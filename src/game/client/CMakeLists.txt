@@ -30,6 +30,7 @@ target_include_directories(client PRIVATE
 	../server
 	../server/entities/characters
 	../server/entities/characters/NPCs
+	../server/gamerules
 	../../public
 	../common
 	../pm_shared

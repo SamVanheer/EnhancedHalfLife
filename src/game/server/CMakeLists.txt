@@ -8,6 +8,7 @@ target_include_directories(hl PRIVATE
 	.
 	entities/characters
 	entities/characters/NPCs
+	gamerules
 	../engine
 	../common
 	../pm_shared
@@ -46,8 +47,6 @@ target_sources(hl PRIVATE
 	func_tank.cpp
 	game.cpp
 	game.h
-	gamerules.cpp
-	gamerules.h
 	ggrenade.cpp
 	globals.cpp
 	healthkit.cpp
@@ -65,7 +64,6 @@ target_sources(hl PRIVATE
 	monstermaker.cpp
 	monsterstate.cpp
 	mortar.cpp
-	multiplay_gamerules.cpp
 	nodes.cpp
 	nodes.h
 	pathcorner.cpp
@@ -73,15 +71,12 @@ target_sources(hl PRIVATE
 	plane.h
 	plats.cpp
 	saverestore.h
-	singleplay_gamerules.cpp
 	skill.cpp
 	skill.h
 	sound.cpp
 	soundent.cpp
 	soundent.h
 	subs.cpp
-	teamplay_gamerules.cpp
-	teamplay_gamerules.h
 	trains.h
 	triggers.cpp
 	UserMessages.cpp
@@ -144,6 +139,12 @@ target_sources(hl PRIVATE
 	entities/characters/NPCs/tentacle.cpp
 	entities/characters/NPCs/turret.cpp
 	entities/characters/NPCs/zombie.cpp
+	gamerules/gamerules.cpp
+	gamerules/gamerules.h
+	gamerules/multiplay_gamerules.cpp
+	gamerules/singleplay_gamerules.cpp
+	gamerules/teamplay_gamerules.cpp
+	gamerules/teamplay_gamerules.h
 	../common/mathlib.cpp
 	../game_shared/voice_gamemgr.cpp
 	../game_shared/voice_gamemgr.h
