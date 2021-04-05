@@ -149,7 +149,6 @@ target_sources(client PRIVATE
 	ui/vgui/vgui_TeamFortressViewport.cpp
 	ui/vgui/vgui_TeamFortressViewport.h
 	ui/vgui/vgui_teammenu.cpp
-	../common/port.h
 	../game_shared/bitvec.h
 	../game_shared/vgui_checkbutton2.cpp
 	../game_shared/vgui_checkbutton2.h
@@ -186,6 +185,7 @@ target_sources(client PRIVATE
 	../../public/parsemsg.cpp
 	../../public/parsemsg.h
 	../../public/Platform.h
+	../../public/port.h
 	../../public/Sequence.h
 	../../public/studio_event.h
 	../../public/winsani_in.h
