@@ -10,7 +10,8 @@ target_include_directories(hl PRIVATE
 	../common
 	../pm_shared
 	../game_shared
-	../../public)
+	../../public
+	../shared/entities/weapons)
 	
 target_compile_definitions(hl PRIVATE
 	QUIVER
@@ -43,8 +44,6 @@ target_sources(hl PRIVATE
 	client.h
 	combat.cpp
 	controller.cpp
-	crossbow.cpp
-	crowbar.cpp
 	decals.h
 	defaultai.cpp
 	defaultai.h
@@ -52,7 +51,6 @@ target_sources(hl PRIVATE
 	doors.h
 	effects.cpp
 	effects.h
-	egon.cpp
 	enginecallback.h
 	explode.cpp
 	explode.h
@@ -67,21 +65,16 @@ target_sources(hl PRIVATE
 	gamerules.cpp
 	gamerules.h
 	gargantua.cpp
-	gauss.cpp
 	genericmonster.cpp
 	ggrenade.cpp
 	globals.cpp
-	#glock.cpp # Do not include; already included as hl_wpn_glock.cpp
 	gman.cpp
-	handgrenade.cpp
 	hassassin.cpp
 	headcrab.cpp
 	healthkit.cpp
 	hgrunt.cpp
-	hl.def # Also add this; will be set as the module definition file automatically
 	hornet.cpp
 	hornet.h
-	hornetgun.cpp
 	houndeye.cpp
 	h_ai.cpp
 	h_battery.cpp
@@ -102,7 +95,6 @@ target_sources(hl PRIVATE
 	monsters.h
 	monsterstate.cpp
 	mortar.cpp
-	mp5.cpp
 	multiplay_gamerules.cpp
 	nihilanth.cpp
 	nodes.cpp
@@ -115,11 +107,8 @@ target_sources(hl PRIVATE
 	plats.cpp
 	player.cpp
 	player.h
-	python.cpp
 	rat.cpp
 	roach.cpp
-	rpg.cpp
-	satchel.cpp
 	saverestore.h
 	schedule.cpp
 	schedule.h
@@ -127,7 +116,6 @@ target_sources(hl PRIVATE
 	scripted.cpp
 	scripted.h
 	scriptevent.h
-	shotgun.cpp
 	singleplay_gamerules.cpp
 	skill.cpp
 	skill.h
@@ -139,7 +127,6 @@ target_sources(hl PRIVATE
 	squad.h
 	squadmonster.cpp
 	squadmonster.h
-	squeakgrenade.cpp
 	subs.cpp
 	talkmonster.cpp
 	talkmonster.h
@@ -149,7 +136,6 @@ target_sources(hl PRIVATE
 	tentacle.cpp
 	trains.h
 	triggers.cpp
-	tripmine.cpp
 	turret.cpp
 	UserMessages.cpp
 	UserMessages.h
@@ -157,8 +143,6 @@ target_sources(hl PRIVATE
 	util.h
 	vector.h
 	weapons.cpp
-	weapons_shared.cpp
-	weapons.h
 	world.cpp
 	xen.cpp
 	zombie.cpp
@@ -173,8 +157,11 @@ target_sources(hl PRIVATE
 	../pm_shared/pm_math.cpp
 	../pm_shared/pm_movevars.h
 	../pm_shared/pm_shared.cpp
-	../pm_shared/pm_shared.h
-	wpn_shared/hl_wpn_glock.cpp)
+	../pm_shared/pm_shared.h)
+
+add_subdirectory(../shared shared)
+
+add_shared_sources(hl)
 
 # Create filters
 get_target_property(SERVER_SOURCES hl SOURCES)

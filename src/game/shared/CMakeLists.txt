@@ -1,0 +1,19 @@
+function(add_shared_sources target)
+	target_sources(${target}
+		PRIVATE
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crossbow.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crowbar.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/egon.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/gauss.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/handgrenade.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/hornetgun.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/mp5.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/python.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/rpg.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/satchel.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/shotgun.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/squeakgrenade.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/tripmine.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/weapons_shared.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/hl_wpn_glock.cpp)
+endfunction()

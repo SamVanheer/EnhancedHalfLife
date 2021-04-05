@@ -32,7 +32,8 @@ target_include_directories(client PRIVATE
 	../common
 	../pm_shared
 	../engine
-	../game_shared)
+	../game_shared
+	../shared/entities/weapons)
 	
 target_compile_definitions(client PRIVATE
 	CLIENT_DLL
@@ -216,23 +217,11 @@ target_sources(client PRIVATE
 	../../public/pman_particlemem.h
 	../../public/pman_triangleffect.h
 	../../public/cl_dll/IGameClientExports.h
-	../../public/steam/steamtypes.h
-	../server/crossbow.cpp
-	../server/crowbar.cpp
-	../server/egon.cpp
-	../server/gauss.cpp
-	../server/handgrenade.cpp
-	../server/hornetgun.cpp
-	../server/mp5.cpp
-	../server/python.cpp
-	../server/rpg.cpp
-	../server/satchel.cpp
-	../server/shotgun.cpp
-	../server/squeakgrenade.cpp
-	../server/tripmine.cpp
-	../server/weapons_shared.cpp
-	../server/wpn_shared/hl_wpn_glock.cpp
-)
+	../../public/steam/steamtypes.h)
+
+add_subdirectory(../shared shared)
+
+add_shared_sources(client)
 
 # Create filters
 get_target_property(CLIENT_SOURCES client SOURCES)
