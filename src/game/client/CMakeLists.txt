@@ -28,8 +28,10 @@ set_common_properties(client)
 target_include_directories(client PRIVATE
 	.
 	../server
+	../server/entities
 	../server/entities/characters
 	../server/entities/characters/NPCs
+	../server/entities/point
 	../server/gamerules
 	../../public
 	../common

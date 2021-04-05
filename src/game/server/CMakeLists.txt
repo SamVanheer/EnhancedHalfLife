@@ -6,8 +6,12 @@ set_common_properties(hl)
 
 target_include_directories(hl PRIVATE
 	.
+	entities
+	entities/brush
 	entities/characters
 	entities/characters/NPCs
+	entities/items
+	entities/point
 	gamerules
 	../engine
 	../common
@@ -22,71 +26,51 @@ target_compile_definitions(hl PRIVATE
 target_sources(hl PRIVATE
 	activity.h
 	activitymap.h
-	airtank.cpp
-	animating.cpp
-	animation.cpp
-	animation.h
-	bmodels.cpp
-	buttons.cpp
-	cbase.cpp
-	cbase.h
 	cdll_dll.h
 	client.cpp
 	client.h
 	decals.h
-	doors.cpp
-	doors.h
-	effects.cpp
-	effects.h
 	enginecallback.h
-	explode.cpp
-	explode.h
 	extdll.h
-	func_break.cpp
-	func_break.h
-	func_tank.cpp
 	game.cpp
 	game.h
-	ggrenade.cpp
 	globals.cpp
-	healthkit.cpp
-	h_ai.cpp
-	h_battery.cpp
-	h_cine.cpp
-	h_cycler.cpp
 	h_export.cpp
-	items.cpp
-	items.h
-	lights.cpp
-	maprules.cpp
-	maprules.h
-	monsterevent.h
-	monstermaker.cpp
-	monsterstate.cpp
-	mortar.cpp
 	nodes.cpp
 	nodes.h
-	pathcorner.cpp
 	plane.cpp
 	plane.h
-	plats.cpp
 	saverestore.h
 	skill.cpp
 	skill.h
-	sound.cpp
-	soundent.cpp
-	soundent.h
-	subs.cpp
-	trains.h
-	triggers.cpp
 	UserMessages.cpp
 	UserMessages.h
 	util.cpp
 	util.h
 	vector.h
-	weapons.cpp
-	world.cpp
-	xen.cpp
+	entities/animating.cpp
+	entities/animation.cpp
+	entities/animation.h
+	entities/cbase.cpp
+	entities/cbase.h
+	entities/maprules.cpp
+	entities/maprules.h
+	entities/monsterevent.h
+	entities/subs.cpp
+	entities/triggers.cpp
+	entities/world.cpp
+	entities/brush/bmodels.cpp
+	entities/brush/buttons.cpp
+	entities/brush/doors.cpp
+	entities/brush/doors.h
+	entities/brush/func_break.cpp
+	entities/brush/func_break.h
+	entities/brush/func_tank.cpp
+	entities/brush/h_battery.cpp
+	entities/brush/mortar.cpp
+	entities/brush/pathcorner.cpp
+	entities/brush/plats.cpp
+	entities/brush/trains.h
 	entities/characters/observer.cpp
 	entities/characters/player.cpp
 	entities/characters/player.h
@@ -110,6 +94,7 @@ target_sources(hl PRIVATE
 	entities/characters/NPCs/gargantua.cpp
 	entities/characters/NPCs/genericmonster.cpp
 	entities/characters/NPCs/gman.cpp
+	entities/characters/NPCs/h_ai.cpp
 	entities/characters/NPCs/hassassin.cpp
 	entities/characters/NPCs/headcrab.cpp
 	entities/characters/NPCs/hgrunt.cpp
@@ -121,6 +106,7 @@ target_sources(hl PRIVATE
 	entities/characters/NPCs/leech.cpp
 	entities/characters/NPCs/monsters.cpp
 	entities/characters/NPCs/monsters.h
+	entities/characters/NPCs/monsterstate.cpp
 	entities/characters/NPCs/nihilanth.cpp
 	entities/characters/NPCs/osprey.cpp
 	entities/characters/NPCs/rat.cpp
@@ -139,6 +125,24 @@ target_sources(hl PRIVATE
 	entities/characters/NPCs/tentacle.cpp
 	entities/characters/NPCs/turret.cpp
 	entities/characters/NPCs/zombie.cpp
+	entities/items/healthkit.cpp
+	entities/items/items.cpp
+	entities/items/items.h
+	entities/point/airtank.cpp
+	entities/point/effects.cpp
+	entities/point/effects.h
+	entities/point/explode.cpp
+	entities/point/explode.h
+	entities/point/ggrenade.cpp
+	entities/point/h_cine.cpp
+	entities/point/h_cycler.cpp
+	entities/point/lights.cpp
+	entities/point/monstermaker.cpp
+	entities/point/sound.cpp
+	entities/point/soundent.cpp
+	entities/point/soundent.h
+	entities/point/xen.cpp
+	entities/weapons/weapons.cpp
 	gamerules/gamerules.cpp
 	gamerules/gamerules.h
 	gamerules/multiplay_gamerules.cpp
