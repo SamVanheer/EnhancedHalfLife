@@ -59,7 +59,6 @@ target_sources(client PRIVATE
 	ammo.h
 	ammohistory.cpp
 	ammohistory.h
-	ammo_secondary.cpp
 	battery.cpp
 	camera.h
 	cdll_int.cpp
