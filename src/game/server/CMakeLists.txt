@@ -19,6 +19,7 @@ target_include_directories(hl PRIVATE
 	../pm_shared
 	../game_shared
 	../../public
+	../../public/engine
 	../../public/game/server
 	../../public/math
 	../shared

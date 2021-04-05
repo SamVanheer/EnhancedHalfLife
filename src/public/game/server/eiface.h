@@ -100,7 +100,7 @@ typedef struct
 	int	fPlayTrack;
 } CDStatus;
 
-#include "../common/crc.h"
+#include "crc.h"
 
 
 // Engine hands this to DLLs for functionality callbacks

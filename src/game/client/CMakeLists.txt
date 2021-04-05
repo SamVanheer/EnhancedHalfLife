@@ -41,6 +41,8 @@ target_include_directories(client PRIVATE
 	../server/gamerules
 	../server/server_interface
 	../../public
+	../../public/engine
+	../../public/engine/client
 	../../public/game/client
 	../../public/game/server
 	../../public/math
@@ -147,49 +149,7 @@ target_sources(client PRIVATE
 	ui/vgui/vgui_TeamFortressViewport.cpp
 	ui/vgui/vgui_TeamFortressViewport.h
 	ui/vgui/vgui_teammenu.cpp
-	../common/beamdef.h
-	../common/cl_entity.h
-	../common/com_model.h
-	../common/const.h
-	../common/con_nprint.h
-	../common/crc.h
-	../common/cvardef.h
-	../common/demo_api.h
-	../common/director_cmds.h
-	../common/dlight.h
-	../common/dll_state.h
-	../common/entity_state.h
-	../common/entity_types.h
-	../common/enums.h
-	../common/event_api.h
-	../common/event_args.h
-	../common/event_flags.h
-	../common/hltv.h
-	# ../common/interface.cpp # Do not include, version from /public is used
-	../common/interface.h
-	../common/in_buttons.h
-	../common/ivoicetweak.h
-	../common/netadr.h
-	../common/net_api.h
-	../common/nowin.h
-	../common/parsemsg.cpp
-	../common/parsemsg.h
-	../common/particledef.h
-	../common/Platform.h
-	../common/pmtrace.h
 	../common/port.h
-	../common/qfont.h
-	../common/ref_params.h
-	../common/r_efx.h
-	../common/r_studioint.h
-	../common/screenfade.h
-	../common/Sequence.h
-	../common/studio_event.h
-	../common/triangleapi.h
-	../common/usercmd.h
-	../common/weaponinfo.h
-	../common/winsani_in.h
-	../common/winsani_out.h
 	../game_shared/bitvec.h
 	../game_shared/vgui_checkbutton2.cpp
 	../game_shared/vgui_checkbutton2.h
@@ -210,13 +170,50 @@ target_sources(client PRIVATE
 	../game_shared/voice_banmgr.h
 	../game_shared/voice_common.h
 	../../public/archtypes.h
+	../../public/const.h
+	../../public/con_nprint.h
+	../../public/crc.h
+	../../public/cvardef.h
+	../../public/director_cmds.h
+	../../public/enums.h
 	../../public/FileSystem.h
+	../../public/hltv.h
+	../../public/in_buttons.h
 	../../public/interface.cpp
 	../../public/interface.h
 	../../public/keydefs.h
-	../../public/particleman.h
-	../../public/pman_particlemem.h
-	../../public/pman_triangleffect.h
+	../../public/netadr.h
+	../../public/parsemsg.cpp
+	../../public/parsemsg.h
+	../../public/Platform.h
+	../../public/Sequence.h
+	../../public/studio_event.h
+	../../public/winsani_in.h
+	../../public/winsani_out.h
+	../../public/engine/com_model.h
+	../../public/engine/entity_state.h
+	../../public/engine/event_args.h
+	../../public/engine/event_flags.h
+	../../public/engine/pmtrace.h
+	../../public/engine/r_studioint.h
+	../../public/engine/screenfade.h
+	../../public/engine/usercmd.h
+	../../public/engine/weaponinfo.h
+	../../public/engine/client/beamdef.h
+	../../public/engine/client/cl_entity.h
+	../../public/engine/client/demo_api.h
+	../../public/engine/client/dlight.h
+	../../public/engine/client/entity_types.h
+	../../public/engine/client/event_api.h
+	../../public/engine/client/ivoicetweak.h
+	../../public/engine/client/net_api.h
+	../../public/engine/client/particledef.h
+	../../public/engine/client/particleman.h
+	../../public/engine/client/pman_particlemem.h
+	../../public/engine/client/pman_triangleffect.h
+	../../public/engine/client/ref_params.h
+	../../public/engine/client/r_efx.h
+	../../public/engine/client/triangleapi.h
 	../../public/game/client/IGameClientExports.h
 	../../public/steam/steamtypes.h
 	../../public/math/mathlib.cpp
