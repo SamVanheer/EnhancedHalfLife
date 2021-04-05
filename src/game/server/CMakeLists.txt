@@ -6,6 +6,7 @@ set_common_properties(hl)
 
 target_include_directories(hl PRIVATE
 	.
+	entities/characters
 	entities/characters/NPCs
 	../engine
 	../common
@@ -67,13 +68,10 @@ target_sources(hl PRIVATE
 	multiplay_gamerules.cpp
 	nodes.cpp
 	nodes.h
-	observer.cpp
 	pathcorner.cpp
 	plane.cpp
 	plane.h
 	plats.cpp
-	player.cpp
-	player.h
 	saverestore.h
 	singleplay_gamerules.cpp
 	skill.cpp
@@ -81,8 +79,6 @@ target_sources(hl PRIVATE
 	sound.cpp
 	soundent.cpp
 	soundent.h
-	spectator.cpp
-	spectator.h
 	subs.cpp
 	teamplay_gamerules.cpp
 	teamplay_gamerules.h
@@ -96,6 +92,11 @@ target_sources(hl PRIVATE
 	weapons.cpp
 	world.cpp
 	xen.cpp
+	entities/characters/observer.cpp
+	entities/characters/player.cpp
+	entities/characters/player.h
+	entities/characters/spectator.cpp
+	entities/characters/spectator.h
 	entities/characters/NPCs/aflock.cpp
 	entities/characters/NPCs/agrunt.cpp
 	entities/characters/NPCs/apache.cpp
