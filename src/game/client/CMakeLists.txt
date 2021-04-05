@@ -27,6 +27,9 @@ set_common_properties(client)
 
 target_include_directories(client PRIVATE
 	.
+	ui
+	ui/hud
+	ui/vgui
 	../server
 	../server/entities
 	../server/entities/characters
@@ -55,18 +58,12 @@ target_link_options(client PRIVATE
 		-framework Carbon>)
 
 target_sources(client PRIVATE
-	ammo.cpp
-	ammo.h
-	ammohistory.cpp
-	ammohistory.h
-	battery.cpp
 	camera.h
 	cdll_int.cpp
 	cl_dll.h
 	cl_util.h
 	com_weapons.cpp
 	com_weapons.h
-	death.cpp
 	demo.cpp
 	demo.h
 	entity.cpp
@@ -76,20 +73,9 @@ target_sources(client PRIVATE
 	ev_hldm.cpp
 	ev_hldm.h
 	Exports.h
-	flashlight.cpp
 	GameStudioModelRenderer.cpp
 	GameStudioModelRenderer.h
-	geiger.cpp
 	global_consts.h
-	health.cpp
-	health.h
-	hud.cpp
-	hud.h
-	hud_msg.cpp
-	hud_redraw.cpp
-	hud_spectator.cpp
-	hud_spectator.h
-	hud_update.cpp
 	input.cpp
 	inputw32.cpp
 	interpolation.cpp
@@ -97,45 +83,62 @@ target_sources(client PRIVATE
 	in_camera.cpp
 	in_defs.h
 	kbutton.h
-	menu.cpp
-	message.cpp
 	player_info.h
-	saytext.cpp
-	statusbar.cpp
-	status_icons.cpp
 	StudioModelRenderer.cpp
 	StudioModelRenderer.h
 	studio_util.cpp
 	studio_util.h
-	text_message.cpp
 	tf_defs.h
-	train.cpp
 	tri.cpp
 	tri.h
 	util.cpp
-	vgui_ClassMenu.cpp
-	vgui_CustomObjects.cpp
-	vgui_int.cpp
-	vgui_int.h
-	vgui_MOTDWindow.cpp
-	vgui_SchemeManager.cpp
-	vgui_SchemeManager.h
-	vgui_ScorePanel.cpp
-	vgui_ScorePanel.h
-	vgui_SpectatorPanel.cpp
-	vgui_SpectatorPanel.h
-	vgui_TeamFortressViewport.cpp
-	vgui_TeamFortressViewport.h
-	vgui_teammenu.cpp
 	view.cpp
 	view.h
-	voice_status.cpp
-	voice_status.h
 	wrect.h
 	hl/hl_baseentity.cpp
 	hl/hl_events.cpp
 	hl/hl_objects.cpp
 	hl/hl_weapons.cpp
+	ui/voice_status.cpp
+	ui/voice_status.h
+	ui/hud/ammo.cpp
+	ui/hud/ammo.h
+	ui/hud/ammohistory.cpp
+	ui/hud/ammohistory.h
+	ui/hud/battery.cpp
+	ui/hud/death.cpp
+	ui/hud/flashlight.cpp
+	ui/hud/geiger.cpp
+	ui/hud/health.cpp
+	ui/hud/health.h
+	ui/hud/hud.cpp
+	ui/hud/hud.h
+	ui/hud/hud_msg.cpp
+	ui/hud/hud_redraw.cpp
+	ui/hud/hud_spectator.cpp
+	ui/hud/hud_spectator.h
+	ui/hud/hud_update.cpp
+	ui/hud/menu.cpp
+	ui/hud/message.cpp
+	ui/hud/saytext.cpp
+	ui/hud/status_icons.cpp
+	ui/hud/statusbar.cpp
+	ui/hud/text_message.cpp
+	ui/hud/train.cpp
+	ui/vgui/vgui_ClassMenu.cpp
+	ui/vgui/vgui_CustomObjects.cpp
+	ui/vgui/vgui_int.cpp
+	ui/vgui/vgui_int.h
+	ui/vgui/vgui_MOTDWindow.cpp
+	ui/vgui/vgui_SchemeManager.cpp
+	ui/vgui/vgui_SchemeManager.h
+	ui/vgui/vgui_ScorePanel.cpp
+	ui/vgui/vgui_ScorePanel.h
+	ui/vgui/vgui_SpectatorPanel.cpp
+	ui/vgui/vgui_SpectatorPanel.h
+	ui/vgui/vgui_TeamFortressViewport.cpp
+	ui/vgui/vgui_TeamFortressViewport.h
+	ui/vgui/vgui_teammenu.cpp
 	../common/beamdef.h
 	../common/cl_entity.h
 	../common/com_model.h
