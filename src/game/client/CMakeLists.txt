@@ -9,14 +9,16 @@ endif()
 
 target_include_directories(vgui INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../utils/vgui/include)
 
-# Set up SDL2 library. No include path since it's used directly by the client project
+# Set up SDL2 library
 add_library(SDL2 SHARED IMPORTED)
 
 if (WIN32)
-	set_target_properties(SDL2 PROPERTIES IMPORTED_IMPLIB "${CMAKE_CURRENT_SOURCE_DIR}/../../../lib/public/SDL2.lib")
+	set_target_properties(SDL2 PROPERTIES IMPORTED_IMPLIB "${CMAKE_CURRENT_SOURCE_DIR}/../../../external/SDL2/lib/SDL2.lib")
 else()
 	set_target_properties(SDL2 PROPERTIES IMPORTED_LOCATION "${HALFLIFE_DIRECTORY}/libSDL2.so")
 endif()
+
+target_include_directories(vgui INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../../external/SDL2/include)
 
 # Add client library
 add_library(client SHARED)
@@ -30,8 +32,7 @@ target_include_directories(client PRIVATE
 	../common
 	../pm_shared
 	../engine
-	../game_shared
-	../../../external)
+	../game_shared)
 	
 target_compile_definitions(client PRIVATE
 	CLIENT_DLL
