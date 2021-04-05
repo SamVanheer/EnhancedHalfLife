@@ -27,6 +27,7 @@ set_common_properties(client)
 
 target_include_directories(client PRIVATE
 	.
+	client_interface
 	input
 	rendering
 	ui
@@ -39,11 +40,14 @@ target_include_directories(client PRIVATE
 	../server/entities/point
 	../server/gamerules
 	../../public
+	../../public/game/client
+	../../public/game/server
 	../../public/math
 	../common
 	../pm_shared
 	../engine
 	../game_shared
+	../shared
 	../shared/entities/weapons)
 	
 target_compile_definitions(client PRIVATE
@@ -60,7 +64,6 @@ target_link_options(client PRIVATE
 		-framework Carbon>)
 
 target_sources(client PRIVATE
-	cdll_int.cpp
 	cl_dll.h
 	cl_util.h
 	com_weapons.cpp
@@ -73,7 +76,6 @@ target_sources(client PRIVATE
 	ev_common.cpp
 	ev_hldm.cpp
 	ev_hldm.h
-	Exports.h
 	global_consts.h
 	interpolation.cpp
 	interpolation.h
@@ -83,6 +85,8 @@ target_sources(client PRIVATE
 	view.cpp
 	view.h
 	wrect.h
+	client_interface/cdll_int.cpp
+	client_interface/Exports.h
 	hl/hl_baseentity.cpp
 	hl/hl_events.cpp
 	hl/hl_objects.cpp
@@ -220,7 +224,7 @@ target_sources(client PRIVATE
 	../../public/particleman.h
 	../../public/pman_particlemem.h
 	../../public/pman_triangleffect.h
-	../../public/cl_dll/IGameClientExports.h
+	../../public/game/client/IGameClientExports.h
 	../../public/steam/steamtypes.h
 	../../public/math/mathlib.cpp
 	../../public/math/mathlib.h

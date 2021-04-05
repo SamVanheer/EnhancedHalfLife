@@ -1,6 +1,7 @@
 function(add_shared_sources target)
 	target_sources(${target}
 		PRIVATE
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/cdll_dll.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crossbow.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crowbar.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/egon.cpp

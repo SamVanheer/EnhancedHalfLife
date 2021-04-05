@@ -13,12 +13,15 @@ target_include_directories(hl PRIVATE
 	entities/items
 	entities/point
 	gamerules
+	server_interface/
 	../engine
 	../common
 	../pm_shared
 	../game_shared
 	../../public
+	../../public/game/server
 	../../public/math
+	../shared
 	../shared/entities/weapons)
 	
 target_compile_definitions(hl PRIVATE
@@ -27,16 +30,11 @@ target_compile_definitions(hl PRIVATE
 target_sources(hl PRIVATE
 	activity.h
 	activitymap.h
-	cdll_dll.h
 	client.cpp
 	client.h
 	decals.h
-	enginecallback.h
 	extdll.h
-	game.cpp
-	game.h
 	globals.cpp
-	h_export.cpp
 	nodes.cpp
 	nodes.h
 	plane.cpp
@@ -149,6 +147,10 @@ target_sources(hl PRIVATE
 	gamerules/singleplay_gamerules.cpp
 	gamerules/teamplay_gamerules.cpp
 	gamerules/teamplay_gamerules.h
+	server_interface/enginecallback.h
+	server_interface/game.cpp
+	server_interface/game.h
+	server_interface/h_export.cpp
 	../game_shared/voice_gamemgr.cpp
 	../game_shared/voice_gamemgr.h
 	../pm_shared/pm_debug.cpp

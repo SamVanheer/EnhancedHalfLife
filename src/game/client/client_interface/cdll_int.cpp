@@ -391,7 +391,7 @@ extern "C" void DLLEXPORT F(void *pv)
 	*pcldll_func = cldll_func;
 }
 
-#include "cl_dll/IGameClientExports.h"
+#include "IGameClientExports.h"
 
 //-----------------------------------------------------------------------------
 // Purpose: Exports functions that are used by the gameUI for UI dialogs
