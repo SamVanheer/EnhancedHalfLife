@@ -1,3 +1,23 @@
+# Add server library
+# Add the def file as well
+add_library(hl SHARED hl.def)
+
+set_common_properties(hl)
+
+target_include_directories(hl PRIVATE
+	.
+	../engine
+	../common
+	../pm_shared
+	../game_shared
+	../../public)
+	
+target_compile_definitions(hl PRIVATE
+	QUIVER
+	VOXEL
+	QUAKE2
+	VALVE_DLL)
+
 target_sources(hl PRIVATE
 	activity.h
 	activitymap.h
@@ -155,3 +175,31 @@ target_sources(hl PRIVATE
 	../pm_shared/pm_shared.cpp
 	../pm_shared/pm_shared.h
 	wpn_shared/hl_wpn_glock.cpp)
+
+# Create filters
+get_target_property(SERVER_SOURCES hl SOURCES)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/../.. FILES ${SERVER_SOURCES})
+
+if (MSVC)
+	set(HLDS_EXECUTABLE "hlds.exe")
+
+	# Set debugging settings to work on the mod directory
+	# It is assumed that the install path points to the mod directory
+	get_filename_component(MOD_NAME ${CMAKE_INSTALL_PREFIX} NAME_WE)
+
+	# If HLDS_DIRECTORY is not specified it will leave a non-functional "default" setting
+	set_target_properties(hl PROPERTIES
+		VS_DEBUGGER_COMMAND "${HLDS_DIRECTORY}/${HLDS_EXECUTABLE}"
+		VS_DEBUGGER_COMMAND_ARGUMENTS "-game ${MOD_NAME}"
+		VS_DEBUGGER_WORKING_DIRECTORY "${HLDS_DIRECTORY}")
+endif()
+
+# Set install paths to the user-defined mod directory
+install(TARGETS hl
+	RUNTIME DESTINATION dlls
+	LIBRARY DESTINATION dlls
+)
+
+if (WIN32)
+	install(FILES $<TARGET_PDB_FILE:hl> DESTINATION dlls OPTIONAL)
+endif()

@@ -1,3 +1,51 @@
+# Set up vgui library
+add_library(vgui SHARED IMPORTED)
+
+if (WIN32)
+	set_target_properties(vgui PROPERTIES IMPORTED_IMPLIB "${CMAKE_CURRENT_SOURCE_DIR}/../../utils/vgui/lib/win32_vc6/vgui.lib")
+else()
+	set_target_properties(vgui PROPERTIES IMPORTED_LOCATION "${HALFLIFE_DIRECTORY}/vgui.so")
+endif()
+
+target_include_directories(vgui INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../utils/vgui/include)
+
+# Set up SDL2 library. No include path since it's used directly by the client project
+add_library(SDL2 SHARED IMPORTED)
+
+if (WIN32)
+	set_target_properties(SDL2 PROPERTIES IMPORTED_IMPLIB "${CMAKE_CURRENT_SOURCE_DIR}/../../../lib/public/SDL2.lib")
+else()
+	set_target_properties(SDL2 PROPERTIES IMPORTED_LOCATION "${HALFLIFE_DIRECTORY}/libSDL2.so")
+endif()
+
+# Add client library
+add_library(client SHARED)
+
+set_common_properties(client)
+
+target_include_directories(client PRIVATE
+	.
+	../server
+	../../public
+	../common
+	../pm_shared
+	../engine
+	../game_shared
+	../../../external)
+	
+target_compile_definitions(client PRIVATE
+	CLIENT_DLL
+	HL_DLL)
+	
+target_link_libraries(client PRIVATE
+	vgui
+	$<$<PLATFORM_ID:Windows>:wsock32>
+	SDL2)
+
+target_link_options(client PRIVATE
+	$<$<PLATFORM_ID:Darwin>:
+		-framework Carbon>)
+
 target_sources(client PRIVATE
 	ammo.cpp
 	ammo.h
@@ -85,21 +133,6 @@ target_sources(client PRIVATE
 	hl/hl_events.cpp
 	hl/hl_objects.cpp
 	hl/hl_weapons.cpp
-	../dlls/crossbow.cpp
-	../dlls/crowbar.cpp
-	../dlls/egon.cpp
-	../dlls/gauss.cpp
-	../dlls/handgrenade.cpp
-	../dlls/hornetgun.cpp
-	../dlls/mp5.cpp
-	../dlls/python.cpp
-	../dlls/rpg.cpp
-	../dlls/satchel.cpp
-	../dlls/shotgun.cpp
-	../dlls/squeakgrenade.cpp
-	../dlls/tripmine.cpp
-	../dlls/weapons_shared.cpp
-	../dlls/wpn_shared/hl_wpn_glock.cpp
 	../common/beamdef.h
 	../common/cl_entity.h
 	../common/com_model.h
@@ -173,14 +206,56 @@ target_sources(client PRIVATE
 	../pm_shared/pm_movevars.h
 	../pm_shared/pm_shared.cpp
 	../pm_shared/pm_shared.h
-	../public/archtypes.h
-	../public/FileSystem.h
-	../public/interface.cpp
-	../public/interface.h
-	../public/keydefs.h
-	../public/particleman.h
-	../public/pman_particlemem.h
-	../public/pman_triangleffect.h
-	../public/cl_dll/IGameClientExports.h
-	../public/steam/steamtypes.h
+	../../public/archtypes.h
+	../../public/FileSystem.h
+	../../public/interface.cpp
+	../../public/interface.h
+	../../public/keydefs.h
+	../../public/particleman.h
+	../../public/pman_particlemem.h
+	../../public/pman_triangleffect.h
+	../../public/cl_dll/IGameClientExports.h
+	../../public/steam/steamtypes.h
+	../server/crossbow.cpp
+	../server/crowbar.cpp
+	../server/egon.cpp
+	../server/gauss.cpp
+	../server/handgrenade.cpp
+	../server/hornetgun.cpp
+	../server/mp5.cpp
+	../server/python.cpp
+	../server/rpg.cpp
+	../server/satchel.cpp
+	../server/shotgun.cpp
+	../server/squeakgrenade.cpp
+	../server/tripmine.cpp
+	../server/weapons_shared.cpp
+	../server/wpn_shared/hl_wpn_glock.cpp
 )
+
+# Create filters
+get_target_property(CLIENT_SOURCES client SOURCES)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/../.. FILES ${CLIENT_SOURCES})
+
+if (MSVC)
+	set(HL_EXECUTABLE "hl.exe")
+	
+	# Set debugging settings to work on the mod directory
+	# It is assumed that the install path points to the mod directory
+	get_filename_component(MOD_NAME ${CMAKE_INSTALL_PREFIX} NAME_WE)
+
+	set_target_properties(client PROPERTIES
+		VS_DEBUGGER_COMMAND "${HALFLIFE_DIRECTORY}/${HL_EXECUTABLE}"
+		VS_DEBUGGER_COMMAND_ARGUMENTS "-game ${MOD_NAME}"
+		VS_DEBUGGER_WORKING_DIRECTORY "${HALFLIFE_DIRECTORY}")
+endif()
+	
+# Set install paths to the user-defined mod directory
+install(TARGETS client
+	RUNTIME DESTINATION cl_dlls
+	LIBRARY DESTINATION cl_dlls
+)
+
+if (WIN32)
+	install(FILES $<TARGET_PDB_FILE:client> DESTINATION cl_dlls OPTIONAL)
+endif()
