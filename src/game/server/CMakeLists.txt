@@ -6,6 +6,7 @@ set_common_properties(hl)
 
 target_include_directories(hl PRIVATE
 	.
+	entities/characters/NPCs
 	../engine
 	../common
 	../pm_shared
@@ -19,31 +20,18 @@ target_compile_definitions(hl PRIVATE
 target_sources(hl PRIVATE
 	activity.h
 	activitymap.h
-	aflock.cpp
-	agrunt.cpp
 	airtank.cpp
 	animating.cpp
 	animation.cpp
 	animation.h
-	apache.cpp
-	barnacle.cpp
-	barney.cpp
-	basemonster.h
-	bigmomma.cpp
-	bloater.cpp
 	bmodels.cpp
-	bullsquid.cpp
 	buttons.cpp
 	cbase.cpp
 	cbase.h
 	cdll_dll.h
 	client.cpp
 	client.h
-	combat.cpp
-	controller.cpp
 	decals.h
-	defaultai.cpp
-	defaultai.h
 	doors.cpp
 	doors.h
 	effects.cpp
@@ -52,8 +40,6 @@ target_sources(hl PRIVATE
 	explode.cpp
 	explode.h
 	extdll.h
-	flyingmonster.cpp
-	flyingmonster.h
 	func_break.cpp
 	func_break.h
 	func_tank.cpp
@@ -61,58 +47,34 @@ target_sources(hl PRIVATE
 	game.h
 	gamerules.cpp
 	gamerules.h
-	gargantua.cpp
-	genericmonster.cpp
 	ggrenade.cpp
 	globals.cpp
-	gman.cpp
-	hassassin.cpp
-	headcrab.cpp
 	healthkit.cpp
-	hgrunt.cpp
-	hornet.cpp
-	hornet.h
-	houndeye.cpp
 	h_ai.cpp
 	h_battery.cpp
 	h_cine.cpp
 	h_cycler.cpp
 	h_export.cpp
-	ichthyosaur.cpp
-	islave.cpp
 	items.cpp
 	items.h
-	leech.cpp
 	lights.cpp
 	maprules.cpp
 	maprules.h
 	monsterevent.h
 	monstermaker.cpp
-	monsters.cpp
-	monsters.h
 	monsterstate.cpp
 	mortar.cpp
 	multiplay_gamerules.cpp
-	nihilanth.cpp
 	nodes.cpp
 	nodes.h
 	observer.cpp
-	osprey.cpp
 	pathcorner.cpp
 	plane.cpp
 	plane.h
 	plats.cpp
 	player.cpp
 	player.h
-	rat.cpp
-	roach.cpp
 	saverestore.h
-	schedule.cpp
-	schedule.h
-	scientist.cpp
-	scripted.cpp
-	scripted.h
-	scriptevent.h
 	singleplay_gamerules.cpp
 	skill.cpp
 	skill.h
@@ -121,18 +83,11 @@ target_sources(hl PRIVATE
 	soundent.h
 	spectator.cpp
 	spectator.h
-	squad.h
-	squadmonster.cpp
-	squadmonster.h
 	subs.cpp
-	talkmonster.cpp
-	talkmonster.h
 	teamplay_gamerules.cpp
 	teamplay_gamerules.h
-	tentacle.cpp
 	trains.h
 	triggers.cpp
-	turret.cpp
 	UserMessages.cpp
 	UserMessages.h
 	util.cpp
@@ -141,7 +96,53 @@ target_sources(hl PRIVATE
 	weapons.cpp
 	world.cpp
 	xen.cpp
-	zombie.cpp
+	entities/characters/NPCs/aflock.cpp
+	entities/characters/NPCs/agrunt.cpp
+	entities/characters/NPCs/apache.cpp
+	entities/characters/NPCs/barnacle.cpp
+	entities/characters/NPCs/barney.cpp
+	entities/characters/NPCs/basemonster.h
+	entities/characters/NPCs/bigmomma.cpp
+	entities/characters/NPCs/bloater.cpp
+	entities/characters/NPCs/bullsquid.cpp
+	entities/characters/NPCs/combat.cpp
+	entities/characters/NPCs/controller.cpp
+	entities/characters/NPCs/defaultai.cpp
+	entities/characters/NPCs/defaultai.h
+	entities/characters/NPCs/flyingmonster.cpp
+	entities/characters/NPCs/flyingmonster.h
+	entities/characters/NPCs/gargantua.cpp
+	entities/characters/NPCs/genericmonster.cpp
+	entities/characters/NPCs/gman.cpp
+	entities/characters/NPCs/hassassin.cpp
+	entities/characters/NPCs/headcrab.cpp
+	entities/characters/NPCs/hgrunt.cpp
+	entities/characters/NPCs/hornet.cpp
+	entities/characters/NPCs/hornet.h
+	entities/characters/NPCs/houndeye.cpp
+	entities/characters/NPCs/ichthyosaur.cpp
+	entities/characters/NPCs/islave.cpp
+	entities/characters/NPCs/leech.cpp
+	entities/characters/NPCs/monsters.cpp
+	entities/characters/NPCs/monsters.h
+	entities/characters/NPCs/nihilanth.cpp
+	entities/characters/NPCs/osprey.cpp
+	entities/characters/NPCs/rat.cpp
+	entities/characters/NPCs/roach.cpp
+	entities/characters/NPCs/schedule.cpp
+	entities/characters/NPCs/schedule.h
+	entities/characters/NPCs/scientist.cpp
+	entities/characters/NPCs/scripted.cpp
+	entities/characters/NPCs/scripted.h
+	entities/characters/NPCs/scriptevent.h
+	entities/characters/NPCs/squad.h
+	entities/characters/NPCs/squadmonster.cpp
+	entities/characters/NPCs/squadmonster.h
+	entities/characters/NPCs/talkmonster.cpp
+	entities/characters/NPCs/talkmonster.h
+	entities/characters/NPCs/tentacle.cpp
+	entities/characters/NPCs/turret.cpp
+	entities/characters/NPCs/zombie.cpp
 	../common/mathlib.cpp
 	../game_shared/voice_gamemgr.cpp
 	../game_shared/voice_gamemgr.h

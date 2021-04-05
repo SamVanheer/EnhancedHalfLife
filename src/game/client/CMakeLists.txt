@@ -28,6 +28,7 @@ set_common_properties(client)
 target_include_directories(client PRIVATE
 	.
 	../server
+	../server/entities/characters/NPCs
 	../../public
 	../common
 	../pm_shared
