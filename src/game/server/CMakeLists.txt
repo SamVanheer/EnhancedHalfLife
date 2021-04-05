@@ -14,9 +14,6 @@ target_include_directories(hl PRIVATE
 	../shared/entities/weapons)
 	
 target_compile_definitions(hl PRIVATE
-	QUIVER
-	VOXEL
-	QUAKE2
 	VALVE_DLL)
 
 target_sources(hl PRIVATE
