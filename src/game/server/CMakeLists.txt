@@ -18,6 +18,7 @@ target_include_directories(hl PRIVATE
 	../pm_shared
 	../game_shared
 	../../public
+	../../public/math
 	../shared/entities/weapons)
 	
 target_compile_definitions(hl PRIVATE
@@ -47,7 +48,6 @@ target_sources(hl PRIVATE
 	UserMessages.h
 	util.cpp
 	util.h
-	vector.h
 	entities/animating.cpp
 	entities/animation.cpp
 	entities/animation.h
@@ -149,7 +149,6 @@ target_sources(hl PRIVATE
 	gamerules/singleplay_gamerules.cpp
 	gamerules/teamplay_gamerules.cpp
 	gamerules/teamplay_gamerules.h
-	../common/mathlib.cpp
 	../game_shared/voice_gamemgr.cpp
 	../game_shared/voice_gamemgr.h
 	../pm_shared/pm_debug.cpp
@@ -160,7 +159,10 @@ target_sources(hl PRIVATE
 	../pm_shared/pm_math.cpp
 	../pm_shared/pm_movevars.h
 	../pm_shared/pm_shared.cpp
-	../pm_shared/pm_shared.h)
+	../pm_shared/pm_shared.h
+	../../public/math/mathlib.cpp
+	../../public/math/mathlib.h
+	../../public/math/vector.h)
 
 add_subdirectory(../shared shared)
 

@@ -34,6 +34,7 @@ target_include_directories(client PRIVATE
 	../server/entities/point
 	../server/gamerules
 	../../public
+	../../public/math
 	../common
 	../pm_shared
 	../engine
@@ -162,8 +163,6 @@ target_sources(client PRIVATE
 	../common/interface.h
 	../common/in_buttons.h
 	../common/ivoicetweak.h
-	../common/mathlib.cpp
-	../common/mathlib.h
 	../common/netadr.h
 	../common/net_api.h
 	../common/nowin.h
@@ -222,7 +221,10 @@ target_sources(client PRIVATE
 	../../public/pman_particlemem.h
 	../../public/pman_triangleffect.h
 	../../public/cl_dll/IGameClientExports.h
-	../../public/steam/steamtypes.h)
+	../../public/steam/steamtypes.h
+	../../public/math/mathlib.cpp
+	../../public/math/mathlib.h
+	../../public/math/vector.h)
 
 add_subdirectory(../shared shared)
 
