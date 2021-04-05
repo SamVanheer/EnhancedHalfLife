@@ -27,6 +27,8 @@ set_common_properties(client)
 
 target_include_directories(client PRIVATE
 	.
+	input
+	rendering
 	ui
 	ui/hud
 	ui/vgui
@@ -58,7 +60,6 @@ target_link_options(client PRIVATE
 		-framework Carbon>)
 
 target_sources(client PRIVATE
-	camera.h
 	cdll_int.cpp
 	cl_dll.h
 	cl_util.h
@@ -73,24 +74,11 @@ target_sources(client PRIVATE
 	ev_hldm.cpp
 	ev_hldm.h
 	Exports.h
-	GameStudioModelRenderer.cpp
-	GameStudioModelRenderer.h
 	global_consts.h
-	input.cpp
-	inputw32.cpp
 	interpolation.cpp
 	interpolation.h
-	in_camera.cpp
-	in_defs.h
-	kbutton.h
 	player_info.h
-	StudioModelRenderer.cpp
-	StudioModelRenderer.h
-	studio_util.cpp
-	studio_util.h
 	tf_defs.h
-	tri.cpp
-	tri.h
 	util.cpp
 	view.cpp
 	view.h
@@ -99,6 +87,20 @@ target_sources(client PRIVATE
 	hl/hl_events.cpp
 	hl/hl_objects.cpp
 	hl/hl_weapons.cpp
+	input/camera.h
+	input/input.cpp
+	input/inputw32.cpp
+	input/in_camera.cpp
+	input/in_defs.h
+	input/kbutton.h
+	rendering/GameStudioModelRenderer.cpp
+	rendering/GameStudioModelRenderer.h
+	rendering/StudioModelRenderer.cpp
+	rendering/StudioModelRenderer.h
+	rendering/studio_util.cpp
+	rendering/studio_util.h
+	rendering/tri.cpp
+	rendering/tri.h
 	ui/voice_status.cpp
 	ui/voice_status.h
 	ui/hud/ammo.cpp
