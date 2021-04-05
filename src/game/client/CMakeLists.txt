@@ -61,7 +61,6 @@ target_sources(client PRIVATE
 	ammohistory.h
 	ammo_secondary.cpp
 	battery.cpp
-	bench.h
 	camera.h
 	cdll_int.cpp
 	cl_dll.h
@@ -87,9 +86,6 @@ target_sources(client PRIVATE
 	health.h
 	hud.cpp
 	hud.h
-	hud_bench.cpp
-	hud_benchtrace.cpp
-	hud_benchtrace.h
 	hud_msg.cpp
 	hud_redraw.cpp
 	hud_spectator.cpp
