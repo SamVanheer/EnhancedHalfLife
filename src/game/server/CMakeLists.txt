@@ -17,14 +17,15 @@ target_include_directories(hl PRIVATE
 	../engine
 	../common
 	../pm_shared
-	../game_shared
 	../../public
 	../../public/engine
+	../../public/game
 	../../public/game/server
 	../../public/math
 	../shared
 	../shared/entities/weapons
-	../shared/player_movement)
+	../shared/player_movement
+	../shared/utils)
 	
 target_compile_definitions(hl PRIVATE
 	VALVE_DLL)
@@ -48,6 +49,8 @@ target_sources(hl PRIVATE
 	UserMessages.h
 	util.cpp
 	util.h
+	voice_gamemgr.cpp
+	voice_gamemgr.h
 	entities/animating.cpp
 	entities/animation.cpp
 	entities/animation.h
@@ -153,8 +156,7 @@ target_sources(hl PRIVATE
 	server_interface/game.cpp
 	server_interface/game.h
 	server_interface/h_export.cpp
-	../game_shared/voice_gamemgr.cpp
-	../game_shared/voice_gamemgr.h
+	../../public/game/voice_common.h
 	../../public/math/mathlib.cpp
 	../../public/math/mathlib.h
 	../../public/math/vector.h)

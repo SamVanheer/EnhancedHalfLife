@@ -33,6 +33,7 @@ target_include_directories(client PRIVATE
 	ui
 	ui/hud
 	ui/vgui
+	ui/vgui/utils
 	../server
 	../server/entities
 	../server/entities/characters
@@ -43,16 +44,17 @@ target_include_directories(client PRIVATE
 	../../public
 	../../public/engine
 	../../public/engine/client
+	../../public/game
 	../../public/game/client
 	../../public/game/server
 	../../public/math
 	../common
 	../pm_shared
 	../engine
-	../game_shared
 	../shared
 	../shared/entities/weapons
-	../shared/player_movement)
+	../shared/player_movement
+	../shared/utils)
 	
 target_compile_definitions(client PRIVATE
 	CLIENT_DLL
@@ -149,25 +151,23 @@ target_sources(client PRIVATE
 	ui/vgui/vgui_TeamFortressViewport.cpp
 	ui/vgui/vgui_TeamFortressViewport.h
 	ui/vgui/vgui_teammenu.cpp
-	../game_shared/bitvec.h
-	../game_shared/vgui_checkbutton2.cpp
-	../game_shared/vgui_checkbutton2.h
-	../game_shared/vgui_defaultinputsignal.h
-	../game_shared/vgui_grid.cpp
-	../game_shared/vgui_grid.h
-	../game_shared/vgui_helpers.cpp
-	../game_shared/vgui_helpers.h
-	../game_shared/vgui_listbox.cpp
-	../game_shared/vgui_listbox.h
-	../game_shared/vgui_loadtga.cpp
-	../game_shared/vgui_loadtga.h
-	../game_shared/vgui_scrollbar2.cpp
-	../game_shared/vgui_scrollbar2.h
-	../game_shared/vgui_slider2.cpp
-	../game_shared/vgui_slider2.h
-	../game_shared/voice_banmgr.cpp
-	../game_shared/voice_banmgr.h
-	../game_shared/voice_common.h
+	ui/vgui/utils/vgui_checkbutton2.cpp
+	ui/vgui/utils/vgui_checkbutton2.h
+	ui/vgui/utils/vgui_defaultinputsignal.h
+	ui/vgui/utils/vgui_grid.cpp
+	ui/vgui/utils/vgui_grid.h
+	ui/vgui/utils/vgui_helpers.cpp
+	ui/vgui/utils/vgui_helpers.h
+	ui/vgui/utils/vgui_listbox.cpp
+	ui/vgui/utils/vgui_listbox.h
+	ui/vgui/utils/vgui_loadtga.cpp
+	ui/vgui/utils/vgui_loadtga.h
+	ui/vgui/utils/vgui_scrollbar2.cpp
+	ui/vgui/utils/vgui_scrollbar2.h
+	ui/vgui/utils/vgui_slider2.cpp
+	ui/vgui/utils/vgui_slider2.h
+	ui/vgui/utils/voice_banmgr.cpp
+	ui/vgui/utils/voice_banmgr.h
 	../../public/archtypes.h
 	../../public/const.h
 	../../public/con_nprint.h
@@ -214,6 +214,7 @@ target_sources(client PRIVATE
 	../../public/engine/client/ref_params.h
 	../../public/engine/client/r_efx.h
 	../../public/engine/client/triangleapi.h
+	../../public/game/voice_common.h
 	../../public/game/client/IGameClientExports.h
 	../../public/steam/steamtypes.h
 	../../public/math/mathlib.cpp

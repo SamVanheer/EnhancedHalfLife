@@ -25,5 +25,6 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_math.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_movevars.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.h)
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.h
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/bitvec.h)
 endfunction()
