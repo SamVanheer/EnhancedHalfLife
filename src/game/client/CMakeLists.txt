@@ -39,6 +39,7 @@ target_include_directories(client PRIVATE
 	../server/entities/characters/NPCs
 	../server/entities/point
 	../server/gamerules
+	../server/server_interface
 	../../public
 	../../public/game/client
 	../../public/game/server
@@ -48,7 +49,8 @@ target_include_directories(client PRIVATE
 	../engine
 	../game_shared
 	../shared
-	../shared/entities/weapons)
+	../shared/entities/weapons
+	../shared/player_movement)
 	
 target_compile_definitions(client PRIVATE
 	CLIENT_DLL
@@ -207,15 +209,6 @@ target_sources(client PRIVATE
 	../game_shared/voice_banmgr.cpp
 	../game_shared/voice_banmgr.h
 	../game_shared/voice_common.h
-	../pm_shared/pm_debug.cpp
-	../pm_shared/pm_debug.h
-	../pm_shared/pm_defs.h
-	../pm_shared/pm_info.h
-	../pm_shared/pm_materials.h
-	../pm_shared/pm_math.cpp
-	../pm_shared/pm_movevars.h
-	../pm_shared/pm_shared.cpp
-	../pm_shared/pm_shared.h
 	../../public/archtypes.h
 	../../public/FileSystem.h
 	../../public/interface.cpp

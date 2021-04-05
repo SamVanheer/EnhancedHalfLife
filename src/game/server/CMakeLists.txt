@@ -13,7 +13,7 @@ target_include_directories(hl PRIVATE
 	entities/items
 	entities/point
 	gamerules
-	server_interface/
+	server_interface
 	../engine
 	../common
 	../pm_shared
@@ -22,7 +22,8 @@ target_include_directories(hl PRIVATE
 	../../public/game/server
 	../../public/math
 	../shared
-	../shared/entities/weapons)
+	../shared/entities/weapons
+	../shared/player_movement)
 	
 target_compile_definitions(hl PRIVATE
 	VALVE_DLL)
@@ -153,15 +154,6 @@ target_sources(hl PRIVATE
 	server_interface/h_export.cpp
 	../game_shared/voice_gamemgr.cpp
 	../game_shared/voice_gamemgr.h
-	../pm_shared/pm_debug.cpp
-	../pm_shared/pm_debug.h
-	../pm_shared/pm_defs.h
-	../pm_shared/pm_info.h
-	../pm_shared/pm_materials.h
-	../pm_shared/pm_math.cpp
-	../pm_shared/pm_movevars.h
-	../pm_shared/pm_shared.cpp
-	../pm_shared/pm_shared.h
 	../../public/math/mathlib.cpp
 	../../public/math/mathlib.h
 	../../public/math/vector.h)
