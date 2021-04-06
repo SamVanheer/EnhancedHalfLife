@@ -29,8 +29,15 @@ inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, ent
 extern globalvars_t				*gpGlobals;
 
 // Use this instead of ALLOC_STRING on constant strings
-#define STRING(offset)		((const char *)(gpGlobals->pStringBase + (unsigned int)(offset)))
-#define MAKE_STRING(str)	((uint64)(str) - (uint64)(STRING(0)))
+inline const char* STRING(string_t offset)
+{
+	return gpGlobals->pStringBase + static_cast<unsigned int>(offset);
+}
+
+inline string_t MAKE_STRING(const char* str)
+{
+	return reinterpret_cast<uint64>(str) - reinterpret_cast<uint64>(STRING(0));
+}
 
 string_t ALLOC_STRING(const char* str);
 
