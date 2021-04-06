@@ -15,6 +15,7 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/shotgun.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/squeakgrenade.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/tripmine.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/weapons.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/weapons_shared.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/hl_wpn_glock.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_debug.cpp
