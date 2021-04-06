@@ -31,6 +31,20 @@
 #include "gamerules.h"
 #include "UserMessages.h"
 
+#include "CStringPool.hpp"
+
+CStringPool g_StringPool;
+
+string_t ALLOC_STRING(const char* str)
+{
+	return MAKE_STRING(g_StringPool.Allocate(str));
+}
+
+void ClearStringPool()
+{
+	g_StringPool.Clear();
+}
+
 float UTIL_WeaponTimeBase()
 {
 #if defined( CLIENT_WEAPONS )

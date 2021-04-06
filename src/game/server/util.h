@@ -32,6 +32,10 @@ extern globalvars_t				*gpGlobals;
 #define STRING(offset)		((const char *)(gpGlobals->pStringBase + (unsigned int)(offset)))
 #define MAKE_STRING(str)	((uint64)(str) - (uint64)(STRING(0)))
 
+string_t ALLOC_STRING(const char* str);
+
+void ClearStringPool();
+
 inline edict_t *FIND_ENTITY_BY_CLASSNAME(edict_t *entStart, const char *pszName) 
 {
 	return FIND_ENTITY_BY_STRING(entStart, "classname", pszName);

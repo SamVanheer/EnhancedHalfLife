@@ -189,10 +189,21 @@ void DispatchBlocked(edict_t* pentBlocked, edict_t* pentOther)
 		pEntity->Blocked(pOther);
 }
 
+void SV_NewMapStarted()
+{
+	ClearStringPool();
+}
+
 void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
 {
 	if (!pkvd || !pentKeyvalue)
 		return;
+
+	if (g_IsStartingNewMap)
+	{
+		g_IsStartingNewMap = false;
+		SV_NewMapStarted();
+	}
 
 	EntvarsKeyvalue(VARS(pentKeyvalue), pkvd);
 

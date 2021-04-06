@@ -33,6 +33,7 @@
 #include "weapons.h"
 #include "gamerules.h"
 #include "teamplay_gamerules.h"
+#include "dll_functions.hpp"
 
 extern CGraph WorldGraph;
 extern CSoundEnt *pSoundEnt;
@@ -128,6 +129,11 @@ LINK_ENTITY_TO_CLASS( worldspawn, CWorld );
 #define SF_WORLD_FORCETEAM	0x0004		// Force teams
 
 extern DLL_GLOBAL bool		g_fGameOver;
+
+CWorld::~CWorld()
+{
+	g_IsStartingNewMap = true;
+}
 
 void CWorld :: Spawn()
 {

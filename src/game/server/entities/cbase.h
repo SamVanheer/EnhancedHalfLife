@@ -690,6 +690,8 @@ struct SelAmmo
 class CWorld : public CBaseEntity
 {
 public:
+	~CWorld();
+
 	void Spawn() override;
 	void Precache() override;
 	void KeyValue( KeyValueData *pkvd ) override;
