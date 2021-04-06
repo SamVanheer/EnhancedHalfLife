@@ -216,31 +216,31 @@ void CBaseTurret::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "maxsleep"))
 	{
 		m_flMaxWait = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "orientation"))
 	{
 		m_iOrientation = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 
 	}
 	else if (FStrEq(pkvd->szKeyName, "searchspeed"))
 	{
 		m_iSearchSpeed = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 
 	}
 	else if (FStrEq(pkvd->szKeyName, "turnrate"))
 	{
 		m_iBaseTurnRate = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "style") ||
 			 FStrEq(pkvd->szKeyName, "height") ||
 			 FStrEq(pkvd->szKeyName, "value1") ||
 			 FStrEq(pkvd->szKeyName, "value2") ||
 			 FStrEq(pkvd->szKeyName, "value3"))
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	else
 		CBaseMonster::KeyValue( pkvd );
 }
@@ -262,7 +262,7 @@ void CBaseTurret::Spawn()
 	if (( pev->spawnflags & SF_MONSTER_TURRET_AUTOACTIVATE ) 
 		 && !( pev->spawnflags & SF_MONSTER_TURRET_STARTINACTIVE ))
 	{
-		m_iAutoStart = TRUE;
+		m_iAutoStart = true;
 	}
 
 	ResetSequenceInfo( );
@@ -309,7 +309,7 @@ void CTurret::Spawn()
 	
 	SetThink(&CTurret::Initialize);	
 
-	m_pEyeGlow = CSprite::SpriteCreate( TURRET_GLOW_SPRITE, pev->origin, FALSE );
+	m_pEyeGlow = CSprite::SpriteCreate( TURRET_GLOW_SPRITE, pev->origin, false);
 	m_pEyeGlow->SetTransparency( kRenderGlow, 255, 0, 0, 0, kRenderFxNoDissipation );
 	m_pEyeGlow->SetAttachment( edict(), 2 );
 	m_eyeBrightness = 0;
@@ -397,7 +397,7 @@ void CBaseTurret::TurretUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 	{
 		m_hEnemy = NULL;
 		pev->nextthink = gpGlobals->time + 0.1;
-		m_iAutoStart = FALSE;// switching off a turret disables autostart
+		m_iAutoStart = false;// switching off a turret disables autostart
 		//!!!! this should spin down first!!BUGBUG
 		SetThink(&CBaseTurret::Retire);
 	}
@@ -408,7 +408,7 @@ void CBaseTurret::TurretUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 		// if the turret is flagged as an autoactivate turret, re-enable it's ability open self.
 		if ( pev->spawnflags & SF_MONSTER_TURRET_AUTOACTIVATE )
 		{
-			m_iAutoStart = TRUE;
+			m_iAutoStart = true;
 		}
 		
 		SetThink(&CBaseTurret::Deploy);
@@ -542,9 +542,9 @@ void CBaseTurret::ActiveThink()
 
 	// Is the Gun looking at the target
 	if (DotProduct(vecLOS, gpGlobals->v_forward) <= 0.866) // 30 degree slop
-		fAttack = FALSE;
+		fAttack = false;
 	else
-		fAttack = TRUE;
+		fAttack = true;
 
 	// fire the gun
 	if (m_iSpin && ((fAttack) || (m_fBeserk)))
@@ -919,7 +919,7 @@ void CBaseTurret::AutoSearchThink()
 
 void CBaseTurret ::	TurretDeath()
 {
-	BOOL iActive = FALSE;
+	bool iActive = false;
 
 	StudioFrameAdvance( );
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -1241,7 +1241,7 @@ void CSentry::SentryTouch( CBaseEntity *pOther )
 
 void CSentry ::	SentryDeath()
 {
-	BOOL iActive = FALSE;
+	bool iActive = false;
 
 	StudioFrameAdvance( );
 	pev->nextthink = gpGlobals->time + 0.1;

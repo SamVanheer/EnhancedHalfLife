@@ -45,7 +45,7 @@ void CWorldItem::KeyValue(KeyValueData *pkvd)
 	if (FStrEq(pkvd->szKeyName, "type"))
 	{
 		m_iType = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CBaseEntity::KeyValue( pkvd );
@@ -182,10 +182,10 @@ class CItemSuit : public CItem
 	{
 		PRECACHE_MODEL ("models/w_suit.mdl");
 	}
-	BOOL MyTouch( CBasePlayer *pPlayer ) override
+	bool MyTouch( CBasePlayer *pPlayer ) override
 	{
 		if ( pPlayer->pev->weapons & (1<<WEAPON_SUIT) )
-			return FALSE;
+			return false;
 
 		if ( pev->spawnflags & SF_SUIT_SHORTLOGON )
 			EMIT_SOUND_SUIT(pPlayer->edict(), "!HEV_A0");		// short version of suit logon,
@@ -193,7 +193,7 @@ class CItemSuit : public CItem
 			EMIT_SOUND_SUIT(pPlayer->edict(), "!HEV_AAx");	// long version of suit logon
 
 		pPlayer->pev->weapons |= (1<<WEAPON_SUIT);
-		return TRUE;
+		return true;
 	}
 };
 
@@ -214,11 +214,11 @@ class CItemBattery : public CItem
 		PRECACHE_MODEL ("models/w_battery.mdl");
 		PRECACHE_SOUND( "items/gunpickup2.wav" );
 	}
-	BOOL MyTouch( CBasePlayer *pPlayer ) override
+	bool MyTouch( CBasePlayer *pPlayer ) override
 	{
 		if ( pPlayer->pev->deadflag != DEAD_NO )
 		{
-			return FALSE;
+			return false;
 		}
 
 		if ((pPlayer->pev->armorvalue < MAX_NORMAL_BATTERY) &&
@@ -247,10 +247,10 @@ class CItemBattery : public CItem
 			sprintf( szcharge,"!HEV_%1dP", pct );
 			
 			//EMIT_SOUND_SUIT(ENT(pev), szcharge);
-			pPlayer->SetSuitUpdate(szcharge, FALSE, SUIT_NEXT_IN_30SEC);
-			return TRUE;		
+			pPlayer->SetSuitUpdate(szcharge, false, SUIT_NEXT_IN_30SEC);
+			return true;		
 		}
-		return FALSE;
+		return false;
 	}
 };
 
@@ -269,12 +269,12 @@ class CItemAntidote : public CItem
 	{
 		PRECACHE_MODEL ("models/w_antidote.mdl");
 	}
-	BOOL MyTouch( CBasePlayer *pPlayer ) override
+	bool MyTouch( CBasePlayer *pPlayer ) override
 	{
-		pPlayer->SetSuitUpdate("!HEV_DET4", FALSE, SUIT_NEXT_IN_1MIN);
+		pPlayer->SetSuitUpdate("!HEV_DET4", false, SUIT_NEXT_IN_1MIN);
 		
 		pPlayer->m_rgItems[ITEM_ANTIDOTE] += 1;
-		return TRUE;
+		return true;
 	}
 };
 
@@ -293,10 +293,10 @@ class CItemSecurity : public CItem
 	{
 		PRECACHE_MODEL ("models/w_security.mdl");
 	}
-	BOOL MyTouch( CBasePlayer *pPlayer ) override
+	bool MyTouch( CBasePlayer *pPlayer ) override
 	{
 		pPlayer->m_rgItems[ITEM_SECURITY] += 1;
-		return TRUE;
+		return true;
 	}
 };
 
@@ -314,16 +314,16 @@ class CItemLongJump : public CItem
 	{
 		PRECACHE_MODEL ("models/w_longjump.mdl");
 	}
-	BOOL MyTouch( CBasePlayer *pPlayer ) override
+	bool MyTouch( CBasePlayer *pPlayer ) override
 	{
 		if ( pPlayer->m_fLongJump )
 		{
-			return FALSE;
+			return false;
 		}
 
 		if ( ( pPlayer->pev->weapons & (1<<WEAPON_SUIT) ) )
 		{
-			pPlayer->m_fLongJump = TRUE;// player now has longjump module
+			pPlayer->m_fLongJump = true;// player now has longjump module
 
 			g_engfuncs.pfnSetPhysicsKeyValue( pPlayer->edict(), "slj", "1" );
 
@@ -332,9 +332,9 @@ class CItemLongJump : public CItem
 			MESSAGE_END();
 
 			EMIT_SOUND_SUIT( pPlayer->edict(), "!HEV_A1" );	// Play the longjump sound UNDONE: Kelly? correct sound?
-			return TRUE;		
+			return true;		
 		}
-		return FALSE;
+		return false;
 	}
 };
 

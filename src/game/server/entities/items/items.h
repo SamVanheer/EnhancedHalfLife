@@ -23,7 +23,7 @@ public:
 	CBaseEntity*	Respawn() override;
 	void	EXPORT ItemTouch( CBaseEntity *pOther );
 	void	EXPORT Materialize();
-	virtual BOOL MyTouch( CBasePlayer *pPlayer ) { return FALSE; }
+	virtual bool MyTouch( CBasePlayer *pPlayer ) { return false; }
 };
 
 #endif // ITEMS_H

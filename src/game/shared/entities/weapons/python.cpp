@@ -43,16 +43,16 @@ int CPython::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-int CPython::AddToPlayer( CBasePlayer *pPlayer )
+bool CPython::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
 		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 void CPython::Spawn( )
@@ -85,7 +85,7 @@ void CPython::Precache()
 	m_usFirePython = PRECACHE_EVENT( 1, "events/python.sc" );
 }
 
-BOOL CPython::Deploy( )
+bool CPython::Deploy( )
 {
 #ifdef CLIENT_DLL
 	if ( bIsMultiplayer() )
@@ -107,7 +107,7 @@ BOOL CPython::Deploy( )
 
 void CPython::Holster( int skiplocal /* = 0 */ )
 {
-	m_fInReload = FALSE;// cancel any reload in progress.
+	m_fInReload = false;// cancel any reload in progress.
 
 	if (m_pPlayer->m_iFOV != 0)
 	{
@@ -193,7 +193,7 @@ void CPython::PrimaryAttack()
 
 	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		// HEV suit - indicate out of ammo condition
-		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
+		m_pPlayer->SetSuitUpdate("!HEV_AMO0", false, 0);
 
 	m_flNextPrimaryAttack = 0.75;
 	m_flTimeWeaponIdle = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
@@ -210,7 +210,7 @@ void CPython::Reload()
 		m_pPlayer->m_iFOV = 0;  // 0 means reset to default fov
 	}
 
-	int bUseScope = FALSE;
+	bool bUseScope = false;
 #ifdef CLIENT_DLL
 	bUseScope = bIsMultiplayer();
 #else
@@ -253,7 +253,7 @@ void CPython::WeaponIdle()
 		m_flTimeWeaponIdle = (170.0/30.0);
 	}
 	
-	int bUseScope = FALSE;
+	bool bUseScope = false;
 #ifdef CLIENT_DLL
 	bUseScope = bIsMultiplayer();
 #else
@@ -277,14 +277,14 @@ class CPythonAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_357ammobox.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	BOOL AddAmmo( CBaseEntity *pOther ) override
+	bool AddAmmo( CBaseEntity *pOther ) override
 	{ 
 		if (pOther->GiveAmmo( AMMO_357BOX_GIVE, "357", _357_MAX_CARRY ) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return TRUE;
+			return true;
 		}
-		return FALSE;
+		return false;
 	}
 };
 LINK_ENTITY_TO_CLASS( ammo_357, CPythonAmmo );

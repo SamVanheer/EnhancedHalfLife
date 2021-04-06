@@ -73,9 +73,6 @@ inline edict_t *FIND_ENTITY_BY_TARGET(edict_t *entStart, const char *pszName)
 // More explicit than "int"
 typedef int EOFFSET;
 
-// In case it's not alread defined
-typedef int BOOL;
-
 // In case this ever changes
 #define M_PI			3.14159265358979323846
 
@@ -138,13 +135,13 @@ inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, ent
 
 // Testing the three types of "entity" for nullity
 #define eoNullEntity 0
-inline BOOL FNullEnt(EOFFSET eoffset)			{ return eoffset == 0; }
-inline BOOL FNullEnt(const edict_t* pent)	{ return pent == NULL || FNullEnt(OFFSET(pent)); }
-inline BOOL FNullEnt(entvars_t* pev)				{ return pev == NULL || FNullEnt(OFFSET(pev)); }
+inline bool FNullEnt(EOFFSET eoffset)			{ return eoffset == 0; }
+inline bool FNullEnt(const edict_t* pent)	{ return pent == NULL || FNullEnt(OFFSET(pent)); }
+inline bool FNullEnt(entvars_t* pev)				{ return pev == NULL || FNullEnt(OFFSET(pev)); }
 
 // Testing strings for nullity
 #define iStringNull 0
-inline BOOL FStringNull(int iString)			{ return iString == iStringNull; }
+inline bool FStringNull(int iString)			{ return iString == iStringNull; }
 
 #define cchMapNameMost 32
 
@@ -185,11 +182,11 @@ enum TOGGLE_STATE
 	};
 
 // Misc useful
-inline BOOL FStrEq(const char*sz1, const char*sz2)
+inline bool FStrEq(const char*sz1, const char*sz2)
 	{ return (strcmp(sz1, sz2) == 0); }
-inline BOOL FClassnameIs(edict_t* pent, const char* szClassname)
+inline bool FClassnameIs(edict_t* pent, const char* szClassname)
 	{ return FStrEq(STRING(VARS(pent)->classname), szClassname); }
-inline BOOL FClassnameIs(entvars_t* pev, const char* szClassname)
+inline bool FClassnameIs(entvars_t* pev, const char* szClassname)
 	{ return FStrEq(STRING(pev->classname), szClassname); }
 
 class CBaseEntity;
@@ -252,10 +249,10 @@ int			UTIL_IsMasterTriggered	(string_t sMaster, CBaseEntity *pActivator);
 void			UTIL_BloodStream( const Vector &origin, const Vector &direction, int color, int amount );
 void			UTIL_BloodDrips( const Vector &origin, const Vector &direction, int color, int amount );
 Vector		UTIL_RandomBloodVector();
-BOOL			UTIL_ShouldShowBlood( int bloodColor );
+bool			UTIL_ShouldShowBlood( int bloodColor );
 void			UTIL_BloodDecalTrace( TraceResult *pTrace, int bloodColor );
 void			UTIL_DecalTrace( TraceResult *pTrace, int decalNumber );
-void			UTIL_PlayerDecalTrace( TraceResult *pTrace, int playernum, int decalNumber, BOOL bIsCustom );
+void			UTIL_PlayerDecalTrace( TraceResult *pTrace, int playernum, int decalNumber, bool bIsCustom );
 void			UTIL_GunshotDecalTrace( TraceResult *pTrace, int decalNumber );
 void			UTIL_Sparks( const Vector &position );
 void			UTIL_Ricochet( const Vector &position, float scale );
@@ -268,8 +265,8 @@ float		UTIL_AngleDistance( float next, float cur );
 
 char			*UTIL_VarArgs( const char *format, ... );
 void			UTIL_Remove( CBaseEntity *pEntity );
-BOOL			UTIL_IsValidEntity( edict_t *pent );
-BOOL			UTIL_TeamsMatch( const char *pTeamName1, const char *pTeamName2 );
+bool			UTIL_IsValidEntity( edict_t *pent );
+bool			UTIL_TeamsMatch( const char *pTeamName1, const char *pTeamName2 );
 
 // Use for ease-in, ease-out style interpolation (accel/decel)
 float		UTIL_SplineFraction( float value, float scale );
@@ -291,7 +288,7 @@ inline void			UTIL_CenterPrintAll( const char *msg_name, const char *param1 = NU
 
 class CBasePlayerItem;
 class CBasePlayer;
-BOOL UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon );
+bool UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon );
 
 // prints messages through the HUD
 void ClientPrint( entvars_t *client, int msg_dest, const char *msg_name, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL, const char *param4 = NULL );
@@ -342,7 +339,7 @@ int BuildChangeList( LEVELLIST *pLevelList, int maxList );
 // How did I ever live without ASSERT?
 //
 #ifdef	DEBUG
-void DBG_AssertFunction(BOOL fExpr, const char* szExpr, const char* szFile, int szLine, const char* szMessage);
+void DBG_AssertFunction(bool fExpr, const char* szExpr, const char* szFile, int szLine, const char* szMessage);
 #define ASSERT(f)		DBG_AssertFunction(f, #f, __FILE__, __LINE__, NULL)
 #define ASSERTSZ(f, sz)	DBG_AssertFunction(f, #f, __FILE__, __LINE__, sz)
 #else	// !DEBUG

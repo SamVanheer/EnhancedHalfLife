@@ -53,7 +53,7 @@ public:
 	int		ISoundMask () override;
 	
 	// UNDONE: These don't necessarily need to be save/restored, but if we add more data, it may
-	BOOL	m_fLightHacked;
+	bool	m_fLightHacked;
 	int		m_iMode;
 	// -----------------------------
 };
@@ -136,7 +136,7 @@ void CRoach :: Spawn()
 
 	pev->view_ofs		= Vector ( 0, 0, 1 );// position of the eyes relative to monster's origin.
 	pev->takedamage		= DAMAGE_YES;
-	m_fLightHacked		= FALSE;
+	m_fLightHacked		= false;
 	m_flLastLightLevel	= -1;
 	m_iMode				= ROACH_IDLE;
 	m_flNextSmellTime	= gpGlobals->time;
@@ -199,7 +199,7 @@ void CRoach :: MonsterThink()
 		// if light value hasn't been collection for the first time yet, 
 		// suspend the creature for a second so the world finishes spawning, then we'll collect the light level.
 		pev->nextthink = gpGlobals->time + 1;
-		m_fLightHacked = TRUE;
+		m_fLightHacked = true;
 		return;
 	}
 	else if ( m_flLastLightLevel < 0 )
@@ -392,7 +392,7 @@ void CRoach :: Move ( float flInterval )
 	if ( RANDOM_LONG(0,149) == 1 && m_iMode != ROACH_SCARED_BY_LIGHT && m_iMode != ROACH_SMELL_FOOD )
 	{
 		// random skitter while moving as long as not on a b-line to get out of light or going to food
-		PickNewDest( FALSE );
+		PickNewDest(false);
 	}
 }
 

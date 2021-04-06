@@ -53,9 +53,9 @@ public:
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 
 	void RunAI() override;
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override;	// balls
-	BOOL CheckRangeAttack2 ( float flDot, float flDist ) override;	// head
-	BOOL CheckMeleeAttack1 ( float flDot, float flDist ) override;	// block, throw
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override;	// balls
+	bool CheckRangeAttack2 ( float flDot, float flDist ) override;	// head
+	bool CheckMeleeAttack1 ( float flDot, float flDist ) override;	// block, throw
 	Schedule_t* GetSchedule () override;
 	Schedule_t* GetScheduleOfType ( int Type ) override;
 	void StartTask ( Task_t *pTask ) override;
@@ -67,7 +67,7 @@ public:
 	int  CheckLocalMove ( const Vector &vecStart, const Vector &vecEnd, CBaseEntity *pTarget, float *pflDist ) override;
 	void MoveExecute( CBaseEntity *pTargetEnt, const Vector &vecDir, float flInterval ) override;
 	void SetActivity ( Activity NewActivity ) override;
-	BOOL ShouldAdvanceRoute( float flWaypointDist ) override;
+	bool ShouldAdvanceRoute( float flWaypointDist ) override;
 	int LookupFloat( );
 
 	float m_flNextFlinch;
@@ -667,7 +667,7 @@ void CController :: RunTask ( Task_t *pTask )
 			m_iBallTime[0] = m_flShootEnd;
 			m_iBall[1] = 64;
 			m_iBallTime[1] = m_flShootEnd;
-			m_fInCombat = FALSE;
+			m_fInCombat = false;
 		}
 	}
 
@@ -682,7 +682,7 @@ void CController :: RunTask ( Task_t *pTask )
 
 		if (m_fSequenceFinished)
 		{
-			m_fInCombat = FALSE;
+			m_fInCombat = false;
 		}
 
 		CSquadMonster :: RunTask ( pTask );
@@ -694,14 +694,14 @@ void CController :: RunTask ( Task_t *pTask )
 				pev->sequence = LookupActivity( ACT_RANGE_ATTACK1 );
 				pev->frame = 0;
 				ResetSequenceInfo( );
-				m_fInCombat = TRUE;
+				m_fInCombat = true;
 			}
 			else if (HasConditions ( bits_COND_CAN_RANGE_ATTACK2 ))
 			{
 				pev->sequence = LookupActivity( ACT_RANGE_ATTACK2 );
 				pev->frame = 0;
 				ResetSequenceInfo( );
-				m_fInCombat = TRUE;
+				m_fInCombat = true;
 			}
 			else
 			{
@@ -791,29 +791,29 @@ Schedule_t* CController :: GetScheduleOfType ( int Type )
 // CheckRangeAttack1  - shoot a bigass energy ball out of their head
 //
 //=========================================================
-BOOL CController :: CheckRangeAttack1 ( float flDot, float flDist )
+bool CController :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( flDot > 0.5 && flDist > 256 && flDist <= 2048 )
 	{
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 
-BOOL CController :: CheckRangeAttack2 ( float flDot, float flDist )
+bool CController :: CheckRangeAttack2 ( float flDot, float flDist )
 {
 	if ( flDot > 0.5 && flDist > 64 && flDist <= 2048 )
 	{
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 
-BOOL CController :: CheckMeleeAttack1 ( float flDot, float flDist )
+bool CController :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
-	return FALSE;
+	return false;
 }
 
 
@@ -849,7 +849,7 @@ void CController :: RunAI()
 	{
 		if (m_pBall[i] == NULL)
 		{
-			m_pBall[i] = CSprite::SpriteCreate( "sprites/xspark4.spr", pev->origin, TRUE );
+			m_pBall[i] = CSprite::SpriteCreate( "sprites/xspark4.spr", pev->origin, true);
 			m_pBall[i]->SetTransparency( kRenderGlow, 255, 255, 255, 255, kRenderFxNoDissipation );
 			m_pBall[i]->SetAttachment( edict(), (i + 3) );
 			m_pBall[i]->SetScale( 1.0 );
@@ -1076,14 +1076,14 @@ void CController :: Move ( float flInterval )
 
 
 
-BOOL CController:: ShouldAdvanceRoute( float flWaypointDist )
+bool CController:: ShouldAdvanceRoute( float flWaypointDist )
 {
 	if ( flWaypointDist <= 32  )
 	{
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 

@@ -376,19 +376,19 @@ int CRpg::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-int CRpg::AddToPlayer( CBasePlayer *pPlayer )
+bool CRpg::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
 		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
-BOOL CRpg::Deploy( )
+bool CRpg::Deploy( )
 {
 	if ( m_iClip == 0 )
 	{
@@ -399,20 +399,20 @@ BOOL CRpg::Deploy( )
 }
 
 
-BOOL CRpg::CanHolster()
+bool CRpg::CanHolster()
 {
 	if ( m_fSpotActive && m_cActiveRockets )
 	{
 		// can't put away while guiding a missile.
-		return FALSE;
+		return false;
 	}
 
-	return TRUE;
+	return true;
 }
 
 void CRpg::Holster( int skiplocal /* = 0 */ )
 {
-	m_fInReload = FALSE;// cancel any reload in progress.
+	m_fInReload = false;// cancel any reload in progress.
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	
@@ -570,7 +570,7 @@ class CRpgAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_rpgammo.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	BOOL AddAmmo( CBaseEntity *pOther ) override
+	bool AddAmmo( CBaseEntity *pOther ) override
 	{ 
 		int iGive;
 
@@ -591,9 +591,9 @@ class CRpgAmmo : public CBasePlayerAmmo
 		if (pOther->GiveAmmo( iGive, "rockets", ROCKET_MAX_CARRY ) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return TRUE;
+			return true;
 		}
-		return FALSE;
+		return false;
 	}
 };
 LINK_ENTITY_TO_CLASS( ammo_rpgclip, CRpgAmmo );

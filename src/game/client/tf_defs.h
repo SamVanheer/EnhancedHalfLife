@@ -14,7 +14,7 @@
 //===========================================================================
 // OLD OPTIONS.QC
 //===========================================================================
-#define DEFAULT_AUTOZOOM		 FALSE
+#define DEFAULT_AUTOZOOM		 false
 #define WEINER_SNIPER                           // autoaiming for sniper rifle
 #define FLAME_MAXWORLDNUM        20             // maximum number of flames in the world. DO NOT PUT BELOW 20.
 
@@ -33,11 +33,11 @@
 								// increasing it _decreases_ the amount of help the losing team gets
 								// Minimum setting is 1, which would really help the losing team
 
-#define DISPLAY_CLASS_HELP			TRUE            // Change this to #OFF if you don't want the class help to 
+#define DISPLAY_CLASS_HELP			true            // Change this to #OFF if you don't want the class help to 
 													// appear whenever a player connects
-#define NEVER_TEAMFRAGS				FALSE			// teamfrags options always off 
-#define ALWAYS_TEAMFRAGS			FALSE			// teamfrags options always on 
-#define CHECK_SPEEDS				TRUE            // makes sure players aren't moving too fast
+#define NEVER_TEAMFRAGS				false			// teamfrags options always off 
+#define ALWAYS_TEAMFRAGS			false			// teamfrags options always on 
+#define CHECK_SPEEDS				true            // makes sure players aren't moving too fast
 #define SNIPER_RIFLE_RELOAD_TIME    1.5				// seconds
 
 #define MAPBRIEFING_MAXTEXTLENGTH	512
@@ -95,7 +95,7 @@
 // TeamFortress State Flags
 #define TFSTATE_GRENPRIMED		1 	// Whether the player has a primed grenade
 #define TFSTATE_RELOADING		2 	// Whether the player is reloading
-#define TFSTATE_ALTKILL			4  	// #TRUE if killed with a weapon not in self.weapon: NOT USED ANYMORE
+#define TFSTATE_ALTKILL			4  	// #true if killed with a weapon not in self.weapon: NOT USED ANYMORE
 #define TFSTATE_RANDOMPC		8   // Whether Playerclass is random, new one each respawn
 #define TFSTATE_INFECTED		16 	// set when player is infected by the bioweapon
 #define TFSTATE_INVINCIBLE		32 	// Player has permanent Invincibility (Usually by GoalItem)
@@ -1017,7 +1017,7 @@ float already_chosen_map;
 // grappling hook variables
 .entity	hook;	
 .float	on_hook;
-.float  fire_held_down;// flag - TRUE if player is still holding down the
+.float  fire_held_down;// flag - true if player is still holding down the
                        // fire button after throwing a hook.
 */
 /*==================================================*/
@@ -1186,9 +1186,9 @@ extern float teamadvantage[5];	// only used if the teamplay equalisation bits ar
 extern int   teamallies[5];		// Keeps track of which teams are allied
 extern string_t	team_names[5];
 
-extern BOOL  CTF_Map;
-extern BOOL  birthday;
-extern BOOL  christmas;
+extern bool  CTF_Map;
+extern bool  birthday;
+extern bool  christmas;
 
 extern float num_world_flames;
 
@@ -1203,10 +1203,10 @@ extern float spy_off;
 extern float old_grens;		
 extern float flagem_checked;
 extern float flNextEqualisationCalc;
-extern BOOL  cease_fire;
-extern BOOL  no_cease_fire_text;
-extern BOOL  initial_cease_fire;
-extern BOOL  last_cease_fire;
+extern bool  cease_fire;
+extern bool  no_cease_fire_text;
+extern bool  initial_cease_fire;
+extern bool  last_cease_fire;
 // Autokick stuff
 extern float autokick_kills;
 
@@ -1225,7 +1225,7 @@ extern string_t	team_menu_string;
 extern int toggleflags;					// toggleable flags
 
 extern CBaseEntity* g_pLastSpawns[5];
-extern BOOL g_bFirstClient;
+extern bool g_bFirstClient;
 
 extern float g_fNextPrematchAlert;
 
@@ -1239,7 +1239,7 @@ extern ip_storage_t g_IpStorage[32];
 
 class CGhost;
 /*==========================================================================*/
-BOOL ClassIsRestricted(float tno, int pc);
+bool ClassIsRestricted(float tno, int pc);
 char* GetTeamName(int tno);
 int TeamFortress_GetNoPlayers();
 void DestroyBuilding(CBaseEntity *eng, char *bld);
@@ -1247,16 +1247,16 @@ void teamsprint( int tno, CBaseEntity *ignore, int msg_dest, const char *st, con
 float anglemod( float v );
 
 // Team Funcs
-BOOL TeamFortress_TeamIsCivilian(float tno);
-void TeamFortress_TeamShowScores(BOOL bLong, CBasePlayer *pPlayer);
-BOOL TeamFortress_TeamPutPlayerInTeam();
+bool TeamFortress_TeamIsCivilian(float tno);
+void TeamFortress_TeamShowScores(bool bLong, CBasePlayer *pPlayer);
+bool TeamFortress_TeamPutPlayerInTeam();
 void TeamFortress_TeamSetColor(int tno);
 void TeamFortress_TeamIncreaseScore(int tno, int scoretoadd);
 int TeamFortress_TeamGetScoreFrags(int tno);
 int TeamFortress_TeamGetNoPlayers(int tno);
 float TeamEqualiseDamage(CBaseEntity *targ, CBaseEntity *attacker, float damage);
-BOOL IsSpawnPointValid( Vector &pos );
-BOOL TeamFortress_SortTeams( void );
+bool IsSpawnPointValid( Vector &pos );
+bool TeamFortress_SortTeams( void );
 void DumpClanScores( void );
 void CalculateTeamEqualiser();
 
@@ -1270,15 +1270,15 @@ void RemoveGoal(CBaseEntity *Goal);
 void tfgoalitem_GiveToPlayer(CBaseEntity *Item, CBasePlayer *AP, CBaseEntity *Goal);
 void dremove( CBaseEntity *te );
 void tfgoalitem_RemoveFromPlayer(CBaseEntity *Item, CBasePlayer *AP, int iMethod);
-void tfgoalitem_drop(CBaseEntity *Item, BOOL PAlive, CBasePlayer *P);
+void tfgoalitem_drop(CBaseEntity *Item, bool PAlive, CBasePlayer *P);
 void DisplayItemStatus(CBaseEntity *Goal, CBasePlayer *Player, CBaseEntity *Item);
 void tfgoalitem_checkgoalreturn(CBaseEntity *Item);
 void DoGoalWork(CBaseEntity *Goal, CBasePlayer *AP);
-void DoResults(CBaseEntity *Goal, CBasePlayer *AP, BOOL bAddBonuses);
+void DoResults(CBaseEntity *Goal, CBasePlayer *AP, bool bAddBonuses);
 void DoGroupWork(CBaseEntity *Goal, CBasePlayer *AP);
 // hooks into the mapscript for all entities
-BOOL ActivateDoResults(CBaseEntity *Goal, CBasePlayer *AP, CBaseEntity *ActivatingGoal);
-BOOL ActivationSucceeded(CBaseEntity *Goal, CBasePlayer *AP, CBaseEntity *ActivatingGoal);
+bool ActivateDoResults(CBaseEntity *Goal, CBasePlayer *AP, CBaseEntity *ActivatingGoal);
+bool ActivationSucceeded(CBaseEntity *Goal, CBasePlayer *AP, CBaseEntity *ActivatingGoal);
 
 // prematch & ceasefire
 void Display_Prematch();
@@ -1349,7 +1349,7 @@ public:
 	void	Spawn( void );
 	void	Activate( void );
 	int		Classify ( void ) { return	CLASS_TFSPAWN; }
-	BOOL	CheckTeam( int iTeamNo );
+	bool	CheckTeam( int iTeamNo );
 
 	EHANDLE m_pTeamCheck;
 };
@@ -1373,7 +1373,7 @@ class CTeamCheck : public CBaseDelay
 public:
 	void Spawn( void );
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	BOOL TeamMatches( int iTeam );
+	bool TeamMatches( int iTeam );
 };
 
 class CTeamSet : public CBaseDelay

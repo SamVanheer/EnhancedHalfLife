@@ -50,8 +50,8 @@ public:
 	float m_flAltitude;
 	float m_flKillVictimTime;
 	int	  m_cGibs;// barnacle loads up on gibs each time it kills something.
-	BOOL  m_fTongueExtended;
-	BOOL  m_fLiftingPrey;
+	bool  m_fTongueExtended;
+	bool  m_fLiftingPrey;
 	float m_flTongueAdj;
 };
 LINK_ENTITY_TO_CLASS( monster_barnacle, CBarnacle );
@@ -117,7 +117,7 @@ void CBarnacle :: Spawn()
 	m_MonsterState		= MONSTERSTATE_NONE;
 	m_flKillVictimTime	= 0;
 	m_cGibs				= 0;
-	m_fLiftingPrey		= FALSE;
+	m_fLiftingPrey		= false;
 	m_flTongueAdj		= -100;
 
 	InitBoneControllers();
@@ -157,7 +157,7 @@ void CBarnacle :: BarnacleThink ()
 		if ( !m_hEnemy->IsAlive() )
 		{
 			// someone (maybe even the barnacle) killed the prey. Reset barnacle.
-			m_fLiftingPrey = FALSE;// indicate that we're not lifting prey.
+			m_fLiftingPrey = false;// indicate that we're not lifting prey.
 			m_hEnemy = NULL;
 			return;
 		}
@@ -168,7 +168,7 @@ void CBarnacle :: BarnacleThink ()
 			{
 				// crap, someone killed the prey on the way up.
 				m_hEnemy = NULL;
-				m_fLiftingPrey = FALSE;
+				m_fLiftingPrey = false;
 				return;
 			}
 
@@ -187,7 +187,7 @@ void CBarnacle :: BarnacleThink ()
 			if ( fabs( pev->origin.z - ( vecNewEnemyOrigin.z + m_hEnemy->pev->view_ofs.z - 8 ) ) < BARNACLE_BODY_HEIGHT )
 			{
 		// prey has just been lifted into position ( if the victim origin + eye height + 8 is higher than the bottom of the barnacle, it is assumed that the head is within barnacle's body )
-				m_fLiftingPrey = FALSE;
+				m_fLiftingPrey = false;
 
 				EMIT_SOUND( ENT(pev), CHAN_WEAPON, "barnacle/bcl_bite3.wav", 1, ATTN_NORM );	
 
@@ -285,7 +285,7 @@ void CBarnacle :: BarnacleThink ()
 				pTouchEnt->pev->origin.x = pev->origin.x;
 				pTouchEnt->pev->origin.y = pev->origin.y;
 
-				m_fLiftingPrey = TRUE;// indicate that we should be lifting prey.
+				m_fLiftingPrey = true;// indicate that we should be lifting prey.
 				m_flKillVictimTime = -1;// set this to a bogus time while the victim is lifted.
 
 				m_flAltitude = (pev->origin.z - pTouchEnt->EyePosition().z);
@@ -298,12 +298,12 @@ void CBarnacle :: BarnacleThink ()
 			{
 				// if tongue is higher than is should be, lower it kind of slowly.
 				m_flAltitude += BARNACLE_PULL_SPEED;
-				m_fTongueExtended = FALSE;
+				m_fTongueExtended = false;
 			}
 			else
 			{
 				m_flAltitude = flLength;
-				m_fTongueExtended = TRUE;
+				m_fTongueExtended = true;
 			}
 
 		}

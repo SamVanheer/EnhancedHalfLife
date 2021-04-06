@@ -160,10 +160,10 @@ CBasePlayerWeapon :: DefaultDeploy
 
 =====================
 */
-BOOL CBasePlayerWeapon :: DefaultDeploy(const char *szViewModel, const char *szWeaponModel, int iAnim, const char *szAnimExt, int skiplocal, int	body )
+bool CBasePlayerWeapon :: DefaultDeploy(const char *szViewModel, const char *szWeaponModel, int iAnim, const char *szAnimExt, int skiplocal, int	body )
 {
 	if ( !CanDeploy() )
-		return FALSE;
+		return false;
 
 	gEngfuncs.CL_LoadModel( szViewModel, &m_pPlayer->pev->viewmodel );
 	
@@ -172,7 +172,7 @@ BOOL CBasePlayerWeapon :: DefaultDeploy(const char *szViewModel, const char *szW
 	g_irunninggausspred = false;
 	m_pPlayer->m_flNextAttack = 0.5;
 	m_flTimeWeaponIdle = 1.0;
-	return TRUE;
+	return true;
 }
 
 /*
@@ -181,15 +181,15 @@ CBasePlayerWeapon :: PlayEmptySound
 
 =====================
 */
-BOOL CBasePlayerWeapon :: PlayEmptySound()
+bool CBasePlayerWeapon :: PlayEmptySound()
 {
 	if (m_iPlayEmptySound)
 	{
 		HUD_PlaySound( "weapons/357_cock1.wav", 0.8 );
 		m_iPlayEmptySound = 0;
-		return 0;
+		return false; //TODO: incorrect?
 	}
-	return 0;
+	return false;
 }
 
 /*
@@ -201,7 +201,7 @@ Put away weapon
 */
 void CBasePlayerWeapon::Holster( int skiplocal /* = 0 */ )
 { 
-	m_fInReload = FALSE; // cancel any reload in progress.
+	m_fInReload = false; // cancel any reload in progress.
 	g_irunninggausspred = false;
 	m_pPlayer->pev->viewmodel = 0; 
 }

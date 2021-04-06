@@ -249,7 +249,7 @@ void CTripmineGrenade :: MakeBeam()
 
 void CTripmineGrenade :: BeamBreakThink()
 {
-	BOOL bBlowup = 0;
+	bool bBlowup = 0;
 
 	TraceResult tr;
 
@@ -305,7 +305,7 @@ int CTripmineGrenade :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttac
 		SetThink( &CTripmineGrenade::SUB_Remove );
 		pev->nextthink = gpGlobals->time + 0.1;
 		KillBeam();
-		return FALSE;
+		return false;
 	}
 	return CGrenade::TakeDamage( pevInflictor, pevAttacker, flDamage, bitsDamageType );
 }
@@ -390,7 +390,7 @@ int CTripmine::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-BOOL CTripmine::Deploy( )
+bool CTripmine::Deploy( )
 {
 	pev->body = 0;
 	return DefaultDeploy( "models/v_tripmine.mdl", "models/p_tripmine.mdl", TRIPMINE_DRAW, "trip" );

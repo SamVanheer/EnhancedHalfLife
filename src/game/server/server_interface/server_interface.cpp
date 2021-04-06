@@ -40,7 +40,7 @@ BOOL WINAPI DllMain(
 	else if (fdwReason == DLL_PROCESS_DETACH)
 	{
 	}
-	return TRUE;
+	return true;
 }
 #endif
 
@@ -56,11 +56,11 @@ int GetEntityAPI(DLL_FUNCTIONS* pFunctionTable, int interfaceVersion)
 {
 	if (!pFunctionTable || interfaceVersion != INTERFACE_VERSION)
 	{
-		return FALSE;
+		return false;
 	}
 
 	memcpy(pFunctionTable, &gEntityInterface, sizeof(DLL_FUNCTIONS));
-	return TRUE;
+	return true;
 }
 
 int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
@@ -69,11 +69,11 @@ int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
 	{
 		// Tell engine what version we had, so it can figure out who is out of date.
 		*interfaceVersion = INTERFACE_VERSION;
-		return FALSE;
+		return false;
 	}
 
 	memcpy(pFunctionTable, &gEntityInterface, sizeof(DLL_FUNCTIONS));
-	return TRUE;
+	return true;
 }
 
 int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
@@ -81,10 +81,10 @@ int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
 	if (!pFunctionTable || *interfaceVersion != NEW_DLL_FUNCTIONS_VERSION)
 	{
 		*interfaceVersion = NEW_DLL_FUNCTIONS_VERSION;
-		return FALSE;
+		return false;
 	}
 
 	memcpy(pFunctionTable, &gNewDLLFunctions, sizeof(gNewDLLFunctions));
-	return TRUE;
+	return true;
 }
 }

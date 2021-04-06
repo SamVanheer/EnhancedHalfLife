@@ -44,7 +44,7 @@ public:
 	void Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 
 	// Don't treat as a live target
-	BOOL IsAlive() override { return FALSE; }
+	bool IsAlive() override { return false; }
 
 	int		Save( CSave &save ) override;
 	int		Restore( CRestore &restore ) override;
@@ -162,7 +162,7 @@ void CCycler :: Think()
 		// hack to avoid reloading model every frame
 		pev->animtime = gpGlobals->time;
 		pev->framerate = 1.0;
-		m_fSequenceFinished = FALSE;
+		m_fSequenceFinished = false;
 		m_flLastEventCheck = gpGlobals->time;
 		pev->frame = 0;
 		if (!m_animate)
@@ -314,7 +314,7 @@ public:
 
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
-	BOOL Deploy() override;
+	bool Deploy() override;
 	void Holster( int skiplocal = 0 ) override;
 	int m_iszModel;
 	int m_iModel;
@@ -339,13 +339,13 @@ void CWeaponCycler::Spawn( )
 
 
 
-BOOL CWeaponCycler::Deploy( )
+bool CWeaponCycler::Deploy( )
 {
 	m_pPlayer->pev->viewmodel = m_iszModel;
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
 	SendWeaponAnim( 0 );
 	m_iClip = 0;
-	return TRUE;
+	return true;
 }
 
 

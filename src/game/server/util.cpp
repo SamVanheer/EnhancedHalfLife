@@ -229,7 +229,7 @@ edict_t *DBG_EntOfVars( const entvars_t *pev )
 #ifdef	DEBUG
 	void
 DBG_AssertFunction(
-	BOOL		fExpr,
+	bool		fExpr,
 	const char*	szExpr,
 	const char*	szFile,
 	int			szLine,
@@ -246,7 +246,7 @@ DBG_AssertFunction(
 	}
 #endif	// DEBUG
 
-BOOL UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon )
+bool UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon )
 {
 	return g_pGameRules->GetNextBestWeapon( pPlayer, pCurrentWeapon );
 }
@@ -845,22 +845,23 @@ void UTIL_ShowMessageAll( const char *pString )
 	}
 }
 
+//TODO: define constants for magic numbers
 // Overloaded to add IGNORE_GLASS
 void UTIL_TraceLine( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, IGNORE_GLASS ignoreGlass, edict_t *pentIgnore, TraceResult *ptr )
 {
-	TRACE_LINE( vecStart, vecEnd, (igmon == ignore_monsters ? TRUE : FALSE) | (ignoreGlass?0x100:0), pentIgnore, ptr );
+	TRACE_LINE( vecStart, vecEnd, (igmon == ignore_monsters ? 1 : 0) | (ignoreGlass?0x100:0), pentIgnore, ptr );
 }
 
 
 void UTIL_TraceLine( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, edict_t *pentIgnore, TraceResult *ptr )
 {
-	TRACE_LINE( vecStart, vecEnd, (igmon == ignore_monsters ? TRUE : FALSE), pentIgnore, ptr );
+	TRACE_LINE( vecStart, vecEnd, (igmon == ignore_monsters ? 1 : 0), pentIgnore, ptr );
 }
 
 
 void UTIL_TraceHull( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, int hullNumber, edict_t *pentIgnore, TraceResult *ptr )
 {
-	TRACE_HULL( vecStart, vecEnd, (igmon == ignore_monsters ? TRUE : FALSE), hullNumber, pentIgnore, ptr );
+	TRACE_HULL( vecStart, vecEnd, (igmon == ignore_monsters ? 1 : 0), hullNumber, pentIgnore, ptr );
 }
 
 void UTIL_TraceModel( const Vector &vecStart, const Vector &vecEnd, int hullNumber, edict_t *pentModel, TraceResult *ptr )
@@ -1016,22 +1017,22 @@ int UTIL_IsMasterTriggered(string_t sMaster, CBaseEntity *pActivator)
 	return 1;
 }
 
-BOOL UTIL_ShouldShowBlood( int color )
+bool UTIL_ShouldShowBlood( int color )
 {
 	if ( color != DONT_BLEED )
 	{
 		if ( color == BLOOD_COLOR_RED )
 		{
 			if ( CVAR_GET_FLOAT("violence_hblood") != 0 )
-				return TRUE;
+				return true;
 		}
 		else
 		{
 			if ( CVAR_GET_FLOAT("violence_ablood") != 0 )
-				return TRUE;
+				return true;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 int UTIL_PointContents(	const Vector &vec )
@@ -1184,7 +1185,7 @@ Tell connected clients to display it, or use the default spray can decal
 if the custom can't be loaded.
 ==============
 */
-void UTIL_PlayerDecalTrace( TraceResult *pTrace, int playernum, int decalNumber, BOOL bIsCustom )
+void UTIL_PlayerDecalTrace( TraceResult *pTrace, int playernum, int decalNumber, bool bIsCustom )
 {
 	int index;
 	
@@ -1260,20 +1261,20 @@ void UTIL_Ricochet( const Vector &position, float scale )
 }
 
 
-BOOL UTIL_TeamsMatch( const char *pTeamName1, const char *pTeamName2 )
+bool UTIL_TeamsMatch( const char *pTeamName1, const char *pTeamName2 )
 {
 	// Everyone matches unless it's teamplay
 	if ( !g_pGameRules->IsTeamplay() )
-		return TRUE;
+		return true;
 
 	// Both on a team?
 	if ( *pTeamName1 != 0 && *pTeamName2 != 0 )
 	{
 		if ( !stricmp( pTeamName1, pTeamName2 ) )	// Same Team?
-			return TRUE;
+			return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 
@@ -1464,11 +1465,11 @@ void UTIL_Remove( CBaseEntity *pEntity )
 }
 
 
-BOOL UTIL_IsValidEntity( edict_t *pent )
+bool UTIL_IsValidEntity( edict_t *pent )
 {
 	if ( !pent || pent->free || (pent->v.flags & FL_KILLME) )
-		return FALSE;
-	return TRUE;
+		return false;
+	return true;
 }
 
 

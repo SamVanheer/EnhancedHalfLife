@@ -79,7 +79,7 @@ struct hud_player_info_t
 {
 	char *name;
 	short ping;
-	byte thisplayer;  // TRUE if this is the calling player
+	byte thisplayer;  // true if this is the calling player
 
 	byte spectator;
 	byte packetloss;

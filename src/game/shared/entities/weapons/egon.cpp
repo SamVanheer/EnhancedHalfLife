@@ -66,23 +66,23 @@ void CEgon::Precache()
 }
 
 
-BOOL CEgon::Deploy()
+bool CEgon::Deploy()
 {
-	m_deployed = FALSE;
+	m_deployed = false;
 	m_fireState = FIRE_OFF;
 	return DefaultDeploy( "models/v_egon.mdl", "models/p_egon.mdl", EGON_DRAW, "egon" );
 }
 
-int CEgon::AddToPlayer( CBasePlayer *pPlayer )
+bool CEgon::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
 		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 
@@ -125,12 +125,12 @@ float CEgon::GetDischargeInterval()
 	return EGON_DISCHARGE_INTERVAL;
 }
 
-BOOL CEgon::HasAmmo()
+bool CEgon::HasAmmo()
 {
 	if ( m_pPlayer->ammo_uranium <= 0 )
-		return FALSE;
+		return false;
 
-	return TRUE;
+	return true;
 }
 
 void CEgon::UseAmmo( int count )
@@ -416,7 +416,7 @@ void CEgon::CreateEffect()
 	m_pNoise->pev->flags |= FL_SKIPLOCALHOST;
 	m_pNoise->pev->owner = m_pPlayer->edict();
 
-	m_pSprite = CSprite::SpriteCreate( EGON_FLARE_SPRITE, pev->origin, FALSE );
+	m_pSprite = CSprite::SpriteCreate( EGON_FLARE_SPRITE, pev->origin, false);
 	m_pSprite->pev->scale = 1.0;
 	m_pSprite->SetTransparency( kRenderGlow, 255, 255, 255, 255, kRenderFxNoDissipation );
 	m_pSprite->pev->spawnflags |= SF_SPRITE_TEMPORARY;
@@ -501,7 +501,7 @@ void CEgon::WeaponIdle()
 	}
 
 	SendWeaponAnim( iAnim );
-	m_deployed = TRUE;
+	m_deployed = true;
 }
 
 
@@ -538,14 +538,14 @@ class CEgonAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_chainammo.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	BOOL AddAmmo( CBaseEntity *pOther ) override
+	bool AddAmmo( CBaseEntity *pOther ) override
 	{ 
 		if (pOther->GiveAmmo( AMMO_URANIUMBOX_GIVE, "uranium", URANIUM_MAX_CARRY ) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return TRUE;
+			return true;
 		}
-		return FALSE;
+		return false;
 	}
 };
 LINK_ENTITY_TO_CLASS( ammo_egonclip, CEgonAmmo );

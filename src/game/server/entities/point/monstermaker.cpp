@@ -58,8 +58,8 @@ public:
 
 	float m_flGround; // z coord of the ground under me, used to make sure no monsters are under the maker when it drops a new child
 
-	BOOL m_fActive;
-	BOOL m_fFadeChildren;// should we make the children fadeout?
+	bool m_fActive;
+	bool m_fFadeChildren;// should we make the children fadeout?
 };
 
 LINK_ENTITY_TO_CLASS( monstermaker, CMonsterMaker );
@@ -84,17 +84,17 @@ void CMonsterMaker :: KeyValue( KeyValueData *pkvd )
 	if ( FStrEq(pkvd->szKeyName, "monstercount") )
 	{
 		m_cNumMonsters = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "m_imaxlivechildren") )
 	{
 		m_iMaxLiveChildren = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "monstertype") )
 	{
 		m_iszMonsterClassname = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CBaseMonster::KeyValue( pkvd );
@@ -120,29 +120,29 @@ void CMonsterMaker :: Spawn( )
 
 		if ( FBitSet ( pev->spawnflags, SF_MONSTERMAKER_START_ON ) )
 		{// start making monsters as soon as monstermaker spawns
-			m_fActive = TRUE;
+			m_fActive = true;
 			SetThink ( &CMonsterMaker::MakerThink );
 		}
 		else
 		{// wait to be activated.
-			m_fActive = FALSE;
+			m_fActive = false;
 			SetThink ( &CMonsterMaker::SUB_DoNothing );
 		}
 	}
 	else
 	{// no targetname, just start.
 			pev->nextthink = gpGlobals->time + m_flDelay;
-			m_fActive = TRUE;
+			m_fActive = true;
 			SetThink ( &CMonsterMaker::MakerThink );
 	}
 
 	if ( m_cNumMonsters == 1 )
 	{
-		m_fFadeChildren = FALSE;
+		m_fFadeChildren = false;
 	}
 	else
 	{
-		m_fFadeChildren = TRUE;
+		m_fFadeChildren = true;
 	}
 
 	m_flGround = 0;
@@ -253,12 +253,12 @@ void CMonsterMaker :: ToggleUse ( CBaseEntity *pActivator, CBaseEntity *pCaller,
 
 	if ( m_fActive )
 	{
-		m_fActive = FALSE;
+		m_fActive = false;
 		SetThink ( NULL );
 	}
 	else
 	{
-		m_fActive = TRUE;
+		m_fActive = true;
 		SetThink ( &CMonsterMaker::MakerThink );
 	}
 

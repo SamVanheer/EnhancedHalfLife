@@ -73,10 +73,10 @@ public:
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	Schedule_t* GetSchedule () override;
 	Schedule_t* GetScheduleOfType ( int Type ) override;
-	BOOL CheckMeleeAttack1 ( float flDot, float flDist ) override;	// jump
-	// BOOL CheckMeleeAttack2 ( float flDot, float flDist ) override;
-	BOOL CheckRangeAttack1 ( float flDot, float flDist ) override;	// shoot
-	BOOL CheckRangeAttack2 ( float flDot, float flDist ) override;	// throw grenade
+	bool CheckMeleeAttack1 ( float flDot, float flDist ) override;	// jump
+	// bool CheckMeleeAttack2 ( float flDot, float flDist ) override;
+	bool CheckRangeAttack1 ( float flDot, float flDist ) override;	// shoot
+	bool CheckRangeAttack2 ( float flDot, float flDist ) override;	// throw grenade
 	void StartTask ( Task_t *pTask ) override;
 	void RunAI() override;
 	void RunTask ( Task_t *pTask ) override;
@@ -96,7 +96,7 @@ public:
 
 	float m_flNextGrenadeCheck;
 	Vector	m_vecTossVelocity;
-	BOOL	m_fThrowGrenade;
+	bool	m_fThrowGrenade;
 
 	int		m_iTargetRanderamt;
 
@@ -254,7 +254,7 @@ void CHAssassin :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			CGrenade::ShootTimed( pev, pev->origin + gpGlobals->v_forward * 34 + Vector (0, 0, 32), m_vecTossVelocity, 2.0 );
 
 			m_flNextGrenadeCheck = gpGlobals->time + 6;// wait six seconds before even looking again to see if a grenade can be thrown.
-			m_fThrowGrenade = FALSE;
+			m_fThrowGrenade = false;
 			// !!!LATER - when in a group, only try to throw grenade if ordered.
 		}
 		break;
@@ -623,7 +623,7 @@ IMPLEMENT_CUSTOM_SCHEDULES( CHAssassin, CBaseMonster );
 //=========================================================
 // CheckMeleeAttack1 - jump like crazy if the enemy gets too close. 
 //=========================================================
-BOOL CHAssassin :: CheckMeleeAttack1 ( float flDot, float flDist )
+bool CHAssassin :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
 	if ( m_flNextJump < gpGlobals->time && (flDist <= 128 || HasMemory( bits_MEMORY_BADJUMP )) && m_hEnemy != NULL )
 	{
@@ -635,7 +635,7 @@ BOOL CHAssassin :: CheckMeleeAttack1 ( float flDot, float flDist )
 
 		if ( tr.fStartSolid || tr.flFraction < 1.0)
 		{
-			return FALSE;
+			return false;
 		}
 
 		float flGravity = g_psv_gravity->value;
@@ -644,16 +644,16 @@ BOOL CHAssassin :: CheckMeleeAttack1 ( float flDot, float flDist )
 		float speed = flGravity * time / 160;
 		m_vecJumpVelocity = (vecDest - pev->origin) * speed;
 
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 //=========================================================
 // CheckRangeAttack1  - drop a cap in their ass
 //
 //=========================================================
-BOOL CHAssassin :: CheckRangeAttack1 ( float flDot, float flDist )
+bool CHAssassin :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( !HasConditions( bits_COND_ENEMY_OCCLUDED ) && flDist > 64 && flDist <= 2048 /* && flDot >= 0.5 */ /* && NoFriendlyFire() */ )
 	{
@@ -666,27 +666,27 @@ BOOL CHAssassin :: CheckRangeAttack1 ( float flDot, float flDist )
 
 		if ( tr.flFraction == 1 || tr.pHit == m_hEnemy->edict() )
 		{
-			return TRUE;
+			return true;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 //=========================================================
 // CheckRangeAttack2 - toss grenade is enemy gets in the way and is too close. 
 //=========================================================
-BOOL CHAssassin :: CheckRangeAttack2 ( float flDot, float flDist )
+bool CHAssassin :: CheckRangeAttack2 ( float flDot, float flDist )
 {
-	m_fThrowGrenade = FALSE;
+	m_fThrowGrenade = false;
 	if ( !FBitSet ( m_hEnemy->pev->flags, FL_ONGROUND ) )
 	{
 		// don't throw grenades at anything that isn't on the ground!
-		return FALSE;
+		return false;
 	}
 
 	// don't get grenade happy unless the player starts to piss you off
 	if ( m_iFrustration <= 2)
-		return FALSE;
+		return false;
 
 	if ( m_flNextGrenadeCheck < gpGlobals->time && !HasConditions( bits_COND_ENEMY_OCCLUDED ) && flDist <= 512 /* && flDot >= 0.5 */ /* && NoFriendlyFire() */ )
 	{
@@ -697,13 +697,13 @@ BOOL CHAssassin :: CheckRangeAttack2 ( float flDot, float flDist )
 			m_vecTossVelocity = vecToss;
 
 			// throw a hand grenade
-			m_fThrowGrenade = TRUE;
+			m_fThrowGrenade = true;
 
-			return TRUE;
+			return true;
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 

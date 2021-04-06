@@ -197,34 +197,34 @@ int CBaseEntity :: IsDormant()
 	return FBitSet( pev->flags, FL_DORMANT );
 }
 
-BOOL CBaseEntity :: IsInWorld()
+bool CBaseEntity :: IsInWorld()
 {
 	// position 
-	if (pev->origin.x >= 4096) return FALSE;
-	if (pev->origin.y >= 4096) return FALSE;
-	if (pev->origin.z >= 4096) return FALSE;
-	if (pev->origin.x <= -4096) return FALSE;
-	if (pev->origin.y <= -4096) return FALSE;
-	if (pev->origin.z <= -4096) return FALSE;
+	if (pev->origin.x >= 4096) return false;
+	if (pev->origin.y >= 4096) return false;
+	if (pev->origin.z >= 4096) return false;
+	if (pev->origin.x <= -4096) return false;
+	if (pev->origin.y <= -4096) return false;
+	if (pev->origin.z <= -4096) return false;
 	// speed
-	if (pev->velocity.x >= 2000) return FALSE;
-	if (pev->velocity.y >= 2000) return FALSE;
-	if (pev->velocity.z >= 2000) return FALSE;
-	if (pev->velocity.x <= -2000) return FALSE;
-	if (pev->velocity.y <= -2000) return FALSE;
-	if (pev->velocity.z <= -2000) return FALSE;
+	if (pev->velocity.x >= 2000) return false;
+	if (pev->velocity.y >= 2000) return false;
+	if (pev->velocity.z >= 2000) return false;
+	if (pev->velocity.x <= -2000) return false;
+	if (pev->velocity.y <= -2000) return false;
+	if (pev->velocity.z <= -2000) return false;
 
-	return TRUE;
+	return true;
 }
 
-int CBaseEntity::ShouldToggle( USE_TYPE useType, BOOL currentState )
+bool CBaseEntity::ShouldToggle( USE_TYPE useType, bool currentState )
 {
 	if ( useType != USE_TOGGLE && useType != USE_SET )
 	{
 		if ( (currentState && useType == USE_ON) || (!currentState && useType == USE_OFF) )
-			return 0;
+			return false;
 	}
-	return 1;
+	return true;
 }
 
 

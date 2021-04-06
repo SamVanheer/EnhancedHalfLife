@@ -177,7 +177,7 @@ void CStomp::Think()
 		pev->origin = pev->origin + pev->movedir * pev->speed * STOMP_INTERVAL;
 		for ( int i = 0; i < 2; i++ )
 		{
-			CSprite *pSprite = CSprite::SpriteCreate( GARG_STOMP_SPRITE_NAME, pev->origin, TRUE );
+			CSprite *pSprite = CSprite::SpriteCreate( GARG_STOMP_SPRITE_NAME, pev->origin, true);
 			if ( pSprite )
 			{
 				UTIL_TraceLine( pev->origin, pev->origin - Vector(0,0,500), ignore_monsters, edict(), &tr );
@@ -232,9 +232,9 @@ public:
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType ) override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 
-	BOOL CheckMeleeAttack1( float flDot, float flDist ) override;		// Swipe
-	BOOL CheckMeleeAttack2( float flDot, float flDist ) override;		// Flames
-	BOOL CheckRangeAttack1( float flDot, float flDist ) override;		// Stomp attack
+	bool CheckMeleeAttack1( float flDot, float flDist ) override;		// Swipe
+	bool CheckMeleeAttack2( float flDot, float flDist ) override;		// Flames
+	bool CheckRangeAttack1( float flDot, float flDist ) override;		// Stomp attack
 	void SetObjectCollisionBox() override
 	{
 		pev->absmin = pev->origin + Vector( -80, -80, 0 );
@@ -259,7 +259,7 @@ public:
 	void FlameUpdate();
 	void FlameControls( float angleX, float angleY );
 	void FlameDestroy();
-	inline BOOL FlameIsOn() { return m_pFlame[0] != NULL; }
+	inline bool FlameIsOn() { return m_pFlame[0] != NULL; }
 
 	void FlameDamage( Vector vecStart, Vector vecEnd, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType );
 
@@ -579,7 +579,7 @@ void CGargantua :: FlameUpdate()
 	static float	offset[2] = { 60, -60 };
 	TraceResult		trace;
 	Vector			vecStart, angleGun;
-	BOOL			streaks = FALSE;
+	bool			streaks = false;
 
 	for ( i = 0; i < 2; i++ )
 	{
@@ -602,7 +602,7 @@ void CGargantua :: FlameUpdate()
 			if ( trace.flFraction != 1.0 && gpGlobals->time > m_streakTime )
 			{
 				StreakSplash( trace.vecEndPos, trace.vecPlaneNormal, 6, 20, 50, 400 );
-				streaks = TRUE;
+				streaks = true;
 				UTIL_DecalTrace( &trace, DECAL_SMALLSCORCH1 + RANDOM_LONG(0,2) );
 			}
 			// RadiusDamage( trace.vecEndPos, pev, pev, gSkillData.gargantuaDmgFire, CLASS_ALIEN_MONSTER, DMG_BURN );
@@ -788,7 +788,7 @@ void CGargantua :: Spawn()
 
 	MonsterInit();
 
-	m_pEyeGlow = CSprite::SpriteCreate( GARG_EYE_SPRITE_NAME, pev->origin, FALSE );
+	m_pEyeGlow = CSprite::SpriteCreate( GARG_EYE_SPRITE_NAME, pev->origin, false);
 	m_pEyeGlow->SetTransparency( kRenderGlow, 255, 255, 255, 0, kRenderFxNoDissipation );
 	m_pEyeGlow->SetAttachment( edict(), 1 );
 	EyeOff();
@@ -941,21 +941,21 @@ void CGargantua::Killed( entvars_t *pevAttacker, int iGib )
 // Garg swipe attack
 // 
 //=========================================================
-BOOL CGargantua::CheckMeleeAttack1( float flDot, float flDist )
+bool CGargantua::CheckMeleeAttack1( float flDot, float flDist )
 {
 //	ALERT(at_aiconsole, "CheckMelee(%f, %f)\n", flDot, flDist);
 
 	if (flDot >= 0.7)
 	{
 		if (flDist <= GARG_ATTACKDIST)
-			return TRUE;
+			return true;
 	}
-	return FALSE;
+	return false;
 }
 
 
 // Flame thrower madness!
-BOOL CGargantua::CheckMeleeAttack2( float flDot, float flDist )
+bool CGargantua::CheckMeleeAttack2( float flDot, float flDist )
 {
 //	ALERT(at_aiconsole, "CheckMelee(%f, %f)\n", flDot, flDist);
 
@@ -964,10 +964,10 @@ BOOL CGargantua::CheckMeleeAttack2( float flDot, float flDist )
 		if (flDot >= 0.8 && flDist > GARG_ATTACKDIST)
 		{
 			if ( flDist <= GARG_FLAME_LENGTH )
-				return TRUE;
+				return true;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 
@@ -980,16 +980,16 @@ BOOL CGargantua::CheckMeleeAttack2( float flDot, float flDist )
 // Stomp attack
 //
 //=========================================================
-BOOL CGargantua::CheckRangeAttack1( float flDot, float flDist )
+bool CGargantua::CheckRangeAttack1( float flDot, float flDist )
 {
 	if ( gpGlobals->time > m_seeTime )
 	{
 		if (flDot >= 0.7 && flDist > GARG_ATTACKDIST)
 		{
-				return TRUE;
+				return true;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 
@@ -1223,7 +1223,7 @@ void CGargantua::RunTask( Task_t *pTask )
 		}
 		else
 		{
-			BOOL cancel = FALSE;
+			bool cancel = false;
 
 			Vector angles = g_vecZero;
 
@@ -1238,10 +1238,10 @@ void CGargantua::RunTask( Task_t *pTask )
 				angles.x = -angles.x;
 				angles.y -= pev->angles.y;
 				if ( dir.Length() > 400 )
-					cancel = TRUE;
+					cancel = true;
 			}
 			if ( fabs(angles.y) > 60 )
-				cancel = TRUE;
+				cancel = true;
 			
 			if ( cancel )
 			{

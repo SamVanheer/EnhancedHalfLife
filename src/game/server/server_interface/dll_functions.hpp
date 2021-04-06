@@ -37,6 +37,6 @@ void ResetGlobalState();
 
 void OnFreeEntPrivateData(edict_t* pEdict);
 
-extern BOOL gTouchDisabled;
+extern bool gTouchDisabled;
 
 void SetObjectCollisionBox(entvars_t* pev);

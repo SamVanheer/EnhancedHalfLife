@@ -80,7 +80,7 @@ public:
 	void SpreadFlock2();
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
 	void Poop ();
-	BOOL FPathBlocked();
+	bool FPathBlocked();
 	//void KeyValue( KeyValueData *pkvd ) override;
 
 	int		Save( CSave &save ) override;
@@ -97,11 +97,11 @@ public:
 
 	CFlockingFlyer *m_pSquadLeader;
 	CFlockingFlyer *m_pSquadNext;
-	BOOL	m_fTurning;// is this boid turning?
-	BOOL	m_fCourseAdjust;// followers set this flag TRUE to override flocking while they avoid something
-	BOOL	m_fPathBlocked;// TRUE if there is an obstacle ahead
+	bool	m_fTurning;// is this boid turning?
+	bool	m_fCourseAdjust;// followers set this flag true to override flocking while they avoid something
+	bool	m_fPathBlocked;// true if there is an obstacle ahead
 	Vector	m_vecReferencePoint;// last place we saw leader
-	Vector	m_vecAdjustedVelocity;// adjusted velocity (used when fCourseAdjust is TRUE)
+	Vector	m_vecAdjustedVelocity;// adjusted velocity (used when fCourseAdjust is true)
 	float	m_flGoalSpeed;
 	float	m_flLastBlockedTime;
 	float	m_flFakeBlockedTime;
@@ -136,12 +136,12 @@ void CFlockingFlyerFlock :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "iFlockSize"))
 	{
 		m_cFlockSize = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "flFlockRadius"))
 	{
 		m_flFlockRadius = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 }
 
@@ -326,7 +326,7 @@ void CFlockingFlyer :: SpawnCommonCode( )
 	pev->takedamage	= DAMAGE_NO;
 	pev->health		= 1;
 
-	m_fPathBlocked	= FALSE;// obstacles will be detected
+	m_fPathBlocked	= false;// obstacles will be detected
 	m_flFieldOfView	= 0.2;
 
 	//SET_MODEL(ENT(pev), "models/aflock.mdl");
@@ -498,33 +498,33 @@ void CFlockingFlyer :: SpreadFlock2 ( )
 }
 
 //=========================================================
-// FBoidPathBlocked - returns TRUE if there is an obstacle ahead
+// FBoidPathBlocked - returns true if there is an obstacle ahead
 //=========================================================
-BOOL CFlockingFlyer :: FPathBlocked( )
+bool CFlockingFlyer :: FPathBlocked( )
 {
 	TraceResult		tr;
 	Vector			vecDist;// used for general measurements
 	Vector			vecDir;// used for general measurements
-	BOOL			fBlocked;
+	bool			fBlocked;
 
 	if ( m_flFakeBlockedTime > gpGlobals->time )
 	{
 		m_flLastBlockedTime = gpGlobals->time;
-		return TRUE;
+		return true;
 	}
 
 	// use VELOCITY, not angles, not all boids point the direction they are flying
 	//vecDir = UTIL_VecToAngles( pevBoid->velocity );
 	UTIL_MakeVectors ( pev->angles );
 
-	fBlocked = FALSE;// assume the way ahead is clear
+	fBlocked = false;// assume the way ahead is clear
 
 	// check for obstacle ahead
 	UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * AFLOCK_CHECK_DIST, ignore_monsters, ENT(pev), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		m_flLastBlockedTime = gpGlobals->time;
-		fBlocked = TRUE;
+		fBlocked = true;
 	}
 
 	// extra wide checks
@@ -532,14 +532,14 @@ BOOL CFlockingFlyer :: FPathBlocked( )
 	if (tr.flFraction != 1.0)
 	{
 		m_flLastBlockedTime = gpGlobals->time;
-		fBlocked = TRUE;
+		fBlocked = true;
 	}
 
 	UTIL_TraceLine(pev->origin - gpGlobals->v_right * 12, pev->origin - gpGlobals->v_right * 12 + gpGlobals->v_forward * AFLOCK_CHECK_DIST, ignore_monsters, ENT(pev), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		m_flLastBlockedTime = gpGlobals->time;
-		fBlocked = TRUE;
+		fBlocked = true;
 	}
 
 	if ( !fBlocked && gpGlobals->time - m_flLastBlockedTime > 6 )
@@ -575,11 +575,11 @@ void CFlockingFlyer :: FlockLeaderThink()
 		// if the boid is turning, stop the trend.
 		if ( m_fTurning )
 		{
-			m_fTurning = FALSE;
+			m_fTurning = false;
 			pev->avelocity.y = 0;
 		}
 
-		m_fPathBlocked = FALSE;
+		m_fPathBlocked = false;
 
 		if (pev->speed <= AFLOCK_FLY_SPEED )
 			pev->speed+= 5;
@@ -592,7 +592,7 @@ void CFlockingFlyer :: FlockLeaderThink()
 	}
 	
 	// IF we get this far in the function, the leader's path is blocked!
-	m_fPathBlocked = TRUE;
+	m_fPathBlocked = true;
 
 	if ( !m_fTurning)// something in the way and boid is not already turning to avoid
 	{
@@ -609,18 +609,18 @@ void CFlockingFlyer :: FlockLeaderThink()
 		if ( flRightSide > flLeftSide )
 		{
 			pev->avelocity.y = -AFLOCK_TURN_RATE;
-			m_fTurning = TRUE;
+			m_fTurning = true;
 		}
 		// default to left turn :)
 		else if ( flLeftSide > flRightSide )
 		{
 			pev->avelocity.y = AFLOCK_TURN_RATE;
-			m_fTurning = TRUE;
+			m_fTurning = true;
 		}
 		else
 		{
 			// equidistant. Pick randomly between left and right.
-			m_fTurning = TRUE;
+			m_fTurning = true;
 
 			if ( RANDOM_LONG( 0, 1 ) == 0 )
 			{
@@ -753,7 +753,7 @@ void CFlockingFlyer :: FlockFollowerThink()
 		}
 		else // set course adjust flag and calculate adjusted velocity
 		{
-			m_fCourseAdjust = TRUE;
+			m_fCourseAdjust = true;
 			
 			// use VELOCITY, not angles, not all boids point the direction they are flying
 			//vecDir = UTIL_VecToAngles( pev->velocity );
@@ -785,7 +785,7 @@ void CFlockingFlyer :: FlockFollowerThink()
 	}
 
 	// if we make it this far, boids path is CLEAR!
-	m_fCourseAdjust = FALSE;
+	m_fCourseAdjust = false;
 */
 	
 

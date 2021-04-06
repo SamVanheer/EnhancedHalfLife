@@ -607,11 +607,11 @@ void CBasePlayerItem::DestroyItem()
 	Kill( );
 }
 
-int CBasePlayerItem::AddToPlayer( CBasePlayer *pPlayer )
+bool CBasePlayerItem::AddToPlayer( CBasePlayer *pPlayer )
 {
 	m_pPlayer = pPlayer;
 
-	return TRUE;
+	return true;
 }
 
 void CBasePlayerItem::Drop()
@@ -648,7 +648,7 @@ void CBasePlayerItem::AttachToPlayer ( CBasePlayer *pPlayer )
 }
 
 // CALLED THROUGH the newly-touched weapon's instance. The existing player weapon is pOriginal
-int CBasePlayerWeapon::AddDuplicate( CBasePlayerItem *pOriginal )
+bool CBasePlayerWeapon::AddDuplicate( CBasePlayerItem *pOriginal )
 {
 	if ( m_iDefaultAmmo )
 	{
@@ -662,7 +662,7 @@ int CBasePlayerWeapon::AddDuplicate( CBasePlayerItem *pOriginal )
 }
 
 
-int CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer )
+bool CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer )
 {
 	int bResult = CBasePlayerItem::AddToPlayer( pPlayer );
 
@@ -677,12 +677,12 @@ int CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer )
 
 	if (bResult)
 		return AddWeapon( );
-	return FALSE;
+	return false;
 }
 
 int CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
 {
-	BOOL bSend = FALSE;
+	bool bSend = false;
 	int state = 0;
 	if ( pPlayer->m_pActiveItem == this )
 	{
@@ -695,7 +695,7 @@ int CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
 	// Forcing send of all data!
 	if ( !pPlayer->m_fWeapon )
 	{
-		bSend = TRUE;
+		bSend = true;
 	}
 	
 	// This is the current or last weapon, so the state will need to be updated
@@ -704,7 +704,7 @@ int CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
 	{
 		if ( pPlayer->m_pActiveItem != pPlayer->m_pClientActiveItem )
 		{
-			bSend = TRUE;
+			bSend = true;
 		}
 	}
 
@@ -713,7 +713,7 @@ int CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
 		 state != m_iClientWeaponState || 
 		 pPlayer->m_iFOV != pPlayer->m_iClientFOV )
 	{
-		bSend = TRUE;
+		bSend = true;
 	}
 
 	if ( bSend )
@@ -726,7 +726,7 @@ int CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
 
 		m_iClientClip = m_iClip;
 		m_iClientWeaponState = state;
-		pPlayer->m_fWeapon = TRUE;
+		pPlayer->m_fWeapon = true;
 	}
 
 	if ( m_pNext )
@@ -756,7 +756,7 @@ void CBasePlayerWeapon::SendWeaponAnim( int iAnim, int skiplocal, int body )
 	MESSAGE_END();
 }
 
-BOOL CBasePlayerWeapon :: AddPrimaryAmmo( int iCount, char *szName, int iMaxClip, int iMaxCarry )
+bool CBasePlayerWeapon :: AddPrimaryAmmo( int iCount, char *szName, int iMaxClip, int iMaxCarry )
 {
 	int iIdAmmo;
 
@@ -790,11 +790,11 @@ BOOL CBasePlayerWeapon :: AddPrimaryAmmo( int iCount, char *szName, int iMaxClip
 		}
 	}
 
-	return iIdAmmo > 0 ? TRUE : FALSE;
+	return iIdAmmo > 0 ? true : false;
 }
 
 
-BOOL CBasePlayerWeapon :: AddSecondaryAmmo( int iCount, char *szName, int iMax )
+bool CBasePlayerWeapon :: AddSecondaryAmmo( int iCount, char *szName, int iMax )
 {
 	int iIdAmmo;
 
@@ -807,7 +807,7 @@ BOOL CBasePlayerWeapon :: AddSecondaryAmmo( int iCount, char *szName, int iMax )
 		m_iSecondaryAmmoType = iIdAmmo;
 		EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
 	}
-	return iIdAmmo > 0 ? TRUE : FALSE;
+	return iIdAmmo > 0 ? true : false;
 }
 
 //=========================================================
@@ -816,22 +816,22 @@ BOOL CBasePlayerWeapon :: AddSecondaryAmmo( int iCount, char *szName, int iMax )
 // (does it have ammo loaded? do I have any ammo for the 
 // weapon?, etc)
 //=========================================================
-BOOL CBasePlayerWeapon :: IsUseable()
+bool CBasePlayerWeapon :: IsUseable()
 {
 	if (m_iClip > 0)
 	{
-		return TRUE;
+		return true;
 	}
 
 	//Player has unlimited ammo for this weapon or does not use magazines
 	if (iMaxAmmo1() == WEAPON_NOCLIP)
 	{
-		return TRUE;
+		return true;
 	}
 
 	if (m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] > 0)
 	{
-		return TRUE;
+		return true;
 	}
 
 	if (pszAmmo2())
@@ -839,23 +839,23 @@ BOOL CBasePlayerWeapon :: IsUseable()
 		//Player has unlimited ammo for this weapon or does not use magazines
 		if (iMaxAmmo2() == WEAPON_NOCLIP)
 		{
-			return TRUE;
+			return true;
 		}
 
 		if (m_pPlayer->m_rgAmmo[SecondaryAmmoIndex()] > 0)
 		{
-			return TRUE;
+			return true;
 		}
 	}
 
 	// clip is empty (or nonexistant) and the player has no more ammo of this type. 
-	return FALSE;
+	return false;
 }
 
-BOOL CBasePlayerWeapon :: DefaultDeploy( const char *szViewModel, const char *szWeaponModel, int iAnim, const char *szAnimExt, int skiplocal /* = 0 */, int body )
+bool CBasePlayerWeapon :: DefaultDeploy( const char *szViewModel, const char *szWeaponModel, int iAnim, const char *szAnimExt, int skiplocal /* = 0 */, int body )
 {
 	if (!CanDeploy( ))
-		return FALSE;
+		return false;
 
 	m_pPlayer->TabulateAmmo();
 	m_pPlayer->pev->viewmodel = MAKE_STRING(szViewModel);
@@ -867,10 +867,10 @@ BOOL CBasePlayerWeapon :: DefaultDeploy( const char *szViewModel, const char *sz
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
 	m_flLastFireTime = 0.0;
 
-	return TRUE;
+	return true;
 }
 
-BOOL CBasePlayerWeapon :: PlayEmptySound()
+bool CBasePlayerWeapon :: PlayEmptySound()
 {
 	if (m_iPlayEmptySound)
 	{
@@ -897,7 +897,7 @@ int CBasePlayerWeapon::SecondaryAmmoIndex()
 
 void CBasePlayerWeapon::Holster( int skiplocal /* = 0 */ )
 { 
-	m_fInReload = FALSE; // cancel any reload in progress.
+	m_fInReload = false; // cancel any reload in progress.
 	m_pPlayer->pev->viewmodel = 0; 
 	m_pPlayer->pev->weaponmodel = 0;
 }
@@ -975,24 +975,24 @@ void CBasePlayerAmmo :: DefaultTouch( CBaseEntity *pOther )
 // if  this is a weapon dropped by a dying player, has 0 m_iDefaultAmmo, which means only the ammo in 
 // the weapon clip comes along. 
 //=========================================================
-int CBasePlayerWeapon::ExtractAmmo( CBasePlayerWeapon *pWeapon )
+bool CBasePlayerWeapon::ExtractAmmo( CBasePlayerWeapon *pWeapon )
 {
-	int			iReturn = 0;
+	bool result = false;
 
 	if ( pszAmmo1() != NULL )
 	{
 		// blindly call with m_iDefaultAmmo. It's either going to be a value or zero. If it is zero,
 		// we only get the ammo in the weapon's clip, which is what we want. 
-		iReturn = pWeapon->AddPrimaryAmmo( m_iDefaultAmmo, (char *)pszAmmo1(), iMaxClip(), iMaxAmmo1() );
+		result = pWeapon->AddPrimaryAmmo( m_iDefaultAmmo, (char *)pszAmmo1(), iMaxClip(), iMaxAmmo1() );
 		m_iDefaultAmmo = 0;
 	}
 
 	if ( pszAmmo2() != NULL )
 	{
-		iReturn |= pWeapon->AddSecondaryAmmo( 0, (char *)pszAmmo2(), iMaxAmmo2() );
+		result = pWeapon->AddSecondaryAmmo( 0, (char *)pszAmmo2(), iMaxAmmo2() ) || result;
 	}
 
-	return iReturn;
+	return result;
 }
 
 //=========================================================
@@ -1098,7 +1098,7 @@ void CWeaponBox :: KeyValue( KeyValueData *pkvd )
 		PackAmmo( ALLOC_STRING(pkvd->szKeyName), atoi(pkvd->szValue) );
 		m_cAmmoTypes++;// count this new ammo type.
 
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 	{
@@ -1222,12 +1222,12 @@ void CWeaponBox::Touch( CBaseEntity *pOther )
 //=========================================================
 // CWeaponBox - PackWeapon: Add this weapon to the box
 //=========================================================
-BOOL CWeaponBox::PackWeapon( CBasePlayerItem *pWeapon )
+bool CWeaponBox::PackWeapon( CBasePlayerItem *pWeapon )
 {
 	// is one of these weapons already packed in this box?
 	if ( HasWeapon( pWeapon ) )
 	{
-		return FALSE;// box can only hold one of each weapon type
+		return false;// box can only hold one of each weapon type
 	}
 
 	if ( pWeapon->m_pPlayer )
@@ -1235,7 +1235,7 @@ BOOL CWeaponBox::PackWeapon( CBasePlayerItem *pWeapon )
 		if ( !pWeapon->m_pPlayer->RemovePlayerItem( pWeapon ) )
 		{
 			// failed to unhook the weapon from the player!
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -1267,13 +1267,13 @@ BOOL CWeaponBox::PackWeapon( CBasePlayerItem *pWeapon )
 
 	//ALERT ( at_console, "packed %s\n", STRING(pWeapon->pev->classname) );
 
-	return TRUE;
+	return true;
 }
 
 //=========================================================
 // CWeaponBox - PackAmmo
 //=========================================================
-BOOL CWeaponBox::PackAmmo( int iszName, int iCount )
+bool CWeaponBox::PackAmmo( int iszName, int iCount )
 {
 	int iMaxCarry;
 
@@ -1281,7 +1281,7 @@ BOOL CWeaponBox::PackAmmo( int iszName, int iCount )
 	{
 		// error here
 		ALERT ( at_console, "NULL String in PackAmmo!\n" );
-		return FALSE;
+		return false;
 	}
 	
 	iMaxCarry = MaxAmmoCarry( iszName );
@@ -1290,10 +1290,10 @@ BOOL CWeaponBox::PackAmmo( int iszName, int iCount )
 	{
 		//ALERT ( at_console, "Packed %d rounds of %s\n", iCount, STRING(iszName) );
 		GiveAmmo( iCount, STRING( iszName ), iMaxCarry );
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 //=========================================================
@@ -1338,7 +1338,7 @@ int CWeaponBox::GiveAmmo( int iCount, const char *szName, int iMax, int *pIndex/
 // CWeaponBox::HasWeapon - is a weapon of this type already
 // packed in this box?
 //=========================================================
-BOOL CWeaponBox::HasWeapon( CBasePlayerItem *pCheckItem )
+bool CWeaponBox::HasWeapon( CBasePlayerItem *pCheckItem )
 {
 	CBasePlayerItem *pItem = m_rgpPlayerItems[pCheckItem->iItemSlot()];
 
@@ -1346,18 +1346,18 @@ BOOL CWeaponBox::HasWeapon( CBasePlayerItem *pCheckItem )
 	{
 		if (FClassnameIs( pItem->pev, STRING( pCheckItem->pev->classname) ))
 		{
-			return TRUE;
+			return true;
 		}
 		pItem = pItem->m_pNext;
 	}
 
-	return FALSE;
+	return false;
 }
 
 //=========================================================
 // CWeaponBox::IsEmpty - is there anything in this box?
 //=========================================================
-BOOL CWeaponBox::IsEmpty()
+bool CWeaponBox::IsEmpty()
 {
 	int i;
 
@@ -1365,7 +1365,7 @@ BOOL CWeaponBox::IsEmpty()
 	{
 		if ( m_rgpPlayerItems[ i ] )
 		{
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -1374,11 +1374,11 @@ BOOL CWeaponBox::IsEmpty()
 		if ( !FStringNull( m_rgiszAmmo[ i ] ) )
 		{
 			// still have a bit of this type of ammo
-			return FALSE;
+			return false;
 		}
 	}
 
-	return TRUE;
+	return true;
 }
 
 //=========================================================
