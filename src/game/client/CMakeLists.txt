@@ -191,7 +191,9 @@ target_sources(client PRIVATE
 	../../public/studio_event.h
 	../../public/winsani_in.h
 	../../public/winsani_out.h
-	../../public/game/client/APIProxy.h
+	../../public/game/client/cdll_int.h
+	../../public/game/client/client_int.hpp
+	../../public/game/client/IGameClientExports.h
 	../../public/engine/com_model.h
 	../../public/engine/entity_state.h
 	../../public/engine/event_args.h
@@ -202,6 +204,7 @@ target_sources(client PRIVATE
 	../../public/engine/usercmd.h
 	../../public/engine/weaponinfo.h
 	../../public/engine/client/beamdef.h
+	../../public/engine/client/cl_engine_int.hpp
 	../../public/engine/client/cl_entity.h
 	../../public/engine/client/demo_api.h
 	../../public/engine/client/dlight.h

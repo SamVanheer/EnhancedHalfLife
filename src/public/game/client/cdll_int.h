@@ -98,7 +98,8 @@ typedef struct hud_player_info_s
 #define CLDLL_INTERFACE_VERSION		7
 
 //#include "server.h" // server_static_t define for apiproxy
-#include "APIProxy.h"
+#include "client_int.hpp"
+#include "cl_engine_int.hpp"
 
 #ifdef __cplusplus
 }
