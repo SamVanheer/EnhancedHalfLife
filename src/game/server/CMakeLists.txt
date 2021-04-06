@@ -56,6 +56,8 @@ target_sources(hl PRIVATE
 	entities/animation.h
 	entities/cbase.cpp
 	entities/cbase.h
+	entities/ehandle.cpp
+	entities/ehandle.hpp
 	entities/maprules.cpp
 	entities/maprules.h
 	entities/monsterevent.h
