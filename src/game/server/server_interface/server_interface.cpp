@@ -21,11 +21,10 @@
 enginefuncs_t g_engfuncs;
 globalvars_t* gpGlobals;
 
-#undef DLLEXPORT
 #ifdef _WIN32
-#define DLLEXPORT __stdcall
+#define GIVEFNPTRSTODLL_EXPORT __stdcall
 #else
-#define DLLEXPORT __attribute__ ((visibility("default")))
+#define GIVEFNPTRSTODLL_EXPORT DLLEXPORT
 #endif
 
 #ifdef _WIN32
@@ -48,7 +47,7 @@ BOOL WINAPI DllMain(
 
 extern "C"
 {
-void DLLEXPORT GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine, globalvars_t* pGlobals)
+void GIVEFNPTRSTODLL_EXPORT GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine, globalvars_t* pGlobals)
 {
 	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
 	gpGlobals = pGlobals;
