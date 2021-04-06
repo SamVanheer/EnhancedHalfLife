@@ -78,7 +78,7 @@ public:
 static CHLVoiceStatusHelper g_VoiceStatusHelper;
 
 
-extern client_sprite_t *GetSpriteList(client_sprite_t *pList, const char *psz, int iRes, int iCount);
+client_sprite_t *GetSpriteList(client_sprite_t *pList, const char *psz, int iRes, int iCount);
 
 extern cvar_t *sensitivity;
 cvar_t *cl_lw = NULL;

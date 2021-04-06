@@ -110,56 +110,56 @@ typedef struct module_s
 
 #define CLDLL_INTERFACE_VERSION		7
 
-extern void LoadSecurityModuleFromDisk(char * pszDllName);
-extern void LoadSecurityModuleFromMemory( unsigned char * pCode, int nSize );
-extern void CloseSecurityModule();
+void LoadSecurityModuleFromDisk(char * pszDllName);
+void LoadSecurityModuleFromMemory( unsigned char * pCode, int nSize );
+void CloseSecurityModule();
 
 
-extern void ClientDLL_Init( void ); // from cdll_int.c
-extern void ClientDLL_Shutdown( void );
-extern void ClientDLL_HudInit( void );
-extern void ClientDLL_HudVidInit( void );
-extern void	ClientDLL_UpdateClientData( void );
-extern void ClientDLL_Frame( double time );
-extern void ClientDLL_HudRedraw( int intermission );
-extern void ClientDLL_MoveClient( struct playermove_s *ppmove );
-extern void ClientDLL_ClientMoveInit( struct playermove_s *ppmove );
-extern char ClientDLL_ClientTextureType( char *name );
+void ClientDLL_Init( void ); // from cdll_int.c
+void ClientDLL_Shutdown( void );
+void ClientDLL_HudInit( void );
+void ClientDLL_HudVidInit( void );
+void	ClientDLL_UpdateClientData( void );
+void ClientDLL_Frame( double time );
+void ClientDLL_HudRedraw( int intermission );
+void ClientDLL_MoveClient( struct playermove_s *ppmove );
+void ClientDLL_ClientMoveInit( struct playermove_s *ppmove );
+char ClientDLL_ClientTextureType( char *name );
 
-extern void ClientDLL_CreateMove( float frametime, struct usercmd_s *cmd, int active );
-extern void ClientDLL_ActivateMouse( void );
-extern void ClientDLL_DeactivateMouse( void );
-extern void ClientDLL_MouseEvent( int mstate );
-extern void ClientDLL_ClearStates( void );
-extern int ClientDLL_IsThirdPerson( void );
-extern void ClientDLL_GetCameraOffsets( float *ofs );
-extern int ClientDLL_GraphKeyDown( void );
-extern struct kbutton_s *ClientDLL_FindKey( const char *name );
-extern void ClientDLL_CAM_Think( void );
-extern void ClientDLL_IN_Accumulate( void );
-extern void ClientDLL_CalcRefdef( struct ref_params_s *pparams );
-extern int ClientDLL_AddEntity( int type, struct cl_entity_s *ent );
-extern void ClientDLL_CreateEntities( void );
+void ClientDLL_CreateMove( float frametime, struct usercmd_s *cmd, int active );
+void ClientDLL_ActivateMouse( void );
+void ClientDLL_DeactivateMouse( void );
+void ClientDLL_MouseEvent( int mstate );
+void ClientDLL_ClearStates( void );
+int ClientDLL_IsThirdPerson( void );
+void ClientDLL_GetCameraOffsets( float *ofs );
+int ClientDLL_GraphKeyDown( void );
+struct kbutton_s *ClientDLL_FindKey( const char *name );
+void ClientDLL_CAM_Think( void );
+void ClientDLL_IN_Accumulate( void );
+void ClientDLL_CalcRefdef( struct ref_params_s *pparams );
+int ClientDLL_AddEntity( int type, struct cl_entity_s *ent );
+void ClientDLL_CreateEntities( void );
 
-extern void ClientDLL_DrawNormalTriangles( void );
-extern void ClientDLL_DrawTransparentTriangles( void );
-extern void ClientDLL_StudioEvent( const struct mstudioevent_s *event, const struct cl_entity_s *entity );
-extern void ClientDLL_PostRunCmd( struct local_state_s *from, struct local_state_s *to, struct usercmd_s *cmd, int runfuncs, double time, unsigned int random_seed );
-extern void ClientDLL_TxferLocalOverrides( struct entity_state_s *state, const struct clientdata_s *client );
-extern void ClientDLL_ProcessPlayerState( struct entity_state_s *dst, const struct entity_state_s *src );
-extern void ClientDLL_TxferPredictionData ( struct entity_state_s *ps, const struct entity_state_s *pps, struct clientdata_s *pcd, const struct clientdata_s *ppcd, struct weapon_data_s *wd, const struct weapon_data_s *pwd );
-extern void ClientDLL_ReadDemoBuffer( int size, unsigned char *buffer );
-extern int ClientDLL_ConnectionlessPacket( const struct netadr_s *net_from, const char *args, char *response_buffer, int *response_buffer_size );
-extern int ClientDLL_GetHullBounds( int hullnumber, float *mins, float *maxs );
+void ClientDLL_DrawNormalTriangles( void );
+void ClientDLL_DrawTransparentTriangles( void );
+void ClientDLL_StudioEvent( const struct mstudioevent_s *event, const struct cl_entity_s *entity );
+void ClientDLL_PostRunCmd( struct local_state_s *from, struct local_state_s *to, struct usercmd_s *cmd, int runfuncs, double time, unsigned int random_seed );
+void ClientDLL_TxferLocalOverrides( struct entity_state_s *state, const struct clientdata_s *client );
+void ClientDLL_ProcessPlayerState( struct entity_state_s *dst, const struct entity_state_s *src );
+void ClientDLL_TxferPredictionData ( struct entity_state_s *ps, const struct entity_state_s *pps, struct clientdata_s *pcd, const struct clientdata_s *ppcd, struct weapon_data_s *wd, const struct weapon_data_s *pwd );
+void ClientDLL_ReadDemoBuffer( int size, unsigned char *buffer );
+int ClientDLL_ConnectionlessPacket( const struct netadr_s *net_from, const char *args, char *response_buffer, int *response_buffer_size );
+int ClientDLL_GetHullBounds( int hullnumber, float *mins, float *maxs );
 
-extern void ClientDLL_VGui_ConsolePrint(const char* text);
+void ClientDLL_VGui_ConsolePrint(const char* text);
 
-extern int ClientDLL_Key_Event( int down, int keynum, const char *pszCurrentBinding );
-extern void ClientDLL_TempEntUpdate( double ft, double ct, double grav, struct tempent_s **ppFreeTE, struct tempent_s **ppActiveTE, int ( *addTEntity )( struct cl_entity_s *pEntity ), void ( *playTESound )( struct tempent_s *pTemp, float damp ) );
-extern struct cl_entity_s *ClientDLL_GetUserEntity( int index );
-extern void ClientDLL_VoiceStatus(int entindex, qboolean bTalking);
-extern void ClientDLL_DirectorMessage( int iSize, void *pbuf );
-extern void ClientDLL_ChatInputPosition( int *x, int *y );
+int ClientDLL_Key_Event( int down, int keynum, const char *pszCurrentBinding );
+void ClientDLL_TempEntUpdate( double ft, double ct, double grav, struct tempent_s **ppFreeTE, struct tempent_s **ppActiveTE, int ( *addTEntity )( struct cl_entity_s *pEntity ), void ( *playTESound )( struct tempent_s *pTemp, float damp ) );
+struct cl_entity_s *ClientDLL_GetUserEntity( int index );
+void ClientDLL_VoiceStatus(int entindex, qboolean bTalking);
+void ClientDLL_DirectorMessage( int iSize, void *pbuf );
+void ClientDLL_ChatInputPosition( int *x, int *y );
 
 //#include "server.h" // server_static_t define for apiproxy
 #include "APIProxy.h"
@@ -284,7 +284,7 @@ extern module_t	g_module;
 #define RecEngDraw_FillRGBABlend(a, b, c, d, e, f, g, h)		(g_engdstAddrs.pfnFillRGBABlend(&a, &b, &c, &d, &e, &f, &g, &h))
 
 // Dummy destination function for use when there's no security module
-extern void NullDst(void);
+void NullDst(void);
 
 // Use this to init an engdst structure to point to NullDst
 #define k_engdstNull \

@@ -46,7 +46,7 @@ extern int cam_thirdperson;
 #define SQUELCHOSCILLATE_PER_SECOND	2.0f
 
 
-extern BitmapTGA *LoadTGA( const char* pImageName );
+BitmapTGA *LoadTGA( const char* pImageName );
 
 
 

@@ -27,7 +27,7 @@
 #include	"game.h"
 #include "UserMessages.h"
 
-extern edict_t *EntSelectSpawnPoint( CBaseEntity *pPlayer );
+edict_t *EntSelectSpawnPoint( CBaseEntity *pPlayer );
 
 DLL_GLOBAL CGameRules*	g_pGameRules = NULL;
 extern DLL_GLOBAL BOOL	g_fGameOver;

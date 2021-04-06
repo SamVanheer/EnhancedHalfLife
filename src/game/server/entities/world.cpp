@@ -41,7 +41,7 @@ extern CBaseEntity				*g_pLastSpawn;
 DLL_GLOBAL edict_t				*g_pBodyQueueHead;
 extern DLL_GLOBAL	int			gDisplayTitle;
 
-extern void W_Precache();
+void W_Precache();
 
 /*
 ==============================================================================

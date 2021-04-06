@@ -159,7 +159,7 @@ public:
 	virtual void EndMultiplayerGame() {}
 };
 
-extern CGameRules *InstallGameRules();
+CGameRules *InstallGameRules();
 
 
 //=========================================================

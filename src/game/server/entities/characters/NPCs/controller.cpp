@@ -885,7 +885,7 @@ void CController :: RunAI()
 }
 
 
-extern void DrawRoute( entvars_t *pev, WayPoint_t *m_Route, int m_iRouteIndex, int r, int g, int b );
+void DrawRoute( entvars_t *pev, WayPoint_t *m_Route, int m_iRouteIndex, int r, int g, int b );
 
 void CController::Stop() 
 { 

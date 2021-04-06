@@ -53,8 +53,8 @@ extern DLL_GLOBAL int		g_iSkillLevel, gDisplayTitle;
 
 BOOL gInitHUD = TRUE;
 
-extern void CopyToBodyQue(entvars_t* pev);
-extern edict_t *EntSelectSpawnPoint( CBaseEntity *pPlayer );
+void CopyToBodyQue(entvars_t* pev);
+edict_t *EntSelectSpawnPoint( CBaseEntity *pPlayer );
 
 // the world node graph
 extern CGraph	WorldGraph;

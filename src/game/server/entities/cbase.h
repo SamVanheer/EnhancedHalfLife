@@ -53,13 +53,11 @@ CBaseEntity
 
 #include "Platform.h"
 
-// C functions for external declarations that call the appropriate C++ methods
-
 #define EXPORT DLLEXPORT
 
 typedef enum { USE_OFF = 0, USE_ON = 1, USE_SET = 2, USE_TOGGLE = 3 } USE_TYPE;
 
-extern void FireTargets( const char *targetName, CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+void FireTargets( const char *targetName, CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
 typedef void (CBaseEntity::*BASEPTR)();
 typedef void (CBaseEntity::*ENTITYFUNCPTR)(CBaseEntity *pOther );

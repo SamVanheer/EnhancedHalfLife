@@ -21,7 +21,7 @@
 #include "monsterevent.h"
 #endif
 
-extern int IsSoundEvent( int eventNumber );
+int IsSoundEvent( int eventNumber );
 
 int LookupActivity( void *pmodel, entvars_t *pev, int activity );
 int LookupActivityHeaviest( void *pmodel, entvars_t *pev, int activity );

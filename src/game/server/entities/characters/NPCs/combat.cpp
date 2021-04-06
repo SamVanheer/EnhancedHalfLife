@@ -33,7 +33,7 @@
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 extern DLL_GLOBAL int			g_iSkillLevel;
 
-extern Vector VecBModelOrigin( entvars_t* pevBModel );
+Vector VecBModelOrigin( entvars_t* pevBModel );
 extern entvars_t *g_pevLastInflictor;
 
 #define GERMAN_GIB_COUNT		4

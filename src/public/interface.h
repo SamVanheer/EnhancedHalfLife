@@ -120,13 +120,13 @@ extern "C"
 };
 
 
-extern CreateInterfaceFn	Sys_GetFactoryThis( void );
+CreateInterfaceFn	Sys_GetFactoryThis( void );
 
 
 //-----------------------------------------------------------------------------
 // UNDONE: This is obsolete, use the module load/unload/get instead!!!
 //-----------------------------------------------------------------------------
-extern CreateInterfaceFn	Sys_GetFactory( const char *pModuleName );
+CreateInterfaceFn	Sys_GetFactory( const char *pModuleName );
 
 
 // load/unload components
@@ -137,10 +137,10 @@ class CSysModule;
 // The factory for that module should be passed on to dependent components for
 // proper versioning.
 //-----------------------------------------------------------------------------
-extern CSysModule			*Sys_LoadModule( const char *pModuleName );
-extern void					Sys_UnloadModule( CSysModule *pModule );
+CSysModule			*Sys_LoadModule( const char *pModuleName );
+void					Sys_UnloadModule( CSysModule *pModule );
 
-extern CreateInterfaceFn	Sys_GetFactory( CSysModule *pModule );
+CreateInterfaceFn	Sys_GetFactory( CSysModule *pModule );
 
 
 #endif

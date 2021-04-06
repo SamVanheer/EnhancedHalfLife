@@ -49,7 +49,7 @@ extern DLL_GLOBAL BOOL		g_fGameOver;
 extern DLL_GLOBAL int		g_iSkillLevel;
 extern DLL_GLOBAL ULONG		g_ulFrameCount;
 
-extern void CopyToBodyQue(entvars_t* pev);
+void CopyToBodyQue(entvars_t* pev);
 extern int giPrecacheGrunt;
 
 extern cvar_t allow_spectators;
