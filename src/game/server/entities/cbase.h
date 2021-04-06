@@ -56,25 +56,6 @@ CBaseEntity
 
 #define EXPORT DLLEXPORT
 
-extern "C" DLLEXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion );
-extern "C" DLLEXPORT int GetEntityAPI2( DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion );
-extern "C" DLLEXPORT int GetNewDLLFunctions(NEW_DLL_FUNCTIONS * pFunctionTable, int* interfaceVersion);
-
-extern int DispatchSpawn( edict_t *pent );
-extern void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd );
-extern void DispatchTouch( edict_t *pentTouched, edict_t *pentOther );
-extern void DispatchUse( edict_t *pentUsed, edict_t *pentOther );
-extern void DispatchThink( edict_t *pent );
-extern void DispatchBlocked( edict_t *pentBlocked, edict_t *pentOther );
-extern void DispatchSave( edict_t *pent, SAVERESTOREDATA *pSaveData );
-extern int  DispatchRestore( edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity );
-extern void	DispatchObjectCollsionBox( edict_t *pent );
-extern void SaveWriteFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount );
-extern void SaveReadFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount );
-extern void SaveGlobalState( SAVERESTOREDATA *pSaveData );
-extern void RestoreGlobalState( SAVERESTOREDATA *pSaveData );
-extern void ResetGlobalState();
-
 typedef enum { USE_OFF = 0, USE_ON = 1, USE_SET = 2, USE_TOGGLE = 3 } USE_TYPE;
 
 extern void FireTargets( const char *targetName, CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );

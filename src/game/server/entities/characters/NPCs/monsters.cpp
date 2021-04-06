@@ -33,6 +33,7 @@
 #include "decals.h"
 #include "soundent.h"
 #include "gamerules.h"
+#include "dll_functions.hpp"
 
 #define MONSTER_CUT_CORNER_DIST		8 // 8 means the monster's bounding box is contained without the box of the node in WC
 

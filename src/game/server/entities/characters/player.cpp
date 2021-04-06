@@ -40,6 +40,7 @@
 #include "hltv.h"
 #include "UserMessages.h"
 #include "client.h"
+#include "dll_functions.hpp"
 
 // #define DUCKFIX
 

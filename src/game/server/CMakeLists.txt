@@ -152,10 +152,13 @@ target_sources(hl PRIVATE
 	gamerules/singleplay_gamerules.cpp
 	gamerules/teamplay_gamerules.cpp
 	gamerules/teamplay_gamerules.h
+	server_interface/dll_functions.cpp
+	server_interface/dll_functions.hpp
 	server_interface/enginecallback.h
 	server_interface/game.cpp
 	server_interface/game.h
-	server_interface/h_export.cpp
+	server_interface/server_interface.cpp
+	server_interface/server_interface.hpp
 	../../public/game/voice_common.h
 	../../public/math/mathlib.cpp
 	../../public/math/mathlib.h

@@ -26,6 +26,7 @@
 #include	"schedule.h"
 #include	"weapons.h"
 #include	"squadmonster.h"
+#include "dll_functions.hpp"
 
 //=========================================================
 // Monster's Anim Events Go Here
