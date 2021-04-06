@@ -100,9 +100,6 @@ typedef struct hud_player_info_s
 //#include "server.h" // server_static_t define for apiproxy
 #include "APIProxy.h"
 
-extern cldll_func_t	cl_funcs;
-extern cl_enginefunc_t cl_engsrcProxies;
-
 #ifdef __cplusplus
 }
 #endif
