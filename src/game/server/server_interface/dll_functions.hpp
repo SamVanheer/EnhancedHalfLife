@@ -16,6 +16,7 @@
 #pragma once
 
 #include "extdll.h"
+#include "server_int.hpp"
 
 int DispatchSpawn(edict_t* pent);
 void DispatchThink(edict_t* pent);

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "extdll.h"
+#include "dll_functions.hpp"
 
 /**
 *	@file

@@ -20,6 +20,7 @@ target_include_directories(hl PRIVATE
 	../pm_shared
 	../../public
 	../../public/engine
+	../../public/engine/server
 	../../public/game
 	../../public/game/server
 	../../public/math
@@ -166,7 +167,9 @@ target_sources(hl PRIVATE
 	server_interface/game.h
 	server_interface/server_interface.cpp
 	server_interface/server_interface.hpp
+	../../public/engine/server/sv_engine_int.hpp
 	../../public/game/voice_common.h
+	../../public/game/server/server_int.hpp
 	../../public/math/mathlib.cpp
 	../../public/math/mathlib.h
 	../../public/math/vector.h)

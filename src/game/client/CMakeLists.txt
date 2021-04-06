@@ -45,6 +45,7 @@ target_include_directories(client PRIVATE
 	../../public
 	../../public/engine
 	../../public/engine/client
+	../../public/engine/server
 	../../public/game
 	../../public/game/client
 	../../public/game/server

@@ -13,7 +13,6 @@
 *
 ****/
 #include "extdll.h"
-#include "eiface.h"
 #include "util.h"
 #include "game.h"
 
