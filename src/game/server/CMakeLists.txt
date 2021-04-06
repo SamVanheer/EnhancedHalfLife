@@ -34,8 +34,6 @@ target_compile_definitions(hl PRIVATE
 target_sources(hl PRIVATE
 	activity.h
 	activitymap.h
-	client.cpp
-	client.h
 	decals.cpp
 	decals.hpp
 	extdll.h
@@ -159,6 +157,8 @@ target_sources(hl PRIVATE
 	persistence/globalstate.hpp
 	persistence/saverestore.cpp
 	persistence/saverestore.hpp
+	server_interface/client.cpp
+	server_interface/client.h
 	server_interface/dll_functions.cpp
 	server_interface/dll_functions.hpp
 	server_interface/enginecallback.h
