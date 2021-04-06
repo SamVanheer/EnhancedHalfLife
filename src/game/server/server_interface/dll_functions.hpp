@@ -18,18 +18,24 @@
 #include "extdll.h"
 
 int DispatchSpawn(edict_t* pent);
-void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd);
-void DispatchTouch(edict_t* pentTouched, edict_t* pentOther);
-void DispatchUse(edict_t* pentUsed, edict_t* pentOther);
 void DispatchThink(edict_t* pent);
+void DispatchUse(edict_t* pentUsed, edict_t* pentOther);
+void DispatchTouch(edict_t* pentTouched, edict_t* pentOther);
 void DispatchBlocked(edict_t* pentBlocked, edict_t* pentOther);
+void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd);
 void DispatchSave(edict_t* pent, SAVERESTOREDATA* pSaveData);
 int  DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity);
 void DispatchObjectCollsionBox(edict_t* pent);
+
 void SaveWriteFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount);
 void SaveReadFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount);
+
 void SaveGlobalState(SAVERESTOREDATA* pSaveData);
 void RestoreGlobalState(SAVERESTOREDATA* pSaveData);
 void ResetGlobalState();
 
 void OnFreeEntPrivateData(edict_s* pEdict);
+
+extern BOOL gTouchDisabled;
+
+void SetObjectCollisionBox(entvars_t* pev);

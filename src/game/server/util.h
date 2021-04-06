@@ -523,3 +523,5 @@ float UTIL_SharedRandomFloat( unsigned int seed, float low, float high );
 float UTIL_WeaponTimeBase();
 
 CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe);
+
+void EntvarsKeyvalue(entvars_t* pev, KeyValueData* pkvd);

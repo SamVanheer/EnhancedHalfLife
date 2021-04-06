@@ -23,6 +23,7 @@
 #include	"nodes.h"
 #include	"animation.h"
 #include	"doors.h"
+#include "dll_functions.hpp"
 
 #if !defined ( _WIN32 )
 #include <sys/stat.h>
@@ -1580,7 +1581,6 @@ void CTestHull :: ShowBadNode()
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
-extern BOOL gTouchDisabled;
 void CTestHull::CallBuildNodeGraph()
 {
 	// TOUCH HACK -- Don't allow this entity to call anyone's "touch" function
