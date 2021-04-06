@@ -191,6 +191,7 @@ target_sources(client PRIVATE
 	../../public/studio_event.h
 	../../public/winsani_in.h
 	../../public/winsani_out.h
+	../../public/game/client/APIProxy.h
 	../../public/engine/com_model.h
 	../../public/engine/entity_state.h
 	../../public/engine/event_args.h
