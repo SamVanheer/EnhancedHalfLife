@@ -378,10 +378,10 @@ mstudioanim_t *CStudioModelRenderer::StudioGetAnim( model_t *m_pSubModel, mstudi
 		m_pSubModel->submodels = (dmodel_t *)paSequences;
 	}
 
-	if (!IEngineStudio.Cache_Check( (struct cache_user_s *)&(paSequences[pseqdesc->seqgroup])))
+	if (!IEngineStudio.Cache_Check( &(paSequences[pseqdesc->seqgroup])))
 	{
 		gEngfuncs.Con_DPrintf("loading %s\n", pseqgroup->name );
-		IEngineStudio.LoadCacheFile( pseqgroup->name, (struct cache_user_s *)&paSequences[pseqdesc->seqgroup] );
+		IEngineStudio.LoadCacheFile( pseqgroup->name, &paSequences[pseqdesc->seqgroup] );
 	}
 	return (mstudioanim_t *)((byte *)paSequences[pseqdesc->seqgroup].data + pseqdesc->animindex);
 }

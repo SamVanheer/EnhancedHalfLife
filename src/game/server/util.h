@@ -160,9 +160,8 @@ inline BOOL FStringNull(int iString)			{ return iString == iStringNull; }
 #define		BLOOD_COLOR_YELLOW	(BYTE)195
 #define		BLOOD_COLOR_GREEN	BLOOD_COLOR_YELLOW
 
-typedef enum 
+enum MONSTERSTATE
 {
-
 	MONSTERSTATE_NONE = 0,
 	MONSTERSTATE_IDLE,
 	MONSTERSTATE_COMBAT,
@@ -172,19 +171,18 @@ typedef enum
 	MONSTERSTATE_SCRIPT,
 	MONSTERSTATE_PLAYDEAD,
 	MONSTERSTATE_DEAD
-
-} MONSTERSTATE;
+};
 
 
 
 // Things that toggle (buttons/triggers/doors) need this
-typedef enum
+enum TOGGLE_STATE
 	{
 	TS_AT_TOP,
 	TS_AT_BOTTOM,
 	TS_GOING_UP,
 	TS_GOING_DOWN
-	} TOGGLE_STATE;
+	};
 
 // Misc useful
 inline BOOL FStrEq(const char*sz1, const char*sz2)
@@ -239,8 +237,8 @@ void			UTIL_ShowMessageAll		( const char *pString );
 void			UTIL_ScreenFadeAll		( const Vector &color, float fadeTime, float holdTime, int alpha, int flags );
 void			UTIL_ScreenFade			( CBaseEntity *pEntity, const Vector &color, float fadeTime, float fadeHold, int alpha, int flags );
 
-typedef enum { ignore_monsters=1, dont_ignore_monsters=0, missile=2 } IGNORE_MONSTERS;
-typedef enum { ignore_glass=1, dont_ignore_glass=0 } IGNORE_GLASS;
+enum IGNORE_MONSTERS { ignore_monsters=1, dont_ignore_monsters=0, missile=2 };
+enum IGNORE_GLASS { ignore_glass=1, dont_ignore_glass=0 };
 void			UTIL_TraceLine			(const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, edict_t *pentIgnore, TraceResult *ptr);
 void			UTIL_TraceLine			(const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, IGNORE_GLASS ignoreGlass, edict_t *pentIgnore, TraceResult *ptr);
 enum { point_hull=0, human_hull=1, large_hull=2, head_hull=3 };
@@ -303,7 +301,7 @@ void			UTIL_SayText( const char *pText, CBaseEntity *pEntity );
 void			UTIL_SayTextAll( const char *pText, CBaseEntity *pEntity );
 
 
-typedef struct hudtextparms_s
+struct hudtextparms_t
 {
 	float		x;
 	float		y;
@@ -315,7 +313,7 @@ typedef struct hudtextparms_s
 	float		holdTime;
 	float		fxTime;
 	int			channel;
-} hudtextparms_t;
+};
 
 // prints as transparent 'title' to the HUD
 void			UTIL_HudMessageAll( const hudtextparms_t &textparms, const char *pMessage );

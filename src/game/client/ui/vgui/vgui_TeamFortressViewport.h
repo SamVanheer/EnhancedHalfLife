@@ -814,7 +814,7 @@ public:
 class CMenuHandler_ToggleCvar : public ActionSignal
 {
 private:
-	struct cvar_s * m_cvar;
+	cvar_t* m_cvar;
 
 public:
 	CMenuHandler_ToggleCvar( char * cvarname )
@@ -1259,7 +1259,7 @@ public:
 class ToggleCommandButton : public CommandButton, public InputSignal
 {
 private:
-	struct cvar_s * m_cvar;
+	cvar_t* m_cvar;
 	CImageLabel *	pLabelOn;
 	CImageLabel *	pLabelOff;
 	
@@ -1342,7 +1342,7 @@ public:
 class SpectToggleButton : public CommandButton, public InputSignal
 {
 private:
-	struct cvar_s * m_cvar;
+	cvar_t* m_cvar;
 	CImageLabel *	pLabelOn; 
 
 public:
@@ -1430,7 +1430,7 @@ public:
 class SpectToggleButton : public ToggleCommandButton
 {
 private:
-	struct cvar_s * m_cvar;
+	cvar_t* m_cvar;
 	CImageLabel *	pLabelOn;
 	CImageLabel *	pLabelOff;
 	

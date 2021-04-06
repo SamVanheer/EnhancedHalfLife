@@ -24,11 +24,9 @@
 
 #include "event_flags.h"
 
-typedef struct event_info_s event_info_t;
-
 #include "event_args.h"
 
-struct event_info_s
+struct event_info_t
 {
 	unsigned short index;			  // 0 implies not in use
 
@@ -45,11 +43,9 @@ struct event_info_s
 
 };
 
-typedef struct event_state_s event_state_t;
-
-struct event_state_s
+struct event_state_t
 {
-	struct event_info_s ei[ MAX_EVENT_QUEUE ];
+	event_info_t ei[ MAX_EVENT_QUEUE ];
 };
 
 #if !defined( ENTITY_STATEH )

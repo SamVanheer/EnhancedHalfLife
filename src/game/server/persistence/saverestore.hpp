@@ -71,12 +71,12 @@ private:
 	void	BufferHeader( const char *pname, int size );
 };
 
-typedef struct 
+struct HEADER
 {
 	unsigned short		size;
 	unsigned short		token;
 	char				*pData;
-} HEADER;
+};
 
 class CRestore : public CSaveRestoreBuffer
 {

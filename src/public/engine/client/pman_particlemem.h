@@ -11,10 +11,10 @@ class CCoreTriangleEffect;
 
 #define TRIANGLE_FPS 30
 
-typedef struct visibleparticles_s
+struct visibleparticles_t
 {
 	CCoreTriangleEffect *pVisibleParticle;
-} visibleparticles_t;
+};
 
 //---------------------------------------------------------------------------
 // Memory block record.

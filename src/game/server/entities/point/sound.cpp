@@ -38,7 +38,7 @@ static char *memfgets( byte *pMemFile, int fileSize, int &filePos, char *pBuffer
 
 // NOTE: IF YOU CHANGE THIS STRUCT YOU MUST CHANGE THE SAVE/RESTORE VERSION NUMBER
 // SEE BELOW (in the typedescription for the class)
-typedef struct dynpitchvol
+struct dynpitchvol_t
 {
 	// NOTE: do not change the order of these parameters 
 	// NOTE: unless you also change order of rgdpvpreset array elements!
@@ -80,7 +80,7 @@ typedef struct dynpitchvol
 	int	lfomult;
 
 
-} dynpitchvol_t;
+};
 
 #define CDPVPRESETMAX 27
 
@@ -995,13 +995,13 @@ void CEnvSound :: Spawn( )
 
 // group of related sentences
 
-typedef struct sentenceg
+struct SENTENCEG
 {
 	char szgroupname[CBSENTENCENAME_MAX];
 	int count;
 	unsigned char rgblru[CSENTENCE_LRU_MAX];
 
-} SENTENCEG;
+};
 
 #define CSENTENCEG_MAX 200					// max number of sentence groups
 // globals

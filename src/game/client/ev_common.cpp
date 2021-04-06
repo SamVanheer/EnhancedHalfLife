@@ -33,7 +33,7 @@ GetEntity
 Return's the requested cl_entity_t
 =================
 */
-struct cl_entity_s *GetEntity( int idx )
+cl_entity_t* GetEntity( int idx )
 {
 	return gEngfuncs.GetEntityByIndex( idx );
 }
@@ -45,7 +45,7 @@ GetViewEntity
 Return's the current weapon/view model
 =================
 */
-struct cl_entity_s *GetViewEntity()
+cl_entity_t* GetViewEntity()
 {
 	return gEngfuncs.GetViewModel();
 }

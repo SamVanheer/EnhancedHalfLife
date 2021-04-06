@@ -16,8 +16,7 @@
 #pragma once
 
 class CBaseEntity;
-
-using edict_t = struct edict_s;
+struct edict_t;
 
 //
 // EHANDLE. Safe way to point to CBaseEntities who may die between frames

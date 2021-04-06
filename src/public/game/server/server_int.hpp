@@ -19,11 +19,18 @@
 #include <stdio.h>
 #include "custom.h"
 
+struct clientdata_t;
+struct entity_state_t;
+struct netadr_t;
+struct playermove_t;
+struct usercmd_t;
+struct weapon_data_t;
+
 #define INTERFACE_VERSION		140
 
 // ONLY ADD NEW FUNCTIONS TO THE END OF THIS STRUCT.  INTERFACE VERSION IS FROZEN AT 138
 
-typedef struct
+struct DLL_FUNCTIONS
 {
 	// Initialize/shutdown the game (one-time call after loading of game .dll )
 	void			(*pfnGameInit)			();
@@ -76,22 +83,22 @@ typedef struct
 	// Notify game .dll that engine is going to shut down.  Allows mod authors to set a breakpoint.
 	void			(*pfnSys_Error)			(const char* error_string);
 
-	void			(*pfnPM_Move) (struct playermove_s* ppmove, qboolean server);
-	void			(*pfnPM_Init) (struct playermove_s* ppmove);
+	void			(*pfnPM_Move) (playermove_t* ppmove, qboolean server);
+	void			(*pfnPM_Init) (playermove_t* ppmove);
 	char			(*pfnPM_FindTextureType)(char* name);
-	void			(*pfnSetupVisibility)(struct edict_s* pViewEntity, struct edict_s* pClient, unsigned char** pvs, unsigned char** pas);
-	void			(*pfnUpdateClientData) (const struct edict_s* ent, int sendweapons, struct clientdata_s* cd);
-	int				(*pfnAddToFullPack)(struct entity_state_s* state, int e, edict_t* ent, edict_t* host, int hostflags, int player, unsigned char* pSet);
-	void			(*pfnCreateBaseline) (int player, int eindex, struct entity_state_s* baseline, struct edict_s* entity, int playermodelindex, Vector* player_mins, Vector* player_maxs);
+	void			(*pfnSetupVisibility)(edict_t* pViewEntity, edict_t* pClient, unsigned char** pvs, unsigned char** pas);
+	void			(*pfnUpdateClientData) (const edict_t* ent, int sendweapons, clientdata_t* cd);
+	int				(*pfnAddToFullPack)(entity_state_t* state, int e, edict_t* ent, edict_t* host, int hostflags, int player, unsigned char* pSet);
+	void			(*pfnCreateBaseline) (int player, int eindex, entity_state_t* baseline, edict_t* entity, int playermodelindex, Vector* player_mins, Vector* player_maxs);
 	void			(*pfnRegisterEncoders)	();
-	int				(*pfnGetWeaponData)		(struct edict_s* player, struct weapon_data_s* info);
+	int				(*pfnGetWeaponData)		(edict_t* player, weapon_data_t* info);
 
-	void			(*pfnCmdStart)			(const edict_t* player, const struct usercmd_s* cmd, unsigned int random_seed);
+	void			(*pfnCmdStart)			(const edict_t* player, const usercmd_t* cmd, unsigned int random_seed);
 	void			(*pfnCmdEnd)			(const edict_t* player);
 
 	// Return 1 if the packet is valid.  Set response_buffer_size if you want to send a response packet.  Incoming, it holds the max
 	//  size of the response_buffer, so you must zero it out if you choose not to respond.
-	int				(*pfnConnectionlessPacket)	(const struct netadr_s* net_from, const char* args, char* response_buffer, int* response_buffer_size);
+	int				(*pfnConnectionlessPacket)	(const netadr_t* net_from, const char* args, char* response_buffer, int* response_buffer_size);
 
 	// Enumerates player hulls.  Returns 0 if the hull number doesn't exist, 1 otherwise
 	int				(*pfnGetHullBounds)	(int hullnumber, float* mins, float* maxs);
@@ -101,21 +108,21 @@ typedef struct
 
 	// One of the pfnForceUnmodified files failed the consistency check for the specified player
 	// Return 0 to allow the client to continue, 1 to force immediate disconnection ( with an optional disconnect message of up to 256 characters )
-	int				(*pfnInconsistentFile)(const struct edict_s* player, const char* filename, char* disconnect_message);
+	int				(*pfnInconsistentFile)(const edict_t* player, const char* filename, char* disconnect_message);
 
 	// The game .dll should return 1 if lag compensation should be allowed ( could also just set
 	//  the sv_unlag cvar.
 	// Most games right now should return 0, until client-side weapon prediction code is written
 	//  and tested for them.
 	int				(*pfnAllowLagCompensation)();
-} DLL_FUNCTIONS;
+};
 
 extern DLL_FUNCTIONS		gEntityInterface;
 
 // Current version.
 #define NEW_DLL_FUNCTIONS_VERSION	1
 
-typedef struct
+struct NEW_DLL_FUNCTIONS
 {
 	// Called right before the object's memory is freed. 
 	// Calls its destructor.
@@ -124,7 +131,8 @@ typedef struct
 	int				(*pfnShouldCollide)(edict_t* pentTouched, edict_t* pentOther);
 	void			(*pfnCvarValue)(const edict_t* pEnt, const char* value);
 	void			(*pfnCvarValue2)(const edict_t* pEnt, int requestID, const char* cvarName, const char* value);
-} NEW_DLL_FUNCTIONS;
+};
+
 typedef int	(*NEW_DLL_FUNCTIONS_FN)(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion);
 
 // Pointers will be null if the game DLL doesn't support this API.

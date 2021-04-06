@@ -22,13 +22,14 @@
 #include "effects.h"
 #include "customentity.h"
 
-typedef struct 
+//TODO: used?
+struct t_ospreygrunt
 {
 	int isValid;
 	EHANDLE hGrunt;
 	Vector	vecOrigin;
 	Vector  vecAngles;
-} t_ospreygrunt;
+};
 
 
 

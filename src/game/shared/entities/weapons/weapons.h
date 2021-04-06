@@ -27,7 +27,7 @@ class CGrenade : public CBaseMonster
 public:
 	void Spawn() override;
 
-	typedef enum { SATCHEL_DETONATE = 0, SATCHEL_RELEASE } SATCHELCODE;
+	enum SATCHELCODE { SATCHEL_DETONATE = 0, SATCHEL_RELEASE };
 
 	static CGrenade *ShootTimed( entvars_t *pevOwner, Vector vecStart, Vector vecVelocity, float time );
 	static CGrenade *ShootContact( entvars_t *pevOwner, Vector vecStart, Vector vecVelocity );
@@ -170,7 +170,7 @@ public:
 #define AMMO_SNARKBOX_GIVE		5
 
 // bullet types
-typedef	enum
+enum Bullet
 {
 	BULLET_NONE = 0,
 	BULLET_PLAYER_9MM, // glock
@@ -182,7 +182,7 @@ typedef	enum
 	BULLET_MONSTER_9MM,
 	BULLET_MONSTER_MP5,
 	BULLET_MONSTER_12MM,
-} Bullet;
+};
 
 
 #define ITEM_FLAG_SELECTONEMPTY		1
@@ -193,7 +193,7 @@ typedef	enum
 
 #define WEAPON_IS_ONTARGET 0x40
 
-typedef struct
+struct ItemInfo
 {
 	int		iSlot;
 	int		iPosition;
@@ -206,13 +206,13 @@ typedef struct
 	int		iId;
 	int		iFlags;
 	int		iWeight;// this value used to determine this weapon's importance in autoselection.
-} ItemInfo;
+};
 
-typedef struct
+struct AmmoInfo
 {
 	const char *pszName;
 	int iId;
-} AmmoInfo;
+};
 
 extern int giAmmoIndex;
 
@@ -396,12 +396,12 @@ void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage);
 int DamageDecal( CBaseEntity *pEntity, int bitsDamageType );
 void RadiusDamage( Vector vecSrc, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, float flRadius, int iClassIgnore, int bitsDamageType );
 
-typedef struct 
+struct MULTIDAMAGE
 {
 	CBaseEntity		*pEntity;
 	float			amount;
 	int				type;
-} MULTIDAMAGE;
+};
 
 extern MULTIDAMAGE gMultiDamage;
 

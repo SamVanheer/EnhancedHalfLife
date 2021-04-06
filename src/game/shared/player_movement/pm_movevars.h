@@ -10,9 +10,8 @@
 #define PM_MOVEVARSH
 
 // movevars_t                  // Physics variables.
-typedef struct movevars_s movevars_t;
 
-struct movevars_s
+struct movevars_t
 {
 	float	gravity;           // Gravity for map
 	float	stopspeed;         // Deceleration when not moving

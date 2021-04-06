@@ -20,8 +20,10 @@
 #define PM_SHAREDH
 #pragma once
 
-void PM_Init( struct playermove_s *ppmove );
-void PM_Move ( struct playermove_s *ppmove, int server );
+struct playermove_t;
+
+void PM_Init(playermove_t* ppmove );
+void PM_Move (playermove_t* ppmove, int server );
 char PM_FindTextureType( char *name );
 
 // Spectator Movement modes (stored in pev->iuser1, so the physics code can get at them)

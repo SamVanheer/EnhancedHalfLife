@@ -37,7 +37,7 @@ typedef	int	fixed16_t;
 #define M_PI		3.14159265358979323846	// matches value in gcc v2 math.h
 #endif
 
-struct mplane_s;
+struct mplane_t;
 
 constexpr Vector vec3_origin(0, 0, 0);
 constexpr Vector g_vecZero(0, 0, 0);
@@ -66,11 +66,12 @@ void R_ConcatTransforms (float in1[3][4], float in2[3][4], float out[3][4]);
 // Here are some "manual" INLINE routines for doing floating point to integer conversions
 extern short new_cw, old_cw;
 
-typedef union DLONG {
+union DLONG
+{
 	int		i[2];
 	double	d;
 	float	f;
-	} DLONG;
+};
 
 extern DLONG	dlong;
 
@@ -131,7 +132,7 @@ void VectorAngles( const float* forward, float* angles );
 
 int InvertMatrix( const float * m, float *out );
 
-int BoxOnPlaneSide (const Vector& emins, const Vector& emaxs, struct mplane_s *plane);
+int BoxOnPlaneSide (const Vector& emins, const Vector& emaxs, mplane_t *plane);
 float	anglemod(float a);
 
 

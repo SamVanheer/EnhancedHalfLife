@@ -1158,11 +1158,11 @@ float already_chosen_map;
 
 #ifndef TF_DEFS_ONLY
 
-typedef struct
+struct team_color_t
 {
 	int topColor;
 	int bottomColor;
-} team_color_t;
+};
 
 
 /*==================================================*/
@@ -1229,11 +1229,11 @@ extern BOOL g_bFirstClient;
 
 extern float g_fNextPrematchAlert;
 
-typedef struct
+struct ip_storage_t
 {
 	int			ip;
 	edict_t	*pEdict;
-} ip_storage_t;
+};
 
 extern ip_storage_t g_IpStorage[32];
 

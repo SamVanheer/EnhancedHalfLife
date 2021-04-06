@@ -439,7 +439,7 @@ void SaveReadFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseDa
 	restoreHelper.ReadFields(pname, pBaseData, pFields, fieldCount);
 }
 
-void OnFreeEntPrivateData(edict_s* pEdict)
+void OnFreeEntPrivateData(edict_t* pEdict)
 {
 	if (pEdict && pEdict->pvPrivateData)
 	{

@@ -26,13 +26,13 @@
 #define FCVAR_UNLOGGED		(1<<8)  // If this is a FCVAR_SERVER, don't log changes to the log file / console if we are creating a log
 #define FCVAR_NOEXTRAWHITEPACE	(1<<9)  // strip trailing/leading white space from this cvar
 
-typedef struct cvar_s
+struct cvar_t
 {
 	const char	*name;
 	//Technically this should be non-const but that only matters to engine code
 	const char	*string;
 	int		flags;
 	float	value;
-	struct cvar_s *next;
-} cvar_t;
+	cvar_t* next;
+};
 #endif

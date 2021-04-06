@@ -1422,7 +1422,7 @@ void CHudSpectator::DrawOverviewLayer()
 	int ix,iy,i,xTiles,yTiles,frame;
 
 	qboolean	hasMapImage = m_MapSprite?TRUE:FALSE;
-	model_t *   dummySprite = (struct model_s *)gEngfuncs.GetSpritePointer( m_hsprUnkownMap);
+	model_t *   dummySprite = (model_t*) gEngfuncs.GetSpritePointer( m_hsprUnkownMap);
 
 	if ( hasMapImage)
 	{
@@ -1545,7 +1545,7 @@ void CHudSpectator::DrawOverviewLayer()
 void CHudSpectator::DrawOverviewEntities()
 {
 	int				i,ir,ig,ib;
-	struct model_s *hSpriteModel;
+	model_t* hSpriteModel;
 	Vector			origin, angles, point, forward, right, left, up, world, screen, offset;
 	float			x,y,z, r,g,b, sizeScale = 4.0f;
 	cl_entity_t *	ent;
@@ -1572,7 +1572,7 @@ void CHudSpectator::DrawOverviewEntities()
 		if ( !m_OverviewEntities[i].hSprite )
 			continue;
 
-		hSpriteModel = (struct model_s *)gEngfuncs.GetSpritePointer( m_OverviewEntities[i].hSprite );
+		hSpriteModel = (model_t*) gEngfuncs.GetSpritePointer( m_OverviewEntities[i].hSprite );
 		ent = m_OverviewEntities[i].entity;
 		
 		gEngfuncs.pTriAPI->SpriteTexture( hSpriteModel, 0 );
@@ -1624,7 +1624,7 @@ void CHudSpectator::DrawOverviewEntities()
 
 		gEngfuncs.pTriAPI->RenderMode( kRenderTransAdd );
 		
-		hSpriteModel = (struct model_s *)gEngfuncs.GetSpritePointer( m_hsprBeam );
+		hSpriteModel = (model_t*) gEngfuncs.GetSpritePointer( m_hsprBeam );
 		gEngfuncs.pTriAPI->SpriteTexture( hSpriteModel, 0 );
 		
 		gEngfuncs.pTriAPI->Color4f(r, g, b, 0.3);
@@ -1708,7 +1708,7 @@ void CHudSpectator::DrawOverviewEntities()
 
 	angles[0] = 0; // always show horizontal camera sprite
 
-	hSpriteModel = (struct model_s *)gEngfuncs.GetSpritePointer( m_hsprCamera );
+	hSpriteModel = (model_t*) gEngfuncs.GetSpritePointer( m_hsprCamera );
 	gEngfuncs.pTriAPI->RenderMode( kRenderTransAdd );
 	gEngfuncs.pTriAPI->SpriteTexture( hSpriteModel, 0 );
 	
@@ -1776,7 +1776,7 @@ void CHudSpectator::CheckOverviewEntities()
 	}
 }
 
-bool CHudSpectator::AddOverviewEntity( int type, struct cl_entity_s *ent, const char *modelname)
+bool CHudSpectator::AddOverviewEntity( int type, cl_entity_t* ent, const char *modelname)
 {
 	HSPRITE	hSprite = 0;
 	double  duration = -1.0f;	// duration -1 means show it only this frame;

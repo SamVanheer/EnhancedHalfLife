@@ -1172,20 +1172,20 @@ void CHalfLifeMultiplay :: GoToIntermission()
 
 #define MAX_RULE_BUFFER 1024
 
-typedef struct mapcycle_item_s
+struct mapcycle_item_t
 {
-	struct mapcycle_item_s *next;
+	mapcycle_item_t* next;
 
 	char mapname[ 32 ];
 	int  minplayers, maxplayers;
 	char rulebuffer[ MAX_RULE_BUFFER ];
-} mapcycle_item_t;
+};
 
-typedef struct mapcycle_s
+struct mapcycle_t
 {
-	struct mapcycle_item_s *items;
-	struct mapcycle_item_s *next_item;
-} mapcycle_t;
+	mapcycle_item_t* items;
+	mapcycle_item_t* next_item;
+};
 
 /*
 ==============
@@ -1335,7 +1335,7 @@ int ReloadMapCycleFile( char *filename, mapcycle_t *cycle )
 	char *pFileList;
 	char *aFileList = pFileList = (char*)LOAD_FILE_FOR_ME( filename, &length );
 	int hasbuffer;
-	mapcycle_item_s *item, *newlist = NULL, *next;
+	mapcycle_item_t *item, *newlist = NULL, *next;
 
 	if ( pFileList && length )
 	{
@@ -1368,7 +1368,7 @@ int ReloadMapCycleFile( char *filename, mapcycle_t *cycle )
 				// Create entry
 				char *s;
 
-				item = new mapcycle_item_s;
+				item = new mapcycle_item_t;
 
 				strcpy( item->mapname, szMap );
 
@@ -1574,7 +1574,7 @@ void CHalfLifeMultiplay :: ChangeLevel()
 	{
 		BOOL keeplooking = FALSE;
 		BOOL found = FALSE;
-		mapcycle_item_s *item;
+		mapcycle_item_t *item;
 
 		// Assume current map
 		strcpy( szNextMap, STRING(gpGlobals->mapname) );

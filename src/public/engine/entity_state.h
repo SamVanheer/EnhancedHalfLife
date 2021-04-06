@@ -24,9 +24,7 @@
 
 // Entity state is used for the baseline and for delta compression of a packet of 
 //  entities that is sent to a client.
-typedef struct entity_state_s entity_state_t;
-
-struct entity_state_s
+struct entity_state_t
 {
 // Fields which are filled in by routines outside of delta compression
 	int			entityType;
@@ -124,7 +122,7 @@ struct entity_state_s
 
 #include "pm_info.h"
 
-typedef struct clientdata_s
+struct clientdata_t
 {
 	Vector				origin;
 	Vector				velocity;
@@ -179,15 +177,15 @@ typedef struct clientdata_s
 	Vector				vuser2;
 	Vector				vuser3;
 	Vector				vuser4;
-} clientdata_t;
+};
 
 #include "weaponinfo.h"
 
-typedef struct local_state_s
+struct local_state_t
 {
 	entity_state_t playerstate;
 	clientdata_t   client;
 	weapon_data_t  weapondata[ 64 ];
-} local_state_t;
+};
 
 #endif // !ENTITY_STATEH

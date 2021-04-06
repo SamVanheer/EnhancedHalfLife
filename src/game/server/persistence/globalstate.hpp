@@ -15,11 +15,9 @@
 
 #pragma once
 
-typedef enum { GLOBAL_OFF = 0, GLOBAL_ON = 1, GLOBAL_DEAD = 2 } GLOBALESTATE;
+enum GLOBALESTATE { GLOBAL_OFF = 0, GLOBAL_ON = 1, GLOBAL_DEAD = 2 };
 
-typedef struct globalentity_s globalentity_t;
-
-struct globalentity_s
+struct globalentity_t
 {
 	char			name[64];
 	char			levelName[32];

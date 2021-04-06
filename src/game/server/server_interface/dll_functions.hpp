@@ -35,7 +35,7 @@ void SaveGlobalState(SAVERESTOREDATA* pSaveData);
 void RestoreGlobalState(SAVERESTOREDATA* pSaveData);
 void ResetGlobalState();
 
-void OnFreeEntPrivateData(edict_s* pEdict);
+void OnFreeEntPrivateData(edict_t* pEdict);
 
 extern BOOL gTouchDisabled;
 

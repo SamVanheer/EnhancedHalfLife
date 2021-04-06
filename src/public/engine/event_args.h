@@ -24,7 +24,7 @@
 // Event was invoked with stated angles
 #define FEVENT_ANGLES	( 1<<1 )
 
-typedef struct event_args_s
+struct event_args_t
 {
 	int		flags;
 
@@ -45,6 +45,6 @@ typedef struct event_args_s
 
 	int		bparam1;
 	int		bparam2;
-} event_args_t;
+};
 
 #endif

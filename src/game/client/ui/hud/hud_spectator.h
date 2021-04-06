@@ -12,6 +12,8 @@
 #include "cl_entity.h"
 #include "interpolation.h"
 
+struct cl_entity_t;
+struct model_t;
 
 #define INSET_OFF				0
 #define	INSET_CHASE_FREE		1
@@ -31,7 +33,8 @@ void NormalizeAngles( float* angles );
 // Purpose: Handles the drawing of the spectator stuff (camera & top-down map and all the things on it )
 //-----------------------------------------------------------------------------
 
-typedef struct overviewInfo_s {
+struct overviewInfo_t
+{
 	char		map[64];	// cl.levelname or empty
 	Vector		origin;		// center of map
 	float		zoom;		// zoom of map images
@@ -39,28 +42,29 @@ typedef struct overviewInfo_s {
 	float		layersHeights[OVERVIEW_MAX_LAYERS];
 	char		layersImages[OVERVIEW_MAX_LAYERS][255];
 	qboolean	rotated;	// are map images rotated (90 degrees) ?
-	
+
 	int			insetWindowX;
 	int			insetWindowY;
 	int			insetWindowHeight;
 	int			insetWindowWidth;
-} overviewInfo_t;
+};
 
-typedef struct overviewEntity_s {
+struct overviewEntity_t
+{
 
 	HSPRITE					hSprite;
-	struct cl_entity_s *	entity;
+	cl_entity_t*			entity;
 	double					killTime;
-} overviewEntity_t;
+};
 
-typedef struct cameraWayPoint_s 
+struct cameraWayPoint_t
 {
 	float	time;
 	Vector	position;
 	Vector	angle;
 	float	fov;
 	int		flags;
-} cameraWayPoint_t;
+};
 
 #define	 MAX_OVERVIEW_ENTITIES		128
 #define	 MAX_CAM_WAYPOINTS			32
@@ -74,7 +78,7 @@ public:
 	void InitHUDData() override;
 	bool AddOverviewEntityToList( HSPRITE sprite, cl_entity_t * ent, double killTime);
 	void DeathMessage(int victim);
-	bool AddOverviewEntity( int type, struct cl_entity_s *ent, const char *modelname );
+	bool AddOverviewEntity( int type, cl_entity_t* ent, const char *modelname );
 	void CheckOverviewEntities();
 	void DrawOverview();
 	void DrawOverviewEntities();
@@ -142,7 +146,7 @@ private:
 
 	wrect_t		m_crosshairRect;
 
-	struct model_s * m_MapSprite;	// each layer image is saved in one sprite, where each tile is a sprite frame
+	model_t* m_MapSprite;	// each layer image is saved in one sprite, where each tile is a sprite frame
 	float		m_flNextObserverInput;
 	float		m_FOV;
 	float		m_zoomDelta;

@@ -55,7 +55,7 @@ CBaseEntity
 
 #define EXPORT DLLEXPORT
 
-typedef enum { USE_OFF = 0, USE_ON = 1, USE_SET = 2, USE_TOGGLE = 3 } USE_TYPE;
+enum USE_TYPE { USE_OFF = 0, USE_ON = 1, USE_SET = 2, USE_TOGGLE = 3 };
 
 void FireTargets( const char *targetName, CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
@@ -359,7 +359,7 @@ private:
 };
 
 
-typedef struct locksounds			// sounds that doors and buttons make when locked/unlocked
+struct locksound_t			// sounds that doors and buttons make when locked/unlocked
 {
 	string_t	sLockedSound;		// sound a door makes when it's locked
 	string_t	sLockedSentence;	// sentence group played when door is locked
@@ -373,7 +373,7 @@ typedef struct locksounds			// sounds that doors and buttons make when locked/un
 	float	flwaitSentence;			// time delay between playing consecutive sentences
 	BYTE	bEOFLocked;				// true if hit end of list of locked sentences
 	BYTE	bEOFUnlocked;			// true if hit end of list of unlocked sentences
-} locksound_t;
+};
 
 void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton);
 
@@ -671,13 +671,14 @@ push_trigger_data
 
 #define TRACER_FREQ		4			// Tracers fire every 4 bullets
 
-typedef struct _SelAmmo
+//TODO: used?
+struct SelAmmo
 {
 	BYTE	Ammo1Type;
 	BYTE	Ammo1;
 	BYTE	Ammo2Type;
 	BYTE	Ammo2;
-} SelAmmo;
+};
 
 
 // this moved here from world.cpp, to allow classes to be derived from it

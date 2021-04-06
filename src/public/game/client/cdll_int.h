@@ -41,7 +41,7 @@ typedef int HSPRITE;	// handle to a graphic
 #define SCRINFO_SCREENFLASH 1
 #define SCRINFO_STRETCHED	2
 
-typedef struct SCREENINFO_s
+struct SCREENINFO
 {
 	int		iSize;
 	int		iWidth;
@@ -49,10 +49,10 @@ typedef struct SCREENINFO_s
 	int		iFlags;
 	int		iCharHeight;
 	short	charWidths[256];
-} SCREENINFO;
+};
 
 
-typedef struct client_data_s
+struct client_data_t
 {
 	// fields that cannot be modified  (ie. have no effect if changed)
 	Vector origin;
@@ -62,20 +62,20 @@ typedef struct client_data_s
 	int		iWeaponBits;
 //	int		iAccessoryBits;
 	float	fov;	// field of view
-} client_data_t;
+};
 
-typedef struct client_sprite_s
+struct client_sprite_t
 {
 	char szName[64];
 	char szSprite[64];
 	int hspr;
 	int iRes;
 	wrect_t rc;
-} client_sprite_t;
+};
 
 
 
-typedef struct hud_player_info_s
+struct hud_player_info_t
 {
 	char *name;
 	short ping;
@@ -89,7 +89,7 @@ typedef struct hud_player_info_s
 	short bottomcolor;
 
 	uint64 m_nSteamID;
-} hud_player_info_t;
+};
 
 #ifndef IN_BUTTONS_H
 #include "in_buttons.h"

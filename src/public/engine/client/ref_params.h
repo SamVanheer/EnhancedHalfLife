@@ -15,7 +15,10 @@
 #if !defined( REF_PARAMSH )
 #define REF_PARAMSH
 
-typedef struct ref_params_s
+struct movevars_t;
+struct usercmd_t;
+
+struct ref_params_t
 {
 	// Output
 	float	vieworg[3];
@@ -60,16 +63,16 @@ typedef struct ref_params_s
 	int		smoothing;
 
 	// Last issued usercmd
-	struct usercmd_s *cmd;
+	usercmd_t* cmd;
 
 	// Movevars
-	struct movevars_s *movevars;
+	movevars_t* movevars;
 
 	int		viewport[4];		// the viewport coordinates x ,y , width, height
 
 	int		nextView;			// the renderer calls ClientDLL_CalcRefdef() and Renderview
 								// so long in cycles until this value is 0 (multiple views)
 	int		onlyClientDraw;		// if !=0 nothing is drawn by the engine except clientDraw functions
-} ref_params_t;
+};
 
 #endif // !REF_PARAMSH

@@ -23,7 +23,7 @@
 	int CL_IsThirdPerson();
 	void CL_CameraOffset( float *ofs );
 
-	void DLLEXPORT V_CalcRefdef( struct ref_params_s *pparams );
+	void DLLEXPORT V_CalcRefdef( ref_params_t *pparams );
 
 	void PM_ParticleLine( float *start, float *end, int pcolor, float life, float vert);
 	int		PM_GetVisEntInfo( int ent );
@@ -159,7 +159,7 @@ void V_InterpolateAngles( float *start, float *end, float *output, float frac )
 } */
 
 // Quakeworld bob code, this fixes jitters in the mutliplayer since the clock (pparams->time) isn't quite linear
-float V_CalcBob ( struct ref_params_s *pparams )
+float V_CalcBob ( ref_params_t *pparams )
 {
 	static	double	bobtime;
 	static float	bob;
@@ -234,13 +234,13 @@ float V_CalcRoll (Vector angles, Vector velocity, float rollangle, float rollspe
 	return side * sign;
 }
 
-typedef struct pitchdrift_s
+struct pitchdrift_t
 {
 	float		pitchvel;
 	int			nodrift;
 	float		driftmove;
 	double		laststop;
-} pitchdrift_t;
+};
 
 static pitchdrift_t pd;
 
@@ -276,7 +276,7 @@ If the user is adjusting pitch manually, either with lookup/lookdown,
 mlook and mouse, or klook and keyboard, pitch drifting is constantly stopped.
 ===============
 */
-void V_DriftPitch ( struct ref_params_s *pparams )
+void V_DriftPitch ( ref_params_t* pparams )
 {
 	float		delta, move;
 
@@ -357,7 +357,7 @@ void V_DriftPitch ( struct ref_params_s *pparams )
 V_CalcGunAngle
 ==================
 */
-void V_CalcGunAngle ( struct ref_params_s *pparams )
+void V_CalcGunAngle ( ref_params_t* pparams )
 {	
 	cl_entity_t *viewent;
 	
@@ -384,7 +384,7 @@ V_AddIdle
 Idle swaying
 ==============
 */
-void V_AddIdle ( struct ref_params_s *pparams )
+void V_AddIdle (ref_params_t* pparams )
 {
 	pparams->viewangles[ROLL] += v_idlescale * sin(pparams->time*v_iroll_cycle.value) * v_iroll_level.value;
 	pparams->viewangles[PITCH] += v_idlescale * sin(pparams->time*v_ipitch_cycle.value) * v_ipitch_level.value;
@@ -399,7 +399,7 @@ V_CalcViewRoll
 Roll is induced by movement and damage
 ==============
 */
-void V_CalcViewRoll ( struct ref_params_s *pparams )
+void V_CalcViewRoll ( ref_params_t* pparams )
 {
 	float		side;
 	cl_entity_t *viewentity;
@@ -428,7 +428,7 @@ V_CalcIntermissionRefdef
 
 ==================
 */
-void V_CalcIntermissionRefdef ( struct ref_params_s *pparams )
+void V_CalcIntermissionRefdef ( ref_params_t* pparams )
 {
 	cl_entity_t	*ent, *view;
 	float		old;
@@ -467,7 +467,7 @@ void V_CalcIntermissionRefdef ( struct ref_params_s *pparams )
 #define ORIGIN_BACKUP 64
 #define ORIGIN_MASK ( ORIGIN_BACKUP - 1 )
 
-typedef struct 
+struct viewinterp_t
 {
 	float Origins[ ORIGIN_BACKUP ][3];
 	float OriginTime[ ORIGIN_BACKUP ];
@@ -477,7 +477,7 @@ typedef struct
 
 	int CurrentOrigin;
 	int CurrentAngle;
-} viewinterp_t;
+};
 
 /*
 ==================
@@ -485,7 +485,7 @@ V_CalcRefdef
 
 ==================
 */
-void V_CalcNormalRefdef ( struct ref_params_s *pparams )
+void V_CalcNormalRefdef ( ref_params_t* pparams )
 {
 	cl_entity_t		*ent, *view;
 	int				i;
@@ -1435,7 +1435,7 @@ int V_FindViewModelByWeaponModel(int weaponindex)
 		{ "models/p_satchel.mdl",		"models/v_satchel.mdl"		},
 		{ NULL, NULL } };
 
-	struct model_s * weaponModel = IEngineStudio.GetModelByIndex( weaponindex );
+	model_t * weaponModel = IEngineStudio.GetModelByIndex( weaponindex );
 
 	if ( weaponModel )
 	{
@@ -1465,7 +1465,7 @@ V_CalcSpectatorRefdef
 
 ==================
 */
-void V_CalcSpectatorRefdef ( struct ref_params_s * pparams )
+void V_CalcSpectatorRefdef ( ref_params_t* pparams )
 {
 	static Vector			velocity ( 0.0f, 0.0f, 0.0f);
 
@@ -1639,7 +1639,7 @@ void V_CalcSpectatorRefdef ( struct ref_params_s * pparams )
 
 
 
-void DLLEXPORT V_CalcRefdef( struct ref_params_s *pparams )
+void DLLEXPORT V_CalcRefdef( ref_params_t* pparams )
 {
 	// intermission / finale rendering
 	if ( pparams->intermission )

@@ -18,12 +18,12 @@
 #pragma once
 #endif
 
-typedef struct mstudioevent_s
+struct mstudioevent_t
 {
 	int 				frame;
 	int					event;
 	int					type;
 	char				options[64];
-} mstudioevent_t;
+};
 
 #endif // STUDIO_EVENTH

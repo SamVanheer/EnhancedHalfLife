@@ -35,14 +35,14 @@ public:
 
 	//Use this if you want to create a new particle without any overloaded functions, Think, Touch, etc.
 	//Just call this function, set the particle's behavior and let it rip.
-	virtual CBaseParticle *CreateParticle( Vector org, Vector normal, model_s * sprite, float size, float brightness, const char *classname  ) = 0;
+	virtual CBaseParticle *CreateParticle( Vector org, Vector normal, model_t * sprite, float size, float brightness, const char *classname  ) = 0;
 	
 	//Use this to take a block from the mempool for custom particles ( used in new ).
 	virtual char *RequestNewMemBlock( int iSize ) = 0; 
 
 	//These ones are used along a custom Create for new particles you want to override their behavior.
 	//You can call these whenever you want, but they are mainly used by CBaseParticle.
-	virtual void CoreInitializeSprite ( CCoreTriangleEffect *pParticle, Vector org, Vector normal, model_s *sprite, float size, float brightness ) = 0; //Only use this for TrianglePlanes
+	virtual void CoreInitializeSprite ( CCoreTriangleEffect *pParticle, Vector org, Vector normal, model_t *sprite, float size, float brightness ) = 0; //Only use this for TrianglePlanes
 	virtual void CoreThink( CCoreTriangleEffect *pParticle, float time ) = 0;
 	virtual void CoreDraw(  CCoreTriangleEffect *pParticle ) = 0;
 	virtual void CoreAnimate( CCoreTriangleEffect *pParticle, float time ) = 0;
@@ -80,7 +80,7 @@ public:
 	virtual void Force ( void ) { g_pParticleMan->CoreForce( this ); }
 	virtual bool CheckVisibility ( void ) { return g_pParticleMan->CoreCheckVisibility( this ); } 
 
-	virtual void InitializeSprite( Vector org, Vector normal, model_s *sprite, float size, float brightness )
+	virtual void InitializeSprite( Vector org, Vector normal, model_t *sprite, float size, float brightness )
 	{
 		g_pParticleMan->CoreInitializeSprite ( this, org, normal, sprite, size, brightness );
 	}

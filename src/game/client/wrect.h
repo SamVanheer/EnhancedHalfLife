@@ -8,9 +8,9 @@
 #if !defined( WRECTH )
 #define WRECTH
 
-typedef struct rect_s
+struct wrect_t
 {
 	int				left, right, top, bottom;
-} wrect_t;
+};
 
 #endif

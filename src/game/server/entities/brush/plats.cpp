@@ -1621,7 +1621,7 @@ void CFuncTrainControls :: Spawn()
 // train within these dimensions in order to operate when the train is near it.
 //
 
-typedef enum { TRAIN_SAFE, TRAIN_BLOCKING, TRAIN_FOLLOWING } TRAIN_CODE;
+enum TRAIN_CODE { TRAIN_SAFE, TRAIN_BLOCKING, TRAIN_FOLLOWING };
 
 class CFuncTrackChange : public CFuncPlatRot
 {

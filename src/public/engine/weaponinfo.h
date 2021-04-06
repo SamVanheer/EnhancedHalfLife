@@ -19,7 +19,7 @@
 #endif
 
 // Info about weapons player might have in his/her possession
-typedef struct weapon_data_s
+struct weapon_data_t
 {
 	int			m_iId;
 	int			m_iClip;
@@ -47,6 +47,6 @@ typedef struct weapon_data_s
 	float		fuser2;
 	float		fuser3;
 	float		fuser4;
-} weapon_data_t;
+};
 
 #endif

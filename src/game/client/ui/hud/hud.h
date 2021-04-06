@@ -40,17 +40,19 @@
 
 #define		HUDELEM_ACTIVE	1
 
-typedef struct {
+struct POSITION
+{
 	int x, y;
-} POSITION;
+};
 
 #include "global_consts.h"
 
-typedef struct {
+struct RGBA
+{
 	unsigned char r,g,b,a;
-} RGBA;
+};
 
-typedef struct cvar_s cvar_t;
+struct cvar_t;
 
 
 #define HUD_ACTIVE	1
@@ -293,8 +295,8 @@ friend class CHudSpectator;
 
 private:
 
-	struct cvar_s *	m_HUD_saytext;
-	struct cvar_s *	m_HUD_saytext_time;
+	cvar_t*	m_HUD_saytext;
+	cvar_t*	m_HUD_saytext_time;
 };
 
 //
@@ -445,13 +447,13 @@ public:
 
 private:
 
-	typedef struct
+	struct icon_sprite_t
 	{
 		char szSpriteName[MAX_ICONSPRITENAME_LENGTH];
 		HSPRITE spr;
 		wrect_t rc;
 		unsigned char r, g, b;
-	} icon_sprite_t;
+	};
 
 	icon_sprite_t m_IconList[MAX_ICONSPRITES];
 
@@ -507,7 +509,7 @@ private:
 	wrect_t *m_rgrcRects;	/*[HUD_SPRITE_COUNT]*/
 	char *m_rgszSpriteNames; /*[HUD_SPRITE_COUNT][MAX_SPRITE_NAME_LENGTH]*/
 
-	struct cvar_s *default_fov;
+	cvar_t* default_fov;
 public:
 	HSPRITE GetSprite( int index ) 
 	{

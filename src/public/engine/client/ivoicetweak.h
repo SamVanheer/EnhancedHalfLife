@@ -12,15 +12,15 @@
 #endif
 
 // These provide access to the voice controls.
-typedef enum
+enum VoiceTweakControl
 {
 	MicrophoneVolume=0,			// values 0-1.
 	OtherSpeakerScale,			// values 0-1. Scales how loud other players are.
 	MicBoost,					// 20 db gain to voice input
-} VoiceTweakControl;
+};
 
 
-typedef struct IVoiceTweak_s
+struct IVoiceTweak
 {
 	// These turn voice tweak mode on and off. While in voice tweak mode, the user's voice is echoed back
 	// without sending to the server. 
@@ -32,7 +32,7 @@ typedef struct IVoiceTweak_s
 	float			(*GetControlFloat)(VoiceTweakControl iControl);
 
     int             (*GetSpeakingVolume)();
-} IVoiceTweak;
+};
 
 
 #endif // IVOICETWEAK_H

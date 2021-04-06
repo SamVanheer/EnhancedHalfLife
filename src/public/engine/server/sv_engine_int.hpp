@@ -30,7 +30,12 @@
 #include "Sequence.h"
 #include "crc.h"
 
-typedef enum
+struct cvar_t;
+struct delta_t;
+struct entity_state_t;
+struct entvars_t;
+
+enum ALERT_TYPE
 {
 	at_notice,
 	at_console,		// same as at_notice, but forces a ConPrintf, not a message box
@@ -38,27 +43,27 @@ typedef enum
 	at_warning,
 	at_error,
 	at_logged		// Server print to console ( only in multiplayer games ).
-} ALERT_TYPE;
+};
 
 // 4-22-98  JOHN: added for use in pfnClientPrintf
-typedef enum
+enum PRINT_TYPE
 {
 	print_console,
 	print_center,
 	print_chat,
-} PRINT_TYPE;
+};
 
 // For integrity checking of content on clients
-typedef enum
+enum FORCE_TYPE
 {
 	force_exactfile,					// File on client must exactly match server's file
 	force_model_samebounds,				// For model files only, the geometry must fit in the same bbox
 	force_model_specifybounds,			// For model files only, the geometry must fit in the specified bbox
 	force_model_specifybounds_if_avail,	// For Steam model files only, the geometry must fit in the specified bbox (if the file is available)
-} FORCE_TYPE;
+};
 
 // Returned by TraceLine
-typedef struct
+struct TraceResult
 {
 	int		fAllSolid;			// if true, plane is not valid
 	int		fStartSolid;		// if true, the initial point was in a solid area
@@ -70,11 +75,11 @@ typedef struct
 	Vector	vecPlaneNormal;		// surface normal at impact
 	edict_t* pHit;				// entity the surface is on
 	int		iHitgroup;			// 0 == generic, non zero is specific body part
-} TraceResult;
+};
 
 // Engine hands this to DLLs for functionality callbacks
 // ONLY ADD NEW FUNCTIONS TO THE END OF THIS STRUCT.
-typedef struct enginefuncs_s
+struct enginefuncs_t
 {
 	int			(*pfnPrecacheModel)			(const char* s);
 	int			(*pfnPrecacheSound)			(const char* s);
@@ -144,12 +149,12 @@ typedef struct enginefuncs_s
 	void		(*pfnFreeEntPrivateData)	(edict_t* pEdict);
 	const char* (*pfnSzFromIndex)			(int iString);
 	int			(*pfnAllocString)			(const char* szValue);
-	struct entvars_s* (*pfnGetVarsOfEnt)			(edict_t* pEdict);
+	entvars_t* (*pfnGetVarsOfEnt)			(edict_t* pEdict);
 	edict_t* (*pfnPEntityOfEntOffset)	(int iEntOffset);
 	int			(*pfnEntOffsetOfPEntity)	(const edict_t* pEdict);
 	int			(*pfnIndexOfEdict)			(const edict_t* pEdict);
 	edict_t* (*pfnPEntityOfEntIndex)		(int iEntIndex);
-	edict_t* (*pfnFindEntityByVars)		(struct entvars_s* pvars);
+	edict_t* (*pfnFindEntityByVars)		(entvars_t* pvars);
 	void* (*pfnGetModelPtr)			(edict_t* pEdict);
 	int			(*pfnRegUserMsg)			(const char* pszName, int iSize);
 	void		(*pfnAnimationAutomove)		(const edict_t* pEdict, float flTime);
@@ -208,19 +213,19 @@ typedef struct enginefuncs_s
 
 	int			(*pfnCheckVisibility)		(const edict_t* entity, unsigned char* pset);
 
-	void		(*pfnDeltaSetField)			(struct delta_s* pFields, const char* fieldname);
-	void		(*pfnDeltaUnsetField)		(struct delta_s* pFields, const char* fieldname);
-	void		(*pfnDeltaAddEncoder)		(const char* name, void (*conditionalencode)(struct delta_s* pFields, const unsigned char* from, const unsigned char* to));
+	void		(*pfnDeltaSetField)			(delta_t* pFields, const char* fieldname);
+	void		(*pfnDeltaUnsetField)		(delta_t* pFields, const char* fieldname);
+	void		(*pfnDeltaAddEncoder)		(const char* name, void (*conditionalencode)(delta_t* pFields, const unsigned char* from, const unsigned char* to));
 	int			(*pfnGetCurrentPlayer)		();
 	int			(*pfnCanSkipPlayer)			(const edict_t* player);
-	int			(*pfnDeltaFindField)		(struct delta_s* pFields, const char* fieldname);
-	void		(*pfnDeltaSetFieldByIndex)	(struct delta_s* pFields, int fieldNumber);
-	void		(*pfnDeltaUnsetFieldByIndex)(struct delta_s* pFields, int fieldNumber);
+	int			(*pfnDeltaFindField)		(delta_t* pFields, const char* fieldname);
+	void		(*pfnDeltaSetFieldByIndex)	(delta_t* pFields, int fieldNumber);
+	void		(*pfnDeltaUnsetFieldByIndex)(delta_t* pFields, int fieldNumber);
 
 	void		(*pfnSetGroupMask)			(int mask, int op);
 
-	int			(*pfnCreateInstancedBaseline) (int classname, struct entity_state_s* baseline);
-	void		(*pfnCvar_DirectSet)		(struct cvar_s* var, const char* value);
+	int			(*pfnCreateInstancedBaseline) (int classname, entity_state_t* baseline);
+	void		(*pfnCvar_DirectSet)		(cvar_t* var, const char* value);
 
 	// Forces the client and server to be running with the same version of the specified file
 	//  ( e.g., a player model ).
@@ -241,8 +246,8 @@ typedef struct enginefuncs_s
 	// PSV: Added for CZ training map
 //	const char *(*pfnKeyNameForBinding)		( const char* pBinding );
 
-	sequenceEntry_s* (*pfnSequenceGet)			(const char* fileName, const char* entryName);
-	sentenceEntry_s* (*pfnSequencePickSentence)	(const char* groupName, int pickMethod, int* picked);
+	sequenceEntry* (*pfnSequenceGet)			(const char* fileName, const char* entryName);
+	sentenceEntry* (*pfnSequencePickSentence)	(const char* groupName, int pickMethod, int* picked);
 
 	// LH: Give access to filesize via filesystem
 	int			(*pfnGetFileSize)			(const char* filename);
@@ -267,27 +272,28 @@ typedef struct enginefuncs_s
 	void (*pfnQueryClientCvarValue2)(const edict_t* player, const char* cvarName, int requestID);
 	int (*pfnCheckParm)(const char* pchCmdLineToken, char** ppnext);
 	edict_t* (*pfnPEntityOfEntIndexAllEntities)(int iEntIndex);
-} enginefuncs_t;
+};
 
 // Passed to pfnKeyValue
-typedef struct KeyValueData_s
+struct KeyValueData
 {
 	const char* szClassName;	// in: entity classname
 	const char* szKeyName;		// in: name of key
 	const char* szValue;		// in: value of key
 	int32		fHandled;		// out: DLL sets to true if key-value pair was understood
-} KeyValueData;
+};
 
-typedef struct
+struct LEVELLIST
 {
 	char		mapName[32];
 	char		landmarkName[32];
 	edict_t* pentLandmark;
 	Vector		vecLandmarkOrigin;
-} LEVELLIST;
+};
+
 #define MAX_LEVEL_CONNECTIONS	16		// These are encoded in the lower 16bits of ENTITYTABLE->flags
 
-typedef struct
+struct ENTITYTABLE
 {
 	int			id;				// Ordinal ID of this entity (used for entity <--> pointer conversions)
 	edict_t* pent;			// Pointer to the in-game entity
@@ -296,20 +302,14 @@ typedef struct
 	int			size;			// Byte size of this entity's data
 	int			flags;			// This could be a short -- bit mask of transitions that this entity is in the PVS of
 	string_t	classname;		// entity class name
-
-} ENTITYTABLE;
+};
 
 #define FENTTABLE_PLAYER		0x80000000
 #define FENTTABLE_REMOVED		0x40000000
 #define FENTTABLE_MOVEABLE		0x20000000
 #define FENTTABLE_GLOBAL		0x10000000
 
-typedef struct saverestore_s SAVERESTOREDATA;
-
-#ifdef _WIN32
-typedef
-#endif
-struct saverestore_s
+struct SAVERESTOREDATA
 {
 	char* pBaseData;		// Start of all entity save data
 	char* pCurrentData;	// Current buffer pointer for sequential access
@@ -331,13 +331,9 @@ struct saverestore_s
 	float		time;
 	char		szCurrentMapName[32];	// To check global entities
 
-}
-#ifdef _WIN32
-SAVERESTOREDATA
-#endif
-;
+};
 
-typedef enum _fieldtypes
+enum FIELDTYPE
 {
 	FIELD_FLOAT = 0,		// Any floating point value
 	FIELD_STRING,			// A string ID (return from ALLOC_STRING)
@@ -359,7 +355,7 @@ typedef enum _fieldtypes
 	FIELD_SOUNDNAME,		// Engine string that is a sound name (needs precache)
 
 	FIELD_TYPECOUNT,		// MUST BE LAST
-} FIELDTYPE;
+};
 
 #if !defined(offsetof)  && !defined(GNUC)
 #define offsetof(s,m)	(size_t)&(((s *)0)->m)
@@ -375,11 +371,11 @@ typedef enum _fieldtypes
 
 #define FTYPEDESC_GLOBAL			0x0001		// This field is masked for global entity save/restore
 
-typedef struct
+struct TYPEDESCRIPTION
 {
 	FIELDTYPE		fieldType;
 	const char* fieldName;
 	int				fieldOffset;
 	short			fieldSize;
 	short			flags;
-} TYPEDESCRIPTION;
+};
