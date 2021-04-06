@@ -145,7 +145,7 @@ struct moveclip_t
 	trace_t		trace;
 	int			type;
 	edict_t		*passedict;
-	qboolean	monsterclip;
+	bool		monsterclip;
 };
 
 extern trace_t SV_ClipMoveToEntity (edict_t *ent, Vector start, Vector mins, Vector maxs, Vector end);

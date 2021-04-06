@@ -388,7 +388,7 @@ void CVoiceStatus::CreateEntities()
 }
 
 
-void CVoiceStatus::UpdateSpeakerStatus( int entindex, qboolean bTalking )
+void CVoiceStatus::UpdateSpeakerStatus( int entindex, bool bTalking )
 {
 	cvar_t *pVoiceLoopback = NULL;
 
@@ -400,7 +400,7 @@ void CVoiceStatus::UpdateSpeakerStatus( int entindex, qboolean bTalking )
 	if ( gEngfuncs.pfnGetCvarFloat( "voice_clientdebug" ) )
 	{
 		char msg[256];
-		_snprintf( msg, sizeof( msg ), "CVoiceStatus::UpdateSpeakerStatus: ent %d talking = %d\n", entindex, bTalking );
+		_snprintf( msg, sizeof( msg ), "CVoiceStatus::UpdateSpeakerStatus: ent %d talking = %d\n", entindex, (int) bTalking );
 		gEngfuncs.pfnConsolePrint( msg );
 	}
 
@@ -409,7 +409,7 @@ void CVoiceStatus::UpdateSpeakerStatus( int entindex, qboolean bTalking )
 	// Is it the local player talking?
 	if ( entindex == -1 )
 	{
-		m_bTalking = !!bTalking;
+		m_bTalking = bTalking;
 		if( bTalking )
 		{
 			// Enable voice for them automatically if they try to talk.
@@ -424,7 +424,7 @@ void CVoiceStatus::UpdateSpeakerStatus( int entindex, qboolean bTalking )
 	}
 	else if ( entindex == -2 )
 	{
-		m_bServerAcked = !!bTalking;
+		m_bServerAcked = bTalking;
 	}
 
 	if ( entindex >= 0 && entindex <= VOICE_MAX_PLAYERS )

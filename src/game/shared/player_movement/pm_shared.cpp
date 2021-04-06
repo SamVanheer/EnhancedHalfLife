@@ -183,7 +183,7 @@ void PM_InitTextureTypes()
 	int i, j;
 	byte *pMemFile;
 	int fileSize, filePos;
-	static qboolean bTextureTypeInit = false;
+	static bool bTextureTypeInit = false;
 
 	if ( bTextureTypeInit )
 		return;
@@ -628,7 +628,7 @@ PM_AddToTouched
 Add's the trace result to touch list, if contact is not already in list.
 ================
 */
-qboolean PM_AddToTouched(pmtrace_t tr, Vector impactvelocity)
+bool PM_AddToTouched(pmtrace_t tr, Vector impactvelocity)
 {
 	int i;
 
@@ -1445,7 +1445,7 @@ void PM_AirMove ()
 	PM_FlyMove ();
 }
 
-qboolean PM_InWater()
+bool PM_InWater()
 {
 	return ( pmove->waterlevel > 1 );
 }
@@ -1457,7 +1457,7 @@ PM_CheckWater
 Sets pmove->waterlevel and pmove->watertype values.
 =============
 */
-qboolean PM_CheckWater ()
+bool PM_CheckWater ()
 {
 	Vector	point;
 	int		cont;
@@ -2047,7 +2047,7 @@ void PM_LadderMove( physent_t *pLadder )
 {
 	Vector		ladderCenter;
 	trace_t		trace;
-	qboolean	onFloor;
+	bool	onFloor;
 	Vector		floor;
 	Vector		modelmins, modelmaxs;
 
@@ -2461,9 +2461,9 @@ PM_Jump
 void PM_Jump ()
 {
 	int i;
-	qboolean tfc = false;
+	bool tfc = false;
 
-	qboolean cansuperjump = false;
+	bool cansuperjump = false;
 
 	if (pmove->dead)
 	{
@@ -2927,7 +2927,7 @@ Numtouch and touchindex[] will be set if any of the physents
 were contacted during the move.
 =============
 */
-void PM_PlayerMove ( qboolean server )
+void PM_PlayerMove (bool server )
 {
 	physent_t *pLadder = NULL;
 
