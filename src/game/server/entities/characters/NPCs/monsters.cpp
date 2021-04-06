@@ -29,7 +29,7 @@
 #include "weapons.h"
 #include "scripted.h"
 #include "squadmonster.h"
-#include "decals.h"
+#include "decals.hpp"
 #include "soundent.h"
 #include "gamerules.h"
 #include "dll_functions.hpp"

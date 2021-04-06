@@ -24,7 +24,7 @@
 #include "util.h"
 #include "cbase.h"
 #include "weapons.h"
-#include "decals.h"
+#include "decals.hpp"
 #include "soundent.h"
 
 class CFuncMortarField : public CBaseToggle

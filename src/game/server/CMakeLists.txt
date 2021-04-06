@@ -36,7 +36,8 @@ target_sources(hl PRIVATE
 	activitymap.h
 	client.cpp
 	client.h
-	decals.h
+	decals.cpp
+	decals.hpp
 	extdll.h
 	globals.cpp
 	nodes.cpp

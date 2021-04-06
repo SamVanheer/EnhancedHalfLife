@@ -28,7 +28,7 @@
 #include "weapons.h"
 #include "nodes.h"
 #include "soundent.h"
-#include "decals.h"
+#include "decals.hpp"
 #include "gamerules.h"
 #include "UserMessages.h"
 

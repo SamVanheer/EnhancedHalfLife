@@ -33,7 +33,7 @@
 #include "soundent.h"
 #include "monsters.h"
 #include "shake.h"
-#include "decals.h"
+#include "decals.hpp"
 #include "gamerules.h"
 #include "game.h"
 #include "pm_shared.h"

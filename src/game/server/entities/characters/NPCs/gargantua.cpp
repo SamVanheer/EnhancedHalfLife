@@ -27,7 +27,7 @@
 #include	"weapons.h"
 #include	"effects.h"
 #include	"soundent.h"
-#include	"decals.h"
+#include	"decals.hpp"
 #include	"explode.h"
 #include	"func_break.h"
 

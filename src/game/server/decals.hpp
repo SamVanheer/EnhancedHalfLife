@@ -72,4 +72,6 @@ typedef struct
 
 extern DLL_DECALLIST gDecals[];
 
+void InitializeDecalsList();
+
 #endif	// DECALS_H

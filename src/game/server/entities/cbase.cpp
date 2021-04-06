@@ -16,7 +16,7 @@
 #include	"util.h"
 #include	"cbase.h"
 #include	"client.h"
-#include	"decals.h"
+#include	"decals.hpp"
 #include	"gamerules.h"
 #include	"game.h"
 #include "dll_functions.hpp"

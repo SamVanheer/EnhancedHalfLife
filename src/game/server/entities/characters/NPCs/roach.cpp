@@ -22,7 +22,7 @@
 #include	"monsters.h"
 #include	"schedule.h"
 #include	"soundent.h"
-#include	"decals.h"
+#include	"decals.hpp"
 
 #define		ROACH_IDLE				0
 #define		ROACH_BORED				1
