@@ -28,10 +28,6 @@
 #include "animation.h"
 #endif
 
-#ifndef SAVERESTORE_H
-#include "saverestore.h"
-#endif
-
 #include "schedule.h"
 #include "scripted.h"
 #include "defaultai.h"

@@ -43,7 +43,8 @@ CBaseEntity
 #define		FCAP_FORCE_TRANSITION		0x00000080		// ALWAYS goes across transitions
 
 #include "archtypes.h"     // DAL
-#include "saverestore.h"
+#include "saverestore.hpp"
+#include "globalstate.hpp"
 #include "schedule.h"
 
 #ifndef MONSTEREVENT_H

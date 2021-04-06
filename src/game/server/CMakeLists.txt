@@ -13,6 +13,7 @@ target_include_directories(hl PRIVATE
 	entities/items
 	entities/point
 	gamerules
+	persistence
 	server_interface
 	../engine
 	../common
@@ -42,7 +43,6 @@ target_sources(hl PRIVATE
 	nodes.h
 	plane.cpp
 	plane.h
-	saverestore.h
 	skill.cpp
 	skill.h
 	UserMessages.cpp
@@ -154,6 +154,10 @@ target_sources(hl PRIVATE
 	gamerules/singleplay_gamerules.cpp
 	gamerules/teamplay_gamerules.cpp
 	gamerules/teamplay_gamerules.h
+	persistence/globalstate.cpp
+	persistence/globalstate.hpp
+	persistence/saverestore.cpp
+	persistence/saverestore.hpp
 	server_interface/dll_functions.cpp
 	server_interface/dll_functions.hpp
 	server_interface/enginecallback.h

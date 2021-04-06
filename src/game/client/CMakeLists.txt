@@ -40,6 +40,7 @@ target_include_directories(client PRIVATE
 	../server/entities/characters/NPCs
 	../server/entities/point
 	../server/gamerules
+	../server/persistence
 	../server/server_interface
 	../../public
 	../../public/engine

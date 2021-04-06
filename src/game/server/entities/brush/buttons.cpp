@@ -23,7 +23,6 @@
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
-#include "saverestore.h"
 #include "doors.h"
 
 #if !defined ( _WIN32 )
