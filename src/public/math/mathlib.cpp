@@ -280,6 +280,63 @@ void InterpolateAngles(float* start, float* end, float* output, float frac)
 	NormalizeAngles(output);
 }
 
+void SmoothInterpolateAngles(float* startAngle, float* endAngle, float* finalAngle, float degreesPerSec, float frametime)
+{
+	float absd, frac, d, threshhold;
+
+	NormalizeAngles(startAngle);
+	NormalizeAngles(endAngle);
+
+	for (int i = 0; i < 3; i++)
+	{
+		d = endAngle[i] - startAngle[i];
+
+		if (d > 180.0f)
+		{
+			d -= 360.0f;
+		}
+		else if (d < -180.0f)
+		{
+			d += 360.0f;
+		}
+
+		absd = fabs(d);
+
+		if (absd > 0.01f)
+		{
+			frac = degreesPerSec * frametime;
+
+			threshhold = degreesPerSec / 4;
+
+			if (absd < threshhold)
+			{
+				float h = absd / threshhold;
+				h *= h;
+				frac *= h;  // slow down last degrees
+			}
+
+			if (frac > absd)
+			{
+				finalAngle[i] = endAngle[i];
+			}
+			else
+			{
+				if (d > 0)
+					finalAngle[i] = startAngle[i] + frac;
+				else
+					finalAngle[i] = startAngle[i] - frac;
+			}
+		}
+		else
+		{
+			finalAngle[i] = endAngle[i];
+		}
+
+	}
+
+	NormalizeAngles(finalAngle);
+}
+
 float AngleBetweenVectors(const Vector& v1, const Vector& v2)
 {
 	float angle;
