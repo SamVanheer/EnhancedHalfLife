@@ -15,9 +15,7 @@
 
 #pragma once
 
-#ifndef SCRIPTEVENT_H
 #include "scriptevent.h"
-#endif
 
 #define SF_SCRIPT_WAITTILLSEEN		1
 #define SF_SCRIPT_EXITAGITATED		2

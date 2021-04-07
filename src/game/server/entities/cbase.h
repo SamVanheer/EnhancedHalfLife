@@ -50,9 +50,7 @@ CBaseEntity
 #include "globalstate.hpp"
 #include "schedule.h"
 
-#ifndef MONSTEREVENT_H
 #include "monsterevent.h"
-#endif
 
 #include "Platform.h"
 

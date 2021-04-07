@@ -15,9 +15,7 @@
 
 #pragma once
 
-#ifndef MONSTERS_H
 #include "monsters.h"
-#endif
 
 //=========================================================
 // Talking monster base class

@@ -15,20 +15,10 @@
 
 #include "extdll.h"
 #include "util.h"
-
 #include "studio.h"
-
-#ifndef ACTIVITY_H
 #include "activity.h"
-#endif
-
-#ifndef ANIMATION_H
 #include "animation.h"
-#endif
-
-#ifndef SCRIPTEVENT_H
 #include "scriptevent.h"
-#endif
 
 extern globalvars_t				*gpGlobals;
 
