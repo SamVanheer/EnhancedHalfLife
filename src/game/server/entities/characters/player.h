@@ -43,9 +43,11 @@
 //-----------------------------------------------------
 #define CSUITPLAYLIST	4		// max of 4 suit sentences queued up at any time
 
-//TODO: make this an enum and update SetSuitUpdate
-#define SUIT_GROUP			TRUE
-#define	SUIT_SENTENCE		FALSE
+enum class SuitSoundType
+{
+	Sentence,
+	Group
+};
 
 #define	SUIT_REPEAT_OK		0
 #define SUIT_NEXT_IN_30SEC	30
@@ -286,7 +288,7 @@ public:
 	void PlayerUse();
 
 	void CheckSuitUpdate();
-	void SetSuitUpdate(const char *name, bool fgroup, int iNoRepeat);
+	void SetSuitUpdate(const char *name, SuitSoundType type, int iNoRepeat);
 	void UpdateGeigerCounter();
 	void CheckTimeBasedDamage();
 

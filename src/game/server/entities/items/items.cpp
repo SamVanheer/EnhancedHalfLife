@@ -247,7 +247,7 @@ class CItemBattery : public CItem
 			sprintf( szcharge,"!HEV_%1dP", pct );
 			
 			//EMIT_SOUND_SUIT(ENT(pev), szcharge);
-			pPlayer->SetSuitUpdate(szcharge, false, SUIT_NEXT_IN_30SEC);
+			pPlayer->SetSuitUpdate(szcharge, SuitSoundType::Sentence, SUIT_NEXT_IN_30SEC);
 			return true;		
 		}
 		return false;
@@ -271,7 +271,7 @@ class CItemAntidote : public CItem
 	}
 	bool MyTouch( CBasePlayer *pPlayer ) override
 	{
-		pPlayer->SetSuitUpdate("!HEV_DET4", false, SUIT_NEXT_IN_1MIN);
+		pPlayer->SetSuitUpdate("!HEV_DET4", SuitSoundType::Sentence, SUIT_NEXT_IN_1MIN);
 		
 		pPlayer->m_rgItems[ITEM_ANTIDOTE] += 1;
 		return true;
