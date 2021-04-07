@@ -138,7 +138,6 @@ target_sources(hl PRIVATE
 	entities/point/explode.cpp
 	entities/point/explode.h
 	entities/point/ggrenade.cpp
-	entities/point/h_cine.cpp
 	entities/point/h_cycler.cpp
 	entities/point/lights.cpp
 	entities/point/monstermaker.cpp
