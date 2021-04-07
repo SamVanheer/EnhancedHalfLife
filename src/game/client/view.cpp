@@ -13,7 +13,6 @@
 #include "entity_state.h"
 #include "cl_entity.h"
 #include "ref_params.h"
-#include "in_defs.h" // PITCH YAW ROLL
 #include "pm_movevars.h"
 #include "pm_shared.h"
 #include "pm_defs.h"

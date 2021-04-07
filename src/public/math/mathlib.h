@@ -22,6 +22,13 @@ typedef float vec_t;
 
 #include "vector.h"
 
+// up / down
+#define	PITCH	0
+// left / right
+#define	YAW		1
+// fall over
+#define	ROLL	2 
+
 typedef vec_t vec4_t[4];	// x,y,z,w
 typedef vec_t vec5_t[5];
 

@@ -7,16 +7,6 @@
 
 #pragma once
 
-#ifndef PITCH
-// MOVEMENT INFO
-// up / down
-#define	PITCH	0
-// left / right
-#define	YAW		1
-// fall over
-#define	ROLL	2
-#endif
-
 #define FDotProduct( a, b ) (fabs((a[0])*(b[0])) + fabs((a[1])*(b[1])) + fabs((a[2])*(b[2])))
 
 void	AngleMatrix (const float *angles, float (*matrix)[4] );

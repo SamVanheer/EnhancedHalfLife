@@ -17,13 +17,6 @@
 #include "mathlib.h"
 #include "const.h"
 
-// up / down
-#define	PITCH	0
-// left / right
-#define	YAW		1
-// fall over
-#define	ROLL	2 
-
 #pragma warning(disable : 4244)
 
 int nanmask = 255<<23;

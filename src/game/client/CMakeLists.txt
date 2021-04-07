@@ -103,7 +103,6 @@ target_sources(client PRIVATE
 	input/input.cpp
 	input/inputw32.cpp
 	input/in_camera.cpp
-	input/in_defs.h
 	input/kbutton.h
 	rendering/GameStudioModelRenderer.cpp
 	rendering/GameStudioModelRenderer.h

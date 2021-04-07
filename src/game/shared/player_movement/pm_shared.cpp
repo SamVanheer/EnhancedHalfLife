@@ -114,12 +114,6 @@ struct hull_t
 
 // double to float warning
 #pragma warning(disable : 4244)
-// up / down
-#define	PITCH	0
-// left / right
-#define	YAW		1
-// fall over
-#define	ROLL	2 
 
 #define MAX_CLIENTS 32
 
