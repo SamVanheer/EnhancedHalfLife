@@ -76,7 +76,7 @@ inline cvar_t *CVAR_CREATE( const char *cv, const char *val, const int flags ) {
 #define ServerCmd (*gEngfuncs.pfnServerCmd)
 #define EngineClientCmd (*gEngfuncs.pfnClientCmd)
 #define SetCrosshair (*gEngfuncs.pfnSetCrosshair)
-#define AngleVectors (*gEngfuncs.pfnAngleVectors)
+#define AngleVectors (*gEngfuncs.pfnAngleVectors) //TODO: remove this
 
 
 // Gets the height & width of a sprite,  at the specified frame
@@ -155,12 +155,6 @@ inline void PlaySound( const char *szSound, float vol ) { gEngfuncs.pfnPlaySound
 inline void PlaySound( int iSound, float vol ) { gEngfuncs.pfnPlaySoundByIndex( iSound, vol ); }
 
 void ScaleColors( int &r, int &g, int &b, int a );
-
-float Length(const float *v);
-void VectorMA (const float *veca, float scale, const float *vecb, float *vecc);
-void VectorScale (const float *in, float scale, float *out);
-float VectorNormalize (float *v);
-void VectorInverse ( float *v );
 
 // disable 'possible loss of data converting float to int' warning message
 #pragma warning( disable: 4244 )

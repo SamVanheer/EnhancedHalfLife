@@ -47,7 +47,6 @@ static int tracerCount[ 32 ];
 #include "pm_shared.h"
 
 void V_PunchAxis( int axis, float punch );
-void VectorAngles( const float *forward, float *angles );
 
 extern cvar_t *cl_lw;
 

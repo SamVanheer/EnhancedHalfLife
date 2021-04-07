@@ -1243,7 +1243,6 @@ char* GetTeamName(int tno);
 int TeamFortress_GetNoPlayers();
 void DestroyBuilding(CBaseEntity *eng, char *bld);
 void teamsprint( int tno, CBaseEntity *ignore, int msg_dest, const char *st, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL );
-float anglemod( float v );
 
 // Team Funcs
 bool TeamFortress_TeamIsCivilian(float tno);

@@ -68,7 +68,7 @@ void VectorScale (const float* in, float scale, float* out);
 int Q_log2(int val);
 
 void R_ConcatRotations (float in1[3][3], float in2[3][3], float out[3][3]);
-void R_ConcatTransforms (float in1[3][4], float in2[3][4], float out[3][4]);
+void R_ConcatTransforms (float in1[3][4], float in2[3][4], float out[3][4]); //TODO: probably the same as ConcatTransforms
 
 // Here are some "manual" INLINE routines for doing floating point to integer conversions
 extern short new_cw, old_cw;
@@ -83,7 +83,7 @@ union DLONG
 extern DLONG	dlong;
 
 #ifdef _WIN32
-void __inline set_fpu_cw(void)
+void __inline set_fpu_cw()
 {
 _asm	
 	{		wait
@@ -106,7 +106,7 @@ int __inline quick_ftol(float f)
 	return dlong.i[0];
 }
 
-void __inline restore_fpu_cw(void)
+void __inline restore_fpu_cw()
 {
 	_asm	fldcw	old_cw
 }
@@ -123,7 +123,6 @@ int GreatestCommonDivisor (int i1, int i2);
 
 void AngleVectors (const Vector& angles, Vector* forward, Vector* right, Vector* up);
 void AngleVectorsTranspose (const Vector& angles, Vector* forward, Vector* right, Vector* up);
-#define AngleIVectors	AngleVectorsTranspose
 
 void AngleMatrix (const float* angles, float (*matrix)[4] );
 void AngleIMatrix (const Vector& angles, float (*matrix)[4] );
