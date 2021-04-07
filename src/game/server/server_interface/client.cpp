@@ -216,7 +216,7 @@ void ClientPutInServer( edict_t *pEntity )
 extern CVoiceGameMgr g_VoiceGameMgr;
 
 
-
+//TODO: C++ now has built-in types for these
 #if defined( _MSC_VER ) || defined( WIN32 )
 typedef wchar_t	uchar16;
 typedef unsigned int uchar32;

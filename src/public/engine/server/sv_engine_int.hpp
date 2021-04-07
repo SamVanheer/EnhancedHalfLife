@@ -357,6 +357,7 @@ enum FIELDTYPE
 	FIELD_TYPECOUNT,		// MUST BE LAST
 };
 
+//TODO: probably not needed anymore
 #if !defined(offsetof)  && !defined(GNUC)
 #define offsetof(s,m)	(size_t)&(((s *)0)->m)
 #endif

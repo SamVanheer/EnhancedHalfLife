@@ -35,10 +35,7 @@
 
 // PM_PlayerTrace results.
 #include "pmtrace.h"
-
-#if !defined ( USERCMD_H )
 #include "usercmd.h"
-#endif
 
 struct hull_t;
 struct model_t;

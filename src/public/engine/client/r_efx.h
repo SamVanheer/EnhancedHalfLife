@@ -16,24 +16,16 @@
 #pragma once
 
 // particle_t
-#if !defined( PARTICLEDEFH )  
 #include "particledef.h"
-#endif
 
 // BEAM
-#if !defined( BEAMDEFH )
 #include "beamdef.h"
-#endif
 
 // dlight_t
-#if !defined ( DLIGHTH )
 #include "dlight.h"
-#endif
 
 // cl_entity_t
-#if !defined( CL_ENTITYH )
 #include "cl_entity.h"
-#endif
 
 struct cl_entity_t;
 struct model_t;

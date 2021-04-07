@@ -12,7 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 
 #include	"extdll.h"
 #include	"util.h"
@@ -1418,7 +1417,3 @@ void CControllerZapBall::ExplodeTouch( CBaseEntity *pOther )
 
 	UTIL_Remove( this );
 }
-
-
-
-#endif		// !OEM && !HLDEMO
