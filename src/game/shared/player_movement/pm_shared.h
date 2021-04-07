@@ -36,6 +36,6 @@ int PM_GetPhysEntInfo(int ent);
 #ifdef CLIENT_DLL
 // Spectator Mode
 inline int		iJumpSpectator;
-inline float	vJumpOrigin[3];
-inline float	vJumpAngles[3];
+inline Vector	vJumpOrigin;
+inline Vector	vJumpAngles;
 #endif

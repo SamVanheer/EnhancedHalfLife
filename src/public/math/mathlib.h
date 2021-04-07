@@ -146,7 +146,7 @@ void NormalizeAngles( float* angles );
 *	Frac is 0.0 to 1.0 ( i.e., should probably be clamped, but doesn't have to be )
 */
 void InterpolateAngles( float* start, float* end, float* output, float frac );
-void SmoothInterpolateAngles(float* startAngle, float* endAngle, float* finalAngle, float degreesPerSec, float frametime);
+void SmoothInterpolateAngles(Vector& startAngle, Vector& endAngle, Vector& finalAngle, float degreesPerSec, float frametime);
 float AngleBetweenVectors( const Vector& v1, const Vector& v2 );
 
 

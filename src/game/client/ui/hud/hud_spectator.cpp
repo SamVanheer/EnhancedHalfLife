@@ -1172,7 +1172,7 @@ void CHudSpectator::SetModes(int iNewMainMode, int iNewInsetMode)
 									g_iUser1 = OBS_ROAMING;
 									if ( g_iUser2 )
 									{
-										V_GetChasePos( g_iUser2, v_cl_angles, vJumpOrigin, vJumpAngles );
+										V_GetChasePos( g_iUser2, &v_cl_angles, vJumpOrigin, vJumpAngles );
 										gEngfuncs.SetViewAngles( vJumpAngles );
 										iJumpSpectator = 1;
 									}
@@ -1678,7 +1678,7 @@ void CHudSpectator::DrawOverviewEntities()
 	}
 	else if ( m_pip->value == INSET_CHASE_FREE  || g_iUser1 == OBS_CHASE_FREE )
 	{
-		V_GetChasePos( g_iUser2, v_cl_angles, origin, angles );
+		V_GetChasePos( g_iUser2, &v_cl_angles, origin, angles );
 	}
 	else if ( g_iUser1 == OBS_ROAMING )
 	{

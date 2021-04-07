@@ -280,7 +280,7 @@ void InterpolateAngles(float* start, float* end, float* output, float frac)
 	NormalizeAngles(output);
 }
 
-void SmoothInterpolateAngles(float* startAngle, float* endAngle, float* finalAngle, float degreesPerSec, float frametime)
+void SmoothInterpolateAngles(Vector& startAngle, Vector& endAngle, Vector& finalAngle, float degreesPerSec, float frametime)
 {
 	float absd, frac, d, threshhold;
 
