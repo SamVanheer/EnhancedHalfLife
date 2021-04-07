@@ -12,9 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//=========================================================
-// Hornets
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"

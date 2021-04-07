@@ -12,10 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-//  ammohistory.cpp
-//
-
 
 #include "hud.h"
 #include "cl_util.h"

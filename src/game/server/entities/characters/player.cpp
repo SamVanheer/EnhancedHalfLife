@@ -12,12 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== player.cpp ========================================================
-
-  functions dealing with the player
-
+/**
+*	@file
+* 
+*	functions dealing with the player
 */
 
 #include <limits>

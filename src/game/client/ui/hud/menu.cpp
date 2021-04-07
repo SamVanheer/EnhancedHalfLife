@@ -12,11 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// menu.cpp
-//
-// generic menu handler
-//
+
 #include "hud.h"
 #include "cl_util.h"
 #include "parsemsg.h"

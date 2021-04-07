@@ -12,10 +12,12 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// monsterstate.cpp - base class monster functions for 
-// controlling core AI.
-//=========================================================
+
+/**
+*	@file
+* 
+*	base class monster functions for controlling core AI.
+*/
 
 #include "extdll.h"
 #include "util.h"

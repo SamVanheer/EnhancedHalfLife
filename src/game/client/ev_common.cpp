@@ -12,7 +12,13 @@
 *   without written permission from Valve LLC.
 *
 ****/
-// shared event functions
+
+/**
+*	@file
+* 
+*	shared event functions
+*/
+
 #include "hud.h"
 #include "cl_util.h"
 #include "const.h"

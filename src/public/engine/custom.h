@@ -12,7 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-// Customization.h
 
 #pragma once
 
@@ -20,10 +19,6 @@
 
 #define MAX_QPATH 64    // Must match value in quakedefs.h
 
-/////////////////
-// Customization
-// passed to pfnPlayerCustomization
-// For automatic downloading.
 enum resourcetype_t
 {
 	t_sound = 0,
@@ -74,6 +69,11 @@ struct resource_t
 	resource_t*			pPrev;
 };
 
+/**
+*	@brief passed to pfnPlayerCustomization
+*
+*	For automatic downloading.
+*/
 struct customization_t
 {
 	qboolean bInUse;     // Is this customization in use;

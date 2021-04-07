@@ -14,10 +14,6 @@
 ****/
 #if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 
-//=========================================================
-// CONTROLLER
-//=========================================================
-
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"

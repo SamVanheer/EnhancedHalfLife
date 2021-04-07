@@ -14,10 +14,6 @@
 ****/
 #if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 
-//=========================================================
-// icthyosaur - evin, satan fish monster
-//=========================================================
-
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"
@@ -49,6 +45,9 @@ extern CGraph WorldGraph;
 //=========================================================
 
 // UNDONE: Save/restore here
+/**
+*	@brief evin, satan fish monster
+*/
 class CIchthyosaur : public CFlyingMonster
 {
 public:

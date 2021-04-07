@@ -12,11 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// Message.cpp
-//
-// implementation of CHudMessage class
-//
 
 #include "hud.h"
 #include "cl_util.h"

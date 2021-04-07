@@ -15,7 +15,6 @@
 
 #pragma once
 
-// doors
 #define SF_DOOR_ROTATE_Y			0
 #define	SF_DOOR_START_OPEN			1
 #define SF_DOOR_ROTATE_BACKWARDS	2

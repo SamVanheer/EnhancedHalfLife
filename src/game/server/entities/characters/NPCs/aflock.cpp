@@ -12,8 +12,7 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-//=========================================================
+
 #include "archtypes.h"     // DAL
 
 #include	"extdll.h"

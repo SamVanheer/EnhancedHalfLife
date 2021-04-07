@@ -12,9 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//=========================================================
-// GameRules.cpp
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"

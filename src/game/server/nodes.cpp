@@ -12,9 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// nodes.cpp - AI node tree stuff.
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"

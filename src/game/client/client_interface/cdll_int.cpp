@@ -12,11 +12,12 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-//  cdll_int.c
-//
-// this implementation handles the linking of the engine to the DLL
-//
+
+/**
+*	@file
+* 
+*	this implementation handles the linking of the engine to the DLL
+*/
 
 #include "hud.h"
 #include "cl_util.h"

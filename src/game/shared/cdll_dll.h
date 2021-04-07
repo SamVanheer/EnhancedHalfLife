@@ -12,12 +12,14 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-//  cdll_dll.h
-
-// this file is included by both the game-dll and the client-dll,
 
 #pragma once
+
+/**
+*	@file
+* 
+*	this file is included by both the game-dll and the client-dll
+*/
 
 #define MAX_WEAPONS		32		// ???
 

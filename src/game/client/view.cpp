@@ -1,4 +1,8 @@
-// view/refresh setup functions
+/**
+*	@file
+* 
+*	view/refresh setup functions
+*/
 
 #include "hud.h"
 #include "cl_util.h"

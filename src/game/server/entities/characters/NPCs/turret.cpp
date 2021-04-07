@@ -12,11 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-/*
-
-===== turret.cpp ========================================================
-
-*/
 
 //
 // TODO: 

@@ -12,13 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
-
-===== mortar.cpp ========================================================
-
-  the "LaBuznik" mortar device              
-
-*/
 
 #include "extdll.h"
 #include "util.h"
@@ -27,6 +20,9 @@
 #include "decals.hpp"
 #include "soundent.h"
 
+/**
+*	@brief the "LaBuznik" mortar device 
+*/
 class CFuncMortarField : public CBaseToggle
 {
 public:

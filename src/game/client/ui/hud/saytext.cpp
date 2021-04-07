@@ -12,11 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// saytext.cpp
-//
-// implementation of CHudSayText class
-//
 
 #include "hud.h"
 #include "cl_util.h"

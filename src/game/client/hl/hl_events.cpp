@@ -18,18 +18,14 @@
 #include "pmtrace.h"
 #include "ev_hldm.h"
 
-/*
-======================
-Game_HookEvents
-
-Associate script file name with callback functions.  Callback's must be extern "C" so
- the engine doesn't get confused about name mangling stuff.  Note that the format is
- always the same.  Of course, a clever mod team could actually embed parameters, behavior
- into the actual .sc files and create a .sc file parser and hook their functionality through
- that.. i.e., a scripting system.
-
-That was what we were going to do, but we ran out of time...oh well.
-======================
+/**
+*	@brief Associate script file name with callback functions. 
+*
+*	Callback's must be extern "C" so the engine doesn't get confused about name mangling stuff.
+*	Note that the format is always the same.
+*	Of course, a clever mod team could actually embed parameters, behavior into the actual .sc files
+*	and create a .sc file parser and hook their functionality through that.. i.e., a scripting system.
+*	That was what we were going to do, but we ran out of time...oh well.
 */
 void Game_HookEvents()
 {

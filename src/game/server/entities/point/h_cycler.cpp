@@ -12,12 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== h_cycler.cpp ========================================================
-
-  The Halflife Cycler Monsters
-
+/**
+*	@file
+* 
+*	The Halflife Cycler Monsters
 */
 
 #include "extdll.h"

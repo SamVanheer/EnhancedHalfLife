@@ -12,9 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// teamplay_gamerules.h
-//
 
 #pragma once
 

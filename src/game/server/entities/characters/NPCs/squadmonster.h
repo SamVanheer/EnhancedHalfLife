@@ -15,11 +15,6 @@
 
 #pragma once
 
-//=========================================================
-// CSquadMonster - all the extra data for monsters that
-// form squads.
-//=========================================================
-
 #define	SF_SQUADMONSTER_LEADER	32
 
 
@@ -53,9 +48,9 @@
 
 #define	MAX_SQUAD_MEMBERS	5
 
-//=========================================================
-// CSquadMonster - for any monster that forms squads.
-//=========================================================
+/**
+*	@brief for any monster that forms squads.
+*/
 class CSquadMonster : public CBaseMonster 
 {
 public:

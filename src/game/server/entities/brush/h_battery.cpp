@@ -12,12 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== h_battery.cpp ========================================================
-
-  battery-related code
-
+/**
+*	@file
+* 
+*	battery-related code
 */
 
 #include "extdll.h"

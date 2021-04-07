@@ -12,9 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// ========================== PATH_CORNER ===========================
-//
 
 #include "extdll.h"
 #include "util.h"

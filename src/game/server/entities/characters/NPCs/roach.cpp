@@ -12,9 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// cockroach
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"
@@ -34,6 +31,10 @@
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
+
+/**
+*	@brief cockroach
+*/
 class CRoach : public CBaseMonster
 {
 public:

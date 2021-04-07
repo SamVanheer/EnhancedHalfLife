@@ -12,11 +12,12 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// util.cpp
-//
-// implementation of class-less helper functions
-//
+
+/**
+*	@file
+*
+*	implementation of class-less helper functions
+*/
 
 #include <cstdio>
 #include <cstdlib>

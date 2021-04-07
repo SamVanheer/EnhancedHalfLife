@@ -1,4 +1,8 @@
-// Client side entity management functions
+/**
+*	@file
+* 
+*	Client side entity management functions
+*/
 
 #include <memory.h>
 

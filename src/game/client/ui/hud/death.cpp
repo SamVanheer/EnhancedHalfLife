@@ -12,9 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// death notice
-//
+
 #include "hud.h"
 #include "cl_util.h"
 #include "parsemsg.h"

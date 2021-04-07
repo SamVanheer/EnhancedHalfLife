@@ -12,14 +12,13 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-/*
 
-===== h_cine.cpp ========================================================
-
-  The Halflife hard coded "scripted sequence".
-
-  I'm pretty sure all this code is obsolete
-
+/**
+*	@file
+* 
+*	The Halflife hard coded "scripted sequence".
+*
+*	I'm pretty sure all this code is obsolete
 */
 
 #include	"extdll.h"

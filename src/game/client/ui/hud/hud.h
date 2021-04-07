@@ -12,13 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//			
-//  hud.h
-//
-// class CHud declaration
-//
-// CHud handles the message, calculation, and drawing the HUD
-//
 
 #pragma once
 
@@ -183,9 +176,11 @@ private:
 
 };
 
-//
-//-----------------------------------------------------
-//
+/**
+*	@brief generic text status bar, set by game dll
+*
+*	runs across bottom of screen
+*/
 class CHudStatusBar : public CHudBase
 {
 public:
@@ -258,9 +253,9 @@ private:
 	int m_HUD_d_skull;  // sprite index of skull icon
 };
 
-//
-//-----------------------------------------------------
-//
+/**
+*	@brief generic menu handler
+*/
 class CHudMenu : public CHudBase
 {
 public:
@@ -371,10 +366,9 @@ struct message_parms_t
 	float fadeTime;
 };
 
-//
-//-----------------------------------------------------
-//
-
+/**
+*	@brief this class routes messages through titles.txt for localisation
+*/
 class CHudTextMessage: public CHudBase
 {
 public:
@@ -464,7 +458,9 @@ private:
 //-----------------------------------------------------
 //
 
-
+/**
+*	@brief CHud handles the message, calculation, and drawing the HUD
+*/
 class CHud
 {
 private:

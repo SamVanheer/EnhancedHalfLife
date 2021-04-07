@@ -15,6 +15,12 @@
 
 #pragma once
 
+/**
+*	@file
+* 
+*	client/server game specific stuff
+*/
+
 #include "custom.h"
 
 struct clientdata_t;

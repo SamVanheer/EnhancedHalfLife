@@ -12,7 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-// Spectator.h
 
 #pragma once
 

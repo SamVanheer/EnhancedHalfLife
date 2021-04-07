@@ -13,15 +13,6 @@
 *
 ****/
 
-//	-------------------------------------------
-//
-//	maprules.cpp
-//
-//	This module contains entities for implementing/changing game
-//	rules dynamically within each map (.BSP)
-//
-//	-------------------------------------------
-
 #include "extdll.h"
 #include "util.h"
 #include "gamerules.h"

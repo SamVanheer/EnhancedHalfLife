@@ -12,9 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// ammohistory.h
-//
 
 #pragma once
 

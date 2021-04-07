@@ -15,7 +15,11 @@
 
 #pragma once
 
-// Screen / View effects
+/**
+*	@file
+* 
+*	Screen / View effects
+*/
 
 // screen shake
 

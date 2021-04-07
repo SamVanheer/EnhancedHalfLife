@@ -12,7 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-// pm_math.c -- math primitives
 
 #include "Platform.h"
 #include "mathlib.h"

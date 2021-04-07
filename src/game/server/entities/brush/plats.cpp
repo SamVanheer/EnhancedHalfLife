@@ -12,12 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== plats.cpp ========================================================
-
-  spawn, think, and touch functions for trains, etc
-
+/**
+*	@file
+* 
+*	spawn, think, and touch functions for trains, etc
 */
 
 #include "extdll.h"

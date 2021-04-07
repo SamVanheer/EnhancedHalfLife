@@ -14,3 +14,9 @@
 ****/
 
 #pragma once
+
+/**
+*	@file
+* 
+*	This module contains entities for implementing/changing game rules dynamically within each map (.BSP)
+*/

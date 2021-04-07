@@ -12,9 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// status_icons.cpp
-//
+
 #include "hud.h"
 #include "cl_util.h"
 #include "const.h"

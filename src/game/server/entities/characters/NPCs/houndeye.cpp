@@ -12,9 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// Houndeye - spooky sonic dog. 
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"
@@ -73,6 +70,9 @@ enum
 #define		HOUND_AE_HOPBACK		6
 #define		HOUND_AE_CLOSE_EYE		7
 
+/**
+*	@brief spooky sonic dog. 
+*/
 class CHoundeye : public CSquadMonster
 {
 public:

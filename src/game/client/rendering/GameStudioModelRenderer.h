@@ -7,12 +7,6 @@
 
 #pragma once
 
-/*
-====================
-CGameStudioModelRenderer
-
-====================
-*/
 class CGameStudioModelRenderer : public CStudioModelRenderer
 {
 public:

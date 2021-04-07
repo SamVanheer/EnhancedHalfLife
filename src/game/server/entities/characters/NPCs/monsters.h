@@ -15,15 +15,13 @@
 
 #pragma once
 
-#include "skill.h"
-
-/*
-
-===== monsters.h ========================================================
-
-  Header file for monster-related utility code
-
+/**
+*	@file
+*
+*	monster-related utility code
 */
+
+#include "skill.h"
 
 // CHECKLOCALMOVE result types 
 #define	LOCALMOVE_INVALID					0 // move is not possible

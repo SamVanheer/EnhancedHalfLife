@@ -9,9 +9,9 @@
 
 #include "interface.h"
 
-//-----------------------------------------------------------------------------
-// Purpose: Exports a set of functions for the GameUI interface to interact with the game client
-//-----------------------------------------------------------------------------
+/**
+*	@brief Exports a set of functions for the GameUI interface to interact with the game client
+*/
 class IGameClientExports : public IBaseInterface
 {
 public:

@@ -12,9 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// human scientist (passive lab worker)
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"
@@ -59,10 +56,9 @@ enum
 #define		SCIENTIST_AE_NEEDLEON	( 2 )
 #define		SCIENTIST_AE_NEEDLEOFF	( 3 )
 
-//=======================================================
-// Scientist
-//=======================================================
-
+/**
+*	@brief human scientist (passive lab worker)
+*/
 class CScientist : public CTalkMonster
 {
 public:

@@ -12,10 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//=========================================================
-// Monster Maker - this is an entity that creates monsters
-// in the game.
-//=========================================================
 
 #include "extdll.h"
 #include "util.h"

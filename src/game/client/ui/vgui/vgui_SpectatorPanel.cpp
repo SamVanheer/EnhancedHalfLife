@@ -1,7 +1,3 @@
-// vgui_SpectatorPanel.cpp: implementation of the SpectatorPanel class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "hud.h"
 #include "cl_util.h"
 #include "const.h"
@@ -14,14 +10,9 @@
 
 #include "Exports.h"
 
-/*
-==========================
-HUD_ChatInputPosition
-
-Sets the location of the input for chat text
-==========================
+/**
+*	@brief Sets the location of the input for chat text
 */
-
 void DLLEXPORT HUD_ChatInputPosition( int *x, int *y )
 {
 	if ( g_iUser1 != 0 || gEngfuncs.IsSpectateOnly() )

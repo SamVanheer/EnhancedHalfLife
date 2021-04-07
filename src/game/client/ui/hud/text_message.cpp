@@ -12,13 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// text_message.cpp
-//
-// implementation of CHudTextMessage class
-//
-// this class routes messages through titles.txt for localisation
-//
 
 #include "hud.h"
 #include "cl_util.h"

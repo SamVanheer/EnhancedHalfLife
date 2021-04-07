@@ -12,9 +12,13 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// Default behaviors.
-//=========================================================
+
+/**
+*	@file
+* 
+*	Default behaviors.
+*/
+
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"

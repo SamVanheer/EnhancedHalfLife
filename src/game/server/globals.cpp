@@ -13,14 +13,11 @@
 *
 ****/
 /*
-
-===== globals.cpp ========================================================
-
   DLL-wide global variable definitions.
   They're all defined here, for convenient centralization.
   Source files that need them should "extern ..." declare each
   variable, to better document what globals they care about.
-
+  TODO: this is a bad way to handle this, it results in a lot of redundant forward declarations. Clean this up
 */
 
 #include "extdll.h"

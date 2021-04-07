@@ -12,11 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// Geiger.cpp
-//
-// implementation of CHudAmmo class
-//
 
 #include "hud.h"
 #include "cl_util.h"

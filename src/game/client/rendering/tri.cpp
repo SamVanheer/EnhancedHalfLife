@@ -5,12 +5,15 @@
 // $NoKeywords: $
 //=============================================================================
 
-// Triangle rendering, if any
+/**
+*	@file
+* 
+*	Triangle rendering, if any
+*	Triangle rendering apis are in gEngfuncs.pTriAPI
+*/
 
 #include "hud.h"
 #include "cl_util.h"
-
-// Triangle rendering apis are in gEngfuncs.pTriAPI
 
 #include "const.h"
 #include "entity_state.h"

@@ -12,9 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// Zombie
-//=========================================================
 
 // UNDONE: Don't flinch every time you get hit
 

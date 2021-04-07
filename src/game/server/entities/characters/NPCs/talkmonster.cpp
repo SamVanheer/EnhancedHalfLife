@@ -23,10 +23,6 @@
 #include	"soundent.h"
 #include	"animation.h"
 
-//=========================================================
-// Talking monster base class
-// Used for scientists and barneys
-//=========================================================
 float	CTalkMonster::g_talkWaitTime = 0;		// time delay until it's ok to speak: used so that two NPCs don't talk at once
 
 // NOTE: m_voicePitch & m_szGrp should be fixed up by precache each save/restore

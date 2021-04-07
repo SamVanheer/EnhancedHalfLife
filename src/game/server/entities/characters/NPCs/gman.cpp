@@ -12,9 +12,7 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// GMan - misunderstood servant of the people
-//=========================================================
+
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"
@@ -27,6 +25,9 @@
 // Monster's Anim Events Go Here
 //=========================================================
 
+/**
+*	@brief misunderstood servant of the people
+*/
 class CGMan : public CBaseMonster
 {
 public:

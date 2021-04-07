@@ -12,9 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// Alien slave monster
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"
@@ -39,6 +36,9 @@ extern DLL_GLOBAL int		g_iSkillLevel;
 
 #define		ISLAVE_MAX_BEAMS	8
 
+/**
+*	@brief Alien slave monster
+*/
 class CISlave : public CSquadMonster
 {
 public:

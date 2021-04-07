@@ -12,12 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== triggers.cpp ========================================================
-
-  spawn and use functions for editor-placed triggers              
-
+/**
+*	@file
+* 
+*	spawn and use functions for editor-placed triggers  
 */
 
 #include "extdll.h"

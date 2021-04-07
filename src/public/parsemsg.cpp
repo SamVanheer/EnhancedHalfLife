@@ -12,10 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-//  parsemsg.cpp
-//
-//--------------------------------------------------------------------------------------------------------------
+
 #include "extdll.h"
 #include "parsemsg.h"
 

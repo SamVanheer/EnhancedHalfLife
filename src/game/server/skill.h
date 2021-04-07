@@ -12,11 +12,14 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//=========================================================
-// skill.h - skill level concerns
-//=========================================================
 
 #pragma once
+
+/**
+*	@file
+* 
+*	skill level concerns
+*/
 
 struct skilldata_t
 {

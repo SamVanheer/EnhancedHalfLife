@@ -12,11 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// hud.cpp
-//
-// implementation of CHud class
-//
 
 #include "hud.h"
 #include "cl_util.h"

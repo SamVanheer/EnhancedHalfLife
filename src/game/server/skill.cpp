@@ -12,9 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//=========================================================
-// skill.cpp - code for skill level concerns
-//=========================================================
+
 #include	"extdll.h"
 #include	"util.h"
 #include	"skill.h"

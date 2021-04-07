@@ -12,9 +12,7 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// Generic Monster - purely for scripted sequence work.
-//=========================================================
+
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"
@@ -29,6 +27,9 @@
 // Monster's Anim Events Go Here
 //=========================================================
 
+/**
+*	@brief purely for scripted sequence work.
+*/
 class CGenericMonster : public CBaseMonster
 {
 public:

@@ -12,14 +12,15 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-//  cdll_int.h
-//
-// 4-23-98  
-// JOHN:  client dll interface declarations
-//
 
 #pragma once
+
+/**
+*	@file
+* 
+*	4-23-98  
+*	JOHN:  client dll interface declarations
+*/
 
 //TODO: can probably remove this part since there are no functions declared in this scope
 #ifdef __cplusplus

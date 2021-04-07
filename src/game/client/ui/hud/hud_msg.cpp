@@ -12,9 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-//  hud_msg.cpp
-//
 
 #include "hud.h"
 #include "cl_util.h"

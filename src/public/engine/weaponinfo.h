@@ -15,7 +15,9 @@
 
 #pragma once
 
-// Info about weapons player might have in his/her possession
+/**
+*	@brief Info about weapons player might have in his/her possession
+*/
 struct weapon_data_t
 {
 	int			m_iId;

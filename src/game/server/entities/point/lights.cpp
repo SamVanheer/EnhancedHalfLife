@@ -12,12 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== lights.cpp ========================================================
-
-  spawn and think functions for editor-placed lights
-
+/**
+*	@file
+* 
+*	spawn and think functions for editor-placed lights
 */
 
 #include "extdll.h"

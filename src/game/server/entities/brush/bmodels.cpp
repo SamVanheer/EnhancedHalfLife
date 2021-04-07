@@ -12,12 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== bmodels.cpp ========================================================
-
-  spawn, think, and use functions for entities that use brush models
-
+/**
+*	@file
+* 
+*	spawn, think, and use functions for entities that use brush models
 */
 
 #include "extdll.h"

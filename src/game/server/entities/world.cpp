@@ -12,12 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== world.cpp ========================================================
-
-  precaches and defs for entities and other data that must always be available.
-
+/**
+*	@file
+* 
+*	precaches and defs for entities and other data that must always be available.
 */
 
 #include "extdll.h"

@@ -12,12 +12,10 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-  h_ai.cpp - halflife specific ai code
-
+/**
+*	@brief halflife specific ai code
 */
-
 
 #include	"extdll.h"
 #include	"util.h"

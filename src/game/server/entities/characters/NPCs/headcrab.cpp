@@ -12,9 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// headcrab.cpp - tiny, jumpy alien parasite
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"
@@ -70,6 +67,9 @@ Schedule_t	slHCRangeAttack1Fast[] =
 	},
 };
 
+/**
+*	@brief tiny, jumpy alien parasite
+*/
 class CHeadCrab : public CBaseMonster
 {
 public:

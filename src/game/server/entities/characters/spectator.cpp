@@ -12,12 +12,15 @@
 *   without written permission from Valve LLC.
 *
 ****/
-// CBaseSpectator
 
 // YWB:  UNDONE
 
-// Spectator functions
-// 
+/**
+*	@file
+* 
+*	Spectator functions
+*/
+
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"

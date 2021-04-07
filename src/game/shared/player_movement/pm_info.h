@@ -12,8 +12,10 @@
 *   without written permission from Valve LLC.
 *
 ****/
-// Physics info string definition
 
 #pragma once
 
+/**
+*	@brief Physics info string definition
+*/
 #define MAX_PHYSINFO_STRING 256

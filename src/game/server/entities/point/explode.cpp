@@ -12,13 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== explode.cpp ========================================================
-
-  Explosion-related code
-
-*/
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"

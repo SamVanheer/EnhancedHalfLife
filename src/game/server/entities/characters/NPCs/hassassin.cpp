@@ -14,10 +14,6 @@
 ****/
 #if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 
-//=========================================================
-// hassassin - Human assassin, fast and stealthy
-//=========================================================
-
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"
@@ -61,6 +57,9 @@ enum
 
 #define bits_MEMORY_BADJUMP		(bits_MEMORY_CUSTOM1)
 
+/**
+*	@brief Human assassin, fast and stealthy
+*/
 class CHAssassin : public CBaseMonster
 {
 public:

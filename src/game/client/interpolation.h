@@ -5,17 +5,13 @@
 ** Valve, L.L.C., or in accordance with the terms and conditions stipulated in
 ** the agreement/contract under which the contents have been supplied.
 **
-*******************************************************************************
-**
-** Contents:
-**
-**	      interpolation.h: Bezier inpolation classes
-**
 ******************************************************************************/
 
 #pragma once
 
-//  interpolation class
+/**
+*	@brief Bezier inpolation class
+*/
 class CInterpolation  
 {
 public:

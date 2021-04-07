@@ -12,11 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// flashlight.cpp
-//
-// implementation of CHudFlashlight class
-//
 
 #include "hud.h"
 #include "cl_util.h"

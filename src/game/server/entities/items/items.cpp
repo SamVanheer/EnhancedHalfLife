@@ -12,13 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
-
-===== items.cpp ========================================================
-
-  functions governing the selection/use of weapons for players
-
-*/
 
 #include "extdll.h"
 #include "util.h"

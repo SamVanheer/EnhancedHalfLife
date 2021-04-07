@@ -12,13 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
-
-===== monsters.cpp ========================================================
-
-  Monster-related utility code
-
-*/
 
 #include "extdll.h"
 #include "util.h"

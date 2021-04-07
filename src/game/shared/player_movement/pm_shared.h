@@ -13,10 +13,6 @@
 *
 ****/
 
-//
-// pm_shared.h
-//
-
 #pragma once
 
 struct playermove_t;

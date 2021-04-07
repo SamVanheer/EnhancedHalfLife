@@ -15,14 +15,6 @@
 // Robin, 4-22-98: Moved set_suicide_frame() here from player.cpp to allow us to 
 //				   have one without a hardcoded player.mdl in tf_client.cpp
 
-/*
-
-===== client.cpp ========================================================
-
-  client/server game specific stuff
-
-*/
-
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"

@@ -5,11 +5,13 @@
 // $NoKeywords: $
 //=============================================================================
 
-// Camera.h  --  defines and such for a 3rd person camera
-// NOTE: must include quakedef.h first
-
-
 #pragma once
+
+/**
+*	@file
+* 
+*	defines and such for a 3rd person camera
+*/
 
 // pitch, yaw, dist
 extern Vector cam_ofs;

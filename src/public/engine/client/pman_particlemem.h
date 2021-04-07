@@ -11,8 +11,9 @@ struct visibleparticles_t
 	CCoreTriangleEffect *pVisibleParticle;
 };
 
-//---------------------------------------------------------------------------
-// Memory block record.
+/**
+*	@brief Memory block record.
+*/
 class MemoryBlock
 {
 private:
@@ -132,7 +133,9 @@ private:
 typedef std::vector<MemoryBlock *> VectorOfMemoryBlocks;
 typedef VectorOfMemoryBlocks::iterator MemoryBlockIterator;
 
-// Mini memory manager - singleton.
+/**
+*	@brief Mini memory manager - singleton.
+*/
 class CMiniMem
 {
 private:

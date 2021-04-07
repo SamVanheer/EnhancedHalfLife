@@ -12,9 +12,7 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// leech - basic little swimming monster
-//=========================================================
+
 //
 // UNDONE:
 // DONE:Steering force model for attack
@@ -68,7 +66,9 @@
 #include "effects.h"
 #endif
 
-
+/**
+*	@brief basic little swimming monster
+*/
 class CLeech : public CBaseMonster
 {
 public:

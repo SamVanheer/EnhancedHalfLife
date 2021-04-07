@@ -12,9 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// Agrunt - Dominant, warlike alien grunt monster
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"
@@ -68,6 +65,9 @@ int iAgruntMuzzleFlash;
 
 #define		AGRUNT_MELEE_DIST	100
 
+/**
+*	@brief Dominant, warlike alien grunt monster
+*/
 class CAGrunt : public CSquadMonster
 {
 public:

@@ -12,9 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// barnacle - stationary ceiling mounted 'fishing' monster
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"
@@ -31,6 +28,9 @@
 //=========================================================
 #define	BARNACLE_AE_PUKEGIB	2
 
+/**
+*	@brief stationary ceiling mounted 'fishing' monster
+*/
 class CBarnacle : public CBaseMonster
 {
 public:

@@ -5,8 +5,6 @@
 // $NoKeywords: $
 //=============================================================================
 
-// pm_movevars.h
-
 #pragma once
 
 // movevars_t                  // Physics variables.

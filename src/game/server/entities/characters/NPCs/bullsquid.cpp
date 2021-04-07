@@ -12,9 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// bullsquid - big, spotty tentacle-mouthed meanie.
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"
@@ -186,6 +183,9 @@ void CSquidSpit :: Touch ( CBaseEntity *pOther )
 #define		BSQUID_AE_HOP		( 5 )
 #define		BSQUID_AE_THROW		( 6 )
 
+/**
+*	@brief big, spotty tentacle-mouthed meanie.
+*/
 class CBullsquid : public CBaseMonster
 {
 public:

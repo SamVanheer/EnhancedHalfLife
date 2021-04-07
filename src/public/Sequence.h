@@ -11,9 +11,6 @@
 typedef unsigned char byte;
 #endif
 
-//---------------------------------------------------------------------------
-// client_textmessage_t
-//---------------------------------------------------------------------------
 struct client_textmessage_t
 {
 	int		effect;
@@ -29,13 +26,9 @@ struct client_textmessage_t
 	const char *pMessage;
 };
 
-
-//--------------------------------------------------------------------------
-// sequenceDefaultBits_e
-//	
-// Enumerated list of possible modifiers for a command.  This enumeration
-// is used in a bitarray controlling what modifiers are specified for a command.
-//---------------------------------------------------------------------------
+/**
+*	@brief Enumerated list of possible modifiers for a command. This enumeration is used in a bitarray controlling what modifiers are specified for a command.
+*/
 enum sequenceModifierBits
 {
 	SEQUENCE_MODIFIER_EFFECT_BIT		= (1 << 1),
@@ -51,12 +44,9 @@ enum sequenceModifierBits
 	SEQUENCE_MODIFIER_TEXTCHANNEL_BIT	= (1 << 11),
 };
 
-
-//---------------------------------------------------------------------------
-// sequenceCommandEnum_e
-// 
-// Enumerated sequence command types.
-//---------------------------------------------------------------------------
+/**
+*	@brief Enumerated sequence command types.
+*/
 enum sequenceCommandEnum
 {
 	SEQUENCE_COMMAND_ERROR = -1,
@@ -86,24 +76,18 @@ enum sequenceCommandEnum
 	SEQUENCE_MODIFIER_TEXTCHANNEL,
 };
 
-
-//---------------------------------------------------------------------------
-// sequenceCommandType_e
-// 
-// Typeerated sequence command types.
-//---------------------------------------------------------------------------
+/**
+*	@brief Typeerated sequence command types.
+*/
 enum sequenceCommandType
 {
 	SEQUENCE_TYPE_COMMAND,
 	SEQUENCE_TYPE_MODIFIER,
 };
 
-
-//---------------------------------------------------------------------------
-// sequenceCommandMapping_s
-// 
-// A mapping of a command enumerated-value to its name.
-//---------------------------------------------------------------------------
+/**
+*	@brief A mapping of a command enumerated-value to its name.
+*/
 struct sequenceCommandMapping
 {
 	sequenceCommandEnum	commandEnum;
@@ -111,13 +95,9 @@ struct sequenceCommandMapping
 	sequenceCommandType	commandType;
 };
 
-
-//---------------------------------------------------------------------------
-// sequenceCommandLine_s
-// 
-// Structure representing a single command (usually 1 line) from a
-//	.SEQ file entry.
-//---------------------------------------------------------------------------
+/**
+*	@brief Structure representing a single command (usually 1 line) from a .SEQ file entry.
+*/
 struct sequenceCommandLine
 {
 	int						commandType;		// Specifies the type of command
@@ -135,13 +115,9 @@ struct sequenceCommandLine
 	sequenceCommandLine*	nextCommandLine;	// Next command (linked list)
 };
 
-
-//---------------------------------------------------------------------------
-// sequenceEntry_s
-// 
-// Structure representing a single command (usually 1 line) from a
-//	.SEQ file entry.
-//---------------------------------------------------------------------------
+/**
+*	@brief Structure representing a single command (usually 1 line) from a .SEQ file entry.
+*/
 struct sequenceEntry
 {
 	char*					fileName;		// Name of sequence file without .SEQ extension
@@ -151,14 +127,11 @@ struct sequenceEntry
 	qboolean				isGlobal;		// Is entry retained over level transitions?
 };
 
-
-
-//---------------------------------------------------------------------------
-// sentenceEntry_s
-// Structure representing a single sentence of a group from a .SEQ
-// file entry.  Sentences are identical to entries in sentences.txt, but
-// can be unique per level and are loaded/unloaded with the level.
-//---------------------------------------------------------------------------
+/**
+*	@brief Structure representing a single sentence of a group from a .SEQ file entry.
+*
+*	Sentences are identical to entries in sentences.txt, but can be unique per level and are loaded/unloaded with the level.
+*/
 struct sentenceEntry
 {
 	char*					data;			// sentence data (ie "We have hostiles" )
@@ -167,13 +140,12 @@ struct sentenceEntry
 	unsigned int			index;			// this entry's position in the file.
 };
 
-//--------------------------------------------------------------------------
-// sentenceGroupEntry_s
-// Structure representing a group of sentences found in a .SEQ file.
-// A sentence group is defined by all sentences with the same name, ignoring
-// the number at the end of the sentence name.  Groups enable a sentence
-// to be picked at random across a group.
-//--------------------------------------------------------------------------
+/**
+*	@brief Structure representing a group of sentences found in a .SEQ file.
+*
+*	A sentence group is defined by all sentences with the same name, ignoring the number at the end of the sentence name.
+*	Groups enable a sentence to be picked at random across a group.
+*/
 struct sentenceGroupEntry
 {
 	char*					groupName;		// name of the group (ie CT_ALERT )
@@ -182,9 +154,6 @@ struct sentenceGroupEntry
 	sentenceGroupEntry*		nextEntry;		// next loaded group
 };
 
-//---------------------------------------------------------------------------
-// Function declarations
-//---------------------------------------------------------------------------
 sequenceEntry* SequenceGet( const char* fileName, const char* entryName );
 void Sequence_ParseFile( const char* fileName, qboolean isGlobal );
 void Sequence_OnLevelLoad( const char* mapName );

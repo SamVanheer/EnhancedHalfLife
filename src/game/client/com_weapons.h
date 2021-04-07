@@ -5,10 +5,13 @@
 // $NoKeywords: $
 //=============================================================================
 
-// com_weapons.h
-// Shared weapons common function prototypes
-
 #pragma once
+
+/**
+*	@file
+* 
+*	Shared weapons common function prototypes
+*/
 
 #include "Exports.h"
 

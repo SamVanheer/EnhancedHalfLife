@@ -12,12 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== subs.cpp ========================================================
-
-  frequently used global functions
-
+/**
+*	@file
+* 
+*	frequently used global functions
 */
 
 #include "extdll.h"

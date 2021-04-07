@@ -12,11 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// Health.cpp
-//
-// implementation of CHudHealth class
-//
 
 #include "stdio.h"
 #include "stdlib.h"

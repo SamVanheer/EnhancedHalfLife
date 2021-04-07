@@ -12,9 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// teamplay_gamerules.cpp
-//
+
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"

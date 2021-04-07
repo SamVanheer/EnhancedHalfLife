@@ -12,9 +12,7 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// monster template
-//=========================================================
+
 // UNDONE: Holster weapon?
 
 #include	"extdll.h"

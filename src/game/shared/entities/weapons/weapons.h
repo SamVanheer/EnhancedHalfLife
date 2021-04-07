@@ -15,6 +15,12 @@
 
 #pragma once
 
+/**
+*	@file
+*
+*	functions governing the selection/use of weapons for players
+*/
+
 #include "effects.h"
 
 class CBasePlayer;

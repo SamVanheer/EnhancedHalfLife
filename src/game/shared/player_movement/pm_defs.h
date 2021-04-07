@@ -12,7 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-// pm_defs.h
 
 #pragma once
 

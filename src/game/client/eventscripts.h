@@ -5,8 +5,6 @@
 // $NoKeywords: $
 //=============================================================================
 
-// eventscripts.h
-
 #pragma once
 
 struct cl_entity_t;

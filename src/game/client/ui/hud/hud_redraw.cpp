@@ -12,9 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// hud_redraw.cpp
-//
+
 #include "hud.h"
 #include "cl_util.h"
 

@@ -12,14 +12,9 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//=========================================================
-// GameRules
-//=========================================================
 
 #pragma once
 
-//#include "weapons.h"
-//#include "items.h"
 class CBasePlayerItem;
 class CBasePlayer;
 class CItem;

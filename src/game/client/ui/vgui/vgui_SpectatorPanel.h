@@ -1,7 +1,3 @@
-// vgui_SpectatorPanel.h: interface for the SpectatorPanel class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #pragma once
 
 #include <VGUI_Panel.h>

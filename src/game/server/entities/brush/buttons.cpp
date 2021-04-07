@@ -12,12 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== buttons.cpp ========================================================
-
-  button-related code
-
+/**
+*	@file
+* 
+*	button-related code
 */
 
 #include "extdll.h"

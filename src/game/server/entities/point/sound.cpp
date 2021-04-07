@@ -12,9 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//=========================================================
-// sound.cpp 
-//=========================================================
 
 #include "extdll.h"
 #include "util.h"

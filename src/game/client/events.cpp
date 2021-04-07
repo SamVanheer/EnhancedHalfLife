@@ -10,12 +10,8 @@
 
 void Game_HookEvents();
 
-/*
-===================
-EV_HookEvents
-
-See if game specific code wants to hook any events.
-===================
+/**
+*	@brief See if game specific code wants to hook any events.
 */
 void EV_HookEvents()
 {

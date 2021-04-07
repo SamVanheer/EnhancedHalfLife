@@ -9,12 +9,6 @@
 
 struct entity_state_t;
 
-/*
-====================
-CStudioModelRenderer
-
-====================
-*/
 class CStudioModelRenderer
 {
 public:

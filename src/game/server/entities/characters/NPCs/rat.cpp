@@ -12,9 +12,6 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-//=========================================================
-// rat - environmental monster
-//=========================================================
 
 #include	"extdll.h"
 #include	"util.h"
@@ -26,6 +23,9 @@
 // Monster's Anim Events Go Here
 //=========================================================
 
+/**
+*	@brief environmental monster
+*/
 class CRat : public CBaseMonster
 {
 public:

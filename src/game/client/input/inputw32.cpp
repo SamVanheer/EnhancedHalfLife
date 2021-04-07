@@ -5,8 +5,12 @@
 // $NoKeywords: $
 //=============================================================================
 
-// in_win.c -- windows 95 mouse and joystick code
-// 02/21/97 JCB Added extended DirectInput code to support external controllers.
+/**
+*	@file
+* 
+*	windows 95 mouse and joystick code
+*	02/21/97 JCB Added extended DirectInput code to support external controllers.
+*/
 
 #include "hud.h"
 #include "cl_util.h"

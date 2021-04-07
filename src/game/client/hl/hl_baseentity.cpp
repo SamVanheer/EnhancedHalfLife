@@ -13,14 +13,14 @@
 *
 ****/
 
-/*
-==========================
-This file contains "stubs" of class member implementations so that we can predict certain
- weapons client side.  From time to time you might find that you need to implement part of the
- these functions.  If so, cut it from here, paste it in hl_weapons.cpp or somewhere else and
- add in the functionality you need.
-==========================
+/**
+*	@file
+* 
+*	This file contains "stubs" of class member implementations so that we can predict certain weapons client side.
+*	From time to time you might find that you need to implement part of the these functions.
+*	If so, cut it from here, paste it in hl_weapons.cpp or somewhere else and add in the functionality you need.
 */
+
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"

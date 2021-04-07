@@ -12,21 +12,18 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-//  cl_dll.h
-//
-
 #pragma once
 
-// 4-23-98  JOHN
-
-//
-//  This DLL is linked by the client when they first initialize.
-// This DLL is responsible for the following tasks:
-//		- Loading the HUD graphics upon initialization
-//		- Drawing the HUD graphics every frame
-//		- Handling the custum HUD-update packets
-//
+/**
+*	@file
+*
+*	This DLL is linked by the client when they first initialize.
+*	This DLL is responsible for the following tasks:
+*		- Loading the HUD graphics upon initialization
+*		- Drawing the HUD graphics every frame
+*		- Handling the custum HUD-update packets
+*	4-23-98  JOHN
+*/
 
 #include "Platform.h"
 

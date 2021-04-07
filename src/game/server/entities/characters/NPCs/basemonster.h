@@ -15,9 +15,9 @@
 
 #pragma once
 
-//
-// generic Monster
-//
+/**
+*	@brief generic Monster
+*/
 class CBaseMonster : public CBaseToggle
 {
 private:

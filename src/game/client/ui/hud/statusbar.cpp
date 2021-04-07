@@ -12,12 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// statusbar.cpp
-//
-// generic text status bar, set by game dll
-// runs across bottom of screen
-//
 
 #include "hud.h"
 #include "cl_util.h"

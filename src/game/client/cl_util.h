@@ -12,9 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// cl_util.h
-//
 
 #pragma once
 

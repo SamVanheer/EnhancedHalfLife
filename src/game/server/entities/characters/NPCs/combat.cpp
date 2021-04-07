@@ -12,12 +12,11 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
 
-===== combat.cpp ========================================================
-
-  functions dealing with damage infliction & death
-
+/**
+*	@file
+* 
+*	functions dealing with damage infliction & death
 */
 
 #include "extdll.h"

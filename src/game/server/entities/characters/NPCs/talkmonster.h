@@ -93,6 +93,9 @@ enum
 	LAST_TALKMONSTER_TASK,			// MUST be last
 };
 
+/**
+*	@brief Talking monster base class. Used for scientists and barneys
+*/
 class CTalkMonster : public CBaseMonster
 {
 public:

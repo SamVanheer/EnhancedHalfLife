@@ -12,11 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-// battery.cpp
-//
-// implementation of CHudBattery class
-//
 
 #include "hud.h"
 #include "cl_util.h"

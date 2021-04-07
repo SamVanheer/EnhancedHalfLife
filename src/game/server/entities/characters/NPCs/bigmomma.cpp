@@ -14,9 +14,6 @@
 ****/
 #if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 
-//=========================================================
-// monster template
-//=========================================================
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"

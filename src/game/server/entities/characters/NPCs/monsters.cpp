@@ -12,12 +12,11 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-/*
 
-===== monsters.cpp ========================================================
-
-  Monster-related utility code
-
+/**
+*	@file
+* 
+*	Monster-related utility code
 */
 
 #include "extdll.h"

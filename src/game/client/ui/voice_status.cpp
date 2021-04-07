@@ -6,6 +6,7 @@
 //=============================================================================
 
 // There are hud.h's coming out of the woodwork so this ensures that we get the right one.
+//TODO: clean this up
 #if defined(THREEWAVE) || defined(DMC_BUILD)
 	#include "../dmc/cl_dll/hud.h"
 #elif defined(CSTRIKE)

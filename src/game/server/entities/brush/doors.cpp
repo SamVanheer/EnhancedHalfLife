@@ -12,11 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/*
-
-===== doors.cpp ========================================================
-
-*/
 
 #include "extdll.h"
 #include "util.h"
