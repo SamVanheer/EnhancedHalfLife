@@ -22,8 +22,6 @@
 #include "activity.h"
 #endif
 
-#include "activitymap.h"
-
 #ifndef ANIMATION_H
 #include "animation.h"
 #endif

@@ -34,7 +34,6 @@ target_compile_definitions(hl PRIVATE
 
 target_sources(hl PRIVATE
 	activity.h
-	activitymap.h
 	decals.cpp
 	decals.hpp
 	extdll.h
