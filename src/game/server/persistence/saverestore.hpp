@@ -49,6 +49,7 @@ public:
 	CSave( SAVERESTOREDATA *pdata ) : CSaveRestoreBuffer( pdata ) {};
 
 	void	WriteShort( const char *pname, const short *value, int count );
+	void	WriteBoolean(const char* pname, const bool* value, int count);
 	void	WriteInt( const char *pname, const int *value, int count );		// Save an int
 	void	WriteFloat( const char *pname, const float *value, int count );	// Save a float
 	void	WriteTime( const char *pname, const float *value, int count );	// Save a float (timevalue)
