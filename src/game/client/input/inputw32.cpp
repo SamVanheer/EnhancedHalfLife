@@ -116,13 +116,13 @@ enum _ControlList
 
 
 
-DWORD	dwAxisMap[ JOY_MAX_AXES ];
-DWORD	dwControlMap[ JOY_MAX_AXES ];
+unsigned int	dwAxisMap[ JOY_MAX_AXES ];
+int	dwControlMap[ JOY_MAX_AXES ];
 int	pdwRawValue[ JOY_MAX_AXES ];
-DWORD		joy_oldbuttonstate, joy_oldpovstate;
+unsigned int		joy_oldbuttonstate, joy_oldpovstate;
 
 int			joy_id;
-DWORD		joy_numbuttons;
+unsigned int		joy_numbuttons;
 
 SDL_GameController *s_pJoystick = NULL;
 
@@ -760,7 +760,7 @@ void Joy_AdvancedUpdate_f ()
 	// called once by IN_ReadJoystick and by user whenever an update is needed
 	// cvars are now available
 	int	i;
-	DWORD dwTemp;
+	unsigned int dwTemp;
 
 	// initialize all the maps
 	for (i = 0; i < JOY_MAX_AXES; i++)
@@ -789,22 +789,22 @@ void Joy_AdvancedUpdate_f ()
 
 		// advanced initialization here
 		// data supplied by user via joy_axisn cvars
-		dwTemp = (DWORD) joy_advaxisx->value;
+		dwTemp = (unsigned int) joy_advaxisx->value;
 		dwAxisMap[JOY_AXIS_X] = dwTemp & 0x0000000f;
 		dwControlMap[JOY_AXIS_X] = dwTemp & JOY_RELATIVE_AXIS;
-		dwTemp = (DWORD) joy_advaxisy->value;
+		dwTemp = (unsigned int) joy_advaxisy->value;
 		dwAxisMap[JOY_AXIS_Y] = dwTemp & 0x0000000f;
 		dwControlMap[JOY_AXIS_Y] = dwTemp & JOY_RELATIVE_AXIS;
-		dwTemp = (DWORD) joy_advaxisz->value;
+		dwTemp = (unsigned int) joy_advaxisz->value;
 		dwAxisMap[JOY_AXIS_Z] = dwTemp & 0x0000000f;
 		dwControlMap[JOY_AXIS_Z] = dwTemp & JOY_RELATIVE_AXIS;
-		dwTemp = (DWORD) joy_advaxisr->value;
+		dwTemp = (unsigned int) joy_advaxisr->value;
 		dwAxisMap[JOY_AXIS_R] = dwTemp & 0x0000000f;
 		dwControlMap[JOY_AXIS_R] = dwTemp & JOY_RELATIVE_AXIS;
-		dwTemp = (DWORD) joy_advaxisu->value;
+		dwTemp = (unsigned int) joy_advaxisu->value;
 		dwAxisMap[JOY_AXIS_U] = dwTemp & 0x0000000f;
 		dwControlMap[JOY_AXIS_U] = dwTemp & JOY_RELATIVE_AXIS;
-		dwTemp = (DWORD) joy_advaxisv->value;
+		dwTemp = (unsigned int) joy_advaxisv->value;
 		dwAxisMap[JOY_AXIS_V] = dwTemp & 0x0000000f;
 		dwControlMap[JOY_AXIS_V] = dwTemp & JOY_RELATIVE_AXIS;
 	}
@@ -825,7 +825,7 @@ void IN_Commands ()
 		return;
 	}
 
-	DWORD	buttonstate, povstate;
+	unsigned int	buttonstate, povstate;
 	
 	// loop through the joystick buttons
 	// key a joystick event or auxillary event for higher number buttons for each state change
