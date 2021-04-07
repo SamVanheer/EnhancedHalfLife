@@ -16,29 +16,13 @@
 #include "pm_movevars.h"
 #include "pm_shared.h"
 #include "pm_defs.h"
+#include "pm_debug.h"
 #include "event_api.h"
 #include "pmtrace.h"
 #include "screenfade.h"
 #include "shake.h"
 #include "hltv.h"
 #include "Exports.h"
-
-//TODO: clean up these forward declarations
-	int CL_IsThirdPerson();
-	void CL_CameraOffset( float *ofs );
-
-	void DLLEXPORT V_CalcRefdef( ref_params_t *pparams );
-
-	void PM_ParticleLine( float *start, float *end, int pcolor, float life, float vert);
-	int		PM_GetVisEntInfo( int ent );
-	int		PM_GetPhysEntInfo( int ent );
-
-	extern float	vJumpOrigin[3];
-	extern float	vJumpAngles[3];
-
-
-void V_DropPunchAngle ( float frametime, float *ev_punchangle );
-
 #include "r_studioint.h"
 #include "com_model.h"
 #include "kbutton.h"
@@ -99,63 +83,15 @@ cvar_t	v_ipitch_level		= {"v_ipitch_level", "0.3", 0, 0.3};
 
 float	v_idlescale;  // used by TFC for concussion grenade effect
 
-//=============================================================================
-/*
-void V_NormalizeAngles( Vector& angles )
+void V_DropPunchAngle(float frametime, float* ev_punchangle)
 {
-	int i;
-	// Normalize angles
-	for ( i = 0; i < 3; i++ )
-	{
-		if ( angles[i] > 180.0 )
-		{
-			angles[i] -= 360.0;
-		}
-		else if ( angles[i] < -180.0 )
-		{
-			angles[i] += 360.0;
-		}
-	}
+	float	len;
+
+	len = VectorNormalize(ev_punchangle);
+	len -= (10.0 + len * 0.5) * frametime;
+	len = V_max(len, 0.0);
+	VectorScale(ev_punchangle, len, ev_punchangle);
 }
-
-/*
-===================
-V_InterpolateAngles
-
-Interpolate Euler angles.
-FIXME:  Use Quaternions to avoid discontinuities
-Frac is 0.0 to 1.0 ( i.e., should probably be clamped, but doesn't have to be )
-===================
-
-void V_InterpolateAngles( float *start, float *end, float *output, float frac )
-{
-	int i;
-	float ang1, ang2;
-	float d;
-	
-	V_NormalizeAngles( start );
-	V_NormalizeAngles( end );
-
-	for ( i = 0 ; i < 3 ; i++ )
-	{
-		ang1 = start[i];
-		ang2 = end[i];
-
-		d = ang2 - ang1;
-		if ( d > 180 )
-		{
-			d -= 360;
-		}
-		else if ( d < -180 )
-		{	
-			d += 360;
-		}
-
-		output[i] = ang1 + d * frac;
-	}
-
-	V_NormalizeAngles( output );
-} */
 
 // Quakeworld bob code, this fixes jitters in the mutliplayer since the clock (pparams->time) isn't quite linear
 float V_CalcBob ( ref_params_t *pparams )
@@ -839,6 +775,7 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 	v_origin = pparams->vieworg;
 }
 
+//TODO: refactor and move to mathlib.cpp
 void V_SmoothInterpolateAngles( float * startAngle, float * endAngle, float * finalAngle, float degreesPerSec )
 {
 	float absd,frac,d,threshhold;
@@ -1644,22 +1581,6 @@ void DLLEXPORT V_CalcRefdef( ref_params_t* pparams )
 	}
 #endif
 */
-}
-
-/*
-=============
-V_DropPunchAngle
-
-=============
-*/
-void V_DropPunchAngle ( float frametime, float *ev_punchangle )
-{
-	float	len;
-	
-	len = VectorNormalize ( ev_punchangle );
-	len -= (10.0 + len * 0.5) * frametime;
-	len = V_max( len, 0.0 );
-	VectorScale ( ev_punchangle, len, ev_punchangle );
 }
 
 /*

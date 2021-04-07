@@ -16,6 +16,7 @@
 #include "hud.h"
 #include "cl_util.h"
 #include "parsemsg.h"
+#include "vgui_TeamFortressViewport.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -29,7 +30,6 @@ DECLARE_MESSAGE( m_StatusBar, StatusValue );
 #define STATUSBAR_ID_LINE		1
 #endif
 
-float *GetClientColor( int clientIndex );
 extern float g_ColorYellow[3];
 
 int CHudStatusBar :: Init()

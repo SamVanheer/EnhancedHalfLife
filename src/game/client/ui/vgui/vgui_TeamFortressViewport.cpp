@@ -77,7 +77,6 @@ int g_iUser3 = 0;
 
 void IN_ResetMouse();
 CMenuPanel *CMessageWindowPanel_Create( const char *szMOTD, const char *szTitle, int iShadeFullscreen, int iRemoveMe, int x, int y, int wide, int tall );
-float * GetClientColor( int clientIndex );
 
 using namespace vgui;
 

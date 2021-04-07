@@ -21,6 +21,9 @@ void PM_Init(playermove_t* ppmove );
 void PM_Move (playermove_t* ppmove, int server );
 char PM_FindTextureType( char *name );
 
+int PM_GetVisEntInfo(int ent);
+int PM_GetPhysEntInfo(int ent);
+
 // Spectator Movement modes (stored in pev->iuser1, so the physics code can get at them)
 #define OBS_NONE				0
 #define OBS_CHASE_LOCKED		1
@@ -29,3 +32,10 @@ char PM_FindTextureType( char *name );
 #define OBS_IN_EYE				4
 #define OBS_MAP_FREE			5
 #define OBS_MAP_CHASE			6
+
+#ifdef CLIENT_DLL
+// Spectator Mode
+inline int		iJumpSpectator;
+inline float	vJumpOrigin[3];
+inline float	vJumpAngles[3];
+#endif

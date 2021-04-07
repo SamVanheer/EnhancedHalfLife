@@ -39,14 +39,13 @@
 
 #include "r_studioint.h"
 #include "com_model.h"
+#include "view.h"
 
 extern engine_studio_api_t IEngineStudio;
 
 static int tracerCount[ 32 ];
 
 #include "pm_shared.h"
-
-void V_PunchAxis( int axis, float punch );
 
 extern cvar_t *cl_lw;
 

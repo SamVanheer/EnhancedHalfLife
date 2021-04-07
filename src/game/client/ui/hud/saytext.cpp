@@ -23,8 +23,6 @@
 
 #include "vgui_TeamFortressViewport.h"
 
-float *GetClientColor( int clientIndex );
-
 #define MAX_LINES	5
 #define MAX_CHARS_PER_LINE	256  /* it can be less than this, depending on char size */
 
