@@ -76,7 +76,7 @@ struct entvars_t
 	float		impacttime;
 	float		starttime;
 
-	int			fixangle;		// 0:nothing, 1:force view angles, 2:add avelocity
+	int			fixangle;		// FIXANGLE_NONE:nothing, FIXANGLE_ABSOLUTE:force view angles, FIXANGLE_RELATIVE:add avelocity
 	float		idealpitch;
 	float		pitch_speed;
 	float		ideal_yaw;

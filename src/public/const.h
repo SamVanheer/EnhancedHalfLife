@@ -645,6 +645,11 @@
 #define SF_TRAIN_START_ON		4		// Train is initially moving
 #define SF_TRAIN_PASSABLE		8		// Train is not solid -- used to make water trains
 
+// view angle update types for fixangle
+#define FIXANGLE_NONE			0
+#define FIXANGLE_ABSOLUTE		1
+#define FIXANGLE_RELATIVE		2
+
 // buttons
 #include "in_buttons.h"
 

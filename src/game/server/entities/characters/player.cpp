@@ -1317,7 +1317,7 @@ void CBasePlayer::StartDeathCam()
 
 	m_afPhysicsFlags |= PFLAG_OBSERVER;
 	pev->view_ofs = g_vecZero;
-	pev->fixangle = true;
+	pev->fixangle = FIXANGLE_ABSOLUTE;
 	pev->solid = SOLID_NOT;
 	pev->takedamage = DAMAGE_NO;
 	pev->movetype = MOVETYPE_NONE;
@@ -1364,7 +1364,7 @@ void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle )
 	pev->effects = EF_NODRAW;
 	pev->view_ofs = g_vecZero;
 	pev->angles = pev->v_angle = vecViewAngle;
-	pev->fixangle = true;
+	pev->fixangle = FIXANGLE_ABSOLUTE;
 	pev->solid = SOLID_NOT;
 	pev->takedamage = DAMAGE_NO;
 	pev->movetype = MOVETYPE_NONE;
@@ -2943,7 +2943,7 @@ int CBasePlayer::Restore( CRestore &restore )
 	pev->v_angle.z = 0;	// Clear out roll
 	pev->angles = pev->v_angle;
 
-	pev->fixangle = true;           // turn this way immediately
+	pev->fixangle = FIXANGLE_ABSOLUTE;           // turn this way immediately
 
 // Copied from spawn() for now
 	m_bloodColor	= BLOOD_COLOR_RED;

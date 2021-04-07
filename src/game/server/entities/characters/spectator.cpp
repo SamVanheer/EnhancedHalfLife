@@ -100,7 +100,7 @@ void CBaseSpectator::SpectatorImpulseCommand()
 		pGoal = pCurrentGoal;
 		UTIL_SetOrigin( pev, pGoal->v.origin );
 		pev->angles = pGoal->v.angles;
-		pev->fixangle = FALSE; //TODO: define constants for fixangle
+		pev->fixangle = FIXANGLE_NONE;
 		break;
 	default:
 		ALERT(at_console, "Unknown spectator impulse\n");
