@@ -4,6 +4,13 @@
 
 const char* CStringPool::Allocate(const char* string)
 {
+	//Treat null pointers as empty strings
+	//TODO: need to warn about this!
+	if (!string)
+	{
+		return "";
+	}
+
 	const std::string_view source{string};
 
 	if (auto it = _pool.find(source); it != _pool.end())
