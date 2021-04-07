@@ -153,6 +153,14 @@ float Distance(const float* v1, const float* v2);
 
 void ConcatTransforms(float in1[3][4], float in2[3][4], float out[3][4]);
 
+void	AngleQuaternion(float* angles, vec4_t quaternion);
+
+void	QuaternionSlerp(vec4_t p, vec4_t q, float t, vec4_t qt);
+
+void	QuaternionMatrix(vec4_t quaternion, float(*matrix)[4]);
+
+void	MatrixCopy(float in[3][4], float out[3][4]);
+
 #define BOX_ON_PLANE_SIDE(emins, emaxs, p)	\
 	(((p)->type < 3)?						\
 	(										\

@@ -108,8 +108,6 @@ target_sources(client PRIVATE
 	rendering/GameStudioModelRenderer.h
 	rendering/StudioModelRenderer.cpp
 	rendering/StudioModelRenderer.h
-	rendering/studio_util.cpp
-	rendering/studio_util.h
 	rendering/tri.cpp
 	rendering/tri.h
 	ui/voice_status.cpp

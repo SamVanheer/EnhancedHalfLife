@@ -23,7 +23,6 @@
 #include "com_model.h"
 #include "demo_api.h"
 #include "event_api.h"
-#include "studio_util.h"
 #include "screenfade.h"
 
 

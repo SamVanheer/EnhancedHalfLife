@@ -18,7 +18,6 @@
 #include <string.h>
 #include <memory.h>
 
-#include "studio_util.h"
 #include "r_studioint.h"
 
 #include "StudioModelRenderer.h"
