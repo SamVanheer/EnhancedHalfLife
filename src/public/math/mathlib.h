@@ -169,6 +169,8 @@ void	QuaternionMatrix(vec4_t quaternion, float(*matrix)[4]);
 
 void	MatrixCopy(float in[3][4], float out[3][4]);
 
+float MaxAngleBetweenAngles(float* a1, float* a2);
+
 #define BOX_ON_PLANE_SIDE(emins, emaxs, p)	\
 	(((p)->type < 3)?						\
 	(										\

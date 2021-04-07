@@ -1067,34 +1067,6 @@ void V_GetSingleTargetCam(cl_entity_t * ent1, float * angle, float * origin)
 	V_GetChaseOrigin( angle, newOrigin, distance, origin );
 }
 
-float MaxAngleBetweenAngles(  float * a1, float * a2 )
-{
-	float d, maxd = 0.0f;
-
-	NormalizeAngles( a1 );
-	NormalizeAngles( a2 );
-
-	for ( int i = 0 ; i < 3 ; i++ )
-	{
-		d = a2[i] - a1[i];
-		if ( d > 180 )
-		{
-			d -= 360;
-		}
-		else if ( d < -180 )
-		{	
-			d += 360;
-		}
-
-		d = fabs(d);
-
-		if ( d > maxd )
-			maxd=d;
-	}
-
-	return maxd;
-}
-
 void V_GetDoubleTargetsCam(cl_entity_t	 * ent1, cl_entity_t * ent2,float * angle, float * origin)
 {
 	float newAngle[3]; float newOrigin[3]; float tempVec[3];
