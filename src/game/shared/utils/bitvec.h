@@ -5,17 +5,11 @@
 // $NoKeywords: $
 //=============================================================================
 
-#ifndef BITVEC_H
-#define BITVEC_H
-#ifdef _WIN32
 #pragma once
-#endif
-
 
 #include "archtypes.h"     // DAL
 #include <assert.h>
 #include <string.h>
-
 
 class CBitVecAccessor
 {
@@ -175,7 +169,3 @@ inline void CBitVec<NUM_BITS>::SetDWord(int i, uint32 val)
 	assert(i >= 0 && i < NUM_DWORDS);
 	m_DWords[i] = val;
 }
-
-
-#endif // BITVEC_H
-

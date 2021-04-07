@@ -5,12 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#ifndef VOICE_LISTBOX_H
-#define VOICE_LISTBOX_H
-#ifdef _WIN32
 #pragma once
-#endif
-
 
 #include "VGUI_Panel.h"
 #include "VGUI_IntChangeSignal.h"
@@ -110,6 +105,3 @@ protected:
 };
 
 }
-
-
-#endif // VOICE_LISTBOX_H

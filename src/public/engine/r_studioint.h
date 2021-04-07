@@ -1,8 +1,4 @@
-#if !defined( R_STUDIOINT_H )
-#define R_STUDIOINT_H
-#if defined( _WIN32 )
 #pragma once
-#endif
 
 struct alight_t;
 struct cache_user_t;
@@ -148,5 +144,3 @@ struct sv_blending_interface_t
 													  int				iBone,
 													  const edict_t		*pEdict );
 };
-
-#endif // R_STUDIOINT_H

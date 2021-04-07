@@ -13,11 +13,8 @@
 *
 ****/
 // netadr.h
-#ifndef NETADR_H
-#define NETADR_H
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 enum netadrtype_t
 {
@@ -36,5 +33,3 @@ struct netadr_t
 	unsigned char	ipx[10];
 	unsigned short	port;
 };
-
-#endif // NETADR_H

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Platform.h"
 
 struct cl_entity_t;

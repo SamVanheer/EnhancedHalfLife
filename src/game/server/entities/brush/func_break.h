@@ -12,8 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#ifndef FUNC_BREAK_H
-#define FUNC_BREAK_H
+
+#pragma once
 
 enum Explosions { expRandom, expDirected};
 enum Materials { matGlass = 0, matWood, matMetal, matFlesh, matCinderBlock, matCeilingTile, matComputer, matUnbreakableGlass, matRocks, matNone, matLastMaterial };
@@ -70,5 +70,3 @@ public:
 	int			m_iszGibModel;
 	int			m_iszSpawnObject;
 };
-
-#endif	// FUNC_BREAK_H

@@ -5,12 +5,9 @@
 // $NoKeywords: $
 //=============================================================================
 
-#if !defined( WRECTH )
-#define WRECTH
+#pragma once
 
 struct wrect_t
 {
 	int				left, right, top, bottom;
 };
-
-#endif

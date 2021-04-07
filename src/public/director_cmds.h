@@ -8,6 +8,8 @@
 // director_cmds.h
 // sub commands for svc_director
 
+#pragma once
+
 #define DRC_ACTIVE				0	// tells client that he's an spectator and will get director command
 #define DRC_STATUS				1	// send status infos about proxy 
 #define DRC_CAMERA				2	// set the actual director camera position
@@ -34,5 +36,3 @@
 #define DRCAPI_SETFOCUS				9	// set the camera which has the input focus
 #define DRCAPI_GETTARGETS			10	// queries engine for player list
 #define DRCAPI_SETVIEWPOINTS		11	// gives engine all waypoints
-
-

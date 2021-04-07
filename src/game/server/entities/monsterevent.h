@@ -12,8 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#ifndef MONSTEREVENT_H
-#define MONSTEREVENT_H
+
+#pragma once
 
 struct MonsterEvent_t
 {
@@ -30,5 +30,3 @@ struct MonsterEvent_t
 #define MONSTER_EVENT_BODYDROP_HEAVY	2002
 
 #define MONSTER_EVENT_SWISHSOUND		2010
-
-#endif		// MONSTEREVENT_H

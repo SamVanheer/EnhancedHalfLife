@@ -12,11 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined ( DEMO_APIH )
-#define DEMO_APIH
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 struct demo_api_t
 {
@@ -27,5 +24,3 @@ struct demo_api_t
 };
 
 extern demo_api_t demoapi;
-
-#endif

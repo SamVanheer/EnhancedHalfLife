@@ -6,8 +6,8 @@
 //=============================================================================
 
 // pm_movevars.h
-#if !defined( PM_MOVEVARSH )
-#define PM_MOVEVARSH
+
+#pragma once
 
 // movevars_t                  // Physics variables.
 
@@ -42,5 +42,3 @@ struct movevars_t
 };
 
 extern movevars_t movevars;
-
-#endif

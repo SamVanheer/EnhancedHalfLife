@@ -13,8 +13,7 @@
 *
 ****/
 // pm_defs.h
-#if !defined( PM_DEFSH )
-#define PM_DEFSH
+
 #pragma once
 
 #include "archtypes.h"     // DAL
@@ -224,5 +223,3 @@ struct playermove_t
 	int				(*PM_TestPlayerPositionEx) (float *pos, pmtrace_t *ptrace, int (*pfnIgnore)( physent_t *pe ) );
 	pmtrace_t*		(*PM_TraceLineEx)( float *start, float *end, int flags, int usehulll, int (*pfnIgnore)( physent_t *pe ) );
 };
-
-#endif

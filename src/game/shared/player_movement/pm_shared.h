@@ -16,8 +16,7 @@
 //
 // pm_shared.h
 //
-#if !defined( PM_SHAREDH )
-#define PM_SHAREDH
+
 #pragma once
 
 struct playermove_t;
@@ -34,5 +33,3 @@ char PM_FindTextureType( char *name );
 #define OBS_IN_EYE				4
 #define OBS_MAP_FREE			5
 #define OBS_MAP_CHASE			6
-
-#endif

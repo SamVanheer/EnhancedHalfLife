@@ -13,15 +13,11 @@
  *
  ****/
 
-#ifndef ENUMS_H
-#define ENUMS_H
+#pragma once
 
 enum netsrc_t
-	{
-		NS_CLIENT,
-		NS_SERVER,
-		NS_MULTICAST	// xxxMO
-	};
-	
-#endif
-
+{
+	NS_CLIENT,
+	NS_SERVER,
+	NS_MULTICAST	// xxxMO
+};

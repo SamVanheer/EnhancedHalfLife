@@ -5,8 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#if !defined ( EV_HLDMH )
-#define EV_HLDMH
+#pragma once
 
 void EV_HLDM_GunshotDecalTrace( pmtrace_t *pTrace, char *decalName );
 void EV_HLDM_DecalGunshot( pmtrace_t *pTrace, int iBulletType );
@@ -39,5 +38,3 @@ extern "C"
 
 	void EV_TrainPitchAdjust(event_args_t* args);
 }
-
-#endif // EV_HLDMH

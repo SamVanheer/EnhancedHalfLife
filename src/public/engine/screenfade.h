@@ -5,11 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#if !defined( SCREENFADEH )
-#define SCREENFADEH
-#ifdef _WIN32
 #pragma once
-#endif
 
 struct screenfade_t
 {
@@ -20,5 +16,3 @@ struct screenfade_t
 	byte		fader, fadeg, fadeb, fadealpha;	// Fade color
 	int			fadeFlags;		// Fading flags
 };
-
-#endif // !SCREENFADEH

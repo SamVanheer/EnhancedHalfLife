@@ -6,11 +6,8 @@
 //=============================================================================
 
 // com_model.h
-#if !defined( COM_MODEL_H )
-#define COM_MODEL_H
-#if defined( _WIN32 )
+
 #pragma once
-#endif
 
 struct msurface_t;
 struct surfcache_t;
@@ -350,5 +347,3 @@ struct player_info_t
 	char hashedcdkey[16];
 	uint64 m_nSteamID;
 };
-
-#endif // #define COM_MODEL_H

@@ -12,11 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined( CON_NPRINTH )
-#define CON_NPRINTH
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,4 +32,3 @@ void Con_NXPrintf(con_nprint_t* info, char *fmt, ... );
 }
 #endif
 
-#endif

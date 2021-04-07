@@ -7,11 +7,8 @@
 
 // com_weapons.h
 // Shared weapons common function prototypes
-#if !defined( COM_WEAPONSH )
-#define COM_WEAPONSH
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 #include "Exports.h"
 
@@ -44,5 +41,3 @@ extern Vector v_angles;
 extern Vector v_client_aimangles;
 extern float g_lastFOV;
 extern local_state_t *g_finalstate;
-
-#endif

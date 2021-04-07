@@ -12,11 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined( STUDIO_EVENTH )
-#define STUDIO_EVENTH
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 struct mstudioevent_t
 {
@@ -25,5 +22,3 @@ struct mstudioevent_t
 	int					type;
 	char				options[64];
 };
-
-#endif // STUDIO_EVENTH

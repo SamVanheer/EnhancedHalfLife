@@ -12,8 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#ifndef CLIENT_H
-#define CLIENT_H
+
+#pragma once
 
 #include "custom.h"
 
@@ -70,5 +70,3 @@ void CreateInstancedBaselines ();
 int	InconsistentFile( const edict_t *player, const char *filename, char *disconnect_message );
 
 int AllowLagCompensation();
-
-#endif		// CLIENT_H

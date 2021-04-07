@@ -12,8 +12,9 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#ifndef CONST_H
-#define CONST_H
+
+#pragma once
+
 //
 // Constants shared by the engine and dlls
 // This header file included by engine files and DLL files.
@@ -763,6 +764,3 @@ struct trace_t
 	edict_t	*ent;			// entity the surface is on
 	int		hitgroup;		// 0 == generic, non zero is specific body part
 };
-
-#endif
-

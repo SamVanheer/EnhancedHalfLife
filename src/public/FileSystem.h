@@ -5,11 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#ifndef FILESYSTEM_H
-#define FILESYSTEM_H
-#ifdef _WIN32
 #pragma once
-#endif
 
 #include "archtypes.h"     // DAL
 #include "interface.h"
@@ -184,5 +180,3 @@ public:
 #define IBaseFileSystem IFileSystem
 
 #define FILESYSTEM_INTERFACE_VERSION "VFileSystem009"
-
-#endif // FILESYSTEM_H

@@ -12,9 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#ifndef ITEMS_H
-#define ITEMS_H
 
+#pragma once
 
 class CItem : public CBaseEntity
 {
@@ -25,5 +24,3 @@ public:
 	void	EXPORT Materialize();
 	virtual bool MyTouch( CBasePlayer *pPlayer ) { return false; }
 };
-
-#endif // ITEMS_H

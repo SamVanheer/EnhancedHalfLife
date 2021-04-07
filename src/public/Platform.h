@@ -13,8 +13,7 @@
 *
 ****/
 
-#ifndef PLATFORM_H
-#define PLATFORM_H
+#pragma once
 
 /**
 *	@file
@@ -91,5 +90,3 @@ typedef unsigned char BYTE;
 #define V_max(a,b)  (((a) > (b)) ? (a) : (b))
 
 #define clamp( val, min, max ) ( ((val) > (max)) ? (max) : ( ((val) < (min)) ? (min) : (val) ) )
-
-#endif //PLATFORM_H

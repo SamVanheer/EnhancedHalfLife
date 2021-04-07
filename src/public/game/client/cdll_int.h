@@ -19,9 +19,9 @@
 // JOHN:  client dll interface declarations
 //
 
-#ifndef CDLL_INT_H
-#define CDLL_INT_H
+#pragma once
 
+//TODO: can probably remove this part since there are no functions declared in this scope
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -104,6 +104,3 @@ struct hud_player_info_t
 #ifdef __cplusplus
 }
 #endif
-
-#endif // CDLL_INT_H
-	

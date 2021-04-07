@@ -12,11 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined( TRIANGLEAPIH )
-#define TRIANGLEAPIH
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 struct model_t;
 
@@ -62,5 +59,3 @@ struct triangleapi_t
 	void		( *FogParams ) ( float flDensity, int iFogSkybox ); // Used with Fog()...sets fog density and whether the fog should be applied to the skybox
 
 };
-
-#endif // !TRIANGLEAPIH

@@ -6,8 +6,8 @@
 //=============================================================================
 
 // eventscripts.h
-#if !defined ( EVENTSCRIPTSH )
-#define EVENTSCRIPTSH
+
+#pragma once
 
 struct cl_entity_t;
 struct event_args_t;
@@ -24,5 +24,3 @@ void EV_CreateTracer( float *start, float *end );
 cl_entity_t* GetEntity( int idx );
 cl_entity_t* GetViewEntity();
 void EV_MuzzleFlash();
-
-#endif // EVENTSCRIPTSH

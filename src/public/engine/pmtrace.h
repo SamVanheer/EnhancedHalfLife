@@ -12,11 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined( PMTRACEH )
-#define PMTRACEH
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 struct pmplane_t
 {
@@ -37,5 +34,3 @@ struct pmtrace_t
 								  // Only run on server.
 	int         hitgroup;
 };
-
-#endif

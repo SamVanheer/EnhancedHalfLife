@@ -12,8 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined( REF_PARAMSH )
-#define REF_PARAMSH
+
+#pragma once
 
 struct movevars_t;
 struct usercmd_t;
@@ -74,5 +74,3 @@ struct ref_params_t
 								// so long in cycles until this value is 0 (multiple views)
 	int		onlyClientDraw;		// if !=0 nothing is drawn by the engine except clientDraw functions
 };
-
-#endif // !REF_PARAMSH

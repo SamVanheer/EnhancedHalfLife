@@ -12,11 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined ( DLIGHTH )
-#define DLIGHTH
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 struct dlight_t
 {
@@ -29,5 +26,3 @@ struct dlight_t
 	int		key;
 	qboolean	dark;			// subtracts light instead of adding
 };
-
-#endif

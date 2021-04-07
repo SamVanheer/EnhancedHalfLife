@@ -12,11 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined ( R_EFXH )
-#define R_EFXH
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 // particle_t
 #if !defined( PARTICLEDEFH )  
@@ -195,5 +192,3 @@ struct efx_api_t
 };
 
 extern efx_api_t efx;
-
-#endif

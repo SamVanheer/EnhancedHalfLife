@@ -12,11 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined( PARTICLEDEFH )
-#define PARTICLEDEFH
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 enum ptype_t 
 {
@@ -54,5 +51,3 @@ struct particle_t
 	// For deathfunc, etc.
 	unsigned char context;
 };
-
-#endif

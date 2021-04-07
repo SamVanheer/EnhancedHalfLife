@@ -12,11 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#if !defined( ENTITY_STATEH )
-#define ENTITY_STATEH
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 // For entityType below
 #define ENTITY_NORMAL		(1<<0)
@@ -187,5 +184,3 @@ struct local_state_t
 	clientdata_t   client;
 	weapon_data_t  weapondata[ 64 ];
 };
-
-#endif // !ENTITY_STATEH

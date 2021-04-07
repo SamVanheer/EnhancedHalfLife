@@ -8,8 +8,7 @@
 *
 ****/
 
-#ifndef __TF_DEFS_H
-#define __TF_DEFS_H
+#pragma once
 
 //===========================================================================
 // OLD OPTIONS.QC
@@ -1382,8 +1381,3 @@ public:
 	void Spawn( void );
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 };
-
-#endif // TF_DEFS_ONLY
-#endif // __TF_DEFS_H
-
-

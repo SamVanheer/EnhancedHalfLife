@@ -5,11 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#if !defined ( STUDIOMODELRENDERER_H )
-#define STUDIOMODELRENDERER_H
-#if defined( _WIN32 )
 #pragma once
-#endif
 
 struct entity_state_t;
 
@@ -187,5 +183,3 @@ public:
 	float			(*m_pbonetransform) [ MAXSTUDIOBONES ][ 3 ][ 4 ];
 	float			(*m_plighttransform)[ MAXSTUDIOBONES ][ 3 ][ 4 ];
 };
-
-#endif // STUDIOMODELRENDERER_H

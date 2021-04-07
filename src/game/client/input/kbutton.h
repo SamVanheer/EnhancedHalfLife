@@ -5,8 +5,6 @@
 // $NoKeywords: $
 //=============================================================================
 
-#if !defined( KBUTTONH )
-#define KBUTTONH
 #pragma once
 
 struct kbutton_t
@@ -14,5 +12,3 @@ struct kbutton_t
 	int		down[2];		// key nums holding it down
 	int		state;			// low bit is down state
 };
-
-#endif // !KBUTTONH
