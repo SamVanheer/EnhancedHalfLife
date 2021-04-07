@@ -716,12 +716,11 @@ void CSave::BufferData(const char* pdata, int size)
 
 int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount, int startField, int size, char* pName, void* pData)
 {
-	int i, j, stringCount, fieldNumber, entityIndex;
+	int i, j, fieldNumber, entityIndex;
 	TYPEDESCRIPTION* pTest;
 	float	time, timeData;
 	Vector	position;
 	edict_t* pent;
-	char* pString;
 
 	time = 0;
 	position = Vector(0, 0, 0);
@@ -732,6 +731,8 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 		if (m_pdata->fUseLandmark)
 			position = m_pdata->vecLandmarkOffset;
 	}
+
+	byte* nextData = reinterpret_cast<byte*>(pData);
 
 	for (i = 0; i < fieldCount; i++)
 	{
@@ -744,7 +745,10 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 				for (j = 0; j < pTest->fieldSize; j++)
 				{
 					void* pOutputData = ((char*)pBaseData + pTest->fieldOffset + (j * gSizes[pTest->fieldType]));
-					void* pInputData = (char*)pData + j * gSizes[pTest->fieldType];
+					void* pInputData = nextData;
+
+					//Default to advancing by size of type
+					std::size_t advanceInputByBytes = gSizes[pTest->fieldType];
 
 					switch (pTest->fieldType)
 					{
@@ -760,22 +764,22 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 					case FIELD_MODELNAME:
 					case FIELD_SOUNDNAME:
 					case FIELD_STRING:
-						// Skip over j strings
-						pString = (char*)pData;
-						for (stringCount = 0; stringCount < j; stringCount++)
-						{
-							while (*pString)
-								pString++;
-							pString++;
-						}
-						pInputData = pString;
-						if (strlen((char*)pInputData) == 0)
+					{
+						const char* inputString = reinterpret_cast<const char*>(pInputData);
+
+						const std::size_t inputLength = strlen(inputString);
+
+						//Skip over string and null terminator
+						advanceInputByBytes = inputLength + 1;
+
+						//TODO: use string_t here
+						if (inputLength == 0)
 							*((int*)pOutputData) = 0;
 						else
 						{
 							int string;
 
-							string = ALLOC_STRING((char*)pInputData);
+							string = ALLOC_STRING(inputString);
 
 							*((int*)pOutputData) = string;
 
@@ -788,6 +792,7 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 							}
 						}
 						break;
+					}
 					case FIELD_EVARS:
 						entityIndex = *(int*)pInputData;
 						pent = EntityFromIndex(entityIndex);
@@ -840,6 +845,7 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 
 					case FIELD_BOOLEAN:
 						*((bool*)pOutputData) = *(byte*)pInputData;
+						advanceInputByBytes = sizeof(byte);
 						break;
 
 					case FIELD_INTEGER:
@@ -858,15 +864,27 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 						*((int*)pOutputData) = *(int*)pInputData;
 						break;
 					case FIELD_FUNCTION:
-						if (strlen((char*)pInputData) == 0)
+					{
+						const char* inputString = reinterpret_cast<const char*>(pInputData);
+
+						const std::size_t inputLength = strlen(inputString);
+
+						//Skip over string and null terminator
+						advanceInputByBytes = inputLength + 1;
+
+						//TODO: assumes function pointer is size of int
+						if (inputLength == 0)
 							*((int*)pOutputData) = 0;
 						else
-							*((int*)pOutputData) = FUNCTION_FROM_NAME((char*)pInputData);
+							*((int*)pOutputData) = FUNCTION_FROM_NAME(inputString);
 						break;
+					}
 
 					default:
 						ALERT(at_error, "Bad field type\n");
 					}
+
+					nextData += advanceInputByBytes;
 				}
 			}
 #if 0
