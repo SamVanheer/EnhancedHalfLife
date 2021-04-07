@@ -13,11 +13,7 @@
 *
 ****/
 
-
-
-
-#ifndef _STUDIO_H_
-#define _STUDIO_H_
+#pragma once
 
 /*
 ==============================================================================
@@ -365,5 +361,3 @@ struct mstudiotrivert_t
 
 #define RAD_TO_STUDIO		(32768.0/M_PI)
 #define STUDIO_TO_RAD		(M_PI/32768.0)
-
-#endif

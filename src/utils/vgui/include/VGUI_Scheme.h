@@ -5,8 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#ifndef VGUI_SCHEME_H
-#define VGUI_SCHEME_H
+#pragma once
 
 #include<VGUI.h>
 
@@ -78,5 +77,3 @@ protected:
 };
 
 }
-
-#endif

@@ -5,8 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#ifndef VGUI_TEXTIMAGE_H
-#define VGUI_TEXTIMAGE_H
+#pragma once
 
 #include<VGUI.h>
 #include<VGUI_Image.h>
@@ -51,8 +50,3 @@ protected:
 };
 
 }
-
-#endif
-
-
-

@@ -12,8 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#ifndef PROGS_H
-#define PROGS_H
+
+#pragma once
 
 #include "progdefs.h"
 
@@ -74,5 +74,3 @@ edict_t		*EDICT_NUM(int n);
 int			NUM_FOR_EDICT(const edict_t *e);
 
 #define PROG_TO_EDICT(e) ((edict_t *)((byte *)sv.edicts + e))
-
-#endif // PROGS_H

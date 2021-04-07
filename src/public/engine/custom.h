@@ -14,11 +14,7 @@
 ****/
 // Customization.h
 
-#ifndef CUSTOM_H
-#define CUSTOM_H
-#ifdef _WIN32
 #pragma once
-#endif
 
 #include "const.h"
 
@@ -99,5 +95,3 @@ void		COM_ClearCustomizationList(customization_t*pHead, qboolean bCleanDecals);
 qboolean	COM_CreateCustomization(customization_t*pListHead, resource_t *pResource, int playernumber, int flags,
 	customization_t**pCustomization, int *nLumps );
 int			COM_SizeofResourceList ( resource_t *pList, resourceinfo_t *ri );
-
-#endif // CUSTOM_H

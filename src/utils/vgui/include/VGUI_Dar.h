@@ -5,8 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#ifndef VGUI_DAR_H
-#define VGUI_DAR_H
+#pragma once
 
 #include<stdlib.h>
 #include<string.h>
@@ -189,6 +188,3 @@ template class VGUIAPI Dar<class RepaintSignal*>;
 #endif
 
 }
-
-
-#endif

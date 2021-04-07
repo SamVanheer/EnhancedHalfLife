@@ -12,11 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#ifndef PROGDEFS_H
-#define PROGDEFS_H
-#ifdef _WIN32
+
 #pragma once
-#endif
 
 struct globalvars_t
 {	
@@ -219,6 +216,3 @@ struct entvars_t
 	edict_t		*euser3;
 	edict_t		*euser4;
 };
-
-
-#endif // PROGDEFS_H
