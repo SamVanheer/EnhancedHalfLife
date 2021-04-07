@@ -80,7 +80,9 @@ static cvar_t *m_mousethread_sleep;
 
 int			mouse_buttons;
 int			mouse_oldbuttonstate;
+#ifdef _WIN32
 POINT		current_pos;
+#endif
 int			old_mouse_x, old_mouse_y, mx_accum, my_accum;
 float		mouse_x, mouse_y;
 
@@ -517,8 +519,11 @@ void IN_MouseMove ( float frametime, usercmd_t *cmd)
 #endif
 		{
 			SDL_GetRelativeMouseState( &deltaX, &deltaY );
+
+#ifdef _WIN32
 			current_pos.x = deltaX;
-			current_pos.y = deltaY;	
+			current_pos.y = deltaY;
+#endif
 		}
 		
 #ifdef _WIN32

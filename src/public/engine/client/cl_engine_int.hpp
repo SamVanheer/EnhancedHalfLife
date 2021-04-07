@@ -38,6 +38,12 @@ struct cmdalias_t
 	char	*value;
 };
 
+struct Point
+{
+	long x;
+	long y;
+};
+
 /**
 *	@brief Functions exported by the engine
 */
@@ -142,7 +148,7 @@ struct cl_enginefunc_t
 	int (*GetTrackerIDForPlayer)(int playerSlot);
 	int (*GetPlayerForTrackerID)(int trackerID)	;
 	int (*pfnServerCmdUnreliable)(char* szCmdString);
-	void (*pfnGetMousePos)(struct tagPOINT* ppt); //TODO: remove dependency on Windows type
+	void (*pfnGetMousePos)(Point* ppt);
 	void (*pfnSetMousePos)(int x, int y);
 	void (*pfnSetMouseEnable)(qboolean fEnable);
 	cvar_t* (*GetFirstCvarPtr)();
