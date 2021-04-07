@@ -130,8 +130,15 @@ void AngleIMatrix (const Vector& angles, float (*matrix)[4] );
 void VectorTransform (const float* in1, float in2[3][4], float* out);
 
 void NormalizeAngles( float* angles );
+
+/**
+*	@brief Interpolate Euler angles.
+*
+*	FIXME:  Use Quaternions to avoid discontinuities
+*	Frac is 0.0 to 1.0 ( i.e., should probably be clamped, but doesn't have to be )
+*/
 void InterpolateAngles( float* start, float* end, float* output, float frac );
-float AngleBetweenVectors( const float* v1, const float* v2 );
+float AngleBetweenVectors( const Vector& v1, const Vector& v2 );
 
 
 void VectorMatrix( const Vector& forward, Vector& right, Vector& up);
@@ -142,7 +149,9 @@ int InvertMatrix( const float * m, float *out );
 int BoxOnPlaneSide (const Vector& emins, const Vector& emaxs, mplane_t *plane);
 float	anglemod(float a);
 
+float Distance(const float* v1, const float* v2);
 
+void ConcatTransforms(float in1[3][4], float in2[3][4], float out[3][4]);
 
 #define BOX_ON_PLANE_SIDE(emins, emaxs, p)	\
 	(((p)->type < 3)?						\
