@@ -187,7 +187,6 @@ target_sources(client PRIVATE
 	../../public/parsemsg.cpp
 	../../public/parsemsg.h
 	../../public/Platform.h
-	../../public/port.h
 	../../public/Sequence.h
 	../../public/studio_event.h
 	../../public/winsani_in.h
