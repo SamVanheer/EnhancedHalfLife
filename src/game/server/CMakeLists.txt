@@ -166,6 +166,40 @@ target_sources(hl PRIVATE
 	server_interface/game.h
 	server_interface/server_interface.cpp
 	server_interface/server_interface.hpp
+	../../public/archtypes.h
+	../../public/const.h
+	../../public/crc.h
+	../../public/cvardef.h
+	../../public/director_cmds.h
+	../../public/enums.h
+	../../public/FileSystem.h
+	../../public/hltv.h
+	../../public/in_buttons.h
+	../../public/interface.cpp
+	../../public/interface.h
+	../../public/keydefs.h
+	../../public/netadr.h
+	../../public/Platform.h
+	../../public/Sequence.h
+	../../public/studio.h
+	../../public/studio_event.h
+	../../public/winsani_in.h
+	../../public/winsani_out.h
+	../../public/engine/com_model.h
+	../../public/engine/custom.h
+	../../public/engine/customentity.h
+	../../public/engine/edict.h
+	../../public/engine/entity_state.h
+	../../public/engine/event_args.h
+	../../public/engine/event_flags.h
+	../../public/engine/pmtrace.h
+	../../public/engine/progdefs.h
+	../../public/engine/progs.h
+	../../public/engine/r_studioint.h
+	../../public/engine/screenfade.h
+	../../public/engine/shake.h
+	../../public/engine/usercmd.h
+	../../public/engine/weaponinfo.h
 	../../public/engine/server/sv_engine_int.hpp
 	../../public/game/voice_common.h
 	../../public/game/server/server_int.hpp

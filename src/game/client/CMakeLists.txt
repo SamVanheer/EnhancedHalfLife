@@ -171,8 +171,8 @@ target_sources(client PRIVATE
 	ui/vgui/utils/voice_banmgr.cpp
 	ui/vgui/utils/voice_banmgr.h
 	../../public/archtypes.h
-	../../public/const.h
 	../../public/con_nprint.h
+	../../public/const.h
 	../../public/crc.h
 	../../public/cvardef.h
 	../../public/director_cmds.h
@@ -188,19 +188,23 @@ target_sources(client PRIVATE
 	../../public/parsemsg.h
 	../../public/Platform.h
 	../../public/Sequence.h
+	../../public/studio.h
 	../../public/studio_event.h
 	../../public/winsani_in.h
 	../../public/winsani_out.h
-	../../public/game/client/cdll_int.h
-	../../public/game/client/client_int.hpp
-	../../public/game/client/IGameClientExports.h
 	../../public/engine/com_model.h
+	../../public/engine/custom.h
+	../../public/engine/customentity.h
+	../../public/engine/edict.h
 	../../public/engine/entity_state.h
 	../../public/engine/event_args.h
 	../../public/engine/event_flags.h
 	../../public/engine/pmtrace.h
+	../../public/engine/progdefs.h
+	../../public/engine/progs.h
 	../../public/engine/r_studioint.h
 	../../public/engine/screenfade.h
+	../../public/engine/shake.h
 	../../public/engine/usercmd.h
 	../../public/engine/weaponinfo.h
 	../../public/engine/client/beamdef.h
@@ -219,12 +223,16 @@ target_sources(client PRIVATE
 	../../public/engine/client/ref_params.h
 	../../public/engine/client/r_efx.h
 	../../public/engine/client/triangleapi.h
+	../../public/engine/server/sv_engine_int.hpp
 	../../public/game/voice_common.h
+	../../public/game/client/cdll_int.h
+	../../public/game/client/client_int.hpp
 	../../public/game/client/IGameClientExports.h
-	../../public/steam/steamtypes.h
+	../../public/game/server/server_int.hpp
 	../../public/math/mathlib.cpp
 	../../public/math/mathlib.h
-	../../public/math/vector.h)
+	../../public/math/vector.h
+	../../public/steam/steamtypes.h)
 
 add_subdirectory(../shared shared)
 
