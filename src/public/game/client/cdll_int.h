@@ -22,11 +22,6 @@
 *	JOHN:  client dll interface declarations
 */
 
-//TODO: can probably remove this part since there are no functions declared in this scope
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "const.h"
 #include "steam/steamtypes.h"
 #include "ref_params.h"
@@ -99,7 +94,3 @@ struct hud_player_info_t
 //#include "server.h" // server_static_t define for apiproxy
 #include "client_int.hpp"
 #include "cl_engine_int.hpp"
-
-#ifdef __cplusplus
-}
-#endif

@@ -21,7 +21,6 @@
 /**
 *	@brief Associate script file name with callback functions. 
 *
-*	Callback's must be extern "C" so the engine doesn't get confused about name mangling stuff.
 *	Note that the format is always the same.
 *	Of course, a clever mod team could actually embed parameters, behavior into the actual .sc files
 *	and create a .sc file parser and hook their functionality through that.. i.e., a scripting system.
