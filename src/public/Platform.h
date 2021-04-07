@@ -82,7 +82,6 @@ typedef unsigned char BYTE;
 #define stricmp strcasecmp
 #define _strnicmp strncasecmp
 #define strnicmp strncasecmp
-#define _snprintf snprintf
 #define _alloca alloca
 
 #define DLLEXPORT __attribute__ ( ( visibility( "default" ) ) )
