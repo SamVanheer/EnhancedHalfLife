@@ -10,6 +10,12 @@ public:
 	CStringPool() = default;
 	~CStringPool() = default;
 
+	CStringPool(const CStringPool&) = delete;
+	CStringPool& operator=(const CStringPool&) = delete;
+
+	CStringPool(CStringPool&&) = default;
+	CStringPool& operator=(CStringPool&&) = default;
+
 	const char* Allocate(const char* string);
 
 	void Clear();
