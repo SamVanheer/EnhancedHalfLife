@@ -122,6 +122,15 @@ fixed16_t Invert24To16(fixed16_t val);
 int GreatestCommonDivisor (int i1, int i2);
 
 void AngleVectors (const Vector& angles, Vector* forward, Vector* right, Vector* up);
+
+/**
+*	@brief overload that takes all outputs by reference
+*/
+inline void AngleVectors(const Vector& angles, Vector& forward, Vector& right, Vector& up)
+{
+	AngleVectors(angles, &forward, &right, &up);
+}
+
 void AngleVectorsTranspose (const Vector& angles, Vector* forward, Vector* right, Vector* up);
 
 void AngleMatrix (const float* angles, float (*matrix)[4] );

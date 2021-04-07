@@ -1489,7 +1489,7 @@ void EV_TripmineFire( event_args_t *args )
 	VectorCopy( args->origin, vecSrc );
 	VectorCopy( args->angles, angles );
 
-	AngleVectors ( angles, forward, NULL, NULL );
+	AngleVectors ( angles, &forward, NULL, NULL );
 		
 	if ( !EV_IsLocal ( idx ) )
 		return;
@@ -1530,7 +1530,7 @@ void EV_SnarkFire( event_args_t *args )
 	VectorCopy( args->origin, vecSrc );
 	VectorCopy( args->angles, angles );
 
-	AngleVectors ( angles, forward, NULL, NULL );
+	AngleVectors ( angles, &forward, NULL, NULL );
 		
 	if ( !EV_IsLocal ( idx ) )
 		return;

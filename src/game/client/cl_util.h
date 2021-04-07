@@ -76,7 +76,6 @@ inline cvar_t *CVAR_CREATE( const char *cv, const char *val, const int flags ) {
 #define ServerCmd (*gEngfuncs.pfnServerCmd)
 #define EngineClientCmd (*gEngfuncs.pfnClientCmd)
 #define SetCrosshair (*gEngfuncs.pfnSetCrosshair)
-#define AngleVectors (*gEngfuncs.pfnAngleVectors) //TODO: remove this
 
 
 // Gets the height & width of a sprite,  at the specified frame

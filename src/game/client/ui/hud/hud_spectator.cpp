@@ -99,7 +99,7 @@ void SpectatorSpray()
 	if ( !gEngfuncs.IsSpectateOnly() )
 		return;
 
-	AngleVectors(v_angles,forward,NULL,NULL);
+	AngleVectors(v_angles,&forward,NULL,NULL);
 	VectorScale(forward, 128, forward);
 	VectorAdd(forward, v_origin, forward);
     pmtrace_t * trace = gEngfuncs.PM_TraceLine( v_origin, forward, PM_TRACELINE_PHYSENTSONLY, 2, -1 );
@@ -624,7 +624,7 @@ int CHudSpectator::Draw(float flTime)
 	if ( (m_moveDelta != 0.0f) && (g_iUser1 != OBS_ROAMING) )
 	{
 		Vector	right;
-		AngleVectors(v_angles, NULL, right, NULL);
+		AngleVectors(v_angles, NULL, &right, NULL);
 		VectorNormalize(right);
 		VectorScale(right, m_moveDelta, right );
 
@@ -1580,7 +1580,7 @@ void CHudSpectator::DrawOverviewEntities()
 		// see R_DrawSpriteModel
 		// draws players sprite
 
-		AngleVectors(ent->angles, right, up, NULL );
+		AngleVectors(ent->angles, &right, &up, NULL );
 
 		VectorCopy(ent->origin,origin);
 
@@ -1714,7 +1714,7 @@ void CHudSpectator::DrawOverviewEntities()
 	
 	gEngfuncs.pTriAPI->Color4f( r, g, b, 1.0 );
 
-	AngleVectors(angles, forward, NULL, NULL );
+	AngleVectors(angles, &forward, NULL, NULL );
 	VectorScale (forward, 512.0f, forward);
 	
 	offset[0] =  0.0f; 
