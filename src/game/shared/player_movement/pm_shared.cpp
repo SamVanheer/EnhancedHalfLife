@@ -25,6 +25,7 @@
 #include "pm_movevars.h"
 #include "pm_debug.h"
 #include "materials.hpp"
+#include "com_model.h"
 #include <stdio.h>  // NULL
 #include <string.h> // strcpy
 #include <stdlib.h> // atoi
@@ -33,35 +34,6 @@
 static int pm_shared_initialized = 0;
 
 #pragma warning( disable : 4305 )
-
-//TODO: move this to a common header
-enum modtype_t {mod_brush, mod_sprite, mod_alias, mod_studio};
-
-
-struct dclipnode_t
-{
-	int			planenum;
-	short		children[2];	// negative numbers are contents
-};
-
-struct mplane_t
-{
-	Vector	normal;			// surface normal
-	float	dist;			// closest appoach to origin
-	byte	type;			// for texture axis selection and fast side tests
-	byte	signbits;		// signx + signy<<1 + signz<<1
-	byte	pad[2];
-};
-
-struct hull_t
-{
-	dclipnode_t	*clipnodes;
-	mplane_t	*planes;
-	int			firstclipnode;
-	int			lastclipnode;
-	Vector		clip_mins;
-	Vector		clip_maxs;
-};
 
 // Ducking time
 #define TIME_TO_DUCK		0.4
