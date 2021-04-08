@@ -46,6 +46,12 @@ constexpr int MAX_CLIENTS = 32;
 
 #define WEAPON_SUIT			31
 
+constexpr int CLIMB_SHAKE_FREQUENCY = 22;			//!< how many frames in between screen shakes when climbing
+constexpr int MAX_CLIMB_SPEED = 200;				//!< fastest vertical climbing speed possible
+constexpr int CLIMB_SPEED_DEC = 15;					//!< climbing deceleration rate
+constexpr int CLIMB_PUNCH_X = -7;					//!< how far to 'punch' client X axis when climbing
+constexpr int CLIMB_PUNCH_Z = 7;					//!< how far to 'punch' client Z axis when climbing
+
 constexpr int PLAYER_FATAL_FALL_SPEED = 1024;		//!< approx 60 feet
 constexpr int PLAYER_MAX_SAFE_FALL_SPEED = 580;		//!< approx 20 feet
 constexpr float DAMAGE_FOR_FALL_SPEED
