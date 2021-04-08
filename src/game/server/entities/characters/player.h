@@ -15,9 +15,7 @@
 
 #pragma once
 
-#include "pm_materials.h"
-
-
+#include "materials.hpp"
 
 //
 // Player PHYSICS FLAGS bits

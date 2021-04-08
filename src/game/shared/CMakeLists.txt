@@ -2,6 +2,7 @@ function(add_shared_sources target)
 	target_sources(${target}
 		PRIVATE
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/cdll_dll.h
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/materials.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crossbow.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crowbar.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/egon.cpp
@@ -22,7 +23,6 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_debug.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_defs.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_info.h
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_materials.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_movevars.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.h

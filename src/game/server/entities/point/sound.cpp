@@ -1474,8 +1474,6 @@ void EMIT_GROUPNAME_SUIT(edict_t *entity, const char *groupname)
 
 bool fTextureTypeInit = false;
 
-#define CTEXTURESMAX		512			// max number of textures loaded
-
 int gcTextures = 0;
 char grgszTextureName[CTEXTURESMAX][CBTEXTURENAMEMAX];	// texture names
 char grgchTextureType[CTEXTURESMAX];						// parallel array of texture types
