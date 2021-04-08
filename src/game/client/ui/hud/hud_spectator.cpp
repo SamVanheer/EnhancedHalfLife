@@ -162,7 +162,7 @@ int CHudSpectator::Init()
 	m_moveDelta = 0.0f;
 	m_FOV = 90.0f;
 	m_chatEnabled = (gHUD.m_SayText.m_HUD_saytext->value!=0);
-	iJumpSpectator	= 0;
+	iJumpSpectator	= false;
 
 	memset( &m_OverviewData, 0, sizeof(m_OverviewData));
 	memset( &m_OverviewEntities, 0, sizeof(m_OverviewEntities));
@@ -354,16 +354,16 @@ void CHudSpectator::SetSpectatorStartPosition()
 {
 	// search for info_player start
 	if ( UTIL_FindEntityInMap( "trigger_camera",  m_cameraOrigin, m_cameraAngles ) )
-		iJumpSpectator = 1;
+		iJumpSpectator = true;
 
 	else if ( UTIL_FindEntityInMap( "info_player_start",  m_cameraOrigin, m_cameraAngles ) )
-		iJumpSpectator = 1;
+		iJumpSpectator = true;
 
 	else if ( UTIL_FindEntityInMap( "info_player_deathmatch",  m_cameraOrigin, m_cameraAngles ) )
-		iJumpSpectator = 1;
+		iJumpSpectator = true;
 
 	else if ( UTIL_FindEntityInMap( "info_player_coop",  m_cameraOrigin, m_cameraAngles ) )
-		iJumpSpectator = 1;
+		iJumpSpectator = true;
 	else
 	{
 		// jump to 0,0,0 if no better position was found
@@ -374,7 +374,7 @@ void CHudSpectator::SetSpectatorStartPosition()
 	VectorCopy(m_cameraOrigin, vJumpOrigin);
 	VectorCopy(m_cameraAngles, vJumpAngles);
 
-    iJumpSpectator = 1;	// jump anyway
+    iJumpSpectator = true;	// jump anyway
 }
 
 
@@ -384,7 +384,7 @@ void CHudSpectator::SetCameraView(Vector pos, Vector angle, float fov)
 	VectorCopy(pos, vJumpOrigin);
 	VectorCopy(angle, vJumpAngles);
     gEngfuncs.SetViewAngles( vJumpAngles );
-	iJumpSpectator = 1;	// jump anyway
+	iJumpSpectator = true;	// jump anyway
 }
 
 void CHudSpectator::AddWaypoint( float time, Vector pos, Vector angle, float fov, int flags )
@@ -571,7 +571,7 @@ int CHudSpectator::VidInit()
 	m_flNextObserverInput = 0.0f;
 	m_lastHudMessage = 0;
 	m_iSpectatorNumber = 0;
-	iJumpSpectator	= 0;
+	iJumpSpectator	= false;
 	g_iUser1 = g_iUser2 = 0;
 	
 	return 1;
@@ -938,7 +938,7 @@ void CHudSpectator::FindNextPlayer(bool bReverse)
 		VectorCopy ( pEnt->angles, vJumpAngles );
     }
 
-	iJumpSpectator = 1;
+	iJumpSpectator = true;
 	gViewPort->MsgFunc_ResetFade( NULL, 0, NULL );
 }
 
@@ -996,7 +996,7 @@ void CHudSpectator::FindPlayer(const char *name)
 		VectorCopy ( pEnt->angles, vJumpAngles );
     }
 
-	iJumpSpectator = 1;
+	iJumpSpectator = true;
 	gViewPort->MsgFunc_ResetFade( NULL, 0, NULL );
 }
 
@@ -1071,7 +1071,7 @@ void CHudSpectator::HandleButtonsDown( int ButtonPressed )
 			if ( g_iUser1 == OBS_ROAMING )
 			{
 				gEngfuncs.SetViewAngles( vJumpAngles );
-				iJumpSpectator = 1;
+				iJumpSpectator = true;
 	
 			}
 			// release directed mode if player wants to see another player
@@ -1174,7 +1174,7 @@ void CHudSpectator::SetModes(int iNewMainMode, int iNewInsetMode)
 									{
 										V_GetChasePos( g_iUser2, &v_cl_angles, vJumpOrigin, vJumpAngles );
 										gEngfuncs.SetViewAngles( vJumpAngles );
-										iJumpSpectator = 1;
+										iJumpSpectator = true;
 									}
 									break;
 
@@ -1946,7 +1946,7 @@ void CHudSpectator::InitHUDData()
 	m_flNextObserverInput = 0.0f;
 	m_lastHudMessage = 0;
 	m_iSpectatorNumber = 0;
-	iJumpSpectator	= 0;
+	iJumpSpectator	= false;
 	g_iUser1 = g_iUser2 = 0;
 
 	memset( &m_OverviewData, 0, sizeof(m_OverviewData));

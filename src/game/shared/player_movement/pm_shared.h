@@ -19,7 +19,7 @@ struct playermove_t;
 
 void PM_Init(playermove_t* ppmove );
 void PM_Move (playermove_t* ppmove, int server );
-char PM_FindTextureType( char *name );
+char PM_FindTextureType( const char *name );
 
 int PM_GetVisEntInfo(int ent);
 int PM_GetPhysEntInfo(int ent);
@@ -37,7 +37,7 @@ inline playermove_t* pmove = nullptr;
 
 #ifdef CLIENT_DLL
 // Spectator Mode
-inline int		iJumpSpectator;
+inline bool		iJumpSpectator;
 inline Vector	vJumpOrigin;
 inline Vector	vJumpAngles;
 #endif
