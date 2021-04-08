@@ -110,15 +110,6 @@ struct hull_t
 
 #define MAX_CLIENTS 32
 
-#define	CONTENTS_CURRENT_0		-9
-#define	CONTENTS_CURRENT_90		-10
-#define	CONTENTS_CURRENT_180	-11
-#define	CONTENTS_CURRENT_270	-12
-#define	CONTENTS_CURRENT_UP		-13
-#define	CONTENTS_CURRENT_DOWN	-14
-
-#define CONTENTS_TRANSLUCENT	-15
-
 static Vector rgv3tStuckTable[54];
 static int rgStuckLast[MAX_CLIENTS][2];
 
