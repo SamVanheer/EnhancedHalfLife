@@ -154,11 +154,9 @@ inline int safe_sprintf( char *dst, int len_dst, const char *format, ...)
 
     va_start(v, format);
 
-	_vsnprintf(dst,len_dst,format,v);
+	vsnprintf(dst,len_dst,format,v);
 
 	va_end(v);
-
-	dst[ len_dst - 1 ] = '\0';
 
 	return 0;
 }

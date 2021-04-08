@@ -36,7 +36,9 @@
 #include "archtypes.h"     // DAL
 
 // Misc C-runtime library headers
+#include <climits>
 #include <cmath>
+#include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -68,12 +70,8 @@ using qboolean = int;
 #define DLLEXPORT __declspec( dllexport )
 #else // _WIN32
 #define MAX_PATH PATH_MAX
-#include <limits.h>
-#include <stdarg.h>
-#define _vsnprintf(a,b,c,d) vsnprintf(a,b,c,d)
 
 #define stricmp strcasecmp
-#define _strnicmp strncasecmp
 #define strnicmp strncasecmp
 #define _alloca alloca
 
