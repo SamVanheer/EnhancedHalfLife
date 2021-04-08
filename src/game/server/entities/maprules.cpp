@@ -118,8 +118,8 @@ void CRuleBrushEntity::Spawn()
 //	Flag: Allow negative scores					SF_SCORE_NEGATIVE
 //	Flag: Award points to team in teamplay		SF_SCORE_TEAM
 
-#define SF_SCORE_NEGATIVE			0x0001
-#define SF_SCORE_TEAM				0x0002
+constexpr int SF_SCORE_NEGATIVE = 0x0001;
+constexpr int SF_SCORE_TEAM = 0x0002;
 
 class CGameScore : public CRulePointEntity
 {
@@ -206,7 +206,7 @@ void CGameEnd::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useT
 //
 
 
-#define SF_ENVTEXT_ALLPLAYERS			0x0001
+constexpr int SF_ENVTEXT_ALLPLAYERS = 0x0001;
 
 
 class CGameText : public CRulePointEntity
@@ -335,8 +335,8 @@ void CGameText::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 // Flag: Any team until set?		-- Any team can use this until the team is set (otherwise no teams can use it)
 //
 
-#define SF_TEAMMASTER_FIREONCE			0x0001
-#define SF_TEAMMASTER_ANYTEAM			0x0002
+constexpr int SF_TEAMMASTER_FIREONCE = 0x0001;
+constexpr int SF_TEAMMASTER_ANYTEAM = 0x0002;
 
 class CGameTeamMaster : public CRulePointEntity
 {
@@ -447,8 +447,8 @@ bool CGameTeamMaster::TeamMatch( CBaseEntity *pActivator )
 // Flag: Fire once
 // Flag: Clear team				-- Sets the team to "NONE" instead of activator
 
-#define SF_TEAMSET_FIREONCE			0x0001
-#define SF_TEAMSET_CLEARTEAM		0x0002
+constexpr int SF_TEAMSET_FIREONCE = 0x0001;
+constexpr int SF_TEAMSET_CLEARTEAM = 0x0002;
 
 class CGameTeamSet : public CRulePointEntity
 {
@@ -604,7 +604,7 @@ void CGamePlayerZone::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 // CGamePlayerHurt / game_player_hurt	-- Damages the player who fires it
 // Flag: Fire once
 
-#define SF_PKILL_FIREONCE			0x0001
+constexpr int SF_PKILL_FIREONCE = 0x0001;
 class CGamePlayerHurt : public CRulePointEntity
 {
 public:
@@ -645,8 +645,8 @@ void CGamePlayerHurt::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 // Flag: Fire once
 // Flag: Reset on Fire
 
-#define SF_GAMECOUNT_FIREONCE			0x0001
-#define SF_GAMECOUNT_RESET				0x0002
+constexpr int SF_GAMECOUNT_FIREONCE = 0x0001;
+constexpr int SF_GAMECOUNT_RESET = 0x0002;
 
 class CGameCounter : public CRulePointEntity
 {
@@ -722,7 +722,7 @@ void CGameCounter::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE 
 // CGameCounterSet / game_counter_set	-- Sets the counter's value
 // Flag: Fire once
 
-#define SF_GAMECOUNTSET_FIREONCE			0x0001
+constexpr int SF_GAMECOUNTSET_FIREONCE = 0x0001;
 
 class CGameCounterSet : public CRulePointEntity
 {
@@ -754,8 +754,8 @@ void CGameCounterSet::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 // CGamePlayerEquip / game_playerequip	-- Sets the default player equipment
 // Flag: USE Only
 
-#define SF_PLAYEREQUIP_USEONLY			0x0001
-#define MAX_EQUIP		32
+constexpr int SF_PLAYEREQUIP_USEONLY = 0x0001;
+constexpr int MAX_EQUIP = 32;
 
 class CGamePlayerEquip : public CRulePointEntity
 {
@@ -849,9 +849,9 @@ void CGamePlayerEquip::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 // Flag: Kill Player
 // Flag: Gib Player
 
-#define SF_PTEAM_FIREONCE			0x0001
-#define SF_PTEAM_KILL    			0x0002
-#define SF_PTEAM_GIB     			0x0004
+constexpr int SF_PTEAM_FIREONCE = 0x0001;
+constexpr int SF_PTEAM_KILL = 0x0002;
+constexpr int SF_PTEAM_GIB = 0x0004;
 
 class CGamePlayerTeam : public CRulePointEntity
 {

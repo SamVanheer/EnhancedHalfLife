@@ -19,14 +19,14 @@
 #include	"monsters.h"
 #include	"schedule.h"
 
-#define	BARNACLE_BODY_HEIGHT	44 // how 'tall' the barnacle's model is.
-#define BARNACLE_PULL_SPEED		8
-#define BARNACLE_KILL_VICTIM_DELAY	5 // how many seconds after pulling prey in to gib them. 
+constexpr int BARNACLE_BODY_HEIGHT = 44; // how 'tall' the barnacle's model is.
+constexpr int BARNACLE_PULL_SPEED = 8;
+constexpr int BARNACLE_KILL_VICTIM_DELAY = 5; // how many seconds after pulling prey in to gib them. 
 
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
-#define	BARNACLE_AE_PUKEGIB	2
+constexpr int BARNACLE_AE_PUKEGIB = 2;
 
 /**
 *	@brief stationary ceiling mounted 'fishing' monster
@@ -390,7 +390,7 @@ void CBarnacle :: Precache()
 // to see if any entity is touching it. Also stores the length
 // of the trace in the int pointer provided.
 //=========================================================
-#define BARNACLE_CHECK_SPACING	8
+constexpr int BARNACLE_CHECK_SPACING = 8;
 CBaseEntity *CBarnacle :: TongueTouchEnt ( float *pflLength )
 {
 	TraceResult	tr;

@@ -23,15 +23,15 @@ enum TRICULLSTYLE
 	TRI_NONE = 1,
 };
 
-#define TRI_API_VERSION		1
+constexpr int TRI_API_VERSION = 1;
 
-#define TRI_TRIANGLES		0
-#define TRI_TRIANGLE_FAN	1
-#define TRI_QUADS			2
-#define TRI_POLYGON			3
-#define TRI_LINES			4	
-#define TRI_TRIANGLE_STRIP	5
-#define TRI_QUAD_STRIP		6
+constexpr int TRI_TRIANGLES = 0;
+constexpr int TRI_TRIANGLE_FAN = 1;
+constexpr int TRI_QUADS = 2;
+constexpr int TRI_POLYGON = 3;
+constexpr int TRI_LINES = 4;
+constexpr int TRI_TRIANGLE_STRIP = 5;
+constexpr int TRI_QUAD_STRIP = 6;
 
 struct triangleapi_t
 {

@@ -26,13 +26,13 @@
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
-#define	CONTROLLER_AE_HEAD_OPEN		1
-#define	CONTROLLER_AE_BALL_SHOOT	2
-#define	CONTROLLER_AE_SMALL_SHOOT	3
-#define CONTROLLER_AE_POWERUP_FULL	4
-#define CONTROLLER_AE_POWERUP_HALF	5
+constexpr int CONTROLLER_AE_HEAD_OPEN = 1;
+constexpr int CONTROLLER_AE_BALL_SHOOT = 2;
+constexpr int CONTROLLER_AE_SMALL_SHOOT = 3;
+constexpr int CONTROLLER_AE_POWERUP_FULL = 4;
+constexpr int CONTROLLER_AE_POWERUP_HALF = 5;
 
-#define CONTROLLER_FLINCH_DELAY			2		// at most one flinch every n secs
+constexpr int CONTROLLER_FLINCH_DELAY = 2;		// at most one flinch every n secs
 
 class CController : public CSquadMonster
 {
@@ -888,7 +888,7 @@ void CController::Stop()
 }
 
 
-#define DIST_TO_CHECK	200
+constexpr int DIST_TO_CHECK = 200;
 void CController :: Move ( float flInterval ) 
 {
 	float		flWaypointDist;

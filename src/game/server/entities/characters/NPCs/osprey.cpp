@@ -33,10 +33,10 @@ struct t_ospreygrunt
 
 
 
-#define SF_WAITFORTRIGGER	0x40
+constexpr int SF_WAITFORTRIGGER = 0x40;
 
 
-#define MAX_CARRY	24
+constexpr int MAX_CARRY = 24;
 
 class COsprey : public CBaseMonster
 {

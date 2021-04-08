@@ -69,11 +69,11 @@ int g_iUser3 = 0;
 #define SBOARD_INDENT_Y			YRES(40)
 
 // low-res scoreboard indents
-#define SBOARD_INDENT_X_512		30
-#define SBOARD_INDENT_Y_512		30
+constexpr int SBOARD_INDENT_X_512 = 30;
+constexpr int SBOARD_INDENT_Y_512 = 30;
 
-#define SBOARD_INDENT_X_400		0
-#define SBOARD_INDENT_Y_400		20
+constexpr int SBOARD_INDENT_X_400 = 0;
+constexpr int SBOARD_INDENT_Y_400 = 20;
 
 void IN_ResetMouse();
 CMenuPanel *CMessageWindowPanel_Create( const char *szMOTD, const char *szTitle, int iShadeFullscreen, int iRemoveMe, int x, int y, int wide, int tall );
@@ -1571,7 +1571,7 @@ void TeamFortressViewport::UpdateSpectatorPanel()
 		// in first person mode colorize player names
 		if ( (g_iUser1 == OBS_IN_EYE) && player )
 		{
-			float * color = GetClientColor( player );
+			const float * color = GetClientColor( player );
 			int r = color[0]*255;
 			int g = color[1]*255;
 			int b = color[2]*255;

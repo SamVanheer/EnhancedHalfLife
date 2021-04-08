@@ -46,24 +46,22 @@ int iAgruntMuzzleFlash;
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
-#define		AGRUNT_AE_HORNET1	( 1 )
-#define		AGRUNT_AE_HORNET2	( 2 )
-#define		AGRUNT_AE_HORNET3	( 3 )
-#define		AGRUNT_AE_HORNET4	( 4 )
-#define		AGRUNT_AE_HORNET5	( 5 )
+constexpr int AGRUNT_AE_HORNET1 = 1;
+constexpr int AGRUNT_AE_HORNET2 = 2;
+constexpr int AGRUNT_AE_HORNET3 = 3;
+constexpr int AGRUNT_AE_HORNET4 = 4;
+constexpr int AGRUNT_AE_HORNET5 = 5;
 // some events are set up in the QC file that aren't recognized by the code yet.
-#define		AGRUNT_AE_PUNCH		( 6 )
-#define		AGRUNT_AE_BITE		( 7 )
+constexpr int AGRUNT_AE_PUNCH = 6;
+constexpr int AGRUNT_AE_BITE = 7;
 
-#define		AGRUNT_AE_LEFT_FOOT	 ( 10 )
-#define		AGRUNT_AE_RIGHT_FOOT ( 11 )
+constexpr int AGRUNT_AE_LEFT_FOOT = 10;
+constexpr int AGRUNT_AE_RIGHT_FOOT = 11;
 
-#define		AGRUNT_AE_LEFT_PUNCH ( 12 )
-#define		AGRUNT_AE_RIGHT_PUNCH ( 13 )
+constexpr int AGRUNT_AE_LEFT_PUNCH = 12;
+constexpr int AGRUNT_AE_RIGHT_PUNCH = 13;
 
-
-
-#define		AGRUNT_MELEE_DIST	100
+constexpr int AGRUNT_MELEE_DIST = 100;
 
 /**
 *	@brief Dominant, warlike alien grunt monster

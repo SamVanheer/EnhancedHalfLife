@@ -22,8 +22,8 @@
 #include	"weapons.h"
 #include	"game.h"
 
-#define SF_INFOBM_RUN		0x0001
-#define SF_INFOBM_WAIT		0x0002
+constexpr int SF_INFOBM_RUN = 0x0001;
+constexpr int SF_INFOBM_WAIT = 0x0002;
 
 // AI Nodes for Big Momma
 class CInfoBM : public CPointEntity
@@ -124,40 +124,40 @@ IMPLEMENT_SAVERESTORE( CBMortar, CBaseEntity );
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
-#define	BIG_AE_STEP1				1		// Footstep left
-#define	BIG_AE_STEP2				2		// Footstep right
-#define	BIG_AE_STEP3				3		// Footstep back left
-#define	BIG_AE_STEP4				4		// Footstep back right
-#define BIG_AE_SACK					5		// Sack slosh
-#define BIG_AE_DEATHSOUND			6		// Death sound
+constexpr int BIG_AE_STEP1 = 1;			//!< Footstep left
+constexpr int BIG_AE_STEP2 = 2;			//!< Footstep right
+constexpr int BIG_AE_STEP3 = 3;			//!< Footstep back left
+constexpr int BIG_AE_STEP4 = 4;			//!< Footstep back right
+constexpr int BIG_AE_SACK = 5;			//!< Sack slosh
+constexpr int BIG_AE_DEATHSOUND = 6;	//!< Death sound
 
-#define	BIG_AE_MELEE_ATTACKBR		8		// Leg attack
-#define	BIG_AE_MELEE_ATTACKBL		9		// Leg attack
-#define	BIG_AE_MELEE_ATTACK1		10		// Leg attack
-#define BIG_AE_MORTAR_ATTACK1		11		// Launch a mortar
-#define BIG_AE_LAY_CRAB				12		// Lay a headcrab
-#define BIG_AE_JUMP_FORWARD			13		// Jump up and forward
-#define BIG_AE_SCREAM				14		// alert sound
-#define BIG_AE_PAIN_SOUND			15		// pain sound
-#define BIG_AE_ATTACK_SOUND			16		// attack sound
-#define BIG_AE_BIRTH_SOUND			17		// birth sound
-#define BIG_AE_EARLY_TARGET			50		// Fire target early
+constexpr int BIG_AE_MELEE_ATTACKBR = 8;	//!< Leg attack
+constexpr int BIG_AE_MELEE_ATTACKBL = 9;	//!< Leg attack
+constexpr int BIG_AE_MELEE_ATTACK1 = 10;	//!< Leg attack
+constexpr int BIG_AE_MORTAR_ATTACK1 = 11;	//!< Launch a mortar
+constexpr int BIG_AE_LAY_CRAB = 12;			//!< Lay a headcrab
+constexpr int BIG_AE_JUMP_FORWARD = 13;		//!< Jump up and forward
+constexpr int BIG_AE_SCREAM = 14;			//!< alert sound
+constexpr int BIG_AE_PAIN_SOUND = 15;		//!< pain sound
+constexpr int BIG_AE_ATTACK_SOUND = 16;		//!< attack sound
+constexpr int BIG_AE_BIRTH_SOUND = 17;		//!< birth sound
+constexpr int BIG_AE_EARLY_TARGET = 50;		//!< Fire target early
 
 
 
 // User defined conditions
-#define bits_COND_NODE_SEQUENCE			( bits_COND_SPECIAL1 )		// pev->netname contains the name of a sequence to play
+constexpr int bits_COND_NODE_SEQUENCE = bits_COND_SPECIAL1; 		// pev->netname contains the name of a sequence to play
 
 // Attack distance constants
-#define	BIG_ATTACKDIST		170
-#define BIG_MORTARDIST		800
-#define BIG_MAXCHILDREN		20			// Max # of live headcrab children
+constexpr int BIG_ATTACKDIST = 170;
+constexpr int BIG_MORTARDIST = 800;
+constexpr int BIG_MAXCHILDREN = 20;			// Max # of live headcrab children
 
 
-#define bits_MEMORY_CHILDPAIR		(bits_MEMORY_CUSTOM1)
-#define bits_MEMORY_ADVANCE_NODE	(bits_MEMORY_CUSTOM2)
-#define bits_MEMORY_COMPLETED_NODE	(bits_MEMORY_CUSTOM3)
-#define bits_MEMORY_FIRED_NODE		(bits_MEMORY_CUSTOM4)
+constexpr int bits_MEMORY_CHILDPAIR = bits_MEMORY_CUSTOM1;
+constexpr int bits_MEMORY_ADVANCE_NODE = bits_MEMORY_CUSTOM2;
+constexpr int bits_MEMORY_COMPLETED_NODE = bits_MEMORY_CUSTOM3;
+constexpr int bits_MEMORY_FIRED_NODE = bits_MEMORY_CUSTOM4;
 
 int gSpitSprite, gSpitDebrisSprite;
 Vector VecCheckSplatToss( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, float maxHeight );

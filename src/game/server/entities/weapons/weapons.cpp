@@ -28,9 +28,6 @@
 extern CGraph	WorldGraph;
 extern int gEvilImpulse101;
 
-
-#define NOT_USED 255
-
 DLL_GLOBAL	short	g_sModelIndexLaser;// holds the index for the laser beam
 DLL_GLOBAL  const char *g_pModelNameLaser = "sprites/laserbeam.spr";
 DLL_GLOBAL	short	g_sModelIndexLaserDot;// holds the index for the laser beam dot
@@ -42,12 +39,9 @@ DLL_GLOBAL	short	g_sModelIndexBloodDrop;// holds the sprite index for the initia
 DLL_GLOBAL	short	g_sModelIndexBloodSpray;// holds the sprite index for splattered blood
 
 ItemInfo CBasePlayerItem::ItemInfoArray[MAX_WEAPONS];
-AmmoInfo CBasePlayerItem::AmmoInfoArray[MAX_AMMO_SLOTS];
+AmmoInfo CBasePlayerItem::AmmoInfoArray[MAX_AMMO_TYPES];
 
 MULTIDAMAGE gMultiDamage;
-
-#define TRACER_FREQ		4			// Tracers fire every fourth bullet
-
 
 //=========================================================
 // MaxAmmoCarry - pass in a name and this function will tell
@@ -1047,8 +1041,8 @@ LINK_ENTITY_TO_CLASS( weaponbox, CWeaponBox );
 
 TYPEDESCRIPTION	CWeaponBox::m_SaveData[] = 
 {
-	DEFINE_ARRAY( CWeaponBox, m_rgAmmo, FIELD_INTEGER, MAX_AMMO_SLOTS ),
-	DEFINE_ARRAY( CWeaponBox, m_rgiszAmmo, FIELD_STRING, MAX_AMMO_SLOTS ),
+	DEFINE_ARRAY( CWeaponBox, m_rgAmmo, FIELD_INTEGER, MAX_AMMO_TYPES),
+	DEFINE_ARRAY( CWeaponBox, m_rgiszAmmo, FIELD_STRING, MAX_AMMO_TYPES),
 	DEFINE_ARRAY( CWeaponBox, m_rgpPlayerItems, FIELD_CLASSPTR, MAX_ITEM_TYPES ),
 	DEFINE_FIELD( CWeaponBox, m_cAmmoTypes, FIELD_INTEGER ),
 };
@@ -1067,7 +1061,7 @@ void CWeaponBox::Precache()
 //=========================================================
 void CWeaponBox :: KeyValue( KeyValueData *pkvd )
 {
-	if ( m_cAmmoTypes < MAX_AMMO_SLOTS )
+	if ( m_cAmmoTypes < MAX_AMMO_TYPES)
 	{
 		PackAmmo( ALLOC_STRING(pkvd->szKeyName), atoi(pkvd->szValue) );
 		m_cAmmoTypes++;// count this new ammo type.
@@ -1076,7 +1070,7 @@ void CWeaponBox :: KeyValue( KeyValueData *pkvd )
 	}
 	else
 	{
-		ALERT ( at_console, "WeaponBox too full! only %d ammotypes allowed\n", MAX_AMMO_SLOTS );
+		ALERT ( at_console, "WeaponBox too full! only %d ammotypes allowed\n", MAX_AMMO_TYPES);
 	}
 }
 
@@ -1148,7 +1142,7 @@ void CWeaponBox::Touch( CBaseEntity *pOther )
 	int i;
 
 // dole out ammo
-	for ( i = 0 ; i < MAX_AMMO_SLOTS ; i++ )
+	for ( i = 0 ; i < MAX_AMMO_TYPES; i++ )
 	{
 		if ( !FStringNull( m_rgiszAmmo[ i ] ) )
 		{
@@ -1277,7 +1271,7 @@ int CWeaponBox::GiveAmmo( int iCount, const char *szName, int iMax, int *pIndex/
 {
 	int i;
 
-	for (i = 1; i < MAX_AMMO_SLOTS && !FStringNull( m_rgiszAmmo[i] ); i++)
+	for (i = 1; i < MAX_AMMO_TYPES && !FStringNull( m_rgiszAmmo[i] ); i++)
 	{
 		if (stricmp( szName, STRING( m_rgiszAmmo[i])) == 0)
 		{
@@ -1294,7 +1288,7 @@ int CWeaponBox::GiveAmmo( int iCount, const char *szName, int iMax, int *pIndex/
 			return -1;
 		}
 	}
-	if (i < MAX_AMMO_SLOTS)
+	if (i < MAX_AMMO_TYPES)
 	{
 		if (pIndex)
 			*pIndex = i;
@@ -1343,7 +1337,7 @@ bool CWeaponBox::IsEmpty()
 		}
 	}
 
-	for ( i = 0 ; i < MAX_AMMO_SLOTS ; i++ )
+	for ( i = 0 ; i < MAX_AMMO_TYPES; i++ )
 	{
 		if ( !FStringNull( m_rgiszAmmo[ i ] ) )
 		{

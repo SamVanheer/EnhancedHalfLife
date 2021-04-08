@@ -12,7 +12,7 @@
 #include "vgui_loadtga.h"
 
 
-#define EXTRA_X	5
+constexpr int EXTRA_X = 5;
 
 
 using namespace vgui;

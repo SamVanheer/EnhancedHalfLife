@@ -26,7 +26,7 @@ struct playermove_t;
 struct usercmd_t;
 struct weapon_data_t;
 
-#define INTERFACE_VERSION		140
+constexpr int INTERFACE_VERSION = 140;
 
 // ONLY ADD NEW FUNCTIONS TO THE END OF THIS STRUCT.  INTERFACE VERSION IS FROZEN AT 138
 
@@ -120,7 +120,7 @@ struct DLL_FUNCTIONS
 extern DLL_FUNCTIONS		gEntityInterface;
 
 // Current version.
-#define NEW_DLL_FUNCTIONS_VERSION	1
+constexpr int NEW_DLL_FUNCTIONS_VERSION = 1;
 
 struct NEW_DLL_FUNCTIONS
 {

@@ -30,30 +30,30 @@
 //=========================================================
 // Gargantua Monster
 //=========================================================
-const float GARG_ATTACKDIST = 80.0;
+constexpr float GARG_ATTACKDIST = 80.0;
 
 // Garg animation events
-#define GARG_AE_SLASH_LEFT			1
-//#define GARG_AE_BEAM_ATTACK_RIGHT	2		// No longer used
-#define GARG_AE_LEFT_FOOT			3
-#define GARG_AE_RIGHT_FOOT			4
-#define GARG_AE_STOMP				5
-#define GARG_AE_BREATHE				6
+constexpr int GARG_AE_SLASH_LEFT = 1;
+//#define GARG_AE_BEAM_ATTACK_RIGHT	= 2;	// No longer used
+constexpr int GARG_AE_LEFT_FOOT = 3;
+constexpr int GARG_AE_RIGHT_FOOT = 4;
+constexpr int GARG_AE_STOMP = 5;
+constexpr int GARG_AE_BREATHE = 6;
 
 
 // Gargantua is immune to any damage but this
-#define GARG_DAMAGE					(DMG_ENERGYBEAM|DMG_CRUSH|DMG_MORTAR|DMG_BLAST)
+constexpr int GARG_DAMAGE = DMG_ENERGYBEAM | DMG_CRUSH | DMG_MORTAR | DMG_BLAST;
 #define GARG_EYE_SPRITE_NAME		"sprites/gargeye1.spr"
 #define GARG_BEAM_SPRITE_NAME		"sprites/xbeam3.spr"
 #define GARG_BEAM_SPRITE2			"sprites/xbeam3.spr"
 #define GARG_STOMP_SPRITE_NAME		"sprites/gargeye1.spr"
 #define GARG_STOMP_BUZZ_SOUND		"weapons/mine_charge.wav"
-#define GARG_FLAME_LENGTH			330
+constexpr int GARG_FLAME_LENGTH = 330;
 #define GARG_GIB_MODEL				"models/metalplategibs.mdl"
 
-#define ATTN_GARG					(ATTN_NORM)
+constexpr float ATTN_GARG = ATTN_NORM;
 
-#define STOMP_SPRITE_COUNT			10
+constexpr int STOMP_SPRITE_COUNT = 10;
 
 int gStompSprite = 0, gGargGibModel = 0;
 void SpawnExplosion( Vector center, float randomRange, float time, int magnitude );
@@ -127,7 +127,7 @@ void CStomp::Spawn()
 }
 
 
-#define	STOMP_INTERVAL		0.025
+constexpr float	STOMP_INTERVAL = 0.025;
 
 void CStomp::Think()
 {
@@ -1326,7 +1326,7 @@ CSpiral *CSpiral::Create( const Vector &origin, float height, float radius, floa
 	return pSpiral;
 }
 
-#define SPIRAL_INTERVAL		0.1 //025
+constexpr float SPIRAL_INTERVAL = 0.1; //025
 
 void CSpiral::Think()
 {
@@ -1363,6 +1363,7 @@ void CSpiral::Think()
 
 
 // HACKHACK Cut and pasted from explode.cpp
+//TODO: merge with explode.cpp
 void SpawnExplosion( Vector center, float randomRange, float time, int magnitude )
 {
 	KeyValueData	kvd;

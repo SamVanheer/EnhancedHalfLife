@@ -11,7 +11,7 @@
 #include "voice_banmgr.h"
 
 
-#define BANMGR_FILEVERSION	1
+constexpr int BANMGR_FILEVERSION = 1;
 char const *g_pBanMgrFilename = "voice_ban.dt";
 
 

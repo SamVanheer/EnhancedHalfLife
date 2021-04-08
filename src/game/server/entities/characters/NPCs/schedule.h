@@ -15,11 +15,12 @@
 
 #pragma once
 
-#define	TASKSTATUS_NEW				0			// Just started
-#define TASKSTATUS_RUNNING			1			// Running task & movement
-#define TASKSTATUS_RUNNING_MOVEMENT	2			// Just running movement
-#define TASKSTATUS_RUNNING_TASK		3			// Just running task
-#define TASKSTATUS_COMPLETE			4			// Completed, get next task
+//TODO: should probably be enum class
+constexpr int TASKSTATUS_NEW = 0;				// Just started
+constexpr int TASKSTATUS_RUNNING = 1;			// Running task & movement
+constexpr int TASKSTATUS_RUNNING_MOVEMENT = 2;	// Just running movement
+constexpr int TASKSTATUS_RUNNING_TASK = 3;		// Just running task
+constexpr int TASKSTATUS_COMPLETE = 4;			// Completed, get next task
 
 
 //=========================================================
@@ -225,60 +226,60 @@ struct WayPoint_t
 
 // these MoveFlag values are assigned to a WayPoint's TYPE in order to demonstrate the 
 // type of movement the monster should use to get there.
-#define bits_MF_TO_TARGETENT		( 1 << 0 ) // local move to targetent.
-#define bits_MF_TO_ENEMY			( 1 << 1 ) // local move to enemy
-#define bits_MF_TO_COVER			( 1 << 2 ) // local move to a hiding place
-#define bits_MF_TO_DETOUR			( 1 << 3 ) // local move to detour point.
-#define bits_MF_TO_PATHCORNER		( 1 << 4 ) // local move to a path corner
-#define bits_MF_TO_NODE				( 1 << 5 ) // local move to a node
-#define bits_MF_TO_LOCATION			( 1 << 6 ) // local move to an arbitrary point
-#define bits_MF_IS_GOAL				( 1 << 7 ) // this waypoint is the goal of the whole move.
-#define bits_MF_DONT_SIMPLIFY		( 1 << 8 ) // Don't let the route code simplify this waypoint
+constexpr int bits_MF_TO_TARGETENT = 1 << 0;	//!< local move to targetent.
+constexpr int bits_MF_TO_ENEMY = 1 << 1;		//!< local move to enemy
+constexpr int bits_MF_TO_COVER = 1 << 2;		//!< local move to a hiding place
+constexpr int bits_MF_TO_DETOUR = 1 << 3;		//!< local move to detour point.
+constexpr int bits_MF_TO_PATHCORNER = 1 << 4;	//!< local move to a path corner
+constexpr int bits_MF_TO_NODE = 1 << 5;			//!< local move to a node
+constexpr int bits_MF_TO_LOCATION = 1 << 6;		//!< local move to an arbitrary point
+constexpr int bits_MF_IS_GOAL = 1 << 7;			//!< this waypoint is the goal of the whole move.
+constexpr int bits_MF_DONT_SIMPLIFY = 1 << 8;	//!< Don't let the route code simplify this waypoint
 
 // If you define any flags that aren't _TO_ flags, add them here so we can mask
 // them off when doing compares.
-#define bits_MF_NOT_TO_MASK (bits_MF_IS_GOAL | bits_MF_DONT_SIMPLIFY)
+constexpr int bits_MF_NOT_TO_MASK = bits_MF_IS_GOAL | bits_MF_DONT_SIMPLIFY;
 
-#define MOVEGOAL_NONE				(0)
-#define MOVEGOAL_TARGETENT			(bits_MF_TO_TARGETENT)
-#define MOVEGOAL_ENEMY				(bits_MF_TO_ENEMY)
-#define MOVEGOAL_PATHCORNER			(bits_MF_TO_PATHCORNER)
-#define MOVEGOAL_LOCATION			(bits_MF_TO_LOCATION)
-#define MOVEGOAL_NODE				(bits_MF_TO_NODE)
+constexpr int MOVEGOAL_NONE = 0;
+constexpr int MOVEGOAL_TARGETENT = bits_MF_TO_TARGETENT;
+constexpr int MOVEGOAL_ENEMY = bits_MF_TO_ENEMY;
+constexpr int MOVEGOAL_PATHCORNER = bits_MF_TO_PATHCORNER;
+constexpr int MOVEGOAL_LOCATION = bits_MF_TO_LOCATION;
+constexpr int MOVEGOAL_NODE = bits_MF_TO_NODE;
 
 // these bits represent conditions that may befall the monster, of which some are allowed 
 // to interrupt certain schedules. 
-#define bits_COND_NO_AMMO_LOADED		( 1 << 0 ) // weapon needs to be reloaded!
-#define	bits_COND_SEE_HATE				( 1 << 1 ) // see something that you hate
-#define bits_COND_SEE_FEAR				( 1 << 2 ) // see something that you are afraid of
-#define bits_COND_SEE_DISLIKE			( 1 << 3 ) // see something that you dislike
-#define bits_COND_SEE_ENEMY				( 1 << 4 ) // target entity is in full view.
-#define bits_COND_ENEMY_OCCLUDED		( 1 << 5 ) // target entity occluded by the world
-#define bits_COND_SMELL_FOOD			( 1 << 6 )
-#define bits_COND_ENEMY_TOOFAR			( 1 << 7 )
-#define bits_COND_LIGHT_DAMAGE			( 1 << 8 ) // hurt a little 
-#define bits_COND_HEAVY_DAMAGE			( 1 << 9 ) // hurt a lot
-#define bits_COND_CAN_RANGE_ATTACK1		( 1 << 10)
-#define bits_COND_CAN_MELEE_ATTACK1		( 1 << 11)
-#define bits_COND_CAN_RANGE_ATTACK2		( 1 << 12)
-#define bits_COND_CAN_MELEE_ATTACK2		( 1 << 13)
-// #define bits_COND_CAN_RANGE_ATTACK3		( 1 << 14)
-#define bits_COND_PROVOKED				( 1 << 15)
-#define bits_COND_NEW_ENEMY				( 1 << 16)
-#define bits_COND_HEAR_SOUND			( 1 << 17) // there is an interesting sound
-#define bits_COND_SMELL					( 1 << 18) // there is an interesting scent
-#define bits_COND_ENEMY_FACING_ME		( 1 << 19) // enemy is facing me
-#define bits_COND_ENEMY_DEAD			( 1 << 20) // enemy was killed. If you get this in combat, try to find another enemy. If you get it in alert, victory dance.
-#define bits_COND_SEE_CLIENT			( 1 << 21) // see a client
-#define bits_COND_SEE_NEMESIS			( 1 << 22) // see my nemesis
+constexpr int bits_COND_NO_AMMO_LOADED = 1 << 0;	//!< weapon needs to be reloaded!
+constexpr int bits_COND_SEE_HATE = 1 << 1;			//!< see something that you hate
+constexpr int bits_COND_SEE_FEAR = 1 << 2;			//!< see something that you are afraid of
+constexpr int bits_COND_SEE_DISLIKE = 1 << 3;		//!< see something that you dislike
+constexpr int bits_COND_SEE_ENEMY = 1 << 4;			//!< target entity is in full view.
+constexpr int bits_COND_ENEMY_OCCLUDED = 1 << 5;	//!< target entity occluded by the world
+constexpr int bits_COND_SMELL_FOOD = 1 << 6;
+constexpr int bits_COND_ENEMY_TOOFAR = 1 << 7;
+constexpr int bits_COND_LIGHT_DAMAGE = 1 << 8;		//!< hurt a little 
+constexpr int bits_COND_HEAVY_DAMAGE = 1 << 9;		//!< hurt a lot
+constexpr int bits_COND_CAN_RANGE_ATTACK1 = 1 << 10;
+constexpr int bits_COND_CAN_MELEE_ATTACK1 = 1 << 11;
+constexpr int bits_COND_CAN_RANGE_ATTACK2 = 1 << 12;
+constexpr int bits_COND_CAN_MELEE_ATTACK2 = 1 << 13;
+// constexpr int bits_COND_CAN_RANGE_ATTACK3 = 1 << 14;
+constexpr int bits_COND_PROVOKED = 1 << 15;
+constexpr int bits_COND_NEW_ENEMY = 1 << 16;
+constexpr int bits_COND_HEAR_SOUND = 1 << 17;		//!< there is an interesting sound
+constexpr int bits_COND_SMELL = 1 << 18;			//!< there is an interesting scent
+constexpr int bits_COND_ENEMY_FACING_ME = 1 << 19;	//!< enemy is facing me
+constexpr int bits_COND_ENEMY_DEAD = 1 << 20;		//!< enemy was killed. If you get this in combat, try to find another enemy. If you get it in alert, victory dance.
+constexpr int bits_COND_SEE_CLIENT = 1 << 21;		//!< see a client
+constexpr int bits_COND_SEE_NEMESIS = 1 << 22;		//!< see my nemesis
 
-#define bits_COND_SPECIAL1				( 1 << 28) // Defined by individual monster
-#define bits_COND_SPECIAL2				( 1 << 29) // Defined by individual monster
+constexpr int bits_COND_SPECIAL1 = 1 << 28;			//!< Defined by individual monster
+constexpr int bits_COND_SPECIAL2 = 1 << 29;			//!< Defined by individual monster
 
-#define bits_COND_TASK_FAILED			( 1 << 30)
-#define bits_COND_SCHEDULE_DONE			( 1 << 31)
+constexpr int bits_COND_TASK_FAILED = 1 << 30;
+constexpr int bits_COND_SCHEDULE_DONE = 1 << 31;
 
 
-#define bits_COND_ALL_SPECIAL			(bits_COND_SPECIAL1 | bits_COND_SPECIAL2)
+constexpr int bits_COND_ALL_SPECIAL = bits_COND_SPECIAL1 | bits_COND_SPECIAL2;
 
-#define bits_COND_CAN_ATTACK			(bits_COND_CAN_RANGE_ATTACK1 | bits_COND_CAN_MELEE_ATTACK1 | bits_COND_CAN_RANGE_ATTACK2 | bits_COND_CAN_MELEE_ATTACK2)
+constexpr int bits_COND_CAN_ATTACK = bits_COND_CAN_RANGE_ATTACK1 | bits_COND_CAN_MELEE_ATTACK1 | bits_COND_CAN_RANGE_ATTACK2 | bits_COND_CAN_MELEE_ATTACK2;

@@ -88,9 +88,9 @@ TYPEDESCRIPTION	CBaseDoor::m_SaveData[] =
 IMPLEMENT_SAVERESTORE( CBaseDoor, CBaseToggle );
 
 
-#define DOOR_SENTENCEWAIT	6
-#define DOOR_SOUNDWAIT		3
-#define BUTTON_SOUNDWAIT	0.5
+constexpr int DOOR_SENTENCEWAIT = 6;
+constexpr int DOOR_SOUNDWAIT = 3;
+constexpr float BUTTON_SOUNDWAIT = 0.5;
 
 // play door or button locked or unlocked sounds. 
 // pass in pointer to valid locksound struct. 

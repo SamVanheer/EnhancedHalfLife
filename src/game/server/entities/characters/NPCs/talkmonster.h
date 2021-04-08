@@ -22,20 +22,20 @@
 // Used for scientists and barneys
 //=========================================================
 
-#define TALKRANGE_MIN 500.0				// don't talk to anyone farther away than this
+constexpr float TALKRANGE_MIN = 500.0;			// don't talk to anyone farther away than this
 
-#define TLK_STARE_DIST	128				// anyone closer than this and looking at me is probably staring at me.
+constexpr int TLK_STARE_DIST = 128;				// anyone closer than this and looking at me is probably staring at me.
 
-#define bit_saidDamageLight		(1<<0)	// bits so we don't repeat key sentences
-#define bit_saidDamageMedium	(1<<1)
-#define bit_saidDamageHeavy		(1<<2)
-#define bit_saidHelloPlayer		(1<<3)
-#define bit_saidWoundLight		(1<<4)
-#define bit_saidWoundHeavy		(1<<5)
-#define bit_saidHeard			(1<<6)
-#define bit_saidSmelled			(1<<7)
+constexpr int bit_saidDamageLight = 1 << 0;	// bits so we don't repeat key sentences
+constexpr int bit_saidDamageMedium = 1 << 1;
+constexpr int bit_saidDamageHeavy = 1 << 2;
+constexpr int bit_saidHelloPlayer = 1 << 3;
+constexpr int bit_saidWoundLight = 1 << 4;
+constexpr int bit_saidWoundHeavy = 1 << 5;
+constexpr int bit_saidHeard = 1 << 6;
+constexpr int bit_saidSmelled = 1 << 7;
 
-#define TLK_CFRIENDS		3
+constexpr int TLK_CFRIENDS = 3;
 
 enum TALKGROUPNAMES
 {
@@ -176,6 +176,6 @@ public:
 
 
 // Clients can push talkmonsters out of their way
-#define		bits_COND_CLIENT_PUSH		( bits_COND_SPECIAL1 )
+constexpr int bits_COND_CLIENT_PUSH = bits_COND_SPECIAL1;
 // Don't see a client right now.
-#define		bits_COND_CLIENT_UNSEEN		( bits_COND_SPECIAL2 )
+constexpr int bits_COND_CLIENT_UNSEEN = bits_COND_SPECIAL2;

@@ -22,6 +22,7 @@
 //
 #include "activity.h"
 #include "enginecallback.h"
+#include "materials.hpp"
 
 inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, entvars_t *ent );  // implementation later in this file
 
@@ -83,9 +84,6 @@ inline edict_t *FIND_ENTITY_BY_TARGET(edict_t *entStart, const char *pszName)
 // More explicit than "int"
 typedef int EOFFSET;
 
-// In case this ever changes
-#define M_PI			3.14159265358979323846
-
 // Keeps clutter down a bit, when declaring external entity/global method prototypes
 #define DECLARE_GLOBAL_METHOD(MethodName)  extern void DLLEXPORT MethodName()
 #define GLOBAL_METHOD(funcname)					void DLLEXPORT funcname()
@@ -144,28 +142,28 @@ inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, ent
 }
 
 // Testing the three types of "entity" for nullity
-#define eoNullEntity 0
+constexpr EOFFSET eoNullEntity = 0;
 inline bool FNullEnt(EOFFSET eoffset)			{ return eoffset == 0; }
 inline bool FNullEnt(const edict_t* pent)	{ return pent == NULL || FNullEnt(OFFSET(pent)); }
 inline bool FNullEnt(entvars_t* pev)				{ return pev == NULL || FNullEnt(OFFSET(pev)); }
 
 // Testing strings for nullity
-#define iStringNull 0
+constexpr string_t iStringNull = 0;
 inline bool FStringNull(int iString)			{ return iString == iStringNull; }
 
-#define cchMapNameMost 32
+constexpr int cchMapNameMost = 32;
 
 // Dot products for view cone checking
-#define VIEW_FIELD_FULL		(float)-1.0 // +-180 degrees
-#define	VIEW_FIELD_WIDE		(float)-0.7 // +-135 degrees 0.1 // +-85 degrees, used for full FOV checks 
-#define	VIEW_FIELD_NARROW	(float)0.7 // +-45 degrees, more narrow check used to set up ranged attacks
-#define	VIEW_FIELD_ULTRA_NARROW	(float)0.9 // +-25 degrees, more narrow check used to set up ranged attacks
+constexpr float VIEW_FIELD_FULL = -1.0;			//!< +-180 degrees
+constexpr float VIEW_FIELD_WIDE = -0.7;			//!< +-135 degrees 0.1 // +-85 degrees, used for full FOV checks 
+constexpr float VIEW_FIELD_NARROW = 0.7;		//!< +-45 degrees, more narrow check used to set up ranged attacks
+constexpr float VIEW_FIELD_ULTRA_NARROW = 0.9;	//!< +-25 degrees, more narrow check used to set up ranged attacks
 
 // All monsters need this data
-#define		DONT_BLEED			-1
-#define		BLOOD_COLOR_RED		(BYTE)247
-#define		BLOOD_COLOR_YELLOW	(BYTE)195
-#define		BLOOD_COLOR_GREEN	BLOOD_COLOR_YELLOW
+constexpr BYTE DONT_BLEED = -1;
+constexpr BYTE BLOOD_COLOR_RED = (BYTE)247;
+constexpr BYTE BLOOD_COLOR_YELLOW = (BYTE)195;
+constexpr BYTE BLOOD_COLOR_GREEN = BLOOD_COLOR_YELLOW;
 
 enum MONSTERSTATE
 {
@@ -362,92 +360,85 @@ void DBG_AssertFunction(bool fExpr, const char* szExpr, const char* szFile, int 
 //
 // Un-comment only as needed
 //
-#define LANGUAGE_ENGLISH				0
-#define LANGUAGE_GERMAN					1
-#define LANGUAGE_FRENCH					2
-#define LANGUAGE_BRITISH				3
+constexpr int LANGUAGE_ENGLISH = 0;
+constexpr int LANGUAGE_GERMAN = 1;
+constexpr int LANGUAGE_FRENCH = 2;
+constexpr int LANGUAGE_BRITISH = 3;
 
 extern DLL_GLOBAL int			g_Language;
 
-#define AMBIENT_SOUND_STATIC			0	// medium radius attenuation
-#define AMBIENT_SOUND_EVERYWHERE		1
-#define AMBIENT_SOUND_SMALLRADIUS		2
-#define AMBIENT_SOUND_MEDIUMRADIUS		4
-#define AMBIENT_SOUND_LARGERADIUS		8
-#define AMBIENT_SOUND_START_SILENT		16
-#define AMBIENT_SOUND_NOT_LOOPING		32
+constexpr int AMBIENT_SOUND_STATIC = 0;	//!< medium radius attenuation
+constexpr int AMBIENT_SOUND_EVERYWHERE = 1;
+constexpr int AMBIENT_SOUND_SMALLRADIUS = 2;
+constexpr int AMBIENT_SOUND_MEDIUMRADIUS = 4;
+constexpr int AMBIENT_SOUND_LARGERADIUS = 8;
+constexpr int AMBIENT_SOUND_START_SILENT = 16;
+constexpr int AMBIENT_SOUND_NOT_LOOPING = 32;
 
-#define SPEAKER_START_SILENT			1	// wait for trigger 'on' to start announcements
+constexpr int SPEAKER_START_SILENT = 1;	// wait for trigger 'on' to start announcements
 
-#define SND_SPAWNING		(1<<8)		// duplicated in protocol.h we're spawing, used in some cases for ambients 
-#define SND_STOP			(1<<5)		// duplicated in protocol.h stop sound
-#define SND_CHANGE_VOL		(1<<6)		// duplicated in protocol.h change sound vol
-#define SND_CHANGE_PITCH	(1<<7)		// duplicated in protocol.h change sound pitch
+constexpr int SND_SPAWNING = 1 << 8;		//!< duplicated in protocol.h we're spawing, used in some cases for ambients 
+constexpr int SND_STOP = 1 << 5;			//!< duplicated in protocol.h stop sound
+constexpr int SND_CHANGE_VOL = 1 << 6;		//!< duplicated in protocol.h change sound vol
+constexpr int SND_CHANGE_PITCH = 1 << 7;	//!< duplicated in protocol.h change sound pitch
 
-#define	LFO_SQUARE			1
-#define LFO_TRIANGLE		2
-#define LFO_RANDOM			3
+constexpr int LFO_SQUARE = 1;
+constexpr int LFO_TRIANGLE = 2;
+constexpr int LFO_RANDOM = 3;
 
 // func_rotating
-#define SF_BRUSH_ROTATE_Y_AXIS		0
-#define SF_BRUSH_ROTATE_INSTANT		1
-#define SF_BRUSH_ROTATE_BACKWARDS	2
-#define SF_BRUSH_ROTATE_Z_AXIS		4
-#define SF_BRUSH_ROTATE_X_AXIS		8
-#define SF_PENDULUM_AUTO_RETURN		16
-#define	SF_PENDULUM_PASSABLE		32
+constexpr int SF_BRUSH_ROTATE_Y_AXIS = 0;
+constexpr int SF_BRUSH_ROTATE_INSTANT = 1;
+constexpr int SF_BRUSH_ROTATE_BACKWARDS = 2;
+constexpr int SF_BRUSH_ROTATE_Z_AXIS = 4;
+constexpr int SF_BRUSH_ROTATE_X_AXIS = 8;
+constexpr int SF_PENDULUM_AUTO_RETURN = 16;
+constexpr int SF_PENDULUM_PASSABLE = 32;
 
 
-#define SF_BRUSH_ROTATE_SMALLRADIUS	128
-#define SF_BRUSH_ROTATE_MEDIUMRADIUS 256
-#define SF_BRUSH_ROTATE_LARGERADIUS 512
+constexpr int SF_BRUSH_ROTATE_SMALLRADIUS = 128;
+constexpr int SF_BRUSH_ROTATE_MEDIUMRADIUS = 256;
+constexpr int SF_BRUSH_ROTATE_LARGERADIUS = 512;
 
-#define PUSH_BLOCK_ONLY_X	1
-#define PUSH_BLOCK_ONLY_Y	2
-
-#define SVC_TEMPENTITY		23
-#define SVC_INTERMISSION	30
-#define SVC_CDTRACK			32
-#define SVC_WEAPONANIM		35
-#define SVC_ROOMTYPE		37
-#define	SVC_DIRECTOR		51
+constexpr int SVC_TEMPENTITY = 23;
+constexpr int SVC_INTERMISSION = 30;
+constexpr int SVC_CDTRACK = 32;
+constexpr int SVC_WEAPONANIM = 35;
+constexpr int SVC_ROOMTYPE = 37;
+constexpr int SVC_DIRECTOR = 51;
 
 
 
 // triggers
-#define	SF_TRIGGER_ALLOWMONSTERS	1// monsters allowed to fire this trigger
-#define	SF_TRIGGER_NOCLIENTS		2// players not allowed to fire this trigger
-#define SF_TRIGGER_PUSHABLES		4// only pushables can fire this trigger
+constexpr int SF_TRIGGER_ALLOWMONSTERS = 1;	//!< monsters allowed to fire this trigger
+constexpr int SF_TRIGGER_NOCLIENTS = 2;		//!< players not allowed to fire this trigger
+constexpr int SF_TRIGGER_PUSHABLES = 4;		//!< only pushables can fire this trigger
 
 // func breakable
-#define SF_BREAK_TRIGGER_ONLY	1// may only be broken by trigger
-#define	SF_BREAK_TOUCH			2// can be 'crashed through' by running player (plate glass)
-#define SF_BREAK_PRESSURE		4// can be broken by a player standing on it
-#define SF_BREAK_CROWBAR		256// instant break if hit with crowbar
+constexpr int SF_BREAK_TRIGGER_ONLY = 1;	//!< may only be broken by trigger
+constexpr int SF_BREAK_TOUCH = 2;			//!< can be 'crashed through' by running player (plate glass)
+constexpr int SF_BREAK_PRESSURE = 4;		//!< can be broken by a player standing on it
+constexpr int SF_BREAK_CROWBAR = 256;		//!< instant break if hit with crowbar
 
 // func_pushable (it's also func_breakable, so don't collide with those flags)
-#define SF_PUSH_BREAKABLE		128
+constexpr int SF_PUSH_BREAKABLE = 128;
 
-#define SF_LIGHT_START_OFF		1
+constexpr int SF_LIGHT_START_OFF = 1;
 
-#define SPAWNFLAG_NOMESSAGE	1
-#define SPAWNFLAG_NOTOUCH	1
-#define SPAWNFLAG_DROIDONLY	4
+constexpr int SPAWNFLAG_NOMESSAGE = 1;
+constexpr int SPAWNFLAG_NOTOUCH = 1;
 
-#define SPAWNFLAG_USEONLY	1		// can't be touched, must be used (buttons)
-
-#define TELE_PLAYER_ONLY	1
-#define TELE_SILENT			2
-
-#define SF_TRIG_PUSH_ONCE		1
+constexpr int SF_TRIG_PUSH_ONCE = 1;
 
 
 // Sound Utilities
 
 // sentence groups
-#define CBSENTENCENAME_MAX 16
-#define CVOXFILESENTENCEMAX		1536		// max number of sentences in game. NOTE: this must match
-											// CVOXFILESENTENCEMAX in engine\sound.h!!!
+constexpr int CBSENTENCENAME_MAX = 16;
+/**
+*	@brief max number of sentences in game. NOTE: this must match CVOXFILESENTENCEMAX in engine\sound.h!!!
+*/
+constexpr int CVOXFILESENTENCEMAX = 1536;
 
 extern char gszallsentencenames[CVOXFILESENTENCEMAX][CBSENTENCENAME_MAX];
 extern int gcallsentences;
@@ -503,8 +494,8 @@ void EMIT_GROUPNAME_SUIT(edict_t *entity, const char *groupname);
 #define PLAYBACK_EVENT( flags, who, index ) PLAYBACK_EVENT_FULL( flags, who, index, 0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, 0, 0, 0, 0 );
 #define PLAYBACK_EVENT_DELAY( flags, who, index, delay ) PLAYBACK_EVENT_FULL( flags, who, index, delay, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, 0, 0, 0, 0 );
 
-#define GROUP_OP_AND	0
-#define GROUP_OP_NAND	1
+constexpr int GROUP_OP_AND = 0;
+constexpr int GROUP_OP_NAND = 1;
 
 extern int g_groupmask;
 extern int g_groupop;

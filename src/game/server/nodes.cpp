@@ -29,13 +29,13 @@
 #include <unistd.h> // mkdir
 #endif
 
-#define	HULL_STEP_SIZE 16// how far the test hull moves on each step
-#define	NODE_HEIGHT	8	// how high to lift nodes off the ground after we drop them all (make stair/ramp mapping easier)
+constexpr int HULL_STEP_SIZE = 16; // how far the test hull moves on each step
+constexpr int NODE_HEIGHT = 8;	// how high to lift nodes off the ground after we drop them all (make stair/ramp mapping easier)
 
 // to help eliminate node clutter by level designers, this is used to cap how many other nodes
 // any given node is allowed to 'see' in the first stage of graph creation "LinkVisibleNodes()".
-#define	MAX_NODE_INITIAL_LINKS	128
-#define	MAX_NODES               1024
+constexpr int MAX_NODE_INITIAL_LINKS = 128;
+constexpr int MAX_NODES = 1024;
 
 extern DLL_GLOBAL edict_t		*g_pBodyQueueHead;
 
@@ -804,7 +804,7 @@ void inline CalcBounds(int &Lower, int &Upper, int Goal, int Best)
 //
 inline int CALC_RANGE(int x, int lower, int upper)
 {
-	return NUM_RANGES*(x-lower)/((upper-lower+1));
+	return CGraph::NUM_RANGES*(x-lower)/((upper-lower+1));
 }
 
 
@@ -2651,7 +2651,7 @@ int CGraph :: CheckNODFile ( char *szMapName )
 	return retValue;
 }
 
-#define ENTRY_STATE_EMPTY -1
+constexpr short ENTRY_STATE_EMPTY = -1;
 
 struct tagNodePair
 {
@@ -2709,9 +2709,9 @@ void CGraph::HashSearch(int iSrcNode, int iDestNode, int &iKey)
 	iKey = m_pHashLinks[i];
 }
 
-#define NUMBER_OF_PRIMES 177
+constexpr int NUMBER_OF_PRIMES = 177;
 
-int Primes[NUMBER_OF_PRIMES] =
+constexpr int Primes[NUMBER_OF_PRIMES] =
 { 1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67,
 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151,
 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239,
@@ -2787,7 +2787,7 @@ void CGraph::HashChoosePrimes(int TableSize)
 
 // Renumber nodes so that nodes that link together are together.
 //
-#define UNNUMBERED_NODE -1
+constexpr int UNNUMBERED_NODE = -1;
 void CGraph::SortNodes()
 {
 	// We are using m_iPreviousNode to be the new node number.

@@ -18,9 +18,9 @@
 #include "progdefs.h"
 
 // 16 simultaneous events, max
-#define MAX_EVENT_QUEUE 64
+constexpr int MAX_EVENT_QUEUE = 64;
 
-#define DEFAULT_EVENT_RESENDS 1
+constexpr int DEFAULT_EVENT_RESENDS = 1;
 
 #include "event_flags.h"
 

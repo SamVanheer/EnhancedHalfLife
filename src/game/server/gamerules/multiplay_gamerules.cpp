@@ -36,9 +36,9 @@ extern DLL_GLOBAL bool	g_fGameOver;
 
 extern int g_teamplay;
 
-#define ITEM_RESPAWN_TIME	30
-#define WEAPON_RESPAWN_TIME	20
-#define AMMO_RESPAWN_TIME	20
+constexpr int ITEM_RESPAWN_TIME = 30;
+constexpr int WEAPON_RESPAWN_TIME = 20;
+constexpr int AMMO_RESPAWN_TIME = 20;
 
 float g_flIntermissionStartTime = 0;
 
@@ -170,7 +170,7 @@ void CHalfLifeMultiplay::RefreshSkillData()
 }
 
 // longest the intermission can last, in seconds
-#define MAX_INTERMISSION_TIME		120
+constexpr int MAX_INTERMISSION_TIME = 120;
 
 extern cvar_t timeleft, fragsleft;
 
@@ -911,7 +911,7 @@ float CHalfLifeMultiplay :: FlWeaponRespawnTime( CBasePlayerItem *pWeapon )
 
 // when we are within this close to running out of entities,  items 
 // marked with the ITEM_FLAG_LIMITINWORLD will delay their respawn
-#define ENTITY_INTOLERANCE	100
+constexpr int ENTITY_INTOLERANCE = 100;
 
 //=========================================================
 // FlWeaponRespawnTime - Returns 0 if the weapon can respawn 
@@ -1143,7 +1143,7 @@ bool CHalfLifeMultiplay :: FAllowMonsters()
 
 //=========================================================
 //======== CHalfLifeMultiplay private functions ===========
-#define INTERMISSION_TIME		6
+constexpr int INTERMISSION_TIME = 6;
 
 void CHalfLifeMultiplay :: GoToIntermission()
 {
@@ -1167,7 +1167,7 @@ void CHalfLifeMultiplay :: GoToIntermission()
 	m_iEndIntermissionButtonHit = false;
 }
 
-#define MAX_RULE_BUFFER 1024
+constexpr int MAX_RULE_BUFFER = 1024;
 
 struct mapcycle_item_t
 {
@@ -1656,8 +1656,8 @@ void CHalfLifeMultiplay :: ChangeLevel()
 	}
 }
 
-#define MAX_MOTD_CHUNK	  60
-#define MAX_MOTD_LENGTH   1536 // (MAX_MOTD_CHUNK * 4)
+constexpr int MAX_MOTD_CHUNK = 60;
+constexpr int MAX_MOTD_LENGTH = 1536; // (MAX_MOTD_CHUNK * 4)
 
 void CHalfLifeMultiplay :: SendMOTDToClient( edict_t *client )
 {

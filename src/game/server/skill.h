@@ -147,6 +147,6 @@ float GetSkillCvar( const char *pName );
 
 extern DLL_GLOBAL int		g_iSkillLevel;
 
-#define SKILL_EASY		1
-#define SKILL_MEDIUM	2
-#define SKILL_HARD		3
+constexpr int SKILL_EASY = 1;
+constexpr int SKILL_MEDIUM = 2;
+constexpr int SKILL_HARD = 3;

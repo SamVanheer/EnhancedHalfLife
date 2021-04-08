@@ -25,11 +25,11 @@
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
-#define	ZOMBIE_AE_ATTACK_RIGHT		0x01
-#define	ZOMBIE_AE_ATTACK_LEFT		0x02
-#define	ZOMBIE_AE_ATTACK_BOTH		0x03
+constexpr int ZOMBIE_AE_ATTACK_RIGHT = 0x01;
+constexpr int ZOMBIE_AE_ATTACK_LEFT = 0x02;
+constexpr int ZOMBIE_AE_ATTACK_BOTH = 0x03;
 
-#define ZOMBIE_FLINCH_DELAY			2		// at most one flinch every n secs
+constexpr int ZOMBIE_FLINCH_DELAY = 2;		//!< at most one flinch every n secs
 
 class CZombie : public CBaseMonster
 {

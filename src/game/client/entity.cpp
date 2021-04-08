@@ -332,7 +332,7 @@ void DLLEXPORT HUD_StudioEvent( const mstudioevent_t *event, const cl_entity_t *
 		iMuzzleFlash = 0;
 
 #endif 
-
+	//TODO: define constants
 	switch( event->event )
 	{
 	case 5001:

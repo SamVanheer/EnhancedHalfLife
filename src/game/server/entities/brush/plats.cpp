@@ -26,7 +26,7 @@
 
 static void PlatSpawnInsideTrigger(entvars_t* pevPlatform);
 
-#define SF_PLAT_TOGGLE		0x0001
+constexpr int SF_PLAT_TOGGLE = 0x0001;
 
 class CBasePlatTrain : public CBaseToggle
 {
@@ -1096,9 +1096,9 @@ static void FixupAngles( Vector &v )
 	v.z = Fix( v.z );
 }
 
-#define TRAIN_STARTPITCH	60
-#define TRAIN_MAXPITCH		200
-#define TRAIN_MAXSPEED		1000	// approx max speed for sound pitch calculation
+constexpr int TRAIN_STARTPITCH = 60;
+constexpr int TRAIN_MAXPITCH = 200;
+constexpr int TRAIN_MAXSPEED = 1000;	// approx max speed for sound pitch calculation
 
 void CFuncTrackTrain :: StopSound()
 {
@@ -1608,11 +1608,11 @@ void CFuncTrainControls :: Spawn()
 //
 // ----------------------------------------------------------------------------
 
-#define SF_TRACK_ACTIVATETRAIN		0x00000001
-#define SF_TRACK_RELINK				0x00000002
-#define SF_TRACK_ROTMOVE			0x00000004
-#define SF_TRACK_STARTBOTTOM		0x00000008
-#define SF_TRACK_DONT_MOVE			0x00000010
+constexpr int SF_TRACK_ACTIVATETRAIN = 0x00000001;
+constexpr int SF_TRACK_RELINK = 0x00000002;
+constexpr int SF_TRACK_ROTMOVE = 0x00000004;
+constexpr int SF_TRACK_STARTBOTTOM = 0x00000008;
+constexpr int SF_TRACK_DONT_MOVE = 0x00000010;
 
 //
 // This entity is a rotating/moving platform that will carry a train to a new track.
@@ -2108,7 +2108,7 @@ void CFuncTrackAuto :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 // pev->health is current health
 // pev->max_health is the amount to reset to each time it starts
 
-#define FGUNTARGET_START_ON			0x0001
+constexpr int FGUNTARGET_START_ON = 0x0001;
 
 class CGunTarget : public CBaseMonster
 {

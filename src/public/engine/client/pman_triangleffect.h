@@ -1,24 +1,24 @@
 #pragma once
 
-#define TRI_COLLIDEWORLD	0x00000020
-#define TRI_COLLIDEALL		0x00001000 // will collide with world and slideboxes
-#define TRI_COLLIDEKILL		0x00004000 // tent is removed upon collision with anything
-#define TRI_SPIRAL			0x00008000
-#define TRI_ANIMATEDIE		0x00016000 //animate once and then die
-#define TRI_WATERTRACE		0x00032000
+constexpr int TRI_COLLIDEWORLD = 0x00000020;
+constexpr int TRI_COLLIDEALL = 0x00001000;	//!< will collide with world and slideboxes
+constexpr int TRI_COLLIDEKILL = 0x00004000;	//!< tent is removed upon collision with anything
+constexpr int TRI_SPIRAL = 0x00008000;
+constexpr int TRI_ANIMATEDIE = 0x00016000;	//!< animate once and then die
+constexpr int TRI_WATERTRACE = 0x00032000;
 
 
-#define CULL_FRUSTUM_POINT ( 1 << 0 )
-#define CULL_FRUSTUM_SPHERE ( 1 << 1 )
-#define CULL_FRUSTUM_PLANE ( 1 << 2 )
-#define CULL_PVS ( 1 << 3 )
+constexpr int CULL_FRUSTUM_POINT = 1 << 0;
+constexpr int CULL_FRUSTUM_SPHERE = 1 << 1;
+constexpr int CULL_FRUSTUM_PLANE = 1 << 2;
+constexpr int CULL_PVS = 1 << 3;
 
-#define LIGHT_NONE ( 1 << 4 )
-#define LIGHT_COLOR ( 1 << 5 )
-#define LIGHT_INTENSITY ( 1 << 6 )
+constexpr int LIGHT_NONE = 1 << 4;
+constexpr int LIGHT_COLOR = 1 << 5;
+constexpr int LIGHT_INTENSITY = 1 << 6;
 
-#define RENDER_FACEPLAYER ( 1 << 7 ) // m_vAngles == Player view angles
-#define RENDER_FACEPLAYER_ROTATEZ ( 1 << 8 ) //Just like above but m_vAngles.z is untouched so the sprite can rotate.
+constexpr int RENDER_FACEPLAYER = 1 << 7;			//!< m_vAngles == Player view angles
+constexpr int RENDER_FACEPLAYER_ROTATEZ = 1 << 8;	//!< Just like above but m_vAngles.z is untouched so the sprite can rotate.
 
 
 #include "pman_particlemem.h" 

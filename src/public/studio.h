@@ -25,20 +25,20 @@ Studio models are position independent, so the cache manager can move them.
 */
  
 
-#define MAXSTUDIOTRIANGLES	20000	// TODO: tune this
-#define MAXSTUDIOVERTS		2048	// TODO: tune this
-#define MAXSTUDIOSEQUENCES	2048	// total animation sequences -- KSH incremented
-#define MAXSTUDIOSKINS		100		// total textures
-#define MAXSTUDIOSRCBONES	512		// bones allowed at source movement
-#define MAXSTUDIOBONES		128		// total bones actually used
-#define MAXSTUDIOMODELS		32		// sub-models per model
-#define MAXSTUDIOBODYPARTS	32
-#define MAXSTUDIOGROUPS		16
-#define MAXSTUDIOANIMATIONS	2048		
-#define MAXSTUDIOMESHES		256
-#define MAXSTUDIOEVENTS		1024
-#define MAXSTUDIOPIVOTS		256
-#define MAXSTUDIOCONTROLLERS 8
+constexpr int MAXSTUDIOTRIANGLES = 20000;	// TODO: tune this
+constexpr int MAXSTUDIOVERTS = 2048;		// TODO: tune this
+constexpr int MAXSTUDIOSEQUENCES = 2048;	// total animation sequences -- KSH incremented
+constexpr int MAXSTUDIOSKINS = 100;			// total textures
+constexpr int MAXSTUDIOSRCBONES = 512;		// bones allowed at source movement
+constexpr int MAXSTUDIOBONES = 128;			// total bones actually used
+constexpr int MAXSTUDIOMODELS = 32;			// sub-models per model
+constexpr int MAXSTUDIOBODYPARTS = 32;
+constexpr int MAXSTUDIOGROUPS = 16;
+constexpr int MAXSTUDIOANIMATIONS = 2048;
+constexpr int MAXSTUDIOMESHES = 256;
+constexpr int MAXSTUDIOEVENTS = 1024;
+constexpr int MAXSTUDIOPIVOTS = 256;
+constexpr int MAXSTUDIOCONTROLLERS = 8;
 
 struct studiohdr_t
 {
@@ -323,41 +323,41 @@ struct mstudiotrivert_t
 #endif
 
 // lighting options
-#define STUDIO_NF_FLATSHADE		0x0001
-#define STUDIO_NF_CHROME		0x0002
-#define STUDIO_NF_FULLBRIGHT	0x0004
-#define STUDIO_NF_NOMIPS        0x0008
-#define STUDIO_NF_ALPHA         0x0010
-#define STUDIO_NF_ADDITIVE      0x0020
-#define STUDIO_NF_MASKED        0x0040
+constexpr int STUDIO_NF_FLATSHADE = 0x0001;
+constexpr int STUDIO_NF_CHROME = 0x0002;
+constexpr int STUDIO_NF_FULLBRIGHT = 0x0004;
+constexpr int STUDIO_NF_NOMIPS = 0x0008;
+constexpr int STUDIO_NF_ALPHA = 0x0010;
+constexpr int STUDIO_NF_ADDITIVE = 0x0020;
+constexpr int STUDIO_NF_MASKED = 0x0040;
 
 // motion flags
-#define STUDIO_X		0x0001
-#define STUDIO_Y		0x0002	
-#define STUDIO_Z		0x0004
-#define STUDIO_XR		0x0008
-#define STUDIO_YR		0x0010
-#define STUDIO_ZR		0x0020
-#define STUDIO_LX		0x0040
-#define STUDIO_LY		0x0080
-#define STUDIO_LZ		0x0100
-#define STUDIO_AX		0x0200
-#define STUDIO_AY		0x0400
-#define STUDIO_AZ		0x0800
-#define STUDIO_AXR		0x1000
-#define STUDIO_AYR		0x2000
-#define STUDIO_AZR		0x4000
-#define STUDIO_TYPES	0x7FFF
-#define STUDIO_RLOOP	0x8000	// controller that wraps shortest distance
+constexpr int STUDIO_X = 0x0001;
+constexpr int STUDIO_Y = 0x0002;
+constexpr int STUDIO_Z = 0x0004;
+constexpr int STUDIO_XR = 0x0008;
+constexpr int STUDIO_YR = 0x0010;
+constexpr int STUDIO_ZR = 0x0020;
+constexpr int STUDIO_LX = 0x0040;
+constexpr int STUDIO_LY = 0x0080;
+constexpr int STUDIO_LZ = 0x0100;
+constexpr int STUDIO_AX = 0x0200;
+constexpr int STUDIO_AY = 0x0400;
+constexpr int STUDIO_AZ = 0x0800;
+constexpr int STUDIO_AXR = 0x1000;
+constexpr int STUDIO_AYR = 0x2000;
+constexpr int STUDIO_AZR = 0x4000;
+constexpr int STUDIO_TYPES = 0x7FFF;
+constexpr int STUDIO_RLOOP = 0x8000;	// controller that wraps shortest distance
 
 // sequence flags
-#define STUDIO_LOOPING	0x0001
+constexpr int STUDIO_LOOPING = 0x0001;
 
 // bone flags
-#define STUDIO_HAS_NORMALS	0x0001
-#define STUDIO_HAS_VERTICES 0x0002
-#define STUDIO_HAS_BBOX		0x0004
-#define STUDIO_HAS_CHROME	0x0008	// if any of the textures have chrome on them
+constexpr int STUDIO_HAS_NORMALS = 0x0001;
+constexpr int STUDIO_HAS_VERTICES = 0x0002;
+constexpr int STUDIO_HAS_BBOX = 0x0004;
+constexpr int STUDIO_HAS_CHROME = 0x0008;	// if any of the textures have chrome on them
 
 #define RAD_TO_STUDIO		(32768.0/M_PI)
 #define STUDIO_TO_RAD		(M_PI/32768.0)

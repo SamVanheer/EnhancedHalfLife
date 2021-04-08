@@ -31,9 +31,9 @@ using namespace vgui;
 extern int cam_thirdperson;
 
 
-#define VOICE_MODEL_INTERVAL		0.3
-#define SCOREBOARD_BLINK_FREQUENCY	0.3	// How often to blink the scoreboard icons.
-#define SQUELCHOSCILLATE_PER_SECOND	2.0f
+constexpr float VOICE_MODEL_INTERVAL = 0.3;
+constexpr float SCOREBOARD_BLINK_FREQUENCY = 0.3f;	// How often to blink the scoreboard icons.
+constexpr float SQUELCHOSCILLATE_PER_SECOND = 2.0f;
 
 // ---------------------------------------------------------------------- //
 // The voice manager for the client.

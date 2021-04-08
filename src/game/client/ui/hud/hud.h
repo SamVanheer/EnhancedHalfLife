@@ -15,9 +15,9 @@
 
 #pragma once
 
-#define RGB_YELLOWISH 0x00FFA000 //255,160,0
-#define RGB_REDISH 0x00FF1010 //255,160,0
-#define RGB_GREENISH 0x0000A000 //0,160,0
+constexpr int RGB_YELLOWISH = 0x00FFA000; //255,160,0
+constexpr int RGB_REDISH = 0x00FF1010; //255,160,0
+constexpr int RGB_GREENISH = 0x0000A000; //0,160,0
 
 #ifndef _WIN32
 #define _cdecl 
@@ -27,12 +27,10 @@
 #include "cl_dll.h"
 #include "ammo.h"
 
-#define DHN_DRAWZERO 1
-#define DHN_2DIGITS  2
-#define DHN_3DIGITS  4
-#define MIN_ALPHA	 100	
-
-#define		HUDELEM_ACTIVE	1
+constexpr int DHN_DRAWZERO = 1;
+constexpr int DHN_2DIGITS = 2;
+constexpr int DHN_3DIGITS = 4;
+constexpr int MIN_ALPHA = 100;
 
 struct POSITION
 {
@@ -49,12 +47,12 @@ struct RGBA
 struct cvar_t;
 
 
-#define HUD_ACTIVE	1
-#define HUD_INTERMISSION 2
+constexpr int HUD_ACTIVE = 1;
+constexpr int HUD_INTERMISSION = 2;
 
-#define MAX_PLAYER_NAME_LENGTH		32
+constexpr int MAX_PLAYER_NAME_LENGTH = 32;
 
-#define	MAX_MOTD_LENGTH				1536
+constexpr int MAX_MOTD_LENGTH = 1536;
 
 //
 //-----------------------------------------------------
@@ -140,7 +138,7 @@ private:
 #include "health.h"
 
 
-#define FADE_TIME 100
+constexpr int FADE_TIME = 100;
 
 
 //
@@ -207,7 +205,7 @@ protected:
 	int m_bReparseString; // set to true whenever the m_szStatusBar needs to be recalculated
 
 	// an array of colors...one color for each line
-	float *m_pflNameColors[MAX_STATUSBAR_LINES];
+	const float *m_pflNameColors[MAX_STATUSBAR_LINES];
 };
 
 struct extra_player_info_t 
@@ -418,7 +416,7 @@ private:
 //
 //-----------------------------------------------------
 //
-#define MAX_SPRITE_NAME_LENGTH	24
+constexpr int MAX_SPRITE_NAME_LENGTH = 24;
 
 class CHudStatusIcons: public CHudBase
 {

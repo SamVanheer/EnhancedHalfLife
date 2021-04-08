@@ -8,7 +8,7 @@ struct entity_state_t;
 struct model_t;
 struct player_info_t;
 
-#define STUDIO_INTERFACE_VERSION 1
+constexpr int STUDIO_INTERFACE_VERSION = 1;
 
 struct engine_studio_api_t
 {
@@ -128,7 +128,7 @@ struct r_studio_interface_t
 extern r_studio_interface_t *pStudioAPI;
 
 // server blending
-#define SV_BLENDING_INTERFACE_VERSION 1
+constexpr int SV_BLENDING_INTERFACE_VERSION = 1;
 
 struct sv_blending_interface_t
 {

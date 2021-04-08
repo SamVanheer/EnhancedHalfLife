@@ -15,38 +15,38 @@
 
 #pragma once
 
-#define	SF_SQUADMONSTER_LEADER	32
+constexpr int	SF_SQUADMONSTER_LEADER = 32;
 
 
-#define bits_NO_SLOT		0
+constexpr int bits_NO_SLOT = 0;
 
 // HUMAN GRUNT SLOTS
-#define bits_SLOT_HGRUNT_ENGAGE1	( 1 << 0 )
-#define bits_SLOT_HGRUNT_ENGAGE2	( 1 << 1 )
-#define bits_SLOTS_HGRUNT_ENGAGE	( bits_SLOT_HGRUNT_ENGAGE1 | bits_SLOT_HGRUNT_ENGAGE2 )
+constexpr int bits_SLOT_HGRUNT_ENGAGE1 = 1 << 0;
+constexpr int bits_SLOT_HGRUNT_ENGAGE2 = 1 << 1;
+constexpr int bits_SLOTS_HGRUNT_ENGAGE = bits_SLOT_HGRUNT_ENGAGE1 | bits_SLOT_HGRUNT_ENGAGE2;
 
-#define bits_SLOT_HGRUNT_GRENADE1	( 1 << 2 ) 
-#define bits_SLOT_HGRUNT_GRENADE2	( 1 << 3 ) 
-#define bits_SLOTS_HGRUNT_GRENADE	( bits_SLOT_HGRUNT_GRENADE1 | bits_SLOT_HGRUNT_GRENADE2 )
+constexpr int bits_SLOT_HGRUNT_GRENADE1 = 1 << 2;
+constexpr int bits_SLOT_HGRUNT_GRENADE2 = 1 << 3;
+constexpr int bits_SLOTS_HGRUNT_GRENADE = bits_SLOT_HGRUNT_GRENADE1 | bits_SLOT_HGRUNT_GRENADE2;
 
 // ALIEN GRUNT SLOTS
-#define bits_SLOT_AGRUNT_HORNET1	( 1 << 4 )
-#define bits_SLOT_AGRUNT_HORNET2	( 1 << 5 )
-#define bits_SLOT_AGRUNT_CHASE		( 1 << 6 )
-#define bits_SLOTS_AGRUNT_HORNET	( bits_SLOT_AGRUNT_HORNET1 | bits_SLOT_AGRUNT_HORNET2 )
+constexpr int bits_SLOT_AGRUNT_HORNET1 = 1 << 4;
+constexpr int bits_SLOT_AGRUNT_HORNET2 = 1 << 5;
+constexpr int bits_SLOT_AGRUNT_CHASE = 1 << 6;
+constexpr int bits_SLOTS_AGRUNT_HORNET = bits_SLOT_AGRUNT_HORNET1 | bits_SLOT_AGRUNT_HORNET2;
 
 // HOUNDEYE SLOTS
-#define bits_SLOT_HOUND_ATTACK1		( 1 << 7 )
-#define bits_SLOT_HOUND_ATTACK2		( 1 << 8 )
-#define bits_SLOT_HOUND_ATTACK3		( 1 << 9 )
-#define bits_SLOTS_HOUND_ATTACK		( bits_SLOT_HOUND_ATTACK1 | bits_SLOT_HOUND_ATTACK2 | bits_SLOT_HOUND_ATTACK3 )
+constexpr int bits_SLOT_HOUND_ATTACK1 = 1 << 7;
+constexpr int bits_SLOT_HOUND_ATTACK2 = 1 << 8;
+constexpr int bits_SLOT_HOUND_ATTACK3 = 1 << 9;
+constexpr int bits_SLOTS_HOUND_ATTACK = bits_SLOT_HOUND_ATTACK1 | bits_SLOT_HOUND_ATTACK2 | bits_SLOT_HOUND_ATTACK3;
 
 // global slots
-#define bits_SLOT_SQUAD_SPLIT		( 1 << 10 )// squad members don't all have the same enemy
+constexpr int bits_SLOT_SQUAD_SPLIT = 1 << 10;// squad members don't all have the same enemy
 
-#define NUM_SLOTS			11// update this every time you add/remove a slot.
+constexpr int NUM_SLOTS = 11;// update this every time you add/remove a slot.
 
-#define	MAX_SQUAD_MEMBERS	5
+constexpr int MAX_SQUAD_MEMBERS = 5;
 
 /**
 *	@brief for any monster that forms squads.

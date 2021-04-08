@@ -291,7 +291,7 @@ struct LEVELLIST
 	Vector		vecLandmarkOrigin;
 };
 
-#define MAX_LEVEL_CONNECTIONS	16		// These are encoded in the lower 16bits of ENTITYTABLE->flags
+constexpr int MAX_LEVEL_CONNECTIONS = 16;		// These are encoded in the lower 16bits of ENTITYTABLE->flags
 
 struct ENTITYTABLE
 {
@@ -304,10 +304,10 @@ struct ENTITYTABLE
 	string_t	classname;		// entity class name
 };
 
-#define FENTTABLE_PLAYER		0x80000000
-#define FENTTABLE_REMOVED		0x40000000
-#define FENTTABLE_MOVEABLE		0x20000000
-#define FENTTABLE_GLOBAL		0x10000000
+constexpr int FENTTABLE_PLAYER = 0x80000000;
+constexpr int FENTTABLE_REMOVED = 0x40000000;
+constexpr int FENTTABLE_MOVEABLE = 0x20000000;
+constexpr int FENTTABLE_GLOBAL = 0x10000000;
 
 struct SAVERESTOREDATA
 {
@@ -370,7 +370,7 @@ enum FIELDTYPE
 #define DEFINE_GLOBAL_FIELD(type,name,fieldtype)	_FIELD(type, name, fieldtype, 1, FTYPEDESC_GLOBAL )
 
 
-#define FTYPEDESC_GLOBAL			0x0001		// This field is masked for global entity save/restore
+constexpr int FTYPEDESC_GLOBAL = 0x0001;		// This field is masked for global entity save/restore
 
 struct TYPEDESCRIPTION
 {

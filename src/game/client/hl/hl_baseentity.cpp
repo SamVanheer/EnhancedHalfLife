@@ -36,7 +36,7 @@ enginefuncs_t g_engfuncs;
 globalvars_t  *gpGlobals;
 
 ItemInfo CBasePlayerItem::ItemInfoArray[MAX_WEAPONS];
-AmmoInfo CBasePlayerItem::AmmoInfoArray[MAX_AMMO_SLOTS];
+AmmoInfo CBasePlayerItem::AmmoInfoArray[MAX_AMMO_TYPES];
 
 void EMIT_SOUND_DYN(edict_t *entity, int channel, const char *sample, float volume, float attenuation, int flags, int pitch) { }
 

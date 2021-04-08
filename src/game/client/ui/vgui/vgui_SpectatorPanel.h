@@ -6,31 +6,31 @@
 
 using namespace vgui;
 
-#define SPECTATOR_PANEL_CMD_NONE				0
+constexpr int SPECTATOR_PANEL_CMD_NONE = 0;
 
-#define SPECTATOR_PANEL_CMD_OPTIONS				1
-#define	SPECTATOR_PANEL_CMD_PREVPLAYER			2
-#define SPECTATOR_PANEL_CMD_NEXTPLAYER			3
-#define	SPECTATOR_PANEL_CMD_HIDEMENU			4
-#define	SPECTATOR_PANEL_CMD_TOGGLE_INSET		5
-#define SPECTATOR_PANEL_CMD_CAMERA				6
-#define SPECTATOR_PANEL_CMD_PLAYERS				7
+constexpr int SPECTATOR_PANEL_CMD_OPTIONS = 1;
+constexpr int SPECTATOR_PANEL_CMD_PREVPLAYER = 2;
+constexpr int SPECTATOR_PANEL_CMD_NEXTPLAYER = 3;
+constexpr int SPECTATOR_PANEL_CMD_HIDEMENU = 4;
+constexpr int SPECTATOR_PANEL_CMD_TOGGLE_INSET = 5;
+constexpr int SPECTATOR_PANEL_CMD_CAMERA = 6;
+constexpr int SPECTATOR_PANEL_CMD_PLAYERS = 7;
 
 // spectator panel sizes
-#define PANEL_HEIGHT 64
+constexpr int PANEL_HEIGHT = 64;
 
-#define BANNER_WIDTH	256
-#define BANNER_HEIGHT	64
+constexpr int BANNER_WIDTH = 256;
+constexpr int BANNER_HEIGHT = 64;
 
-#define OPTIONS_BUTTON_X 96
-#define CAMOPTIONS_BUTTON_X 200
-
-
-#define SEPERATOR_WIDTH 15
-#define SEPERATOR_HEIGHT 15
+constexpr int OPTIONS_BUTTON_X = 96;
+constexpr int CAMOPTIONS_BUTTON_X = 200;
 
 
-#define TEAM_NUMBER 2
+constexpr int SEPERATOR_WIDTH = 15;
+constexpr int SEPERATOR_HEIGHT = 15;
+
+
+constexpr int TEAM_NUMBER = 2;
 
 class SpectatorPanel : public Panel //, public vgui::CDefaultInputSignal
 {

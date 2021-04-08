@@ -30,7 +30,7 @@ enum
 	BEAM_HOSE,
 };
 
-#define BEAM_FSINE		0x10
-#define BEAM_FSOLID		0x20
-#define BEAM_FSHADEIN	0x40
-#define BEAM_FSHADEOUT	0x80
+constexpr int BEAM_FSINE = 0x10;
+constexpr int BEAM_FSOLID = 0x20;
+constexpr int BEAM_FSHADEIN = 0x40;
+constexpr int BEAM_FSHADEOUT = 0x80;

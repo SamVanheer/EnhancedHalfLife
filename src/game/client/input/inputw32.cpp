@@ -27,7 +27,7 @@
 #include <SDL2/SDL_mouse.h>
 #include <SDL2/SDL_gamecontroller.h>
 
-#define MOUSE_BUTTON_COUNT 5
+constexpr int MOUSE_BUTTON_COUNT = 5;
 
 // Set this to 1 to show mouse cursor.  Experimental
 int	g_iVisibleMouse = 0;
@@ -96,15 +96,15 @@ static int	mouseshowtoggle = 1;
 
 // joystick defines and variables
 // where should defines be moved?
-#define JOY_ABSOLUTE_AXIS	0x00000000		// control like a joystick
-#define JOY_RELATIVE_AXIS	0x00000010		// control like a mouse, spinner, trackball
-#define	JOY_MAX_AXES		6				// X, Y, Z, R, U, V
-#define JOY_AXIS_X			0
-#define JOY_AXIS_Y			1
-#define JOY_AXIS_Z			2
-#define JOY_AXIS_R			3
-#define JOY_AXIS_U			4
-#define JOY_AXIS_V			5
+constexpr int JOY_ABSOLUTE_AXIS = 0x00000000;		// control like a joystick
+constexpr int JOY_RELATIVE_AXIS = 0x00000010;		// control like a mouse, spinner, trackball
+constexpr int JOY_MAX_AXES = 6;				// X, Y, Z, R, U, V
+constexpr int JOY_AXIS_X = 0;
+constexpr int JOY_AXIS_Y = 1;
+constexpr int JOY_AXIS_Z = 2;
+constexpr int JOY_AXIS_R = 3;
+constexpr int JOY_AXIS_U = 4;
+constexpr int JOY_AXIS_V = 5;
 
 enum _ControlList
 {

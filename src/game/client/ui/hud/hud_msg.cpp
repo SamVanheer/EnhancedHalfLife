@@ -18,6 +18,9 @@
 #include "parsemsg.h"
 #include "r_efx.h"
 
+#include "extdll.h"
+#include "util.h"
+
 #include "particleman.h"
 extern IParticleMan *g_pParticleMan;
 

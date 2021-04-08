@@ -107,9 +107,7 @@ private:
 	bool	m_precache;
 };
 
-#define MAX_ENTITYARRAY 64
-
-//#define ARRAYSIZE(p)		(sizeof(p)/sizeof(p[0]))
+constexpr int MAX_ENTITYARRAY = 64;
 
 #define IMPLEMENT_SAVERESTORE(derivedClass,baseClass) \
 	int derivedClass::Save( CSave &save )\

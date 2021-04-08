@@ -127,7 +127,7 @@ TYPEDESCRIPTION	gEntvarsDescription[] =
 	DEFINE_ENTITY_FIELD(radsuit_finished, FIELD_TIME),
 };
 
-#define ENTVARS_COUNT		(sizeof(gEntvarsDescription)/sizeof(gEntvarsDescription[0]))
+constexpr int ENTVARS_COUNT = (sizeof(gEntvarsDescription) / sizeof(gEntvarsDescription[0]));
 
 // --------------------------------------------------------------
 //

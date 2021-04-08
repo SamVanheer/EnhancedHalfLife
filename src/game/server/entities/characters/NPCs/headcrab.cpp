@@ -23,7 +23,7 @@
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
-#define		HC_AE_JUMPATTACK	( 2 )
+constexpr int HC_AE_JUMPATTACK = 2;
 
 Task_t	tlHCRangeAttack1[] =
 {
@@ -436,7 +436,6 @@ int CHeadCrab :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, fl
 //=========================================================
 // IdleSound
 //=========================================================
-#define CRAB_ATTN_IDLE (float)1.5
 void CHeadCrab :: IdleSound ()
 {
 	EMIT_SOUND_DYN( edict(), CHAN_VOICE, RANDOM_SOUND_ARRAY(pIdleSounds), GetSoundVolue(), ATTN_IDLE, 0, GetVoicePitch() );

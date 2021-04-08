@@ -46,14 +46,17 @@ extern cvar_t* cl_rollangle;
 extern cvar_t* cl_rollspeed;
 extern cvar_t* cl_bobtilt;
 
-#define	CAM_MODE_RELAX		1
-#define CAM_MODE_FOCUS		2
+enum class CamMode
+{
+	Relax = 1,
+	Focus
+};
 
 Vector		v_origin, v_angles, v_cl_angles, v_sim_org, v_lastAngles;
 float		v_frametime, v_lastDistance;	
 float		v_cameraRelaxAngle	= 5.0f;
 float		v_cameraFocusAngle	= 35.0f;
-int			v_cameraMode = CAM_MODE_FOCUS;
+CamMode		v_cameraMode = CamMode::Focus;
 bool		v_resetCamera = true;
 
 Vector v_client_aimangles;
@@ -381,8 +384,8 @@ void V_CalcIntermissionRefdef ( ref_params_t* pparams )
 	v_angles = pparams->viewangles;
 }
 
-#define ORIGIN_BACKUP 64
-#define ORIGIN_MASK ( ORIGIN_BACKUP - 1 )
+constexpr int ORIGIN_BACKUP = 64;
+constexpr int ORIGIN_MASK = ORIGIN_BACKUP - 1;
 
 struct viewinterp_t
 {
@@ -947,24 +950,24 @@ void V_GetDoubleTargetsCam(cl_entity_t	 * ent1, cl_entity_t * ent2, Vector& angl
 
 	float d = MaxAngleBetweenAngles( v_lastAngles, newAngle );
 
-	if ( ( d < v_cameraFocusAngle) && ( v_cameraMode == CAM_MODE_RELAX ) )
+	if ( ( d < v_cameraFocusAngle) && ( v_cameraMode == CamMode::Relax) )
 	{
 		// difference is to small and we are in relax camera mode, keep viewangles
 		newAngle = v_lastAngles;
 	}
-	else if ( (d < v_cameraRelaxAngle) && (v_cameraMode == CAM_MODE_FOCUS) )
+	else if ( (d < v_cameraRelaxAngle) && (v_cameraMode == CamMode::Focus) )
 	{
 		// we catched up with our target, relax again
-		v_cameraMode = CAM_MODE_RELAX;
+		v_cameraMode = CamMode::Relax;
 	}
 	else
 	{
 		// target move too far away, focus camera again
-		v_cameraMode = CAM_MODE_FOCUS;
+		v_cameraMode = CamMode::Focus;
 	}
 
 	// and smooth view, if not a scene cut
-	if ( v_resetCamera || (v_cameraMode == CAM_MODE_RELAX) )
+	if ( v_resetCamera || (v_cameraMode == CamMode::Relax) )
 	{
 		angle = newAngle;
 	}

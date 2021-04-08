@@ -592,7 +592,6 @@ int CHudSpectator::Draw(float flTime)
 	int lx;
 
 	char string[256];
-	float * color;
 
 	// draw only in spectator mode
 	if ( !g_iUser1  )
@@ -650,7 +649,7 @@ int CHudSpectator::Draw(float flTime)
 				) continue;
 		}
 
-		color = GetClientColor( i+1 );
+		const float* color = GetClientColor( i+1 );
 
 		// draw the players name and health underneath
 		sprintf(string, "%s", g_PlayerInfoList[i+1].name );

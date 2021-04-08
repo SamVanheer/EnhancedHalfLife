@@ -21,8 +21,8 @@
 #include "nodes.h"
 #include "effects.h"
 
-#define N_SCALE		15
-#define N_SPHERES	20
+constexpr int N_SCALE = 15;
+constexpr int N_SPHERES = 20;
 
 class CNihilanth : public CBaseMonster
 {

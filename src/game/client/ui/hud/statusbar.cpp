@@ -25,12 +25,10 @@ DECLARE_MESSAGE( m_StatusBar, StatusText );
 DECLARE_MESSAGE( m_StatusBar, StatusValue );
 
 #ifdef _TFC
-#define STATUSBAR_ID_LINE		2
+constexpr int STATUSBAR_ID_LINE = 2;
 #else
-#define STATUSBAR_ID_LINE		1
+constexpr int STATUSBAR_ID_LINE = 1;
 #endif
-
-extern float g_ColorYellow[3];
 
 int CHudStatusBar :: Init()
 {

@@ -18,4 +18,4 @@
 /**
 *	@brief Physics info string definition
 */
-#define MAX_PHYSINFO_STRING 256
+constexpr int MAX_PHYSINFO_STRING = 256;

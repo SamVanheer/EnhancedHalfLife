@@ -13,32 +13,32 @@ struct efrag_t;
 struct msurface_t;
 struct surfcache_t;
 
-#define STUDIO_RENDER 1
-#define STUDIO_EVENTS 2
+constexpr int STUDIO_RENDER = 1;
+constexpr int STUDIO_EVENTS = 2;
 
-#define	MAX_EDICTS			900
+constexpr int	MAX_EDICTS = 900;
 
-#define MAX_MODEL_NAME		64
-#define MAX_MAP_HULLS		4
-#define	MIPLEVELS			4
-#define	NUM_AMBIENTS		4		// automatic ambient sounds
-#define	MAXLIGHTMAPS		4
-#define	PLANE_ANYZ			5
+constexpr int MAX_MODEL_NAME = 64;
+constexpr int MAX_MAP_HULLS = 4;
+constexpr int MIPLEVELS = 4;
+constexpr int NUM_AMBIENTS = 4;	// automatic ambient sounds
+constexpr int MAXLIGHTMAPS = 4;
+constexpr int PLANE_ANYZ = 5;
 
-#define ALIAS_Z_CLIP_PLANE	5
+constexpr int ALIAS_Z_CLIP_PLANE = 5;
 
 // flags in finalvert_t.flags
-#define ALIAS_LEFT_CLIP				0x0001
-#define ALIAS_TOP_CLIP				0x0002
-#define ALIAS_RIGHT_CLIP			0x0004
-#define ALIAS_BOTTOM_CLIP			0x0008
-#define ALIAS_Z_CLIP				0x0010
-#define ALIAS_ONSEAM				0x0020
-#define ALIAS_XY_CLIP_MASK			0x000F
+constexpr int ALIAS_LEFT_CLIP = 0x0001;
+constexpr int ALIAS_TOP_CLIP = 0x0002;
+constexpr int ALIAS_RIGHT_CLIP = 0x0004;
+constexpr int ALIAS_BOTTOM_CLIP = 0x0008;
+constexpr int ALIAS_Z_CLIP = 0x0010;
+constexpr int ALIAS_ONSEAM = 0x0020;
+constexpr int ALIAS_XY_CLIP_MASK = 0x000F;
 
-#define	ZISCALE	((float)0x8000)
+constexpr float ZISCALE = 0x8000;
 
-#define CACHE_SIZE	32		// used to align key data structures
+constexpr int CACHE_SIZE = 32;		// used to align key data structures
 
 enum modtype_t
 {
@@ -309,8 +309,8 @@ struct auxvert_t
 
 #include "custom.h"
 
-#define	MAX_INFO_STRING			256
-#define	MAX_SCOREBOARDNAME		32
+constexpr int MAX_INFO_STRING = 256;
+constexpr int MAX_SCOREBOARDNAME = 32;
 struct player_info_t
 {
 	// User id on server

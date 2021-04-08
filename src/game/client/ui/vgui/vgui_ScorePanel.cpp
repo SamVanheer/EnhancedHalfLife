@@ -68,10 +68,10 @@ SBColumnInfo g_ColumnInfo[NUM_COLUMNS] =
 };
 
 
-#define TEAM_NO				0
-#define TEAM_YES			1
-#define TEAM_SPECTATORS		2
-#define TEAM_BLANK			3
+constexpr int TEAM_NO = 0;
+constexpr int TEAM_YES = 1;
+constexpr int TEAM_SPECTATORS = 2;
+constexpr int TEAM_BLANK = 3;
 
 
 //-----------------------------------------------------------------------------
@@ -277,7 +277,7 @@ void ScorePanel::Update()
 	for (i = 0; i < NUM_ROWS; i++)
 	{
 		m_iSortedRows[i] = 0;
-		m_iIsATeam[i] = TEAM_NO;
+		m_iIsATeam[i] = TeamType::No;
 	}
 	for (i = 0; i < MAX_PLAYERS; i++)
 	{
@@ -286,7 +286,7 @@ void ScorePanel::Update()
 
 	// If it's not teamplay, sort all the players. Otherwise, sort the teams.
 	if ( !gHUD.m_Teamplay )
-		SortPlayers( 0, NULL );
+		SortPlayers(TeamType::No, NULL );
 	else
 		SortTeams();
 
@@ -396,22 +396,22 @@ void ScorePanel::SortTeams()
 
 		// Put this team in the sorted list
 		m_iSortedRows[ m_iRows ] = best_team;
-		m_iIsATeam[ m_iRows ] = TEAM_YES;
+		m_iIsATeam[ m_iRows ] = TeamType::Yes;
 		g_TeamInfo[best_team].already_drawn = true;  // set the already_drawn to be true, so this team won't get sorted again
 		m_iRows++;
 
 		// Now sort all the players on this team
-		SortPlayers( 0, g_TeamInfo[best_team].name );
+		SortPlayers(TeamType::No, g_TeamInfo[best_team].name );
 	}
 
 	// Add all the players who aren't in a team yet into spectators
-	SortPlayers( TEAM_SPECTATORS, NULL );
+	SortPlayers(TeamType::Spectators, NULL );
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Sort a list of players
 //-----------------------------------------------------------------------------
-void ScorePanel::SortPlayers( int iTeam, char *team )
+void ScorePanel::SortPlayers(TeamType iTeam, char *team )
 {
 	bool bCreatedTeam = false;
 
@@ -446,7 +446,7 @@ void ScorePanel::SortPlayers( int iTeam, char *team )
 			break;
 
 		// If we haven't created the Team yet, do it first
-		if (!bCreatedTeam && iTeam)
+		if (!bCreatedTeam && iTeam != TeamType::No)
 		{
 			m_iIsATeam[ m_iRows ] = iTeam;
 			m_iRows++;
@@ -462,7 +462,7 @@ void ScorePanel::SortPlayers( int iTeam, char *team )
 
 	if (team)
 	{
-		m_iIsATeam[m_iRows++] = TEAM_BLANK;
+		m_iIsATeam[m_iRows++] = TeamType::Blank;
 	}
 }
 
@@ -600,12 +600,12 @@ void ScorePanel::FillGrid()
 			hud_player_info_t *pl_info = NULL;
 			team_info_t *team_info = NULL;
 
-			if (m_iIsATeam[row] == TEAM_BLANK)
+			if (m_iIsATeam[row] == TeamType::Blank)
 			{
 				pLabel->setText(" ");
 				continue;
 			}
-			else if ( m_iIsATeam[row] == TEAM_YES )
+			else if ( m_iIsATeam[row] == TeamType::Yes)
 			{
 				// Get the team's data
 				team_info = &g_TeamInfo[ m_iSortedRows[row] ];
@@ -633,7 +633,7 @@ void ScorePanel::FillGrid()
 											iTeamColors[team_info->teamnumber % iNumberOfTeamColors][2],
 											0 );
 			}
-			else if ( m_iIsATeam[row] == TEAM_SPECTATORS )
+			else if ( m_iIsATeam[row] == TeamType::Spectators)
 			{
 				// grey text for spectators
 				pLabel->setFgColor(100, 100, 100, 0);
@@ -693,14 +693,14 @@ void ScorePanel::FillGrid()
 
 			// Fill out with the correct data
 			strcpy(sz, "");
-			if ( m_iIsATeam[row] )
+			if ( m_iIsATeam[row] != TeamType::No)
 			{
 				char sz2[128];
 
 				switch (col)
 				{
 				case COLUMN_NAME:
-					if ( m_iIsATeam[row] == TEAM_SPECTATORS )
+					if ( m_iIsATeam[row] == TeamType::Spectators )
 					{
 						sprintf( sz2, "%s", CHudTextMessage::BufferedLocaliseTextString( "#Spectators" ) );
 					}
@@ -712,7 +712,7 @@ void ScorePanel::FillGrid()
 					strcpy(sz, sz2);
 
 					// Append the number of players
-					if ( m_iIsATeam[row] == TEAM_YES )
+					if ( m_iIsATeam[row] == TeamType::Yes)
 					{
 						if (team_info->players == 1)
 						{
@@ -732,15 +732,15 @@ void ScorePanel::FillGrid()
 				case COLUMN_CLASS:
 					break;
 				case COLUMN_KILLS:
-					if ( m_iIsATeam[row] == TEAM_YES )
+					if ( m_iIsATeam[row] == TeamType::Yes)
 						sprintf(sz, "%d",  team_info->frags );
 					break;
 				case COLUMN_DEATHS:
-					if ( m_iIsATeam[row] == TEAM_YES )
+					if ( m_iIsATeam[row] == TeamType::Yes)
 						sprintf(sz, "%d",  team_info->deaths );
 					break;
 				case COLUMN_LATENCY:
-					if ( m_iIsATeam[row] == TEAM_YES )
+					if ( m_iIsATeam[row] == TeamType::Yes)
 						sprintf(sz, "%d", team_info->ping );
 					break;
 				default:
@@ -986,7 +986,7 @@ void ScorePanel::MouseOverCell(int row, int col)
 		return;
 
 	// don't act on teams
-	if (m_iIsATeam[row] != TEAM_NO)
+	if (m_iIsATeam[row] != TeamType::No)
 		return;
 
 	// don't act on disconnected players or ourselves

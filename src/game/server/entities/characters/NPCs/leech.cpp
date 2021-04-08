@@ -43,20 +43,20 @@
 
 
 // Animation events
-#define LEECH_AE_ATTACK		1
-#define LEECH_AE_FLOP		2
+constexpr int LEECH_AE_ATTACK = 1;
+constexpr int LEECH_AE_FLOP = 2;
 
 
 // Movement constants
 
-#define		LEECH_ACCELERATE		10
-#define		LEECH_CHECK_DIST		45
-#define		LEECH_SWIM_SPEED		50
-#define		LEECH_SWIM_ACCEL		80
-#define		LEECH_SWIM_DECEL		10
-#define		LEECH_TURN_RATE			90
-#define		LEECH_SIZEX				10
-#define		LEECH_FRAMETIME			0.1
+constexpr int LEECH_ACCELERATE = 10;
+constexpr int LEECH_CHECK_DIST = 45;
+constexpr int LEECH_SWIM_SPEED = 50;
+constexpr int LEECH_SWIM_ACCEL = 80;
+constexpr int LEECH_SWIM_DECEL = 10;
+constexpr int LEECH_TURN_RATE = 90;
+constexpr int LEECH_SIZEX = 10;
+constexpr float LEECH_FRAMETIME = 0.1;
 
 
 

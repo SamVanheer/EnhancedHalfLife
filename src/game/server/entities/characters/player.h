@@ -20,13 +20,13 @@
 //
 // Player PHYSICS FLAGS bits
 //
-#define		PFLAG_ONLADDER		( 1<<0 )
-#define		PFLAG_ONSWING		( 1<<0 )
-#define		PFLAG_ONTRAIN		( 1<<1 )
-#define		PFLAG_ONBARNACLE	( 1<<2 )
-#define		PFLAG_DUCKING		( 1<<3 )		// In the process of ducking, but totally squatted yet
-#define		PFLAG_USING			( 1<<4 )		// Using a continuous entity
-#define		PFLAG_OBSERVER		( 1<<5 )		// player is locked in stationary cam mode. Spectators can move, observers can't.
+constexpr int PFLAG_ONLADDER = 1<<0;
+constexpr int PFLAG_ONSWING = 1<<0;
+constexpr int PFLAG_ONTRAIN = 1<<1;
+constexpr int PFLAG_ONBARNACLE = 1<<2;
+constexpr int PFLAG_DUCKING = 1<<3;		//!< In the process of ducking, but totally squatted yet
+constexpr int PFLAG_USING = 1<<4;		//!< Using a continuous entity
+constexpr int PFLAG_OBSERVER = 1<<5;	//!< player is locked in stationary cam mode. Spectators can move, observers can't.
 
 //
 // generic player
@@ -34,7 +34,7 @@
 //-----------------------------------------------------
 //This is Half-Life player entity
 //-----------------------------------------------------
-#define CSUITPLAYLIST	4		// max of 4 suit sentences queued up at any time
+constexpr int CSUITPLAYLIST = 4;		//!< max of 4 suit sentences queued up at any time
 
 enum class SuitSoundType
 {
@@ -42,20 +42,17 @@ enum class SuitSoundType
 	Group
 };
 
-#define	SUIT_REPEAT_OK		0
-#define SUIT_NEXT_IN_30SEC	30
-#define SUIT_NEXT_IN_1MIN	60
-#define SUIT_NEXT_IN_5MIN	300
-#define SUIT_NEXT_IN_10MIN	600
-#define SUIT_NEXT_IN_30MIN	1800
-#define SUIT_NEXT_IN_1HOUR	3600
+constexpr int SUIT_REPEAT_OK = 0;
+constexpr int SUIT_NEXT_IN_30SEC = 30;
+constexpr int SUIT_NEXT_IN_1MIN = 60;
+constexpr int SUIT_NEXT_IN_5MIN = 300;
+constexpr int SUIT_NEXT_IN_10MIN = 600;
+constexpr int SUIT_NEXT_IN_30MIN = 1800;
+constexpr int SUIT_NEXT_IN_1HOUR = 3600;
 
-#define CSUITNOREPEAT		32
+constexpr int CSUITNOREPEAT = 32;
 
-#define	SOUND_FLASHLIGHT_ON		"items/flashlight1.wav"
-#define	SOUND_FLASHLIGHT_OFF	"items/flashlight1.wav"
-
-#define TEAM_NAME_LENGTH	16
+constexpr int TEAM_NAME_LENGTH = 16;
 
 enum PLAYER_ANIM
 {
@@ -67,10 +64,9 @@ enum PLAYER_ANIM
 	PLAYER_ATTACK1,
 };
 
-#define MAX_ID_RANGE 2048
-#define SBAR_STRING_SIZE 128
+constexpr int MAX_ID_RANGE = 2048;
+constexpr int SBAR_STRING_SIZE = 128;
 
-//TODO: used?
 enum sbar_data
 {
 	SBAR_ID_TARGETNAME = 1,
@@ -79,7 +75,7 @@ enum sbar_data
 	SBAR_END,
 };
 
-#define CHAT_INTERVAL 1.0f
+constexpr float CHAT_INTERVAL = 1.0f;
 
 class CBasePlayer : public CBaseMonster
 {
@@ -181,8 +177,8 @@ public:
 	CBasePlayerItem *m_pClientActiveItem;  // client version of the active item
 	CBasePlayerItem *m_pLastItem;
 	// shared ammo slots
-	int	m_rgAmmo[MAX_AMMO_SLOTS];
-	int	m_rgAmmoLast[MAX_AMMO_SLOTS];
+	int	m_rgAmmo[MAX_AMMO_TYPES];
+	int	m_rgAmmoLast[MAX_AMMO_TYPES];
 
 	Vector				m_vecAutoAim;
 	bool				m_fOnTarget;
@@ -327,11 +323,5 @@ public:
 
 	bool m_bRestored;
 };
-
-#define AUTOAIM_2DEGREES  0.0348994967025
-#define AUTOAIM_5DEGREES  0.08715574274766
-#define AUTOAIM_8DEGREES  0.1391731009601
-#define AUTOAIM_10DEGREES 0.1736481776669
-
 
 extern bool gInitHUD;

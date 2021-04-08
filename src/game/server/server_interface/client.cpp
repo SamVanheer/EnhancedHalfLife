@@ -872,8 +872,8 @@ void ClientPrecache()
 	PRECACHE_SOUND("debris/glass2.wav");
 	PRECACHE_SOUND("debris/glass3.wav");
 
-	PRECACHE_SOUND( SOUND_FLASHLIGHT_ON );
-	PRECACHE_SOUND( SOUND_FLASHLIGHT_OFF );
+	PRECACHE_SOUND( SOUND_FLASHLIGHT_ON.data() );
+	PRECACHE_SOUND( SOUND_FLASHLIGHT_OFF.data() );
 
 // player gib sounds
 	PRECACHE_SOUND("common/bodysplat.wav");		               
@@ -1326,12 +1326,12 @@ struct entity_field_alias_t
 	int	 field;
 };
 
-#define FIELD_ORIGIN0			0
-#define FIELD_ORIGIN1			1
-#define FIELD_ORIGIN2			2
-#define FIELD_ANGLES0			3
-#define FIELD_ANGLES1			4
-#define FIELD_ANGLES2			5
+constexpr int FIELD_ORIGIN0 = 0;
+constexpr int FIELD_ORIGIN1 = 1;
+constexpr int FIELD_ORIGIN2 = 2;
+constexpr int FIELD_ANGLES0 = 3;
+constexpr int FIELD_ANGLES1 = 4;
+constexpr int FIELD_ANGLES2 = 5;
 
 static entity_field_alias_t entity_field_alias[]=
 {
@@ -1471,15 +1471,15 @@ void Player_Encode( delta_t* pFields, const unsigned char *from, const unsigned 
 	}
 }
 
-#define CUSTOMFIELD_ORIGIN0			0
-#define CUSTOMFIELD_ORIGIN1			1
-#define CUSTOMFIELD_ORIGIN2			2
-#define CUSTOMFIELD_ANGLES0			3
-#define CUSTOMFIELD_ANGLES1			4
-#define CUSTOMFIELD_ANGLES2			5
-#define CUSTOMFIELD_SKIN			6
-#define CUSTOMFIELD_SEQUENCE		7
-#define CUSTOMFIELD_ANIMTIME		8
+constexpr int CUSTOMFIELD_ORIGIN0 = 0;
+constexpr int CUSTOMFIELD_ORIGIN1 = 1;
+constexpr int CUSTOMFIELD_ORIGIN2 = 2;
+constexpr int CUSTOMFIELD_ANGLES0 = 3;
+constexpr int CUSTOMFIELD_ANGLES1 = 4;
+constexpr int CUSTOMFIELD_ANGLES2 = 5;
+constexpr int CUSTOMFIELD_SKIN = 6;
+constexpr int CUSTOMFIELD_SEQUENCE = 7;
+constexpr int CUSTOMFIELD_ANIMTIME = 8;
 
 entity_field_alias_t custom_entity_field_alias[]=
 {

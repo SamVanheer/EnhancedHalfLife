@@ -15,7 +15,7 @@
 
 #pragma once
 
-#define EVENT_API_VERSION 1
+constexpr int EVENT_API_VERSION = 1;
 
 struct edict_t;
 struct physent_t;

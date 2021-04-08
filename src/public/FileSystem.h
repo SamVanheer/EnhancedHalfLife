@@ -49,7 +49,7 @@ enum FileWarningLevel_t
 	FILESYSTEM_WARNING_REPORTALLACCESSES
 };
 
-#define FILESYSTEM_INVALID_HANDLE	( FileHandle_t )0
+constexpr FileHandle_t FILESYSTEM_INVALID_HANDLE = static_cast<FileHandle_t>(0);
 #endif
 
 // turn off any windows defines
@@ -177,6 +177,6 @@ public:
 };
 
 // Steam3/Src compat
-#define IBaseFileSystem IFileSystem
+using IBaseFileSystem = IFileSystem;
 
 #define FILESYSTEM_INTERFACE_VERSION "VFileSystem009"

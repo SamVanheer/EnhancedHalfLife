@@ -521,7 +521,7 @@ void UTIL_MakeAimVectors( const Vector &vecAngles )
 	MAKE_VECTORS(rgflVec);
 }
 
-
+//TODO: use std::swap
 #define SWAP(a,b,temp)	((temp)=(a),(a)=(b),(b)=(temp))
 
 void UTIL_MakeInvVectors( const Vector &vec, globalvars_t *pgv )

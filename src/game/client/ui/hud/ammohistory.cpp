@@ -28,7 +28,7 @@ HistoryResource gHR;
 #define AMMO_PICKUP_PICK_HEIGHT		(32 + (gHR.iHistoryGap * 2))
 #define AMMO_PICKUP_HEIGHT_MAX		(ScreenHeight - 100)
 
-#define MAX_ITEM_NAME	32
+constexpr int MAX_ITEM_NAME = 32;
 int HISTORY_DRAW_TIME = 5;
 
 // keep a list of items

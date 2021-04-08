@@ -16,7 +16,7 @@
 
 
 
-#define UPDATE_INTERVAL	0.3
+constexpr float UPDATE_INTERVAL = 0.3;
 
 
 // These are stored off as CVoiceGameMgr is created and deleted.

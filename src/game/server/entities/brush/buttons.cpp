@@ -28,13 +28,13 @@
 #include <string.h> // memset())))
 #endif
 
-#define SF_BUTTON_DONTMOVE		1
-#define SF_ROTBUTTON_NOTSOLID	1
-#define	SF_BUTTON_TOGGLE		32	// button stays pushed until reactivated
-#define	SF_BUTTON_SPARK_IF_OFF	64	// button sparks in OFF state
-#define SF_BUTTON_TOUCH_ONLY	256	// button only fires as a result of USE key.
+constexpr int SF_BUTTON_DONTMOVE = 1;
+constexpr int SF_ROTBUTTON_NOTSOLID = 1;
+constexpr int SF_BUTTON_TOGGLE = 32;		// button stays pushed until reactivated
+constexpr int SF_BUTTON_SPARK_IF_OFF = 64;	// button sparks in OFF state
+constexpr int SF_BUTTON_TOUCH_ONLY = 256;	// button only fires as a result of USE key.
 
-#define SF_GLOBAL_SET			1	// Set global state to initial state on spawn
+constexpr int SF_GLOBAL_SET = 1;			// Set global state to initial state on spawn
 
 class CEnvGlobal : public CPointEntity
 {
@@ -164,7 +164,7 @@ void CMultiSource::KeyValue( KeyValueData *pkvd )
 		CPointEntity::KeyValue( pkvd );
 }
 
-#define SF_MULTI_INIT		1
+constexpr int SF_MULTI_INIT = 1;
 
 void CMultiSource::Spawn()
 { 
@@ -871,7 +871,7 @@ void CRotButton::Spawn()
 // This will disable use and make the button solid
 // rotating buttons were made SOLID_NOT by default since their were some
 // collision problems with them...
-#define SF_MOMENTARY_DOOR		0x0001
+constexpr int SF_MOMENTARY_DOOR = 0x0001;
 
 class CMomentaryRotButton : public CBaseToggle
 {
@@ -1225,8 +1225,8 @@ void EXPORT CEnvSpark::SparkStop(CBaseEntity *pActivator, CBaseEntity *pCaller, 
 	SetThink(NULL);
 }
 
-#define SF_BTARGET_USE		0x0001
-#define SF_BTARGET_ON		0x0002
+constexpr int SF_BTARGET_USE = 0x0001;
+constexpr int SF_BTARGET_ON = 0x0002;
 
 class CButtonTarget : public CBaseEntity
 {

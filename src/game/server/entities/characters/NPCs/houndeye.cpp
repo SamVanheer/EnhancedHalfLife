@@ -28,13 +28,13 @@ extern CGraph WorldGraph;
 
 // houndeye does 20 points of damage spread over a sphere 384 units in diameter, and each additional 
 // squad member increases the BASE damage by 110%, per the spec.
-#define HOUNDEYE_MAX_SQUAD_SIZE			4
-#define	HOUNDEYE_MAX_ATTACK_RADIUS		384
-#define	HOUNDEYE_SQUAD_BONUS			(float)1.1
+constexpr int HOUNDEYE_MAX_SQUAD_SIZE = 4;
+constexpr int HOUNDEYE_MAX_ATTACK_RADIUS = 384;
+constexpr float HOUNDEYE_SQUAD_BONUS = 1.1;
 
-#define HOUNDEYE_EYE_FRAMES 4 // how many different switchable maps for the eye
+constexpr int HOUNDEYE_EYE_FRAMES = 4; // how many different switchable maps for the eye
 
-#define HOUNDEYE_SOUND_STARTLE_VOLUME	128 // how loud a sound has to be to badly scare a sleeping houndeye
+constexpr int HOUNDEYE_SOUND_STARTLE_VOLUME = 128; // how loud a sound has to be to badly scare a sleeping houndeye
 
 //=========================================================
 // monster-specific tasks
@@ -62,13 +62,13 @@ enum
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
-#define		HOUND_AE_WARN			1
-#define		HOUND_AE_STARTATTACK	2
-#define		HOUND_AE_THUMP			3
-#define		HOUND_AE_ANGERSOUND1	4
-#define		HOUND_AE_ANGERSOUND2	5
-#define		HOUND_AE_HOPBACK		6
-#define		HOUND_AE_CLOSE_EYE		7
+constexpr int HOUND_AE_WARN = 1;
+constexpr int HOUND_AE_STARTATTACK = 2;
+constexpr int HOUND_AE_THUMP = 3;
+constexpr int HOUND_AE_ANGERSOUND1 = 4;
+constexpr int HOUND_AE_ANGERSOUND2 = 5;
+constexpr int HOUND_AE_HOPBACK = 6;
+constexpr int HOUND_AE_CLOSE_EYE = 7;
 
 /**
 *	@brief spooky sonic dog. 

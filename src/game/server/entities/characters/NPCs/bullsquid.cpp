@@ -24,7 +24,7 @@
 #include	"soundent.h"
 #include	"game.h"
 
-#define		SQUID_SPRINT_DIST	256 // how close the squid has to get before starting to sprint and refusing to swerve
+constexpr int SQUID_SPRINT_DIST = 256; // how close the squid has to get before starting to sprint and refusing to swerve
 
 int			   iSquidSpitSprite;
 	
@@ -176,12 +176,12 @@ void CSquidSpit :: Touch ( CBaseEntity *pOther )
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
-#define		BSQUID_AE_SPIT		( 1 )
-#define		BSQUID_AE_BITE		( 2 )
-#define		BSQUID_AE_BLINK		( 3 )
-#define		BSQUID_AE_TAILWHIP	( 4 )
-#define		BSQUID_AE_HOP		( 5 )
-#define		BSQUID_AE_THROW		( 6 )
+constexpr int BSQUID_AE_SPIT = 1;
+constexpr int BSQUID_AE_BITE = 2;
+constexpr int BSQUID_AE_BLINK = 3;
+constexpr int BSQUID_AE_TAILWHIP = 4;
+constexpr int BSQUID_AE_HOP = 5;
+constexpr int BSQUID_AE_THROW = 6;
 
 /**
 *	@brief big, spotty tentacle-mouthed meanie.
@@ -431,7 +431,7 @@ int	CBullsquid :: Classify ()
 //=========================================================
 // IdleSound 
 //=========================================================
-#define SQUID_ATTN_IDLE	(float)1.5
+constexpr float SQUID_ATTN_IDLE = 1.5;
 void CBullsquid :: IdleSound ()
 {
 	switch ( RANDOM_LONG(0,4) )

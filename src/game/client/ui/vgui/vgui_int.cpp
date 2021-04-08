@@ -25,7 +25,7 @@
 
 namespace
 {
-
+//TODO: remove this stuff, it's never used
 class TexturePanel : public Panel , public ActionSignal
 {
 private:

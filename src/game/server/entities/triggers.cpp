@@ -27,12 +27,12 @@
 #include "gamerules.h"
 #include "dll_functions.hpp"
 
-#define	SF_TRIGGER_PUSH_START_OFF	2//spawnflag that makes trigger_push spawn turned OFF
-#define SF_TRIGGER_HURT_TARGETONCE	1// Only fire hurt target once
-#define	SF_TRIGGER_HURT_START_OFF	2//spawnflag that makes trigger_push spawn turned OFF
-#define	SF_TRIGGER_HURT_NO_CLIENTS	8//spawnflag that makes trigger_push spawn turned OFF
-#define SF_TRIGGER_HURT_CLIENTONLYFIRE	16// trigger hurt will only fire its target if it is hurting a client
-#define SF_TRIGGER_HURT_CLIENTONLYTOUCH 32// only clients may touch this trigger.
+constexpr int SF_TRIGGER_PUSH_START_OFF = 2;		//!< spawnflag that makes trigger_push spawn turned OFF
+constexpr int SF_TRIGGER_HURT_TARGETONCE = 1;		//!< Only fire hurt target once
+constexpr int SF_TRIGGER_HURT_START_OFF = 2;		//!< spawnflag that makes trigger_push spawn turned OFF
+constexpr int SF_TRIGGER_HURT_NO_CLIENTS = 8;		//!< spawnflag that makes trigger_push spawn turned OFF
+constexpr int SF_TRIGGER_HURT_CLIENTONLYFIRE = 16;	//!< trigger hurt will only fire its target if it is hurting a client
+constexpr int SF_TRIGGER_HURT_CLIENTONLYTOUCH = 32;	//!< only clients may touch this trigger.
 
 extern DLL_GLOBAL bool		g_fGameOver;
 
@@ -101,7 +101,7 @@ void CFrictionModifier :: KeyValue( KeyValueData *pkvd )
 // This trigger will fire when the level spawns (or respawns if not fire once)
 // It will check a global state before firing.  It supports delay and killtargets
 
-#define SF_AUTO_FIREONCE		0x0001
+constexpr int SF_AUTO_FIREONCE = 0x0001;
 
 class CAutoTrigger : public CBaseDelay
 {
@@ -184,7 +184,7 @@ void CAutoTrigger::Think()
 
 
 
-#define SF_RELAY_FIREONCE		0x0001
+constexpr int SF_RELAY_FIREONCE = 0x0001;
 
 class CTriggerRelay : public CBaseDelay
 {
@@ -256,8 +256,8 @@ void CTriggerRelay::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE
 // FLAG:		THREAD (create clones when triggered)
 // FLAG:		CLONE (this is a clone for a threaded execution)
 
-#define SF_MULTIMAN_CLONE		0x80000000
-#define SF_MULTIMAN_THREAD		0x00000001
+constexpr int SF_MULTIMAN_CLONE = 0x80000000;
+constexpr int SF_MULTIMAN_THREAD = 0x00000001;
 
 class CMultiManager : public CBaseToggle
 {
@@ -471,10 +471,10 @@ void CMultiManager :: ManagerReport ()
 
 
 // Flags to indicate masking off various render parameters that are normally copied to the targets
-#define SF_RENDER_MASKFX	(1<<0)
-#define SF_RENDER_MASKAMT	(1<<1)
-#define SF_RENDER_MASKMODE	(1<<2)
-#define SF_RENDER_MASKCOLOR	(1<<3)
+constexpr int SF_RENDER_MASKFX = 1 << 0;
+constexpr int SF_RENDER_MASKAMT = 1 << 1;
+constexpr int SF_RENDER_MASKMODE = 1 << 2;
+constexpr int SF_RENDER_MASKCOLOR = 1 << 3;
 
 class CRenderFxManager : public CBaseEntity
 {
@@ -1321,7 +1321,7 @@ void CFireAndDie::Think()
 }
 
 
-#define SF_CHANGELEVEL_USEONLY		0x0002
+constexpr int SF_CHANGELEVEL_USEONLY = 0x0002;
 class CChangeLevel : public CBaseTrigger
 {
 public:
@@ -1597,7 +1597,7 @@ int CChangeLevel::InTransitionVolume( CBaseEntity *pEntity, char *pVolumeName )
 
 
 // We can only ever move 512 entities across a transition
-#define MAX_ENTITY 512
+constexpr int MAX_ENTITY = 512;
 
 // This has grown into a complicated beast
 // Can we make this more elegant?
@@ -1975,7 +1975,7 @@ void CTriggerSave::SaveTouch( CBaseEntity *pOther )
 	SERVER_COMMAND( "autosave\n" );
 }
 
-#define SF_ENDSECTION_USEONLY		0x0001
+constexpr int SF_ENDSECTION_USEONLY = 0x0001;
 
 class CTriggerEndSection : public CBaseTrigger
 {
@@ -2137,9 +2137,9 @@ void CTriggerChangeTarget::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, U
 
 
 
-#define SF_CAMERA_PLAYER_POSITION	1
-#define SF_CAMERA_PLAYER_TARGET		2
-#define SF_CAMERA_PLAYER_TAKECONTROL 4
+constexpr int SF_CAMERA_PLAYER_POSITION = 1;
+constexpr int SF_CAMERA_PLAYER_TARGET = 2;
+constexpr int SF_CAMERA_PLAYER_TAKECONTROL = 4;
 
 class CTriggerCamera : public CBaseDelay
 {

@@ -4,7 +4,7 @@
 
 class CCoreTriangleEffect;
 
-#define TRIANGLE_FPS 30
+constexpr int TRIANGLE_FPS = 30;
 
 struct visibleparticles_t
 {

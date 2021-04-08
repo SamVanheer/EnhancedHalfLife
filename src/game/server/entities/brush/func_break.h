@@ -18,7 +18,7 @@
 enum Explosions { expRandom, expDirected};
 enum Materials { matGlass = 0, matWood, matMetal, matFlesh, matCinderBlock, matCeilingTile, matComputer, matUnbreakableGlass, matRocks, matNone, matLastMaterial };
 
-#define	NUM_SHARDS 6 // this many shards spawned when breakable objects break;
+constexpr int NUM_SHARDS = 6; // this many shards spawned when breakable objects break;
 
 class CBreakable : public CBaseDelay
 {

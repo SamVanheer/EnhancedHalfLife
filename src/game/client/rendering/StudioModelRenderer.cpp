@@ -28,10 +28,10 @@ extern cvar_t *tfc_newmodels;
 extern extra_player_info_t  g_PlayerExtraInfo[MAX_PLAYERS+1];
 
 // team colors for old TFC models
-#define TEAM1_COLOR		150
-#define TEAM2_COLOR		250
-#define TEAM3_COLOR		45
-#define TEAM4_COLOR		100
+constexpr int TEAM1_COLOR = 150;
+constexpr int TEAM2_COLOR = 250;
+constexpr int TEAM3_COLOR = 45;
+constexpr int TEAM4_COLOR = 100;
 
 int m_nPlayerGaitSequences[MAX_CLIENTS];
 
@@ -1507,23 +1507,23 @@ void CStudioModelRenderer::StudioProcessGait( entity_state_t *pplayer )
 
 #if defined _TFC
 
-#define PC_UNDEFINED	0 
+constexpr int PC_UNDEFINED = 0;
 
-#define PC_SCOUT		1 
-#define PC_SNIPER		2 
-#define PC_SOLDIER		3 
-#define PC_DEMOMAN		4 
-#define PC_MEDIC		5 
-#define PC_HVYWEAP		6 
-#define PC_PYRO			7
-#define PC_SPY			8
-#define PC_ENGINEER		9
-#define PC_RANDOM		10 	
-#define PC_CIVILIAN		11
+constexpr int PC_SCOUT = 1;
+constexpr int PC_SNIPER = 2;
+constexpr int PC_SOLDIER = 3;
+constexpr int PC_DEMOMAN = 4;
+constexpr int PC_MEDIC = 5;
+constexpr int PC_HVYWEAP = 6;
+constexpr int PC_PYRO = 7;
+constexpr int PC_SPY = 8;
+constexpr int PC_ENGINEER = 9;
+constexpr int PC_RANDOM = 10;
+constexpr int PC_CIVILIAN = 11;
 
-#define PC_LASTCLASS	12
+constexpr int PC_LASTCLASS = 12;
 
-#define TFC_MODELS_OLD	0
+constexpr int TFC_MODELS_OLD = 0;
 
 extern cvar_t *tfc_newmodels;
 
@@ -1559,7 +1559,7 @@ char *sOldClassModelFiles[] =
 	"models/player/civilian/civilian.mdl",
 };
 
-#define NUM_WEAPON_PMODELS 18
+constexpr int NUM_WEAPON_PMODELS = 18;
 
 char *sNewWeaponPModels[] =
 {

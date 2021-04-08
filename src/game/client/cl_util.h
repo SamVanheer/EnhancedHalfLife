@@ -63,14 +63,28 @@ inline cvar_t *CVAR_CREATE( const char *cv, const char *val, const int flags ) {
 // ScreenWidth returns the width of the screen, in pixels
 #define ScreenWidth (gHUD.m_scrinfo.iWidth)
 
-#define BASE_XRES 640.f
+constexpr float BASE_XRES = 640.f;
 
 // use this to project world coordinates to screen coordinates
-#define XPROJECT(x)	( (1.0f+(x))*ScreenWidth*0.5f )
-#define YPROJECT(y) ( (1.0f-(y))*ScreenHeight*0.5f )
+inline float XPROJECT(float x)
+{
+	return (1.0f + x) * ScreenWidth * 0.5;
+}
 
-#define XRES(x)					(x  * ((float)ScreenWidth / 640))
-#define YRES(y)					(y  * ((float)ScreenHeight / 480))
+inline float YPROJECT(float y)
+{
+	return (1.0f - y) * ScreenHeight * 0.5f;
+}
+
+inline float XRES(float x)
+{
+	return x * (ScreenWidth / 640.0f);
+}
+
+inline float YRES(float y)
+{
+	return y * (ScreenHeight / 480.0f);
+}
 
 #define GetScreenInfo (*gEngfuncs.pfnGetScreenInfo)
 #define ServerCmd (*gEngfuncs.pfnServerCmd)
@@ -160,11 +174,11 @@ void ScaleColors( int &r, int &g, int &b, int a );
 // disable 'truncation from 'const double' to 'float' warning message
 #pragma warning( disable: 4305 )
 
-inline void UnpackRGB(int &r, int &g, int &b, unsigned long ulRGB)\
-{\
-	r = (ulRGB & 0xFF0000) >>16;\
-	g = (ulRGB & 0xFF00) >> 8;\
-	b = ulRGB & 0xFF;\
+inline void UnpackRGB(int &r, int &g, int &b, unsigned long ulRGB)
+{
+	r = (ulRGB & 0xFF0000) >>16;
+	g = (ulRGB & 0xFF00) >> 8;
+	b = ulRGB & 0xFF;
 }
 
 HSPRITE LoadSprite(const char *pszName);

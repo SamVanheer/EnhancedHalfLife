@@ -29,7 +29,7 @@ struct sequenceEntry;
 struct triangleapi_t;
 struct wrect_t;
 
-#define	MAX_ALIAS_NAME	32
+constexpr int MAX_ALIAS_NAME = 32;
 
 struct cmdalias_t
 {

@@ -24,14 +24,14 @@
 //=========================================================
 // DEFINE
 //=========================================================
-#define MAX_STACK_NODES	    100
-#define	NO_NODE				-1
-#define MAX_NODE_HULLS		4
+constexpr int MAX_STACK_NODES = 100;
+constexpr int NO_NODE = -1;
+constexpr int MAX_NODE_HULLS = 4;
 
-#define bits_NODE_LAND      ( 1 << 0 )  // Land node, so nudge if necessary.
-#define bits_NODE_AIR       ( 1 << 1 )  // Air node, don't nudge.
-#define bits_NODE_WATER     ( 1 << 2 )  // Water node, don't nudge.
-#define bits_NODE_GROUP_REALM (bits_NODE_LAND | bits_NODE_AIR | bits_NODE_WATER)
+constexpr int bits_NODE_LAND = 1 << 0;		// Land node, so nudge if necessary.
+constexpr int bits_NODE_AIR = 1 << 1;		// Air node, don't nudge.
+constexpr int bits_NODE_WATER = 1 << 2;		// Water node, don't nudge.
+constexpr int bits_NODE_GROUP_REALM = bits_NODE_LAND | bits_NODE_AIR | bits_NODE_WATER;
 
 //=========================================================
 // Instance of a node.
@@ -67,16 +67,16 @@ public:
 //=========================================================
 // CLink - A link between 2 nodes
 //=========================================================
-#define		bits_LINK_SMALL_HULL	( 1 << 0 )// headcrab box can fit through this connection
-#define		bits_LINK_HUMAN_HULL	( 1 << 1 )// player box can fit through this connection
-#define		bits_LINK_LARGE_HULL	( 1 << 2 )// big box can fit through this connection
-#define		bits_LINK_FLY_HULL		( 1 << 3 )// a flying big box can fit through this connection
-#define		bits_LINK_DISABLED		( 1 << 4 )// link is not valid when the set
+constexpr int bits_LINK_SMALL_HULL = 1 << 0;	// headcrab box can fit through this connection
+constexpr int bits_LINK_HUMAN_HULL = 1 << 1;	// player box can fit through this connection
+constexpr int bits_LINK_LARGE_HULL = 1 << 2;	// big box can fit through this connection
+constexpr int bits_LINK_FLY_HULL = 1 << 3;		// a flying big box can fit through this connection
+constexpr int bits_LINK_DISABLED = 1 << 4;		// link is not valid when the set
 
-#define		NODE_SMALL_HULL			0
-#define		NODE_HUMAN_HULL			1
-#define		NODE_LARGE_HULL			2
-#define		NODE_FLY_HULL			3
+constexpr int NODE_SMALL_HULL = 0;
+constexpr int NODE_HUMAN_HULL = 1;
+constexpr int NODE_LARGE_HULL = 2;
+constexpr int NODE_FLY_HULL = 3;
 
 class CLink
 {
@@ -109,7 +109,7 @@ struct CACHE_ENTRY
 //=========================================================
 // CGraph 
 //=========================================================
-#define	GRAPH_VERSION	(int)17// !!!increment this whever graph/node/link classes change, to obsolesce older disk files.
+constexpr int	GRAPH_VERSION = 17; // !!!increment this whever graph/node/link classes change, to obsolesce older disk files.
 class CGraph
 {
 public:
@@ -136,8 +136,8 @@ public:
 	// search each range. After the search is exhausted, we know we have the closest
 	// node.
 	//
-#define CACHE_SIZE 128
-#define NUM_RANGES 256
+	static constexpr int CACHE_SIZE = 128;
+	static constexpr int NUM_RANGES = 256;
 	DIST_INFO *m_di;	// This is m_cNodes long, but the entries don't correspond to CNode entries.
 	int m_RangeStart[3][NUM_RANGES];
 	int m_RangeEnd[3][NUM_RANGES];

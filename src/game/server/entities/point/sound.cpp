@@ -79,11 +79,11 @@ struct dynpitchvol_t
 
 };
 
-#define CDPVPRESETMAX 27
+constexpr int CDPVPRESETMAX = 27;
 
 // presets for runtime pitch and vol modulation of ambient sounds
 
-dynpitchvol_t rgdpvpreset[CDPVPRESETMAX] = 
+constexpr dynpitchvol_t rgdpvpreset[CDPVPRESETMAX] = 
 {
 // pitch	pstart	spinup	spindwn	volrun	volstrt	fadein	fadeout	lfotype	lforate	modptch modvol	cspnup		
 {1,	255,	 75,	95,		95,		10,		1,		50,		95, 	0,		0,		0,		0,		0,		0,0,0,0,0,0,0,0,0,0}, 
@@ -988,7 +988,7 @@ void CEnvSound :: Spawn( )
 
 // ==================== SENTENCE GROUPS, UTILITY FUNCTIONS  ======================================
 
-#define CSENTENCE_LRU_MAX	32		// max number of elements per sentence group
+constexpr int CSENTENCE_LRU_MAX = 32;		// max number of elements per sentence group
 
 // group of related sentences
 
@@ -1000,7 +1000,7 @@ struct SENTENCEG
 
 };
 
-#define CSENTENCEG_MAX 200					// max number of sentence groups
+constexpr int CSENTENCEG_MAX = 200;	// max number of sentence groups
 // globals
 
 SENTENCEG rgsentenceg[CSENTENCEG_MAX];
@@ -1840,8 +1840,8 @@ void CSpeaker :: Spawn()
 	Precache( );
 }
 
-#define ANNOUNCE_MINUTES_MIN	0.25	 
-#define ANNOUNCE_MINUTES_MAX	2.25
+constexpr float ANNOUNCE_MINUTES_MIN = 0.25;
+constexpr float ANNOUNCE_MINUTES_MAX = 2.25;
 
 void CSpeaker :: Precache()
 {

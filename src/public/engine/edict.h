@@ -7,7 +7,7 @@
 
 #pragma once
 
-#define	MAX_ENT_LEAFS	48
+constexpr int MAX_ENT_LEAFS = 48;
 
 #include "progdefs.h"
 

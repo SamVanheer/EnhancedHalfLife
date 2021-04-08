@@ -15,7 +15,7 @@
 
 #pragma once
 
-#define ACTIVITY_NOT_AVAILABLE		-1
+constexpr int ACTIVITY_NOT_AVAILABLE = -1;
 
 #include "monsterevent.h"
 
@@ -37,6 +37,3 @@ int GetBodygroup( void *pmodel, entvars_t *pev, int iGroup );
 
 int GetAnimationEvent( void *pmodel, entvars_t *pev, MonsterEvent_t *pMonsterEvent, float flStart, float flEnd, int index );
 int ExtractBbox( void *pmodel, int sequence, float *mins, float *maxs );
-
-// From /engine/studio.h
-#define STUDIO_LOOPING		0x0001

@@ -23,9 +23,9 @@
 #include "func_break.h"
 #include "shake.h"
 
-#define	SF_GIBSHOOTER_REPEATABLE	1 // allows a gibshooter to be refired
+constexpr int SF_GIBSHOOTER_REPEATABLE = 1; // allows a gibshooter to be refired
 
-#define SF_FUNNEL_REVERSE			1 // funnel effect repels particles instead of attracting them.
+constexpr int SF_FUNNEL_REVERSE = 1; // funnel effect repels particles instead of attracting them.
 
 
 // Lightning target, just alias landmark
@@ -67,7 +67,7 @@ TYPEDESCRIPTION	CBubbling::m_SaveData[] =
 IMPLEMENT_SAVERESTORE( CBubbling, CBaseEntity );
 
 
-#define SF_BUBBLES_STARTOFF		0x0001
+constexpr int SF_BUBBLES_STARTOFF = 0x0001;
 
 void CBubbling::Spawn()
 {
@@ -1739,10 +1739,10 @@ LINK_ENTITY_TO_CLASS( env_blood, CBlood );
 
 
 
-#define SF_BLOOD_RANDOM		0x0001
-#define SF_BLOOD_STREAM		0x0002
-#define SF_BLOOD_PLAYER		0x0004
-#define SF_BLOOD_DECAL		0x0008
+constexpr int SF_BLOOD_RANDOM = 0x0001;
+constexpr int SF_BLOOD_STREAM = 0x0002;
+constexpr int SF_BLOOD_PLAYER = 0x0004;
+constexpr int SF_BLOOD_DECAL = 0x0008;
 
 void CBlood::Spawn()
 {
@@ -1860,10 +1860,10 @@ LINK_ENTITY_TO_CLASS( env_shake, CShake );
 // radius of 0 means all players
 // NOTE: UTIL_ScreenShake() will only shake players who are on the ground
 
-#define SF_SHAKE_EVERYONE	0x0001		// Don't check radius
+constexpr int SF_SHAKE_EVERYONE = 0x0001;	// Don't check radius
 // UNDONE: These don't work yet
-#define SF_SHAKE_DISRUPT	0x0002		// Disrupt controls
-#define SF_SHAKE_INAIR		0x0004		// Shake players in air
+constexpr int SF_SHAKE_DISRUPT = 0x0002;	// Disrupt controls
+constexpr int SF_SHAKE_INAIR = 0x0004;		// Shake players in air
 
 void CShake::Spawn()
 {
@@ -1929,9 +1929,9 @@ LINK_ENTITY_TO_CLASS( env_fade, CFade );
 
 // pev->dmg_take is duration
 // pev->dmg_save is hold duration
-#define SF_FADE_IN				0x0001		// Fade in, not out
-#define SF_FADE_MODULATE		0x0002		// Modulate, don't blend
-#define SF_FADE_ONLYONE			0x0004
+constexpr int SF_FADE_IN = 0x0001;			// Fade in, not out
+constexpr int SF_FADE_MODULATE = 0x0002;	// Modulate, don't blend
+constexpr int SF_FADE_ONLYONE = 0x0004;
 
 void CFade::Spawn()
 {

@@ -21,12 +21,12 @@ struct MonsterEvent_t
 	char		*options;
 };
 
-#define EVENT_SPECIFIC			0
-#define EVENT_SCRIPTED			1000
-#define EVENT_SHARED			2000
-#define EVENT_CLIENT			5000
+constexpr int EVENT_SPECIFIC = 0;
+constexpr int EVENT_SCRIPTED = 1000;
+constexpr int EVENT_SHARED = 2000;
+constexpr int EVENT_CLIENT = 5000;
 
-#define MONSTER_EVENT_BODYDROP_LIGHT	2001
-#define MONSTER_EVENT_BODYDROP_HEAVY	2002
+constexpr int MONSTER_EVENT_BODYDROP_LIGHT = 2001;
+constexpr int MONSTER_EVENT_BODYDROP_HEAVY = 2002;
 
-#define MONSTER_EVENT_SWISHSOUND		2010
+constexpr int MONSTER_EVENT_SWISHSOUND = 2010;

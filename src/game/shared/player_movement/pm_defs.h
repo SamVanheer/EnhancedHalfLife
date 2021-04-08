@@ -16,19 +16,19 @@
 #pragma once
 
 #include "archtypes.h"     // DAL
-#define	MAX_PHYSENTS 600 		  // Must have room for all entities in the world.
-#define MAX_MOVEENTS 64
-#define	MAX_CLIP_PLANES	5
+constexpr int MAX_PHYSENTS = 600; 		  //!< Must have room for all entities in the world. (can break if num_edicts is greater than this)
+constexpr int MAX_MOVEENTS = 64;
+constexpr int MAX_CLIP_PLANES = 5;
 
-#define PM_NORMAL			0x00000000
-#define PM_STUDIO_IGNORE	0x00000001		// Skip studio models
-#define PM_STUDIO_BOX		0x00000002		// Use boxes for non-complex studio models (even in traceline)
-#define PM_GLASS_IGNORE		0x00000004		// Ignore entities with non-normal rendermode
-#define PM_WORLD_ONLY		0x00000008		// Only trace against the world
+constexpr int PM_NORMAL = 0x00000000;
+constexpr int PM_STUDIO_IGNORE = 0x00000001;	//!< Skip studio models
+constexpr int PM_STUDIO_BOX = 0x00000002;		//!< Use boxes for non-complex studio models (even in traceline)
+constexpr int PM_GLASS_IGNORE = 0x00000004;		//!< Ignore entities with non-normal rendermode
+constexpr int PM_WORLD_ONLY = 0x00000008;		//!< Only trace against the world
 
 // Values for flags parameter of PM_TraceLine
-#define PM_TRACELINE_PHYSENTSONLY	0
-#define PM_TRACELINE_ANYVISIBLE		1
+constexpr int PM_TRACELINE_PHYSENTSONLY = 0;
+constexpr int PM_TRACELINE_ANYVISIBLE = 1;
 
 
 #include "pm_info.h"

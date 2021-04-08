@@ -27,17 +27,17 @@
 #ifdef _TFC
 #include "../tfc/tf_defs.h"
 #else
-#define PC_LASTCLASS 10
-#define PC_UNDEFINED 0
-#define MENU_DEFAULT				1
-#define MENU_TEAM 					2
-#define MENU_CLASS 					3
-#define MENU_MAPBRIEFING			4
-#define MENU_INTRO 					5
-#define MENU_CLASSHELP				6
-#define MENU_CLASSHELP2 			7
-#define MENU_REPEATHELP 			8
-#define MENU_SPECHELP				9
+constexpr int PC_LASTCLASS = 10;
+constexpr int PC_UNDEFINED = 0;
+constexpr int MENU_DEFAULT = 1;
+constexpr int MENU_TEAM = 2;
+constexpr int MENU_CLASS = 3;
+constexpr int MENU_MAPBRIEFING = 4;
+constexpr int MENU_INTRO = 5;
+constexpr int MENU_CLASSHELP = 6;
+constexpr int MENU_CLASSHELP2 = 7;
+constexpr int MENU_REPEATHELP = 8;
+constexpr int MENU_SPECHELP = 9;
 #endif
 using namespace vgui;
 
@@ -59,7 +59,12 @@ class TeamFortressViewport;
 char* GetVGUITGAName(const char *pszName);
 BitmapTGA *LoadTGAForRes(const char* pImageName);
 void ScaleColors( int &r, int &g, int &b, int a );
-float* GetClientColor(int clientIndex);
+const float* GetClientColor(int clientIndex);
+constexpr Vector g_ColorBlue{0.6, 0.8, 1.0};
+constexpr Vector g_ColorRed{1.0, 0.25, 0.25};
+constexpr Vector g_ColorGreen{0.6, 1.0, 0.6};
+constexpr Vector g_ColorYellow{1.0, 0.7, 0.0};
+constexpr Vector g_ColorGrey{0.8, 0.8, 0.8};
 extern const char *sTFClassSelection[];
 extern int sTFValidClassInts[];
 extern const char *sLocalisedClasses[];
@@ -69,8 +74,8 @@ extern TeamFortressViewport *gViewPort;
 
 
 // Command Menu positions 
-#define MAX_MENUS				80
-#define MAX_BUTTONS				100
+constexpr int MAX_MENUS = 80;
+constexpr int MAX_BUTTONS = 100;
 
 #define BUTTON_SIZE_Y			YRES(30)
 #define CMENU_SIZE_X			XRES(160)
@@ -80,15 +85,15 @@ extern TeamFortressViewport *gViewPort;
 
 #define CMENU_TOP				(BUTTON_SIZE_Y * 4)
 
-//#define MAX_TEAMNAME_SIZE		64
-#define MAX_BUTTON_SIZE			32
+//constexpr int MAX_TEAMNAME_SIZE = 64;
+constexpr int MAX_BUTTON_SIZE = 32;
 
 // Map Briefing Window
-#define MAPBRIEF_INDENT			30
+constexpr int MAPBRIEF_INDENT = 30;
 
 // Team Menu
 #define TMENU_INDENT_X			(30 * ((float)ScreenHeight / 640))
-#define TMENU_HEADER			100
+constexpr int TMENU_HEADER = 100;
 #define TMENU_SIZE_X			(ScreenWidth - (TMENU_INDENT_X * 2))
 #define TMENU_SIZE_Y			(TMENU_HEADER + BUTTON_SIZE_Y * 7)
 #define TMENU_PLAYER_INDENT		(((float)TMENU_SIZE_X / 3) * 2)
@@ -96,7 +101,7 @@ extern TeamFortressViewport *gViewPort;
 
 // Class Menu
 #define CLMENU_INDENT_X			(30 * ((float)ScreenHeight / 640))
-#define CLMENU_HEADER			100
+constexpr int CLMENU_HEADER = 100;
 #define CLMENU_SIZE_X			(ScreenWidth - (CLMENU_INDENT_X * 2))
 #define CLMENU_SIZE_Y			(CLMENU_HEADER + BUTTON_SIZE_Y * 11)
 #define CLMENU_PLAYER_INDENT	(((float)CLMENU_SIZE_X / 3) * 2)
@@ -638,7 +643,7 @@ public:
 
 //============================================================
 // Command Menu Button Handlers
-#define MAX_COMMAND_SIZE	256
+constexpr int MAX_COMMAND_SIZE	=256;
 
 class CMenuHandler_StringCommand : public ActionSignal
 {
@@ -780,11 +785,11 @@ public:
 	virtual void keyFocusTicked(Panel* panel) {};
 };
 
-#define HIDE_TEXTWINDOW		0
-#define SHOW_MAPBRIEFING	1
-#define SHOW_CLASSDESC		2
-#define SHOW_MOTD			3
-#define SHOW_SPECHELP		4
+constexpr int HIDE_TEXTWINDOW = 0;
+constexpr int SHOW_MAPBRIEFING = 1;
+constexpr int SHOW_CLASSDESC = 2;
+constexpr int SHOW_MOTD = 3;
+constexpr int SHOW_SPECHELP = 4;
 
 class CMenuHandler_TextWindow : public ActionSignal
 {
@@ -1053,10 +1058,10 @@ public:
 	}
 };
 
-#define		DISGUISE_TEAM1		(1<<0)
-#define		DISGUISE_TEAM2		(1<<1)
-#define		DISGUISE_TEAM3		(1<<2)
-#define		DISGUISE_TEAM4		(1<<3)
+constexpr int DISGUISE_TEAM1 = 1 << 0;
+constexpr int DISGUISE_TEAM2 = 1 << 1;
+constexpr int DISGUISE_TEAM3 = 1 << 2;
+constexpr int DISGUISE_TEAM4 = 1 << 3;
 
 class DisguiseButton : public CommandButton
 {
@@ -1115,10 +1120,10 @@ public:
 };
 
 extern int iBuildingCosts[];
-#define BUILDSTATE_HASBUILDING		(1<<0)		// Data is building ID (1 = Dispenser, 2 = Sentry, 3 = Entry Teleporter, 4 = Exit Teleporter)
-#define BUILDSTATE_BUILDING			(1<<1)
-#define BUILDSTATE_BASE				(1<<2)
-#define BUILDSTATE_CANBUILD			(1<<3)		// Data is building ID (1 = Dispenser, 2 = Sentry, 3 = Entry Teleporter, 4 = Exit Teleporter)
+constexpr int BUILDSTATE_HASBUILDING = 1 << 0;	// Data is building ID (1 = Dispenser, 2 = Sentry, 3 = Entry Teleporter, 4 = Exit Teleporter)
+constexpr int BUILDSTATE_BUILDING = 1 << 1;
+constexpr int BUILDSTATE_BASE = 1 << 2;
+constexpr int BUILDSTATE_CANBUILD = 1 << 3;		// Data is building ID (1 = Dispenser, 2 = Sentry, 3 = Entry Teleporter, 4 = Exit Teleporter)
 
 class BuildButton : public CommandButton
 {
@@ -1204,7 +1209,7 @@ public:
 	}
 };
 
-#define MAX_MAPNAME 256
+constexpr int MAX_MAPNAME = 256;
 
 class MapButton : public CommandButton
 {

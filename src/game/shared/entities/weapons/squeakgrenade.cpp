@@ -75,7 +75,7 @@ TYPEDESCRIPTION	CSqueakGrenade::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE( CSqueakGrenade, CGrenade );
 
-#define SQUEEK_DETONATE_DELAY	15.0
+constexpr float SQUEEK_DETONATE_DELAY = 15.0;
 
 int CSqueakGrenade :: Classify ()
 {

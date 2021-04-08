@@ -17,7 +17,7 @@
 
 #include "const.h"
 
-#define MAX_QPATH 64    // Must match value in quakedefs.h
+constexpr int MAX_QPATH = 64;    // Must match value in quakedefs.h
 
 enum resourcetype_t
 {
@@ -41,14 +41,13 @@ struct resourceinfo_t
 	_resourceinfo_t info[ 8 ];
 };
 
-#define RES_FATALIFMISSING (1<<0)   // Disconnect if we can't get this file.
-#define RES_WASMISSING     (1<<1)   // Do we have the file locally, did we get it ok?
-#define RES_CUSTOM         (1<<2)   // Is this resource one that corresponds to another player's customization
-								    // or is it a server startup resource.
-#define RES_REQUESTED	   (1<<3)	// Already requested a download of this one
-#define RES_PRECACHED	   (1<<4)	// Already precached
-#define RES_ALWAYS		   (1<<5)	// download always even if available on client	
-#define RES_CHECKFILE	   (1<<7)	// check file on client
+constexpr int RES_FATALIFMISSING = 1 << 0;  //!< Disconnect if we can't get this file.
+constexpr int RES_WASMISSING = 1 << 1;		//!< Do we have the file locally, did we get it ok?
+constexpr int RES_CUSTOM = 1 << 2;			//!< Is this resource one that corresponds to another player's customization or is it a server startup resource.
+constexpr int RES_REQUESTED = 1 << 3;		//!< Already requested a download of this one
+constexpr int RES_PRECACHED = 1 << 4;		//!< Already precached
+constexpr int RES_ALWAYS = 1 << 5;			//!< download always even if available on client	
+constexpr int RES_CHECKFILE = 1 << 7;		//!< check file on client
 
 #include "crc.h"
 
@@ -87,9 +86,9 @@ struct customization_t
 	customization_t* pNext; // Next in chain
 };
 
-#define FCUST_FROMHPAK		( 1<<0 )
-#define FCUST_WIPEDATA		( 1<<1 )
-#define FCUST_IGNOREINIT	( 1<<2 )
+constexpr int FCUST_FROMHPAK = 1 << 0;
+constexpr int FCUST_WIPEDATA = 1 << 1;
+constexpr int FCUST_IGNOREINIT = 1 << 2;
 
 void		COM_ClearCustomizationList(customization_t*pHead, qboolean bCleanDecals);
 qboolean	COM_CreateCustomization(customization_t*pListHead, resource_t *pResource, int playernumber, int flags,

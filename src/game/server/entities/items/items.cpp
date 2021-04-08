@@ -161,7 +161,7 @@ void CItem::Materialize()
 	SetTouch( &CItem::ItemTouch );
 }
 
-#define SF_SUIT_SHORTLOGON		0x0001
+constexpr int SF_SUIT_SHORTLOGON = 0x0001;
 
 class CItemSuit : public CItem
 {

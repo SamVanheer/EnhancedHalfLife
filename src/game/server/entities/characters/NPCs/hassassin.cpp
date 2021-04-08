@@ -49,12 +49,12 @@ enum
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
-#define		ASSASSIN_AE_SHOOT1	1
-#define		ASSASSIN_AE_TOSS1	2
-#define		ASSASSIN_AE_JUMP	3
+constexpr int ASSASSIN_AE_SHOOT1 = 1;
+constexpr int ASSASSIN_AE_TOSS1 = 2;
+constexpr int ASSASSIN_AE_JUMP = 3;
 
 
-#define bits_MEMORY_BADJUMP		(bits_MEMORY_CUSTOM1)
+constexpr int bits_MEMORY_BADJUMP = bits_MEMORY_CUSTOM1;
 
 /**
 *	@brief Human assassin, fast and stealthy

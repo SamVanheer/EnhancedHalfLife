@@ -25,8 +25,8 @@
 #include "gamerules.h"
 #include "UserMessages.h"
 
-#define EGON_SWITCH_NARROW_TIME			0.75			// Time it takes to switch fire modes
-#define EGON_SWITCH_WIDE_TIME			1.5
+constexpr float EGON_SWITCH_NARROW_TIME = 0.75;		// Time it takes to switch fire modes
+constexpr float EGON_SWITCH_WIDE_TIME = 1.5;
 
 LINK_ENTITY_TO_CLASS( weapon_egon, CEgon );
 
@@ -111,8 +111,8 @@ int CEgon::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-#define EGON_PULSE_INTERVAL			0.1
-#define EGON_DISCHARGE_INTERVAL		0.1
+constexpr float EGON_PULSE_INTERVAL = 0.1;
+constexpr float EGON_DISCHARGE_INTERVAL = 0.1;
 
 float CEgon::GetPulseInterval()
 {

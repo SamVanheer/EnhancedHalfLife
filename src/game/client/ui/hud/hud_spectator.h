@@ -13,16 +13,16 @@
 struct cl_entity_t;
 struct model_t;
 
-#define INSET_OFF				0
-#define	INSET_CHASE_FREE		1
-#define	INSET_IN_EYE			2
-#define	INSET_MAP_FREE			3
-#define	INSET_MAP_CHASE			4
+constexpr int INSET_OFF = 0;
+constexpr int INSET_CHASE_FREE = 1;
+constexpr int INSET_IN_EYE = 2;
+constexpr int INSET_MAP_FREE = 3;
+constexpr int INSET_MAP_CHASE = 4;
 
-#define MAX_SPEC_HUD_MESSAGES	8
+constexpr int MAX_SPEC_HUD_MESSAGES = 8;
 
-#define OVERVIEW_TILE_SIZE		128		// don't change this
-#define OVERVIEW_MAX_LAYERS		1
+constexpr int OVERVIEW_TILE_SIZE = 128;		// don't change this
+constexpr int OVERVIEW_MAX_LAYERS = 1;
 
 //-----------------------------------------------------------------------------
 // Purpose: Handles the drawing of the spectator stuff (camera & top-down map and all the things on it )
@@ -61,8 +61,8 @@ struct cameraWayPoint_t
 	int		flags;
 };
 
-#define	 MAX_OVERVIEW_ENTITIES		128
-#define	 MAX_CAM_WAYPOINTS			32
+constexpr int MAX_OVERVIEW_ENTITIES = 128;
+constexpr int MAX_CAM_WAYPOINTS = 32;
 
 class CHudSpectator : public CHudBase
 {

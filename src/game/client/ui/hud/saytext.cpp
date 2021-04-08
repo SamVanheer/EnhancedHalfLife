@@ -23,16 +23,16 @@
 
 #include "vgui_TeamFortressViewport.h"
 
-#define MAX_LINES	5
-#define MAX_CHARS_PER_LINE	256  /* it can be less than this, depending on char size */
+constexpr int MAX_LINES = 5;
+constexpr int MAX_CHARS_PER_LINE = 256;  /* it can be less than this, depending on char size */
 
 // allow 20 pixels on either side of the text
 #define MAX_LINE_WIDTH  ( ScreenWidth - 40 )
-#define LINE_START  10
+constexpr int LINE_START = 10;
 static float SCROLL_SPEED = 5;
 
 static char g_szLineBuffer[ MAX_LINES + 1 ][ MAX_CHARS_PER_LINE ];
-static float *g_pflNameColors[ MAX_LINES + 1 ];
+static const float *g_pflNameColors[ MAX_LINES + 1 ];
 static int g_iNameLengths[ MAX_LINES + 1 ];
 static float flScrollTime = 0;  // the time at which the lines next scroll up
 

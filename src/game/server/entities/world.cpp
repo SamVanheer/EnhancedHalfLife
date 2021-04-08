@@ -123,9 +123,9 @@ void CopyToBodyQue(entvars_t *pev)
 
 LINK_ENTITY_TO_CLASS( worldspawn, CWorld );
 
-#define SF_WORLD_DARK		0x0001		// Fade from black at startup
-#define SF_WORLD_TITLE		0x0002		// Display game title at startup
-#define SF_WORLD_FORCETEAM	0x0004		// Force teams
+constexpr int SF_WORLD_DARK = 0x0001;		//!< Fade from black at startup
+constexpr int SF_WORLD_TITLE = 0x0002;		//!< Display game title at startup
+constexpr int SF_WORLD_FORCETEAM = 0x0004;	//!< Force teams
 
 extern DLL_GLOBAL bool		g_fGameOver;
 

@@ -21,10 +21,10 @@
 #include	"soundent.h"
 
 
-#define ACT_T_IDLE		1010
-#define ACT_T_TAP			1020
-#define ACT_T_STRIKE		1030
-#define ACT_T_REARIDLE	1040
+constexpr int ACT_T_IDLE = 1010;
+constexpr int ACT_T_TAP = 1020;
+constexpr int ACT_T_STRIKE = 1030;
+constexpr int ACT_T_REARIDLE = 1040;
 
 /**
 *	@brief silo of death tentacle monster (half life)
@@ -113,10 +113,10 @@ int CTentacle :: g_fSquirmSound;
 LINK_ENTITY_TO_CLASS( monster_tentacle, CTentacle );
 
 // stike sounds
-#define TE_NONE -1
-#define TE_SILO 0
-#define TE_DIRT 1
-#define TE_WATER 2
+constexpr int TE_NONE = -1;
+constexpr int TE_SILO = 0;
+constexpr int TE_DIRT = 1;
+constexpr int TE_WATER = 2;
 
 const char *CTentacle::pHitSilo[] = 
 {

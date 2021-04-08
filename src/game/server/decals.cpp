@@ -72,7 +72,7 @@ void InitializeDecalsList()
 		gDecals[i].index = DECAL_INDEX(gDecals[i].name);
 }
 
-#define SF_DECAL_NOTINDEATHMATCH		2048
+constexpr int SF_DECAL_NOTINDEATHMATCH = 2048;
 
 class CDecal : public CBaseEntity
 {

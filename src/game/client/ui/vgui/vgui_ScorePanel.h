@@ -17,20 +17,16 @@
 
 #include <ctype.h>
 
-#define MAX_SCORES					10
-#define MAX_SCOREBOARD_TEAMS		5
-
 // Scoreboard cells
-#define COLUMN_TRACKER	0
-#define COLUMN_NAME		1
-#define COLUMN_CLASS	2
-#define COLUMN_KILLS	3
-#define COLUMN_DEATHS	4
-#define COLUMN_LATENCY	5
-#define COLUMN_VOICE	6
-#define COLUMN_BLANK	7
-#define NUM_COLUMNS		8
-#define NUM_ROWS		(MAX_PLAYERS + (MAX_SCOREBOARD_TEAMS * 2))
+constexpr int COLUMN_TRACKER = 0;
+constexpr int COLUMN_NAME = 1;
+constexpr int COLUMN_CLASS = 2;
+constexpr int COLUMN_KILLS = 3;
+constexpr int COLUMN_DEATHS = 4;
+constexpr int COLUMN_LATENCY = 5;
+constexpr int COLUMN_VOICE = 6;
+constexpr int COLUMN_BLANK = 7;
+constexpr int NUM_COLUMNS = 8;
 
 using namespace vgui;
 
@@ -264,6 +260,14 @@ private:
 	CLabelHeader*	GetPlayerEntry(int x, int y)	{return &m_PlayerEntries[x][y];}
 
 public:
+
+	enum class TeamType
+	{
+		No = 0,
+		Yes,
+		Spectators,
+		Blank
+	};
 	
 	int				m_iNumTeams;
 	int				m_iPlayerNum;
@@ -271,7 +275,7 @@ public:
 
 	int				m_iRows;
 	int				m_iSortedRows[NUM_ROWS];
-	int				m_iIsATeam[NUM_ROWS];
+	TeamType		m_iIsATeam[NUM_ROWS];
 	bool			m_bHasBeenSorted[MAX_PLAYERS];
 	int				m_iLastKilledBy;
 	int				m_fLastKillTime;
@@ -284,7 +288,7 @@ public:
 	void Update();
 
 	void SortTeams();
-	void SortPlayers( int iTeam, char *team );
+	void SortPlayers(TeamType iTeam, char *team );
 	void RebuildTeams();
 
 	void FillGrid();

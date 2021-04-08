@@ -20,7 +20,7 @@
 
 
 #define XEN_PLANT_GLOW_SPRITE		"sprites/flare3.spr"
-#define XEN_PLANT_HIDE_TIME			5
+constexpr int XEN_PLANT_HIDE_TIME = 5;
 
 
 class CActAnimating : public CBaseAnimating
@@ -190,7 +190,7 @@ public:
 
 LINK_ENTITY_TO_CLASS( xen_hair, CXenHair );
 
-#define SF_HAIR_SYNC		0x0001
+constexpr int SF_HAIR_SYNC = 0x0001;
 
 void CXenHair::Spawn()
 {
@@ -256,7 +256,7 @@ void CXenTreeTrigger::Touch( CBaseEntity *pOther )
 }
 
 
-#define TREE_AE_ATTACK		1
+constexpr int TREE_AE_ATTACK = 1;
 
 class CXenTree : public CActAnimating
 {

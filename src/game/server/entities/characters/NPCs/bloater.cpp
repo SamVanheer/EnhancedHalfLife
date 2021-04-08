@@ -23,7 +23,7 @@
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
-#define	BLOATER_AE_ATTACK_MELEE1		0x01
+constexpr int BLOATER_AE_ATTACK_MELEE1 = 0x01;
 
 
 class CBloater : public CBaseMonster

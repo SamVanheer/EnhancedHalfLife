@@ -19,8 +19,8 @@
 #include	"schedule.h"
 #include	"flyingmonster.h"
 
-#define FLYING_AE_FLAP		(8)
-#define FLYING_AE_FLAPSOUND	(9)
+constexpr int FLYING_AE_FLAP = 8;
+constexpr int FLYING_AE_FLAPSOUND = 9;
 
 
 extern DLL_GLOBAL edict_t		*g_pBodyQueueHead;

@@ -156,7 +156,7 @@ int CHudTextMessage::MsgFunc_TextMsg( const char *pszName, int iSize, void *pbuf
 
 	int msg_dest = READ_BYTE();
 
-#define MSG_BUF_SIZE 128
+	constexpr int MSG_BUF_SIZE = 128;
 	static char szBuf[6][MSG_BUF_SIZE];
 	const char *msg_text = LookupString( READ_STRING(), &msg_dest );
 	msg_text = safe_strcpy( szBuf[0], msg_text , MSG_BUF_SIZE);

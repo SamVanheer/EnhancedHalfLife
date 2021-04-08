@@ -26,16 +26,16 @@
 
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 
-#define		SF_BRUSH_ACCDCC	16// brush should accelerate and decelerate when toggled
-#define		SF_BRUSH_HURT		32// rotating brush that inflicts pain based on rotation speed
-#define		SF_ROTATING_NOT_SOLID	64	// some special rotating objects are not solid.
+constexpr int SF_BRUSH_ACCDCC = 16;			// brush should accelerate and decelerate when toggled
+constexpr int SF_BRUSH_HURT = 32;			// rotating brush that inflicts pain based on rotation speed
+constexpr int SF_ROTATING_NOT_SOLID = 64;	// some special rotating objects are not solid.
 
 // covering cheesy noise1, noise2, & noise3 fields so they make more sense (for rotating fans)
 #define		noiseStart		noise1
 #define		noiseStop		noise2
 #define		noiseRunning	noise3
 
-#define		SF_PENDULUM_SWING		2	// spawnflag that makes a pendulum a rope swing.
+constexpr int SF_PENDULUM_SWING = 2;	// spawnflag that makes a pendulum a rope swing.
 //
 // BModelOrigin - calculates origin of a bmodel from absmin/size because all bmodel origins are 0 0 0
 //
@@ -80,7 +80,7 @@ void CFuncWall :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE u
 }
 
 
-#define SF_WALL_START_OFF		0x0001
+constexpr int SF_WALL_START_OFF = 0x0001;
 
 class CFuncWallToggle : public CFuncWall
 {
@@ -140,8 +140,8 @@ void CFuncWallToggle :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 }
 
 
-#define SF_CONVEYOR_VISUAL		0x0001
-#define SF_CONVEYOR_NOTSOLID	0x0002
+constexpr int SF_CONVEYOR_VISUAL = 0x0001;
+constexpr int SF_CONVEYOR_NOTSOLID = 0x0002;
 
 class CFuncConveyor : public CFuncWall
 {
@@ -533,8 +533,8 @@ void CFuncRotating :: HurtTouch ( CBaseEntity *pOther )
 // RampPitchVol - ramp pitch and volume up to final values, based on difference
 // between how fast we're going vs how fast we plan to go
 //
-#define FANPITCHMIN		30
-#define FANPITCHMAX		100
+constexpr int FANPITCHMIN = 30;
+constexpr int FANPITCHMAX = 100;
 
 void CFuncRotating :: RampPitchVol (int fUp)
 {

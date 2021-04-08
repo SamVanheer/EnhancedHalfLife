@@ -22,7 +22,7 @@
 #include "effects.h"
 #include "gamerules.h"
 
-#define	TRIPMINE_PRIMARY_VOLUME		450
+constexpr int	TRIPMINE_PRIMARY_VOLUME = 450;
 
 #ifndef CLIENT_DLL
 

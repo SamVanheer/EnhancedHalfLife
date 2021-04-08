@@ -35,9 +35,9 @@ extern DLL_GLOBAL int			g_iSkillLevel;
 Vector VecBModelOrigin( entvars_t* pevBModel );
 extern entvars_t *g_pevLastInflictor;
 
-#define GERMAN_GIB_COUNT		4
-#define	HUMAN_GIB_COUNT			6
-#define ALIEN_GIB_COUNT			4
+constexpr int GERMAN_GIB_COUNT = 4;
+constexpr int HUMAN_GIB_COUNT = 6;
+constexpr int ALIEN_GIB_COUNT = 4;
 
 
 // HACKHACK -- The gib velocity equations don't work

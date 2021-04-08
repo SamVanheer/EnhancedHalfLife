@@ -47,6 +47,7 @@ using func_t = unsigned int;
 using string_t = unsigned int;
 using qboolean = int;
 
+//TODO: use constexpr template function instead to detect some edge cases
 #define ARRAYSIZE(p)		(sizeof(p)/sizeof(p[0]))
 
 // Prevent tons of unused windows definitions

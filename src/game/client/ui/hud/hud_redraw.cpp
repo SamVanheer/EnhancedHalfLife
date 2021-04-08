@@ -18,9 +18,9 @@
 
 #include "vgui_TeamFortressViewport.h"
 
-#define MAX_LOGO_FRAMES 56
+constexpr int MAX_LOGO_FRAMES = 56;
 
-int grgLogoFrame[MAX_LOGO_FRAMES] = 
+constexpr int grgLogoFrame[MAX_LOGO_FRAMES] = 
 {
 	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 13, 13, 13, 13, 12, 11, 10, 9, 8, 14, 15,
 	16, 17, 18, 19, 20, 20, 20, 20, 20, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 

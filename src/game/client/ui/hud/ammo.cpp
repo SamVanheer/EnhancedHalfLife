@@ -24,6 +24,11 @@
 #include "ammohistory.h"
 #include "vgui_TeamFortressViewport.h"
 
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "weapons.h"
+
 WEAPON *gpActiveSel;	// NULL means off, 1 means just the menu bar, otherwise
 						// this points to the active weapon menu item
 WEAPON *gpLastSel;		// Last weapon menu selection 
@@ -61,7 +66,7 @@ int WeaponsResource :: HasAmmo( WEAPON *p )
 		return true;
 
 	return (p->iAmmoType == -1) || p->iClip > 0 || CountAmmo(p->iAmmoType) 
-		|| CountAmmo(p->iAmmo2Type) || ( p->iFlags & WEAPON_FLAGS_SELECTONEMPTY );
+		|| CountAmmo(p->iAmmo2Type) || ( p->iFlags & ITEM_FLAG_SELECTONEMPTY);
 }
 
 
@@ -249,8 +254,8 @@ DECLARE_COMMAND(m_Ammo, NextWeapon);
 DECLARE_COMMAND(m_Ammo, PrevWeapon);
 
 // width of ammo fonts
-#define AMMO_SMALL_WIDTH 10
-#define AMMO_LARGE_WIDTH 20
+constexpr int AMMO_SMALL_WIDTH = 10;
+constexpr int AMMO_LARGE_WIDTH = 20;
 
 #define HISTORY_DRAW_TIME	"5"
 

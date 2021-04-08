@@ -16,8 +16,6 @@
 #include "extdll.h"
 #include "parsemsg.h"
 
-#define true 1
-
 static byte *gpBuf;
 static int giSize;
 static int giRead;

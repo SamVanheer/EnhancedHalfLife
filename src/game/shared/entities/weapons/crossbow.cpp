@@ -24,8 +24,8 @@
 #include "UserMessages.h"
 
 #ifndef CLIENT_DLL
-#define BOLT_AIR_VELOCITY	2000
-#define BOLT_WATER_VELOCITY	1000
+constexpr int BOLT_AIR_VELOCITY = 2000;
+constexpr int BOLT_WATER_VELOCITY = 1000;
 
 // UNDONE: Save/restore this?  Don't forget to set classname and LINK_ENTITY_TO_CLASS()
 // 

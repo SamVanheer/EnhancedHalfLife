@@ -18,11 +18,11 @@
 //=========================================================
 // Hornet Defines
 //=========================================================
-#define HORNET_TYPE_RED			0
-#define HORNET_TYPE_ORANGE		1
-#define HORNET_RED_SPEED		(float)600
-#define HORNET_ORANGE_SPEED		(float)800
-#define	HORNET_BUZZ_VOLUME		(float)0.8
+constexpr int HORNET_TYPE_RED = 0;
+constexpr int HORNET_TYPE_ORANGE = 1;
+constexpr float HORNET_RED_SPEED = 600;
+constexpr float HORNET_ORANGE_SPEED = 800;
+constexpr float HORNET_BUZZ_VOLUME = 0.8;
 
 extern int iHornetPuff;
 
