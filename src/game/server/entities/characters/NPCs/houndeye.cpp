@@ -136,8 +136,6 @@ int	CHoundeye :: Classify ()
 //=========================================================
 bool CHoundeye :: FValidateHintType ( short sHint )
 {
-	int i;
-
 	static short sHoundHints[] =
 	{
 		HINT_WORLD_MACHINERY,
@@ -146,7 +144,7 @@ bool CHoundeye :: FValidateHintType ( short sHint )
 		HINT_WORLD_ALIEN_BLOOD,
 	};
 
-	for ( i = 0 ; i < ARRAYSIZE ( sHoundHints ) ; i++ )
+	for (std::size_t i = 0 ; i < ARRAYSIZE ( sHoundHints ) ; i++ )
 	{
 		if ( sHoundHints[ i ] == sHint )
 		{

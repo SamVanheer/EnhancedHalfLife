@@ -1475,7 +1475,7 @@ bool PM_CheckStuck ()
 		if ( ( hitent == 0 ) ||
 			 ( pmove->physents[hitent].model != NULL ) )
 		{
-			int nReps = 0;
+			std::size_t nReps = 0;
 			PM_ResetStuckOffsets( pmove->player_index, pmove->server );
 			do 
 			{

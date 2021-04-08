@@ -175,7 +175,7 @@ void PM_DrawPhysEntBBox(int num, int pcolor, float life)
 		for (int j = 0; j < 8; j++)
 			p[j] = p[j] + org;
 
-		for (int j = 0; j < ARRAYSIZE(PM_boxpnt); j++)
+		for (std::size_t j = 0; j < ARRAYSIZE(PM_boxpnt); j++)
 		{
 			PM_DrawRectangle(
 				p[PM_boxpnt[j][1]],
@@ -197,7 +197,7 @@ void PM_DrawPhysEntBBox(int num, int pcolor, float life)
 			p[j] = tmp;
 		}
 
-		for (int j = 0; j < ARRAYSIZE(PM_boxpnt); j++)
+		for (std::size_t j = 0; j < ARRAYSIZE(PM_boxpnt); j++)
 		{
 			PM_DrawRectangle(
 				p[PM_boxpnt[j][1]],
@@ -232,7 +232,7 @@ void PM_DrawBBox(Vector mins, Vector maxs, Vector origin, int pcolor, float life
 		p[j] = tmp;
 	}
 
-	for (int j = 0; j < ARRAYSIZE(PM_boxpnt); j++)
+	for (std::size_t j = 0; j < ARRAYSIZE(PM_boxpnt); j++)
 	{
 		PM_DrawRectangle(
 			p[PM_boxpnt[j][1]],

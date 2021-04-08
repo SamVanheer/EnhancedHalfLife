@@ -47,9 +47,6 @@ using func_t = unsigned int;
 using string_t = unsigned int;
 using qboolean = int;
 
-//TODO: use constexpr template function instead to detect some edge cases
-#define ARRAYSIZE(p)		(sizeof(p)/sizeof(p[0]))
-
 // Prevent tons of unused windows definitions
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -82,6 +79,15 @@ using qboolean = int;
 
 #define DLLEXPORT __attribute__ ( ( visibility( "default" ) ) )
 #endif //_WIN32
+
+template<typename T, std::size_t Size>
+constexpr std::size_t ArraySize(const T (&)[Size])
+{
+	return Size;
+}
+
+#undef ARRAYSIZE
+#define ARRAYSIZE ArraySize
 
 #define V_min(a,b)  (((a) < (b)) ? (a) : (b))
 #define V_max(a,b)  (((a) > (b)) ? (a) : (b))
