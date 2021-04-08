@@ -3,10 +3,6 @@
 #include "archtypes.h"     // DAL
 #include "netadr.h"
 
-#ifndef _WIN32
-#include "enums.h"
-#endif
-
 struct cl_enginefunc_t;
 struct cl_entity_t;
 struct client_data_t;

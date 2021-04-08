@@ -13,6 +13,8 @@
 *
 ****/
 
+#include <cctype>
+
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"
@@ -26,10 +28,6 @@
 #include	"voice_gamemgr.h"
 #include	"hltv.h"
 #include "UserMessages.h"
-
-#if !defined ( _WIN32 )
-#include <ctype.h>
-#endif
 
 extern DLL_GLOBAL CGameRules	*g_pGameRules;
 extern DLL_GLOBAL bool	g_fGameOver;

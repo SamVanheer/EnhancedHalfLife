@@ -24,10 +24,6 @@
 #include "cbase.h"
 #include "doors.h"
 
-#if !defined ( _WIN32 )
-#include <string.h> // memset())))
-#endif
-
 constexpr int SF_BUTTON_DONTMOVE = 1;
 constexpr int SF_ROTBUTTON_NOTSOLID = 1;
 constexpr int SF_BUTTON_TOGGLE = 32;		// button stays pushed until reactivated

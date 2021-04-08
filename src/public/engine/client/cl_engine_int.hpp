@@ -4,10 +4,6 @@
 #include "netadr.h"
 #include "Sequence.h"
 
-#ifndef _WIN32
-#include "enums.h"
-#endif
-
 struct cl_entity_t;
 struct client_sprite_t;
 struct client_textmessage_t;
