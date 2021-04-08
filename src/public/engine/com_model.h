@@ -9,6 +9,7 @@
 
 #pragma once
 
+struct efrag_t;
 struct msurface_t;
 struct surfcache_t;
 
