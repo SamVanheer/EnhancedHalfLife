@@ -6,11 +6,6 @@
 
 #pragma once
 
-
-#ifndef _DEF_BYTE_
-typedef unsigned char byte;
-#endif
-
 struct client_textmessage_t
 {
 	int		effect;

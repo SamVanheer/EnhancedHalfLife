@@ -26,12 +26,7 @@ struct MD5Context_t
     unsigned char in[64];
 };
 
-//TODO: redundant
-#ifdef _WIN32
 typedef uint32 CRC32_t;
-#else
-typedef uint32 CRC32_t;
-#endif
 
 void CRC32_Init(CRC32_t *pulCRC);
 CRC32_t CRC32_Final(CRC32_t pulCRC);
