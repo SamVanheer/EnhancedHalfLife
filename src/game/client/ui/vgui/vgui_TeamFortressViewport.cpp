@@ -2107,7 +2107,7 @@ void CDragNDropHandler::cursorMoved(int x,int y,Panel* panel)
 		App::getInstance()->getCursorPos(x,y);			
 		m_pPanel->setPos(m_iaDragOrgPos[0]+(x-m_iaDragStart[0]),m_iaDragOrgPos[1]+(y-m_iaDragStart[1]));
 		
-		if(m_pPanel->getParent()!=null)
+		if(m_pPanel->getParent()!= nullptr)
 		{			
 			m_pPanel->getParent()->repaint();
 		}
@@ -2132,7 +2132,7 @@ void CDragNDropHandler::mouseReleased(MouseCode code,Panel* panel)
 {
 	m_bDragging=false;
 	m_pPanel->setDragged(m_bDragging);
-	App::getInstance()->setMouseCapture(null);
+	App::getInstance()->setMouseCapture(nullptr);
 }
 
 //================================================================

@@ -60,7 +60,7 @@ class VoiceImagePanel : public vgui::ImagePanel
 {
 	virtual void paintBackground()
 	{
-		if (_image!=null)
+		if (_image!= nullptr)
 		{
 			vgui::Color col;
 			getFgColor(col);

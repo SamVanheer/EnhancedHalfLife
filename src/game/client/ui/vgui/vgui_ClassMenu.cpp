@@ -224,7 +224,7 @@ CClassMenuPanel::CClassMenuPanel(int iTrans, int iRemoveMe, int x,int y,int wide
 
 		//check to see if the image goes lower than the text
 		//just use the red teams [0] images
-		if(m_pClassImages[0][i]!=null)
+		if(m_pClassImages[0][i]!= nullptr)
 		{
 			m_pClassImages[0][i]->getPos(xx,yy);
 			if((yy+m_pClassImages[0][i]->getTall())>maxY)
