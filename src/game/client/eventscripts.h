@@ -19,6 +19,7 @@ bool EV_IsLocal( int idx );
 bool EV_IsPlayer( int idx );
 void EV_CreateTracer( float *start, float *end );
 
+bool IsFirstPersonSpectator();
 cl_entity_t* GetEntity( int idx );
 cl_entity_t* GetViewEntity();
 void EV_MuzzleFlash();

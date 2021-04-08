@@ -14,11 +14,11 @@
 ****/
 /*
 
-===== util.cpp ========================================================
-
   Utility code.  Really not optional after all.
 
 */
+
+#include <algorithm>
 
 #include "extdll.h"
 #include "util.h"
@@ -521,19 +521,15 @@ void UTIL_MakeAimVectors( const Vector &vecAngles )
 	MAKE_VECTORS(rgflVec);
 }
 
-//TODO: use std::swap
-#define SWAP(a,b,temp)	((temp)=(a),(a)=(b),(b)=(temp))
-
 void UTIL_MakeInvVectors( const Vector &vec, globalvars_t *pgv )
 {
 	MAKE_VECTORS(vec);
 
-	float tmp;
 	pgv->v_right = pgv->v_right * -1;
 
-	SWAP(pgv->v_forward.y, pgv->v_right.x, tmp);
-	SWAP(pgv->v_forward.z, pgv->v_up.x, tmp);
-	SWAP(pgv->v_right.z, pgv->v_up.y, tmp);
+	std::swap(pgv->v_forward.y, pgv->v_right.x);
+	std::swap(pgv->v_forward.z, pgv->v_up.x);
+	std::swap(pgv->v_right.z, pgv->v_up.y);
 }
 
 

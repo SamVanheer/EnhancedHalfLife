@@ -123,6 +123,12 @@ public:
 	void BiteSound();
 	void DeathSound() override;
 	void PainSound() override;
+
+	template<std::size_t Size>
+	void EMIT_ICKY_SOUND(int chan, const char* (&array)[Size])
+	{
+		EMIT_SOUND_DYN(ENT(pev), chan, array[RANDOM_LONG(0, ARRAYSIZE(array) - 1)], 1.0, 0.6, 0, RANDOM_LONG(95, 105));
+	}
 };
 
 LINK_ENTITY_TO_CLASS( monster_ichthyosaur, CIchthyosaur );
@@ -181,10 +187,6 @@ const char *CIchthyosaur::pDieSounds[] =
 	"ichy/ichy_die2.wav",
 	"ichy/ichy_die4.wav",
 };
-
-#define EMIT_ICKY_SOUND( chan, array ) \
-	EMIT_SOUND_DYN ( ENT(pev), chan , array [ RANDOM_LONG(0,ARRAYSIZE( array )-1) ], 1.0, 0.6, 0, RANDOM_LONG(95,105) ); 
-
 
 void CIchthyosaur :: IdleSound()	
 { 

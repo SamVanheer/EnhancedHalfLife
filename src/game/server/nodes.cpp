@@ -2256,20 +2256,31 @@ int CQueuePriority :: Remove( float &fPriority )
     return iReturn;
 }
 
-#define HEAP_LEFT_CHILD(x) (2*(x)+1)
-#define HEAP_RIGHT_CHILD(x) (2*(x)+2)
-#define HEAP_PARENT(x) (((x)-1)/2)
+constexpr int HeapLeftChild(int x)
+{
+	return (2 * x) + 1;
+}
+
+constexpr int HeapRightChild(int x)
+{
+	return (2 * x) + 2;
+}
+
+constexpr int HeapParent(int x)
+{
+	return (x - 1) / 2;
+}
 
 void CQueuePriority::Heap_SiftDown(int iSubRoot)
 {
 	int parent = iSubRoot;
-	int child = HEAP_LEFT_CHILD(parent);
+	int child = HeapLeftChild(parent);
 
 	struct tag_HEAP_NODE Ref = m_heap[ parent ];
 
     while (child < m_cSize)
 	{
-		int rightchild = HEAP_RIGHT_CHILD(parent);
+		int rightchild = HeapRightChild(parent);
 		if (rightchild < m_cSize)
 		{
 			if ( m_heap[ rightchild ].Priority < m_heap[ child ].Priority )
@@ -2282,7 +2293,7 @@ void CQueuePriority::Heap_SiftDown(int iSubRoot)
 
 		m_heap[ parent ] = m_heap[ child ];
 		parent = child;
-		child = HEAP_LEFT_CHILD(parent);
+		child = HeapLeftChild(parent);
 	}
 	m_heap[ parent ] = Ref;
 }
@@ -2292,7 +2303,7 @@ void CQueuePriority::Heap_SiftUp()
 	int child = m_cSize-1;
 	while (child)
 	{
-		int parent = HEAP_PARENT(child);
+		int parent = HeapParent(child);
 		if ( m_heap[ parent ].Priority <= m_heap[ child ].Priority )
 			break;
 
@@ -3039,8 +3050,12 @@ void CGraph::BuildRegionTables()
 
 void CGraph :: ComputeStaticRoutingTables()
 {
+	const auto fromTo = [&](int x, int y)
+	{
+		return (x * m_cNodes) + y;
+	};
+
 	int nRoutes = m_cNodes*m_cNodes;
-#define FROM_TO(x,y) ((x)*m_cNodes+(y))
 	short *Routes = new short[nRoutes];
 
 	int *pMyPath = new int[m_cNodes];
@@ -3075,7 +3090,7 @@ void CGraph :: ComputeStaticRoutingTables()
 				{
 					for (int iTo = 0; iTo < m_cNodes; iTo++)
 					{
-						Routes[FROM_TO(iFrom, iTo)] = -1;
+						Routes[fromTo(iFrom, iTo)] = -1;
 					}
 				}
 
@@ -3083,7 +3098,7 @@ void CGraph :: ComputeStaticRoutingTables()
 				{
 					for (int iTo = m_cNodes-1; iTo >= 0; iTo--)
 					{
-						if (Routes[FROM_TO(iFrom, iTo)] != -1) continue;
+						if (Routes[fromTo(iFrom, iTo)] != -1) continue;
 
 						int cPathSize = FindShortestPath(pMyPath, iFrom, iTo, iHull, iCapMask);
 
@@ -3098,7 +3113,7 @@ void CGraph :: ComputeStaticRoutingTables()
 								for (int iNode1 = iNode+1; iNode1 < cPathSize; iNode1++)
 								{
 									int iEnd = pMyPath[iNode1];
-									Routes[FROM_TO(iStart, iEnd)] = iNext;
+									Routes[fromTo(iStart, iEnd)] = iNext;
 								}
 							}
 #if 0
@@ -3114,15 +3129,15 @@ void CGraph :: ComputeStaticRoutingTables()
 								for (int iNode1 = iNode-1; iNode1 >= 0; iNode1--)
 								{
 									int iEnd = pMyPath[iNode1];
-									Routes[FROM_TO(iStart, iEnd)] = iNext;
+									Routes[fromTo(iStart, iEnd)] = iNext;
 								}
 							}
 #endif
 						}
 						else
 						{
-							Routes[FROM_TO(iFrom, iTo)] = iFrom;
-							Routes[FROM_TO(iTo, iFrom)] = iTo;
+							Routes[fromTo(iFrom, iTo)] = iFrom;
+							Routes[fromTo(iTo, iFrom)] = iTo;
 						}
 					}
 				}
@@ -3131,7 +3146,7 @@ void CGraph :: ComputeStaticRoutingTables()
 				{
 					for (int iTo = 0; iTo < m_cNodes; iTo++)
 					{
-						BestNextNodes[iTo] = Routes[FROM_TO(iFrom, iTo)];
+						BestNextNodes[iTo] = Routes[fromTo(iFrom, iTo)];
 					}
 
 					// Compress this node's routing table.

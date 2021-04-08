@@ -309,6 +309,12 @@ public:
 	virtual	bool FVisible ( CBaseEntity *pEntity );
 	virtual	bool FVisible ( const Vector &vecOrigin );
 
+	template<std::size_t Size>
+	void EMIT_SOUND_ARRAY_DYN(int chan, const char* (&array)[Size])
+	{
+		EMIT_SOUND_DYN(ENT(pev), chan, RANDOM_SOUND_ARRAY(array), 1.0, ATTN_NORM, 0, RANDOM_LONG(95, 105));
+	}
+
 	//We use this variables to store each ammo count.
 	int ammo_9mm;
 	int ammo_357;

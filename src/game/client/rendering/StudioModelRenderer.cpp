@@ -13,6 +13,7 @@
 #include "cl_entity.h"
 #include "dlight.h"
 #include "triangleapi.h"
+#include "eventscripts.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -1102,7 +1103,6 @@ void CStudioModelRenderer::StudioMergeBones ( model_t *m_pSubModel )
 #if defined( _TFC )
 #include "pm_shared.h"
 const Vector& GetTeamColor( int team_no );
-#define IS_FIRSTPERSON_SPEC ( g_iUser1 == OBS_IN_EYE || (g_iUser1 && (gHUD.m_Spectator.m_pip->value == INSET_IN_EYE)) )
 
 int GetRemapColor( int iTeam, bool bTopColor )
 {

@@ -57,21 +57,28 @@ inline edict_t *FIND_ENTITY_BY_TARGETNAME(edict_t *entStart, const char *pszName
 inline edict_t *FIND_ENTITY_BY_TARGET(edict_t *entStart, const char *pszName) 
 {
 	return FIND_ENTITY_BY_STRING(entStart, "target", pszName);
-}	
-
-// Keeps clutter down a bit, when writing key-value pairs
-#define WRITEKEY_INT(pf, szKeyName, iKeyValue) ENGINE_FPRINTF(pf, "\"%s\" \"%d\"\n", szKeyName, iKeyValue)
-#define WRITEKEY_FLOAT(pf, szKeyName, flKeyValue)								\
-		ENGINE_FPRINTF(pf, "\"%s\" \"%f\"\n", szKeyName, flKeyValue)
-#define WRITEKEY_STRING(pf, szKeyName, szKeyValue)								\
-		ENGINE_FPRINTF(pf, "\"%s\" \"%s\"\n", szKeyName, szKeyValue)
-#define WRITEKEY_VECTOR(pf, szKeyName, flX, flY, flZ)							\
-		ENGINE_FPRINTF(pf, "\"%s\" \"%f %f %f\"\n", szKeyName, flX, flY, flZ)
+}
 
 // Keeps clutter down a bit, when using a float as a bit-vector
-#define SetBits(flBitVector, bits)		((flBitVector) = (int)(flBitVector) | (bits))
-#define ClearBits(flBitVector, bits)	((flBitVector) = (int)(flBitVector) & ~(bits))
-#define FBitSet(flBitVector, bit)		((int)(flBitVector) & (bit))
+template<typename T>
+constexpr T& SetBits(T& flBitVector, int bits)
+{
+	flBitVector = ((int)flBitVector) | bits;
+	return flBitVector;
+}
+
+template<typename T>
+constexpr T& ClearBits(T& flBitVector, int bits)
+{
+	flBitVector = ((int)flBitVector) & ~bits;
+	return flBitVector;
+}
+
+template<typename T>
+constexpr bool FBitSet(const T& flBitVector, int bit)
+{
+	return (((int)flBitVector) & bit) != 0;
+}
 
 // Makes these more explicit, and easier to find
 #define FILE_GLOBAL static
@@ -483,16 +490,30 @@ void EMIT_SOUND_SUIT(edict_t *entity, const char *sample);
 void EMIT_GROUPID_SUIT(edict_t *entity, int isentenceg);
 void EMIT_GROUPNAME_SUIT(edict_t *entity, const char *groupname);
 
-#define PRECACHE_SOUND_ARRAY( a ) \
-	{ for (std::size_t i = 0; i < ARRAYSIZE( a ); i++ ) PRECACHE_SOUND((char *) a [i]); }
+template<std::size_t Size>
+void PRECACHE_SOUND_ARRAY(const char* (&a)[Size])
+{
+	for (std::size_t i = 0; i < ARRAYSIZE(a); i++)
+	{
+		PRECACHE_SOUND(a[i]);
+	}
+}
 
-#define EMIT_SOUND_ARRAY_DYN( chan, array ) \
-	EMIT_SOUND_DYN ( ENT(pev), chan , array [ RANDOM_LONG(0,ARRAYSIZE( array )-1) ], 1.0, ATTN_NORM, 0, RANDOM_LONG(95,105) ); 
+template<std::size_t Size>
+const char* RANDOM_SOUND_ARRAY(const char* (&array)[Size])
+{
+	return array[RANDOM_LONG(0, ARRAYSIZE(array) - 1)];
+}
 
-#define RANDOM_SOUND_ARRAY( array ) (array) [ RANDOM_LONG(0,ARRAYSIZE( (array) )-1) ]
+inline void PLAYBACK_EVENT(int flags, edict_t* invoker, unsigned short index)
+{
+	PLAYBACK_EVENT_FULL(flags, invoker, index, 0, g_vecZero, g_vecZero, 0.0, 0.0, 0, 0, 0, 0);
+}
 
-#define PLAYBACK_EVENT( flags, who, index ) PLAYBACK_EVENT_FULL( flags, who, index, 0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, 0, 0, 0, 0 );
-#define PLAYBACK_EVENT_DELAY( flags, who, index, delay ) PLAYBACK_EVENT_FULL( flags, who, index, delay, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, 0, 0, 0, 0 );
+inline void PLAYBACK_EVENT_DELAY(int flags, edict_t* invoker, unsigned short index, float delay)
+{
+	PLAYBACK_EVENT_FULL(flags, invoker, index, delay, g_vecZero, g_vecZero, 0.0, 0.0, 0, 0, 0, 0);
+}
 
 constexpr int GROUP_OP_AND = 0;
 constexpr int GROUP_OP_NAND = 1;

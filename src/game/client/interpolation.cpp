@@ -12,14 +12,17 @@
 #include "interpolation.h"
 
 // = determinant of matrix a,b,c
-#define Determinant(a,b,c)		( (a)[2] * ( (b)[0]*(c)[1] - (b)[1]*(c)[0] ) + \
-								  (a)[1] * ( (b)[2]*(c)[0] - (b)[0]*(c)[2] ) + \
-								  (a)[0] * ( (b)[1]*(c)[2] - (b)[2]*(c)[1] ) )
+inline float Determinant(const Vector& a, const Vector& b, const Vector& c)
+{
+	return (a[2] * (b[0] * c[1] - b[1] * c[0]) +
+		a[1] * (b[2] * c[0] - b[0] * c[2]) +
+		a[0] * (b[1] * c[2] - b[2] * c[1]));
+}
 
 // slove 3 vector linear system of equations v0 = x*v1 + y*v2 + z*v3 (if possible)
-bool SolveLSE (Vector v0, Vector v1, Vector v2, Vector v3, float * x, float * y, float * z)
+bool SolveLSE (const Vector& v0, const Vector& v1, const Vector& v2, const Vector& v3, float * x, float * y, float * z)
 {
-	float d = Determinant(v1,v2,v3);
+	const float d = Determinant(v1,v2,v3);
 
 	if (d==0.0f)
 		return false;
@@ -56,9 +59,20 @@ bool GetPointBetweenLines(Vector& p, Vector a1, Vector m1, Vector a2, Vector m2 
 }
 
 // Bernstein Poynom B(u) with n = 2, i = 0
-#define BernsteinPolynom20(u)	((1.0f-u)*(1.0f-u))
-#define BernsteinPolynom21(u)	(2.0f*u*(1.0f-u))
-#define BernsteinPolynom22(u)	(u*u)
+inline constexpr float BernsteinPolynom20(float u)
+{
+	return (1.0f - u) * (1.0f - u);
+}
+
+inline constexpr float BernsteinPolynom21(float u)
+{
+	return 2.0f * u * (1.0f - u);
+}
+
+inline constexpr float BernsteinPolynom22(float u)
+{
+	return u * u;
+}
 
 CInterpolation::CInterpolation()
 {
