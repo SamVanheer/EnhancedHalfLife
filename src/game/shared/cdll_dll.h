@@ -21,6 +21,8 @@
 *	this file is included by both the game-dll and the client-dll
 */
 
+constexpr int MAX_CLIENTS = 32;
+
 #define MAX_WEAPONS		32		// ???
 
 #define MAX_WEAPON_SLOTS		5	// hud item selection slots

@@ -90,8 +90,6 @@ struct hull_t
 // double to float warning
 #pragma warning(disable : 4244)
 
-#define MAX_CLIENTS 32
-
 static Vector rgv3tStuckTable[54];
 static int rgStuckLast[MAX_CLIENTS][2];
 

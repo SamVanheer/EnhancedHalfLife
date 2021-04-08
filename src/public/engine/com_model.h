@@ -16,7 +16,6 @@ struct surfcache_t;
 #define STUDIO_RENDER 1
 #define STUDIO_EVENTS 2
 
-#define MAX_CLIENTS			32
 #define	MAX_EDICTS			900
 
 #define MAX_MODEL_NAME		64
