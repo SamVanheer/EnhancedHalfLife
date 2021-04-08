@@ -36,27 +36,23 @@ static int pm_shared_initialized = 0;
 #pragma warning( disable : 4305 )
 
 // Ducking time
-#define TIME_TO_DUCK		0.4
-#define MAX_CLIMB_SPEED		200
-#define STUCK_MOVEUP		1
-#define STUCK_MOVEDOWN		-1
-#define	STOP_EPSILON		0.1
+constexpr double TIME_TO_DUCK = 0.4;
+constexpr int STUCK_MOVEUP = 1;
+constexpr int STUCK_MOVEDOWN = -1;
+constexpr double STOP_EPSILON = 0.1;
 
-
-#define STEP_CONCRETE	0		// default step sound
-#define STEP_METAL		1		// metal floor
-#define STEP_DIRT		2		// dirt, sand, rock
-#define STEP_VENT		3		// ventillation duct
-#define STEP_GRATE		4		// metal grating
-#define STEP_TILE		5		// floor tiles
-#define STEP_SLOSH		6		// shallow liquid puddle
-#define STEP_WADE		7		// wading in liquid
-#define STEP_LADDER		8		// climbing ladder
-
-
-#define PLAYER_LONGJUMP_SPEED 350 // how fast we longjump
-
-#define PLAYER_DUCKING_MULTIPLIER 0.333
+enum class StepType
+{
+	Concrete = 0,	//!< default step sound
+	Metal,			//!< metal floor
+	Dirt,			//!< dirt, sand, rock
+	Vent,			//!< ventillation duct
+	Grate,			//!< metal grating
+	Tile,			//!< floor tiles
+	Slosh,			//!< shallow liquid puddle
+	Wade,			//!< wading in liquid
+	Ladder			//!< climbing ladder
+};
 
 // double to float warning
 #pragma warning(disable : 4244)
@@ -208,7 +204,7 @@ char PM_FindTextureType( char *name )
 	return CHAR_TEX_CONCRETE;
 }
 
-void PM_PlayStepSound( int step, float fvol )
+void PM_PlayStepSound(StepType step, float fvol )
 {
 	static int iSkipStep = 0;
 	int irand;
@@ -240,7 +236,7 @@ void PM_PlayStepSound( int step, float fvol )
 	switch (step)
 	{
 	default:
-	case STEP_CONCRETE:
+	case StepType::Concrete:
 		switch (irand)
 		{
 		// right foot
@@ -251,7 +247,7 @@ void PM_PlayStepSound( int step, float fvol )
 		case 3:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_step4.wav", fvol, ATTN_NORM, 0, PITCH_NORM );	break;
 		}
 		break;
-	case STEP_METAL:
+	case StepType::Metal:
 		switch(irand)
 		{
 		// right foot
@@ -262,7 +258,7 @@ void PM_PlayStepSound( int step, float fvol )
 		case 3:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_metal4.wav", fvol, ATTN_NORM, 0, PITCH_NORM );	break;
 		}
 		break;
-	case STEP_DIRT:
+	case StepType::Dirt:
 		switch(irand)
 		{
 		// right foot
@@ -273,7 +269,7 @@ void PM_PlayStepSound( int step, float fvol )
 		case 3:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_dirt4.wav", fvol, ATTN_NORM, 0, PITCH_NORM );	break;
 		}
 		break;
-	case STEP_VENT:
+	case StepType::Vent:
 		switch(irand)
 		{
 		// right foot
@@ -284,7 +280,7 @@ void PM_PlayStepSound( int step, float fvol )
 		case 3:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_duct4.wav", fvol, ATTN_NORM, 0, PITCH_NORM );	break;
 		}
 		break;
-	case STEP_GRATE:
+	case StepType::Grate:
 		switch(irand)
 		{
 		// right foot
@@ -295,7 +291,7 @@ void PM_PlayStepSound( int step, float fvol )
 		case 3:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_grate4.wav", fvol, ATTN_NORM, 0, PITCH_NORM );	break;
 		}
 		break;
-	case STEP_TILE:
+	case StepType::Tile:
 		if ( !pmove->RandomLong(0,4) )
 			irand = 4;
 		switch(irand)
@@ -309,7 +305,7 @@ void PM_PlayStepSound( int step, float fvol )
 		case 4: pmove->PM_PlaySound( CHAN_BODY, "player/pl_tile5.wav", fvol, ATTN_NORM, 0, PITCH_NORM );	break;
 		}
 		break;
-	case STEP_SLOSH:
+	case StepType::Slosh:
 		switch(irand)
 		{
 		// right foot
@@ -320,7 +316,7 @@ void PM_PlayStepSound( int step, float fvol )
 		case 3:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_slosh4.wav", fvol, ATTN_NORM, 0, PITCH_NORM );	break;
 		}
 		break;
-	case STEP_WADE:
+	case StepType::Wade:
 		if ( iSkipStep == 0 )
 		{
 			iSkipStep++;
@@ -342,7 +338,7 @@ void PM_PlayStepSound( int step, float fvol )
 		case 3:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_wade4.wav", fvol, ATTN_NORM, 0, PITCH_NORM );	break;
 		}
 		break;
-	case STEP_LADDER:
+	case StepType::Ladder:
 		switch(irand)
 		{
 		// right foot
@@ -356,18 +352,18 @@ void PM_PlayStepSound( int step, float fvol )
 	}
 }	
 
-int PM_MapTextureTypeStepType(char chTextureType)
+StepType PM_MapTextureTypeStepType(char chTextureType)
 {
 	switch (chTextureType)
 	{
-		default:
-		case CHAR_TEX_CONCRETE:	return STEP_CONCRETE;	
-		case CHAR_TEX_METAL: return STEP_METAL;	
-		case CHAR_TEX_DIRT: return STEP_DIRT;	
-		case CHAR_TEX_VENT: return STEP_VENT;	
-		case CHAR_TEX_GRATE: return STEP_GRATE;	
-		case CHAR_TEX_TILE: return STEP_TILE;
-		case CHAR_TEX_SLOSH: return STEP_SLOSH;
+	default:
+	case CHAR_TEX_CONCRETE:	return StepType::Concrete;
+	case CHAR_TEX_METAL: return StepType::Metal;
+	case CHAR_TEX_DIRT: return StepType::Dirt;
+	case CHAR_TEX_VENT: return StepType::Vent;
+	case CHAR_TEX_GRATE: return StepType::Grate;
+	case CHAR_TEX_TILE: return StepType::Tile;
+	case CHAR_TEX_SLOSH: return StepType::Slosh;
 	}
 }
 
@@ -425,7 +421,7 @@ void PM_UpdateStepSound()
 	float velwalk;
 	float flduck;
 	int	fLadder;
-	int step;
+	StepType step;
 
 	if ( pmove->flTimeStepSound > 0 )
 		return;
@@ -475,19 +471,19 @@ void PM_UpdateStepSound()
 		// find out what we're stepping in or on...
 		if (fLadder)
 		{
-			step = STEP_LADDER;
+			step = StepType::Ladder;
 			fvol = 0.35;
 			pmove->flTimeStepSound = 350;
 		}
 		else if ( pmove->PM_PointContents ( knee, NULL ) == CONTENTS_WATER )
 		{
-			step = STEP_WADE;
+			step = StepType::Wade;
 			fvol = 0.65;
 			pmove->flTimeStepSound = 600;
 		}
 		else if ( pmove->PM_PointContents ( feet, NULL ) == CONTENTS_WATER )
 		{
-			step = STEP_SLOSH;
+			step = StepType::Slosh;
 			fvol = fWalking ? 0.2 : 0.5;
 			pmove->flTimeStepSound = fWalking ? 400 : 300;		
 		}
@@ -1543,7 +1539,7 @@ try nudging slightly on all axis to
 allow for the cut precision of the net coordinates
 =================
 */
-#define PM_CHECKSTUCK_MINTIME 0.05  // Don't check again too quickly.
+constexpr double PM_CHECKSTUCK_MINTIME = 0.05;  // Don't check again too quickly.
 
 int PM_CheckStuck ()
 {
@@ -2348,9 +2344,6 @@ void PM_NoClip()
 
 }
 
-// Only allow bunny jumping up to 1.7x server / player maxspeed setting
-#define BUNNYJUMP_MAX_SPEED_FACTOR 1.7f
-
 //-----------------------------------------------------------------------------
 // Purpose: Corrects bunny jumping ( where player initiates a bunny jump before other
 //  movement logic runs, thus making onground == -1 thus making PM_Friction get skipped and
@@ -2529,7 +2522,6 @@ void PM_Jump ()
 PM_CheckWaterJump
 =============
 */
-#define WJ_HEIGHT 8
 void PM_CheckWaterJump ()
 {
 	Vector	vecStart, vecEnd;
@@ -2566,7 +2558,7 @@ void PM_CheckWaterJump ()
 		return;
 
 	VectorCopy( pmove->origin, vecStart );
-	vecStart[2] += WJ_HEIGHT;
+	vecStart[2] += PLAYER_WATERJUMP_HEIGHT;
 
 	VectorMA ( vecStart, 24, flatforward, vecEnd );
 	
@@ -2576,7 +2568,7 @@ void PM_CheckWaterJump ()
 	tr = pmove->PM_PlayerTrace( vecStart, vecEnd, PM_NORMAL, -1 );
 	if ( tr.fraction < 1.0 && fabs( tr.plane.normal[2] ) < 0.1f )  // Facing a near vertical wall?
 	{
-		vecStart[2] += pmove->player_maxs[ savehull ][2] - WJ_HEIGHT;
+		vecStart[2] += pmove->player_maxs[ savehull ][2] - PLAYER_WATERJUMP_HEIGHT;
 		VectorMA( vecStart, 24, flatforward, vecEnd );
 		VectorMA(vec3_origin, -50, tr.plane.normal, pmove->movedir );
 

@@ -58,6 +58,14 @@ constexpr float DAMAGE_FOR_FALL_SPEED
 	= 100.0f / (PLAYER_FATAL_FALL_SPEED - PLAYER_MAX_SAFE_FALL_SPEED);	//!< damage per unit per second.
 constexpr int PLAYER_MIN_BOUNCE_SPEED = 200;
 constexpr float PLAYER_FALL_PUNCH_THRESHHOLD = 350; //!< won't punch player's screen/make scrape noise unless player falling at least this fast.
+
+constexpr int PLAYER_LONGJUMP_SPEED = 350;			//!< how fast we longjump
+constexpr double PLAYER_DUCKING_MULTIPLIER = 0.333;
+
+constexpr int PLAYER_WATERJUMP_HEIGHT = 8;			//!< how high the player jumps when exiting water
+
+constexpr float BUNNYJUMP_MAX_SPEED_FACTOR = 1.7f;	//!< Only allow bunny jumping up to 1.7x server / player maxspeed setting
+
 // used by suit voice to indicate damage sustained and repaired type to player
 
 // instant damage
