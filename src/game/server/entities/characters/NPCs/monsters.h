@@ -74,9 +74,6 @@ void UTIL_MoveToOrigin( edict_t* pent, const Vector &vecGoal, float flDist, int 
 Vector VecCheckToss ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, float flGravityAdj = 1.0 );
 Vector VecCheckThrow ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj = 1.0 );
 extern DLL_GLOBAL Vector		g_vecAttackDir;
-extern DLL_GLOBAL CONSTANT float g_flMeleeRange;
-extern DLL_GLOBAL CONSTANT float g_flMediumRange;
-extern DLL_GLOBAL CONSTANT float g_flLongRange;
 void EjectBrass (const Vector &vecOrigin, const Vector &vecVelocity, float rotation, int model, int soundtype );
 void ExplodeModel( const Vector &vecOrigin, float speed, int model, int count );
 

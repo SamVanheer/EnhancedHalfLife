@@ -81,19 +81,10 @@ constexpr bool FBitSet(const T& flBitVector, int bit)
 }
 
 // Makes these more explicit, and easier to find
-#define FILE_GLOBAL static
 #define DLL_GLOBAL
-
-// Until we figure out why "const" gives the compiler problems, we'll just have to use
-// this bogus "empty" define to mark things as constant.
-#define CONSTANT
 
 // More explicit than "int"
 typedef int EOFFSET;
-
-// Keeps clutter down a bit, when declaring external entity/global method prototypes
-#define DECLARE_GLOBAL_METHOD(MethodName)  extern void DLLEXPORT MethodName()
-#define GLOBAL_METHOD(funcname)					void DLLEXPORT funcname()
 
 // This is the glue that hooks .MAP entity class names to our CPP classes
 // The _declspec forces them to be exported by name so we can do a lookup with GetProcAddress()

@@ -1431,8 +1431,8 @@ void CChangeLevel :: ExecuteChangeLevel()
 }
 
 
-FILE_GLOBAL char st_szNextMap[cchMapNameMost];
-FILE_GLOBAL char st_szNextSpot[cchMapNameMost];
+static char st_szNextMap[cchMapNameMost];
+static char st_szNextSpot[cchMapNameMost];
 
 edict_t *CChangeLevel :: FindLandmark( const char *pLandmarkName )
 {
