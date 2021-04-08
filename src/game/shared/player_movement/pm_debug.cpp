@@ -27,8 +27,6 @@
 #pragma warning(disable : 4244)
 #pragma warning(disable : 4305)
 
-extern playermove_t *pmove;
-
 // Expand debugging BBOX particle hulls by this many units.
 #define BOX_GAP 0.0f               
 

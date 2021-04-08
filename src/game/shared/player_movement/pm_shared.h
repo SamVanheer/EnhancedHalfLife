@@ -33,6 +33,8 @@ int PM_GetPhysEntInfo(int ent);
 #define OBS_MAP_FREE			5
 #define OBS_MAP_CHASE			6
 
+inline playermove_t* pmove = nullptr;
+
 #ifdef CLIENT_DLL
 // Spectator Mode
 inline int		iJumpSpectator;

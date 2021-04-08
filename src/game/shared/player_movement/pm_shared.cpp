@@ -37,7 +37,6 @@ static int pm_shared_initialized = 0;
 //TODO: move this to a common header
 enum modtype_t {mod_brush, mod_sprite, mod_alias, mod_studio};
 
-playermove_t *pmove = NULL;
 
 struct dclipnode_t
 {
