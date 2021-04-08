@@ -70,8 +70,6 @@ using qboolean = int;
 
 #define DLLEXPORT __declspec( dllexport )
 #else // _WIN32
-typedef uint32 ULONG;
-typedef unsigned char BYTE;
 #define MAX_PATH PATH_MAX
 #include <limits.h>
 #include <stdarg.h>

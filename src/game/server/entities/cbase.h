@@ -203,8 +203,8 @@ public:
 	void EXPORT SUB_FadeOut ();
 	void EXPORT SUB_CallUseToggle() { this->Use( this, this, USE_TOGGLE, 0 ); }
 	bool		ShouldToggle( USE_TYPE useType, bool currentState );
-	void		FireBullets( ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL  );
-	Vector		FireBulletsPlayer( ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL, int shared_rand = 0 );
+	void		FireBullets(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL  );
+	Vector		FireBulletsPlayer(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL, int shared_rand = 0 );
 
 	virtual CBaseEntity *Respawn() { return NULL; }
 
@@ -372,8 +372,8 @@ struct locksound_t			// sounds that doors and buttons make when locked/unlocked
 
 	float	flwaitSound;			// time delay between playing consecutive 'locked/unlocked' sounds
 	float	flwaitSentence;			// time delay between playing consecutive sentences
-	BYTE	bEOFLocked;				// true if hit end of list of locked sentences
-	BYTE	bEOFUnlocked;			// true if hit end of list of unlocked sentences
+	byte	bEOFLocked;				// true if hit end of list of locked sentences
+	byte	bEOFUnlocked;			// true if hit end of list of unlocked sentences
 };
 
 void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton);
@@ -610,10 +610,10 @@ public:
 
 	locksound_t m_ls;			// door lock sounds
 	
-	BYTE	m_bLockedSound;		// ordinals from entity selection
-	BYTE	m_bLockedSentence;	
-	BYTE	m_bUnlockedSound;	
-	BYTE	m_bUnlockedSentence;
+	byte	m_bLockedSound;		// ordinals from entity selection
+	byte	m_bLockedSentence;	
+	byte	m_bUnlockedSound;	
+	byte	m_bUnlockedSentence;
 	int		m_sounds;
 };
 
@@ -644,10 +644,10 @@ template <class T> T * GetClassPtr( T *a )
 //TODO: used?
 struct SelAmmo
 {
-	BYTE	Ammo1Type;
-	BYTE	Ammo1;
-	BYTE	Ammo2Type;
-	BYTE	Ammo2;
+	byte	Ammo1Type;
+	byte	Ammo1;
+	byte	Ammo2Type;
+	byte	Ammo2;
 };
 
 

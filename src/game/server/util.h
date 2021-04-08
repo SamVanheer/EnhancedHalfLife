@@ -160,10 +160,10 @@ constexpr float VIEW_FIELD_NARROW = 0.7;		//!< +-45 degrees, more narrow check u
 constexpr float VIEW_FIELD_ULTRA_NARROW = 0.9;	//!< +-25 degrees, more narrow check used to set up ranged attacks
 
 // All monsters need this data
-constexpr BYTE DONT_BLEED = -1;
-constexpr BYTE BLOOD_COLOR_RED = (BYTE)247;
-constexpr BYTE BLOOD_COLOR_YELLOW = (BYTE)195;
-constexpr BYTE BLOOD_COLOR_GREEN = BLOOD_COLOR_YELLOW;
+constexpr byte DONT_BLEED = -1;
+constexpr byte BLOOD_COLOR_RED = (byte)247;
+constexpr byte BLOOD_COLOR_YELLOW = (byte)195;
+constexpr byte BLOOD_COLOR_GREEN = BLOOD_COLOR_YELLOW;
 
 enum MONSTERSTATE
 {
@@ -234,7 +234,7 @@ void			UTIL_MakeInvVectors		( const Vector &vec, globalvars_t *pgv );
 
 void			UTIL_SetOrigin			( entvars_t* pev, const Vector &vecOrigin );
 void			UTIL_EmitAmbientSound	( edict_t *entity, const Vector &vecOrigin, const char *samp, float vol, float attenuation, int fFlags, int pitch );
-void			UTIL_ParticleEffect		( const Vector &vecOrigin, const Vector &vecDirection, ULONG ulColor, ULONG ulCount );
+void			UTIL_ParticleEffect		( const Vector &vecOrigin, const Vector &vecDirection, uint32 ulColor, uint32 ulCount );
 void			UTIL_ScreenShake		( const Vector &center, float amplitude, float frequency, float duration, float radius );
 void			UTIL_ScreenShakeAll		( const Vector &center, float amplitude, float frequency, float duration );
 void			UTIL_ShowMessage		( const char *pString, CBaseEntity *pPlayer );

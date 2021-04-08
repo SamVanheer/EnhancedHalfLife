@@ -43,7 +43,7 @@
 
 // #define DUCKFIX
 
-extern DLL_GLOBAL ULONG		g_ulModelIndexPlayer;
+extern DLL_GLOBAL uint32	g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;
 extern DLL_GLOBAL	bool	g_fDrawLines;
 int gEvilImpulse101;
@@ -1319,7 +1319,7 @@ void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle )
 	// clear any clientside entities attached to this player
 	MESSAGE_BEGIN( MSG_PAS, SVC_TEMPENTITY, pev->origin );
 		WRITE_BYTE( TE_KILLPLAYERATTACHMENTS );
-		WRITE_BYTE( (BYTE)entindex() );
+		WRITE_BYTE( (byte)entindex() );
 	MESSAGE_END();
 
 	// Holster weapon immediately, to allow it to cleanup
@@ -1966,7 +1966,7 @@ void CBasePlayer::PreThink()
 void CBasePlayer::CheckTimeBasedDamage() 
 {
 	int i;
-	BYTE bDuration = 0;
+	byte bDuration = 0;
 
 	static float gtbdPrev = 0.0;
 
@@ -2130,8 +2130,6 @@ Things powered by the battery
 // if in range of radiation source, ping geiger counter
 void CBasePlayer :: UpdateGeigerCounter()
 {
-	BYTE range;
-
 	// delay per update ie: don't flood net with these msgs
 	if (gpGlobals->time < m_flgeigerDelay)
 		return;
@@ -2140,7 +2138,7 @@ void CBasePlayer :: UpdateGeigerCounter()
 		
 	// send range to radition source to client
 
-	range = (BYTE) (m_flgeigerRange / 4);
+	const byte range = (byte) (m_flgeigerRange / 4);
 
 	if (range != m_igeigerRangePrev)
 	{
