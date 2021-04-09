@@ -159,7 +159,7 @@ struct efx_api_t
 	particle_t *( *R_TracerParticles )			( float * org, float * vel, float life );
 	void		( *R_TeleportSplash )			( float * org );
 	void		( *R_TempSphereModel )			( float *pos, float speed, float life, int count, int modelIndex );
-	TEMPENTITY	*( *R_TempModel )				( float *pos, float *dir, float *angles, float life, int modelIndex, int soundtype );
+	TEMPENTITY	*( *R_TempModel )				( const float *pos, const float *dir, const float *angles, float life, int modelIndex, int soundtype );
 	TEMPENTITY	*( *R_DefaultSprite )			( float *pos, int spriteIndex, float framerate );
 	TEMPENTITY	*( *R_TempSprite )				( float *pos, const float *dir, float scale, int modelIndex, int rendermode, int renderfx, float a, float life, int flags );
 	int			( *Draw_DecalIndex )			( int id );
