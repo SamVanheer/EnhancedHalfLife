@@ -122,7 +122,7 @@ static byte *LoadFileByResolution( const char *filePrefix, int xRes, const char 
 
 	// try open the file
 	byte *pFile = nullptr;
-	while ( 1 )
+	while (true)
 	{
 
 		// try load

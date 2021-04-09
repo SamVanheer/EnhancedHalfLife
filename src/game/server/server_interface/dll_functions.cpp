@@ -289,7 +289,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 		if (globalEntity)
 		{
 			CRestore tmpRestore(pSaveData);
-			tmpRestore.PrecacheMode(0);
+			tmpRestore.PrecacheMode(false);
 			tmpRestore.ReadEntVars("ENTVARS", &tmpVars);
 
 			// HACKHACK - reset the save pointers, we're going to restore for real this time

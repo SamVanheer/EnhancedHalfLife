@@ -92,7 +92,7 @@ void AlertMessage( ALERT_TYPE atype, const char *szFmt, ... )
 //Mostly used by the client side weapons.
 bool bIsMultiplayer ()
 {
-	return gEngfuncs.GetMaxClients() == 1 ? 0 : 1;
+	return gEngfuncs.GetMaxClients() != 1;
 }
 //Just loads a v_ model.
 void LoadVModel ( const char *szViewModel, CBasePlayer *m_pPlayer )

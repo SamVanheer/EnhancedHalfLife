@@ -4133,7 +4133,7 @@ Vector CBasePlayer :: GetAutoaimVector( float flDelta )
 
 	// always use non-sticky autoaim
 	// UNDONE: use sever variable to chose!
-	if (1 || g_iSkillLevel == SKILL_MEDIUM)
+	if (true || g_iSkillLevel == SKILL_MEDIUM)
 	{
 		m_vecAutoAim = Vector( 0, 0, 0 );
 		// flDelta *= 0.5;
@@ -4144,7 +4144,7 @@ Vector CBasePlayer :: GetAutoaimVector( float flDelta )
 
 	// update ontarget if changed
 	if ( !g_pGameRules->AllowAutoTargetCrosshair() )
-		m_fOnTarget = 0;
+		m_fOnTarget = false;
 	else if (m_fOldTargeting != m_fOnTarget)
 	{
 		m_pActiveItem->UpdateItemInfo( );
@@ -4171,7 +4171,7 @@ Vector CBasePlayer :: GetAutoaimVector( float flDelta )
 
 	// always use non-sticky autoaim
 	// UNDONE: use sever variable to chose!
-	if (0 || g_iSkillLevel == SKILL_EASY)
+	if (false || g_iSkillLevel == SKILL_EASY)
 	{
 		m_vecAutoAim = m_vecAutoAim * 0.67 + angles * 0.33;
 	}

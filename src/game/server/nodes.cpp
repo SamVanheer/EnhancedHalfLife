@@ -167,7 +167,7 @@ entvars_t* CGraph :: LinkEntForLink ( CLink *pLink, CNode *pNode )
 			return pevLinkEnt;
 		}
 
-		while ( 1 )
+		while (true)
 		{
 			pentTrigger = FIND_ENTITY_BY_TARGET ( pentSearch, STRING( pevLinkEnt->targetname ) );// find the button or trigger
 

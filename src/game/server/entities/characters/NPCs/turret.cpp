@@ -1029,7 +1029,7 @@ int CBaseTurret::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, flo
 
 	if (pev->health <= 10)
 	{
-		if (m_iOn && (1 || RANDOM_LONG(0, 0x7FFF) > 800))
+		if (m_iOn && (true || RANDOM_LONG(0, 0x7FFF) > 800))
 		{
 			m_fBeserk = 1;
 			SetThink(&CBaseTurret::SearchThink);

@@ -496,7 +496,7 @@ void CRenderFxManager :: Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, US
 	if (!FStringNull(pev->target))
 	{
 		edict_t* pentTarget	= nullptr;
-		while ( 1 )
+		while (true)
 		{
 			pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
 			if (FNullEnt(pentTarget))

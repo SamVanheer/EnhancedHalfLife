@@ -46,7 +46,7 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname)
 
 bool CBasePlayerWeapon::CanDeploy()
 {
-	bool bHasAmmo = 0;
+	bool bHasAmmo = false;
 
 	if (!pszAmmo1())
 	{
@@ -64,7 +64,7 @@ bool CBasePlayerWeapon::CanDeploy()
 	}
 	if (m_iClip > 0)
 	{
-		bHasAmmo |= 1;
+		bHasAmmo |= true;
 	}
 	if (!bHasAmmo)
 	{

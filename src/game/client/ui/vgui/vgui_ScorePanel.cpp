@@ -369,7 +369,7 @@ void ScorePanel::SortTeams()
 	}
 
 	// Draw the teams
-	while ( 1 )
+	while (true)
 	{
 		int highest_frags = -99999; int lowest_deaths = 99999;
 		int best_team = 0;
@@ -416,7 +416,7 @@ void ScorePanel::SortPlayers(TeamType iTeam, char *team )
 	bool bCreatedTeam = false;
 
 	// draw the players, in order,  and restricted to team if set
-	while ( 1 )
+	while (true)
 	{
 		// Find the top ranking player
 		int highest_frags = -99999;	int lowest_deaths = 99999;

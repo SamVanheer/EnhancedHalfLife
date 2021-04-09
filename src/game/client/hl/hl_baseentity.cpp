@@ -128,7 +128,7 @@ int CBaseMonster :: IgnoreConditions () { return 0; }
 void CBaseMonster :: RouteClear () { }
 void CBaseMonster :: RouteNew () { }
 bool CBaseMonster :: FRouteClear () { return false; }
-bool CBaseMonster :: FRefreshRoute () { return 0; }
+bool CBaseMonster :: FRefreshRoute () { return false; }
 bool CBaseMonster::MoveToEnemy( Activity movementAct, float waitTime ) { return false; }
 bool CBaseMonster::MoveToLocation( Activity movementAct, float waitTime, const Vector &goal ) { return false; }
 bool CBaseMonster::MoveToTarget( Activity movementAct, float waitTime ) { return false; }
@@ -328,7 +328,7 @@ void CBasePlayerItem::Drop() { }
 void CBasePlayerItem::Kill() { }
 void CBasePlayerItem::Holster( int skiplocal ) { }
 void CBasePlayerItem::AttachToPlayer ( CBasePlayer *pPlayer ) { }
-bool CBasePlayerWeapon::AddDuplicate( CBasePlayerItem *pOriginal ) { return 0; }
+bool CBasePlayerWeapon::AddDuplicate( CBasePlayerItem *pOriginal ) { return false; }
 bool CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer ) { return false; }
 int CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer ) { return 0; }
 bool CBasePlayerWeapon :: AddPrimaryAmmo( int iCount, char *szName, int iMaxClip, int iMaxCarry ) { return true; }

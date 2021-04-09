@@ -1252,7 +1252,7 @@ skipwhite:
 	if (c == '\"')
 	{
 		data++;
-		while (1)
+		while (true)
 		{
 			c = *data++;
 			if (c=='\"' || !c)
@@ -1335,7 +1335,7 @@ int ReloadMapCycleFile( char *filename, mapcycle_t *cycle )
 	if ( pFileList && length )
 	{
 		// the first map name in the file becomes the default
-		while ( 1 )
+		while (true)
 		{
 			hasbuffer = 0;
 			memset( szBuffer, 0, MAX_RULE_BUFFER );
@@ -1484,7 +1484,7 @@ void ExtractCommandString( char *s, char *szCommand )
 	if ( *s == '\\' )
 		s++;
 
-	while (1)
+	while (true)
 	{
 		o = pkey;
 		while ( *s != '\\' )

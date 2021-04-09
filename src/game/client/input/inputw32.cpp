@@ -194,7 +194,7 @@ DWORD WINAPI MousePos_ThreadFunction( LPVOID p )
 {
 	s_hMouseDoneQuitEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
-	while ( 1 )
+	while (true)
 	{
 		if ( WaitForSingleObject( s_hMouseQuitEvent, (int)m_mousethread_sleep->value ) == WAIT_OBJECT_0 )
 		{

@@ -81,7 +81,7 @@ void CBaseSpectator::SpectatorImpulseCommand()
 		//  back around
 
 		bFound = false;
-		while (1)
+		while (true)
 		{
 			pCurrentGoal = FIND_ENTITY_BY_CLASSNAME(pCurrentGoal, "info_player_deathmatch");
 			// Looped around, failure

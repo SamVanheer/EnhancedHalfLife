@@ -361,14 +361,7 @@ void CIchthyosaur::CombatUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 	if ( !ShouldToggle( useType, m_bOnAttack ) )
 		return;
 
-	if (m_bOnAttack)
-	{
-		m_bOnAttack = 0;
-	}
-	else
-	{
-		m_bOnAttack = 1;
-	}
+	m_bOnAttack = !m_bOnAttack;
 }
 
 //=========================================================

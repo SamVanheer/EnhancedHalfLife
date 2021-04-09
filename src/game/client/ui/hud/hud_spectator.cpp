@@ -256,7 +256,7 @@ int UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 
 		// we parse the first { now parse entities properties
 		
-		while ( 1 )
+		while (true)
 		{	
 			// parse key
 			data = gEngfuncs.COM_ParseFile(data, token);
