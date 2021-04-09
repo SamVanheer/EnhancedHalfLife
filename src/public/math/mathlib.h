@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -48,80 +48,37 @@ struct mplane_t;
 
 constexpr Vector vec3_origin(0, 0, 0);
 constexpr Vector g_vecZero(0, 0, 0);
-extern	int nanmask;
+constexpr int nanmask = 255 << 23;
 
-#define	IS_NAN(x) (((*(int *)&x)&nanmask)==nanmask)
+template<typename T>
+constexpr bool IS_NAN(T x)
+{
+	return (*reinterpret_cast<int*>(&x) & nanmask) == nanmask;
+}
 
 #define VectorSubtract(a,b,c) {(c)[0]=(a)[0]-(b)[0];(c)[1]=(a)[1]-(b)[1];(c)[2]=(a)[2]-(b)[2];}
 #define VectorAdd(a,b,c) {(c)[0]=(a)[0]+(b)[0];(c)[1]=(a)[1]+(b)[1];(c)[2]=(a)[2]+(b)[2];}
 #define VectorCopy(a,b) {(b)[0]=(a)[0];(b)[1]=(a)[1];(b)[2]=(a)[2];}
-inline void VectorClear( float *a ) { a[ 0 ] = 0.0; a[ 1 ] = 0.0; a[ 2 ] = 0.0; }
+inline void VectorClear(float* a) { a[0] = 0.0; a[1] = 0.0; a[2] = 0.0; }
 
-void VectorMA (const float* veca, float scale, const float* vecb, float* vecc);
+void VectorMA(const float* veca, float scale, const float* vecb, float* vecc);
 
-bool VectorCompare (const float* v1, const float* v2);
-float Length (const float* v);
-void CrossProduct (const float* v1, const float* v2, float* cross);
-float VectorNormalize (float* v);		// returns vector length
-void VectorInverse (float* v);
-void VectorScale (const float* in, float scale, float* out);
+bool VectorCompare(const float* v1, const float* v2);
+float Length(const float* v);
+void CrossProduct(const float* v1, const float* v2, float* cross);
+float VectorNormalize(float* v);		// returns vector length
+void VectorInverse(float* v);
+void VectorScale(const float* in, float scale, float* out);
 int Q_log2(int val);
 
-void R_ConcatRotations (float in1[3][3], float in2[3][3], float out[3][3]);
-void R_ConcatTransforms (float in1[3][4], float in2[3][4], float out[3][4]); //TODO: probably the same as ConcatTransforms
+void R_ConcatRotations(float in1[3][3], float in2[3][3], float out[3][3]);
+void R_ConcatTransforms(float in1[3][4], float in2[3][4], float out[3][4]); //TODO: probably the same as ConcatTransforms
 
-// Here are some "manual" INLINE routines for doing floating point to integer conversions
-extern short new_cw, old_cw;
-
-union DLONG
-{
-	int		i[2];
-	double	d;
-	float	f;
-};
-
-extern DLONG	dlong;
-
-#ifdef _WIN32
-void __inline set_fpu_cw()
-{
-_asm	
-	{		wait
-			fnstcw	old_cw
-			wait
-			mov		ax, word ptr old_cw
-			or		ah, 0xc
-			mov		word ptr new_cw,ax
-			fldcw	new_cw
-	}
-}
-
-int __inline quick_ftol(float f)
-{
-	_asm {
-		// Assumes that we are already in chop mode, and only need a 32-bit int
-		fld		DWORD PTR f
-		fistp	DWORD PTR dlong
-	}
-	return dlong.i[0];
-}
-
-void __inline restore_fpu_cw()
-{
-	_asm	fldcw	old_cw
-}
-#else
-#define set_fpu_cw() /* */
-#define quick_ftol(f) ftol(f)
-#define restore_fpu_cw() /* */
-#endif
-
-void FloorDivMod (double numer, double denom, int *quotient,
-		int *rem);
+void FloorDivMod(double numer, double denom, int* quotient, int* rem);
 fixed16_t Invert24To16(fixed16_t val);
-int GreatestCommonDivisor (int i1, int i2);
+int GreatestCommonDivisor(int i1, int i2);
 
-void AngleVectors (const Vector& angles, Vector* forward, Vector* right, Vector* up);
+void AngleVectors(const Vector& angles, Vector* forward, Vector* right, Vector* up);
 
 /**
 *	@brief overload that takes all outputs by reference
@@ -131,13 +88,13 @@ inline void AngleVectors(const Vector& angles, Vector& forward, Vector& right, V
 	AngleVectors(angles, &forward, &right, &up);
 }
 
-void AngleVectorsTranspose (const Vector& angles, Vector* forward, Vector* right, Vector* up);
+void AngleVectorsTranspose(const Vector& angles, Vector* forward, Vector* right, Vector* up);
 
-void AngleMatrix (const float* angles, float (*matrix)[4] );
-void AngleIMatrix (const Vector& angles, float (*matrix)[4] );
-void VectorTransform (const float* in1, float in2[3][4], float* out);
+void AngleMatrix(const float* angles, float(*matrix)[4]);
+void AngleIMatrix(const Vector& angles, float(*matrix)[4]);
+void VectorTransform(const float* in1, float in2[3][4], float* out);
 
-void NormalizeAngles( float* angles );
+void NormalizeAngles(float* angles);
 
 /**
 *	@brief Interpolate Euler angles.
@@ -145,30 +102,30 @@ void NormalizeAngles( float* angles );
 *	FIXME:  Use Quaternions to avoid discontinuities
 *	Frac is 0.0 to 1.0 ( i.e., should probably be clamped, but doesn't have to be )
 */
-void InterpolateAngles( float* start, float* end, float* output, float frac );
+void InterpolateAngles(float* start, float* end, float* output, float frac);
 void SmoothInterpolateAngles(Vector& startAngle, Vector& endAngle, Vector& finalAngle, float degreesPerSec, float frametime);
-float AngleBetweenVectors( const Vector& v1, const Vector& v2 );
+float AngleBetweenVectors(const Vector& v1, const Vector& v2);
 
 
-void VectorMatrix( const Vector& forward, Vector& right, Vector& up);
-void VectorAngles( const float* forward, float* angles );
+void VectorMatrix(const Vector& forward, Vector& right, Vector& up);
+void VectorAngles(const float* forward, float* angles);
 
-int InvertMatrix( const float * m, float *out );
+int InvertMatrix(const float* m, float* out);
 
-int BoxOnPlaneSide (const Vector& emins, const Vector& emaxs, mplane_t *plane);
-float	anglemod(float a);
+int BoxOnPlaneSide(const Vector& emins, const Vector& emaxs, mplane_t* plane);
+float anglemod(float a);
 
 float Distance(const float* v1, const float* v2);
 
 void ConcatTransforms(float in1[3][4], float in2[3][4], float out[3][4]);
 
-void	AngleQuaternion(float* angles, vec4_t quaternion);
+void AngleQuaternion(float* angles, vec4_t quaternion);
 
-void	QuaternionSlerp(vec4_t p, vec4_t q, float t, vec4_t qt);
+void QuaternionSlerp(vec4_t p, vec4_t q, float t, vec4_t qt);
 
-void	QuaternionMatrix(vec4_t quaternion, float(*matrix)[4]);
+void QuaternionMatrix(vec4_t quaternion, float(*matrix)[4]);
 
-void	MatrixCopy(float in[3][4], float out[3][4]);
+void MatrixCopy(float in[3][4], float out[3][4]);
 
 float MaxAngleBetweenAngles(float* a1, float* a2);
 

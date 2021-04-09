@@ -17,8 +17,6 @@
 
 #pragma warning(disable : 4244)
 
-int nanmask = 255 << 23;
-
 void VectorMA(const float* veca, float scale, const float* vecb, float* vecc)
 {
 	vecc[0] = veca[0] + scale * vecb[0];
