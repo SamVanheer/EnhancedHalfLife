@@ -1009,28 +1009,36 @@ void PM_WalkMove ()
 	
 	trace = pmove->PM_PlayerTrace (pmove->origin, dest, PM_NORMAL, -1 );
 
+	bool useDown = false;
+
 	// If we are not on the ground any more then
 	//  use the original movement attempt
-	if ( trace.plane.normal[2] < 0.7)
-		goto usedown;
-	// If the trace ended up in empty space, copy the end
-	//  over to the origin.
-	if (!trace.startsolid && !trace.allsolid)
+	if (trace.plane.normal[2] < 0.7)
 	{
-		pmove->origin = trace.endpos;
+		useDown = true;
 	}
-	// Copy this origion to up.
-	pmove->up = pmove->origin;
-
-	// decide which one went farther
-	const float downdist = (down[0] - original[0]) * (down[0] - original[0])
-		     + (down[1] - original[1]) * (down[1] - original[1]);
-	const float updist = (pmove->up[0] - original[0]) * (pmove->up[0] - original[0])
-		     + (pmove->up[1] - original[1]) * (pmove->up[1] - original[1]);
-
-	if (downdist > updist)
+	else
 	{
-usedown:
+		// If the trace ended up in empty space, copy the end
+		//  over to the origin.
+		if (!trace.startsolid && !trace.allsolid)
+		{
+			pmove->origin = trace.endpos;
+		}
+		// Copy this origion to up.
+		pmove->up = pmove->origin;
+
+		// decide which one went farther
+		const float downdist = (down[0] - original[0]) * (down[0] - original[0])
+			+ (down[1] - original[1]) * (down[1] - original[1]);
+		const float updist = (pmove->up[0] - original[0]) * (pmove->up[0] - original[0])
+			+ (pmove->up[1] - original[1]) * (pmove->up[1] - original[1]);
+
+		useDown = downdist > updist;
+	}
+
+	if (useDown)
+	{
 		pmove->origin = down;
 		pmove->velocity = downvel;
 	}
