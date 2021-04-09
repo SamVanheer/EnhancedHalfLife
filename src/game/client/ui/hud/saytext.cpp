@@ -41,7 +41,7 @@ static int line_height = 0;
 
 DECLARE_MESSAGE( m_SayText, SayText );
 
-int CHudSayText :: Init()
+bool CHudSayText :: Init()
 {
 	gHUD.AddHudElem( this );
 
@@ -54,7 +54,7 @@ int CHudSayText :: Init()
 
 	m_iFlags |= HUD_INTERMISSION; // is always drawn during an intermission
 
-	return 1;
+	return true;
 }
 
 
@@ -65,9 +65,9 @@ void CHudSayText :: InitHUDData()
 	memset( g_iNameLengths, 0, sizeof g_iNameLengths );
 }
 
-int CHudSayText :: VidInit()
+bool CHudSayText :: VidInit()
 {
-	return 1;
+	return true;
 }
 
 
@@ -89,12 +89,12 @@ int ScrollTextUp()
 	return 1;
 }
 
-int CHudSayText :: Draw( float flTime )
+bool CHudSayText :: Draw( float flTime )
 {
 	int y = Y_START;
 
 	if ( ( gViewPort && gViewPort->AllowedToPrintText() == false) || !m_HUD_saytext->value )
-		return 1;
+		return true;
 
 	// make sure the scrolltime is within reasonable bounds,  to guard against the clock being reset
 	flScrollTime = V_min( flScrollTime, flTime + m_HUD_saytext_time->value );
@@ -153,17 +153,17 @@ int CHudSayText :: Draw( float flTime )
 		y += line_height;
 	}
 
-	return 1;
+	return true;
 }
 
-int CHudSayText :: MsgFunc_SayText( const char *pszName, int iSize, void *pbuf )
+bool CHudSayText :: MsgFunc_SayText( const char *pszName, int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 
 	int client_index = READ_BYTE();		// the client who spoke the message
 	SayTextPrint( READ_STRING(), iSize - 1,  client_index );
 	
-	return 1;
+	return true;
 }
 
 void CHudSayText :: SayTextPrint( const char *pszBuf, int iBufSize, int clientIndex )

@@ -25,8 +25,8 @@ public:
 	void KeyValue( KeyValueData* pkvd ) override;
 	float GetDelay() override { return m_flWait; }
 //	void Touch( CBaseEntity *pOther ) override;
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 

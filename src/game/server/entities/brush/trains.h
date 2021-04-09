@@ -56,8 +56,8 @@ public:
 	CPathTrack	*GetNext();
 	CPathTrack	*GetPrevious();
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 #if PATH_SPARKLE_DEBUG
@@ -98,8 +98,8 @@ public:
 	
 	static CFuncTrackTrain *Instance( edict_t *pent );
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 	int	ObjectCaps() override { return (CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DIRECTIONAL_USE; }

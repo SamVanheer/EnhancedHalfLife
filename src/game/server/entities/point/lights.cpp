@@ -32,8 +32,8 @@ public:
 	void	Spawn() override;
 	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 

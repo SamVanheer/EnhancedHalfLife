@@ -61,28 +61,28 @@ HUD_GetHullBounds
 */
 int DLLEXPORT HUD_GetHullBounds( int hullnumber, float *mins, float *maxs )
 {
-	int iret = 0;
+	bool ret = false;
 
 	switch (hullnumber)
 	{
 	case 0:				// Normal player
 		memcpy(mins, &VEC_HULL_MIN, sizeof(VEC_HULL_MIN));
 		memcpy(maxs, &VEC_HULL_MAX, sizeof(VEC_HULL_MAX));
-		iret = 1;
+		ret = true;
 		break;
 	case 1:				// Crouched player
 		memcpy(mins, &VEC_DUCK_HULL_MIN, sizeof(VEC_DUCK_HULL_MIN));
 		memcpy(maxs, &VEC_DUCK_HULL_MAX, sizeof(VEC_DUCK_HULL_MAX));
-		iret = 1;
+		ret = true;
 		break;
 	case 2:				// Point based hull
 		memcpy(mins, &g_vecZero, sizeof(g_vecZero));
 		memcpy(maxs, &g_vecZero, sizeof(g_vecZero));
-		iret = 1;
+		ret = true;
 		break;
 	}
 
-	return iret;
+	return ret;
 }
 
 /*
@@ -104,7 +104,7 @@ int	DLLEXPORT HUD_ConnectionlessPacket( const netadr_t *net_from, const char *ar
 
 	// Since we don't listen for anything here, just respond that it's a bogus message
 	// If we didn't reject the message, we'd return 1 for success instead.
-	return 0;
+	return false;
 }
 
 void DLLEXPORT HUD_PlayerMoveInit( playermove_t* ppmove )
@@ -127,7 +127,7 @@ int DLLEXPORT Initialize( cl_enginefunc_t *pEnginefuncs, int iVersion )
 	gEngfuncs = *pEnginefuncs;
 
 	if (iVersion != CLDLL_INTERFACE_VERSION)
-		return 0;
+		return false;
 
 	memcpy(&gEngfuncs, pEnginefuncs, sizeof(cl_enginefunc_t));
 
@@ -135,7 +135,7 @@ int DLLEXPORT Initialize( cl_enginefunc_t *pEnginefuncs, int iVersion )
 	CL_LoadParticleMan();
 
 	// get tracker interface, if any
-	return 1;
+	return true;
 }
 
 
@@ -155,7 +155,7 @@ int DLLEXPORT HUD_VidInit()
 
 	VGui_Startup();
 
-	return 1;
+	return true;
 }
 
 /*
@@ -189,7 +189,7 @@ int DLLEXPORT HUD_Redraw( float time, int intermission )
 {
 	gHUD.Redraw( time, intermission );
 
-	return 1;
+	return true;
 }
 
 

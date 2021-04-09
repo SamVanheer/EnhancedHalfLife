@@ -90,7 +90,7 @@ public:
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	bool CheckRangeAttack1 ( float flDot, float flDist ) override;
 	bool CheckRangeAttack2 ( float flDot, float flDist ) override;
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 
 	virtual float GetDamageAmount() { return gSkillData.headcrabDmgBite; }
 	virtual int GetVoicePitch() { return 100; }
@@ -424,7 +424,7 @@ bool CHeadCrab :: CheckRangeAttack2 ( float flDot, float flDist )
 #endif
 }
 
-int CHeadCrab :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CHeadCrab :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	// Don't take any acid damage -- BigMomma's mortar is acid
 	if ( bitsDamageType & DMG_ACID )

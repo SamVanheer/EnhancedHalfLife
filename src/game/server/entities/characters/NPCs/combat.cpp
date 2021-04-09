@@ -800,10 +800,10 @@ void CGib :: Spawn( const char *szGibModel )
 }
 
 // take health
-int CBaseMonster :: TakeHealth (float flHealth, int bitsDamageType)
+bool CBaseMonster :: TakeHealth (float flHealth, int bitsDamageType)
 {
 	if (!pev->takedamage)
-		return 0;
+		return false;
 
 	// clear out any damage types we healed.
 	// UNDONE: generic health should not heal any
@@ -830,13 +830,13 @@ When a monster is poisoned via an arrow etc it takes all the poison damage at on
 GLOBALS ASSUMED SET:  g_iSkillLevel
 ============
 */
-int CBaseMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CBaseMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	float	flTake;
 	Vector	vecDir;
 
 	if (!pev->takedamage)
-		return 0;
+		return false;
 
 	if ( !IsAlive() )
 	{
@@ -880,7 +880,7 @@ int CBaseMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker,
 		// check for godmode or invincibility
 		if ( pev->flags & FL_GODMODE )
 		{
-			return 0;
+			return false;
 		}
 	}
 
@@ -898,7 +898,7 @@ int CBaseMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker,
 	if ( m_MonsterState == MONSTERSTATE_SCRIPT )
 	{
 		SetConditions( bits_COND_LIGHT_DAMAGE );
-		return 0;
+		return false;
 	}
 
 	if ( pev->health <= 0 )
@@ -920,7 +920,7 @@ int CBaseMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker,
 
 		g_pevLastInflictor = nullptr;
 
-		return 0;
+		return false;
 	}
 
 	// react to the damage (get mad)
@@ -959,14 +959,14 @@ int CBaseMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker,
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 //=========================================================
 // DeadTakeDamage - takedamage function called when a monster's
 // corpse is damaged.
 //=========================================================
-int CBaseMonster :: DeadTakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CBaseMonster :: DeadTakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	Vector			vecDir;
 
@@ -1002,13 +1002,13 @@ int CBaseMonster :: DeadTakeDamage( entvars_t *pevInflictor, entvars_t *pevAttac
 		{
 			pev->health = -50;
 			Killed( pevAttacker, GIB_ALWAYS );
-			return 0;
+			return false;
 		}
 		// Accumulate corpse gibbing damage, so you can gib with multiple hits
 		pev->health -= flDamage * 0.1;
 	}
 	
-	return 1;
+	return true;
 }
 
 

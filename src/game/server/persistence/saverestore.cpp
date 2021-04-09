@@ -534,14 +534,14 @@ void EntvarsKeyvalue(entvars_t* pev, KeyValueData* pkvd)
 
 
 
-int CSave::WriteEntVars(const char* pname, entvars_t* pev)
+bool CSave::WriteEntVars(const char* pname, entvars_t* pev)
 {
 	return WriteFields(pname, pev, gEntvarsDescription, ENTVARS_COUNT);
 }
 
 
 
-int CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount)
+bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount)
 {
 	int				i, j, actualCount, emptyCount;
 	TYPEDESCRIPTION* pTest;
@@ -650,7 +650,7 @@ int CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFie
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 
@@ -663,14 +663,14 @@ void CSave::BufferString(char* pdata, int len)
 }
 
 
-int CSave::DataEmpty(const char* pdata, int size)
+bool CSave::DataEmpty(const char* pdata, int size)
 {
 	for (int i = 0; i < size; i++)
 	{
 		if (pdata[i])
-			return 0;
+			return false;
 	}
-	return 1;
+	return true;
 }
 
 
@@ -901,13 +901,13 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 }
 
 
-int CRestore::ReadEntVars(const char* pname, entvars_t* pev)
+bool CRestore::ReadEntVars(const char* pname, entvars_t* pev)
 {
 	return ReadFields(pname, pev, gEntvarsDescription, ENTVARS_COUNT);
 }
 
 
-int CRestore::ReadFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount)
+bool CRestore::ReadFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount)
 {
 	unsigned short	i, token;
 	int		lastField, fileCount;
@@ -923,7 +923,7 @@ int CRestore::ReadFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pF
 	{
 		//		ALERT( at_error, "Expected %s found %s!\n", pname, BufferPointer() );
 		BufferRewind(2 * sizeof(short));
-		return 0;
+		return false;
 	}
 
 	// Skip over the struct name
@@ -946,7 +946,7 @@ int CRestore::ReadFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pF
 		lastField++;
 	}
 
-	return 1;
+	return true;
 }
 
 
@@ -1055,17 +1055,17 @@ int CRestore::BufferSkipZString()
 	return len;
 }
 
-int	CRestore::BufferCheckZString(const char* string)
+bool CRestore::BufferCheckZString(const char* string)
 {
 	if (!m_pdata)
-		return 0;
+		return false;
 
 	int maxLen = m_pdata->bufferSize - m_pdata->size;
 	int len = strlen(string);
 	if (len <= maxLen)
 	{
 		if (!strncmp(string, m_pdata->pCurrentData, len))
-			return 1;
+			return true;
 	}
-	return 0;
+	return false;
 }

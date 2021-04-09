@@ -1295,7 +1295,7 @@ COM_TokenWaiting
 Returns 1 if additional data is waiting to be processed on this line
 ==============
 */
-int COM_TokenWaiting( char *buffer )
+bool COM_TokenWaiting( char *buffer )
 {
 	char *p;
 
@@ -1303,12 +1303,12 @@ int COM_TokenWaiting( char *buffer )
 	while ( *p && *p!='\n')
 	{
 		if ( !isspace( *p ) || isalnum( *p ) )
-			return 1;
+			return true;
 
 		p++;
 	}
 
-	return 0;
+	return false;
 }
 
 
@@ -1321,7 +1321,7 @@ ReloadMapCycleFile
 Parses mapcycle.txt file into mapcycle_t structure
 ==============
 */
-int ReloadMapCycleFile( char *filename, mapcycle_t *cycle )
+bool ReloadMapCycleFile( char *filename, mapcycle_t *cycle )
 {
 	char szBuffer[ MAX_RULE_BUFFER ];
 	char szMap[ 32 ];
@@ -1426,7 +1426,7 @@ int ReloadMapCycleFile( char *filename, mapcycle_t *cycle )
 	// Didn't parse anything
 	if ( !item )
 	{
-		return 0;
+		return false;
 	}
 
 	while ( item->next )
@@ -1437,7 +1437,7 @@ int ReloadMapCycleFile( char *filename, mapcycle_t *cycle )
 	
 	cycle->next_item = item->next;
 
-	return 1;
+	return true;
 }
 
 /*

@@ -25,31 +25,31 @@ extern DLL_GLOBAL Vector		g_vecAttackDir;
 extern DLL_GLOBAL int			g_iSkillLevel;
 
 // give health
-int CBaseEntity :: TakeHealth( float flHealth, int bitsDamageType )
+bool CBaseEntity :: TakeHealth( float flHealth, int bitsDamageType )
 {
 	if (!pev->takedamage)
-		return 0;
+		return false;
 
 // heal
 	if ( pev->health >= pev->max_health )
-		return 0;
+		return false;
 
 	pev->health += flHealth;
 
 	if (pev->health > pev->max_health)
 		pev->health = pev->max_health;
 
-	return 1;
+	return true;
 }
 
 // inflict damage on this entity.  bitsDamageType indicates type of damage inflicted, ie: DMG_CRUSH
 
-int CBaseEntity :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+bool CBaseEntity :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	Vector			vecTemp;
 
 	if (!pev->takedamage)
-		return 0;
+		return false;
 
 	// UNDONE: some entity types may be immune or resistant to some bitsDamageType
 	
@@ -88,10 +88,10 @@ int CBaseEntity :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, 
 	if (pev->health <= 0)
 	{
 		Killed( pevAttacker, GIB_NORMAL );
-		return 0;
+		return false;
 	}
 
-	return 1;
+	return true;
 }
 
 
@@ -126,19 +126,17 @@ TYPEDESCRIPTION	CBaseEntity::m_SaveData[] =
 };
 
 
-int CBaseEntity::Save( CSave &save )
+bool CBaseEntity::Save( CSave &save )
 {
 	if ( save.WriteEntVars( "ENTVARS", pev ) )
 		return save.WriteFields( "BASE", this, m_SaveData, ARRAYSIZE(m_SaveData) );
 
-	return 0;
+	return false;
 }
 
-int CBaseEntity::Restore( CRestore &restore )
+bool CBaseEntity::Restore( CRestore &restore )
 {
-	int status;
-
-	status = restore.ReadEntVars( "ENTVARS", pev );
+	bool status = restore.ReadEntVars( "ENTVARS", pev );
 	if ( status )
 		status = restore.ReadFields( "BASE", this, m_SaveData, ARRAYSIZE(m_SaveData) );
 
@@ -163,7 +161,7 @@ void CBaseEntity::SetObjectCollisionBox()
 }
 
 
-int	CBaseEntity :: Intersects( CBaseEntity *pOther )
+bool CBaseEntity :: Intersects( CBaseEntity *pOther )
 {
 	if ( pOther->pev->absmin.x > pev->absmax.x ||
 		 pOther->pev->absmin.y > pev->absmax.y ||
@@ -171,8 +169,8 @@ int	CBaseEntity :: Intersects( CBaseEntity *pOther )
 		 pOther->pev->absmax.x < pev->absmin.x ||
 		 pOther->pev->absmax.y < pev->absmin.y ||
 		 pOther->pev->absmax.z < pev->absmin.z )
-		 return 0;
-	return 1;
+		 return false;
+	return true;
 }
 
 void CBaseEntity :: MakeDormant()
@@ -191,7 +189,7 @@ void CBaseEntity :: MakeDormant()
 	UTIL_SetOrigin( pev, pev->origin );
 }
 
-int CBaseEntity :: IsDormant()
+bool CBaseEntity :: IsDormant()
 {
 	return FBitSet( pev->flags, FL_DORMANT );
 }

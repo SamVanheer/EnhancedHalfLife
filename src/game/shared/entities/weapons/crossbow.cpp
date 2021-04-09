@@ -261,7 +261,7 @@ void CCrossbow::Precache()
 }
 
 
-int CCrossbow::GetItemInfo(ItemInfo *p)
+bool CCrossbow::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "bolts";
@@ -274,7 +274,7 @@ int CCrossbow::GetItemInfo(ItemInfo *p)
 	p->iId = WEAPON_CROSSBOW;
 	p->iFlags = 0;
 	p->iWeight = CROSSBOW_WEIGHT;
-	return 1;
+	return true;
 }
 
 

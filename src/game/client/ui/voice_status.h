@@ -81,12 +81,12 @@ public:
 public:
 	
 	// Initialize the cl_dll's voice manager.
-	virtual int Init(
+	virtual bool Init(
 		IVoiceStatusHelper *m_pHelper,
 		vgui::Panel **pParentPanel);
 	
 	// ackPosition is the bottom position of where CVoiceStatus will draw the voice acknowledgement labels.
-	virtual int VidInit();
+	bool VidInit() override;
 
 
 public:

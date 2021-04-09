@@ -259,7 +259,7 @@ constexpr int AMMO_LARGE_WIDTH = 20;
 
 #define HISTORY_DRAW_TIME	"5"
 
-int CHudAmmo::Init()
+bool CHudAmmo::Init()
 {
 	gHUD.AddHudElem(this);
 
@@ -295,7 +295,7 @@ int CHudAmmo::Init()
 	gWR.Init();
 	gHR.Init();
 
-	return 1;
+	return true;
 };
 
 void CHudAmmo::Reset()
@@ -310,7 +310,7 @@ void CHudAmmo::Reset()
 	gHR.Reset();
 }
 
-int CHudAmmo::VidInit()
+bool CHudAmmo::VidInit()
 {
 	// Load sprites for buckets (top row of weapon menu)
 	m_HUD_bucket0 = gHUD.GetSpriteIndex( "bucket1" );
@@ -336,7 +336,7 @@ int CHudAmmo::VidInit()
 		giABHeight = 2;
 	}
 
-	return 1;
+	return true;
 }
 
 //
@@ -483,7 +483,7 @@ void WeaponsResource :: SelectSlot( int iSlot, int fAdvance, int iDirection )
 //
 // AmmoX  -- Update the count of a known type of ammo
 // 
-int CHudAmmo::MsgFunc_AmmoX(const char *pszName, int iSize, void *pbuf)
+bool CHudAmmo::MsgFunc_AmmoX(const char *pszName, int iSize, void *pbuf)
 {
 	BEGIN_READ( pbuf, iSize );
 
@@ -492,10 +492,10 @@ int CHudAmmo::MsgFunc_AmmoX(const char *pszName, int iSize, void *pbuf)
 
 	gWR.SetAmmo( iIndex, abs(iCount) );
 
-	return 1;
+	return true;
 }
 
-int CHudAmmo::MsgFunc_AmmoPickup( const char *pszName, int iSize, void *pbuf )
+bool CHudAmmo::MsgFunc_AmmoPickup( const char *pszName, int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 	int iIndex = READ_BYTE();
@@ -504,10 +504,10 @@ int CHudAmmo::MsgFunc_AmmoPickup( const char *pszName, int iSize, void *pbuf )
 	// Add ammo to the history
 	gHR.AddToHistory( HISTSLOT_AMMO, iIndex, abs(iCount) );
 
-	return 1;
+	return true;
 }
 
-int CHudAmmo::MsgFunc_WeapPickup( const char *pszName, int iSize, void *pbuf )
+bool CHudAmmo::MsgFunc_WeapPickup( const char *pszName, int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 	int iIndex = READ_BYTE();
@@ -515,10 +515,10 @@ int CHudAmmo::MsgFunc_WeapPickup( const char *pszName, int iSize, void *pbuf )
 	// Add the weapon to the history
 	gHR.AddToHistory( HISTSLOT_WEAP, iIndex );
 
-	return 1;
+	return true;
 }
 
-int CHudAmmo::MsgFunc_ItemPickup( const char *pszName, int iSize, void *pbuf )
+bool CHudAmmo::MsgFunc_ItemPickup( const char *pszName, int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 	const char *szName = READ_STRING();
@@ -526,18 +526,18 @@ int CHudAmmo::MsgFunc_ItemPickup( const char *pszName, int iSize, void *pbuf )
 	// Add the weapon to the history
 	gHR.AddToHistory( HISTSLOT_ITEM, szName );
 
-	return 1;
+	return true;
 }
 
 
-int CHudAmmo::MsgFunc_HideWeapon( const char *pszName, int iSize, void *pbuf )
+bool CHudAmmo::MsgFunc_HideWeapon( const char *pszName, int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 	
 	gHUD.m_iHideHUDDisplay = READ_BYTE();
 
 	if (gEngfuncs.IsSpectateOnly())
-		return 1;
+		return true;
 
 	if ( gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL ) )
 	{
@@ -551,7 +551,7 @@ int CHudAmmo::MsgFunc_HideWeapon( const char *pszName, int iSize, void *pbuf )
 			SetCrosshair( m_pWeapon->hCrosshair, m_pWeapon->rcCrosshair, 255, 255, 255 );
 	}
 
-	return 1;
+	return true;
 }
 
 // 
@@ -559,7 +559,7 @@ int CHudAmmo::MsgFunc_HideWeapon( const char *pszName, int iSize, void *pbuf )
 //  counts are updated with AmmoX. Server assures that the Weapon ammo type 
 //  numbers match a real ammo type.
 //
-int CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
+bool CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
 {
 	static wrect_t nullrc;
 	bool fOnTarget = false;
@@ -580,7 +580,7 @@ int CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
 	{
 		SetCrosshair(0, nullrc, 0, 0, 0);
 		m_pWeapon = nullptr;
-		return 0;
+		return false;
 	}
 
 	if ( g_iUser1 != OBS_IN_EYE )
@@ -590,7 +590,7 @@ int CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
 		{
 			gHUD.m_fPlayerDead = true;
 			gpActiveSel = nullptr;
-			return 1;
+			return true;
 		}
 		gHUD.m_fPlayerDead = false;
 	}
@@ -598,7 +598,7 @@ int CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
 	WEAPON *pWeapon = gWR.GetWeapon( iId );
 
 	if ( !pWeapon )
-		return 0;
+		return false;
 
 	if ( iClip < -1 )
 		pWeapon->iClip = abs(iClip);
@@ -607,7 +607,7 @@ int CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
 
 
 	if ( iState == 0 )	// we're not the current weapon, so update no more
-		return 1;
+		return true;
 
 	m_pWeapon = pWeapon;
 
@@ -630,13 +630,13 @@ int CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
 	m_fFade = 200.0f; //!!!
 	m_iFlags |= HUD_ACTIVE;
 	
-	return 1;
+	return true;
 }
 
 //
 // WeaponList -- Tells the hud about a new weapon type.
 //
-int CHudAmmo::MsgFunc_WeaponList(const char *pszName, int iSize, void *pbuf )
+bool CHudAmmo::MsgFunc_WeaponList(const char *pszName, int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 	
@@ -662,7 +662,7 @@ int CHudAmmo::MsgFunc_WeaponList(const char *pszName, int iSize, void *pbuf )
 
 	gWR.AddWeapon( &Weapon );
 
-	return 1;
+	return true;
 
 }
 
@@ -829,16 +829,16 @@ void CHudAmmo::UserCmd_PrevWeapon()
 // Drawing code
 //-------------------------------------------------------------------------
 
-int CHudAmmo::Draw(float flTime)
+bool CHudAmmo::Draw(float flTime)
 {
 	int a, x, y, r, g, b;
 	int AmmoWidth;
 
 	if (!(gHUD.m_iWeaponBits & (1<<(WEAPON_SUIT)) ))
-		return 1;
+		return true;
 
 	if ( (gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL )) )
-		return 1;
+		return true;
 
 	// Draw Weapon Menu
 	DrawWList(flTime);
@@ -847,16 +847,16 @@ int CHudAmmo::Draw(float flTime)
 	gHR.DrawAmmoHistory( flTime );
 
 	if (!(m_iFlags & HUD_ACTIVE))
-		return 0;
+		return false;
 
 	if (!m_pWeapon)
-		return 0;
+		return false;
 
 	WEAPON *pw = m_pWeapon; // shorthand
 
 	// SPR_Draw Ammo
 	if ((pw->iAmmoType < 0) && (pw->iAmmo2Type < 0))
-		return 0;
+		return false;
 
 
 	int iFlags = DHN_DRAWZERO; // draw 0 values
@@ -941,7 +941,7 @@ int CHudAmmo::Draw(float flTime)
 			SPR_DrawAdditive(0, x, y - iOffset, &m_pWeapon->rcAmmo2);
 		}
 	}
-	return 1;
+	return true;
 }
 
 
@@ -1013,12 +1013,12 @@ void DrawAmmoBar(WEAPON *p, int x, int y, int width, int height)
 //
 // Draw Weapon Menu
 //
-int CHudAmmo::DrawWList(float flTime)
+bool CHudAmmo::DrawWList(float flTime)
 {
 	int r,g,b,x,y,a,i;
 
 	if ( !gpActiveSel )
-		return 0;
+		return false;
 
 	int iActiveSlot;
 
@@ -1169,7 +1169,7 @@ int CHudAmmo::DrawWList(float flTime)
 		}
 	}	
 
-	return 1;
+	return true;
 
 }
 

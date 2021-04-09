@@ -564,7 +564,7 @@ public:
 	void UpdateHighlights( void );
 	void UpdateSpectatorPanel( void );
 
-	int	 KeyInput( int down, int keynum, const char *pszCurrentBinding );
+	bool KeyInput( int down, int keynum, const char *pszCurrentBinding );
 	void InputPlayerSpecial( void );
 	void GetAllPlayersInfo( void );
 	void DeathMsg( int killer, int victim );
@@ -600,22 +600,22 @@ public:
 	int GetAllowSpectators() { return m_iAllowSpectators; };
 
 	// Message Handlers
-	int MsgFunc_ValClass(const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_TeamNames(const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_Feign(const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_Detpack(const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_VGUIMenu(const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_MOTD( const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_BuildSt( const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_RandomPC( const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_ServerName( const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_ScoreInfo( const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_TeamScore( const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_TeamInfo( const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_Spectator( const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_AllowSpec( const char *pszName, int iSize, void *pbuf );
-	int MsgFunc_SpecFade( const char *pszName, int iSize, void *pbuf );	
-	int MsgFunc_ResetFade( const char *pszName, int iSize, void *pbuf );	
+	bool MsgFunc_ValClass(const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_TeamNames(const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_Feign(const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_Detpack(const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_VGUIMenu(const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_MOTD( const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_BuildSt( const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_RandomPC( const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_ServerName( const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_ScoreInfo( const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_TeamScore( const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_TeamInfo( const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_Spectator( const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_AllowSpec( const char *pszName, int iSize, void *pbuf );
+	bool MsgFunc_SpecFade( const char *pszName, int iSize, void *pbuf );	
+	bool MsgFunc_ResetFade( const char *pszName, int iSize, void *pbuf );	
 
 	// Input
 	bool SlotInput( int iSlot );

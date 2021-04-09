@@ -218,7 +218,7 @@ void CSatchel::Precache()
 }
 
 
-int CSatchel::GetItemInfo(ItemInfo *p)
+bool CSatchel::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "Satchel Charge";
@@ -232,7 +232,7 @@ int CSatchel::GetItemInfo(ItemInfo *p)
 	p->iId = m_iId = WEAPON_SATCHEL;
 	p->iWeight = SATCHEL_WEIGHT;
 
-	return 1;
+	return true;
 }
 
 //=========================================================

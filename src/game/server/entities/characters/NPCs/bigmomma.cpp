@@ -40,8 +40,8 @@ public:
 	// Reach delay in pev->speed
 	// Reach sequence in pev->netname
 	
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int		m_preSequence;
@@ -104,8 +104,8 @@ public:
 	void Touch( CBaseEntity *pOther ) override;
 	void EXPORT Animate();
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int  m_maxFrame;
@@ -175,7 +175,7 @@ public:
 	void Precache() override;
 	void KeyValue( KeyValueData *pkvd ) override;
 	void Activate() override;
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 
 	void		RunTask( Task_t *pTask ) override;
 	void		StartTask( Task_t *pTask ) override;
@@ -285,8 +285,8 @@ public:
 	bool CheckMeleeAttack2( float flDot, float flDist ) override;	// Lay a crab
 	bool CheckRangeAttack1( float flDot, float flDist ) override;	// Mortar launch
 
-	int	Save( CSave &save ) override;
-	int	Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	static const char *pChildDieSounds[];
@@ -576,7 +576,7 @@ void CBigMomma :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector ve
 }
 
 
-int CBigMomma :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CBigMomma :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	// Don't take any acid damage -- BigMomma's mortar is acid
 	if ( bitsDamageType & DMG_ACID )

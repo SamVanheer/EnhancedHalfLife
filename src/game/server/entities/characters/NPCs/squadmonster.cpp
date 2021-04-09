@@ -382,16 +382,14 @@ int CSquadMonster :: SquadRecruit( int searchRadius, int maxMembers )
 //=========================================================
 // CheckEnemy
 //=========================================================
-int CSquadMonster :: CheckEnemy ( CBaseEntity *pEnemy )
+bool CSquadMonster :: CheckEnemy ( CBaseEntity *pEnemy )
 {
-	int iUpdatedLKP;
-
-	iUpdatedLKP = CBaseMonster :: CheckEnemy ( m_hEnemy );
+	const bool updatedLKP = CBaseMonster :: CheckEnemy ( m_hEnemy );
 	
 	// communicate with squad members about the enemy IF this individual has the same enemy as the squad leader.
 	if ( InSquad() && (CBaseEntity *)m_hEnemy == MySquadLeader()->m_hEnemy )
 	{
-		if ( iUpdatedLKP )
+		if ( updatedLKP )
 		{
 			// have new enemy information, so paste to the squad.
 			SquadPasteEnemyInfo();
@@ -403,7 +401,7 @@ int CSquadMonster :: CheckEnemy ( CBaseEntity *pEnemy )
 		}
 	}
 
-	return iUpdatedLKP;
+	return updatedLKP;
 }
 
 //=========================================================

@@ -282,7 +282,7 @@ void CBasePlayer :: DeathSound()
 // override takehealth
 // bitsDamageType indicates type of damage healed. 
 
-int CBasePlayer :: TakeHealth( float flHealth, int bitsDamageType )
+bool CBasePlayer :: TakeHealth( float flHealth, int bitsDamageType )
 {
 	return CBaseMonster :: TakeHealth (flHealth, bitsDamageType);
 
@@ -345,14 +345,13 @@ void CBasePlayer :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector 
 	type will cause the damage time countdown to be reset.  Thus the ongoing effects of poison, radiation
 	etc are implemented with subsequent calls to TakeDamage using DMG_GENERIC.
 */
-int CBasePlayer :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CBasePlayer :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	// have suit diagnose the problem - ie: report damage type
 	int bitsDamage = bitsDamageType;
 	int ffound = true;
 	int fmajor;
 	int fcritical;
-	int fTookDamage;
 	int ftrivial;
 	float flRatio;
 	float flBonus;
@@ -369,7 +368,7 @@ int CBasePlayer :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, 
 
 	// Already dead
 	if ( !IsAlive() )
-		return 0;
+		return false;
 	// go take the damage first
 
 	
@@ -378,7 +377,7 @@ int CBasePlayer :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, 
 	if ( !g_pGameRules->FPlayerCanTakeDamage( this, pAttacker ) )
 	{
 		// Refuse the damage
-		return 0;
+		return false;
 	}
 
 	// keep track of amount of damage last sustained
@@ -409,7 +408,7 @@ int CBasePlayer :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, 
 
 	// this cast to INT is critical!!! If a player ends up with 0.5 health, the engine will get that
 	// as an int (zero) and think the player is dead! (this will incite a clientside screentilt, etc)
-	fTookDamage = CBaseMonster::TakeDamage(pevInflictor, pevAttacker, (int)flDamage, bitsDamageType);
+	const bool fTookDamage = CBaseMonster::TakeDamage(pevInflictor, pevAttacker, (int)flDamage, bitsDamageType);
 
 	// reset damage time countdown for each type of time based damage player just sustained
 
@@ -2874,10 +2873,10 @@ void CBasePlayer :: Precache()
 }
 
 
-int CBasePlayer::Save( CSave &save )
+bool CBasePlayer::Save( CSave &save )
 {
 	if ( !CBaseMonster::Save(save) )
-		return 0;
+		return false;
 
 	return save.WriteFields( "PLAYER", this, m_playerSaveData, ARRAYSIZE(m_playerSaveData) );
 }
@@ -2892,12 +2891,12 @@ void CBasePlayer::RenewItems()
 }
 
 
-int CBasePlayer::Restore( CRestore &restore )
+bool CBasePlayer::Restore( CRestore &restore )
 {
 	if ( !CBaseMonster::Restore(restore) )
-		return 0;
+		return false;
 
-	int status = restore.ReadFields( "PLAYER", this, m_playerSaveData, ARRAYSIZE(m_playerSaveData) );
+	bool status = restore.ReadFields( "PLAYER", this, m_playerSaveData, ARRAYSIZE(m_playerSaveData) );
 
 	SAVERESTOREDATA *pSaveData = (SAVERESTOREDATA *)gpGlobals->pSaveData;
 	// landmark isn't present.
@@ -4646,8 +4645,8 @@ public:
 	void	EXPORT LoadThink();
 	void	KeyValue( KeyValueData *pkvd ) override;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	inline	float	Duration() { return pev->dmg_take; }

@@ -42,8 +42,8 @@ public:
 	void		Spawn() override;
 	void		KeyValue( KeyValueData *pkvd ) override;
 	void EXPORT	ChangeFriction( CBaseEntity *pOther );
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	int	ObjectCaps() override { return CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
@@ -109,8 +109,8 @@ public:
 	void Think() override;
 
 	int ObjectCaps() override { return CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -191,8 +191,8 @@ public:
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 
 	int ObjectCaps() override { return CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -272,8 +272,8 @@ public:
 	
 	int ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -1332,11 +1332,11 @@ public:
 
 	static edict_t *FindLandmark( const char *pLandmarkName );
 	static int ChangeList( LEVELLIST *pLevelList, int maxList );
-	static int AddTransitionToList( LEVELLIST *pLevelList, int listCount, const char *pMapName, const char *pLandmarkName, edict_t *pentLandmark );
-	static int InTransitionVolume( CBaseEntity *pEntity, char *pVolumeName );
+	static bool AddTransitionToList( LEVELLIST *pLevelList, int listCount, const char *pMapName, const char *pLandmarkName, edict_t *pentLandmark );
+	static bool InTransitionVolume( CBaseEntity *pEntity, char *pVolumeName );
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -1531,24 +1531,24 @@ void CChangeLevel :: TouchChangeLevel( CBaseEntity *pOther )
 
 // Add a transition to the list, but ignore duplicates 
 // (a designer may have placed multiple trigger_changelevels with the same landmark)
-int CChangeLevel::AddTransitionToList( LEVELLIST *pLevelList, int listCount, const char *pMapName, const char *pLandmarkName, edict_t *pentLandmark )
+bool CChangeLevel::AddTransitionToList( LEVELLIST *pLevelList, int listCount, const char *pMapName, const char *pLandmarkName, edict_t *pentLandmark )
 {
 	int i;
 
 	if ( !pLevelList || !pMapName || !pLandmarkName || !pentLandmark )
-		return 0;
+		return false;
 
 	for ( i = 0; i < listCount; i++ )
 	{
 		if ( pLevelList[i].pentLandmark == pentLandmark && strcmp( pLevelList[i].mapName, pMapName ) == 0 )
-			return 0;
+			return false;
 	}
 	strcpy( pLevelList[listCount].mapName, pMapName );
 	strcpy( pLevelList[listCount].landmarkName, pLandmarkName );
 	pLevelList[listCount].pentLandmark = pentLandmark;
 	pLevelList[listCount].vecLandmarkOrigin = VARS(pentLandmark)->origin;
 
-	return 1;
+	return true;
 }
 
 int BuildChangeList( LEVELLIST *pLevelList, int maxList )
@@ -1557,13 +1557,13 @@ int BuildChangeList( LEVELLIST *pLevelList, int maxList )
 }
 
 
-int CChangeLevel::InTransitionVolume( CBaseEntity *pEntity, char *pVolumeName )
+bool CChangeLevel::InTransitionVolume( CBaseEntity *pEntity, char *pVolumeName )
 {
 	edict_t	*pentVolume;
 
 
 	if ( pEntity->ObjectCaps() & FCAP_FORCE_TRANSITION )
-		return 1;
+		return true;
 
 	// If you're following another entity, follow it through the transition (weapons follow the player)
 	if ( pEntity->pev->movetype == MOVETYPE_FOLLOW )
@@ -1572,7 +1572,7 @@ int CChangeLevel::InTransitionVolume( CBaseEntity *pEntity, char *pVolumeName )
 			pEntity = CBaseEntity::Instance( pEntity->pev->aiment );
 	}
 
-	int inVolume = 1;	// Unless we find a trigger_transition, everything is in the volume
+	bool inVolume = true;	// Unless we find a trigger_transition, everything is in the volume
 
 	pentVolume = FIND_ENTITY_BY_TARGETNAME( nullptr, pVolumeName );
 	while ( !FNullEnt( pentVolume ) )
@@ -1582,9 +1582,9 @@ int CChangeLevel::InTransitionVolume( CBaseEntity *pEntity, char *pVolumeName )
 		if ( pVolume && FClassnameIs( pVolume->pev, "trigger_transition" ) )
 		{
 			if ( pVolume->Intersects( pEntity ) )	// It touches one, it's in the volume
-				return 1;
+				return true;
 			else
-				inVolume = 0;	// Found a trigger_transition, but I don't intersect it -- if I don't find another, don't go!
+				inVolume = false;	// Found a trigger_transition, but I don't intersect it -- if I don't find another, don't go!
 		}
 		pentVolume = FIND_ENTITY_BY_TARGETNAME( pentVolume, pVolumeName );
 	}
@@ -2083,8 +2083,8 @@ public:
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 
 	int ObjectCaps() override { return CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -2147,8 +2147,8 @@ public:
 	void EXPORT FollowTarget();
 	void Move();
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	int	ObjectCaps() override { return CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	static	TYPEDESCRIPTION m_SaveData[];
 

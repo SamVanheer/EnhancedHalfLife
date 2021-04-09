@@ -24,13 +24,13 @@
 
 
 
-int ExtractBbox( void *pmodel, int sequence, float *mins, float *maxs )
+bool ExtractBbox( void *pmodel, int sequence, float *mins, float *maxs )
 {
 	studiohdr_t *pstudiohdr;
 	
 	pstudiohdr = (studiohdr_t *)pmodel;
 	if (! pstudiohdr)
-		return 0;
+		return false;
 
 	mstudioseqdesc_t	*pseqdesc;
 
@@ -44,7 +44,7 @@ int ExtractBbox( void *pmodel, int sequence, float *mins, float *maxs )
 	maxs[1] = pseqdesc[ sequence ].bbmax[1];
 	maxs[2] = pseqdesc[ sequence ].bbmax[2];
 
-	return 1;
+	return true;
 }
 
 
@@ -142,11 +142,11 @@ int LookupSequence( void *pmodel, const char *label )
 }
 
 
-int IsSoundEvent( int eventNumber )
+bool IsSoundEvent( int eventNumber )
 {
 	if ( eventNumber == SCRIPT_EVENT_SOUND || eventNumber == SCRIPT_EVENT_SOUND_VOICE )
-		return 1;
-	return 0;
+		return true;
+	return false;
 }
 
 

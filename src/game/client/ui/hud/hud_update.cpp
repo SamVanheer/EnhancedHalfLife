@@ -25,7 +25,7 @@ extern float v_idlescale;
 float in_fov;
 void HUD_SetCmdBits( int bits );
 
-int CHud::UpdateClientData(client_data_t *cdata, float time)
+bool CHud::UpdateClientData(client_data_t *cdata, float time)
 {
 	memcpy(m_vecOrigin, cdata->origin, sizeof(Vector));
 	memcpy(m_vecAngles, cdata->viewangles, sizeof(Vector));
@@ -43,8 +43,8 @@ int CHud::UpdateClientData(client_data_t *cdata, float time)
 
 	CL_ResetButtonBits( m_iKeyBits );
 
-	// return 1 if in anything in the client_data struct has been changed, 0 otherwise
-	return 1;
+	// return true if in anything in the client_data struct has been changed, 0 otherwise
+	return true;
 }
 
 

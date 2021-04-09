@@ -240,7 +240,7 @@ int CBaseAnimating :: GetBodygroup( int iGroup )
 }
 
 
-int CBaseAnimating :: ExtractBbox( int sequence, float *mins, float *maxs )
+bool CBaseAnimating :: ExtractBbox( int sequence, float *mins, float *maxs )
 {
 	return ::ExtractBbox( GET_MODEL_PTR( ENT(pev) ), sequence, mins, maxs );
 }

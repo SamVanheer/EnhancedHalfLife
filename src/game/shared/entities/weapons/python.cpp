@@ -25,7 +25,7 @@
 LINK_ENTITY_TO_CLASS( weapon_python, CPython );
 LINK_ENTITY_TO_CLASS( weapon_357, CPython );
 
-int CPython::GetItemInfo(ItemInfo *p)
+bool CPython::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "357";
@@ -39,7 +39,7 @@ int CPython::GetItemInfo(ItemInfo *p)
 	p->iId = m_iId = WEAPON_PYTHON;
 	p->iWeight = PYTHON_WEIGHT;
 
-	return 1;
+	return true;
 }
 
 bool CPython::AddToPlayer( CBasePlayer *pPlayer )

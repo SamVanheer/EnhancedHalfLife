@@ -27,7 +27,7 @@ DECLARE_MESSAGE(m_Flash, Flashlight)
 
 #define BAT_NAME "sprites/%d_Flashlight.spr"
 
-int CHudFlashlight::Init()
+bool CHudFlashlight::Init()
 {
 	m_fFade = 0;
 	m_fOn = 0;
@@ -39,7 +39,7 @@ int CHudFlashlight::Init()
 
 	gHUD.AddHudElem(this);
 
-	return 1;
+	return true;
 };
 
 void CHudFlashlight::Reset()
@@ -48,7 +48,7 @@ void CHudFlashlight::Reset()
 	m_fOn = 0;
 }
 
-int CHudFlashlight::VidInit()
+bool CHudFlashlight::VidInit()
 {
 	int HUD_flash_empty = gHUD.GetSpriteIndex( "flash_empty" );
 	int HUD_flash_full = gHUD.GetSpriteIndex( "flash_full" );
@@ -62,10 +62,10 @@ int CHudFlashlight::VidInit()
 	m_prcBeam = &gHUD.GetSpriteRect(HUD_flash_beam);
 	m_iWidth = m_prc2->right - m_prc2->left;
 
-	return 1;
+	return true;
 };
 
-int CHudFlashlight:: MsgFunc_FlashBat(const char *pszName,  int iSize, void *pbuf )
+bool CHudFlashlight:: MsgFunc_FlashBat(const char *pszName,  int iSize, void *pbuf )
 {
 
 	
@@ -74,10 +74,10 @@ int CHudFlashlight:: MsgFunc_FlashBat(const char *pszName,  int iSize, void *pbu
 	m_iBat = x;
 	m_flBat = ((float)x)/100.0;
 
-	return 1;
+	return true;
 }
 
-int CHudFlashlight:: MsgFunc_Flashlight(const char *pszName,  int iSize, void *pbuf )
+bool CHudFlashlight:: MsgFunc_Flashlight(const char *pszName,  int iSize, void *pbuf )
 {
 
 	BEGIN_READ( pbuf, iSize );
@@ -86,19 +86,19 @@ int CHudFlashlight:: MsgFunc_Flashlight(const char *pszName,  int iSize, void *p
 	m_iBat = x;
 	m_flBat = ((float)x)/100.0;
 
-	return 1;
+	return true;
 }
 
-int CHudFlashlight::Draw(float flTime)
+bool CHudFlashlight::Draw(float flTime)
 {
 	if ( gHUD.m_iHideHUDDisplay & ( HIDEHUD_FLASHLIGHT | HIDEHUD_ALL ) )
-		return 1;
+		return true;
 
 	int r, g, b, x, y, a;
 	wrect_t rc;
 
 	if (!(gHUD.m_iWeaponBits & (1<<(WEAPON_SUIT)) ))
-		return 1;
+		return true;
 
 	if (m_fOn)
 		a = 225;
@@ -140,5 +140,5 @@ int CHudFlashlight::Draw(float flTime)
 	}
 
 
-	return 1;
+	return true;
 }

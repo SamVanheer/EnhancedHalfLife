@@ -251,7 +251,7 @@ void			UTIL_TraceModel			(const Vector &vecStart, const Vector &vecEnd, int hull
 Vector		UTIL_GetAimVector		(edict_t* pent, float flSpeed);
 int			UTIL_PointContents		(const Vector &vec);
 
-int			UTIL_IsMasterTriggered	(string_t sMaster, CBaseEntity *pActivator);
+bool UTIL_IsMasterTriggered	(string_t sMaster, CBaseEntity *pActivator);
 void			UTIL_BloodStream( const Vector &origin, const Vector &direction, int color, int amount );
 void			UTIL_BloodDrips( const Vector &origin, const Vector &direction, int color, int amount );
 Vector		UTIL_RandomBloodVector();

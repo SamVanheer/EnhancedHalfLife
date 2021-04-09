@@ -111,8 +111,8 @@ public:
 	virtual void	Spawn() {}
 	virtual void	Precache() {}
 	virtual void	KeyValue( KeyValueData* pkvd) { pkvd->fHandled = false; }
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	virtual int		ObjectCaps() { return FCAP_ACROSS_TRANSITION; }
 	virtual void	Activate() {}
 	
@@ -128,8 +128,8 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	virtual void	TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
-	virtual int		TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
-	virtual int		TakeHealth( float flHealth, int bitsDamageType );
+	virtual bool	TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
+	virtual bool	TakeHealth( float flHealth, int bitsDamageType );
 	virtual void	Killed( entvars_t *pevAttacker, int iGib );
 	virtual int		BloodColor() { return DONT_BLEED; }
 	virtual void	TraceBleed( float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
@@ -143,7 +143,7 @@ public:
 	virtual bool	RemovePlayerItem( CBasePlayerItem *pItem ) { return false; }
 	virtual int 	GiveAmmo( int iAmount, const char *szName, int iMax ) { return -1; }
 	virtual float	GetDelay() { return 0; }
-	virtual int		IsMoving() { return pev->velocity != g_vecZero; }
+	virtual bool	IsMoving() { return pev->velocity != g_vecZero; }
 	virtual void	OverrideReset() {}
 	virtual int		DamageDecal( int bitsDamageType );
 	// This is ONLY used by the node graph to test movement through a door
@@ -210,9 +210,9 @@ public:
 
 	void SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, float value );
 	// Do the bounding boxes of these two intersect?
-	int		Intersects( CBaseEntity *pOther );
+	bool	Intersects( CBaseEntity *pOther );
 	void	MakeDormant();
-	int		IsDormant();
+	bool	IsDormant();
 	bool    IsLockedByMaster() { return false; }
 
 	static CBaseEntity *Instance( edict_t *pent )
@@ -400,8 +400,8 @@ public:
 	int	ObjectCaps() override { return (CPointEntity::ObjectCaps() | FCAP_MASTER); }
 	bool IsTriggered( CBaseEntity *pActivator ) override;
 	void EXPORT Register();
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save( CSave &save ) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -423,8 +423,8 @@ public:
 	int			m_iszKillTarget;
 
 	void	KeyValue( KeyValueData* pkvd) override;
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save( CSave &save ) override;
+	bool Restore( CRestore &restore ) override;
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 	// common member functions
@@ -436,8 +436,8 @@ public:
 class CBaseAnimating : public CBaseDelay
 {
 public:
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save( CSave &save ) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -459,7 +459,7 @@ public:
 	void GetAttachment ( int iAttachment, Vector &origin, Vector &angles );
 	void SetBodygroup( int iGroup, int iValue );
 	int GetBodygroup( int iGroup );
-	int ExtractBbox( int sequence, float *mins, float *maxs );
+	bool ExtractBbox( int sequence, float *mins, float *maxs );
 	void SetSequenceBox();
 
 	// animation needs
@@ -503,8 +503,8 @@ public:
 
 	int					m_bitsDamageInflict;	// DMG_ damage type that the door or tigger does
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save( CSave &save ) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -596,9 +596,9 @@ public:
 	void EXPORT ButtonReturn();
 	void EXPORT ButtonBackHome();
 	void EXPORT ButtonUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	int		TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool Save( CSave &save ) override;
+	bool Restore( CRestore &restore ) override;
 	
 	enum BUTTON_CODE { BUTTON_NOTHING, BUTTON_ACTIVATE, BUTTON_RETURN };
 	BUTTON_CODE	ButtonResponseToTouch();

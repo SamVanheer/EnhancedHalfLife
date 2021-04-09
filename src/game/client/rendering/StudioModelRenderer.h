@@ -21,8 +21,8 @@ public:
 
 public:  
 	// Public Interfaces
-	virtual int StudioDrawModel ( int flags );
-	virtual int StudioDrawPlayer ( int flags, entity_state_t* pplayer );
+	virtual bool StudioDrawModel ( int flags );
+	virtual bool StudioDrawPlayer ( int flags, entity_state_t* pplayer );
 
 public:
 	// Local interfaces

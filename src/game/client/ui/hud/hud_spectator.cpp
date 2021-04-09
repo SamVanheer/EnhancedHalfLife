@@ -152,7 +152,7 @@ void ToggleScores()
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-int CHudSpectator::Init()
+bool CHudSpectator::Init()
 {
 	gHUD.AddHudElem(this);
 
@@ -183,10 +183,10 @@ int CHudSpectator::Init()
 	if ( !m_drawnames || !m_drawcone || !m_drawstatus || !m_autoDirector || !m_pip)
 	{
 		gEngfuncs.Con_Printf("ERROR! Couldn't register all spectator variables.\n");
-		return 0;
+		return false;
 	}
 
-	return 1;
+	return true;
 }
 
 
@@ -221,7 +221,7 @@ void UTIL_StringToVector( float * pVector, const char *pString )
 	}
 }
 
-int UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
+bool UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 {
 	int				n,found = 0;
 	char			keyname[256];
@@ -229,9 +229,9 @@ int UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 
 	cl_entity_t *	pEnt = gEngfuncs.GetEntityByIndex( 0 );	// get world model
 
-	if ( !pEnt ) return 0;
+	if ( !pEnt ) return false;
 
-	if ( !pEnt->model )	return 0;
+	if ( !pEnt->model )	return false;
 
 	char * data = pEnt->model->entities;
 
@@ -245,13 +245,13 @@ int UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 		if (!data)
 		{
 			gEngfuncs.Con_DPrintf("UTIL_FindEntityInMap: EOF without closing brace\n");
-			return 0;
+			return false;
 		}
 
 		if (token[0] != '{')
 		{
 			gEngfuncs.Con_DPrintf("UTIL_FindEntityInMap: expected {\n");
-			return 0;
+			return false;
 		}
 
 		// we parse the first { now parse entities properties
@@ -266,7 +266,7 @@ int UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 			if (!data)
 			{	
 				gEngfuncs.Con_DPrintf("UTIL_FindEntityInMap: EOF without closing brace\n");
-				return 0;
+				return false;
 			}
 
             strcpy (keyname, token);
@@ -284,13 +284,13 @@ int UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 			if (!data)
 			{	
 				gEngfuncs.Con_DPrintf("UTIL_FindEntityInMap: EOF without closing brace\n");
-				return 0;
+				return false;
 			}
 
             if (token[0] == '}')
 			{
 				gEngfuncs.Con_DPrintf("UTIL_FindEntityInMap: closing brace without data");
-				return 0;
+				return false;
 			}
 
 			if (!strcmp(keyname,"classname"))
@@ -337,11 +337,11 @@ int UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
         } // while (1)
 
 		if (found)
-			return 1;
+			return true;
 
 	}
 
-	return 0;	// we search all entities, but didn't found the correct
+	return false;	// we search all entities, but didn't found the correct
 
 }
 
@@ -556,7 +556,7 @@ bool CHudSpectator::GetDirectorCamera(Vector&position, Vector&angle)
 //-----------------------------------------------------------------------------
 // Purpose: Loads new icons
 //-----------------------------------------------------------------------------
-int CHudSpectator::VidInit()
+bool CHudSpectator::VidInit()
 {
 	m_hsprPlayer		= SPR_Load("sprites/iplayer.spr");
 	m_hsprPlayerBlue	= SPR_Load("sprites/iplayerblue.spr");
@@ -574,7 +574,7 @@ int CHudSpectator::VidInit()
 	iJumpSpectator	= false;
 	g_iUser1 = g_iUser2 = 0;
 	
-	return 1;
+	return true;
 }
 
 float CHudSpectator::GetFOV()
@@ -587,7 +587,7 @@ float CHudSpectator::GetFOV()
 // Input  : flTime - 
 //			intermission - 
 //-----------------------------------------------------------------------------
-int CHudSpectator::Draw(float flTime)
+bool CHudSpectator::Draw(float flTime)
 {
 	int lx;
 
@@ -595,7 +595,7 @@ int CHudSpectator::Draw(float flTime)
 
 	// draw only in spectator mode
 	if ( !g_iUser1  )
-		return 0;
+		return false;
 
 	// if user pressed zoom, aplly changes
 	if ( (m_zoomDelta != 0.0f) && (	g_iUser1 == OBS_MAP_FREE ) )
@@ -623,10 +623,10 @@ int CHudSpectator::Draw(float flTime)
 	
 	// Only draw the icon names only if map mode is in Main Mode
 	if ( g_iUser1 < OBS_MAP_FREE  ) 
-		return 1;
+		return true;
 	
 	if ( !m_drawnames->value )
-		return 1;
+		return true;
 	
 	// make sure we have player info
 	gViewPort->GetAllPlayersInfo();
@@ -661,7 +661,7 @@ int CHudSpectator::Draw(float flTime)
 		
 	}
 
-	return 1;
+	return true;
 }
 
 

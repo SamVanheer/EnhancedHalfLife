@@ -43,7 +43,7 @@ IMPLEMENT_SAVERESTORE( CHornet, CBaseMonster );
 //=========================================================
 // don't let hornets gib, ever.
 //=========================================================
-int CHornet :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CHornet :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	// filter these bits a little.
 	bitsDamageType &= ~ ( DMG_ALWAYSGIB );

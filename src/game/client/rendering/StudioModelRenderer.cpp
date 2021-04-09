@@ -1149,7 +1149,7 @@ StudioDrawModel
 
 ====================
 */
-int CStudioModelRenderer::StudioDrawModel( int flags )
+bool CStudioModelRenderer::StudioDrawModel( int flags )
 {
 	alight_t lighting;
 	Vector dir;
@@ -1163,11 +1163,10 @@ int CStudioModelRenderer::StudioDrawModel( int flags )
 	{
 		entity_state_t deadplayer;
 
-		int result;
 		int save_interp;
 
 		if (m_pCurrentEntity->curstate.renderamt <= 0 || m_pCurrentEntity->curstate.renderamt > gEngfuncs.GetMaxClients() )
-			return 0;
+			return false;
 
 		// get copy of player
 		deadplayer = *(IEngineStudio.GetPlayerState( m_pCurrentEntity->curstate.renderamt - 1 )); //cl.frames[cl.parsecount & CL_UPDATE_MASK].playerstate[m_pCurrentEntity->curstate.renderamt-1];
@@ -1185,7 +1184,7 @@ int CStudioModelRenderer::StudioDrawModel( int flags )
 		m_fDoInterp = 0;
 		
 		// draw as though it were a player
-		result = StudioDrawPlayer( flags, &deadplayer );
+		const bool result = StudioDrawPlayer( flags, &deadplayer );
 		
 		m_fDoInterp = save_interp;
 		return result;
@@ -1202,13 +1201,13 @@ int CStudioModelRenderer::StudioDrawModel( int flags )
 	{
 		// see if the bounding box lets us trivially reject, also sets
 		if (!IEngineStudio.StudioCheckBBox ())
-			return 0;
+			return false;
 
 		(*m_pModelsDrawn)++;
 		(*m_pStudioModelCount)++; // render data cache cookie
 
 		if (m_pStudioHeader->numbodyparts == 0)
-			return 1;
+			return true;
 	}
 
 	if (m_pCurrentEntity->curstate.movetype == MOVETYPE_FOLLOW)
@@ -1330,7 +1329,7 @@ int CStudioModelRenderer::StudioDrawModel( int flags )
 		StudioRenderModel( );
 	}
 
-	return 1;
+	return true;
 }
 
 /*
@@ -1652,7 +1651,7 @@ StudioDrawPlayer
 
 ====================
 */
-int CStudioModelRenderer::StudioDrawPlayer( int flags, entity_state_t *pplayer )
+bool CStudioModelRenderer::StudioDrawPlayer( int flags, entity_state_t *pplayer )
 {
 	alight_t lighting;
 	Vector dir;
@@ -1665,7 +1664,7 @@ int CStudioModelRenderer::StudioDrawPlayer( int flags, entity_state_t *pplayer )
 	m_nPlayerIndex = pplayer->number - 1;
 
 	if (m_nPlayerIndex < 0 || m_nPlayerIndex >= gEngfuncs.GetMaxClients())
-		return 0;
+		return false;
 
 #if defined( _TFC )
 
@@ -1693,7 +1692,7 @@ int CStudioModelRenderer::StudioDrawPlayer( int flags, entity_state_t *pplayer )
 #endif
 
 	if (m_pRenderModel == nullptr)
-		return 0;
+		return false;
 
 	m_pStudioHeader = (studiohdr_t *)IEngineStudio.Mod_Extradata (m_pRenderModel);
 	IEngineStudio.StudioSetHeader( m_pStudioHeader );
@@ -1735,13 +1734,13 @@ int CStudioModelRenderer::StudioDrawPlayer( int flags, entity_state_t *pplayer )
 	{
 		// see if the bounding box lets us trivially reject, also sets
 		if (!IEngineStudio.StudioCheckBBox ())
-			return 0;
+			return false;
 
 		(*m_pModelsDrawn)++;
 		(*m_pStudioModelCount)++; // render data cache cookie
 
 		if (m_pStudioHeader->numbodyparts == 0)
-			return 1;
+			return true;
 	}
 
 	m_pPlayerInfo = IEngineStudio.PlayerInfo( m_nPlayerIndex );
@@ -1931,7 +1930,7 @@ int CStudioModelRenderer::StudioDrawPlayer( int flags, entity_state_t *pplayer )
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 /*

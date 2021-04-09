@@ -37,8 +37,8 @@ public:
 	const globalentity_t* EntityFromTable(string_t globalname);
 	GLOBALESTATE	EntityGetState(string_t globalname);
 	int				EntityInTable(string_t globalname) { return (Find(globalname) != nullptr) ? 1 : 0; }
-	int				Save(CSave& save);
-	int				Restore(CRestore& restore);
+	bool Save(CSave& save);
+	bool Restore(CRestore& restore);
 	static TYPEDESCRIPTION m_SaveData[];
 
 	//#ifdef _DEBUG

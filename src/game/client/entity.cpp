@@ -55,11 +55,11 @@ int DLLEXPORT HUD_AddEntity( int type, cl_entity_t *ent, const char *modelname )
 
 		if ( (	g_iUser1 == OBS_IN_EYE || gHUD.m_Spectator.m_pip->value == INSET_IN_EYE ) &&
 				ent->index == g_iUser2 )
-			return 0;	// don't draw the player we are following in eye
+			return false;	// don't draw the player we are following in eye
 
 	}
 
-	return 1;
+	return true;
 }
 
 /*

@@ -29,8 +29,8 @@ class CAirtank : public CGrenade
 	int	 BloodColor() override { return DONT_BLEED; }
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 

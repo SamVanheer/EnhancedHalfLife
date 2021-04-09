@@ -51,7 +51,7 @@ public:
 	bool CheckRangeAttack2 ( float flDot, float flDist ) override;
 	void CallForHelp( const char *szClassname, float flDist, EHANDLE hEnemy, Vector &vecLocation );
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType) override;
-	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 
 	void DeathSound() override;
 	void PainSound() override;
@@ -65,8 +65,8 @@ public:
 	Schedule_t *GetScheduleOfType ( int Type ) override;
 	CUSTOM_SCHEDULES;
 
-	int	Save( CSave &save ) override;
-	int Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static TYPEDESCRIPTION m_SaveData[];
 
 	void ClearBeams( );
@@ -570,11 +570,11 @@ void CISlave :: Precache()
 // TakeDamage - get provoked when injured
 //=========================================================
 
-int CISlave :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CISlave :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	// don't slash one of your own
 	if ((bitsDamageType & DMG_SLASH) && pevAttacker && IRelationship( Instance(pevAttacker) ) < R_DL)
-		return 0;
+		return false;
 
 	m_afMemory |= bits_MEMORY_PROVOKED;
 	return CSquadMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);

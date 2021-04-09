@@ -1603,7 +1603,7 @@ void EV_TrainPitchAdjust( event_args_t *args )
 	}
 }
 
-int EV_TFC_IsAllyTeam( int iTeam1, int iTeam2 )
+bool EV_TFC_IsAllyTeam( int iTeam1, int iTeam2 )
 {
-	return 0;
+	return false;
 }

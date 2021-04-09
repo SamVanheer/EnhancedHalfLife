@@ -89,7 +89,7 @@ void CHud::Think()
 // Redraw
 // step through the local data,  placing the appropriate graphics & text as appropriate
 // returns 1 if they've changed, 0 otherwise
-int CHud :: Redraw( float flTime, int intermission )
+bool CHud :: Redraw( float flTime, int intermission )
 {
 	m_fOldTime = m_flTime;	// save time of previous redraw
 	m_flTime = flTime;
@@ -134,7 +134,7 @@ int CHud :: Redraw( float flTime, int intermission )
 	m_iIntermission = intermission;
 
 	// if no redrawing is necessary
-	// return 0;
+	// return false;
 	
 	// draw all registered HUD elements
 	if ( m_pCvarDraw->value )
@@ -201,7 +201,7 @@ int CHud :: Redraw( float flTime, int intermission )
 	}
 	*/
 
-	return 1;
+	return true;
 }
 
 void ScaleColors( int &r, int &g, int &b, int a )

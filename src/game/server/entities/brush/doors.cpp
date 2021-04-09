@@ -37,9 +37,9 @@ public:
 			return (CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_IMPULSE_USE;
 		else
 			return (CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION);
-	};
-	int	Save( CSave &save ) override;
-	int	Restore( CRestore &restore ) override;
+	}
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 	
@@ -49,7 +49,7 @@ public:
 	void EXPORT DoorTouch( CBaseEntity *pOther );
 
 	// local functions
-	int DoorActivate( );
+	bool DoorActivate( );
 	void EXPORT DoorGoUp();
 	void EXPORT DoorGoDown();
 	void EXPORT DoorHitTop();
@@ -519,10 +519,10 @@ void CBaseDoor::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 //
 // Causes the door to "do its thing", i.e. start moving, and cascade activation.
 //
-int CBaseDoor::DoorActivate( )
+bool CBaseDoor::DoorActivate( )
 {
 	if (!UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
-		return 0;
+		return false;
 
 	if (FBitSet(pev->spawnflags, SF_DOOR_NO_AUTO_RETURN) && m_toggle_state == TS_AT_TOP)
 	{// door should close
@@ -545,7 +545,7 @@ int CBaseDoor::DoorActivate( )
 		DoorGoUp();
 	}
 
-	return 1;
+	return true;
 }
 
 //
@@ -884,8 +884,8 @@ public:
 	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 	int	ObjectCaps() override { return CBaseToggle :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	int	Save( CSave &save ) override;
-	int	Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void EXPORT DoorMoveDone();

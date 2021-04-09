@@ -38,8 +38,8 @@ public:
 	void Precache( ) override;
 	void KeyValue( KeyValueData *pkvd ) override;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	// Don't allow the tentacle to go across transitions!!!
@@ -62,7 +62,7 @@ public:
 
 	float HearingSensitivity() override { return 2.0; }
 
-	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
 
@@ -980,7 +980,7 @@ void CTentacle :: HitTouch( CBaseEntity *pOther )
 }
 
 
-int CTentacle::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+bool CTentacle::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	if (flDamage > pev->health)
 	{
@@ -990,7 +990,7 @@ int CTentacle::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 	{
 		pev->health -= flDamage;
 	}
-	return 1;
+	return true;
 }
 
 

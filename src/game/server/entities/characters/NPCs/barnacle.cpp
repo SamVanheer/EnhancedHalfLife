@@ -42,9 +42,9 @@ public:
 	void EXPORT BarnacleThink ();
 	void EXPORT WaitTillDead ();
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	float m_flAltitude;
@@ -130,7 +130,7 @@ void CBarnacle :: Spawn()
 	UTIL_SetOrigin ( pev, pev->origin );
 }
 
-int CBarnacle::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CBarnacle::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	if ( bitsDamageType & DMG_CLUB )
 	{

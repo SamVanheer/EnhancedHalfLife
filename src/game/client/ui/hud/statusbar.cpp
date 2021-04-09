@@ -30,7 +30,7 @@ constexpr int STATUSBAR_ID_LINE = 2;
 constexpr int STATUSBAR_ID_LINE = 1;
 #endif
 
-int CHudStatusBar :: Init()
+bool CHudStatusBar :: Init()
 {
 	gHUD.AddHudElem( this );
 
@@ -41,14 +41,14 @@ int CHudStatusBar :: Init()
 
 	CVAR_CREATE( "hud_centerid", "0", FCVAR_ARCHIVE );
 
-	return 1;
+	return true;
 }
 
-int CHudStatusBar :: VidInit()
+bool CHudStatusBar :: VidInit()
 {
 	// Load sprites here
 
-	return 1;
+	return true;
 }
 
 void CHudStatusBar :: Reset()
@@ -168,7 +168,7 @@ void CHudStatusBar :: ParseStatusString( int line_num )
 	}
 }
 
-int CHudStatusBar :: Draw( float fTime )
+bool CHudStatusBar :: Draw( float fTime )
 {
 	if ( m_bReparseString )
 	{
@@ -204,7 +204,7 @@ int CHudStatusBar :: Draw( float fTime )
 		DrawConsoleString( x, y, m_szStatusBar[i] );
 	}
 
-	return 1;
+	return true;
 }
 
 // Message handler for StatusText message
@@ -219,14 +219,14 @@ int CHudStatusBar :: Draw( float fTime )
 // if StatusValue[slotnum] != 0, the following string is drawn, upto the next newline - otherwise the text is skipped upto next newline
 // %pX, where X is an integer, will substitute a player name here, getting the player index from StatusValue[X]
 // %iX, where X is an integer, will substitute a number here, getting the number from StatusValue[X]
-int CHudStatusBar :: MsgFunc_StatusText( const char *pszName, int iSize, void *pbuf )
+bool CHudStatusBar :: MsgFunc_StatusText( const char *pszName, int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 
 	int line = READ_BYTE();
 
 	if ( line < 0 || line > MAX_STATUSBAR_LINES )
-		return 1;
+		return true;
 
 	strncpy( m_szStatusText[line], READ_STRING(), MAX_STATUSTEXT_LENGTH );
 	m_szStatusText[line][MAX_STATUSTEXT_LENGTH-1] = 0;  // ensure it's null terminated ( strncpy() won't null terminate if read string too long)
@@ -234,24 +234,24 @@ int CHudStatusBar :: MsgFunc_StatusText( const char *pszName, int iSize, void *p
 	m_iFlags |= HUD_ACTIVE;
 	m_bReparseString = true;
 
-	return 1;
+	return true;
 }
 
 // Message handler for StatusText message
 // accepts two values:
 //		byte: index into the status value array
 //		short: value to store
-int CHudStatusBar :: MsgFunc_StatusValue( const char *pszName, int iSize, void *pbuf )
+bool CHudStatusBar :: MsgFunc_StatusValue( const char *pszName, int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 
 	int index = READ_BYTE();
 	if ( index < 1 || index > MAX_STATUSBAR_VALUES )
-		return 1; // index out of range
+		return true; // index out of range
 
 	m_iStatusValues[index] = READ_SHORT();
 
 	m_bReparseString = true;
 	
-	return 1;
+	return true;
 }

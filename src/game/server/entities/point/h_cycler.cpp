@@ -32,7 +32,7 @@ class CCycler : public CBaseMonster
 public:
 	void GenericCyclerSpawn(const char *szModel, Vector vecMin, Vector vecMax);
 	int	ObjectCaps() override { return (CBaseEntity :: ObjectCaps() | FCAP_IMPULSE_USE); }
-	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
 	void Spawn() override;
 	void Think() override;
 	//void Pain( float flDamage );
@@ -41,8 +41,8 @@ public:
 	// Don't treat as a live target
 	bool IsAlive() override { return false; }
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int			m_animate;
@@ -181,7 +181,7 @@ void CCycler :: Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE us
 // CyclerPain , changes sequences when shot
 //
 //void CCycler :: Pain( float flDamage )
-int CCycler :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+bool CCycler :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	if (m_animate)
 	{
@@ -204,7 +204,7 @@ int CCycler :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 		ALERT( at_console, "sequence: %d, frame %.0f\n", pev->sequence, pev->frame );
 	}
 
-	return 0;
+	return false;
 }
 
 class CCyclerSprite : public CBaseEntity
@@ -214,14 +214,14 @@ public:
 	void Think() override;
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 	int	ObjectCaps() override { return (CBaseEntity :: ObjectCaps() | FCAP_DONT_SAVE | FCAP_IMPULSE_USE); }
-	int	TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool	TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
 	void	Animate( float frames );
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	inline int		ShouldAnimate() { return m_animate && m_maxFrame > 1.0; }
+	inline bool		ShouldAnimate() { return m_animate && m_maxFrame > 1.0; }
 	int			m_animate;
 	float		m_lastTime;
 	float		m_maxFrame;
@@ -275,13 +275,13 @@ void CCyclerSprite::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE
 }
 
 
-int	CCyclerSprite::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+bool	CCyclerSprite::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	if ( m_maxFrame > 1.0 )
 	{
 		Animate( 1.0 );
 	}
-	return 1;
+	return true;
 }
 
 void CCyclerSprite::Animate( float frames )
@@ -302,7 +302,7 @@ class CWeaponCycler : public CBasePlayerWeapon
 public:
 	void Spawn() override;
 	int iItemSlot() override { return 1; }
-	int GetItemInfo(ItemInfo *p) override {return 0; }
+	bool GetItemInfo(ItemInfo *p) override {return false; }
 
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
@@ -382,8 +382,8 @@ void CWeaponCycler::SecondaryAttack()
 // Flaming Wreakage
 class CWreckage : public CBaseMonster
 {
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void Spawn() override;

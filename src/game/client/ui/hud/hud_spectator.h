@@ -89,10 +89,10 @@ public:
 	void FindPlayer(const char *name);
 	void DirectorMessage( int iSize, void *pbuf );
 	void SetSpectatorStartPosition();
-	int Init() override;
-	int VidInit() override;
+	bool Init() override;
+	bool VidInit() override;
 
-	int Draw(float flTime) override;
+	bool Draw(float flTime) override;
 
 	void	AddWaypoint( float time, Vector pos, Vector angle, float fov, int flags );
 	void	SetCameraView(Vector pos, Vector angle, float fov);

@@ -133,7 +133,7 @@ public:
 	void AddToHistory( int iType, const char *szName, int iCount = 0 );
 
 	void CheckClearHistory();
-	int DrawAmmoHistory( float flTime );
+	bool DrawAmmoHistory( float flTime );
 };
 
 extern HistoryResource gHR;

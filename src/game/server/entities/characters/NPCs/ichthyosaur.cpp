@@ -57,8 +57,8 @@ public:
 	void  HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	CUSTOM_SCHEDULES;
 
-	int	Save( CSave &save ) override;
-	int Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static TYPEDESCRIPTION m_SaveData[];
 
 	Schedule_t *GetSchedule() override;

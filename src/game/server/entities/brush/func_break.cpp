@@ -519,7 +519,7 @@ void CBreakable::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vec
 // exceptions that are breakable-specific
 // bitsDamageType indicates the type of damage sustained ie: DMG_CRUSH
 //=========================================================
-int CBreakable :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+bool CBreakable :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	Vector	vecTemp;
 
@@ -541,7 +541,7 @@ int CBreakable :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	}
 	
 	if (!IsBreakable())
-		return 0;
+		return false;
 
 	// Breakables take double damage from the crowbar
 	if ( bitsDamageType & DMG_CLUB )
@@ -560,7 +560,7 @@ int CBreakable :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	{
 		Killed( pevAttacker, GIB_NORMAL );
 		Die();
-		return 0;
+		return false;
 	}
 
 	// Make a shard noise each time func breakable is hit.
@@ -568,7 +568,7 @@ int CBreakable :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, f
 
 	DamageSound();
 
-	return 1;
+	return true;
 }
 
 
@@ -781,13 +781,13 @@ public:
 //	virtual void	SetActivator( CBaseEntity *pActivator ) { m_pPusher = pActivator; }
 
 	int	ObjectCaps() override { return (CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_CONTINUOUS_USE; }
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	inline float MaxSpeed() { return m_maxSpeed; }
 	
 	// breakables use an overridden takedamage
-	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )  override;
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )  override;
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -987,11 +987,11 @@ void CPushable::StopSound()
 }
 #endif
 
-int CPushable::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+bool CPushable::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	if ( pev->spawnflags & SF_PUSH_BREAKABLE )
 		return CBreakable::TakeDamage( pevInflictor, pevAttacker, flDamage, bitsDamageType );
 
-	return 1;
+	return true;
 }
 

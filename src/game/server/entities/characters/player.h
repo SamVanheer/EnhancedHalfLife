@@ -201,9 +201,9 @@ public:
 	virtual void PreThink();
 	virtual void PostThink();
 	Vector GetGunPosition() override;
-	int TakeHealth( float flHealth, int bitsDamageType ) override;
+	bool TakeHealth( float flHealth, int bitsDamageType ) override;
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType) override;
-	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	void	Killed( entvars_t *pevAttacker, int iGib ) override;
 	Vector BodyTarget( const Vector &posSrc ) override { return Center( ) + pev->view_ofs * RANDOM_FLOAT( 0.5, 1.1 ); }		// position to shoot at
 	void StartSneaking() override { m_tSneaking = gpGlobals->time - 1; }
@@ -217,8 +217,8 @@ public:
 															// Spectators should return true for this
 	const char *TeamID() override;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	void RenewItems();
 	void PackDeadPlayerItems();
 	void RemoveAllItems(bool removeSuit );

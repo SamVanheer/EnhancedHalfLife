@@ -285,8 +285,8 @@ public:
 	void RampPitchVol (int fUp );
 	void Blocked( CBaseEntity *pOther ) override;
 	int	ObjectCaps() override { return CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -734,8 +734,8 @@ public:
 	void	Touch( CBaseEntity *pOther ) override;
 	void	EXPORT RopeTouch ( CBaseEntity *pOther );// this touch func makes the pendulum a rope
 	int	ObjectCaps() override { return CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	void	Blocked( CBaseEntity *pOther ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];

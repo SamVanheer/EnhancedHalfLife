@@ -906,7 +906,7 @@ void CTalkMonster :: IdleRespond()
 	PlaySentence( m_szGrp[TLK_ANSWER], RANDOM_FLOAT(2.8, 3.2), VOL_NORM, ATTN_IDLE );
 }
 
-int CTalkMonster :: FOkToSpeak()
+bool CTalkMonster :: FOkToSpeak()
 {
 	// if in the grip of a barnacle, don't speak
 	if ( m_MonsterState == MONSTERSTATE_PRONE || m_IdealMonsterState == MONSTERSTATE_PRONE )
@@ -942,7 +942,7 @@ int CTalkMonster :: FOkToSpeak()
 }
 
 
-int CTalkMonster::CanPlaySentence(bool fDisregardState )
+bool CTalkMonster::CanPlaySentence(bool fDisregardState )
 { 
 	if ( fDisregardState )
 		return CBaseMonster::CanPlaySentence( fDisregardState );
@@ -952,7 +952,7 @@ int CTalkMonster::CanPlaySentence(bool fDisregardState )
 //=========================================================
 // FIdleStare
 //=========================================================
-int CTalkMonster :: FIdleStare()
+bool CTalkMonster :: FIdleStare()
 {
 	if (!FOkToSpeak())
 		return false;
@@ -967,7 +967,7 @@ int CTalkMonster :: FIdleStare()
 // IdleHello
 // Try to greet player first time he's seen
 //=========================================================
-int CTalkMonster :: FIdleHello()
+bool CTalkMonster :: FIdleHello()
 {
 	if (!FOkToSpeak())
 		return false;
@@ -1019,7 +1019,7 @@ void CTalkMonster :: IdleHeadTurn( Vector &vecFriend )
 // FIdleSpeak
 // ask question of nearby friend, or make statement
 //=========================================================
-int CTalkMonster :: FIdleSpeak ()
+bool CTalkMonster :: FIdleSpeak ()
 { 
 	// try to start a conversation, or make statement
 	int pitch;
@@ -1186,7 +1186,7 @@ void CTalkMonster :: SetAnswerQuestion( CTalkMonster *pSpeaker )
 	m_hTalkTarget = (CBaseMonster *)pSpeaker;
 }
 
-int CTalkMonster :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CTalkMonster :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	if ( IsAlive() )
 	{

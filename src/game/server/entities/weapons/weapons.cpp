@@ -647,7 +647,7 @@ bool CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer )
 	return false;
 }
 
-int CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
+bool CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
 {
 	bool bSend = false;
 	int state = 0;
@@ -656,7 +656,7 @@ int CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
 		if ( pPlayer->m_fOnTarget )
 			state = WEAPON_IS_ONTARGET;
 		else
-			state = 1;
+			state = 1; //TODO: define constant
 	}
 
 	// Forcing send of all data!
@@ -699,7 +699,7 @@ int CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
 	if ( m_pNext )
 		m_pNext->UpdateClientData( pPlayer );
 
-	return 1;
+	return true;
 }
 
 

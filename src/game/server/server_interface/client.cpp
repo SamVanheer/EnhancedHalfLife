@@ -1090,16 +1090,16 @@ int AddToFullPack( entity_state_t* state, int e, edict_t *ent, edict_t *host, in
 	// don't send if flagged for NODRAW and it's not the host getting the message
 	if ( ( ent->v.effects & EF_NODRAW ) &&
 		 ( ent != host ) )
-		return 0;
+		return false;
 
 	// Ignore ents without valid / visible models
 	if ( !ent->v.modelindex || !STRING( ent->v.model ) )
-		return 0;
+		return false;
 
 	// Don't send spectators to other players
 	if ( ( ent->v.flags & FL_SPECTATOR ) && ( ent != host ) )
 	{
-		return 0;
+		return false;
 	}
 
 	// Ignore if not the host and not touching a PVS/PAS leaf
@@ -1108,7 +1108,7 @@ int AddToFullPack( entity_state_t* state, int e, edict_t *ent, edict_t *host, in
 	{
 		if ( !ENGINE_CHECK_VISIBILITY( ent, pSet ) )
 		{
-			return 0;
+			return false;
 		}
 	}
 
@@ -1117,7 +1117,7 @@ int AddToFullPack( entity_state_t* state, int e, edict_t *ent, edict_t *host, in
 	if ( ent->v.flags & FL_SKIPLOCALHOST )
 	{
 		if ( ( hostflags & 1 ) && ( ent->v.owner == host ) )
-			return 0;
+			return false;
 	}
 	
 	if ( host->v.groupinfo )
@@ -1130,12 +1130,12 @@ int AddToFullPack( entity_state_t* state, int e, edict_t *ent, edict_t *host, in
 			if ( g_groupop == GROUP_OP_AND )
 			{
 				if ( !(ent->v.groupinfo & host->v.groupinfo ) )
-					return 0;
+					return false;
 			}
 			else if ( g_groupop == GROUP_OP_NAND )
 			{
 				if ( ent->v.groupinfo & host->v.groupinfo )
-					return 0;
+					return false;
 			}
 		}
 
@@ -1259,7 +1259,7 @@ int AddToFullPack( entity_state_t* state, int e, edict_t *ent, edict_t *host, in
 		state->health		= ent->v.health;
 	}
 
-	return 1;
+	return true;
 }
 
 /*
@@ -1580,11 +1580,11 @@ int GetWeaponData( edict_t *player, weapon_data_t *info )
 	CBasePlayerWeapon *gun;
 	
 	ItemInfo II;
-
+	//TODO: use MAX_WEAPONS constant
 	memset( info, 0, 32 * sizeof( weapon_data_t ) );
 
 	if ( !pl )
-		return 1;
+		return true;
 
 	// go through all of the weapons and make a list of the ones to pack
 	for ( i = 0 ; i < MAX_ITEM_TYPES ; i++ )
@@ -1633,7 +1633,7 @@ int GetWeaponData( edict_t *player, weapon_data_t *info )
 #else
 	memset( info, 0, 32 * sizeof( weapon_data_t ) );
 #endif
-	return 1;
+	return true;
 }
 
 /*
@@ -1817,7 +1817,7 @@ int	ConnectionlessPacket( const netadr_t* net_from, const char *args, char *resp
 
 	// Since we don't listen for anything here, just respond that it's a bogus message
 	// If we didn't reject the message, we'd return 1 for success instead.
-	return 0;
+	return false;
 }
 
 /*
@@ -1827,30 +1827,31 @@ GetHullBounds
   Engine calls this to enumerate player collision hulls, for prediction.  Return 0 if the hullnumber doesn't exist.
 ================================
 */
+//TODO: merge with client side version
 int GetHullBounds( int hullnumber, float *mins, float *maxs )
 {
-	int iret = 0;
+	bool ret = false;
 
 	switch ( hullnumber )
 	{
 	case 0:				// Normal player
 		memcpy(mins, &VEC_HULL_MIN, sizeof(VEC_HULL_MIN));
 		memcpy(maxs, &VEC_HULL_MAX, sizeof(VEC_HULL_MAX));
-		iret = 1;
+		ret = true;
 		break;
 	case 1:				// Crouched player
 		memcpy(mins, &VEC_DUCK_HULL_MIN, sizeof(VEC_DUCK_HULL_MIN));
 		memcpy(maxs, &VEC_DUCK_HULL_MAX, sizeof(VEC_DUCK_HULL_MAX));
-		iret = 1;
+		ret = true;
 		break;
 	case 2:				// Point based hull
 		memcpy(mins, &g_vecZero, sizeof(g_vecZero));
 		memcpy(maxs, &g_vecZero, sizeof(g_vecZero));
-		iret = 1;
+		ret = true;
 		break;
 	}
 
-	return iret;
+	return ret;
 }
 
 /*
@@ -1887,13 +1888,13 @@ int	InconsistentFile( const edict_t *player, const char *filename, char *disconn
 {
 	// Server doesn't care?
 	if ( CVAR_GET_FLOAT( "mp_consistency" ) != 1 )
-		return 0;
+		return false;
 
 	// Default behavior is to kick the player
 	sprintf( disconnect_message, "Server is enforcing file consistency for %s\n", filename );
 
 	// Kick now with specified disconnect message.
-	return 1;
+	return true;
 }
 
 /*
@@ -1909,5 +1910,5 @@ AllowLagCompensation
 */
 int AllowLagCompensation()
 {
-	return 1;
+	return true;
 }

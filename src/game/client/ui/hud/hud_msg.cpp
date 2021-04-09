@@ -35,7 +35,7 @@ void ClearEventList();
 
 /// USER-DEFINED SERVER MESSAGE HANDLERS
 
-int CHud :: MsgFunc_ResetHUD(const char *pszName, int iSize, void *pbuf )
+bool CHud :: MsgFunc_ResetHUD(const char *pszName, int iSize, void *pbuf )
 {
 	ASSERT( iSize == 0 );
 
@@ -55,7 +55,7 @@ int CHud :: MsgFunc_ResetHUD(const char *pszName, int iSize, void *pbuf )
 	// reset concussion effect
 	m_iConcussionEffect = 0;
 
-	return 1;
+	return true;
 }
 
 void CAM_ToFirstPerson();
@@ -95,16 +95,16 @@ void CHud :: MsgFunc_InitHUD( const char *pszName, int iSize, void *pbuf )
 }
 
 
-int CHud :: MsgFunc_GameMode(const char *pszName, int iSize, void *pbuf )
+bool CHud :: MsgFunc_GameMode(const char *pszName, int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 	m_Teamplay = READ_BYTE();
 
-	return 1;
+	return true;
 }
 
 
-int CHud :: MsgFunc_Damage(const char *pszName, int iSize, void *pbuf )
+bool CHud :: MsgFunc_Damage(const char *pszName, int iSize, void *pbuf )
 {
 	int		armor, blood;
 	Vector	from;
@@ -125,10 +125,10 @@ int CHud :: MsgFunc_Damage(const char *pszName, int iSize, void *pbuf )
 
 	// TODO: kick viewangles,  show damage visually
 
-	return 1;
+	return true;
 }
 
-int CHud :: MsgFunc_Concuss( const char *pszName, int iSize, void *pbuf )
+bool CHud :: MsgFunc_Concuss( const char *pszName, int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 	m_iConcussionEffect = READ_BYTE();
@@ -140,5 +140,5 @@ int CHud :: MsgFunc_Concuss( const char *pszName, int iSize, void *pbuf )
 	}
 	else
 		this->m_StatusIcons.DisableIcon("dmg_concuss");
-	return 1;
+	return true;
 }

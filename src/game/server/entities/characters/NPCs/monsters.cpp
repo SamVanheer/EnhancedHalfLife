@@ -103,18 +103,18 @@ TYPEDESCRIPTION	CBaseMonster::m_SaveData[] =
 };
 
 //IMPLEMENT_SAVERESTORE( CBaseMonster, CBaseToggle );
-int CBaseMonster::Save( CSave &save )
+bool CBaseMonster::Save( CSave &save )
 {
 	if ( !CBaseToggle::Save(save) )
-		return 0;
+		return false;
 	return save.WriteFields( "CBaseMonster", this, m_SaveData, ARRAYSIZE(m_SaveData) );
 }
 
-int CBaseMonster::Restore( CRestore &restore )
+bool CBaseMonster::Restore( CRestore &restore )
 {
 	if ( !CBaseToggle::Restore(restore) )
-		return 0;
-	int status = restore.ReadFields( "CBaseMonster", this, m_SaveData, ARRAYSIZE(m_SaveData) );
+		return false;
+	bool status = restore.ReadFields( "CBaseMonster", this, m_SaveData, ARRAYSIZE(m_SaveData) );
 	
 	// We don't save/restore routes yet
 	RouteClear();
@@ -1047,12 +1047,11 @@ bool CBaseMonster :: FCanCheckAttacks ()
 // gets and stores data and conditions pertaining to a monster's
 // enemy. Returns true if Enemy LKP was updated.
 //=========================================================
-int CBaseMonster :: CheckEnemy ( CBaseEntity *pEnemy )
+bool CBaseMonster :: CheckEnemy ( CBaseEntity *pEnemy )
 {
 	float	flDistToEnemy;
-	int		iUpdatedLKP;// set this to true if you update the EnemyLKP in this function.
+	bool updatedLKP = false;// set this to true if you update the EnemyLKP in this function.
 
-	iUpdatedLKP = false;
 	ClearConditions ( bits_COND_ENEMY_FACING_ME );
 	
 	if ( !FVisible( pEnemy ) )
@@ -1091,7 +1090,7 @@ int CBaseMonster :: CheckEnemy ( CBaseEntity *pEnemy )
 	{
 		CBaseMonster *pEnemyMonster;
 
-		iUpdatedLKP = true;
+		updatedLKP = true;
 		m_vecEnemyLKP = pEnemy->pev->origin;
 
 		pEnemyMonster = pEnemy->MyMonsterPointer();
@@ -1121,7 +1120,7 @@ int CBaseMonster :: CheckEnemy ( CBaseEntity *pEnemy )
 		// if the enemy is not occluded, and unseen, that means it is behind or beside the monster.
 		// if the enemy is near enough the monster, we go ahead and let the monster know where the
 		// enemy is. 
-		iUpdatedLKP = true;
+		updatedLKP = true;
 		m_vecEnemyLKP = pEnemy->pev->origin;
 	}
 
@@ -1149,13 +1148,13 @@ int CBaseMonster :: CheckEnemy ( CBaseEntity *pEnemy )
 				{
 					// Refresh
 					FRefreshRoute();
-					return iUpdatedLKP;
+					return updatedLKP;
 				}
 			}
 		}
 	}
 
-	return iUpdatedLKP;
+	return updatedLKP;
 }
 
 //=========================================================
@@ -2176,13 +2175,13 @@ void CBaseMonster :: MovementComplete()
 }
 
 
-int CBaseMonster::TaskIsRunning()
+bool CBaseMonster::TaskIsRunning()
 {
 	if ( m_iTaskStatus != TASKSTATUS_COMPLETE && 
 		 m_iTaskStatus != TASKSTATUS_RUNNING_MOVEMENT )
-		 return 1;
+		 return true;
 
-	return 0;
+	return false;
 }
 
 //=========================================================
@@ -3097,7 +3096,7 @@ bool CBaseMonster :: FCheckAITrigger ()
 // will be sucked into the script no matter what state it is
 // in. ONLY Scripted AI ents should allow this.
 //=========================================================	
-int CBaseMonster :: CanPlaySequence(bool fDisregardMonsterState, int interruptLevel )
+bool CBaseMonster :: CanPlaySequence(bool fDisregardMonsterState, int interruptLevel )
 {
 	if ( m_pCine || !IsAlive() || m_MonsterState == MONSTERSTATE_PRONE )
 	{

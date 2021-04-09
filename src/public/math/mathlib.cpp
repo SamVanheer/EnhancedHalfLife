@@ -26,15 +26,15 @@ void VectorMA(const float* veca, float scale, const float* vecb, float* vecc)
 	vecc[2] = veca[2] + scale * vecb[2];
 }
 
-int VectorCompare(const float* v1, const float* v2)
+bool VectorCompare(const float* v1, const float* v2)
 {
 	int		i;
 
 	for (i = 0; i < 3; i++)
 		if (v1[i] != v2[i])
-			return 0;
+			return false;
 
-	return 1;
+	return true;
 }
 
 float Length(const float* v)

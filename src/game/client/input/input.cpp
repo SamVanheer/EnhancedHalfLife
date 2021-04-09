@@ -125,7 +125,7 @@ Removes references to +use and replaces them with the keyname in the output stri
 NOTE:  Only works for text with +word in it.
 ============
 */
-int KB_ConvertString( char *in, char **ppout )
+bool KB_ConvertString( char *in, char **ppout )
 {
 	char sz[ 4096 ];
 	char binding[ 64 ];
@@ -135,7 +135,7 @@ int KB_ConvertString( char *in, char **ppout )
 	const char *pBinding;
 
 	if ( !ppout )
-		return 0;
+		return false;
 
 	*ppout = nullptr;
 	p = in;
@@ -191,7 +191,7 @@ int KB_ConvertString( char *in, char **ppout )
 	strcpy( pOut, sz );
 	*ppout = pOut;
 
-	return 1;
+	return true;
 }
 
 /*
@@ -363,7 +363,7 @@ int DLLEXPORT HUD_Key_Event( int down, int keynum, const char *pszCurrentBinding
 	if (gViewPort)
 		return gViewPort->KeyInput(down, keynum, pszCurrentBinding);
 	
-	return 1;
+	return true;
 }
 
 void IN_BreakDown() { KeyDown( &in_break );}
@@ -757,12 +757,12 @@ void DLLEXPORT CL_CreateMove ( float frametime, usercmd_t* cmd, int active )
 ============
 CL_IsDead
 
-Returns 1 if health is <= 0
+Returns true if health is <= 0
 ============
 */
-int	CL_IsDead()
+bool CL_IsDead()
 {
-	return ( gHUD.m_Health.m_iHealth <= 0 ) ? 1 : 0;
+	return gHUD.m_Health.m_iHealth <= 0;
 }
 
 /*

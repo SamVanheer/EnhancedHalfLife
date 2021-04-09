@@ -46,7 +46,7 @@ int giDmgFlags[NUM_DMG_TYPES] =
 	DMG_HALLUC
 };
 
-int CHudHealth::Init()
+bool CHudHealth::Init()
 {
 	HOOK_MESSAGE(Health);
 	HOOK_MESSAGE(Damage);
@@ -62,7 +62,7 @@ int CHudHealth::Init()
 
 
 	gHUD.AddHudElem(this);
-	return 1;
+	return true;
 }
 
 void CHudHealth::Reset()
@@ -79,7 +79,7 @@ void CHudHealth::Reset()
 	}
 }
 
-int CHudHealth::VidInit()
+bool CHudHealth::VidInit()
 {
 	m_hSprite = 0;
 
@@ -88,10 +88,10 @@ int CHudHealth::VidInit()
 
 	giDmgHeight = gHUD.GetSpriteRect(m_HUD_dmg_bio).right - gHUD.GetSpriteRect(m_HUD_dmg_bio).left;
 	giDmgWidth = gHUD.GetSpriteRect(m_HUD_dmg_bio).bottom - gHUD.GetSpriteRect(m_HUD_dmg_bio).top;
-	return 1;
+	return true;
 }
 
-int CHudHealth:: MsgFunc_Health(const char *pszName,  int iSize, void *pbuf )
+bool CHudHealth:: MsgFunc_Health(const char *pszName,  int iSize, void *pbuf )
 {
 	// TODO: update local health data
 	BEGIN_READ( pbuf, iSize );
@@ -106,11 +106,11 @@ int CHudHealth:: MsgFunc_Health(const char *pszName,  int iSize, void *pbuf )
 		m_iHealth = x;
 	}
 
-	return 1;
+	return true;
 }
 
 
-int CHudHealth:: MsgFunc_Damage(const char *pszName,  int iSize, void *pbuf )
+bool CHudHealth:: MsgFunc_Damage(const char *pszName,  int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 
@@ -129,7 +129,7 @@ int CHudHealth:: MsgFunc_Damage(const char *pszName,  int iSize, void *pbuf )
 	if ( damageTaken > 0 || armor > 0 )
 		CalcDamageDirection(vecFrom);
 
-	return 1;
+	return true;
 }
 
 
@@ -161,14 +161,14 @@ void CHudHealth::GetPainColor( int &r, int &g, int &b )
 #endif 
 }
 
-int CHudHealth::Draw(float flTime)
+bool CHudHealth::Draw(float flTime)
 {
 	int r, g, b;
 	int a = 0, x, y;
 	int HealthWidth;
 
 	if ( (gHUD.m_iHideHUDDisplay & HIDEHUD_HEALTH) || gEngfuncs.IsSpectateOnly() )
-		return 1;
+		return true;
 
 	if ( !m_hSprite )
 		m_hSprite = LoadSprite(PAIN_NAME);
@@ -290,10 +290,10 @@ void CHudHealth::CalcDamageDirection(Vector vecFrom)
 	}
 }
 
-int CHudHealth::DrawPain(float flTime)
+bool CHudHealth::DrawPain(float flTime)
 {
 	if (!(m_fAttackFront || m_fAttackRear || m_fAttackLeft || m_fAttackRight))
-		return 1;
+		return true;
 
 	int r, g, b;
 	int x, y, a, shade;
@@ -361,16 +361,16 @@ int CHudHealth::DrawPain(float flTime)
 	} else
 		m_fAttackLeft = 0;
 
-	return 1;
+	return true;
 }
 
-int CHudHealth::DrawDamage(float flTime)
+bool CHudHealth::DrawDamage(float flTime)
 {
 	int r, g, b, a;
 	DAMAGE_IMAGE *pdmg;
 
 	if (!m_bitsDamage)
-		return 1;
+		return true;
 
 	UnpackRGB(r,g,b, RGB_YELLOWISH);
 	
@@ -422,7 +422,7 @@ int CHudHealth::DrawDamage(float flTime)
 		}
 	}
 
-	return 1;
+	return true;
 }
  
 

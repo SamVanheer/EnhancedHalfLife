@@ -27,8 +27,8 @@ constexpr int N_SPHERES = 20;
 class CNihilanth : public CBaseMonster
 {
 public:
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void Spawn() override;
@@ -66,7 +66,7 @@ public:
 	void ShootBalls();
 	void MakeFriend( Vector vecPos );
 	
-	int  TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType) override;
 
 	void PainSound() override;
@@ -171,8 +171,8 @@ IMPLEMENT_SAVERESTORE( CNihilanth, CBaseMonster );
 class CNihilanthHVR : public CBaseMonster
 {
 public:
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void Spawn() override;
@@ -1230,22 +1230,22 @@ void CNihilanth::CommandUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 }
 
 
-int CNihilanth :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+bool CNihilanth :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	if (pevInflictor->owner == edict())
-		return 0;
+		return false;
 
 	if (flDamage >= pev->health)
 	{
 		pev->health = 1;
 		if (m_irritation != 3)
-			return 0;
+			return false;
 	}
 	
 	PainSound( );
 
 	pev->health -= flDamage;
-	return 0;
+	return false;
 }
 
 

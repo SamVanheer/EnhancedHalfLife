@@ -109,12 +109,12 @@ public:
 	int	BloodColor() override { return DONT_BLEED; }
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
 	void Activate() override;
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 	int	Classify() override { return CLASS_INSECT; }
 	int IRelationship( CBaseEntity *pTarget ) override;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	static const char *pAttackSounds[];
@@ -300,7 +300,7 @@ void CLeech::Precache()
 }
 
 
-int CLeech::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CLeech::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	pev->velocity = g_vecZero;
 

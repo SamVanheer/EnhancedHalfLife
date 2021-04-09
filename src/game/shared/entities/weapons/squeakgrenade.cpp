@@ -43,8 +43,8 @@ class CSqueakGrenade : public CGrenade
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
 	void GibMonster() override;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -431,7 +431,7 @@ void CSqueak::Precache()
 }
 
 
-int CSqueak::GetItemInfo(ItemInfo *p)
+bool CSqueak::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "Snarks";
@@ -445,7 +445,7 @@ int CSqueak::GetItemInfo(ItemInfo *p)
 	p->iWeight = SNARK_WEIGHT;
 	p->iFlags = ITEM_FLAG_LIMITINWORLD | ITEM_FLAG_EXHAUSTIBLE;
 
-	return 1;
+	return true;
 }
 
 

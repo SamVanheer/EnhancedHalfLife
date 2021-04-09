@@ -59,7 +59,7 @@ const float* GetClientColor( int clientIndex )
 	return nullptr;
 }
 
-int CHudDeathNotice :: Init()
+bool CHudDeathNotice :: Init()
 {
 	gHUD.AddHudElem( this );
 
@@ -67,7 +67,7 @@ int CHudDeathNotice :: Init()
 
 	CVAR_CREATE( "hud_deathnotice_time", "6", 0 );
 
-	return 1;
+	return true;
 }
 
 
@@ -77,14 +77,14 @@ void CHudDeathNotice :: InitHUDData()
 }
 
 
-int CHudDeathNotice :: VidInit()
+bool CHudDeathNotice :: VidInit()
 {
 	m_HUD_d_skull = gHUD.GetSpriteIndex( "d_skull" );
 
-	return 1;
+	return true;
 }
 
-int CHudDeathNotice :: Draw( float flTime )
+bool CHudDeathNotice :: Draw( float flTime )
 {
 	int x, y, r, g, b;
 
@@ -144,11 +144,11 @@ int CHudDeathNotice :: Draw( float flTime )
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 // This message handler may be better off elsewhere
-int CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *pbuf )
+bool CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *pbuf )
 {
 	m_iFlags |= HUD_ACTIVE;
 
@@ -288,7 +288,7 @@ int CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *p
 		ConsolePrint( "\n" );
 	}
 
-	return 1;
+	return true;
 }
 
 

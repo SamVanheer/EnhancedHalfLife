@@ -27,7 +27,7 @@ client_textmessage_t	g_pCustomMessage;
 const char *g_pCustomName = "Custom";
 char g_pCustomText[1024];
 
-int CHudMessage::Init()
+bool CHudMessage::Init()
 {
 	HOOK_MESSAGE( HudText );
 	HOOK_MESSAGE( GameTitle );
@@ -36,15 +36,15 @@ int CHudMessage::Init()
 
 	Reset();
 
-	return 1;
+	return true;
 };
 
-int CHudMessage::VidInit()
+bool CHudMessage::VidInit()
 {
 	m_HUD_title_half = gHUD.GetSpriteIndex( "title_half" );
 	m_HUD_title_life = gHUD.GetSpriteIndex( "title_life" );
 
-	return 1;
+	return true;
 };
 
 
@@ -309,7 +309,7 @@ void CHudMessage::MessageDrawScan( client_textmessage_t *pMessage, float time )
 }
 
 
-int CHudMessage::Draw( float fTime )
+bool CHudMessage::Draw( float fTime )
 {
 	int i, drawn;
 	client_textmessage_t *pMessage;
@@ -407,7 +407,7 @@ int CHudMessage::Draw( float fTime )
 	if ( !drawn )
 		m_iFlags &= ~HUD_ACTIVE;
 
-	return 1;
+	return true;
 }
 
 
@@ -476,7 +476,7 @@ void CHudMessage::MessageAdd( const char *pName, float time )
 }
 
 
-int CHudMessage::MsgFunc_HudText( const char *pszName,  int iSize, void *pbuf )
+bool CHudMessage::MsgFunc_HudText( const char *pszName,  int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 
@@ -490,11 +490,11 @@ int CHudMessage::MsgFunc_HudText( const char *pszName,  int iSize, void *pbuf )
 	if ( !(m_iFlags & HUD_ACTIVE) )
 		m_iFlags |= HUD_ACTIVE;
 
-	return 1;
+	return true;
 }
 
 
-int CHudMessage::MsgFunc_GameTitle( const char *pszName,  int iSize, void *pbuf )
+bool CHudMessage::MsgFunc_GameTitle( const char *pszName,  int iSize, void *pbuf )
 {
 	m_pGameTitle = TextMessageGet( "GAMETITLE" );
 	if ( m_pGameTitle != nullptr)
@@ -506,7 +506,7 @@ int CHudMessage::MsgFunc_GameTitle( const char *pszName,  int iSize, void *pbuf 
 			m_iFlags |= HUD_ACTIVE;
 	}
 
-	return 1;
+	return true;
 }
 
 void CHudMessage::MessageAdd(client_textmessage_t * newMessage )

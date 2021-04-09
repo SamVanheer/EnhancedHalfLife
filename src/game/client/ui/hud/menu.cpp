@@ -26,11 +26,11 @@ constexpr int MAX_MENU_STRING = 512;
 char g_szMenuString[MAX_MENU_STRING];
 char g_szPrelocalisedMenuString[MAX_MENU_STRING];
 
-int KB_ConvertString( char *in, char **ppout );
+bool KB_ConvertString( char *in, char **ppout );
 
 DECLARE_MESSAGE( m_Menu, ShowMenu );
 
-int CHudMenu :: Init()
+bool CHudMenu :: Init()
 {
 	gHUD.AddHudElem( this );
 
@@ -38,7 +38,7 @@ int CHudMenu :: Init()
 
 	InitHUDData();
 
-	return 1;
+	return true;
 }
 
 void CHudMenu :: InitHUDData()
@@ -54,9 +54,9 @@ void CHudMenu :: Reset()
 	m_fWaitingForMore = false;
 }
 
-int CHudMenu :: VidInit()
+bool CHudMenu :: VidInit()
 {
-	return 1;
+	return true;
 }
 
 
@@ -122,7 +122,7 @@ static inline const char* ParseEscapeToken( const char* token )
 }
 
 
-int CHudMenu :: Draw( float flTime )
+bool CHudMenu :: Draw( float flTime )
 {
 	// check for if menu is set to disappear
 	if ( m_flShutoffTime > 0 )
@@ -131,13 +131,13 @@ int CHudMenu :: Draw( float flTime )
 		{  // times up, shutoff
 			m_fMenuDisplayed = 0;
 			m_iFlags &= ~HUD_ACTIVE;
-			return 1;
+			return true;
 		}
 	}
 
 	// don't draw the menu if the scoreboard is being shown
 	if ( gViewPort && gViewPort->IsScoreBoardVisible() )
-		return 1;
+		return true;
 
 	// draw the menu, along the left-hand side of the screen
 
@@ -198,7 +198,7 @@ int CHudMenu :: Draw( float flTime )
 		}
 	}
 	
-	return 1;
+	return true;
 }
 
 // selects an item from the menu
@@ -225,7 +225,7 @@ void CHudMenu :: SelectMenuItem( int menu_item )
 //		byte : a boolean, true if there is more string yet to be received before displaying the menu, false if it's the last string
 //		string: menu string to display
 // if this message is never received, then scores will simply be the combined totals of the players.
-int CHudMenu :: MsgFunc_ShowMenu( const char *pszName, int iSize, void *pbuf )
+bool CHudMenu :: MsgFunc_ShowMenu( const char *pszName, int iSize, void *pbuf )
 {
 	char *temp = nullptr;
 
@@ -275,5 +275,5 @@ int CHudMenu :: MsgFunc_ShowMenu( const char *pszName, int iSize, void *pbuf )
 
 	m_fWaitingForMore = NeedMore;
 
-	return 1;
+	return true;
 }

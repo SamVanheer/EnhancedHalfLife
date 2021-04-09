@@ -128,27 +128,27 @@ TYPEDESCRIPTION	gGlobalEntitySaveData[] =
 };
 
 
-int CGlobalState::Save(CSave& save)
+bool CGlobalState::Save(CSave& save)
 {
 	int i;
 	globalentity_t* pEntity;
 
 	if (!save.WriteFields("GLOBAL", this, m_SaveData, ARRAYSIZE(m_SaveData)))
-		return 0;
+		return false;
 
 	pEntity = m_pList;
 	for (i = 0; i < m_listCount && pEntity; i++)
 	{
 		if (!save.WriteFields("GENT", pEntity, gGlobalEntitySaveData, ARRAYSIZE(gGlobalEntitySaveData)))
-			return 0;
+			return false;
 
 		pEntity = pEntity->pNext;
 	}
 
-	return 1;
+	return true;
 }
 
-int CGlobalState::Restore(CRestore& restore)
+bool CGlobalState::Restore(CRestore& restore)
 {
 	int i, listCount;
 	globalentity_t tmpEntity;
@@ -156,7 +156,7 @@ int CGlobalState::Restore(CRestore& restore)
 
 	ClearStates();
 	if (!restore.ReadFields("GLOBAL", this, m_SaveData, ARRAYSIZE(m_SaveData)))
-		return 0;
+		return false;
 
 	listCount = m_listCount;	// Get new list count
 	m_listCount = 0;				// Clear loaded data
@@ -164,10 +164,10 @@ int CGlobalState::Restore(CRestore& restore)
 	for (i = 0; i < listCount; i++)
 	{
 		if (!restore.ReadFields("GENT", &tmpEntity, gGlobalEntitySaveData, ARRAYSIZE(gGlobalEntitySaveData)))
-			return 0;
+			return false;
 		EntityAdd(MAKE_STRING(tmpEntity.name), MAKE_STRING(tmpEntity.levelName), tmpEntity.state);
 	}
-	return 1;
+	return true;
 }
 
 void CGlobalState::EntityUpdate(string_t globalname, string_t mapname)

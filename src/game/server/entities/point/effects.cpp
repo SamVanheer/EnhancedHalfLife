@@ -42,8 +42,8 @@ public:
 	void	EXPORT FizzThink();
 	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	int		ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -391,8 +391,8 @@ public:
 		return false;
 	}
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void	BeamUpdateVars();
@@ -625,14 +625,14 @@ void CLightning::StrikeUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 }
 
 
-int IsPointEntity( CBaseEntity *pEnt )
+bool IsPointEntity( CBaseEntity *pEnt )
 {
 	if ( !pEnt->pev->modelindex )
-		return 1;
+		return true;
 	if ( FClassnameIs( pEnt->pev, "info_target" ) || FClassnameIs( pEnt->pev, "info_landmark" ) || FClassnameIs( pEnt->pev, "path_corner" ) )
-		return 1;
+		return true;
 
-	return 0;
+	return false;
 }
 
 
@@ -1041,11 +1041,11 @@ void CLaser::KeyValue( KeyValueData *pkvd )
 }
 
 
-int CLaser::IsOn()
+bool CLaser::IsOn()
 {
 	if (pev->effects & EF_NODRAW)
-		return 0;
-	return 1;
+		return false;
+	return true;
 }
 
 
@@ -1117,8 +1117,8 @@ public:
 	void Spawn() override;
 	void Think() override;
 	void Animate( float frames );
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	float		m_lastTime;
@@ -1355,8 +1355,8 @@ public:
 
 	virtual CGib *CreateGib();
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int	m_iGibs;

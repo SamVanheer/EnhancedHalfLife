@@ -39,8 +39,8 @@ public:
 	void	KeyValue( KeyValueData *pkvd ) override;
 	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 	
@@ -388,18 +388,18 @@ void CBaseButton::KeyValue( KeyValueData *pkvd )
 //
 // ButtonShot
 //
-int CBaseButton::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+bool CBaseButton::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	BUTTON_CODE code = ButtonResponseToTouch();
 	
 	if ( code == BUTTON_NOTHING )
-		return 0;
+		return false;
 	// Temporarily disable the touch function, until movement is finished.
 	SetTouch(nullptr);
 
 	m_hActivator = CBaseEntity::Instance( pevAttacker );
 	if ( m_hActivator == nullptr)
-		return 0;
+		return false;
 
 	if ( code == BUTTON_RETURN )
 	{
@@ -413,7 +413,7 @@ int CBaseButton::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	else // code == BUTTON_ACTIVATE
 		ButtonActivate( );
 
-	return 0;
+	return false;
 }
 
 /*QUAKED func_button (0 .5 .8) ?
@@ -892,8 +892,8 @@ public:
 	void	UpdateTarget( float value );
 
 	static CMomentaryRotButton *Instance( edict_t *pent ) { return (CMomentaryRotButton *)GET_PRIVATE(pent);}
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -1128,8 +1128,8 @@ public:
 	void	EXPORT SparkStop(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	void	KeyValue(KeyValueData *pkvd) override;
 	
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -1229,7 +1229,7 @@ class CButtonTarget : public CBaseEntity
 public:
 	void Spawn() override;
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
-	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
 	int	ObjectCaps() override;
 	
 };
@@ -1270,9 +1270,9 @@ int	CButtonTarget :: ObjectCaps()
 }
 
 
-int CButtonTarget::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+bool CButtonTarget::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	Use( Instance(pevAttacker), this, USE_TOGGLE, 0 );
 
-	return 1;
+	return true;
 }

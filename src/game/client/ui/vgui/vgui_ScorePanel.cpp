@@ -34,8 +34,8 @@
 team_info_t			 g_TeamInfo[MAX_TEAMS+1];
 int					 g_IsSpectator[MAX_PLAYERS+1];
 
-int HUD_IsGame( const char *game );
-int EV_TFC_IsAllyTeam( int iTeam1, int iTeam2 );
+bool HUD_IsGame( const char *game );
+bool EV_TFC_IsAllyTeam( int iTeam1, int iTeam2 );
 
 // Scoreboard dimensions
 #define SBOARD_TITLE_SIZE_Y			YRES(22)

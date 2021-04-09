@@ -98,8 +98,8 @@ public:
 	bool ShouldSpeak();
 	CUSTOM_SCHEDULES;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	static const char *pAttackHitSounds[];

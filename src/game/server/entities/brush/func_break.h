@@ -32,7 +32,7 @@ public:
 	void DamageSound();
 
 	// breakables use an overridden takedamage
-	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
 	// To spark when hit
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType ) override;
 
@@ -43,8 +43,8 @@ public:
 
 	void EXPORT		Die();
 	int		ObjectCaps() override { return (CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	inline bool		Explodable() { return ExplosionMagnitude() > 0; }
 	inline int		ExplosionMagnitude() { return pev->impulse; }

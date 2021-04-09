@@ -85,8 +85,8 @@ public:
 
 	void		AdjustAnglesForBarrel( Vector &angles, float distance );
 
-	int	Save( CSave &save ) override;
-	int	Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	bool OnControls( entvars_t *pevTest ) override;
@@ -770,8 +770,8 @@ public:
 	void	Think() override;
 	CLaser *GetLaser();
 
-	int	Save( CSave &save ) override;
-	int	Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
@@ -975,8 +975,8 @@ public:
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 	void Think() override;
 
-	int	Save( CSave &save ) override;
-	int	Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static TYPEDESCRIPTION m_SaveData[];
 
 	CFuncTank *m_pTank;

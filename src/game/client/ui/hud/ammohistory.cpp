@@ -101,7 +101,7 @@ void HistoryResource :: CheckClearHistory()
 //
 // Draw Ammo pickup history
 //
-int HistoryResource :: DrawAmmoHistory( float flTime )
+bool HistoryResource :: DrawAmmoHistory( float flTime )
 {
 	for ( int i = 0; i < MAX_HISTORY; i++ )
 	{
@@ -141,7 +141,7 @@ int HistoryResource :: DrawAmmoHistory( float flTime )
 				WEAPON *weap = gWR.GetWeapon( rgAmmoHistory[i].iId );
 
 				if ( !weap )
-					return 1;  // we don't know about the weapon yet, so don't draw anything
+					return true;  // we don't know about the weapon yet, so don't draw anything
 
 				int r, g, b;
 				UnpackRGB(r,g,b, RGB_YELLOWISH);
@@ -180,7 +180,7 @@ int HistoryResource :: DrawAmmoHistory( float flTime )
 	}
 
 
-	return 1;
+	return true;
 }
 
 

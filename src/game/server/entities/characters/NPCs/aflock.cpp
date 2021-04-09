@@ -39,8 +39,8 @@ public:
 	void KeyValue( KeyValueData *pkvd ) override;
 	void SpawnFlock();
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	// Sounds are shared by the flock
@@ -82,8 +82,8 @@ public:
 	bool FPathBlocked();
 	//void KeyValue( KeyValueData *pkvd ) override;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int IsLeader() { return m_pSquadLeader == this; }

@@ -58,7 +58,7 @@ int __MsgFunc_VoiceMask(const char *pszName, int iSize, void *pbuf)
 	if(g_pInternalVoiceStatus)
 		g_pInternalVoiceStatus->HandleVoiceMaskMsg(iSize, pbuf);
 
-	return 1;
+	return true;
 }
 
 int __MsgFunc_ReqState(const char *pszName, int iSize, void *pbuf)
@@ -66,7 +66,7 @@ int __MsgFunc_ReqState(const char *pszName, int iSize, void *pbuf)
 	if(g_pInternalVoiceStatus)
 		g_pInternalVoiceStatus->HandleReqStateMsg(iSize, pbuf);
 
-	return 1;
+	return true;
 }
 
 
@@ -165,7 +165,7 @@ CVoiceStatus::~CVoiceStatus()
 }
 
 
-int CVoiceStatus::Init(
+bool CVoiceStatus::Init(
 	IVoiceStatusHelper *pHelper,
 	Panel **pParentPanel)
 {
@@ -229,11 +229,11 @@ int CVoiceStatus::Init(
 	m_pchGameDir = (char *)malloc(strlen(pchGameDirT) + 1);
 	strcpy(m_pchGameDir, pchGameDirT);
 
-	return 1;
+	return true;
 }
 
 
-int CVoiceStatus::VidInit()
+bool CVoiceStatus::VidInit()
 {
 	FreeBitmaps();
 

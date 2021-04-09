@@ -31,12 +31,12 @@ class CTripmineGrenade : public CGrenade
 	void Spawn() override;
 	void Precache() override;
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 	
 	void EXPORT WarningThink();
 	void EXPORT PowerupThink();
@@ -296,7 +296,7 @@ void CTripmineGrenade :: BeamBreakThink()
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
-int CTripmineGrenade :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CTripmineGrenade :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	if (gpGlobals->time < m_flPowerUp && flDamage < pev->health)
 	{
@@ -373,7 +373,7 @@ void CTripmine::Precache()
 	m_usTripFire = PRECACHE_EVENT( 1, "events/tripfire.sc" );
 }
 
-int CTripmine::GetItemInfo(ItemInfo *p)
+bool CTripmine::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "Trip Mine";
@@ -387,7 +387,7 @@ int CTripmine::GetItemInfo(ItemInfo *p)
 	p->iWeight = TRIPMINE_WEIGHT;
 	p->iFlags = ITEM_FLAG_LIMITINWORLD | ITEM_FLAG_EXHAUSTIBLE;
 
-	return 1;
+	return true;
 }
 
 bool CTripmine::Deploy( )

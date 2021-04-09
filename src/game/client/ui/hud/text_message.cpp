@@ -23,7 +23,7 @@
 
 DECLARE_MESSAGE( m_TextMessage, TextMsg );
 
-int CHudTextMessage::Init()
+bool CHudTextMessage::Init()
 {
 	HOOK_MESSAGE( TextMsg );
 
@@ -31,7 +31,7 @@ int CHudTextMessage::Init()
 
 	Reset();
 
-	return 1;
+	return true;
 };
 
 // Searches through the string for any msg names (indicated by a '#')
@@ -150,7 +150,7 @@ char* ConvertCRtoNL( char *str )
 //   string: message parameter 4
 // any string that starts with the character '#' is a message name, and is used to look up the real message in titles.txt
 // the next (optional) one to four strings are parameters for that string (which can also be message names if they begin with '#')
-int CHudTextMessage::MsgFunc_TextMsg( const char *pszName, int iSize, void *pbuf )
+bool CHudTextMessage::MsgFunc_TextMsg( const char *pszName, int iSize, void *pbuf )
 {
 	BEGIN_READ( pbuf, iSize );
 
@@ -177,7 +177,7 @@ int CHudTextMessage::MsgFunc_TextMsg( const char *pszName, int iSize, void *pbuf
 	char *psz = szBuf[5];
 
 	if ( gViewPort && gViewPort->AllowedToPrintText() == false)
-		return 1;
+		return true;
 
 	switch ( msg_dest )
 	{
@@ -203,5 +203,5 @@ int CHudTextMessage::MsgFunc_TextMsg( const char *pszName, int iSize, void *pbuf
 		break;
 	}
 
-	return 1;
+	return true;
 }

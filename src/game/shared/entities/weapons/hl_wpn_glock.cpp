@@ -56,7 +56,7 @@ void CGlock::Precache()
 	m_usFireGlock2 = PRECACHE_EVENT( 1, "events/glock2.sc" );
 }
 
-int CGlock::GetItemInfo(ItemInfo *p)
+bool CGlock::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "9mm";
@@ -70,7 +70,7 @@ int CGlock::GetItemInfo(ItemInfo *p)
 	p->iId = m_iId = WEAPON_GLOCK;
 	p->iWeight = GLOCK_WEIGHT;
 
-	return 1;
+	return true;
 }
 
 bool CGlock::Deploy( )

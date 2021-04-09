@@ -38,8 +38,8 @@ public:
 	// This is done to fix spawn flag collisions between this class and a derived class
 	virtual bool IsTogglePlat() { return (pev->spawnflags & SF_PLAT_TOGGLE) ? true : false; }
 
-	int	Save( CSave &save ) override;
-	int	Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	byte	m_bMoveSnd;			// sound a plat makes while moving
@@ -531,8 +531,8 @@ public:
 	void	HitBottom() override;
 	
 	void			RotMove( Vector &destAngle, float time );
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	Vector	m_end, m_start;
@@ -647,8 +647,8 @@ public:
 
 	void EXPORT Wait();
 	void EXPORT Next();
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	entvars_t	*m_pevCurrentTarget;
@@ -1647,8 +1647,8 @@ public:
 	void			EnableUse() { m_use = 1; }
 	int				UseEnabled() { return m_use; }
 
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void	OverrideReset() override;
@@ -2122,13 +2122,13 @@ public:
 
 	int				BloodColor() override { return DONT_BLEED; }
 	int				Classify() override { return CLASS_MACHINE; }
-	int				TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 	void			Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 	Vector			BodyTarget( const Vector &posSrc ) override { return pev->origin; }
 
 	int	ObjectCaps() override { return CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -2251,7 +2251,7 @@ void CGunTarget::Stop()
 }
 
 
-int	CGunTarget::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool	CGunTarget::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	if ( pev->health > 0 )
 	{
@@ -2264,7 +2264,7 @@ int	CGunTarget::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, flo
 				FireTargets( STRING(pev->message), this, this, USE_TOGGLE, 0 );
 		}
 	}
-	return 0;
+	return false;
 }
 
 

@@ -37,8 +37,8 @@ constexpr int CONTROLLER_FLINCH_DELAY = 2;		// at most one flinch every n secs
 class CController : public CSquadMonster
 {
 public:
-	int		Save( CSave &save ) override;
-	int		Restore( CRestore &restore ) override;
+	bool Save(CSave& save) override;
+	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void Spawn() override;
@@ -82,7 +82,7 @@ public:
 	static const char *pPainSounds[];
 	static const char *pDeathSounds[];
 
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
 	void GibMonster() override;
 
@@ -175,7 +175,7 @@ void CController :: SetYawSpeed ()
 	pev->yaw_speed = ys;
 }
 
-int CController :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CController :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	// HACK HACK -- until we fix this.
 	if ( IsAlive() )
