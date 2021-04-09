@@ -127,7 +127,7 @@ inline entvars_t *VARS(entvars_t *pev)					{ return pev; }
 inline entvars_t *VARS(edict_t *pent)			
 { 
 	if ( !pent )
-		return NULL;
+		return nullptr;
 
 	return &pent->v; 
 }
@@ -142,8 +142,8 @@ inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, ent
 // Testing the three types of "entity" for nullity
 constexpr EOFFSET eoNullEntity = 0;
 inline bool FNullEnt(EOFFSET eoffset)			{ return eoffset == 0; }
-inline bool FNullEnt(const edict_t* pent)	{ return pent == NULL || FNullEnt(OFFSET(pent)); }
-inline bool FNullEnt(entvars_t* pev)				{ return pev == NULL || FNullEnt(OFFSET(pev)); }
+inline bool FNullEnt(const edict_t* pent)	{ return pent == nullptr || FNullEnt(OFFSET(pent)); }
+inline bool FNullEnt(entvars_t* pev)				{ return pev == nullptr || FNullEnt(OFFSET(pev)); }
 
 // Testing strings for nullity
 constexpr string_t iStringNull = 0;
@@ -211,7 +211,7 @@ CBaseEntity	*UTIL_FindEntityByTargetname(CBaseEntity *pStartEntity, const char *
 CBaseEntity	*UTIL_FindEntityGeneric(const char *szName, Vector &vecSrc, float flRadius );
 
 // returns a CBaseEntity pointer to a player by index.  Only returns if the player is spawned and connected
-// otherwise returns NULL
+// otherwise returns nullptr
 // Index is 1 based
 CBaseEntity	*UTIL_PlayerByIndex( int playerIndex );
 
@@ -286,8 +286,10 @@ void			UTIL_BubbleTrail( Vector from, Vector to, int count );
 void			UTIL_PrecacheOther( const char *szClassname );
 
 // prints a message to each client
-void			UTIL_ClientPrintAll( int msg_dest, const char *msg_name, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL, const char *param4 = NULL );
-inline void			UTIL_CenterPrintAll( const char *msg_name, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL, const char *param4 = NULL ) 
+void			UTIL_ClientPrintAll( int msg_dest, const char *msg_name,
+	const char *param1 = nullptr, const char *param2 = nullptr, const char *param3 = nullptr, const char *param4 = nullptr);
+inline void			UTIL_CenterPrintAll( const char *msg_name,
+	const char *param1 = nullptr, const char *param2 = nullptr, const char *param3 = nullptr, const char *param4 = nullptr)
 {
 	UTIL_ClientPrintAll( HUD_PRINTCENTER, msg_name, param1, param2, param3, param4 );
 }
@@ -297,7 +299,8 @@ class CBasePlayer;
 bool UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon );
 
 // prints messages through the HUD
-void ClientPrint( entvars_t *client, int msg_dest, const char *msg_name, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL, const char *param4 = NULL );
+void ClientPrint( entvars_t *client, int msg_dest, const char *msg_name,
+	const char *param1 = nullptr, const char *param2 = nullptr, const char *param3 = nullptr, const char *param4 = nullptr);
 
 // prints a message to the HUD say (chat)
 void			UTIL_SayText( const char *pText, CBaseEntity *pEntity );
@@ -346,7 +349,7 @@ int BuildChangeList( LEVELLIST *pLevelList, int maxList );
 //
 #ifdef	DEBUG
 void DBG_AssertFunction(bool fExpr, const char* szExpr, const char* szFile, int szLine, const char* szMessage);
-#define ASSERT(f)		DBG_AssertFunction(f, #f, __FILE__, __LINE__, NULL)
+#define ASSERT(f)		DBG_AssertFunction(f, #f, __FILE__, __LINE__, nullptr)
 #define ASSERTSZ(f, sz)	DBG_AssertFunction(f, #f, __FILE__, __LINE__, sz)
 #else	// !DEBUG
 #define ASSERT(f)

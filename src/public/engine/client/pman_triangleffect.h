@@ -43,7 +43,7 @@ public:
 #ifdef _WIN32
              throw "Error in requested size of new particle class instance.";
 #else
-			return NULL;
+			return nullptr;
 #endif
 		
       return((CCoreTriangleEffect *) CMiniMem::Instance()->newBlock());

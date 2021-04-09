@@ -170,7 +170,7 @@ bool CHoundeye :: FCanActiveIdle ()
 		{
 			CSquadMonster *pMember = pSquadLeader->MySquadMember(i);
 			 
-			if ( pMember != NULL && pMember != this && pMember->m_iHintNode != NO_NODE )
+			if ( pMember != nullptr && pMember != this && pMember->m_iHintNode != NO_NODE )
 			{
 				// someone else in the group is active idling right now!
 				return false;
@@ -610,9 +610,9 @@ void CHoundeye :: SonicAttack ()
 	MESSAGE_END();
 
 
-	CBaseEntity *pEntity = NULL;
+	CBaseEntity *pEntity = nullptr;
 	// iterate on all entities in the vicinity.
-	while ((pEntity = UTIL_FindEntityInSphere( pEntity, pev->origin, HOUNDEYE_MAX_ATTACK_RADIUS )) != NULL)
+	while ((pEntity = UTIL_FindEntityInSphere( pEntity, pev->origin, HOUNDEYE_MAX_ATTACK_RADIUS )) != nullptr)
 	{
 		if ( pEntity->pev->takedamage != DAMAGE_NO )
 		{
@@ -1156,7 +1156,7 @@ Schedule_t* CHoundeye :: GetScheduleOfType ( int Type )
 			CSound *pWakeSound;
 
 			pWakeSound = PBestSound();
-			ASSERT( pWakeSound != NULL );
+			ASSERT( pWakeSound != nullptr );
 			if ( pWakeSound )
 			{
 				MakeIdealYaw ( pWakeSound->m_vecOrigin );

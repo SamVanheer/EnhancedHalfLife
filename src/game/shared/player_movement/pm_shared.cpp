@@ -111,7 +111,7 @@ void PM_InitTextureTypes()
 	gcTextures = 0;
 
 	const int fileSize = pmove->COM_FileSize( "sound/materials.txt" );
-	byte* pMemFile = pmove->COM_LoadFile( "sound/materials.txt", 5, NULL );
+	byte* pMemFile = pmove->COM_LoadFile( "sound/materials.txt", 5, nullptr);
 	if ( !pMemFile )
 		return;
 
@@ -119,7 +119,7 @@ void PM_InitTextureTypes()
 
 	int filePos = 0;
 	// for each line in the file...
-	while ( pmove->memfgets( pMemFile, fileSize, &filePos, buffer, 511 ) != NULL && (gcTextures < CTEXTURESMAX) )
+	while ( pmove->memfgets( pMemFile, fileSize, &filePos, buffer, 511 ) != nullptr && (gcTextures < CTEXTURESMAX) )
 	{
 		// skip whitespace
 		int i = 0;
@@ -455,13 +455,13 @@ void PM_UpdateStepSound()
 			fvol = 0.35;
 			pmove->flTimeStepSound = 350;
 		}
-		else if ( pmove->PM_PointContents ( knee, NULL ) == CONTENTS_WATER )
+		else if ( pmove->PM_PointContents ( knee, nullptr) == CONTENTS_WATER )
 		{
 			step = StepType::Wade;
 			fvol = 0.65;
 			pmove->flTimeStepSound = 600;
 		}
-		else if ( pmove->PM_PointContents ( feet, NULL ) == CONTENTS_WATER )
+		else if ( pmove->PM_PointContents ( feet, nullptr) == CONTENTS_WATER )
 		{
 			step = StepType::Slosh;
 			fvol = fWalking ? 0.2 : 0.5;
@@ -1325,7 +1325,7 @@ bool PM_CheckWater ()
 
 		// Now check a point that is at the player hull midpoint.
 		point[2] = pmove->origin[2] + heightover2;
-		cont = pmove->PM_PointContents (point, NULL );
+		cont = pmove->PM_PointContents (point, nullptr);
 		// If that point is also under water...
 		if (cont <= CONTENTS_WATER && cont > CONTENTS_TRANSLUCENT )
 		{
@@ -1335,7 +1335,7 @@ bool PM_CheckWater ()
 			// Now check the eye position.  (view_ofs is relative to the origin)
 			point[2] = pmove->origin[2] + pmove->view_ofs[2];
 
-			cont = pmove->PM_PointContents (point, NULL );
+			cont = pmove->PM_PointContents (point, nullptr);
 			if (cont <= CONTENTS_WATER && cont > CONTENTS_TRANSLUCENT ) 
 				pmove->waterlevel = 3;  // In over our eyes
 		}
@@ -1473,7 +1473,7 @@ bool PM_CheckStuck ()
 	{
 		// World or BSP model
 		if ( ( hitent == 0 ) ||
-			 ( pmove->physents[hitent].model != NULL ) )
+			 ( pmove->physents[hitent].model != nullptr) )
 		{
 			std::size_t nReps = 0;
 			PM_ResetStuckOffsets( pmove->player_index, pmove->server );
@@ -1518,7 +1518,7 @@ bool PM_CheckStuck ()
 	const int i = PM_GetRandomStuckOffsets(pmove->player_index, pmove->server, offset);
 
 	Vector test = base + offset;
-	if ( ( hitent = pmove->PM_TestPlayerPosition ( test, NULL ) ) == -1 )
+	if ( ( hitent = pmove->PM_TestPlayerPosition ( test, nullptr) ) == -1 )
 	{
 		//Con_DPrintf("Nudged\n");
 
@@ -1547,7 +1547,7 @@ bool PM_CheckStuck ()
 				{
 					test = base + Vector(x, y, z);
 
-					if ( pmove->PM_TestPlayerPosition ( test, NULL ) == -1 )
+					if ( pmove->PM_TestPlayerPosition ( test, nullptr) == -1 )
 					{
 						pmove->origin = test;
 						return false;
@@ -1697,7 +1697,7 @@ float PM_SplineFraction( float value, float scale )
 
 void PM_FixPlayerCrouchStuck( int direction )
 {
-	int hitent = pmove->PM_TestPlayerPosition ( pmove->origin, NULL );
+	int hitent = pmove->PM_TestPlayerPosition ( pmove->origin, nullptr);
 	if (hitent == -1 )
 		return;
 	
@@ -1705,7 +1705,7 @@ void PM_FixPlayerCrouchStuck( int direction )
 	for ( int i = 0; i < 36; i++ )
 	{
 		pmove->origin[2] += direction;
-		hitent = pmove->PM_TestPlayerPosition ( pmove->origin, NULL );
+		hitent = pmove->PM_TestPlayerPosition ( pmove->origin, nullptr);
 		if (hitent == -1 )
 			return;
 	}
@@ -1861,7 +1861,7 @@ void PM_LadderMove( physent_t *pLadder )
 	Vector floor = pmove->origin;
 	floor[2] += pmove->player_mins[pmove->usehull][2] - 1;
 
-	const bool onFloor = pmove->PM_PointContents(floor, NULL) == CONTENTS_SOLID;
+	const bool onFloor = pmove->PM_PointContents(floor, nullptr) == CONTENTS_SOLID;
 
 	pmove->gravity = 0;
 	trace_t trace;
@@ -1877,7 +1877,7 @@ void PM_LadderMove( physent_t *pLadder )
 		}
 
 		Vector vpn, v_right;
-		AngleVectors( pmove->angles, &vpn, &v_right, NULL );
+		AngleVectors( pmove->angles, &vpn, &v_right, nullptr);
 
 		if ( pmove->flags & FL_DUCKING )
 		{
@@ -1979,7 +1979,7 @@ physent_t *PM_Ladder()
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -2705,7 +2705,7 @@ void PM_PlayerMove (bool server )
 	}
 
 	g_onladder = false;
-	physent_t* pLadder = NULL;
+	physent_t* pLadder = nullptr;
 	// Don't run ladder code if dead or on a train
 	if ( !pmove->dead && !(pmove->flags & FL_ONTRAIN) )
 	{

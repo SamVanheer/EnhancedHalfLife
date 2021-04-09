@@ -390,13 +390,13 @@ void CNihilanth::StartupThink()
 
 	CBaseEntity *pEntity;
 
-	pEntity = UTIL_FindEntityByTargetname( NULL, "n_min");
+	pEntity = UTIL_FindEntityByTargetname( nullptr, "n_min");
 	if (pEntity)
 		m_flMinZ = pEntity->pev->origin.z;
 	else
 		m_flMinZ = -4096;
 
-	pEntity = UTIL_FindEntityByTargetname( NULL, "n_max");
+	pEntity = UTIL_FindEntityByTargetname( nullptr, "n_max");
 	if (pEntity)
 		m_flMaxZ = pEntity->pev->origin.z;
 	else
@@ -407,7 +407,7 @@ void CNihilanth::StartupThink()
 	{
 		EmitSphere( );
 	}
-	m_hRecharger = NULL;
+	m_hRecharger = nullptr;
 
 	SetThink( &CNihilanth::HuntThink);
 	SetUse( &CNihilanth::CommandUse );
@@ -466,7 +466,7 @@ void CNihilanth :: DyingThink()
 		else
 		{
 			UTIL_Remove( m_pBall );
-			m_pBall = NULL;
+			m_pBall = nullptr;
 		}
 	}
 
@@ -543,7 +543,7 @@ void CNihilanth::CrashTouch( CBaseEntity *pOther )
 	// only crash if we hit something solid
 	if ( pOther->pev->solid == SOLID_BSP) 
 	{
-		SetTouch( NULL );
+		SetTouch( nullptr );
 		pev->nextthink = gpGlobals->time;
 	}
 }
@@ -594,7 +594,7 @@ void CNihilanth :: ShootBalls()
 		
 		while (m_flShootTime < m_flShootEnd && m_flShootTime < gpGlobals->time)
 		{
-			if (m_hEnemy != NULL)
+			if (m_hEnemy != nullptr)
 			{
 				Vector vecSrc, vecDir;
 				CNihilanthHVR *pEntity;
@@ -629,14 +629,14 @@ void CNihilanth :: MakeFriend( Vector vecStart )
 
 	for (i = 0; i < 3; i++)
 	{
-		if (m_hFriend[i] != NULL && !m_hFriend[i]->IsAlive())
+		if (m_hFriend[i] != nullptr && !m_hFriend[i]->IsAlive())
 		{
 			if (pev->rendermode == kRenderNormal) // don't do it if they are already fading
 				m_hFriend[i]->MyMonsterPointer()->FadeMonster( );
-			m_hFriend[i] = NULL;
+			m_hFriend[i] = nullptr;
 		}
 
-		if (m_hFriend[i] == NULL)
+		if (m_hFriend[i] == nullptr)
 		{
 			if (RANDOM_LONG(0, 1) == 0)
 			{
@@ -645,7 +645,7 @@ void CNihilanth :: MakeFriend( Vector vecStart )
 				{
 					CNode &node = WorldGraph.Node( iNode );
 					TraceResult tr;
-					UTIL_TraceHull( node.m_vecOrigin + Vector( 0, 0, 32 ), node.m_vecOrigin + Vector( 0, 0, 32 ), dont_ignore_monsters, large_hull, NULL, &tr );
+					UTIL_TraceHull( node.m_vecOrigin + Vector( 0, 0, 32 ), node.m_vecOrigin + Vector( 0, 0, 32 ), dont_ignore_monsters, large_hull, nullptr, &tr );
 					if (tr.fStartSolid == 0)
 						m_hFriend[i] = Create("monster_alien_controller", node.m_vecOrigin, pev->angles );
 				}
@@ -657,12 +657,12 @@ void CNihilanth :: MakeFriend( Vector vecStart )
 				{
 					CNode &node = WorldGraph.Node( iNode );
 					TraceResult tr;
-					UTIL_TraceHull( node.m_vecOrigin + Vector( 0, 0, 36 ), node.m_vecOrigin + Vector( 0, 0, 36 ), dont_ignore_monsters, human_hull, NULL, &tr );
+					UTIL_TraceHull( node.m_vecOrigin + Vector( 0, 0, 36 ), node.m_vecOrigin + Vector( 0, 0, 36 ), dont_ignore_monsters, human_hull, nullptr, &tr );
 					if (tr.fStartSolid == 0)
 						m_hFriend[i] = Create("monster_alien_slave", node.m_vecOrigin, pev->angles );
 				}
 			}
-			if (m_hFriend[i] != NULL)
+			if (m_hFriend[i] != nullptr)
 			{
 				EMIT_SOUND( m_hFriend[i]->edict(), CHAN_WEAPON, "debris/beamstart7.wav", 1.0, ATTN_NORM );
 			}
@@ -679,7 +679,7 @@ void CNihilanth :: NextActivity( )
 
 	if (m_irritation >= 2)
 	{
-		if (m_pBall == NULL)
+		if (m_pBall == nullptr)
 		{
 			m_pBall = CSprite::SpriteCreate( "sprites/tele1.spr", pev->origin, true);
 			if (m_pBall)
@@ -710,17 +710,17 @@ void CNihilanth :: NextActivity( )
 		}
 	}
 
-	if ((pev->health < gSkillData.nihilanthHealth / 2 || m_iActiveSpheres < N_SPHERES / 2) && m_hRecharger == NULL && m_iLevel <= 9)
+	if ((pev->health < gSkillData.nihilanthHealth / 2 || m_iActiveSpheres < N_SPHERES / 2) && m_hRecharger == nullptr && m_iLevel <= 9)
 	{
 		char szName[128];
 
-		CBaseEntity *pEnt = NULL;
-		CBaseEntity *pRecharger = NULL;
+		CBaseEntity *pEnt = nullptr;
+		CBaseEntity *pRecharger = nullptr;
 		float flDist = 8192;
 
 		sprintf(szName, "%s%d", m_szRechargerTarget, m_iLevel );
 
-		while ((pEnt = UTIL_FindEntityByTargetname( pEnt, szName )) != NULL)
+		while ((pEnt = UTIL_FindEntityByTargetname( pEnt, szName )) != nullptr)
 		{
 			float flLocal = (pEnt->pev->origin - pev->origin).Length();
 			if (flLocal < flDist)
@@ -740,7 +740,7 @@ void CNihilanth :: NextActivity( )
 		}
 		else
 		{
-			m_hRecharger = NULL;
+			m_hRecharger = nullptr;
 			ALERT( at_aiconsole, "nihilanth can't find %s\n", szName );
 			m_iLevel++;
 			if (m_iLevel > 9)
@@ -751,7 +751,7 @@ void CNihilanth :: NextActivity( )
 	float flDist = (m_posDesired - pev->origin).Length();
 	float flDot = DotProduct( m_vecDesired, gpGlobals->v_forward );
 
-	if (m_hRecharger != NULL)
+	if (m_hRecharger != nullptr)
 	{
 		// at we at power up yet?
 		if (flDist < 128.0)
@@ -776,23 +776,23 @@ void CNihilanth :: NextActivity( )
 		return;
 	}
 
-	if (m_hEnemy != NULL && !m_hEnemy->IsAlive())
+	if (m_hEnemy != nullptr && !m_hEnemy->IsAlive())
 	{
-		m_hEnemy = NULL;
+		m_hEnemy = nullptr;
 	}
 
 	if (m_flLastSeen + 15 < gpGlobals->time)
 	{
-		m_hEnemy = NULL;
+		m_hEnemy = nullptr;
 	}
 
-	if (m_hEnemy == NULL)
+	if (m_hEnemy == nullptr)
 	{
 		Look( 4096 );
 		m_hEnemy = BestVisibleEnemy( );
 	}
 
-	if (m_hEnemy != NULL && m_irritation != 0)
+	if (m_hEnemy != nullptr && m_irritation != 0)
 	{
 		if (m_flLastSeen + 5 > gpGlobals->time && flDist < 256 && flDot > 0)
 		{
@@ -811,12 +811,12 @@ void CNihilanth :: NextActivity( )
 					char szText[128];
 
 					sprintf( szText, "%s%d", m_szTeleportTouch, m_iTeleport );
-					CBaseEntity *pTouch = UTIL_FindEntityByTargetname( NULL, szText );
+					CBaseEntity *pTouch = UTIL_FindEntityByTargetname( nullptr, szText );
 
 					sprintf( szText, "%s%d", m_szTeleportUse, m_iTeleport );
-					CBaseEntity *pTrigger = UTIL_FindEntityByTargetname( NULL, szText );
+					CBaseEntity *pTrigger = UTIL_FindEntityByTargetname( nullptr, szText );
 
-					if (pTrigger != NULL || pTouch != NULL)
+					if (pTrigger != nullptr || pTouch != nullptr)
 					{
 						pev->sequence = LookupSequence( "attack2" ); // teleport
 					}
@@ -869,7 +869,7 @@ void CNihilanth :: HuntThink()
 	}
 
 	// look for current enemy	
-	if (m_hEnemy != NULL && m_hRecharger == NULL)
+	if (m_hEnemy != nullptr && m_hRecharger == nullptr)
 	{
 		if (FVisible( m_hEnemy ))
 		{
@@ -972,11 +972,11 @@ bool CNihilanth :: AbsorbSphere()
 {
 	for (int i = 0; i < N_SPHERES; i++)
 	{
-		if (m_hSphere[i] != NULL)
+		if (m_hSphere[i] != nullptr)
 		{
 			CNihilanthHVR *pSphere = (CNihilanthHVR *)((CBaseEntity *)m_hSphere[i]);
 			pSphere->AbsorbInit( );
-			m_hSphere[i] = NULL;
+			m_hSphere[i] = nullptr;
 			m_iActiveSpheres--;
 			return true;
 		}
@@ -992,7 +992,7 @@ bool CNihilanth :: EmitSphere()
 
 	for (int i = 0; i < N_SPHERES; i++)
 	{
-		if (m_hSphere[i] != NULL)
+		if (m_hSphere[i] != nullptr)
 		{
 			m_iActiveSpheres++;
 		}
@@ -1021,10 +1021,10 @@ void CNihilanth :: 	TargetSphere( USE_TYPE useType, float value )
 	int i;
 	for (i = 0; i < N_SPHERES; i++)
 	{
-		if (m_hSphere[i] != NULL)
+		if (m_hSphere[i] != nullptr)
 		{
 			pSphere = m_hSphere[i]->MyMonsterPointer();
-			if (pSphere->m_hEnemy == NULL)
+			if (pSphere->m_hEnemy == nullptr)
 				break;
 		}
 	}
@@ -1049,7 +1049,7 @@ void CNihilanth :: HandleAnimEvent( MonsterEvent_t *pEvent )
 	case 1:	// shoot 
 		break;
 	case 2:	// zen
-		if (m_hEnemy != NULL)
+		if (m_hEnemy != nullptr)
 		{
 			if (RANDOM_LONG(0,4) == 0)
 				EMIT_SOUND( edict(), CHAN_VOICE, RANDOM_SOUND_ARRAY( pAttackSounds ), 1.0, 0.2 ); 
@@ -1089,17 +1089,17 @@ void CNihilanth :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		}
 		break;
 	case 3:	// prayer
-		if (m_hEnemy != NULL)
+		if (m_hEnemy != nullptr)
 		{
 			char szText[128];
 
 			sprintf( szText, "%s%d", m_szTeleportTouch, m_iTeleport );
-			CBaseEntity *pTouch = UTIL_FindEntityByTargetname( NULL, szText );
+			CBaseEntity *pTouch = UTIL_FindEntityByTargetname( nullptr, szText );
 
 			sprintf( szText, "%s%d", m_szTeleportUse, m_iTeleport );
-			CBaseEntity *pTrigger = UTIL_FindEntityByTargetname( NULL, szText );
+			CBaseEntity *pTrigger = UTIL_FindEntityByTargetname( nullptr, szText );
 
-			if (pTrigger != NULL || pTouch != NULL)
+			if (pTrigger != nullptr || pTouch != nullptr)
 			{
 				EMIT_SOUND( edict(), CHAN_VOICE, RANDOM_SOUND_ARRAY( pAttackSounds ), 1.0, 0.2 ); 
 
@@ -1152,11 +1152,11 @@ void CNihilanth :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		break;
 	case 4:	// get a sphere
 		{
-			if (m_hRecharger != NULL)
+			if (m_hRecharger != nullptr)
 			{
 				if (!EmitSphere( ))
 				{
-					m_hRecharger = NULL;
+					m_hRecharger = nullptr;
 				}
 			}
 		}
@@ -1167,7 +1167,7 @@ void CNihilanth :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		}
 		break;
 	case 6:
-		if (m_hEnemy != NULL)
+		if (m_hEnemy != nullptr)
 		{
 			Vector vecSrc, vecAngles;
 			GetAttachment( 2, vecSrc, vecAngles ); 
@@ -1196,19 +1196,19 @@ void CNihilanth::CommandUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 	{
 	case USE_OFF:
 		{
-			CBaseEntity *pTouch = UTIL_FindEntityByTargetname( NULL, m_szDeadTouch );
+			CBaseEntity *pTouch = UTIL_FindEntityByTargetname( nullptr, m_szDeadTouch );
 
 			if ( pTouch )
 			{
-				if ( m_hEnemy != NULL )
+				if ( m_hEnemy != nullptr )
 				{
 					pTouch->Touch( m_hEnemy );
 				}
 				// if the player is using "notarget", the ending sequence won't fire unless we catch it here
 				else
 				{
-					CBaseEntity *pEntity = UTIL_FindEntityByClassname( NULL, "player" );				
-					if ( pEntity != NULL && pEntity->IsAlive() )
+					CBaseEntity *pEntity = UTIL_FindEntityByClassname( nullptr, "player" );				
+					if ( pEntity != nullptr && pEntity->IsAlive() )
 					{
 						pTouch->Touch( pEntity );
 					}
@@ -1275,9 +1275,9 @@ CBaseEntity *CNihilanth::RandomTargetname( const char *szName )
 {
 	int total = 0;
 
-	CBaseEntity *pEntity = NULL;
-	CBaseEntity *pNewEntity = NULL;
-	while ((pNewEntity = UTIL_FindEntityByTargetname( pNewEntity, szName )) != NULL)
+	CBaseEntity *pEntity = nullptr;
+	CBaseEntity *pNewEntity = nullptr;
+	while ((pNewEntity = UTIL_FindEntityByTargetname( pNewEntity, szName )) != nullptr)
 	{
 		total++;
 		if (RANDOM_LONG(0,total-1) < 1)
@@ -1357,9 +1357,9 @@ CBaseEntity *CNihilanthHVR::RandomClassname( const char *szName )
 {
 	int total = 0;
 
-	CBaseEntity *pEntity = NULL;
-	CBaseEntity *pNewEntity = NULL;
-	while ((pNewEntity = UTIL_FindEntityByClassname( pNewEntity, szName )) != NULL)
+	CBaseEntity *pEntity = nullptr;
+	CBaseEntity *pNewEntity = nullptr;
+	while ((pNewEntity = UTIL_FindEntityByClassname( pNewEntity, szName )) != nullptr)
 	{
 		total++;
 		if (RANDOM_LONG(0,total-1) < 1)
@@ -1372,7 +1372,7 @@ void CNihilanthHVR :: HoverThink()
 {
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	if (m_hTargetEnt != NULL)
+	if (m_hTargetEnt != nullptr)
 	{
 		CircleTarget( m_hTargetEnt->pev->origin + Vector( 0, 0, 16 * N_SCALE ) );
 	}
@@ -1460,9 +1460,10 @@ void CNihilanthHVR :: ZapThink()
 	pev->nextthink = gpGlobals->time + 0.05;
 
 	// check world boundaries
-	if (m_hEnemy == NULL ||  pev->origin.x < -4096 || pev->origin.x > 4096 || pev->origin.y < -4096 || pev->origin.y > 4096 || pev->origin.z < -4096 || pev->origin.z > 4096)
+	//TODO: define world boundary constant
+	if (m_hEnemy == nullptr ||  pev->origin.x < -4096 || pev->origin.x > 4096 || pev->origin.y < -4096 || pev->origin.y > 4096 || pev->origin.z < -4096 || pev->origin.z > 4096)
 	{
-		SetTouch( NULL );
+		SetTouch( nullptr );
 		UTIL_Remove( this );
 		return;
 	}
@@ -1482,7 +1483,7 @@ void CNihilanthHVR :: ZapThink()
 		UTIL_TraceLine( pev->origin, m_hEnemy->Center(), dont_ignore_monsters, edict(), &tr );
 
 		CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
-		if (pEntity != NULL && pEntity->pev->takedamage)
+		if (pEntity != nullptr && pEntity->pev->takedamage)
 		{
 			ClearMultiDamage( );
 			pEntity->TraceAttack( pev, gSkillData.nihilanthZap, pev->velocity, &tr, DMG_SHOCK );
@@ -1510,7 +1511,7 @@ void CNihilanthHVR :: ZapThink()
 
 		UTIL_EmitAmbientSound( edict(), tr.vecEndPos, "weapons/electro4.wav", 0.5, ATTN_NORM, 0, RANDOM_LONG( 140, 160 ) );
 
-		SetTouch( NULL );
+		SetTouch( nullptr );
 		UTIL_Remove( this );
 		pev->nextthink = gpGlobals->time + 0.2;
 		return;
@@ -1550,7 +1551,7 @@ void CNihilanthHVR::ZapTouch( CBaseEntity *pOther )
 	}
 	*/
 
-	SetTouch( NULL );
+	SetTouch( nullptr );
 	UTIL_Remove( this );
 	pev->nextthink = gpGlobals->time + 0.2;
 }
@@ -1603,7 +1604,7 @@ void CNihilanthHVR :: TeleportThink()
 	pev->nextthink = gpGlobals->time + 0.1;
 
 	// check world boundaries
-	if (m_hEnemy == NULL || !m_hEnemy->IsAlive() || pev->origin.x < -4096 || pev->origin.x > 4096 || pev->origin.y < -4096 || pev->origin.y > 4096 || pev->origin.z < -4096 || pev->origin.z > 4096)
+	if (m_hEnemy == nullptr || !m_hEnemy->IsAlive() || pev->origin.x < -4096 || pev->origin.x > 4096 || pev->origin.y < -4096 || pev->origin.y > 4096 || pev->origin.z < -4096 || pev->origin.z > 4096)
 	{
 		STOP_SOUND(edict(), CHAN_WEAPON, "x/x_teleattack1.wav" );
 		UTIL_Remove( this );
@@ -1615,10 +1616,10 @@ void CNihilanthHVR :: TeleportThink()
 		STOP_SOUND(edict(), CHAN_WEAPON, "x/x_teleattack1.wav" );
 		UTIL_Remove( this );
 
-		if (m_hTargetEnt != NULL)
+		if (m_hTargetEnt != nullptr)
 			m_hTargetEnt->Use( m_hEnemy, m_hEnemy, USE_ON, 1.0 );
 
-		if ( m_hTouch != NULL && m_hEnemy != NULL )
+		if ( m_hTouch != nullptr && m_hEnemy != nullptr )
 			m_hTouch->Touch( m_hEnemy );
 	}
 	else 
@@ -1673,10 +1674,10 @@ void CNihilanthHVR::TeleportTouch( CBaseEntity *pOther )
 
 	if (pOther == pEnemy)
 	{
-		if (m_hTargetEnt != NULL)
+		if (m_hTargetEnt != nullptr)
 			m_hTargetEnt->Use( pEnemy, pEnemy, USE_ON, 1.0 );
 
-		if (m_hTouch != NULL && pEnemy != NULL )
+		if (m_hTouch != nullptr && pEnemy != nullptr )
 			m_hTouch->Touch( pEnemy );
 	}
 	else
@@ -1684,7 +1685,7 @@ void CNihilanthHVR::TeleportTouch( CBaseEntity *pOther )
 		m_pNihilanth->MakeFriend( pev->origin );
 	}
 
-	SetTouch( NULL );
+	SetTouch( nullptr );
 	STOP_SOUND(edict(), CHAN_WEAPON, "x/x_teleattack1.wav" );
 	UTIL_Remove( this );
 }
@@ -1700,7 +1701,7 @@ void CNihilanthHVR :: DissipateThink()
 	pev->renderamt -= 2;
 	pev->scale += 0.1;
 
-	if (m_hTargetEnt != NULL)
+	if (m_hTargetEnt != nullptr)
 	{
 		CircleTarget( m_hTargetEnt->pev->origin + Vector( 0, 0, 4096 ) );
 	}

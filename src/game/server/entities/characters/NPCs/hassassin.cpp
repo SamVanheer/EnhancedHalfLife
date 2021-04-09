@@ -188,7 +188,7 @@ void CHAssassin :: SetYawSpeed ()
 //=========================================================
 void CHAssassin :: Shoot ()
 {
-	if (m_hEnemy == NULL)
+	if (m_hEnemy == nullptr)
 	{
 		return;
 	}
@@ -623,7 +623,7 @@ IMPLEMENT_CUSTOM_SCHEDULES( CHAssassin, CBaseMonster );
 //=========================================================
 bool CHAssassin :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
-	if ( m_flNextJump < gpGlobals->time && (flDist <= 128 || HasMemory( bits_MEMORY_BADJUMP )) && m_hEnemy != NULL )
+	if ( m_flNextJump < gpGlobals->time && (flDist <= 128 || HasMemory( bits_MEMORY_BADJUMP )) && m_hEnemy != nullptr )
 	{
 		TraceResult	tr;
 
@@ -714,7 +714,7 @@ void CHAssassin :: RunAI()
 
 	// always visible if moving
 	// always visible is not on hard
-	if (g_iSkillLevel != SKILL_HARD || m_hEnemy == NULL || pev->deadflag != DEAD_NO || m_Activity == ACT_RUN || m_Activity == ACT_WALK || !(pev->flags & FL_ONGROUND))
+	if (g_iSkillLevel != SKILL_HARD || m_hEnemy == nullptr || pev->deadflag != DEAD_NO || m_Activity == ACT_RUN || m_Activity == ACT_WALK || !(pev->flags & FL_ONGROUND))
 		m_iTargetRanderamt = 255;
 	else
 		m_iTargetRanderamt = 20;
@@ -841,7 +841,7 @@ Schedule_t *CHAssassin :: GetSchedule ()
 				CSound *pSound;
 				pSound = PBestSound();
 
-				ASSERT( pSound != NULL );
+				ASSERT( pSound != nullptr );
 				if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) )
 				{
 					return GetScheduleOfType( SCHED_TAKE_COVER_FROM_BEST_SOUND );
@@ -889,7 +889,7 @@ Schedule_t *CHAssassin :: GetSchedule ()
 				CSound *pSound;
 				pSound = PBestSound();
 
-				ASSERT( pSound != NULL );
+				ASSERT( pSound != nullptr );
 				if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) )
 				{
 					return GetScheduleOfType( SCHED_TAKE_COVER_FROM_BEST_SOUND );

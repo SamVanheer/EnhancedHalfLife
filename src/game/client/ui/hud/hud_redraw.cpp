@@ -176,7 +176,7 @@ int CHud :: Redraw( float flTime, int intermission )
 		int iFrame = (int)(flTime * 20) % MAX_LOGO_FRAMES;
 		i = grgLogoFrame[iFrame] - 1;
 
-		SPR_DrawAdditive(i, x, y, NULL);
+		SPR_DrawAdditive(i, x, y, nullptr);
 	}
 
 	/*
@@ -197,7 +197,7 @@ int CHud :: Redraw( float flTime, int intermission )
 		SPR_Set(m_hsprCursor, 250, 250, 250 );
 		
 		// Draw the logo at 20 fps
-		SPR_DrawAdditive( 0, mx, my, NULL );
+		SPR_DrawAdditive( 0, mx, my, nullptr );
 	}
 	*/
 

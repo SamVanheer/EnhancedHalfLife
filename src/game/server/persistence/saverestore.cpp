@@ -164,7 +164,7 @@ static int gSizes[FIELD_TYPECOUNT] =
 // Base class includes common SAVERESTOREDATA pointer, and manages the entity table
 CSaveRestoreBuffer::CSaveRestoreBuffer()
 {
-	m_pdata = NULL;
+	m_pdata = nullptr;
 }
 
 
@@ -180,7 +180,7 @@ CSaveRestoreBuffer :: ~CSaveRestoreBuffer()
 
 int	CSaveRestoreBuffer::EntityIndex(CBaseEntity* pEntity)
 {
-	if (pEntity == NULL)
+	if (pEntity == nullptr)
 		return -1;
 	return EntityIndex(pEntity->pev);
 }
@@ -188,7 +188,7 @@ int	CSaveRestoreBuffer::EntityIndex(CBaseEntity* pEntity)
 
 int	CSaveRestoreBuffer::EntityIndex(entvars_t* pevLookup)
 {
-	if (pevLookup == NULL)
+	if (pevLookup == nullptr)
 		return -1;
 	return EntityIndex(ENT(pevLookup));
 }
@@ -201,7 +201,7 @@ int	CSaveRestoreBuffer::EntityIndex(EOFFSET eoLookup)
 
 int	CSaveRestoreBuffer::EntityIndex(edict_t* pentLookup)
 {
-	if (!m_pdata || pentLookup == NULL)
+	if (!m_pdata || pentLookup == nullptr)
 		return -1;
 
 	int i;
@@ -220,7 +220,7 @@ int	CSaveRestoreBuffer::EntityIndex(edict_t* pentLookup)
 edict_t* CSaveRestoreBuffer::EntityFromIndex(int entityIndex)
 {
 	if (!m_pdata || entityIndex < 0)
-		return NULL;
+		return nullptr;
 
 	int i;
 	ENTITYTABLE* pTable;
@@ -231,7 +231,7 @@ edict_t* CSaveRestoreBuffer::EntityFromIndex(int entityIndex)
 		if (pTable->id == entityIndex)
 			return pTable->pent;
 	}
-	return NULL;
+	return nullptr;
 }
 
 
@@ -799,7 +799,7 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 						if (pent)
 							*((entvars_t**)pOutputData) = VARS(pent);
 						else
-							*((entvars_t**)pOutputData) = NULL;
+							*((entvars_t**)pOutputData) = nullptr;
 						break;
 					case FIELD_CLASSPTR:
 						entityIndex = *(int*)pInputData;
@@ -807,7 +807,7 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 						if (pent)
 							*((CBaseEntity**)pOutputData) = CBaseEntity::Instance(pent);
 						else
-							*((CBaseEntity**)pOutputData) = NULL;
+							*((CBaseEntity**)pOutputData) = nullptr;
 						break;
 					case FIELD_EDICT:
 						entityIndex = *(int*)pInputData;
@@ -822,7 +822,7 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 						if (pent)
 							*((EHANDLE*)pOutputData) = CBaseEntity::Instance(pent);
 						else
-							*((EHANDLE*)pOutputData) = NULL;
+							*((EHANDLE*)pOutputData) = nullptr;
 						break;
 					case FIELD_ENTITY:
 						entityIndex = *(int*)pInputData;
@@ -952,7 +952,7 @@ int CRestore::ReadFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pF
 
 void CRestore::BufferReadHeader(HEADER* pheader)
 {
-	ASSERT(pheader != NULL);
+	ASSERT(pheader != nullptr);
 	pheader->size = ReadShort();				// Read field size
 	pheader->token = ReadShort();				// Read field name token
 	pheader->pData = BufferPointer();			// Field Data is next
@@ -1002,14 +1002,14 @@ char* CRestore::ReadNamedString(const char* pName)
 char* CRestore::BufferPointer()
 {
 	if (!m_pdata)
-		return NULL;
+		return nullptr;
 
 	return m_pdata->pCurrentData;
 }
 
 void CRestore::BufferReadBytes(char* pOutput, int size)
 {
-	ASSERT(m_pdata != NULL);
+	ASSERT(m_pdata != nullptr);
 
 	if (!m_pdata || Empty())
 		return;
@@ -1030,7 +1030,7 @@ void CRestore::BufferReadBytes(char* pOutput, int size)
 
 void CRestore::BufferSkipBytes(int bytes)
 {
-	BufferReadBytes(NULL, bytes);
+	BufferReadBytes(nullptr, bytes);
 }
 
 int CRestore::BufferSkipZString()

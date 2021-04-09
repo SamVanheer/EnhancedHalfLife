@@ -21,7 +21,7 @@ private:
     //bool m_bBlockIsInUse;
 public:
     MemoryBlock(long lBlockSize)
-    : next(NULL), prev(NULL)
+    : next(nullptr), prev(nullptr)
       //m_bBlockIsInUse(false) // Initialize block to 'free' state.
     {
         // Allocate memory here.
@@ -43,7 +43,7 @@ public:
 class MemList
 {
 public:
-	MemList() : m_pHead(NULL) {}
+	MemList() : m_pHead(nullptr) {}
 
 	~MemList() { Reset(); }
 
@@ -52,15 +52,15 @@ public:
 		if(!m_pHead)
 		{
 			m_pHead = newItem;
-			newItem->next = NULL;
-			newItem->prev = NULL;
+			newItem->next = nullptr;
+			newItem->prev = nullptr;
 			return;
 		}
 
 		MemoryBlock * temp = m_pHead;
 		m_pHead = newItem;
 		m_pHead->next = temp;
-		m_pHead->prev = NULL;
+		m_pHead->prev = nullptr;
 		
 		temp->prev = m_pHead;
 	}
@@ -74,17 +74,17 @@ public:
 	MemoryBlock * Pop( void )
 	{
 		if(!m_pHead)
-			return(NULL);
+			return nullptr;
 
 		MemoryBlock * temp = m_pHead;
 
 		m_pHead = m_pHead->next;
 
 		if(m_pHead)
-			m_pHead->prev = NULL;
+			m_pHead->prev = nullptr;
 
-		temp->next = NULL;
-		temp->prev = NULL;
+		temp->next = nullptr;
+		temp->prev = nullptr;
 
 		return(temp);
 	}
@@ -98,10 +98,10 @@ public:
 
 			m_pHead = m_pHead->next;
 			if(m_pHead)
-				m_pHead->prev = NULL;
+				m_pHead->prev = nullptr;
 
-			temp->next = NULL;
-			temp->prev = NULL;
+			temp->next = nullptr;
+			temp->prev = nullptr;
 			return;
 		}
 
@@ -114,8 +114,8 @@ public:
 		if(next)
 			next->prev = prev;
 
-		pItem->next = NULL;
-		pItem->prev = NULL;
+		pItem->next = nullptr;
+		pItem->prev = nullptr;
 	}
 
 	void Reset( void )
@@ -157,7 +157,7 @@ protected:
     virtual ~CMiniMem();
 
     // ------------ Memory pool manager calls.
-    // Find a free block and mark it as "in use".  Return NULL
+    // Find a free block and mark it as "in use".  Return nullptr
     //  if no free blocks found.
     char *AllocateFreeBlock(void);
 public:

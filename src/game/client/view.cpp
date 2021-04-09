@@ -362,7 +362,7 @@ void V_CalcIntermissionRefdef ( ref_params_t* pparams )
 	pparams->vieworg = pparams->simorg;
 	pparams->viewangles = pparams->cl_viewangles;
 
-	view->model = NULL;
+	view->model = nullptr;
 
 	// allways idle in intermission
 	const float old = v_idlescale;
@@ -466,7 +466,7 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 			if ( waterEntity >= 0 && waterEntity < pparams->max_entities )
 			{
 				cl_entity_t* pwater = gEngfuncs.GetEntityByIndex( waterEntity );
-				if ( pwater && ( pwater->model != NULL ) )
+				if ( pwater && ( pwater->model != nullptr) )
 				{
 					waterDist += ( pwater->curstate.scale * 16 );	// Add in wave height
 				}
@@ -485,7 +485,7 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 			point[2] -= waterDist;
 			for ( int i = 0; i < waterDist; i++ )
 			{
-				const int contents = gEngfuncs.PM_PointContents( point, NULL );
+				const int contents = gEngfuncs.PM_PointContents( point, nullptr);
 				if ( contents > CONTENTS_WATER )
 					break;
 				point[2] += 1;
@@ -499,7 +499,7 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 
 			for ( int i = 0; i < waterDist; i++ )
 			{
-				const int contents = gEngfuncs.PM_PointContents( point, NULL );
+				const int contents = gEngfuncs.PM_PointContents( point, nullptr);
 				if ( contents <= CONTENTS_WATER )
 					break;
 				point[2] -= 1;
@@ -749,7 +749,7 @@ void V_GetChaseOrigin( Vector& angles, Vector& origin, float distance, Vector& r
 {
 	// Trace back from the target using the player's view angles
 	Vector	forward;
-	AngleVectors(angles, &forward, NULL, NULL);
+	AngleVectors(angles, &forward, nullptr, nullptr);
 	
 	VectorScale(forward,-1,forward);
 
@@ -761,7 +761,7 @@ void V_GetChaseOrigin( Vector& angles, Vector& origin, float distance, Vector& r
 
 	int ignoreent = -1;	// first, ignore no entity
 
-	cl_entity_t* ent = NULL;
+	cl_entity_t* ent = nullptr;
 
 	while ( maxLoops > 0)
 	{
@@ -774,7 +774,7 @@ void V_GetChaseOrigin( Vector& angles, Vector& origin, float distance, Vector& r
 
 		ent = gEngfuncs.GetEntityByIndex( PM_GetPhysEntInfo( trace->ent ) );
 
-		if ( ent == NULL )
+		if ( ent == nullptr)
 			break;
 
 		// hit non-player solid BSP , stop here
@@ -1050,7 +1050,7 @@ void V_GetDirectedChasePosition(cl_entity_t	 * ent1, cl_entity_t * ent2, Vector&
 
 void V_GetChasePos(int target, Vector* cl_angles, Vector& origin, Vector& angles)
 {
-	cl_entity_t	 *	ent = NULL;
+	cl_entity_t	 *	ent = nullptr;
 	
 	if ( target ) 
 	{
@@ -1078,7 +1078,7 @@ void V_GetChasePos(int target, Vector* cl_angles, Vector& origin, Vector& angles
 	}
 	else
 	{
-		if (cl_angles == NULL)	// no mouse angles given, use entity angles ( locked mode )
+		if (cl_angles == nullptr)	// no mouse angles given, use entity angles ( locked mode )
 		{
 			angles = ent->angles;
 			angles[0] *= -1;
@@ -1153,7 +1153,7 @@ void V_GetMapFreePosition( Vector& cl_angles, Vector& origin, Vector& angles )
 	};
 	
 	Vector forward;
-	AngleVectors(angles, &forward, NULL, NULL);
+	AngleVectors(angles, &forward, nullptr, nullptr);
 
 	VectorNormalize(forward);
 
@@ -1195,7 +1195,7 @@ void V_GetMapChasePosition(int target, Vector& cl_angles, Vector& origin, Vector
 	angles[2] = 0.0f;	// don't roll angle (if chased player is dead)
 
 	Vector forward;
-	AngleVectors(angles, &forward, NULL, NULL);
+	AngleVectors(angles, &forward, nullptr, nullptr);
 
 	VectorNormalize(forward);
 
@@ -1241,7 +1241,7 @@ int V_FindViewModelByWeaponModel(int weaponindex)
 		{ "models/p_tripmine.mdl",		"models/v_tripmine.mdl"		},
 		{ "models/p_satchel_radio.mdl",	"models/v_satchel_radio.mdl"},
 		{ "models/p_satchel.mdl",		"models/v_satchel.mdl"		},
-		{ NULL, NULL } };
+		{ nullptr, nullptr } };
 
 	model_t * weaponModel = IEngineStudio.GetModelByIndex( weaponindex );
 
@@ -1250,7 +1250,7 @@ int V_FindViewModelByWeaponModel(int weaponindex)
 		int len = strlen( weaponModel->name );
 		int i = 0;
 
-		while ( modelmap[i] != NULL )
+		while ( modelmap[i] != nullptr)
 		{
 			if ( !strnicmp( weaponModel->name, modelmap[i][0], len ) )
 			{
@@ -1333,7 +1333,7 @@ void V_CalcSpectatorRefdef ( ref_params_t* pparams )
 				else
 				{
 					// model not found
-					gunModel->model = NULL;	// disable weapon model
+					gunModel->model = nullptr;	// disable weapon model
 					lastWeaponModelIndex = lastViewModelIndex = 0;
 				}
 			}
@@ -1348,7 +1348,7 @@ void V_CalcSpectatorRefdef ( ref_params_t* pparams )
 			}
 			else
 			{
-				gunModel->model = NULL;	// disable weaopn model
+				gunModel->model = nullptr;	// disable weaopn model
 			}
 		}
 		else
@@ -1368,7 +1368,7 @@ void V_CalcSpectatorRefdef ( ref_params_t* pparams )
 
 		switch ( g_iUser1 )
 		{
-			case OBS_CHASE_LOCKED:	V_GetChasePos( g_iUser2, NULL, v_origin, v_angles );
+			case OBS_CHASE_LOCKED:	V_GetChasePos( g_iUser2, nullptr, v_origin, v_angles );
 									break;
 
 			case OBS_CHASE_FREE:	V_GetChasePos( g_iUser2, &v_cl_angles, v_origin, v_angles );

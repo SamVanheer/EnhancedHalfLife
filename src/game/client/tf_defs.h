@@ -1242,7 +1242,8 @@ bool ClassIsRestricted(float tno, int pc);
 char* GetTeamName(int tno);
 int TeamFortress_GetNoPlayers();
 void DestroyBuilding(CBaseEntity *eng, char *bld);
-void teamsprint( int tno, CBaseEntity *ignore, int msg_dest, const char *st, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL );
+void teamsprint( int tno, CBaseEntity *ignore, int msg_dest, const char *st,
+	const char *param1 = nullptr, const char *param2 = nullptr, const char *param3 = nullptr);
 
 // Team Funcs
 bool TeamFortress_TeamIsCivilian(float tno);

@@ -125,7 +125,7 @@ unsigned int		joy_oldbuttonstate, joy_oldpovstate;
 int			joy_id;
 unsigned int		joy_numbuttons;
 
-SDL_GameController *s_pJoystick = NULL;
+SDL_GameController *s_pJoystick = nullptr;
 
 // none of these cvars are saved over a session
 // this means that advanced controller configuration needs to be executed
@@ -192,7 +192,7 @@ long ThreadInterlockedExchange( long *pDest, long value )
 
 DWORD WINAPI MousePos_ThreadFunction( LPVOID p )
 {
-	s_hMouseDoneQuitEvent = CreateEvent( NULL, FALSE, FALSE, NULL );
+	s_hMouseDoneQuitEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
 	while ( 1 )
 	{
@@ -292,7 +292,7 @@ IN_StartupMouse
 */
 void IN_StartupMouse ()
 {
-	if ( gEngfuncs.CheckParm ("-nomouse", NULL ) ) 
+	if ( gEngfuncs.CheckParm ("-nomouse", nullptr) )
 		return; 
 
 	mouseinitialized = 1;
@@ -301,16 +301,16 @@ void IN_StartupMouse ()
 
 	if (mouseparmsvalid)
 	{
-		if ( gEngfuncs.CheckParm ("-noforcemspd", NULL ) ) 
+		if ( gEngfuncs.CheckParm ("-noforcemspd", nullptr) )
 			newmouseparms[2] = originalmouseparms[2];
 
-		if ( gEngfuncs.CheckParm ("-noforcemaccel", NULL ) ) 
+		if ( gEngfuncs.CheckParm ("-noforcemaccel", nullptr) )
 		{
 			newmouseparms[0] = originalmouseparms[0];
 			newmouseparms[1] = originalmouseparms[1];
 		}
 
-		if ( gEngfuncs.CheckParm ("-noforcemparms", NULL ) ) 
+		if ( gEngfuncs.CheckParm ("-noforcemparms", nullptr) )
 		{
 			newmouseparms[0] = originalmouseparms[0];
 			newmouseparms[1] = originalmouseparms[1];
@@ -691,7 +691,7 @@ IN_StartupJoystick
 void IN_StartupJoystick () 
 { 
 	// abort startup if user requests no joystick
-	if ( gEngfuncs.CheckParm ("-nojoy", NULL ) ) 
+	if ( gEngfuncs.CheckParm ("-nojoy", nullptr) )
 		return; 
  
  	// assume no joystick
@@ -1135,17 +1135,17 @@ void IN_Init ()
 
 #ifdef _WIN32
 	m_bRawInput				= CVAR_GET_FLOAT( "m_rawinput" ) > 0;
-	m_bMouseThread			= gEngfuncs.CheckParm ("-mousethread", NULL ) != NULL;
+	m_bMouseThread			= gEngfuncs.CheckParm ("-mousethread", nullptr) != 0;
 	m_mousethread_sleep			= gEngfuncs.pfnRegisterVariable ( "m_mousethread_sleep", "10", FCVAR_ARCHIVE );
 
 	if ( !m_bRawInput && m_bMouseThread && m_mousethread_sleep ) 
 	{
 		s_mouseDeltaX = s_mouseDeltaY = 0;
 		
-		s_hMouseQuitEvent = CreateEvent( NULL, FALSE, FALSE, NULL );
+		s_hMouseQuitEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 		if ( s_hMouseQuitEvent )
 		{
-			s_hMouseThread = CreateThread( NULL, 0, MousePos_ThreadFunction, NULL, 0, &s_hMouseThreadId );
+			s_hMouseThread = CreateThread(nullptr, 0, MousePos_ThreadFunction, nullptr, 0, &s_hMouseThreadId );
 		}
 	}
 #endif

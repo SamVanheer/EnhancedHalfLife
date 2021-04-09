@@ -107,10 +107,10 @@ void CBaseEntity :: Killed( entvars_t *pevAttacker, int iGib )
 CBaseEntity *CBaseEntity::GetNextTarget()
 {
 	if ( FStringNull( pev->target ) )
-		return NULL;
-	edict_t *pTarget = FIND_ENTITY_BY_TARGETNAME ( NULL, STRING(pev->target) );
+		return nullptr;
+	edict_t *pTarget = FIND_ENTITY_BY_TARGETNAME ( nullptr, STRING(pev->target) );
 	if ( FNullEnt(pTarget) )
-		return NULL;
+		return nullptr;
 
 	return Instance( pTarget );
 }
@@ -252,7 +252,7 @@ CBaseEntity * CBaseEntity::Create( const char *szName, const Vector &vecOrigin, 
 	if ( FNullEnt( pent ) )
 	{
 		ALERT ( at_console, "NULL Ent in Create!\n" );
-		return NULL;
+		return nullptr;
 	}
 	pEntity = Instance( pent );
 	pEntity->pev->owner = pentOwner;

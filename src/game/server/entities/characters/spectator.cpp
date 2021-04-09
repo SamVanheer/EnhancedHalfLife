@@ -40,7 +40,7 @@ void CBaseSpectator::SpectatorConnect()
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_NOCLIP;
 	
-	m_pGoalEnt = NULL;
+	m_pGoalEnt = nullptr;
 }
 
 /*
@@ -63,7 +63,7 @@ Called by SpectatorThink if the spectator entered an impulse
 */
 void CBaseSpectator::SpectatorImpulseCommand()
 {
-	static edict_t	*pGoal		= NULL;
+	static edict_t	*pGoal		= nullptr;
 	edict_t         *pPreviousGoal;
 	edict_t         *pCurrentGoal;
 	bool			bFound;
@@ -74,6 +74,7 @@ void CBaseSpectator::SpectatorImpulseCommand()
 		// teleport the spectator to the next spawn point
 		// note that if the spectator is tracking, this doesn't do
 		// much
+		//TODO: dangerous!
 		pPreviousGoal = pGoal;
 		pCurrentGoal  = pGoal;
 		// Start at the current goal, skip the world, and stop if we looped
@@ -148,5 +149,5 @@ void CBaseSpectator::Spawn()
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_NOCLIP;
 	
-	m_pGoalEnt = NULL;
+	m_pGoalEnt = nullptr;
 }

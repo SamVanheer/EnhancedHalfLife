@@ -12,18 +12,18 @@ void *GetModuleHandle(const char *name)
         void *handle;
 
 
-        if( name == NULL )
+        if( name == nullptr)
         {
                 // hmm, how can this be handled under linux....
                 // is it even needed?
-                return NULL;
+                return nullptr;
         }
 
-        if( (handle=dlopen(name, RTLD_NOW))==NULL)
+        if( (handle=dlopen(name, RTLD_NOW))== nullptr)
         {   
 		//printf("Error:%s\n",dlerror());
                 // couldn't open this file
-                return NULL;
+                return nullptr;
         }
 
         // read "man dlopen" for details
@@ -37,7 +37,7 @@ void *GetModuleHandle(const char *name)
 // ------------------------------------------------------------------------------------ //
 // InterfaceReg.
 // ------------------------------------------------------------------------------------ //
-InterfaceReg *InterfaceReg::s_pInterfaceRegs = NULL;
+InterfaceReg *InterfaceReg::s_pInterfaceRegs = nullptr;
 
 
 InterfaceReg::InterfaceReg( InstantiateInterfaceFn fn, const char *pName ) :
@@ -73,7 +73,7 @@ EXPORT_FUNCTION IBaseInterface *CreateInterface( const char *pName, int *pReturn
 	{
 		*pReturnCode = IFACE_FAILED;
 	}
-	return NULL;	
+	return nullptr;
 }
 
 #ifdef LINUX
@@ -97,7 +97,7 @@ static IBaseInterface *CreateInterfaceLocal( const char *pName, int *pReturnCode
 	{
 		*pReturnCode = IFACE_FAILED;
 	}
-	return NULL;	
+	return nullptr;
 }
 #endif
 
@@ -218,7 +218,7 @@ void Sys_UnloadModule( CSysModule *pModule )
 CreateInterfaceFn Sys_GetFactory( CSysModule *pModule )
 {
 	if ( !pModule )
-		return NULL;
+		return nullptr;
 
 	HMODULE	hDLL = reinterpret_cast<HMODULE>(pModule);
 #if defined ( _WIN32 )

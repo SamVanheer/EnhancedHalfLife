@@ -142,7 +142,7 @@ void CWorld :: Spawn()
 
 void CWorld :: Precache()
 {
-	g_pLastSpawn = NULL;
+	g_pLastSpawn = nullptr;
 	
 #if 1
 	CVAR_SET_STRING("sv_gravity", "800"); // 67ft/sec
@@ -166,7 +166,7 @@ void CWorld :: Precache()
 
 	///!!!LATER - do we want a sound ent in deathmatch? (sjb)
 	//pSoundEnt = CBaseEntity::Create( "soundent", g_vecZero, g_vecZero, edict() );
-	pSoundEnt = GetClassPtr( ( CSoundEnt *)NULL );
+	pSoundEnt = GetClassPtr( ( CSoundEnt *)nullptr );
 	pSoundEnt->Spawn();
 
 	if ( !pSoundEnt )
@@ -299,7 +299,7 @@ void CWorld :: Precache()
 	if ( pev->netname )
 	{
 		ALERT( at_aiconsole, "Chapter title: %s\n", STRING(pev->netname) );
-		CBaseEntity *pEntity = CBaseEntity::Create( "env_message", g_vecZero, g_vecZero, NULL );
+		CBaseEntity *pEntity = CBaseEntity::Create( "env_message", g_vecZero, g_vecZero, nullptr );
 		if ( pEntity )
 		{
 			pEntity->SetThink( &CBaseEntity::SUB_CallUseToggle );

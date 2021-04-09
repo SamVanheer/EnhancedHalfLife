@@ -209,7 +209,7 @@ void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
 
 	// If the key was an entity variable, or there's no class set yet, don't look for the object, it may
 	// not exist yet.
-	if (pkvd->fHandled || pkvd->szClassName == NULL)
+	if (pkvd->fHandled || pkvd->szClassName == nullptr)
 		return;
 
 	// Get the actualy entity object
@@ -260,14 +260,14 @@ void DispatchSave(edict_t* pent, SAVERESTOREDATA* pSaveData)
 // different classes with the same global name
 CBaseEntity* FindGlobalEntity(string_t classname, string_t globalname)
 {
-	edict_t* pent = FIND_ENTITY_BY_STRING(NULL, "globalname", STRING(globalname));
+	edict_t* pent = FIND_ENTITY_BY_STRING(nullptr, "globalname", STRING(globalname));
 	CBaseEntity* pReturn = CBaseEntity::Instance(pent);
 	if (pReturn)
 	{
 		if (!FClassnameIs(pReturn->pev, STRING(classname)))
 		{
 			ALERT(at_console, "Global entity found %s, wrong class %s\n", STRING(globalname), STRING(pReturn->pev->classname));
-			pReturn = NULL;
+			pReturn = nullptr;
 		}
 	}
 

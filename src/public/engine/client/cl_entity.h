@@ -100,7 +100,7 @@ struct cl_entity_t
 
 	model_t*				model;			// cl.model_precache[ curstate.modelindes ];  all visible entities have a model
 	efrag_t*				efrag;			// linked list of efrags
-	mnode_t*				topnode;		// for bmodels, first world node that splits bmodel, or NULL if not split
+	mnode_t*				topnode;		// for bmodels, first world node that splits bmodel, or nullptr if not split
 
 	float					syncbase;		// for client-side animations -- used by obsolete alias animation system, remove?
 	int						visframe;		// last frame this entity was found in an active leaf
