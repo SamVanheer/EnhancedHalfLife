@@ -721,18 +721,11 @@ struct colorVec
 	unsigned r, g, b, a;
 };
 
-#ifdef _WIN32
-#pragma pack(push,2)
-#endif
-
 struct PackedColorVec
 {
 	unsigned short r, g, b, a;
 };
 
-#ifdef _WIN32
-#pragma pack(pop)
-#endif
 struct link_t
 {
 	link_t* prev, * next;
