@@ -496,7 +496,7 @@ void CIchthyosaur :: Spawn()
 	m_flMaxDist = 384;
 
 	Vector Forward;
-	UTIL_MakeVectorsPrivate(pev->angles, Forward, 0, 0);
+	UTIL_MakeVectorsPrivate(pev->angles, Forward, nullptr, nullptr);
 	pev->velocity = m_flightSpeed * Forward.Normalize();
 	m_SaveVelocity = pev->velocity;
 }

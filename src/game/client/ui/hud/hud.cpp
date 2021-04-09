@@ -359,7 +359,7 @@ void CHud :: Init()
 
 	m_Menu.Init();
 	
-	MsgFunc_ResetHUD(0, 0, nullptr);
+	MsgFunc_ResetHUD(nullptr, 0, nullptr);
 }
 
 // CHud destructor

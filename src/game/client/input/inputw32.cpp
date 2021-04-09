@@ -156,9 +156,9 @@ int			joy_avail, joy_advancedinit, joy_haspov;
 
 #ifdef _WIN32
 DWORD	s_hMouseThreadId = 0;
-HANDLE	s_hMouseThread = 0;
-HANDLE	s_hMouseQuitEvent = 0;
-HANDLE	s_hMouseDoneQuitEvent = 0;
+HANDLE	s_hMouseThread = nullptr;
+HANDLE	s_hMouseQuitEvent = nullptr;
+HANDLE	s_hMouseDoneQuitEvent = nullptr;
 SDL_bool mouseRelative = SDL_TRUE;
 #endif
 
@@ -342,20 +342,20 @@ void IN_Shutdown ()
 	{
 		TerminateThread( s_hMouseThread, 0 );
 		CloseHandle( s_hMouseThread );
-		s_hMouseThread = (HANDLE)0;
+		s_hMouseThread = nullptr;
 	}
 	
 	if ( s_hMouseQuitEvent )
 	{
 		CloseHandle( s_hMouseQuitEvent );
-		s_hMouseQuitEvent = (HANDLE)0;
+		s_hMouseQuitEvent = nullptr;
 	}
 	
 	
 	if ( s_hMouseDoneQuitEvent )
 	{
 		CloseHandle( s_hMouseDoneQuitEvent );
-		s_hMouseDoneQuitEvent = (HANDLE)0;
+		s_hMouseDoneQuitEvent = nullptr;
 	}
 #endif
 }

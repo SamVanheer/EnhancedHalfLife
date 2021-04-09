@@ -830,7 +830,7 @@ void CGraph :: CheckNode(Vector vecOrigin, int iNode)
 		TraceResult tr;
 
 		// make sure that vecOrigin can trace to this node!
-		UTIL_TraceLine ( vecOrigin, m_pNodes[ iNode ].m_vecOriginPeek, ignore_monsters, 0, &tr );
+		UTIL_TraceLine ( vecOrigin, m_pNodes[ iNode ].m_vecOriginPeek, ignore_monsters, nullptr, &tr );
 
 		if ( tr.flFraction == 1.0 )
 		{
@@ -1220,7 +1220,7 @@ int CGraph :: LinkVisibleNodes ( CLink *pLinkPool, FILE *file, int *piBadNode )
 #endif
 
 			tr.pHit = nullptr;// clear every time so we don't get stuck with last trace's hit ent
-			pTraceEnt = 0;
+			pTraceEnt = nullptr;
 
 			UTIL_TraceLine ( m_pNodes[ i ].m_vecOrigin,
 							 m_pNodes[ j ].m_vecOrigin,
@@ -3343,10 +3343,10 @@ void CGraph :: ComputeStaticRoutingTables()
 	if (BestNextNodes) delete BestNextNodes;
 	if (pRoute) delete pRoute;
 	if (pMyPath) delete pMyPath;
-	Routes = 0;
-	BestNextNodes = 0;
-	pRoute = 0;
-	pMyPath = 0;
+	Routes = nullptr;
+	BestNextNodes = nullptr;
+	pRoute = nullptr;
+	pMyPath = nullptr;
 
 #if 0
 	TestRoutingTables();
@@ -3476,8 +3476,8 @@ EnoughSaid:
 
 	if (pMyPath) delete pMyPath;
 	if (pMyPath2) delete pMyPath2;
-	pMyPath = 0;
-	pMyPath2 = 0;
+	pMyPath = nullptr;
+	pMyPath2 = nullptr;
 }
 
 
