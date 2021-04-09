@@ -35,14 +35,7 @@
 
 constexpr int MONSTER_CUT_CORNER_DIST = 8; // 8 means the monster's bounding box is contained without the box of the node in WC
 
-
-Vector VecBModelOrigin( entvars_t* pevBModel );
-
 extern DLL_GLOBAL	bool	g_fDrawLines;
-extern DLL_GLOBAL	short	g_sModelIndexLaser;// holds the index for the laser beam
-extern DLL_GLOBAL	short	g_sModelIndexLaserDot;// holds the index for the laser beam dot
-
-extern CGraph WorldGraph;// the world node graph
 
 
 

@@ -18,9 +18,6 @@
 #include "cbase.h"
 #include "doors.h"
 
-
-void SetMovedir(entvars_t* ev);
-
 #define noiseMoving noise1
 #define noiseArrived noise2
 
@@ -550,8 +547,6 @@ int CBaseDoor::DoorActivate( )
 
 	return 1;
 }
-
-Vector VecBModelOrigin( entvars_t* pevBModel );
 
 //
 // Starts the door going to its "up" position (simply ToggleData->vecPosition2).

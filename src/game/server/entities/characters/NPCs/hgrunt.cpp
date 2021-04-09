@@ -41,8 +41,6 @@
 
 int g_fGruntQuestion;				// true if an idle grunt asked a question. Cleared when someone answers.
 
-extern DLL_GLOBAL int		g_iSkillLevel;
-
 //=========================================================
 // monster-specific DEFINE's
 //=========================================================

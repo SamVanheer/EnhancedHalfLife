@@ -36,9 +36,6 @@ constexpr int SF_TRIGGER_HURT_CLIENTONLYTOUCH = 32;	//!< only clients may touch 
 
 extern DLL_GLOBAL bool		g_fGameOver;
 
-void SetMovedir(entvars_t* pev);
-Vector VecBModelOrigin( entvars_t* pevBModel );
-
 class CFrictionModifier : public CBaseEntity
 {
 public:

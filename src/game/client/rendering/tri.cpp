@@ -23,7 +23,6 @@
 
 #include "particleman.h"
 #include "tri.h"
-extern IParticleMan *g_pParticleMan;
 
 /*
 =================

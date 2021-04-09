@@ -23,8 +23,6 @@
 #include	"soundent.h"
 #include	"game.h"
 
-extern DLL_GLOBAL int  g_iSkillLevel;
-
 //=========================================================
 // monster-specific schedule types
 //=========================================================

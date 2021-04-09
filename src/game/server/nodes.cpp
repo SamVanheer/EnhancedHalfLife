@@ -39,8 +39,6 @@ constexpr int MAX_NODES = 1024;
 
 extern DLL_GLOBAL edict_t		*g_pBodyQueueHead;
 
-Vector VecBModelOrigin( entvars_t* pevBModel );
-
 CGraph	WorldGraph;
 
 LINK_ENTITY_TO_CLASS( info_node, CNodeEnt );

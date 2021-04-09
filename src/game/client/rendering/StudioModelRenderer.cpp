@@ -26,8 +26,6 @@
 
 extern cvar_t *tfc_newmodels;
 
-extern extra_player_info_t  g_PlayerExtraInfo[MAX_PLAYERS+1];
-
 // team colors for old TFC models
 constexpr int TEAM1_COLOR = 150;
 constexpr int TEAM2_COLOR = 250;

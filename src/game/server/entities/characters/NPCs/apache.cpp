@@ -21,8 +21,6 @@
 #include "nodes.h"
 #include "effects.h"
 
-extern DLL_GLOBAL int		g_iSkillLevel;
-
 constexpr int SF_WAITFORTRIGGER = 0x04 | 0x40; // UNDONE: Fix!
 constexpr int SF_NOWRECKAGE = 0x08;
 

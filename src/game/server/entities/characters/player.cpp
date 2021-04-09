@@ -47,16 +47,13 @@ extern DLL_GLOBAL uint32	g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;
 extern DLL_GLOBAL	bool	g_fDrawLines;
 int gEvilImpulse101;
-extern DLL_GLOBAL int		g_iSkillLevel, gDisplayTitle;
+extern DLL_GLOBAL int		gDisplayTitle;
 
 
 bool gInitHUD = true;
 
 void CopyToBodyQue(entvars_t* pev);
 edict_t *EntSelectSpawnPoint( CBaseEntity *pPlayer );
-
-// the world node graph
-extern CGraph	WorldGraph;
 
 constexpr int TRAIN_ACTIVE = 0x80;
 constexpr int TRAIN_NEW = 0xc0;

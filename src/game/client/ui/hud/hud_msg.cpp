@@ -22,7 +22,6 @@
 #include "util.h"
 
 #include "particleman.h"
-extern IParticleMan *g_pParticleMan;
 
 #if !defined( _TFC )
 extern BEAM *pBeam;

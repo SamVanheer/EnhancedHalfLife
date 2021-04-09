@@ -20,8 +20,6 @@
 #include "animation.h"
 #include "scriptevent.h"
 
-extern globalvars_t				*gpGlobals;
-
 #pragma warning( disable : 4244 )
 
 

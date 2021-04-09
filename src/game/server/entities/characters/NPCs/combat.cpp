@@ -29,10 +29,6 @@
 #include "weapons.h"
 #include "func_break.h"
 
-extern DLL_GLOBAL Vector		g_vecAttackDir;
-extern DLL_GLOBAL int			g_iSkillLevel;
-
-Vector VecBModelOrigin( entvars_t* pevBModel );
 extern entvars_t *g_pevLastInflictor;
 
 constexpr int GERMAN_GIB_COUNT = 4;

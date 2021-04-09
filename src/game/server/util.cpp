@@ -1404,9 +1404,6 @@ float UTIL_WaterLevel( const Vector &position, float minz, float maxz )
 	return midUp.z;
 }
 
-
-extern DLL_GLOBAL	short	g_sModelIndexBubbles;// holds the index for the bubbles model
-
 void UTIL_Bubbles( Vector mins, Vector maxs, int count )
 {
 	Vector mid =  (mins + maxs) * 0.5;

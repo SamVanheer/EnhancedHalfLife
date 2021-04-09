@@ -29,8 +29,6 @@ constexpr int SEARCH_RETRY = 16;
 
 constexpr int ICHTHYOSAUR_SPEED = 150;
 
-extern CGraph WorldGraph;
-
 constexpr int EYE_MAD = 0;
 constexpr int EYE_BASE = 1;
 constexpr int EYE_CLOSED = 2;

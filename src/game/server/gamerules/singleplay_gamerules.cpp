@@ -23,7 +23,6 @@
 #include	"items.h"
 #include "UserMessages.h"
 
-extern DLL_GLOBAL CGameRules	*g_pGameRules;
 extern DLL_GLOBAL bool	g_fGameOver;
 
 //=========================================================

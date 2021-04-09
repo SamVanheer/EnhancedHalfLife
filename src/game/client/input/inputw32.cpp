@@ -32,7 +32,6 @@ constexpr int MOUSE_BUTTON_COUNT = 5;
 // Set this to 1 to show mouse cursor.  Experimental
 int	g_iVisibleMouse = 0;
 
-extern cl_enginefunc_t gEngfuncs;
 extern int iMouseInUse;
 
 extern kbutton_t	in_strafe;

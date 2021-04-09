@@ -19,7 +19,6 @@
 #include "Exports.h"
 
 #include "particleman.h"
-extern IParticleMan *g_pParticleMan;
 
 void Game_AddObjects();
 

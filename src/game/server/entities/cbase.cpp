@@ -21,7 +21,6 @@
 #include	"game.h"
 #include "dll_functions.hpp"
 
-Vector VecBModelOrigin( entvars_t* pevBModel );
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 extern DLL_GLOBAL int			g_iSkillLevel;
 

@@ -25,7 +25,6 @@
 #include "gamerules.h"
 #include "UserMessages.h"
 
-extern CGraph	WorldGraph;
 extern int gEvilImpulse101;
 
 DLL_GLOBAL	short	g_sModelIndexLaser;// holds the index for the laser beam
