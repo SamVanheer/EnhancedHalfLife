@@ -13,6 +13,8 @@
 *
 ****/
 
+#include <filesystem>
+
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"
@@ -21,13 +23,6 @@
 #include	"animation.h"
 #include	"doors.h"
 #include "dll_functions.hpp"
-
-#if !defined ( _WIN32 )
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <unistd.h> // mkdir
-#endif
 
 constexpr int HULL_STEP_SIZE = 16; // how far the test hull moves on each step
 constexpr int NODE_HEIGHT = 8;	// how high to lift nodes off the ground after we drop them all (make stair/ramp mapping easier)
@@ -43,10 +38,7 @@ CGraph	WorldGraph;
 
 LINK_ENTITY_TO_CLASS( info_node, CNodeEnt );
 LINK_ENTITY_TO_CLASS( info_node_air, CNodeEnt );
-#ifdef _LINUX
-#include <unistd.h>
-#define CreateDirectory(p, n) mkdir(p, 0777)
-#endif
+
 //=========================================================
 // CGraph - InitGraph - prepares the graph for use. Frees any
 // memory currently in use by the world graph, NULLs 
@@ -1598,8 +1590,6 @@ void CTestHull :: BuildNodeGraph()
 	TraceResult	tr;
 	FILE	*file;
 
-	char	szNrpFilename [MAX_PATH];// text node report filename
-
 	CLink	*pTempPool; // temporary link pool 
 
 	CNode	*pSrcNode;// node we're currently working with
@@ -1647,11 +1637,11 @@ void CTestHull :: BuildNodeGraph()
 
 
 	// make sure directories have been made
+	char szNrpFilename[MAX_PATH];// text node report filename
 	GET_GAME_DIR( szNrpFilename );
-	strcat( szNrpFilename, "/maps" );
-	CreateDirectory( szNrpFilename, nullptr );
-	strcat( szNrpFilename, "/graphs" );
-	CreateDirectory( szNrpFilename, nullptr );
+	std::strncat(szNrpFilename, "/maps/graphs", sizeof(szNrpFilename) - strlen(szNrpFilename) - 1);
+	std::error_code error;
+	std::filesystem::create_directories(szNrpFilename, error);
 
 	strcat( szNrpFilename, "/" );
 	strcat( szNrpFilename, STRING( gpGlobals->mapname ) );
@@ -2331,10 +2321,9 @@ int CGraph :: FLoadGraph ( char *szMapName )
 	// make sure the directories have been made
 	char	szDirName[MAX_PATH];
 	GET_GAME_DIR( szDirName );
-	strcat( szDirName, "/maps" );
-	CreateDirectory( szDirName, nullptr );
-	strcat( szDirName, "/graphs" );
-	CreateDirectory( szDirName, nullptr );
+	std::strncat(szDirName, "/maps/graphs", sizeof(szDirName) - strlen(szDirName) - 1);
+	std::error_code error;
+	std::filesystem::create_directories(szDirName, error);
 
 	strcpy ( szFilename, "maps/graphs/" );
 	strcat ( szFilename, szMapName );
@@ -2509,10 +2498,9 @@ int CGraph :: FSaveGraph ( char *szMapName )
 
 	// make sure directories have been made
 	GET_GAME_DIR( szFilename );
-	strcat( szFilename, "/maps" );
-	CreateDirectory( szFilename, nullptr );
-	strcat( szFilename, "/graphs" );
-	CreateDirectory( szFilename, nullptr );
+	std::strncat(szFilename, "/maps/graphs", sizeof(szFilename) - strlen(szFilename) - 1);
+	std::error_code error;
+	std::filesystem::create_directories(szFilename, error);
 
 	strcat( szFilename, "/" );
 	strcat( szFilename, szMapName );
