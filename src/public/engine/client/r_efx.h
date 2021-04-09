@@ -151,10 +151,10 @@ struct efx_api_t
 	void		( *R_Sprite_Explode )			( TEMPENTITY *pTemp, float scale, int flags );
 	void		( *R_Sprite_Smoke )				( TEMPENTITY *pTemp, float scale );
 	void		( *R_Sprite_Spray )				( float * pos, float * dir, int modelIndex, int count, int speed, int iRand );
-	void		( *R_Sprite_Trail )				( int type, float * start, float * end, int modelIndex, int count, float life, float size, float amplitude, int renderamt, float speed );
+	void		( *R_Sprite_Trail )				( int type, const float * start, const float * end, int modelIndex, int count, float life, float size, float amplitude, int renderamt, float speed );
 	void		( *R_Sprite_WallPuff )			( TEMPENTITY *pTemp, float scale );
 	void		( *R_StreakSplash )				( float * pos, float * dir, int color, int count, float speed, int velocityMin, int velocityMax );
-	void		( *R_TracerEffect )				( float * start, float * end );
+	void		( *R_TracerEffect )				( float * start, const float * end );
 	void		( *R_UserTracerParticle )		( float * org, float * vel, float life, int colorIndex, float length, unsigned char deathcontext, void ( *deathfunc)( particle_t *particle ) );
 	particle_t *( *R_TracerParticles )			( float * org, float * vel, float life );
 	void		( *R_TeleportSplash )			( float * org );
@@ -163,7 +163,7 @@ struct efx_api_t
 	TEMPENTITY	*( *R_DefaultSprite )			( float *pos, int spriteIndex, float framerate );
 	TEMPENTITY	*( *R_TempSprite )				( float *pos, const float *dir, float scale, int modelIndex, int rendermode, int renderfx, float a, float life, int flags );
 	int			( *Draw_DecalIndex )			( int id );
-	int			( *Draw_DecalIndexFromName )	( char *name );
+	int			( *Draw_DecalIndexFromName )	( const char *name );
 	void		( *R_DecalShoot )				( int textureIndex, int entity, int modelIndex, float * position, int flags );
 	void		( *R_AttachTentToPlayer )		( int client, int modelIndex, float zoffset, float life );
 	void		( *R_KillAttachedTents )		( int client );
