@@ -41,7 +41,7 @@ struct cldll_func_t
 	void (*pIN_Accumulate)();
 	void (*pCL_CreateMove)(float frametime, usercmd_t* cmd, int active);
 	int (*pCL_IsThirdPerson)();
-	void (*pCL_GetCameraOffsets)(float* ofs);
+	void (*pCL_GetCameraOffsets)(Vector* ofs);
 	kbutton_t* (*pFindKey)(const char* name);
 	void (*pCamThink)();
 	void (*pCalcRefdef)(ref_params_t* pparams);

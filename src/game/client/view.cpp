@@ -522,10 +522,7 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 	// don't allow cheats in multiplayer
 	if ( pparams->maxclients <= 1 )
 	{
-		for ( int i=0 ; i<3 ; i++ )
-		{
-			pparams->vieworg[i] += scr_ofsx->value*pparams->forward[i] + scr_ofsy->value*pparams->right[i] + scr_ofsz->value*pparams->up[i];
-		}
+		pparams->vieworg = pparams->vieworg + scr_ofsx->value * pparams->forward + scr_ofsy->value * pparams->right + scr_ofsz->value * pparams->up;
 	}
 	
 	// Treating cam_ofs[2] as the distance
@@ -534,7 +531,7 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 	{
 		Vector ofs = g_vecZero;
 
-		CL_CameraOffset( ofs );
+		CL_CameraOffset( &ofs );
 
 		camAngles = ofs;
 		camAngles[ ROLL ]	= 0;
@@ -542,10 +539,7 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 		Vector camForward, camRight, camUp;
 		AngleVectors( camAngles, camForward, camRight, camUp );
 
-		for ( int i = 0; i < 3; i++ )
-		{
-			pparams->vieworg[ i ] += -ofs[2] * camForward[ i ];
-		}
+		pparams->vieworg = pparams->vieworg + -ofs[2] * camForward;
 	}
 	
 	// Give gun our viewangles

@@ -17,13 +17,6 @@
 
 #pragma warning(disable : 4244)
 
-void VectorMA(const float* veca, float scale, const float* vecb, float* vecc)
-{
-	vecc[0] = veca[0] + scale * vecb[0];
-	vecc[1] = veca[1] + scale * vecb[1];
-	vecc[2] = veca[2] + scale * vecb[2];
-}
-
 bool VectorCompare(const float* v1, const float* v2)
 {
 	int		i;
@@ -407,10 +400,9 @@ float	anglemod(float a)
 	return a;
 }
 
-float Distance(const float* v1, const float* v2)
+float Distance(const Vector& v1, const Vector& v2)
 {
-	Vector d;
-	VectorSubtract(v2, v1, d);
+	const Vector d = v2 - v1;
 	return Length(d);
 }
 

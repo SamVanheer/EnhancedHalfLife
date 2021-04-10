@@ -235,7 +235,6 @@ void CHudHealth::CalcDamageDirection(Vector vecFrom)
 {
 	Vector	forward, right, up;
 	float	side, front;
-	Vector vecOrigin, vecAngles;
 
 	if (!vecFrom[0] && !vecFrom[1] && !vecFrom[2])
 	{
@@ -243,12 +242,10 @@ void CHudHealth::CalcDamageDirection(Vector vecFrom)
 		return;
 	}
 
+	const Vector vecOrigin = gHUD.m_vecOrigin;
+	const Vector vecAngles = gHUD.m_vecAngles;
 
-	memcpy(vecOrigin, gHUD.m_vecOrigin, sizeof(Vector));
-	memcpy(vecAngles, gHUD.m_vecAngles, sizeof(Vector));
-
-
-	VectorSubtract (vecFrom, vecOrigin, vecFrom);
+	vecFrom = vecFrom - vecOrigin;
 
 	float flDistToTarget = vecFrom.Length();
 

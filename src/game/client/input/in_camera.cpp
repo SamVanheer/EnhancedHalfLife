@@ -333,7 +333,7 @@ void DLLEXPORT CAM_Think()
 	if( cam_contain->value )
 	{
 		// check new ideal
-		VectorCopy( origin, pnt );
+		pnt = origin;
 		AngleVectors( camAngles, camForward, camRight, camUp );
 		for (i=0 ; i<3 ; i++)
 			pnt[i] += -dist*camForward[i];
@@ -359,7 +359,7 @@ void DLLEXPORT CAM_Think()
 	}
 
 	// Move towards ideal
-	VectorCopy( cam_ofs, camAngles );
+	camAngles = cam_ofs;
 
 	gEngfuncs.GetViewAngles( (float *)viewangles );
 
@@ -389,7 +389,7 @@ void DLLEXPORT CAM_Think()
 		dist = camAngles[ ROLL ];
 		camAngles[ ROLL ] = 0;
 
-		VectorCopy( origin, pnt );
+		pnt = origin;
 		AngleVectors( camAngles, camForward, camRight, camUp );
 		for (i=0 ; i<3 ; i++)
 			pnt[i] += -dist*camForward[i];
@@ -615,7 +615,7 @@ int DLLEXPORT CL_IsThirdPerson()
 	return (cam_thirdperson ? 1 : 0) || (g_iUser1 && (g_iUser2 == gEngfuncs.GetLocalPlayer()->index) );
 }
 
-void DLLEXPORT CL_CameraOffset( float *ofs )
+void DLLEXPORT CL_CameraOffset( Vector* ofs )
 {
-	VectorCopy( cam_ofs, ofs );
+	*ofs = cam_ofs;
 }

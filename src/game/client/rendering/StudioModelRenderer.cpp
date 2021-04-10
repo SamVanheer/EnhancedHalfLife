@@ -427,13 +427,12 @@ void CStudioModelRenderer::StudioSetUpTransform (int trivial_accept)
 {
 	int				i;
 	Vector			angles;
-	Vector			modelpos;
 
 // tweek model origin	
 	//for (i = 0; i < 3; i++)
 	//	modelpos[i] = m_pCurrentEntity->origin[i];
 
-	VectorCopy( m_pCurrentEntity->origin, modelpos );
+	Vector modelpos = m_pCurrentEntity->origin;
 
 // TODO: should really be stored with the entity instead of being reconstructed
 // TODO: should use a look-up table
@@ -471,10 +470,7 @@ void CStudioModelRenderer::StudioSetUpTransform (int trivial_accept)
 			f = 0;
 		}
 
-		for (i = 0; i < 3; i++)
-		{
-			modelpos[i] += (m_pCurrentEntity->origin[i] - m_pCurrentEntity->latched.prevorigin[i]) * f;
-		}
+		modelpos = modelpos + (m_pCurrentEntity->origin - m_pCurrentEntity->latched.prevorigin) * f;
 
 		// NOTE:  Because multiplayer lag can be relatively large, we don't want to cap
 		//  f at 1.5 anymore.
@@ -504,7 +500,7 @@ void CStudioModelRenderer::StudioSetUpTransform (int trivial_accept)
 	}
 	else if ( m_pCurrentEntity->curstate.movetype != MOVETYPE_NONE ) 
 	{
-		VectorCopy( m_pCurrentEntity->angles, angles );
+		angles = m_pCurrentEntity->angles;
 	}
 
 	//Con_DPrintf("%.0f %0.f %0.f\n", modelpos[0], modelpos[1], modelpos[2] );
@@ -1177,8 +1173,8 @@ bool CStudioModelRenderer::StudioDrawModel( int flags )
 		deadplayer.gaitsequence = 0;
 
 		deadplayer.movetype = MOVETYPE_NONE;
-		VectorCopy( m_pCurrentEntity->curstate.angles, deadplayer.angles );
-		VectorCopy( m_pCurrentEntity->curstate.origin, deadplayer.origin );
+		deadplayer.angles = m_pCurrentEntity->curstate.angles;
+		deadplayer.origin = m_pCurrentEntity->curstate.origin;
 
 		save_interp = m_fDoInterp;
 		m_fDoInterp = 0;
@@ -1355,11 +1351,11 @@ void CStudioModelRenderer::StudioEstimateGait( entity_state_t *pplayer )
 		return;
 	}
 
-	// VectorAdd( pplayer->velocity, pplayer->prediction_error, est_velocity );
+	// est_velocity = pplayer->velocity + pplayer->prediction_error;
 	if ( m_fGaitEstimation )
 	{
-		VectorSubtract( m_pCurrentEntity->origin, m_pPlayerInfo->prevgaitorigin, est_velocity );
-		VectorCopy( m_pCurrentEntity->origin, m_pPlayerInfo->prevgaitorigin );
+		est_velocity = m_pCurrentEntity->origin - m_pPlayerInfo->prevgaitorigin;
+		m_pPlayerInfo->prevgaitorigin = m_pCurrentEntity->origin;
 		m_flGaitMovement = Length( est_velocity );
 		if (dt <= 0 || m_flGaitMovement / dt < 5)
 		{
@@ -1370,7 +1366,7 @@ void CStudioModelRenderer::StudioEstimateGait( entity_state_t *pplayer )
 	}
 	else
 	{
-		VectorCopy( pplayer->velocity, est_velocity );
+		est_velocity = pplayer->velocity;
 		m_flGaitMovement = Length( est_velocity ) * dt;
 	}
 
@@ -1700,10 +1696,9 @@ bool CStudioModelRenderer::StudioDrawPlayer( int flags, entity_state_t *pplayer 
 
 	if (pplayer->gaitsequence)
 	{
-		Vector orig_angles;
 		m_pPlayerInfo = IEngineStudio.PlayerInfo( m_nPlayerIndex );
 
-		VectorCopy( m_pCurrentEntity->angles, orig_angles );
+		const Vector orig_angles = m_pCurrentEntity->angles;
 	
 		StudioProcessGait( pplayer );
 
@@ -1711,7 +1706,7 @@ bool CStudioModelRenderer::StudioDrawPlayer( int flags, entity_state_t *pplayer 
 		m_pPlayerInfo = nullptr;
 
 		StudioSetUpTransform( 0 );
-		VectorCopy( orig_angles, m_pCurrentEntity->angles );
+		m_pCurrentEntity->angles = orig_angles;
 	}
 	else
 	{

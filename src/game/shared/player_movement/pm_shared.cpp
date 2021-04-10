@@ -934,7 +934,7 @@ void PM_WalkMove ()
 
 	if (spd < 1.0f)
 	{
-		VectorClear( pmove->velocity );
+		pmove->velocity = vec3_origin;
 		return;
 	}
 
@@ -1565,7 +1565,7 @@ bool PM_CheckStuck ()
 		}
 	}
 
-	//VectorCopy (base, pmove->origin);
+	//pmove->origin = base;
 
 	return true;
 }

@@ -56,12 +56,7 @@ constexpr bool IS_NAN(T x)
 	return (*reinterpret_cast<int*>(&x) & nanmask) == nanmask;
 }
 
-#define VectorSubtract(a,b,c) {(c)[0]=(a)[0]-(b)[0];(c)[1]=(a)[1]-(b)[1];(c)[2]=(a)[2]-(b)[2];}
-#define VectorAdd(a,b,c) {(c)[0]=(a)[0]+(b)[0];(c)[1]=(a)[1]+(b)[1];(c)[2]=(a)[2]+(b)[2];}
 #define VectorCopy(a,b) {(b)[0]=(a)[0];(b)[1]=(a)[1];(b)[2]=(a)[2];}
-inline void VectorClear(float* a) { a[0] = 0.0; a[1] = 0.0; a[2] = 0.0; }
-
-void VectorMA(const float* veca, float scale, const float* vecb, float* vecc);
 
 bool VectorCompare(const float* v1, const float* v2);
 float Length(const float* v);
@@ -115,7 +110,7 @@ int InvertMatrix(const float* m, float* out);
 int BoxOnPlaneSide(const Vector& emins, const Vector& emaxs, mplane_t* plane);
 float anglemod(float a);
 
-float Distance(const float* v1, const float* v2);
+float Distance(const Vector& v1, const Vector& v2);
 
 void ConcatTransforms(float in1[3][4], float in2[3][4], float out[3][4]);
 

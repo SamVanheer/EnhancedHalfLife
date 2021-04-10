@@ -57,7 +57,7 @@ extern "C"
 	// From in_camera
 	void DLLEXPORT CAM_Think(void);
 	int DLLEXPORT CL_IsThirdPerson(void);
-	void DLLEXPORT CL_CameraOffset(float* ofs);
+	void DLLEXPORT CL_CameraOffset(Vector* ofs);
 
 	// From input
 	kbutton_t DLLEXPORT* KB_Find(const char* name);

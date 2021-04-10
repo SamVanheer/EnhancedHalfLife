@@ -73,7 +73,7 @@ structure, we need to copy them into the state structure at this point.
 */
 void DLLEXPORT HUD_TxferLocalOverrides( entity_state_t *state, const clientdata_t *client )
 {
-	VectorCopy( client->origin, state->origin );
+	state->origin = client->origin;
 
 	// Spectator
 	state->iuser1 = client->iuser1;
@@ -97,10 +97,10 @@ playerstate structure
 void DLLEXPORT HUD_ProcessPlayerState( entity_state_t *dst, const entity_state_t *src )
 {
 	// Copy in network data
-	VectorCopy( src->origin, dst->origin );
-	VectorCopy( src->angles, dst->angles );
+	dst->origin =  src->origin;
+	dst->angles = src->angles;
 
-	VectorCopy( src->velocity, dst->velocity );
+	dst->velocity = src->velocity;
 
 	dst->frame					= src->frame;
 	dst->modelindex				= src->modelindex;
@@ -126,7 +126,7 @@ void DLLEXPORT HUD_ProcessPlayerState( entity_state_t *dst, const entity_state_t
 	memcpy( &dst->controller[0], &src->controller[0], 4 * sizeof( byte ) );
 	memcpy( &dst->blending[0], &src->blending[0], 2 * sizeof( byte ) );
 
-	VectorCopy( src->basevelocity, dst->basevelocity );
+	dst->basevelocity = src->basevelocity;
 
 	dst->friction				= src->friction;
 	dst->gravity				= src->gravity;
@@ -211,10 +211,10 @@ void DLLEXPORT HUD_TxferPredictionData ( entity_state_t *ps, const entity_state_
 	pcd->fuser2					= ppcd->fuser2;
 	pcd->fuser3					= ppcd->fuser3;
 
-	VectorCopy( ppcd->vuser1, pcd->vuser1 );
-	VectorCopy( ppcd->vuser2, pcd->vuser2 );
-	VectorCopy( ppcd->vuser3, pcd->vuser3 );
-	VectorCopy( ppcd->vuser4, pcd->vuser4 );
+	pcd->vuser1 = ppcd->vuser1;
+	pcd->vuser2 = ppcd->vuser2;
+	pcd->vuser3 = ppcd->vuser3;
+	pcd->vuser4 = ppcd->vuser4;
 
 	memcpy( wd, pwd, 32 * sizeof( weapon_data_t ) );
 }
@@ -466,7 +466,7 @@ void DLLEXPORT HUD_TempEntUpdate (
 		{
 			pprev = pTemp;
 			
-			VectorCopy( pTemp->entity.origin, pTemp->entity.prevstate.origin );
+			pTemp->entity.prevstate.origin = pTemp->entity.origin;
 
 			if ( pTemp->flags & FTENT_SPARKSHOWER )
 			{
@@ -496,11 +496,9 @@ void DLLEXPORT HUD_TempEntUpdate (
 			}
 			else if ( pTemp->flags & FTENT_PLYRATTACHMENT )
 			{
-				cl_entity_t *pClient;
+				cl_entity_t *pClient = gEngfuncs.GetEntityByIndex( pTemp->clientIndex );
 
-				pClient = gEngfuncs.GetEntityByIndex( pTemp->clientIndex );
-
-				VectorAdd( pClient->origin, pTemp->tentOffset, pTemp->entity.origin );
+				pTemp->entity.origin = pClient->origin + pTemp->tentOffset;
 			}
 			else if ( pTemp->flags & FTENT_SINEWAVE )
 			{
@@ -564,7 +562,7 @@ void DLLEXPORT HUD_TempEntUpdate (
 				pTemp->entity.angles[1] += pTemp->entity.baseline.angles[1] * frametime;
 				pTemp->entity.angles[2] += pTemp->entity.baseline.angles[2] * frametime;
 
-				VectorCopy( pTemp->entity.angles, pTemp->entity.latched.prevangles );
+				pTemp->entity.latched.prevangles = pTemp->entity.angles;
 			}
 
 			if ( pTemp->flags & (FTENT_COLLIDEALL | FTENT_COLLIDEWORLD) )
@@ -589,7 +587,7 @@ void DLLEXPORT HUD_TempEntUpdate (
 						if ( !pmtrace.ent || ( pe->info != pTemp->clientIndex ) )
 						{
 							traceFraction = pmtrace.fraction;
-							VectorCopy( pmtrace.plane.normal, traceNormal );
+							traceNormal = pmtrace.plane.normal;
 
 							if ( pTemp->hitcallback )
 							{
@@ -609,7 +607,7 @@ void DLLEXPORT HUD_TempEntUpdate (
 					if ( pmtrace.fraction != 1 )
 					{
 						traceFraction = pmtrace.fraction;
-						VectorCopy( pmtrace.plane.normal, traceNormal );
+						traceNormal = pmtrace.plane.normal;
 
 						if ( pTemp->flags & FTENT_SPARKSHOWER )
 						{
@@ -632,12 +630,10 @@ void DLLEXPORT HUD_TempEntUpdate (
 				
 				if ( traceFraction != 1 )	// Decent collision now, and damping works
 				{
-					float  proj, damp;
-
 					// Place at contact point
-					VectorMA( pTemp->entity.prevstate.origin, traceFraction*frametime, pTemp->entity.baseline.origin, pTemp->entity.origin );
+					pTemp->entity.origin = pTemp->entity.prevstate.origin + (traceFraction * frametime) * pTemp->entity.baseline.origin;
 					// Damp velocity
-					damp = pTemp->bounceFactor;
+					float damp = pTemp->bounceFactor;
 					if ( pTemp->flags & (FTENT_GRAVITY|FTENT_SLOWGRAVITY) )
 					{
 						damp *= 0.5;
@@ -669,8 +665,8 @@ void DLLEXPORT HUD_TempEntUpdate (
 						// Reflect velocity
 						if ( damp != 0 )
 						{
-							proj = DotProduct( pTemp->entity.baseline.origin, traceNormal );
-							VectorMA( pTemp->entity.baseline.origin, -proj*2, traceNormal, pTemp->entity.baseline.origin );
+							const float proj = DotProduct( pTemp->entity.baseline.origin, traceNormal );
+							pTemp->entity.baseline.origin = pTemp->entity.baseline.origin + (-proj * 2) * traceNormal;
 							// Reflect rotation (fake)
 
 							pTemp->entity.angles[1] = -pTemp->entity.angles[1];
@@ -690,7 +686,7 @@ void DLLEXPORT HUD_TempEntUpdate (
 			if ( (pTemp->flags & FTENT_FLICKER) && gTempEntFrame == pTemp->entity.curstate.effects )
 			{
 				dlight_t *dl = gEngfuncs.pEfxAPI->CL_AllocDlight (0);
-				VectorCopy (pTemp->entity.origin, dl->origin);
+				dl->origin = pTemp->entity.origin;
 				dl->radius = 60;
 				dl->color.r = 255;
 				dl->color.g = 120;
