@@ -122,7 +122,7 @@ void CHalfLifeRules :: PlayerSpawn( CBasePlayer *pPlayer )
 //=========================================================
 bool CHalfLifeRules :: AllowAutoTargetCrosshair()
 {
-	return ( g_iSkillLevel == SKILL_EASY );
+	return (g_SkillLevel == SkillLevel::Easy );
 }
 
 //=========================================================

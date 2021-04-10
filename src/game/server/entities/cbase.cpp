@@ -22,7 +22,6 @@
 #include "dll_functions.hpp"
 
 extern DLL_GLOBAL Vector		g_vecAttackDir;
-extern DLL_GLOBAL int			g_iSkillLevel;
 
 // give health
 bool CBaseEntity :: TakeHealth( float flHealth, int bitsDamageType )

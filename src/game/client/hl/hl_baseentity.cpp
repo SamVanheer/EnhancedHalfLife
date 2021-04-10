@@ -98,7 +98,6 @@ CGrenade *CGrenade::ShootContact( entvars_t *pevOwner, Vector vecStart, Vector v
 void CGrenade::DetonateUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ){ }
 
 void UTIL_Remove( CBaseEntity *pEntity ){ }
-struct skilldata_t  gSkillData;
 void UTIL_SetSize( entvars_t *pev, const Vector &vecMin, const Vector &vecMax ){ }
 CBaseEntity *UTIL_FindEntityInSphere( CBaseEntity *pStartEntity, const Vector &vecCenter, float flRadius ){ return nullptr;}
 

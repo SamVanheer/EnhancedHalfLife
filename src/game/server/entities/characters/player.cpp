@@ -3996,7 +3996,7 @@ void CBasePlayer :: EnableControl(bool fControl)
 //=========================================================
 Vector CBasePlayer :: GetAutoaimVector( float flDelta )
 {
-	if (g_iSkillLevel == SKILL_HARD)
+	if (g_SkillLevel == SkillLevel::Hard)
 	{
 		UTIL_MakeVectors( pev->v_angle + pev->punchangle );
 		return gpGlobals->v_forward;
@@ -4007,7 +4007,7 @@ Vector CBasePlayer :: GetAutoaimVector( float flDelta )
 
 	// always use non-sticky autoaim
 	// UNDONE: use sever variable to chose!
-	if (true || g_iSkillLevel == SKILL_MEDIUM)
+	if (true || g_SkillLevel == SkillLevel::Medium)
 	{
 		m_vecAutoAim = Vector( 0, 0, 0 );
 		// flDelta *= 0.5;
@@ -4045,7 +4045,7 @@ Vector CBasePlayer :: GetAutoaimVector( float flDelta )
 
 	// always use non-sticky autoaim
 	// UNDONE: use sever variable to chose!
-	if (false || g_iSkillLevel == SKILL_EASY)
+	if (false || g_SkillLevel == SkillLevel::Easy)
 	{
 		m_vecAutoAim = m_vecAutoAim * 0.67 + angles * 0.33;
 	}

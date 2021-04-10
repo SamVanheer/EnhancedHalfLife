@@ -38,7 +38,6 @@
 
 extern DLL_GLOBAL uint32	g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;
-extern DLL_GLOBAL int		g_iSkillLevel;
 extern DLL_GLOBAL uint32	g_ulFrameCount;
 
 extern int giPrecacheGrunt;

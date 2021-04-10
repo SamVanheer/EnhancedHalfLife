@@ -29,7 +29,6 @@ DLL_GLOBAL uint32		g_ulFrameCount;
 DLL_GLOBAL uint32		g_ulModelIndexEyes;
 DLL_GLOBAL uint32		g_ulModelIndexPlayer;
 DLL_GLOBAL Vector		g_vecAttackDir;
-DLL_GLOBAL int			g_iSkillLevel;
 DLL_GLOBAL int			gDisplayTitle;
 DLL_GLOBAL bool			g_fGameOver;
 DLL_GLOBAL int			g_Language;

@@ -107,23 +107,13 @@ bool CGameRules::CanHavePlayerItem( CBasePlayer *pPlayer, CBasePlayerItem *pWeap
 //=========================================================
 void CGameRules::RefreshSkillData ()
 {
-	int	iSkill;
+	auto skill = static_cast<SkillLevel>(CVAR_GET_FLOAT("skill"));
 
-	iSkill = (int)CVAR_GET_FLOAT("skill");
-	g_iSkillLevel = iSkill;
+	skill = clamp(skill, SkillLevel::Easy, SkillLevel::Hard);
 
-	if ( iSkill < 1 )
-	{
-		iSkill = 1;
-	}
-	else if ( iSkill > 3 )
-	{
-		iSkill = 3; 
-	}
+	gSkillData.SkillLevel = g_SkillLevel = skill;
 
-	gSkillData.iSkillLevel = iSkill;
-
-	ALERT ( at_console, "\nGAME SKILL LEVEL:%d\n",iSkill );
+	ALERT ( at_console, "\nGAME SKILL LEVEL:%d\n", static_cast<int>(skill));
 
 	//Agrunt		
 	gSkillData.agruntHealth = GetSkillCvar( "sk_agrunt_health" );
