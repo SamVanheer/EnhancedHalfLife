@@ -519,3 +519,8 @@ float UTIL_WeaponTimeBase();
 CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe);
 
 void EntvarsKeyvalue(entvars_t* pev, KeyValueData* pkvd);
+
+/**
+*	@brief Determine the current # of active players on the server for map cycling logic
+*/
+int UTIL_CountPlayers();

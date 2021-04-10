@@ -1400,3 +1400,20 @@ void UTIL_StripToken( const char *pKey, char *pDest )
 	}
 	pDest[i] = 0;
 }
+
+int UTIL_CountPlayers()
+{
+	int	num = 0;
+
+	for (int i = 1; i <= gpGlobals->maxClients; i++)
+	{
+		CBaseEntity* pEnt = UTIL_PlayerByIndex(i);
+
+		if (pEnt)
+		{
+			++num;
+		}
+	}
+
+	return num;
+}

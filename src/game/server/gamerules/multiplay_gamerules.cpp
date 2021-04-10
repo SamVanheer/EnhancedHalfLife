@@ -1339,30 +1339,6 @@ bool ReloadMapCycleFile( char *filename, mapcycle_t *cycle )
 
 /*
 ==============
-CountPlayers
-
-Determine the current # of active players on the server for map cycling logic
-==============
-*/
-int CountPlayers()
-{
-	int	num = 0;
-
-	for ( int i = 1; i <= gpGlobals->maxClients; i++ )
-	{
-		CBaseEntity *pEnt = UTIL_PlayerByIndex( i );
-
-		if ( pEnt )
-		{
-			num = num + 1;
-		}
-	}
-
-	return num;
-}
-
-/*
-==============
 ExtractCommandString
 
 Parse commands/key value pairs to issue right after map xxx command is issued on server
@@ -1445,7 +1421,7 @@ void CHalfLifeMultiplay :: ChangeLevel()
 	szCommands[ 0 ] = '\0';
 	szRules[ 0 ] = '\0';
 
-	curplayers = CountPlayers();
+	curplayers = UTIL_CountPlayers();
 
 	// Has the map cycle filename changed?
 	if ( stricmp( mapcfile, szPreviousMapCycleFile ) )
