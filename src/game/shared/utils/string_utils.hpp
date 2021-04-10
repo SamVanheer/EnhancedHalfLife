@@ -31,3 +31,15 @@ int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut);
 *	@brief Returns true if UTF-8 string contains invalid sequences.
 */
 bool Q_UnicodeValidate(const char* pUTF8);
+
+inline char com_token[1500];
+
+/**
+*	@brief Parse a token out of a string
+*/
+char* COM_Parse(char* data);
+
+/**
+*	@brief Returns 1 if additional data is waiting to be processed on this line
+*/
+bool COM_TokenWaiting(char* buffer);
