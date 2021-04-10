@@ -252,10 +252,10 @@ public:
 	void StartDeathCam();
 	void StartObserver( Vector vecPosition, Vector vecViewAngle );
 
-	void AddPoints( int score, bool bAllowNegativeScore ) override;
-	void AddPointsToTeam( int score, bool bAllowNegativeScore ) override;
-	bool AddPlayerItem( CBasePlayerItem *pItem ) override;
-	bool RemovePlayerItem( CBasePlayerItem *pItem ) override;
+	void AddPoints( int score, bool bAllowNegativeScore );
+	void AddPointsToTeam( int score, bool bAllowNegativeScore );
+	bool AddPlayerItem( CBasePlayerItem *pItem );
+	bool RemovePlayerItem( CBasePlayerItem *pItem );
 	void DropPlayerItem ( char *pszItemName );
 	bool HasPlayerItem( CBasePlayerItem *pCheckItem );
 	bool HasNamedPlayerItem( const char *pszItemName );
@@ -322,6 +322,16 @@ public:
 	int m_iAutoWepSwitch;
 
 	bool m_bRestored;
+
+	//We use this variables to store each ammo count.
+	int ammo_9mm;
+	int ammo_357;
+	int ammo_bolts;
+	int ammo_buckshot;
+	int ammo_rockets;
+	int ammo_uranium;
+	int ammo_hornets;
+	int ammo_argrens;
 };
 
 extern bool gInitHUD;

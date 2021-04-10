@@ -167,13 +167,14 @@ void CGameScore::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE us
 	// Only players can use this
 	if ( pActivator->IsPlayer() )
 	{
+		auto player = static_cast<CBasePlayer*>(pActivator);
 		if ( AwardToTeam() )
 		{
-			pActivator->AddPointsToTeam( Points(), AllowNegativeScore() );
+			player->AddPointsToTeam( Points(), AllowNegativeScore() );
 		}
 		else
 		{
-			pActivator->AddPoints( Points(), AllowNegativeScore() );
+			player->AddPoints( Points(), AllowNegativeScore() );
 		}
 	}
 }
@@ -550,7 +551,7 @@ void CGamePlayerZone::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 	if ( !CanFireForActivator( pActivator ) )
 		return;
 
-	CBaseEntity *pPlayer = nullptr;
+	CBasePlayer *pPlayer = nullptr;
 
 	for ( int i = 1; i <= gpGlobals->maxClients; i++ )
 	{

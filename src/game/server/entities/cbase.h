@@ -137,10 +137,6 @@ public:
 	virtual CBaseMonster *MyMonsterPointer() { return nullptr;}
 	virtual CSquadMonster *MySquadMonsterPointer() { return nullptr;}
 	virtual	int		GetToggleState() { return TS_AT_TOP; }
-	virtual void	AddPoints( int score, bool bAllowNegativeScore ) {}
-	virtual void	AddPointsToTeam( int score, bool bAllowNegativeScore ) {}
-	virtual bool	AddPlayerItem( CBasePlayerItem *pItem ) { return false; }
-	virtual bool	RemovePlayerItem( CBasePlayerItem *pItem ) { return false; }
 	virtual int 	GiveAmmo( int iAmount, const char *szName, int iMax ) { return -1; }
 	virtual float	GetDelay() { return 0; }
 	virtual bool	IsMoving() { return pev->velocity != vec3_origin; }
@@ -315,15 +311,6 @@ public:
 		EMIT_SOUND_DYN(ENT(pev), chan, RANDOM_SOUND_ARRAY(array), 1.0, ATTN_NORM, 0, RANDOM_LONG(95, 105));
 	}
 
-	//We use this variables to store each ammo count.
-	int ammo_9mm;
-	int ammo_357;
-	int ammo_bolts;
-	int ammo_buckshot;
-	int ammo_rockets;
-	int ammo_uranium;
-	int ammo_hornets;
-	int ammo_argrens;
 	//Special stuff for grenades and satchels.
 	float m_flStartThrow;
 	float m_flReleaseThrow;
