@@ -23,6 +23,7 @@
 #include "cl_util.h"
 #include "netadr.h"
 #include "interface.h"
+#include "materials.hpp"
 //#include "vgui_schememanager.h"
 
 #include "pm_shared.h"
@@ -114,7 +115,7 @@ void DLLEXPORT HUD_PlayerMoveInit( playermove_t* ppmove )
 
 char DLLEXPORT HUD_PlayerMoveTexture( char *name )
 {
-	return PM_FindTextureType( name );
+	return TEXTURETYPE_Find( name );
 }
 
 void DLLEXPORT HUD_PlayerMove( playermove_t* ppmove, int server )

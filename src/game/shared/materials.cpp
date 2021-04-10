@@ -13,20 +13,50 @@
 *
 ****/
 
+#include <cassert>
+
 #include "Platform.h"
 #include "filesystem_shared.hpp"
 #include "materials.hpp"
 #include "shared_utils.hpp"
 
-bool fTextureTypeInit = false;
+static bool fTextureTypeInit = false;
 
 int gcTextures = 0;
 char grgszTextureName[CTEXTURESMAX][CBTEXTURENAMEMAX];	// texture names
 char grgchTextureType[CTEXTURESMAX];						// parallel array of texture types
 
-// open materials.txt,  get size, alloc space, 
-// save in array.  Only works first time called, 
-// ignored on subsequent calls.
+void TEXTURETYPE_SwapTextures(int i, int j)
+{
+	char szTemp[CBTEXTURENAMEMAX];
+
+	strcpy(szTemp, grgszTextureName[i]);
+	const char chTemp = grgchTextureType[i];
+
+	strcpy(grgszTextureName[i], grgszTextureName[j]);
+	grgchTextureType[i] = grgchTextureType[j];
+
+	strcpy(grgszTextureName[j], szTemp);
+	grgchTextureType[j] = chTemp;
+}
+
+void TEXTURETYPE_SortTextures()
+{
+	// Bubble sort, yuck, but this only occurs at startup and it's only 512 elements...
+	//
+	for (int i = 0; i < gcTextures; i++)
+	{
+		for (int j = i + 1; j < gcTextures; j++)
+		{
+			if (stricmp(grgszTextureName[i], grgszTextureName[j]) > 0)
+			{
+				// Swap
+				//
+				TEXTURETYPE_SwapTextures(i, j);
+			}
+		}
+	}
+}
 
 void TEXTURETYPE_Init()
 {
@@ -90,23 +120,35 @@ void TEXTURETYPE_Init()
 		strcpy(&(grgszTextureName[gcTextures++][0]), &(buffer[i]));
 	}
 
+	TEXTURETYPE_SortTextures();
+
 	fTextureTypeInit = true;
 }
 
-// given texture name, find texture type
-// if not found, return type 'concrete'
-
-// NOTE: this routine should ONLY be called if the 
-// current texture under the player changes!
-
-char TEXTURETYPE_Find(char* name)
+char TEXTURETYPE_Find(const char* name)
 {
-	// CONSIDER: pre-sort texture names and perform faster binary search here
+	assert(fTextureTypeInit);
 
-	for (int i = 0; i < gcTextures; i++)
+	int left = 0;
+	int right = gcTextures - 1;
+
+	while (left <= right)
 	{
-		if (!strnicmp(name, &(grgszTextureName[i][0]), CBTEXTURENAMEMAX - 1))
-			return (grgchTextureType[i]);
+		const int pivot = (left + right) / 2;
+
+		const int val = strnicmp(name, grgszTextureName[pivot], CBTEXTURENAMEMAX - 1);
+		if (val == 0)
+		{
+			return grgchTextureType[pivot];
+		}
+		else if (val > 0)
+		{
+			left = pivot + 1;
+		}
+		else if (val < 0)
+		{
+			right = pivot - 1;
+		}
 	}
 
 	return CHAR_TEX_CONCRETE;

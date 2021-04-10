@@ -19,7 +19,6 @@ struct playermove_t;
 
 void PM_Init(playermove_t* ppmove );
 void PM_Move (playermove_t* ppmove, int server );
-char PM_FindTextureType( const char *name );
 
 int PM_GetVisEntInfo(int ent);
 int PM_GetPhysEntInfo(int ent);

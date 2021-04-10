@@ -59,140 +59,7 @@ static bool pm_shared_initialized = false;
 static Vector rgv3tStuckTable[54];
 static int rgStuckLast[MAX_CLIENTS][2];
 
-// Texture names
-static int gcTextures = 0;
-static char grgszTextureName[CTEXTURESMAX][CBTEXTURENAMEMAX];	
-static char grgchTextureType[CTEXTURESMAX];
-
 bool g_onladder = false;
-
-void PM_SwapTextures( int i, int j )
-{
-	char szTemp[ CBTEXTURENAMEMAX ];
-
-	strcpy( szTemp, grgszTextureName[ i ] );
-	const char chTemp = grgchTextureType[ i ];
-	
-	strcpy( grgszTextureName[ i ], grgszTextureName[ j ] );
-	grgchTextureType[ i ] = grgchTextureType[ j ];
-
-	strcpy( grgszTextureName[ j ], szTemp );
-	grgchTextureType[ j ] = chTemp;
-}
-
-void PM_SortTextures()
-{
-	// Bubble sort, yuck, but this only occurs at startup and it's only 512 elements...
-	//
-	for ( int i = 0 ; i < gcTextures; i++ )
-	{
-		for ( int j = i + 1; j < gcTextures; j++ )
-		{
-			if ( stricmp( grgszTextureName[ i ], grgszTextureName[ j ] ) > 0 )
-			{
-				// Swap
-				//
-				PM_SwapTextures( i, j );
-			}
-		}
-	}
-}
-
-void PM_InitTextureTypes()
-{
-	static bool bTextureTypeInit = false;
-
-	if ( bTextureTypeInit )
-		return;
-
-	memset(&(grgszTextureName[0][0]), 0, CTEXTURESMAX * CBTEXTURENAMEMAX);
-	memset(grgchTextureType, 0, CTEXTURESMAX);
-
-	gcTextures = 0;
-
-	const int fileSize = pmove->COM_FileSize( "sound/materials.txt" );
-	byte* pMemFile = pmove->COM_LoadFile( "sound/materials.txt", 5, nullptr);
-	if ( !pMemFile )
-		return;
-
-	char buffer[512]{};
-
-	int filePos = 0;
-	// for each line in the file...
-	while ( pmove->memfgets( pMemFile, fileSize, &filePos, buffer, 511 ) != nullptr && (gcTextures < CTEXTURESMAX) )
-	{
-		// skip whitespace
-		int i = 0;
-		while(buffer[i] && isspace(buffer[i]))
-			i++;
-		
-		if (!buffer[i])
-			continue;
-
-		// skip comment lines
-		if (buffer[i] == '/' || !isalpha(buffer[i]))
-			continue;
-
-		// get texture type
-		grgchTextureType[gcTextures] = toupper(buffer[i++]);
-
-		// skip whitespace
-		while(buffer[i] && isspace(buffer[i]))
-			i++;
-		
-		if (!buffer[i])
-			continue;
-
-		// get sentence name
-		int j = i;
-		while (buffer[j] && !isspace(buffer[j]))
-			j++;
-
-		if (!buffer[j])
-			continue;
-
-		// null-terminate name and save in sentences array
-		j = V_min (j, CBTEXTURENAMEMAX-1+i);
-		buffer[j] = 0;
-		strcpy(&(grgszTextureName[gcTextures++][0]), &(buffer[i]));
-	}
-
-	// Must use engine to free since we are in a .dll
-	pmove->COM_FreeFile ( pMemFile );
-
-	PM_SortTextures();
-
-	bTextureTypeInit = true;
-}
-
-char PM_FindTextureType( const char *name )
-{
-	assert( pm_shared_initialized );
-
-	int left = 0;
-	int right = gcTextures - 1;
-
-	while ( left <= right )
-	{
-		const int pivot = ( left + right ) / 2;
-
-		const int val = strnicmp( name, grgszTextureName[ pivot ], CBTEXTURENAMEMAX-1 );
-		if ( val == 0 )
-		{
-			return grgchTextureType[ pivot ];
-		}
-		else if ( val > 0 )
-		{
-			left = pivot + 1;
-		}
-		else if ( val < 0 )
-		{
-			right = pivot - 1;
-		}
-	}
-
-	return CHAR_TEX_CONCRETE;
-}
 
 void PM_PlayStepSound(StepType step, float fvol )
 {
@@ -391,7 +258,7 @@ void PM_CatagorizeTextureType()
 	pmove->sztexturename[ CBTEXTURENAMEMAX - 1 ] = 0;
 		
 	// get texture type
-	pmove->chtexturetype = PM_FindTextureType( pmove->sztexturename );	
+	pmove->chtexturetype = TEXTURETYPE_Find( pmove->sztexturename );
 }
 
 void PM_UpdateStepSound()
@@ -3080,7 +2947,7 @@ void PM_Init( playermove_t *ppmove )
 	pmove = ppmove;
 
 	PM_CreateStuckTable();
-	PM_InitTextureTypes();
+	TEXTURETYPE_Init();
 
 	pm_shared_initialized = true;
 }

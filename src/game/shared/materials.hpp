@@ -39,5 +39,12 @@ constexpr char CHAR_TEX_GLASS = 'Y';
 constexpr char CHAR_TEX_FLESH = 'F';
 constexpr char CHAR_TEX_SNOW = 'N';
 
+/**
+*	@brief open materials.txt, get size, alloc space, save in array. Only works first time called, ignored on subsequent calls.
+*/
 void TEXTURETYPE_Init();
-char TEXTURETYPE_Find(char* name);
+
+/**
+*	@brief Given texture name, find texture type. If not found, return type 'concrete'
+*/
+char TEXTURETYPE_Find(const char* name);

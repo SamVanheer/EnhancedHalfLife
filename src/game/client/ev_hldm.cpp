@@ -45,8 +45,6 @@ extern engine_studio_api_t IEngineStudio;
 
 static int tracerCount[ 32 ];
 
-#include "pm_shared.h"
-
 extern cvar_t *cl_lw;
 
 // play a strike sound based on the texture that was hit by the attack traceline.  VecSrc/VecEnd are the
@@ -98,7 +96,7 @@ float EV_HLDM_PlayTextureSound( int idx, pmtrace_t *ptr, const Vector& vecSrc, c
 			szbuffer[ CBTEXTURENAMEMAX - 1 ] = 0;
 				
 			// get texture type
-			chTextureType = PM_FindTextureType( szbuffer );	
+			chTextureType = TEXTURETYPE_Find( szbuffer );
 		}
 	}
 	
