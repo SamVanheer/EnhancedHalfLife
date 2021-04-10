@@ -17,24 +17,24 @@ struct visibleparticles_t
 class MemoryBlock
 {
 private:
-    char *m_pData;
-    //bool m_bBlockIsInUse;
+	char *m_pData;
+	//bool m_bBlockIsInUse;
 public:
-    MemoryBlock(long lBlockSize)
-    : next(nullptr), prev(nullptr)
-      //m_bBlockIsInUse(false) // Initialize block to 'free' state.
-    {
-        // Allocate memory here.
-        m_pData = new char[lBlockSize];
-    }
+	MemoryBlock(long lBlockSize)
+	: next(nullptr), prev(nullptr)
+	  //m_bBlockIsInUse(false) // Initialize block to 'free' state.
+	{
+		// Allocate memory here.
+		m_pData = new char[lBlockSize];
+	}
 
-    virtual ~MemoryBlock()
-    {
-        // Free memory.
-        delete[] m_pData;
-    }
+	virtual ~MemoryBlock()
+	{
+		// Free memory.
+		delete[] m_pData;
+	}
   
-    inline char *Memory(void) { return m_pData; }
+	inline char *Memory(void) { return m_pData; }
 
 	MemoryBlock * next;
 	MemoryBlock * prev;
@@ -139,37 +139,37 @@ typedef VectorOfMemoryBlocks::iterator MemoryBlockIterator;
 class CMiniMem
 {
 private:
-    // Main memory pool.  Array is fine, but vectors are
-    //  easier. :)
-    static VectorOfMemoryBlocks m_vecMemoryPool;
-    // Size of memory blocks in pool.
-    static long m_lMemoryBlockSize;
-    static long m_lMaxBlocks;
-    static long m_lMemoryPoolSize;
-    static CMiniMem *_instance;
+	// Main memory pool.  Array is fine, but vectors are
+	//  easier. :)
+	static VectorOfMemoryBlocks m_vecMemoryPool;
+	// Size of memory blocks in pool.
+	static long m_lMemoryBlockSize;
+	static long m_lMaxBlocks;
+	static long m_lMemoryPoolSize;
+	static CMiniMem *_instance;
 
 	int m_iTotalParticles;
-    int m_iParticlesDrawn;
+	int m_iParticlesDrawn;
 
 protected:
-    // private constructor and destructor.
-    CMiniMem(long lMemoryPoolSize, long lMaxBlockSize);
-    virtual ~CMiniMem();
+	// private constructor and destructor.
+	CMiniMem(long lMemoryPoolSize, long lMaxBlockSize);
+	virtual ~CMiniMem();
 
-    // ------------ Memory pool manager calls.
-    // Find a free block and mark it as "in use".  Return nullptr
-    //  if no free blocks found.
-    char *AllocateFreeBlock(void);
+	// ------------ Memory pool manager calls.
+	// Find a free block and mark it as "in use".  Return nullptr
+	//  if no free blocks found.
+	char *AllocateFreeBlock(void);
 public:
 
-    // Return a pointer to usable block of memory.
-    char *newBlock(void);
+	// Return a pointer to usable block of memory.
+	char *newBlock(void);
 
-    // Mark a target memory item as no longer "in use".
-    void deleteBlock(MemoryBlock *p);
+	// Mark a target memory item as no longer "in use".
+	void deleteBlock(MemoryBlock *p);
 
-    // Return the remaining capacity of the memory pool as a percent.
-    long PercentUsed(void);
+	// Return the remaining capacity of the memory pool as a percent.
+	long PercentUsed(void);
 
 	void ProcessAll( void ); //Processes all
 
@@ -177,8 +177,8 @@ public:
 
 	static int ApplyForce( Vector vOrigin, Vector vDirection, float flRadius, float flStrength );
 
-    static CMiniMem *Instance(void);
-    static long MaxBlockSize(void);
+	static CMiniMem *Instance(void);
+	static long MaxBlockSize(void);
 
 	bool CheckSize( int iSize );
 

@@ -725,18 +725,18 @@ void CFuncTrain :: Wait()
 		
 	// need pointer to LAST target.
 	if ( FBitSet (m_pevCurrentTarget->spawnflags , SF_TRAIN_WAIT_RETRIGGER ) || ( pev->spawnflags & SF_TRAIN_WAIT_RETRIGGER ) )
-    {
+	{
 		pev->spawnflags |= SF_TRAIN_WAIT_RETRIGGER;
-        // clear the sound channel.
+		// clear the sound channel.
 		if ( pev->noiseMovement )
 			STOP_SOUND( edict(), CHAN_STATIC, (char*)STRING(pev->noiseMovement) );
 		if ( pev->noiseStopMoving )
 			EMIT_SOUND (ENT(pev), CHAN_VOICE, (char*)STRING(pev->noiseStopMoving), m_volume, ATTN_NORM);
 		pev->nextthink = 0;
-        return;
-    }
-    
-    // ALERT ( at_console, "%f\n", m_flWait );
+		return;
+	}
+	
+	// ALERT ( at_console, "%f\n", m_flWait );
 
 	if (m_flWait != 0)
 	{// -1 wait will wait forever!		
@@ -765,7 +765,7 @@ void CFuncTrain :: Next()
 	// now find our next target
 	pTarg = GetNextTarget();
 
-    if ( !pTarg )
+	if ( !pTarg )
 	{
 		if ( pev->noiseMovement )
 			STOP_SOUND( edict(), CHAN_STATIC, (char*)STRING(pev->noiseMovement) );
@@ -783,12 +783,12 @@ void CFuncTrain :: Next()
 
 	if ( m_pevCurrentTarget && m_pevCurrentTarget->speed != 0 )
 	{// don't copy speed from target if it is 0 (uninitialized)
-        pev->speed = m_pevCurrentTarget->speed;
+		pev->speed = m_pevCurrentTarget->speed;
 		ALERT( at_aiconsole, "Train %s speed to %4.2f\n", STRING(pev->targetname), pev->speed );
 	}
 	m_pevCurrentTarget = pTarg->pev;// keep track of this since path corners change our target for us.
 
-    pev->enemy = pTarg->edict();//hack
+	pev->enemy = pTarg->edict();//hack
 
 	if(FBitSet(m_pevCurrentTarget->spawnflags, SF_CORNER_TELEPORT))
 	{
@@ -825,7 +825,7 @@ void CFuncTrain :: Activate()
 		
 		pev->target = pevTarg->target;
 		m_pevCurrentTarget = pevTarg;// keep track of this since path corners change our target for us.
-    
+	
 		UTIL_SetOrigin	(pev, pevTarg->origin - (pev->mins + pev->maxs) * 0.5 );
 		
 		if ( FStringNull(pev->targetname) )
@@ -1407,7 +1407,7 @@ void CFuncTrackTrain :: Find()
 
 	if ( pev->spawnflags & SF_TRACKTRAIN_NOPITCH )
 		pev->angles.x = 0;
-    UTIL_SetOrigin( pev, nextPos );
+	UTIL_SetOrigin( pev, nextPos );
 	NextThink( pev->ltime + 0.1, false);
 	SetThink( &CFuncTrackTrain::Next );
 	pev->speed = m_startSpeed;

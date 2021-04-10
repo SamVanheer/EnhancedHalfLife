@@ -136,7 +136,7 @@ IMPLEMENT_SAVERESTORE( CBreakable, CBaseEntity );
 
 void CBreakable::Spawn()
 {
-    Precache( );    
+	Precache( );    
 
 	if ( FBitSet( pev->spawnflags, SF_BREAK_TRIGGER_ONLY ) )
 		pev->takedamage	= DAMAGE_NO;
@@ -144,8 +144,8 @@ void CBreakable::Spawn()
 		pev->takedamage	= DAMAGE_YES;
   
 	pev->solid		= SOLID_BSP;
-    pev->movetype	= MOVETYPE_PUSH;
-    m_angle			= pev->angles.y;
+	pev->movetype	= MOVETYPE_PUSH;
+	m_angle			= pev->angles.y;
 	pev->angles.y	= 0;
 
 	// HACK:  matGlass can receive decals, we need the client to know about this
@@ -210,7 +210,7 @@ const char **CBreakable::MaterialSoundList( Materials precacheMaterial, int &sou
 {
 	const char	**pSoundList = nullptr;
 
-    switch ( precacheMaterial ) 
+	switch ( precacheMaterial ) 
 	{
 	case matWood:
 		pSoundList = pSoundsWood;
@@ -278,7 +278,7 @@ void CBreakable::Precache()
 {
 	const char *pGibName;
 
-    switch (m_Material) 
+	switch (m_Material) 
 	{
 	case matWood:
 		pGibName = "models/woodgibs.mdl";
@@ -429,7 +429,7 @@ void CBreakable::BreakTouch( CBaseEntity *pOther )
 	// only players can break these right now
 	if ( !pOther->IsPlayer() || !IsBreakable() )
 	{
-        return;
+		return;
 	}
 
 	if ( FBitSet ( pev->spawnflags, SF_BREAK_TOUCH ) )
@@ -658,7 +658,7 @@ void CBreakable::Die()
 		EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "debris/bustceiling.wav", fvol, ATTN_NORM, 0, pitch);
 		break;
 	}
-    
+	
 		
 	if (m_Explosion == expDirected)
 		vecVelocity = g_vecAttackDir * 200;

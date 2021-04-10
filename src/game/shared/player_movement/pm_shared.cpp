@@ -524,7 +524,7 @@ void PM_FixupGravityVelocity ()
 	const float ent_gravity = pmove->gravity ? pmove->gravity : 1.0;
 
 	// Get the correct velocity for the end of the dt 
-  	pmove->velocity[2] -= (ent_gravity * pmove->movevars->gravity * pmove->frametime * 0.5 );
+	pmove->velocity[2] -= (ent_gravity * pmove->movevars->gravity * pmove->frametime * 0.5 );
 
 	PM_CheckVelocity();
 }
@@ -1940,7 +1940,7 @@ void PM_Physics_Toss()
 	if ( pmove->onground != -1 )
 	{
 		if (pmove->basevelocity == vec3_origin &&
-		    pmove->velocity == vec3_origin)
+			pmove->velocity == vec3_origin)
 			return;
 	}
 
@@ -2146,7 +2146,7 @@ void PM_Jump ()
 	}
 
 	// No more effect
- 	if ( pmove->onground == -1 )
+	if ( pmove->onground == -1 )
 	{
 		// Flag that we jumped.
 		// HACK HACK HACK
@@ -2159,7 +2159,7 @@ void PM_Jump ()
 		return;		// don't pogo stick
 
 	// In the air now.
-    pmove->onground = -1;
+	pmove->onground = -1;
 
 	PM_PreventMegaBunnyJumping();
 
@@ -2389,20 +2389,20 @@ float PM_CalcRoll (Vector angles, Vector velocity, float rollangle, float rollsp
 {
 	Vector  forward, right, up;
 	AngleVectors (angles, &forward, &right, &up);
-    
+	
 	float side = DotProduct (velocity, right);
-    
+	
 	const float sign = side < 0 ? -1 : 1;
-    
+	
 	side = fabs(side);
-    
+	
 	const float value = rollangle;
-    
+	
 	if (side < rollspeed)
 	{
 		side = side * value / rollspeed;
 	}
-    else
+	else
 	{
 		side = value;
 	}
@@ -2603,7 +2603,7 @@ void PM_PlayerMove (bool server )
 			PM_LadderMove( pLadder );
 		}
 		else if ( pmove->movetype != MOVETYPE_WALK &&
-			      pmove->movetype != MOVETYPE_NOCLIP )
+				  pmove->movetype != MOVETYPE_NOCLIP )
 		{
 			// Clear ladder stuff unless player is noclipping
 			//  it will be set immediately again next frame if necessary

@@ -27,5 +27,5 @@ struct IVoiceTweak
 	void			(*SetControlFloat)(VoiceTweakControl iControl, float value);
 	float			(*GetControlFloat)(VoiceTweakControl iControl);
 
-    int             (*GetSpeakingVolume)();
+	int             (*GetSpeakingVolume)();
 };

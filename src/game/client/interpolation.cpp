@@ -33,9 +33,9 @@ bool SolveLSE (const Vector& v0, const Vector& v1, const Vector& v2, const Vecto
 	if ( y )
 		*y= Determinant(v1,v0,v3) / d;
 
-    if ( z )
+	if ( z )
 		*z= Determinant(v1,v2,v0) / d;
-      
+	  
 	return true;
 }
 

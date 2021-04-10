@@ -224,7 +224,7 @@ void CBaseMonster :: Listen ()
 
 		//if ( ( g_pSoundEnt->m_SoundPool[ iSound ].m_iType & iMySounds ) && ( g_pSoundEnt->m_SoundPool[ iSound ].m_vecOrigin - EarPosition()).Length () <= g_pSoundEnt->m_SoundPool[ iSound ].m_iVolume * hearingSensitivity ) 
 		{
- 			// the monster cares about this sound, and it's close enough to hear.
+			// the monster cares about this sound, and it's close enough to hear.
 			//g_pSoundEnt->m_SoundPool[ iSound ].m_iNextAudible = m_iAudibleList;
 			pCurrentSound->m_iNextAudible = m_iAudibleList;
 			

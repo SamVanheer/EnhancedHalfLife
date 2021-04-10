@@ -837,7 +837,7 @@ void CTentacle :: HandleAnimEvent( MonsterEvent_t *pEvent )
 				UTIL_EmitAmbientSound(ENT(pev), vecSrc, RANDOM_SOUND_ARRAY( pHitWater ), 1.0, ATTN_NORM, 0, 100);
 				break;
 			}
-          gpGlobals->force_retouch++;
+		  gpGlobals->force_retouch++;
 		}
 		break;
 

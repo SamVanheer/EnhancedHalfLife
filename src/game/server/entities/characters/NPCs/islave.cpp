@@ -60,7 +60,7 @@ public:
 
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
 
-    void StartTask ( Task_t *pTask ) override;
+	void StartTask ( Task_t *pTask ) override;
 	Schedule_t *GetSchedule() override;
 	Schedule_t *GetScheduleOfType ( int Type ) override;
 	CUSTOM_SCHEDULES;
@@ -694,7 +694,7 @@ Schedule_t *CISlave :: GetScheduleOfType ( int Type )
 		if (HasConditions( bits_COND_CAN_MELEE_ATTACK1 ))
 		{
 			return CSquadMonster :: GetScheduleOfType( SCHED_MELEE_ATTACK1 );
-        }
+		}
 		break;
 	case SCHED_RANGE_ATTACK1:
 		return slSlaveAttack1;

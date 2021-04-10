@@ -92,7 +92,7 @@ void SpectatorSpray()
 	AngleVectors(v_angles,&forward, nullptr, nullptr);
 	forward = forward * 128;
 	forward = forward + v_origin;
-    pmtrace_t * trace = gEngfuncs.PM_TraceLine( v_origin, forward, PM_TRACELINE_PHYSENTSONLY, 2, -1 );
+	pmtrace_t * trace = gEngfuncs.PM_TraceLine( v_origin, forward, PM_TRACELINE_PHYSENTSONLY, 2, -1 );
 	if ( trace->fraction != 1.0 )
 	{
 		sprintf(string, "drc_spray %.2f %.2f %.2f %i", 
@@ -109,7 +109,7 @@ void SpectatorHelp()
 	}
 	else
 	{
-  		char *text = CHudTextMessage::BufferedLocaliseTextString( "#Spec_Help_Text" );
+		char *text = CHudTextMessage::BufferedLocaliseTextString( "#Spec_Help_Text" );
 			
 		if ( text )
 		{
@@ -269,7 +269,7 @@ bool UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 				return false;
 			}
 
-            strcpy (keyname, token);
+			strcpy (keyname, token);
 
 			// another hack to fix keynames with trailing spaces
 			n = strlen(keyname);
@@ -287,7 +287,7 @@ bool UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 				return false;
 			}
 
-            if (token[0] == '}')
+			if (token[0] == '}')
 			{
 				gEngfuncs.Con_DPrintf("UTIL_FindEntityInMap: closing brace without data");
 				return false;
@@ -301,7 +301,7 @@ bool UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 				}
 			}
 
-            if( !strcmp( keyname, "angle" ) )
+			if( !strcmp( keyname, "angle" ) )
 			{
 				float y = atof( token );
 				
@@ -314,7 +314,7 @@ bool UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 				{
 					angle[0] = -90.0f;
 					angle[1] =   0.0f;
-                }
+				}
 				else
 				{
 					angle[0] = 90.0f;
@@ -334,7 +334,7 @@ bool UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 				UTIL_StringToVector(origin, token);
 
 			}
-        } // while (1)
+		} // while (1)
 
 		if (found)
 			return true;
@@ -369,12 +369,12 @@ void CHudSpectator::SetSpectatorStartPosition()
 		// jump to 0,0,0 if no better position was found
 		m_cameraOrigin = vec3_origin;
 		m_cameraAngles = vec3_origin;
-    }
+	}
 	
 	vJumpOrigin = m_cameraOrigin;
 	vJumpAngles = m_cameraAngles;
 
-    iJumpSpectator = true;	// jump anyway
+	iJumpSpectator = true;	// jump anyway
 }
 
 
@@ -383,7 +383,7 @@ void CHudSpectator::SetCameraView(Vector pos, Vector angle, float fov)
 	m_FOV = fov;
 	vJumpOrigin = pos;
 	vJumpAngles = angle;
-    gEngfuncs.SetViewAngles( vJumpAngles );
+	gEngfuncs.SetViewAngles( vJumpAngles );
 	iJumpSpectator = true;	// jump anyway
 }
 
@@ -404,7 +404,7 @@ void CHudSpectator::AddWaypoint( float time, Vector pos, Vector angle, float fov
 
 	m_CamPath[m_NumWayPoints].angle = angle;
 	m_CamPath[m_NumWayPoints].position = pos;
-    m_CamPath[ m_NumWayPoints ].flags = flags;
+	m_CamPath[ m_NumWayPoints ].flags = flags;
 	m_CamPath[ m_NumWayPoints ].fov = fov;
 	m_CamPath[ m_NumWayPoints ].time = time;
 
@@ -928,13 +928,13 @@ void CHudSpectator::FindNextPlayer(bool bReverse)
 		// take save camera position 
 		vJumpOrigin = m_cameraOrigin;
 		vJumpAngles = m_cameraAngles;
-    }
+	}
 	else
 	{
 		// use new entity position for roaming
 		vJumpOrigin = pEnt->origin;
 		vJumpAngles = pEnt->angles;
-    }
+	}
 
 	iJumpSpectator = true;
 	gViewPort->MsgFunc_ResetFade(nullptr, 0, nullptr);
@@ -986,13 +986,13 @@ void CHudSpectator::FindPlayer(const char *name)
 		// take save camera position 
 		vJumpOrigin = m_cameraOrigin;
 		vJumpAngles = m_cameraAngles;
-    }
+	}
 	else
 	{
 		// use new entity position for roaming
 		vJumpOrigin = pEnt->origin;
 		vJumpAngles = pEnt->angles;
-    }
+	}
 
 	iJumpSpectator = true;
 	gViewPort->MsgFunc_ResetFade(nullptr, 0, nullptr);
@@ -1572,7 +1572,7 @@ void CHudSpectator::DrawOverviewEntities()
 
 		origin = ent->origin;
 
-        gEngfuncs.pTriAPI->Begin( TRI_QUADS );
+		gEngfuncs.pTriAPI->Begin( TRI_QUADS );
 
 		gEngfuncs.pTriAPI->Color4f( 1.0, 1.0, 1.0, 1.0 );
 		
@@ -1654,7 +1654,7 @@ void CHudSpectator::DrawOverviewEntities()
 			
 		offset = offset - screen;
 
-        int playerNum = ent->index - 1;
+		int playerNum = ent->index - 1;
 
 		m_vPlayerPos[playerNum][0] = screen[0];	
 		m_vPlayerPos[playerNum][1] = screen[1] + offset.Length();
@@ -1678,7 +1678,7 @@ void CHudSpectator::DrawOverviewEntities()
 	{
 		origin = v_sim_org;
 		angles = v_cl_angles;
-    }
+	}
 	else
 		V_GetChasePos( g_iUser2, nullptr, origin, angles );
 

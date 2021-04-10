@@ -252,7 +252,7 @@ Vector CBaseEntity::FireBulletsPlayer (uint32 cShots, Vector vecSrc, Vector vecD
 			
 	}
 
-    return Vector ( x * vecSpread.x, y * vecSpread.y, 0.0 );
+	return Vector ( x * vecSpread.x, y * vecSpread.y, 0.0 );
 }
 
 /*

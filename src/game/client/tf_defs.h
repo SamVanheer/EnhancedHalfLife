@@ -1017,7 +1017,7 @@ float already_chosen_map;
 .entity	hook;	
 .float	on_hook;
 .float  fire_held_down;// flag - true if player is still holding down the
-                       // fire button after throwing a hook.
+					   // fire button after throwing a hook.
 */
 /*==================================================*/
 /* Server Settings								    */

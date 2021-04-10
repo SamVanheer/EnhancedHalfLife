@@ -173,7 +173,7 @@ void Force_CenterView_f ()
 	if (!iMouseInUse)
 	{
 		gEngfuncs.GetViewAngles( (float *)viewangles );
-	    viewangles[PITCH] = 0;
+		viewangles[PITCH] = 0;
 		gEngfuncs.SetViewAngles( (float *)viewangles );
 	}
 }
@@ -638,8 +638,8 @@ void DLLEXPORT IN_Accumulate ()
 	//only accumulate mouse if we are not moving the camera with the mouse
 	if ( !iMouseInUse && !g_iVisibleMouse)
 	{
-	    if (mouseactive)
-	    {
+		if (mouseactive)
+		{
 #ifdef _WIN32
 			if ( !m_bRawInput )
 			{
@@ -693,7 +693,7 @@ void IN_StartupJoystick ()
 	if ( gEngfuncs.CheckParm ("-nojoy", nullptr) )
 		return; 
  
- 	// assume no joystick
+	// assume no joystick
 	joy_avail = 0; 
 
 	int nJoysticks = SDL_NumJoysticks();

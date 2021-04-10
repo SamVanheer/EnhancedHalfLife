@@ -147,17 +147,17 @@ float V_CalcRoll (const Vector& angles, const Vector& velocity, float rollangle,
 {
 	Vector  forward, right, up;
 	AngleVectors ( angles, forward, right, up );
-    
+	
 	float side = DotProduct (velocity, right);
-    const float sign = side < 0 ? -1 : 1;
-    side = fabs( side );
-    
+	const float sign = side < 0 ? -1 : 1;
+	side = fabs( side );
+	
 	const float value = rollangle;
-    if (side < rollspeed)
+	if (side < rollspeed)
 	{
 		side = side * value / rollspeed;
 	}
-    else
+	else
 	{
 		side = value;
 	}

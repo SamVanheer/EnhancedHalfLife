@@ -51,7 +51,7 @@ public:
 	}
 
 	void getSize(int &wide, int &tall) override
-    {
+	{
 		int w1, w2, t1, t2;
 		_image[0]->getTextSize(w1, t1);
 		_image[1]->getTextSize(w2, t2);
@@ -62,13 +62,13 @@ public:
 	}
 
 	void doPaint(Panel *panel) override
-    {
+	{
 		_image[0]->doPaint(panel);
 		_image[1]->doPaint(panel);
 	}
 
 	void setPos(int x, int y) override
-    {
+	{
 		_image[0]->setPos(x, y);
 		
 		int swide, stall;
@@ -80,7 +80,7 @@ public:
 	}
 
 	void setColor(Color color) override
-    {
+	{
 		_image[0]->setColor(color);
 	}
 
@@ -125,8 +125,8 @@ public:
 		_useFgColorAsImageColor = state;
 	}
 
-    void setText(int textBufferLen, const char* text) override
-    {
+	void setText(int textBufferLen, const char* text) override
+	{
 		_dualImage->GetImage(0)->setText(text);
 
 		// calculate the text size
@@ -163,12 +163,12 @@ public:
 	}
 
 	void getTextSize(int &wide, int &tall) override
-    {
+	{
 		_dualImage->getSize(wide, tall);
 	}
 
 	void setFgColor(int r,int g,int b,int a) override
-    {
+	{
 		Label::setFgColor(r,g,b,a);
 		Color color(r,g,b,a);
 		_dualImage->setColor(color);
@@ -177,7 +177,7 @@ public:
 	}
 
 	void setFgColor(Scheme::SchemeColor sc) override
-    {
+	{
 		int r, g, b, a;
 		Label::setFgColor(sc);
 		Label::getFgColor( r, g, b, a );
@@ -187,7 +187,7 @@ public:
 	}
 
 	void setFont(Font *font) override
-    {
+	{
 		_dualImage->GetImage(0)->setFont(font);
 	}
 
@@ -230,7 +230,7 @@ private:
 	class HitTestPanel : public Panel
 	{
 	public:
-        void	internalMousePressed(MouseCode code) override;
+		void	internalMousePressed(MouseCode code) override;
 	};
 
 
@@ -304,8 +304,8 @@ public:
 // InputSignal overrides.
 public:
 
-    void mousePressed(MouseCode code, Panel* panel) override;
-    void cursorMoved(int x, int y, Panel *panel) override;
+	void mousePressed(MouseCode code, Panel* panel) override;
+	void cursorMoved(int x, int y, Panel *panel) override;
 
 	friend class CLabelHeader;
 };

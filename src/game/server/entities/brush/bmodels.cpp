@@ -192,7 +192,7 @@ void CFuncConveyor :: UpdateSpeed( float speed )
 
 void CFuncConveyor :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-    pev->speed = -pev->speed;
+	pev->speed = -pev->speed;
 	UpdateSpeed( pev->speed );
 }
 

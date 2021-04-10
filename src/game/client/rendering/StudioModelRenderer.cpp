@@ -286,7 +286,7 @@ void CStudioModelRenderer::StudioCalcBonePosition( int frame, float s, mstudiobo
 			{
 				k -= panimvalue->num.total;
 				panimvalue += panimvalue->num.valid + 1;
-  				// DEBUG
+				// DEBUG
 				if (panimvalue->num.total < panimvalue->num.valid)
 					k = 0;
 			}
@@ -733,7 +733,7 @@ float CStudioModelRenderer::StudioEstimateFrame( mstudioseqdesc_t *pseqdesc )
 	{
 		f = (m_pCurrentEntity->curstate.frame * (pseqdesc->numframes - 1)) / 256.0;
 	}
- 	
+	
 	f += dfdt;
 
 	if (pseqdesc->flags & STUDIO_LOOPING) 

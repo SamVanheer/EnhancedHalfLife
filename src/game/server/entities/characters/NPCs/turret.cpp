@@ -854,7 +854,7 @@ void CBaseTurret::SearchThink()
 	else
 	{
 		// Are we out of time, do we need to retract?
- 		if (gpGlobals->time > m_flLastSight)
+		if (gpGlobals->time > m_flLastSight)
 		{
 			//Before we retrace, make sure that we are spun down.
 			m_flLastSight = 0;

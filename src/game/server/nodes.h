@@ -312,11 +312,11 @@ public:
 
 private:
 	int	m_cSize;
-    struct tag_QUEUE_NODE
-    {
-        int   Id;
-        float Priority;
-    } m_queue[ MAX_STACK_NODES ];
+	struct tag_QUEUE_NODE
+	{
+		int   Id;
+		float Priority;
+	} m_queue[ MAX_STACK_NODES ];
 	int m_head;
 	int m_tail;
 };
@@ -339,11 +339,11 @@ public:
 
 private:
 	int	m_cSize;
-    struct tag_HEAP_NODE
-    {
-        int   Id;
-        float Priority;
-    } m_heap[ MAX_STACK_NODES ];
+	struct tag_HEAP_NODE
+	{
+		int   Id;
+		float Priority;
+	} m_heap[ MAX_STACK_NODES ];
 	void Heap_SiftDown(int);
 	void Heap_SiftUp();
 

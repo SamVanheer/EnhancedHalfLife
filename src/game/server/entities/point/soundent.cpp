@@ -227,7 +227,7 @@ void CSoundEnt :: InsertSound ( int iType, const Vector &vecOrigin, int iVolume,
 //=========================================================
 void CSoundEnt :: Initialize ()
 {
-  	int i;
+	int i;
 	int iSound;
 
 	m_cLastActiveSounds;

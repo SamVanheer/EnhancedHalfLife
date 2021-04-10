@@ -54,7 +54,7 @@ public:
 	void EXPORT TumbleThink();
 
 	virtual void BounceSound();
-    int	BloodColor() override { return DONT_BLEED; }
+	int	BloodColor() override { return DONT_BLEED; }
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
 
 	bool m_fRegisteredSound;// whether or not this grenade has issued its DANGER sound to the world sound list yet.
@@ -221,7 +221,7 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname);
 class CBasePlayerItem : public CBaseAnimating
 {
 public:
-    void SetObjectCollisionBox() override;
+	void SetObjectCollisionBox() override;
 
 	bool Save(CSave& save) override;
 	bool Restore( CRestore &restore ) override;
@@ -366,7 +366,7 @@ public:
 class CBasePlayerAmmo : public CBaseEntity
 {
 public:
-    void Spawn() override;
+	void Spawn() override;
 	void EXPORT DefaultTouch( CBaseEntity *pOther ); // default weapon touch
 	virtual bool AddAmmo( CBaseEntity *pOther ) { return true; }
 
@@ -546,7 +546,7 @@ public:
 	TraceResult m_trHit;
 
 	bool UseDecrement() override
-    { 
+	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
 #else

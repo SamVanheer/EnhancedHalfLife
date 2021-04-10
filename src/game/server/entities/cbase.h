@@ -181,7 +181,7 @@ public:
 	virtual void Blocked( CBaseEntity *pOther ) { if (m_pfnBlocked) (this->*m_pfnBlocked)( pOther ); }
 
 	// allow engine to allocate instance data
-    void *operator new( size_t stAllocateBlock, entvars_t *pev )
+	void *operator new( size_t stAllocateBlock, entvars_t *pev )
 	{
 		return (void *)ALLOC_PRIVATE(ENT(pev), stAllocateBlock);
 	};

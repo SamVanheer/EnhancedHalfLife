@@ -91,7 +91,7 @@ void CEgon::Holster( int skiplocal /* = 0 */ )
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	SendWeaponAnim( EGON_HOLSTER );
 
-    EndAttack();
+	EndAttack();
 }
 
 bool CEgon::GetItemInfo(ItemInfo *p)

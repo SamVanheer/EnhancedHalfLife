@@ -315,7 +315,7 @@ Schedule_t slTwitchDie[] =
 
 DEFINE_CUSTOM_SCHEDULES(CIchthyosaur)
 {
-    slSwimAround,
+	slSwimAround,
 	slSwimAgitated,
 	slCircleEnemy,
 	slTwitchDie,

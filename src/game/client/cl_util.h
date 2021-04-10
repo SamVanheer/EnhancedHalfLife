@@ -154,7 +154,7 @@ inline int safe_sprintf( char *dst, int len_dst, const char *format, ...)
 
 	va_list v;
 
-    va_start(v, format);
+	va_start(v, format);
 
 	vsnprintf(dst,len_dst,format,v);
 

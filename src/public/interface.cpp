@@ -9,28 +9,28 @@
 //
 void *GetModuleHandle(const char *name)
 {
-        void *handle;
+		void *handle;
 
 
-        if( name == nullptr)
-        {
-                // hmm, how can this be handled under linux....
-                // is it even needed?
-                return nullptr;
-        }
+		if( name == nullptr)
+		{
+				// hmm, how can this be handled under linux....
+				// is it even needed?
+				return nullptr;
+		}
 
-        if( (handle=dlopen(name, RTLD_NOW))== nullptr)
-        {   
+		if( (handle=dlopen(name, RTLD_NOW))== nullptr)
+		{   
 		//printf("Error:%s\n",dlerror());
-                // couldn't open this file
-                return nullptr;
-        }
+				// couldn't open this file
+				return nullptr;
+		}
 
-        // read "man dlopen" for details
-        // in short dlopen() inc a ref count
-        // so dec the ref count by performing the close
-        dlclose(handle);
-       return handle;
+		// read "man dlopen" for details
+		// in short dlopen() inc a ref count
+		// so dec the ref count by performing the close
+		dlclose(handle);
+	   return handle;
 }
 #endif
 

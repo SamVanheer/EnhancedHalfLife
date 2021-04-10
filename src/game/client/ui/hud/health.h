@@ -49,7 +49,7 @@ public:
 	bool Init() override;
 	bool VidInit() override;
 	bool Draw(float fTime) override;
-    void Reset() override;
+	void Reset() override;
 	bool MsgFunc_Health(const char *pszName,  int iSize, void *pbuf);
 	bool MsgFunc_Damage(const char *pszName,  int iSize, void *pbuf);
 	int m_iHealth;

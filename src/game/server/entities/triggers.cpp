@@ -1870,10 +1870,10 @@ void CBaseTrigger :: TeleportTouch( CBaseEntity *pOther )
 	// Only teleport monsters or clients
 	if ( !FBitSet( pevToucher->flags, FL_CLIENT|FL_MONSTER ) )
 		return;
-    
+	
 	if (!UTIL_IsMasterTriggered(m_sMaster, pOther))
 		return;
- 	
+	
 	if ( !( pev->spawnflags & SF_TRIGGER_ALLOWMONSTERS ) )
 	{// no monsters allowed!
 		if ( FBitSet( pevToucher->flags, FL_MONSTER ) )
@@ -1966,7 +1966,7 @@ void CTriggerSave::SaveTouch( CBaseEntity *pOther )
 	// Only save on clients
 	if ( !pOther->IsPlayer() )
 		return;
-    
+	
 	SetTouch( nullptr );
 	UTIL_Remove( this );
 	SERVER_COMMAND( "autosave\n" );
@@ -1990,7 +1990,7 @@ void CTriggerEndSection::EndSectionUse( CBaseEntity *pActivator, CBaseEntity *pC
 	// Only save on clients
 	if ( pActivator && !pActivator->IsNetClient() )
 		return;
-    
+	
 	SetUse( nullptr );
 
 	if ( pev->message )
@@ -2021,7 +2021,7 @@ void CTriggerEndSection::EndSectionTouch( CBaseEntity *pOther )
 	// Only save on clients
 	if ( !pOther->IsNetClient() )
 		return;
-    
+	
 	SetTouch( nullptr );
 
 	if (pev->message)

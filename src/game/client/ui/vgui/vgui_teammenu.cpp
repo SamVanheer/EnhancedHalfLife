@@ -44,7 +44,7 @@
 #define TEAMMENU_WINDOW_TEXT_SIZE_Y		YRES(178)
 #define TEAMMENU_WINDOW_INFO_X			XRES(16)
 #define TEAMMENU_WINDOW_INFO_Y			YRES(234)
-      
+	  
 // Creation
 CTeamMenuPanel::CTeamMenuPanel(int iTrans, int iRemoveMe, int x,int y,int wide,int tall) : CMenuPanel(iTrans, iRemoveMe, x,y,wide,tall)
 {

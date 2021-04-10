@@ -22,8 +22,8 @@
 struct MD5Context_t
 {
 	unsigned int buf[4];
-    unsigned int bits[2];
-    unsigned char in[64];
+	unsigned int bits[2];
+	unsigned char in[64];
 };
 
 typedef uint32 CRC32_t;
@@ -38,7 +38,7 @@ unsigned char COM_BlockSequenceCRCByte (unsigned char *base, int length, int seq
 
 void MD5Init(MD5Context_t *context);
 void MD5Update(MD5Context_t *context, unsigned char const *buf,
-               unsigned int len);
+			   unsigned int len);
 void MD5Final(unsigned char digest[16], MD5Context_t *context);
 void Transform(unsigned int buf[4], unsigned int const in[16]);
 

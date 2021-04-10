@@ -598,7 +598,7 @@ void CBasePlayer::PackDeadPlayerItems()
 
 	// get the game rules 
 	iWeaponRules = g_pGameRules->DeadPlayerWeapons( this );
- 	iAmmoRules = g_pGameRules->DeadPlayerAmmo( this );
+	iAmmoRules = g_pGameRules->DeadPlayerAmmo( this );
 
 	if ( iWeaponRules == GR_PLR_DROP_GUN_NO && iAmmoRules == GR_PLR_DROP_AMMO_NO )
 	{
@@ -2517,7 +2517,7 @@ void CBasePlayer::PostThink()
 		{
 			SetAnimation( PLAYER_WALK );
 		}
-    }
+	}
 
 	if (FBitSet(pev->flags, FL_ONGROUND))
 	{		
@@ -2787,8 +2787,8 @@ void CBasePlayer::Spawn()
 	g_pGameRules->SetDefaultPlayerTeam( this );
 	g_pGameRules->GetPlayerSpawnSpot( this );
 
-    SET_MODEL(ENT(pev), "models/player.mdl");
-    g_ulModelIndexPlayer = pev->modelindex;
+	SET_MODEL(ENT(pev), "models/player.mdl");
+	g_ulModelIndexPlayer = pev->modelindex;
 	pev->sequence		= LookupActivity( ACT_IDLE );
 
 	if ( FBitSet(pev->flags, FL_DUCKING) ) 
@@ -2796,7 +2796,7 @@ void CBasePlayer::Spawn()
 	else
 		UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
 
-    pev->view_ofs = VEC_VIEW;
+	pev->view_ofs = VEC_VIEW;
 	Precache();
 	m_HackedGunPos		= Vector( 0, 32, 0 );
 
@@ -2917,7 +2917,7 @@ bool CBasePlayer::Restore( CRestore &restore )
 // Copied from spawn() for now
 	m_bloodColor	= BLOOD_COLOR_RED;
 
-    g_ulModelIndexPlayer = pev->modelindex;
+	g_ulModelIndexPlayer = pev->modelindex;
 
 	if ( FBitSet(pev->flags, FL_DUCKING) ) 
 	{
@@ -3237,7 +3237,7 @@ void CBasePlayer :: FlashlightTurnOn()
 void CBasePlayer :: FlashlightTurnOff()
 {
 	EMIT_SOUND_DYN( ENT(pev), CHAN_WEAPON, SOUND_FLASHLIGHT_OFF.data(), 1.0, ATTN_NORM, 0, PITCH_NORM );
-    ClearBits(pev->effects, EF_DIMLIGHT);
+	ClearBits(pev->effects, EF_DIMLIGHT);
 	MESSAGE_BEGIN( MSG_ONE, gmsgFlashlight, nullptr, pev );
 	WRITE_BYTE(0);
 	WRITE_BYTE(m_iFlashBattery);
@@ -3311,12 +3311,12 @@ void CBasePlayer::ImpulseCommands( )
 		break;
 		}
 	case 100:
-        // temporary flashlight for level designers
-        if ( FlashlightIsOn() )
+		// temporary flashlight for level designers
+		if ( FlashlightIsOn() )
 		{
 			FlashlightTurnOff();
 		}
-        else 
+		else 
 		{
 			FlashlightTurnOn();
 		}
@@ -3683,9 +3683,9 @@ Called every frame by the player PreThink
 void CBasePlayer::ItemPreFrame()
 {
 #if defined( CLIENT_WEAPONS )
-    if ( m_flNextAttack > 0 )
+	if ( m_flNextAttack > 0 )
 #else
-    if ( gpGlobals->time < m_flNextAttack )
+	if ( gpGlobals->time < m_flNextAttack )
 #endif
 	{
 		return;
@@ -3712,9 +3712,9 @@ void CBasePlayer::ItemPostFrame()
 		return;
 
 #if defined( CLIENT_WEAPONS )
-    if ( m_flNextAttack > 0 )
+	if ( m_flNextAttack > 0 )
 #else
-    if ( gpGlobals->time < m_flNextAttack )
+	if ( gpGlobals->time < m_flNextAttack )
 #endif
 	{
 		return;
