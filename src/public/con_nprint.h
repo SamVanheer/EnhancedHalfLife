@@ -19,7 +19,7 @@ struct con_nprint_t
 {
 	int		index;			// Row #
 	float	time_to_live;	// # of seconds before it dissappears
-	float	color[ 3 ];		// RGB colors ( 0.0 -> 1.0 scale )
+	Vector	color;			// RGB colors ( 0.0 -> 1.0 scale )
 };
 
 void Con_NPrintf( int idx, char *fmt, ... );
