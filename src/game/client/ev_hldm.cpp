@@ -898,7 +898,7 @@ void EV_FireGauss( event_args_t *args )
 
 						const Vector delta = beam_tr.endpos - tr.endpos;
 						
-						float n2 = Length( delta );
+						float n2 = delta.Length();
 
 						if (n2 < flDamage)
 						{

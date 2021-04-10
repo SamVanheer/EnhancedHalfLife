@@ -628,9 +628,9 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 	{
 		static Vector lastorg;
 
-		Vector delta = pparams->simorg - lastorg;
+		const Vector delta = pparams->simorg - lastorg;
 
-		if ( Length( delta ) != 0.0 )
+		if ( delta.Length() != 0.0 )
 		{
 			ViewInterp.Origins[ViewInterp.CurrentOrigin & ORIGIN_MASK] = pparams->simorg;
 			ViewInterp.OriginTime[ ViewInterp.CurrentOrigin & ORIGIN_MASK ] = pparams->time;
@@ -672,7 +672,7 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 				const Vector neworg = ViewInterp.Origins[foundidx & ORIGIN_MASK] + frac * delta;
 
 				// Dont interpolate large changes
-				if ( Length( delta ) < 64 )
+				if ( delta.Length() < 64 )
 				{
 					delta = neworg - pparams->simorg;
 
@@ -742,10 +742,10 @@ void V_SmoothInterpolateAngles( Vector& startAngle, Vector& endAngle, Vector& fi
 void V_GetChaseOrigin( Vector& angles, Vector& origin, float distance, Vector& returnvec )
 {
 	// Trace back from the target using the player's view angles
-	Vector	forward;
+	Vector forward;
 	AngleVectors(angles, &forward, nullptr, nullptr);
 	
-	VectorScale(forward,-1,forward);
+	forward = -forward;
 
 	Vector vecStart = origin;
 	Vector vecEnd = vecStart + forward * distance;

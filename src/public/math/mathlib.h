@@ -58,9 +58,6 @@ constexpr bool IS_NAN(T x)
 
 #define VectorCopy(a,b) {(b)[0]=(a)[0];(b)[1]=(a)[1];(b)[2]=(a)[2];}
 
-bool VectorCompare(const float* v1, const float* v2);
-float Length(const float* v);
-void CrossProduct(const float* v1, const float* v2, float* cross);
 float VectorNormalize(float* v);		// returns vector length
 void VectorInverse(float* v);
 void VectorScale(const float* in, float scale, float* out);

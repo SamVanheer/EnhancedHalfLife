@@ -17,35 +17,6 @@
 
 #pragma warning(disable : 4244)
 
-bool VectorCompare(const float* v1, const float* v2)
-{
-	int		i;
-
-	for (i = 0; i < 3; i++)
-		if (v1[i] != v2[i])
-			return false;
-
-	return true;
-}
-
-float Length(const float* v)
-{
-	float	length = 0.0f;
-
-	for (int i = 0; i < 3; i++)
-		length += v[i] * v[i];
-	length = sqrt(length);		// FIXME
-
-	return length;
-}
-
-void CrossProduct(const float* v1, const float* v2, float* cross)
-{
-	cross[0] = v1[1] * v2[2] - v1[2] * v2[1];
-	cross[1] = v1[2] * v2[0] - v1[0] * v2[2];
-	cross[2] = v1[0] * v2[1] - v1[1] * v2[0];
-}
-
 float VectorNormalize(float* v)
 {
 	float length = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
@@ -348,9 +319,9 @@ void VectorMatrix(const Vector& forward, Vector& right, Vector& up)
 
 	constexpr Vector tmp{0, 0, 1};
 
-	CrossProduct(forward, tmp, right);
+	right = CrossProduct(forward, tmp);
 	VectorNormalize(right);
-	CrossProduct(right, forward, up);
+	up = CrossProduct(right, forward);
 	VectorNormalize(up);
 }
 
@@ -391,8 +362,7 @@ float anglemod(float a)
 
 float Distance(const Vector& v1, const Vector& v2)
 {
-	const Vector d = v2 - v1;
-	return Length(d);
+	return (v2 - v1).Length();
 }
 
 void ConcatTransforms(float in1[3][4], float in2[3][4], float out[3][4])

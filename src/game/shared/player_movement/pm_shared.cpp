@@ -212,7 +212,7 @@ void PM_PlayStepSound(StepType step, float fvol )
 	Vector hvel = pmove->velocity;
 	hvel[2] = 0.0;
 
-	if ( pmove->multiplayer && ( !g_onladder && Length( hvel ) <= 220 ) )
+	if ( pmove->multiplayer && ( !g_onladder && hvel.Length() <= 220 ) )
 		return;
 
 	// irand - 0,1 for right foot, 2,3 for left foot
@@ -404,7 +404,7 @@ void PM_UpdateStepSound()
 
 	PM_CatagorizeTextureType();
 
-	const float speed = Length( pmove->velocity );
+	const float speed = pmove->velocity.Length();
 
 	// determine if we are on a ladder
 	const bool fLadder = ( pmove->movetype == MOVETYPE_FLY );// IsOnLadder();
@@ -431,7 +431,7 @@ void PM_UpdateStepSound()
 	//  play step sound.  Also, if pmove->flTimeStepSound is zero, get the new
 	//  sound right away - we just started moving in new level.
 	if ( (fLadder || ( pmove->onground != -1 ) ) &&
-		( Length( pmove->velocity ) > 0.0 ) &&
+		( pmove->velocity.Length() > 0.0 ) &&
 		( speed >= velwalk || !pmove->flTimeStepSound ) )
 	{
 		const bool fWalking = speed < velrun;		
@@ -930,7 +930,7 @@ void PM_WalkMove ()
 	// Add in any base velocity to the current velocity.
 	pmove->velocity = pmove->velocity + pmove->basevelocity;
 
-	const float spd = Length( pmove->velocity );
+	const float spd = pmove->velocity.Length();
 
 	if (spd < 1.0f)
 	{
@@ -1598,7 +1598,7 @@ void PM_SpectatorMove ()
 #endif
 		// Move around in normal spectator method
 	
-		const float speed = Length (pmove->velocity);
+		const float speed = pmove->velocity.Length();
 		if (speed < 1)
 		{
 			pmove->velocity = vec3_origin;
@@ -2072,8 +2072,8 @@ void PM_Physics_Toss()
 	// If on ground and not moving, return.
 	if ( pmove->onground != -1 )
 	{
-		if (VectorCompare(pmove->basevelocity, vec3_origin) &&
-		    VectorCompare(pmove->velocity, vec3_origin))
+		if (pmove->basevelocity == vec3_origin &&
+		    pmove->velocity == vec3_origin)
 			return;
 	}
 
@@ -2197,7 +2197,7 @@ void PM_PreventMegaBunnyJumping()
 		return;
 
 	// Current player speed
-	const float spd = Length( pmove->velocity );
+	const float spd = pmove->velocity.Length();
 
 	if ( spd <= maxscaledspeed )
 		return;
@@ -2317,7 +2317,7 @@ void PM_Jump ()
 		if ( cansuperjump &&
 			( pmove->cmd.buttons & IN_DUCK ) &&
 			( pmove->flDuckTime > 0 ) &&
-			Length( pmove->velocity ) > 50 )
+			pmove->velocity.Length() > 50 )
 		{
 			pmove->punchangle[0] = -5;
 

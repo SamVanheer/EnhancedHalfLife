@@ -90,7 +90,7 @@ void SpectatorSpray()
 		return;
 
 	AngleVectors(v_angles,&forward, nullptr, nullptr);
-	VectorScale(forward, 128, forward);
+	forward = forward * 128;
 	forward = forward + v_origin;
     pmtrace_t * trace = gEngfuncs.PM_TraceLine( v_origin, forward, PM_TRACELINE_PHYSENTSONLY, 2, -1 );
 	if ( trace->fraction != 1.0 )
@@ -612,10 +612,10 @@ bool CHudSpectator::Draw(float flTime)
 	// if user moves in map mode, change map origin
 	if ( (m_moveDelta != 0.0f) && (g_iUser1 != OBS_ROAMING) )
 	{
-		Vector	right;
+		Vector right;
 		AngleVectors(v_angles, nullptr, &right, nullptr);
 		VectorNormalize(right);
-		VectorScale(right, m_moveDelta, right );
+		right = right * m_moveDelta;
 
 		m_mapOrigin = m_mapOrigin + right;
 	}
@@ -1657,7 +1657,7 @@ void CHudSpectator::DrawOverviewEntities()
         int playerNum = ent->index - 1;
 
 		m_vPlayerPos[playerNum][0] = screen[0];	
-		m_vPlayerPos[playerNum][1] = screen[1] + Length(offset);	
+		m_vPlayerPos[playerNum][1] = screen[1] + offset.Length();
 		m_vPlayerPos[playerNum][2] = 1;	// mark player as visible 
 	}
 
@@ -1699,7 +1699,7 @@ void CHudSpectator::DrawOverviewEntities()
 	gEngfuncs.pTriAPI->Color4f( r, g, b, 1.0 );
 
 	AngleVectors(angles, &forward, nullptr, nullptr);
-	VectorScale (forward, 512.0f, forward);
+	forward = forward * 512;
 	
 	offset[0] =  0.0f; 
 	offset[1] = 45.0f; 
