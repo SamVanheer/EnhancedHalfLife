@@ -43,11 +43,11 @@ void TEXTURETYPE_Init()
 	gcTextures = 0;
 	memset(buffer, 0, 512);
 
-	auto file = FileSystem_LoadFileIntoBuffer("sound/materials.txt");
+	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer("sound/materials.txt");
 
-	byte* pMemFile = std::get<0>(file).get();
+	byte* pMemFile = fileBuffer.get();
 	//TODO: really large files could cause problems here due to the narrowing conversion
-	const int fileSize = std::get<1>(file);
+	const int fileSize = size;
 	if (!pMemFile)
 		return;
 
