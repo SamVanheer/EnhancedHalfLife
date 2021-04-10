@@ -264,39 +264,6 @@ bool UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeap
 {
 	return g_pGameRules->GetNextBestWeapon( pPlayer, pCurrentWeapon );
 }
-
-// ripped this out of the engine
-float	UTIL_AngleMod(float a)
-{
-	if (a < 0)
-	{
-		a = a + 360 * ((int)(a / 360) + 1);
-	}
-	else if (a >= 360)
-	{
-		a = a - 360 * ((int)(a / 360));
-	}
-	// a = (360.0/65536) * ((int)(a*(65536/360.0)) & 65535);
-	return a;
-}
-
-float UTIL_AngleDiff( float destAngle, float srcAngle )
-{
-	float delta;
-
-	delta = destAngle - srcAngle;
-	if ( destAngle > srcAngle )
-	{
-		if ( delta >= 180 )
-			delta -= 360;
-	}
-	else
-	{
-		if ( delta <= -180 )
-			delta += 360;
-	}
-	return delta;
-}
 	
 //	float UTIL_MoveToOrigin( edict_t *pent, const Vector vecGoal, float flDist, int iMoveType )
 void UTIL_MoveToOrigin( edict_t *pent, const Vector &vecGoal, float flDist, int iMoveType )
@@ -895,13 +862,6 @@ void UTIL_SetSize( entvars_t *pev, const Vector &vecMin, const Vector &vecMax )
 {
 	SET_SIZE( ENT(pev), vecMin, vecMax );
 }
-	
-	
-float UTIL_VecToYaw( const Vector &vec )
-{
-	return VEC_TO_YAW(vec);
-}
-
 
 void UTIL_SetOrigin( entvars_t *pev, const Vector &vecOrigin )
 {
@@ -914,72 +874,6 @@ void UTIL_ParticleEffect( const Vector &vecOrigin, const Vector &vecDirection, u
 {
 	PARTICLE_EFFECT( vecOrigin, vecDirection, (float)ulColor, (float)ulCount );
 }
-
-
-float UTIL_Approach( float target, float value, float speed )
-{
-	float delta = target - value;
-
-	if ( delta > speed )
-		value += speed;
-	else if ( delta < -speed )
-		value -= speed;
-	else 
-		value = target;
-
-	return value;
-}
-
-
-float UTIL_ApproachAngle( float target, float value, float speed )
-{
-	target = UTIL_AngleMod( target );
-	value = UTIL_AngleMod( target );
-	
-	float delta = target - value;
-
-	// Speed is assumed to be positive
-	if ( speed < 0 )
-		speed = -speed;
-
-	if ( delta < -180 )
-		delta += 360;
-	else if ( delta > 180 )
-		delta -= 360;
-
-	if ( delta > speed )
-		value += speed;
-	else if ( delta < -speed )
-		value -= speed;
-	else 
-		value = target;
-
-	return value;
-}
-
-
-float UTIL_AngleDistance( float next, float cur )
-{
-	float delta = next - cur;
-
-	if ( delta < -180 )
-		delta += 360;
-	else if ( delta > 180 )
-		delta -= 360;
-
-	return delta;
-}
-
-
-float UTIL_SplineFraction( float value, float scale )
-{
-	value = scale * value;
-	float valueSquared = value * value;
-
-	// Nice little ease-in, ease-out spline-like curve
-	return 3 * valueSquared - 2 * valueSquared * value;
-}
-
 
 char* UTIL_VarArgs( const char *format, ... )
 {
@@ -1337,35 +1231,6 @@ void UTIL_StringToIntArray( int *pVector, int count, const char *pString )
 		pVector[j] = 0;
 	}
 }
-
-Vector UTIL_ClampVectorToBox( const Vector &input, const Vector &clampSize )
-{
-	Vector sourceVector = input;
-
-	if ( sourceVector.x > clampSize.x )
-		sourceVector.x -= clampSize.x;
-	else if ( sourceVector.x < -clampSize.x )
-		sourceVector.x += clampSize.x;
-	else
-		sourceVector.x = 0;
-
-	if ( sourceVector.y > clampSize.y )
-		sourceVector.y -= clampSize.y;
-	else if ( sourceVector.y < -clampSize.y )
-		sourceVector.y += clampSize.y;
-	else
-		sourceVector.y = 0;
-	
-	if ( sourceVector.z > clampSize.z )
-		sourceVector.z -= clampSize.z;
-	else if ( sourceVector.z < -clampSize.z )
-		sourceVector.z += clampSize.z;
-	else
-		sourceVector.z = 0;
-
-	return sourceVector.Normalize();
-}
-
 
 float UTIL_WaterLevel( const Vector &position, float minz, float maxz )
 {

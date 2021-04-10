@@ -199,9 +199,6 @@ class CBaseEntity;
 
 // Misc. Prototypes
 void			UTIL_SetSize			(entvars_t* pev, const Vector &vecMin, const Vector &vecMax);
-float		UTIL_VecToYaw			(const Vector &vec);
-float		UTIL_AngleMod			(float a);
-float		UTIL_AngleDiff			( float destAngle, float srcAngle );
 
 CBaseEntity	*UTIL_FindEntityInSphere(CBaseEntity *pStartEntity, const Vector &vecCenter, float flRadius);
 CBaseEntity	*UTIL_FindEntityByString(CBaseEntity *pStartEntity, const char *szKeyword, const char *szValue );
@@ -263,18 +260,11 @@ void			UTIL_Sparks( const Vector &position );
 void			UTIL_Ricochet( const Vector &position, float scale );
 void			UTIL_StringToVector( float *pVector, const char *pString );
 void			UTIL_StringToIntArray( int *pVector, int count, const char *pString );
-Vector		UTIL_ClampVectorToBox( const Vector &input, const Vector &clampSize );
-float		UTIL_Approach( float target, float value, float speed );
-float		UTIL_ApproachAngle( float target, float value, float speed );
-float		UTIL_AngleDistance( float next, float cur );
 
 char			*UTIL_VarArgs( const char *format, ... );
 void			UTIL_Remove( CBaseEntity *pEntity );
 bool			UTIL_IsValidEntity( edict_t *pent );
 bool			UTIL_TeamsMatch( const char *pTeamName1, const char *pTeamName2 );
-
-// Use for ease-in, ease-out style interpolation (accel/decel)
-float		UTIL_SplineFraction( float value, float scale );
 
 // Search for water transition along a vertical line
 float		UTIL_WaterLevel( const Vector &position, float minz, float maxz );

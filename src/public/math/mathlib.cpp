@@ -304,6 +304,86 @@ float AngleBetweenVectors(const Vector& v1, const Vector& v2)
 	return angle;
 }
 
+float UTIL_AngleDiff(float destAngle, float srcAngle)
+{
+	float delta = destAngle - srcAngle;
+
+	if (destAngle > srcAngle)
+	{
+		if (delta >= 180)
+			delta -= 360;
+	}
+	else
+	{
+		if (delta <= -180)
+			delta += 360;
+	}
+
+	return delta;
+}
+
+float UTIL_AngleDistance(float next, float cur)
+{
+	float delta = next - cur;
+
+	if (delta < -180)
+		delta += 360;
+	else if (delta > 180)
+		delta -= 360;
+
+	return delta;
+}
+
+float UTIL_Approach(float target, float value, float speed)
+{
+	float delta = target - value;
+
+	if (delta > speed)
+		value += speed;
+	else if (delta < -speed)
+		value -= speed;
+	else
+		value = target;
+
+	return value;
+}
+
+
+float UTIL_ApproachAngle(float target, float value, float speed)
+{
+	target = UTIL_AngleMod(target);
+	value = UTIL_AngleMod(target);
+
+	float delta = target - value;
+
+	// Speed is assumed to be positive
+	if (speed < 0)
+		speed = -speed;
+
+	if (delta < -180)
+		delta += 360;
+	else if (delta > 180)
+		delta -= 360;
+
+	if (delta > speed)
+		value += speed;
+	else if (delta < -speed)
+		value -= speed;
+	else
+		value = target;
+
+	return value;
+}
+
+float UTIL_SplineFraction(float value, float scale)
+{
+	value = scale * value;
+	float valueSquared = value * value;
+
+	// Nice little ease-in, ease-out spline-like curve
+	return 3 * valueSquared - 2 * valueSquared * value;
+}
+
 void VectorMatrix(const Vector& forward, Vector& right, Vector& up)
 {
 	if (forward[0] == 0 && forward[1] == 0)
@@ -352,9 +432,71 @@ Vector VectorAngles(const Vector& forward)
 	return {static_cast<float>(pitch), static_cast<float>(yaw), 0};
 }
 
+float UTIL_VecToYaw(const Vector& vec)
+{
+	double yaw;
+
+	if (vec[1] == 0 && vec[0] == 0)
+	{
+		yaw = 0;
+	}
+	else
+	{
+		//Note: this uses floor, unlike VectorAngles!
+		yaw = floor(atan2(vec[1], vec[0]) * 180 / M_PI);
+		if (yaw < 0)
+			yaw += 360;
+	}
+
+	return static_cast<float>(yaw);
+}
+
+Vector UTIL_ClampVectorToBox(const Vector& input, const Vector& clampSize)
+{
+	Vector sourceVector = input;
+
+	if (sourceVector.x > clampSize.x)
+		sourceVector.x -= clampSize.x;
+	else if (sourceVector.x < -clampSize.x)
+		sourceVector.x += clampSize.x;
+	else
+		sourceVector.x = 0;
+
+	if (sourceVector.y > clampSize.y)
+		sourceVector.y -= clampSize.y;
+	else if (sourceVector.y < -clampSize.y)
+		sourceVector.y += clampSize.y;
+	else
+		sourceVector.y = 0;
+
+	if (sourceVector.z > clampSize.z)
+		sourceVector.z -= clampSize.z;
+	else if (sourceVector.z < -clampSize.z)
+		sourceVector.z += clampSize.z;
+	else
+		sourceVector.z = 0;
+
+	return sourceVector.Normalize();
+}
+
 float anglemod(float a)
 {
 	a = (360.0 / 65536) * ((int)(a * (65536 / 360.0)) & 65535);
+	return a;
+}
+
+// ripped this out of the engine
+float UTIL_AngleMod(float a)
+{
+	if (a < 0)
+	{
+		a = a + 360 * ((int)(a / 360) + 1);
+	}
+	else if (a >= 360)
+	{
+		a = a - 360 * ((int)(a / 360));
+	}
+	// a = (360.0/65536) * ((int)(a*(65536/360.0)) & 65535);
 	return a;
 }
 

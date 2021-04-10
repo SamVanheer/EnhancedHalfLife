@@ -96,15 +96,24 @@ void NormalizeAngles(float* angles);
 void InterpolateAngles(float* start, float* end, float* output, float frac);
 void SmoothInterpolateAngles(Vector& startAngle, Vector& endAngle, Vector& finalAngle, float degreesPerSec, float frametime);
 float AngleBetweenVectors(const Vector& v1, const Vector& v2);
+float UTIL_AngleDiff(float destAngle, float srcAngle);
+float UTIL_AngleDistance(float next, float cur);
+float UTIL_Approach(float target, float value, float speed);
+float UTIL_ApproachAngle(float target, float value, float speed);
 
+// Use for ease-in, ease-out style interpolation (accel/decel)
+float UTIL_SplineFraction(float value, float scale);
 
 void VectorMatrix(const Vector& forward, Vector& right, Vector& up);
 Vector VectorAngles(const Vector& forward);
+float UTIL_VecToYaw(const Vector& vec);
+Vector UTIL_ClampVectorToBox(const Vector& input, const Vector& clampSize);
 
 int InvertMatrix(const float* m, float* out);
 
 int BoxOnPlaneSide(const Vector& emins, const Vector& emaxs, mplane_t* plane);
 float anglemod(float a);
+float UTIL_AngleMod(float a);
 
 float Distance(const Vector& v1, const Vector& v2);
 
