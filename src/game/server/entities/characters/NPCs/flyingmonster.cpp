@@ -83,7 +83,7 @@ void CFlyingMonster :: Stop()
 	}
 	pev->angles.z = 0;
 	pev->angles.x = 0;
-	m_vecTravel = g_vecZero;
+	m_vecTravel = vec3_origin;
 }
 
 
@@ -206,7 +206,7 @@ void CFlyingMonster::MoveExecute( CBaseEntity *pTargetEnt, const Vector &vecDir,
 		{
 			m_IdealActivity = GetStoppedActivity();
 			m_stopTime = gpGlobals->time;
-			m_vecTravel = g_vecZero;
+			m_vecTravel = vec3_origin;
 		}
 	}
 	else

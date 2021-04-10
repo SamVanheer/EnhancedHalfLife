@@ -109,7 +109,7 @@ void CGrenade::Explode( TraceResult *pTrace, int bitsDamageType )
 
 	pev->effects |= EF_NODRAW;
 	SetThink( &CGrenade::Smoke );
-	pev->velocity = g_vecZero;
+	pev->velocity = vec3_origin;
 	pev->nextthink = gpGlobals->time + 0.3;
 
 	if (iContents != CONTENTS_WATER)
@@ -433,7 +433,7 @@ CGrenade * CGrenade :: ShootSatchelCharge( entvars_t *pevOwner, Vector vecStart,
 	pGrenade->pev->dmg = 200;
 	UTIL_SetOrigin( pGrenade->pev, vecStart );
 	pGrenade->pev->velocity = vecVelocity;
-	pGrenade->pev->angles = g_vecZero;
+	pGrenade->pev->angles = vec3_origin;
 	pGrenade->pev->owner = ENT(pevOwner);
 	
 	// Detonate in "time" seconds

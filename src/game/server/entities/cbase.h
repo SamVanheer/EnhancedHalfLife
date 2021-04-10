@@ -143,7 +143,7 @@ public:
 	virtual bool	RemovePlayerItem( CBasePlayerItem *pItem ) { return false; }
 	virtual int 	GiveAmmo( int iAmount, const char *szName, int iMax ) { return -1; }
 	virtual float	GetDelay() { return 0; }
-	virtual bool	IsMoving() { return pev->velocity != g_vecZero; }
+	virtual bool	IsMoving() { return pev->velocity != vec3_origin; }
 	virtual void	OverrideReset() {}
 	virtual int		DamageDecal( int bitsDamageType );
 	// This is ONLY used by the node graph to test movement through a door

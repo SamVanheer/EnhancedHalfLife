@@ -1089,7 +1089,7 @@ void CGraph :: ShowNodeConnections ( int iNode )
 
 	pNode = &m_pNodes[ iNode ];
 
-	UTIL_ParticleEffect( pNode->m_vecOrigin, g_vecZero, 255, 20 );// show node position
+	UTIL_ParticleEffect( pNode->m_vecOrigin, vec3_origin, 255, 20 );// show node position
 	
 	if ( pNode->m_cNumLinks <= 0 )
 	{// no connections!
@@ -1559,11 +1559,11 @@ void CTestHull :: ShowBadNode()
 
 	UTIL_MakeVectors ( pev->angles );
 
-	UTIL_ParticleEffect ( pev->origin, g_vecZero, 255, 25 );
-	UTIL_ParticleEffect ( pev->origin + gpGlobals->v_forward * 64, g_vecZero, 255, 25 );
-	UTIL_ParticleEffect ( pev->origin - gpGlobals->v_forward * 64, g_vecZero, 255, 25 );
-	UTIL_ParticleEffect ( pev->origin + gpGlobals->v_right * 64, g_vecZero, 255, 25 );
-	UTIL_ParticleEffect ( pev->origin - gpGlobals->v_right * 64, g_vecZero, 255, 25 );
+	UTIL_ParticleEffect ( pev->origin, vec3_origin, 255, 25 );
+	UTIL_ParticleEffect ( pev->origin + gpGlobals->v_forward * 64, vec3_origin, 255, 25 );
+	UTIL_ParticleEffect ( pev->origin - gpGlobals->v_forward * 64, vec3_origin, 255, 25 );
+	UTIL_ParticleEffect ( pev->origin + gpGlobals->v_right * 64, vec3_origin, 255, 25 );
+	UTIL_ParticleEffect ( pev->origin - gpGlobals->v_right * 64, vec3_origin, 255, 25 );
 
 	pev->nextthink = gpGlobals->time + 0.1;
 }

@@ -180,7 +180,7 @@ void CBaseMonster :: BarnacleVictimReleased ()
 {
 	m_IdealMonsterState = MONSTERSTATE_IDLE;
 
-	pev->velocity = g_vecZero;
+	pev->velocity = vec3_origin;
 	pev->movetype = MOVETYPE_STEP;
 }
 
@@ -744,7 +744,7 @@ void DrawRoute( entvars_t *pev, WayPoint_t *m_Route, int m_iRouteIndex, int r, i
 		return;
 	}
 
-//	UTIL_ParticleEffect ( m_Route[ m_iRouteIndex ].vecLocation, g_vecZero, 255, 25 );
+//	UTIL_ParticleEffect ( m_Route[ m_iRouteIndex ].vecLocation, vec3_origin, 255, 25 );
 
 	MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
 		WRITE_BYTE( TE_BEAMPOINTS);
@@ -795,7 +795,7 @@ void DrawRoute( entvars_t *pev, WayPoint_t *m_Route, int m_iRouteIndex, int r, i
 			WRITE_BYTE( 10 );		// speed
 		MESSAGE_END();
 
-//		UTIL_ParticleEffect ( m_Route[ i ].vecLocation, g_vecZero, 255, 25 );
+//		UTIL_ParticleEffect ( m_Route[ i ].vecLocation, vec3_origin, 255, 25 );
 	}
 }
 #endif
@@ -1336,7 +1336,7 @@ int CBaseMonster :: CheckLocalMove ( const Vector &vecStart, const Vector &vecEn
 		if ( (flStep + LOCAL_STEP_SIZE) >= (flDist-1) )
 			stepSize = (flDist - flStep) - 1;
 		
-//		UTIL_ParticleEffect ( pev->origin, g_vecZero, 255, 25 );
+//		UTIL_ParticleEffect ( pev->origin, vec3_origin, 255, 25 );
 
 		if ( !WALK_MOVE( ENT(pev), flYaw, stepSize, WALKMOVE_CHECKONLY ) )
 		{// can't take the next step, fail!
@@ -2610,7 +2610,7 @@ void CBaseMonster :: SetEyePosition ()
 
 	pev->view_ofs = vecEyePosition;
 
-	if ( pev->view_ofs == g_vecZero )
+	if ( pev->view_ofs == vec3_origin)
 	{
 		ALERT ( at_aiconsole, "%s has no view_ofs!\n", STRING ( pev->classname ) );
 	}
@@ -3285,7 +3285,7 @@ void CBaseMonster :: MonsterInitDead()
 	pev->max_health		= pev->health;
 	pev->deadflag		= DEAD_DEAD;
 	
-	UTIL_SetSize(pev, g_vecZero, g_vecZero );
+	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 	UTIL_SetOrigin( pev, pev->origin );
 
 	// Setup health counters, etc.

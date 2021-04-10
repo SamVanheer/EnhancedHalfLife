@@ -542,7 +542,7 @@ void CBaseTrigger::InitTrigger( )
 {
 	// trigger angles are used for one-way touches.  An angle of 0 is assumed
 	// to mean no restrictions, so use a yaw of 360 instead.
-	if (pev->angles != g_vecZero)
+	if (pev->angles != vec3_origin)
 		SetMovedir(pev);
 	pev->solid = SOLID_TRIGGER;
 	pev->movetype = MOVETYPE_NONE;
@@ -1123,7 +1123,7 @@ void CBaseTrigger :: MultiTouch( CBaseEntity *pOther )
 
 #if 0
 		// if the trigger has an angles field, check player's facing direction
-		if (pev->movedir != g_vecZero)
+		if (pev->movedir != vec3_origin)
 		{
 			UTIL_MakeVectors( pevToucher->angles );
 			if ( DotProduct( gpGlobals->v_forward, pev->movedir ) < 0 )
@@ -1802,7 +1802,7 @@ Pushes the player
 
 void CTriggerPush :: Spawn( )
 {
-	if ( pev->angles == g_vecZero )
+	if ( pev->angles == vec3_origin)
 		pev->angles.y = 360;
 	InitTrigger();
 
@@ -1915,7 +1915,7 @@ void CBaseTrigger :: TeleportTouch( CBaseEntity *pOther )
 	}
 
 	pevToucher->fixangle = FIXANGLE_ABSOLUTE;
-	pevToucher->velocity = pevToucher->basevelocity = g_vecZero;
+	pevToucher->velocity = pevToucher->basevelocity = vec3_origin;
 }
 
 
@@ -2378,7 +2378,7 @@ void CTriggerCamera::FollowTarget( )
 	{
 		pev->velocity = pev->velocity * 0.8;
 		if (pev->velocity.Length( ) < 10.0)
-			pev->velocity = g_vecZero;
+			pev->velocity = vec3_origin;
 	}
 
 	pev->nextthink = gpGlobals->time;
@@ -2411,7 +2411,7 @@ void CTriggerCamera::Move()
 		// Set up next corner
 		if ( !m_pentPath )
 		{
-			pev->velocity = g_vecZero;
+			pev->velocity = vec3_origin;
 		}
 		else 
 		{

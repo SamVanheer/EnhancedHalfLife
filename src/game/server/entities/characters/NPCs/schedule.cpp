@@ -625,7 +625,7 @@ void CBaseMonster :: StartTask ( Task_t *pTask )
 		}
 	case TASK_CLEAR_LASTPOSITION:
 		{
-			m_vecLastPosition = g_vecZero;
+			m_vecLastPosition = vec3_origin;
 			TaskComplete();
 			break;
 		}
@@ -793,7 +793,7 @@ void CBaseMonster :: StartTask ( Task_t *pTask )
 
 			ASSERT( pBestSound != nullptr );
 			/*
-			if ( pBestSound && FindLateralCover( pBestSound->m_vecOrigin, g_vecZero ) )
+			if ( pBestSound && FindLateralCover( pBestSound->m_vecOrigin, vec3_origin ) )
 			{
 				// try lateral first
 				m_flMoveWaitFinished = gpGlobals->time + pTask->flData;
@@ -801,7 +801,7 @@ void CBaseMonster :: StartTask ( Task_t *pTask )
 			}
 			*/
 
-			if ( pBestSound && FindCover( pBestSound->m_vecOrigin, g_vecZero, pBestSound->m_iVolume, CoverRadius() ) )
+			if ( pBestSound && FindCover( pBestSound->m_vecOrigin, vec3_origin, pBestSound->m_iVolume, CoverRadius() ) )
 			{
 				// then try for plain ole cover
 				m_flMoveWaitFinished = gpGlobals->time + pTask->flData;

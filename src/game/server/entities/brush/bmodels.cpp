@@ -63,7 +63,7 @@ LINK_ENTITY_TO_CLASS( func_wall, CFuncWall );
 
 void CFuncWall :: Spawn()
 {
-	pev->angles		= g_vecZero;
+	pev->angles		= vec3_origin;
 	pev->movetype	= MOVETYPE_PUSH;  // so it doesn't get pushed by anything
 	pev->solid		= SOLID_BSP;
 	SET_MODEL( ENT(pev), STRING(pev->model) );
@@ -228,7 +228,7 @@ void CFuncIllusionary :: KeyValue( KeyValueData *pkvd )
 
 void CFuncIllusionary :: Spawn()
 {
-	pev->angles = g_vecZero;
+	pev->angles = vec3_origin;
 	pev->movetype = MOVETYPE_NONE;  
 	pev->solid = SOLID_NOT;// always solid_not 
 	SET_MODEL( ENT(pev), STRING(pev->model) );
@@ -332,7 +332,7 @@ void CFuncRotating :: KeyValue( KeyValueData* pkvd)
 	{
 		Vector tmp;
 		UTIL_StringToVector( (float *)tmp, pkvd->szValue );
-		if ( tmp != g_vecZero )
+		if ( tmp != vec3_origin)
 			pev->origin = tmp;
 	}
 	else if (FStrEq(pkvd->szKeyName, "sounds"))
@@ -498,7 +498,7 @@ void CFuncRotating :: Precache()
 		}
 	}
 	
-	if (pev->avelocity != g_vecZero )
+	if (pev->avelocity != vec3_origin)
 	{
 		// if fan was spinning, and we went through transition or save/restore,
 		// make sure we restart the sound.  1.5 sec delay is magic number. KDB
@@ -634,7 +634,7 @@ void CFuncRotating :: SpinDown()
 	if (((vecdir > 0) && (vecAVel.x <= 0 && vecAVel.y <= 0 && vecAVel.z <= 0)) || 
 		((vecdir < 0) && (vecAVel.x >= 0 && vecAVel.y >= 0 && vecAVel.z >= 0)))
 	{
-		pev->avelocity = g_vecZero;// set speed in case we overshot
+		pev->avelocity = vec3_origin;// set speed in case we overshot
 		
 		// stop sound, we're done
 		EMIT_SOUND_DYN(ENT(pev), CHAN_STATIC, (char *)STRING(pev->noiseRunning /* Stop */), 
@@ -663,7 +663,7 @@ void CFuncRotating :: RotatingUse( CBaseEntity *pActivator, CBaseEntity *pCaller
 	if ( FBitSet ( pev->spawnflags, SF_BRUSH_ACCDCC ) )
 	{
 		// fan is spinning, so stop it.
-		if ( pev->avelocity != g_vecZero )
+		if ( pev->avelocity != vec3_origin)
 		{
 			SetThink ( &CFuncRotating::SpinDown );
 			//EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, (char *)STRING(pev->noiseStop), 
@@ -682,7 +682,7 @@ void CFuncRotating :: RotatingUse( CBaseEntity *pActivator, CBaseEntity *pCaller
 	}
 	else if ( !FBitSet ( pev->spawnflags, SF_BRUSH_ACCDCC ) )//this is a normal start/stop brush.
 	{
-		if ( pev->avelocity != g_vecZero )
+		if ( pev->avelocity != vec3_origin)
 		{
 			// play stopping sound here
 			SetThink ( &CFuncRotating::SpinDown );
@@ -691,7 +691,7 @@ void CFuncRotating :: RotatingUse( CBaseEntity *pActivator, CBaseEntity *pCaller
 			//	m_flVolume, m_flAttenuation, 0, m_pitch);
 			
 			pev->nextthink = pev->ltime + 0.1;
-			// pev->avelocity = g_vecZero;
+			// pev->avelocity = vec3_origin;
 		}
 		else
 		{
@@ -842,7 +842,7 @@ void CPendulum :: PendulumUse( CBaseEntity *pActivator, CBaseEntity *pCaller, US
 		{
 			pev->speed = 0;		// Dead stop
 			SetThink(nullptr);
-			pev->avelocity = g_vecZero;
+			pev->avelocity = vec3_origin;
 		}
 	}
 	else
@@ -860,7 +860,7 @@ void CPendulum :: Stop()
 	pev->angles = m_start;
 	pev->speed = 0;
 	SetThink(nullptr);
-	pev->avelocity = g_vecZero;
+	pev->avelocity = vec3_origin;
 }
 
 
@@ -901,7 +901,7 @@ void CPendulum :: Swing()
 			pev->angles = m_center;
 			pev->speed = 0;
 			SetThink(nullptr);
-			pev->avelocity = g_vecZero;
+			pev->avelocity = vec3_origin;
 		}
 		else if ( pev->speed > m_dampSpeed )
 			pev->speed = m_dampSpeed;
@@ -950,7 +950,7 @@ void CPendulum :: RopeTouch ( CBaseEntity *pOther )
 	}
 
 	pev->enemy = pOther->edict();
-	pevOther->velocity = g_vecZero;
+	pevOther->velocity = vec3_origin;
 	pevOther->movetype = MOVETYPE_NONE;
 }
 

@@ -741,12 +741,12 @@ void CBaseDoor::Blocked( CBaseEntity *pOther )
 							if ( FClassnameIs ( pentTarget, "func_door" ) )
 							{// set origin to realign normal doors
 								pDoor->pev->origin = pev->origin;
-								pDoor->pev->velocity = g_vecZero;// stop!
+								pDoor->pev->velocity = vec3_origin;// stop!
 							}
 							else
 							{// set angles to realign rotating doors
 								pDoor->pev->angles = pev->angles;
-								pDoor->pev->avelocity = g_vecZero;
+								pDoor->pev->avelocity = vec3_origin;
 							}
 						}
 

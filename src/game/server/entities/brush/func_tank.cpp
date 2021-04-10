@@ -472,7 +472,7 @@ bool CFuncTank :: InRange( float range )
 
 void CFuncTank :: Think()
 {
-	pev->avelocity = g_vecZero;
+	pev->avelocity = vec3_origin;
 	TrackTarget();
 
 	if ( fabs(pev->avelocity.x) > 1 || fabs(pev->avelocity.y) > 1 )

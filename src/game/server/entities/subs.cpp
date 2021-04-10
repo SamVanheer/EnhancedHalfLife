@@ -34,7 +34,7 @@ extern DLL_GLOBAL int g_iSkillLevel;
 void CPointEntity :: Spawn()
 {
 	pev->solid = SOLID_NOT;
-//	UTIL_SetSize(pev, g_vecZero, g_vecZero);
+//	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 }
 
 
@@ -307,7 +307,7 @@ void SetMovedir( entvars_t *pev )
 		pev->movedir = gpGlobals->v_forward;
 	}
 	
-	pev->angles = g_vecZero;
+	pev->angles = vec3_origin;
 }
 
 
@@ -432,7 +432,7 @@ void CBaseToggle :: LinearMoveDone()
 	}
 
 	UTIL_SetOrigin(pev, m_vecFinalDest);
-	pev->velocity = g_vecZero;
+	pev->velocity = vec3_origin;
 	pev->nextthink = -1;
 	if ( m_pfnCallWhenMoveDone )
 		(this->*m_pfnCallWhenMoveDone)();
@@ -492,7 +492,7 @@ After rotating, set angle to exact final angle, call "move done" function
 void CBaseToggle :: AngularMoveDone()
 {
 	pev->angles = m_vecFinalAngle;
-	pev->avelocity = g_vecZero;
+	pev->avelocity = vec3_origin;
 	pev->nextthink = -1;
 	if ( m_pfnCallWhenMoveDone )
 		(this->*m_pfnCallWhenMoveDone)();

@@ -166,7 +166,7 @@ void CSqueakGrenade :: Killed( entvars_t *pevAttacker, int iGib )
 
 	CSoundEnt::InsertSound ( bits_SOUND_COMBAT, pev->origin, SMALL_EXPLOSION_VOLUME, 3.0 );
 
-	UTIL_BloodDrips( pev->origin, g_vecZero, BloodColor(), 80 );
+	UTIL_BloodDrips( pev->origin, vec3_origin, BloodColor(), 80 );
 
 	if (m_hOwner != nullptr)
 		RadiusDamage ( pev, m_hOwner->pev, pev->dmg, CLASS_NONE, DMG_BLAST );
@@ -516,7 +516,7 @@ void CSqueak::PrimaryAttack()
 	flags = 0;
 #endif
 
-	    PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usSnarkFire, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, 0, 0, 0, 0 );
+	    PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usSnarkFire, 0.0, vec3_origin, vec3_origin, 0.0, 0.0, 0, 0, 0, 0 );
 
 		if ( tr.fAllSolid == 0 && tr.fStartSolid == 0 && tr.flFraction > 0.25 )
 		{

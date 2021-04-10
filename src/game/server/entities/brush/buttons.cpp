@@ -1030,13 +1030,13 @@ void CMomentaryRotButton::UpdateSelf( float value )
 	pev->nextthink = pev->ltime + 0.1;
 	if ( m_direction > 0 && value >= 1.0 )
 	{
-		pev->avelocity = g_vecZero;
+		pev->avelocity = vec3_origin;
 		pev->angles = m_end;
 		return;
 	}
 	else if ( m_direction < 0 && value <= 0 )
 	{
-		pev->avelocity = g_vecZero;
+		pev->avelocity = vec3_origin;
 		pev->angles = m_start;
 		return;
 	}
@@ -1075,7 +1075,7 @@ void CMomentaryRotButton::UpdateTarget( float value )
 
 void CMomentaryRotButton::Off()
 {
-	pev->avelocity = g_vecZero;
+	pev->avelocity = vec3_origin;
 	m_lastUsed = 0;
 	if ( FBitSet( pev->spawnflags, SF_PENDULUM_AUTO_RETURN ) && m_returnSpeed > 0 )
 	{
@@ -1101,7 +1101,7 @@ void CMomentaryRotButton::UpdateSelfReturn( float value )
 {
 	if ( value <= 0 )
 	{
-		pev->avelocity = g_vecZero;
+		pev->avelocity = vec3_origin;
 		pev->angles = m_start;
 		pev->nextthink = -1;
 		SetThink(nullptr);

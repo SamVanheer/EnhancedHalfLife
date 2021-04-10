@@ -283,9 +283,9 @@ bool CBaseMonster :: HasAlienGibs()
 void CBaseMonster::FadeMonster()
 {
 	StopAnimation();
-	pev->velocity = g_vecZero;
+	pev->velocity = vec3_origin;
 	pev->movetype = MOVETYPE_NONE;
-	pev->avelocity = g_vecZero;
+	pev->avelocity = vec3_origin;
 	pev->animtime = gpGlobals->time;
 	pev->effects |= EF_NOINTERP;
 	SUB_StartFadeOut();
@@ -646,7 +646,7 @@ void CBaseEntity :: SUB_StartFadeOut ()
 	}
 
 	pev->solid = SOLID_NOT;
-	pev->avelocity = g_vecZero;
+	pev->avelocity = vec3_origin;
 
 	pev->nextthink = gpGlobals->time + 0.1;
 	SetThink ( &CBaseEntity::SUB_FadeOut );
@@ -681,7 +681,7 @@ void CGib :: WaitTillLand ()
 		return;
 	}
 
-	if ( pev->velocity == g_vecZero )
+	if ( pev->velocity == vec3_origin)
 	{
 		SetThink (&CGib::SUB_StartFadeOut);
 		pev->nextthink = gpGlobals->time + m_lifeTime;
@@ -766,8 +766,8 @@ void CGib :: StickyGibTouch ( CBaseEntity *pOther )
 
 	pev->velocity = tr.vecPlaneNormal * -1;
 	pev->angles = UTIL_VecToAngles ( pev->velocity );
-	pev->velocity = g_vecZero; 
-	pev->avelocity = g_vecZero;
+	pev->velocity = vec3_origin;
+	pev->avelocity = vec3_origin;
 	pev->movetype = MOVETYPE_NONE;
 }
 

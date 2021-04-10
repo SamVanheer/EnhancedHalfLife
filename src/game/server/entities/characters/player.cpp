@@ -190,7 +190,7 @@ static void ThrowGib(entvars_t *pev, char *szGibModel, float flDamage)
 
 	pevNew->origin = pev->origin;
 	SET_MODEL(ENT(pevNew), szGibModel);
-	UTIL_SetSize(pevNew, g_vecZero, g_vecZero);
+	UTIL_SetSize(pevNew, vec3_origin, vec3_origin);
 
 	pevNew->velocity		= VecVelocityForDamage(flDamage);
 	pevNew->movetype		= MOVETYPE_BOUNCE;
@@ -1169,7 +1169,7 @@ void CBasePlayer::PlayerDeathThink()
 	{
 		flForward = pev->velocity.Length() - 20;
 		if (flForward <= 0)
-			pev->velocity = g_vecZero;
+			pev->velocity = vec3_origin;
 		else    
 			pev->velocity = flForward * pev->velocity.Normalize();
 	}
@@ -1258,7 +1258,7 @@ void CBasePlayer::StartDeathCam()
 	edict_t *pSpot, *pNewSpot;
 	int iRand;
 
-	if ( pev->view_ofs == g_vecZero )
+	if ( pev->view_ofs == vec3_origin)
 	{
 		// don't accept subsequent attempts to StartDeathCam()
 		return;
@@ -1302,7 +1302,7 @@ void CBasePlayer::StartDeathCam()
 	// start death cam
 
 	m_afPhysicsFlags |= PFLAG_OBSERVER;
-	pev->view_ofs = g_vecZero;
+	pev->view_ofs = vec3_origin;
 	pev->fixangle = FIXANGLE_ABSOLUTE;
 	pev->solid = SOLID_NOT;
 	pev->takedamage = DAMAGE_NO;
@@ -1348,7 +1348,7 @@ void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle )
 	m_iHideHUD = (HIDEHUD_HEALTH | HIDEHUD_WEAPONS);
 	m_afPhysicsFlags |= PFLAG_OBSERVER;
 	pev->effects = EF_NODRAW;
-	pev->view_ofs = g_vecZero;
+	pev->view_ofs = vec3_origin;
 	pev->angles = pev->v_angle = vecViewAngle;
 	pev->fixangle = FIXANGLE_ABSOLUTE;
 	pev->solid = SOLID_NOT;
@@ -1832,7 +1832,7 @@ void CBasePlayer::PreThink()
 			return;
 		}
 
-		pev->velocity = g_vecZero;
+		pev->velocity = vec3_origin;
 		vel = 0;
 		if ( m_afButtonPressed & IN_FORWARD )
 		{
@@ -1878,7 +1878,7 @@ void CBasePlayer::PreThink()
 
 	if ( m_afPhysicsFlags & PFLAG_ONBARNACLE )
 	{
-		pev->velocity = g_vecZero;
+		pev->velocity = vec3_origin;
 	}
 }
 /* Time based Damage works as follows: 
@@ -2447,7 +2447,7 @@ void CBasePlayer :: UpdatePlayerSound ()
 
 	// Below are a couple of useful little bits that make it easier to determine just how much noise the 
 	// player is making. 
-	// UTIL_ParticleEffect ( pev->origin + gpGlobals->v_forward * iVolume, g_vecZero, 255, 25 );
+	// UTIL_ParticleEffect ( pev->origin + gpGlobals->v_forward * iVolume, vec3_origin, 255, 25 );
 	//ALERT ( at_console, "%d/%d\n", iVolume, m_iTargetVolume );
 }
 
@@ -4214,7 +4214,7 @@ Vector CBasePlayer :: AutoaimDeflection( Vector &vecSrc, float flDist, float flD
 	if ( g_psv_aim->value == 0 )
 	{
 		m_fOnTarget = false;
-		return g_vecZero;
+		return vec3_origin;
 	}
 
 	UTIL_MakeVectors( pev->v_angle + pev->punchangle + m_vecAutoAim );
@@ -4745,7 +4745,7 @@ void CInfoIntermission::Spawn()
 	UTIL_SetOrigin( pev, pev->origin );
 	pev->solid = SOLID_NOT;
 	pev->effects = EF_NODRAW;
-	pev->v_angle = g_vecZero;
+	pev->v_angle = vec3_origin;
 
 	pev->nextthink = gpGlobals->time + 2;// let targets spawn!
 

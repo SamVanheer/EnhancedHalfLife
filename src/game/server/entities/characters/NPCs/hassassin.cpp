@@ -688,7 +688,7 @@ bool CHAssassin :: CheckRangeAttack2 ( float flDot, float flDist )
 	{
 		Vector vecToss = VecCheckThrow( pev, GetGunPosition( ), m_hEnemy->Center(), flDist, 0.5 ); // use dist as speed to get there in 1 second
 
-		if ( vecToss != g_vecZero )
+		if ( vecToss != vec3_origin)
 		{
 			m_vecTossVelocity = vecToss;
 

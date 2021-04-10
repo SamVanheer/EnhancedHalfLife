@@ -1845,8 +1845,8 @@ int GetHullBounds( int hullnumber, float *mins, float *maxs )
 		ret = true;
 		break;
 	case 2:				// Point based hull
-		memcpy(mins, &g_vecZero, sizeof(g_vecZero));
-		memcpy(maxs, &g_vecZero, sizeof(g_vecZero));
+		memcpy(mins, &vec3_origin, sizeof(vec3_origin));
+		memcpy(maxs, &vec3_origin, sizeof(vec3_origin));
 		ret = true;
 		break;
 	}

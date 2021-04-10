@@ -788,7 +788,7 @@ bool CBigMomma::CheckRangeAttack1( float flDot, float flDist )
 			Vector startPos = pev->origin;
 			startPos.z += 180;
 			pev->movedir = VecCheckSplatToss( pev, startPos, pEnemy->BodyTarget( pev->origin ), RANDOM_FLOAT( 150, 500 ) );
-			if ( pev->movedir != g_vecZero )
+			if ( pev->movedir != vec3_origin)
 				return true;
 		}
 	}
@@ -1097,7 +1097,7 @@ Vector VecCheckSplatToss( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
-		return g_vecZero;
+		return vec3_origin;
 	}
 
 	// Don't worry about actually hitting the target, this won't hurt us!

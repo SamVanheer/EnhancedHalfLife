@@ -185,7 +185,7 @@ void CLeech::Spawn()
 	// Just for fun
 	//	SET_MODEL(ENT(pev), "models/icky.mdl");
 	
-//	UTIL_SetSize( pev, g_vecZero, g_vecZero );
+//	UTIL_SetSize( pev, vec3_origin, vec3_origin );
 	UTIL_SetSize( pev, Vector(-1,-1,0), Vector(1,1,2));
 	// Don't push the minz down too much or the water check will fail because this entity is really point-sized
 	pev->solid			= SOLID_SLIDEBOX;
@@ -199,7 +199,7 @@ void CLeech::Spawn()
 	SetThink( &CLeech::SwimThink );
 	SetUse( nullptr );
 	SetTouch( nullptr );
-	pev->view_ofs = g_vecZero;
+	pev->view_ofs = vec3_origin;
 
 	m_flTurning = 0;
 	m_fPathBlocked = false;
@@ -302,7 +302,7 @@ void CLeech::Precache()
 
 bool CLeech::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
-	pev->velocity = g_vecZero;
+	pev->velocity = vec3_origin;
 
 	// Nudge the leech away from the damage
 	if ( pevInflictor )
@@ -503,7 +503,7 @@ void CLeech::UpdateMotion()
 	{
 		pev->movetype = MOVETYPE_TOSS;
 		m_IdealActivity = ACT_TWITCH;
-		pev->velocity = g_vecZero;
+		pev->velocity = vec3_origin;
 
 		// Animation will intersect the floor if either of these is non-zero
 		pev->angles.z = 0;
@@ -562,7 +562,7 @@ void CLeech::SwimThink()
 	if ( FNullEnt( FIND_CLIENT_IN_PVS( edict() ) ) )
 	{
 		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(1,1.5);
-		pev->velocity = g_vecZero;
+		pev->velocity = vec3_origin;
 		return;
 	}
 	else
@@ -700,7 +700,7 @@ void CLeech::Killed(entvars_t *pevAttacker, int iGib)
 		pev->angles.z = 0;
 		pev->angles.x = 0;
 		pev->origin.z += 1;
-		pev->avelocity = g_vecZero;
+		pev->avelocity = vec3_origin;
 		if ( RANDOM_LONG( 0, 99 ) < 70 )
 			pev->avelocity.y = RANDOM_LONG( -720, 720 );
 

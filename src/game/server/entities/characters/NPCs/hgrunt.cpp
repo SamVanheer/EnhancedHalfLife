@@ -548,7 +548,7 @@ bool CHGrunt :: CheckRangeAttack2 ( float flDot, float flDist )
 	{
 		Vector vecToss = VecCheckToss( pev, GetGunPosition(), vecTarget, 0.5 );
 
-		if ( vecToss != g_vecZero )
+		if ( vecToss != vec3_origin)
 		{
 			m_vecTossVelocity = vecToss;
 
@@ -569,7 +569,7 @@ bool CHGrunt :: CheckRangeAttack2 ( float flDot, float flDist )
 	{
 		Vector vecToss = VecCheckThrow( pev, GetGunPosition(), vecTarget, gSkillData.hgruntGrenadeSpeed, 0.5 );
 
-		if ( vecToss != g_vecZero )
+		if ( vecToss != vec3_origin)
 		{
 			m_vecTossVelocity = vecToss;
 
@@ -901,7 +901,7 @@ void CHGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		case HGRUNT_AE_GREN_DROP:
 		{
 			UTIL_MakeVectors( pev->angles );
-			CGrenade::ShootTimed( pev, pev->origin + gpGlobals->v_forward * 17 - gpGlobals->v_right * 27 + gpGlobals->v_up * 6, g_vecZero, 3 );
+			CGrenade::ShootTimed( pev, pev->origin + gpGlobals->v_forward * 17 - gpGlobals->v_right * 27 + gpGlobals->v_up * 6, vec3_origin, 3 );
 		}
 		break;
 

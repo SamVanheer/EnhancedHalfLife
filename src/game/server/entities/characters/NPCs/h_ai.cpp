@@ -72,7 +72,7 @@ bool FBoxVisible ( entvars_t *pevLooker, entvars_t *pevTarget, Vector &vecTarget
 
 //
 // VecCheckToss - returns the velocity at which an object should be lobbed from vecspot1 to land near vecspot2.
-// returns g_vecZero if toss is not feasible.
+// returns vec3_origin if toss is not feasible.
 // 
 Vector VecCheckToss ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, float flGravityAdj )
 {
@@ -87,7 +87,7 @@ Vector VecCheckToss ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, f
 	if (vecSpot2.z - vecSpot1.z > 500)
 	{
 		// to high, fail
-		return g_vecZero;
+		return vec3_origin;
 	}
 
 	UTIL_MakeVectors (pev->angles);
@@ -111,7 +111,7 @@ Vector VecCheckToss ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, f
 	if (vecMidPoint.z < vecSpot1.z || vecMidPoint.z < vecSpot2.z)
 	{
 		// to not enough space, fail
-		return g_vecZero;
+		return vec3_origin;
 	}
 
 	// How high should the grenade travel to reach the apex
@@ -125,7 +125,7 @@ Vector VecCheckToss ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, f
 	if (time1 < 0.1)
 	{
 		// too close
-		return g_vecZero;
+		return vec3_origin;
 	}
 
 	// how hard to throw sideways to get there in time.
@@ -141,7 +141,7 @@ Vector VecCheckToss ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, f
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
-		return g_vecZero;
+		return vec3_origin;
 	}
 
 	// UNDONE: either ignore monsters or change it to not care if we hit our enemy
@@ -149,7 +149,7 @@ Vector VecCheckToss ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, f
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
-		return g_vecZero;
+		return vec3_origin;
 	}
 	
 	return vecGrenadeVel;
@@ -158,7 +158,7 @@ Vector VecCheckToss ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, f
 
 //
 // VecCheckThrow - returns the velocity vector at which an object should be thrown from vecspot1 to hit vecspot2.
-// returns g_vecZero if throw is not feasible.
+// returns vec3_origin if throw is not feasible.
 // 
 Vector VecCheckThrow ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj )
 {
@@ -181,14 +181,14 @@ Vector VecCheckThrow ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, 
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
-		return g_vecZero;
+		return vec3_origin;
 	}
 
 	UTIL_TraceLine(vecSpot2, vecApex, ignore_monsters, ENT(pev), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
-		return g_vecZero;
+		return vec3_origin;
 	}
 
 	return vecGrenadeVel;

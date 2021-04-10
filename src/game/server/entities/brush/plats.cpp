@@ -280,7 +280,7 @@ void CFuncPlat :: Setup()
 	if (m_flTWidth == 0)
 		m_flTWidth = 10;
 	
-	pev->angles		= g_vecZero;
+	pev->angles		= vec3_origin;
 
 	pev->solid		= SOLID_BSP;
 	pev->movetype	= MOVETYPE_PUSH;
@@ -557,8 +557,8 @@ void CFuncPlatRot :: SetupRotation()
 	}
 	else
 	{
-		m_start = g_vecZero;
-		m_end = g_vecZero;
+		m_start = vec3_origin;
+		m_end = vec3_origin;
 	}
 	if ( !FStringNull(pev->targetname) )	// Start at top
 	{
@@ -586,7 +586,7 @@ void CFuncPlatRot :: GoDown()
 void CFuncPlatRot :: HitBottom()
 {
 	CFuncPlat :: HitBottom();
-	pev->avelocity = g_vecZero;
+	pev->avelocity = vec3_origin;
 	pev->angles = m_start;
 }
 
@@ -607,7 +607,7 @@ void CFuncPlatRot :: GoUp()
 void CFuncPlatRot :: HitTop()
 {
 	CFuncPlat :: HitTop();
-	pev->avelocity = g_vecZero;
+	pev->avelocity = vec3_origin;
 	pev->angles = m_end;
 }
 
@@ -706,7 +706,7 @@ void CFuncTrain :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE 
 		if ( pev->enemy )
 			pev->target = pev->enemy->v.targetname;
 		pev->nextthink = 0;
-		pev->velocity = g_vecZero;
+		pev->velocity = vec3_origin;
 		if ( pev->noiseStopMoving )
 			EMIT_SOUND (ENT(pev), CHAN_VOICE, (char*)STRING(pev->noiseStopMoving), m_volume, ATTN_NORM);
 	}
@@ -915,7 +915,7 @@ void CFuncTrain::OverrideReset()
 	CBaseEntity	*pTarg;
 
 	// Are we moving?
-	if ( pev->velocity != g_vecZero && pev->nextthink != 0 )
+	if ( pev->velocity != vec3_origin && pev->nextthink != 0 )
 	{
 		pev->target = pev->message;
 		// now find our next target
@@ -923,7 +923,7 @@ void CFuncTrain::OverrideReset()
 		if ( !pTarg )
 		{
 			pev->nextthink = 0;
-			pev->velocity = g_vecZero;
+			pev->velocity = vec3_origin;
 		}
 		else	// Keep moving for 0.1 secs, then find path_corner again and restart
 		{
@@ -1051,8 +1051,8 @@ void CFuncTrackTrain :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 		else
 		{
 			pev->speed = 0;
-			pev->velocity = g_vecZero;
-			pev->avelocity = g_vecZero;
+			pev->velocity = vec3_origin;
+			pev->avelocity = vec3_origin;
 			StopSound();
 			SetThink(nullptr);
 		}
@@ -1111,7 +1111,7 @@ void CFuncTrackTrain :: StopSound()
 		us_encode = us_sound;
 
 		PLAYBACK_EVENT_FULL( FEV_RELIABLE | FEV_UPDATE, edict(), m_usAdjustPitch, 0.0, 
-			(float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, us_encode, 0, 1, 0 );
+			vec3_origin, vec3_origin, 0.0, 0.0, us_encode, 0, 1, 0 );
 
 		/*
 		STOP_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noise));
@@ -1161,7 +1161,7 @@ void CFuncTrackTrain :: UpdateSound()
 		us_encode = us_sound | us_pitch | us_volume;
 
 		PLAYBACK_EVENT_FULL( FEV_RELIABLE | FEV_UPDATE, edict(), m_usAdjustPitch, 0.0, 
-			(float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, us_encode, 0, 0, 0 );
+			vec3_origin, vec3_origin, 0.0, 0.0, us_encode, 0, 0, 0 );
 	}
 }
 
@@ -1276,7 +1276,7 @@ void CFuncTrackTrain :: Next()
 	{
 		StopSound();
 		pev->velocity = (nextPos - pev->origin);
-		pev->avelocity = g_vecZero;
+		pev->avelocity = vec3_origin;
 		float distance = pev->velocity.Length();
 		m_oldSpeed = pev->speed;
 
@@ -1335,8 +1335,8 @@ void CFuncTrackTrain::DeadEnd()
 		}
 	}
 
-	pev->velocity = g_vecZero;
-	pev->avelocity = g_vecZero;
+	pev->velocity = vec3_origin;
+	pev->avelocity = vec3_origin;
 	if ( pTrack )
 	{
 		ALERT( at_aiconsole, "at %s\n", STRING(pTrack->pev->targetname) );
@@ -1497,8 +1497,8 @@ void CFuncTrackTrain :: Spawn()
 		m_speed = pev->speed;
 	
 	pev->speed = 0;
-	pev->velocity = g_vecZero;
-	pev->avelocity = g_vecZero;
+	pev->velocity = vec3_origin;
+	pev->avelocity = vec3_origin;
 	pev->impulse = m_speed;
 
 	m_dir = 1;
@@ -2245,7 +2245,7 @@ void CGunTarget::Wait()
 
 void CGunTarget::Stop()
 {
-	pev->velocity = g_vecZero;
+	pev->velocity = vec3_origin;
 	pev->nextthink = 0;
 	pev->takedamage = DAMAGE_NO;
 }

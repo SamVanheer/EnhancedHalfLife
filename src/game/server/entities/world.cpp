@@ -164,7 +164,7 @@ void CWorld :: Precache()
 	//!!!UNDONE why is there so much Spawn code in the Precache function? I'll just keep it here 
 
 	///!!!LATER - do we want a sound ent in deathmatch? (sjb)
-	//pSoundEnt = CBaseEntity::Create( "soundent", g_vecZero, g_vecZero, edict() );
+	//pSoundEnt = CBaseEntity::Create( "soundent", vec3_origin, vec3_origin, edict() );
 	pSoundEnt = GetClassPtr( ( CSoundEnt *)nullptr );
 	pSoundEnt->Spawn();
 
@@ -298,7 +298,7 @@ void CWorld :: Precache()
 	if ( pev->netname )
 	{
 		ALERT( at_aiconsole, "Chapter title: %s\n", STRING(pev->netname) );
-		CBaseEntity *pEntity = CBaseEntity::Create( "env_message", g_vecZero, g_vecZero, nullptr );
+		CBaseEntity *pEntity = CBaseEntity::Create( "env_message", vec3_origin, vec3_origin, nullptr );
 		if ( pEntity )
 		{
 			pEntity->SetThink( &CBaseEntity::SUB_CallUseToggle );

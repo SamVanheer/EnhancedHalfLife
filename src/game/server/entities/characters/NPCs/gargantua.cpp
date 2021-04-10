@@ -893,7 +893,7 @@ void CGargantua::DeathEffect()
 		position.z += 15;
 	}
 
-	CBaseEntity *pSmoker = CBaseEntity::Create( "env_smoker", pev->origin, g_vecZero, nullptr );
+	CBaseEntity *pSmoker = CBaseEntity::Create( "env_smoker", pev->origin, vec3_origin, nullptr );
 	pSmoker->pev->health = 1;	// 1 smoke balls
 	pSmoker->pev->scale = 46;	// 4.6X normal size
 	pSmoker->pev->dmg = 0;		// 0 radial distribution
@@ -1198,7 +1198,7 @@ void CGargantua::RunTask( Task_t *pTask )
 		{
 			bool cancel = false;
 
-			Vector angles = g_vecZero;
+			Vector angles = vec3_origin;
 
 			FlameUpdate();
 			CBaseEntity *pEnemy = m_hEnemy;
@@ -1247,9 +1247,9 @@ void CSmoker::Spawn()
 	pev->movetype = MOVETYPE_NONE;
 	pev->nextthink = gpGlobals->time;
 	pev->solid = SOLID_NOT;
-	UTIL_SetSize(pev, g_vecZero, g_vecZero );
+	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 	pev->effects |= EF_NODRAW;
-	pev->angles = g_vecZero;
+	pev->angles = vec3_origin;
 }
 
 
@@ -1279,9 +1279,9 @@ void CSpiral::Spawn()
 	pev->movetype = MOVETYPE_NONE;
 	pev->nextthink = gpGlobals->time;
 	pev->solid = SOLID_NOT;
-	UTIL_SetSize(pev, g_vecZero, g_vecZero );
+	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 	pev->effects |= EF_NODRAW;
-	pev->angles = g_vecZero;
+	pev->angles = vec3_origin;
 }
 
 
@@ -1298,7 +1298,7 @@ CSpiral *CSpiral::Create( const Vector &origin, float height, float radius, floa
 	pSpiral->pev->dmg = height;
 	pSpiral->pev->speed = duration;
 	pSpiral->pev->health = 0;
-	pSpiral->pev->angles = g_vecZero;
+	pSpiral->pev->angles = vec3_origin;
 
 	return pSpiral;
 }
@@ -1349,7 +1349,7 @@ void SpawnExplosion( Vector center, float randomRange, float time, int magnitude
 	center.x += RANDOM_FLOAT( -randomRange, randomRange );
 	center.y += RANDOM_FLOAT( -randomRange, randomRange );
 
-	CBaseEntity *pExplosion = CBaseEntity::Create( "env_explosion", center, g_vecZero, nullptr );
+	CBaseEntity *pExplosion = CBaseEntity::Create( "env_explosion", center, vec3_origin, nullptr );
 	sprintf( buf, "%3d", magnitude );
 	kvd.szKeyName = "iMagnitude";
 	kvd.szValue = buf;

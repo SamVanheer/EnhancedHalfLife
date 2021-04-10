@@ -102,7 +102,7 @@ struct skilldata_t  gSkillData;
 void UTIL_SetSize( entvars_t *pev, const Vector &vecMin, const Vector &vecMax ){ }
 CBaseEntity *UTIL_FindEntityInSphere( CBaseEntity *pStartEntity, const Vector &vecCenter, float flRadius ){ return nullptr;}
 
-Vector UTIL_VecToAngles( const Vector &vec ){ return g_vecZero; }
+Vector UTIL_VecToAngles( const Vector &vec ){ return vec3_origin; }
 CSprite *CSprite::SpriteCreate( const char *pSpriteName, const Vector &origin, bool animate ) { return nullptr; }
 void CBeam::PointEntInit( const Vector &start, int endIndex ) { }
 CBeam *CBeam::BeamCreate( const char *pSpriteName, int width ) { return nullptr; }
@@ -191,7 +191,7 @@ int CBaseAnimating :: FindTransition( int iEndingSequence, int iGoalSequence, in
 void CBaseAnimating :: GetAutomovement( Vector &origin, Vector &angles, float flInterval ) { }
 void CBaseAnimating :: SetBodygroup( int iGroup, int iValue ) { }
 int CBaseAnimating :: GetBodygroup( int iGroup ) { return 0; }
-Vector CBaseMonster :: GetGunPosition() { return g_vecZero; }
+Vector CBaseMonster :: GetGunPosition() { return vec3_origin; }
 void CBaseEntity::TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType) { }
 void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker ) { }
 void CBaseEntity :: TraceBleed( float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType ) { }
@@ -203,7 +203,7 @@ void CBaseMonster :: KeyValue( KeyValueData *pkvd ) { }
 bool CBaseMonster :: FCheckAITrigger () { return false; }
 bool CBaseMonster :: CanPlaySequence(bool fDisregardMonsterState, int interruptLevel ) { return false; }
 bool CBaseMonster :: FindLateralCover ( const Vector &vecThreat, const Vector &vecViewOffset ) { return false; }
-Vector CBaseMonster :: ShootAtEnemy( const Vector &shootOrigin ) { return g_vecZero; }
+Vector CBaseMonster :: ShootAtEnemy( const Vector &shootOrigin ) { return vec3_origin; }
 bool CBaseMonster :: FacingIdeal() { return false; }
 bool CBaseMonster :: FCanActiveIdle () { return false; }
 void CBaseMonster::PlaySentence( const char *pszSentence, float duration, float volume, float attenuation ) { }
@@ -287,15 +287,15 @@ void CBasePlayer :: BarnacleVictimBitten ( entvars_t *pevBarnacle ) { }
 void CBasePlayer :: BarnacleVictimReleased () { }
 int CBasePlayer :: Illumination() { return 0; }
 void CBasePlayer :: EnableControl(bool fControl) { }
-Vector CBasePlayer :: GetAutoaimVector( float flDelta ) { return g_vecZero; }
-Vector CBasePlayer :: AutoaimDeflection( Vector &vecSrc, float flDist, float flDelta  ) { return g_vecZero; }
+Vector CBasePlayer :: GetAutoaimVector( float flDelta ) { return vec3_origin; }
+Vector CBasePlayer :: AutoaimDeflection( Vector &vecSrc, float flDist, float flDelta  ) { return vec3_origin; }
 void CBasePlayer :: ResetAutoaim( ) { }
 void CBasePlayer :: SetCustomDecalFrames( int nFrames ) { }
 int CBasePlayer :: GetCustomDecalFrames() { return -1; }
 void CBasePlayer::DropPlayerItem ( char *pszItemName ) { }
 bool CBasePlayer::HasPlayerItem( CBasePlayerItem *pCheckItem ) { return false; }
 bool CBasePlayer :: SwitchWeapon( CBasePlayerItem *pWeapon )  { return false; }
-Vector CBasePlayer :: GetGunPosition() { return g_vecZero; }
+Vector CBasePlayer :: GetGunPosition() { return vec3_origin; }
 const char *CBasePlayer::TeamID() { return ""; }
 int CBasePlayer :: GiveAmmo( int iCount, const char *szName, int iMax ) { return 0; }
 void CBasePlayer::AddPoints( int score, bool bAllowNegativeScore ) { }

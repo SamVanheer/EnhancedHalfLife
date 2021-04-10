@@ -87,7 +87,7 @@ void CRoach :: Touch ( CBaseEntity *pOther )
 	Vector		vecSpot;
 	TraceResult	tr;
 
-	if ( pOther->pev->velocity == g_vecZero || !pOther->IsPlayer() )
+	if ( pOther->pev->velocity == vec3_origin || !pOther->IsPlayer() )
 	{
 		return;
 	}

@@ -529,7 +529,7 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 	Vector camAngles;
 	if( CL_IsThirdPerson() )
 	{
-		Vector ofs = g_vecZero;
+		Vector ofs = vec3_origin;
 
 		CL_CameraOffset( &ofs );
 

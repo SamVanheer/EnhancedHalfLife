@@ -207,7 +207,7 @@ void CFlockingFlyerFlock :: SpawnFlock()
 		pBoid->pev->movetype = MOVETYPE_FLY;
 		pBoid->SpawnCommonCode();
 		pBoid->pev->flags &= ~FL_ONGROUND;
-		pBoid->pev->velocity = g_vecZero;
+		pBoid->pev->velocity = vec3_origin;
 		pBoid->pev->angles	 = pev->angles;
 		
 		pBoid->pev->frame = 0;
@@ -308,7 +308,7 @@ void CFlockingFlyer :: FallHack()
 		}
 		else
 		{
-			pev->velocity = g_vecZero;
+			pev->velocity = vec3_origin;
 			SetThink( nullptr );
 		}
 	}

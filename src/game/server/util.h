@@ -501,12 +501,12 @@ const char* RANDOM_SOUND_ARRAY(const char* (&array)[Size])
 
 inline void PLAYBACK_EVENT(int flags, edict_t* invoker, unsigned short index)
 {
-	PLAYBACK_EVENT_FULL(flags, invoker, index, 0, g_vecZero, g_vecZero, 0.0, 0.0, 0, 0, 0, 0);
+	PLAYBACK_EVENT_FULL(flags, invoker, index, 0, vec3_origin, vec3_origin, 0.0, 0.0, 0, 0, 0, 0);
 }
 
 inline void PLAYBACK_EVENT_DELAY(int flags, edict_t* invoker, unsigned short index, float delay)
 {
-	PLAYBACK_EVENT_FULL(flags, invoker, index, delay, g_vecZero, g_vecZero, 0.0, 0.0, 0, 0, 0, 0);
+	PLAYBACK_EVENT_FULL(flags, invoker, index, delay, vec3_origin, vec3_origin, 0.0, 0.0, 0, 0, 0, 0);
 }
 
 constexpr int GROUP_OP_AND = 0;

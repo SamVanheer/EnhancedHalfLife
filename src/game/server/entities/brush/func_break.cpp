@@ -895,7 +895,7 @@ void CPushable :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE u
 		return;
 	}
 
-	if ( pActivator->pev->velocity != g_vecZero )
+	if ( pActivator->pev->velocity != vec3_origin)
 		Move( pActivator, 0 );
 }
 
