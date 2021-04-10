@@ -30,10 +30,9 @@ bool VectorCompare(const float* v1, const float* v2)
 
 float Length(const float* v)
 {
-	int		i;
 	float	length = 0.0f;
 
-	for (i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
 		length += v[i] * v[i];
 	length = sqrt(length);		// FIXME
 
@@ -49,14 +48,12 @@ void CrossProduct(const float* v1, const float* v2, float* cross)
 
 float VectorNormalize(float* v)
 {
-	float	length, ilength;
-
-	length = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
+	float length = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
 	length = sqrt(length);		// FIXME
 
 	if (length)
 	{
-		ilength = 1 / length;
+		const float ilength = 1 / length;
 		v[0] *= ilength;
 		v[1] *= ilength;
 		v[2] *= ilength;
@@ -89,18 +86,15 @@ int Q_log2(int val)
 
 void AngleVectors(const Vector& angles, Vector* forward, Vector* right, Vector* up)
 {
-	float		angle;
-	float		sr, sp, sy, cr, cp, cy;
-
-	angle = angles[YAW] * (M_PI * 2 / 360);
-	sy = sin(angle);
-	cy = cos(angle);
+	float angle = angles[YAW] * (M_PI * 2 / 360);
+	const float sy = sin(angle);
+	const float cy = cos(angle);
 	angle = angles[PITCH] * (M_PI * 2 / 360);
-	sp = sin(angle);
-	cp = cos(angle);
+	const float sp = sin(angle);
+	const float cp = cos(angle);
 	angle = angles[ROLL] * (M_PI * 2 / 360);
-	sr = sin(angle);
-	cr = cos(angle);
+	const float sr = sin(angle);
+	const float cr = cos(angle);
 
 	if (forward)
 	{
@@ -124,18 +118,15 @@ void AngleVectors(const Vector& angles, Vector* forward, Vector* right, Vector* 
 
 void AngleVectorsTranspose(const Vector& angles, Vector* forward, Vector* right, Vector* up)
 {
-	float		angle;
-	float		sr, sp, sy, cr, cp, cy;
-
-	angle = angles[YAW] * (M_PI * 2 / 360);
-	sy = sin(angle);
-	cy = cos(angle);
+	float angle = angles[YAW] * (M_PI * 2 / 360);
+	const float sy = sin(angle);
+	const float cy = cos(angle);
 	angle = angles[PITCH] * (M_PI * 2 / 360);
-	sp = sin(angle);
-	cp = cos(angle);
+	const float sp = sin(angle);
+	const float cp = cos(angle);
 	angle = angles[ROLL] * (M_PI * 2 / 360);
-	sr = sin(angle);
-	cr = cos(angle);
+	const float sr = sin(angle);
+	const float cr = cos(angle);
 
 	if (forward)
 	{
@@ -330,14 +321,13 @@ void SmoothInterpolateAngles(Vector& startAngle, Vector& endAngle, Vector& final
 
 float AngleBetweenVectors(const Vector& v1, const Vector& v2)
 {
-	float angle;
-	float l1 = Length(v1);
-	float l2 = Length(v2);
+	const float l1 = v1.Length();
+	const float l2 = v2.Length();
 
 	if (!l1 || !l2)
 		return 0.0f;
 
-	angle = acos(DotProduct(v1, v2)) / (l1 * l2);
+	float angle = acos(DotProduct(v1, v2)) / (l1 * l2);
 	angle = (angle * 180.0f) / M_PI;
 
 	return angle;
@@ -345,8 +335,6 @@ float AngleBetweenVectors(const Vector& v1, const Vector& v2)
 
 void VectorMatrix(const Vector& forward, Vector& right, Vector& up)
 {
-	Vector tmp;
-
 	if (forward[0] == 0 && forward[1] == 0)
 	{
 		right[0] = 1;
@@ -358,7 +346,8 @@ void VectorMatrix(const Vector& forward, Vector& right, Vector& up)
 		return;
 	}
 
-	tmp[0] = 0; tmp[1] = 0; tmp[2] = 1.0;
+	constexpr Vector tmp{0, 0, 1};
+
 	CrossProduct(forward, tmp, right);
 	VectorNormalize(right);
 	CrossProduct(right, forward, up);
@@ -367,7 +356,7 @@ void VectorMatrix(const Vector& forward, Vector& right, Vector& up)
 
 void VectorAngles(const float* forward, float* angles)
 {
-	double	tmp, yaw, pitch;
+	double yaw, pitch;
 
 	if (forward[1] == 0 && forward[0] == 0)
 	{
@@ -383,7 +372,7 @@ void VectorAngles(const float* forward, float* angles)
 		if (yaw < 0)
 			yaw += 360;
 
-		tmp = sqrt(forward[0] * forward[0] + forward[1] * forward[1]);
+		const float tmp = sqrt(forward[0] * forward[0] + forward[1] * forward[1]);
 		pitch = (atan2(forward[2], tmp) * 180 / M_PI);
 		if (pitch < 0)
 			pitch += 360;
@@ -394,7 +383,7 @@ void VectorAngles(const float* forward, float* angles)
 	angles[2] = 0;
 }
 
-float	anglemod(float a)
+float anglemod(float a)
 {
 	a = (360.0 / 65536) * ((int)(a * (65536 / 360.0)) & 65535);
 	return a;
@@ -439,19 +428,16 @@ void ConcatTransforms(float in1[3][4], float in2[3][4], float out[3][4])
 */
 void AngleQuaternion(float* angles, vec4_t quaternion)
 {
-	float		angle;
-	float		sr, sp, sy, cr, cp, cy;
-
 	// FIXME: rescale the inputs to 1/2 angle
-	angle = angles[2] * 0.5;
-	sy = sin(angle);
-	cy = cos(angle);
+	float angle = angles[2] * 0.5;
+	const float sy = sin(angle);
+	const float cy = cos(angle);
 	angle = angles[1] * 0.5;
-	sp = sin(angle);
-	cp = cos(angle);
+	const float sp = sin(angle);
+	const float cp = cos(angle);
 	angle = angles[0] * 0.5;
-	sr = sin(angle);
-	cr = cos(angle);
+	const float sr = sin(angle);
+	const float cr = cos(angle);
 
 	quaternion[0] = sr * cp * cy - cr * sp * sy; // X
 	quaternion[1] = cr * sp * cy + sr * cp * sy; // Y
@@ -462,7 +448,7 @@ void AngleQuaternion(float* angles, vec4_t quaternion)
 void QuaternionSlerp(vec4_t p, vec4_t q, float t, vec4_t qt)
 {
 	int i;
-	float	omega, cosom, sinom, sclp, sclq;
+	float sclp, sclq;
 
 	// decide if one of the quaternions is backwards
 	float a = 0;
@@ -481,14 +467,14 @@ void QuaternionSlerp(vec4_t p, vec4_t q, float t, vec4_t qt)
 		}
 	}
 
-	cosom = p[0] * q[0] + p[1] * q[1] + p[2] * q[2] + p[3] * q[3];
+	const float cosom = p[0] * q[0] + p[1] * q[1] + p[2] * q[2] + p[3] * q[3];
 
 	if ((1.0 + cosom) > 0.000001)
 	{
 		if ((1.0 - cosom) > 0.000001)
 		{
-			omega = acos(cosom);
-			sinom = sin(omega);
+			const float omega = acos(cosom);
+			const float sinom = sin(omega);
 			sclp = sin((1.0 - t) * omega) / sinom;
 			sclq = sin(t * omega) / sinom;
 		}
