@@ -513,7 +513,7 @@ bool CFlockingFlyer :: FPathBlocked( )
 	}
 
 	// use VELOCITY, not angles, not all boids point the direction they are flying
-	//vecDir = UTIL_VecToAngles( pevBoid->velocity );
+	//vecDir = VectorAngles( pevBoid->velocity );
 	UTIL_MakeVectors ( pev->angles );
 
 	fBlocked = false;// assume the way ahead is clear
@@ -755,7 +755,7 @@ void CFlockingFlyer :: FlockFollowerThink()
 			m_fCourseAdjust = true;
 			
 			// use VELOCITY, not angles, not all boids point the direction they are flying
-			//vecDir = UTIL_VecToAngles( pev->velocity );
+			//vecDir = VectorAngles( pev->velocity );
 			//UTIL_MakeVectors ( vecDir );
 
 			UTIL_MakeVectors ( pev->angles );

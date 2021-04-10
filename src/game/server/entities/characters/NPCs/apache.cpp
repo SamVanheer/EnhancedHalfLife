@@ -796,7 +796,7 @@ bool CApache :: FireGun( )
 	vecOut.y = -DotProduct( gpGlobals->v_right, vecTarget );
 	vecOut.z = DotProduct( gpGlobals->v_up, vecTarget );
 
-	Vector angles = UTIL_VecToAngles (vecOut);
+	Vector angles = VectorAngles(vecOut);
 
 	angles.x = -angles.x;
 	if (angles.y > 180)
@@ -1038,7 +1038,7 @@ void CApacheHVR :: AccelerateThink()
 	}
 
 	// re-aim
-	pev->angles = UTIL_VecToAngles( pev->velocity );
+	pev->angles = VectorAngles( pev->velocity );
 
 	pev->nextthink = gpGlobals->time + 0.1;
 }

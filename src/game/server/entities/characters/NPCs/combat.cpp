@@ -765,7 +765,7 @@ void CGib :: StickyGibTouch ( CBaseEntity *pOther )
 	UTIL_BloodDecalTrace( &tr, m_bloodColor );
 
 	pev->velocity = tr.vecPlaneNormal * -1;
-	pev->angles = UTIL_VecToAngles ( pev->velocity );
+	pev->angles = VectorAngles( pev->velocity );
 	pev->velocity = vec3_origin;
 	pev->avelocity = vec3_origin;
 	pev->movetype = MOVETYPE_NONE;

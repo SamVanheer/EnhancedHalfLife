@@ -955,7 +955,7 @@ void CIchthyosaur::Swim( )
 	}
 */
 	constexpr int PROBE_LENGTH = 150;
-	Angles = UTIL_VecToAngles( m_SaveVelocity );
+	Angles = VectorAngles( m_SaveVelocity );
 	Angles.x = -Angles.x;
 	UTIL_MakeVectorsPrivate(Angles, Forward, Right, Up);
 
@@ -993,7 +993,7 @@ void CIchthyosaur::Swim( )
 
 	// ALERT( at_console, "speed %f\n", m_flightSpeed );
 	
-	Angles = UTIL_VecToAngles( m_SaveVelocity );
+	Angles = VectorAngles( m_SaveVelocity );
 
 	// Smooth Pitch
 	//

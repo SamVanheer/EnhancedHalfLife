@@ -301,7 +301,7 @@ void CSqueakGrenade::HuntThink()
 	}
 	m_posPrev = pev->origin;
 
-	pev->angles = UTIL_VecToAngles( pev->velocity );
+	pev->angles = VectorAngles( pev->velocity );
 	pev->angles.z = 0;
 	pev->angles.x = 0;
 }

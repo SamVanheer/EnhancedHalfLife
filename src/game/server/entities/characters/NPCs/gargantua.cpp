@@ -1207,7 +1207,7 @@ void CGargantua::RunTask( Task_t *pTask )
 				Vector org = pev->origin;
 				org.z += 64;
 				Vector dir = pEnemy->BodyTarget(org) - org;
-				angles = UTIL_VecToAngles( dir );
+				angles = VectorAngles( dir );
 				angles.x = -angles.x;
 				angles.y -= pev->angles.y;
 				if ( dir.Length() > 400 )

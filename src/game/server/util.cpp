@@ -297,13 +297,6 @@ float UTIL_AngleDiff( float destAngle, float srcAngle )
 	}
 	return delta;
 }
-
-Vector UTIL_VecToAngles( const Vector &vec )
-{
-	float rgflVecOut[3];
-	VEC_TO_ANGLES(vec, rgflVecOut);
-	return Vector(rgflVecOut);
-}
 	
 //	float UTIL_MoveToOrigin( edict_t *pent, const Vector vecGoal, float flDist, int iMoveType )
 void UTIL_MoveToOrigin( edict_t *pent, const Vector &vecGoal, float flDist, int iMoveType )

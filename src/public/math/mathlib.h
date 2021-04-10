@@ -99,7 +99,7 @@ float AngleBetweenVectors(const Vector& v1, const Vector& v2);
 
 
 void VectorMatrix(const Vector& forward, Vector& right, Vector& up);
-void VectorAngles(const float* forward, float* angles);
+Vector VectorAngles(const Vector& forward);
 
 int InvertMatrix(const float* m, float* out);
 

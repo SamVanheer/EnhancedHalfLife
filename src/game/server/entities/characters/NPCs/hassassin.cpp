@@ -224,7 +224,7 @@ void CHAssassin :: Shoot ()
 
 	pev->effects |= EF_MUZZLEFLASH;
 
-	Vector angDir = UTIL_VecToAngles( vecShootDir );
+	Vector angDir = VectorAngles( vecShootDir );
 	SetBlending( 0, angDir.x );
 
 	m_cAmmoLoaded--;

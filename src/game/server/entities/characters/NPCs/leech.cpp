@@ -369,7 +369,7 @@ float CLeech::ObstacleDistance( CBaseEntity *pTarget )
 	Vector			vecTest;
 
 	// use VELOCITY, not angles, not all boids point the direction they are flying
-	//Vector vecDir = UTIL_VecToAngles( pev->velocity );
+	//Vector vecDir = VectorAngles( pev->velocity );
 	MakeVectors();
 
 	// check for obstacle ahead

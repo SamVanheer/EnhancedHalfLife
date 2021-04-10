@@ -1296,7 +1296,7 @@ void CBasePlayer::StartDeathCam()
 		UTIL_TraceLine( pev->origin, pev->origin + Vector( 0, 0, 128 ), ignore_monsters, edict(), &tr );
 
 		UTIL_SetOrigin( pev, tr.vecEndPos );
-		pev->angles = pev->v_angle = UTIL_VecToAngles( tr.vecEndPos - pev->origin  );
+		pev->angles = pev->v_angle = VectorAngles( tr.vecEndPos - pev->origin  );
 	}
 
 	// start death cam
@@ -4312,7 +4312,7 @@ Vector CBasePlayer :: AutoaimDeflection( Vector &vecSrc, float flDist, float flD
 
 	if (bestent)
 	{
-		bestdir = UTIL_VecToAngles (bestdir);
+		bestdir = VectorAngles(bestdir);
 		bestdir.x = -bestdir.x;
 		bestdir = bestdir - pev->v_angle - pev->punchangle;
 
@@ -4760,7 +4760,7 @@ void CInfoIntermission::Think ()
 
 	if ( !FNullEnt(pTarget) )
 	{
-		pev->v_angle = UTIL_VecToAngles( (pTarget->v.origin - pev->origin).Normalize() );
+		pev->v_angle = VectorAngles( (pTarget->v.origin - pev->origin).Normalize() );
 		pev->v_angle.x = -pev->v_angle.x;
 	}
 }

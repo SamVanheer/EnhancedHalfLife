@@ -799,7 +799,7 @@ void CHGrunt :: Shoot ()
 	
 	m_cAmmoLoaded--;// take away a bullet!
 
-	Vector angDir = UTIL_VecToAngles( vecShootDir );
+	Vector angDir = VectorAngles( vecShootDir );
 	SetBlending( 0, angDir.x );
 }
 
@@ -826,7 +826,7 @@ void CHGrunt :: Shotgun ()
 	
 	m_cAmmoLoaded--;// take away a bullet!
 
-	Vector angDir = UTIL_VecToAngles( vecShootDir );
+	Vector angDir = VectorAngles( vecShootDir );
 	SetBlending( 0, angDir.x );
 }
 

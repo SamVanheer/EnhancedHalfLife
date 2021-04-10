@@ -325,7 +325,7 @@ void VectorMatrix(const Vector& forward, Vector& right, Vector& up)
 	VectorNormalize(up);
 }
 
-void VectorAngles(const float* forward, float* angles)
+Vector VectorAngles(const Vector& forward)
 {
 	double yaw, pitch;
 
@@ -349,9 +349,7 @@ void VectorAngles(const float* forward, float* angles)
 			pitch += 360;
 	}
 
-	angles[0] = pitch;
-	angles[1] = yaw;
-	angles[2] = 0;
+	return {static_cast<float>(pitch), static_cast<float>(yaw), 0};
 }
 
 float anglemod(float a)

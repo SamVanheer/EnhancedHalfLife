@@ -221,7 +221,7 @@ void CRpgRocket :: FollowThink()
 		}
 	}
 
-	pev->angles = UTIL_VecToAngles( vecTarget );
+	pev->angles = VectorAngles( vecTarget );
 
 	// this acceleration and turning math is totally wrong, but it seems to respond well so don't change it.
 	float flSpeed = pev->velocity.Length();

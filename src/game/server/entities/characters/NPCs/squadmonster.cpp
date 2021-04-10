@@ -464,7 +464,7 @@ bool CSquadMonster :: NoFriendlyFire()
 
 	if ( m_hEnemy != nullptr )
 	{
-		UTIL_MakeVectors ( UTIL_VecToAngles( m_hEnemy->Center() - pev->origin ) );
+		UTIL_MakeVectors (VectorAngles( m_hEnemy->Center() - pev->origin ) );
 	}
 	else
 	{

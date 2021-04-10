@@ -1205,7 +1205,7 @@ void CFuncTrackTrain :: Next()
 	nextFront.z += m_height;
 
 	Vector delta = nextFront - pev->origin;
-	Vector angles = UTIL_VecToAngles( delta );
+	Vector angles = VectorAngles( delta );
 	// The train actually points west
 	angles.y += 180;
 
@@ -1401,7 +1401,7 @@ void CFuncTrackTrain :: Find()
 	m_ppath->LookAhead( &look, m_length, 0 );
 	look.z += m_height;
 
-	pev->angles = UTIL_VecToAngles( look - nextPos );
+	pev->angles = VectorAngles( look - nextPos );
 	// The train actually points west
 	pev->angles.y += 180;
 

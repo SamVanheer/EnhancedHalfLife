@@ -323,7 +323,7 @@ void CHornet :: TrackTarget ()
 			break;
 	}
 
-	pev->angles = UTIL_VecToAngles (pev->velocity);
+	pev->angles = VectorAngles(pev->velocity);
 
 	pev->solid = SOLID_BBOX;
 

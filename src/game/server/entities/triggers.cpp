@@ -2348,7 +2348,7 @@ void CTriggerCamera::FollowTarget( )
 		return;
 	}
 
-	Vector vecGoal = UTIL_VecToAngles( m_hTarget->pev->origin - pev->origin );
+	Vector vecGoal = VectorAngles( m_hTarget->pev->origin - pev->origin );
 	vecGoal.x = -vecGoal.x;
 
 	if (pev->angles.y > 360)

@@ -543,7 +543,7 @@ void CFuncTank::TrackTarget()
 // !!! I'm not sure what i changed
 		direction = m_sightOrigin - pev->origin;
 //		direction = m_sightOrigin - barrelEnd;
-		angles = UTIL_VecToAngles( direction );
+		angles = VectorAngles( direction );
 
 		// Calculate the additional rotation to point the end of the barrel at the target (not the gun's center) 
 		AdjustAnglesForBarrel( angles, direction.Length() );

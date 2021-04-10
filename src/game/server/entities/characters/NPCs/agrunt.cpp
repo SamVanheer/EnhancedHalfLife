@@ -430,7 +430,7 @@ void CAGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			if (HasConditions( bits_COND_SEE_ENEMY))
 			{
 				vecDirToEnemy = ( ( m_vecEnemyLKP ) - pev->origin );
-				angDir = UTIL_VecToAngles( vecDirToEnemy );
+				angDir = VectorAngles( vecDirToEnemy );
 				vecDirToEnemy = vecDirToEnemy.Normalize();
 			}
 			else
@@ -462,7 +462,7 @@ void CAGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 				WRITE_BYTE( 128 );			// brightness
 			MESSAGE_END();
 
-			CBaseEntity *pHornet = CBaseEntity::Create( "hornet", vecArmPos, UTIL_VecToAngles( vecDirToEnemy ), edict() );
+			CBaseEntity *pHornet = CBaseEntity::Create( "hornet", vecArmPos, VectorAngles( vecDirToEnemy ), edict() );
 			UTIL_MakeVectors ( pHornet->pev->angles );
 			pHornet->pev->velocity = gpGlobals->v_forward * 300;
 			
@@ -977,7 +977,7 @@ void CAGrunt :: StartTask ( Task_t *pTask )
 			fSkip = false;
 			vecCenter = Center();
 
-			UTIL_VecToAngles( m_vecEnemyLKP - pev->origin );
+			VectorAngles( m_vecEnemyLKP - pev->origin );
 
 			UTIL_TraceLine( Center() + gpGlobals->v_forward * 128, m_vecEnemyLKP, ignore_monsters, ENT(pev), &tr);
 			if ( tr.flFraction == 1.0 )

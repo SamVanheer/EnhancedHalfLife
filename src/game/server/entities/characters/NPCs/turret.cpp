@@ -497,7 +497,7 @@ void CBaseTurret::ActiveThink()
 	vecDirToEnemy = vecMidEnemy - vecMid;	// calculate dir and dist to enemy
 	float flDistToEnemy = vecDirToEnemy.Length();
 
-	Vector vec = UTIL_VecToAngles(vecMidEnemy - vecMid);	
+	Vector vec = VectorAngles(vecMidEnemy - vecMid);
 
 	// Current enmey is not visible.
 	if (!fEnemyVisible || (flDistToEnemy > TURRET_RANGE))

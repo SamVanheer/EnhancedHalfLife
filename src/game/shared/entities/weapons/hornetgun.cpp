@@ -223,7 +223,7 @@ void CHgun::SecondaryAttack()
 
 	pHornet = CBaseEntity::Create( "hornet", vecSrc, m_pPlayer->pev->v_angle, m_pPlayer->edict() );
 	pHornet->pev->velocity = gpGlobals->v_forward * 1200;
-	pHornet->pev->angles = UTIL_VecToAngles( pHornet->pev->velocity );
+	pHornet->pev->angles = VectorAngles( pHornet->pev->velocity );
 
 	pHornet->SetThink( &CHornet::StartDart );
 

@@ -470,7 +470,7 @@ bool CHudSpectator::GetDirectorCamera(Vector&position, Vector&angle)
 			}
 			
 			vt = vt - position;
-			VectorAngles(vt, angle);
+			angle = VectorAngles(vt);
 			angle[0] = -angle[0];
 			return true;
 		}

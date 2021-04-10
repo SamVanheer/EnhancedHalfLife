@@ -346,7 +346,7 @@ void CBarney :: BarneyFirePistol ()
 	vecShootOrigin = pev->origin + Vector( 0, 0, 55 );
 	Vector vecShootDir = ShootAtEnemy( vecShootOrigin );
 
-	Vector angDir = UTIL_VecToAngles( vecShootDir );
+	Vector angDir = VectorAngles( vecShootDir );
 	SetBlending( 0, angDir.x );
 	pev->effects = EF_MUZZLEFLASH;
 

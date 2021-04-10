@@ -821,7 +821,7 @@ void V_GetChaseOrigin( Vector& angles, Vector& origin, float distance, Vector& r
 	if ( ent2 )
 	{
 		newAngle = ent2->origin - ent1->origin;
-		VectorAngles( newAngle, newAngle );
+		newAngle = VectorAngles( newAngle );
 		newAngle[0] = -newAngle[0];
 	}
 	else
@@ -931,7 +931,7 @@ void V_GetDoubleTargetsCam(cl_entity_t	 * ent1, cl_entity_t * ent2, Vector& angl
 	// get new angle towards second target
 	Vector newAngle = ent2->origin - ent1->origin;
 
-	VectorAngles( newAngle, newAngle );
+	newAngle = VectorAngles( newAngle );
 	newAngle[0] = -newAngle[0];
 
 	// set angle diffrent in Dramtaic scenes
@@ -978,7 +978,7 @@ void V_GetDoubleTargetsCam(cl_entity_t	 * ent1, cl_entity_t * ent2, Vector& angl
 
 	// calculate angle to second target
 	Vector tempVec = ent2->origin - origin;
-	VectorAngles( tempVec, tempVec );
+	tempVec = VectorAngles( tempVec );
 	tempVec[0] = -tempVec[0];
 
 	/* take middle between two viewangles
