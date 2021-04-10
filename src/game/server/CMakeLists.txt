@@ -148,6 +148,8 @@ target_sources(hl PRIVATE
 	entities/weapons/weapons.cpp
 	gamerules/gamerules.cpp
 	gamerules/gamerules.h
+	gamerules/mapcycle.cpp
+	gamerules/mapcycle.hpp
 	gamerules/multiplay_gamerules.cpp
 	gamerules/singleplay_gamerules.cpp
 	gamerules/teamplay_gamerules.cpp
