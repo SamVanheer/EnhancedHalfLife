@@ -217,6 +217,11 @@ CBaseEntity	*UTIL_FindEntityGeneric(const char *szName, Vector &vecSrc, float fl
 */
 CBasePlayer* UTIL_PlayerByIndex( int playerIndex );
 
+/**
+*	@brief Find a player with a case-insensitive name search.
+*/
+CBasePlayer* FindPlayerByName(const char* pTestName);
+
 #define UTIL_EntitiesInPVS(pent)			(*g_engfuncs.pfnEntitiesInPVS)(pent)
 void			UTIL_MakeVectors		(const Vector &vecAngles);
 

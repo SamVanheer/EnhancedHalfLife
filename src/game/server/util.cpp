@@ -458,6 +458,27 @@ CBasePlayer* UTIL_PlayerByIndex( int playerIndex )
 	return nullptr;
 }
 
+CBasePlayer* FindPlayerByName(const char* pTestName)
+{
+	for (int i = 1; i <= gpGlobals->maxClients; i++)
+	{
+		edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex(i);
+		if (pEdict)
+		{
+			CBaseEntity* pEnt = CBaseEntity::Instance(pEdict);
+			if (pEnt && pEnt->IsPlayer())
+			{
+				const char* pNetName = STRING(pEnt->pev->netname);
+				if (stricmp(pNetName, pTestName) == 0)
+				{
+					return (CBasePlayer*)pEnt;
+				}
+			}
+		}
+	}
+
+	return nullptr;
+}
 
 void UTIL_MakeVectors( const Vector &vecAngles )
 {
