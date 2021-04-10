@@ -26,6 +26,7 @@
 class CBasePlayer;
 
 void DeactivateSatchels( CBasePlayer *pOwner );
+void W_Precache();
 
 // Contact Grenade / Timed grenade / Satchel Charge
 class CGrenade : public CBaseMonster

@@ -40,8 +40,6 @@ extern CSoundEnt *pSoundEnt;
 extern CBaseEntity				*g_pLastSpawn;
 extern DLL_GLOBAL	int			gDisplayTitle;
 
-void W_Precache();
-
 // moved CWorld class definition to cbase.h
 //=======================
 // CWorld
