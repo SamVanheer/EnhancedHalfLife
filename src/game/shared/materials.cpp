@@ -13,76 +13,46 @@
 *
 ****/
 
+#include <algorithm>
+#include <array>
 #include <cassert>
+#include <vector>
 
 #include "Platform.h"
 #include "filesystem_shared.hpp"
 #include "materials.hpp"
 #include "shared_utils.hpp"
 
-static bool fTextureTypeInit = false;
-
-int gcTextures = 0;
-char grgszTextureName[CTEXTURESMAX][CBTEXTURENAMEMAX];	// texture names
-char grgchTextureType[CTEXTURESMAX];						// parallel array of texture types
-
-void TEXTURETYPE_SwapTextures(int i, int j)
+struct Material
 {
-	char szTemp[CBTEXTURENAMEMAX];
+	std::array<char, CBTEXTURENAMEMAX> Name;
+	char Type = CHAR_TEX_CONCRETE;
+};
 
-	strcpy(szTemp, grgszTextureName[i]);
-	const char chTemp = grgchTextureType[i];
+static bool g_TextureTypeInit = false;
 
-	strcpy(grgszTextureName[i], grgszTextureName[j]);
-	grgchTextureType[i] = grgchTextureType[j];
-
-	strcpy(grgszTextureName[j], szTemp);
-	grgchTextureType[j] = chTemp;
-}
-
-void TEXTURETYPE_SortTextures()
-{
-	// Bubble sort, yuck, but this only occurs at startup and it's only 512 elements...
-	//
-	for (int i = 0; i < gcTextures; i++)
-	{
-		for (int j = i + 1; j < gcTextures; j++)
-		{
-			if (stricmp(grgszTextureName[i], grgszTextureName[j]) > 0)
-			{
-				// Swap
-				//
-				TEXTURETYPE_SwapTextures(i, j);
-			}
-		}
-	}
-}
+static std::vector<Material> g_Materials;
 
 void TEXTURETYPE_Init()
 {
-	char buffer[512];
-	int i, j;
-	int filePos = 0;
-
-	if (fTextureTypeInit)
+	if (g_TextureTypeInit)
 		return;
 
-	memset(&(grgszTextureName[0][0]), 0, CTEXTURESMAX * CBTEXTURENAMEMAX);
-	memset(grgchTextureType, 0, CTEXTURESMAX);
-
-	gcTextures = 0;
-	memset(buffer, 0, 512);
+	g_Materials.clear();
 
 	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer("sound/materials.txt");
 
 	byte* pMemFile = fileBuffer.get();
 	//TODO: really large files could cause problems here due to the narrowing conversion
 	const int fileSize = size;
+
 	if (!pMemFile)
 		return;
 
+	char buffer[512]{};
+
 	// for each line in the file...
-	while (memfgets(pMemFile, fileSize, filePos, buffer, 511) != nullptr && (gcTextures < CTEXTURESMAX))
+	for (int i, j, filePos = 0; memfgets(pMemFile, fileSize, filePos, buffer, 511) != nullptr;)
 	{
 		// skip whitespace
 		i = 0;
@@ -96,8 +66,10 @@ void TEXTURETYPE_Init()
 		if (buffer[i] == '/' || !isalpha(buffer[i]))
 			continue;
 
+		Material material;
+
 		// get texture type
-		grgchTextureType[gcTextures] = toupper(buffer[i++]);
+		material.Type = toupper(buffer[i++]);
 
 		// skip whitespace
 		while (buffer[i] && isspace(buffer[i]))
@@ -116,39 +88,34 @@ void TEXTURETYPE_Init()
 
 		// null-terminate name and save in sentences array
 		j = V_min(j, CBTEXTURENAMEMAX - 1 + i);
-		buffer[j] = 0;
-		strcpy(&(grgszTextureName[gcTextures++][0]), &(buffer[i]));
+		buffer[j] = '\0';
+		strncpy(material.Name.data(), &(buffer[i]), material.Name.size() - 1);
+		material.Name.back() = '\0';
+
+		g_Materials.push_back(std::move(material));
 	}
 
-	TEXTURETYPE_SortTextures();
+	std::sort(g_Materials.begin(), g_Materials.end(), [](const Material& lhs, const Material& rhs)
+		{
+			return stricmp(lhs.Name.data(), rhs.Name.data()) < 0;
+		}
+	);
 
-	fTextureTypeInit = true;
+	g_TextureTypeInit = true;
 }
 
 char TEXTURETYPE_Find(const char* name)
 {
-	assert(fTextureTypeInit);
+	assert(g_TextureTypeInit);
 
-	int left = 0;
-	int right = gcTextures - 1;
+	auto result = std::lower_bound(g_Materials.begin(), g_Materials.end(), name, [](const Material& material, const char* textureName)
+		{
+			return strnicmp(material.Name.data(), textureName, CBTEXTURENAMEMAX - 1) < 0;
+		});
 
-	while (left <= right)
+	if (result != g_Materials.end())
 	{
-		const int pivot = (left + right) / 2;
-
-		const int val = strnicmp(name, grgszTextureName[pivot], CBTEXTURENAMEMAX - 1);
-		if (val == 0)
-		{
-			return grgchTextureType[pivot];
-		}
-		else if (val > 0)
-		{
-			left = pivot + 1;
-		}
-		else if (val < 0)
-		{
-			right = pivot - 1;
-		}
+		return result->Type;
 	}
 
 	return CHAR_TEX_CONCRETE;

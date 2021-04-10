@@ -22,8 +22,7 @@
 *	Play footstep sound based on material type.
 */
 
-constexpr int CTEXTURESMAX = 512;			//!< max number of textures loaded
-constexpr int CBTEXTURENAMEMAX = 13;		//!< only load first n chars of name
+constexpr int CBTEXTURENAMEMAX = 16;
 
 // texture types
 constexpr char CHAR_TEX_CONCRETE = 'C';
