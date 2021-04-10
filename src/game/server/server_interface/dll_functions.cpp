@@ -89,6 +89,7 @@ DLL_FUNCTIONS gEntityInterface =
 NEW_DLL_FUNCTIONS gNewDLLFunctions =
 {
 	OnFreeEntPrivateData,		//pfnOnFreeEntPrivateData
+	GameDLLShutdown,
 };
 
 int DispatchSpawn(edict_t* pent)

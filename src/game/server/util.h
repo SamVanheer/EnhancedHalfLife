@@ -23,6 +23,7 @@
 #include "activity.h"
 #include "enginecallback.h"
 #include "materials.hpp"
+#include "filesystem_shared.hpp"
 
 inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, entvars_t *ent );  // implementation later in this file
 

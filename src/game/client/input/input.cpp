@@ -1022,5 +1022,6 @@ void DLLEXPORT HUD_Shutdown()
 	ClearEventList();
 #endif
 	
+	FileSystem_FreeFileSystem();
 	CL_UnloadParticleMan();
 }

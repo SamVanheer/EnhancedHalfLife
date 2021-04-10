@@ -4,6 +4,8 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/cdll_dll.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/materials.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/materials.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/filesystem_shared.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/filesystem_shared.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crossbow.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crowbar.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/egon.cpp

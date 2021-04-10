@@ -454,6 +454,12 @@ cvar_t	sk_player_leg3	= { "sk_player_leg3","1" };
 // This gets called one time when the game is initialied
 void GameDLLInit()
 {
+	if (!FileSystem_LoadFileSystem())
+	{
+		g_engfuncs.pfnServerPrint("Could not load filesystem library\n");
+		SERVER_COMMAND("quit\n");
+		return;
+	}
 	// Register cvars here:
 
 	g_psv_gravity = CVAR_GET_POINTER( "sv_gravity" );
@@ -889,3 +895,7 @@ void GameDLLInit()
 	SERVER_COMMAND( "exec skill.cfg\n" );
 }
 
+void GameDLLShutdown()
+{
+	FileSystem_FreeFileSystem();
+}
