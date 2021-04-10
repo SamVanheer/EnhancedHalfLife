@@ -444,24 +444,18 @@ CBaseEntity *UTIL_FindEntityGeneric( const char *szWhatever, Vector &vecSrc, flo
 	return pEntity;
 }
 
-
-// returns a CBaseEntity pointer to a player by index.  Only returns if the player is spawned and connected
-// otherwise returns nullptr
-// Index is 1 based
-CBaseEntity	*UTIL_PlayerByIndex( int playerIndex )
+CBasePlayer* UTIL_PlayerByIndex( int playerIndex )
 {
-	CBaseEntity *pPlayer = nullptr;
-
 	if ( playerIndex > 0 && playerIndex <= gpGlobals->maxClients )
 	{
 		edict_t *pPlayerEdict = INDEXENT( playerIndex );
 		if ( pPlayerEdict && !pPlayerEdict->free )
 		{
-			pPlayer = CBaseEntity::Instance( pPlayerEdict );
+			return static_cast<CBasePlayer*>(CBaseEntity::Instance( pPlayerEdict ));
 		}
 	}
 	
-	return pPlayer;
+	return nullptr;
 }
 
 
@@ -546,7 +540,7 @@ void UTIL_ScreenShake( const Vector &center, float amplitude, float frequency, f
 
 	for ( i = 1; i <= gpGlobals->maxClients; i++ )
 	{
-		CBaseEntity *pPlayer = UTIL_PlayerByIndex( i );
+		CBasePlayer*pPlayer = UTIL_PlayerByIndex( i );
 
 		if ( !pPlayer || !(pPlayer->pev->flags & FL_ONGROUND) )	// Don't shake if not onground
 			continue;
@@ -628,7 +622,7 @@ void UTIL_ScreenFadeAll( const Vector &color, float fadeTime, float fadeHold, in
 
 	for ( i = 1; i <= gpGlobals->maxClients; i++ )
 	{
-		CBaseEntity *pPlayer = UTIL_PlayerByIndex( i );
+		CBasePlayer*pPlayer = UTIL_PlayerByIndex( i );
 	
 		UTIL_ScreenFadeWrite( fade, pPlayer );
 	}
@@ -694,7 +688,7 @@ void UTIL_HudMessageAll( const hudtextparms_t &textparms, const char *pMessage )
 
 	for ( i = 1; i <= gpGlobals->maxClients; i++ )
 	{
-		CBaseEntity *pPlayer = UTIL_PlayerByIndex( i );
+		CBasePlayer*pPlayer = UTIL_PlayerByIndex( i );
 		if ( pPlayer )
 			UTIL_HudMessage( pPlayer, textparms, pMessage );
 	}
@@ -803,7 +797,7 @@ void UTIL_ShowMessageAll( const char *pString )
 
 	for ( i = 1; i <= gpGlobals->maxClients; i++ )
 	{
-		CBaseEntity *pPlayer = UTIL_PlayerByIndex( i );
+		CBasePlayer*pPlayer = UTIL_PlayerByIndex( i );
 		if ( pPlayer )
 			UTIL_ShowMessage( pString, pPlayer );
 	}
@@ -1402,7 +1396,7 @@ int UTIL_CountPlayers()
 
 	for (int i = 1; i <= gpGlobals->maxClients; i++)
 	{
-		CBaseEntity* pEnt = UTIL_PlayerByIndex(i);
+		CBasePlayer* pEnt = UTIL_PlayerByIndex(i);
 
 		if (pEnt)
 		{

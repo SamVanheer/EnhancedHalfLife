@@ -1616,7 +1616,7 @@ void CBasePlayer::AddPointsToTeam( int score, bool bAllowNegativeScore )
 
 	for ( int i = 1; i <= gpGlobals->maxClients; i++ )
 	{
-		CBaseEntity *pPlayer = UTIL_PlayerByIndex( i );
+		CBasePlayer *pPlayer = UTIL_PlayerByIndex( i );
 
 		if ( pPlayer && i != index )
 		{

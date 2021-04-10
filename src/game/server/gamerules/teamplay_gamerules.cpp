@@ -239,7 +239,7 @@ void CHalfLifeTeamplay::InitHUD( CBasePlayer *pPlayer )
 	// loop through all active players and send their team info to the new client
 	for ( i = 1; i <= gpGlobals->maxClients; i++ )
 	{
-		CBaseEntity *plr = UTIL_PlayerByIndex( i );
+		CBasePlayer*plr = UTIL_PlayerByIndex( i );
 		if ( plr && IsValidTeam( plr->TeamID() ) )
 		{
 			MESSAGE_BEGIN( MSG_ONE, gmsgTeamInfo, nullptr, pPlayer->edict() );
@@ -520,7 +520,7 @@ const char *CHalfLifeTeamplay::TeamWithFewestPlayers()
 	// loop through all clients, count number of players on each team
 	for ( i = 1; i <= gpGlobals->maxClients; i++ )
 	{
-		CBaseEntity *plr = UTIL_PlayerByIndex( i );
+		CBasePlayer*plr = UTIL_PlayerByIndex( i );
 
 		if ( plr )
 		{
@@ -581,7 +581,7 @@ void CHalfLifeTeamplay::RecountTeams( bool bResendInfo )
 	// loop through all clients
 	for ( int i = 1; i <= gpGlobals->maxClients; i++ )
 	{
-		CBaseEntity *plr = UTIL_PlayerByIndex( i );
+		CBasePlayer*plr = UTIL_PlayerByIndex( i );
 
 		if ( plr )
 		{

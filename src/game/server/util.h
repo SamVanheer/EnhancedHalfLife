@@ -25,6 +25,10 @@
 #include "materials.hpp"
 #include "filesystem_shared.hpp"
 
+class CBaseEntity;
+class CBasePlayer;
+class CBasePlayerItem;
+
 inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, entvars_t *ent );  // implementation later in this file
 
 extern globalvars_t				*gpGlobals;
@@ -196,8 +200,6 @@ inline bool FClassnameIs(edict_t* pent, const char* szClassname)
 inline bool FClassnameIs(entvars_t* pev, const char* szClassname)
 	{ return FStrEq(STRING(pev->classname), szClassname); }
 
-class CBaseEntity;
-
 // Misc. Prototypes
 void			UTIL_SetSize			(entvars_t* pev, const Vector &vecMin, const Vector &vecMax);
 
@@ -207,10 +209,13 @@ CBaseEntity	*UTIL_FindEntityByClassname(CBaseEntity *pStartEntity, const char *s
 CBaseEntity	*UTIL_FindEntityByTargetname(CBaseEntity *pStartEntity, const char *szName );
 CBaseEntity	*UTIL_FindEntityGeneric(const char *szName, Vector &vecSrc, float flRadius );
 
-// returns a CBaseEntity pointer to a player by index.  Only returns if the player is spawned and connected
-// otherwise returns nullptr
-// Index is 1 based
-CBaseEntity	*UTIL_PlayerByIndex( int playerIndex );
+/**
+*	@brief Returns a CBasePlayer pointer to a player by index
+*
+*	Only returns if the player is spawned and connected, otherwise returns nullptr
+*	Index is 1 based
+*/
+CBasePlayer* UTIL_PlayerByIndex( int playerIndex );
 
 #define UTIL_EntitiesInPVS(pent)			(*g_engfuncs.pfnEntitiesInPVS)(pent)
 void			UTIL_MakeVectors		(const Vector &vecAngles);
@@ -279,8 +284,6 @@ inline void			UTIL_CenterPrintAll( const char *msg_name,
 	UTIL_ClientPrintAll( HUD_PRINTCENTER, msg_name, param1, param2, param3, param4 );
 }
 
-class CBasePlayerItem;
-class CBasePlayer;
 bool UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon );
 
 // prints messages through the HUD
