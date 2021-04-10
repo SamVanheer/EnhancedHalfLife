@@ -36,8 +36,6 @@
 #include "corpse.hpp"
 #include "spawnpoints.hpp"
 
-extern CSoundEnt *pSoundEnt;
-
 extern DLL_GLOBAL	int			gDisplayTitle;
 
 // moved CWorld class definition to cbase.h

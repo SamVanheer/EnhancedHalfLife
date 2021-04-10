@@ -31,7 +31,6 @@
 #include	"skill.h"
 
 // Globals used by game logic
-int gmsgWeapPickup = 0;
 enginefuncs_t g_engfuncs;
 globalvars_t  *gpGlobals;
 

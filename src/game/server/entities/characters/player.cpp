@@ -47,7 +47,6 @@
 
 extern DLL_GLOBAL uint32	g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;
-extern DLL_GLOBAL	bool	g_fDrawLines;
 int gEvilImpulse101;
 extern DLL_GLOBAL int		gDisplayTitle;
 

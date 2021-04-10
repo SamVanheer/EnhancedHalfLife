@@ -41,8 +41,6 @@ constexpr int AMMO_RESPAWN_TIME = 20;
 
 float g_flIntermissionStartTime = 0;
 
-CVoiceGameMgr	g_VoiceGameMgr;
-
 class CMultiplayGameMgrHelper : public IVoiceGameMgrHelper
 {
 public:
@@ -170,10 +168,6 @@ void CHalfLifeMultiplay::RefreshSkillData()
 
 // longest the intermission can last, in seconds
 constexpr int MAX_INTERMISSION_TIME = 120;
-
-extern cvar_t timeleft, fragsleft;
-
-extern cvar_t mp_chattime;
 
 //=========================================================
 //=========================================================

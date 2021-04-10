@@ -44,7 +44,6 @@ TeamFortressViewport *gViewPort = nullptr;
 
 #include "particleman.h"
 CSysModule *g_hParticleManModule = nullptr;
-IParticleMan *g_pParticleMan = nullptr;
 
 void CL_LoadParticleMan();
 void CL_UnloadParticleMan();

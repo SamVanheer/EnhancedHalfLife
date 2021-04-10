@@ -33,8 +33,6 @@ constexpr int NODE_HEIGHT = 8;	// how high to lift nodes off the ground after we
 constexpr int MAX_NODE_INITIAL_LINKS = 128;
 constexpr int MAX_NODES = 1024;
 
-CGraph	WorldGraph;
-
 LINK_ENTITY_TO_CLASS( info_node, CNodeEnt );
 LINK_ENTITY_TO_CLASS( info_node_air, CNodeEnt );
 

@@ -22,6 +22,7 @@
 #include	"teamplay_gamerules.h"
 #include	"game.h"
 #include "UserMessages.h"
+#include "voice_gamemgr.h"
 
 static char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
 static int team_scores[MAX_TEAMS];
@@ -64,11 +65,6 @@ CHalfLifeTeamplay :: CHalfLifeTeamplay()
 
 	RecountTeams();
 }
-
-extern cvar_t timeleft, fragsleft;
-
-#include "voice_gamemgr.h"
-extern CVoiceGameMgr	g_VoiceGameMgr;
 
 void CHalfLifeTeamplay :: Think ()
 {

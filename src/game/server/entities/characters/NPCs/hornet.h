@@ -24,8 +24,6 @@ constexpr float HORNET_RED_SPEED = 600;
 constexpr float HORNET_ORANGE_SPEED = 800;
 constexpr float HORNET_BUZZ_VOLUME = 0.8;
 
-extern int iHornetPuff;
-
 //=========================================================
 // Hornet - this is the projectile that the Alien Grunt fires.
 //=========================================================

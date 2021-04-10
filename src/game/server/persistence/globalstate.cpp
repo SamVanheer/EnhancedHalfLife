@@ -18,19 +18,6 @@
 #include "cbase.h"
 #include "player.h"
 
-CGlobalState gGlobalState;
-
-CGlobalState::CGlobalState()
-{
-	Reset();
-}
-
-void CGlobalState::Reset()
-{
-	m_pList = nullptr;
-	m_listCount = 0;
-}
-
 globalentity_t* CGlobalState::Find(string_t globalname)
 {
 	if (!globalname)

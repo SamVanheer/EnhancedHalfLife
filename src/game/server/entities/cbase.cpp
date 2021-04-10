@@ -139,7 +139,7 @@ bool CBaseEntity::Restore( CRestore &restore )
 	if ( status )
 		status = restore.ReadFields( "BASE", this, m_SaveData, ARRAYSIZE(m_SaveData) );
 
-    if ( pev->modelindex != 0 && !FStringNull(pev->model) )
+	if ( pev->modelindex != 0 && !FStringNull(pev->model) )
 	{
 		Vector mins, maxs;
 		mins = pev->mins;	// Set model is about to destroy these

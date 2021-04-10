@@ -28,8 +28,17 @@ struct globalentity_t
 class CGlobalState
 {
 public:
-	CGlobalState();
-	void			Reset();
+	CGlobalState()
+	{
+		Reset();
+	}
+
+	void Reset()
+	{
+		m_pList = nullptr;
+		m_listCount = 0;
+	}
+
 	void			ClearStates();
 	void			EntityAdd(string_t globalname, string_t mapName, GLOBALESTATE state);
 	void			EntitySetState(string_t globalname, GLOBALESTATE state);
@@ -47,8 +56,8 @@ public:
 
 private:
 	globalentity_t* Find(string_t globalname);
-	globalentity_t* m_pList;
-	int				m_listCount;
+	globalentity_t* m_pList = nullptr;
+	int				m_listCount = 0;
 };
 
-extern CGlobalState gGlobalState;
+inline CGlobalState gGlobalState;

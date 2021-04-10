@@ -376,4 +376,4 @@ enum
 	HINT_STUKA_LANDING,
 };
 
-extern CGraph WorldGraph;
+inline CGraph WorldGraph;

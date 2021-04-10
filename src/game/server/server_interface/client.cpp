@@ -35,14 +35,14 @@
 #include "UserMessages.h"
 #include "string_utils.hpp"
 #include "corpse.hpp"
+#include "voice_gamemgr.h"
+#include "entity_state.h"
 
 extern DLL_GLOBAL uint32	g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;
 extern DLL_GLOBAL uint32	g_ulFrameCount;
 
 extern int giPrecacheGrunt;
-
-extern cvar_t allow_spectators;
 
 extern int g_teamplay;
 
@@ -207,9 +207,6 @@ void ClientPutInServer( edict_t *pEntity )
 	pPlayer->pev->iuser1 = 0;	// disable any spec modes
 	pPlayer->pev->iuser2 = 0; 
 }
-
-#include "voice_gamemgr.h"
-extern CVoiceGameMgr g_VoiceGameMgr;
 
 //// HOST_SAY
 // String comes in as
@@ -952,8 +949,6 @@ void SetupVisibility( edict_t *pViewEntity, edict_t *pClient, unsigned char **pv
 	*pvs = ENGINE_SET_PVS ( (float *)&org );
 	*pas = ENGINE_SET_PAS ( (float *)&org );
 }
-
-#include "entity_state.h"
 
 /*
 AddToFullPack

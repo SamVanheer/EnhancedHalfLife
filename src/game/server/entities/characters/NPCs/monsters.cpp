@@ -35,10 +35,6 @@
 
 constexpr int MONSTER_CUT_CORNER_DIST = 8; // 8 means the monster's bounding box is contained without the box of the node in WC
 
-extern DLL_GLOBAL	bool	g_fDrawLines;
-
-
-
 // Global Savedata for monster
 // UNDONE: Save schedule data?  Can this be done?  We may
 // lose our enemy pointer or other data (goal ent, target, etc)

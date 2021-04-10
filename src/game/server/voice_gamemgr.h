@@ -71,3 +71,5 @@ private:
 	int					m_nMaxPlayers;
 	double				m_UpdateInterval;						// How long since the last update.
 };
+
+inline CVoiceGameMgr g_VoiceGameMgr;
