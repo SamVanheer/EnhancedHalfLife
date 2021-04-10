@@ -23,8 +23,7 @@
 #include	"skill.h"
 #include	"game.h"
 #include "UserMessages.h"
-
-edict_t *EntSelectSpawnPoint( CBaseEntity *pPlayer );
+#include "spawnpoints.hpp"
 
 DLL_GLOBAL CGameRules*	g_pGameRules = nullptr;
 extern DLL_GLOBAL bool	g_fGameOver;

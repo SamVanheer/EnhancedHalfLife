@@ -34,10 +34,10 @@
 #include "teamplay_gamerules.h"
 #include "dll_functions.hpp"
 #include "corpse.hpp"
+#include "spawnpoints.hpp"
 
 extern CSoundEnt *pSoundEnt;
 
-extern CBaseEntity				*g_pLastSpawn;
 extern DLL_GLOBAL	int			gDisplayTitle;
 
 // moved CWorld class definition to cbase.h

@@ -146,6 +146,8 @@ target_sources(hl PRIVATE
 	entities/point/sound.cpp
 	entities/point/soundent.cpp
 	entities/point/soundent.h
+	entities/point/spawnpoints.cpp
+	entities/point/spawnpoints.hpp
 	entities/point/xen.cpp
 	entities/weapons/weapons.cpp
 	gamerules/gamerules.cpp
