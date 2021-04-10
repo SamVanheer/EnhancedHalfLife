@@ -94,8 +94,8 @@ bool CHudHealth::VidInit()
 bool CHudHealth:: MsgFunc_Health(const char *pszName,  int iSize, void *pbuf )
 {
 	// TODO: update local health data
-	BEGIN_READ( pbuf, iSize );
-	int x = READ_SHORT();
+	BufferReader reader{pbuf, iSize};
+	int x = reader.ReadShort();
 
 	m_iFlags |= HUD_ACTIVE;
 
@@ -112,16 +112,16 @@ bool CHudHealth:: MsgFunc_Health(const char *pszName,  int iSize, void *pbuf )
 
 bool CHudHealth:: MsgFunc_Damage(const char *pszName,  int iSize, void *pbuf )
 {
-	BEGIN_READ( pbuf, iSize );
+	BufferReader reader{pbuf, iSize};
 
-	int armor = READ_BYTE();	// armor
-	int damageTaken = READ_BYTE();	// health
-	long bitsDamage = READ_LONG(); // damage bits
+	int armor = reader.ReadByte();	// armor
+	int damageTaken = reader.ReadByte();	// health
+	long bitsDamage = reader.ReadLong(); // damage bits
 
 	Vector vecFrom;
 
 	for ( int i = 0 ; i < 3 ; i++)
-		vecFrom[i] = READ_COORD();
+		vecFrom[i] = reader.ReadCoord();
 
 	UpdateTiles(gHUD.m_flTime, bitsDamage);
 

@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1999, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -19,238 +19,306 @@
 
 #pragma once
 
-inline byte* gpBuf;
-inline int giSize;
-inline int giRead;
-inline int giBadRead;
+#include "Platform.h"
 
-//--------------------------------------------------------------------------------------------------------------
-inline void BEGIN_READ( void *buf, int size )
+class Buffer
 {
-	giRead = 0;
-	giBadRead = 0;
-	giSize = size;
-	gpBuf = (byte*)buf;
-}
+public:
+	constexpr Buffer() = default;
+	constexpr Buffer(const Buffer&) = default;
+	constexpr Buffer& operator=(const Buffer&) = default;
 
-inline int READ_CHAR()
-{
-	int     c;
+	Buffer(Buffer&&) = delete;
+	Buffer& operator=(Buffer&&) = delete;
 
-	if (giRead + 1 > giSize)
+	constexpr Buffer(byte* buffer, std::size_t size, std::size_t offset = 0)
+		: _buffer(buffer)
+		, _size(size)
+		, _startOffset(offset)
+		, _offset(offset)
 	{
-		giBadRead = true;
-		return -1;
 	}
 
-	c = (signed char)gpBuf[giRead];
-	giRead++;
-
-	return c;
-}
-
-inline int READ_BYTE()
-{
-	int     c;
-
-	if (giRead + 1 > giSize)
+	Buffer(void* buffer, int size)
+		: _buffer(reinterpret_cast<byte*>(buffer))
+		, _size(static_cast<int>(size))
 	{
-		giBadRead = true;
-		return -1;
 	}
 
-	c = (unsigned char)gpBuf[giRead];
-	giRead++;
+	constexpr bool HasOverflowed() const { return nullptr == _buffer || _badRead; }
 
-	return c;
-}
-
-inline int READ_SHORT()
-{
-	int     c;
-
-	if (giRead + 2 > giSize)
+	void SetHasOverflowed(bool state)
 	{
-		giBadRead = true;
-		return -1;
+		_badRead = state;
 	}
 
-	c = (short)(gpBuf[giRead] + (gpBuf[giRead + 1] << 8));
-
-	giRead += 2;
-
-	return c;
-}
-
-inline int READ_WORD()
-{
-	return READ_SHORT();
-}
-
-inline int READ_LONG()
-{
-	int     c;
-
-	if (giRead + 4 > giSize)
+	constexpr bool WillOverflowOnBytes(std::size_t byteCount) const
 	{
-		giBadRead = true;
-		return -1;
+		return HasOverflowed() || (_offset + byteCount > _size);
 	}
 
-	c = gpBuf[giRead] + (gpBuf[giRead + 1] << 8) + (gpBuf[giRead + 2] << 16) + (gpBuf[giRead + 3] << 24);
+	constexpr const byte* GetData() const { return _buffer; }
 
-	giRead += 4;
+	constexpr byte* GetData() { return _buffer; }
 
-	return c;
-}
+	constexpr const byte* GetCurrentData() const { return _buffer + _offset; }
 
-inline float READ_FLOAT()
-{
-	union
+	constexpr byte* GetCurrentData() { return _buffer + _offset; }
+
+	constexpr std::size_t GetTotalSize() const { return _size; }
+
+	constexpr std::size_t GetStartOffset() const { return _startOffset; }
+
+	constexpr std::size_t GetCurrentOffset() const { return _offset; }
+
+	constexpr void Advance(std::size_t byteCount)
 	{
-		byte    b[4];
-		float   f;
-		int     l;
-	} dat;
+		_offset += byteCount;
+	}
 
-	dat.b[0] = gpBuf[giRead];
-	dat.b[1] = gpBuf[giRead + 1];
-	dat.b[2] = gpBuf[giRead + 2];
-	dat.b[3] = gpBuf[giRead + 3];
-	giRead += 4;
+private:
+	byte* _buffer = nullptr;
+	std::size_t _size = 0;
+	std::size_t _startOffset = 0;
+	std::size_t _offset = 0;
+	bool _badRead = false;
+};
 
-	//	dat.l = LittleLong (dat.l);
-
-	return dat.f;
-}
-
-inline char* READ_STRING()
+class BufferReader
 {
-	static char     string[2048];
-	int             l, c;
+public:
+	constexpr BufferReader() = default;
+	constexpr BufferReader(const BufferReader&) = default;
+	constexpr BufferReader& operator=(const BufferReader&) = default;
 
-	string[0] = 0;
+	BufferReader(BufferReader&&) = delete;
+	BufferReader& operator=(BufferReader&&) = delete;
 
-	l = 0;
-	do
+	constexpr BufferReader(byte* buffer, std::size_t size, std::size_t offset = 0)
+		: _buffer(buffer, size, offset)
 	{
-		if (giRead + 1 > giSize)
-			break; // no more characters
+	}
 
-		c = READ_CHAR();
-		if (c == -1 || c == 0)
-			break;
-		string[l] = c;
-		l++;
-	} while (l < sizeof(string) - 1);
+	BufferReader(void* buffer, int size)
+		: _buffer(buffer, size)
+	{
+	}
 
-	string[l] = 0;
+	constexpr bool HasOverflowed() const { return _buffer.HasOverflowed(); }
 
-	return string;
-}
+	constexpr std::size_t GetTotalSize() const { return _buffer.GetTotalSize(); }
 
-inline float READ_COORD()
-{
-	return (float)(READ_SHORT() * (1.0 / 8));
-}
+	constexpr std::size_t GetBytesRead() const { return _buffer.GetCurrentOffset() - _buffer.GetStartOffset(); }
 
-inline float READ_ANGLE()
-{
-	return (float)(READ_CHAR() * (360.0 / 256));
-}
+	constexpr int ReadChar()
+	{
+		return ReadValue<signed char>();
+	}
 
-inline float READ_HIRESANGLE()
-{
-	return (float)(READ_SHORT() * (360.0 / 65536));
-}
+	constexpr int ReadByte()
+	{
+		return ReadValue<byte>();
+	}
 
-inline int READ_OK()
-{
-	return !giBadRead;
-}
+	constexpr int ReadShort()
+	{
+		return ReadValue<short>();
+	}
 
-//--------------------------------------------------------------------------------------------------------------
+	constexpr int ReadWord()
+	{
+		return ReadShort();
+	}
+
+	constexpr int ReadLong()
+	{
+		return ReadValue<int>();
+	}
+
+	constexpr float ReadFloat()
+	{
+		union U
+		{
+			byte    b[4];
+			float   f;
+			int     l;
+		};
+
+		U u{};
+
+		u.l = ReadLong();
+
+		return u.f;
+	}
+
+	const char* ReadString()
+	{
+		static char string[2048]{};
+
+		std::size_t l = 0;
+		do
+		{
+			if (_buffer.WillOverflowOnBytes(1))
+				break; // no more characters
+
+			const int c = ReadChar();
+			if (c == -1 || c == '\0')
+				break;
+			string[l] = c;
+			++l;
+		}
+		while (l < sizeof(string) - 1);
+
+		string[l] = '\0';
+
+		return string;
+	}
+
+	constexpr float ReadCoord()
+	{
+		return (float)(ReadShort() * (1.0 / 8));
+	}
+
+	constexpr float ReadAngle()
+	{
+		return (float)(ReadChar() * (360.0 / 256));
+	}
+
+	constexpr float ReadHiresAngle()
+	{
+		return (float)(ReadShort() * (360.0 / 65536));
+	}
+
+private:
+	template<std::size_t Size, std::size_t Offset>
+	struct ReadValueByte
+	{
+		static constexpr void Read(Buffer& buffer, byte* destination)
+		{
+			destination[Offset] = buffer.GetCurrentData()[Offset];
+			ReadValueByte<Size, Offset - 1>::Read(buffer, destination);
+		}
+	};
+
+	template<std::size_t Size>
+	struct ReadValueByte<Size, 0>
+	{
+		static constexpr void Read(Buffer& buffer, byte* destination)
+		{
+			destination[0] = buffer.GetCurrentData()[0];
+		}
+	};
+
+	template<typename T>
+	constexpr T ReadValue()
+	{
+		if (_buffer.WillOverflowOnBytes(sizeof(T)))
+		{
+			_buffer.SetHasOverflowed(true);
+			return -1;
+		}
+
+		T value{};
+		ReadValueByte<sizeof(T), sizeof(T) - 1>::Read(_buffer, reinterpret_cast<byte*>(&value));
+
+		_buffer.Advance(sizeof(T));
+
+		return value;
+	}
+
+private:
+	Buffer _buffer;
+};
+
 class BufferWriter
 {
 public:
-	BufferWriter()
+	BufferWriter() = default;
+
+	constexpr BufferWriter(const BufferWriter&) = default;
+	constexpr BufferWriter& operator=(const BufferWriter&) = default;
+
+	BufferWriter(BufferWriter&&) = delete;
+	BufferWriter& operator=(BufferWriter&&) = delete;
+
+	constexpr BufferWriter(byte* buffer, std::size_t size, std::size_t offset = 0)
+		: _buffer(buffer, size, offset)
 	{
-		Init(nullptr, 0);
-	}
-	BufferWriter(unsigned char* buffer, int bufferLen)
-	{
-		Init(buffer, bufferLen);
-	}
-	void Init( unsigned char *buffer, int bufferLen )
-	{
-		m_overflow = false;
-		m_buffer = buffer;
-		m_remaining = bufferLen;
-		m_overallLength = bufferLen;
 	}
 
-	void WriteByte( unsigned char data )
+	BufferWriter(void* buffer, int size)
+		: _buffer(buffer, size)
 	{
-		if (!m_buffer || !m_remaining)
-		{
-			m_overflow = true;
-			return;
-		}
-
-		*m_buffer = data;
-		++m_buffer;
-		--m_remaining;
 	}
-	void WriteLong( int data )
-	{
-		if (!m_buffer || m_remaining < 4)
-		{
-			m_overflow = true;
-			return;
-		}
 
-		m_buffer[0] = data & 0xff;
-		m_buffer[1] = (data >> 8) & 0xff;
-		m_buffer[2] = (data >> 16) & 0xff;
-		m_buffer[3] = data >> 24;
-		m_buffer += 4;
-		m_remaining -= 4;
+	constexpr bool HasOverflowed() const { return _buffer.HasOverflowed(); }
+
+	constexpr std::size_t GetTotalSize() const { return _buffer.GetTotalSize(); }
+
+	constexpr std::size_t GetBytesWritten() const { return  _buffer.GetCurrentOffset() - _buffer.GetStartOffset(); }
+
+	constexpr void WriteByte(unsigned char data)
+	{
+		WriteValue(data);
 	}
-	void WriteString( const char *str )
-	{
-		if (!m_buffer || !m_remaining)
-		{
-			m_overflow = true;
-			return;
-		}
 
+	constexpr void WriteLong(int data)
+	{
+		WriteValue(data);
+	}
+
+	void WriteString(const char* str)
+	{
 		if (!str)
 			str = "";
 
-		int len = strlen(str) + 1;
-		if (len > m_remaining)
+		const std::size_t len = strlen(str) + 1;
+
+		if (_buffer.WillOverflowOnBytes(len))
 		{
-			m_overflow = true;
-			str = "";
-			len = 1;
+			_buffer.SetHasOverflowed(true);
+			return;
 		}
 
-		strcpy((char*)m_buffer, str);
-		m_remaining -= len;
-		m_buffer += len;
+		strncpy(reinterpret_cast<char*>(_buffer.GetCurrentData()), str, len);
+
+		_buffer.Advance(len);
 	}
 
-	bool HasOverflowed();
-	int GetSpaceUsed()
+private:
+	template<std::size_t Size, std::size_t Offset>
+	struct WriteValueByte
 	{
-		return m_overallLength - m_remaining;
+		static constexpr void Write(Buffer& buffer, const byte* source)
+		{
+			buffer.GetCurrentData()[Offset] = source[Offset];
+			WriteValueByte<Size, Offset - 1>::Write(buffer, source);
+		}
+	};
+
+	template<std::size_t Size>
+	struct WriteValueByte<Size, 0>
+	{
+		static constexpr void Write(Buffer& buffer, const byte* source)
+		{
+			buffer.GetCurrentData()[0] = source[0];
+		}
+	};
+
+	template<typename T>
+	constexpr void WriteValue(const T& value)
+	{
+		if (_buffer.WillOverflowOnBytes(sizeof(T)))
+		{
+			_buffer.SetHasOverflowed(true);
+			return;
+		}
+
+		WriteValueByte<sizeof(T), sizeof(T) - 1>::Write(_buffer, reinterpret_cast<const byte*>(&value));
+
+		_buffer.Advance(sizeof(T));
 	}
 
-protected:
-	unsigned char *m_buffer;
-	int m_remaining;
-	bool m_overflow;
-	int m_overallLength;
+private:
+	Buffer _buffer;
 };
-
-//--------------------------------------------------------------------------------------------------------------

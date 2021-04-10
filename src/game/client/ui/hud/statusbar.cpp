@@ -221,14 +221,14 @@ bool CHudStatusBar :: Draw( float fTime )
 // %iX, where X is an integer, will substitute a number here, getting the number from StatusValue[X]
 bool CHudStatusBar :: MsgFunc_StatusText( const char *pszName, int iSize, void *pbuf )
 {
-	BEGIN_READ( pbuf, iSize );
+	BufferReader reader{pbuf, iSize};
 
-	int line = READ_BYTE();
+	int line = reader.ReadByte();
 
 	if ( line < 0 || line > MAX_STATUSBAR_LINES )
 		return true;
 
-	strncpy( m_szStatusText[line], READ_STRING(), MAX_STATUSTEXT_LENGTH );
+	strncpy( m_szStatusText[line], reader.ReadString(), MAX_STATUSTEXT_LENGTH );
 	m_szStatusText[line][MAX_STATUSTEXT_LENGTH-1] = 0;  // ensure it's null terminated ( strncpy() won't null terminate if read string too long)
 
 	m_iFlags |= HUD_ACTIVE;
@@ -243,13 +243,13 @@ bool CHudStatusBar :: MsgFunc_StatusText( const char *pszName, int iSize, void *
 //		short: value to store
 bool CHudStatusBar :: MsgFunc_StatusValue( const char *pszName, int iSize, void *pbuf )
 {
-	BEGIN_READ( pbuf, iSize );
+	BufferReader reader{pbuf, iSize};
 
-	int index = READ_BYTE();
+	int index = reader.ReadByte();
 	if ( index < 1 || index > MAX_STATUSBAR_VALUES )
 		return true; // index out of range
 
-	m_iStatusValues[index] = READ_SHORT();
+	m_iStatusValues[index] = reader.ReadShort();
 
 	m_bReparseString = true;
 	

@@ -485,10 +485,10 @@ void WeaponsResource :: SelectSlot( int iSlot, int fAdvance, int iDirection )
 // 
 bool CHudAmmo::MsgFunc_AmmoX(const char *pszName, int iSize, void *pbuf)
 {
-	BEGIN_READ( pbuf, iSize );
+	BufferReader reader{pbuf, iSize};
 
-	int iIndex = READ_BYTE();
-	int iCount = READ_BYTE();
+	int iIndex = reader.ReadByte();
+	int iCount = reader.ReadByte();
 
 	gWR.SetAmmo( iIndex, abs(iCount) );
 
@@ -497,9 +497,9 @@ bool CHudAmmo::MsgFunc_AmmoX(const char *pszName, int iSize, void *pbuf)
 
 bool CHudAmmo::MsgFunc_AmmoPickup( const char *pszName, int iSize, void *pbuf )
 {
-	BEGIN_READ( pbuf, iSize );
-	int iIndex = READ_BYTE();
-	int iCount = READ_BYTE();
+	BufferReader reader{pbuf, iSize};
+	int iIndex = reader.ReadByte();
+	int iCount = reader.ReadByte();
 
 	// Add ammo to the history
 	gHR.AddToHistory( HISTSLOT_AMMO, iIndex, abs(iCount) );
@@ -509,8 +509,8 @@ bool CHudAmmo::MsgFunc_AmmoPickup( const char *pszName, int iSize, void *pbuf )
 
 bool CHudAmmo::MsgFunc_WeapPickup( const char *pszName, int iSize, void *pbuf )
 {
-	BEGIN_READ( pbuf, iSize );
-	int iIndex = READ_BYTE();
+	BufferReader reader{pbuf, iSize};
+	int iIndex = reader.ReadByte();
 
 	// Add the weapon to the history
 	gHR.AddToHistory( HISTSLOT_WEAP, iIndex );
@@ -520,8 +520,8 @@ bool CHudAmmo::MsgFunc_WeapPickup( const char *pszName, int iSize, void *pbuf )
 
 bool CHudAmmo::MsgFunc_ItemPickup( const char *pszName, int iSize, void *pbuf )
 {
-	BEGIN_READ( pbuf, iSize );
-	const char *szName = READ_STRING();
+	BufferReader reader{pbuf, iSize};
+	const char *szName = reader.ReadString();
 
 	// Add the weapon to the history
 	gHR.AddToHistory( HISTSLOT_ITEM, szName );
@@ -532,9 +532,9 @@ bool CHudAmmo::MsgFunc_ItemPickup( const char *pszName, int iSize, void *pbuf )
 
 bool CHudAmmo::MsgFunc_HideWeapon( const char *pszName, int iSize, void *pbuf )
 {
-	BEGIN_READ( pbuf, iSize );
+	BufferReader reader{pbuf, iSize};
 	
-	gHUD.m_iHideHUDDisplay = READ_BYTE();
+	gHUD.m_iHideHUDDisplay = reader.ReadByte();
 
 	if (gEngfuncs.IsSpectateOnly())
 		return true;
@@ -564,11 +564,11 @@ bool CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
 	static wrect_t nullrc;
 	bool fOnTarget = false;
 
-	BEGIN_READ( pbuf, iSize );
+	BufferReader reader{pbuf, iSize};
 
-	int iState = READ_BYTE();
-	int iId = READ_CHAR();
-	int iClip = READ_CHAR();
+	int iState = reader.ReadByte();
+	int iId = reader.ReadChar();
+	int iClip = reader.ReadChar();
 
 	// detect if we're also on target
 	if ( iState > 1 )
@@ -638,26 +638,26 @@ bool CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
 //
 bool CHudAmmo::MsgFunc_WeaponList(const char *pszName, int iSize, void *pbuf )
 {
-	BEGIN_READ( pbuf, iSize );
+	BufferReader reader{pbuf, iSize};
 	
 	WEAPON Weapon;
 
-	strcpy( Weapon.szName, READ_STRING() );
-	Weapon.iAmmoType = (int)READ_CHAR();	
+	strcpy( Weapon.szName, reader.ReadString() );
+	Weapon.iAmmoType = (int)reader.ReadChar();
 	
-	Weapon.iMax1 = READ_BYTE();
+	Weapon.iMax1 = reader.ReadByte();
 	if (Weapon.iMax1 == 255)
 		Weapon.iMax1 = -1;
 
-	Weapon.iAmmo2Type = READ_CHAR();
-	Weapon.iMax2 = READ_BYTE();
+	Weapon.iAmmo2Type = reader.ReadChar();
+	Weapon.iMax2 = reader.ReadByte();
 	if (Weapon.iMax2 == 255)
 		Weapon.iMax2 = -1;
 
-	Weapon.iSlot = READ_CHAR();
-	Weapon.iSlotPos = READ_CHAR();
-	Weapon.iId = READ_CHAR();
-	Weapon.iFlags = READ_BYTE();
+	Weapon.iSlot = reader.ReadChar();
+	Weapon.iSlotPos = reader.ReadChar();
+	Weapon.iId = reader.ReadChar();
+	Weapon.iFlags = reader.ReadByte();
 	Weapon.iClip = 0;
 
 	gWR.AddWeapon( &Weapon );

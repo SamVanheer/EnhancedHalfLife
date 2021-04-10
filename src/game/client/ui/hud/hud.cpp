@@ -504,10 +504,10 @@ void CHud :: VidInit()
 
 bool CHud::MsgFunc_Logo(const char *pszName,  int iSize, void *pbuf)
 {
-	BEGIN_READ( pbuf, iSize );
+	BufferReader reader{pbuf, iSize};
 
 	// update Train data
-	m_iLogo = READ_BYTE();
+	m_iLogo = reader.ReadByte();
 
 	return true;
 }
@@ -608,9 +608,9 @@ float HUD_GetFOV()
 
 bool CHud::MsgFunc_SetFOV(const char *pszName,  int iSize, void *pbuf)
 {
-	BEGIN_READ( pbuf, iSize );
+	BufferReader reader{pbuf, iSize};
 
-	int newfov = READ_BYTE();
+	int newfov = reader.ReadByte();
 	int def_fov = CVAR_GET_FLOAT( "default_fov" );
 
 	//Weapon prediction already takes care of changing the fog. ( g_lastFOV ).

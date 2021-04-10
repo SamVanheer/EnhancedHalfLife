@@ -152,14 +152,14 @@ bool CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *
 {
 	m_iFlags |= HUD_ACTIVE;
 
-	BEGIN_READ( pbuf, iSize );
+	BufferReader reader{pbuf, iSize};
 
-	int killer = READ_BYTE();
-	int victim = READ_BYTE();
+	int killer = reader.ReadByte();
+	int victim = reader.ReadByte();
 
 	char killedwith[32];
 	strcpy( killedwith, "d_" );
-	strncat( killedwith, READ_STRING(), 32 );
+	strncat( killedwith, reader.ReadString(), 32 );
 
 	if (gViewPort)
 		gViewPort->DeathMsg( killer, victim );
