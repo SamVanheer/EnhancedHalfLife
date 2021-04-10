@@ -97,3 +97,28 @@ void FileSystem_FreeFileSystem()
 		g_pFileSystemModule = nullptr;
 	}
 }
+
+std::tuple<std::unique_ptr<byte[]>, std::size_t> FileSystem_LoadFileIntoBuffer(const char* filename)
+{
+	assert(g_pFileSystem);
+
+	auto fileHandle = g_pFileSystem->Open(filename, "rb");
+
+	if (fileHandle == FILESYSTEM_INVALID_HANDLE)
+	{
+		return {};
+	}
+
+	const auto size = g_pFileSystem->Size(fileHandle);
+
+	//Null terminate it in case it's actually text
+	auto buffer = std::make_unique<byte[]>(size + 1);
+
+	g_pFileSystem->Read(buffer.get(), size, fileHandle);
+
+	buffer[size] = '\0';
+
+	g_pFileSystem->Close(fileHandle);
+
+	return {std::move(buffer), size};
+}

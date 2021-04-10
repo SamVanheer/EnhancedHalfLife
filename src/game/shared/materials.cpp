@@ -13,9 +13,8 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-
+#include "Platform.h"
+#include "filesystem_shared.hpp"
 #include "materials.hpp"
 #include "shared_utils.hpp"
 
@@ -33,8 +32,7 @@ void TEXTURETYPE_Init()
 {
 	char buffer[512];
 	int i, j;
-	byte* pMemFile;
-	int fileSize, filePos = 0;
+	int filePos = 0;
 
 	if (fTextureTypeInit)
 		return;
@@ -45,7 +43,11 @@ void TEXTURETYPE_Init()
 	gcTextures = 0;
 	memset(buffer, 0, 512);
 
-	pMemFile = g_engfuncs.pfnLoadFileForMe("sound/materials.txt", &fileSize);
+	auto file = FileSystem_LoadFileIntoBuffer("sound/materials.txt");
+
+	byte* pMemFile = std::get<0>(file).get();
+	//TODO: really large files could cause problems here due to the narrowing conversion
+	const int fileSize = std::get<1>(file);
 	if (!pMemFile)
 		return;
 
@@ -87,8 +89,6 @@ void TEXTURETYPE_Init()
 		buffer[j] = 0;
 		strcpy(&(grgszTextureName[gcTextures++][0]), &(buffer[i]));
 	}
-
-	g_engfuncs.pfnFreeFile(pMemFile);
 
 	fTextureTypeInit = true;
 }

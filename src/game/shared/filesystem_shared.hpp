@@ -15,9 +15,15 @@
 
 #pragma once
 
+#include <cstddef>
+#include <memory>
+#include <tuple>
+
 #include "FileSystem.h"
 
 inline IFileSystem* g_pFileSystem = nullptr;
 
 bool FileSystem_LoadFileSystem();
 void FileSystem_FreeFileSystem();
+
+std::tuple<std::unique_ptr<byte[]>, std::size_t> FileSystem_LoadFileIntoBuffer(const char* filename);
