@@ -15,7 +15,7 @@
 
 #pragma once
 
-class IFileSystem;
+#include "FileSystem.h"
 
 inline IFileSystem* g_pFileSystem = nullptr;
 

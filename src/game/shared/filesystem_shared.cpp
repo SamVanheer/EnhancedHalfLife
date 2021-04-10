@@ -25,7 +25,6 @@
 
 #include "interface.h"
 
-#include "FileSystem.h"
 #include "filesystem_shared.hpp"
 
 static CSysModule* g_pFileSystemModule = nullptr;
