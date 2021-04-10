@@ -75,6 +75,8 @@ target_sources(hl PRIVATE
 	entities/brush/pathcorner.cpp
 	entities/brush/plats.cpp
 	entities/brush/trains.h
+	entities/characters/corpse.cpp
+	entities/characters/corpse.hpp
 	entities/characters/observer.cpp
 	entities/characters/player.cpp
 	entities/characters/player.h

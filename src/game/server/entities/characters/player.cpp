@@ -40,6 +40,7 @@
 #include "UserMessages.h"
 #include "client.h"
 #include "dll_functions.hpp"
+#include "corpse.hpp"
 
 // #define DUCKFIX
 
@@ -52,7 +53,6 @@ extern DLL_GLOBAL int		gDisplayTitle;
 
 bool gInitHUD = true;
 
-void CopyToBodyQue(entvars_t* pev);
 edict_t *EntSelectSpawnPoint( CBaseEntity *pPlayer );
 
 constexpr int TRAIN_ACTIVE = 0x80;
@@ -4548,66 +4548,6 @@ void CBasePlayer::SetPrefsFromUserinfo(char* infobuffer)
 		m_iAutoWepSwitch = 1;
 	}
 }
-
-//=========================================================
-// Dead HEV suit prop
-//=========================================================
-class CDeadHEV : public CBaseMonster
-{
-public:
-	void Spawn() override;
-	int	Classify () override { return	CLASS_HUMAN_MILITARY; }
-
-	void KeyValue( KeyValueData *pkvd ) override;
-
-	int	m_iPose;// which sequence to display	-- temporary, don't need to save
-	static const char *m_szPoses[4];
-};
-
-const char *CDeadHEV::m_szPoses[] = { "deadback", "deadsitting", "deadstomach", "deadtable" };
-
-void CDeadHEV::KeyValue( KeyValueData *pkvd )
-{
-	if (FStrEq(pkvd->szKeyName, "pose"))
-	{
-		m_iPose = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
-	}
-	else 
-		CBaseMonster::KeyValue( pkvd );
-}
-
-LINK_ENTITY_TO_CLASS( monster_hevsuit_dead, CDeadHEV );
-
-//=========================================================
-// ********** DeadHEV SPAWN **********
-//=========================================================
-void CDeadHEV :: Spawn()
-{
-	PRECACHE_MODEL("models/player.mdl");
-	SET_MODEL(ENT(pev), "models/player.mdl");
-
-	pev->effects		= 0;
-	pev->yaw_speed		= 8;
-	pev->sequence		= 0;
-	pev->body			= 1;
-	m_bloodColor		= BLOOD_COLOR_RED;
-
-	pev->sequence = LookupSequence( m_szPoses[m_iPose] );
-
-	if (pev->sequence == -1)
-	{
-		ALERT ( at_console, "Dead hevsuit with bad pose\n" );
-		pev->sequence = 0;
-		pev->effects = EF_BRIGHTFIELD;
-	}
-
-	// Corpses have less health
-	pev->health			= 8;
-
-	MonsterInitDead();
-}
-
 
 class CStripWeapons : public CPointEntity
 {

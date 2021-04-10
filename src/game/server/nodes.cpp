@@ -23,6 +23,7 @@
 #include	"animation.h"
 #include	"doors.h"
 #include "dll_functions.hpp"
+#include "corpse.hpp"
 
 constexpr int HULL_STEP_SIZE = 16; // how far the test hull moves on each step
 constexpr int NODE_HEIGHT = 8;	// how high to lift nodes off the ground after we drop them all (make stair/ramp mapping easier)
@@ -31,8 +32,6 @@ constexpr int NODE_HEIGHT = 8;	// how high to lift nodes off the ground after we
 // any given node is allowed to 'see' in the first stage of graph creation "LinkVisibleNodes()".
 constexpr int MAX_NODE_INITIAL_LINKS = 128;
 constexpr int MAX_NODES = 1024;
-
-extern DLL_GLOBAL edict_t		*g_pBodyQueueHead;
 
 CGraph	WorldGraph;
 

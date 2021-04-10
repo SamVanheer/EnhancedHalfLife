@@ -34,13 +34,13 @@
 #include "pm_shared.h"
 #include "UserMessages.h"
 #include "string_utils.hpp"
+#include "corpse.hpp"
 
 extern DLL_GLOBAL uint32	g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;
 extern DLL_GLOBAL int		g_iSkillLevel;
 extern DLL_GLOBAL uint32	g_ulFrameCount;
 
-void CopyToBodyQue(entvars_t* pev);
 extern int giPrecacheGrunt;
 
 extern cvar_t allow_spectators;
