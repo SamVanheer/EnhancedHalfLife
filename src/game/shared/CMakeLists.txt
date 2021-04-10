@@ -2,6 +2,7 @@ function(add_shared_sources target)
 	target_sources(${target}
 		PRIVATE
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/cdll_dll.h
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/materials.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/materials.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crossbow.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crowbar.cpp
@@ -28,5 +29,7 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/bitvec.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CStringPool.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CStringPool.hpp)
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CStringPool.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/shared_utils.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/shared_utils.hpp)
 endfunction()

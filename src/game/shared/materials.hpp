@@ -15,6 +15,13 @@
 
 #pragma once
 
+/**
+*	@file
+* 
+*	Used to detect the texture the player is standing on, map the texture name to a material type.
+*	Play footstep sound based on material type.
+*/
+
 constexpr int CTEXTURESMAX = 512;			//!< max number of textures loaded
 constexpr int CBTEXTURENAMEMAX = 13;		//!< only load first n chars of name
 
@@ -31,3 +38,6 @@ constexpr char CHAR_TEX_COMPUTER = 'P';
 constexpr char CHAR_TEX_GLASS = 'Y';
 constexpr char CHAR_TEX_FLESH = 'F';
 constexpr char CHAR_TEX_SNOW = 'N';
+
+void TEXTURETYPE_Init();
+char TEXTURETYPE_Find(char* name);
