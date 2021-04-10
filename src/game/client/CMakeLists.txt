@@ -181,7 +181,6 @@ target_sources(client PRIVATE
 	../../public/interface.h
 	../../public/keydefs.h
 	../../public/netadr.h
-	../../public/parsemsg.cpp
 	../../public/parsemsg.h
 	../../public/Platform.h
 	../../public/Sequence.h
