@@ -469,21 +469,20 @@ CBaseEntity	*UTIL_PlayerByIndex( int playerIndex )
 
 void UTIL_MakeVectors( const Vector &vecAngles )
 {
-	MAKE_VECTORS( vecAngles );
+	AngleVectors(vecAngles, gpGlobals->v_forward, gpGlobals->v_right, gpGlobals->v_up);
 }
 
 
 void UTIL_MakeAimVectors( const Vector &vecAngles )
 {
-	float rgflVec[3];
-	vecAngles.CopyToArray(rgflVec);
-	rgflVec[0] = -rgflVec[0];
-	MAKE_VECTORS(rgflVec);
+	Vector angles = vecAngles;
+	angles[0] = -angles[0];
+	AngleVectors(angles, gpGlobals->v_forward, gpGlobals->v_right, gpGlobals->v_up);
 }
 
 void UTIL_MakeInvVectors( const Vector &vec, globalvars_t *pgv )
 {
-	MAKE_VECTORS(vec);
+	AngleVectors(vec, gpGlobals->v_forward, gpGlobals->v_right, gpGlobals->v_up);
 
 	pgv->v_right = pgv->v_right * -1;
 
