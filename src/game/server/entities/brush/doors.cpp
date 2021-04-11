@@ -110,9 +110,8 @@ void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton)
 
 	if (flocked)
 	{
-		//TODO: bool
-		int fplaysound = (!FStringNull(pls->sLockedSound) && gpGlobals->time > pls->flwaitSound);
-		int fplaysentence = (!FStringNull(pls->sLockedSentence) && !pls->bEOFLocked && gpGlobals->time > pls->flwaitSentence);
+		const bool fplaysound = (!FStringNull(pls->sLockedSound) && gpGlobals->time > pls->flwaitSound);
+		const bool fplaysentence = (!FStringNull(pls->sLockedSentence) && !pls->bEOFLocked && gpGlobals->time > pls->flwaitSentence);
 		float fvol;
 
 		if (fplaysound && fplaysentence)
@@ -148,8 +147,8 @@ void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton)
 	{
 		// UNLOCKED SOUND
 
-		int fplaysound = (!FStringNull(pls->sUnlockedSound) && gpGlobals->time > pls->flwaitSound);
-		int fplaysentence = (!FStringNull(pls->sUnlockedSentence) && !pls->bEOFUnlocked && gpGlobals->time > pls->flwaitSentence);
+		const bool fplaysound = (!FStringNull(pls->sUnlockedSound) && gpGlobals->time > pls->flwaitSound);
+		const bool fplaysentence = (!FStringNull(pls->sUnlockedSentence) && !pls->bEOFUnlocked && gpGlobals->time > pls->flwaitSentence);
 		float fvol;
 
 		// if playing both sentence and sound, lower sound volume so we hear sentence
