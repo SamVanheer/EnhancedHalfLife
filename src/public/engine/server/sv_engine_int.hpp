@@ -62,6 +62,10 @@ enum FORCE_TYPE
 	force_model_specifybounds_if_avail,	// For Steam model files only, the geometry must fit in the specified bbox (if the file is available)
 };
 
+constexpr int TRACE_IGNORE_NOTHING = 0;
+constexpr int TRACE_IGNORE_MONSTERS = 1 << 0;
+constexpr int TRACE_IGNORE_GLASS = 1 << 8;
+
 // Returned by TraceLine
 struct TraceResult
 {

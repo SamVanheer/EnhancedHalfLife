@@ -824,23 +824,28 @@ void UTIL_ShowMessageAll( const char *pString )
 	}
 }
 
-//TODO: define constants for magic numbers
 // Overloaded to add IGNORE_GLASS
 void UTIL_TraceLine( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, IGNORE_GLASS ignoreGlass, edict_t *pentIgnore, TraceResult *ptr )
 {
-	TRACE_LINE( vecStart, vecEnd, (igmon == ignore_monsters ? 1 : 0) | (ignoreGlass?0x100:0), pentIgnore, ptr );
+	TRACE_LINE( vecStart, vecEnd,
+		(igmon == ignore_monsters ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING) | (ignoreGlass? TRACE_IGNORE_GLASS : TRACE_IGNORE_NOTHING),
+		pentIgnore, ptr );
 }
 
 
 void UTIL_TraceLine( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, edict_t *pentIgnore, TraceResult *ptr )
 {
-	TRACE_LINE( vecStart, vecEnd, (igmon == ignore_monsters ? 1 : 0), pentIgnore, ptr );
+	TRACE_LINE( vecStart, vecEnd,
+		(igmon == ignore_monsters ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING),
+		pentIgnore, ptr );
 }
 
 
 void UTIL_TraceHull( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, int hullNumber, edict_t *pentIgnore, TraceResult *ptr )
 {
-	TRACE_HULL( vecStart, vecEnd, (igmon == ignore_monsters ? 1 : 0), hullNumber, pentIgnore, ptr );
+	TRACE_HULL( vecStart, vecEnd,
+		(igmon == ignore_monsters ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING),
+		hullNumber, pentIgnore, ptr );
 }
 
 void UTIL_TraceModel( const Vector &vecStart, const Vector &vecEnd, int hullNumber, edict_t *pentModel, TraceResult *ptr )
