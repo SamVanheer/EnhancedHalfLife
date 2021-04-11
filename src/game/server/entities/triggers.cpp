@@ -1020,7 +1020,7 @@ void CBaseTrigger :: HurtTouch ( CBaseEntity *pOther )
 
 		SUB_UseTargets( pOther, USE_TOGGLE, 0 );
 		if ( pev->spawnflags & SF_TRIGGER_HURT_TARGETONCE )
-			pev->target = 0;
+			pev->target = iStringNull;
 	}
 }
 
@@ -2366,7 +2366,7 @@ void CTriggerCamera::Move()
 		{
 			FireTargets( STRING(m_pentPath->pev->message), this, this, USE_TOGGLE, 0 );
 			if ( FBitSet( m_pentPath->pev->spawnflags, SF_CORNER_FIREONCE ) )
-				m_pentPath->pev->message = 0;
+				m_pentPath->pev->message = iStringNull;
 		}
 		// Time to go to the next target
 		m_pentPath = m_pentPath->GetNextTarget();

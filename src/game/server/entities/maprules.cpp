@@ -91,7 +91,7 @@ void CRulePointEntity::Spawn()
 {
 	CRuleEntity::Spawn();
 	pev->frame			= 0;
-	pev->model			= 0;
+	pev->model			= iStringNull;
 }
 
 // 

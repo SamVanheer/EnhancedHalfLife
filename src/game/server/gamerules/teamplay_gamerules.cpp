@@ -50,7 +50,7 @@ CHalfLifeTeamplay :: CHalfLifeTeamplay()
 	{
 		if ( teamoverride.value )
 		{
-			const char *pTeamList = STRING(pWorld->v.team);
+			const char *pTeamList = STRING(static_cast<string_t>(pWorld->v.team));
 			if ( pTeamList && strlen(pTeamList) )
 			{
 				strncpy( m_szTeamList, pTeamList, TEAMPLAY_TEAMLISTLENGTH );

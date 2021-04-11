@@ -1308,7 +1308,7 @@ void UTIL_Remove( CBaseEntity *pEntity )
 
 	pEntity->UpdateOnRemove();
 	pEntity->pev->flags |= FL_KILLME;
-	pEntity->pev->targetname = 0;
+	pEntity->pev->targetname = iStringNull;
 }
 
 

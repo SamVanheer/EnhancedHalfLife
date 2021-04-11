@@ -720,7 +720,7 @@ void CFuncTrain :: Wait()
 	{
 		FireTargets( STRING(m_pevCurrentTarget->message), this, this, USE_TOGGLE, 0 );
 		if ( FBitSet( m_pevCurrentTarget->spawnflags, SF_CORNER_FIREONCE ) )
-			m_pevCurrentTarget->message = 0;
+			m_pevCurrentTarget->message = iStringNull;
 	}
 		
 	// need pointer to LAST target.
@@ -1252,7 +1252,7 @@ void CFuncTrackTrain :: Next()
 			{
 				FireTargets( STRING(pFire->pev->message), this, this, USE_TOGGLE, 0 );
 				if ( FBitSet( pFire->pev->spawnflags, SF_PATH_FIREONCE ) )
-					pFire->pev->message = 0;
+					pFire->pev->message = iStringNull;
 			}
 
 			if ( pFire->pev->spawnflags & SF_PATH_DISABLE_TRAIN )
@@ -1539,7 +1539,7 @@ void CFuncTrackTrain :: Precache()
 	{
 	default:
 		// no sound
-		pev->noise = 0;
+		pev->noise = iStringNull;
 		break;
 	case 1: PRECACHE_SOUND("plats/ttrain1.wav"); pev->noise = MAKE_STRING("plats/ttrain1.wav");break;
 	case 2: PRECACHE_SOUND("plats/ttrain2.wav"); pev->noise = MAKE_STRING("plats/ttrain2.wav");break;
@@ -2225,7 +2225,7 @@ void CGunTarget::Wait()
 	{
 		FireTargets( STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0 );
 		if ( FBitSet( pTarget->pev->spawnflags, SF_CORNER_FIREONCE ) )
-			pTarget->pev->message = 0;
+			pTarget->pev->message = iStringNull;
 	}
 		
 	m_flWait = pTarget->GetDelay();

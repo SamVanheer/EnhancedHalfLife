@@ -738,8 +738,8 @@ void CBasePlayer::RemoveAllItems(bool removeSuit )
 	}
 	m_pActiveItem = nullptr;
 
-	pev->viewmodel		= 0;
-	pev->weaponmodel	= 0;
+	pev->viewmodel		= iStringNull;
+	pev->weaponmodel	= iStringNull;
 	
 	if ( removeSuit )
 		pev->weapons = 0;
@@ -3470,8 +3470,8 @@ bool CBasePlayer::RemovePlayerItem( CBasePlayerItem *pItem )
 		pItem->pev->nextthink = 0;// crowbar may be trying to swing again, etc.
 		pItem->SetThink( nullptr );
 		m_pActiveItem = nullptr;
-		pev->viewmodel = 0;
-		pev->weaponmodel = 0;
+		pev->viewmodel = iStringNull;
+		pev->weaponmodel = iStringNull;
 	}
 	if ( m_pLastItem == pItem )
 		m_pLastItem = nullptr;

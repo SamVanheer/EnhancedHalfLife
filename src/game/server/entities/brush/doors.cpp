@@ -453,7 +453,7 @@ void CBaseDoor::Precache()
 		case 8: m_ls.sLockedSentence = ALLOC_STRING("NH"); break; // maintenance door
 		case 9: m_ls.sLockedSentence = ALLOC_STRING("NG"); break; // broken door
 		
-		default: m_ls.sLockedSentence = 0; break;
+		default: m_ls.sLockedSentence = iStringNull; break;
 	}
 
 	switch (m_bUnlockedSentence)
@@ -467,7 +467,7 @@ void CBaseDoor::Precache()
 		case 7: m_ls.sUnlockedSentence = ALLOC_STRING("ECON"); break; // gen containment
 		case 8: m_ls.sUnlockedSentence = ALLOC_STRING("EH"); break; // maintenance door
 		
-		default: m_ls.sUnlockedSentence = 0; break;
+		default: m_ls.sUnlockedSentence = iStringNull; break;
 	}
 }
 

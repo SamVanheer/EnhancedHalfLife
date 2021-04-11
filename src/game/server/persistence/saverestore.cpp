@@ -379,7 +379,7 @@ void CSave::WriteString(const char* pname, const char* pdata)
 }
 
 
-void CSave::WriteString(const char* pname, const int* stringId, int count)
+void CSave::WriteString(const char* pname, const string_t* stringId, int count)
 {
 	int i, size;
 
@@ -563,7 +563,7 @@ bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFi
 		case FIELD_MODELNAME:
 		case FIELD_SOUNDNAME:
 		case FIELD_STRING:
-			WriteString(pTest->fieldName, (int*)pOutputData, pTest->fieldSize);
+			WriteString(pTest->fieldName, (string_t*)pOutputData, pTest->fieldSize);
 			break;
 		case FIELD_CLASSPTR:
 		case FIELD_EVARS:

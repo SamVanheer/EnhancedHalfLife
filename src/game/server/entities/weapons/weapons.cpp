@@ -597,8 +597,8 @@ void CBasePlayerItem::Kill()
 
 void CBasePlayerItem::Holster( int skiplocal /* = 0 */ )
 { 
-	m_pPlayer->pev->viewmodel = 0; 
-	m_pPlayer->pev->weaponmodel = 0;
+	m_pPlayer->pev->viewmodel = iStringNull;
+	m_pPlayer->pev->weaponmodel = iStringNull;
 }
 
 void CBasePlayerItem::AttachToPlayer ( CBasePlayer *pPlayer )
@@ -865,8 +865,8 @@ int CBasePlayerWeapon::SecondaryAmmoIndex()
 void CBasePlayerWeapon::Holster( int skiplocal /* = 0 */ )
 { 
 	m_fInReload = false; // cancel any reload in progress.
-	m_pPlayer->pev->viewmodel = 0; 
-	m_pPlayer->pev->weaponmodel = 0;
+	m_pPlayer->pev->viewmodel = iStringNull;
+	m_pPlayer->pev->weaponmodel = iStringNull;
 }
 
 void CBasePlayerAmmo::Spawn()
