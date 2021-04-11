@@ -43,3 +43,5 @@ char* COM_Parse(char* data);
 *	@brief Returns 1 if additional data is waiting to be processed on this line
 */
 bool COM_TokenWaiting(char* buffer);
+
+Vector UTIL_StringToVector(const char* pString);

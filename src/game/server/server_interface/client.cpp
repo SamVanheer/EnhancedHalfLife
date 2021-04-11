@@ -33,7 +33,6 @@
 #include "netadr.h"
 #include "pm_shared.h"
 #include "UserMessages.h"
-#include "string_utils.hpp"
 #include "corpse.hpp"
 #include "voice_gamemgr.h"
 #include "entity_state.h"

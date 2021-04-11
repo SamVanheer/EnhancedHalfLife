@@ -330,8 +330,7 @@ void CFuncRotating :: KeyValue( KeyValueData* pkvd)
 	}
 	else if (FStrEq(pkvd->szKeyName, "spawnorigin"))
 	{
-		Vector tmp;
-		UTIL_StringToVector( (float *)tmp, pkvd->szValue );
+		const Vector tmp = UTIL_StringToVector(pkvd->szValue);
 		if ( tmp != vec3_origin)
 			pev->origin = tmp;
 	}

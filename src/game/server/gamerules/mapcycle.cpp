@@ -16,7 +16,6 @@
 #include "extdll.h"
 #include "util.h"
 #include "mapcycle.hpp"
-#include "string_utils.hpp"
 
 /*
 ==============

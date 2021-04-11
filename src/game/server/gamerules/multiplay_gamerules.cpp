@@ -28,7 +28,6 @@
 #include	"voice_gamemgr.h"
 #include	"hltv.h"
 #include "UserMessages.h"
-#include "string_utils.hpp"
 #include "mapcycle.hpp"
 
 extern DLL_GLOBAL bool	g_fGameOver;

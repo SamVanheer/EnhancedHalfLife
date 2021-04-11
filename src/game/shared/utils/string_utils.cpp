@@ -16,6 +16,8 @@
 #include <cctype>
 #include <cstdint>
 
+#include "Platform.h"
+#include "mathlib.h"
 #include "string_utils.hpp"
 
 bool Q_IsValidUChar32(char32_t uVal)
@@ -198,4 +200,30 @@ bool COM_TokenWaiting(char* buffer)
 	}
 
 	return false;
+}
+
+Vector UTIL_StringToVector(const char* pString)
+{
+	const char* pstr = pString;
+
+	Vector result = vec3_origin;
+
+	for (int j = 0; j < 3; ++j)
+	{
+		result[j] = atof(pstr);
+
+		while (*pstr && *pstr != ' ')
+		{
+			++pstr;
+		}
+
+		if (!*pstr)
+		{
+			break;
+		}
+
+		++pstr;
+	}
+
+	return result;
 }

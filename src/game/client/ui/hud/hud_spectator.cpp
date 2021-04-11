@@ -19,6 +19,7 @@
 #include "parsemsg.h"
 #include "entity_types.h"
 #include "view.h"
+#include "string_utils.hpp"
 
 // these are included for the math functions
 #include "com_model.h"
@@ -189,39 +190,7 @@ bool CHudSpectator::Init()
 	return true;
 }
 
-
-//-----------------------------------------------------------------------------
-// UTIL_StringToVector originally from ..\dlls\util.cpp, slightly changed
-//-----------------------------------------------------------------------------
-//TODO: seems identical to the server side version, consider merging them
-void UTIL_StringToVector( float * pVector, const char *pString )
-{
-	char *pstr, *pfront, tempString[128];
-	int	j;
-
-	strcpy( tempString, pString );
-	pstr = pfront = tempString;
-	
-	for ( j = 0; j < 3; j++ )		
-	{
-		pVector[j] = atof( pfront );
-		
-		while ( *pstr && *pstr != ' ' )
-			pstr++;
-		if (!*pstr)
-			break;
-		pstr++;
-		pfront = pstr;
-	}
-
-	if (j < 2)
-	{
-		for (j = j+1;j < 3; j++)
-			pVector[j] = 0;
-	}
-}
-
-bool UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
+bool UTIL_FindEntityInMap(const char * name, Vector& origin, Vector& angle)
 {
 	int				n,found = 0;
 	char			keyname[256];
@@ -326,13 +295,12 @@ bool UTIL_FindEntityInMap(const char * name, float * origin, float * angle)
 
 			if( !strcmp( keyname, "angles" ) )
 			{
-				UTIL_StringToVector(angle, token);
+				angle = UTIL_StringToVector(token);
 			}
 			
 			if (!strcmp(keyname,"origin"))
 			{
-				UTIL_StringToVector(origin, token);
-
+				origin = UTIL_StringToVector(token);
 			}
 		} // while (1)
 

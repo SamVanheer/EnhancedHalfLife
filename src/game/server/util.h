@@ -24,6 +24,7 @@
 #include "enginecallback.h"
 #include "materials.hpp"
 #include "filesystem_shared.hpp"
+#include "string_utils.hpp"
 
 class CBaseEntity;
 class CBasePlayer;
@@ -264,7 +265,6 @@ void			UTIL_PlayerDecalTrace( TraceResult *pTrace, int playernum, int decalNumbe
 void			UTIL_GunshotDecalTrace( TraceResult *pTrace, int decalNumber );
 void			UTIL_Sparks( const Vector &position );
 void			UTIL_Ricochet( const Vector &position, float scale );
-void			UTIL_StringToVector( float *pVector, const char *pString );
 void			UTIL_StringToIntArray( int *pVector, int count, const char *pString );
 
 char			*UTIL_VarArgs( const char *format, ... );
