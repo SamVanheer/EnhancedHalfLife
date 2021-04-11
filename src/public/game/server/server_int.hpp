@@ -101,7 +101,7 @@ struct DLL_FUNCTIONS
 	int				(*pfnConnectionlessPacket)	(const netadr_t* net_from, const char* args, char* response_buffer, int* response_buffer_size);
 
 	// Enumerates player hulls.  Returns 0 if the hull number doesn't exist, 1 otherwise
-	int				(*pfnGetHullBounds)	(int hullnumber, float* mins, float* maxs);
+	int				(*pfnGetHullBounds)	(int hullnumber, Vector* mins, Vector* maxs);
 
 	// Create baselines for certain "unplaced" items.
 	void			(*pfnCreateInstancedBaselines) ();

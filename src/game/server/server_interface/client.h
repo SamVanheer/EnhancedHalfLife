@@ -69,7 +69,7 @@ void CmdEnd ( const edict_t *player );
 
 int	ConnectionlessPacket( const netadr_t* net_from, const char *args, char *response_buffer, int *response_buffer_size );
 
-int GetHullBounds( int hullnumber, float *mins, float *maxs );
+int GetHullBounds( int hullnumber, Vector* mins, Vector* maxs );
 
 void CreateInstancedBaselines ();
 

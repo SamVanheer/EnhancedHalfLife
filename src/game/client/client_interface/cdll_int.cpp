@@ -36,6 +36,7 @@
 
 #include "tri.h"
 #include "vgui_TeamFortressViewport.h"
+#include "shared_interface/shared_interface.hpp"
 
 cl_enginefunc_t gEngfuncs;
 CHud gHUD;
@@ -59,30 +60,9 @@ HUD_GetHullBounds
   Engine calls this to enumerate player collision hulls, for prediction.  Return 0 if the hullnumber doesn't exist.
 ================================
 */
-int DLLEXPORT HUD_GetHullBounds( int hullnumber, float *mins, float *maxs )
+int DLLEXPORT HUD_GetHullBounds( int hullnumber, Vector* mins, Vector* maxs )
 {
-	bool ret = false;
-
-	switch (hullnumber)
-	{
-	case 0:				// Normal player
-		memcpy(mins, &VEC_HULL_MIN, sizeof(VEC_HULL_MIN));
-		memcpy(maxs, &VEC_HULL_MAX, sizeof(VEC_HULL_MAX));
-		ret = true;
-		break;
-	case 1:				// Crouched player
-		memcpy(mins, &VEC_DUCK_HULL_MIN, sizeof(VEC_DUCK_HULL_MIN));
-		memcpy(maxs, &VEC_DUCK_HULL_MAX, sizeof(VEC_DUCK_HULL_MAX));
-		ret = true;
-		break;
-	case 2:				// Point based hull
-		memcpy(mins, &vec3_origin, sizeof(vec3_origin));
-		memcpy(maxs, &vec3_origin, sizeof(vec3_origin));
-		ret = true;
-		break;
-	}
-
-	return ret;
+	return Shared_GetHullBounds(hullnumber, *mins, *maxs);
 }
 
 /*

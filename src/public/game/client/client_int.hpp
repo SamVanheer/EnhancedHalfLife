@@ -58,7 +58,7 @@ struct cldll_func_t
 		weapon_data_t* wd, const weapon_data_t* pwd);
 	void (*pReadDemoBuffer)(int size, unsigned char* buffer);
 	int (*pConnectionlessPacket)(const netadr_t* net_from, const char* args, char* response_buffer, int* response_buffer_size);
-	int	(*pGetHullBounds)(int hullnumber, float* mins, float* maxs);
+	int	(*pGetHullBounds)(int hullnumber, Vector* mins, Vector* maxs);
 	void (*pHudFrame)(double);
 	int (*pKeyEvent)(int eventcode, int keynum, const char* pszCurrentBinding);
 	void (*pTempEntUpdate)(double frametime, double client_time, double cl_gravity, TEMPENTITY** ppTempEntFree, TEMPENTITY** ppTempEntActive,
