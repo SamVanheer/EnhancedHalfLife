@@ -192,8 +192,8 @@ void CAmbientGeneric :: Spawn()
 		SetThink( &CAmbientGeneric::SUB_Remove );
 		return;
 	}
-    pev->solid		= SOLID_NOT;
-    pev->movetype	= MOVETYPE_NONE;
+	pev->solid		= SOLID_NOT;
+	pev->movetype	= MOVETYPE_NONE;
 
 	// Set up think function for dynamic modification 
 	// of ambient sound's pitch or volume. Don't
@@ -1666,8 +1666,8 @@ void CSpeaker :: Spawn()
 		SetThink( &CSpeaker::SUB_Remove );
 		return;
 	}
-    pev->solid		= SOLID_NOT;
-    pev->movetype	= MOVETYPE_NONE;
+	pev->solid		= SOLID_NOT;
+	pev->movetype	= MOVETYPE_NONE;
 
 	
 	SetThink(&CSpeaker::SpeakerThink);

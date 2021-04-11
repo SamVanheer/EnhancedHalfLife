@@ -113,7 +113,8 @@ char TEXTURETYPE_Find(const char* name)
 			return strnicmp(material.Name.data(), textureName, CBTEXTURENAMEMAX - 1) < 0;
 		});
 
-	if (result != g_Materials.end())
+	//If this is the texture we're looking for, use it
+	if (result != g_Materials.end() && stricmp(result->Name.data(), name) == 0)
 	{
 		return result->Type;
 	}
