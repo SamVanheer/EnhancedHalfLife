@@ -192,7 +192,12 @@ constexpr int ITEM_FLAG_NOAUTOSWITCHEMPTY = 4;
 constexpr int ITEM_FLAG_LIMITINWORLD = 8;
 constexpr int ITEM_FLAG_EXHAUSTIBLE = 16; // A player can totally exhaust their ammo supply and lose this weapon
 
-constexpr int WEAPON_IS_ONTARGET = 0x40;
+enum class WeaponState
+{
+	NotActive = 0,
+	Active,
+	OnTarget
+};
 
 struct ItemInfo
 {
@@ -356,7 +361,7 @@ public:
 	int		m_iSecondaryAmmoType;								// "secondary" ammo index into players m_rgAmmo[]
 	int		m_iClip;											// number of shots left in the primary weapon clip, -1 it not used
 	int		m_iClientClip;										// the last version of m_iClip sent to hud dll
-	int		m_iClientWeaponState;								// the last version of the weapon state sent to hud dll (is current weapon, is on target)
+	WeaponState m_iClientWeaponState;							// the last version of the weapon state sent to hud dll (is current weapon, is on target)
 	int		m_fInReload;										// Are we in the middle of a reload;
 
 	int		m_iDefaultAmmo;// how much ammo you get when you pick up this weapon as placed by a level designer.

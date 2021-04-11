@@ -650,13 +650,13 @@ bool CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer )
 bool CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
 {
 	bool bSend = false;
-	int state = 0;
+	WeaponState state = WeaponState::NotActive;
 	if ( pPlayer->m_pActiveItem == this )
 	{
 		if ( pPlayer->m_fOnTarget )
-			state = WEAPON_IS_ONTARGET;
+			state = WeaponState::OnTarget;
 		else
-			state = 1; //TODO: define constant
+			state = WeaponState::Active;
 	}
 
 	// Forcing send of all data!
@@ -686,7 +686,7 @@ bool CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
 	if ( bSend )
 	{
 		MESSAGE_BEGIN( MSG_ONE, gmsgCurWeapon, nullptr, pPlayer->pev );
-			WRITE_BYTE( state );
+			WRITE_BYTE( static_cast<int>(state) );
 			WRITE_BYTE( m_iId );
 			WRITE_BYTE( m_iClip );
 		MESSAGE_END();
