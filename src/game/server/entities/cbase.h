@@ -626,16 +626,6 @@ template <class T> T * GetClassPtr( T *a )
 	return a;
 }
 
-//TODO: used?
-struct SelAmmo
-{
-	byte	Ammo1Type;
-	byte	Ammo1;
-	byte	Ammo2Type;
-	byte	Ammo2;
-};
-
-
 // this moved here from world.cpp, to allow classes to be derived from it
 //=======================
 // CWorld

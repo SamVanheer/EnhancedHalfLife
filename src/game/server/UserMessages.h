@@ -17,7 +17,6 @@
 
 inline int gmsgShake = 0;
 inline int gmsgFade = 0;
-inline int gmsgSelAmmo = 0;
 inline int gmsgFlashlight = 0;
 inline int gmsgFlashBattery = 0;
 inline int gmsgResetHUD = 0;
