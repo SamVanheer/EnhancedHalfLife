@@ -1697,39 +1697,6 @@ int CChangeLevel::ChangeList( LEVELLIST *pLevelList, int maxList )
 	return count;
 }
 
-/*
-go to the next level for deathmatch
-only called if a time or frag limit has expired
-*/
-void NextLevel()
-{
-	edict_t* pent;
-	CChangeLevel *pChange;
-	
-	// find a trigger_changelevel
-	pent = FIND_ENTITY_BY_CLASSNAME(nullptr, "trigger_changelevel");
-	
-	// go back to start if no trigger_changelevel
-	if (FNullEnt(pent))
-	{
-		gpGlobals->mapname = ALLOC_STRING("start");
-		pChange = GetClassPtr( (CChangeLevel *)nullptr );
-		strcpy(pChange->m_szMapName, "start");
-	}
-	else
-		pChange = GetClassPtr( (CChangeLevel *)VARS(pent));
-	
-	strcpy(st_szNextMap, pChange->m_szMapName);
-	g_fGameOver = true;
-	
-	if (pChange->pev->nextthink < gpGlobals->time)
-	{
-		pChange->SetThink( &CChangeLevel::ExecuteChangeLevel );
-		pChange->pev->nextthink = gpGlobals->time + 0.1;
-	}
-}
-
-
 // ============================== LADDER =======================================
 
 class CLadder : public CBaseTrigger
