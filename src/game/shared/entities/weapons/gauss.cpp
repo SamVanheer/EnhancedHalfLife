@@ -24,6 +24,7 @@
 #include "shake.h"
 #include "gamerules.h"
 #include "UserMessages.h"
+#include "weaponinfo.h"
 
 LINK_ENTITY_TO_CLASS( weapon_gauss, CGauss );
 
@@ -574,7 +575,15 @@ void CGauss::WeaponIdle()
 	}
 }
 
+void CGauss::GetWeaponData(weapon_data_t& data)
+{
+	data.iuser2 = m_fInAttack;
+}
 
+void CGauss::SetWeaponData(const weapon_data_t& data)
+{
+	m_fInAttack = data.iuser2;
+}
 
 
 

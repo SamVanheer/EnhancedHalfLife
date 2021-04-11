@@ -24,6 +24,7 @@
 #include "effects.h"
 
 class CBasePlayer;
+struct weapon_data_t;
 
 void DeactivateSatchels( CBasePlayer *pOwner );
 void W_Precache();
@@ -261,6 +262,9 @@ public:
 	virtual bool UpdateClientData( CBasePlayer *pPlayer ) { return false; }
 
 	virtual CBasePlayerItem *GetWeaponPtr() { return nullptr; }
+
+	virtual void GetWeaponData(weapon_data_t& data) {}
+	virtual void SetWeaponData(const weapon_data_t& data) {}
 
 	static ItemInfo ItemInfoArray[ MAX_WEAPONS ];
 	static AmmoInfo AmmoInfoArray[MAX_AMMO_TYPES];
@@ -886,6 +890,7 @@ public:
 	// was this weapon just fired primary or secondary?
 	// we need to know so we can pick the right set of effects. 
 	bool m_fPrimaryFire;
+	int m_fInAttack;
 
 	bool UseDecrement() override
 	{ 
@@ -895,6 +900,9 @@ public:
 		return false;
 #endif
 	}
+
+	void GetWeaponData(weapon_data_t& data) override;
+	void SetWeaponData(const weapon_data_t& data) override;
 
 private:
 	unsigned short m_usGaussFire;
@@ -976,6 +984,7 @@ public:
 	CBeam				*m_pBeam;
 	CBeam				*m_pNoise;
 	CSprite				*m_pSprite;
+	int m_fireState;
 
 	bool UseDecrement() override
 	{ 
@@ -985,6 +994,9 @@ public:
 		return false;
 #endif
 	}
+
+	void GetWeaponData(weapon_data_t& data) override;
+	void SetWeaponData(const weapon_data_t& data) override;
 
 	unsigned short m_usEgonStop;
 
@@ -1075,6 +1087,12 @@ public:
 		return false;
 #endif
 	}
+
+	void GetWeaponData(weapon_data_t& data) override;
+	void SetWeaponData(const weapon_data_t& data) override;
+
+	float m_flStartThrow;
+	float m_flReleaseThrow;
 };
 
 enum satchel_e
@@ -1128,6 +1146,11 @@ public:
 		return false;
 #endif
 	}
+
+	void GetWeaponData(weapon_data_t& data) override;
+	void SetWeaponData(const weapon_data_t& data) override;
+
+	int m_chargeReady;
 };
 
 enum tripmine_e

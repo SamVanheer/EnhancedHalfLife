@@ -1496,11 +1496,8 @@ int GetWeaponData( edict_t *player, weapon_data_t *info )
 						item->m_fInReload				= gun->m_fInReload;
 						item->m_fInSpecialReload		= gun->m_fInSpecialReload;
 						item->fuser1					= V_max( gun->pev->fuser1, -0.001 );
-						item->fuser2					= gun->m_flStartThrow;
-						item->fuser3					= gun->m_flReleaseThrow;
-						item->iuser1					= gun->m_chargeReady;
-						item->iuser2					= gun->m_fInAttack;
-						item->iuser3					= gun->m_fireState;
+
+						gun->GetWeaponData(*item);
 						
 											
 //						item->m_flPumpTime				= V_max( gun->m_flPumpTime, -0.001 );

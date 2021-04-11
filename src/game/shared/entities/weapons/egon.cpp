@@ -24,6 +24,7 @@
 #include "customentity.h"
 #include "gamerules.h"
 #include "UserMessages.h"
+#include "weaponinfo.h"
 
 constexpr float EGON_SWITCH_NARROW_TIME = 0.75;		// Time it takes to switch fire modes
 constexpr float EGON_SWITCH_WIDE_TIME = 1.5;
@@ -522,6 +523,15 @@ void CEgon::EndAttack()
 	DestroyEffect();
 }
 
+void CEgon::GetWeaponData(weapon_data_t& data)
+{
+	data.iuser3 = m_fireState;
+}
+
+void CEgon::SetWeaponData(const weapon_data_t& data)
+{
+	m_fireState = data.iuser3;
+}
 
 
 class CEgonAmmo : public CBasePlayerAmmo

@@ -310,14 +310,6 @@ public:
 	{
 		EMIT_SOUND_DYN(ENT(pev), chan, RANDOM_SOUND_ARRAY(array), 1.0, ATTN_NORM, 0, RANDOM_LONG(95, 105));
 	}
-
-	//Special stuff for grenades and satchels.
-	float m_flStartThrow;
-	float m_flReleaseThrow;
-	int m_chargeReady;
-	int m_fInAttack;
-
-	int m_fireState;
 };
 
 inline bool FNullEnt(CBaseEntity* ent) { return (ent == nullptr) || FNullEnt(ent->edict()); }

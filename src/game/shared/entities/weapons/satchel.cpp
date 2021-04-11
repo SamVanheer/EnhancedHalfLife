@@ -21,6 +21,7 @@
 #include "nodes.h"
 #include "player.h"
 #include "gamerules.h"
+#include "weaponinfo.h"
 
 class CSatchelCharge : public CGrenade
 {
@@ -447,6 +448,16 @@ void CSatchel::WeaponIdle()
 		break;
 	}
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );// how long till we do this again.
+}
+
+void CSatchel::GetWeaponData(weapon_data_t& data)
+{
+	data.iuser1 = m_chargeReady;
+}
+
+void CSatchel::SetWeaponData(const weapon_data_t& data)
+{
+	m_chargeReady = data.iuser1;
 }
 
 //=========================================================
