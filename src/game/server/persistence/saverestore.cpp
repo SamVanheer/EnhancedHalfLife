@@ -12,6 +12,9 @@
 *   without written permission from Valve LLC.
 *
 ****/
+
+#include <bit>
+
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -260,34 +263,12 @@ void CSaveRestoreBuffer::BufferRewind(int size)
 	m_pdata->size -= size;
 }
 
-#ifndef _WIN32
-extern "C" {
-	unsigned _rotr(unsigned val, int shift)
-	{
-		unsigned lobit;        /* non-zero means lo bit set */
-		unsigned num = val;    /* number to rotate */
-
-		shift &= 0x1f;                  /* modulo 32 -- this will also make
-										   negative shifts work */
-
-		while (shift--) {
-			lobit = num & 1;        /* get high bit */
-			num >>= 1;              /* shift right one bit */
-			if (lobit)
-				num |= 0x80000000;  /* set hi bit if lo bit was set */
-		}
-
-		return num;
-	}
-}
-#endif
-
 unsigned int CSaveRestoreBuffer::HashString(const char* pszToken)
 {
 	unsigned int	hash = 0;
 
 	while (*pszToken)
-		hash = _rotr(hash, 4) ^ *pszToken++;
+		hash = std::rotr(hash, 4) ^ *pszToken++;
 
 	return hash;
 }
