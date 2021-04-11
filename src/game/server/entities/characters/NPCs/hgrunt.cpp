@@ -1078,7 +1078,7 @@ void CHGrunt :: Precache()
 //=========================================================
 void CHGrunt :: StartTask ( Task_t *pTask )
 {
-	m_iTaskStatus = TASKSTATUS_RUNNING;
+	m_iTaskStatus = TaskStatus::Running;
 
 	switch ( pTask->iTask )
 	{
@@ -1139,7 +1139,7 @@ void CHGrunt :: RunTask ( Task_t *pTask )
 
 			if ( FacingIdeal() )
 			{
-				m_iTaskStatus = TASKSTATUS_COMPLETE;
+				m_iTaskStatus = TaskStatus::Complete;
 			}
 			break;
 		}

@@ -117,7 +117,7 @@ bool CBaseMonster::Restore( CRestore &restore )
 
 	// We don't save/restore schedules yet
 	m_pSchedule = nullptr;
-	m_iTaskStatus = TASKSTATUS_NEW;
+	m_iTaskStatus = TaskStatus::New;
 	
 	// Reset animation
 	m_Activity = ACT_RESET;
@@ -2151,20 +2151,20 @@ void CBaseMonster :: MovementComplete()
 { 
 	switch( m_iTaskStatus )
 	{
-	case TASKSTATUS_NEW:
-	case TASKSTATUS_RUNNING:
-		m_iTaskStatus = TASKSTATUS_RUNNING_TASK;
+	case TaskStatus::New:
+	case TaskStatus::Running:
+		m_iTaskStatus = TaskStatus::RunningTask;
 		break;
 
-	case TASKSTATUS_RUNNING_MOVEMENT:
+	case TaskStatus::RunningMovement:
 		TaskComplete();
 		break;
 	
-	case TASKSTATUS_RUNNING_TASK:
+	case TaskStatus::RunningTask:
 		ALERT( at_error, "Movement completed twice!\n" );
 		break;
 
-	case TASKSTATUS_COMPLETE:		
+	case TaskStatus::Complete:
 		break;
 	}
 	m_movementGoal = MOVEGOAL_NONE;
@@ -2173,8 +2173,8 @@ void CBaseMonster :: MovementComplete()
 
 bool CBaseMonster::TaskIsRunning()
 {
-	if ( m_iTaskStatus != TASKSTATUS_COMPLETE && 
-		 m_iTaskStatus != TASKSTATUS_RUNNING_MOVEMENT )
+	if ( m_iTaskStatus != TaskStatus::Complete &&
+		 m_iTaskStatus != TaskStatus::RunningMovement)
 		 return true;
 
 	return false;

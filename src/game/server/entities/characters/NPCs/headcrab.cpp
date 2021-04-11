@@ -377,7 +377,7 @@ void CHeadCrab :: PrescheduleThink ()
 
 void CHeadCrab :: StartTask ( Task_t *pTask )
 {
-	m_iTaskStatus = TASKSTATUS_RUNNING;
+	m_iTaskStatus = TaskStatus::Running;
 
 	switch ( pTask->iTask )
 	{

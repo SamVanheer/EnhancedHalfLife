@@ -668,26 +668,26 @@ void CHoundeye :: SonicAttack ()
 //=========================================================
 void CHoundeye :: StartTask ( Task_t *pTask )
 {
-	m_iTaskStatus = TASKSTATUS_RUNNING;
+	m_iTaskStatus = TaskStatus::Running;
 
 	switch ( pTask->iTask )
 	{
 	case TASK_HOUND_FALL_ASLEEP:
 		{
 			m_fAsleep = true; // signal that hound is lying down (must stand again before doing anything else!)
-			m_iTaskStatus = TASKSTATUS_COMPLETE;
+			m_iTaskStatus = TaskStatus::Complete;
 			break;
 		}
 	case TASK_HOUND_WAKE_UP:
 		{
 			m_fAsleep = false; // signal that hound is standing again
-			m_iTaskStatus = TASKSTATUS_COMPLETE;
+			m_iTaskStatus = TaskStatus::Complete;
 			break;
 		}
 	case TASK_HOUND_OPEN_EYE:
 		{
 			m_fDontBlink = false; // turn blinking back on and that code will automatically open the eye
-			m_iTaskStatus = TASKSTATUS_COMPLETE;
+			m_iTaskStatus = TaskStatus::Complete;
 			break;
 		}
 	case TASK_HOUND_CLOSE_EYE:

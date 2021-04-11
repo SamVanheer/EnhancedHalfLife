@@ -49,7 +49,7 @@ bool CBaseMonster :: FHaveSchedule()
 //=========================================================
 void CBaseMonster :: ClearSchedule()
 {
-	m_iTaskStatus = TASKSTATUS_NEW;
+	m_iTaskStatus = TaskStatus::New;
 	m_pSchedule = nullptr;
 	m_iScheduleIndex = 0;
 }
@@ -81,7 +81,7 @@ void CBaseMonster :: ChangeSchedule ( Schedule_t *pNewSchedule )
 
 	m_pSchedule			= pNewSchedule;
 	m_iScheduleIndex	= 0;
-	m_iTaskStatus		= TASKSTATUS_NEW;
+	m_iTaskStatus		= TaskStatus::New;
 	m_afConditions		= 0;// clear all of the conditions
 	m_failSchedule		= SCHED_NONE;
 
@@ -140,7 +140,7 @@ void CBaseMonster :: NextScheduledTask ()
 {
 	ASSERT( m_pSchedule != nullptr );
 
-	m_iTaskStatus = TASKSTATUS_NEW;
+	m_iTaskStatus = TaskStatus::New;
 	m_iScheduleIndex++;
 
 	if ( FScheduleDone() )
@@ -266,7 +266,7 @@ void CBaseMonster :: MaintainSchedule ()
 			}
 		}
 
-		if ( m_iTaskStatus == TASKSTATUS_NEW )
+		if ( m_iTaskStatus == TaskStatus::New)
 		{	
 			Task_t *pTask = GetTask();
 			ASSERT( pTask != nullptr );
@@ -280,7 +280,7 @@ void CBaseMonster :: MaintainSchedule ()
 			SetActivity ( m_IdealActivity );
 		}
 		
-		if ( !TaskIsComplete() && m_iTaskStatus != TASKSTATUS_NEW )
+		if ( !TaskIsComplete() && m_iTaskStatus != TaskStatus::New)
 			break;
 	}
 

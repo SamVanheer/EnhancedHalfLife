@@ -53,7 +53,7 @@ public:
 		MONSTERSTATE		m_MonsterState;// monster's current state
 		MONSTERSTATE		m_IdealMonsterState;// monster should change to this state
 	
-		int					m_iTaskStatus;
+		TaskStatus			m_iTaskStatus;
 		Schedule_t			*m_pSchedule;
 		int					m_iScheduleIndex;
 
@@ -211,12 +211,12 @@ public:
 
 		bool FGetNodeRoute ( Vector vecDest );
 		
-		inline void TaskComplete() { if ( !HasConditions(bits_COND_TASK_FAILED) ) m_iTaskStatus = TASKSTATUS_COMPLETE; }
+		inline void TaskComplete() { if ( !HasConditions(bits_COND_TASK_FAILED) ) m_iTaskStatus = TaskStatus::Complete; }
 		void MovementComplete();
 		inline void TaskFail() { SetConditions(bits_COND_TASK_FAILED); }
-		inline void TaskBegin() { m_iTaskStatus = TASKSTATUS_RUNNING; }
+		inline void TaskBegin() { m_iTaskStatus = TaskStatus::Running; }
 		bool TaskIsRunning();
-		inline bool TaskIsComplete() { return (m_iTaskStatus == TASKSTATUS_COMPLETE); }
+		inline bool TaskIsComplete() { return m_iTaskStatus == TaskStatus::Complete; }
 		inline bool MovementIsComplete() { return (m_movementGoal == MOVEGOAL_NONE); }
 
 		int IScheduleFlags ();

@@ -1164,7 +1164,7 @@ Schedule_t* CBullsquid :: GetScheduleOfType ( int Type )
 //=========================================================
 void CBullsquid :: StartTask ( Task_t *pTask )
 {
-	m_iTaskStatus = TASKSTATUS_RUNNING;
+	m_iTaskStatus = TaskStatus::Running;
 
 	switch ( pTask->iTask )
 	{
@@ -1196,7 +1196,7 @@ void CBullsquid :: StartTask ( Task_t *pTask )
 		{
 			if ( BuildRoute ( m_hEnemy->pev->origin, bits_MF_TO_ENEMY, m_hEnemy ) )
 			{
-				m_iTaskStatus = TASKSTATUS_COMPLETE;
+				m_iTaskStatus = TaskStatus::Complete;
 			}
 			else
 			{
@@ -1227,7 +1227,7 @@ void CBullsquid :: RunTask ( Task_t *pTask )
 
 			if ( m_fSequenceFinished )
 			{
-				m_iTaskStatus = TASKSTATUS_COMPLETE;
+				m_iTaskStatus = TaskStatus::Complete;
 			}
 			break;
 		}

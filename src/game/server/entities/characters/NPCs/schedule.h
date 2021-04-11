@@ -15,12 +15,14 @@
 
 #pragma once
 
-//TODO: should probably be enum class
-constexpr int TASKSTATUS_NEW = 0;				// Just started
-constexpr int TASKSTATUS_RUNNING = 1;			// Running task & movement
-constexpr int TASKSTATUS_RUNNING_MOVEMENT = 2;	// Just running movement
-constexpr int TASKSTATUS_RUNNING_TASK = 3;		// Just running task
-constexpr int TASKSTATUS_COMPLETE = 4;			// Completed, get next task
+enum class TaskStatus
+{
+	New = 0,		  //!< Just started
+	Running,		  //!< Running task & movement
+	RunningMovement,  //!< Just running movement
+	RunningTask,	  //!< Just running task
+	Complete		  //!< Completed, get next task
+};
 
 
 //=========================================================
