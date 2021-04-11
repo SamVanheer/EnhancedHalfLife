@@ -323,7 +323,7 @@ fired during this frame, handle the event by it's tag ( e.g., muzzleflash, sound
 */
 void DLLEXPORT HUD_StudioEvent( const mstudioevent_t *event, const cl_entity_t *entity )
 {
-	int iMuzzleFlash = 1;
+	bool muzzleFlash = true;
 
 #if defined( _TFC )
 
@@ -335,19 +335,19 @@ void DLLEXPORT HUD_StudioEvent( const mstudioevent_t *event, const cl_entity_t *
 	switch( event->event )
 	{
 	case 5001:
-		if ( iMuzzleFlash )
+		if (muzzleFlash)
 			gEngfuncs.pEfxAPI->R_MuzzleFlash( (float *)&entity->attachment[0], atoi( event->options) );
 		break;
 	case 5011:
-		if ( iMuzzleFlash )
+		if (muzzleFlash)
 			gEngfuncs.pEfxAPI->R_MuzzleFlash( (float *)&entity->attachment[1], atoi( event->options) );
 		break;
 	case 5021:
-		if ( iMuzzleFlash )
+		if (muzzleFlash)
 			gEngfuncs.pEfxAPI->R_MuzzleFlash( (float *)&entity->attachment[2], atoi( event->options) );
 		break;
 	case 5031:
-		if ( iMuzzleFlash )
+		if (muzzleFlash)
 			gEngfuncs.pEfxAPI->R_MuzzleFlash( (float *)&entity->attachment[3], atoi( event->options) );
 		break;
 	case 5002:
