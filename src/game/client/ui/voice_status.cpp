@@ -520,7 +520,7 @@ void CVoiceStatus::UpdateServerState(bool bForce)
 	{	
 		unsigned long serverBanMask = 0;
 		unsigned long banMask = 0;
-		for(unsigned long i=0; i < 32; i++)
+		for(unsigned long i=0; i < MAX_CLIENTS; i++)
 		{
 			char playerID[16];
 			if(!gEngfuncs.GetPlayerUniqueID(i+1, playerID))
@@ -529,7 +529,7 @@ void CVoiceStatus::UpdateServerState(bool bForce)
 			if(m_BanMgr.GetPlayerBan(playerID))
 				banMask |= 1 << i;
 
-			if(m_ServerBannedPlayers[dw*32 + i])
+			if(m_ServerBannedPlayers[dw* MAX_CLIENTS + i])
 				serverBanMask |= 1 << i;
 		}
 

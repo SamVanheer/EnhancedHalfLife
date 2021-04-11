@@ -1151,7 +1151,7 @@ void CEnvSpark::Spawn()
 {
 	SetThink(nullptr);
 	SetUse(nullptr);
-
+	//TODO: define spawnflags
 	if (FBitSet(pev->spawnflags, 32)) // Use for on/off
 	{
 		if (FBitSet(pev->spawnflags, 64)) // Start on

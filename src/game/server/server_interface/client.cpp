@@ -1460,8 +1460,8 @@ int GetWeaponData( edict_t *player, weapon_data_t *info )
 	CBasePlayerWeapon *gun;
 	
 	ItemInfo II;
-	//TODO: use MAX_WEAPONS constant
-	memset( info, 0, 32 * sizeof( weapon_data_t ) );
+
+	memset( info, 0, MAX_WEAPONS * sizeof( weapon_data_t ) );
 
 	if ( !pl )
 		return true;
@@ -1483,7 +1483,7 @@ int GetWeaponData( edict_t *player, weapon_data_t *info )
 					memset( &II, 0, sizeof( II ) );
 					gun->GetItemInfo( &II );
 
-					if ( II.iId >= 0 && II.iId < 32 )
+					if ( II.iId >= 0 && II.iId < MAX_WEAPONS )
 					{
 						item = &info[ II.iId ];
 					 	
@@ -1511,7 +1511,7 @@ int GetWeaponData( edict_t *player, weapon_data_t *info )
 		}
 	}
 #else
-	memset( info, 0, 32 * sizeof( weapon_data_t ) );
+	memset( info, 0, MAX_WEAPONS * sizeof( weapon_data_t ) );
 #endif
 	return true;
 }

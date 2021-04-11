@@ -1636,8 +1636,8 @@ char * ReturnCorrectedModelString ( int iSwitchClass )
 #endif
 
 #ifdef _TFC
-float g_flSpinUpTime[ 33 ];
-float g_flSpinDownTime[ 33 ];
+float g_flSpinUpTime[MAX_CLIENTS + 1];
+float g_flSpinDownTime[MAX_CLIENTS + 1];
 #endif
 
 

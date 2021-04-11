@@ -154,6 +154,7 @@ inline bool FNullEnt(entvars_t* pev)				{ return pev == nullptr || FNullEnt(OFFS
 constexpr string_t iStringNull = 0;
 inline bool FStringNull(int iString)			{ return iString == iStringNull; }
 
+//TODO: defined elsewhere
 constexpr int cchMapNameMost = 32;
 
 // Dot products for view cone checking
