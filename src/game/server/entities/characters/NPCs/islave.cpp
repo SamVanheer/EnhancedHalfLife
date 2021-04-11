@@ -34,6 +34,8 @@ constexpr int ISLAVE_AE_ZAP_DONE = 5;
 
 constexpr int ISLAVE_MAX_BEAMS = 8;
 
+constexpr int SF_ISLAVE_IS_REVIVED_SLAVE = 1 << 0;
+
 /**
 *	@brief Alien slave monster
 */
@@ -407,7 +409,7 @@ void CISlave :: HandleAnimEvent( MonsterEvent_t *pEvent )
 				{
 					CBaseEntity *pNew = Create( "monster_alien_slave", m_hDead->pev->origin, m_hDead->pev->angles );
 					CBaseMonster *pNewMonster = pNew->MyMonsterPointer( );
-					pNew->pev->spawnflags |= 1;
+					pNew->pev->spawnflags |= SF_ISLAVE_IS_REVIVED_SLAVE;
 					WackBeam( -1, pNew );
 					WackBeam( 1, pNew );
 					UTIL_Remove( m_hDead );
@@ -634,9 +636,9 @@ Schedule_t *CISlave :: GetSchedule()
 	ClearBeams( );
 
 /*
-	if (pev->spawnflags)
+	if (pev->spawnflags & SF_ISLAVE_IS_REVIVED_SLAVE)
 	{
-		pev->spawnflags = 0;
+		pev->spawnflags &= ~SF_ISLAVE_IS_REVIVED_SLAVE;
 		return GetScheduleOfType( SCHED_RELOAD );
 	}
 */

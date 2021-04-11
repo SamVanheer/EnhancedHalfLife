@@ -1118,6 +1118,9 @@ void CMomentaryRotButton::UpdateSelfReturn( float value )
 // Spark
 //----------------------------------------------------------------
 
+constexpr int SF_SPARK_TOGGLE = 1 << 5;
+constexpr int SF_SPARK_START_ON = 1 << 6;
+
 class CEnvSpark : public CBaseEntity
 {
 public:
@@ -1151,10 +1154,10 @@ void CEnvSpark::Spawn()
 {
 	SetThink(nullptr);
 	SetUse(nullptr);
-	//TODO: define spawnflags
-	if (FBitSet(pev->spawnflags, 32)) // Use for on/off
+
+	if (FBitSet(pev->spawnflags, SF_SPARK_TOGGLE)) // Use for on/off
 	{
-		if (FBitSet(pev->spawnflags, 64)) // Start on
+		if (FBitSet(pev->spawnflags, SF_SPARK_START_ON)) // Start on
 		{
 			SetThink(&CEnvSpark::SparkThink);	// start sparking
 			SetUse(&CEnvSpark::SparkStop);		// set up +USE to stop sparking

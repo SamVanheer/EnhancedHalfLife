@@ -26,6 +26,8 @@ constexpr int	TRIPMINE_PRIMARY_VOLUME = 450;
 
 #ifndef CLIENT_DLL
 
+constexpr int SF_TRIPMINE_INSTANT_ON = 1 << 0;
+
 class CTripmineGrenade : public CGrenade
 {
 	void Spawn() override;
@@ -94,7 +96,7 @@ void CTripmineGrenade :: Spawn()
 	UTIL_SetSize(pev, Vector( -8, -8, -8), Vector(8, 8, 8));
 	UTIL_SetOrigin( pev, pev->origin );
 
-	if (pev->spawnflags & 1)
+	if (pev->spawnflags & SF_TRIPMINE_INSTANT_ON)
 	{
 		// power up quickly
 		m_flPowerUp = gpGlobals->time + 1.0;
