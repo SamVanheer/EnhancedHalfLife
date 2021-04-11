@@ -1251,7 +1251,7 @@ case TASK_GET_PATH_TO_BESTSCENT:
 		}
 	case TASK_WAIT_FOR_SCRIPT:
 		{
-			if (m_pCine->m_iszIdle)
+			if (!FStringNull(m_pCine->m_iszIdle))
 			{
 				m_pCine->StartSequence( (CBaseMonster *)this, m_pCine->m_iszIdle, false);
 				if (FStrEq( STRING(m_pCine->m_iszIdle), STRING(m_pCine->m_iszPlay)))

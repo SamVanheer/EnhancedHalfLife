@@ -20,7 +20,7 @@
 
 globalentity_t* CGlobalState::Find(string_t globalname)
 {
-	if (!globalname)
+	if (FStringNull(globalname))
 		return nullptr;
 
 	globalentity_t* pTest;

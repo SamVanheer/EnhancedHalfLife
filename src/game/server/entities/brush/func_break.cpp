@@ -333,13 +333,13 @@ void CBreakable::Precache()
 		break;
 	}
 	MaterialSoundPrecache( m_Material );
-	if ( m_iszGibModel )
+	if (!FStringNull(m_iszGibModel))
 		pGibName = STRING(m_iszGibModel);
 
 	m_idShard = PRECACHE_MODEL( (char *)pGibName );
 
 	// Precache the spawn item's data
-	if ( m_iszSpawnObject )
+	if (!FStringNull(m_iszSpawnObject))
 		UTIL_PrecacheOther( (char *)STRING( m_iszSpawnObject ) );
 }
 
@@ -738,7 +738,7 @@ void CBreakable::Die()
 
 	SetThink( &CBreakable::SUB_Remove );
 	pev->nextthink = pev->ltime + 0.1;
-	if ( m_iszSpawnObject )
+	if (!FStringNull(m_iszSpawnObject))
 		CBaseEntity::Create( (char *)STRING(m_iszSpawnObject), VecBModelOrigin(pev), pev->angles, edict() );
 
 

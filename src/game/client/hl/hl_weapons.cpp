@@ -97,7 +97,7 @@ bool bIsMultiplayer ()
 //Just loads a v_ model.
 void LoadVModel ( const char *szViewModel, CBasePlayer *m_pPlayer )
 {
-	gEngfuncs.CL_LoadModel( szViewModel, &m_pPlayer->pev->viewmodel );
+	gEngfuncs.CL_LoadModel( szViewModel, reinterpret_cast<int*>(&m_pPlayer->pev->viewmodel) );
 }
 
 /*
@@ -165,7 +165,7 @@ bool CBasePlayerWeapon :: DefaultDeploy(const char *szViewModel, const char *szW
 	if ( !CanDeploy() )
 		return false;
 
-	gEngfuncs.CL_LoadModel( szViewModel, &m_pPlayer->pev->viewmodel );
+	gEngfuncs.CL_LoadModel( szViewModel, reinterpret_cast<int*>(&m_pPlayer->pev->viewmodel) );
 	
 	SendWeaponAnim( iAnim, skiplocal, body );
 
@@ -695,7 +695,7 @@ void HUD_WeaponsPostThink( local_state_t *from, local_state_t*to, usercmd_t *cmd
 	// Don't go firing anything if we have died or are spectating
 	// Or if we don't have a weapon model deployed
 	if ( ( player.pev->deadflag != ( DEAD_DISCARDBODY + 1 ) ) && 
-		 !CL_IsDead() && player.pev->viewmodel && !g_iUser1 )
+		 !CL_IsDead() && !FStringNull(player.pev->viewmodel) && !g_iUser1 )
 	{
 		if ( player.m_flNextAttack <= 0 )
 		{

@@ -2456,7 +2456,7 @@ void CBasePlayer::PostThink()
 	// Handle Tank controlling
 	if ( m_pTank != nullptr )
 	{ // if they've moved too far from the gun,  or selected a weapon, unuse the gun
-		if ( m_pTank->OnControls( pev ) && !pev->weaponmodel )
+		if ( m_pTank->OnControls( pev ) && FStringNull(pev->weaponmodel) )
 		{  
 			m_pTank->Use( this, this, USE_SET, 2 );	// try fire the gun
 		}
@@ -3063,7 +3063,7 @@ void CBasePlayer::GiveNamedItem( const char *pszName )
 {
 	edict_t	*pent;
 
-	int istr = MAKE_STRING(pszName);
+	string_t istr = MAKE_STRING(pszName);
 
 	pent = CREATE_NAMED_ENTITY(istr);
 	if ( FNullEnt( pent ) )
@@ -3336,7 +3336,7 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 			}
 
 			ALERT ( at_console, "Model: %s\n", STRING( pEntity->pev->model ) );
-			if ( pEntity->pev->globalname )
+			if (!FStringNull(pEntity->pev->globalname))
 				ALERT ( at_console, "Globalname: %s\n", STRING( pEntity->pev->globalname ) );
 		}
 		break;

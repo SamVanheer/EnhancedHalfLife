@@ -124,7 +124,7 @@ struct clientdata_t
 	Vector				origin;
 	Vector				velocity;
 
-	int					viewmodel;
+	string_t			viewmodel;
 	Vector				punchangle;
 	int					flags;
 	int					waterlevel;

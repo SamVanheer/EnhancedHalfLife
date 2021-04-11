@@ -398,8 +398,8 @@ public:
 	void	BeamUpdateVars();
 
 	int		m_active;
-	int		m_iszStartEntity;
-	int		m_iszEndEntity;
+	string_t m_iszStartEntity;
+	string_t m_iszEndEntity;
 	float	m_life;
 	int		m_boltWidth;
 	int		m_noiseAmplitude;
@@ -407,7 +407,7 @@ public:
 	int		m_speed;
 	float	m_restrike;
 	int		m_spriteTexture;
-	int		m_iszSpriteName;
+	string_t m_iszSpriteName;
 	int		m_frameStart;
 
 	float	m_radius;
@@ -475,7 +475,7 @@ void CLightning::Spawn()
 			SetThink( &CLightning::DamageThink );
 			pev->nextthink = gpGlobals->time + 0.1;
 		}
-		if ( pev->targetname )
+		if (!FStringNull(pev->targetname))
 		{
 			if ( !(pev->spawnflags & SF_BEAM_STARTON) )
 			{
@@ -972,7 +972,7 @@ void CLaser::Spawn()
 
 	PointsInit( pev->origin, pev->origin );
 
-	if ( !m_pSprite && m_iszSpriteName )
+	if ( !m_pSprite && !FStringNull(m_iszSpriteName))
 		m_pSprite = CSprite::SpriteCreate( STRING(m_iszSpriteName), pev->origin, true);
 	else
 		m_pSprite = nullptr;
@@ -980,7 +980,7 @@ void CLaser::Spawn()
 	if ( m_pSprite )
 		m_pSprite->SetTransparency( kRenderGlow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx );
 
-	if ( pev->targetname && !(pev->spawnflags & SF_BEAM_STARTON) )
+	if (!FStringNull(pev->targetname) && !(pev->spawnflags & SF_BEAM_STARTON) )
 		TurnOff();
 	else
 		TurnOn();
@@ -989,7 +989,7 @@ void CLaser::Spawn()
 void CLaser::Precache()
 {
 	pev->modelindex = PRECACHE_MODEL( (char *)STRING(pev->model) );
-	if ( m_iszSpriteName )
+	if (!FStringNull(m_iszSpriteName))
 		PRECACHE_MODEL( (char *)STRING(m_iszSpriteName) );
 }
 
@@ -1190,7 +1190,7 @@ void CSprite::Spawn()
 	SET_MODEL( ENT(pev), STRING(pev->model) );
 
 	m_maxFrame = (float) MODEL_FRAMES( pev->modelindex ) - 1;
-	if ( pev->targetname && !(pev->spawnflags & SF_SPRITE_STARTON) )
+	if (!FStringNull(pev->targetname) && !(pev->spawnflags & SF_SPRITE_STARTON) )
 		TurnOff();
 	else
 		TurnOn();
@@ -2033,7 +2033,7 @@ void CMessage::Spawn()
 
 void CMessage::Precache()
 {
-	if ( pev->noise )
+	if (!FStringNull(pev->noise))
 		PRECACHE_SOUND( (char *)STRING(pev->noise) );
 }
 
@@ -2076,7 +2076,7 @@ void CMessage::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useT
 		if ( pPlayer )
 			UTIL_ShowMessage( STRING(pev->message), pPlayer );
 	}
-	if ( pev->noise )
+	if (!FStringNull(pev->noise))
 	{
 		EMIT_SOUND( edict(), CHAN_BODY, STRING(pev->noise), pev->scale, pev->speed );
 	}

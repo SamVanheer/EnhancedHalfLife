@@ -39,7 +39,7 @@ public:
 
 private:
 	int		m_iStyle;
-	int		m_iszPattern;
+	string_t m_iszPattern;
 };
 LINK_ENTITY_TO_CLASS( light, CLight );
 
@@ -98,7 +98,7 @@ void CLight :: Spawn()
 //		CHANGE_METHOD(ENT(pev), em_use, light_use);
 		if (FBitSet(pev->spawnflags, SF_LIGHT_START_OFF))
 			LIGHT_STYLE(m_iStyle, "a");
-		else if (m_iszPattern)
+		else if (!FStringNull(m_iszPattern))
 			LIGHT_STYLE(m_iStyle, (char *)STRING( m_iszPattern ));
 		else
 			LIGHT_STYLE(m_iStyle, "m");
@@ -115,7 +115,7 @@ void CLight :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useT
 
 		if (FBitSet(pev->spawnflags, SF_LIGHT_START_OFF))
 		{
-			if (m_iszPattern)
+			if (!FStringNull(m_iszPattern))
 				LIGHT_STYLE(m_iStyle, (char *)STRING( m_iszPattern ));
 			else
 				LIGHT_STYLE(m_iStyle, "m");

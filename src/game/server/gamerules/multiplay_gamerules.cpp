@@ -411,7 +411,7 @@ void CHalfLifeMultiplay :: InitHUD( CBasePlayer *pl )
 {
 	// notify other clients of player joining the game
 	UTIL_ClientPrintAll( HUD_PRINTNOTIFY, UTIL_VarArgs( "%s has joined the game\n", 
-		( pl->pev->netname && STRING(pl->pev->netname)[0] != 0 ) ? STRING(pl->pev->netname) : "unconnected" ) );
+		(!FStringNull(pl->pev->netname) && STRING(pl->pev->netname)[0] != 0 ) ? STRING(pl->pev->netname) : "unconnected" ) );
 
 	// team match?
 	if ( g_teamplay )
@@ -1094,7 +1094,7 @@ int CHalfLifeMultiplay::DeadPlayerAmmo( CBasePlayer *pPlayer )
 edict_t *CHalfLifeMultiplay::GetPlayerSpawnSpot( CBasePlayer *pPlayer )
 {
 	edict_t *pentSpawnSpot = CGameRules::GetPlayerSpawnSpot( pPlayer );	
-	if ( IsMultiplayer() && pentSpawnSpot->v.target )
+	if ( IsMultiplayer() && !FStringNull(pentSpawnSpot->v.target))
 	{
 		FireTargets( STRING(pentSpawnSpot->v.target), pPlayer, pPlayer, USE_TOGGLE, 0 );
 	}

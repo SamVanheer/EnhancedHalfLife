@@ -152,7 +152,7 @@ inline bool FNullEnt(entvars_t* pev)				{ return pev == nullptr || FNullEnt(OFFS
 
 // Testing strings for nullity
 constexpr string_t iStringNull = 0;
-inline bool FStringNull(int iString)			{ return iString == iStringNull; }
+inline bool FStringNull(string_t iString) { return iString == iStringNull; }
 
 //TODO: defined elsewhere
 constexpr int cchMapNameMost = 32;

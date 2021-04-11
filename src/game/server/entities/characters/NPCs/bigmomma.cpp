@@ -44,7 +44,7 @@ public:
 	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int		m_preSequence;
+	string_t m_preSequence;
 };
 
 LINK_ENTITY_TO_CLASS( info_bigmomma, CInfoBM );
@@ -183,7 +183,7 @@ public:
 	Schedule_t	*GetScheduleOfType( int Type ) override;
 	void		TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType ) override;
 
-	void NodeStart( int iszNextNode );
+	void NodeStart(string_t iszNextNode);
 	void NodeReach();
 	bool ShouldGoToNode();
 
@@ -192,25 +192,25 @@ public:
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	void LayHeadcrab();
 
-	int GetNodeSequence()
+	string_t GetNodeSequence()
 	{
 		CBaseEntity *pTarget = m_hTargetEnt;
 		if ( pTarget )
 		{
 			return pTarget->pev->netname;	// netname holds node sequence
 		}
-		return 0;
+		return iStringNull;
 	}
 
 
-	int GetNodePresequence()
+	string_t GetNodePresequence()
 	{
 		CInfoBM *pTarget = (CInfoBM *)(CBaseEntity *)m_hTargetEnt;
 		if ( pTarget )
 		{
 			return pTarget->m_preSequence;
 		}
-		return 0;
+		return iStringNull;
 	}
 
 	float GetNodeDelay()
@@ -539,7 +539,7 @@ void CBigMomma :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		case BIG_AE_EARLY_TARGET:
 			{
 				CBaseEntity *pTarget = m_hTargetEnt;
-				if ( pTarget && pTarget->pev->message )
+				if ( pTarget && !FStringNull(pTarget->pev->message) )
 					FireTargets( STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0 );
 				Remember( bits_MEMORY_FIRED_NODE );
 			}
@@ -706,13 +706,13 @@ void CBigMomma::Activate()
 }
 
 
-void CBigMomma::NodeStart( int iszNextNode )
+void CBigMomma::NodeStart(string_t iszNextNode)
 {
 	pev->netname = iszNextNode;
 
 	CBaseEntity *pTarget = nullptr;
 
-	if ( pev->netname )
+	if ( !FStringNull(pev->netname) )
 	{
 		edict_t *pentTarget = FIND_ENTITY_BY_TARGETNAME ( nullptr, STRING(pev->netname) );
 
@@ -746,7 +746,7 @@ void CBigMomma::NodeReach()
 
 	if ( !HasMemory( bits_MEMORY_FIRED_NODE ) )
 	{
-		if ( pTarget->pev->message )
+		if ( !FStringNull(pTarget->pev->message) )
 			FireTargets( STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0 );
 	}
 	Forget( bits_MEMORY_FIRED_NODE );
@@ -947,19 +947,19 @@ void CBigMomma::StartTask( Task_t *pTask )
 	case TASK_PLAY_NODE_PRESEQUENCE:
 	case TASK_PLAY_NODE_SEQUENCE:
 		{
-			int sequence;
+			string_t sequence;
 			if ( pTask->iTask == TASK_PLAY_NODE_SEQUENCE )
 				sequence = GetNodeSequence();
 			else
 				sequence = GetNodePresequence();
 
 			ALERT( at_aiconsole, "BM: Playing node sequence %s\n", STRING(sequence) );
-			if ( sequence )
+			if ( !FStringNull(sequence) )
 			{
-				sequence = LookupSequence( STRING( sequence ) );
-				if ( sequence != -1 )
+				const int sequenceIndex = LookupSequence( STRING( sequence ) );
+				if (sequenceIndex != -1 )
 				{
-					pev->sequence = sequence;
+					pev->sequence = sequenceIndex;
 					pev->frame = 0;
 					ResetSequenceInfo( );
 					ALERT( at_aiconsole, "BM: Sequence %s\n", STRING(GetNodeSequence()) );

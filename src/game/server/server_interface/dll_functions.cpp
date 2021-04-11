@@ -119,7 +119,7 @@ int DispatchSpawn(edict_t* pent)
 
 
 		// Handle global stuff here
-		if (pEntity && pEntity->pev->globalname)
+		if (pEntity && !FStringNull(pEntity->pev->globalname))
 		{
 			const globalentity_t* pGlobal = gGlobalState.EntityFromTable(pEntity->pev->globalname);
 			if (pGlobal)
@@ -363,7 +363,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 				pEntity->OverrideReset();
 			}
 		}
-		else if (pEntity && pEntity->pev->globalname)
+		else if (pEntity && !FStringNull(pEntity->pev->globalname))
 		{
 			const globalentity_t* pGlobal = gGlobalState.EntityFromTable(pEntity->pev->globalname);
 			if (pGlobal)

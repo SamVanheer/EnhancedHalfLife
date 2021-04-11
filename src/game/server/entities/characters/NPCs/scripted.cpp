@@ -131,7 +131,7 @@ void CCineMonster :: Spawn()
 		SetThink( &CCineMonster::CineThink );
 		pev->nextthink = gpGlobals->time + 1.0;
 		// Wait to be used?
-		if ( pev->targetname )
+		if (!FStringNull(pev->targetname))
 			m_startTime = gpGlobals->time + 1E6;
 	}
 	if ( pev->spawnflags & SF_SCRIPT_NOINTERRUPT )
@@ -364,7 +364,7 @@ void CCineMonster :: PossessEntity()
 //		ALERT( at_aiconsole, "\"%s\" found and used (INT: %s)\n", STRING( pTarget->pev->targetname ), FBitSet(pev->spawnflags, SF_SCRIPT_NOINTERRUPT)?"No":"Yes" );
 
 		pTarget->m_IdealMonsterState = MONSTERSTATE_SCRIPT;
-		if (m_iszIdle)
+		if (!FStringNull(m_iszIdle))
 		{
 			StartSequence( pTarget, m_iszIdle, false);
 			if (FStrEq( STRING(m_iszIdle), STRING(m_iszPlay)))
@@ -476,9 +476,9 @@ void CCineMonster :: CineThink()
 
 
 // lookup a sequence name and setup the target monster to play it
-bool CCineMonster :: StartSequence( CBaseMonster *pTarget, int iszSeq, bool completeOnEmpty )
+bool CCineMonster :: StartSequence( CBaseMonster *pTarget, string_t iszSeq, bool completeOnEmpty )
 {
-	if ( !iszSeq && completeOnEmpty )
+	if ( FStringNull(iszSeq) && completeOnEmpty )
 	{
 		SequenceDone( pTarget );
 		return false;
@@ -510,9 +510,9 @@ bool CCineMonster :: StartSequence( CBaseMonster *pTarget, int iszSeq, bool comp
 // lookup a sequence name and setup the target monster to play it
 // overridden for CCineAI because it's ok for them to not have an animation sequence
 // for the monster to play. For a regular Scripted Sequence, that situation is an error.
-bool CCineAI :: StartSequence( CBaseMonster *pTarget, int iszSeq, bool completeOnEmpty )
+bool CCineAI :: StartSequence( CBaseMonster *pTarget, string_t iszSeq, bool completeOnEmpty )
 {
-	if ( iszSeq == 0 && completeOnEmpty )
+	if (FStringNull(iszSeq) && completeOnEmpty )
 	{
 		// no sequence was provided. Just let the monster proceed, however, we still have to fire any Sequence target
 		// and remove any non-repeatable CineAI entities here ( because there is code elsewhere that handles those tasks, but
@@ -691,7 +691,7 @@ void CCineMonster :: CancelScript()
 {
 	ALERT( at_aiconsole, "Cancelling script: %s\n", STRING(m_iszPlay) );
 	
-	if ( !pev->targetname )
+	if (FStringNull(pev->targetname))
 	{
 		ScriptEntityCancel( edict() );
 		return;
@@ -827,7 +827,7 @@ bool CBaseMonster :: CineCleanup( )
 	}
 
 	// If we actually played a sequence
-	if ( pOldCine && pOldCine->m_iszPlay )
+	if ( pOldCine && !FStringNull(pOldCine->m_iszPlay))
 	{
 		if ( !(pOldCine->pev->spawnflags & SF_SCRIPT_NOSCRIPTMOVEMENT) )
 		{
@@ -926,15 +926,15 @@ public:
 
 
 private:
-	int		m_iszSentence;		// string index for idle animation
-	int		m_iszEntity;	// entity that is wanted for this sentence
+	string_t m_iszSentence;		// string index for idle animation
+	string_t m_iszEntity;	// entity that is wanted for this sentence
 	float	m_flRadius;		// range to search
 	float	m_flDuration;	// How long the sentence lasts
 	float	m_flRepeat;	// repeat rate
 	float	m_flAttenuation;
 	float	m_flVolume;
 	bool	m_active;
-	int		m_iszListener;	// name of entity to look at while talking
+	string_t m_iszListener;	// name of entity to look at while talking
 };
 
 constexpr int SF_SENTENCE_ONCE = 0x0001;
@@ -1023,7 +1023,7 @@ void CScriptedSentence :: Spawn()
 	
 	m_active = true;
 	// if no targetname, start now
-	if ( !pev->targetname )
+	if (FStringNull(pev->targetname))
 	{
 		SetThink( &CScriptedSentence::FindThink );
 		pev->nextthink = gpGlobals->time + 1.0;
@@ -1080,7 +1080,7 @@ void CScriptedSentence :: FindThink()
 void CScriptedSentence :: DelayThink()
 {
 	m_active = true;
-	if ( !pev->targetname )
+	if (FStringNull(pev->targetname))
 		pev->nextthink = gpGlobals->time + 0.1;
 	SetThink( &CScriptedSentence::FindThink );
 }

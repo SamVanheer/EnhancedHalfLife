@@ -115,7 +115,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	int			m_globalstate;
+	string_t m_globalstate;
 	USE_TYPE	triggerType;
 };
 LINK_ENTITY_TO_CLASS( trigger_auto, CAutoTrigger );
@@ -171,7 +171,7 @@ void CAutoTrigger::Precache()
 
 void CAutoTrigger::Think()
 {
-	if ( !m_globalstate || gGlobalState.EntityGetState( m_globalstate ) == GLOBAL_ON )
+	if ( FStringNull(m_globalstate) || gGlobalState.EntityGetState( m_globalstate ) == GLOBAL_ON )
 	{
 		SUB_UseTargets( this, triggerType, 0 );
 		if ( pev->spawnflags & SF_AUTO_FIREONCE )
@@ -280,7 +280,7 @@ public:
 	int		m_cTargets;	// the total number of targets in this manager's fire list.
 	int		m_index;	// Current target
 	float	m_startTime;// Time we started firing
-	int		m_iTargetName	[ MAX_MULTI_TARGETS ];// list if indexes into global string array
+	string_t m_iTargetName	[ MAX_MULTI_TARGETS ];// list if indexes into global string array
 	float	m_flTargetDelay [ MAX_MULTI_TARGETS ];// delay (in seconds) from time of manager fire to target fire
 private:
 	inline bool IsClone() { return (pev->spawnflags & SF_MULTIMAN_CLONE) ? true : false; }
@@ -345,6 +345,7 @@ void CMultiManager :: Spawn()
 
 	// Sort targets
 	// Quick and dirty bubble sort
+	//TODO: bool & std::swap
 	int swapped = 1;
 
 	while ( swapped )
@@ -355,7 +356,7 @@ void CMultiManager :: Spawn()
 			if ( m_flTargetDelay[i] < m_flTargetDelay[i-1] )
 			{
 				// Swap out of order elements
-				int name = m_iTargetName[i];
+				string_t name = m_iTargetName[i];
 				float delay = m_flTargetDelay[i];
 				m_iTargetName[i] = m_iTargetName[i-1];
 				m_flTargetDelay[i] = m_flTargetDelay[i-1];
@@ -1010,7 +1011,7 @@ void CBaseTrigger :: HurtTouch ( CBaseEntity *pOther )
 
   
 	
-	if ( pev->target )
+	if ( !FStringNull(pev->target) )
 	{
 		// trigger has a target it wants to fire. 
 		if ( pev->spawnflags & SF_TRIGGER_HURT_CLIENTONLYFIRE )
@@ -1165,7 +1166,7 @@ void CBaseTrigger :: ActivateMultiTrigger( CBaseEntity *pActivator )
 	m_hActivator = pActivator;
 	SUB_UseTargets( m_hActivator, USE_TOGGLE, 0 );
 
-	if ( pev->message && pActivator->IsPlayer() )
+	if (!FStringNull(pev->message) && pActivator->IsPlayer() )
 	{
 		UTIL_ShowMessage( STRING(pev->message), pActivator );
 //		CLIENT_PRINTF( ENT( pActivator->pev ), print_center, STRING(pev->message) );
@@ -1342,7 +1343,7 @@ public:
 
 	char m_szMapName[cchMapNameMost];		// trigger_changelevel only:  next map
 	char m_szLandmarkName[cchMapNameMost];		// trigger_changelevel only:  landmark on next map
-	int		m_changeTarget;
+	string_t m_changeTarget;
 	float	m_changeTargetDelay;
 };
 LINK_ENTITY_TO_CLASS( trigger_changelevel, CChangeLevel );
@@ -1485,7 +1486,7 @@ void CChangeLevel :: ChangeLevelNow( CBaseEntity *pActivator )
 	}
 
 	// Create an entity to fire the changetarget
-	if ( m_changeTarget )
+	if (!FStringNull(m_changeTarget))
 	{
 		CFireAndDie *pFireAndDie = GetClassPtr( (CFireAndDie *)nullptr );
 		if ( pFireAndDie )
@@ -1662,7 +1663,7 @@ int CChangeLevel::ChangeList( LEVELLIST *pLevelList, int maxList )
 						// If this entity can be moved or is global, mark it
 						if ( caps & FCAP_ACROSS_TRANSITION )
 							flags |= FENTTABLE_MOVEABLE;
-						if ( pEntity->pev->globalname && !pEntity->IsDormant() )
+						if (!FStringNull(pEntity->pev->globalname) && !pEntity->IsDormant() )
 							flags |= FENTTABLE_GLOBAL;
 						if ( flags )
 						{
@@ -1993,7 +1994,7 @@ void CTriggerEndSection::EndSectionUse( CBaseEntity *pActivator, CBaseEntity *pC
 	
 	SetUse( nullptr );
 
-	if ( pev->message )
+	if ( !FStringNull(pev->message) )
 	{
 		g_engfuncs.pfnEndSection(STRING(pev->message));
 	}
@@ -2024,7 +2025,7 @@ void CTriggerEndSection::EndSectionTouch( CBaseEntity *pOther )
 	
 	SetTouch( nullptr );
 
-	if (pev->message)
+	if (!FStringNull(pev->message))
 	{
 		g_engfuncs.pfnEndSection(STRING(pev->message));
 	}
@@ -2089,7 +2090,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	int		m_iszNewTarget;
+	string_t m_iszNewTarget;
 };
 LINK_ENTITY_TO_CLASS( trigger_changetarget, CTriggerChangeTarget );
 
@@ -2155,7 +2156,7 @@ public:
 	EHANDLE m_hPlayer;
 	EHANDLE m_hTarget;
 	CBaseEntity *m_pentPath;
-	int	  m_sPath;
+	string_t m_sPath;
 	float m_flWait;
 	float m_flReturnTime;
 	float m_flStopTime;
@@ -2277,7 +2278,7 @@ void CTriggerCamera::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 		player->EnableControl(false);
 	}
 
-	if ( m_sPath )
+	if (!FStringNull(m_sPath))
 	{
 		m_pentPath = Instance( FIND_ENTITY_BY_TARGETNAME ( nullptr, STRING(m_sPath)) );
 	}
@@ -2399,7 +2400,7 @@ void CTriggerCamera::Move()
 	if ( m_moveDistance <= 0 )
 	{
 		// Fire the passtarget if there is one
-		if ( m_pentPath->pev->message )
+		if (!FStringNull(m_pentPath->pev->message))
 		{
 			FireTargets( STRING(m_pentPath->pev->message), this, this, USE_TOGGLE, 0 );
 			if ( FBitSet( m_pentPath->pev->spawnflags, SF_CORNER_FIREONCE ) )

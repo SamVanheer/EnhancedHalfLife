@@ -500,7 +500,7 @@ void EntvarsKeyvalue(entvars_t* pev, KeyValueData* pkvd)
 			case FIELD_MODELNAME:
 			case FIELD_SOUNDNAME:
 			case FIELD_STRING:
-				(*(int*)((char*)pev + pField->fieldOffset)) = ALLOC_STRING(pkvd->szValue);
+				(*(string_t*)((char*)pev + pField->fieldOffset)) = ALLOC_STRING(pkvd->szValue);
 				break;
 
 			case FIELD_TIME:
@@ -777,11 +777,9 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 							*((int*)pOutputData) = 0;
 						else
 						{
-							int string;
+							string_t string = ALLOC_STRING(inputString);
 
-							string = ALLOC_STRING(inputString);
-
-							*((int*)pOutputData) = string;
+							*((string_t*)pOutputData) = string;
 
 							if (!FStringNull(string) && m_precache)
 							{

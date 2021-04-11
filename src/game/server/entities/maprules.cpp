@@ -29,7 +29,7 @@ public:
 	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	void	SetMaster( int iszMaster ) { m_iszMaster = iszMaster; }
+	void	SetMaster(string_t iszMaster ) { m_iszMaster = iszMaster; }
 
 protected:
 	bool	CanFireForActivator( CBaseEntity *pActivator );
@@ -67,7 +67,7 @@ void CRuleEntity::KeyValue( KeyValueData *pkvd )
 
 bool CRuleEntity::CanFireForActivator( CBaseEntity *pActivator )
 {
-	if ( m_iszMaster )
+	if ( !FStringNull(m_iszMaster) )
 	{
 		if ( UTIL_IsMasterTriggered( m_iszMaster, pActivator ) )
 			return true;
@@ -572,7 +572,7 @@ void CGamePlayerZone::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 			if ( trace.fStartSolid )
 			{
 				playersInCount++;
-				if ( m_iszInTarget )
+				if ( !FStringNull(m_iszInTarget) )
 				{
 					FireTargets( STRING(m_iszInTarget), pPlayer, pActivator, useType, value );
 				}
@@ -580,7 +580,7 @@ void CGamePlayerZone::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 			else
 			{
 				playersOutCount++;
-				if ( m_iszOutTarget )
+				if ( !FStringNull(m_iszOutTarget) )
 				{
 					FireTargets( STRING(m_iszOutTarget), pPlayer, pActivator, useType, value );
 				}
@@ -588,12 +588,12 @@ void CGamePlayerZone::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 		}
 	}
 
-	if ( m_iszInCount )
+	if ( !FStringNull(m_iszInCount) )
 	{
 		FireTargets( STRING(m_iszInCount), pActivator, this, USE_SET, playersInCount );
 	}
 
-	if ( m_iszOutCount )
+	if ( !FStringNull(m_iszOutCount) )
 	{
 		FireTargets( STRING(m_iszOutCount), pActivator, this, USE_SET, playersOutCount );
 	}
@@ -786,7 +786,7 @@ void CGamePlayerEquip::KeyValue( KeyValueData *pkvd )
 	{
 		for ( int i = 0; i < MAX_EQUIP; i++ )
 		{
-			if ( !m_weaponNames[i] )
+			if (FStringNull(m_weaponNames[i]) )
 			{
 				char tmp[128];
 
@@ -828,7 +828,7 @@ void CGamePlayerEquip::EquipPlayer( CBaseEntity *pEntity )
 
 	for ( int i = 0; i < MAX_EQUIP; i++ )
 	{
-		if ( !m_weaponNames[i] )
+		if (FStringNull(m_weaponNames[i]) )
 			break;
 		for ( int j = 0; j < m_weaponCount[i]; j++ )
 		{

@@ -76,7 +76,7 @@ void CEnvGlobal::KeyValue( KeyValueData *pkvd )
 
 void CEnvGlobal::Spawn()
 {
-	if ( !m_globalstate )
+	if ( FStringNull(m_globalstate ))
 	{
 		REMOVE_ENTITY( ENT(pev) );
 		return;
@@ -198,7 +198,7 @@ void CMultiSource::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE 
 	{
 		ALERT( at_aiconsole, "Multisource %s enabled (%d inputs)\n", STRING(pev->targetname), m_iTotal );
 		USE_TYPE useType = USE_TOGGLE;
-		if ( m_globalstate )
+		if ( !FStringNull(m_globalstate) )
 			useType = USE_ON;
 		SUB_UseTargets(nullptr, useType, 0 );
 	}
@@ -223,7 +223,7 @@ bool CMultiSource::IsTriggered( CBaseEntity * )
 
 	if (i == m_iTotal)
 	{
-		if ( !m_globalstate || gGlobalState.EntityGetState( m_globalstate ) == GLOBAL_ON )
+		if (FStringNull(m_globalstate) || gGlobalState.EntityGetState( m_globalstate ) == GLOBAL_ON )
 			return true;
 	}
 	

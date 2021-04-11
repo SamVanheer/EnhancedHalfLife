@@ -47,7 +47,7 @@ MULTIDAMAGE gMultiDamage;
 // you the maximum amount of that type of ammunition that a 
 // player can carry.
 //=========================================================
-int MaxAmmoCarry( int iszName )
+int MaxAmmoCarry( string_t iszName )
 {
 	for ( int i = 0;  i < MAX_WEAPONS; i++ )
 	{
@@ -1240,7 +1240,7 @@ bool CWeaponBox::PackWeapon( CBasePlayerItem *pWeapon )
 //=========================================================
 // CWeaponBox - PackAmmo
 //=========================================================
-bool CWeaponBox::PackAmmo( int iszName, int iCount )
+bool CWeaponBox::PackAmmo( string_t iszName, int iCount )
 {
 	int iMaxCarry;
 

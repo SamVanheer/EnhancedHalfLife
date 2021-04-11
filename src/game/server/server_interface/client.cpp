@@ -96,7 +96,7 @@ void ClientDisconnect( edict_t *pEntity )
 		return;
 
 	char text[256] = "" ;
-	if ( pEntity->v.netname )
+	if (!FStringNull(pEntity->v.netname))
 		snprintf( text, sizeof(text), "- %s has left the game\n", STRING(pEntity->v.netname) );
 	MESSAGE_BEGIN( MSG_ALL, gmsgSayText, nullptr);
 		WRITE_BYTE( ENTINDEX(pEntity) );
@@ -404,7 +404,7 @@ void ClientCommand( edict_t *pEntity )
 	{
 		if (g_psv_cheats->value)
 		{
-			int iszItem = ALLOC_STRING( CMD_ARGV(1) );	// Make a copy of the classname
+			string_t iszItem = ALLOC_STRING( CMD_ARGV(1) );	// Make a copy of the classname
 			player->GiveNamedItem( STRING(iszItem) );
 		}
 	}
@@ -447,7 +447,7 @@ void ClientCommand( edict_t *pEntity )
 
 			// notify other clients of player switching to spectator mode
 			UTIL_ClientPrintAll( HUD_PRINTNOTIFY, UTIL_VarArgs( "%s switched to spectator mode\n", 
-			 	( pev->netname && STRING(pev->netname)[0] != 0 ) ? STRING(pev->netname) : "unconnected" ) );
+			 	(!FStringNull(pev->netname) && STRING(pev->netname)[0] != 0 ) ? STRING(pev->netname) : "unconnected" ) );
 		}
 		else
 			ClientPrint( pev, HUD_PRINTCONSOLE, "Spectator mode is disabled.\n" );
@@ -503,7 +503,7 @@ void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 		return;
 
 	// msg everyone if someone changes their name,  and it isn't the first time (changing no name to current name)
-	if ( pEntity->v.netname && STRING(pEntity->v.netname)[0] != 0 && !FStrEq( STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue( infobuffer, "name" )) )
+	if (!FStringNull(pEntity->v.netname) && STRING(pEntity->v.netname)[0] != 0 && !FStrEq( STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue( infobuffer, "name" )) )
 	{
 		char sName[256];
 		char *pName = g_engfuncs.pfnInfoKeyValue( infobuffer, "name" );

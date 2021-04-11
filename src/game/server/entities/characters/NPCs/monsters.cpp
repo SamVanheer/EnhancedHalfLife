@@ -1404,7 +1404,7 @@ float CBaseMonster :: OpenDoorAndWait( entvars_t *pevDoor )
 		//ALERT(at_aiconsole, "pev->ltime = %d ms\n", (int)(1000*pev->ltime));
 		flTravelTime = pevDoor->nextthink - pevDoor->ltime;
 		//ALERT(at_aiconsole, "Waiting %d ms\n", (int)(1000*flTravelTime));
-		if ( pcbeDoor->pev->targetname )
+		if (!FStringNull(pcbeDoor->pev->targetname))
 		{
 			edict_t *pentTarget = nullptr;
 			for (;;)

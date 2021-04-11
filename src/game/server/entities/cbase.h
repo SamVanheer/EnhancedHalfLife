@@ -399,7 +399,7 @@ class CBaseDelay : public CBaseEntity
 {
 public:
 	float		m_flDelay;
-	int			m_iszKillTarget;
+	string_t m_iszKillTarget;
 
 	void	KeyValue( KeyValueData* pkvd) override;
 	bool Save( CSave &save ) override;

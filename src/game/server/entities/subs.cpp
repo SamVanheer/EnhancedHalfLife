@@ -67,7 +67,7 @@ void CBaseEntity::UpdateOnRemove()
 			}
 		}
 	}
-	if ( pev->globalname )
+	if ( !FStringNull(pev->globalname) )
 		gGlobalState.EntitySetState( pev->globalname, GLOBAL_DEAD );
 }
 
@@ -178,7 +178,7 @@ void CBaseDelay :: SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, fl
 	//
 	// exit immediatly if we don't have a target or kill target
 	//
-	if (FStringNull(pev->target) && !m_iszKillTarget)
+	if (FStringNull(pev->target) && FStringNull(m_iszKillTarget))
 		return;
 
 	//
@@ -220,7 +220,7 @@ void CBaseDelay :: SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, fl
 	// kill the killtargets
 	//
 
-	if ( m_iszKillTarget )
+	if (!FStringNull(m_iszKillTarget))
 	{
 		edict_t *pentKillTarget = nullptr;
 
@@ -405,7 +405,7 @@ void CBaseToggle :: LinearMoveDone()
 
 bool CBaseToggle :: IsLockedByMaster()
 {
-	if (m_sMaster && !UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
+	if (!FStringNull(m_sMaster) && !UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
 		return true;
 	else
 		return false;

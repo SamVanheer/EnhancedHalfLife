@@ -308,7 +308,7 @@ public:
 	void SecondaryAttack() override;
 	bool Deploy() override;
 	void Holster( int skiplocal = 0 ) override;
-	int m_iszModel;
+	string_t m_iszModel;
 	int m_iModel;
 };
 LINK_ENTITY_TO_CLASS( cycler_weapon, CWeaponCycler );
@@ -411,7 +411,7 @@ void CWreckage::Spawn()
 	pev->frame			= 0;
 	pev->nextthink		= gpGlobals->time + 0.1;
 
-	if (pev->model)
+	if (!FStringNull(pev->model))
 	{
 		PRECACHE_MODEL( (char *)STRING(pev->model) );
 		SET_MODEL( ENT(pev), STRING(pev->model) );
@@ -423,7 +423,7 @@ void CWreckage::Spawn()
 
 void CWreckage::Precache( )
 {
-	if ( pev->model )
+	if (!FStringNull(pev->model))
 		PRECACHE_MODEL( (char *)STRING(pev->model) );
 }
 

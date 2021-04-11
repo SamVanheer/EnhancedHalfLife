@@ -220,7 +220,7 @@ void CWorld :: Precache()
 	else
 		CVAR_SET_FLOAT( "sv_zmax", 4096 );
 
-	if ( pev->netname )
+	if (!FStringNull(pev->netname))
 	{
 		ALERT( at_aiconsole, "Chapter title: %s\n", STRING(pev->netname) );
 		CBaseEntity *pEntity = CBaseEntity::Create( "env_message", vec3_origin, vec3_origin, nullptr );
@@ -313,7 +313,7 @@ void CWorld :: KeyValue( KeyValueData *pkvd )
 	}
 	else if ( FStrEq(pkvd->szKeyName, "mapteams") )
 	{
-		pev->team = ALLOC_STRING( pkvd->szValue );
+		pev->team = static_cast<int>(ALLOC_STRING( pkvd->szValue ));
 		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "defaultteam") )

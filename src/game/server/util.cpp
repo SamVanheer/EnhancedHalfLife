@@ -905,7 +905,7 @@ Vector UTIL_GetAimVector( edict_t *pent, float flSpeed )
 
 bool UTIL_IsMasterTriggered(string_t sMaster, CBaseEntity *pActivator)
 {
-	if (sMaster)
+	if (!FStringNull(sMaster))
 	{
 		edict_t *pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(sMaster));
 	

@@ -1460,9 +1460,9 @@ void CTalkMonster::KeyValue( KeyValueData *pkvd )
 
 void CTalkMonster::Precache()
 {
-	if ( m_iszUse )
+	if (!FStringNull(m_iszUse))
 		m_szGrp[TLK_USE] = STRING( m_iszUse );
-	if ( m_iszUnUse )
+	if (!FStringNull(m_iszUnUse))
 		m_szGrp[TLK_UNUSE] = STRING( m_iszUnUse );
 }
 

@@ -192,7 +192,7 @@ void CPathTrack :: Link()
 	}
 
 	// Find "alternate" path
-	if ( m_altName )
+	if (!FStringNull(m_altName))
 	{
 		pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_altName) );
 		if ( !FNullEnt(pentTarget) )

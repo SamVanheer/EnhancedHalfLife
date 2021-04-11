@@ -110,8 +110,9 @@ void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton)
 
 	if (flocked)
 	{
-		int fplaysound = (pls->sLockedSound && gpGlobals->time > pls->flwaitSound);
-		int fplaysentence = (pls->sLockedSentence && !pls->bEOFLocked && gpGlobals->time > pls->flwaitSentence);
+		//TODO: bool
+		int fplaysound = (!FStringNull(pls->sLockedSound) && gpGlobals->time > pls->flwaitSound);
+		int fplaysentence = (!FStringNull(pls->sLockedSentence) && !pls->bEOFLocked && gpGlobals->time > pls->flwaitSentence);
 		float fvol;
 
 		if (fplaysound && fplaysentence)
@@ -147,8 +148,8 @@ void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton)
 	{
 		// UNLOCKED SOUND
 
-		int fplaysound = (pls->sUnlockedSound && gpGlobals->time > pls->flwaitSound);
-		int fplaysentence = (pls->sUnlockedSentence && !pls->bEOFUnlocked && gpGlobals->time > pls->flwaitSentence);
+		int fplaysound = (!FStringNull(pls->sUnlockedSound) && gpGlobals->time > pls->flwaitSound);
+		int fplaysentence = (!FStringNull(pls->sUnlockedSentence) && !pls->bEOFUnlocked && gpGlobals->time > pls->flwaitSentence);
 		float fvol;
 
 		// if playing both sentence and sound, lower sound volume so we hear sentence
@@ -485,7 +486,7 @@ void CBaseDoor::DoorTouch( CBaseEntity *pOther )
 	// If door has master, and it's not ready to trigger, 
 	// play 'locked' sound
 
-	if (m_sMaster && !UTIL_IsMasterTriggered(m_sMaster, pOther))
+	if (!FStringNull(m_sMaster) && !UTIL_IsMasterTriggered(m_sMaster, pOther))
 		PlayLockSounds(pev, &m_ls, true, false);
 	
 	// If door is somebody's target, then touching does nothing.
@@ -632,7 +633,7 @@ void CBaseDoor::DoorHitTop()
 	}
 
 	// Fire the close target (if startopen is set, then "top" is closed) - netname is the close target
-	if ( pev->netname && (pev->spawnflags & SF_DOOR_START_OPEN) )
+	if (!FStringNull(pev->netname) && (pev->spawnflags & SF_DOOR_START_OPEN) )
 		FireTargets( STRING(pev->netname), m_hActivator, this, USE_TOGGLE, 0 );
 
 	SUB_UseTargets( m_hActivator, USE_TOGGLE, 0 ); // this isn't finished
@@ -687,7 +688,7 @@ void CBaseDoor::DoorHitBottom()
 	SUB_UseTargets( m_hActivator, USE_TOGGLE, 0 ); // this isn't finished
 
 	// Fire the close target (if startopen is set, then "top" is closed) - netname is the close target
-	if ( pev->netname && !(pev->spawnflags & SF_DOOR_START_OPEN) )
+	if (!FStringNull(pev->netname) && !(pev->spawnflags & SF_DOOR_START_OPEN) )
 		FireTargets( STRING(pev->netname), m_hActivator, this, USE_TOGGLE, 0 );
 }
 

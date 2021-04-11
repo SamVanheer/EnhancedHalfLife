@@ -120,14 +120,14 @@ protected:
 
 	Vector		m_barrelPos;	// Length of the freakin barrel
 	float		m_spriteScale;	// Scale of any sprites we shoot
-	int			m_iszSpriteSmoke;
-	int			m_iszSpriteFlash;
+	string_t	m_iszSpriteSmoke;
+	string_t	m_iszSpriteFlash;
 	TANKBULLET	m_bulletType;	// Bullet type
 	int			m_iBulletDamage; // 0 means use Bullet type's default damage
 	
 	Vector		m_sightOrigin;	// Last sight of target
 	int			m_spread;		// firing spread
-	int			m_iszMaster;	// Master entity (game_team_master or multisource)
+	string_t	m_iszMaster;	// Master entity (game_team_master or multisource)
 };
 
 
@@ -201,12 +201,12 @@ void CFuncTank :: Spawn()
 
 void CFuncTank :: Precache()
 {
-	if ( m_iszSpriteSmoke )
+	if (!FStringNull(m_iszSpriteSmoke))
 		PRECACHE_MODEL( (char *)STRING(m_iszSpriteSmoke) );
-	if ( m_iszSpriteFlash )
+	if (!FStringNull(m_iszSpriteFlash))
 		PRECACHE_MODEL( (char *)STRING(m_iszSpriteFlash) );
 
-	if ( pev->noise )
+	if (!FStringNull(pev->noise))
 		PRECACHE_SOUND( (char *)STRING(pev->noise) );
 }
 
@@ -345,7 +345,7 @@ bool CFuncTank :: StartControl( CBasePlayer *pController )
 		return false;
 
 	// Team only or disabled?
-	if ( m_iszMaster )
+	if (!FStringNull(m_iszMaster))
 	{
 		if ( !UTIL_IsMasterTriggered( m_iszMaster, pController ) )
 			return false;
@@ -653,7 +653,7 @@ void CFuncTank::Fire( const Vector &barrelEnd, const Vector &forward, entvars_t 
 {
 	if ( m_fireLast != 0 )
 	{
-		if ( m_iszSpriteSmoke )
+		if (!FStringNull(m_iszSpriteSmoke))
 		{
 			CSprite *pSprite = CSprite::SpriteCreate( STRING(m_iszSpriteSmoke), barrelEnd, true);
 			pSprite->AnimateAndDie( RANDOM_FLOAT( 15.0, 20.0 ) );
@@ -661,7 +661,7 @@ void CFuncTank::Fire( const Vector &barrelEnd, const Vector &forward, entvars_t 
 			pSprite->pev->velocity.z = RANDOM_FLOAT(40, 80);
 			pSprite->SetScale( m_spriteScale );
 		}
-		if ( m_iszSpriteFlash )
+		if (!FStringNull(m_iszSpriteFlash))
 		{
 			CSprite *pSprite = CSprite::SpriteCreate( STRING(m_iszSpriteFlash), barrelEnd, true);
 			pSprite->AnimateAndDie( 60 );
@@ -698,7 +698,7 @@ void CFuncTank::TankTrace( const Vector &vecStart, const Vector &vecForward, con
 	
 void CFuncTank::StartRotSound()
 {
-	if ( !pev->noise || (pev->spawnflags & SF_TANK_SOUNDON) )
+	if (FStringNull(pev->noise) || (pev->spawnflags & SF_TANK_SOUNDON) )
 		return;
 	pev->spawnflags |= SF_TANK_SOUNDON;
 	EMIT_SOUND( edict(), CHAN_STATIC, (char*)STRING(pev->noise), 0.85, ATTN_NORM);
