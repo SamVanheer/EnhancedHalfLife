@@ -341,7 +341,7 @@ void DLLEXPORT HUD_StudioEvent( const mstudioevent_t *event, const cl_entity_t *
 		break;
 	// Client side sound
 	case SCRIPT_EVENT_CLIENT_SOUND:
-		gEngfuncs.pfnPlaySoundByNameAtLocation( (char *)event->options, 1.0, (float *)&entity->attachment[0] );
+		gEngfuncs.pfnPlaySoundByNameAtLocation( event->options, 1.0, (float *)&entity->attachment[0] );
 		break;
 	default:
 		break;

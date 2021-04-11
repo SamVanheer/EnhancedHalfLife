@@ -72,7 +72,7 @@ struct cl_enginefunc_t
 	void (*pfnAngleVectors)(const float* vecAngles, float* forward, float* right, float* up);
 	client_textmessage_t* (*pfnTextMessageGet)(const char* pName);
 	int (*pfnDrawCharacter)(int x, int y, int number, int r, int g, int b);
-	int (*pfnDrawConsoleString)(int x, int y, char* string);
+	int (*pfnDrawConsoleString)(int x, int y, const char* string);
 	void (*pfnDrawSetTextColor)(float r, float g, float b);
 	void (*pfnDrawConsoleStringLen)(const char* string, int* length, int* height);
 	void (*pfnConsolePrint)(const char* string);

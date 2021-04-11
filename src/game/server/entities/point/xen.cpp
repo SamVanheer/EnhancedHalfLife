@@ -554,7 +554,7 @@ const char *CXenSpore::pModelNames[] =
 
 void CXenSpore :: Precache()
 {
-	PRECACHE_MODEL( (char *)pModelNames[pev->skin] );
+	PRECACHE_MODEL( pModelNames[pev->skin] );
 }
 
 

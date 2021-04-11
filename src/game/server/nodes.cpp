@@ -2038,7 +2038,7 @@ void CTestHull :: BuildNodeGraph()
 	WorldGraph.ComputeStaticRoutingTables();
 
 // save the node graph for this level	
-	WorldGraph.FSaveGraph( (char *)STRING( gpGlobals->mapname ) );
+	WorldGraph.FSaveGraph( STRING( gpGlobals->mapname ) );
 	ALERT( at_console, "Done.\n");
 }
 

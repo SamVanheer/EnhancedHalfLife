@@ -338,7 +338,7 @@ void W_Precache()
 	g_sModelIndexBloodSpray = PRECACHE_MODEL ("sprites/bloodspray.spr"); // initial blood
 	g_sModelIndexBloodDrop = PRECACHE_MODEL ("sprites/blood.spr"); // splattered blood 
 
-	g_sModelIndexLaser = PRECACHE_MODEL( (char *)g_pModelNameLaser );
+	g_sModelIndexLaser = PRECACHE_MODEL( g_pModelNameLaser );
 	g_sModelIndexLaserDot = PRECACHE_MODEL("sprites/laserdot.spr");
 
 
@@ -514,7 +514,7 @@ CBaseEntity* CBasePlayerItem::Respawn()
 {
 	// make a copy of this weapon that is invisible and inaccessible to players (no touch function). The weapon spawn/respawn code
 	// will decide when to make the weapon visible and touchable.
-	CBaseEntity *pNewWeapon = CBaseEntity::Create( (char *)STRING( pev->classname ), g_pGameRules->VecWeaponRespawnSpot( this ), pev->angles, pev->owner );
+	CBaseEntity *pNewWeapon = CBaseEntity::Create( STRING( pev->classname ), g_pGameRules->VecWeaponRespawnSpot( this ), pev->angles, pev->owner );
 
 	if ( pNewWeapon )
 	{
@@ -723,7 +723,7 @@ void CBasePlayerWeapon::SendWeaponAnim( int iAnim, int skiplocal, int body )
 	MESSAGE_END();
 }
 
-bool CBasePlayerWeapon :: AddPrimaryAmmo( int iCount, char *szName, int iMaxClip, int iMaxCarry )
+bool CBasePlayerWeapon :: AddPrimaryAmmo( int iCount, const char *szName, int iMaxClip, int iMaxCarry )
 {
 	int iIdAmmo;
 
@@ -761,7 +761,7 @@ bool CBasePlayerWeapon :: AddPrimaryAmmo( int iCount, char *szName, int iMaxClip
 }
 
 
-bool CBasePlayerWeapon :: AddSecondaryAmmo( int iCount, char *szName, int iMax )
+bool CBasePlayerWeapon :: AddSecondaryAmmo( int iCount, const char *szName, int iMax )
 {
 	int iIdAmmo;
 
@@ -950,13 +950,13 @@ bool CBasePlayerWeapon::ExtractAmmo( CBasePlayerWeapon *pWeapon )
 	{
 		// blindly call with m_iDefaultAmmo. It's either going to be a value or zero. If it is zero,
 		// we only get the ammo in the weapon's clip, which is what we want. 
-		result = pWeapon->AddPrimaryAmmo( m_iDefaultAmmo, (char *)pszAmmo1(), iMaxClip(), iMaxAmmo1() );
+		result = pWeapon->AddPrimaryAmmo( m_iDefaultAmmo, pszAmmo1(), iMaxClip(), iMaxAmmo1() );
 		m_iDefaultAmmo = 0;
 	}
 
 	if ( pszAmmo2() != nullptr )
 	{
-		result = pWeapon->AddSecondaryAmmo( 0, (char *)pszAmmo2(), iMaxAmmo2() ) || result;
+		result = pWeapon->AddSecondaryAmmo( 0, pszAmmo2(), iMaxAmmo2() ) || result;
 	}
 
 	return result;

@@ -33,5 +33,5 @@ struct mapcycle_t
 };
 
 void ExtractCommandString(char* s, char* szCommand);
-bool ReloadMapCycleFile(char* filename, mapcycle_t* cycle);
+bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle);
 void DestroyMapCycle(mapcycle_t* cycle);

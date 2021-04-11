@@ -87,7 +87,7 @@ CHalfLifeMultiplay :: CHalfLifeMultiplay()
 	else
 	{
 		// listen server
-		char *lservercfgfile = (char *)CVAR_GET_STRING( "lservercfgfile" );
+		const char *lservercfgfile = CVAR_GET_STRING( "lservercfgfile" );
 
 		if ( lservercfgfile && lservercfgfile[0] )
 		{
@@ -1183,7 +1183,7 @@ void CHalfLifeMultiplay :: ChangeLevel()
 	bool do_cycle = true;
 
 	// find the map to change to
-	char *mapcfile = (char*)CVAR_GET_STRING( "mapcyclefile" );
+	const char *mapcfile = CVAR_GET_STRING( "mapcyclefile" );
 	ASSERT( mapcfile != nullptr);
 
 	szCommands[ 0 ] = '\0';
@@ -1302,7 +1302,7 @@ void CHalfLifeMultiplay :: SendMOTDToClient( edict_t *client )
 	// read from the MOTD.txt file
 	int length, char_count = 0;
 	char *pFileList;
-	char *aFileList = pFileList = (char*)LOAD_FILE_FOR_ME( (char *)CVAR_GET_STRING( "motdfile" ), &length );
+	char *aFileList = pFileList = (char*)LOAD_FILE_FOR_ME( CVAR_GET_STRING( "motdfile" ), &length );
 
 	// send the server name
 	MESSAGE_BEGIN( MSG_ONE, gmsgServerName, nullptr, client );

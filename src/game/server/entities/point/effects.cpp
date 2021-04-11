@@ -239,7 +239,7 @@ void CBeam::BeamInit( const char *pSpriteName, int width )
 	SetFrame( 0 );
 	SetScrollRate( 0 );
 	pev->model = MAKE_STRING( pSpriteName );
-	SetTexture( PRECACHE_MODEL( (char *)pSpriteName ) );
+	SetTexture( PRECACHE_MODEL( pSpriteName ) );
 	SetWidth( width );
 	pev->skin = 0;
 	pev->sequence = 0;
@@ -506,7 +506,7 @@ void CLightning::Spawn()
 
 void CLightning::Precache()
 {
-	m_spriteTexture = PRECACHE_MODEL( (char *)STRING(m_iszSpriteName) );
+	m_spriteTexture = PRECACHE_MODEL( STRING(m_iszSpriteName) );
 	CBeam::Precache();
 }
 
@@ -988,9 +988,9 @@ void CLaser::Spawn()
 
 void CLaser::Precache()
 {
-	pev->modelindex = PRECACHE_MODEL( (char *)STRING(pev->model) );
+	pev->modelindex = PRECACHE_MODEL( STRING(pev->model) );
 	if (!FStringNull(m_iszSpriteName))
-		PRECACHE_MODEL( (char *)STRING(m_iszSpriteName) );
+		PRECACHE_MODEL( STRING(m_iszSpriteName) );
 }
 
 
@@ -1142,7 +1142,7 @@ void CGlow::Spawn()
 	pev->effects		= 0;
 	pev->frame			= 0;
 
-	PRECACHE_MODEL( (char *)STRING(pev->model) );
+	PRECACHE_MODEL( STRING(pev->model) );
 	SET_MODEL( ENT(pev), STRING(pev->model) );
 
 	m_maxFrame = (float) MODEL_FRAMES( pev->modelindex ) - 1;
@@ -1206,7 +1206,7 @@ void CSprite::Spawn()
 
 void CSprite::Precache()
 {
-	PRECACHE_MODEL( (char *)STRING(pev->model) );
+	PRECACHE_MODEL( STRING(pev->model) );
 
 	// Reset attachment after save/restore
 	if ( pev->aiment )
@@ -1577,7 +1577,7 @@ void CEnvShooter :: KeyValue( KeyValueData *pkvd )
 
 void CEnvShooter :: Precache ()
 {
-	m_iGibModelIndex = PRECACHE_MODEL( (char *)STRING(pev->model) );
+	m_iGibModelIndex = PRECACHE_MODEL( STRING(pev->model) );
 	CBreakable::MaterialSoundPrecache( (Materials)m_iGibMaterial );
 }
 
@@ -2034,7 +2034,7 @@ void CMessage::Spawn()
 void CMessage::Precache()
 {
 	if (!FStringNull(pev->noise))
-		PRECACHE_SOUND( (char *)STRING(pev->noise) );
+		PRECACHE_SOUND( STRING(pev->noise) );
 }
 
 void CMessage::KeyValue( KeyValueData *pkvd )

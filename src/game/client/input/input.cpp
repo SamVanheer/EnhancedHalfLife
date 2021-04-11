@@ -159,19 +159,17 @@ bool KB_ConvertString( char *in, char **ppout )
 				pBinding = gEngfuncs.Key_LookupBinding( binding + 1 );
 			}
 
+			const char* maybeActualBinding = binding;
+
 			if ( pBinding )
 			{
 				*pOut++ = '[';
-				pEnd = (char *)pBinding;
-			}
-			else
-			{
-				pEnd = binding;
+				maybeActualBinding = pBinding;
 			}
 
-			while ( *pEnd )
+			while ( *maybeActualBinding)
 			{
-				*pOut++ = *pEnd++;
+				*pOut++ = *maybeActualBinding++;
 			}
 
 			if ( pBinding )

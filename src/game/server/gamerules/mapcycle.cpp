@@ -81,7 +81,7 @@ ReloadMapCycleFile
 Parses mapcycle.txt file into mapcycle_t structure
 ==============
 */
-bool ReloadMapCycleFile(char* filename, mapcycle_t* cycle)
+bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 {
 	char szBuffer[MAX_RULE_BUFFER];
 	char szMap[MAX_MAPNAME_LENGTH];
