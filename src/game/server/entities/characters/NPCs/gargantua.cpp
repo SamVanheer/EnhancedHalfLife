@@ -56,7 +56,6 @@ constexpr float ATTN_GARG = ATTN_NORM;
 constexpr int STOMP_SPRITE_COUNT = 10;
 
 int gStompSprite = 0, gGargGibModel = 0;
-void SpawnExplosion( Vector center, float randomRange, float time, int magnitude );
 
 class CSmoker;
 
@@ -889,7 +888,7 @@ void CGargantua::DeathEffect()
 	position.z += 32;
 	for ( i = 0; i < 7; i+=2 )
 	{
-		SpawnExplosion( position, 70, (i * 0.3), 60 + (i*20) );
+		UTIL_CreateExplosion(position, vec3_origin, nullptr, 60 + (i * 20), false, 70, (i * 0.3));
 		position.z += 15;
 	}
 
@@ -1336,27 +1335,4 @@ void CSpiral::Think()
 
 	if ( pev->health >= pev->speed )
 		UTIL_Remove( this );
-}
-
-
-// HACKHACK Cut and pasted from explode.cpp
-//TODO: merge with explode.cpp
-void SpawnExplosion( Vector center, float randomRange, float time, int magnitude )
-{
-	KeyValueData	kvd;
-	char			buf[128];
-
-	center.x += RANDOM_FLOAT( -randomRange, randomRange );
-	center.y += RANDOM_FLOAT( -randomRange, randomRange );
-
-	CBaseEntity *pExplosion = CBaseEntity::Create( "env_explosion", center, vec3_origin, nullptr );
-	sprintf( buf, "%3d", magnitude );
-	kvd.szKeyName = "iMagnitude";
-	kvd.szValue = buf;
-	pExplosion->KeyValue( &kvd );
-	pExplosion->pev->spawnflags |= SF_ENVEXPLOSION_NODAMAGE;
-
-	pExplosion->Spawn();
-	pExplosion->SetThink( &CBaseEntity::SUB_CallUseToggle );
-	pExplosion->pev->nextthink = gpGlobals->time + time;
 }

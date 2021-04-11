@@ -247,21 +247,38 @@ void CEnvExplosion::Smoke()
 	}
 }
 
-
-// HACKHACK -- create one of these and fake a keyvalue to get the right explosion setup
-void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwner, int magnitude, bool doDamage )
+void UTIL_CreateExplosion(Vector center, const Vector& angles, edict_t* owner, int magnitude, bool doDamage, float randomRange, float delay)
 {
-	KeyValueData	kvd;
-	char			buf[128];
+	if (randomRange != 0)
+	{
+		center.x += RANDOM_FLOAT(-randomRange, randomRange);
+		center.y += RANDOM_FLOAT(-randomRange, randomRange);
+	}
 
-	CBaseEntity *pExplosion = CBaseEntity::Create( "env_explosion", center, angles, pOwner );
-	sprintf( buf, "%3d", magnitude );
+	CBaseEntity* pExplosion = CBaseEntity::Create("env_explosion", center, angles, owner);
+
+	char buf[128];
+	snprintf(buf, sizeof(buf), "%3d", magnitude);
+
+	KeyValueData kvd{};
 	kvd.szKeyName = "iMagnitude";
 	kvd.szValue = buf;
-	pExplosion->KeyValue( &kvd );
-	if ( !doDamage )
+	pExplosion->KeyValue(&kvd);
+
+	if (doDamage)
+	{
 		pExplosion->pev->spawnflags |= SF_ENVEXPLOSION_NODAMAGE;
+	}
 
 	pExplosion->Spawn();
-	pExplosion->Use( nullptr, nullptr, USE_TOGGLE, 0 );
+
+	if (delay > 0)
+	{
+		pExplosion->SetThink(&CBaseEntity::SUB_CallUseToggle);
+		pExplosion->pev->nextthink = gpGlobals->time + delay;
+	}
+	else
+	{
+		pExplosion->Use(nullptr, nullptr, USE_TOGGLE, 0);
+	}
 }
