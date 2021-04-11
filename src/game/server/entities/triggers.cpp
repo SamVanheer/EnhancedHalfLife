@@ -1336,8 +1336,8 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	char m_szMapName[cchMapNameMost];		// trigger_changelevel only:  next map
-	char m_szLandmarkName[cchMapNameMost];		// trigger_changelevel only:  landmark on next map
+	char m_szMapName[MAX_MAPNAME_LENGTH];		// trigger_changelevel only:  next map
+	char m_szLandmarkName[MAX_MAPNAME_LENGTH];		// trigger_changelevel only:  landmark on next map
 	string_t m_changeTarget;
 	float	m_changeTargetDelay;
 };
@@ -1346,8 +1346,8 @@ LINK_ENTITY_TO_CLASS( trigger_changelevel, CChangeLevel );
 // Global Savedata for changelevel trigger
 TYPEDESCRIPTION	CChangeLevel::m_SaveData[] = 
 {
-	DEFINE_ARRAY( CChangeLevel, m_szMapName, FIELD_CHARACTER, cchMapNameMost ),
-	DEFINE_ARRAY( CChangeLevel, m_szLandmarkName, FIELD_CHARACTER, cchMapNameMost ),
+	DEFINE_ARRAY( CChangeLevel, m_szMapName, FIELD_CHARACTER, MAX_MAPNAME_LENGTH),
+	DEFINE_ARRAY( CChangeLevel, m_szLandmarkName, FIELD_CHARACTER, MAX_MAPNAME_LENGTH),
 	DEFINE_FIELD( CChangeLevel, m_changeTarget, FIELD_STRING ),
 	DEFINE_FIELD( CChangeLevel, m_changeTargetDelay, FIELD_FLOAT ),
 };
@@ -1362,14 +1362,14 @@ void CChangeLevel :: KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "map"))
 	{
-		if (strlen(pkvd->szValue) >= cchMapNameMost)
+		if (strlen(pkvd->szValue) >= MAX_MAPNAME_LENGTH)
 			ALERT( at_error, "Map name '%s' too long (32 chars)\n", pkvd->szValue );
 		strcpy(m_szMapName, pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "landmark"))
 	{
-		if (strlen(pkvd->szValue) >= cchMapNameMost)
+		if (strlen(pkvd->szValue) >= MAX_MAPNAME_LENGTH)
 			ALERT( at_error, "Landmark name '%s' too long (32 chars)\n", pkvd->szValue );
 		strcpy(m_szLandmarkName, pkvd->szValue);
 		pkvd->fHandled = true;
@@ -1424,8 +1424,8 @@ void CChangeLevel :: ExecuteChangeLevel()
 }
 
 
-static char st_szNextMap[cchMapNameMost];
-static char st_szNextSpot[cchMapNameMost];
+static char st_szNextMap[MAX_MAPNAME_LENGTH];
+static char st_szNextSpot[MAX_MAPNAME_LENGTH];
 
 edict_t *CChangeLevel :: FindLandmark( const char *pLandmarkName )
 {

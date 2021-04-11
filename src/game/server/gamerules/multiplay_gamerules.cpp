@@ -1172,8 +1172,8 @@ void CHalfLifeMultiplay :: ChangeLevel()
 	static char szPreviousMapCycleFile[ 256 ];
 	static mapcycle_t mapcycle;
 
-	char szNextMap[32];
-	char szFirstMapInList[32];
+	char szNextMap[MAX_MAPNAME_LENGTH];
+	char szFirstMapInList[MAX_MAPNAME_LENGTH];
 	char szCommands[ 1500 ];
 	char szRules[ 1500 ];
 	int minplayers = 0, maxplayers = 0;

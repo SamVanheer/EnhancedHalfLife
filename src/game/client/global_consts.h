@@ -20,4 +20,4 @@ constexpr int MAX_SCOREBOARD_TEAMS = 5;
 constexpr int NUM_ROWS = MAX_PLAYERS + (MAX_SCOREBOARD_TEAMS * 2);
 
 constexpr int MAX_SERVERNAME_LENGTH = 64;
-constexpr int MAX_TEAMNAME_SIZE = 32; //TODO: also defined in player.h
+constexpr int MAX_TEAMNAME_SIZE = 32;

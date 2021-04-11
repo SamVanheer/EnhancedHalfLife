@@ -35,6 +35,8 @@ struct delta_t;
 struct entity_state_t;
 struct entvars_t;
 
+constexpr int MAX_MAPNAME_LENGTH = 32;
+
 enum ALERT_TYPE
 {
 	at_notice,
@@ -289,7 +291,7 @@ struct KeyValueData
 
 struct LEVELLIST
 {
-	char		mapName[32];
+	char		mapName[MAX_MAPNAME_LENGTH];
 	char		landmarkName[32];
 	edict_t* pentLandmark;
 	Vector		vecLandmarkOrigin;
@@ -333,7 +335,7 @@ struct SAVERESTOREDATA
 	char		szLandmarkName[20];// landmark we'll spawn near in next level
 	Vector		vecLandmarkOffset;// for landmark transitions
 	float		time;
-	char		szCurrentMapName[32];	// To check global entities
+	char		szCurrentMapName[MAX_MAPNAME_LENGTH];	// To check global entities
 
 };
 

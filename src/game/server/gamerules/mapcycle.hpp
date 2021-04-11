@@ -21,7 +21,7 @@ struct mapcycle_item_t
 {
 	mapcycle_item_t* next;
 
-	char mapname[32];
+	char mapname[MAX_MAPNAME_LENGTH];
 	int  minplayers, maxplayers;
 	char rulebuffer[MAX_RULE_BUFFER];
 };

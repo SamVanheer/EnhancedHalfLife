@@ -84,7 +84,7 @@ Parses mapcycle.txt file into mapcycle_t structure
 bool ReloadMapCycleFile(char* filename, mapcycle_t* cycle)
 {
 	char szBuffer[MAX_RULE_BUFFER];
-	char szMap[32];
+	char szMap[MAX_MAPNAME_LENGTH];
 	int length;
 	char* pFileList;
 	char* aFileList = pFileList = (char*)LOAD_FILE_FOR_ME(filename, &length);

@@ -24,7 +24,7 @@
 #include "UserMessages.h"
 #include "voice_gamemgr.h"
 
-static char team_names[MAX_TEAMS][MAX_TEAMNAME_LENGTH];
+static char team_names[MAX_TEAMS][TEAM_NAME_LENGTH];
 static int team_scores[MAX_TEAMS];
 static int num_teams = 0;
 
@@ -593,7 +593,7 @@ void CHalfLifeTeamplay::RecountTeams( bool bResendInfo )
 					tm = num_teams;
 					num_teams++;
 					team_scores[tm] = 0;
-					strncpy( team_names[tm], pTeamName, MAX_TEAMNAME_LENGTH );
+					strncpy( team_names[tm], pTeamName, TEAM_NAME_LENGTH);
 				}
 			}
 

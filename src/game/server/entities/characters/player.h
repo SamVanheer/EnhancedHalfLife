@@ -52,8 +52,6 @@ constexpr int SUIT_NEXT_IN_1HOUR = 3600;
 
 constexpr int CSUITNOREPEAT = 32;
 
-constexpr int TEAM_NAME_LENGTH = 16;
-
 enum PLAYER_ANIM
 {
 	PLAYER_IDLE,

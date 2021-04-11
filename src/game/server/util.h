@@ -29,6 +29,8 @@ class CBaseEntity;
 class CBasePlayer;
 class CBasePlayerItem;
 
+constexpr int TEAM_NAME_LENGTH = 16;
+
 inline void MESSAGE_BEGIN( int msg_dest, int msg_type, const float *pOrigin, entvars_t *ent );  // implementation later in this file
 
 extern globalvars_t				*gpGlobals;
@@ -153,9 +155,6 @@ inline bool FNullEnt(entvars_t* pev)				{ return pev == nullptr || FNullEnt(OFFS
 // Testing strings for nullity
 constexpr string_t iStringNull = 0;
 inline bool FStringNull(string_t iString) { return iString == iStringNull; }
-
-//TODO: defined elsewhere
-constexpr int cchMapNameMost = 32;
 
 // Dot products for view cone checking
 constexpr float VIEW_FIELD_FULL = -1.0;			//!< +-180 degrees
