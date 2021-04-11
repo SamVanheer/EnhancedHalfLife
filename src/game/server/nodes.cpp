@@ -2307,7 +2307,7 @@ void CQueuePriority::Heap_SiftUp()
 // will be loaded. If file cannot be loaded, the node tree
 // will be created and saved to disk.
 //=========================================================
-int CGraph :: FLoadGraph ( char *szMapName )
+int CGraph :: FLoadGraph ( const char *szMapName )
 {
 	char	szFilename[MAX_PATH];
 	int		iVersion;
@@ -2480,7 +2480,7 @@ NoMemory:
 // CGraph - FSaveGraph - It's not rocket science.
 // this WILL overwrite existing files.
 //=========================================================
-int CGraph :: FSaveGraph ( char *szMapName )
+int CGraph :: FSaveGraph ( const char *szMapName )
 {
 	
 	int		iVersion = GRAPH_VERSION;
@@ -2610,7 +2610,7 @@ int CGraph :: FSetGraphPointers ()
 // though. ( I now suspect that we are getting GMT back from
 // these functions and must compensate for local time ) (sjb)
 //=========================================================
-int CGraph :: CheckNODFile ( char *szMapName )
+int CGraph :: CheckNODFile ( const char *szMapName )
 {
 	int 		retValue;
 
