@@ -26,3 +26,10 @@ constexpr int SCRIPT_EVENT_ENDANIMATION = 1007;		//!< Set the animation by name 
 constexpr int SCRIPT_EVENT_SOUND_VOICE = 1008;		//!< Play named wave file (on CHAN_VOICE)
 constexpr int SCRIPT_EVENT_SENTENCE_RND1 = 1009;	//!< Play sentence group 25% of the time
 constexpr int SCRIPT_EVENT_NOT_DEAD = 1010;			//!< Bring back to life (for life/death sequences)
+
+constexpr int SCRIPT_EVENT_CLIENT_MUZZLEFLASH_ATTACHMENT0 = 5001;
+constexpr int SCRIPT_EVENT_CLIENT_MUZZLEFLASH_ATTACHMENT1 = 5011;
+constexpr int SCRIPT_EVENT_CLIENT_MUZZLEFLASH_ATTACHMENT2 = 5021;
+constexpr int SCRIPT_EVENT_CLIENT_MUZZLEFLASH_ATTACHMENT3 = 5031;
+constexpr int SCRIPT_EVENT_CLIENT_SPARK = 5002;
+constexpr int SCRIPT_EVENT_CLIENT_SOUND = 5004;
