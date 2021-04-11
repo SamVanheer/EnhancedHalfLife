@@ -15,6 +15,8 @@
 
 #pragma once
 
+class CBaseEntity;
+
 enum GLOBALESTATE { GLOBAL_OFF = 0, GLOBAL_ON = 1, GLOBAL_DEAD = 2 };
 
 struct globalentity_t
@@ -61,3 +63,10 @@ private:
 };
 
 inline CGlobalState gGlobalState;
+
+/**
+*	@brief Find the matching global entity.
+*	
+*	Spit out an error if the designer made entities of different classes with the same global name
+*/
+CBaseEntity* FindGlobalEntity(string_t classname, string_t globalname);

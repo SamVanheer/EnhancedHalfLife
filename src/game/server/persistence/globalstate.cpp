@@ -198,3 +198,19 @@ void ResetGlobalState()
 	gGlobalState.ClearStates();
 	gInitHUD = true;	// Init the HUD on a new game / load game
 }
+
+CBaseEntity* FindGlobalEntity(string_t classname, string_t globalname)
+{
+	edict_t* pent = FIND_ENTITY_BY_STRING(nullptr, "globalname", STRING(globalname));
+	CBaseEntity* pReturn = CBaseEntity::Instance(pent);
+	if (pReturn)
+	{
+		if (!FClassnameIs(pReturn->pev, STRING(classname)))
+		{
+			ALERT(at_console, "Global entity found %s, wrong class %s\n", STRING(globalname), STRING(pReturn->pev->classname));
+			pReturn = nullptr;
+		}
+	}
+
+	return pReturn;
+}
