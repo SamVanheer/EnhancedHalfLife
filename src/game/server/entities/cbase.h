@@ -107,6 +107,19 @@ public:
 
 	virtual ~CBaseEntity() {}
 
+	void* operator new(std::size_t count)
+	{
+		auto memory = new byte[count];
+		std::memset(memory, 0, count);
+		return memory;
+	}
+
+	void operator delete(void* ptr)
+	{
+		auto memory = reinterpret_cast<byte*>(ptr);
+		delete[] memory;
+	}
+
 	// initialization functions
 	virtual void	Spawn() {}
 	virtual void	Precache() {}
@@ -175,20 +188,6 @@ public:
 			(this->*m_pfnUse)( pActivator, pCaller, useType, value );
 	}
 	virtual void Blocked( CBaseEntity *pOther ) { if (m_pfnBlocked) (this->*m_pfnBlocked)( pOther ); }
-
-	// allow engine to allocate instance data
-	void *operator new( size_t stAllocateBlock, entvars_t *pev )
-	{
-		return (void *)ALLOC_PRIVATE(ENT(pev), stAllocateBlock);
-	};
-
-	// don't use this.
-#if _MSC_VER >= 1200 // only build this code if MSVC++ 6.0 or higher
-	void operator delete(void *pMem, entvars_t *pev)
-	{
-		pev->flags |= FL_KILLME;
-	};
-#endif
 
 	void UpdateOnRemove();
 
@@ -620,7 +619,8 @@ template <class T> T * GetClassPtr( T *a )
 	if (a == nullptr) 
 	{
 		// allocate private data 
-		a = new(pev) T;
+		a = new T();
+		pev->pContainingEntity->pvPrivateData = a;
 		a->pev = pev;
 	}
 	return a;

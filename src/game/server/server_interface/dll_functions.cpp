@@ -455,6 +455,10 @@ void OnFreeEntPrivateData(edict_t* pEdict)
 {
 	if (pEdict && pEdict->pvPrivateData)
 	{
-		((CBaseEntity*)pEdict->pvPrivateData)->~CBaseEntity();
+		auto entity = reinterpret_cast<CBaseEntity*>(pEdict->pvPrivateData);
+
+		delete entity;
+
+		pEdict->pvPrivateData = nullptr;
 	}
 }
