@@ -1400,3 +1400,41 @@ int UTIL_CountPlayers()
 
 	return num;
 }
+
+void SetObjectCollisionBox(entvars_t* pev)
+{
+	if ((pev->solid == SOLID_BSP) &&
+		(pev->angles.x || pev->angles.y || pev->angles.z))
+	{
+		// expand for rotation
+		float max = 0;
+
+		for (int i = 0; i < 3; i++)
+		{
+			float v = fabs(pev->mins[i]);
+			if (v > max)
+				max = v;
+			v = fabs(pev->maxs[i]);
+			if (v > max)
+				max = v;
+		}
+
+		for (int i = 0; i < 3; i++)
+		{
+			pev->absmin[i] = pev->origin[i] - max;
+			pev->absmax[i] = pev->origin[i] + max;
+		}
+	}
+	else
+	{
+		pev->absmin = pev->origin + pev->mins;
+		pev->absmax = pev->origin + pev->maxs;
+	}
+
+	pev->absmin.x -= 1;
+	pev->absmin.y -= 1;
+	pev->absmin.z -= 1;
+	pev->absmax.x += 1;
+	pev->absmax.y += 1;
+	pev->absmax.z += 1;
+}

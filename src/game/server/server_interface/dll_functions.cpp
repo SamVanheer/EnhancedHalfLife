@@ -369,46 +369,6 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 	return 0;
 }
 
-//TODO: move elsewhere
-// Initialize absmin & absmax to the appropriate box
-void SetObjectCollisionBox(entvars_t* pev)
-{
-	if ((pev->solid == SOLID_BSP) &&
-		(pev->angles.x || pev->angles.y || pev->angles.z))
-	{	// expand for rotation
-		float		max, v;
-		int			i;
-
-		max = 0;
-		for (i = 0; i < 3; i++)
-		{
-			v = fabs(((float*)pev->mins)[i]);
-			if (v > max)
-				max = v;
-			v = fabs(((float*)pev->maxs)[i]);
-			if (v > max)
-				max = v;
-		}
-		for (i = 0; i < 3; i++)
-		{
-			((float*)pev->absmin)[i] = ((float*)pev->origin)[i] - max;
-			((float*)pev->absmax)[i] = ((float*)pev->origin)[i] + max;
-		}
-	}
-	else
-	{
-		pev->absmin = pev->origin + pev->mins;
-		pev->absmax = pev->origin + pev->maxs;
-	}
-
-	pev->absmin.x -= 1;
-	pev->absmin.y -= 1;
-	pev->absmin.z -= 1;
-	pev->absmax.x += 1;
-	pev->absmax.y += 1;
-	pev->absmax.z += 1;
-}
-
 void DispatchObjectCollsionBox(edict_t* pent)
 {
 	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pent);

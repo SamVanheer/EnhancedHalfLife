@@ -40,5 +40,3 @@ void RestoreGlobalState(SAVERESTOREDATA* pSaveData);
 void ResetGlobalState();
 
 void OnFreeEntPrivateData(edict_t* pEdict);
-
-void SetObjectCollisionBox(entvars_t* pev);

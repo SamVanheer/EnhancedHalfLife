@@ -538,3 +538,8 @@ constexpr bool UTIL_IsInWorld(const Vector& point)
 	return point.x > -WORLD_BOUNDARY && point.y > -WORLD_BOUNDARY && point.z > -WORLD_BOUNDARY
 		&& point.x < WORLD_BOUNDARY && point.y < WORLD_BOUNDARY && point.z < WORLD_BOUNDARY;
 }
+
+/**
+*	@brief Initialize absmin & absmax to the appropriate box
+*/
+void SetObjectCollisionBox(entvars_t* pev);
