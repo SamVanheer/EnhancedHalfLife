@@ -130,7 +130,7 @@ void FindHullIntersection( const Vector &vecSrc, TraceResult &tr, const Vector& 
 
 void CCrowbar::PrimaryAttack()
 {
-	if (! Swing( 1 ))
+	if (! Swing( true ))
 	{
 		SetThink( &CCrowbar::SwingAgain );
 		pev->nextthink = gpGlobals->time + 0.1;
@@ -146,11 +146,10 @@ void CCrowbar::Smack( )
 
 void CCrowbar::SwingAgain()
 {
-	Swing( 0 );
+	Swing( false );
 }
 
-//TODO: use bool
-int CCrowbar::Swing( int fFirst )
+bool CCrowbar::Swing( bool fFirst )
 {
 	bool fDidHit = false;
 
