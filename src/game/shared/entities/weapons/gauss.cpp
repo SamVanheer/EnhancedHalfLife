@@ -351,7 +351,7 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 	m_pPlayer->m_iWeaponVolume = GAUSS_PRIMARY_FIRE_VOLUME;
 
 	Vector vecSrc = vecOrigSrc;
-	Vector vecDest = vecSrc + vecDir * 8192;
+	Vector vecDest = vecSrc + vecDir * WORLD_SIZE;
 	edict_t		*pentIgnore;
 	TraceResult tr, beam_tr;
 	float flMaxFrac = 1.0;
@@ -433,7 +433,7 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 				flMaxFrac = flMaxFrac - tr.flFraction;
 				vecDir = r;
 				vecSrc = tr.vecEndPos + vecDir * 8;
-				vecDest = vecSrc + vecDir * 8192;
+				vecDest = vecSrc + vecDir * WORLD_SIZE;
 
 				// explode a bit
 				m_pPlayer->RadiusDamage( tr.vecEndPos, pev, m_pPlayer->pev, flDamage * n, CLASS_NONE, DMG_BLAST );

@@ -217,7 +217,7 @@ float CFlyingMonster::CeilingZ( const Vector &position )
 
 	Vector minUp = position;
 	Vector maxUp = position;
-	maxUp.z += 4096.0;
+	maxUp.z += WORLD_BOUNDARY;
 
 	UTIL_TraceLine(position, maxUp, ignore_monsters, nullptr, &tr);
 	if (tr.flFraction != 1.0)

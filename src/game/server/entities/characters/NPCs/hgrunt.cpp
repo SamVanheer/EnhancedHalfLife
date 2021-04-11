@@ -2400,7 +2400,7 @@ void CHGruntRepel::Precache()
 void CHGruntRepel::RepelUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
 	TraceResult tr;
-	UTIL_TraceLine( pev->origin, pev->origin + Vector( 0, 0, -4096.0), dont_ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine( pev->origin, pev->origin + Vector( 0, 0, -WORLD_BOUNDARY), dont_ignore_monsters, ENT(pev), &tr);
 	/*
 	if ( tr.pHit && Instance( tr.pHit )->pev->solid != SOLID_BSP) 
 		return;
@@ -2419,7 +2419,7 @@ void CHGruntRepel::RepelUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 	pBeam->SetFlags( BEAM_FSOLID );
 	pBeam->SetColor( 255, 255, 255 );
 	pBeam->SetThink( &CBeam::SUB_Remove );
-	pBeam->pev->nextthink = gpGlobals->time + -4096.0 * tr.flFraction / pGrunt->pev->velocity.z + 0.5;
+	pBeam->pev->nextthink = gpGlobals->time + -WORLD_BOUNDARY * tr.flFraction / pGrunt->pev->velocity.z + 0.5;
 
 	UTIL_Remove( this );
 }

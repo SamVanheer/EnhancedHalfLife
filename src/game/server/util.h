@@ -533,3 +533,9 @@ void EntvarsKeyvalue(entvars_t* pev, KeyValueData* pkvd);
 *	@brief Determine the current # of active players on the server for map cycling logic
 */
 int UTIL_CountPlayers();
+
+constexpr bool UTIL_IsInWorld(const Vector& point)
+{
+	return point.x > -WORLD_BOUNDARY && point.y > -WORLD_BOUNDARY && point.z > -WORLD_BOUNDARY
+		&& point.x < WORLD_BOUNDARY && point.y < WORLD_BOUNDARY && point.z < WORLD_BOUNDARY;
+}

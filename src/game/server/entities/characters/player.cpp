@@ -4002,7 +4002,7 @@ Vector CBasePlayer :: GetAutoaimVector( float flDelta )
 	}
 
 	Vector vecSrc = GetGunPosition( );
-	float flDist = 8192;
+	float flDist = WORLD_SIZE;
 
 	// always use non-sticky autoaim
 	// UNDONE: use sever variable to chose!

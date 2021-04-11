@@ -196,12 +196,11 @@ bool CBaseEntity :: IsDormant()
 bool CBaseEntity :: IsInWorld()
 {
 	// position 
-	if (pev->origin.x >= 4096) return false;
-	if (pev->origin.y >= 4096) return false;
-	if (pev->origin.z >= 4096) return false;
-	if (pev->origin.x <= -4096) return false;
-	if (pev->origin.y <= -4096) return false;
-	if (pev->origin.z <= -4096) return false;
+	if (!UTIL_IsInWorld(pev->origin))
+	{
+		return false;
+	}
+	
 	// speed
 	if (pev->velocity.x >= 2000) return false;
 	if (pev->velocity.y >= 2000) return false;

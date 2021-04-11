@@ -420,7 +420,7 @@ void EV_FireGlock1( event_args_t *args )
 	
 	const Vector vecAiming = forward;
 
-	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_9MM, 0, nullptr, args->fparam1, args->fparam2 );
+	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, WORLD_SIZE, BULLET_PLAYER_9MM, 0, nullptr, args->fparam1, args->fparam2 );
 }
 
 void EV_FireGlock2( event_args_t *args )
@@ -457,7 +457,7 @@ void EV_FireGlock2( event_args_t *args )
 	
 	const Vector vecAiming = forward;
 
-	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_9MM, 0, &tracerCount[idx-1], args->fparam1, args->fparam2 );
+	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, WORLD_SIZE, BULLET_PLAYER_9MM, 0, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 	
 }
 //======================
@@ -608,11 +608,11 @@ void EV_FireMP5( event_args_t *args )
 
 	if ( gEngfuncs.GetMaxClients() > 1 )
 	{
-		EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_MP5, 2, &tracerCount[idx-1], args->fparam1, args->fparam2 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, WORLD_SIZE, BULLET_PLAYER_MP5, 2, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 	}
 	else
 	{
-		EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_MP5, 2, &tracerCount[idx-1], args->fparam1, args->fparam2 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, WORLD_SIZE, BULLET_PLAYER_MP5, 2, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 	}
 }
 
@@ -684,7 +684,7 @@ void EV_FirePython( event_args_t *args )
 	
 	const Vector vecAiming = forward;
 
-	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_357, 0, nullptr, args->fparam1, args->fparam2 );
+	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, WORLD_SIZE, BULLET_PLAYER_357, 0, nullptr, args->fparam1, args->fparam2 );
 }
 //======================
 //	    PHYTON END 
@@ -745,7 +745,7 @@ void EV_FireGauss( event_args_t *args )
 	Vector up, right, forward;
 	AngleVectors( angles, forward, right, up );
 
-	Vector vecDest = vecSrc + 8192 * forward;
+	Vector vecDest = vecSrc + WORLD_SIZE * forward;
 
 	const bool m_fPrimaryFire = args->bparam1 != 0;
 	float flDamage = args->fparam1;
@@ -842,7 +842,7 @@ void EV_FireGauss( event_args_t *args )
 				forward = forward + (2.0 * n) * tr.plane.normal;
 
 				vecSrc = tr.endpos + 8 * forward;
-				vecDest = vecSrc + 8192 * forward;
+				vecDest = vecSrc + WORLD_SIZE * forward;
 
 				gEngfuncs.pEfxAPI->R_TempSprite( tr.endpos, vec3_origin, 0.2, m_iGlow, kRenderGlow, kRenderFxNoDissipation, flDamage * n / 255.0, flDamage * n * 0.5 * 0.1, FTENT_FADEOUT );
 
@@ -1019,7 +1019,7 @@ void EV_FireCrossbow2( event_args_t *args )
 	Vector vecSrc;
 	EV_GetGunPosition( args, vecSrc, origin );
 
-	const Vector vecEnd = vecSrc + 8192 * forward;
+	const Vector vecEnd = vecSrc + WORLD_SIZE * forward;
 
 	gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, "weapons/xbow_fire1.wav", 1, ATTN_NORM, 0, 93 + gEngfuncs.pfnRandomLong(0,0xF) );
 	gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_ITEM, "weapons/xbow_reload1.wav", gEngfuncs.pfnRandomFloat(0.95, 1.0), ATTN_NORM, 0, 93 + gEngfuncs.pfnRandomLong(0,0xF) );

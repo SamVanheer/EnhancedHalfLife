@@ -334,7 +334,7 @@ void CSatchel::PrimaryAttack()
 
 		CBaseEntity *pSatchel = nullptr;
 
-		while ((pSatchel = UTIL_FindEntityInSphere( pSatchel, m_pPlayer->pev->origin, 4096 )) != nullptr)
+		while ((pSatchel = UTIL_FindEntityInSphere( pSatchel, m_pPlayer->pev->origin, WORLD_BOUNDARY)) != nullptr)
 		{
 			if (FClassnameIs( pSatchel->pev, "monster_satchel"))
 			{

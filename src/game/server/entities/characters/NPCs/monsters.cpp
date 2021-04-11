@@ -405,7 +405,7 @@ CSound* CBaseMonster :: PBestSound ()
 {	
 	int iThisSound; 
 	int	iBestSound = -1;
-	float flBestDist = 8192;// so first nearby sound will become best so far.
+	float flBestDist = WORLD_SIZE;// so first nearby sound will become best so far.
 	float flDist;
 	CSound *pSound;
 
@@ -456,7 +456,7 @@ CSound* CBaseMonster :: PBestScent ()
 {	
 	int iThisScent; 
 	int	iBestScent = -1;
-	float flBestDist = 8192;// so first nearby smell will become best so far.
+	float flBestDist = WORLD_SIZE;// so first nearby smell will become best so far.
 	float flDist;
 	CSound *pSound;
 
@@ -2421,7 +2421,7 @@ CBaseEntity *CBaseMonster :: BestVisibleEnemy ()
 	int			iDist;
 	int			iBestRelationship;
 
-	iNearest = 8192;// so first visible entity will become the closest.
+	iNearest = WORLD_SIZE;// so first visible entity will become the closest.
 	pNextEnt = m_pLink;
 	pReturn = nullptr;
 	iBestRelationship = R_NO;

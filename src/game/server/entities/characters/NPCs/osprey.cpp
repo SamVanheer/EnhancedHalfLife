@@ -243,7 +243,7 @@ void COsprey :: DeployThink()
 	Vector vecSrc;
 
 	TraceResult tr;
-	UTIL_TraceLine( pev->origin, pev->origin + Vector( 0, 0, -4096.0), ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine( pev->origin, pev->origin + Vector( 0, 0, -WORLD_BOUNDARY), ignore_monsters, ENT(pev), &tr);
 	CSoundEnt::InsertSound ( bits_SOUND_DANGER, tr.vecEndPos, 400, 0.3 );
 
 	vecSrc = pev->origin + vecForward *  32 + vecRight *  100 + vecUp * -96;
@@ -287,7 +287,7 @@ CBaseMonster *COsprey :: MakeGrunt( Vector vecSrc )
 	CBaseMonster *pGrunt;
 
 	TraceResult tr;
-	UTIL_TraceLine( vecSrc, vecSrc + Vector( 0, 0, -4096.0), dont_ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine( vecSrc, vecSrc + Vector( 0, 0, -WORLD_BOUNDARY), dont_ignore_monsters, ENT(pev), &tr);
 	if ( tr.pHit && Instance( tr.pHit )->pev->solid != SOLID_BSP) 
 		return nullptr;
 
@@ -310,7 +310,7 @@ CBaseMonster *COsprey :: MakeGrunt( Vector vecSrc )
 			pBeam->SetFlags( BEAM_FSOLID );
 			pBeam->SetColor( 255, 255, 255 );
 			pBeam->SetThink( &CBeam::SUB_Remove );
-			pBeam->pev->nextthink = gpGlobals->time + -4096.0 * tr.flFraction / pGrunt->pev->velocity.z + 0.5;
+			pBeam->pev->nextthink = gpGlobals->time + -WORLD_BOUNDARY * tr.flFraction / pGrunt->pev->velocity.z + 0.5;
 
 			// ALERT( at_console, "%d at %.0f %.0f %.0f\n", i, m_vecOrigin[i].x, m_vecOrigin[i].y, m_vecOrigin[i].z );  
 			pGrunt->m_vecLastPosition = m_vecOrigin[i];

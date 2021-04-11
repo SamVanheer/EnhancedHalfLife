@@ -566,7 +566,7 @@ void CApache :: HuntThink()
 				{
 					TraceResult tr;
 					
-					UTIL_TraceLine( pev->origin, pev->origin + vecEst * 4096, ignore_monsters, edict(), &tr );
+					UTIL_TraceLine( pev->origin, pev->origin + vecEst * WORLD_BOUNDARY, ignore_monsters, edict(), &tr );
 					if ((tr.vecEndPos - m_posTarget).Length() < 512)
 						FireRocket( );
 				}
@@ -575,7 +575,7 @@ void CApache :: HuntThink()
 			{
 				TraceResult tr;
 				
-				UTIL_TraceLine( pev->origin, pev->origin + vecEst * 4096, dont_ignore_monsters, edict(), &tr );
+				UTIL_TraceLine( pev->origin, pev->origin + vecEst * WORLD_BOUNDARY, dont_ignore_monsters, edict(), &tr );
 				// just fire when close
 				if ((tr.vecEndPos - m_posTarget).Length() < 512)
 					FireRocket( );
@@ -827,12 +827,12 @@ bool CApache :: FireGun( )
 	if (DotProduct( vecGun, vecTarget ) > 0.98)
 	{
 #if 1
-		FireBullets( 1, posGun, vecGun, VECTOR_CONE_4DEGREES, 8192, BULLET_MONSTER_12MM, 1 );
+		FireBullets( 1, posGun, vecGun, VECTOR_CONE_4DEGREES, WORLD_SIZE, BULLET_MONSTER_12MM, 1 );
 		EMIT_SOUND(ENT(pev), CHAN_WEAPON, "turret/tu_fire1.wav", 1, 0.3);
 #else
 		static float flNext;
 		TraceResult tr;
-		UTIL_TraceLine( posGun, posGun + vecGun * 8192, dont_ignore_monsters, ENT( pev ), &tr );
+		UTIL_TraceLine( posGun, posGun + vecGun * WORLD_SIZE, dont_ignore_monsters, ENT( pev ), &tr );
 
 		if (!m_pBeam)
 		{
@@ -1024,7 +1024,7 @@ void CApacheHVR :: IgniteThink()
 void CApacheHVR :: AccelerateThink()
 {
 	// check world boundaries
-	if (pev->origin.x < -4096 || pev->origin.x > 4096 || pev->origin.y < -4096 || pev->origin.y > 4096 || pev->origin.z < -4096 || pev->origin.z > 4096)
+	if (!UTIL_IsInWorld(pev->origin))
 	{
 		UTIL_Remove( this );
 		return;

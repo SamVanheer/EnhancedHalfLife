@@ -993,7 +993,7 @@ void V_GetDirectedChasePosition(cl_entity_t	 * ent1, cl_entity_t * ent2, Vector&
 
 	if ( v_resetCamera )
 	{
-		v_lastDistance = 4096.0f;
+		v_lastDistance = WORLD_BOUNDARY;
 		// v_cameraMode = CAM_MODE_FOCUS;
 	}
 
@@ -1151,7 +1151,7 @@ void V_GetMapFreePosition( Vector& cl_angles, Vector& origin, Vector& angles )
 
 	VectorNormalize(forward);
 
-	origin = zScaledTarget + forward * -(4096.0f / gHUD.m_Spectator.m_mapZoom);
+	origin = zScaledTarget + forward * -(WORLD_BOUNDARY / gHUD.m_Spectator.m_mapZoom);
 }
 
 void V_GetMapChasePosition(int target, Vector& cl_angles, Vector& origin, Vector& angles)
@@ -1539,7 +1539,7 @@ void V_Move( int mx, int my )
 	Vector forward, up, right;
 	AngleVectors ( newangles, forward, right, up );
 
-	Vector farpoint = v_origin + 8192 * forward;
+	Vector farpoint = v_origin + WORLD_SIZE * forward;
 
 	// Trace
 	pmtrace_t tr = *(gEngfuncs.PM_TraceLine( (float *)&v_origin, (float *)&farpoint, PM_TRACELINE_PHYSENTSONLY, 2 /*point sized hull*/, -1 ));

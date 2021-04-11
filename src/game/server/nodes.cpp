@@ -1020,7 +1020,7 @@ int	CGraph :: FindNearestNode ( const Vector &vecOrigin,  int afNodeTypes )
 	// Verify our answers.
 	//
 	int iNearestCheck = -1;
-	m_flShortest = 8192;// find nodes within this radius
+	m_flShortest = WORLD_SIZE;// find nodes within this radius
 
 	for ( i = 0 ; i < m_cNodes ; i++ )
 	{

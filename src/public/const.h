@@ -20,6 +20,18 @@
 // This header file included by engine files and DLL files.
 // Most came from server.h
 
+/**
+*	@brief Maximum value that a coordinate can have before it's considered out of the map.
+*	
+*	Applies to both positive and negative values ([-WORLD_BOUNDARY, WORLD_BOUNDARY])
+*/
+constexpr float WORLD_BOUNDARY = 4096;
+
+/**
+*	@brief Maximum size of the world on any given axis
+*/
+constexpr float WORLD_SIZE = WORLD_BOUNDARY * 2;
+
 // edict->flags
 constexpr int FL_FLY = 1 << 0;				//!< Changes the SV_Movestep() behavior to not need to be on ground
 constexpr int FL_SWIM = 1 << 1;				//!< Changes the SV_Movestep() behavior to not need to be on ground (but stay in water)

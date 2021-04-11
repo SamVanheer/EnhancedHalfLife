@@ -1164,7 +1164,7 @@ bool CScriptedSentence :: StartSentence( CBaseMonster *pTarget )
 		float radius = m_flRadius;
 
 		if ( FStrEq( STRING(m_iszListener ), "player" ) )
-			radius = 4096;	// Always find the player
+			radius = WORLD_BOUNDARY;	// Always find the player
 
 		pListener = UTIL_FindEntityGeneric( STRING( m_iszListener ), pTarget->pev->origin, radius );
 	}

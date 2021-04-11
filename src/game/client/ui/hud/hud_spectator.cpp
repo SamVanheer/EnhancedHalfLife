@@ -1441,14 +1441,14 @@ void CHudSpectator::DrawOverviewLayer()
 	// rotated view ?
 	if ( m_OverviewData.rotated )
 	{
-		xStep = (2*4096.0f / m_OverviewData.zoom ) / xTiles;
-		yStep = -(2*4096.0f / (m_OverviewData.zoom* screenaspect) ) / yTiles;
+		xStep = (2* WORLD_BOUNDARY / m_OverviewData.zoom ) / xTiles;
+		yStep = -(2* WORLD_BOUNDARY / (m_OverviewData.zoom* screenaspect) ) / yTiles;
 
-		y = ys + (4096.0f / (m_OverviewData.zoom * screenaspect));
+		y = ys + (WORLD_BOUNDARY / (m_OverviewData.zoom * screenaspect));
 
 		for (iy = 0; iy < yTiles; iy++)
 		{
-			x = xs - (4096.0f / (m_OverviewData.zoom));
+			x = xs - (WORLD_BOUNDARY / (m_OverviewData.zoom));
 
 			for (ix = 0; ix < xTiles; ix++)
 			{
@@ -1480,18 +1480,18 @@ void CHudSpectator::DrawOverviewLayer()
 	} 
 	else
 	{
-		xStep = -(2*4096.0f / m_OverviewData.zoom ) / xTiles;
-		yStep = -(2*4096.0f / (m_OverviewData.zoom* screenaspect) ) / yTiles;
+		xStep = -(2* WORLD_BOUNDARY / m_OverviewData.zoom ) / xTiles;
+		yStep = -(2* WORLD_BOUNDARY / (m_OverviewData.zoom* screenaspect) ) / yTiles;
 
 				
-		x = xs + (4096.0f / (m_OverviewData.zoom * screenaspect ));
+		x = xs + (WORLD_BOUNDARY / (m_OverviewData.zoom * screenaspect ));
 
 		
 		
 		for (ix = 0; ix < yTiles; ix++)
 		{
 			
-			y = ys + (4096.0f / (m_OverviewData.zoom));	
+			y = ys + (WORLD_BOUNDARY / (m_OverviewData.zoom));
 						
 			for (iy = 0; iy < xTiles; iy++)	
 			{

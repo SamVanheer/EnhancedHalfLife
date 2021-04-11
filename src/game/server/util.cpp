@@ -59,7 +59,7 @@ CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe)
 	TraceResult tr;
 
 	UTIL_MakeVectors(pMe->pev->v_angle);
-	UTIL_TraceLine(pMe->pev->origin + pMe->pev->view_ofs, pMe->pev->origin + pMe->pev->view_ofs + gpGlobals->v_forward * 8192, dont_ignore_monsters, pMe->edict(), &tr);
+	UTIL_TraceLine(pMe->pev->origin + pMe->pev->view_ofs, pMe->pev->origin + pMe->pev->view_ofs + gpGlobals->v_forward * WORLD_SIZE, dont_ignore_monsters, pMe->edict(), &tr);
 	if (tr.flFraction != 1.0 && !FNullEnt(tr.pHit))
 	{
 		CBaseEntity* pHit = CBaseEntity::Instance(tr.pHit);
@@ -171,7 +171,7 @@ void UTIL_ParametricRocket( entvars_t *pev, Vector vecOrigin, Vector vecAngles, 
 	// Trace out line to end pos
 	TraceResult tr;
 	UTIL_MakeVectors( vecAngles );
-	UTIL_TraceLine( pev->startpos, pev->startpos + gpGlobals->v_forward * 8192, ignore_monsters, owner, &tr);
+	UTIL_TraceLine( pev->startpos, pev->startpos + gpGlobals->v_forward * WORLD_SIZE, ignore_monsters, owner, &tr);
 	pev->endpos = tr.vecEndPos;
 
 	// Now compute how long it will take based on current velocity

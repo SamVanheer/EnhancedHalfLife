@@ -200,7 +200,7 @@ void CRpgRocket :: FollowThink()
 	UTIL_MakeAimVectors( pev->angles );
 
 	vecTarget = gpGlobals->v_forward;
-	flMax = 4096;
+	flMax = WORLD_BOUNDARY;
 	
 	// Examine all entities within a reasonable radius
 	while ((pOther = UTIL_FindEntityByClassname( pOther, "laser_spot" )) != nullptr)
@@ -547,7 +547,7 @@ void CRpg::UpdateSpot()
 		Vector vecAiming = gpGlobals->v_forward;
 
 		TraceResult tr;
-		UTIL_TraceLine ( vecSrc, vecSrc + vecAiming * 8192, dont_ignore_monsters, ENT(m_pPlayer->pev), &tr );
+		UTIL_TraceLine ( vecSrc, vecSrc + vecAiming * WORLD_SIZE, dont_ignore_monsters, ENT(m_pPlayer->pev), &tr );
 		
 		UTIL_SetOrigin( m_pSpot->pev, tr.vecEndPos );
 	}

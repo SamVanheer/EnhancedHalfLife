@@ -394,13 +394,13 @@ void CNihilanth::StartupThink()
 	if (pEntity)
 		m_flMinZ = pEntity->pev->origin.z;
 	else
-		m_flMinZ = -4096;
+		m_flMinZ = -WORLD_BOUNDARY;
 
 	pEntity = UTIL_FindEntityByTargetname( nullptr, "n_max");
 	if (pEntity)
 		m_flMaxZ = pEntity->pev->origin.z;
 	else
-		m_flMaxZ = 4096;
+		m_flMaxZ = WORLD_BOUNDARY;
 
 	m_hRecharger = this;
 	for (int i = 0; i < N_SPHERES; i++)
@@ -507,7 +507,7 @@ void CNihilanth :: DyingThink()
 
 	TraceResult tr;
 
-	UTIL_TraceLine( vecSrc, vecSrc + vecDir * 4096, ignore_monsters, ENT(pev), &tr );
+	UTIL_TraceLine( vecSrc, vecSrc + vecDir * WORLD_BOUNDARY, ignore_monsters, ENT(pev), &tr );
 	
 	MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
 		WRITE_BYTE( TE_BEAMENTPOINT );
@@ -716,7 +716,7 @@ void CNihilanth :: NextActivity( )
 
 		CBaseEntity *pEnt = nullptr;
 		CBaseEntity *pRecharger = nullptr;
-		float flDist = 8192;
+		float flDist = WORLD_SIZE;
 
 		sprintf(szName, "%s%d", m_szRechargerTarget, m_iLevel );
 
@@ -788,7 +788,7 @@ void CNihilanth :: NextActivity( )
 
 	if (m_hEnemy == nullptr)
 	{
-		Look( 4096 );
+		Look(WORLD_BOUNDARY);
 		m_hEnemy = BestVisibleEnemy( );
 	}
 
@@ -1460,8 +1460,7 @@ void CNihilanthHVR :: ZapThink()
 	pev->nextthink = gpGlobals->time + 0.05;
 
 	// check world boundaries
-	//TODO: define world boundary constant
-	if (m_hEnemy == nullptr ||  pev->origin.x < -4096 || pev->origin.x > 4096 || pev->origin.y < -4096 || pev->origin.y > 4096 || pev->origin.z < -4096 || pev->origin.z > 4096)
+	if (m_hEnemy == nullptr || !UTIL_IsInWorld(pev->origin))
 	{
 		SetTouch( nullptr );
 		UTIL_Remove( this );
@@ -1604,7 +1603,7 @@ void CNihilanthHVR :: TeleportThink()
 	pev->nextthink = gpGlobals->time + 0.1;
 
 	// check world boundaries
-	if (m_hEnemy == nullptr || !m_hEnemy->IsAlive() || pev->origin.x < -4096 || pev->origin.x > 4096 || pev->origin.y < -4096 || pev->origin.y > 4096 || pev->origin.z < -4096 || pev->origin.z > 4096)
+	if (m_hEnemy == nullptr || !m_hEnemy->IsAlive() || !UTIL_IsInWorld(pev->origin))
 	{
 		STOP_SOUND(edict(), CHAN_WEAPON, "x/x_teleattack1.wav" );
 		UTIL_Remove( this );
@@ -1703,7 +1702,7 @@ void CNihilanthHVR :: DissipateThink()
 
 	if (m_hTargetEnt != nullptr)
 	{
-		CircleTarget( m_hTargetEnt->pev->origin + Vector( 0, 0, 4096 ) );
+		CircleTarget( m_hTargetEnt->pev->origin + Vector( 0, 0, WORLD_BOUNDARY) );
 	}
 	else
 	{

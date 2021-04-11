@@ -169,7 +169,7 @@ void CFuncMortarField :: FieldUse( CBaseEntity *pActivator, CBaseEntity *pCaller
 		vecSpot.y += RANDOM_FLOAT( -m_flSpread, m_flSpread );
 
 		TraceResult tr;
-		UTIL_TraceLine( vecSpot, vecSpot + Vector( 0, 0, -1 ) * 4096, ignore_monsters, ENT(pev), &tr );
+		UTIL_TraceLine( vecSpot, vecSpot + Vector( 0, 0, -1 ) * WORLD_BOUNDARY, ignore_monsters, ENT(pev), &tr );
 
 		edict_t *pentOwner = nullptr;
 		if (pActivator)	pentOwner = pActivator->edict();
@@ -309,7 +309,7 @@ void CMortar::ShootTimed( EVARS *pevOwner, Vector vecStart, float time )
 	pMortar->Spawn();
 
 	TraceResult tr;
-	UTIL_TraceLine( vecStart, vecStart + Vector( 0, 0, -1 ) * 4096, ignore_monsters, ENT(pMortar->pev), &tr );
+	UTIL_TraceLine( vecStart, vecStart + Vector( 0, 0, -1 ) * WORLD_BOUNDARY, ignore_monsters, ENT(pMortar->pev), &tr );
 
 	pMortar->pev->nextthink = gpGlobals->time + time;
 
