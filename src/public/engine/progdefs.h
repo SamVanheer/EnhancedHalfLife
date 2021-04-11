@@ -152,7 +152,7 @@ struct entvars_t
 	float		teleport_time;
 	float		armortype;
 	float		armorvalue;
-	int			waterlevel;
+	WaterLevel waterlevel;
 	int			watertype;
 	
 	string_t	target;

@@ -1061,9 +1061,9 @@ void RadiusDamage( Vector vecSrc, entvars_t *pevInflictor, entvars_t *pevAttacke
 			}
 
 			// blast's don't tavel into or out of water
-			if (bInWater && pEntity->pev->waterlevel == 0)
+			if (bInWater && pEntity->pev->waterlevel == WaterLevel::Dry)
 				continue;
-			if (!bInWater && pEntity->pev->waterlevel == 3)
+			if (!bInWater && pEntity->pev->waterlevel == WaterLevel::Head)
 				continue;
 
 			vecSpot = pEntity->BodyTarget( vecSrc );
@@ -1224,8 +1224,8 @@ bool CBaseEntity :: FVisible ( CBaseEntity *pEntity )
 		return false;
 
 	// don't look through water
-	if ((pev->waterlevel != 3 && pEntity->pev->waterlevel == 3) 
-		|| (pev->waterlevel == 3 && pEntity->pev->waterlevel == 0))
+	if ((pev->waterlevel != WaterLevel::Head && pEntity->pev->waterlevel == WaterLevel::Head)
+		|| (pev->waterlevel == WaterLevel::Head && pEntity->pev->waterlevel == WaterLevel::Dry))
 		return false;
 
 	vecLookerOrigin = pev->origin + pev->view_ofs;//look through the caller's 'eyes'

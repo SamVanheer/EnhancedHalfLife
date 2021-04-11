@@ -660,7 +660,7 @@ void HUD_WeaponsPostThink( local_state_t *from, local_state_t*to, usercmd_t *cmd
 	player.pev->flags = from->client.flags;
 
 	player.pev->deadflag = from->client.deadflag;
-	player.pev->waterlevel = from->client.waterlevel;
+	player.pev->waterlevel = static_cast<WaterLevel>(from->client.waterlevel);
 	player.pev->maxspeed    = from->client.maxspeed;
 	player.m_iFOV = from->client.fov;
 	player.pev->weaponanim = from->client.weaponanim;

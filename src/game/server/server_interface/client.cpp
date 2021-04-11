@@ -1545,7 +1545,7 @@ void UpdateClientData ( const edict_t *ent, int sendweapons, clientdata_t *cd )
 
 	cd->viewmodel		= MODEL_INDEX( STRING( pev->viewmodel ) );
 
-	cd->waterlevel		= pev->waterlevel;
+	cd->waterlevel		= static_cast<int>(pev->waterlevel);
 	cd->watertype		= pev->watertype;
 	cd->weapons			= pev->weapons;
 

@@ -831,7 +831,7 @@ void PM_WalkMove ()
 	}
 
 	if (oldonground == -1 &&   // Don't walk up stairs if not on ground.
-		pmove->waterlevel  == 0)
+		pmove->waterlevel  == WaterLevel::Dry)
 		return;
 
 	if (pmove->waterjumptime)         // If we are jumping out of water, don't do anything more.
@@ -980,7 +980,7 @@ void PM_Friction ()
 	}
 
 // apply water friction
-//	if (pmove->waterlevel)
+//	if (pmove->waterlevel != WaterLevel::Dry)
 //		drop += speed * pmove->movevars->waterfriction * waterlevel * pmove->frametime;
 
 // scale the velocity
@@ -1158,7 +1158,7 @@ void PM_AirMove ()
 
 bool PM_InWater()
 {
-	return ( pmove->waterlevel > 1 );
+	return ( pmove->waterlevel > WaterLevel::Feet);
 }
 
 /*
@@ -1179,7 +1179,7 @@ bool PM_CheckWater ()
 	};
 	
 	// Assume that we are not in water at all.
-	pmove->waterlevel = 0;
+	pmove->waterlevel = WaterLevel::Dry;
 	pmove->watertype = CONTENTS_EMPTY;
 
 	// Grab point contents.
@@ -1192,8 +1192,7 @@ bool PM_CheckWater ()
 		pmove->watertype = cont;
 
 		// We are at least at level one
-		//TODO: define waterlevel constants
-		pmove->waterlevel = 1;
+		pmove->waterlevel = WaterLevel::Feet;
 
 		const float height = (pmove->player_mins[pmove->usehull][2] + pmove->player_maxs[pmove->usehull][2]);
 		const float heightover2 = height * 0.5;
@@ -1205,14 +1204,14 @@ bool PM_CheckWater ()
 		if (cont <= CONTENTS_WATER && cont > CONTENTS_TRANSLUCENT )
 		{
 			// Set a higher water level.
-			pmove->waterlevel = 2;
+			pmove->waterlevel = WaterLevel::Waist;
 
 			// Now check the eye position.  (view_ofs is relative to the origin)
 			point[2] = pmove->origin[2] + pmove->view_ofs[2];
 
 			cont = pmove->PM_PointContents (point, nullptr);
 			if (cont <= CONTENTS_WATER && cont > CONTENTS_TRANSLUCENT ) 
-				pmove->waterlevel = 3;  // In over our eyes
+				pmove->waterlevel = WaterLevel::Head;  // In over our eyes
 		}
 
 		// Adjust velocity based on water current, if any.
@@ -1227,11 +1226,11 @@ bool PM_CheckWater ()
 				{0, -1, 0}, {0, 0, 1}, {0, 0, -1}
 			};
 
-			pmove->basevelocity = pmove->basevelocity + (50.0 * pmove->waterlevel) * current_table[CONTENTS_CURRENT_0 - truecont];
+			pmove->basevelocity = pmove->basevelocity + (50.0 * static_cast<int>(pmove->waterlevel)) * current_table[CONTENTS_CURRENT_0 - truecont];
 		}
 	}
 
-	return pmove->waterlevel > 1;
+	return pmove->waterlevel > WaterLevel::Feet;
 }
 
 /*
@@ -1280,7 +1279,7 @@ void PM_CatagorizePosition ()
 			// Then we are not in water jump sequence
 			pmove->waterjumptime = 0;
 			// If we could make the move, drop us down that 1 pixel
-			if (pmove->waterlevel < 2 && !tr.startsolid && !tr.allsolid)
+			if (pmove->waterlevel < WaterLevel::Waist && !tr.startsolid && !tr.allsolid)
 				pmove->origin = tr.endpos;
 		}
 
@@ -1865,7 +1864,7 @@ void PM_WaterJump ()
 
 	pmove->waterjumptime -= pmove->cmd.msec;
 	if ( pmove->waterjumptime < 0 ||
-		 !pmove->waterlevel )
+		 pmove->waterlevel == WaterLevel::Dry)
 	{
 		pmove->waterjumptime = 0;
 		pmove->flags &= ~FL_WATERJUMP;
@@ -2094,7 +2093,7 @@ void PM_Jump ()
 	}
 
 	// If we are in the water most of the way...
-	if (pmove->waterlevel >= 2)
+	if (pmove->waterlevel >= WaterLevel::Waist)
 	{	// swimming, not jumping
 		pmove->onground = -1;
 
@@ -2266,7 +2265,7 @@ void PM_CheckFalling()
 	{
 		float fvol = 0.5;
 
-		if ( pmove->waterlevel > 0 )
+		if ( pmove->waterlevel > WaterLevel::Dry)
 		{
 		}
 		else if ( pmove->flFallVelocity > PLAYER_MAX_SAFE_FALL_SPEED )
@@ -2328,8 +2327,8 @@ PM_PlayWaterSounds
 void PM_PlayWaterSounds()
 {
 	// Did we enter or leave water?
-	if  ( ( pmove->oldwaterlevel == 0 && pmove->waterlevel != 0 ) ||
-		  ( pmove->oldwaterlevel != 0 && pmove->waterlevel == 0 ) )
+	if  ( ( pmove->oldwaterlevel == WaterLevel::Dry && pmove->waterlevel != WaterLevel::Dry ) ||
+		  ( pmove->oldwaterlevel != WaterLevel::Dry && pmove->waterlevel == WaterLevel::Dry ) )
 	{
 		switch ( pmove->RandomLong(0,3) )
 		{
@@ -2651,9 +2650,9 @@ void PM_PlayerMove (bool server )
 
 		// If we are swimming in the water, see if we are nudging against a place we can jump up out
 		//  of, and, if so, start out jump.  Otherwise, if we are not moving up, then reset jump timer to 0
-		if ( pmove->waterlevel >= 2 ) 
+		if ( pmove->waterlevel >= WaterLevel::Waist)
 		{
-			if ( pmove->waterlevel == 2 )
+			if ( pmove->waterlevel == WaterLevel::Waist)
 			{
 				PM_CheckWaterJump();
 			}

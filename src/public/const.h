@@ -129,6 +129,14 @@ constexpr int EF_FIBERCAMERA = 1024;		//!< fiber camera
 
 // entity flags
 constexpr int EFLAG_SLERP = 1;				//!< do studio interpolation of this entity
+
+enum class WaterLevel
+{
+	Dry = 0,	//!< not in water
+	Feet,		//!< feet in water
+	Waist,		//!< waist in water
+	Head		//!< head in water
+};
 		
 //
 // temp entity events

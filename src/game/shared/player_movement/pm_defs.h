@@ -134,9 +134,9 @@ struct playermove_t
 	int				movetype;      // Our movement type, NOCLIP, WALK, FLY
 
 	int				onground;
-	int				waterlevel;
+	WaterLevel		waterlevel;
 	int				watertype;
-	int				oldwaterlevel;
+	WaterLevel		oldwaterlevel;
 
 	char			sztexturename[256];
 	char			chtexturetype;
