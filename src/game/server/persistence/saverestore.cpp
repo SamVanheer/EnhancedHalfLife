@@ -753,9 +753,8 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 						//Skip over string and null terminator
 						advanceInputByBytes = inputLength + 1;
 
-						//TODO: use string_t here
 						if (inputLength == 0)
-							*((int*)pOutputData) = 0;
+							*((string_t*)pOutputData) = iStringNull;
 						else
 						{
 							string_t string = ALLOC_STRING(inputString);
