@@ -23,15 +23,9 @@
 
 #include "particleman.h"
 
-#if !defined( _TFC )
 extern BEAM *pBeam;
 extern BEAM *pBeam2;
 extern TEMPENTITY* pFlare;	// Vit_amiN
-#endif 
-
-#if defined( _TFC )
-void ClearEventList();
-#endif
 
 /// USER-DEFINED SERVER MESSAGE HANDLERS
 
@@ -52,17 +46,7 @@ bool CHud :: MsgFunc_ResetHUD(const char *pszName, int iSize, void *pbuf )
 	// reset sensitivity
 	m_flMouseSensitivity = 0;
 
-	// reset concussion effect
-	m_iConcussionEffect = 0;
-
 	return true;
-}
-
-void CAM_ToFirstPerson();
-
-void CHud :: MsgFunc_ViewMode( const char *pszName, int iSize, void *pbuf )
-{
-	CAM_ToFirstPerson();
 }
 
 void CHud :: MsgFunc_InitHUD( const char *pszName, int iSize, void *pbuf )
@@ -77,21 +61,12 @@ void CHud :: MsgFunc_InitHUD( const char *pszName, int iSize, void *pbuf )
 		pList = pList->pNext;
 	}
 
-#if defined( _TFC )
-	ClearEventList();
-
-	// catch up on any building events that are going on
-	gEngfuncs.pfnServerCmd("sendevents");
-#endif
-
 	if ( g_pParticleMan )
 		 g_pParticleMan->ResetParticles();
 
-#if !defined( _TFC )
 	//Probably not a good place to put this.
 	pBeam = pBeam2 = nullptr;
 	pFlare = nullptr;	// Vit_amiN: clear egon's beam flare
-#endif
 }
 
 
@@ -125,20 +100,5 @@ bool CHud :: MsgFunc_Damage(const char *pszName, int iSize, void *pbuf )
 
 	// TODO: kick viewangles,  show damage visually
 
-	return true;
-}
-
-bool CHud :: MsgFunc_Concuss( const char *pszName, int iSize, void *pbuf )
-{
-	BufferReader reader{pbuf, iSize};
-	m_iConcussionEffect = reader.ReadByte();
-	if (m_iConcussionEffect)
-	{
-		int r, g, b;
-		UnpackRGB(r, g, b, RGB_YELLOWISH);
-		this->m_StatusIcons.EnableIcon("dmg_concuss", r, g, b);
-	}
-	else
-		this->m_StatusIcons.DisableIcon("dmg_concuss");
 	return true;
 }

@@ -36,10 +36,6 @@ void DLLEXPORT HUD_DrawNormalTriangles()
 	gHUD.m_Spectator.DrawOverview();
 }
 
-#if defined( _TFC )
-void RunEventList();
-#endif
-
 /*
 =================
 HUD_DrawTransparentTriangles
@@ -49,10 +45,6 @@ Render any triangles with transparent rendermode needs here
 */
 void DLLEXPORT HUD_DrawTransparentTriangles()
 {
-#if defined( _TFC )
-	RunEventList();
-#endif
-
 	if ( g_pParticleMan )
 		 g_pParticleMan->Update();
 }

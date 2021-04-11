@@ -289,41 +289,6 @@ void CommandButton::setParentMenu( CCommandMenu *pParentMenu )
 	m_pParentMenu = pParentMenu;
 }
 
-
-//===========================================================
-int ClassButton::IsNotValid()
-{
-	// If this is the main ChangeClass button, remove it if the player's only able to be civilians
-	if ( m_iPlayerClass == -1 )
-	{
-		if (gViewPort->GetValidClasses(g_iTeamNumber) == -1)
-			return true;
-
-		return false;
-	}
-
-	// Is it an illegal class?
-#ifdef _TFC
-	if ((gViewPort->GetValidClasses(0) & sTFValidClassInts[ m_iPlayerClass ]) || (gViewPort->GetValidClasses(g_iTeamNumber) & sTFValidClassInts[ m_iPlayerClass ]))
-		return true;
-#endif
-
-	// Only check current class if they've got autokill on
-	bool bAutoKill = CVAR_GET_FLOAT( "hud_classautokill" ) != 0;
-	if ( bAutoKill )
-	{	
-		// Is it the player's current class?
-		if ( 
-#ifdef _TFC
-			(gViewPort->IsRandomPC() && m_iPlayerClass == PC_RANDOM) || 
-#endif
-			(!gViewPort->IsRandomPC() && (m_iPlayerClass == g_iPlayerClass)) )
-			return true;
-	}
-
-	return false;
-}
-
 //===========================================================
 // Button with Class image beneath it
 CImageLabel::CImageLabel( const char* pImageName,int x,int y ) : Label( "", x,y )
@@ -533,13 +498,8 @@ void CMenuHandler_StringCommandClassSelect::actionPerformed(Panel* panel)
 {
 	CMenuHandler_StringCommand::actionPerformed( panel );
 
-	// THIS IS NOW BEING DONE ON THE TFC SERVER TO AVOID KILLING SOMEONE THEN 
-	// HAVE THE SERVER SAY "SORRY...YOU CAN'T BE THAT CLASS".
-
-#if !defined _TFC
 	bool bAutoKill = CVAR_GET_FLOAT( "hud_classautokill" ) != 0;
 	if ( bAutoKill && g_iPlayerClass != 0 )
 		gEngfuncs.pfnClientCmd("kill");
-#endif
 }
 

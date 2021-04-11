@@ -24,11 +24,7 @@
 DECLARE_MESSAGE( m_StatusBar, StatusText );
 DECLARE_MESSAGE( m_StatusBar, StatusValue );
 
-#ifdef _TFC
-constexpr int STATUSBAR_ID_LINE = 2;
-#else
 constexpr int STATUSBAR_ID_LINE = 1;
-#endif
 
 bool CHudStatusBar :: Init()
 {

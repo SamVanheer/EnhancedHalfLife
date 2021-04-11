@@ -1717,12 +1717,6 @@ void PM_LadderMove( physent_t *pLadder )
 {
 	if ( pmove->movetype == MOVETYPE_NOCLIP )
 		return;
-	
-#if defined( _TFC )
-	// this is how TFC freezes players, so we don't want them climbing ladders
-	if ( pmove->maxspeed <= 1.0 )
-		return;
-#endif
 
 	Vector modelmins, modelmaxs;
 	pmove->PM_GetModelBounds( pLadder->model, modelmins, modelmaxs );
@@ -2088,15 +2082,6 @@ void PM_Jump ()
 		return;
 	}
 
-	const bool tfc = atoi( pmove->PM_Info_ValueForKey( pmove->physinfo, "tfc" ) ) == 1;
-
-	// Spy that's feigning death cannot jump
-	if ( tfc && 
-		( pmove->deadflag == ( DEAD_DISCARDBODY + 1 ) ) )
-	{
-		return;
-	}
-
 	// See if we are waterjumping.  If so, decrement count and return.
 	if ( pmove->waterjumptime )
 	{
@@ -2163,14 +2148,7 @@ void PM_Jump ()
 
 	PM_PreventMegaBunnyJumping();
 
-	if ( tfc )
-	{
-		pmove->PM_PlaySound( CHAN_BODY, "player/plyrjmp8.wav", 0.5, ATTN_NORM, 0, PITCH_NORM );
-	}
-	else
-	{
-		PM_PlayStepSound( PM_MapTextureTypeStepType( pmove->chtexturetype ), 1.0 );
-	}
+	PM_PlayStepSound( PM_MapTextureTypeStepType( pmove->chtexturetype ), 1.0 );
 
 	// See if user can super long jump?
 	const bool cansuperjump = atoi( pmove->PM_Info_ValueForKey( pmove->physinfo, "slj" ) ) == 1;
@@ -2308,13 +2286,6 @@ void PM_CheckFalling()
 		}
 		else if ( pmove->flFallVelocity > PLAYER_MAX_SAFE_FALL_SPEED / 2 )
 		{
-			const bool tfc = atoi( pmove->PM_Info_ValueForKey( pmove->physinfo, "tfc" ) ) == 1;
-
-			if ( tfc )
-			{
-				pmove->PM_PlaySound( CHAN_VOICE, "player/pl_fallpain3.wav", 1, ATTN_NORM, 0, PITCH_NORM );
-			}
-
 			fvol = 0.85;
 		}
 		else if ( pmove->flFallVelocity < PLAYER_MIN_BOUNCE_SPEED )
@@ -2611,13 +2582,11 @@ void PM_PlayerMove (bool server )
 		}
 	}
 
-#if !defined( _TFC )
 	// Slow down, I'm pulling it! (a box maybe) but only when I'm standing on ground
 	if ( ( pmove->onground != -1 ) && ( pmove->cmd.buttons & IN_USE) )
 	{
 		pmove->velocity = pmove->velocity * 0.3;
 	}
-#endif
 
 	// Handle movement
 	switch ( pmove->movetype )

@@ -937,7 +937,6 @@ void CHudSpectator::FindNextPlayer(bool bReverse)
 	}
 
 	iJumpSpectator = true;
-	gViewPort->MsgFunc_ResetFade(nullptr, 0, nullptr);
 }
 
 
@@ -995,7 +994,6 @@ void CHudSpectator::FindPlayer(const char *name)
 	}
 
 	iJumpSpectator = true;
-	gViewPort->MsgFunc_ResetFade(nullptr, 0, nullptr);
 }
 
 void CHudSpectator::HandleButtonsDown( int ButtonPressed )
@@ -1206,8 +1204,6 @@ void CHudSpectator::SetModes(int iNewMainMode, int iNewInsetMode)
 			memset( &m_crosshairRect,0,sizeof(m_crosshairRect) );
 			SetCrosshair( 0, m_crosshairRect, 0, 0, 0 );
 		} 
-
-		gViewPort->MsgFunc_ResetFade(nullptr, 0, nullptr);
 
 		char string[128];
 		sprintf(string, "#Spec_Mode%d", g_iUser1 );

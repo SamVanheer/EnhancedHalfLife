@@ -306,7 +306,6 @@ private:
 	wrect_t *m_prc1;
 	wrect_t *m_prc2;
 	int	  m_iBat;	
-	int	  m_iBatMax;
 	float m_fFade;
 	int	  m_iHeight;		// width of the battery innards
 };
@@ -464,7 +463,6 @@ private:
 	int							m_iSpriteCount;
 	int							m_iSpriteCountAllRes;
 	float						m_flMouseSensitivity;
-	int							m_iConcussionEffect; 
 
 public:
 
@@ -544,9 +542,7 @@ public:
 	bool MsgFunc_Logo(const char *pszName,  int iSize, void *pbuf);
 	bool MsgFunc_ResetHUD(const char *pszName,  int iSize, void *pbuf);
 	void MsgFunc_InitHUD( const char *pszName, int iSize, void *pbuf );
-	void MsgFunc_ViewMode( const char *pszName, int iSize, void *pbuf );
 	bool MsgFunc_SetFOV(const char *pszName,  int iSize, void *pbuf);
-	bool MsgFunc_Concuss( const char *pszName, int iSize, void *pbuf );
 
 	// Screen information
 	SCREENINFO	m_scrinfo;

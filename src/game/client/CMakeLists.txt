@@ -88,7 +88,6 @@ target_sources(client PRIVATE
 	interpolation.cpp
 	interpolation.h
 	player_info.h
-	tf_defs.h
 	util.cpp
 	view.cpp
 	view.h
@@ -136,7 +135,6 @@ target_sources(client PRIVATE
 	ui/hud/statusbar.cpp
 	ui/hud/text_message.cpp
 	ui/hud/train.cpp
-	ui/vgui/vgui_ClassMenu.cpp
 	ui/vgui/vgui_CustomObjects.cpp
 	ui/vgui/vgui_int.cpp
 	ui/vgui/vgui_int.h
@@ -149,7 +147,6 @@ target_sources(client PRIVATE
 	ui/vgui/vgui_SpectatorPanel.h
 	ui/vgui/vgui_TeamFortressViewport.cpp
 	ui/vgui/vgui_TeamFortressViewport.h
-	ui/vgui/vgui_teammenu.cpp
 	ui/vgui/utils/vgui_checkbutton2.cpp
 	ui/vgui/utils/vgui_checkbutton2.h
 	ui/vgui/utils/vgui_defaultinputsignal.h

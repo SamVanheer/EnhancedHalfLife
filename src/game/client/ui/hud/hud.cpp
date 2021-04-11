@@ -101,20 +101,9 @@ int __MsgFunc_InitHUD(const char *pszName, int iSize, void *pbuf)
 	return true;
 }
 
-int __MsgFunc_ViewMode(const char *pszName, int iSize, void *pbuf)
-{
-	gHUD.MsgFunc_ViewMode( pszName, iSize, pbuf );
-	return true;
-}
-
 int __MsgFunc_SetFOV(const char *pszName, int iSize, void *pbuf)
 {
 	return gHUD.MsgFunc_SetFOV( pszName, iSize, pbuf );
-}
-
-int __MsgFunc_Concuss(const char *pszName, int iSize, void *pbuf)
-{
-	return gHUD.MsgFunc_Concuss( pszName, iSize, pbuf );
 }
 
 int __MsgFunc_GameMode(const char *pszName, int iSize, void *pbuf )
@@ -157,31 +146,10 @@ void __CmdFunc_ForceCloseCommandMenu()
 }
 
 // TFFree Command Menu Message Handlers
-int __MsgFunc_ValClass(const char *pszName, int iSize, void *pbuf)
-{
-	if (gViewPort)
-		return gViewPort->MsgFunc_ValClass( pszName, iSize, pbuf );
-	return false;
-}
-
 int __MsgFunc_TeamNames(const char *pszName, int iSize, void *pbuf)
 {
 	if (gViewPort)
 		return gViewPort->MsgFunc_TeamNames( pszName, iSize, pbuf );
-	return false;
-}
-
-int __MsgFunc_Feign(const char *pszName, int iSize, void *pbuf)
-{
-	if (gViewPort)
-		return gViewPort->MsgFunc_Feign( pszName, iSize, pbuf );
-	return false;
-}
-
-int __MsgFunc_Detpack(const char *pszName, int iSize, void *pbuf)
-{
-	if (gViewPort)
-		return gViewPort->MsgFunc_Detpack( pszName, iSize, pbuf );
 	return false;
 }
 
@@ -196,20 +164,6 @@ int __MsgFunc_MOTD(const char *pszName, int iSize, void *pbuf)
 {
 	if (gViewPort)
 		return gViewPort->MsgFunc_MOTD( pszName, iSize, pbuf );
-	return false;
-}
-
-int __MsgFunc_BuildSt(const char *pszName, int iSize, void *pbuf)
-{
-	if (gViewPort)
-		return gViewPort->MsgFunc_BuildSt( pszName, iSize, pbuf );
-	return false;
-}
-
-int __MsgFunc_RandomPC(const char *pszName, int iSize, void *pbuf)
-{
-	if (gViewPort)
-		return gViewPort->MsgFunc_RandomPC( pszName, iSize, pbuf );
 	return false;
 }
  
@@ -241,34 +195,6 @@ int __MsgFunc_TeamInfo(const char *pszName, int iSize, void *pbuf)
 	return false;
 }
 
-int __MsgFunc_Spectator(const char *pszName, int iSize, void *pbuf)
-{
-	if (gViewPort)
-		return gViewPort->MsgFunc_Spectator( pszName, iSize, pbuf );
-	return false;
-}
-
-int __MsgFunc_SpecFade(const char *pszName, int iSize, void *pbuf)
-{
-	if (gViewPort)
-		return gViewPort->MsgFunc_SpecFade( pszName, iSize, pbuf );
-	return false;
-}
-
-int __MsgFunc_ResetFade(const char *pszName, int iSize, void *pbuf)
-{
-	if (gViewPort)
-		return gViewPort->MsgFunc_ResetFade( pszName, iSize, pbuf );
-	return false;
-}
-
-int __MsgFunc_AllowSpec(const char *pszName, int iSize, void *pbuf)
-{
-	if (gViewPort)
-		return gViewPort->MsgFunc_AllowSpec( pszName, iSize, pbuf );
-	return false;
-}
-
 // This is called every time the DLL is loaded
 void CHud :: Init()
 {
@@ -276,9 +202,7 @@ void CHud :: Init()
 	HOOK_MESSAGE( ResetHUD );
 	HOOK_MESSAGE( GameMode );
 	HOOK_MESSAGE( InitHUD );
-	HOOK_MESSAGE( ViewMode );
 	HOOK_MESSAGE( SetFOV );
-	HOOK_MESSAGE( Concuss );
 
 	// TFFree CommandMenu
 	HOOK_COMMAND( "+commandmenu", OpenCommandMenu );
@@ -286,23 +210,12 @@ void CHud :: Init()
 	HOOK_COMMAND( "ForceCloseCommandMenu", ForceCloseCommandMenu );
 	HOOK_COMMAND( "special", InputPlayerSpecial );
 
-	HOOK_MESSAGE( ValClass );
 	HOOK_MESSAGE( TeamNames );
-	HOOK_MESSAGE( Feign );
-	HOOK_MESSAGE( Detpack );
 	HOOK_MESSAGE( MOTD );
-	HOOK_MESSAGE( BuildSt );
-	HOOK_MESSAGE( RandomPC );
 	HOOK_MESSAGE( ServerName );
 	HOOK_MESSAGE( ScoreInfo );
 	HOOK_MESSAGE( TeamScore );
 	HOOK_MESSAGE( TeamInfo );
-
-	HOOK_MESSAGE( Spectator );
-	HOOK_MESSAGE( AllowSpec );
-	
-	HOOK_MESSAGE( SpecFade );
-	HOOK_MESSAGE( ResetFade );
 
 	// VGUI Menus
 	HOOK_MESSAGE( VGUIMenu );

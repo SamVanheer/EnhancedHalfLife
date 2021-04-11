@@ -137,10 +137,6 @@ void DLLEXPORT HUD_ProcessPlayerState( entity_state_t *dst, const entity_state_t
 	dst->team					= src->team;
 	dst->colormap				= src->colormap;
 
-#if defined( _TFC )
-	dst->fuser1					= src->fuser1;
-#endif
-
 	// Save off some data so other areas of the Client DLL can get to it
 	cl_entity_t *player = gEngfuncs.GetLocalPlayer();	// Get the local player's index
 	if ( dst->number == player->index )
@@ -309,10 +305,6 @@ void DLLEXPORT HUD_CreateEntities()
 	GetClientVoiceMgr()->CreateEntities();
 }
 
-#if defined( _TFC )
-extern int g_bACSpinning[MAX_CLIENTS + 1];
-#endif 
-
 /*
 =========================
 HUD_StudioEvent
@@ -325,12 +317,6 @@ void DLLEXPORT HUD_StudioEvent( const mstudioevent_t *event, const cl_entity_t *
 {
 	bool muzzleFlash = true;
 
-#if defined( _TFC )
-
-	if ( g_bACSpinning[ entity->index - 1 ] )
-		iMuzzleFlash = 0;
-
-#endif 
 	//TODO: define constants
 	switch( event->event )
 	{

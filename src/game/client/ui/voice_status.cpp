@@ -640,6 +640,7 @@ void CVoiceStatus::HandleVoiceMaskMsg(int iSize, void *pbuf)
 		}
 	}
 
+	//TODO: not written on server!
 	m_bServerModEnable = reader.ReadByte();
 }
 

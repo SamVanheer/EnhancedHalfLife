@@ -23,37 +23,26 @@
 // custom scheme handling
 #include "vgui_SchemeManager.h"
 
-#define TF_DEFS_ONLY
-#ifdef _TFC
-#include "../tfc/tf_defs.h"
-#else
 constexpr int PC_LASTCLASS = 10;
 constexpr int PC_UNDEFINED = 0;
 constexpr int MENU_DEFAULT = 1;
-constexpr int MENU_TEAM = 2;
-constexpr int MENU_CLASS = 3;
 constexpr int MENU_MAPBRIEFING = 4;
 constexpr int MENU_INTRO = 5;
 constexpr int MENU_CLASSHELP = 6;
 constexpr int MENU_CLASSHELP2 = 7;
 constexpr int MENU_REPEATHELP = 8;
 constexpr int MENU_SPECHELP = 9;
-#endif
+
 using namespace vgui;
 
-class Cursor;
 class ScorePanel;
 class SpectatorPanel;
 class CCommandMenu;
 class CommandLabel;
 class CommandButton;
-class BuildButton;
-class ClassButton;
 class CMenuPanel;
 class DragNDropPanel;
 class CTransparentPanel;
-class CClassMenuPanel;
-class CTeamMenuPanel;
 class TeamFortressViewport;
 
 char* GetVGUITGAName(const char *pszName);
@@ -65,9 +54,6 @@ constexpr Vector g_ColorRed{1.0, 0.25, 0.25};
 constexpr Vector g_ColorGreen{0.6, 1.0, 0.6};
 constexpr Vector g_ColorYellow{1.0, 0.7, 0.0};
 constexpr Vector g_ColorGrey{0.8, 0.8, 0.8};
-extern const char *sTFClassSelection[];
-extern int sTFValidClassInts[];
-extern const char *sLocalisedClasses[];
 extern int iTeamColors[5][3];
 extern int iNumberOfTeamColors;
 extern TeamFortressViewport *gViewPort;
@@ -511,10 +497,6 @@ private:
 	int			 m_iUser3;
 
 	// VGUI Menus
-	void		 CreateTeamMenu( void );
-	CMenuPanel*	 ShowTeamMenu( void );
-	void		 CreateClassMenu( void );
-	CMenuPanel*	 ShowClassMenu( void );
 	void		 CreateSpectatorMenu( void );
 	
 	// Scheme handler
@@ -524,26 +506,13 @@ private:
 	int		m_iGotAllMOTD;
 	char	m_szMOTD[ MAX_MOTD_LENGTH ];
 
-	//  Command Menu Team buttons
-	CommandButton *m_pTeamButtons[6];
-	CommandButton *m_pDisguiseButtons[5];
-	BuildButton   *m_pBuildButtons[3];
-	BuildButton   *m_pBuildActiveButtons[3];
-
 	int					m_iAllowSpectators;
 
 	// Data for specific sections of the Command Menu
-	int			m_iValidClasses[5];
-	int			m_iIsFeigning;
-	int			m_iIsSettingDetpack;
 	int			m_iNumberOfTeams;
-	int			m_iBuildState;
-	int			m_iRandomPC;
 	char		m_sTeamNames[5][MAX_TEAMNAME_SIZE];
 
 	// Localisation strings
-	char		m_sDetpackStrings[3][MAX_BUTTON_SIZE];
-
 	char		m_sMapName[64];
 
 	// helper function to update the player menu entries
@@ -555,8 +524,6 @@ public:
 
 	int		CreateCommandMenu( const char * menuFile, int direction, int yOffset, bool flatDesign, float flButtonSizeX, float flButtonSizeY, int xOffset );
 	void	CreateScoreBoard( void );
-	CommandButton * CreateCustomButton( char *pButtonText, char * pButtonName, int  iYOffset );
-	CCommandMenu *	CreateDisguiseSubmenu( CommandButton *pButton, CCommandMenu *pParentMenu, const char *commandText, int iYOffset, int iXOffset = 0 );
 
 	void UpdateCursorState( void );
 	void UpdateCommandMenu(int menuIndex);
@@ -590,32 +557,18 @@ public:
 	CCommandMenu *CreateSubMenu( CommandButton *pButton, CCommandMenu *pParentMenu, int iYOffset, int iXOffset = 0 );
 
 	// Data Handlers
-	int GetValidClasses(int iTeam) { return m_iValidClasses[iTeam]; };
-	int GetNumberOfTeams() { return m_iNumberOfTeams; };
-	int GetIsFeigning() { return m_iIsFeigning; };
-	int GetIsSettingDetpack() { return m_iIsSettingDetpack; };
-	int GetBuildState() { return m_iBuildState; };
-	int IsRandomPC() { return m_iRandomPC; };
-	char *GetTeamName( int iTeam ) { return m_sTeamNames[iTeam]; };
-	int GetAllowSpectators() { return m_iAllowSpectators; };
+	int GetNumberOfTeams() { return m_iNumberOfTeams; }
+	char *GetTeamName( int iTeam ) { return m_sTeamNames[iTeam]; }
+	int GetAllowSpectators() { return m_iAllowSpectators; }
 
 	// Message Handlers
-	bool MsgFunc_ValClass(const char *pszName, int iSize, void *pbuf );
 	bool MsgFunc_TeamNames(const char *pszName, int iSize, void *pbuf );
-	bool MsgFunc_Feign(const char *pszName, int iSize, void *pbuf );
-	bool MsgFunc_Detpack(const char *pszName, int iSize, void *pbuf );
 	bool MsgFunc_VGUIMenu(const char *pszName, int iSize, void *pbuf );
 	bool MsgFunc_MOTD( const char *pszName, int iSize, void *pbuf );
-	bool MsgFunc_BuildSt( const char *pszName, int iSize, void *pbuf );
-	bool MsgFunc_RandomPC( const char *pszName, int iSize, void *pbuf );
 	bool MsgFunc_ServerName( const char *pszName, int iSize, void *pbuf );
 	bool MsgFunc_ScoreInfo( const char *pszName, int iSize, void *pbuf );
 	bool MsgFunc_TeamScore( const char *pszName, int iSize, void *pbuf );
 	bool MsgFunc_TeamInfo( const char *pszName, int iSize, void *pbuf );
-	bool MsgFunc_Spectator( const char *pszName, int iSize, void *pbuf );
-	bool MsgFunc_AllowSpec( const char *pszName, int iSize, void *pbuf );
-	bool MsgFunc_SpecFade( const char *pszName, int iSize, void *pbuf );	
-	bool MsgFunc_ResetFade( const char *pszName, int iSize, void *pbuf );	
 
 	// Input
 	bool SlotInput( int iSlot );
@@ -630,12 +583,10 @@ public:
 public:
 	// VGUI Menus
 	CMenuPanel		*m_pCurrentMenu;
-	CTeamMenuPanel	*m_pTeamMenu;
 	int						m_StandardMenu;	// indexs in m_pCommandMenus
 	int						m_SpectatorOptionsMenu;
 	int						m_SpectatorCameraMenu;
 	int						m_PlayerMenu; // a list of current player
-	CClassMenuPanel	*m_pClassMenu;
 	ScorePanel		*m_pScoreBoard;
 	SpectatorPanel *		m_pSpectatorPanel;
 	char			m_szServerName[ MAX_SERVERNAME_LENGTH ];
@@ -643,7 +594,7 @@ public:
 
 //============================================================
 // Command Menu Button Handlers
-constexpr int MAX_COMMAND_SIZE	=256;
+constexpr int MAX_COMMAND_SIZE = 256;
 
 class CMenuHandler_StringCommand : public ActionSignal
 {
@@ -975,72 +926,6 @@ public:
 
 //================================================================
 // Overidden Command Buttons for special visibilities
-class ClassButton : public CommandButton
-{
-protected:
-	int	m_iPlayerClass;
-
-public:
-	ClassButton( int iClass, const char* text,int x,int y,int wide,int tall, bool bNoHighlight ) : CommandButton( text,x,y,wide,tall, bNoHighlight)
-	{
-		m_iPlayerClass = iClass;
-	}
-
-	virtual int IsNotValid();
-};
-
-class TeamButton : public CommandButton
-{
-private:
-	int	m_iTeamNumber;
-public:
-	TeamButton( int iTeam, const char* text,int x,int y,int wide,int tall ) : CommandButton( text,x,y,wide,tall)
-	{
-		m_iTeamNumber = iTeam;
-	}
-
-	virtual int IsNotValid()
-	{
-		int iTeams = gViewPort->GetNumberOfTeams();
-		// Never valid if there's only 1 team
-		if (iTeams == 1)
-			return true;
-
-		// Auto Team's always visible
-		if (m_iTeamNumber == 5)
-			return false;
-
-		if (iTeams >= m_iTeamNumber && m_iTeamNumber != g_iTeamNumber)
-			return false;
-
-		return true;
-	}
-};
-
-class FeignButton : public CommandButton
-{
-private:
-	int	m_iFeignState;
-public:
-	FeignButton( int iState, const char* text,int x,int y,int wide,int tall ) : CommandButton( text,x,y,wide,tall)
-	{
-		m_iFeignState = iState;
-	}
-
-	virtual int IsNotValid()
-	{
-		// Only visible for spies
-#ifdef _TFC
-		if (g_iPlayerClass != PC_SPY)
-			return true;
-#endif
-
-		if (m_iFeignState == gViewPort->GetIsFeigning())
-			return false;
-		return true;
-	}
-};
-
 class SpectateButton : public CommandButton
 {
 public:
@@ -1055,157 +940,6 @@ public:
 			return false;
 
 		return true;
-	}
-};
-
-constexpr int DISGUISE_TEAM1 = 1 << 0;
-constexpr int DISGUISE_TEAM2 = 1 << 1;
-constexpr int DISGUISE_TEAM3 = 1 << 2;
-constexpr int DISGUISE_TEAM4 = 1 << 3;
-
-class DisguiseButton : public CommandButton
-{
-private:
-	int m_iValidTeamsBits;
-	int m_iThisTeam;
-public:
-	DisguiseButton( int iValidTeamNumsBits, const char* text,int x,int y,int wide,int tall ) : CommandButton( text,x,y,wide,tall,false )
-	{
-		m_iValidTeamsBits = iValidTeamNumsBits;
-	}
-
-	virtual int IsNotValid()
-	{
-#ifdef _TFC
-		// Only visible for spies
-		if ( g_iPlayerClass != PC_SPY )
-			return true;
-#endif
-
-		// if it's not tied to a specific team, then always show (for spies)
-		if ( !m_iValidTeamsBits )
-			return false;
-
-		// if we're tied to a team make sure we can change to that team
-		int iTmp = 1 << (gViewPort->GetNumberOfTeams() - 1);
-		if ( m_iValidTeamsBits & iTmp )
-			return false;
-		return true;
-	}
-};
-
-class DetpackButton : public CommandButton
-{
-private:
-	int	m_iDetpackState;
-public:
-	DetpackButton( int iState, const char* text,int x,int y,int wide,int tall ) : CommandButton( text,x,y,wide,tall)
-	{
-		m_iDetpackState = iState;
-	}
-
-	virtual int IsNotValid()
-	{
-#ifdef _TFC
-		// Only visible for demomen
-		if (g_iPlayerClass != PC_DEMOMAN)
-			return true;
-#endif
-
-		if (m_iDetpackState == gViewPort->GetIsSettingDetpack())
-			return false;
-
-		return true;
-	}
-};
-
-extern int iBuildingCosts[];
-constexpr int BUILDSTATE_HASBUILDING = 1 << 0;	// Data is building ID (1 = Dispenser, 2 = Sentry, 3 = Entry Teleporter, 4 = Exit Teleporter)
-constexpr int BUILDSTATE_BUILDING = 1 << 1;
-constexpr int BUILDSTATE_BASE = 1 << 2;
-constexpr int BUILDSTATE_CANBUILD = 1 << 3;		// Data is building ID (1 = Dispenser, 2 = Sentry, 3 = Entry Teleporter, 4 = Exit Teleporter)
-
-class BuildButton : public CommandButton
-{
-private:
-	int	m_iBuildState;
-	int m_iBuildData;
-
-public:
-	enum Buildings
-	{
-		DISPENSER = 0,
-		SENTRYGUN = 1,
-		ENTRY_TELEPORTER = 2,
-		EXIT_TELEPORTER = 3
-	};
-
-	BuildButton( int iState, int iData, const char* text,int x,int y,int wide,int tall ) : CommandButton( text,x,y,wide,tall)
-	{
-		m_iBuildState = iState;
-		m_iBuildData = iData;
-	}
-
-	virtual int IsNotValid()
-	{
-#ifdef _TFC
-		// Only visible for engineers
-		if (g_iPlayerClass != PC_ENGINEER)
-			return true;
-
-		// If this isn't set, it's only active when they're not building
-		if (m_iBuildState & BUILDSTATE_BUILDING)
-		{
-			// Make sure the player's building
-			if ( !(gViewPort->GetBuildState() & BS_BUILDING) )
-				return true;
-		}
-		else
-		{
-			// Make sure the player's not building
-			if ( gViewPort->GetBuildState() & BS_BUILDING )
-				return true;
-		}
-
-		if (m_iBuildState & BUILDSTATE_BASE)
-		{
-			// Only appear if we've got enough metal to build something, or something already built
-			if ( gViewPort->GetBuildState() & (BS_HAS_SENTRYGUN | BS_HAS_DISPENSER | BS_CANB_SENTRYGUN | BS_CANB_DISPENSER | BS_HAS_ENTRY_TELEPORTER | BS_HAS_EXIT_TELEPORTER | BS_CANB_ENTRY_TELEPORTER | BS_CANB_EXIT_TELEPORTER) )
-				return false;
-
-			return true;
-		}
-
-		// Must have a building
-		if (m_iBuildState & BUILDSTATE_HASBUILDING)
-		{
-			if ( m_iBuildData == BuildButton::DISPENSER && !(gViewPort->GetBuildState() & BS_HAS_DISPENSER) )
-				return true;
-			if ( m_iBuildData == BuildButton::SENTRYGUN && !(gViewPort->GetBuildState() & BS_HAS_SENTRYGUN) )
-				return true;
-			if ( m_iBuildData == BuildButton::ENTRY_TELEPORTER && !(gViewPort->GetBuildState() & BS_HAS_ENTRY_TELEPORTER) )
-				return true;
-			if ( m_iBuildData == BuildButton::EXIT_TELEPORTER && !(gViewPort->GetBuildState() & BS_HAS_EXIT_TELEPORTER) )
-				return true;
-		}
-
-		// Can build something
-		if (m_iBuildState & BUILDSTATE_CANBUILD)
-		{
-			// Make sure they've got the ammo and don't have one already
-			if ( m_iBuildData == BuildButton::DISPENSER && (gViewPort->GetBuildState() & BS_CANB_DISPENSER) )
-				return false;
-			if ( m_iBuildData == BuildButton::SENTRYGUN && (gViewPort->GetBuildState() & BS_CANB_SENTRYGUN) )
-				return false;
-			if ( m_iBuildData == BuildButton::ENTRY_TELEPORTER && (gViewPort->GetBuildState() & BS_CANB_ENTRY_TELEPORTER) )
-				return false;
-			if ( m_iBuildData == BuildButton::EXIT_TELEPORTER && (gViewPort->GetBuildState() & BS_CANB_EXIT_TELEPORTER) )
-				return false;
-
-			return true;
-		}
-#endif
-		return false;
 	}
 };
 
@@ -1233,27 +967,6 @@ public:
 			return true;
 
 		return false;
-	}
-};
-
-//-----------------------------------------------------------------------------
-// Purpose: CommandButton which is only displayed if the player is on team X
-//-----------------------------------------------------------------------------
-class TeamOnlyCommandButton : public CommandButton
-{
-private:
-	int m_iTeamNum;
-
-public:
-	TeamOnlyCommandButton( int iTeamNum, const char* text,int x,int y,int wide,int tall, bool flat ) : 
-	  CommandButton( text, x, y, wide, tall, false, flat ), m_iTeamNum(iTeamNum) {}
-
-	virtual int IsNotValid()
-	{
-		if ( g_iTeamNumber != m_iTeamNum )
-			return true;
-
-		return CommandButton::IsNotValid();
 	}
 };
 
@@ -1430,84 +1143,6 @@ public:
 	} 
 };
 
-/*
-class SpectToggleButton : public ToggleCommandButton
-{
-private:
-	cvar_t* m_cvar;
-	CImageLabel *	pLabelOn;
-	CImageLabel *	pLabelOff;
-	
-public:
-
-	SpectToggleButton( const char* cvarname, const char* text,int x,int y,int wide,int tall, bool flat ) : 
-	  ToggleCommandButton( cvarname, text, x, y, wide, tall, flat, true )
-	 {
-		m_cvar = gEngfuncs.pfnGetCvarPointer( cvarname );
-
-			// Put a > to show it's a submenu
-		pLabelOn = new CImageLabel( "checked", 0, 0 );
-		pLabelOn->setParent(this);
-		pLabelOn->addInputSignal(this);
-				
-		pLabelOff = new CImageLabel( "unchecked", 0, 0 );
-		pLabelOff->setParent(this);
-		pLabelOff->setEnabled(true);
-		pLabelOff->addInputSignal(this);
-
-		int textwide, texttall;
-		getTextSize( textwide, texttall);
-	
-		// Reposition
-		pLabelOn->setPos( textwide, (tall - pLabelOn->getTall()) / 2 );
-
-		pLabelOff->setPos( textwide, (tall - pLabelOff->getTall()) / 2 );
-		
-		// Set text color to orange
-		setFgColor(Scheme::sc_primary1);
-	}
-		
-	virtual void paintBackground()
-	{
-		if ( isArmed())
-		{
-			drawSetColor( 143,143, 54, 125 ); 
-			drawFilledRect( 5, 0,_size[0] - 5,_size[1]);
-		}
-	}
-
-	virtual void paint()
-	{
-	
-		if ( isArmed() )
-		{ 
-			setFgColor( 194, 202, 54, 0 );
-		}
-		else
-		{
-			setFgColor( 143, 143, 54, 15 );
-		}
-
-			if ( !m_cvar )
-		{
-			pLabelOff->setVisible(false);
-			pLabelOn->setVisible(false);
-		} 
-		else if ( m_cvar->value )
-		{
-			pLabelOff->setVisible(false);
-			pLabelOn->setVisible(true);
-		}
-		else
-		{
-			pLabelOff->setVisible(true);
-			pLabelOn->setVisible(false);
-		}
-
-		Button::paint();
-	}
-};
-*/
 //============================================================
 // Panel that can be dragged around
 class DragNDropPanel : public Panel
@@ -1669,145 +1304,4 @@ class CTFScrollPanel : public ScrollPanel
 {
 public:
 	CTFScrollPanel(int x,int y,int wide,int tall);
-};
-
-//================================================================
-// Menu Panels that take key input
-//============================================================
-class CClassMenuPanel : public CMenuPanel
-{
-private:
-	CTransparentPanel	*m_pClassInfoPanel[PC_LASTCLASS];
-	Label				*m_pPlayers[PC_LASTCLASS];
-	ClassButton			*m_pButtons[PC_LASTCLASS];
-	CommandButton		*m_pCancelButton;
-	ScrollPanel			*m_pScrollPanel;
-
-	CImageLabel			*m_pClassImages[MAX_TEAMS][PC_LASTCLASS];
-
-	int					m_iCurrentInfo;
-
-	enum { STRLENMAX_PLAYERSONTEAM = 128 };
-	char m_sPlayersOnTeamString[STRLENMAX_PLAYERSONTEAM];
-
-public:
-	CClassMenuPanel(int iTrans, int iRemoveMe, int x,int y,int wide,int tall);
-
-	virtual bool SlotInput( int iSlot );
-	virtual void Open( void );
-	virtual void Update( void );
-	virtual void SetActiveInfo( int iInput );
-	virtual void Initialize( void );
-
-	virtual void Reset( void )
-	{
-		CMenuPanel::Reset();
-		m_iCurrentInfo = 0;
-	}
-};
-
-class CTeamMenuPanel : public CMenuPanel
-{
-public:
-	ScrollPanel         *m_pScrollPanel;
-	CTransparentPanel	*m_pTeamWindow;
-	Label				*m_pMapTitle;
-	TextPanel			*m_pBriefing;
-	TextPanel			*m_pTeamInfoPanel[6];
-	CommandButton		*m_pButtons[6];
-	bool				m_bUpdatedMapName;
-	CommandButton		*m_pCancelButton;
-	CommandButton		*m_pSpectateButton;
-
-	int					m_iCurrentInfo;
-
-public:
-	CTeamMenuPanel(int iTrans, int iRemoveMe, int x,int y,int wide,int tall);
-
-	virtual bool SlotInput( int iSlot );
-	virtual void Open( void );
-	virtual void Update( void );
-	virtual void SetActiveInfo( int iInput );
-	virtual void paintBackground( void );
-
-	virtual void Initialize( void );
-
-	virtual void Reset( void )
-	{
-		CMenuPanel::Reset();
-		m_iCurrentInfo = 0;
-	}
-};
-
-//=========================================================
-// Specific Menus to handle old HUD sections
-class CHealthPanel : public DragNDropPanel
-{
-private:
-	BitmapTGA	*m_pHealthTGA;
-	Label		*m_pHealthLabel;
-public:
-	CHealthPanel(int x,int y,int wide,int tall) : DragNDropPanel(x,y,wide,tall)
-	{
-		// Load the Health icon
-		FileInputStream* fis = new FileInputStream( GetVGUITGAName("%d_hud_health"), false);
-		m_pHealthTGA = new BitmapTGA(fis,true);
-		fis->close();
-
-		// Create the Health Label
-		int iXSize,iYSize;
-		m_pHealthTGA->getSize(iXSize,iYSize);
-		m_pHealthLabel = new Label("",0,0,iXSize,iYSize);
-		m_pHealthLabel->setImage(m_pHealthTGA);
-		m_pHealthLabel->setParent(this);
-
-		// Set panel dimension
-		// Shouldn't be needed once Billy's fized setImage not recalculating the size
-		//setSize( iXSize + 100, gHUD.m_iFontHeight + 10 );
-		//m_pHealthLabel->setPos( 10, (getTall() - iYSize) / 2 );
-	}
-
-	virtual void paintBackground()
-	{
-	}
-
-	void paint()
-	{
-		// Get the paint color
-		int r,g,b,a;
-		// Has health changed? Flash the health #
-		if (gHUD.m_Health.m_fFade)
-		{
-			gHUD.m_Health.m_fFade -= (gHUD.m_flTimeDelta * 20);
-			if (gHUD.m_Health.m_fFade <= 0)
-			{
-				a = MIN_ALPHA;
-				gHUD.m_Health.m_fFade = 0;
-			}
-
-			// Fade the health number back to dim
-			a = MIN_ALPHA +  (gHUD.m_Health.m_fFade/FADE_TIME) * 128;
-		}
-		else
-			a = MIN_ALPHA;
-
-		gHUD.m_Health.GetPainColor( r, g, b );
-		ScaleColors(r, g, b, a );
-
-		// If health is getting low, make it bright red
-		if (gHUD.m_Health.m_iHealth <= 15)
-			a = 255;
-
-		int iXSize,iYSize, iXPos, iYPos;
-		m_pHealthTGA->getSize(iXSize,iYSize);
-		m_pHealthTGA->getPos(iXPos, iYPos);
-
-		// Paint the player's health
-		int x = gHUD.DrawHudNumber( iXPos + iXSize + 5, iYPos + 5, DHN_3DIGITS | DHN_DRAWZERO, gHUD.m_Health.m_iHealth, r, g, b);
-
-		// Draw the vertical line
-		int HealthWidth = gHUD.GetSpriteRect(gHUD.m_HUD_number_0).right - gHUD.GetSpriteRect(gHUD.m_HUD_number_0).left;
-		x += HealthWidth / 2;
-		FillRGBA(x, iYPos + 5, HealthWidth / 10, gHUD.m_iFontHeight, 255, 160, 0, a);
-	}
 };
