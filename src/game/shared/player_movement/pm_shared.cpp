@@ -1005,7 +1005,7 @@ void PM_AirAccelerate (Vector wishdir, float wishspeed, float accel)
 	// Cap speed
 	//wishspd = VectorNormalize (pmove->wishveloc);
 	
-	const float wishspd = V_min(30, wishspeed);
+	const float wishspd = std::min(30.0f, wishspeed);
 
 	// Determine veer amount
 	const float currentspeed = DotProduct (pmove->velocity, wishdir);
@@ -1670,7 +1670,7 @@ void PM_Duck()
 				pmove->bInDuck    = true;
 			}
 
-			const float time = V_max( 0.0, ( 1.0 - (float)pmove->flDuckTime / 1000.0 ) );
+			const float time = std::max( 0.0, ( 1.0 - (float)pmove->flDuckTime / 1000.0 ) );
 			
 			if ( pmove->bInDuck )
 			{
@@ -2391,7 +2391,7 @@ void PM_DropPunchAngle (Vector& punchangle)
 {
 	float len = VectorNormalize ( punchangle );
 	len -= (10.0 + len * 0.5) * pmove->frametime;
-	len = V_max( len, 0.0 );
+	len = std::max( len, 0.0f );
 	punchangle = punchangle * len;
 }
 
@@ -2408,7 +2408,7 @@ void PM_CheckParamters()
 	const float maxspeed = pmove->clientmaxspeed; //atof( pmove->PM_Info_ValueForKey( pmove->physinfo, "maxspd" ) );
 	if ( maxspeed != 0.0 )
 	{
-		pmove->maxspeed = V_min( maxspeed, pmove->maxspeed );
+		pmove->maxspeed = std::min( maxspeed, pmove->maxspeed );
 	}
 
 	if ( ( spd != 0.0 ) &&

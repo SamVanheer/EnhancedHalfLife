@@ -1490,17 +1490,17 @@ int GetWeaponData( edict_t *player, weapon_data_t *info )
 						item->m_iId						= II.iId;
 						item->m_iClip					= gun->m_iClip;
 
-						item->m_flTimeWeaponIdle		= V_max( gun->m_flTimeWeaponIdle, -0.001 );
-						item->m_flNextPrimaryAttack		= V_max( gun->m_flNextPrimaryAttack, -0.001 );
-						item->m_flNextSecondaryAttack	= V_max( gun->m_flNextSecondaryAttack, -0.001 );
+						item->m_flTimeWeaponIdle		= std::max( gun->m_flTimeWeaponIdle, -0.001f );
+						item->m_flNextPrimaryAttack		= std::max( gun->m_flNextPrimaryAttack, -0.001f );
+						item->m_flNextSecondaryAttack	= std::max( gun->m_flNextSecondaryAttack, -0.001f );
 						item->m_fInReload				= gun->m_fInReload;
 						item->m_fInSpecialReload		= gun->m_fInSpecialReload;
-						item->fuser1					= V_max( gun->pev->fuser1, -0.001 );
+						item->fuser1					= std::max( gun->pev->fuser1, -0.001f );
 
 						gun->GetWeaponData(*item);
 						
 											
-//						item->m_flPumpTime				= V_max( gun->m_flPumpTime, -0.001 );
+//						item->m_flPumpTime				= std::max( gun->m_flPumpTime, -0.001f );
 					}
 				}
 				pPlayerItem = pPlayerItem->m_pNext;

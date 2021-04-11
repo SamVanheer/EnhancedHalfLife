@@ -87,7 +87,7 @@ void TEXTURETYPE_Init()
 			continue;
 
 		// null-terminate name and save in sentences array
-		j = V_min(j, CBTEXTURENAMEMAX - 1 + i);
+		j = std::min(j, CBTEXTURENAMEMAX - 1 + i);
 		buffer[j] = '\0';
 		strncpy(material.Name.data(), &(buffer[i]), material.Name.size() - 1);
 		material.Name.back() = '\0';

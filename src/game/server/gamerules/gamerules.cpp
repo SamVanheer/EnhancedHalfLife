@@ -108,7 +108,7 @@ void CGameRules::RefreshSkillData ()
 {
 	auto skill = static_cast<SkillLevel>(CVAR_GET_FLOAT("skill"));
 
-	skill = clamp(skill, SkillLevel::Easy, SkillLevel::Hard);
+	skill = std::clamp(skill, SkillLevel::Easy, SkillLevel::Hard);
 
 	gSkillData.SkillLevel = g_SkillLevel = skill;
 

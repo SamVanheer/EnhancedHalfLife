@@ -1996,7 +1996,7 @@ void CBasePlayer::CheckTimeBasedDamage()
 				// after the player has been drowning and finally takes a breath
 				if (m_idrowndmg > m_idrownrestored)
 				{
-					int idif = V_min(m_idrowndmg - m_idrownrestored, 10);
+					int idif = std::min(m_idrowndmg - m_idrownrestored, 10);
 
 					TakeHealth(idif, DMG_GENERIC);
 					m_idrownrestored += idif;
@@ -2556,23 +2556,23 @@ pt_end:
 				
 				if ( gun && gun->UseDecrement() )
 				{
-					gun->m_flNextPrimaryAttack		= V_max( gun->m_flNextPrimaryAttack - gpGlobals->frametime, -1.0 );
-					gun->m_flNextSecondaryAttack	= V_max( gun->m_flNextSecondaryAttack - gpGlobals->frametime, -0.001 );
+					gun->m_flNextPrimaryAttack		= std::max( gun->m_flNextPrimaryAttack - gpGlobals->frametime, -1.0f );
+					gun->m_flNextSecondaryAttack	= std::max( gun->m_flNextSecondaryAttack - gpGlobals->frametime, -0.001f );
 
 					if ( gun->m_flTimeWeaponIdle != 1000 )
 					{
-						gun->m_flTimeWeaponIdle		= V_max( gun->m_flTimeWeaponIdle - gpGlobals->frametime, -0.001 );
+						gun->m_flTimeWeaponIdle		= std::max( gun->m_flTimeWeaponIdle - gpGlobals->frametime, -0.001f );
 					}
 
 					if ( gun->pev->fuser1 != 1000 )
 					{
-						gun->pev->fuser1	= V_max( gun->pev->fuser1 - gpGlobals->frametime, -0.001 );
+						gun->pev->fuser1	= std::max( gun->pev->fuser1 - gpGlobals->frametime, -0.001f );
 					}
 
 					// Only decrement if not flagged as NO_DECREMENT
 //					if ( gun->m_flPumpTime != 1000 )
 				//	{
-				//		gun->m_flPumpTime	= V_max( gun->m_flPumpTime - gpGlobals->frametime, -0.001 );
+				//		gun->m_flPumpTime	= std::max( gun->m_flPumpTime - gpGlobals->frametime, -0.001f );
 				//	}
 					
 				}
@@ -3523,7 +3523,7 @@ int CBasePlayer :: GiveAmmo( int iCount, const char *szName, int iMax )
 	if ( i < 0 || i >= MAX_AMMO_TYPES)
 		return -1;
 
-	int iAdd = V_min( iCount, iMax - m_rgAmmo[i] );
+	int iAdd = std::min( iCount, iMax - m_rgAmmo[i] );
 	if ( iAdd < 1 )
 		return i;
 
@@ -3645,7 +3645,7 @@ void CBasePlayer::SendAmmoUpdate()
 			// send "Ammo" update message
 			MESSAGE_BEGIN( MSG_ONE, gmsgAmmoX, nullptr, pev );
 				WRITE_BYTE( i );
-				WRITE_BYTE( V_max( V_min( m_rgAmmo[i], 254 ), 0 ) );  // clamp the value to one byte
+				WRITE_BYTE(std::max(std::min( m_rgAmmo[i], 254 ), 0 ) );  // clamp the value to one byte
 			MESSAGE_END();
 		}
 	}
@@ -3725,7 +3725,8 @@ void CBasePlayer :: UpdateClientData()
 
 	if (pev->health != m_iClientHealth)
 	{
-		int iHealth = clamp( pev->health, 0, std::numeric_limits<short>::max() );  // make sure that no negative health values are sent
+		// make sure that no negative health values are sent
+		int iHealth = std::clamp( static_cast<int>(pev->health), 0, static_cast<int>(std::numeric_limits<short>::max()) );
 		if ( pev->health > 0.0f && pev->health <= 1.0f )
 			iHealth = 1;
 

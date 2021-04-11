@@ -36,6 +36,7 @@
 #include "archtypes.h"     // DAL
 
 // Misc C-runtime library headers
+#include <algorithm>
 #include <climits>
 #include <cmath>
 #include <cstdarg>
@@ -86,8 +87,3 @@ constexpr std::size_t ArraySize(const T (&)[Size])
 
 #undef ARRAYSIZE
 #define ARRAYSIZE ArraySize
-
-#define V_min(a,b)  (((a) < (b)) ? (a) : (b))
-#define V_max(a,b)  (((a) > (b)) ? (a) : (b))
-
-#define clamp( val, min, max ) ( ((val) > (max)) ? (max) : ( ((val) < (min)) ? (min) : (val) ) )

@@ -461,7 +461,7 @@ void CNihilanth :: DyingThink()
 	{
 		if (m_pBall->pev->renderamt > 0)
 		{
-			m_pBall->pev->renderamt = V_max( 0, m_pBall->pev->renderamt - 2);
+			m_pBall->pev->renderamt = std::max( 0.0f, m_pBall->pev->renderamt - 2);
 		}
 		else
 		{
@@ -883,7 +883,7 @@ void CNihilanth :: HuntThink()
 		}
 		else
 		{
-			m_flAdj = V_min( m_flAdj + 10, 1000 );
+			m_flAdj = std::min( m_flAdj + 10, 1000.0f );
 		}
 	}
 

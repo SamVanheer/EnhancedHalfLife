@@ -90,7 +90,7 @@ void V_DropPunchAngle(float frametime, Vector& ev_punchangle)
 {
 	float len = VectorNormalize(ev_punchangle);
 	len -= (10.0 + len * 0.5) * frametime;
-	len = V_max(len, 0.0);
+	len = std::max(len, 0.0f);
 	ev_punchangle = ev_punchangle * len;
 }
 
@@ -131,8 +131,8 @@ float V_CalcBob ( ref_params_t *pparams )
 
 	bob = sqrt( vel[0] * vel[0] + vel[1] * vel[1] ) * cl_bob->value;
 	bob = bob * 0.3 + bob * 0.7 * sin(cycle);
-	bob = V_min( bob, 4 );
-	bob = V_max( bob, -7 );
+	bob = std::min( bob, 4.0f );
+	bob = std::max( bob, -7.0f );
 	return bob;
 	
 }
@@ -667,7 +667,7 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 			if ( dt > 0.0 )
 			{
 				double frac = ( t - ViewInterp.OriginTime[ foundidx & ORIGIN_MASK] ) / dt;
-				frac = V_min( 1.0, frac );
+				frac = std::min( 1.0, frac );
 				Vector delta = ViewInterp.Origins[(foundidx + 1) & ORIGIN_MASK] - ViewInterp.Origins[foundidx & ORIGIN_MASK];
 				const Vector neworg = ViewInterp.Origins[foundidx & ORIGIN_MASK] + frac * delta;
 
