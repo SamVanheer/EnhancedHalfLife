@@ -22,17 +22,6 @@
 #include "effects.h"
 #include "customentity.h"
 
-//TODO: used?
-struct t_ospreygrunt
-{
-	int isValid;
-	EHANDLE hGrunt;
-	Vector	vecOrigin;
-	Vector  vecAngles;
-};
-
-
-
 constexpr int SF_WAITFORTRIGGER = 0x40;
 
 
