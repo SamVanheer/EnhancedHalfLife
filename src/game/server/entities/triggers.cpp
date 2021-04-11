@@ -345,24 +345,19 @@ void CMultiManager :: Spawn()
 
 	// Sort targets
 	// Quick and dirty bubble sort
-	//TODO: bool & std::swap
-	int swapped = 1;
+	bool swapped = true;
 
 	while ( swapped )
 	{
-		swapped = 0;
+		swapped = false;
 		for ( int i = 1; i < m_cTargets; i++ )
 		{
 			if ( m_flTargetDelay[i] < m_flTargetDelay[i-1] )
 			{
 				// Swap out of order elements
-				string_t name = m_iTargetName[i];
-				float delay = m_flTargetDelay[i];
-				m_iTargetName[i] = m_iTargetName[i-1];
-				m_flTargetDelay[i] = m_flTargetDelay[i-1];
-				m_iTargetName[i-1] = name;
-				m_flTargetDelay[i-1] = delay;
-				swapped = 1;
+				std::swap(m_iTargetName[i - 1], m_iTargetName[i]);
+				std::swap(m_flTargetDelay[i - 1], m_flTargetDelay[i]);
+				swapped = true;
 			}
 		}
 	}
