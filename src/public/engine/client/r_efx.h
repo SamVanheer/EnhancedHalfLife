@@ -130,8 +130,8 @@ struct efx_api_t
 	void		( *R_LargeFunnel )				( float * org, int reverse );
 	void		( *R_LavaSplash )				( float * org );
 	void		( *R_MultiGunshot )				( float * org, float * dir, float * noise, int count, int decalCount, int *decalIndices );
-	void		( *R_MuzzleFlash )				( float *pos1, int type );
-	void		( *R_ParticleBox )				( float *mins, float *maxs, unsigned char r, unsigned char g, unsigned char b, float life );
+	void		( *R_MuzzleFlash )				( const float *pos1, int type );
+	void		( *R_ParticleBox )				( const float *mins, const float *maxs, unsigned char r, unsigned char g, unsigned char b, float life );
 	void		( *R_ParticleBurst )			( float * pos, int size, int color, float life );
 	void		( *R_ParticleExplosion )		( float * org );
 	void		( *R_ParticleExplosion2 )		( float * org, int colorStart, int colorLength );
@@ -144,7 +144,7 @@ struct efx_api_t
 	void		( *R_RocketTrail )				( float * start, float * end, int type );
 	void		( *R_RunParticleEffect )		( float * org, float * dir, int color, int count );
 	void		( *R_ShowLine )					( float * start, float * end );
-	void		( *R_SparkEffect )				( float *pos, int count, int velocityMin, int velocityMax );
+	void		( *R_SparkEffect )				( const float *pos, int count, int velocityMin, int velocityMax );
 	void		( *R_SparkShower )				( float *pos );
 	void		( *R_SparkStreaks )				( float * pos, int count, int velocityMin, int velocityMax );
 	void		( *R_Spray )					( float * pos, float * dir, int modelIndex, int count, int speed, int spread, int rendermode );

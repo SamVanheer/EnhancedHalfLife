@@ -108,7 +108,7 @@ struct cl_enginefunc_t
 	model_t* (*CL_LoadModel)(const char* modelname, int* index);
 	int (*CL_CreateVisibleEntity)(int type, cl_entity_t* ent);
 	const model_t* (*GetSpritePointer)(HSPRITE hSprite);
-	void (*pfnPlaySoundByNameAtLocation)(const char* szSound, float volume, float* origin);
+	void (*pfnPlaySoundByNameAtLocation)(const char* szSound, float volume, const float* origin);
 	unsigned short (*pfnPrecacheEvent)(int type, const char* psz);
 	void (*pfnPlaybackEvent)(int flags, const edict_t* pInvoker, unsigned short eventindex, float delay, const float* origin, const float* angles,
 		float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2);

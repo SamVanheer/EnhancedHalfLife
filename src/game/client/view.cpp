@@ -1508,12 +1508,12 @@ void V_Move( int mx, int my )
 	Vector farpoint = v_origin + WORLD_SIZE * forward;
 
 	// Trace
-	pmtrace_t tr = *(gEngfuncs.PM_TraceLine( (float *)&v_origin, (float *)&farpoint, PM_TRACELINE_PHYSENTSONLY, 2 /*point sized hull*/, -1 ));
+	pmtrace_t tr = *(gEngfuncs.PM_TraceLine( v_origin, farpoint, PM_TRACELINE_PHYSENTSONLY, 2 /*point sized hull*/, -1 ));
 
 	if ( tr.fraction != 1.0 && tr.ent != 0 )
 	{
 		hitent = PM_GetPhysEntInfo( tr.ent );
-		PM_ParticleLine( (float *)&v_origin, (float *)&tr.endpos, 5, 1.0, 0.0 );
+		PM_ParticleLine( v_origin, tr.endpos, 5, 1.0, 0.0 );
 	}
 	else
 	{

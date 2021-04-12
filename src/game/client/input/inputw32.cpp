@@ -172,9 +172,9 @@ void Force_CenterView_f ()
 
 	if (!iMouseInUse)
 	{
-		gEngfuncs.GetViewAngles( (float *)viewangles );
+		gEngfuncs.GetViewAngles( viewangles );
 		viewangles[PITCH] = 0;
-		gEngfuncs.SetViewAngles( (float *)viewangles );
+		gEngfuncs.SetViewAngles( viewangles );
 	}
 }
 
@@ -488,7 +488,7 @@ void IN_MouseMove ( float frametime, usercmd_t *cmd)
 	int		mx, my;
 	Vector viewangles;
 
-	gEngfuncs.GetViewAngles( (float *)viewangles );
+	gEngfuncs.GetViewAngles( viewangles );
 
 	if ( in_mlook.state & 1)
 	{
@@ -600,7 +600,7 @@ void IN_MouseMove ( float frametime, usercmd_t *cmd)
 		}
 	}
 
-	gEngfuncs.SetViewAngles( (float *)viewangles );
+	gEngfuncs.SetViewAngles( viewangles );
 
 #ifdef _WIN32
 	if (!m_bRawInput && mouseRelative)
@@ -907,7 +907,7 @@ void IN_JoyMove ( float frametime, usercmd_t *cmd )
 	int		i;
 	Vector viewangles;
 
-	gEngfuncs.GetViewAngles( (float *)viewangles );
+	gEngfuncs.GetViewAngles( viewangles );
 
 
 	// complete initialization if first time in
@@ -1079,7 +1079,7 @@ void IN_JoyMove ( float frametime, usercmd_t *cmd )
 	if (viewangles[PITCH] < -cl_pitchup->value)
 		viewangles[PITCH] = -cl_pitchup->value;
 
-	gEngfuncs.SetViewAngles( (float *)viewangles );
+	gEngfuncs.SetViewAngles( viewangles );
 }
 
 /*

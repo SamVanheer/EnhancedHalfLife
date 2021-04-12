@@ -650,13 +650,13 @@ void DLLEXPORT CL_CreateMove ( float frametime, usercmd_t* cmd, int active )
 	{
 		//memset( viewangles, 0, sizeof( Vector ) );
 		//viewangles[ 0 ] = viewangles[ 1 ] = viewangles[ 2 ] = 0.0;
-		gEngfuncs.GetViewAngles( (float *)viewangles );
+		gEngfuncs.GetViewAngles( viewangles );
 
 		CL_AdjustAngles ( frametime, viewangles );
 
 		memset (cmd, 0, sizeof(*cmd));
 		
-		gEngfuncs.SetViewAngles( (float *)viewangles );
+		gEngfuncs.SetViewAngles( viewangles );
 
 		if ( in_strafe.state & 1 )
 		{
@@ -731,7 +731,7 @@ void DLLEXPORT CL_CreateMove ( float frametime, usercmd_t* cmd, int active )
 		}
 	}
 
-	gEngfuncs.GetViewAngles( (float *)viewangles );
+	gEngfuncs.GetViewAngles( viewangles );
 	// Set current view angles.
 
 	if ( g_iAlive )
