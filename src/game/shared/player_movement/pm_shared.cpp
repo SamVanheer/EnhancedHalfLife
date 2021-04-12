@@ -26,6 +26,7 @@
 #include "pm_debug.h"
 #include "materials.hpp"
 #include "com_model.h"
+#include "view_utils.hpp"
 #include <stdio.h>  // NULL
 #include <string.h> // strcpy
 #include <stdlib.h> // atoi
@@ -2325,38 +2326,6 @@ void PM_PlayWaterSounds()
 }
 
 /*
-===============
-PM_CalcRoll
-
-===============
-*/
-//TODO: seems identical to roll calculations in the view code
-float PM_CalcRoll (Vector angles, Vector velocity, float rollangle, float rollspeed )
-{
-	Vector  forward, right, up;
-	AngleVectors (angles, &forward, &right, &up);
-	
-	float side = DotProduct (velocity, right);
-	
-	const float sign = side < 0 ? -1 : 1;
-	
-	side = fabs(side);
-	
-	const float value = rollangle;
-	
-	if (side < rollspeed)
-	{
-		side = side * value / rollspeed;
-	}
-	else
-	{
-		side = value;
-	}
-  
-	return side * sign;
-}
-
-/*
 ==============
 PM_CheckParamters
 
@@ -2398,7 +2367,7 @@ void PM_CheckParamters()
 		const Vector v_angle = pmove->cmd.viewangles + pmove->punchangle;
 
 		// Set up view angles.
-		pmove->angles[ROLL]	=	PM_CalcRoll ( v_angle, pmove->velocity, pmove->movevars->rollangle, pmove->movevars->rollspeed )*4;
+		pmove->angles[ROLL]	= UTIL_CalcRoll( v_angle, pmove->velocity, pmove->movevars->rollangle, pmove->movevars->rollspeed )*4;
 		pmove->angles[PITCH] =	v_angle[PITCH];
 		pmove->angles[YAW]   =	v_angle[YAW];
 	}

@@ -384,14 +384,6 @@ float UTIL_SplineFraction(float value, float scale)
 	return 3 * valueSquared - 2 * valueSquared * value;
 }
 
-void UTIL_DropPunchAngle(float frametime, Vector& ev_punchangle)
-{
-	float len = VectorNormalize(ev_punchangle);
-	len -= (10.0 + len * 0.5) * frametime;
-	len = std::max(len, 0.0f);
-	ev_punchangle = ev_punchangle * len;
-}
-
 void VectorMatrix(const Vector& forward, Vector& right, Vector& up)
 {
 	if (forward[0] == 0 && forward[1] == 0)

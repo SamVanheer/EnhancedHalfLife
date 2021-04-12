@@ -26,6 +26,7 @@
 #include "r_studioint.h"
 #include "com_model.h"
 #include "kbutton.h"
+#include "view_utils.hpp"
 
 extern engine_studio_api_t IEngineStudio;
 
@@ -127,33 +128,6 @@ float V_CalcBob ( ref_params_t *pparams )
 	bob = std::max( bob, -7.0f );
 	return bob;
 	
-}
-
-/*
-===============
-V_CalcRoll
-Used by view and sv_user
-===============
-*/
-float V_CalcRoll (const Vector& angles, const Vector& velocity, float rollangle, float rollspeed )
-{
-	Vector  forward, right, up;
-	AngleVectors ( angles, forward, right, up );
-	
-	float side = DotProduct (velocity, right);
-	const float sign = side < 0 ? -1 : 1;
-	side = fabs( side );
-	
-	const float value = rollangle;
-	if (side < rollspeed)
-	{
-		side = side * value / rollspeed;
-	}
-	else
-	{
-		side = value;
-	}
-	return side * sign;
 }
 
 struct pitchdrift_t
@@ -323,7 +297,7 @@ void V_CalcViewRoll ( ref_params_t* pparams )
 	if ( !viewentity )
 		return;
 
-	const float side = V_CalcRoll ( viewentity->angles, pparams->simvel, cl_rollangle->value, cl_rollspeed->value);
+	const float side = UTIL_CalcRoll( viewentity->angles, pparams->simvel, cl_rollangle->value, cl_rollspeed->value);
 
 	pparams->viewangles[ROLL] += side;
 
