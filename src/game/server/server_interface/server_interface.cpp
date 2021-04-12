@@ -26,24 +26,6 @@ globalvars_t* gpGlobals;
 #define GIVEFNPTRSTODLL_EXPORT DLLEXPORT
 #endif
 
-#ifdef _WIN32
-
-// Required DLL entry point
-BOOL WINAPI DllMain(
-	HINSTANCE hinstDLL,
-	DWORD fdwReason,
-	LPVOID lpvReserved)
-{
-	if (fdwReason == DLL_PROCESS_ATTACH)
-	{
-	}
-	else if (fdwReason == DLL_PROCESS_DETACH)
-	{
-	}
-	return true;
-}
-#endif
-
 extern "C"
 {
 void GIVEFNPTRSTODLL_EXPORT GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine, globalvars_t* pGlobals)
