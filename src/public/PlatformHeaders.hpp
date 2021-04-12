@@ -15,18 +15,19 @@
 
 #pragma once
 
-#include <cstddef>
-#include <filesystem>
-#include <memory>
-#include <tuple>
+// Prevent tons of unused windows definitions
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#define NOWINRES
+#define NOSERVICE
+#define NOMCX
+#define NOIME
+#define NOMINMAX
+#include "winsani_in.h"
+#include <Windows.h>
+#include "winsani_out.h"
 
-#include "FileSystem.h"
+#else // _WIN32
+#define MAX_PATH PATH_MAX
 
-inline IFileSystem* g_pFileSystem = nullptr;
-
-std::filesystem::path FileSystem_GetGameDirectory();
-
-bool FileSystem_LoadFileSystem();
-void FileSystem_FreeFileSystem();
-
-std::tuple<std::unique_ptr<byte[]>, std::size_t> FileSystem_LoadFileIntoBuffer(const char* filename);
+#endif //_WIN32

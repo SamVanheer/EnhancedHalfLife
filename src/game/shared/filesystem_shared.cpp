@@ -15,6 +15,9 @@
 
 #include <cassert>
 
+#include "Platform.h"
+#include "PlatformHeaders.hpp"
+
 #ifndef CLIENT_DLL
 #include "extdll.h"
 #include "util.h"
@@ -28,6 +31,19 @@
 #include "filesystem_shared.hpp"
 
 static CSysModule* g_pFileSystemModule = nullptr;
+
+std::filesystem::path FileSystem_GetGameDirectory()
+{
+#ifndef CLIENT_DLL
+	char gameDir[MAX_PATH]{};
+
+	g_engfuncs.pfnGetGameDir(gameDir);
+
+	return gameDir;
+#else
+	return gEngfuncs.pfnGetGameDirectory();
+#endif
+}
 
 bool FileSystem_LoadFileSystem()
 {

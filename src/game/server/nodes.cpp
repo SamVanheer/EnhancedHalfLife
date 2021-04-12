@@ -1634,21 +1634,21 @@ void CTestHull :: BuildNodeGraph()
 
 
 	// make sure directories have been made
-	char szNrpFilename[MAX_PATH];// text node report filename
-	GET_GAME_DIR( szNrpFilename );
-	std::strncat(szNrpFilename, "/maps/graphs", sizeof(szNrpFilename) - strlen(szNrpFilename) - 1);
+	//text node report filename
+	std::filesystem::path nrpFilename = FileSystem_GetGameDirectory() / "maps" / "graphs";
 	std::error_code error;
-	std::filesystem::create_directories(szNrpFilename, error);
+	std::filesystem::create_directories(nrpFilename, error);
 
-	strcat( szNrpFilename, "/" );
-	strcat( szNrpFilename, STRING( gpGlobals->mapname ) );
-	strcat( szNrpFilename, ".nrp" );
+	nrpFilename = nrpFilename / STRING(gpGlobals->mapname);
+	nrpFilename += ".nrp";
 
-	file = fopen ( szNrpFilename, "w+" );
+	const auto nrpFilenameString = nrpFilename.string();
+
+	file = fopen (nrpFilenameString.c_str(), "w+" );
 
 	if ( !file )
 	{// file error
-		ALERT ( at_aiconsole, "Couldn't create %s!\n", szNrpFilename );
+		ALERT ( at_aiconsole, "Couldn't create %s!\n", nrpFilenameString.c_str());
 
 		if ( pTempPool )
 		{
@@ -2309,24 +2309,20 @@ void CQueuePriority::Heap_SiftUp()
 //=========================================================
 int CGraph :: FLoadGraph ( const char *szMapName )
 {
-	char	szFilename[MAX_PATH];
 	int		iVersion;
 	int     length;
 	byte    *aMemFile;
 	byte    *pMemFile;
 
 	// make sure the directories have been made
-	char	szDirName[MAX_PATH];
-	GET_GAME_DIR( szDirName );
-	std::strncat(szDirName, "/maps/graphs", sizeof(szDirName) - strlen(szDirName) - 1);
+	std::filesystem::path dirName = FileSystem_GetGameDirectory() / "maps" / "graphs";
 	std::error_code error;
-	std::filesystem::create_directories(szDirName, error);
+	std::filesystem::create_directories(dirName, error);
 
-	safe_strcpy( szFilename, "maps/graphs/" );
-	strcat ( szFilename, szMapName );
-	strcat( szFilename, ".nod" );
+	auto filename = dirName / szMapName;
+	filename += ".nod";
 
-	pMemFile = aMemFile = LOAD_FILE_FOR_ME(szFilename, &length);
+	pMemFile = aMemFile = LOAD_FILE_FOR_ME(filename.string().c_str(), &length);
 
 	if ( !aMemFile )
 	{
@@ -2484,7 +2480,6 @@ int CGraph :: FSaveGraph ( const char *szMapName )
 {
 	
 	int		iVersion = GRAPH_VERSION;
-	char	szFilename[MAX_PATH];
 	FILE	*file;
 
 	if ( !m_fGraphPresent || !m_fGraphPointersSet )
@@ -2494,22 +2489,22 @@ int CGraph :: FSaveGraph ( const char *szMapName )
 	}
 
 	// make sure directories have been made
-	GET_GAME_DIR( szFilename );
-	std::strncat(szFilename, "/maps/graphs", sizeof(szFilename) - strlen(szFilename) - 1);
+	std::filesystem::path dirName = FileSystem_GetGameDirectory() / "maps" / "graphs";
 	std::error_code error;
-	std::filesystem::create_directories(szFilename, error);
+	std::filesystem::create_directories(dirName, error);
 
-	strcat( szFilename, "/" );
-	strcat( szFilename, szMapName );
-	strcat( szFilename, ".nod" );
+	auto filename = dirName / szMapName;
+	filename += ".nod";
 
-	file = fopen ( szFilename, "wb" );
+	const auto filenameString = filename.string();
 
-	ALERT ( at_aiconsole, "Created: %s\n", szFilename );
+	file = fopen (filenameString.c_str(), "wb" );
+
+	ALERT ( at_aiconsole, "Created: %s\n", filenameString.c_str());
 
 	if ( !file )
 	{// couldn't create
-		ALERT ( at_aiconsole, "Couldn't Create: %s\n", szFilename );
+		ALERT ( at_aiconsole, "Couldn't Create: %s\n", filenameString.c_str());
 		return false;
 	}
 	else
@@ -2612,24 +2607,18 @@ int CGraph :: FSetGraphPointers ()
 //=========================================================
 int CGraph :: CheckNODFile ( const char *szMapName )
 {
-	int 		retValue;
+	int 		retValue;	
 
-	char		szBspFilename[MAX_PATH];
-	char		szGraphFilename[MAX_PATH];
-	
+	std::filesystem::path bspFilename = std::filesystem::path{"maps"} / szMapName;
+	bspFilename += ".bsp";
 
-	safe_strcpy( szBspFilename, "maps/" );
-	strcat ( szBspFilename, szMapName );
-	strcat ( szBspFilename, ".bsp" );
-
-	safe_strcpy( szGraphFilename, "maps/graphs/" );
-	strcat ( szGraphFilename, szMapName );
-	strcat ( szGraphFilename, ".nod" );
+	std::filesystem::path graphFilename = std::filesystem::path{"maps"} / "graphs" / szMapName;
+	graphFilename += ".nod";
 	
 	retValue = true;
 
 	int iCompare;
-	if (COMPARE_FILE_TIME(szBspFilename, szGraphFilename, &iCompare))
+	if (COMPARE_FILE_TIME(bspFilename.string().c_str(), graphFilename.string().c_str(), &iCompare))
 	{
 		if ( iCompare > 0 )
 		{// BSP file is newer.

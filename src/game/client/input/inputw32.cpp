@@ -14,6 +14,7 @@
 
 #include "hud.h"
 #include "cl_util.h"
+#include "PlatformHeaders.hpp"
 #include "camera.h"
 #include "kbutton.h"
 #include "cvardef.h"

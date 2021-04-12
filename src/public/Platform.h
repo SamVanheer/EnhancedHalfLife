@@ -52,15 +52,6 @@ using qboolean = int;
 
 // Prevent tons of unused windows definitions
 #ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#define NOWINRES
-#define NOSERVICE
-#define NOMCX
-#define NOIME
-#define NOMINMAX
-#include "winsani_in.h"
-#include <Windows.h>
-#include "winsani_out.h"
 
 //Avoid the ISO conformant warning
 #define stricmp _stricmp
@@ -70,7 +61,6 @@ using qboolean = int;
 
 #define DLLEXPORT __declspec( dllexport )
 #else // _WIN32
-#define MAX_PATH PATH_MAX
 
 #define stricmp strcasecmp
 #define strnicmp strncasecmp

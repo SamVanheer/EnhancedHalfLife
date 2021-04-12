@@ -180,6 +180,7 @@ target_sources(client PRIVATE
 	../../public/netadr.h
 	../../public/parsemsg.h
 	../../public/Platform.h
+	../../public/PlatformHeaders.hpp
 	../../public/Sequence.h
 	../../public/studio.h
 	../../public/studio_event.h

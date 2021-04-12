@@ -185,6 +185,7 @@ target_sources(hl PRIVATE
 	../../public/keydefs.h
 	../../public/netadr.h
 	../../public/Platform.h
+	../../public/PlatformHeaders.hpp
 	../../public/Sequence.h
 	../../public/studio.h
 	../../public/studio_event.h
