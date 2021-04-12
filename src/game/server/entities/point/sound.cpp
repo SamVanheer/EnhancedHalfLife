@@ -1275,13 +1275,14 @@ void SENTENCEG_Init()
 	isentencegs = -1;
 
 	
-	int filePos = 0, fileSize;
+	std::size_t filePos = 0;
+	int fileSize;
 	byte *pMemFile = g_engfuncs.pfnLoadFileForMe( "sound/sentences.txt", &fileSize );
 	if ( !pMemFile )
 		return;
 
 	// for each line in the file...
-	while ( memfgets(pMemFile, fileSize, filePos, buffer, 511) != nullptr )
+	while ( memfgets(pMemFile, fileSize, filePos, buffer, sizeof(buffer) - 1) != nullptr )
 	{
 		// skip whitespace
 		i = 0;

@@ -43,8 +43,6 @@ void TEXTURETYPE_Init()
 	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer("sound/materials.txt");
 
 	byte* pMemFile = fileBuffer.get();
-	//TODO: really large files could cause problems here due to the narrowing conversion
-	const int fileSize = size;
 
 	if (!pMemFile)
 		return;
@@ -52,7 +50,7 @@ void TEXTURETYPE_Init()
 	char buffer[512]{};
 
 	// for each line in the file...
-	for (int i, j, filePos = 0; memfgets(pMemFile, fileSize, filePos, buffer, 511) != nullptr;)
+	for (std::size_t i, j, filePos = 0; memfgets(pMemFile, size, filePos, buffer, sizeof(buffer) - 1) != nullptr;)
 	{
 		// skip whitespace
 		i = 0;

@@ -15,4 +15,6 @@
 
 #pragma once
 
-char* memfgets(byte* pMemFile, int fileSize, int& filePos, char* pBuffer, int bufferSize);
+#include <cstddef>
+
+char* memfgets(byte* pMemFile, std::size_t fileSize, std::size_t& filePos, char* pBuffer, std::size_t bufferSize);
