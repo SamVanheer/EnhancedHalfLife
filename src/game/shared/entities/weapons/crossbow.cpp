@@ -69,7 +69,7 @@ void CCrossbowBolt::Spawn( )
 	SET_MODEL(ENT(pev), "models/crossbow_bolt.mdl");
 
 	UTIL_SetOrigin( pev, pev->origin );
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 
 	SetTouch( &CCrossbowBolt::BoltTouch );
 	SetThink( &CCrossbowBolt::BubbleThink );
@@ -120,7 +120,7 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 
 		ApplyMultiDamage( pev, pevOwner );
 
-		pev->velocity = Vector( 0, 0, 0 );
+		pev->velocity = vec3_origin;
 		// play body "thwack" sound
 		switch( RANDOM_LONG(0,1) )
 		{
@@ -150,7 +150,7 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 			pev->angles = VectorAngles( vecDir );
 			pev->solid = SOLID_NOT;
 			pev->movetype = MOVETYPE_FLY;
-			pev->velocity = Vector( 0, 0, 0 );
+			pev->velocity = vec3_origin;
 			pev->avelocity.z = 0;
 			pev->angles.z = RANDOM_LONG(0,360);
 			pev->nextthink = gpGlobals->time + 10.0;

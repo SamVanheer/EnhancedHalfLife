@@ -54,6 +54,12 @@ enum class StepType
 	Ladder			//!< climbing ladder
 };
 
+constexpr Vector current_table[] =
+{
+	vec3_forward, vec3_right, vec3_backward,
+	vec3_left, vec3_up, vec3_down
+};
+
 static bool pm_shared_initialized = false;
 
 static Vector rgv3tStuckTable[54];
@@ -1219,13 +1225,6 @@ bool PM_CheckWater ()
 			 ( truecont >= CONTENTS_CURRENT_DOWN ) )
 		{
 			// The deeper we are, the stronger the current.
-			//TODO: move this elsewhere
-			static constexpr Vector current_table[] =
-			{
-				{1, 0, 0}, {0, 1, 0}, {-1, 0, 0},
-				{0, -1, 0}, {0, 0, 1}, {0, 0, -1}
-			};
-
 			pmove->basevelocity = pmove->basevelocity + (50.0 * static_cast<int>(pmove->waterlevel)) * current_table[CONTENTS_CURRENT_0 - truecont];
 		}
 	}
@@ -1766,14 +1765,10 @@ void PM_LadderMove( physent_t *pLadder )
 				//ALERT(at_console, "pev %.2f %.2f %.2f - ",
 				//	pev->velocity.x, pev->velocity.y, pev->velocity.z);
 				// Calculate player's intended velocity
-				//Vector velocity = (forward * gpGlobals->v_forward) + (right * gpGlobals->v_right);
 				const Vector velocity = vpn * forward + v_right * right;
 				
 				// Perpendicular in the ladder plane
-	//					Vector perp = CrossProduct( Vector(0,0,1), trace.vecPlaneNormal );
-	//					perp = perp.Normalize();
-				Vector tmp{0, 0, 1};
-				Vector perp = CrossProduct( tmp, trace.plane.normal );
+				Vector perp = CrossProduct( vec3_up, trace.plane.normal );
 				VectorNormalize( perp );
 
 				// decompose velocity into ladder plane
@@ -1789,7 +1784,7 @@ void PM_LadderMove( physent_t *pLadder )
 				// NOTE: It IS possible to face up and move down or face down and move up
 				// because the velocity is a sum of the directional velocity and the converted
 				// velocity through the face of the ladder -- by design.
-				tmp = CrossProduct( trace.plane.normal, perp );
+				const Vector tmp = CrossProduct( trace.plane.normal, perp );
 				pmove->velocity = lateral + tmp * -normal;
 				if ( onFloor && normal > 0 )	// On ground moving away from the ladder
 				{

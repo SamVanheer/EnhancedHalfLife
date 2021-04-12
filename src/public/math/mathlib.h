@@ -47,6 +47,14 @@ typedef	int	fixed16_t;
 struct mplane_t;
 
 constexpr Vector vec3_origin(0, 0, 0);
+
+constexpr Vector vec3_forward{1, 0, 0};
+constexpr Vector vec3_backward{-1, 0, 0};
+constexpr Vector vec3_right{0, 1, 0};
+constexpr Vector vec3_left{0, -1, 0};
+constexpr Vector vec3_up{0, 0, 1};
+constexpr Vector vec3_down{0, 0, -1};
+
 constexpr int nanmask = 255 << 23;
 
 template<typename T>

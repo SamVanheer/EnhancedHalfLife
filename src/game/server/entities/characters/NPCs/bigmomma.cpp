@@ -645,7 +645,7 @@ void CBigMomma::LaunchMortar()
 	EMIT_SOUND_DYN( edict(), CHAN_WEAPON, RANDOM_SOUND_ARRAY(pSackSounds), 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
 	CBMortar *pBomb = CBMortar::Shoot( edict(), startPos, pev->movedir );
 	pBomb->pev->gravity = 1.0;
-	MortarSpray( startPos, Vector(0,0,1), gSpitSprite, 24 );
+	MortarSpray( startPos, vec3_up, gSpitSprite, 24 );
 }
 
 //=========================================================
@@ -1161,7 +1161,7 @@ void CBMortar:: Spawn()
 	pev->frame = 0;
 	pev->scale = 0.5;
 
-	UTIL_SetSize( pev, Vector( 0, 0, 0), Vector(0, 0, 0) );
+	UTIL_SetSize( pev, vec3_origin, vec3_origin);
 
 	m_maxFrame = (float) MODEL_FRAMES( pev->modelindex ) - 1;
 	pev->dmgtime = gpGlobals->time + 0.4;

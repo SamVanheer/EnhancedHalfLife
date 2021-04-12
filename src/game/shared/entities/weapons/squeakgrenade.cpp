@@ -283,11 +283,11 @@ void CSqueakGrenade::HuntThink()
 
 	if (pev->flags & FL_ONGROUND)
 	{
-		pev->avelocity = Vector( 0, 0, 0 );
+		pev->avelocity = vec3_origin;
 	}
 	else
 	{
-		if (pev->avelocity == Vector( 0, 0, 0))
+		if (pev->avelocity == vec3_origin)
 		{
 			pev->avelocity.x = RANDOM_FLOAT( -100, 100 );
 			pev->avelocity.z = RANDOM_FLOAT( -100, 100 );

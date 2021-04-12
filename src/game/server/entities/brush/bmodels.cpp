@@ -391,11 +391,11 @@ void CFuncRotating :: Spawn( )
 	}
 	
 	if ( FBitSet(pev->spawnflags, SF_BRUSH_ROTATE_Z_AXIS) )
-		pev->movedir = Vector(0,0,1);
+		pev->movedir = vec3_up;
 	else if ( FBitSet(pev->spawnflags, SF_BRUSH_ROTATE_X_AXIS) )
-		pev->movedir = Vector(1,0,0);
+		pev->movedir = vec3_forward;
 	else 
-		pev->movedir = Vector(0,1,0);	// y-axis
+		pev->movedir = vec3_right;	// y-axis
 
 	// check for reverse rotation
 	if ( FBitSet(pev->spawnflags, SF_BRUSH_ROTATE_BACKWARDS) )

@@ -397,9 +397,7 @@ void VectorMatrix(const Vector& forward, Vector& right, Vector& up)
 		return;
 	}
 
-	constexpr Vector tmp{0, 0, 1};
-
-	right = CrossProduct(forward, tmp);
+	right = CrossProduct(forward, vec3_up);
 	VectorNormalize(right);
 	up = CrossProduct(right, forward);
 	VectorNormalize(up);

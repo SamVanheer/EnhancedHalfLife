@@ -302,7 +302,7 @@ void CNihilanth :: Spawn()
 	SetThink( &CNihilanth::StartupThink );
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	m_vecDesired = Vector( 1, 0, 0 );
+	m_vecDesired = vec3_forward;
 	m_posDesired = Vector( pev->origin.x, pev->origin.y, 512 );
 
 	m_iLevel = 1; 
@@ -440,7 +440,7 @@ void CNihilanth :: DyingThink()
 
 		if (fabs( pev->origin.z - m_flMaxZ ) < 16)
 		{
-			pev->velocity = Vector( 0, 0, 0 );
+			pev->velocity = vec3_origin;
 			FireTargets( m_szDeadUse, this, this, USE_ON, 1.0 );
 			pev->deadflag = DEAD_DEAD;
 		}
@@ -1342,7 +1342,7 @@ void CNihilanthHVR :: CircleInit( CBaseEntity *pTarget )
 	m_nFrames = 1;
 	pev->renderamt = 255;
 
-	UTIL_SetSize(pev, Vector( 0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 	UTIL_SetOrigin( pev, pev->origin );
 
 	SetThink( &CNihilanthHVR::HoverThink );
@@ -1738,7 +1738,7 @@ bool CNihilanthHVR :: CircleTarget( Vector vecTarget )
 	float d1 = (vecDest - vecSrc).Length() - 24 * N_SCALE;
 	float d2 = (vecDest - vecEst).Length() - 24 * N_SCALE;
 
-	if (m_vecIdeal == Vector( 0, 0, 0 ))
+	if (m_vecIdeal == vec3_origin)
 	{
 		m_vecIdeal = pev->velocity;
 	}
@@ -1782,7 +1782,7 @@ bool CNihilanthHVR :: CircleTarget( Vector vecTarget )
 
 void CNihilanthHVR :: MovetoTarget( Vector vecTarget )
 {
-	if (m_vecIdeal == Vector( 0, 0, 0 ))
+	if (m_vecIdeal == vec3_origin)
 	{
 		m_vecIdeal = pev->velocity;
 	}

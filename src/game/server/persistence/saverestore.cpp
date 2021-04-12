@@ -700,11 +700,10 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 	int i, j, fieldNumber, entityIndex;
 	TYPEDESCRIPTION* pTest;
 	float	time, timeData;
-	Vector	position;
 	edict_t* pent;
 
 	time = 0;
-	position = Vector(0, 0, 0);
+	Vector position = vec3_origin;
 
 	if (m_pdata)
 	{

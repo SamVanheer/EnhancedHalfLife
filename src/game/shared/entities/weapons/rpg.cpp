@@ -112,7 +112,7 @@ void CRpgRocket :: Spawn()
 	pev->solid = SOLID_BBOX;
 
 	SET_MODEL(ENT(pev), "models/rpgrocket.mdl");
-	UTIL_SetSize(pev, Vector( 0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 	UTIL_SetOrigin( pev, pev->origin );
 
 	pev->classname = MAKE_STRING("rpg_rocket");

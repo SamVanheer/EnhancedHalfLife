@@ -1101,7 +1101,7 @@ bool CBaseMonster :: CheckEnemy ( CBaseEntity *pEnemy )
 				ClearConditions( bits_COND_ENEMY_FACING_ME );
 		}
 
-		if (pEnemy->pev->velocity != Vector( 0, 0, 0))
+		if (pEnemy->pev->velocity != vec3_origin)
 		{
 			// trail the enemy a bit
 			m_vecEnemyLKP = m_vecEnemyLKP - pEnemy->pev->velocity * RANDOM_FLOAT( -0.05, 0 );
@@ -1636,7 +1636,7 @@ bool CBaseMonster :: FTriangulate ( const Vector &vecStart , const Vector &vecEn
 
 	vecForward = ( vecEnd - vecStart ).Normalize();
 
-	Vector vecDirUp(0,0,1);
+	Vector vecDirUp = vec3_up;
 	vecDir = CrossProduct ( vecForward, vecDirUp);
 
 	// start checking right about where the object is, picking two equidistant starting points, one on

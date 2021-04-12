@@ -1070,7 +1070,7 @@ void EV_FireCrossbow2( event_args_t *args )
 
 			const Vector vBoltAngles = VectorAngles( forward );
 
-			TEMPENTITY *bolt = gEngfuncs.pEfxAPI->R_TempModel( tr.endpos - forward * 10, Vector( 0, 0, 0), vBoltAngles , 5, iModelIndex, TE_BOUNCE_NULL );
+			TEMPENTITY *bolt = gEngfuncs.pEfxAPI->R_TempModel( tr.endpos - forward * 10, vec3_origin, vBoltAngles , 5, iModelIndex, TE_BOUNCE_NULL );
 			
 			if ( bolt )
 			{

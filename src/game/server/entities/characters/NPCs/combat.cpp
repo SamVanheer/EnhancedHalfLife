@@ -109,7 +109,7 @@ void CGib :: SpawnStickyGibs( entvars_t *pevVictim, Vector vecOrigin, int cGibs 
 			
 			pGib->pev->movetype = MOVETYPE_TOSS;
 			pGib->pev->solid = SOLID_BBOX;
-			UTIL_SetSize ( pGib->pev, Vector ( 0, 0 ,0 ), Vector ( 0, 0, 0 ) );
+			UTIL_SetSize ( pGib->pev, vec3_origin, vec3_origin);
 			pGib->SetTouch ( &CGib::StickyGibTouch );
 			pGib->SetThink (nullptr);
 		}
@@ -241,7 +241,7 @@ void CGib :: SpawnRandomGibs( entvars_t *pevVictim, int cGibs, int human )
 			}
 
 			pGib->pev->solid = SOLID_BBOX;
-			UTIL_SetSize ( pGib->pev, Vector( 0 , 0 , 0 ), Vector ( 0, 0, 0 ) );
+			UTIL_SetSize ( pGib->pev, vec3_origin, vec3_origin);
 		}
 		pGib->LimitVelocity();
 	}
@@ -788,7 +788,7 @@ void CGib :: Spawn( const char *szGibModel )
 	pev->classname = MAKE_STRING("gib");
 
 	SET_MODEL(ENT(pev), szGibModel);
-	UTIL_SetSize(pev, Vector( 0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 
 	pev->nextthink = gpGlobals->time + 4;
 	m_lifeTime = 25;
@@ -832,9 +832,6 @@ GLOBALS ASSUMED SET:  g_SkillLevel
 */
 bool CBaseMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
-	float	flTake;
-	Vector	vecDir;
-
 	if (!pev->takedamage)
 		return false;
 
@@ -850,13 +847,13 @@ bool CBaseMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker
 	}
 
 	//!!!LATER - make armor consideration here!
-	flTake = flDamage;
+	float flTake = flDamage;
 
 	// set damage type sustained
 	m_bitsDamageType |= bitsDamageType;
 
 	// grab the vector of the incoming attack. ( pretend that the inflictor is a little lower than it really is, so the body will tend to fly upward a bit).
-	vecDir = Vector( 0, 0, 0 );
+	Vector vecDir = vec3_origin;
 	if (!FNullEnt( pevInflictor ))
 	{
 		CBaseEntity *pInflictor = CBaseEntity :: Instance( pevInflictor );
@@ -968,10 +965,8 @@ bool CBaseMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker
 //=========================================================
 bool CBaseMonster :: DeadTakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
-	Vector			vecDir;
-
 	// grab the vector of the incoming attack. ( pretend that the inflictor is a little lower than it really is, so the body will tend to fly upward a bit).
-	vecDir = Vector( 0, 0, 0 );
+	Vector vecDir = vec3_origin;
 	if (!FNullEnt( pevInflictor ))
 	{
 		CBaseEntity *pInflictor = CBaseEntity :: Instance( pevInflictor );

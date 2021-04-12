@@ -1791,7 +1791,7 @@ void CTestHull :: BuildNodeGraph()
 					break;
 				case NODE_FLY_HULL:
 					UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
-					// UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+					// UTIL_SetSize(pev, vec3_origin, vec3_origin);
 					break;
 				}
 

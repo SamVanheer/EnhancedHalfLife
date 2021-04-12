@@ -2269,7 +2269,7 @@ void CTriggerCamera::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 	}
 	else
 	{
-		pev->velocity = Vector( 0, 0, 0 );
+		pev->velocity = vec3_origin;
 	}
 
 	SET_VIEW( pActivator->edict(), edict() );
@@ -2306,7 +2306,7 @@ void CTriggerCamera::FollowTarget( )
 		player->m_bResetViewEntity = false;
 
 		SUB_UseTargets( this, USE_TOGGLE, 0 );
-		pev->avelocity = Vector( 0, 0, 0 );
+		pev->avelocity = vec3_origin;
 		m_state = 0;
 		return;
 	}

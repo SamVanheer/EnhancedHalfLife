@@ -1311,7 +1311,7 @@ void CSpiral::Think()
 	while ( time > SPIRAL_INTERVAL )
 	{
 		Vector position = pev->origin;
-		Vector direction = Vector(0,0,1);
+		Vector direction = vec3_up;
 		
 		float fraction = 1.0 / pev->speed;
 
@@ -1323,7 +1323,7 @@ void CSpiral::Think()
 		position = position + gpGlobals->v_forward * radius;
 		direction = (direction + gpGlobals->v_forward).Normalize();
 
-		StreakSplash( position, Vector(0,0,1), RANDOM_LONG(8,11), 20, RANDOM_LONG(50,150), 400 );
+		StreakSplash( position, vec3_up, RANDOM_LONG(8,11), 20, RANDOM_LONG(50,150), 400 );
 
 		// Jeez, how many counters should this take ? :)
 		pev->dmgtime += SPIRAL_INTERVAL;

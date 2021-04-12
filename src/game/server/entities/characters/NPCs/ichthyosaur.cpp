@@ -393,7 +393,7 @@ void CIchthyosaur :: SetYawSpeed ()
 void CIchthyosaur :: Killed( entvars_t *pevAttacker, int iGib )
 {
 	CBaseMonster::Killed( pevAttacker, iGib );
-	pev->velocity = Vector( 0, 0, 0 );
+	pev->velocity = vec3_origin;
 }
 
 void CIchthyosaur::BecomeDead()
@@ -633,7 +633,7 @@ void CIchthyosaur :: RunTask ( Task_t *pTask )
 			Vector vecFrom = m_hEnemy->EyePosition( );
 
 			Vector vecDelta = (pev->origin - vecFrom).Normalize( );
-			Vector vecSwim = CrossProduct( vecDelta, Vector( 0, 0, 1 ) ).Normalize( );
+			Vector vecSwim = CrossProduct( vecDelta, vec3_up ).Normalize( );
 			
 			if (DotProduct( vecSwim, m_SaveVelocity ) < 0)
 				vecSwim = vecSwim * -1.0;
@@ -1089,7 +1089,7 @@ void CIchthyosaur::Swim( )
 
 Vector CIchthyosaur::DoProbe(const Vector &Probe)
 {
-	Vector WallNormal = Vector(0,0,-1); // WATER normal is Straight Down for fish.
+	Vector WallNormal = vec3_down; // WATER normal is Straight Down for fish.
 	float frac;
 	bool bBumpedSomething = ProbeZ(pev->origin, Probe, &frac);
 
@@ -1123,5 +1123,5 @@ Vector CIchthyosaur::DoProbe(const Vector &Probe)
 		
 		return SteeringVector;
 	}
-	return Vector(0, 0, 0);
+	return vec3_origin;
 }

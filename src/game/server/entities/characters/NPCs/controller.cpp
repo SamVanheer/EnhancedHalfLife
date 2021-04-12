@@ -735,7 +735,7 @@ Schedule_t *CController :: GetSchedule ()
 
 	case MONSTERSTATE_COMBAT:
 		{
-			Vector vecTmp = Intersect( Vector( 0, 0, 0 ), Vector( 100, 4, 7 ), Vector( 2, 10, -3 ), 20.0 );
+			Vector vecTmp = Intersect(vec3_origin, Vector( 100, 4, 7 ), Vector( 2, 10, -3 ), 20.0 );
 
 			// dead enemy
 			if ( HasConditions ( bits_COND_LIGHT_DAMAGE ) )
@@ -1163,13 +1163,13 @@ void CControllerHeadBall :: Spawn()
 	pev->renderamt = 255;
 	pev->scale = 2.0;
 
-	UTIL_SetSize(pev, Vector( 0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 	UTIL_SetOrigin( pev, pev->origin );
 
 	SetThink( &CControllerHeadBall::HuntThink );
 	SetTouch( &CControllerHeadBall::BounceTouch );
 
-	m_vecIdeal = Vector( 0, 0, 0 );
+	m_vecIdeal = vec3_origin;
 
 	pev->nextthink = gpGlobals->time + 0.1;
 
@@ -1357,7 +1357,7 @@ void CControllerZapBall :: Spawn()
 	pev->renderamt = 255;
 	pev->scale = 0.5;
 
-	UTIL_SetSize(pev, Vector( 0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 	UTIL_SetOrigin( pev, pev->origin );
 
 	SetThink( &CControllerZapBall::AnimateThink );

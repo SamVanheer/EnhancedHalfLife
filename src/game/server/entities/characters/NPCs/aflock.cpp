@@ -290,7 +290,7 @@ void CFlockingFlyer :: Killed( entvars_t *pevAttacker, int iGib )
 	pev->framerate = 0;
 	pev->effects = EF_NOINTERP;
 
-	UTIL_SetSize( pev, Vector(0,0,0), Vector(0,0,0) );
+	UTIL_SetSize( pev, vec3_origin, vec3_origin);
 	pev->movetype = MOVETYPE_TOSS;
 
 	SetThink ( &CFlockingFlyer::FallHack );
@@ -331,7 +331,7 @@ void CFlockingFlyer :: SpawnCommonCode( )
 	//SET_MODEL(ENT(pev), "models/aflock.mdl");
 	SET_MODEL(ENT(pev), "models/boid.mdl");
 
-//	UTIL_SetSize(pev, Vector(0,0,0), Vector(0,0,0));
+//	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 	UTIL_SetSize(pev, Vector(-5,-5,0), Vector(5,5,2));
 }
 

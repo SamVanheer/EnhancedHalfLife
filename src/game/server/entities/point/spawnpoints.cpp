@@ -95,7 +95,7 @@ edict_t* EntSelectSpawnPoint(CBaseEntity* pPlayer)
 				// check if pSpot is valid
 				if (IsSpawnPointValid(pPlayer, pSpot))
 				{
-					if (pSpot->pev->origin == Vector(0, 0, 0))
+					if (pSpot->pev->origin == vec3_origin)
 					{
 						pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_deathmatch");
 						continue;

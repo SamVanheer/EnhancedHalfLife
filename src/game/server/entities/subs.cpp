@@ -256,15 +256,16 @@ void CBaseDelay :: SUB_UseTargetsEntMethod()
 QuakeEd only writes a single float for angles (bad idea), so up and down are
 just constant angles.
 */
+//TODO: move to util.cpp
 void SetMovedir( entvars_t *pev )
 {
 	if (pev->angles == Vector(0, -1, 0))
 	{
-		pev->movedir = Vector(0, 0, 1);
+		pev->movedir = vec3_up;
 	}
 	else if (pev->angles == Vector(0, -2, 0))
 	{
-		pev->movedir = Vector(0, 0, -1);
+		pev->movedir = vec3_down;
 	}
 	else
 	{
@@ -478,11 +479,11 @@ float CBaseToggle :: AxisValue( int flags, const Vector &angles )
 void CBaseToggle :: AxisDir( entvars_t *pev )
 {
 	if ( FBitSet(pev->spawnflags, SF_DOOR_ROTATE_Z) )
-		pev->movedir = Vector ( 0, 0, 1 );	// around z-axis
+		pev->movedir = vec3_up;	// around z-axis
 	else if ( FBitSet(pev->spawnflags, SF_DOOR_ROTATE_X) )
-		pev->movedir = Vector ( 1, 0, 0 );	// around x-axis
+		pev->movedir = vec3_forward;	// around x-axis
 	else
-		pev->movedir = Vector ( 0, 1, 0 );		// around y-axis
+		pev->movedir = vec3_right;		// around y-axis
 }
 
 

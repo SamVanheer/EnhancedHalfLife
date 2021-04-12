@@ -2778,7 +2778,7 @@ bool CBasePlayer::Restore( CRestore &restore )
 
 		// default to normal spawn
 		edict_t* pentSpawnSpot = EntSelectSpawnPoint( this );
-		pev->origin = VARS(pentSpawnSpot)->origin + Vector(0,0,1);
+		pev->origin = VARS(pentSpawnSpot)->origin + vec3_up;
 		pev->angles = VARS(pentSpawnSpot)->angles;
 	}
 	pev->v_angle.z = 0;	// Clear out roll
@@ -4004,7 +4004,7 @@ Vector CBasePlayer :: GetAutoaimVector( float flDelta )
 	// UNDONE: use sever variable to chose!
 	if (true || g_SkillLevel == SkillLevel::Medium)
 	{
-		m_vecAutoAim = Vector( 0, 0, 0 );
+		m_vecAutoAim = vec3_origin;
 		// flDelta *= 0.5;
 	}
 
@@ -4195,7 +4195,7 @@ Vector CBasePlayer :: AutoaimDeflection( Vector &vecSrc, float flDist, float flD
 		return bestdir;
 	}
 
-	return Vector( 0, 0, 0 );
+	return vec3_origin;
 }
 
 
@@ -4203,7 +4203,7 @@ void CBasePlayer :: ResetAutoaim( )
 {
 	if (m_vecAutoAim.x != 0 || m_vecAutoAim.y != 0)
 	{
-		m_vecAutoAim = Vector( 0, 0, 0 );
+		m_vecAutoAim = vec3_origin;
 		SET_CROSSHAIRANGLE( edict(), 0, 0 );
 	}
 	m_fOnTarget = false;

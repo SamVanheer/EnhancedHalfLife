@@ -351,8 +351,8 @@ void CCineMonster :: PossessEntity()
 		case 4: 
 			UTIL_SetOrigin( pTarget->pev, pev->origin );
 			pTarget->pev->ideal_yaw = pev->angles.y;
-			pTarget->pev->avelocity = Vector( 0, 0, 0 );
-			pTarget->pev->velocity = Vector( 0, 0, 0 );
+			pTarget->pev->avelocity = vec3_origin;
+			pTarget->pev->velocity = vec3_origin;
 			pTarget->pev->effects |= EF_NOINTERP;
 			pTarget->pev->angles.y = pev->angles.y;
 			pTarget->m_scriptState = SCRIPT_WAIT;
@@ -422,8 +422,8 @@ void CCineAI :: PossessEntity()
 			// zap the monster instantly to the site of the script entity.
 			UTIL_SetOrigin( pTarget->pev, pev->origin );
 			pTarget->pev->ideal_yaw = pev->angles.y;
-			pTarget->pev->avelocity = Vector( 0, 0, 0 );
-			pTarget->pev->velocity = Vector( 0, 0, 0 );
+			pTarget->pev->avelocity = vec3_origin;
+			pTarget->pev->velocity = vec3_origin;
 			pTarget->pev->effects |= EF_NOINTERP;
 			pTarget->pev->angles.y = pev->angles.y;
 			pTarget->m_scriptState = SCRIPT_WAIT;

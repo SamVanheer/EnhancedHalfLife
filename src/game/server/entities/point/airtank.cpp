@@ -81,7 +81,7 @@ void CAirtank :: Killed( entvars_t *pevAttacker, int iGib )
 
 	// UNDONE: this should make a big bubble cloud, not an explosion
 
-	Explode( pev->origin, Vector( 0, 0, -1 ) );
+	Explode( pev->origin, vec3_down);
 }
 
 
