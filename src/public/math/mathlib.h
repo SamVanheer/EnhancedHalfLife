@@ -114,6 +114,8 @@ float UTIL_ApproachAngle(float target, float value, float speed);
 */
 float UTIL_SplineFraction(float value, float scale);
 
+void UTIL_DropPunchAngle(float frametime, Vector& ev_punchangle);
+
 void VectorMatrix(const Vector& forward, Vector& right, Vector& up);
 Vector VectorAngles(const Vector& forward);
 float UTIL_VecToYaw(const Vector& vec);

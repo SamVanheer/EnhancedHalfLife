@@ -86,14 +86,6 @@ cvar_t	v_ipitch_level		= {"v_ipitch_level", "0.3", 0, 0.3};
 
 float	v_idlescale;  // used by TFC for concussion grenade effect
 
-void V_DropPunchAngle(float frametime, Vector& ev_punchangle)
-{
-	float len = VectorNormalize(ev_punchangle);
-	len -= (10.0 + len * 0.5) * frametime;
-	len = std::max(len, 0.0f);
-	ev_punchangle = ev_punchangle * len;
-}
-
 // Quakeworld bob code, this fixes jitters in the mutliplayer since the clock (pparams->time) isn't quite linear
 float V_CalcBob ( ref_params_t *pparams )
 {
@@ -600,7 +592,7 @@ void V_CalcNormalRefdef ( ref_params_t* pparams )
 	// Include client side punch, too
 	pparams->viewangles = pparams->viewangles + pparams->punchangle + ev_punchangle;
 
-	V_DropPunchAngle ( pparams->frametime, ev_punchangle );
+	UTIL_DropPunchAngle(pparams->frametime, ev_punchangle);
 
 	// smooth out stair step ups
 #if 1

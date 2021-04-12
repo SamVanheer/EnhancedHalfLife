@@ -2357,21 +2357,6 @@ float PM_CalcRoll (Vector angles, Vector velocity, float rollangle, float rollsp
 }
 
 /*
-=============
-PM_DropPunchAngle
-
-=============
-*/
-//TODO: identical to view.cpp code
-void PM_DropPunchAngle (Vector& punchangle)
-{
-	float len = VectorNormalize ( punchangle );
-	len -= (10.0 + len * 0.5) * pmove->frametime;
-	len = std::max( len, 0.0f );
-	punchangle = punchangle * len;
-}
-
-/*
 ==============
 PM_CheckParamters
 
@@ -2405,8 +2390,7 @@ void PM_CheckParamters()
 		pmove->cmd.upmove      = 0;
 	}
 
-
-	PM_DropPunchAngle( pmove->punchangle );
+	UTIL_DropPunchAngle(pmove->frametime, pmove->punchangle);
 
 	// Take angles from command.
 	if ( !pmove->dead )
