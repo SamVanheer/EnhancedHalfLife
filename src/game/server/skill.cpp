@@ -21,7 +21,7 @@ float GetSkillCvar(const char* pName)
 {
 	char	szBuffer[64];
 
-	const int iCount = sprintf(szBuffer, "%s%d", pName, static_cast<int>(gSkillData.SkillLevel));
+	const int iCount = sprintf(szBuffer, "%s%d", pName, static_cast<int>(gSkillData.Level));
 
 	const float flValue = CVAR_GET_FLOAT(szBuffer);
 

@@ -30,7 +30,7 @@ enum class SkillLevel
 
 struct skilldata_t
 {
-	SkillLevel SkillLevel; // game skill level
+	SkillLevel Level; // game skill level
 
 // Monster Health & Damage
 	float agruntHealth;

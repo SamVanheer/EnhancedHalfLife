@@ -110,7 +110,7 @@ void CGameRules::RefreshSkillData ()
 
 	skill = std::clamp(skill, SkillLevel::Easy, SkillLevel::Hard);
 
-	gSkillData.SkillLevel = g_SkillLevel = skill;
+	gSkillData.Level = g_SkillLevel = skill;
 
 	ALERT ( at_console, "\nGAME SKILL LEVEL:%d\n", static_cast<int>(skill));
 
