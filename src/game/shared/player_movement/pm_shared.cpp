@@ -1809,8 +1809,7 @@ physent_t *PM_Ladder()
 		if ( pe->model && (modtype_t)pmove->PM_GetModelType( pe->model ) == mod_brush && pe->skin == CONTENTS_LADDER )
 		{
 			Vector test;
-			//TODO: modify the function to return this type
-			hull_t* hull = (hull_t *)pmove->PM_HullForBsp( pe, test );
+			hull_t* hull = pmove->PM_HullForBsp( pe, test );
 			const int num = hull->firstclipnode;
 
 			// Offset the test point appropriately for this hull.
