@@ -834,19 +834,19 @@ void CHalfLifeMultiplay::DeathNotice( CBasePlayer *pVictim, entvars_t *pKiller, 
 	if ( pKiller->flags & FL_MONSTER )
 	{
 		// killed by a monster
-		strcpy ( szText, STRING( pVictim->pev->netname ) );
+		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
 		strcat ( szText, " was killed by a monster.\n" );
 		return;
 	}
 
 	if ( pKiller == pVictim->pev )
 	{
-		strcpy ( szText, STRING( pVictim->pev->netname ) );
+		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
 		strcat ( szText, " commited suicide.\n" );
 	}
 	else if ( pKiller->flags & FL_CLIENT )
 	{
-		strcpy ( szText, STRING( pKiller->netname ) );
+		safe_strcpy ( szText, STRING( pKiller->netname ) );
 
 		strcat( szText, " : " );
 		strcat( szText, killer_weapon_name );
@@ -857,17 +857,17 @@ void CHalfLifeMultiplay::DeathNotice( CBasePlayer *pVictim, entvars_t *pKiller, 
 	}
 	else if ( FClassnameIs ( pKiller, "worldspawn" ) )
 	{
-		strcpy ( szText, STRING( pVictim->pev->netname ) );
+		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
 		strcat ( szText, " fell or drowned or something.\n" );
 	}
 	else if ( pKiller->solid == SOLID_BSP )
 	{
-		strcpy ( szText, STRING( pVictim->pev->netname ) );
+		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
 		strcat ( szText, " was mooshed.\n" );
 	}
 	else
 	{
-		strcpy ( szText, STRING( pVictim->pev->netname ) );
+		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
 		strcat ( szText, " died mysteriously.\n" );
 	}
 
@@ -1176,7 +1176,7 @@ void CHalfLifeMultiplay :: ChangeLevel()
 	char szCommands[ 1500 ];
 	char szRules[ 1500 ];
 	int minplayers = 0, maxplayers = 0;
-	strcpy( szFirstMapInList, "hldm1" );  // the absolute default level is hldm1
+	safe_strcpy( szFirstMapInList, "hldm1" );  // the absolute default level is hldm1
 
 	int	curplayers;
 	bool do_cycle = true;
@@ -1193,7 +1193,7 @@ void CHalfLifeMultiplay :: ChangeLevel()
 	// Has the map cycle filename changed?
 	if ( stricmp( mapcfile, szPreviousMapCycleFile ) )
 	{
-		strcpy( szPreviousMapCycleFile, mapcfile );
+		safe_strcpy( szPreviousMapCycleFile, mapcfile );
 
 		DestroyMapCycle( &mapcycle );
 
@@ -1211,8 +1211,8 @@ void CHalfLifeMultiplay :: ChangeLevel()
 		mapcycle_item_t *item;
 
 		// Assume current map
-		strcpy( szNextMap, STRING(gpGlobals->mapname) );
-		strcpy( szFirstMapInList, STRING(gpGlobals->mapname) );
+		safe_strcpy( szNextMap, STRING(gpGlobals->mapname) );
+		safe_strcpy( szFirstMapInList, STRING(gpGlobals->mapname) );
 
 		// Traverse list
 		for ( item = mapcycle.next_item; item->next != mapcycle.next_item; item = item->next )
@@ -1263,15 +1263,15 @@ void CHalfLifeMultiplay :: ChangeLevel()
 		mapcycle.next_item = item->next;
 
 		// Perform logic on current item
-		strcpy( szNextMap, item->mapname );
+		safe_strcpy( szNextMap, item->mapname );
 
 		ExtractCommandString( item->rulebuffer, szCommands );
-		strcpy( szRules, item->rulebuffer );
+		safe_strcpy( szRules, item->rulebuffer );
 	}
 
 	if ( !IS_MAP_VALID(szNextMap) )
 	{
-		strcpy( szNextMap, szFirstMapInList );
+		safe_strcpy( szNextMap, szFirstMapInList );
 	}
 
 	g_fGameOver = true;
@@ -1317,7 +1317,7 @@ void CHalfLifeMultiplay :: SendMOTDToClient( edict_t *client )
 		
 		if ( strlen( pFileList ) < MAX_MOTD_CHUNK )
 		{
-			strcpy( chunk, pFileList );
+			safe_strcpy( chunk, pFileList );
 		}
 		else
 		{

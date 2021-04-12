@@ -1364,14 +1364,14 @@ void CChangeLevel :: KeyValue( KeyValueData *pkvd )
 	{
 		if (strlen(pkvd->szValue) >= MAX_MAPNAME_LENGTH)
 			ALERT( at_error, "Map name '%s' too long (32 chars)\n", pkvd->szValue );
-		strcpy(m_szMapName, pkvd->szValue);
+		safe_strcpy(m_szMapName, pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "landmark"))
 	{
 		if (strlen(pkvd->szValue) >= MAX_MAPNAME_LENGTH)
 			ALERT( at_error, "Landmark name '%s' too long (32 chars)\n", pkvd->szValue );
-		strcpy(m_szLandmarkName, pkvd->szValue);
+		safe_strcpy(m_szLandmarkName, pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "changetarget"))
@@ -1495,7 +1495,7 @@ void CChangeLevel :: ChangeLevelNow( CBaseEntity *pActivator )
 		}
 	}
 	// This object will get removed in the call to CHANGE_LEVEL, copy the params into "safe" memory
-	strcpy(st_szNextMap, m_szMapName);
+	safe_strcpy(st_szNextMap, m_szMapName);
 
 	m_hActivator = pActivator;
 	SUB_UseTargets( pActivator, USE_TOGGLE, 0 );
@@ -1505,7 +1505,7 @@ void CChangeLevel :: ChangeLevelNow( CBaseEntity *pActivator )
 	pentLandmark = FindLandmark( m_szLandmarkName );
 	if ( !FNullEnt( pentLandmark ) )
 	{
-		strcpy(st_szNextSpot, m_szLandmarkName);
+		safe_strcpy(st_szNextSpot, m_szLandmarkName);
 		gpGlobals->vecLandmarkOffset = VARS(pentLandmark)->origin;
 	}
 //	ALERT( at_console, "Level touches %d levels\n", ChangeList( levels, 16 ) );
@@ -1539,8 +1539,8 @@ bool CChangeLevel::AddTransitionToList( LEVELLIST *pLevelList, int listCount, co
 		if ( pLevelList[i].pentLandmark == pentLandmark && strcmp( pLevelList[i].mapName, pMapName ) == 0 )
 			return false;
 	}
-	strcpy( pLevelList[listCount].mapName, pMapName );
-	strcpy( pLevelList[listCount].landmarkName, pLandmarkName );
+	safe_strcpy( pLevelList[listCount].mapName, pMapName );
+	safe_strcpy( pLevelList[listCount].landmarkName, pLandmarkName );
 	pLevelList[listCount].pentLandmark = pentLandmark;
 	pLevelList[listCount].vecLandmarkOrigin = VARS(pentLandmark)->origin;
 

@@ -102,7 +102,7 @@ bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 			if (strlen(com_token) <= 0)
 				break;
 
-			strcpy(szMap, com_token);
+			safe_strcpy(szMap, com_token);
 
 			// Any more tokens on this line?
 			if (COM_TokenWaiting(pFileList))
@@ -111,7 +111,7 @@ bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 				if (strlen(com_token) > 0)
 				{
 					hasbuffer = 1;
-					strcpy(szBuffer, com_token);
+					safe_strcpy(szBuffer, com_token);
 				}
 			}
 
@@ -123,7 +123,7 @@ bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 
 				item = new mapcycle_item_t;
 
-				strcpy(item->mapname, szMap);
+				safe_strcpy(item->mapname, szMap);
 
 				item->minplayers = 0;
 				item->maxplayers = 0;
@@ -152,7 +152,7 @@ bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 					g_engfuncs.pfnInfo_RemoveKey(szBuffer, "minplayers");
 					g_engfuncs.pfnInfo_RemoveKey(szBuffer, "maxplayers");
 
-					strcpy(item->rulebuffer, szBuffer);
+					safe_strcpy(item->rulebuffer, szBuffer);
 				}
 
 				item->next = cycle->items;

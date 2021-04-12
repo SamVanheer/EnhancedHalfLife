@@ -146,7 +146,7 @@ public:
 	{
 		// strip any non-alnum characters from the end
 		char buf[512];
-		strcpy(buf, text);
+		safe_strcpy(buf, text);
 
 		int len = strlen(buf);
 		while (len && isspace(buf[--len]))

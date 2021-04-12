@@ -437,8 +437,8 @@ constexpr int CVOXFILESENTENCEMAX = 1536;
 extern char gszallsentencenames[CVOXFILESENTENCEMAX][CBSENTENCENAME_MAX];
 extern int gcallsentences;
 
-int USENTENCEG_Pick(int isentenceg, char *szfound);
-int USENTENCEG_PickSequential(int isentenceg, char *szfound, int ipick, int freset);
+int USENTENCEG_Pick(int isentenceg, char *szfound, std::size_t foundSize);
+int USENTENCEG_PickSequential(int isentenceg, char *szfound, std::size_t foundSize, int ipick, int freset);
 void USENTENCEG_InitLRU(unsigned char *plru, int count);
 
 void SENTENCEG_Init();
@@ -447,7 +447,7 @@ int SENTENCEG_PlayRndI(edict_t *entity, int isentenceg, float volume, float atte
 int SENTENCEG_PlayRndSz(edict_t *entity, const char *szrootname, float volume, float attenuation, int flags, int pitch);
 int SENTENCEG_PlaySequentialSz(edict_t *entity, const char *szrootname, float volume, float attenuation, int flags, int pitch, int ipick, int freset);
 int SENTENCEG_GetIndex(const char *szrootname);
-int SENTENCEG_Lookup(const char *sample, char *sentencenum);
+int SENTENCEG_Lookup(const char *sample, char *sentencenum, std::size_t sentencenumSize);
 
 float TEXTURETYPE_PlaySound(TraceResult *ptr,  Vector vecSrc, Vector vecEnd, int iBulletType);
 

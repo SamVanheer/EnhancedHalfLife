@@ -131,7 +131,7 @@ void CommandButton::RecalculateText()
 	{
 		if ( m_cBoundKey == (char)255 )
 		{
-			strcpy( szBuf, m_sMainText );
+			safe_strcpy( szBuf, m_sMainText );
 		}
 		else
 		{

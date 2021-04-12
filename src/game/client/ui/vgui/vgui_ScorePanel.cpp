@@ -689,7 +689,7 @@ void ScorePanel::FillGrid()
 			}
 
 			// Fill out with the correct data
-			strcpy(sz, "");
+			safe_strcpy(sz, "");
 			if ( m_iIsATeam[row] != TeamType::No)
 			{
 				char sz2[128];
@@ -706,7 +706,7 @@ void ScorePanel::FillGrid()
 						snprintf(sz2, sizeof(sz2), "%s", gViewPort->GetTeamName(team_info->teamnumber) );
 					}
 
-					strcpy(sz, sz2);
+					safe_strcpy(sz, sz2);
 
 					// Append the number of players
 					if ( m_iIsATeam[row] == TeamType::Yes)
@@ -771,7 +771,7 @@ void ScorePanel::FillGrid()
 					GetClientVoiceMgr()->UpdateSpeakerImage(pLabel, m_iSortedRows[row]);
 					break;
 				case COLUMN_CLASS:
-					strcpy(sz, "");
+					safe_strcpy(sz, "");
 					break;
 
 				case COLUMN_TRACKER:

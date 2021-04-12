@@ -510,7 +510,7 @@ void UTIL_EmitAmbientSound( edict_t *entity, const Vector &vecOrigin, const char
 	if (samp && *samp == '!')
 	{
 		char name[32];
-		if (SENTENCEG_Lookup(samp, name) >= 0)
+		if (SENTENCEG_Lookup(samp, name, sizeof(name)) >= 0)
 			EMIT_AMBIENT_SOUND(entity, vecOrigin, name, vol, attenuation, fFlags, pitch);
 	}
 	else
@@ -1193,7 +1193,7 @@ void UTIL_StringToIntArray( int *pVector, int count, const char *pString )
 	char *pstr, *pfront, tempString[128];
 	int	j;
 
-	strcpy( tempString, pString );
+	safe_strcpy( tempString, pString );
 	pstr = pfront = tempString;
 
 	for ( j = 0; j < count; j++ )			// lifted from pr_edict.c

@@ -2322,7 +2322,7 @@ int CGraph :: FLoadGraph ( const char *szMapName )
 	std::error_code error;
 	std::filesystem::create_directories(szDirName, error);
 
-	strcpy ( szFilename, "maps/graphs/" );
+	safe_strcpy( szFilename, "maps/graphs/" );
 	strcat ( szFilename, szMapName );
 	strcat( szFilename, ".nod" );
 
@@ -2618,11 +2618,11 @@ int CGraph :: CheckNODFile ( const char *szMapName )
 	char		szGraphFilename[MAX_PATH];
 	
 
-	strcpy ( szBspFilename, "maps/" );
+	safe_strcpy( szBspFilename, "maps/" );
 	strcat ( szBspFilename, szMapName );
 	strcat ( szBspFilename, ".bsp" );
 
-	strcpy ( szGraphFilename, "maps/graphs/" );
+	safe_strcpy( szGraphFilename, "maps/graphs/" );
 	strcat ( szGraphFilename, szMapName );
 	strcat ( szGraphFilename, ".nod" );
 	

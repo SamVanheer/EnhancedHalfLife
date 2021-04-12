@@ -158,7 +158,7 @@ bool CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *
 	int victim = reader.ReadByte();
 
 	char killedwith[32];
-	strcpy( killedwith, "d_" );
+	safe_strcpy( killedwith, "d_" );
 	strncat( killedwith, reader.ReadString(), 32 );
 
 	if (gViewPort)
@@ -217,7 +217,7 @@ bool CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *
 		rgDeathNoticeList[i].iNonPlayerKill = true;
 
 		// Store the object's name in the Victim slot (skip the d_ bit)
-		strcpy( rgDeathNoticeList[i].szVictim, killedwith+2 );
+		safe_strcpy( rgDeathNoticeList[i].szVictim, killedwith+2 );
 	}
 	else
 	{
@@ -278,9 +278,9 @@ bool CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *
 
 			// replace the code names with the 'real' names
 			if ( !strcmp( killedwith+2, "egon" ) )
-				strcpy( killedwith, "d_gluon gun" );
+				safe_strcpy( killedwith, "d_gluon gun" );
 			if ( !strcmp( killedwith+2, "gauss" ) )
-				strcpy( killedwith, "d_tau cannon" );
+				safe_strcpy( killedwith, "d_tau cannon" );
 
 			ConsolePrint( killedwith+2 ); // skip over the "d_" part
 		}

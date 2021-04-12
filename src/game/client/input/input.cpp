@@ -185,8 +185,9 @@ bool KB_ConvertString( char *in, char **ppout )
 
 	*pOut = '\0';
 
-	pOut = ( char * )malloc( strlen( sz ) + 1 );
-	strcpy( pOut, sz );
+	const std::size_t outputBufferSize = strlen(sz) + 1;
+	pOut = ( char * )malloc( outputBufferSize );
+	safe_strcpy( pOut, sz, outputBufferSize );
 	*ppout = pOut;
 
 	return true;
@@ -233,7 +234,7 @@ void KB_Add( const char *name, kbutton_t *pkb )
 	p = ( kblist_t * )malloc( sizeof( kblist_t ) );
 	memset( p, 0, sizeof( *p ) );
 
-	strcpy( p->name, name );
+	safe_strcpy( p->name, name );
 	p->pkey = pkb;
 
 	p->next = g_kbkeys;

@@ -15,6 +15,15 @@
 
 #pragma once
 
+#include <cstddef>
+
+/**
+*	@brief Copies src to dest and always null terminates the result
+*	@param dst Buffer to copy the string to
+*	@param src String to copy
+*	@param len_dst Size of the destination buffer, in bytes
+*	@return If the destination buffer length is not 0, returns dst. Otherwise returns nullptr
+*/
 inline char* safe_strcpy(char* dst, const char* src, int len_dst)
 {
 	if (len_dst <= 0)
@@ -26,6 +35,12 @@ inline char* safe_strcpy(char* dst, const char* src, int len_dst)
 	dst[len_dst - 1] = '\0';
 
 	return dst;
+}
+
+template<std::size_t Size>
+inline char* safe_strcpy(char (&dst)[Size], const char* src)
+{
+	return safe_strcpy(dst, src, Size);
 }
 
 inline int safe_snprintf(char* dst, int len_dst, const char* format, ...)

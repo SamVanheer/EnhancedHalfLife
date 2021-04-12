@@ -576,11 +576,11 @@ void TeamFortressViewport::Initialize()
 	g_iPlayerClass = 0;
 	g_iTeamNumber = 0;
 
-	strcpy(m_sMapName, "");
-	strcpy(m_szServerName, "");
+	safe_strcpy(m_sMapName, "");
+	safe_strcpy(m_szServerName, "");
 	for (int i = 0; i < 5; i++)
 	{
-		strcpy(m_sTeamNames[i], "");
+		safe_strcpy(m_sTeamNames[i], "");
 	}
 
 	App::getInstance()->setCursorOveride( App::getInstance()->getScheme()->getCursor(Scheme::scu_none) );
@@ -678,7 +678,7 @@ int TeamFortressViewport::CreateCommandMenu( const char * menuFile, int directio
 			cText[31] = '\0';
 
 			// save off the last button text we've come across (for error reporting)
-			strcpy( szLastButtonText, cText );
+			safe_strcpy( szLastButtonText, cText );
 
 			// Get the button command
 			pfile = gEngfuncs.COM_ParseFile(pfile, token);
@@ -1075,7 +1075,7 @@ void TeamFortressViewport::UpdateSpectatorPanel()
 		{
 			char tempString[128];
 			snprintf(tempString, sizeof(tempString), "#Spec_Auto %s", helpString2);
-			strcpy( helpString2, tempString );
+			safe_strcpy( helpString2, tempString );
 		}
 
 		m_pSpectatorPanel->m_BottomMainLabel->setText( "%s", pBottomText );
@@ -1177,10 +1177,11 @@ CMenuPanel* TeamFortressViewport::CreateTextWindow( int iTextToShow )
 
 	if ( iTextToShow == SHOW_MOTD )
 	{
+		//TODO: define this as a constant somewhere
 		if (!m_szServerName || !m_szServerName[0])
-			strcpy( cTitle, "Half-Life" );
+			safe_strcpy( cTitle, "Half-Life" );
 		else
-			strncpy( cTitle, m_szServerName, sizeof(cTitle) );
+			safe_strcpy( cTitle, m_szServerName, sizeof(cTitle) );
 		cTitle[sizeof(cTitle)-1] = 0;
 		cText = m_szMOTD;
 	}
@@ -1189,7 +1190,7 @@ CMenuPanel* TeamFortressViewport::CreateTextWindow( int iTextToShow )
 		// Get the current mapname, and open it's map briefing text
 		if (m_sMapName && m_sMapName[0])
 		{
-			strcpy( sz, "maps/");
+			safe_strcpy( sz, "maps/");
 			strcat( sz, m_sMapName );
 			strcat( sz, ".txt" );
 		}
@@ -1199,13 +1200,13 @@ CMenuPanel* TeamFortressViewport::CreateTextWindow( int iTextToShow )
 			if (!level)
 				return nullptr;
 
-			strcpy( sz, level );
+			safe_strcpy( sz, level );
 			char *ch = strchr( sz, '.' );
 			*ch = '\0';
 			strcat( sz, ".txt" );
 
 			// pull out the map name
-			strcpy( m_sMapName, level );
+			safe_strcpy( m_sMapName, level );
 			ch = strchr( m_sMapName, '.' );
 			if ( ch )
 			{

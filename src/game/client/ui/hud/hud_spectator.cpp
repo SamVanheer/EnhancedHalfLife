@@ -237,7 +237,7 @@ bool UTIL_FindEntityInMap(const char * name, Vector& origin, Vector& angle)
 				return false;
 			}
 
-			strcpy (keyname, token);
+			safe_strcpy(keyname, token);
 
 			// another hack to fix keynames with trailing spaces
 			n = strlen(keyname);
@@ -1215,12 +1215,12 @@ bool CHudSpectator::ParseOverviewFile( )
 	m_OverviewData.zoom	= 1.0f;
 	m_OverviewData.layers = 0;
 	m_OverviewData.layersHeights[0] = 0.0f;
-	strcpy( m_OverviewData.map, gEngfuncs.pfnGetLevelName() );
+	safe_strcpy( m_OverviewData.map, gEngfuncs.pfnGetLevelName() );
 
 	if ( strlen( m_OverviewData.map ) == 0 )
 		return false; // not active yet
 
-	strcpy(levelname, m_OverviewData.map + 5);
+	safe_strcpy(levelname, m_OverviewData.map + 5);
 	levelname[strlen(levelname)-4] = 0;
 	
 	snprintf(filename, sizeof(filename), "overviews/%s.txt", levelname );
@@ -1322,7 +1322,7 @@ bool CHudSpectator::ParseOverviewFile( )
 				if ( !stricmp( token, "image" ) )
 				{
 					pfile = gEngfuncs.COM_ParseFile(pfile,token);
-					strcpy(m_OverviewData.layersImages[ m_OverviewData.layers ], token);
+					safe_strcpy(m_OverviewData.layersImages[ m_OverviewData.layers ], token);
 					
 					
 				} 

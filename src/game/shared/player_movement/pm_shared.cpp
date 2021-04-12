@@ -26,6 +26,7 @@
 #include "pm_debug.h"
 #include "materials.hpp"
 #include "com_model.h"
+#include "string_utils.hpp"
 #include "view_utils.hpp"
 #include <stdio.h>  // NULL
 #include <string.h> // strcpy
@@ -261,7 +262,7 @@ void PM_CatagorizeTextureType()
 		pTextureName++;
 	// '}}'
 	
-	strcpy( pmove->sztexturename, pTextureName);
+	safe_strcpy( pmove->sztexturename, pTextureName);
 	pmove->sztexturename[ CBTEXTURENAMEMAX - 1 ] = 0;
 		
 	// get texture type

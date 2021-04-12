@@ -638,7 +638,7 @@ bool CHudAmmo::MsgFunc_WeaponList(const char *pszName, int iSize, void *pbuf )
 	
 	WEAPON Weapon;
 
-	strcpy( Weapon.szName, reader.ReadString() );
+	safe_strcpy( Weapon.szName, reader.ReadString() );
 	Weapon.iAmmoType = (int)reader.ReadChar();
 	
 	Weapon.iMax1 = reader.ReadByte();

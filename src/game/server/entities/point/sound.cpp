@@ -1037,7 +1037,7 @@ void USENTENCEG_InitLRU(unsigned char *plru, int count)
 // ipick 'next' is returned.  
 // return of -1 indicates an error.
 
-int USENTENCEG_PickSequential(int isentenceg, char *szfound, int ipick, int freset)
+int USENTENCEG_PickSequential(int isentenceg, char *szfound, std::size_t foundSize, int ipick, int freset)
 {
 	char *szgroupname;
 	unsigned char count;
@@ -1058,7 +1058,7 @@ int USENTENCEG_PickSequential(int isentenceg, char *szfound, int ipick, int fres
 	if (ipick >= count)
 		ipick = count-1;
 
-	strcpy(szfound, "!");
+	safe_strcpy(szfound, "!", foundSize);
 	strcat(szfound, szgroupname);
 	snprintf(sznum, sizeof(sznum), "%d", ipick);
 	strcat(szfound, sznum);
@@ -1085,7 +1085,7 @@ int USENTENCEG_PickSequential(int isentenceg, char *szfound, int ipick, int fres
 // actually the size of the list.  Returns ipick, the ordinal
 // of the picked sentence within the group.
 
-int USENTENCEG_Pick(int isentenceg, char *szfound)
+int USENTENCEG_Pick(int isentenceg, char *szfound, std::size_t foundSize)
 {
 	char *szgroupname;
 	unsigned char *plru;
@@ -1120,7 +1120,7 @@ int USENTENCEG_Pick(int isentenceg, char *szfound)
 			USENTENCEG_InitLRU(plru, count);
 		else
 		{
-			strcpy(szfound, "!");
+			safe_strcpy(szfound, "!", foundSize);
 			strcat(szfound, szgroupname);
 			snprintf(sznum, sizeof(sznum), "%d", ipick);
 			strcat(szfound, sznum);
@@ -1171,7 +1171,7 @@ int SENTENCEG_PlayRndI(edict_t *entity, int isentenceg,
 
 	name[0] = 0;
 
-	ipick = USENTENCEG_Pick(isentenceg, name);
+	ipick = USENTENCEG_Pick(isentenceg, name, sizeof(name));
 	if (ipick > 0 && name)
 		EMIT_SOUND_DYN(entity, CHAN_VOICE, name, volume, attenuation, flags, pitch);
 	return ipick;
@@ -1198,7 +1198,7 @@ int SENTENCEG_PlayRndSz(edict_t *entity, const char *szgroupname,
 		return -1;
 	}
 
-	ipick = USENTENCEG_Pick(isentenceg, name);
+	ipick = USENTENCEG_Pick(isentenceg, name, sizeof(name));
 	if (ipick >= 0 && name[0])
 		EMIT_SOUND_DYN(entity, CHAN_VOICE, name, volume, attenuation, flags, pitch);
 
@@ -1223,7 +1223,7 @@ int SENTENCEG_PlaySequentialSz(edict_t *entity, const char *szgroupname,
 	if (isentenceg < 0)
 		return -1;
 
-	ipicknext = USENTENCEG_PickSequential(isentenceg, name, ipick, freset);
+	ipicknext = USENTENCEG_PickSequential(isentenceg, name, sizeof(name), ipick, freset);
 	if (ipicknext >= 0 && name[0])
 		EMIT_SOUND_DYN(entity, CHAN_VOICE, name, volume, attenuation, flags, pitch);
 	return ipicknext;
@@ -1244,7 +1244,7 @@ void SENTENCEG_Stop(edict_t *entity, int isentenceg, int ipick)
 	if (isentenceg < 0 || ipick < 0)
 		return;
 	
-	strcpy(buffer, "!");
+	safe_strcpy(buffer, "!");
 	strcat(buffer, rgsentenceg[isentenceg].szgroupname);
 	snprintf(sznum, sizeof(sznum), "%d", ipick);
 	strcat(buffer, sznum);
@@ -1315,7 +1315,7 @@ void SENTENCEG_Init()
 		if ( strlen( pString ) >= CBSENTENCENAME_MAX )
 			ALERT( at_warning, "Sentence %s longer than %d letters\n", pString, CBSENTENCENAME_MAX-1 );
 
-		strcpy( gszallsentencenames[gcallsentences++], pString );
+		safe_strcpy( gszallsentencenames[gcallsentences++], pString );
 
 		j--;
 		if (j <= i)
@@ -1346,10 +1346,10 @@ void SENTENCEG_Init()
 				break;
 			}
 
-			strcpy(rgsentenceg[isentencegs].szgroupname, &(buffer[i]));
+			safe_strcpy(rgsentenceg[isentencegs].szgroupname, &(buffer[i]));
 			rgsentenceg[isentencegs].count = 1;
 
-			strcpy(szgroup, &(buffer[i]));
+			safe_strcpy(szgroup, &(buffer[i]));
 
 			continue;
 		}
@@ -1379,7 +1379,7 @@ void SENTENCEG_Init()
 
 // convert sentence (sample) name to !sentencenum, return !sentencenum
 
-int SENTENCEG_Lookup(const char *sample, char *sentencenum)
+int SENTENCEG_Lookup(const char *sample, char *sentencenum, std::size_t sentencenumSize)
 {
 	char sznum[32];
 
@@ -1391,7 +1391,7 @@ int SENTENCEG_Lookup(const char *sample, char *sentencenum)
 		{
 			if (sentencenum)
 			{
-				strcpy(sentencenum, "!");
+				safe_strcpy(sentencenum, "!", sentencenumSize);
 				snprintf(sznum, sizeof(sznum), "%d", i);
 				strcat(sentencenum, sznum);
 			}
@@ -1407,7 +1407,7 @@ void EMIT_SOUND_DYN(edict_t *entity, int channel, const char *sample, float volu
 	if (sample && *sample == '!')
 	{
 		char name[32];
-		if (SENTENCEG_Lookup(sample, name) >= 0)
+		if (SENTENCEG_Lookup(sample, name, sizeof(name)) >= 0)
 				EMIT_SOUND_DYN2(entity, channel, name, volume, attenuation, flags, pitch);
 		else
 			ALERT( at_aiconsole, "Unable to find %s in sentences.txt\n", sample );
@@ -1509,7 +1509,7 @@ float TEXTURETYPE_PlaySound(TraceResult *ptr,  Vector vecSrc, Vector vecEnd, int
 			if (*pTextureName == '{' || *pTextureName == '!' || *pTextureName == '~' || *pTextureName == ' ')
 				pTextureName++;
 			// '}}'
-			strcpy(szbuffer, pTextureName);
+			safe_strcpy(szbuffer, pTextureName);
 			szbuffer[CBTEXTURENAMEMAX - 1] = 0;
 				
 			// ALERT ( at_console, "texture hit: %s\n", szbuffer);

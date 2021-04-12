@@ -226,8 +226,9 @@ bool CVoiceStatus::Init(
 
 	// Cache the game directory for use when we shut down
 	const char *pchGameDirT = gEngfuncs.pfnGetGameDirectory();
-	m_pchGameDir = (char *)malloc(strlen(pchGameDirT) + 1);
-	strcpy(m_pchGameDir, pchGameDirT);
+	const std::size_t gameDirSize = strlen(pchGameDirT) + 1;
+	m_pchGameDir = (char *)malloc(gameDirSize);
+	safe_strcpy(m_pchGameDir, pchGameDirT, gameDirSize);
 
 	return true;
 }
