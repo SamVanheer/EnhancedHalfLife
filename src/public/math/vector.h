@@ -27,7 +27,12 @@ public:
 	{
 	}
 
-	constexpr Vector2D(float X, float Y) { x = X; y = Y; }
+	constexpr Vector2D(float X, float Y)
+		: x(X)
+		, y(Y)
+	{
+	}
+
 	constexpr Vector2D operator+(const Vector2D& v) const { return Vector2D(x + v.x, y + v.y); }
 	constexpr Vector2D operator-(const Vector2D& v) const { return Vector2D(x - v.x, y - v.y); }
 	constexpr Vector2D operator*(float fl) const { return Vector2D(x * fl, y * fl); }
