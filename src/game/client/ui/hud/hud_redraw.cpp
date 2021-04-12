@@ -190,7 +190,7 @@ bool CHud :: Redraw( float flTime, int intermission )
 		if (m_hsprCursor == 0)
 		{
 			char sz[256];
-			sprintf( sz, "sprites/cursor.spr" );
+			snprintf(sz, sizeof(sz), "sprites/cursor.spr" );
 			m_hsprCursor = SPR_Load( sz );
 		}
 
@@ -220,7 +220,7 @@ int CHud :: DrawHudString(int xpos, int ypos, int iMaxX, char *szIt, int r, int 
 int CHud :: DrawHudNumberString( int xpos, int ypos, int iMinX, int iNumber, int r, int g, int b )
 {
 	char szString[32];
-	sprintf( szString, "%d", iNumber );
+	snprintf( szString, sizeof(szString), "%d", iNumber );
 	return DrawHudStringReverse( xpos, ypos, iMinX, szString, r, g, b );
 
 }

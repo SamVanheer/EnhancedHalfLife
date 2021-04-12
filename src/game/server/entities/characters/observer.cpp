@@ -272,7 +272,7 @@ void CBasePlayer::Observer_SetMode( int iMode )
 	// print spepctaor mode on client screen
 
 	char modemsg[16];
-	sprintf(modemsg,"#Spec_Mode%i", pev->iuser1 );
+	snprintf(modemsg, sizeof(modemsg), "#Spec_Mode%i", pev->iuser1 );
 	ClientPrint( pev, HUD_PRINTCENTER, modemsg );
 
 	m_iObserverLastMode = iMode;

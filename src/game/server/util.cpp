@@ -253,9 +253,9 @@ DBG_AssertFunction(
 		return;
 	char szOut[512];
 	if (szMessage != nullptr)
-		sprintf(szOut, "ASSERT FAILED:\n %s \n(%s@%d)\n%s", szExpr, szFile, szLine, szMessage);
+		snprintf(szOut, sizeof(szOut), "ASSERT FAILED:\n %s \n(%s@%d)\n%s", szExpr, szFile, szLine, szMessage);
 	else
-		sprintf(szOut, "ASSERT FAILED:\n %s \n(%s@%d)", szExpr, szFile, szLine);
+		snprintf(szOut, sizeof(szOut), "ASSERT FAILED:\n %s \n(%s@%d)", szExpr, szFile, szLine);
 	ALERT(at_console, szOut);
 	}
 #endif	// DEBUG
@@ -774,28 +774,28 @@ void UTIL_SayTextAll( const char *pText, CBaseEntity *pEntity )
 char *UTIL_dtos1( int d )
 {
 	static char buf[8];
-	sprintf( buf, "%d", d );
+	snprintf( buf, sizeof(buf), "%d", d );
 	return buf;
 }
 
 char *UTIL_dtos2( int d )
 {
 	static char buf[8];
-	sprintf( buf, "%d", d );
+	snprintf( buf, sizeof(buf), "%d", d );
 	return buf;
 }
 
 char *UTIL_dtos3( int d )
 {
 	static char buf[8];
-	sprintf( buf, "%d", d );
+	snprintf( buf, sizeof(buf), "%d", d );
 	return buf;
 }
 
 char *UTIL_dtos4( int d )
 {
 	static char buf[8];
-	sprintf( buf, "%d", d );
+	snprintf( buf, sizeof(buf), "%d", d );
 	return buf;
 }
 
@@ -895,7 +895,7 @@ char* UTIL_VarArgs( const char *format, ... )
 	static char		string[1024];
 	
 	va_start (argptr, format);
-	vsprintf (string, format,argptr);
+	vsnprintf (string, sizeof(string), format,argptr);
 	va_end (argptr);
 
 	return string;	
@@ -1347,7 +1347,7 @@ void UTIL_LogPrintf( const char *fmt, ... )
 	static char		string[1024];
 	
 	va_start ( argptr, fmt );
-	vsprintf ( string, fmt, argptr );
+	vsnprintf ( string, sizeof(string), fmt, argptr );
 	va_end   ( argptr );
 
 	// Print to server console

@@ -145,7 +145,7 @@ inline char *safe_strcpy( char *dst, const char *src, int len_dst)
 	return dst;
 }
 
-inline int safe_sprintf( char *dst, int len_dst, const char *format, ...)
+inline int safe_snprintf( char *dst, int len_dst, const char *format, ...)
 {
 	if( len_dst <= 0 )
 	{

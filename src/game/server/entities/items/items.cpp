@@ -237,7 +237,7 @@ class CItemBattery : public CItem
 			if (pct > 0)
 				pct--;
 		
-			sprintf( szcharge,"!HEV_%1dP", pct );
+			snprintf( szcharge, sizeof(szcharge), "!HEV_%1dP", pct );
 			
 			//EMIT_SOUND_SUIT(ENT(pev), szcharge);
 			pPlayer->SetSuitUpdate(szcharge, SuitSoundType::Sentence, SUIT_NEXT_IN_30SEC);

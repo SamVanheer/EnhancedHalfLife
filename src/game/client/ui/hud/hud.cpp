@@ -361,7 +361,7 @@ void CHud :: VidInit()
 				if ( p->iRes == m_iRes )
 				{
 					char sz[256];
-					sprintf(sz, "sprites/%s.spr", p->szSprite);
+					snprintf(sz, sizeof(sz), "sprites/%s.spr", p->szSprite);
 					m_rghSprites[index] = SPR_Load(sz);
 					m_rgrcRects[index] = p->rc;
 					strncpy( &m_rgszSpriteNames[index * MAX_SPRITE_NAME_LENGTH], p->szName, MAX_SPRITE_NAME_LENGTH );
@@ -384,7 +384,7 @@ void CHud :: VidInit()
 			if ( p->iRes == m_iRes )
 			{
 				char sz[256];
-				sprintf( sz, "sprites/%s.spr", p->szSprite );
+				snprintf(sz, sizeof(sz), "sprites/%s.spr", p->szSprite );
 				m_rghSprites[index] = SPR_Load(sz);
 				index++;
 			}

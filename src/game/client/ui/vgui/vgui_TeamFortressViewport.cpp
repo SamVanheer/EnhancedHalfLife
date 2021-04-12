@@ -103,10 +103,10 @@ char* GetVGUITGAName(const char *pszName)
 		i = 320;
 	else
 		i = 640;
-	sprintf(sz, pszName, i);
+	snprintf(sz, sizeof(sz), pszName, i);
 
 	gamedir = gEngfuncs.pfnGetGameDirectory();
-	sprintf(gd, "%s/gfx/vgui/%s.tga",gamedir,sz);
+	snprintf(gd, sizeof(gd), "%s/gfx/vgui/%s.tga",gamedir,sz);
 
 	return gd;
 }
@@ -1022,8 +1022,8 @@ void TeamFortressViewport::UpdateSpectatorPanel()
 			gHUD.m_TextMessage.MsgFunc_TextMsg(nullptr, strlen( tempString ) + 1, tempString );
 		}
 		
-		sprintf(bottomText,"#Spec_Mode%d", g_iUser1 );
-		sprintf(helpString2,"#Spec_Mode%d", g_iUser1 );
+		snprintf(bottomText, sizeof(bottomText), "#Spec_Mode%d", g_iUser1 );
+		snprintf(helpString2, sizeof(helpString2), "#Spec_Mode%d", g_iUser1 );
 
 		if ( gEngfuncs.IsSpectateOnly() )
 			strcat(helpString2, " - HLTV");
@@ -1074,7 +1074,7 @@ void TeamFortressViewport::UpdateSpectatorPanel()
 		if ( gHUD.m_Spectator.m_autoDirector->value )
 		{
 			char tempString[128];
-			sprintf(tempString, "#Spec_Auto %s", helpString2);
+			snprintf(tempString, sizeof(tempString), "#Spec_Auto %s", helpString2);
 			strcpy( helpString2, tempString );
 		}
 

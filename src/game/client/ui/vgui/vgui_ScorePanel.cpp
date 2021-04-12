@@ -263,7 +263,7 @@ void ScorePanel::Update()
 	if (gViewPort->m_szServerName)
 	{
 		char sz[MAX_SERVERNAME_LENGTH + 16];
-		sprintf(sz, "%s", gViewPort->m_szServerName );
+		snprintf(sz, sizeof(sz), "%s", gViewPort->m_szServerName );
 		m_TitleLabel.setText(sz);
 	}
 
@@ -699,11 +699,11 @@ void ScorePanel::FillGrid()
 				case COLUMN_NAME:
 					if ( m_iIsATeam[row] == TeamType::Spectators )
 					{
-						sprintf( sz2, "%s", CHudTextMessage::BufferedLocaliseTextString( "#Spectators" ) );
+						snprintf(sz2, sizeof(sz2), "%s", CHudTextMessage::BufferedLocaliseTextString( "#Spectators" ) );
 					}
 					else
 					{
-						sprintf( sz2, "%s", gViewPort->GetTeamName(team_info->teamnumber) );
+						snprintf(sz2, sizeof(sz2), "%s", gViewPort->GetTeamName(team_info->teamnumber) );
 					}
 
 					strcpy(sz, sz2);
@@ -713,11 +713,11 @@ void ScorePanel::FillGrid()
 					{
 						if (team_info->players == 1)
 						{
-							sprintf(sz2, "(%d %s)", team_info->players, CHudTextMessage::BufferedLocaliseTextString( "#Player" ) );
+							snprintf(sz2, sizeof(sz2), "(%d %s)", team_info->players, CHudTextMessage::BufferedLocaliseTextString( "#Player" ) );
 						}
 						else
 						{
-							sprintf(sz2, "(%d %s)", team_info->players, CHudTextMessage::BufferedLocaliseTextString( "#Player_plural" ) );
+							snprintf(sz2, sizeof(sz2), "(%d %s)", team_info->players, CHudTextMessage::BufferedLocaliseTextString( "#Player_plural" ) );
 						}
 
 						pLabel->setText2(sz2);
@@ -730,15 +730,15 @@ void ScorePanel::FillGrid()
 					break;
 				case COLUMN_KILLS:
 					if ( m_iIsATeam[row] == TeamType::Yes)
-						sprintf(sz, "%d",  team_info->frags );
+						snprintf(sz, sizeof(sz), "%d",  team_info->frags );
 					break;
 				case COLUMN_DEATHS:
 					if ( m_iIsATeam[row] == TeamType::Yes)
-						sprintf(sz, "%d",  team_info->deaths );
+						snprintf(sz, sizeof(sz), "%d",  team_info->deaths );
 					break;
 				case COLUMN_LATENCY:
 					if ( m_iIsATeam[row] == TeamType::Yes)
-						sprintf(sz, "%d", team_info->ping );
+						snprintf(sz, sizeof(sz), "%d", team_info->ping );
 					break;
 				default:
 					break;
@@ -759,12 +759,12 @@ void ScorePanel::FillGrid()
 						const char *trackerName = g_pTrackerUser->GetUserName(trackerID);
 						if (trackerName && *trackerName)
 						{
-							sprintf(sz, "   (%s)", trackerName);
+							snprintf(sz, sizeof(sz), "   (%s)", trackerName);
 							pLabel->setText2(sz);
 						}
 					}
 					*/
-					sprintf(sz, "%s  ", pl_info->name);
+					snprintf(sz, sizeof(sz), "%s  ", pl_info->name);
 					break;
 				case COLUMN_VOICE:
 					sz[0] = 0;
@@ -792,13 +792,13 @@ void ScorePanel::FillGrid()
 					break;
 
 				case COLUMN_KILLS:
-					sprintf(sz, "%d",  g_PlayerExtraInfo[ m_iSortedRows[row] ].frags );
+					snprintf(sz, sizeof(sz), "%d",  g_PlayerExtraInfo[ m_iSortedRows[row] ].frags );
 					break;
 				case COLUMN_DEATHS:
-					sprintf(sz, "%d",  g_PlayerExtraInfo[ m_iSortedRows[row] ].deaths );
+					snprintf(sz, sizeof(sz), "%d",  g_PlayerExtraInfo[ m_iSortedRows[row] ].deaths );
 					break;
 				case COLUMN_LATENCY:
-					sprintf(sz, "%d", g_PlayerInfoList[ m_iSortedRows[row] ].ping );
+					snprintf(sz, sizeof(sz), "%d", g_PlayerInfoList[ m_iSortedRows[row] ].ping );
 					break;
 				default:
 					break;
@@ -878,8 +878,8 @@ void ScorePanel::mousePressed(MouseCode code, Panel* panel)
 					// remove mute
 					GetClientVoiceMgr()->SetPlayerBlockedState(iPlayer, false);
 
-					sprintf( string1, CHudTextMessage::BufferedLocaliseTextString( "#Unmuted" ), pl_info->name );
-					sprintf( string, "%c** %s\n", HUD_PRINTTALK, string1 );
+					snprintf( string1, sizeof(string1), CHudTextMessage::BufferedLocaliseTextString( "#Unmuted" ), pl_info->name );
+					snprintf( string, sizeof(string), "%c** %s\n", HUD_PRINTTALK, string1 );
 
 					gHUD.m_TextMessage.MsgFunc_TextMsg(nullptr, strlen(string)+1, string );
 				}
@@ -891,9 +891,9 @@ void ScorePanel::mousePressed(MouseCode code, Panel* panel)
 					// mute the player
 					GetClientVoiceMgr()->SetPlayerBlockedState(iPlayer, true);
 
-					sprintf( string1, CHudTextMessage::BufferedLocaliseTextString( "#Muted" ), pl_info->name );
-					sprintf( string2, "%s", CHudTextMessage::BufferedLocaliseTextString( "#No_longer_hear_that_player" ) );
-					sprintf( string, "%c** %s %s\n", HUD_PRINTTALK, string1, string2 );
+					snprintf( string1, sizeof(string1), CHudTextMessage::BufferedLocaliseTextString( "#Muted" ), pl_info->name );
+					snprintf( string2, sizeof(string2), "%s", CHudTextMessage::BufferedLocaliseTextString( "#No_longer_hear_that_player" ) );
+					snprintf( string, sizeof(string), "%c** %s %s\n", HUD_PRINTTALK, string1, string2 );
 
 					gHUD.m_TextMessage.MsgFunc_TextMsg(nullptr, strlen(string)+1, string );
 				}
