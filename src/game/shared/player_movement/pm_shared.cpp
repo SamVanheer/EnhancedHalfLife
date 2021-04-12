@@ -1551,24 +1551,6 @@ void PM_SpectatorMove ()
 	}
 }
 
-/*
-==================
-PM_SplineFraction
-
-Use for ease-in, ease-out style interpolation (accel/decel)
-Used by ducking code.
-==================
-*/
-//TODO: move to mathlib
-float PM_SplineFraction( float value, float scale )
-{
-	value = scale * value;
-	const float valueSquared = value * value;
-
-	// Nice little ease-in, ease-out spline-like curve
-	return 3 * valueSquared - 2 * valueSquared * value;
-}
-
 void PM_FixPlayerCrouchStuck( int direction )
 {
 	int hitent = pmove->PM_TestPlayerPosition ( pmove->origin, nullptr);
@@ -1699,7 +1681,7 @@ void PM_Duck()
 					float fMore = (VEC_DUCK_HULL_MIN[2] - VEC_HULL_MIN[2]);
 
 					// Calc parametric time
-					const float duckFraction = PM_SplineFraction( time, (1.0/TIME_TO_DUCK) );
+					const float duckFraction = UTIL_SplineFraction( time, (1.0/TIME_TO_DUCK) );
 					pmove->view_ofs[2] = ((VEC_DUCK_VIEW[2] - fMore ) * duckFraction) + (VEC_VIEW[2] * (1-duckFraction));
 				}
 			}

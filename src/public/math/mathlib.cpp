@@ -378,7 +378,7 @@ float UTIL_ApproachAngle(float target, float value, float speed)
 float UTIL_SplineFraction(float value, float scale)
 {
 	value = scale * value;
-	float valueSquared = value * value;
+	const float valueSquared = value * value;
 
 	// Nice little ease-in, ease-out spline-like curve
 	return 3 * valueSquared - 2 * valueSquared * value;

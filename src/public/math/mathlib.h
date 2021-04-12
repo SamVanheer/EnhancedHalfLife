@@ -101,7 +101,9 @@ float UTIL_AngleDistance(float next, float cur);
 float UTIL_Approach(float target, float value, float speed);
 float UTIL_ApproachAngle(float target, float value, float speed);
 
-// Use for ease-in, ease-out style interpolation (accel/decel)
+/**
+*	@brief Use for ease-in, ease-out style interpolation (accel/decel)
+*/
 float UTIL_SplineFraction(float value, float scale);
 
 void VectorMatrix(const Vector& forward, Vector& right, Vector& up);
