@@ -363,11 +363,6 @@ enum FIELDTYPE
 	FIELD_TYPECOUNT,		// MUST BE LAST
 };
 
-//TODO: probably not needed anymore
-#if !defined(offsetof)  && !defined(GNUC)
-#define offsetof(s,m)	(size_t)&(((s *)0)->m)
-#endif
-
 #define _FIELD(type,name,fieldtype,count,flags)		{ fieldtype, #name, static_cast<int>(offsetof(type, name)), count, flags }
 #define DEFINE_FIELD(type,name,fieldtype)			_FIELD(type, name, fieldtype, 1, 0)
 #define DEFINE_ARRAY(type,name,fieldtype,count)		_FIELD(type, name, fieldtype, count, 0)
