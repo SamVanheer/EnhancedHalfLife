@@ -774,17 +774,17 @@ inline uint32 Hash(const void *p, int len)
 
 void inline CalcBounds(int &Lower, int &Upper, int Goal, int Best)
 {
-    int Temp = 2*Goal - Best;
-    if (Best > Goal)
-    {
-        Lower = std::max(0, Temp);
-        Upper = Best;
-    }
-    else
-    {
-        Upper = std::min(255, Temp);
-        Lower = Best;
-    }
+	int Temp = 2*Goal - Best;
+	if (Best > Goal)
+	{
+		Lower = std::max(0, Temp);
+		Upper = Best;
+	}
+	else
+	{
+		Upper = std::min(255, Temp);
+		Lower = Best;
+	}
 }
 
 // Convert from [-8192,8192] to [0, 255]
@@ -797,18 +797,18 @@ inline int CALC_RANGE(int x, int lower, int upper)
 
 void inline UpdateRange(int &minValue, int &maxValue, int Goal, int Best)
 {
-    int Lower, Upper;
-    CalcBounds(Lower, Upper, Goal, Best);
-    if (Upper < maxValue) maxValue = Upper;
-    if (minValue < Lower) minValue = Lower;
+	int Lower, Upper;
+	CalcBounds(Lower, Upper, Goal, Best);
+	if (Upper < maxValue) maxValue = Upper;
+	if (minValue < Lower) minValue = Lower;
 }
 
 void CGraph :: CheckNode(Vector vecOrigin, int iNode)
 {
-    // Have we already seen this point before?.
-    //
-    if (m_di[iNode].m_CheckedEvent == m_CheckedCounter) return;
-    m_di[iNode].m_CheckedEvent = m_CheckedCounter;
+	// Have we already seen this point before?.
+	//
+	if (m_di[iNode].m_CheckedEvent == m_CheckedCounter) return;
+	m_di[iNode].m_CheckedEvent = m_CheckedCounter;
 
 	float flDist = ( vecOrigin - m_pNodes[ iNode ].m_vecOriginPeek ).Length();
 
@@ -907,114 +907,114 @@ int	CGraph :: FindNearestNode ( const Vector &vecOrigin,  int afNodeTypes )
 	m_maxBoxY = CALC_RANGE(vecOrigin.y + flDist, m_RegionMin[1], m_RegionMax[1]);
 	m_minBoxZ = CALC_RANGE(vecOrigin.z - flDist, m_RegionMin[2], m_RegionMax[2]);
 	m_maxBoxZ = CALC_RANGE(vecOrigin.z + flDist, m_RegionMin[2], m_RegionMax[2])
-    CalcBounds(m_minX, m_maxX, CALC_RANGE(vecOrigin.x, m_RegionMin[0], m_RegionMax[0]), m_pNodes[m_iNearest].m_Region[0]);
-    CalcBounds(m_minY, m_maxY, CALC_RANGE(vecOrigin.y, m_RegionMin[1], m_RegionMax[1]), m_pNodes[m_iNearest].m_Region[1]);
-    CalcBounds(m_minZ, m_maxZ, CALC_RANGE(vecOrigin.z, m_RegionMin[2], m_RegionMax[2]), m_pNodes[m_iNearest].m_Region[2]);
+	CalcBounds(m_minX, m_maxX, CALC_RANGE(vecOrigin.x, m_RegionMin[0], m_RegionMax[0]), m_pNodes[m_iNearest].m_Region[0]);
+	CalcBounds(m_minY, m_maxY, CALC_RANGE(vecOrigin.y, m_RegionMin[1], m_RegionMax[1]), m_pNodes[m_iNearest].m_Region[1]);
+	CalcBounds(m_minZ, m_maxZ, CALC_RANGE(vecOrigin.z, m_RegionMin[2], m_RegionMax[2]), m_pNodes[m_iNearest].m_Region[2]);
 #endif
 
-    int halfX = (m_minX+m_maxX)/2;
-    int halfY = (m_minY+m_maxY)/2;
-    int halfZ = (m_minZ+m_maxZ)/2;
+	int halfX = (m_minX+m_maxX)/2;
+	int halfY = (m_minY+m_maxY)/2;
+	int halfZ = (m_minZ+m_maxZ)/2;
 
-    int j;
+	int j;
 
-    for (i = halfX; i >= m_minX; i--)
-    {
-        for (j = m_RangeStart[0][i]; j <= m_RangeEnd[0][i]; j++)
-        {
+	for (i = halfX; i >= m_minX; i--)
+	{
+		for (j = m_RangeStart[0][i]; j <= m_RangeEnd[0][i]; j++)
+		{
 			if (!(m_pNodes[m_di[j].m_SortedBy[0]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgY = m_pNodes[m_di[j].m_SortedBy[0]].m_Region[1];
 			if (rgY > m_maxBoxY) break;
-            if (rgY < m_minBoxY) continue;
+			if (rgY < m_minBoxY) continue;
 
 			int rgZ = m_pNodes[m_di[j].m_SortedBy[0]].m_Region[2];
-            if (rgZ < m_minBoxZ) continue;
-            if (rgZ > m_maxBoxZ) continue;
-            CheckNode(vecOrigin, m_di[j].m_SortedBy[0]);
-        }
-    }
+			if (rgZ < m_minBoxZ) continue;
+			if (rgZ > m_maxBoxZ) continue;
+			CheckNode(vecOrigin, m_di[j].m_SortedBy[0]);
+		}
+	}
 
-    for (i = std::max(m_minY,halfY+1); i <= m_maxY; i++)
-    {
-        for (j = m_RangeStart[1][i]; j <= m_RangeEnd[1][i]; j++)
-        {
+	for (i = std::max(m_minY,halfY+1); i <= m_maxY; i++)
+	{
+		for (j = m_RangeStart[1][i]; j <= m_RangeEnd[1][i]; j++)
+		{
 			if (!(m_pNodes[m_di[j].m_SortedBy[1]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgZ = m_pNodes[m_di[j].m_SortedBy[1]].m_Region[2];
-            if (rgZ > m_maxBoxZ) break;
-            if (rgZ < m_minBoxZ) continue;
+			if (rgZ > m_maxBoxZ) break;
+			if (rgZ < m_minBoxZ) continue;
 			int rgX = m_pNodes[m_di[j].m_SortedBy[1]].m_Region[0];
-            if (rgX < m_minBoxX) continue;
-            if (rgX > m_maxBoxX) continue;
-            CheckNode(vecOrigin, m_di[j].m_SortedBy[1]);
-        }
-    }
+			if (rgX < m_minBoxX) continue;
+			if (rgX > m_maxBoxX) continue;
+			CheckNode(vecOrigin, m_di[j].m_SortedBy[1]);
+		}
+	}
 
-    for (i = std::min(m_maxZ,halfZ); i >= m_minZ; i--)
-    {
-        for (j = m_RangeStart[2][i]; j <= m_RangeEnd[2][i]; j++)
-        {
+	for (i = std::min(m_maxZ,halfZ); i >= m_minZ; i--)
+	{
+		for (j = m_RangeStart[2][i]; j <= m_RangeEnd[2][i]; j++)
+		{
 			if (!(m_pNodes[m_di[j].m_SortedBy[2]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgX = m_pNodes[m_di[j].m_SortedBy[2]].m_Region[0];
-            if (rgX > m_maxBoxX) break;
-            if (rgX < m_minBoxX) continue;
+			if (rgX > m_maxBoxX) break;
+			if (rgX < m_minBoxX) continue;
 			int rgY = m_pNodes[m_di[j].m_SortedBy[2]].m_Region[1];
-            if (rgY < m_minBoxY) continue;
+			if (rgY < m_minBoxY) continue;
 			if (rgY > m_maxBoxY) continue;
-            CheckNode(vecOrigin, m_di[j].m_SortedBy[2]);
-        }
-    }
+			CheckNode(vecOrigin, m_di[j].m_SortedBy[2]);
+		}
+	}
 
-    for (i = std::max(m_minX,halfX+1); i <= m_maxX; i++)
-    {
-        for (j = m_RangeStart[0][i]; j <= m_RangeEnd[0][i]; j++)
-        {
+	for (i = std::max(m_minX,halfX+1); i <= m_maxX; i++)
+	{
+		for (j = m_RangeStart[0][i]; j <= m_RangeEnd[0][i]; j++)
+		{
 			if (!(m_pNodes[m_di[j].m_SortedBy[0]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgY = m_pNodes[m_di[j].m_SortedBy[0]].m_Region[1];
 			if (rgY > m_maxBoxY) break;
-            if (rgY < m_minBoxY) continue;
+			if (rgY < m_minBoxY) continue;
 
 			int rgZ = m_pNodes[m_di[j].m_SortedBy[0]].m_Region[2];
-            if (rgZ < m_minBoxZ) continue;
-            if (rgZ > m_maxBoxZ) continue;
-            CheckNode(vecOrigin, m_di[j].m_SortedBy[0]);
-        }
-    }
+			if (rgZ < m_minBoxZ) continue;
+			if (rgZ > m_maxBoxZ) continue;
+			CheckNode(vecOrigin, m_di[j].m_SortedBy[0]);
+		}
+	}
 
-    for (i = std::min(m_maxY,halfY); i >= m_minY; i--)
-    {
-        for (j = m_RangeStart[1][i]; j <= m_RangeEnd[1][i]; j++)
-        {
+	for (i = std::min(m_maxY,halfY); i >= m_minY; i--)
+	{
+		for (j = m_RangeStart[1][i]; j <= m_RangeEnd[1][i]; j++)
+		{
 			if (!(m_pNodes[m_di[j].m_SortedBy[1]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgZ = m_pNodes[m_di[j].m_SortedBy[1]].m_Region[2];
-            if (rgZ > m_maxBoxZ) break;
-            if (rgZ < m_minBoxZ) continue;
+			if (rgZ > m_maxBoxZ) break;
+			if (rgZ < m_minBoxZ) continue;
 			int rgX = m_pNodes[m_di[j].m_SortedBy[1]].m_Region[0];
-            if (rgX < m_minBoxX) continue;
-            if (rgX > m_maxBoxX) continue;
-            CheckNode(vecOrigin, m_di[j].m_SortedBy[1]);
-        }
-    }
+			if (rgX < m_minBoxX) continue;
+			if (rgX > m_maxBoxX) continue;
+			CheckNode(vecOrigin, m_di[j].m_SortedBy[1]);
+		}
+	}
 
-    for (i = std::max(m_minZ,halfZ+1); i <= m_maxZ; i++)
-    {
-        for (j = m_RangeStart[2][i]; j <= m_RangeEnd[2][i]; j++)
-        {
+	for (i = std::max(m_minZ,halfZ+1); i <= m_maxZ; i++)
+	{
+		for (j = m_RangeStart[2][i]; j <= m_RangeEnd[2][i]; j++)
+		{
 			if (!(m_pNodes[m_di[j].m_SortedBy[2]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgX = m_pNodes[m_di[j].m_SortedBy[2]].m_Region[0];
-            if (rgX > m_maxBoxX) break;
-            if (rgX < m_minBoxX) continue;
+			if (rgX > m_maxBoxX) break;
+			if (rgX < m_minBoxX) continue;
 			int rgY = m_pNodes[m_di[j].m_SortedBy[2]].m_Region[1];
-            if (rgY < m_minBoxY) continue;
+			if (rgY < m_minBoxY) continue;
 			if (rgY > m_maxBoxY) continue;
-            CheckNode(vecOrigin, m_di[j].m_SortedBy[2]);
-        }
-    }
+			CheckNode(vecOrigin, m_di[j].m_SortedBy[2]);
+		}
+	}
 
 #if 0
 	// Verify our answers.
@@ -1185,7 +1185,7 @@ int CGraph :: LinkVisibleNodes ( CLink *pLinkPool, FILE *file, int *piBadNode )
 
 		// now build a list of every other node that this node can see
 		for ( j = 0 ; j < m_cNodes ; j++ )
-  		{
+		{
 			if ( j == i )
 			{// don't connect to self!
 				continue;
@@ -2218,10 +2218,10 @@ void CQueuePriority :: Insert( int iValue, float fPriority )
 		return;
 	}
 
-    m_heap[ m_cSize ].Priority = fPriority;
+	m_heap[ m_cSize ].Priority = fPriority;
 	m_heap[ m_cSize ].Id = iValue;
-    m_cSize++;
-    Heap_SiftUp();
+	m_cSize++;
+	Heap_SiftUp();
 }
 
 //=========================================================
@@ -2237,8 +2237,8 @@ int CQueuePriority :: Remove( float &fPriority )
 
 	m_heap[ 0 ] = m_heap[ m_cSize ];
 
-    Heap_SiftDown(0);
-    return iReturn;
+	Heap_SiftDown(0);
+	return iReturn;
 }
 
 constexpr int HeapLeftChild(int x)
@@ -2263,7 +2263,7 @@ void CQueuePriority::Heap_SiftDown(int iSubRoot)
 
 	struct tag_HEAP_NODE Ref = m_heap[ parent ];
 
-    while (child < m_cSize)
+	while (child < m_cSize)
 	{
 		int rightchild = HeapRightChild(parent);
 		if (rightchild < m_cSize)
@@ -2309,22 +2309,22 @@ void CQueuePriority::Heap_SiftUp()
 //=========================================================
 int CGraph :: FLoadGraph ( const char *szMapName )
 {
+	//TODO: rewrite graph loading
 	int		iVersion;
-	int     length;
-	byte    *aMemFile;
-	byte    *pMemFile;
 
 	// make sure the directories have been made
-	std::filesystem::path dirName = FileSystem_GetGameDirectory() / "maps" / "graphs";
+	std::filesystem::path dirName = std::filesystem::path{"maps"} / "graphs";
 	std::error_code error;
 	std::filesystem::create_directories(dirName, error);
 
 	auto filename = dirName / szMapName;
 	filename += ".nod";
 
-	pMemFile = aMemFile = LOAD_FILE_FOR_ME(filename.string().c_str(), &length);
+	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer(filename.string().c_str());
 
-	if ( !aMemFile )
+	byte* pMemFile = fileBuffer.get();
+
+	if (!fileBuffer)
 	{
 		return false;
 	}
@@ -2332,8 +2332,8 @@ int CGraph :: FLoadGraph ( const char *szMapName )
 	{
 		// Read the graph version number
 		//
-		length -= sizeof(int);
-		if (length < 0) goto ShortFile;
+		if (size < sizeof(int)) goto ShortFile;
+		size -= sizeof(int);
 		memcpy(&iVersion, pMemFile, sizeof(int));
 		pMemFile += sizeof(int);
 
@@ -2347,8 +2347,8 @@ int CGraph :: FLoadGraph ( const char *szMapName )
 
 		// Read the graph class
 		//
-		length -= sizeof(CGraph);
-		if (length < 0) goto ShortFile;
+		if (size < sizeof(CGraph)) goto ShortFile;
+		size -= sizeof(CGraph);
 		memcpy(this, pMemFile, sizeof(CGraph));
 		pMemFile += sizeof(CGraph);
 
@@ -2373,8 +2373,8 @@ int CGraph :: FLoadGraph ( const char *szMapName )
 
 		// Read in all the nodes
 		//
-		length -= sizeof(CNode) * m_cNodes;
-		if (length < 0) goto ShortFile;
+		if (size < (sizeof(CNode) * m_cNodes)) goto ShortFile;
+		size -= sizeof(CNode) * m_cNodes;
 		memcpy(m_pNodes, pMemFile, sizeof(CNode)*m_cNodes);
 		pMemFile += sizeof(CNode) * m_cNodes;
 
@@ -2391,8 +2391,8 @@ int CGraph :: FLoadGraph ( const char *szMapName )
 
 		// Read in all the links
 		//
-		length -= sizeof(CLink)*m_cLinks;
-		if (length < 0) goto ShortFile;
+		if (size < (sizeof(CLink) * m_cLinks)) goto ShortFile;
+		size -= sizeof(CLink) * m_cLinks;
 		memcpy(m_pLinkPool, pMemFile, sizeof(CLink)*m_cLinks);
 		pMemFile += sizeof(CLink)*m_cLinks;
 
@@ -2407,8 +2407,8 @@ int CGraph :: FLoadGraph ( const char *szMapName )
 
 		// Read it in.
 		//
-		length -= sizeof(DIST_INFO)*m_cNodes;
-		if (length < 0) goto ShortFile;
+		if (size < (sizeof(DIST_INFO) * m_cNodes)) goto ShortFile;
+		size -= sizeof(DIST_INFO) * m_cNodes;
 		memcpy(m_di, pMemFile, sizeof(DIST_INFO)*m_cNodes);
 		pMemFile += sizeof(DIST_INFO)*m_cNodes;
 
@@ -2429,13 +2429,13 @@ int CGraph :: FLoadGraph ( const char *szMapName )
 		
 		// Read in the route information.
 		//
-		length -= sizeof(char)*m_nRouteInfo;
-		if (length < 0) goto ShortFile;
+		if (size < (sizeof(char) * m_nRouteInfo)) goto ShortFile;
+		size -= sizeof(char) * m_nRouteInfo;
 		memcpy(m_pRouteInfo, pMemFile, sizeof(char)*m_nRouteInfo);
 		pMemFile += sizeof(char)*m_nRouteInfo;
 		m_fRoutingComplete = true;
 
-        // malloc for the hash links
+		// malloc for the hash links
 		//
 		m_pHashLinks = (short *)calloc(sizeof(short), m_nHashLinks);
 		if (!m_pHashLinks)
@@ -2446,8 +2446,8 @@ int CGraph :: FLoadGraph ( const char *szMapName )
 
 		// Read in the hash link information
 		//
-		length -= sizeof(short)*m_nHashLinks;
-		if (length < 0) goto ShortFile;
+		if (size < (sizeof(short) * m_nHashLinks)) goto ShortFile;
+		size -= sizeof(short) * m_nHashLinks;
 		memcpy(m_pHashLinks, pMemFile, sizeof(short)*m_nHashLinks);
 		pMemFile += sizeof(short)*m_nHashLinks;
 
@@ -2455,12 +2455,10 @@ int CGraph :: FLoadGraph ( const char *szMapName )
 		//
 		m_fGraphPresent = true;
 		m_fGraphPointersSet = false;
-		
-		FREE_FILE(aMemFile);
 
-		if (length != 0)
+		if (size != 0)
 		{
-			ALERT ( at_aiconsole, "***WARNING***:Node graph was longer than expected by %d bytes.!\n", length);
+			ALERT ( at_aiconsole, "***WARNING***:Node graph was longer than expected by %zu bytes.!\n", size);
 		}
 
 		return true;
@@ -2468,7 +2466,6 @@ int CGraph :: FLoadGraph ( const char *szMapName )
 
 ShortFile:
 NoMemory:
-	FREE_FILE(aMemFile);
 	return false;
 }
 
@@ -2653,13 +2650,13 @@ void CGraph::HashInsert(int iSrcNode, int iDestNode, int iKey)
 	CRC32_PROCESS_BUFFER(&dwHash, &np, sizeof(np));
 	dwHash = CRC32_FINAL(dwHash);
 
-    int di = m_HashPrimes[dwHash&15];
-    int i = (dwHash >> 4) % m_nHashLinks;
-    while (m_pHashLinks[i] != ENTRY_STATE_EMPTY)
-    {
-        i += di;
-        if (i >= m_nHashLinks) i -= m_nHashLinks;
-    }
+	int di = m_HashPrimes[dwHash&15];
+	int i = (dwHash >> 4) % m_nHashLinks;
+	while (m_pHashLinks[i] != ENTRY_STATE_EMPTY)
+	{
+		i += di;
+		if (i >= m_nHashLinks) i -= m_nHashLinks;
+	}
 	m_pHashLinks[i] = iKey;
 }
 
@@ -2674,21 +2671,21 @@ void CGraph::HashSearch(int iSrcNode, int iDestNode, int &iKey)
 	CRC32_PROCESS_BUFFER(&dwHash, &np, sizeof(np));
 	dwHash = CRC32_FINAL(dwHash);
 
-    int di = m_HashPrimes[dwHash&15];
-    int i = (dwHash >> 4) % m_nHashLinks;
-    while (m_pHashLinks[i] != ENTRY_STATE_EMPTY)
-    {
+	int di = m_HashPrimes[dwHash&15];
+	int i = (dwHash >> 4) % m_nHashLinks;
+	while (m_pHashLinks[i] != ENTRY_STATE_EMPTY)
+	{
 		CLink &link = Link(m_pHashLinks[i]);
-        if (iSrcNode == link.m_iSrcNode && iDestNode == link.m_iDestNode)
-        {
+		if (iSrcNode == link.m_iSrcNode && iDestNode == link.m_iDestNode)
+		{
 			break;
-        }
-        else
-        {
-            i += di;
-            if (i >= m_nHashLinks) i -= m_nHashLinks;
-        }
-    }
+		}
+		else
+		{
+			i += di;
+			if (i >= m_nHashLinks) i -= m_nHashLinks;
+		}
+	}
 	iKey = m_pHashLinks[i];
 }
 
@@ -2709,63 +2706,63 @@ constexpr int Primes[NUMBER_OF_PRIMES] =
 
 void CGraph::HashChoosePrimes(int TableSize)
 {
-    int LargestPrime = TableSize/2;
-    if (LargestPrime > Primes[NUMBER_OF_PRIMES-2])
-    {
-        LargestPrime = Primes[NUMBER_OF_PRIMES-2];
-    }
-    int Spacing = LargestPrime/16;
+	int LargestPrime = TableSize/2;
+	if (LargestPrime > Primes[NUMBER_OF_PRIMES-2])
+	{
+		LargestPrime = Primes[NUMBER_OF_PRIMES-2];
+	}
+	int Spacing = LargestPrime/16;
 
-    // Pick a set primes that are evenly spaced from (0 to LargestPrime)
-    // We divide this interval into 16 equal sized zones. We want to find
-    // one prime number that best represents that zone.
-    //
-    int iPrime,iZone;
-    for (iZone = 1, iPrime = 0; iPrime < 16; iZone += Spacing)
-    {
-        // Search for a prime number that is less than the target zone
-        // number given by iZone.
-        //
-        int Lower = Primes[0];
-        for (int jPrime = 0; Primes[jPrime] != 0; jPrime++)
-        {
-            if (jPrime != 0 && TableSize % Primes[jPrime] == 0) continue;
-            int Upper = Primes[jPrime];
-            if (Lower <= iZone && iZone <= Upper)
-            {
-                // Choose the closest lower prime number.
-                //
-                if (iZone - Lower <= Upper - iZone)
-                {
-                    m_HashPrimes[iPrime++] = Lower;
-                }
-                else
-                {
-                    m_HashPrimes[iPrime++] = Upper;
-                }
-                break;
-            }
-            Lower = Upper;
-        }
-    }
+	// Pick a set primes that are evenly spaced from (0 to LargestPrime)
+	// We divide this interval into 16 equal sized zones. We want to find
+	// one prime number that best represents that zone.
+	//
+	int iPrime,iZone;
+	for (iZone = 1, iPrime = 0; iPrime < 16; iZone += Spacing)
+	{
+		// Search for a prime number that is less than the target zone
+		// number given by iZone.
+		//
+		int Lower = Primes[0];
+		for (int jPrime = 0; Primes[jPrime] != 0; jPrime++)
+		{
+			if (jPrime != 0 && TableSize % Primes[jPrime] == 0) continue;
+			int Upper = Primes[jPrime];
+			if (Lower <= iZone && iZone <= Upper)
+			{
+				// Choose the closest lower prime number.
+				//
+				if (iZone - Lower <= Upper - iZone)
+				{
+					m_HashPrimes[iPrime++] = Lower;
+				}
+				else
+				{
+					m_HashPrimes[iPrime++] = Upper;
+				}
+				break;
+			}
+			Lower = Upper;
+		}
+	}
 
-    // Alternate negative and positive numbers
-    //
-    for (iPrime = 0; iPrime < 16; iPrime += 2)
-    {
-        m_HashPrimes[iPrime] = TableSize-m_HashPrimes[iPrime];
-    }
+	// Alternate negative and positive numbers
+	//
+	for (iPrime = 0; iPrime < 16; iPrime += 2)
+	{
+		m_HashPrimes[iPrime] = TableSize-m_HashPrimes[iPrime];
+	}
 
-    // Shuffle the set of primes to reduce correlation with bits in
-    // hash key.
-    //
-    for (iPrime = 0; iPrime < 16-1; iPrime++)
-    {
-        int Pick = RANDOM_LONG(0, 15-iPrime);
-        int Temp = m_HashPrimes[Pick];
-        m_HashPrimes[Pick] = m_HashPrimes[15-iPrime];
-        m_HashPrimes[15-iPrime] = Temp;
-    }
+	// Shuffle the set of primes to reduce correlation with bits in
+	// hash key.
+	//
+	for (iPrime = 0; iPrime < 16-1; iPrime++)
+	{
+		int Pick = RANDOM_LONG(0, 15-iPrime);
+		int Temp = m_HashPrimes[Pick];
+		m_HashPrimes[Pick] = m_HashPrimes[15-iPrime];
+		m_HashPrimes[15-iPrime] = Temp;
+	}
 }
 
 // Renumber nodes so that nodes that link together are together.
@@ -2989,30 +2986,30 @@ void CGraph::BuildRegionTables()
 		int CodeY = m_pNodes[m_di[i].m_SortedBy[1]].m_Region[1];
 		int CodeZ = m_pNodes[m_di[i].m_SortedBy[2]].m_Region[2];
 
-        if (i < m_RangeStart[0][CodeX])
-        {
-            m_RangeStart[0][CodeX] = i;
-        }
-        if (i < m_RangeStart[1][CodeY])
-        {
-            m_RangeStart[1][CodeY] = i;
-        }
-        if (i < m_RangeStart[2][CodeZ])
-        {
-            m_RangeStart[2][CodeZ] = i;
-        }
-        if (m_RangeEnd[0][CodeX] < i)
-        {
-            m_RangeEnd[0][CodeX] = i;
-        }
-        if (m_RangeEnd[1][CodeY] < i)
-        {
-            m_RangeEnd[1][CodeY] = i;
-        }
-        if (m_RangeEnd[2][CodeZ] < i)
-        {
-            m_RangeEnd[2][CodeZ] = i;
-        }
+		if (i < m_RangeStart[0][CodeX])
+		{
+			m_RangeStart[0][CodeX] = i;
+		}
+		if (i < m_RangeStart[1][CodeY])
+		{
+			m_RangeStart[1][CodeY] = i;
+		}
+		if (i < m_RangeStart[2][CodeZ])
+		{
+			m_RangeStart[2][CodeZ] = i;
+		}
+		if (m_RangeEnd[0][CodeX] < i)
+		{
+			m_RangeEnd[0][CodeX] = i;
+		}
+		if (m_RangeEnd[1][CodeY] < i)
+		{
+			m_RangeEnd[1][CodeY] = i;
+		}
+		if (m_RangeEnd[2][CodeZ] < i)
+		{
+			m_RangeEnd[2][CodeZ] = i;
+		}
 	}
 
 	// Initialize the cache.

@@ -82,16 +82,19 @@ Parses mapcycle.txt file into mapcycle_t structure
 */
 bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 {
+	//TODO: clean this up
 	char szBuffer[MAX_RULE_BUFFER];
 	char szMap[MAX_MAPNAME_LENGTH];
-	int length;
-	char* pFileList;
-	char* aFileList = pFileList = (char*)LOAD_FILE_FOR_ME(filename, &length);
+
+	auto [fileBuffer, length] = FileSystem_LoadFileIntoBuffer(filename);
+
 	int hasbuffer;
 	mapcycle_item_t* item, * newlist = nullptr, * next;
 
-	if (pFileList && length)
+	if (fileBuffer && length)
 	{
+		char* pFileList = reinterpret_cast<char*>(fileBuffer.get());
+
 		// the first map name in the file becomes the default
 		while (true)
 		{
@@ -165,7 +168,7 @@ bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 
 		}
 
-		FREE_FILE(aFileList);
+		fileBuffer.reset();
 	}
 
 	// Fixup circular list pointer

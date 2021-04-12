@@ -1258,6 +1258,7 @@ void SENTENCEG_Stop(edict_t *entity, int isentenceg, int ipick)
 
 void SENTENCEG_Init()
 {
+	//TODO: clean this up
 	char buffer[512];
 	char szgroup[64];
 	int i, j;
@@ -1274,15 +1275,17 @@ void SENTENCEG_Init()
 	memset(szgroup, 0, 64);
 	isentencegs = -1;
 
-	
-	std::size_t filePos = 0;
-	int fileSize;
-	byte *pMemFile = g_engfuncs.pfnLoadFileForMe( "sound/sentences.txt", &fileSize );
+	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer("sound/sentences.txt");
+
+	byte* pMemFile = fileBuffer.get();
+
 	if ( !pMemFile )
 		return;
 
+	std::size_t filePos = 0;
+
 	// for each line in the file...
-	while ( memfgets(pMemFile, fileSize, filePos, buffer, sizeof(buffer) - 1) != nullptr )
+	while ( memfgets(pMemFile, size, filePos, buffer, sizeof(buffer) - 1) != nullptr )
 	{
 		// skip whitespace
 		i = 0;
@@ -1362,7 +1365,7 @@ void SENTENCEG_Init()
 		}
 	}
 
-	g_engfuncs.pfnFreeFile( pMemFile );
+	fileBuffer.reset();
 	
 	fSentencesInit = true;
 

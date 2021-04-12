@@ -1299,9 +1299,12 @@ constexpr int MAX_MOTD_LENGTH = 1536; // (MAX_MOTD_CHUNK * 4)
 void CHalfLifeMultiplay :: SendMOTDToClient( edict_t *client )
 {
 	// read from the MOTD.txt file
-	int length, char_count = 0;
-	char *pFileList;
-	char *aFileList = pFileList = (char*)LOAD_FILE_FOR_ME( CVAR_GET_STRING( "motdfile" ), &length );
+	int char_count = 0;
+
+	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer(CVAR_GET_STRING("motdfile"));
+
+	char* const aFileList = reinterpret_cast<char*>(fileBuffer.get());
+	char* pFileList = aFileList;
 
 	// send the server name
 	MESSAGE_BEGIN( MSG_ONE, gmsgServerName, nullptr, client );
@@ -1336,8 +1339,6 @@ void CHalfLifeMultiplay :: SendMOTDToClient( edict_t *client )
 			WRITE_STRING( chunk );
 		MESSAGE_END();
 	}
-
-	FREE_FILE( aFileList );
 }
 	
 
