@@ -19,7 +19,6 @@
 #include "parsemsg.h"
 #include "entity_types.h"
 #include "view.h"
-#include "string_utils.hpp"
 
 // these are included for the math functions
 #include "com_model.h"

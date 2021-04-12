@@ -20,6 +20,7 @@
 #include "Platform.h"
 
 #include "filesystem_shared.hpp"
+#include "string_utils.hpp"
 
 // Macros to hook function calls into the HUD object
 #define HOOK_MESSAGE(x) gEngfuncs.pfnHookUserMsg(#x, __MsgFunc_##x );
@@ -129,38 +130,6 @@ inline void ConsolePrint( const char *string )
 inline void CenterPrint( const char *string )
 {
 	gEngfuncs.pfnCenterPrint( string );
-}
-
-
-inline char *safe_strcpy( char *dst, const char *src, int len_dst)
-{
-	if( len_dst <= 0 )
-	{
-		return nullptr; // this is bad
-	}
-
-	strncpy(dst,src,len_dst);
-	dst[ len_dst - 1 ] = '\0';
-
-	return dst;
-}
-
-inline int safe_snprintf( char *dst, int len_dst, const char *format, ...)
-{
-	if( len_dst <= 0 )
-	{
-		return -1; // this is bad
-	}
-
-	va_list v;
-
-	va_start(v, format);
-
-	vsnprintf(dst,len_dst,format,v);
-
-	va_end(v);
-
-	return 0;
 }
 
 // sound functions
