@@ -1,13 +1,14 @@
-#include <cstring>
+#include "extdll.h"
+#include "util.h"
 
 #include "CStringPool.hpp"
 
 const char* CStringPool::Allocate(const char* string)
 {
 	//Treat null pointers as empty strings
-	//TODO: need to warn about this!
 	if (!string)
 	{
+		ALERT(at_warning, "NULL string passed to CStringPool::Allocate\n");
 		return "";
 	}
 
