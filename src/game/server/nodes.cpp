@@ -2294,8 +2294,7 @@ int CGraph :: FLoadGraph ( const char *szMapName )
 
 	// make sure the directories have been made
 	std::filesystem::path dirName = std::filesystem::path{"maps"} / "graphs";
-	std::error_code error;
-	std::filesystem::create_directories(dirName, error);
+	g_pFileSystem->CreateDirHierarchy(dirName.string().c_str(), "GAMECONFIG");
 
 	auto filename = dirName / szMapName;
 	filename += ".nod";
