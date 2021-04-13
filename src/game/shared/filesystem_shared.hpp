@@ -30,3 +30,58 @@ bool FileSystem_LoadFileSystem();
 void FileSystem_FreeFileSystem();
 
 std::tuple<std::unique_ptr<byte[]>, std::size_t> FileSystem_LoadFileIntoBuffer(const char* filename);
+
+class FSFile
+{
+public:
+	FSFile(const char* filename, const char* options, const char* pathID = nullptr);
+	~FSFile();
+
+	constexpr bool IsOpen() const { return _handle != FILESYSTEM_INVALID_HANDLE; }
+
+	void Close();
+
+	int Read(void* dest, int size);
+
+	int Write(const void* input, int size);
+
+	template<typename... Args>
+	int Printf(const char* format, Args&&... args)
+	{
+		return g_pFileSystem->FPrintf(_handle, format, std::forward<Args>(args)...);
+	}
+
+	constexpr operator bool() const { return IsOpen(); }
+
+private:
+	FileHandle_t _handle;
+};
+
+inline FSFile::FSFile(const char* filename, const char* options, const char* pathID)
+	: _handle(g_pFileSystem->Open(filename, options, pathID))
+{
+}
+
+inline FSFile::~FSFile()
+{
+	Close();
+}
+
+inline void FSFile::Close()
+{
+	if (IsOpen())
+	{
+		g_pFileSystem->Close(_handle);
+		_handle = FILESYSTEM_INVALID_HANDLE;
+	}
+}
+
+inline int FSFile::Read(void* dest, int size)
+{
+	return g_pFileSystem->Read(dest, size, _handle);
+}
+
+inline int FSFile::Write(const void* input, int size)
+{
+	return g_pFileSystem->Write(input, size, _handle);
+}
