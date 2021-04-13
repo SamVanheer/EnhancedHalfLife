@@ -49,7 +49,6 @@ void COM_Log( const char *pszFile, const char *fmt, ...)
 {
 	va_list		argptr;
 	char		string[1024];
-	FILE *fp;
 	const char *pfilename;
 	
 	if ( !pszFile )
@@ -65,11 +64,13 @@ void COM_Log( const char *pszFile, const char *fmt, ...)
 	vsnprintf (string, sizeof(string), fmt,argptr);
 	va_end (argptr);
 
-	fp = fopen( pfilename, "a+t");
-	if (fp)
+	//Now logs to "game/moddir" instead of "game"
+	auto fileHandle = g_pFileSystem->Open(pfilename, "a+t", "GAMECONFIG");
+
+	if (fileHandle != FILESYSTEM_INVALID_HANDLE)
 	{
-		fprintf(fp, "%s", string);
-		fclose(fp);
+		g_pFileSystem->FPrintf(fileHandle, "%s", string);
+		g_pFileSystem->Close(fileHandle);
 	}
 }
 
