@@ -2456,7 +2456,6 @@ int CGraph :: FSaveGraph ( const char *szMapName )
 {
 	
 	int		iVersion = GRAPH_VERSION;
-	FILE	*file;
 
 	if ( !m_fGraphPresent || !m_fGraphPointersSet )
 	{// protect us in the case that the node graph isn't available or built
@@ -2465,16 +2464,15 @@ int CGraph :: FSaveGraph ( const char *szMapName )
 	}
 
 	// make sure directories have been made
-	std::filesystem::path dirName = FileSystem_GetGameDirectory() / "maps" / "graphs";
-	std::error_code error;
-	std::filesystem::create_directories(dirName, error);
+	std::filesystem::path dirName = std::filesystem::path{"maps"} / "graphs";
+	g_pFileSystem->CreateDirHierarchy(dirName.string().c_str(), "GAMECONFIG");
 
 	auto filename = dirName / szMapName;
 	filename += ".nod";
 
 	const auto filenameString = filename.string();
 
-	file = fopen (filenameString.c_str(), "wb" );
+	FSFile file{filenameString.c_str(), "wb", "GAMECONFIG"};
 
 	ALERT ( at_aiconsole, "Created: %s\n", filenameString.c_str());
 
@@ -2483,36 +2481,34 @@ int CGraph :: FSaveGraph ( const char *szMapName )
 		ALERT ( at_aiconsole, "Couldn't Create: %s\n", filenameString.c_str());
 		return false;
 	}
-	else
-	{
+
 	// write the version
-		fwrite ( &iVersion, sizeof ( int ), 1, file );
+	file.Write( &iVersion, sizeof ( int ));
 
 	// write the CGraph class
-		fwrite ( this, sizeof ( CGraph ), 1, file );
+	file.Write(this, sizeof ( CGraph ));
 
 	// write the nodes
-		fwrite ( m_pNodes, sizeof ( CNode ), m_cNodes, file );
+	file.Write(m_pNodes, sizeof ( CNode ) * m_cNodes);
 
 	// write the links
-		fwrite ( m_pLinkPool, sizeof ( CLink ), m_cLinks, file );
+	file.Write(m_pLinkPool, sizeof ( CLink ) * m_cLinks);
 
-		fwrite ( m_di, sizeof(DIST_INFO), m_cNodes, file );
+	file.Write(m_di, sizeof(DIST_INFO) * m_cNodes);
 
-		// Write the route info.
-		//
-		if ( m_pRouteInfo && m_nRouteInfo )
-		{
-			fwrite ( m_pRouteInfo, sizeof( char ), m_nRouteInfo, file );
-		}
-
-		if (m_pHashLinks && m_nHashLinks)
-		{
-			fwrite(m_pHashLinks, sizeof(short), m_nHashLinks, file);
-		}
-		fclose ( file );
-		return true;
+	// Write the route info.
+	//
+	if ( m_pRouteInfo && m_nRouteInfo )
+	{
+		file.Write(m_pRouteInfo, sizeof( char ) * m_nRouteInfo);
 	}
+
+	if (m_pHashLinks && m_nHashLinks)
+	{
+		file.Write(m_pHashLinks, sizeof(short) * m_nHashLinks);
+	}
+
+	return true;
 }
 
 //=========================================================
