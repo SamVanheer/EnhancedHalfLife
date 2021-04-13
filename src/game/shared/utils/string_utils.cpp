@@ -99,6 +99,27 @@ decodeFinishedMaybeCESU8:
 	goto decodeFinished;
 }
 
+bool V_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut)
+{
+	bool bError;
+
+	Q_UTF8ToUChar32(pUTF8_, uValueOut, bError);
+	return bError;
+}
+
+char* Q_UnicodeAdvance(char* pUTF8, int nChars)
+{
+	char32_t uVal;
+	bool bError;
+
+	for (;nChars > 0 && *pUTF8; --nChars)
+	{
+		pUTF8 += Q_UTF8ToUChar32(pUTF8, uVal, bError);
+	}
+
+	return pUTF8;
+}
+
 bool Q_UnicodeValidate(const char* pUTF8)
 {
 	bool bError = false;
@@ -115,74 +136,132 @@ bool Q_UnicodeValidate(const char* pUTF8)
 	return true;
 }
 
+static bool s_com_token_unget = false;
+bool com_ignorecolons = false;
+
+void COM_UngetToken()
+{
+	s_com_token_unget = true;
+}
+
 //TODO: refactor this to return string_view
 char* COM_Parse(char* data)
 {
-	int             c;
-	int             len;
+	if (s_com_token_unget)
+	{
+		s_com_token_unget = false;
+		return data;
+	}
 
-	len = 0;
-	com_token[0] = 0;
+	com_token[0] = '\0';
 
 	if (!data)
+	{
 		return nullptr;
-
-	// skip whitespace
-skipwhite:
-	while ((c = *data) <= ' ')
-	{
-		if (c == 0)
-			return nullptr;                    // end of file;
-		data++;
 	}
 
-	// skip // comments
-	if (c == '/' && data[1] == '/')
 	{
-		while (*data && *data != '\n')
-			data++;
-		goto skipwhite;
-	}
+		char32_t wchar;
+		bool processAnotherLine = false;
 
+		do
+		{
+			processAnotherLine = false;
+
+			// skip whitespace
+			while (!V_UTF8ToUChar32(data, wchar) && wchar <= ' ')
+			{
+				if (wchar == '\0')
+				{
+					return nullptr; // end of file;
+				}
+
+				data = Q_UnicodeAdvance(data, 1);
+			}
+
+			// skip // comments
+			if (data[0] == '/' && data[1] == '/')
+			{
+				data += 2;
+
+				while (data[0] != '\n' && data[0] != '\0')
+				{
+					++data;
+				}
+
+				processAnotherLine = true;
+			}
+		}
+		while (processAnotherLine);
+	}
 
 	// handle quoted strings specially
-	if (c == '\"')
+	if (data[0] == '\"')
 	{
-		data++;
+		++data;
+
+		std::size_t byteCount = 0;
+
 		while (true)
 		{
-			c = *data++;
-			if (c == '\"' || !c)
+			const char c = *data++;
+
+			if (c == '\"' || c == '\0' || byteCount == (sizeof(com_token) - 1))
 			{
-				com_token[len] = 0;
+				com_token[byteCount] = '\0';
 				return data;
 			}
-			com_token[len] = c;
-			len++;
+
+			com_token[byteCount++] = c;
 		}
 	}
 
 	// parse single characters
-	if (c == '{' || c == '}' || c == ')' || c == '(' || c == '\'' || c == ',')
 	{
-		com_token[len] = c;
-		len++;
-		com_token[len] = 0;
-		return data + 1;
+		const char c = data[0];
+
+		if (c == '}'
+			|| c == '{'
+			|| c == ')'
+			|| c == '('
+			|| c == '\''
+			|| c == ','
+			|| (c == ':' && !com_ignorecolons))
+		{
+			com_token[0] = c;
+			com_token[1] = '\0';
+			return data + 1;
+		}
 	}
 
 	// parse a regular word
-	do
 	{
-		com_token[len] = c;
-		data++;
-		len++;
-		c = *data;
-		if (c == '{' || c == '}' || c == ')' || c == '(' || c == '\'' || c == ',')
-			break;
-	} while (c > 32);
+		char c = data[0];
 
-	com_token[len] = 0;
+		std::size_t byteCount = 0;
+
+		do
+		{
+			com_token[byteCount++] = c;
+			++data;
+			c = data[0];
+
+			if (c == '}'
+				|| c == '{'
+				|| c == ')'
+				|| c == '('
+				|| c == '\''
+				|| c == ','
+				|| (c == ':' && !com_ignorecolons))
+			{
+				break;
+			}
+		}
+		while (byteCount < (sizeof(com_token) - 1) && c > ' ');
+
+		com_token[byteCount] = '\0';
+	}
+
 	return data;
 }
 

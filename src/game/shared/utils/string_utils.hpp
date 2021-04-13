@@ -73,12 +73,19 @@ bool Q_IsValidUChar32(char32_t uVal);
 */
 int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut);
 
+bool V_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut);
+
+//TODO: make this work with const and non-const char*
+char* Q_UnicodeAdvance(char* pUTF8, int nChars);
+
 /**
 *	@brief Returns true if UTF-8 string contains invalid sequences.
 */
 bool Q_UnicodeValidate(const char* pUTF8);
 
-inline char com_token[1500];
+inline char com_token[2048];
+
+void COM_UngetToken();
 
 /**
 *	@brief Parse a token out of a string
