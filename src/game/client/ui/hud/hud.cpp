@@ -415,6 +415,14 @@ void CHud :: VidInit()
 	GetClientVoiceMgr()->VidInit();
 }
 
+void CHud::Shutdown()
+{
+	for (auto hudElement = m_pHudList; hudElement; hudElement = hudElement->pNext)
+	{
+		hudElement->p->Shutdown();
+	}
+}
+
 bool CHud::MsgFunc_Logo(const char *pszName,  int iSize, void *pbuf)
 {
 	BufferReader reader{pbuf, iSize};

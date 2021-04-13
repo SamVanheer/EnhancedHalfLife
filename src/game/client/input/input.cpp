@@ -1004,6 +1004,8 @@ void CL_UnloadParticleMan();
 
 void DLLEXPORT HUD_Shutdown()
 {
+	gHUD.Shutdown();
+
 	ShutdownInput();
 	
 	FileSystem_FreeFileSystem();

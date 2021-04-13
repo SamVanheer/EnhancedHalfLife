@@ -62,6 +62,7 @@ public:
 	virtual		~CHudBase() {}
 	virtual bool Init() {return false;}
 	virtual bool VidInit() {return false;}
+	virtual void Shutdown() {}
 	virtual bool Draw(float flTime) {return false;}
 	virtual void Think() {}
 	virtual void Reset() {}
@@ -529,6 +530,7 @@ public:
 
 	void Init();
 	void VidInit();
+	void Shutdown();
 	void Think();
 	bool Redraw( float flTime, int intermission );
 	bool UpdateClientData( client_data_t *cdata, float time );
