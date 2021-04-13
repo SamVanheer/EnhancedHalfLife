@@ -10,6 +10,7 @@
 #include "VGUI.h"
 #include "vgui_loadtga.h"
 #include "VGUI_InputStream.h"
+#include "filesystem_shared.hpp"
 
 
 // ---------------------------------------------------------------------- //
@@ -62,32 +63,30 @@ public:
 	int			m_ReadPos;
 };
 
+static vgui::BitmapTGA* vgui_LoadTGA(char const* pFilename, bool invertAlpha)
+{
+	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer(pFilename);
+
+	MemoryInputStream stream;
+
+	stream.m_pData = fileBuffer.get();
+	stream.m_DataLen = static_cast<int>(size);
+
+	if (!stream.m_pData)
+		return nullptr;
+
+	stream.m_ReadPos = 0;
+	vgui::BitmapTGA* pRet = new vgui::BitmapTGA(&stream, invertAlpha);
+
+	return pRet;
+}
+
 vgui::BitmapTGA* vgui_LoadTGA(char const *pFilename)
 {
-	MemoryInputStream stream;
-	
-	stream.m_pData = gEngfuncs.COM_LoadFile(pFilename, 5, &stream.m_DataLen);
-	if(!stream.m_pData)
-		return nullptr;
-	
-	stream.m_ReadPos = 0;
-	vgui::BitmapTGA *pRet = new vgui::BitmapTGA(&stream, true);
-	gEngfuncs.COM_FreeFile(stream.m_pData);
-	
-	return pRet;
+	return vgui_LoadTGA(pFilename, true);
 }
 
 vgui::BitmapTGA* vgui_LoadTGANoInvertAlpha(char const *pFilename)
 {
-	MemoryInputStream stream;
-	
-	stream.m_pData = gEngfuncs.COM_LoadFile(pFilename, 5, &stream.m_DataLen);
-	if(!stream.m_pData)
-		return nullptr;
-	
-	stream.m_ReadPos = 0;
-	vgui::BitmapTGA *pRet = new vgui::BitmapTGA(&stream, false);
-	gEngfuncs.COM_FreeFile(stream.m_pData);
-	
-	return pRet;
+	return vgui_LoadTGA(pFilename, false);
 }

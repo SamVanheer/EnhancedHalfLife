@@ -607,7 +607,10 @@ int TeamFortressViewport::CreateCommandMenu( const char * menuFile, int directio
 
 	// Read Command Menu from the txt file
 	char token[1024];
-	char *pfile = (char*)gEngfuncs.COM_LoadFile( menuFile, 5, nullptr);
+
+	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer(menuFile);
+
+	char *pfile = reinterpret_cast<char*>(fileBuffer.get());
 	if (!pfile)
 	{
 		gEngfuncs.Con_DPrintf( "Unable to open %s\n", menuFile);
@@ -761,7 +764,6 @@ int TeamFortressViewport::CreateCommandMenu( const char * menuFile, int directio
 
 	SetCurrentMenu(nullptr);
 	SetCurrentCommandMenu(nullptr);
-	gEngfuncs.COM_FreeFile( pfile );
 
 	m_iInitialized = true;
 	return newIndex;
@@ -1171,9 +1173,10 @@ CMenuPanel* TeamFortressViewport::CreateTextWindow( int iTextToShow )
 {
 	char sz[256];
 	char *cText;
-	char *pfile = nullptr;
 	static const int MAX_TITLE_LENGTH = 64;
 	char cTitle[MAX_TITLE_LENGTH];
+
+	std::unique_ptr<byte[]> fileBuffer;
 
 	if ( iTextToShow == SHOW_MOTD )
 	{
@@ -1221,12 +1224,12 @@ CMenuPanel* TeamFortressViewport::CreateTextWindow( int iTextToShow )
 			}
 		}
 
-		pfile = (char*)gEngfuncs.COM_LoadFile( sz, 5, nullptr);
+		fileBuffer = std::move(std::get<0>(FileSystem_LoadFileIntoBuffer(sz)));
 
-		if (!pfile)
+		if (!fileBuffer)
 			return nullptr;
 
-		cText = pfile;
+		cText = reinterpret_cast<char*>(fileBuffer.get());
 
 		strncpy( cTitle, m_sMapName, MAX_TITLE_LENGTH );
 		cTitle[MAX_TITLE_LENGTH-1] = 0;
@@ -1246,9 +1249,6 @@ CMenuPanel* TeamFortressViewport::CreateTextWindow( int iTextToShow )
 	// if we're in the game (ie. have selected a class), flag the menu to be only grayed in the dialog box, instead of full screen
 	CMenuPanel *pMOTDPanel = CMessageWindowPanel_Create( cText, cTitle, g_iPlayerClass == PC_UNDEFINED, false, 0, 0, ScreenWidth, ScreenHeight );
 	pMOTDPanel->setParent( this );
-
-	if ( pfile )
-		gEngfuncs.COM_FreeFile( pfile );
 
 	return pMOTDPanel;
 }

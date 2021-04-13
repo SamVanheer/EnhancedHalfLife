@@ -276,17 +276,16 @@ bool CVoiceStatus::VidInit()
 
 	// Figure out the voice head model height.
 	m_VoiceHeadModelHeight = 45;
-	char *pFile = (char *)gEngfuncs.COM_LoadFile("scripts/voicemodel.txt", 5, nullptr);
-	if(pFile)
+	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer("scripts/voicemodel.txt");
+
+	if(fileBuffer)
 	{
 		char token[4096];
-		gEngfuncs.COM_ParseFile(pFile, token);
+		gEngfuncs.COM_ParseFile(reinterpret_cast<char*>(fileBuffer.get()), token);
 		if(token[0] >= '0' && token[0] <= '9')
 		{
 			m_VoiceHeadModelHeight = (float)atof(token);
 		}
-
-		gEngfuncs.COM_FreeFile(pFile);
 	}
 
 	m_VoiceHeadModel = gEngfuncs.pfnSPR_Load("sprites/voiceicon.spr");
