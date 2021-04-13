@@ -127,8 +127,6 @@ CVoiceStatus::CVoiceStatus()
 	m_pParentPanel = nullptr;
 
 	m_bServerModEnable = -1;
-
-	m_pchGameDir = nullptr;
 }
 
 
@@ -152,16 +150,6 @@ CVoiceStatus::~CVoiceStatus()
 	m_pLocalLabel = nullptr;
 
 	FreeBitmaps();
-
-	if(m_pchGameDir)
-	{
-		if(m_bBanMgrInitialized)
-		{
-			m_BanMgr.SaveState(m_pchGameDir);
-		}
-
-		free(m_pchGameDir);
-	}
 }
 
 
@@ -176,11 +164,8 @@ bool CVoiceStatus::Init(
 
 	gEngfuncs.pfnAddCommand("voice_showbanned", ShowBannedCallback);
 
-	if(gEngfuncs.pfnGetGameDirectory())
-	{
-		m_BanMgr.Init(gEngfuncs.pfnGetGameDirectory());
-		m_bBanMgrInitialized = true;
-	}
+	m_BanMgr.Init();
+	m_bBanMgrInitialized = true;
 
 	assert(!g_pInternalVoiceStatus);
 	g_pInternalVoiceStatus = this;
@@ -223,12 +208,6 @@ bool CVoiceStatus::Init(
 	m_iFlags = HUD_ACTIVE;
 	HOOK_MESSAGE(VoiceMask);
 	HOOK_MESSAGE(ReqState);
-
-	// Cache the game directory for use when we shut down
-	const char *pchGameDirT = gEngfuncs.pfnGetGameDirectory();
-	const std::size_t gameDirSize = strlen(pchGameDirT) + 1;
-	m_pchGameDir = (char *)malloc(gameDirSize);
-	safe_strcpy(m_pchGameDir, pchGameDirT, gameDirSize);
 
 	return true;
 }
@@ -292,6 +271,13 @@ bool CVoiceStatus::VidInit()
 	return true;
 }
 
+void CVoiceStatus::Shutdown()
+{
+	if (m_bBanMgrInitialized)
+	{
+		m_BanMgr.SaveState();
+	}
+}
 
 void CVoiceStatus::Frame(double frametime)
 {

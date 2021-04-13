@@ -88,6 +88,7 @@ public:
 	// ackPosition is the bottom position of where CVoiceStatus will draw the voice acknowledgement labels.
 	bool VidInit() override;
 
+	void Shutdown() override;
 
 public:
 	
@@ -212,9 +213,6 @@ public:
 
 	// Labels telling who is speaking.
 	CVoiceLabel			m_Labels[MAX_VOICE_SPEAKERS];
-
-	// Cache the game directory for use when we shut down
-	char *				m_pchGameDir;
 };
 
 

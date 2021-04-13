@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include "Platform.h"
 #include "voice_banmgr.h"
-
+#include "filesystem_shared.hpp"
 
 constexpr int BANMGR_FILEVERSION = 1;
 char const *g_pBanMgrFilename = "voice_ban.dt";
@@ -41,30 +41,28 @@ CVoiceBanMgr::~CVoiceBanMgr()
 }
 
 
-bool CVoiceBanMgr::Init(char const *pGameDir)
+bool CVoiceBanMgr::Init()
 {
 	Term();
 
-	char filename[512];
-	snprintf(filename, sizeof(filename), "%s/%s", pGameDir, g_pBanMgrFilename);
-
 	// Load in the squelch file.
-	FILE *fp = fopen(filename, "rb");
-	if(fp)
+	auto fileHandle = g_pFileSystem->Open(g_pBanMgrFilename, "rb", "GAMECONFIG");
+
+	if(fileHandle != FILESYSTEM_INVALID_HANDLE)
 	{
 		int version;
-		if (sizeof(version) == fread(&version, 1, sizeof(version), fp))
+		if (sizeof(version) == g_pFileSystem->Read(&version, sizeof(version), fileHandle))
 		{
 			if (version == BANMGR_FILEVERSION)
 			{
-				fseek(fp, 0, SEEK_END);
-				int nIDs = (ftell(fp) - sizeof(version)) / 16;
-				fseek(fp, sizeof(version), SEEK_SET);
+				g_pFileSystem->Seek(fileHandle, 0, FILESYSTEM_SEEK_TAIL);
+				int nIDs = (g_pFileSystem->Tell(fileHandle) - sizeof(version)) / 16;
+				g_pFileSystem->Seek(fileHandle, sizeof(version), FILESYSTEM_SEEK_HEAD);
 
 				for (int i = 0; i < nIDs; i++)
 				{
 					char playerID[16];
-					if (sizeof(playerID) == fread(playerID, 1, sizeof(playerID), fp))
+					if (sizeof(playerID) == g_pFileSystem->Read(playerID, sizeof(playerID), fileHandle))
 					{
 						AddBannedPlayer(playerID);
 					}
@@ -72,7 +70,7 @@ bool CVoiceBanMgr::Init(char const *pGameDir)
 			}
 		}
 
-		fclose(fp);
+		g_pFileSystem->Close(fileHandle);
 	}
 
 	return true;
@@ -97,28 +95,26 @@ void CVoiceBanMgr::Term()
 }
 
 
-void CVoiceBanMgr::SaveState(char const *pGameDir)
+void CVoiceBanMgr::SaveState()
 {
 	// Save the file out.
-	char filename[512];
-	snprintf(filename, sizeof(filename), "%s/%s", pGameDir, g_pBanMgrFilename);
+	auto fileHandle = g_pFileSystem->Open(g_pBanMgrFilename, "wb", "GAMECONFIG");
 
-	FILE *fp = fopen(filename, "wb");
-	if(fp)
+	if(fileHandle != FILESYSTEM_INVALID_HANDLE)
 	{
 		int version = BANMGR_FILEVERSION;
-		fwrite(&version, 1, sizeof(version), fp);
+		g_pFileSystem->Write(&version, sizeof(version), fileHandle);
 
 		for(int i=0; i < 256; i++)
 		{
 			BannedPlayer *pListHead = &m_PlayerHash[i];
 			for(BannedPlayer *pCur=pListHead->m_pNext; pCur != pListHead; pCur=pCur->m_pNext)
 			{
-				fwrite(pCur->m_PlayerID, 1, 16, fp);
+				g_pFileSystem->Write(pCur->m_PlayerID, 16, fileHandle);
 			}
 		}
 
-		fclose(fp);
+		g_pFileSystem->Close(fileHandle);
 	}
 }
 
