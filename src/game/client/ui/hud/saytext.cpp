@@ -206,7 +206,7 @@ void CHudSayText :: SayTextPrint( const char *pszBuf, int iBufSize, int clientIn
 		}
 	}
 
-	strncpy( g_szLineBuffer[i], pszBuf, std::max(iBufSize , MAX_CHARS_PER_LINE) );
+	safe_strcpy( g_szLineBuffer[i], pszBuf );
 
 	// make sure the text fits in one line
 	EnsureTextFitsInOneLineAndWrapIfHaveTo( i );
