@@ -827,7 +827,7 @@ bool CBasePlayerWeapon :: DefaultDeploy( const char *szViewModel, const char *sz
 	m_pPlayer->TabulateAmmo();
 	m_pPlayer->pev->viewmodel = MAKE_STRING(szViewModel);
 	m_pPlayer->pev->weaponmodel = MAKE_STRING(szWeaponModel);
-	safe_strcpy( m_pPlayer->m_szAnimExtention, szAnimExt );
+	safe_strcpy( m_pPlayer->m_szAnimExtension, szAnimExt );
 	SendWeaponAnim( iAnim, skiplocal, body );
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;

@@ -1223,7 +1223,7 @@ bool CHudSpectator::ParseOverviewFile( )
 
 	if (!fileBuffer)
 	{
-		gEngfuncs.Con_DPrintf("Couldn't open file %s. Using default values for overiew mode.\n", filename );
+		gEngfuncs.Con_DPrintf("Couldn't open file %s. Using default values for overview mode.\n", filename );
 		return false;
 	}
 	
@@ -1290,7 +1290,7 @@ bool CHudSpectator::ParseOverviewFile( )
 				}
 				else
 				{
-					gEngfuncs.Con_Printf("Error parsing overview file %s. (%s unkown)\n", filename, token.c_str() );
+					gEngfuncs.Con_Printf("Error parsing overview file %s. (%s unknown)\n", filename, token.c_str() );
 					return false;
 				}
 
@@ -1334,7 +1334,7 @@ bool CHudSpectator::ParseOverviewFile( )
 				}
 				else
 				{
-					gEngfuncs.Con_Printf("Error parsing overview file %s. (%s unkown)\n", filename, token.c_str() );
+					gEngfuncs.Con_Printf("Error parsing overview file %s. (%s unknown)\n", filename, token.c_str() );
 					return false;
 				}
 

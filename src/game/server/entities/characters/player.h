@@ -240,8 +240,8 @@ public:
 
 	int Classify () override;
 	void SetAnimation( PLAYER_ANIM playerAnim );
-	void SetWeaponAnimType( const char *szExtention );
-	char m_szAnimExtention[32];
+	void SetWeaponAnimType( const char *szExtension );
+	char m_szAnimExtension[32];
 
 	// custom player functions
 	virtual void ImpulseCommands();
