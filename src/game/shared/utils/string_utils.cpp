@@ -17,6 +17,7 @@
 #include <cctype>
 #include <charconv>
 #include <cstdint>
+#include <string>
 
 #include "Platform.h"
 #include "mathlib.h"
@@ -168,9 +169,44 @@ Vector UTIL_StringToVector(std::string_view str)
 
 float UTIL_StringToFloat(std::string_view str, float defaultValue)
 {
+	//TODO GCC doesn't support from_chars with floats yet
+#ifdef WIN32
 	float result = defaultValue;
 	std::from_chars(str.data(), str.data() + str.length(), result);
 	return result;
+#else
+	char* endPos = nullptr;
+	float result = 0;
+	bool isValid = false;
+	
+	//Try to use a stack buffer if possible, fall back to allocating only in case of large strings
+	const std::size_t MaxLocalBufferSize = 256;
+	
+	if (str.length() < MaxLocalBufferSize)
+	{
+		char buffer[MaxLocalBufferSize];
+		
+		safe_strcpy(buffer, str);
+		
+		result = std::strtod(buffer, &endPos);
+		
+		isValid = &buffer[0] != endPos;
+	}
+	else
+	{
+		//This allocates memory but it consistently returns matching results to from-chars
+		const std::string fullString{str};
+		result = std::strtod(fullString.c_str(), &endPos);
+		isValid = fullString.c_str() != endPos;
+	}
+
+	if (isValid)
+	{
+		return result;
+	}
+
+	return defaultValue;
+#endif
 }
 
 int UTIL_StringToInt(std::string_view str, int defaultValue)
