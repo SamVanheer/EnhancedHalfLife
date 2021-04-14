@@ -16,10 +16,13 @@
 // $NoKeywords: $
 //=============================================================================
 
+#include <string>
+
 #include "hud.h"
 #include "cl_util.h"
 #include "vgui_SchemeManager.h"
 #include "cvardef.h"
+#include "CTokenizer.hpp"
 
 #include <string.h>
 
@@ -162,11 +165,8 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 	m_iNumSchemes = 0;
 
 	// find the closest matching scheme file to our resolution
-	char token[1024];
 	auto fileBuffer = LoadFileByResolution( "", xRes, "_textscheme.txt" );
 	m_xRes = xRes;
-
-	char* pFile = reinterpret_cast<char*>(fileBuffer.get());
 
 	//
 	// Read the scheme descriptions from the text file, into a temporary array
@@ -182,160 +182,162 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 	int currentScheme = -1;
 	CScheme *pScheme = nullptr;
 
-	if ( !pFile )
+	if (fileBuffer)
 	{
-		gEngfuncs.Con_DPrintf( "Unable to find *_textscheme.txt\n");
-		goto buildDefaultFont;
+		// record what has been entered so we can create defaults from the different values
+		bool hasFgColor, hasBgColor, hasArmedFgColor, hasArmedBgColor, hasMouseDownFgColor, hasMouseDownBgColor;
+
+		CTokenizer tokenizer{reinterpret_cast<char*>(fileBuffer.get())};
+
+		tokenizer.Next();
+
+		while (!tokenizer.GetToken().empty() && (currentScheme < numTmpSchemes))
+		{
+			// get the paramName name
+			static const int tokenSize = 64;
+			char paramName[tokenSize], paramValue[tokenSize];
+
+			safe_strcpy(paramName, tokenizer.GetToken());
+
+			// get the '=' character
+			tokenizer.Next();
+			if (tokenizer.GetToken() != "=")
+			{
+				if (currentScheme < 0)
+				{
+					gEngfuncs.Con_Printf("error parsing font scheme text file at file start - expected '=', found '%s''\n",
+						std::string{tokenizer.GetToken()}.c_str());
+				}
+				else
+				{
+					gEngfuncs.Con_Printf("error parsing font scheme text file at scheme '%s' - expected '=', found '%s''\n",
+						tmpSchemes[currentScheme].schemeName, std::string{tokenizer.GetToken()}.c_str());
+				}
+				break;
+			}
+
+			// get paramValue
+			tokenizer.Next();
+			safe_strcpy(paramValue, tokenizer.GetToken());
+
+			// is this a new scheme?
+			if (!stricmp(paramName, "SchemeName"))
+			{
+				// setup the defaults for the current scheme
+				if (pScheme)
+				{
+					// foreground color defaults (normal -> armed -> mouse down)
+					if (!hasFgColor)
+					{
+						pScheme->fgColor[0] = pScheme->fgColor[1] = pScheme->fgColor[2] = pScheme->fgColor[3] = 255;
+					}
+					if (!hasArmedFgColor)
+					{
+						memcpy(pScheme->armedFgColor, pScheme->fgColor, sizeof(pScheme->armedFgColor));
+					}
+					if (!hasMouseDownFgColor)
+					{
+						memcpy(pScheme->mousedownFgColor, pScheme->armedFgColor, sizeof(pScheme->mousedownFgColor));
+					}
+
+					// background color (normal -> armed -> mouse down)
+					if (!hasBgColor)
+					{
+						pScheme->bgColor[0] = pScheme->bgColor[1] = pScheme->bgColor[2] = pScheme->bgColor[3] = 0;
+					}
+					if (!hasArmedBgColor)
+					{
+						memcpy(pScheme->armedBgColor, pScheme->bgColor, sizeof(pScheme->armedBgColor));
+					}
+					if (!hasMouseDownBgColor)
+					{
+						memcpy(pScheme->mousedownBgColor, pScheme->armedBgColor, sizeof(pScheme->mousedownBgColor));
+					}
+
+					// font size
+					if (!pScheme->fontSize)
+					{
+						pScheme->fontSize = 17;
+					}
+					if (!pScheme->fontName[0])
+					{
+						safe_strcpy(pScheme->fontName, "Arial");
+					}
+				}
+
+				// create the new scheme
+				currentScheme++;
+				pScheme = &tmpSchemes[currentScheme];
+				hasFgColor = hasBgColor = hasArmedFgColor = hasArmedBgColor = hasMouseDownFgColor = hasMouseDownBgColor = false;
+
+				strncpy(pScheme->schemeName, paramValue, CScheme::SCHEME_NAME_LENGTH);
+				pScheme->schemeName[CScheme::SCHEME_NAME_LENGTH - 1] = '\0'; // ensure null termination of string
+			}
+
+			if (!pScheme)
+			{
+				gEngfuncs.Con_Printf("font scheme text file MUST start with a 'SchemeName'\n");
+				break;
+			}
+
+			// pull the data out into the scheme
+			if (!stricmp(paramName, "FontName"))
+			{
+				strncpy(pScheme->fontName, paramValue, CScheme::FONT_NAME_LENGTH);
+				pScheme->fontName[CScheme::FONT_NAME_LENGTH - 1] = 0;
+			}
+			else if (!stricmp(paramName, "FontSize"))
+			{
+				pScheme->fontSize = atoi(paramValue);
+			}
+			else if (!stricmp(paramName, "FontWeight"))
+			{
+				pScheme->fontWeight = atoi(paramValue);
+			}
+			else if (!stricmp(paramName, "FgColor"))
+			{
+				ParseRGBAFromString(pScheme->fgColor, paramValue);
+				hasFgColor = true;
+			}
+			else if (!stricmp(paramName, "BgColor"))
+			{
+				ParseRGBAFromString(pScheme->bgColor, paramValue);
+				hasBgColor = true;
+			}
+			else if (!stricmp(paramName, "FgColorArmed"))
+			{
+				ParseRGBAFromString(pScheme->armedFgColor, paramValue);
+				hasArmedFgColor = true;
+			}
+			else if (!stricmp(paramName, "BgColorArmed"))
+			{
+				ParseRGBAFromString(pScheme->armedBgColor, paramValue);
+				hasArmedBgColor = true;
+			}
+			else if (!stricmp(paramName, "FgColorMousedown"))
+			{
+				ParseRGBAFromString(pScheme->mousedownFgColor, paramValue);
+				hasMouseDownFgColor = true;
+			}
+			else if (!stricmp(paramName, "BgColorMousedown"))
+			{
+				ParseRGBAFromString(pScheme->mousedownBgColor, paramValue);
+				hasMouseDownBgColor = true;
+			}
+			else if (!stricmp(paramName, "BorderColor"))
+			{
+				ParseRGBAFromString(pScheme->borderColor, paramValue);
+				hasMouseDownBgColor = true;
+			}
+
+			// get the new token last, so we now if the loop needs to be continued or not
+			tokenizer.Next();
+		}
 	}
-
-	// record what has been entered so we can create defaults from the different values
-	bool hasFgColor, hasBgColor, hasArmedFgColor, hasArmedBgColor, hasMouseDownFgColor, hasMouseDownBgColor;
-
-	pFile = gEngfuncs.COM_ParseFile( pFile, token );
-	while ( strlen(token) > 0 && (currentScheme < numTmpSchemes) )
+	else
 	{
-		// get the paramName name
-		static const int tokenSize = 64;
-		char paramName[tokenSize], paramValue[tokenSize];
-
-		strncpy( paramName, token, tokenSize );
-		paramName[tokenSize-1] = 0; // ensure null termination
-
-		// get the '=' character
-		pFile = gEngfuncs.COM_ParseFile( pFile, token );
-		if ( stricmp( token, "=" ) )
-		{
-			if ( currentScheme < 0 )
-			{
-				gEngfuncs.Con_Printf( "error parsing font scheme text file at file start - expected '=', found '%s''\n", token );
-			}
-			else
-			{
-				gEngfuncs.Con_Printf( "error parsing font scheme text file at scheme '%s' - expected '=', found '%s''\n", tmpSchemes[currentScheme].schemeName, token );
-			}
-			break;
-		}
-
-		// get paramValue
-		pFile = gEngfuncs.COM_ParseFile( pFile, token );
-		strncpy( paramValue, token, tokenSize );
-		paramValue[tokenSize-1] = 0; // ensure null termination
-		
-		// is this a new scheme?
-		if ( !stricmp(paramName, "SchemeName") )
-		{
-			// setup the defaults for the current scheme
-			if ( pScheme )
-			{
-				// foreground color defaults (normal -> armed -> mouse down)
-				if ( !hasFgColor )
-				{
-					pScheme->fgColor[0] = pScheme->fgColor[1] = pScheme->fgColor[2] = pScheme->fgColor[3] = 255;
-				}
-				if ( !hasArmedFgColor )
-				{
-					memcpy( pScheme->armedFgColor, pScheme->fgColor, sizeof(pScheme->armedFgColor) );
-				}
-				if ( !hasMouseDownFgColor )
-				{
-					memcpy( pScheme->mousedownFgColor, pScheme->armedFgColor, sizeof(pScheme->mousedownFgColor) );
-				}
-
-				// background color (normal -> armed -> mouse down)
-				if ( !hasBgColor )
-				{
-					pScheme->bgColor[0] = pScheme->bgColor[1] = pScheme->bgColor[2] = pScheme->bgColor[3] = 0;
-				}
-				if ( !hasArmedBgColor )
-				{
-					memcpy( pScheme->armedBgColor, pScheme->bgColor, sizeof(pScheme->armedBgColor) );
-				}
-				if ( !hasMouseDownBgColor )
-				{
-					memcpy( pScheme->mousedownBgColor, pScheme->armedBgColor, sizeof(pScheme->mousedownBgColor) );
-				}
-
-				// font size
-				if ( !pScheme->fontSize )
-				{
-					pScheme->fontSize = 17;
-				}
-				if ( !pScheme->fontName[0] )
-				{
-					safe_strcpy( pScheme->fontName, "Arial" );
-				}
-			}
-
-			// create the new scheme
-			currentScheme++;
-			pScheme = &tmpSchemes[currentScheme];
-			hasFgColor = hasBgColor = hasArmedFgColor = hasArmedBgColor = hasMouseDownFgColor = hasMouseDownBgColor = false;
-
-			strncpy( pScheme->schemeName, paramValue, CScheme::SCHEME_NAME_LENGTH );
-			pScheme->schemeName[CScheme::SCHEME_NAME_LENGTH-1] = '\0'; // ensure null termination of string
-		}
-
-		if ( !pScheme )
-		{
-			gEngfuncs.Con_Printf( "font scheme text file MUST start with a 'SchemeName'\n");
-			break;
-		}
-
-		// pull the data out into the scheme
-		if ( !stricmp(paramName, "FontName") )
-		{
-			strncpy( pScheme->fontName, paramValue, CScheme::FONT_NAME_LENGTH );
-			pScheme->fontName[CScheme::FONT_NAME_LENGTH-1] = 0;
-		}
-		else if ( !stricmp(paramName, "FontSize") )
-		{
-			pScheme->fontSize = atoi( paramValue );
-		}
-		else if ( !stricmp(paramName, "FontWeight") )
-		{
-			pScheme->fontWeight = atoi( paramValue );
-		}
-		else if ( !stricmp(paramName, "FgColor") )
-		{
-			ParseRGBAFromString( pScheme->fgColor, paramValue );
-			hasFgColor = true;
-		}
-		else if ( !stricmp(paramName, "BgColor") )
-		{
-			ParseRGBAFromString( pScheme->bgColor, paramValue );
-			hasBgColor = true;
-		}
-		else if ( !stricmp(paramName, "FgColorArmed") )
-		{
-			ParseRGBAFromString( pScheme->armedFgColor, paramValue );
-			hasArmedFgColor = true;
-		}	
-		else if ( !stricmp(paramName, "BgColorArmed") )
-		{
-			ParseRGBAFromString( pScheme->armedBgColor, paramValue );
-			hasArmedBgColor = true;
-		}
-		else if ( !stricmp(paramName, "FgColorMousedown") )
-		{
-			ParseRGBAFromString( pScheme->mousedownFgColor, paramValue );
-			hasMouseDownFgColor = true;
-		}
-		else if ( !stricmp(paramName, "BgColorMousedown") )
-		{
-			ParseRGBAFromString( pScheme->mousedownBgColor, paramValue );
-			hasMouseDownBgColor = true;
-		}
-		else if ( !stricmp(paramName, "BorderColor") )
-		{
-			ParseRGBAFromString( pScheme->borderColor, paramValue );
-			hasMouseDownBgColor = true;
-		}
-
-		// get the new token last, so we now if the loop needs to be continued or not
-		pFile = gEngfuncs.COM_ParseFile( pFile, token );
+		gEngfuncs.Con_DPrintf("Unable to find *_textscheme.txt\n");
 	}
-
-buildDefaultFont:
 
 	// make sure we have at least 1 valid font
 	if ( currentScheme < 0 )
