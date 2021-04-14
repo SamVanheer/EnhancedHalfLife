@@ -25,9 +25,6 @@ int m_nPlayerGaitSequences[MAX_CLIENTS];
 // Global engine <-> studio model rendering code interface
 engine_studio_api_t IEngineStudio;
 
-/////////////////////
-// Implementation of CStudioModelRenderer.h
-
 /*
 ====================
 Init

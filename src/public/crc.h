@@ -12,7 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-/* crc.h */
 
 #pragma once
 
