@@ -140,27 +140,27 @@ bool Q_UnicodeValidate(const char* pUTF8)
 	return true;
 }
 
-Vector UTIL_StringToVector(const char* pString)
+Vector UTIL_StringToVector(std::string_view str)
 {
-	const char* pstr = pString;
-
 	Vector result = vec3_origin;
+
+	std::size_t index = 0;
 
 	for (int j = 0; j < 3; ++j)
 	{
-		result[j] = atof(pstr);
+		result[j] = UTIL_StringToFloat(str.substr(index));
 
-		while (*pstr && *pstr != ' ')
+		while (index < str.length() && str[index] != ' ')
 		{
-			++pstr;
+			++index;
 		}
 
-		if (!*pstr)
+		if (index >= str.length())
 		{
 			break;
 		}
 
-		++pstr;
+		++index;
 	}
 
 	return result;

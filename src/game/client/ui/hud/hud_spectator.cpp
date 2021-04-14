@@ -270,11 +270,9 @@ bool UTIL_FindEntityInMap(const char* name, Vector& origin, Vector& angle)
 				}
 			}
 
-			const std::string value{tokenizer.GetToken()};
-
 			if (keyname == "angle")
 			{
-				const float y = UTIL_StringToFloat(value);
+				const float y = UTIL_StringToFloat(tokenizer.GetToken());
 				
 				if (y >= 0)
 				{
@@ -296,11 +294,11 @@ bool UTIL_FindEntityInMap(const char* name, Vector& origin, Vector& angle)
 			}
 			else if (keyname == "angles" )
 			{
-				angle = UTIL_StringToVector(value.c_str());
+				angle = UTIL_StringToVector(tokenizer.GetToken());
 			}
 			else if (keyname =="origin")
 			{
-				origin = UTIL_StringToVector(value.c_str());
+				origin = UTIL_StringToVector(tokenizer.GetToken());
 			}
 		} // while (1)
 

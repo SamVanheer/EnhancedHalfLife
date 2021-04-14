@@ -136,8 +136,7 @@ std::size_t Q_UnicodeAdvance(const char* pUTF8, int nChars);
 */
 bool Q_UnicodeValidate(const char* pUTF8);
 
-//TODO: make this use std::string_view
-Vector UTIL_StringToVector(const char* pString);
+Vector UTIL_StringToVector(std::string_view str);
 
 float UTIL_StringToFloat(std::string_view str, float defaultValue = 0);
 
