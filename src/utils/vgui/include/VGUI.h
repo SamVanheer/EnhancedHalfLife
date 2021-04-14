@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <cstddef> // size_t define
+
 //If you are going to add stuff to the vgui core...
 //
 //Keep it simple.
@@ -80,7 +82,6 @@
 # define VGUIAPI __declspec( dllexport )
 #else
 # define VGUIAPI  __attribute__ ((visibility("default")))
-#include <sys/types.h> // size_t define
 #endif
 
 typedef unsigned char  uchar;
