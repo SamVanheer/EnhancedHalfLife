@@ -5,6 +5,10 @@
 // $NoKeywords: $
 //=============================================================================
 
+#include <charconv>
+#include <string>
+#include <string_view>
+
 #include "hud.h"
 #include "cl_util.h"
 #include "cl_entity.h"
@@ -19,6 +23,7 @@
 #include "parsemsg.h"
 #include "entity_types.h"
 #include "view.h"
+#include "CTokenizer.hpp"
 
 // these are included for the math functions
 #include "com_model.h"
@@ -158,29 +163,29 @@ bool CHudSpectator::Init()
 
 	m_iFlags |= HUD_ACTIVE;
 	m_flNextObserverInput = 0.0f;
-	m_zoomDelta	= 0.0f;
+	m_zoomDelta = 0.0f;
 	m_moveDelta = 0.0f;
 	m_FOV = 90.0f;
-	m_chatEnabled = (gHUD.m_SayText.m_HUD_saytext->value!=0);
-	iJumpSpectator	= false;
+	m_chatEnabled = (gHUD.m_SayText.m_HUD_saytext->value != 0);
+	iJumpSpectator = false;
 
-	memset( &m_OverviewData, 0, sizeof(m_OverviewData));
-	memset( &m_OverviewEntities, 0, sizeof(m_OverviewEntities));
+	memset(&m_OverviewData, 0, sizeof(m_OverviewData));
+	memset(&m_OverviewEntities, 0, sizeof(m_OverviewEntities));
 	m_lastPrimaryObject = m_lastSecondaryObject = 0;
 
-	gEngfuncs.pfnAddCommand ("spec_mode", SpectatorMode );
-	gEngfuncs.pfnAddCommand ("spec_decal", SpectatorSpray );
-	gEngfuncs.pfnAddCommand ("spec_help", SpectatorHelp );
-	gEngfuncs.pfnAddCommand ("spec_menu", SpectatorMenu );
-	gEngfuncs.pfnAddCommand ("togglescores", ToggleScores );
+	gEngfuncs.pfnAddCommand("spec_mode", SpectatorMode);
+	gEngfuncs.pfnAddCommand("spec_decal", SpectatorSpray);
+	gEngfuncs.pfnAddCommand("spec_help", SpectatorHelp);
+	gEngfuncs.pfnAddCommand("spec_menu", SpectatorMenu);
+	gEngfuncs.pfnAddCommand("togglescores", ToggleScores);
 
-	m_drawnames		= gEngfuncs.pfnRegisterVariable("spec_drawnames","1",0);
-	m_drawcone		= gEngfuncs.pfnRegisterVariable("spec_drawcone","1",0);
-	m_drawstatus	= gEngfuncs.pfnRegisterVariable("spec_drawstatus","1",0);
-	m_autoDirector	= gEngfuncs.pfnRegisterVariable("spec_autodirector","1",0);
-	m_pip			= gEngfuncs.pfnRegisterVariable("spec_pip","1",0);
-	
-	if ( !m_drawnames || !m_drawcone || !m_drawstatus || !m_autoDirector || !m_pip)
+	m_drawnames = gEngfuncs.pfnRegisterVariable("spec_drawnames", "1", 0);
+	m_drawcone = gEngfuncs.pfnRegisterVariable("spec_drawcone", "1", 0);
+	m_drawstatus = gEngfuncs.pfnRegisterVariable("spec_drawstatus", "1", 0);
+	m_autoDirector = gEngfuncs.pfnRegisterVariable("spec_autodirector", "1", 0);
+	m_pip = gEngfuncs.pfnRegisterVariable("spec_pip", "1", 0);
+
+	if (!m_drawnames || !m_drawcone || !m_drawstatus || !m_autoDirector || !m_pip)
 	{
 		gEngfuncs.Con_Printf("ERROR! Couldn't register all spectator variables.\n");
 		return false;
@@ -189,89 +194,89 @@ bool CHudSpectator::Init()
 	return true;
 }
 
-bool UTIL_FindEntityInMap(const char * name, Vector& origin, Vector& angle)
+bool UTIL_FindEntityInMap(const char* name, Vector& origin, Vector& angle)
 {
-	int				n,found = 0;
-	char			keyname[256];
-	char			token[1024];
+	bool found = false;
 
-	cl_entity_t *	pEnt = gEngfuncs.GetEntityByIndex( 0 );	// get world model
+	std::string_view keyname;
 
-	if ( !pEnt ) return false;
+	cl_entity_t* pEnt = gEngfuncs.GetEntityByIndex(0);	// get world model
 
-	if ( !pEnt->model )	return false;
+	if (!pEnt) return false;
 
-	char * data = pEnt->model->entities;
+	if (!pEnt->model)	return false;
 
-	while (data)
+	CTokenizer tokenizer{pEnt->model->entities};
+
+	while (tokenizer.HasMoreData())
 	{
-		data = gEngfuncs.COM_ParseFile(data, token);
-		
-		if ( (token[0] == '}') ||  (token[0]==0) )
-			break;
+		tokenizer.Next();
 
-		if (!data)
+		if (tokenizer.GetToken().empty() || tokenizer.GetToken() == "}")
 		{
-			gEngfuncs.Con_DPrintf("UTIL_FindEntityInMap: EOF without closing brace\n");
-			return false;
+			break;
 		}
 
-		if (token[0] != '{')
+		if (tokenizer.GetToken() != "{")
 		{
 			gEngfuncs.Con_DPrintf("UTIL_FindEntityInMap: expected {\n");
 			return false;
 		}
 
 		// we parse the first { now parse entities properties
-		
-		while (true)
-		{	
-			// parse key
-			data = gEngfuncs.COM_ParseFile(data, token);
-			if (token[0] == '}')
-				break; // finish parsing this entity
 
-			if (!data)
-			{	
+		while (true)
+		{
+			// parse key
+			if (!tokenizer.Next())
+			{
 				gEngfuncs.Con_DPrintf("UTIL_FindEntityInMap: EOF without closing brace\n");
 				return false;
 			}
 
-			safe_strcpy(keyname, token);
+			if (tokenizer.GetToken() == "}")
+			{
+				break; // finish parsing this entity
+			}
+
+			keyname = tokenizer.GetToken();
 
 			// another hack to fix keynames with trailing spaces
-			n = strlen(keyname);
-			while (n && keyname[n-1] == ' ')
+			std::size_t n = keyname.length();
+			while (n && keyname[n - 1] == ' ')
 			{
-				keyname[n-1] = 0;
-				n--;
+				--n;
 			}
+
+			keyname.remove_suffix(keyname.length() - n);
 			
 			// parse value	
-			data = gEngfuncs.COM_ParseFile(data, token);
-			if (!data)
+			if (!tokenizer.Next())
 			{	
 				gEngfuncs.Con_DPrintf("UTIL_FindEntityInMap: EOF without closing brace\n");
 				return false;
 			}
 
-			if (token[0] == '}')
+			if (tokenizer.GetToken() == "}")
 			{
 				gEngfuncs.Con_DPrintf("UTIL_FindEntityInMap: closing brace without data");
 				return false;
 			}
 
-			if (!strcmp(keyname,"classname"))
+			if (keyname == "classname")
 			{
-				if (!strcmp(token, name ))
+				if (tokenizer.GetToken() == name)
 				{
-					found = 1;	// thats our entity
+					found = true;	// thats our entity
 				}
 			}
 
-			if( !strcmp( keyname, "angle" ) )
+			const std::string value{tokenizer.GetToken()};
+
+			if (keyname == "angle")
 			{
-				float y = atof( token );
+				float y = 0;
+				std::from_chars(value.data(), value.data() + value.length(), y);
 				
 				if (y >= 0)
 				{
@@ -291,15 +296,13 @@ bool UTIL_FindEntityInMap(const char * name, Vector& origin, Vector& angle)
 
 				angle[2] =  0.0f;
 			}
-
-			if( !strcmp( keyname, "angles" ) )
+			else if (keyname == "angles" )
 			{
-				angle = UTIL_StringToVector(token);
+				angle = UTIL_StringToVector(value.c_str());
 			}
-			
-			if (!strcmp(keyname,"origin"))
+			else if (keyname =="origin")
 			{
-				origin = UTIL_StringToVector(token);
+				origin = UTIL_StringToVector(value.c_str());
 			}
 		} // while (1)
 

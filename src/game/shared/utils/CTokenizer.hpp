@@ -37,6 +37,8 @@ public:
 
 	constexpr ~CTokenizer() = default;
 
+	constexpr bool HasMoreData() const { return _offset < _data.length(); }
+
 	bool HasToken() const { return _flags.test(Flag_HasToken); }
 
 	bool ShouldIgnoreColons() const { return _flags.test(Flag_IgnoreColons); }
