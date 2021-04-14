@@ -55,6 +55,7 @@
 
 #include "shake.h"
 #include "screenfade.h"
+#include "CTokenizer.hpp"
 
 extern int g_iVisibleMouse;
 class CCommandMenu;
@@ -606,12 +607,9 @@ int TeamFortressViewport::CreateCommandMenu( const char * menuFile, int directio
 	m_iNumMenus++;
 
 	// Read Command Menu from the txt file
-	char token[1024];
-
 	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer(menuFile);
 
-	char *pfile = reinterpret_cast<char*>(fileBuffer.get());
-	if (!pfile)
+	if (!fileBuffer)
 	{
 		gEngfuncs.Con_DPrintf( "Unable to open %s\n", menuFile);
 		SetCurrentCommandMenu(nullptr);
@@ -623,11 +621,15 @@ int TeamFortressViewport::CreateCommandMenu( const char * menuFile, int directio
 	// Now start parsing the menu structure
 	m_pCurrentCommandMenu = m_pCommandMenus[newIndex];
 	char szLastButtonText[32] = "file start";
-	pfile = gEngfuncs.COM_ParseFile(pfile, token);
-	while ( ( strlen ( token ) > 0 ) && ( m_iNumMenus < MAX_MENUS ) )
+
+	CTokenizer tokenizer{reinterpret_cast<char*>(fileBuffer.get())};
+
+	tokenizer.Next();
+
+	while ( !tokenizer.GetToken().empty() && ( m_iNumMenus < MAX_MENUS ) )
 	{
 		// Keep looping until we hit the end of this menu
-		while ( token[0] != '}' && ( strlen( token ) > 0 ) )
+		while ( tokenizer.GetToken() != "}" && !tokenizer.GetToken().empty())
 		{
 			char cText[32] = "";
 			char cBoundKey[32] = "";
@@ -650,43 +652,38 @@ int TeamFortressViewport::CreateCommandMenu( const char * menuFile, int directio
 			}
 
 			// token should already be the bound key, or the custom name
-			strncpy( cCustom, token, 32 );
-			cCustom[31] = '\0';
+			safe_strcpy(cCustom, tokenizer.GetToken());
 
 			// See if it's a map
 			if (!strcmp(cCustom, "MAP") )
 			{
 				// Get the mapname
-				pfile = gEngfuncs.COM_ParseFile(pfile, token);
-				strncpy( szMap, token, MAX_MAPNAME );
-				szMap[MAX_MAPNAME-1] = '\0';
+				tokenizer.Next();
+				safe_strcpy(szMap, tokenizer.GetToken());
 
 				// Get the next token
-				pfile = gEngfuncs.COM_ParseFile(pfile, token);
+				tokenizer.Next();
 			}
 			else if ( !strncmp(cCustom, "TOGGLE", 6) ) 
 			{
 				iToggle = true;
 				// Get the next token
-				pfile = gEngfuncs.COM_ParseFile(pfile, token);
+				tokenizer.Next();
 			}
 
 			// Get the button bound key
-			strncpy( cBoundKey, token, 32 );
-			cText[31] = '\0';
+			safe_strcpy(cBoundKey, tokenizer.GetToken());
 
 			// Get the button text
-			pfile = gEngfuncs.COM_ParseFile(pfile, token);
-			strncpy( cText, token, 32 );
-			cText[31] = '\0';
+			tokenizer.Next();
+			safe_strcpy(cText, tokenizer.GetToken());
 
 			// save off the last button text we've come across (for error reporting)
 			safe_strcpy( szLastButtonText, cText );
 
 			// Get the button command
-			pfile = gEngfuncs.COM_ParseFile(pfile, token);
-			strncpy( cCommand, token, cCommandLength );
-			cCommand[cCommandLength - 1] = '\0';
+			tokenizer.Next();
+			safe_strcpy(cCommand, tokenizer.GetToken());
 
 			iButtonY = (BUTTON_SIZE_Y-1) * m_pCurrentCommandMenu->GetNumButtons();
 			
@@ -752,14 +749,14 @@ int TeamFortressViewport::CreateCommandMenu( const char * menuFile, int directio
 			// Get the next token
 			if ( bGetExtraToken )
 			{
-				pfile = gEngfuncs.COM_ParseFile(pfile, token);
+				tokenizer.Next();
 			}
 		}
 
 		// Move back up a menu
 		m_pCurrentCommandMenu = m_pCurrentCommandMenu->GetParentMenu();
 
-		pfile = gEngfuncs.COM_ParseFile(pfile, token);
+		tokenizer.Next();
 	}
 
 	SetCurrentMenu(nullptr);
