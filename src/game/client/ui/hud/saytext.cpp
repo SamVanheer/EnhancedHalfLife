@@ -294,14 +294,14 @@ void CHudSayText :: EnsureTextFitsInOneLineAndWrapIfHaveTo( int line )
 					int remaininglen = strlen(last_break);
 
 					if ( (linelen - remaininglen) <= MAX_CHARS_PER_LINE )
-						strcat( g_szLineBuffer[j], last_break );
+						safe_strcat( g_szLineBuffer[j], last_break );
 				}
 				else
 				{
 					if ( (strlen(g_szLineBuffer[j]) - strlen(last_break) - 2) < MAX_CHARS_PER_LINE )
 					{
-						strcat( g_szLineBuffer[j], " " );
-						strcat( g_szLineBuffer[j], last_break );
+						safe_strcat( g_szLineBuffer[j], " " );
+						safe_strcat( g_szLineBuffer[j], last_break );
 					}
 				}
 

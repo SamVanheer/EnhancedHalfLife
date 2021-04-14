@@ -32,6 +32,6 @@ struct mapcycle_t
 	mapcycle_item_t* next_item;
 };
 
-void ExtractCommandString(char* s, char* szCommand);
+void ExtractCommandString(char* s, char* szCommand, std::size_t commandSize);
 bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle);
 void DestroyMapCycle(mapcycle_t* cycle);

@@ -26,7 +26,7 @@ Parse commands/key value pairs to issue right after map xxx command is issued on
  level transition
 ==============
 */
-void ExtractCommandString(char* s, char* szCommand)
+void ExtractCommandString(char* s, char* szCommand, std::size_t commandSize)
 {
 	// Now make rules happen
 	char	pkey[512];
@@ -59,13 +59,13 @@ void ExtractCommandString(char* s, char* szCommand)
 		}
 		*o = 0;
 
-		strcat(szCommand, pkey);
+		safe_strcat(szCommand, pkey, commandSize);
 		if (strlen(value) > 0)
 		{
-			strcat(szCommand, " ");
-			strcat(szCommand, value);
+			safe_strcat(szCommand, " ", commandSize);
+			safe_strcat(szCommand, value, commandSize);
 		}
-		strcat(szCommand, "\n");
+		safe_strcat(szCommand, "\n", commandSize);
 
 		if (!*s)
 			return;

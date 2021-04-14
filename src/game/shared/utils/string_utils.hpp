@@ -56,6 +56,47 @@ inline char* safe_strcpy(char(&dst)[Size], std::string_view src)
 	return safe_strcpy(dst, src, Size);
 }
 
+/**
+*	@brief Appends src to dest and always null terminates the result
+*	@param dst Buffer to append the string to
+*	@param src String to copy
+*	@param len_dst Size of the destination buffer, in bytes
+*	@return If the destination buffer length is not 0 and if there is room to append some or all of src, returns dst. Otherwise returns nullptr
+*/
+inline char* safe_strcat(char* dst, const char* src, std::size_t len_dst)
+{
+	if (len_dst <= 0)
+	{
+		return nullptr; // this is bad
+	}
+
+	const std::size_t srcLength = strlen(src);
+
+	//Nothing to add
+	if (srcLength == 0)
+	{
+		return dst;
+	}
+
+	const std::size_t dstLengthSoFar = strlen(dst);
+
+	const std::size_t spaceLeft = len_dst - dstLengthSoFar;
+
+	//Include the null terminator in src so everything is measuring the full thing to add
+	const std::size_t amountToCopy = std::min(spaceLeft, srcLength + 1);
+
+	strncat(dst, src, amountToCopy - 1);
+	dst[dstLengthSoFar + amountToCopy] = '\0';
+
+	return dst;
+}
+
+template<std::size_t Size>
+inline char* safe_strcat(char(&dst)[Size], const char* src)
+{
+	return safe_strcat(dst, src, Size);
+}
+
 inline int safe_snprintf(char* dst, int len_dst, const char* format, ...)
 {
 	if (len_dst <= 0)

@@ -935,7 +935,7 @@ void CBasePlayer::SetAnimation( PLAYER_ANIM playerAnim )
 			safe_strcpy( szAnim, "crouch_shoot_" );
 		else
 			safe_strcpy( szAnim, "ref_shoot_" );
-		strcat( szAnim, m_szAnimExtention );
+		safe_strcat( szAnim, m_szAnimExtention );
 		animDesired = LookupSequence( szAnim );
 		if (animDesired == -1)
 			animDesired = 0;
@@ -963,7 +963,7 @@ void CBasePlayer::SetAnimation( PLAYER_ANIM playerAnim )
 				safe_strcpy( szAnim, "crouch_aim_" );
 			else
 				safe_strcpy( szAnim, "ref_aim_" );
-			strcat( szAnim, m_szAnimExtention );
+			safe_strcat( szAnim, m_szAnimExtention );
 			animDesired = LookupSequence( szAnim );
 			if (animDesired == -1)
 				animDesired = 0;
@@ -2191,7 +2191,7 @@ void CBasePlayer::CheckSuitUpdate()
 
 				char sentence[CBSENTENCENAME_MAX+1];
 				safe_strcpy(sentence, "!");
-				strcat(sentence, gszallsentencenames[isentence]);
+				safe_strcat(sentence, gszallsentencenames[isentence]);
 				EMIT_SOUND_SUIT(ENT(pev), sentence);
 			}
 			else

@@ -1059,9 +1059,9 @@ int USENTENCEG_PickSequential(int isentenceg, char *szfound, std::size_t foundSi
 		ipick = count-1;
 
 	safe_strcpy(szfound, "!", foundSize);
-	strcat(szfound, szgroupname);
+	safe_strcat(szfound, szgroupname, foundSize);
 	snprintf(sznum, sizeof(sznum), "%d", ipick);
-	strcat(szfound, sznum);
+	safe_strcat(szfound, sznum, foundSize);
 	
 	if (ipick >= count)
 	{
@@ -1121,9 +1121,9 @@ int USENTENCEG_Pick(int isentenceg, char *szfound, std::size_t foundSize)
 		else
 		{
 			safe_strcpy(szfound, "!", foundSize);
-			strcat(szfound, szgroupname);
+			safe_strcat(szfound, szgroupname, foundSize);
 			snprintf(sznum, sizeof(sznum), "%d", ipick);
-			strcat(szfound, sznum);
+			safe_strcat(szfound, sznum, foundSize);
 			return ipick;
 		}
 	}
@@ -1245,9 +1245,9 @@ void SENTENCEG_Stop(edict_t *entity, int isentenceg, int ipick)
 		return;
 	
 	safe_strcpy(buffer, "!");
-	strcat(buffer, rgsentenceg[isentenceg].szgroupname);
+	safe_strcat(buffer, rgsentenceg[isentenceg].szgroupname);
 	snprintf(sznum, sizeof(sznum), "%d", ipick);
-	strcat(buffer, sznum);
+	safe_strcat(buffer, sznum);
 
 	STOP_SOUND(entity, CHAN_VOICE, buffer);
 }
@@ -1397,7 +1397,7 @@ int SENTENCEG_Lookup(const char *sample, char *sentencenum, std::size_t sentence
 			{
 				safe_strcpy(sentencenum, "!", sentencenumSize);
 				snprintf(sznum, sizeof(sznum), "%d", i);
-				strcat(sentencenum, sznum);
+				safe_strcat(sentencenum, sznum, sentencenumSize);
 			}
 			return i;
 		}

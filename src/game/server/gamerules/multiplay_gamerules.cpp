@@ -835,40 +835,40 @@ void CHalfLifeMultiplay::DeathNotice( CBasePlayer *pVictim, entvars_t *pKiller, 
 	{
 		// killed by a monster
 		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
-		strcat ( szText, " was killed by a monster.\n" );
+		safe_strcat ( szText, " was killed by a monster.\n" );
 		return;
 	}
 
 	if ( pKiller == pVictim->pev )
 	{
 		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
-		strcat ( szText, " commited suicide.\n" );
+		safe_strcat ( szText, " commited suicide.\n" );
 	}
 	else if ( pKiller->flags & FL_CLIENT )
 	{
 		safe_strcpy ( szText, STRING( pKiller->netname ) );
 
-		strcat( szText, " : " );
-		strcat( szText, killer_weapon_name );
-		strcat( szText, " : " );
+		safe_strcat( szText, " : " );
+		safe_strcat( szText, killer_weapon_name );
+		safe_strcat( szText, " : " );
 
-		strcat ( szText, STRING( pVictim->pev->netname ) );
-		strcat ( szText, "\n" );
+		safe_strcat ( szText, STRING( pVictim->pev->netname ) );
+		safe_strcat ( szText, "\n" );
 	}
 	else if ( FClassnameIs ( pKiller, "worldspawn" ) )
 	{
 		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
-		strcat ( szText, " fell or drowned or something.\n" );
+		safe_strcat ( szText, " fell or drowned or something.\n" );
 	}
 	else if ( pKiller->solid == SOLID_BSP )
 	{
 		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
-		strcat ( szText, " was mooshed.\n" );
+		safe_strcat ( szText, " was mooshed.\n" );
 	}
 	else
 	{
 		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
-		strcat ( szText, " died mysteriously.\n" );
+		safe_strcat ( szText, " died mysteriously.\n" );
 	}
 
 	UTIL_ClientPrintAll( szText );
@@ -1265,7 +1265,7 @@ void CHalfLifeMultiplay :: ChangeLevel()
 		// Perform logic on current item
 		safe_strcpy( szNextMap, item->mapname );
 
-		ExtractCommandString( item->rulebuffer, szCommands );
+		ExtractCommandString( item->rulebuffer, szCommands, sizeof(szCommands) );
 		safe_strcpy( szRules, item->rulebuffer );
 	}
 

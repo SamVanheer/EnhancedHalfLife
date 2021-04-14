@@ -288,8 +288,8 @@ void Host_Say( edict_t *pEntity, int teamonly )
 	if ( (int)strlen(p) > j )
 		p[j] = 0;
 
-	strcat( text, p );
-	strcat( text, "\n" );
+	safe_strcat( text, p );
+	safe_strcat( text, "\n" );
 
 
 	player->m_flNextChatTime = gpGlobals->time + CHAT_INTERVAL;
