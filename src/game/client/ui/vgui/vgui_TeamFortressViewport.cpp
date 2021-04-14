@@ -1614,10 +1614,7 @@ bool TeamFortressViewport::MsgFunc_MOTD( const char *pszName, int iSize, void *p
 
 	m_iGotAllMOTD = reader.ReadByte();
 
-	int roomInArray = sizeof(m_szMOTD) - strlen(m_szMOTD) - 1;
-
-	strncat( m_szMOTD, reader.ReadString(), roomInArray >= 0 ? roomInArray : 0 );
-	m_szMOTD[ sizeof(m_szMOTD)-1 ] = '\0';
+	safe_strcat( m_szMOTD, reader.ReadString() );
 
 	// don't show MOTD for HLTV spectators
 	if ( m_iGotAllMOTD && !gEngfuncs.IsSpectateOnly() )
