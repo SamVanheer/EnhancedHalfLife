@@ -15,6 +15,9 @@
 //
 // $NoKeywords: $
 //=============================================================================
+
+#include <string>
+
 #include<VGUI_Cursor.h>
 #include<VGUI_Frame.h>
 #include<VGUI_Label.h>
@@ -985,10 +988,6 @@ void TeamFortressViewport::UpdatePlayerMenu(int menuIndex)
 
 }
 
-
-
-void COM_FileBase ( const char *in, char *out);
-
 void TeamFortressViewport::UpdateSpectatorPanel()
 {
 	m_iUser1 = g_iUser1;
@@ -1091,10 +1090,9 @@ void TeamFortressViewport::UpdateSpectatorPanel()
 		else
 		{
 			// otherwise show map name
-			char szMapName[64];
-			COM_FileBase( gEngfuncs.pfnGetLevelName(), szMapName );
+			const std::string szMapName{COM_FileBase(gEngfuncs.pfnGetLevelName())};
 
-			snprintf( szText, sizeof(szText), "%s: %s",CHudTextMessage::BufferedLocaliseTextString( "#Spec_Map" ), szMapName );
+			snprintf( szText, sizeof(szText), "%s: %s",CHudTextMessage::BufferedLocaliseTextString( "#Spec_Map" ), szMapName.c_str() );
 		}
 
 		m_pSpectatorPanel->m_ExtraInfo->setText ( szText );

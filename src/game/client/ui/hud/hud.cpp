@@ -436,65 +436,19 @@ bool CHud::MsgFunc_Logo(const char *pszName,  int iSize, void *pbuf)
 float g_lastFOV = 0.0;
 
 /*
-============
-COM_FileBase
-============
-*/
-// Extracts the base name of a file (no path, no extension, assumes '/' as path separator)
-//TODO: use string_view
-void COM_FileBase ( const char *in, char *out)
-{
-	int len, start, end;
-
-	len = strlen( in );
-	
-	// scan backward for '.'
-	end = len - 1;
-	while ( end && in[end] != '.' && in[end] != '/' && in[end] != '\\' )
-		end--;
-	
-	if ( in[end] != '.' )		// no '.', copy to end
-		end = len-1;
-	else 
-		end--;					// Found ',', copy to left of '.'
-
-
-	// Scan backward for '/'
-	start = len-1;
-	while ( start >= 0 && in[start] != '/' && in[start] != '\\' )
-		start--;
-
-	if ( in[start] != '/' && in[start] != '\\' )
-		start = 0;
-	else 
-		start++;
-
-	// Length of new sting
-	len = end - start + 1;
-
-	// Copy partial string
-	strncpy( out, &in[start], len );
-	// Terminate it
-	out[len] = 0;
-}
-
-/*
 =================
 HUD_IsGame
 
 =================
 */
-bool HUD_IsGame( const char *game )
+bool HUD_IsGame(std::string_view game)
 {
-	const char *gamedir;
-	char gd[ 1024 ];
-
-	gamedir = gEngfuncs.pfnGetGameDirectory();
-	if ( gamedir && gamedir[0] )
+	std::string_view gamedir = gEngfuncs.pfnGetGameDirectory();
+	if ( gamedir[0] )
 	{
-		COM_FileBase( gamedir, gd );
-		if ( !stricmp( gd, game ) )
-			return true;
+		auto gd = COM_FileBase(gamedir);
+
+		return UTIL_IEquals(gd, game);
 	}
 	return false;
 }

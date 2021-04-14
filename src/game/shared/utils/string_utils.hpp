@@ -101,3 +101,10 @@ Vector UTIL_StringToVector(const char* pString);
 float UTIL_StringToFloat(std::string_view str, float defaultValue = 0);
 
 int UTIL_StringToInt(std::string_view str, int defaultValue = 0);
+
+/**
+*	@brief Extracts the base name of a file (no path, no extension, assumes '/' as path separator)
+*/
+std::string_view COM_FileBase(std::string_view in);
+
+bool UTIL_IEquals(std::string_view lhs, std::string_view rhs);

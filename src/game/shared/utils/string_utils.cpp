@@ -13,6 +13,7 @@
 *
 ****/
 
+#include <algorithm>
 #include <cctype>
 #include <charconv>
 #include <cstdint>
@@ -177,4 +178,48 @@ int UTIL_StringToInt(std::string_view str, int defaultValue)
 	int result = defaultValue;
 	std::from_chars(str.data(), str.data() + str.length(), result);
 	return result;
+}
+
+std::string_view COM_FileBase(std::string_view in)
+{
+	// scan backward for '.'
+	std::size_t end = in.find_last_of("./\\");
+
+	if (end == std::string_view::npos)
+	{
+		// no '.', copy to end
+		end = in.length() - 1;
+	}
+	else
+	{
+		// Found '.', copy to left of '.'
+		--end;
+	}
+
+	// Scan backward for '/'
+	std::size_t start = in.find_last_of("/\\");
+
+	if (start == std::string_view::npos)
+	{
+		start = 0;
+	}
+	else
+	{
+		++start;
+	}
+
+	// Length of new sting
+	const size_t len = end - start + 1;
+
+	return in.substr(start, len);
+}
+
+bool UTIL_IEquals(std::string_view lhs, std::string_view rhs)
+{
+	auto result = std::mismatch(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), [](char l, char r)
+		{
+			return toupper(l) == toupper(r);
+		});
+
+	return result.first == lhs.end() && result.second == rhs.end();
 }

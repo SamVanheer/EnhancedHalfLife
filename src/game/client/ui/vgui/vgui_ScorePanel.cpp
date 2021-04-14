@@ -34,8 +34,6 @@
 team_info_t			 g_TeamInfo[MAX_TEAMS+1];
 int					 g_IsSpectator[MAX_PLAYERS+1];
 
-bool HUD_IsGame( const char *game );
-
 // Scoreboard dimensions
 #define SBOARD_TITLE_SIZE_Y			YRES(22)
 
