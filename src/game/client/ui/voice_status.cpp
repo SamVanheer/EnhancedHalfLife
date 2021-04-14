@@ -22,7 +22,7 @@
 #include "vgui_loadtga.h"
 #include "vgui_helpers.h"
 #include "VGUI_MouseCode.h"
-
+#include "CTokenizer.hpp"
 
 
 using namespace vgui;
@@ -259,11 +259,14 @@ bool CVoiceStatus::VidInit()
 
 	if(fileBuffer)
 	{
-		char token[4096];
-		gEngfuncs.COM_ParseFile(reinterpret_cast<char*>(fileBuffer.get()), token);
-		if(token[0] >= '0' && token[0] <= '9')
+		CTokenizer tokenizer{reinterpret_cast<char*>(fileBuffer.get())};
+
+		tokenizer.Next();
+
+		const auto token = tokenizer.GetToken();
+		if(token.length() > 0 && token[0] >= '0' && token[0] <= '9')
 		{
-			m_VoiceHeadModelHeight = (float)atof(token);
+			m_VoiceHeadModelHeight = UTIL_StringToFloat(token);
 		}
 	}
 
