@@ -35,7 +35,7 @@ public:
 	{
 	}
 
-	constexpr ~CTokenizer() = default;
+	~CTokenizer() = default;
 
 	constexpr bool HasMoreData() const { return _offset < _data.length(); }
 
