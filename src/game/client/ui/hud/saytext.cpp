@@ -116,37 +116,33 @@ bool CHudSayText :: Draw( float flTime )
 		}
 	}
 
-	for ( int i = 0; i < MAX_LINES; i++ )
+	char tempBuffer[MAX_CHARS_PER_LINE]{};
+
+	const int MaxPlayerStringLength = MAX_PLAYER_NAME_LENGTH + 32;
+
+	static_assert(MaxPlayerStringLength <= MAX_CHARS_PER_LINE);
+
+	for (int i = 0; i < MAX_LINES; i++)
 	{
-		if ( *g_szLineBuffer[i] )
+		if (*g_szLineBuffer[i])
 		{
-			if ( *g_szLineBuffer[i] == 2 && g_pflNameColors[i] )
+			if (*g_szLineBuffer[i] == 2 && g_pflNameColors[i])
 			{
 				// it's a saytext string
-				char *buf = static_cast<char *>( _alloca( strlen( g_szLineBuffer[i] ) ) );
-				if ( buf )
-				{
-					//char buf[MAX_PLAYER_NAME_LENGTH+32];
 
-					// draw the first x characters in the player color
-					strncpy( buf, g_szLineBuffer[i], std::min(g_iNameLengths[i], MAX_PLAYER_NAME_LENGTH+32) );
-					buf[std::min(g_iNameLengths[i], MAX_PLAYER_NAME_LENGTH+31) ] = 0;
-					gEngfuncs.pfnDrawSetTextColor( g_pflNameColors[i][0], g_pflNameColors[i][1], g_pflNameColors[i][2] );
-					int x = DrawConsoleString( LINE_START, y, buf + 1 ); // don't draw the control code at the start
-					strncpy( buf, g_szLineBuffer[i] + g_iNameLengths[i], strlen( g_szLineBuffer[i] ));
-					buf[ strlen( g_szLineBuffer[i] + g_iNameLengths[i] ) - 1 ] = '\0';
-					// color is reset after each string draw
-					DrawConsoleString( x, y, buf ); 
-				}
-				else
-				{
-					assert( "Not able to alloca chat buffer!\n");
-				}
+				// draw the first x characters in the player color
+				safe_strcpy(tempBuffer, g_szLineBuffer[i], std::min(g_iNameLengths[i] + 1, MaxPlayerStringLength));
+				gEngfuncs.pfnDrawSetTextColor(g_pflNameColors[i][0], g_pflNameColors[i][1], g_pflNameColors[i][2]);
+				const int x = DrawConsoleString(LINE_START, y, tempBuffer + 1); // don't draw the control code at the start
+
+				safe_strcpy(tempBuffer, g_szLineBuffer[i] + g_iNameLengths[i]);
+				// color is reset after each string draw
+				DrawConsoleString(x, y, tempBuffer);
 			}
 			else
 			{
 				// normal draw
-				DrawConsoleString( LINE_START, y, g_szLineBuffer[i] );
+				DrawConsoleString(LINE_START, y, g_szLineBuffer[i]);
 			}
 		}
 
