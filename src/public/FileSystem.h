@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"
 #include "interface.h"
 
 //-----------------------------------------------------------------------------

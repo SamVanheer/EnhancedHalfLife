@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"
 #include "custom.h"
 
 struct clientdata_t;

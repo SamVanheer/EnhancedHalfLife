@@ -164,7 +164,6 @@ target_sources(client PRIVATE
 	ui/vgui/utils/vgui_slider2.h
 	ui/vgui/utils/voice_banmgr.cpp
 	ui/vgui/utils/voice_banmgr.h
-	../../public/archtypes.h
 	../../public/con_nprint.h
 	../../public/const.h
 	../../public/crc.h

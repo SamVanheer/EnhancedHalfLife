@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"
 
 // MD5 Hash
 struct MD5Context_t

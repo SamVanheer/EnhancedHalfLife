@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"
 
 //
 // Misc utility code

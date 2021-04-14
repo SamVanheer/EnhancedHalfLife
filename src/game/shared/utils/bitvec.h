@@ -10,7 +10,7 @@
 #include <cassert>
 #include <cstring>
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"
 
 class CBitVecAccessor
 {

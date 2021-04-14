@@ -24,7 +24,7 @@
 // This is conveniently done for them in extdll.h
 //
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"
 #include "cvardef.h"
 #include "Sequence.h"
 #include "crc.h"

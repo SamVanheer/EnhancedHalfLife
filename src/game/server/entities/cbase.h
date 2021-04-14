@@ -45,7 +45,7 @@ constexpr int FCAP_MASTER = 0x00000080;				//!< Can be used to "master" other en
 // UNDONE: This will ignore transition volumes (trigger_transition), but not the PVS!!!
 constexpr int FCAP_FORCE_TRANSITION = 0x00000080;	//!< ALWAYS goes across transitions
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"
 #include "saverestore.hpp"
 #include "globalstate.hpp"
 #include "schedule.h"

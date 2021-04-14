@@ -5,7 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"

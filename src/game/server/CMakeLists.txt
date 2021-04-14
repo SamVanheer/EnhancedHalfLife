@@ -171,7 +171,6 @@ target_sources(hl PRIVATE
 	server_interface/game.h
 	server_interface/server_interface.cpp
 	server_interface/server_interface.hpp
-	../../public/archtypes.h
 	../../public/const.h
 	../../public/crc.h
 	../../public/cvardef.h

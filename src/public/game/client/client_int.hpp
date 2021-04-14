@@ -1,6 +1,6 @@
 #pragma once
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"
 #include "netadr.h"
 
 struct cl_enginefunc_t;

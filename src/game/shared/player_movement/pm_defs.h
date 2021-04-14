@@ -15,7 +15,8 @@
 
 #pragma once
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"
+
 constexpr int MAX_PHYSENTS = 600; 		  //!< Must have room for all entities in the world. (can break if num_edicts is greater than this)
 constexpr int MAX_MOVEENTS = 64;
 constexpr int MAX_CLIP_PLANES = 5;

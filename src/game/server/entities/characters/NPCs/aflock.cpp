@@ -13,8 +13,6 @@
 *
 ****/
 
-#include "archtypes.h"     // DAL
-
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"
