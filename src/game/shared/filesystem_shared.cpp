@@ -62,8 +62,7 @@ bool FileSystem_LoadFileSystem()
 
 #ifndef CLIENT_DLL
 	//Just use the filename for the server. No COM_ExpandFilename here.
-	strncpy(szFSDir, szFsModule, sizeof(szFSDir) - 1);
-	szFSDir[sizeof(szFSDir) - 1] = '\0';
+	safe_strcpy(szFSDir, szFsModule);
 #else
 	if (gEngfuncs.COM_ExpandFilename(szFsModule, szFSDir, sizeof(szFSDir)) == false)
 	{

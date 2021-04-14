@@ -721,8 +721,7 @@ void CHudSpectator::DirectorMessage( int iSize, void *pbuf )
 								msg->holdtime	= reader.ReadFloat();	// holdtime
 								msg->fxtime		= reader.ReadFloat();	// fxtime;
 
-								strncpy( m_HUDMessageText[m_lastHudMessage], reader.ReadString(), 128 );
-								m_HUDMessageText[m_lastHudMessage][127]=0;	// text 
+								safe_strcpy( m_HUDMessageText[m_lastHudMessage], reader.ReadString() );
 
 								msg->pMessage = m_HUDMessageText[m_lastHudMessage];
 								msg->pName	  = "HUD_MESSAGE";

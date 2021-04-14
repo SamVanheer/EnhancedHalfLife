@@ -270,8 +270,7 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 				pScheme = &tmpSchemes[currentScheme];
 				hasFgColor = hasBgColor = hasArmedFgColor = hasArmedBgColor = hasMouseDownFgColor = hasMouseDownBgColor = false;
 
-				strncpy(pScheme->schemeName, paramValue, CScheme::SCHEME_NAME_LENGTH);
-				pScheme->schemeName[CScheme::SCHEME_NAME_LENGTH - 1] = '\0'; // ensure null termination of string
+				safe_strcpy(pScheme->schemeName, paramValue);
 			}
 
 			if (!pScheme)
@@ -283,8 +282,7 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 			// pull the data out into the scheme
 			if (!stricmp(paramName, "FontName"))
 			{
-				strncpy(pScheme->fontName, paramValue, CScheme::FONT_NAME_LENGTH);
-				pScheme->fontName[CScheme::FONT_NAME_LENGTH - 1] = 0;
+				safe_strcpy(pScheme->fontName, paramValue);
 			}
 			else if (!stricmp(paramName, "FontSize"))
 			{

@@ -190,8 +190,7 @@ bool CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *
 	else
 	{
 		rgDeathNoticeList[i].KillerColor = GetClientColor( killer );
-		strncpy( rgDeathNoticeList[i].szKiller, killer_name, MAX_PLAYER_NAME_LENGTH );
-		rgDeathNoticeList[i].szKiller[MAX_PLAYER_NAME_LENGTH-1] = 0;
+		safe_strcpy( rgDeathNoticeList[i].szKiller, killer_name );
 	}
 
 	// Get the Victim's name
@@ -207,8 +206,7 @@ bool CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *
 	else
 	{
 		rgDeathNoticeList[i].VictimColor = GetClientColor( victim );
-		strncpy( rgDeathNoticeList[i].szVictim, victim_name, MAX_PLAYER_NAME_LENGTH );
-		rgDeathNoticeList[i].szVictim[MAX_PLAYER_NAME_LENGTH-1] = 0;
+		safe_strcpy( rgDeathNoticeList[i].szVictim, victim_name );
 	}
 
 	// Is it a non-player object kill?

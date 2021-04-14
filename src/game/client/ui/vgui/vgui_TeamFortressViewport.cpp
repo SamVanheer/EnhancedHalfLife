@@ -1042,8 +1042,7 @@ void TeamFortressViewport::UpdateSpectatorPanel()
 		// create player & health string
 		if ( player && name )
 		{
-			strncpy( bottomText, name, sizeof(bottomText) );
-			bottomText[ sizeof(bottomText) - 1 ] = 0;
+			safe_strcpy( bottomText, name );
 			pBottomText = bottomText;
 		}
 		else
@@ -1228,8 +1227,7 @@ CMenuPanel* TeamFortressViewport::CreateTextWindow( int iTextToShow )
 
 		cText = reinterpret_cast<char*>(fileBuffer.get());
 
-		strncpy( cTitle, m_sMapName, MAX_TITLE_LENGTH );
-		cTitle[MAX_TITLE_LENGTH-1] = 0;
+		safe_strcpy( cTitle, m_sMapName );
 	}
 	else if ( iTextToShow == SHOW_SPECHELP )
 	{
@@ -1600,8 +1598,7 @@ bool TeamFortressViewport::MsgFunc_VGUIMenu(const char *pszName, int iSize, void
 	// Map briefing includes the name of the map (because it's sent down before the client knows what map it is)
 	if (iMenu == MENU_MAPBRIEFING)
 	{
-		strncpy( m_sMapName, reader.ReadString(), sizeof(m_sMapName) );
-		m_sMapName[ sizeof(m_sMapName) - 1 ] = '\0';
+		safe_strcpy( m_sMapName, reader.ReadString() );
 	}
 
 	// Bring up the menu6
@@ -1637,8 +1634,7 @@ bool TeamFortressViewport::MsgFunc_ServerName( const char *pszName, int iSize, v
 {
 	BufferReader reader{pbuf, iSize};
 
-	strncpy( m_szServerName, reader.ReadString(), sizeof(m_szServerName) );
-	m_szServerName[sizeof(m_szServerName) - 1] = 0;
+	safe_strcpy( m_szServerName, reader.ReadString() );
 
 	return true;
 }
@@ -1714,7 +1710,7 @@ bool TeamFortressViewport::MsgFunc_TeamInfo( const char *pszName, int iSize, voi
 	if ( cl > 0 && cl <= MAX_PLAYERS )
 	{  
 		// set the players team
-		strncpy( g_PlayerExtraInfo[cl].teamname, reader.ReadString(), MAX_TEAM_NAME );
+		safe_strcpy( g_PlayerExtraInfo[cl].teamname, reader.ReadString() );
 	}
 
 	// rebuild the list of teams

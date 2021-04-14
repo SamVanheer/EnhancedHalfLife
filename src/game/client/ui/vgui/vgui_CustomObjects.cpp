@@ -151,8 +151,7 @@ void CommandButton::RecalculateText()
 
 void CommandButton::setText( const char *text )
 {
-	strncpy( m_sMainText, text, MAX_BUTTON_SIZE );
-	m_sMainText[MAX_BUTTON_SIZE-1] = 0;
+	safe_strcpy( m_sMainText, text );
 
 	RecalculateText();
 }

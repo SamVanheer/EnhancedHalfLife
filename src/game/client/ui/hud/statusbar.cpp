@@ -133,7 +133,7 @@ void CHudStatusBar :: ParseStatusString( int line_num )
 							gEngfuncs.pfnGetPlayerInfo( indexval, &g_PlayerInfoList[indexval] );
 							if ( g_PlayerInfoList[indexval].name != nullptr)
 							{
-								strncpy( szRepString, g_PlayerInfoList[indexval].name, MAX_PLAYER_NAME_LENGTH );
+								safe_strcpy( szRepString, g_PlayerInfoList[indexval].name );
 								m_pflNameColors[line_num] = GetClientColor( indexval );
 							}
 							else
@@ -225,8 +225,7 @@ bool CHudStatusBar :: MsgFunc_StatusText( const char *pszName, int iSize, void *
 	if ( line < 0 || line > MAX_STATUSBAR_LINES )
 		return true;
 
-	strncpy( m_szStatusText[line], reader.ReadString(), MAX_STATUSTEXT_LENGTH );
-	m_szStatusText[line][MAX_STATUSTEXT_LENGTH-1] = 0;  // ensure it's null terminated ( strncpy() won't null terminate if read string too long)
+	safe_strcpy( m_szStatusText[line], reader.ReadString() );
 
 	m_iFlags |= HUD_ACTIVE;
 	m_bReparseString = true;

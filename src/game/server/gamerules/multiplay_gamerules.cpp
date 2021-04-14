@@ -1324,8 +1324,7 @@ void CHalfLifeMultiplay :: SendMOTDToClient( edict_t *client )
 		}
 		else
 		{
-			strncpy( chunk, pFileList, MAX_MOTD_CHUNK );
-			chunk[MAX_MOTD_CHUNK] = 0;		// strncpy doesn't always append the null terminator
+			safe_strcpy( chunk, pFileList );
 		}
 
 		char_count += strlen( chunk );

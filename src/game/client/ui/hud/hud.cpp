@@ -364,7 +364,7 @@ void CHud :: VidInit()
 					snprintf(sz, sizeof(sz), "sprites/%s.spr", p->szSprite);
 					m_rghSprites[index] = SPR_Load(sz);
 					m_rgrcRects[index] = p->rc;
-					strncpy( &m_rgszSpriteNames[index * MAX_SPRITE_NAME_LENGTH], p->szName, MAX_SPRITE_NAME_LENGTH );
+					safe_strcpy( &m_rgszSpriteNames[index * MAX_SPRITE_NAME_LENGTH], p->szName, MAX_SPRITE_NAME_LENGTH );
 
 					index++;
 				}
@@ -441,6 +441,7 @@ COM_FileBase
 ============
 */
 // Extracts the base name of a file (no path, no extension, assumes '/' as path separator)
+//TODO: use string_view
 void COM_FileBase ( const char *in, char *out)
 {
 	int len, start, end;

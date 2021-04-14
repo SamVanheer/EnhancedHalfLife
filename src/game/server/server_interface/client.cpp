@@ -479,8 +479,7 @@ void ClientCommand( edict_t *pEntity )
 
 		// check the length of the command (prevents crash)
 		// max total length is 192 ...and we're adding a string below ("Unknown command: %s\n")
-		strncpy( command, pcmd, 127 );
-		command[127] = '\0';
+		safe_strcpy( command, pcmd );
 
 		// tell the user they entered an unknown command
 		ClientPrint( &pEntity->v, HUD_PRINTCONSOLE, UTIL_VarArgs( "Unknown command: %s\n", command ) );
@@ -508,8 +507,7 @@ void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 	{
 		char sName[256];
 		char *pName = g_engfuncs.pfnInfoKeyValue( infobuffer, "name" );
-		strncpy( sName, pName, sizeof(sName) - 1 );
-		sName[ sizeof(sName) - 1 ] = '\0';
+		safe_strcpy( sName, pName );
 
 		// First parse the name and remove any %'s
 		for ( char *pApersand = sName; pApersand != nullptr && *pApersand != 0; pApersand++ )

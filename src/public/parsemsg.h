@@ -280,7 +280,7 @@ public:
 			return;
 		}
 
-		strncpy(reinterpret_cast<char*>(_buffer.GetCurrentData()), str, len);
+		safe_strcpy(reinterpret_cast<char*>(_buffer.GetCurrentData()), str, len);
 
 		_buffer.Advance(len);
 	}

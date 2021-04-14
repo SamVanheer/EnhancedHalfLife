@@ -696,8 +696,7 @@ void UTIL_HudMessage( CBaseEntity *pEntity, const hudtextparms_t &textparms, con
 		else
 		{
 			char tmp[512];
-			strncpy( tmp, pMessage, 511 );
-			tmp[511] = 0;
+			safe_strcpy( tmp, pMessage );
 			WRITE_STRING( tmp );
 		}
 	MESSAGE_END();

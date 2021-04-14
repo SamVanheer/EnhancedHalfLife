@@ -604,15 +604,13 @@ protected:
 public:
 	CMenuHandler_StringCommand( const char *pszCommand )
 	{
-		strncpy( m_pszCommand, pszCommand, MAX_COMMAND_SIZE);
-		m_pszCommand[MAX_COMMAND_SIZE-1] = '\0';
+		safe_strcpy( m_pszCommand, pszCommand);
 		m_iCloseVGUIMenu = false;
 	}
 
 	CMenuHandler_StringCommand( const char *pszCommand, int iClose )
 	{
-		strncpy( m_pszCommand, pszCommand, MAX_COMMAND_SIZE);
-		m_pszCommand[MAX_COMMAND_SIZE-1] = '\0';
+		safe_strcpy( m_pszCommand, pszCommand);
 		m_iCloseVGUIMenu = true;
 	}
 
@@ -802,8 +800,7 @@ protected:
 public:
 	CMenuHandler_SpectateFollow( char *player )
 	{
-		strncpy( m_szplayer, player, MAX_COMMAND_SIZE);
-		m_szplayer[MAX_COMMAND_SIZE-1] = '\0';
+		safe_strcpy( m_szplayer, player);
 	}
 
 	virtual void actionPerformed(Panel* panel)
