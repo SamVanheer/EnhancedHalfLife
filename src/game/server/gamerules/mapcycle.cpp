@@ -16,6 +16,7 @@
 #include "extdll.h"
 #include "util.h"
 #include "mapcycle.hpp"
+#include "CTokenizer.hpp"
 
 /*
 ==============
@@ -93,7 +94,7 @@ bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 
 	if (fileBuffer && length)
 	{
-		char* pFileList = reinterpret_cast<char*>(fileBuffer.get());
+		CTokenizer tokenizer{reinterpret_cast<char*>(fileBuffer.get())};
 
 		// the first map name in the file becomes the default
 		while (true)
@@ -101,20 +102,20 @@ bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 			hasbuffer = 0;
 			memset(szBuffer, 0, MAX_RULE_BUFFER);
 
-			pFileList = COM_Parse(pFileList);
-			if (strlen(com_token) <= 0)
+			tokenizer.Next();
+			if (tokenizer.GetToken().empty())
 				break;
 
-			safe_strcpy(szMap, com_token);
+			safe_strcpy(szMap, tokenizer.GetToken());
 
 			// Any more tokens on this line?
-			if (COM_TokenWaiting(pFileList))
+			if (tokenizer.TokenWaiting())
 			{
-				pFileList = COM_Parse(pFileList);
-				if (strlen(com_token) > 0)
+				tokenizer.Next();
+				if (!tokenizer.GetToken().empty())
 				{
 					hasbuffer = 1;
-					safe_strcpy(szBuffer, com_token);
+					safe_strcpy(szBuffer, tokenizer.GetToken());
 				}
 			}
 

@@ -34,6 +34,8 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/bitvec.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CStringPool.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CStringPool.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CTokenizer.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CTokenizer.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/shared_utils.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/shared_utils.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/string_utils.cpp

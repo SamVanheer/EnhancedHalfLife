@@ -107,17 +107,19 @@ bool V_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut)
 	return bError;
 }
 
-char* Q_UnicodeAdvance(char* pUTF8, int nChars)
+std::size_t Q_UnicodeAdvance(const char* pUTF8, int nChars)
 {
 	char32_t uVal;
 	bool bError;
 
-	for (;nChars > 0 && *pUTF8; --nChars)
+	auto next = pUTF8;
+
+	for (; nChars > 0 && *pUTF8; --nChars)
 	{
-		pUTF8 += Q_UTF8ToUChar32(pUTF8, uVal, bError);
+		next += Q_UTF8ToUChar32(next, uVal, bError);
 	}
 
-	return pUTF8;
+	return next - pUTF8;
 }
 
 bool Q_UnicodeValidate(const char* pUTF8)
@@ -134,151 +136,6 @@ bool Q_UnicodeValidate(const char* pUTF8)
 		pUTF8 += nCharSize;
 	}
 	return true;
-}
-
-static bool s_com_token_unget = false;
-bool com_ignorecolons = false;
-
-void COM_UngetToken()
-{
-	s_com_token_unget = true;
-}
-
-//TODO: refactor this to return string_view
-char* COM_Parse(char* data)
-{
-	if (s_com_token_unget)
-	{
-		s_com_token_unget = false;
-		return data;
-	}
-
-	com_token[0] = '\0';
-
-	if (!data)
-	{
-		return nullptr;
-	}
-
-	{
-		char32_t wchar;
-		bool processAnotherLine = false;
-
-		do
-		{
-			processAnotherLine = false;
-
-			// skip whitespace
-			while (!V_UTF8ToUChar32(data, wchar) && wchar <= ' ')
-			{
-				if (wchar == '\0')
-				{
-					return nullptr; // end of file;
-				}
-
-				data = Q_UnicodeAdvance(data, 1);
-			}
-
-			// skip // comments
-			if (data[0] == '/' && data[1] == '/')
-			{
-				data += 2;
-
-				while (data[0] != '\n' && data[0] != '\0')
-				{
-					++data;
-				}
-
-				processAnotherLine = true;
-			}
-		}
-		while (processAnotherLine);
-	}
-
-	// handle quoted strings specially
-	if (data[0] == '\"')
-	{
-		++data;
-
-		std::size_t byteCount = 0;
-
-		while (true)
-		{
-			const char c = *data++;
-
-			if (c == '\"' || c == '\0' || byteCount == (sizeof(com_token) - 1))
-			{
-				com_token[byteCount] = '\0';
-				return data;
-			}
-
-			com_token[byteCount++] = c;
-		}
-	}
-
-	// parse single characters
-	{
-		const char c = data[0];
-
-		if (c == '}'
-			|| c == '{'
-			|| c == ')'
-			|| c == '('
-			|| c == '\''
-			|| c == ','
-			|| (c == ':' && !com_ignorecolons))
-		{
-			com_token[0] = c;
-			com_token[1] = '\0';
-			return data + 1;
-		}
-	}
-
-	// parse a regular word
-	{
-		char c = data[0];
-
-		std::size_t byteCount = 0;
-
-		do
-		{
-			com_token[byteCount++] = c;
-			++data;
-			c = data[0];
-
-			if (c == '}'
-				|| c == '{'
-				|| c == ')'
-				|| c == '('
-				|| c == '\''
-				|| c == ','
-				|| (c == ':' && !com_ignorecolons))
-			{
-				break;
-			}
-		}
-		while (byteCount < (sizeof(com_token) - 1) && c > ' ');
-
-		com_token[byteCount] = '\0';
-	}
-
-	return data;
-}
-
-bool COM_TokenWaiting(char* buffer)
-{
-	char* p;
-
-	p = buffer;
-	while (*p && *p != '\n')
-	{
-		if (!isspace(*p) || isalnum(*p))
-			return true;
-
-		p++;
-	}
-
-	return false;
 }
 
 Vector UTIL_StringToVector(const char* pString)

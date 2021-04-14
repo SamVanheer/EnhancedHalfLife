@@ -15,7 +15,9 @@
 
 #pragma once
 
+#include <algorithm>
 #include <cstddef>
+#include <string_view>
 
 /**
 *	@brief Copies src to dest and always null terminates the result
@@ -24,14 +26,14 @@
 *	@param len_dst Size of the destination buffer, in bytes
 *	@return If the destination buffer length is not 0, returns dst. Otherwise returns nullptr
 */
-inline char* safe_strcpy(char* dst, const char* src, int len_dst)
+inline char* safe_strcpy(char* dst, const char* src, std::size_t len_dst)
 {
 	if (len_dst <= 0)
 	{
 		return nullptr; // this is bad
 	}
 
-	strncpy(dst, src, len_dst);
+	strncpy(dst, src, len_dst - 1);
 	dst[len_dst - 1] = '\0';
 
 	return dst;
@@ -39,6 +41,17 @@ inline char* safe_strcpy(char* dst, const char* src, int len_dst)
 
 template<std::size_t Size>
 inline char* safe_strcpy(char (&dst)[Size], const char* src)
+{
+	return safe_strcpy(dst, src, Size);
+}
+
+inline char* safe_strcpy(char* dst, std::string_view src, std::size_t len_dst)
+{
+	return safe_strcpy(dst, src.data(), std::min(len_dst, src.length() + 1));
+}
+
+template<std::size_t Size>
+inline char* safe_strcpy(char(&dst)[Size], std::string_view src)
 {
 	return safe_strcpy(dst, src, Size);
 }
@@ -75,22 +88,12 @@ int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut);
 
 bool V_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut);
 
-//TODO: make this work with const and non-const char*
-char* Q_UnicodeAdvance(char* pUTF8, int nChars);
+std::size_t Q_UnicodeAdvance(const char* pUTF8, int nChars);
 
 /**
 *	@brief Returns true if UTF-8 string contains invalid sequences.
 */
 bool Q_UnicodeValidate(const char* pUTF8);
-
-inline char com_token[2048];
-
-void COM_UngetToken();
-
-/**
-*	@brief Parse a token out of a string
-*/
-char* COM_Parse(char* data);
 
 /**
 *	@brief Returns 1 if additional data is waiting to be processed on this line
