@@ -14,6 +14,7 @@
 ****/
 
 #include <cctype>
+#include <charconv>
 #include <cstdint>
 
 #include "Platform.h"
@@ -161,5 +162,19 @@ Vector UTIL_StringToVector(const char* pString)
 		++pstr;
 	}
 
+	return result;
+}
+
+float UTIL_StringToFloat(std::string_view str, float defaultValue)
+{
+	float result = defaultValue;
+	std::from_chars(str.data(), str.data() + str.length(), result);
+	return result;
+}
+
+int UTIL_StringToInt(std::string_view str, int defaultValue)
+{
+	int result = defaultValue;
+	std::from_chars(str.data(), str.data() + str.length(), result);
 	return result;
 }

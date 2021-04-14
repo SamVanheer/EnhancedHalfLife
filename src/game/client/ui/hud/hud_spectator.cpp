@@ -5,7 +5,6 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include <charconv>
 #include <string>
 #include <string_view>
 
@@ -275,8 +274,7 @@ bool UTIL_FindEntityInMap(const char* name, Vector& origin, Vector& angle)
 
 			if (keyname == "angle")
 			{
-				float y = 0;
-				std::from_chars(value.data(), value.data() + value.length(), y);
+				const float y = UTIL_StringToFloat(value);
 				
 				if (y >= 0)
 				{
@@ -1200,8 +1198,6 @@ bool CHudSpectator::ParseOverviewFile( )
 {
 	char filename[255];
 	char levelname[255];
-	char token[1024];
-	float height;
 
 	memset( &m_OverviewData, 0, sizeof(m_OverviewData));
 
@@ -1234,71 +1230,78 @@ bool CHudSpectator::ParseOverviewFile( )
 		return false;
 	}
 	
-	char* pfile = reinterpret_cast<char*>(fileBuffer.get());
+	CTokenizer tokenizer{reinterpret_cast<char*>(fileBuffer.get())};
+
+	std::string token;
 	
 	while (true)
 	{
-		pfile = gEngfuncs.COM_ParseFile(pfile, token);
-
-		if (!pfile)
+		if (!tokenizer.Next())
 			break;
 
-		if ( !stricmp( token, "global" ) )
+		token = tokenizer.GetToken();
+
+		if ( !stricmp(token.c_str(), "global" ) )
 		{
 			// parse the global data
-			pfile = gEngfuncs.COM_ParseFile(pfile, token);
-			if ( stricmp( token, "{" ) ) 
+			tokenizer.Next();
+			if (tokenizer.GetToken() != "{")
 			{
 				gEngfuncs.Con_Printf("Error parsing overview file %s. (expected { )\n", filename );
 				return false;
 			}
 
-			pfile = gEngfuncs.COM_ParseFile(pfile,token);
+			tokenizer.Next();
+			token = tokenizer.GetToken();
 
-			while (stricmp( token, "}") )
+			while (token != "}")
 			{
-				if ( !stricmp( token, "zoom" ) )
+				if ( !stricmp(token.c_str(), "zoom" ) )
 				{
-					pfile = gEngfuncs.COM_ParseFile(pfile,token);
-					m_OverviewData.zoom = atof( token );
+					tokenizer.Next();
+					m_OverviewData.zoom = UTIL_StringToFloat(tokenizer.GetToken());
 				} 
-				else if ( !stricmp( token, "origin" ) )
+				else if ( !stricmp( token.c_str(), "origin" ) )
 				{
-					pfile = gEngfuncs.COM_ParseFile(pfile, token); 
-					m_OverviewData.origin[0] = atof( token );
-					pfile = gEngfuncs.COM_ParseFile(pfile,token); 
-					m_OverviewData.origin[1] = atof( token );
-					pfile = gEngfuncs.COM_ParseFile(pfile, token); 
-					m_OverviewData.origin[2] = atof( token );
-				}
-				else if ( !stricmp( token, "rotated" ) )
-				{
-					pfile = gEngfuncs.COM_ParseFile(pfile,token); 
-					m_OverviewData.rotated = atoi( token );
-				}
-				else if ( !stricmp( token, "inset" ) )
-				{
-					pfile = gEngfuncs.COM_ParseFile(pfile,token); 
-					m_OverviewData.insetWindowX = atof( token );
-					pfile = gEngfuncs.COM_ParseFile(pfile,token); 
-					m_OverviewData.insetWindowY = atof( token );
-					pfile = gEngfuncs.COM_ParseFile(pfile,token); 
-					m_OverviewData.insetWindowWidth = atof( token );
-					pfile = gEngfuncs.COM_ParseFile(pfile,token); 
-					m_OverviewData.insetWindowHeight = atof( token );
+					tokenizer.Next();
+					m_OverviewData.origin.x = UTIL_StringToFloat(tokenizer.GetToken());
 
+					tokenizer.Next();
+					m_OverviewData.origin.y = UTIL_StringToFloat(tokenizer.GetToken());
+
+					tokenizer.Next();
+					m_OverviewData.origin.z = UTIL_StringToFloat(tokenizer.GetToken());
+				}
+				else if ( !stricmp(token.c_str(), "rotated" ) )
+				{
+					tokenizer.Next();
+					m_OverviewData.rotated = UTIL_StringToInt(tokenizer.GetToken()) != 0;
+				}
+				else if ( !stricmp(token.c_str(), "inset" ) )
+				{
+					tokenizer.Next();
+					m_OverviewData.insetWindowX = UTIL_StringToFloat(tokenizer.GetToken());
+
+					tokenizer.Next();
+					m_OverviewData.insetWindowY = UTIL_StringToFloat(tokenizer.GetToken());
+
+					tokenizer.Next();
+					m_OverviewData.insetWindowWidth = UTIL_StringToFloat(tokenizer.GetToken());
+
+					tokenizer.Next();
+					m_OverviewData.insetWindowHeight = UTIL_StringToFloat(tokenizer.GetToken());
 				}
 				else
 				{
-					gEngfuncs.Con_Printf("Error parsing overview file %s. (%s unkown)\n", filename, token );
+					gEngfuncs.Con_Printf("Error parsing overview file %s. (%s unkown)\n", filename, token.c_str() );
 					return false;
 				}
 
-				pfile = gEngfuncs.COM_ParseFile(pfile,token); // parse next token
-
+				tokenizer.Next(); // parse next token
+				token = tokenizer.GetToken();
 			}
 		}
-		else if ( !stricmp( token, "layer" ) )
+		else if ( !stricmp( token.c_str(), "layer" ) )
 		{
 			// parse a layer data
 
@@ -1308,39 +1311,38 @@ bool CHudSpectator::ParseOverviewFile( )
 				return false;
 			}
 
-			pfile = gEngfuncs.COM_ParseFile(pfile,token);
-
+			tokenizer.Next();
 				
-			if ( stricmp( token, "{" ) ) 
+			if (tokenizer.GetToken() != "{")
 			{
 				gEngfuncs.Con_Printf("Error parsing overview file %s. (expected { )\n", filename );
 				return false;
 			}
 
-			pfile = gEngfuncs.COM_ParseFile(pfile,token);
+			tokenizer.Next();
 
-			while (stricmp( token, "}") )
+			token = tokenizer.GetToken();
+
+			while (token != "}")
 			{
-				if ( !stricmp( token, "image" ) )
+				if ( !stricmp(token.c_str(), "image" ) )
 				{
-					pfile = gEngfuncs.COM_ParseFile(pfile,token);
-					safe_strcpy(m_OverviewData.layersImages[ m_OverviewData.layers ], token);
-					
-					
+					tokenizer.Next();
+					safe_strcpy(m_OverviewData.layersImages[ m_OverviewData.layers ], tokenizer.GetToken());
 				} 
-				else if ( !stricmp( token, "height" ) )
+				else if ( !stricmp(token.c_str(), "height" ) )
 				{
-					pfile = gEngfuncs.COM_ParseFile(pfile,token); 
-					height = atof(token);
-					m_OverviewData.layersHeights[ m_OverviewData.layers ] = height;
+					tokenizer.Next();
+					m_OverviewData.layersHeights[m_OverviewData.layers] = UTIL_StringToFloat(tokenizer.GetToken());
 				}
 				else
 				{
-					gEngfuncs.Con_Printf("Error parsing overview file %s. (%s unkown)\n", filename, token );
+					gEngfuncs.Con_Printf("Error parsing overview file %s. (%s unkown)\n", filename, token.c_str() );
 					return false;
 				}
 
-				pfile = gEngfuncs.COM_ParseFile(pfile,token); // parse next token
+				tokenizer.Next(); // parse next token
+				token = tokenizer.GetToken();
 			}
 
 			m_OverviewData.layers++;

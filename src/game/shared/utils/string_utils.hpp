@@ -95,9 +95,9 @@ std::size_t Q_UnicodeAdvance(const char* pUTF8, int nChars);
 */
 bool Q_UnicodeValidate(const char* pUTF8);
 
-/**
-*	@brief Returns 1 if additional data is waiting to be processed on this line
-*/
-bool COM_TokenWaiting(char* buffer);
-
+//TODO: make this use std::string_view
 Vector UTIL_StringToVector(const char* pString);
+
+float UTIL_StringToFloat(std::string_view str, float defaultValue = 0);
+
+int UTIL_StringToInt(std::string_view str, int defaultValue = 0);
