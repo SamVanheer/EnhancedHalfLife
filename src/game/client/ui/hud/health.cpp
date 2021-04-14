@@ -13,13 +13,9 @@
 *
 ****/
 
-#include "stdio.h"
-#include "stdlib.h"
-
 #include "hud.h"
 #include "cl_util.h"
 #include "parsemsg.h"
-#include <string.h>
 
 
 DECLARE_MESSAGE(m_Health, Health )

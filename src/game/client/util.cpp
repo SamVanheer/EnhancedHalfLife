@@ -19,12 +19,8 @@
 *	implementation of class-less helper functions
 */
 
-#include <cstdio>
-#include <cstdlib>
-
 #include "hud.h"
 #include "cl_util.h"
-#include <string.h>
 
 HSPRITE LoadSprite(const char *pszName)
 {

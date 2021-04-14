@@ -24,9 +24,6 @@
 #include "cvardef.h"
 #include "CTokenizer.hpp"
 
-#include <string.h>
-
-
 cvar_t *g_CV_BitmapFonts;
 
 

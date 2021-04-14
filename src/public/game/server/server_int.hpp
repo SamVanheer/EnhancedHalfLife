@@ -16,7 +16,6 @@
 #pragma once
 
 #include "archtypes.h"     // DAL
-#include <stdio.h>
 #include "custom.h"
 
 struct clientdata_t;

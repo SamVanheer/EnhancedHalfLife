@@ -19,7 +19,6 @@
 *	Shared weapons common/shared functions
 */
 
-#include <stdarg.h>
 #include "hud.h"
 #include "cl_util.h"
 #include "com_weapons.h"

@@ -13,9 +13,10 @@
 *
 ****/
 
+#include <cassert>
+
 #include "Platform.h"
 
-#include <assert.h>
 #include "mathlib.h"
 #include "cdll_dll.h"
 #include "const.h"
@@ -28,10 +29,6 @@
 #include "com_model.h"
 #include "string_utils.hpp"
 #include "view_utils.hpp"
-#include <stdio.h>  // NULL
-#include <string.h> // strcpy
-#include <stdlib.h> // atoi
-#include <ctype.h>  // isspace
 
 #pragma warning( disable : 4305 )
 // double to float warning

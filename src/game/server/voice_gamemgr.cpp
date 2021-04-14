@@ -6,8 +6,6 @@
 //=============================================================================
 
 #include "archtypes.h"     // DAL
-#include <string.h>
-#include <assert.h>
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"

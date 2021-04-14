@@ -7,9 +7,10 @@
 
 #pragma once
 
+#include <cassert>
+#include <cstring>
+
 #include "archtypes.h"     // DAL
-#include <assert.h>
-#include <string.h>
 
 class CBitVecAccessor
 {

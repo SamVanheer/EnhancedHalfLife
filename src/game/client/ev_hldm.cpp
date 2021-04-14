@@ -35,8 +35,6 @@
 #include "event_api.h"
 #include "event_args.h"
 
-#include <string.h>
-
 #include "r_studioint.h"
 #include "com_model.h"
 #include "view.h"

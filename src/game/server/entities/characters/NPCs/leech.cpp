@@ -32,8 +32,6 @@
 // Try this on a model with hulls/tracehull?
 //
 
-
-#include	"float.h"
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"

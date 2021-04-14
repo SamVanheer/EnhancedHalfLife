@@ -17,9 +17,6 @@
 #include "cl_util.h"
 #include "parsemsg.h"
 
-#include <string.h>
-#include <stdio.h>
-
 #include "vgui_TeamFortressViewport.h"
 
 constexpr int MAX_LINES = 5;

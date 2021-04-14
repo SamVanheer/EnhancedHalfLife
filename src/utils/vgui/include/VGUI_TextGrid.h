@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include<stdarg.h>
-#include<VGUI.h>
-#include<VGUI_Panel.h>
+#include <cstdarg>
+#include <VGUI.h>
+#include <VGUI_Panel.h>
 
 namespace vgui
 {

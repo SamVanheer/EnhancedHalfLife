@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include<stdlib.h>
-#include<string.h>
-#include<VGUI.h>
+#include <cstdlib>
+#include <cstring>
+#include <VGUI.h>
 
 
 

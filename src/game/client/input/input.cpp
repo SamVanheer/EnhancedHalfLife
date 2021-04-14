@@ -9,6 +9,8 @@
 
 //xxxxxx Move bob and pitch drifting code here and other stuff from view if needed
 
+#include <cctype>
+
 #include "hud.h"
 #include "cl_util.h"
 #include "camera.h"
@@ -18,8 +20,6 @@
 #include "const.h"
 #include "camera.h"
 #include "view.h"
-#include <string.h>
-#include <ctype.h>
 #include "Exports.h"
 
 #include "vgui_TeamFortressViewport.h"

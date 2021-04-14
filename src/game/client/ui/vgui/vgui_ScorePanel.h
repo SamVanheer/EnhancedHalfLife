@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <cctype>
+
 #include<VGUI_Panel.h>
 #include<VGUI_TablePanel.h>
 #include<VGUI_HeaderPanel.h>
@@ -14,8 +16,6 @@
 #include<VGUI_Label.h>
 #include<VGUI_TextImage.h>
 #include "vgui_listbox.h"
-
-#include <ctype.h>
 
 // Scoreboard cells
 constexpr int COLUMN_TRACKER = 0;

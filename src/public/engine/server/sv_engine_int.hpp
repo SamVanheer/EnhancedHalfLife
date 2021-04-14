@@ -25,7 +25,6 @@
 //
 
 #include "archtypes.h"     // DAL
-#include <stdio.h>
 #include "cvardef.h"
 #include "Sequence.h"
 #include "crc.h"

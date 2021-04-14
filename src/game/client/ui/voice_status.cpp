@@ -5,11 +5,10 @@
 // $NoKeywords: $
 //=============================================================================
 
+#include <cassert>
+
 #include "hud.h"
 #include "cl_util.h"
-#include <assert.h>
-#include <string.h>
-#include <stdio.h>
 #include "parsemsg.h"
 #include "demo.h"
 #include "demo_api.h"

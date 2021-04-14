@@ -18,9 +18,6 @@
 #include "parsemsg.h"
 #include "vgui_TeamFortressViewport.h"
 
-#include <string.h>
-#include <stdio.h>
-
 DECLARE_MESSAGE( m_StatusBar, StatusText );
 DECLARE_MESSAGE( m_StatusBar, StatusValue );
 
