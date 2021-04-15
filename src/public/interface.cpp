@@ -87,7 +87,7 @@ CSysModule* Sys_LoadModule(const char* pModuleName)
 		pModuleName = szAbsoluteModuleName;
 	}
 
-	module = dlopen(pModuleName, RTLD_NOW);
+	module = reinterpret_cast<CSysModule*>(dlopen(pModuleName, RTLD_NOW));
 #endif
 
 	if (!module)
