@@ -103,32 +103,6 @@ void ShowBannedCallback()
 // CVoiceStatus.
 // ---------------------------------------------------------------------- //
 
-CVoiceStatus::CVoiceStatus()
-{
-	m_bBanMgrInitialized = false;
-	m_LastUpdateServerState = 0;
-
-	m_pSpeakerLabelIcon = nullptr;
-	m_pScoreboardNeverSpoken = nullptr;
-	m_pScoreboardNotSpeaking = nullptr;
-	m_pScoreboardSpeaking = nullptr;
-	m_pScoreboardSpeaking2 = nullptr;
-	m_pScoreboardSquelch = nullptr;
-	m_pScoreboardBanned = nullptr;
-	
-	m_pLocalBitmap = nullptr;
-	m_pAckBitmap = nullptr;
-
-	m_bTalking = m_bServerAcked = false;
-
-	memset(m_pBanButtons, 0, sizeof(m_pBanButtons));
-
-	m_pParentPanel = nullptr;
-
-	m_bServerModEnable = -1;
-}
-
-
 CVoiceStatus::~CVoiceStatus()
 {
 	g_pInternalVoiceStatus = nullptr;

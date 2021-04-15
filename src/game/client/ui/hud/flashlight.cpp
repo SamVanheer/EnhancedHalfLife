@@ -24,8 +24,7 @@ DECLARE_MESSAGE(m_Flash, Flashlight)
 
 bool CHudFlashlight::Init()
 {
-	m_fFade = 0;
-	m_fOn = 0;
+	m_fOn = false;
 
 	HOOK_MESSAGE(Flashlight);
 	HOOK_MESSAGE(FlashBat);
@@ -39,8 +38,7 @@ bool CHudFlashlight::Init()
 
 void CHudFlashlight::Reset()
 {
-	m_fFade = 0;
-	m_fOn = 0;
+	m_fOn = false;
 }
 
 bool CHudFlashlight::VidInit()
@@ -73,7 +71,7 @@ bool CHudFlashlight:: MsgFunc_FlashBat(const char *pszName,  int iSize, void *pb
 bool CHudFlashlight:: MsgFunc_Flashlight(const char *pszName,  int iSize, void *pbuf )
 {
 	BufferReader reader{pbuf, iSize};
-	m_fOn = reader.ReadByte();
+	m_fOn = reader.ReadByte() != 0;
 	int x = reader.ReadByte();
 	m_iBat = x;
 	m_flBat = ((float)x)/100.0;

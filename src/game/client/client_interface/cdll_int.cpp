@@ -38,7 +38,6 @@
 #include "shared_interface/shared_interface.hpp"
 
 cl_enginefunc_t gEngfuncs;
-CHud gHUD;
 TeamFortressViewport *gViewPort = nullptr;
 
 

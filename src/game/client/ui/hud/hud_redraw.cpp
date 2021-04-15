@@ -89,7 +89,7 @@ void CHud::Think()
 // Redraw
 // step through the local data,  placing the appropriate graphics & text as appropriate
 // returns 1 if they've changed, 0 otherwise
-bool CHud :: Redraw( float flTime, int intermission )
+bool CHud :: Redraw( float flTime, bool intermission )
 {
 	m_fOldTime = m_flTime;	// save time of previous redraw
 	m_flTime = flTime;

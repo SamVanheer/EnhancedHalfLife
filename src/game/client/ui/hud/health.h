@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -39,34 +39,34 @@ struct DAMAGE_IMAGE
 	float fBaseline;
 	int	x, y;
 };
-	
+
 //
 //-----------------------------------------------------
 //
-class CHudHealth: public CHudBase
+class CHudHealth : public CHudBase
 {
 public:
 	bool Init() override;
 	bool VidInit() override;
 	bool Draw(float fTime) override;
 	void Reset() override;
-	bool MsgFunc_Health(const char *pszName,  int iSize, void *pbuf);
-	bool MsgFunc_Damage(const char *pszName,  int iSize, void *pbuf);
-	int m_iHealth;
-	int m_HUD_dmg_bio;
-	int m_HUD_cross;
-	float m_fAttackFront, m_fAttackRear, m_fAttackLeft, m_fAttackRight;
-	void GetPainColor( int &r, int &g, int &b );
-	float m_fFade;
+	bool MsgFunc_Health(const char* pszName, int iSize, void* pbuf);
+	bool MsgFunc_Damage(const char* pszName, int iSize, void* pbuf);
+	int m_iHealth = 0;
+	int m_HUD_dmg_bio = 0;
+	int m_HUD_cross = 0;
+	float m_fAttackFront = 0, m_fAttackRear = 0, m_fAttackLeft = 0, m_fAttackRight = 0;
+	void GetPainColor(int& r, int& g, int& b);
+	float m_fFade = 0;
 
 private:
-	HSPRITE m_hSprite;
-	HSPRITE m_hDamage;
-	
-	DAMAGE_IMAGE m_dmg[NUM_DMG_TYPES];
-	int	m_bitsDamage;
+	HSPRITE m_hSprite{};
+	HSPRITE m_hDamage{};
+
+	DAMAGE_IMAGE m_dmg[NUM_DMG_TYPES]{};
+	int	m_bitsDamage = 0;
 	bool DrawPain(float fTime);
 	bool DrawDamage(float fTime);
 	void CalcDamageDirection(Vector vecFrom);
 	void UpdateTiles(float fTime, long bits);
-};	
+};

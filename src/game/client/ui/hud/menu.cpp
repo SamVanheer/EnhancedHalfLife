@@ -19,6 +19,7 @@
 
 #include "vgui_TeamFortressViewport.h"
 
+//TODO: move into menu class
 constexpr int MAX_MENU_STRING = 512;
 char g_szMenuString[MAX_MENU_STRING];
 char g_szPrelocalisedMenuString[MAX_MENU_STRING];
@@ -40,7 +41,7 @@ bool CHudMenu :: Init()
 
 void CHudMenu :: InitHUDData()
 {
-	m_fMenuDisplayed = 0;
+	m_fMenuDisplayed = false;
 	m_bitsValidSlots = 0;
 	Reset();
 }
@@ -71,6 +72,7 @@ bool CHudMenu :: VidInit()
    \R : Right-align (just for the remainder of the current line)
 =================================*/
 
+//TODO: get rid of these globals
 static int menu_r, menu_g, menu_b, menu_x, menu_ralign;
 
 static inline const char* ParseEscapeToken( const char* token )
@@ -126,7 +128,7 @@ bool CHudMenu :: Draw( float flTime )
 	{
 		if ( m_flShutoffTime <= gHUD.m_flTime )
 		{  // times up, shutoff
-			m_fMenuDisplayed = 0;
+			m_fMenuDisplayed = false;
 			m_iFlags &= ~HUD_ACTIVE;
 			return true;
 		}
@@ -209,7 +211,7 @@ void CHudMenu :: SelectMenuItem( int menu_item )
 		EngineClientCmd( szbuf );
 
 		// remove the menu
-		m_fMenuDisplayed = 0;
+		m_fMenuDisplayed = false;
 		m_iFlags &= ~HUD_ACTIVE;
 	}
 }
@@ -224,13 +226,11 @@ void CHudMenu :: SelectMenuItem( int menu_item )
 // if this message is never received, then scores will simply be the combined totals of the players.
 bool CHudMenu :: MsgFunc_ShowMenu( const char *pszName, int iSize, void *pbuf )
 {
-	char *temp = nullptr;
-
 	BufferReader reader{pbuf, iSize};
 
 	m_bitsValidSlots = reader.ReadShort();
-	int DisplayTime = reader.ReadChar();
-	int NeedMore = reader.ReadByte();
+	const int DisplayTime = reader.ReadChar();
+	const bool NeedMore = reader.ReadByte() != 0;
 
 	if ( DisplayTime > 0 )
 		m_flShutoffTime = DisplayTime + gHUD.m_flTime;
@@ -253,6 +253,7 @@ bool CHudMenu :: MsgFunc_ShowMenu( const char *pszName, int iSize, void *pbuf )
 			safe_strcpy( g_szMenuString, gHUD.m_TextMessage.BufferedLocaliseTextString( g_szPrelocalisedMenuString ) );
 
 			// Swap in characters
+			char* temp = nullptr;
 			if ( KB_ConvertString( g_szMenuString, &temp ) )
 			{
 				safe_strcpy( g_szMenuString, temp );
@@ -260,12 +261,12 @@ bool CHudMenu :: MsgFunc_ShowMenu( const char *pszName, int iSize, void *pbuf )
 			}
 		}
 
-		m_fMenuDisplayed = 1;
+		m_fMenuDisplayed = true;
 		m_iFlags |= HUD_ACTIVE;
 	}
 	else
 	{
-		m_fMenuDisplayed = 0; // no valid slots means that the menu should be turned off
+		m_fMenuDisplayed = false; // no valid slots means that the menu should be turned off
 		m_iFlags &= ~HUD_ACTIVE;
 	}
 

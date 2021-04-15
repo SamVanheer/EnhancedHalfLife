@@ -48,7 +48,7 @@ struct overviewEntity_t
 {
 
 	HSPRITE					hSprite;
-	cl_entity_t*			entity;
+	cl_entity_t* entity;
 	double					killTime;
 };
 
@@ -68,86 +68,85 @@ class CHudSpectator : public CHudBase
 {
 public:
 	void Reset() override;
-	int  ToggleInset(bool allowOff);
+	int ToggleInset(bool allowOff);
 	void CheckSettings();
 	void InitHUDData() override;
-	bool AddOverviewEntityToList( HSPRITE sprite, cl_entity_t * ent, double killTime);
+	bool AddOverviewEntityToList(HSPRITE sprite, cl_entity_t* ent, double killTime);
 	void DeathMessage(int victim);
-	bool AddOverviewEntity( int type, cl_entity_t* ent, const char *modelname );
+	bool AddOverviewEntity(int type, cl_entity_t* ent, const char* modelname);
 	void CheckOverviewEntities();
 	void DrawOverview();
 	void DrawOverviewEntities();
-	void GetMapPosition( float * returnvec );
+	void GetMapPosition(float* returnvec);
 	void DrawOverviewLayer();
 	void LoadMapSprites();
 	bool ParseOverviewFile();
-	bool IsActivePlayer(cl_entity_t * ent);
+	bool IsActivePlayer(cl_entity_t* ent);
 	void SetModes(int iMainMode, int iInsetMode);
 	void HandleButtonsDown(int ButtonPressed);
 	void HandleButtonsUp(int ButtonPressed);
-	void FindNextPlayer( bool bReverse );
-	void FindPlayer(const char *name);
-	void DirectorMessage( int iSize, void *pbuf );
+	void FindNextPlayer(bool bReverse);
+	void FindPlayer(const char* name);
+	void DirectorMessage(int iSize, void* pbuf);
 	void SetSpectatorStartPosition();
 	bool Init() override;
 	bool VidInit() override;
 
 	bool Draw(float flTime) override;
 
-	void	AddWaypoint( float time, Vector pos, Vector angle, float fov, int flags );
-	void	SetCameraView(Vector pos, Vector angle, float fov);
-	float	GetFOV();
-	bool	GetDirectorCamera(Vector&position, Vector&angle);
-	void	SetWayInterpolation(cameraWayPoint_t * prev, cameraWayPoint_t * start, cameraWayPoint_t * end, cameraWayPoint_t * next);
+	void AddWaypoint(float time, Vector pos, Vector angle, float fov, int flags);
+	void SetCameraView(Vector pos, Vector angle, float fov);
+	float GetFOV();
+	bool GetDirectorCamera(Vector& position, Vector& angle);
+	void SetWayInterpolation(cameraWayPoint_t* prev, cameraWayPoint_t* start, cameraWayPoint_t* end, cameraWayPoint_t* next);
 
+	int m_iDrawCycle = 0;
+	client_textmessage_t m_HUDMessages[MAX_SPEC_HUD_MESSAGES]{};
+	char m_HUDMessageText[MAX_SPEC_HUD_MESSAGES][128]{};
+	int m_lastHudMessage = 0;
+	overviewInfo_t m_OverviewData{};
+	overviewEntity_t m_OverviewEntities[MAX_OVERVIEW_ENTITIES]{};
+	int m_iObserverFlags = 0;
+	int m_iSpectatorNumber = 0;
 
-	int m_iDrawCycle;
-	client_textmessage_t m_HUDMessages[MAX_SPEC_HUD_MESSAGES];
-	char				m_HUDMessageText[MAX_SPEC_HUD_MESSAGES][128];
-	int					m_lastHudMessage;
-	overviewInfo_t		m_OverviewData;
-	overviewEntity_t	m_OverviewEntities[MAX_OVERVIEW_ENTITIES];
-	int					m_iObserverFlags;
-	int					m_iSpectatorNumber;
-	
-	float				m_mapZoom;		// zoom the user currently uses
-	Vector				m_mapOrigin;	// origin where user rotates around
-	cvar_t *			m_drawnames;
-	cvar_t *			m_drawcone;
-	cvar_t *			m_drawstatus;
-	cvar_t *			m_autoDirector;
-	cvar_t *			m_pip;
-	bool				m_chatEnabled;
-	
-	bool				m_IsInterpolating;
-	int					m_ChaseEntity;	// if != 0, follow this entity with viewangles
-	int					m_WayPoint;		// current waypoint 1
-	int					m_NumWayPoints;	// current number of waypoints
-	Vector				m_cameraOrigin;	// a help camera
-	Vector				m_cameraAngles;	// and it's angles
-	CInterpolation		m_WayInterpolation;
+	float m_mapZoom = 0;		// zoom the user currently uses
+	Vector m_mapOrigin{vec3_origin};	// origin where user rotates around
+	cvar_t* m_drawnames = nullptr;
+	cvar_t* m_drawcone = nullptr;
+	cvar_t* m_drawstatus = nullptr;
+	cvar_t* m_autoDirector = nullptr;
+	cvar_t* m_pip = nullptr;
+	bool m_chatEnabled = false;
+
+	bool m_IsInterpolating = false;
+	int m_ChaseEntity = 0;	// if != 0, follow this entity with viewangles
+	int m_WayPoint = 0;		// current waypoint 1
+	int m_NumWayPoints = 0;	// current number of waypoints
+	Vector m_cameraOrigin{vec3_origin};	// a help camera
+	Vector m_cameraAngles{vec3_origin};	// and it's angles
+	CInterpolation m_WayInterpolation{};
 
 private:
-	Vector		m_vPlayerPos[MAX_PLAYERS];
-	HSPRITE		m_hsprPlayerBlue;
-	HSPRITE		m_hsprPlayerRed;
-	HSPRITE		m_hsprPlayer;
-	HSPRITE		m_hsprCamera;
-	HSPRITE		m_hsprPlayerDead;
-	HSPRITE		m_hsprViewcone;
-	HSPRITE		m_hsprUnkownMap;
-	HSPRITE		m_hsprBeam;
-	HSPRITE		m_hCrosshair;
+	Vector m_vPlayerPos[MAX_PLAYERS]{};
+	HSPRITE m_hsprPlayerBlue{};
+	HSPRITE m_hsprPlayerRed{};
+	HSPRITE m_hsprPlayer{};
+	HSPRITE m_hsprCamera{};
+	HSPRITE m_hsprPlayerDead{};
+	HSPRITE m_hsprViewcone{};
+	HSPRITE m_hsprUnkownMap{};
+	HSPRITE m_hsprBeam{};
+	HSPRITE m_hCrosshair{};
 
-	wrect_t		m_crosshairRect;
+	wrect_t m_crosshairRect;
 
-	model_t* m_MapSprite;	// each layer image is saved in one sprite, where each tile is a sprite frame
-	float		m_flNextObserverInput;
-	float		m_FOV;
-	float		m_zoomDelta;
-	float		m_moveDelta;
-	int			m_lastPrimaryObject;
-	int			m_lastSecondaryObject;
+	model_t* m_MapSprite = nullptr;	// each layer image is saved in one sprite, where each tile is a sprite frame
+	float m_flNextObserverInput = 0;
+	float m_FOV = 0;
+	float m_zoomDelta = 0;
+	float m_moveDelta = 0;
+	int m_lastPrimaryObject = 0;
+	int m_lastSecondaryObject = 0;
 
-	cameraWayPoint_t	m_CamPath[MAX_CAM_WAYPOINTS];
+	cameraWayPoint_t m_CamPath[MAX_CAM_WAYPOINTS]{};
 };
