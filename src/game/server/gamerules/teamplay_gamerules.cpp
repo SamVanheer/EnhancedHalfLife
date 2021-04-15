@@ -471,14 +471,14 @@ const char *CHalfLifeTeamplay::GetTeamID( CBaseEntity *pEntity )
 }
 
 
-int CHalfLifeTeamplay::GetTeamIndex( const char *pTeamName )
+int CHalfLifeTeamplay::GetTeamIndex(std::string_view teamName)
 {
-	if ( pTeamName && *pTeamName != 0 )
+	if (!teamName.empty())
 	{
 		// try to find existing team
 		for ( int tm = 0; tm < num_teams; tm++ )
 		{
-			if ( !stricmp( team_names[tm], pTeamName ) )
+			if ( UTIL_IEquals( team_names[tm], teamName) )
 				return tm;
 		}
 	}
@@ -544,25 +544,46 @@ const char *CHalfLifeTeamplay::TeamWithFewestPlayers()
 //=========================================================
 void CHalfLifeTeamplay::RecountTeams( bool bResendInfo )
 {
-	char	*pName;
-	char	teamlist[TEAMPLAY_TEAMLISTLENGTH];
-
 	// loop through all teams, recounting everything
 	num_teams = 0;
 
-	// Copy all of the teams from the teamlist
-	// make a copy because strtok is destructive
-	safe_strcpy( teamlist, m_szTeamList );
-	pName = teamlist;
-	pName = strtok( pName, ";" );
-	while ( pName != nullptr && *pName )
+	const std::string_view teamList{m_szTeamList};
+
+	std::size_t previousIndex = 0;
+	std::size_t nextIndex = 0;
+
+	while (true)
 	{
-		if ( GetTeamIndex( pName ) < 0 )
+		nextIndex = teamList.find(';', nextIndex);
+
+		//Last entry
+		if (nextIndex == std::string_view::npos)
 		{
-			safe_strcpy( team_names[num_teams], pName );
+			nextIndex = teamList.length();
+		}
+
+		const auto teamName{teamList.substr(previousIndex, nextIndex - previousIndex)};
+
+		//TODO: improve empty entry handling. Report as warning, maybe keep parsing?
+		if (teamName.empty())
+		{
+			break;
+		}
+
+		if (GetTeamIndex(teamName) < 0)
+		{
+			safe_strcpy(team_names[num_teams], teamName);
 			num_teams++;
 		}
-		pName = strtok(nullptr, ";" );
+
+		if (nextIndex == teamList.length())
+		{
+			break;
+		}
+
+		//Advance past the delimiter
+		++nextIndex;
+		previousIndex = nextIndex;
 	}
 
 	if ( num_teams < 2 )

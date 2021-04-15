@@ -38,7 +38,7 @@ public:
 	void UpdateGameMode( CBasePlayer *pPlayer ) override;  // the client needs to be informed of the current game mode
 	void PlayerKilled( CBasePlayer *pVictim, entvars_t *pKiller, entvars_t *pInflictor ) override;
 	void Think () override;
-	int GetTeamIndex( const char *pTeamName ) override;
+	int GetTeamIndex(std::string_view teamName) override;
 	const char *GetIndexedTeamName( int teamIndex ) override;
 	bool IsValidTeam( const char *pTeamName ) override;
 	const char *SetDefaultPlayerTeam( CBasePlayer *pPlayer ) override;

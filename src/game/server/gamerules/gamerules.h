@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include <string_view>
+
 class CBasePlayerItem;
 class CBasePlayer;
 class CItem;
@@ -139,7 +141,7 @@ public:
 // Teamplay stuff
 	virtual const char *GetTeamID( CBaseEntity *pEntity ) = 0;// what team is this entity on?
 	virtual int PlayerRelationship( CBaseEntity *pPlayer, CBaseEntity *pTarget ) = 0;// What is the player's relationship with this entity?
-	virtual int GetTeamIndex( const char *pTeamName ) { return -1; }
+	virtual int GetTeamIndex( std::string_view teamName ) { return -1; }
 	virtual const char *GetIndexedTeamName( int teamIndex ) { return ""; }
 	virtual bool IsValidTeam( const char *pTeamName ) { return true; }
 	virtual void ChangePlayerTeam( CBasePlayer *pPlayer, const char *pTeamName, bool bKill, bool bGib ) {}
