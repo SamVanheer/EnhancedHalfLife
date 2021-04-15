@@ -1,6 +1,8 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+#include <filesystem>
+#include <string>
 
 #include "interface.h"
 
@@ -65,26 +67,21 @@ CSysModule* Sys_LoadModule(const char* pModuleName)
 #ifdef _WIN32
 	module = reinterpret_cast<CSysModule*>(LoadLibrary(pModuleName));
 #else
-	char szAbsoluteModuleName[1024];
-	szAbsoluteModuleName[0] = 0;
+	std::string absoluteModuleName;
 
 	//If it's not an absolute path, convert it using the current working directory
 	if (pModuleName[0] != '/')
 	{
-		char szCwd[1024];
+		std::error_code ec;
+		absoluteModuleName = (std::filesystem::current_path(ec) / pModuleName).string();
 
 		//Prevent loading from garbage paths if the path is too large for the buffer
-		if (!getcwd(szCwd, sizeof(szCwd)))
+		if (ec)
 		{
 			exit(-1);
 		}
 
-		if (szCwd[strlen(szCwd) - 1] == '/')
-			szCwd[strlen(szCwd) - 1] = 0;
-
-		snprintf(szAbsoluteModuleName, sizeof(szAbsoluteModuleName), "%s/%s", szCwd, pModuleName);
-
-		pModuleName = szAbsoluteModuleName;
+		pModuleName = absoluteModuleName.c_str();
 	}
 
 	module = reinterpret_cast<CSysModule*>(dlopen(pModuleName, RTLD_NOW));
