@@ -125,7 +125,7 @@ public:
 	template<std::size_t Size>
 	void EMIT_ICKY_SOUND(int chan, const char* (&array)[Size])
 	{
-		EMIT_SOUND_DYN(ENT(pev), chan, array[RANDOM_LONG(0, ARRAYSIZE(array) - 1)], 1.0, 0.6, 0, RANDOM_LONG(95, 105));
+		EMIT_SOUND_DYN(ENT(pev), chan, array[RANDOM_LONG(0, ArraySize(array) - 1)], 1.0, 0.6, 0, RANDOM_LONG(95, 105));
 	}
 };
 
@@ -240,7 +240,7 @@ static Schedule_t	slSwimAround[] =
 {
 	{ 
 		tlSwimAround,
-		ARRAYSIZE(tlSwimAround), 
+		ArraySize(tlSwimAround),
 		bits_COND_LIGHT_DAMAGE	|
 		bits_COND_HEAVY_DAMAGE	|
 		bits_COND_SEE_ENEMY		|
@@ -263,7 +263,7 @@ static Schedule_t	slSwimAgitated[] =
 {
 	{ 
 		tlSwimAgitated,
-		ARRAYSIZE(tlSwimAgitated), 
+		ArraySize(tlSwimAgitated),
 		0, 
 		0, 
 		"SwimAgitated"
@@ -281,7 +281,7 @@ static Schedule_t	slCircleEnemy[] =
 {
 	{ 
 		tlCircleEnemy,
-		ARRAYSIZE(tlCircleEnemy), 
+		ArraySize(tlCircleEnemy),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_LIGHT_DAMAGE	|
 		bits_COND_HEAVY_DAMAGE	|
@@ -305,7 +305,7 @@ Schedule_t slTwitchDie[] =
 {
 	{
 		tlTwitchDie,
-		ARRAYSIZE( tlTwitchDie ),
+		ArraySize( tlTwitchDie ),
 		0,
 		0,
 		"Die"

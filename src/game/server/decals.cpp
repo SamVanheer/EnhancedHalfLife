@@ -68,7 +68,7 @@ DLL_DECALLIST gDecals[] = {
 
 void InitializeDecalsList()
 {
-	for (std::size_t i = 0; i < ARRAYSIZE(gDecals); i++)
+	for (std::size_t i = 0; i < ArraySize(gDecals); i++)
 		gDecals[i].index = DECAL_INDEX(gDecals[i].name);
 }
 

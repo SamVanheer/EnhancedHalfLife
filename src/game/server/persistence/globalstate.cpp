@@ -120,13 +120,13 @@ bool CGlobalState::Save(CSave& save)
 	int i;
 	globalentity_t* pEntity;
 
-	if (!save.WriteFields("GLOBAL", this, m_SaveData, ARRAYSIZE(m_SaveData)))
+	if (!save.WriteFields("GLOBAL", this, m_SaveData, ArraySize(m_SaveData)))
 		return false;
 
 	pEntity = m_pList;
 	for (i = 0; i < m_listCount && pEntity; i++)
 	{
-		if (!save.WriteFields("GENT", pEntity, gGlobalEntitySaveData, ARRAYSIZE(gGlobalEntitySaveData)))
+		if (!save.WriteFields("GENT", pEntity, gGlobalEntitySaveData, ArraySize(gGlobalEntitySaveData)))
 			return false;
 
 		pEntity = pEntity->pNext;
@@ -142,7 +142,7 @@ bool CGlobalState::Restore(CRestore& restore)
 
 
 	ClearStates();
-	if (!restore.ReadFields("GLOBAL", this, m_SaveData, ARRAYSIZE(m_SaveData)))
+	if (!restore.ReadFields("GLOBAL", this, m_SaveData, ArraySize(m_SaveData)))
 		return false;
 
 	listCount = m_listCount;	// Get new list count
@@ -150,7 +150,7 @@ bool CGlobalState::Restore(CRestore& restore)
 
 	for (i = 0; i < listCount; i++)
 	{
-		if (!restore.ReadFields("GENT", &tmpEntity, gGlobalEntitySaveData, ARRAYSIZE(gGlobalEntitySaveData)))
+		if (!restore.ReadFields("GENT", &tmpEntity, gGlobalEntitySaveData, ArraySize(gGlobalEntitySaveData)))
 			return false;
 		EntityAdd(MAKE_STRING(tmpEntity.name), MAKE_STRING(tmpEntity.levelName), tmpEntity.state);
 	}

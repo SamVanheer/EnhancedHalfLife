@@ -478,7 +478,7 @@ void EMIT_GROUPNAME_SUIT(edict_t *entity, const char *groupname);
 template<std::size_t Size>
 void PRECACHE_SOUND_ARRAY(const char* (&a)[Size])
 {
-	for (std::size_t i = 0; i < ARRAYSIZE(a); i++)
+	for (std::size_t i = 0; i < ArraySize(a); i++)
 	{
 		PRECACHE_SOUND(a[i]);
 	}
@@ -487,7 +487,7 @@ void PRECACHE_SOUND_ARRAY(const char* (&a)[Size])
 template<std::size_t Size>
 const char* RANDOM_SOUND_ARRAY(const char* (&array)[Size])
 {
-	return array[RANDOM_LONG(0, ARRAYSIZE(array) - 1)];
+	return array[RANDOM_LONG(0, ArraySize(array) - 1)];
 }
 
 inline void PLAYBACK_EVENT(int flags, edict_t* invoker, unsigned short index)

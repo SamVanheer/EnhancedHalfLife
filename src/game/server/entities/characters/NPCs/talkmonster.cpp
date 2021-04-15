@@ -74,7 +74,7 @@ Schedule_t	slIdleResponse[] =
 {
 	{ 
 		tlIdleResponse,
-		ARRAYSIZE ( tlIdleResponse ), 
+		ArraySize( tlIdleResponse ),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_LIGHT_DAMAGE	|
 		bits_COND_HEAVY_DAMAGE,
@@ -98,7 +98,7 @@ Schedule_t	slIdleSpeak[] =
 {
 	{ 
 		tlIdleSpeak,
-		ARRAYSIZE ( tlIdleSpeak ), 
+		ArraySize( tlIdleSpeak ),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_CLIENT_PUSH	|
 		bits_COND_LIGHT_DAMAGE	|
@@ -120,7 +120,7 @@ Schedule_t	slIdleSpeakWait[] =
 {
 	{ 
 		tlIdleSpeakWait,
-		ARRAYSIZE ( tlIdleSpeakWait ), 
+		ArraySize( tlIdleSpeakWait ),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_CLIENT_PUSH	|
 		bits_COND_LIGHT_DAMAGE	|
@@ -152,7 +152,7 @@ Schedule_t	slIdleHello[] =
 {
 	{ 
 		tlIdleHello,
-		ARRAYSIZE ( tlIdleHello ), 
+		ArraySize( tlIdleHello ),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_CLIENT_PUSH	|
 		bits_COND_LIGHT_DAMAGE	|
@@ -175,7 +175,7 @@ Schedule_t	slIdleStopShooting[] =
 {
 	{ 
 		tlIdleStopShooting,
-		ARRAYSIZE ( tlIdleStopShooting ), 
+		ArraySize( tlIdleStopShooting ),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_LIGHT_DAMAGE	|
 		bits_COND_HEAVY_DAMAGE	|
@@ -199,7 +199,7 @@ Schedule_t	slMoveAway[] =
 {
 	{
 		tlMoveAway,
-		ARRAYSIZE ( tlMoveAway ),
+		ArraySize( tlMoveAway ),
 		0,
 		0,
 		"MoveAway"
@@ -217,7 +217,7 @@ Schedule_t	slMoveAwayFail[] =
 {
 	{
 		tlMoveAwayFail,
-		ARRAYSIZE ( tlMoveAwayFail ),
+		ArraySize( tlMoveAwayFail ),
 		0,
 		0,
 		"MoveAwayFail"
@@ -240,7 +240,7 @@ Schedule_t	slMoveAwayFollow[] =
 {
 	{
 		tlMoveAwayFollow,
-		ARRAYSIZE ( tlMoveAwayFollow ),
+		ArraySize( tlMoveAwayFollow ),
 		0,
 		0,
 		"MoveAwayFollow"
@@ -270,7 +270,7 @@ Schedule_t	slTlkIdleWatchClient[] =
 {
 	{ 
 		tlTlkIdleWatchClient,
-		ARRAYSIZE ( tlTlkIdleWatchClient ), 
+		ArraySize( tlTlkIdleWatchClient ),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_LIGHT_DAMAGE	|
 		bits_COND_HEAVY_DAMAGE	|
@@ -293,7 +293,7 @@ Schedule_t	slTlkIdleWatchClient[] =
 
 	{ 
 		tlTlkIdleWatchClientStare,
-		ARRAYSIZE ( tlTlkIdleWatchClientStare ), 
+		ArraySize( tlTlkIdleWatchClientStare ),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_LIGHT_DAMAGE	|
 		bits_COND_HEAVY_DAMAGE	|
@@ -328,7 +328,7 @@ Schedule_t	slTlkIdleEyecontact[] =
 {
 	{ 
 		tlTlkIdleEyecontact,
-		ARRAYSIZE ( tlTlkIdleEyecontact ), 
+		ArraySize( tlTlkIdleEyecontact ),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_CLIENT_PUSH	|
 		bits_COND_LIGHT_DAMAGE	|

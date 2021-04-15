@@ -74,6 +74,3 @@ constexpr std::size_t ArraySize(const T (&)[Size])
 {
 	return Size;
 }
-
-#undef ARRAYSIZE
-#define ARRAYSIZE ArraySize

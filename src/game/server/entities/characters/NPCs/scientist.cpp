@@ -134,7 +134,7 @@ Schedule_t	slFollow[] =
 {
 	{
 		tlFollow,
-		ARRAYSIZE ( tlFollow ),
+		ArraySize( tlFollow ),
 		bits_COND_NEW_ENEMY |
 		bits_COND_LIGHT_DAMAGE |
 		bits_COND_HEAVY_DAMAGE |
@@ -156,7 +156,7 @@ Schedule_t	slFollowScared[] =
 {
 	{
 		tlFollowScared,
-		ARRAYSIZE ( tlFollowScared ),
+		ArraySize( tlFollowScared ),
 		bits_COND_NEW_ENEMY |
 		bits_COND_HEAR_SOUND |
 		bits_COND_LIGHT_DAMAGE |
@@ -177,7 +177,7 @@ Schedule_t	slFaceTargetScared[] =
 {
 	{
 		tlFaceTargetScared,
-		ARRAYSIZE ( tlFaceTargetScared ),
+		ArraySize( tlFaceTargetScared ),
 		bits_COND_HEAR_SOUND |
 		bits_COND_NEW_ENEMY,
 		bits_SOUND_DANGER,
@@ -194,7 +194,7 @@ Schedule_t	slStopFollowing[] =
 {
 	{
 		tlStopFollowing,
-		ARRAYSIZE ( tlStopFollowing ),
+		ArraySize( tlStopFollowing ),
 		0,
 		0,
 		"StopFollowing"
@@ -217,7 +217,7 @@ Schedule_t	slHeal[] =
 {
 	{
 		tlHeal,
-		ARRAYSIZE ( tlHeal ),
+		ArraySize( tlHeal ),
 		0,	// Don't interrupt or he'll end up running around with a needle all the time
 		0,
 		"Heal"
@@ -237,7 +237,7 @@ Schedule_t	slFaceTarget[] =
 {
 	{
 		tlFaceTarget,
-		ARRAYSIZE ( tlFaceTarget ),
+		ArraySize( tlFaceTarget ),
 		bits_COND_CLIENT_PUSH |
 		bits_COND_NEW_ENEMY |
 		bits_COND_HEAR_SOUND,
@@ -261,7 +261,7 @@ Schedule_t	slSciPanic[] =
 {
 	{
 		tlSciPanic,
-		ARRAYSIZE ( tlSciPanic ),
+		ArraySize( tlSciPanic ),
 		0,
 		0,
 		"SciPanic"
@@ -281,7 +281,7 @@ Schedule_t	slIdleSciStand[] =
 {
 	{ 
 		tlIdleSciStand,
-		ARRAYSIZE ( tlIdleSciStand ), 
+		ArraySize( tlIdleSciStand ),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_LIGHT_DAMAGE	|
 		bits_COND_HEAVY_DAMAGE	|
@@ -317,7 +317,7 @@ Schedule_t	slScientistCover[] =
 {
 	{ 
 		tlScientistCover,
-		ARRAYSIZE ( tlScientistCover ), 
+		ArraySize( tlScientistCover ),
 		bits_COND_NEW_ENEMY,
 		0,
 		"ScientistCover"
@@ -339,7 +339,7 @@ Schedule_t	slScientistHide[] =
 {
 	{ 
 		tlScientistHide,
-		ARRAYSIZE ( tlScientistHide ), 
+		ArraySize( tlScientistHide ),
 		bits_COND_NEW_ENEMY |
 		bits_COND_HEAR_SOUND |
 		bits_COND_SEE_ENEMY |
@@ -367,7 +367,7 @@ Schedule_t	slScientistStartle[] =
 {
 	{ 
 		tlScientistStartle,
-		ARRAYSIZE ( tlScientistStartle ), 
+		ArraySize( tlScientistStartle ),
 		bits_COND_NEW_ENEMY |
 		bits_COND_SEE_ENEMY |
 		bits_COND_SEE_HATE |
@@ -392,7 +392,7 @@ Schedule_t	slFear[] =
 {
 	{ 
 		tlFear,
-		ARRAYSIZE ( tlFear ), 
+		ArraySize( tlFear ),
 		bits_COND_NEW_ENEMY,
 		0,
 		"Fear"

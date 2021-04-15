@@ -1302,9 +1302,9 @@ int PM_GetRandomStuckOffsets(int nIndex, int server, Vector& offset)
  // Last time we did a full
 	const int idx = rgStuckLast[nIndex][server]++;
 
-	offset = rgv3tStuckTable[idx % ARRAYSIZE(rgv3tStuckTable)];
+	offset = rgv3tStuckTable[idx % ArraySize(rgv3tStuckTable)];
 
-	return (idx % ARRAYSIZE(rgv3tStuckTable));
+	return (idx % ArraySize(rgv3tStuckTable));
 }
 
 void PM_ResetStuckOffsets(int nIndex, int server)
@@ -1363,7 +1363,7 @@ bool PM_CheckStuck ()
 					return false;
 				}
 				nReps++;
-			} while (nReps < ARRAYSIZE(rgv3tStuckTable));
+			} while (nReps < ArraySize(rgv3tStuckTable));
 		}
 	}
 

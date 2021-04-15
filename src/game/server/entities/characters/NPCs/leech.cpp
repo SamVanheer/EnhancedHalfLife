@@ -276,7 +276,7 @@ void CLeech::AttackSound()
 {
 	if ( gpGlobals->time > m_attackSoundTime )
 	{
-		EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pAttackSounds[ RANDOM_LONG(0,ARRAYSIZE(pAttackSounds)-1) ], 1.0, ATTN_NORM, 0, PITCH_NORM );
+		EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pAttackSounds[ RANDOM_LONG(0, ArraySize(pAttackSounds)-1) ], 1.0, ATTN_NORM, 0, PITCH_NORM );
 		m_attackSoundTime = gpGlobals->time + 0.5;
 	}
 }
@@ -284,7 +284,7 @@ void CLeech::AttackSound()
 
 void CLeech::AlertSound()
 {
-	EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pAlertSounds[ RANDOM_LONG(0,ARRAYSIZE(pAlertSounds)-1) ], 1.0, ATTN_NORM * 0.5, 0, PITCH_NORM );
+	EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pAlertSounds[ RANDOM_LONG(0, ArraySize(pAlertSounds)-1) ], 1.0, ATTN_NORM * 0.5, 0, PITCH_NORM );
 }
 
 

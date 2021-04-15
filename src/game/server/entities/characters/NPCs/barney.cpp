@@ -112,7 +112,7 @@ Schedule_t	slBaFollow[] =
 {
 	{
 		tlBaFollow,
-		ARRAYSIZE ( tlBaFollow ),
+		ArraySize( tlBaFollow ),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_LIGHT_DAMAGE	|
 		bits_COND_HEAVY_DAMAGE	|
@@ -138,7 +138,7 @@ Schedule_t slBarneyEnemyDraw[] =
 {
 	{
 		tlBarneyEnemyDraw,
-		ARRAYSIZE ( tlBarneyEnemyDraw ),
+		ArraySize( tlBarneyEnemyDraw ),
 		0,
 		0,
 		"Barney Enemy Draw"
@@ -157,7 +157,7 @@ Schedule_t	slBaFaceTarget[] =
 {
 	{
 		tlBaFaceTarget,
-		ARRAYSIZE ( tlBaFaceTarget ),
+		ArraySize( tlBaFaceTarget ),
 		bits_COND_CLIENT_PUSH	|
 		bits_COND_NEW_ENEMY		|
 		bits_COND_LIGHT_DAMAGE	|
@@ -182,7 +182,7 @@ Schedule_t	slIdleBaStand[] =
 {
 	{ 
 		tlIdleBaStand,
-		ARRAYSIZE ( tlIdleBaStand ), 
+		ArraySize( tlIdleBaStand ),
 		bits_COND_NEW_ENEMY		|
 		bits_COND_LIGHT_DAMAGE	|
 		bits_COND_HEAVY_DAMAGE	|

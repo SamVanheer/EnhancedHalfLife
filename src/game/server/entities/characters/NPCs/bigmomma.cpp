@@ -838,7 +838,7 @@ Schedule_t	slBigNode[] =
 {
 	{ 
 		tlBigNode,
-		ARRAYSIZE ( tlBigNode ), 
+		ArraySize( tlBigNode ),
 		0,
 		0,
 		"Big Node"
@@ -856,7 +856,7 @@ Schedule_t	slNodeFail[] =
 {
 	{ 
 		tlNodeFail,
-		ARRAYSIZE ( tlNodeFail ), 
+		ArraySize( tlNodeFail ),
 		0,
 		0,
 		"NodeFail"

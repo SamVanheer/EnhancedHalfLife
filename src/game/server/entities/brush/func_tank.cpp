@@ -171,7 +171,7 @@ static Vector gTankSpread[] =
 	Vector( 0.1, 0.1, 0.1 ),	// large cone
 	Vector( 0.25, 0.25, 0.25 ),	// extra-large cone
 };
-constexpr int MAX_FIRING_SPREADS = ARRAYSIZE(gTankSpread);
+constexpr int MAX_FIRING_SPREADS = ArraySize(gTankSpread);
 
 
 void CFuncTank :: Spawn()

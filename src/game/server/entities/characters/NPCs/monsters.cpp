@@ -103,14 +103,14 @@ bool CBaseMonster::Save( CSave &save )
 {
 	if ( !CBaseToggle::Save(save) )
 		return false;
-	return save.WriteFields( "CBaseMonster", this, m_SaveData, ARRAYSIZE(m_SaveData) );
+	return save.WriteFields( "CBaseMonster", this, m_SaveData, ArraySize(m_SaveData) );
 }
 
 bool CBaseMonster::Restore( CRestore &restore )
 {
 	if ( !CBaseToggle::Restore(restore) )
 		return false;
-	bool status = restore.ReadFields( "CBaseMonster", this, m_SaveData, ARRAYSIZE(m_SaveData) );
+	bool status = restore.ReadFields( "CBaseMonster", this, m_SaveData, ArraySize(m_SaveData) );
 	
 	// We don't save/restore routes yet
 	RouteClear();
@@ -2892,7 +2892,7 @@ void CBaseMonster::ReportAIState()
 	static const char *pStateNames[] = { "None", "Idle", "Combat", "Alert", "Hunt", "Prone", "Scripted", "Dead" };
 
 	ALERT( level, "%s: ", STRING(pev->classname) );
-	if ( (std::size_t)m_MonsterState < ARRAYSIZE(pStateNames) )
+	if ( (std::size_t)m_MonsterState < ArraySize(pStateNames) )
 		ALERT( level, "State: %s, ", pStateNames[m_MonsterState] );
 	int i = 0;
 	while ( activity_map[i].type != 0 )

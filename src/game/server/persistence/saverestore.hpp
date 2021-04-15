@@ -114,11 +114,11 @@ constexpr int MAX_ENTITYARRAY = 64;
 	{\
 		if ( !baseClass::Save(save) )\
 			return false;\
-		return save.WriteFields( #derivedClass, this, m_SaveData, ARRAYSIZE(m_SaveData) );\
+		return save.WriteFields( #derivedClass, this, m_SaveData, ArraySize(m_SaveData) );\
 	}\
 	bool derivedClass::Restore( CRestore &restore )\
 	{\
 		if ( !baseClass::Restore(restore) )\
 			return false;\
-		return restore.ReadFields( #derivedClass, this, m_SaveData, ARRAYSIZE(m_SaveData) );\
+		return restore.ReadFields( #derivedClass, this, m_SaveData, ArraySize(m_SaveData) );\
 	}
