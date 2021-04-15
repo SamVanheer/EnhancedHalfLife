@@ -100,7 +100,7 @@ char* GetVGUITGAName(const char *pszName)
 {
 	int i;
 	char sz[256]; 
-	static char gd[256]; 
+	static char gd[sizeof(sz) * 2];
 	const char *gamedir;
 
 	if (ScreenWidth < 640)
@@ -1070,7 +1070,7 @@ void TeamFortressViewport::UpdateSpectatorPanel()
 		// add sting auto if we are in auto directed mode
 		if ( gHUD.m_Spectator.m_autoDirector->value )
 		{
-			char tempString[128];
+			char tempString[sizeof(helpString2) + 64];
 			snprintf(tempString, sizeof(tempString), "#Spec_Auto %s", helpString2);
 			safe_strcpy( helpString2, tempString );
 		}

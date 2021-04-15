@@ -46,7 +46,7 @@ char *GetTGANameForRes(const char *pszName)
 {
 	int i;
 	char sz[256]; 
-	static char gd[256]; 
+	static char gd[sizeof(sz) * 2]; 
 	if (ScreenWidth < 640)
 		i = 320;
 	else

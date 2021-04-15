@@ -1193,9 +1193,6 @@ bool CHudSpectator::IsActivePlayer(cl_entity_t * ent)
 
 bool CHudSpectator::ParseOverviewFile( )
 {
-	char filename[255];
-	char levelname[255];
-
 	memset( &m_OverviewData, 0, sizeof(m_OverviewData));
 
 	// fill in standrd values
@@ -1214,9 +1211,11 @@ bool CHudSpectator::ParseOverviewFile( )
 	if ( strlen( m_OverviewData.map ) == 0 )
 		return false; // not active yet
 
+	char levelname[255];
 	safe_strcpy(levelname, m_OverviewData.map + 5);
 	levelname[strlen(levelname)-4] = 0;
 	
+	char filename[sizeof(levelname) * 2];
 	snprintf(filename, sizeof(filename), "overviews/%s.txt", levelname );
 
 	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer(filename);
