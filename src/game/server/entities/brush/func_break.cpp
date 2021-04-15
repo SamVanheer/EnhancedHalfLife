@@ -58,12 +58,14 @@ void CBreakable::KeyValue( KeyValueData* pkvd )
 	// UNDONE_WC: explicitly ignoring these fields, but they shouldn't be in the map file!
 	if (FStrEq(pkvd->szKeyName, "explosion"))
 	{
-		if (!stricmp(pkvd->szValue, "directed"))
+		if (!stricmp(pkvd->szValue, "1"))
+		{
 			m_Explosion = expDirected;
-		else if (!stricmp(pkvd->szValue, "random"))
-			m_Explosion = expRandom;
+		}
 		else
+		{
 			m_Explosion = expRandom;
+		}
 
 		pkvd->fHandled = true;
 	}
@@ -661,7 +663,7 @@ void CBreakable::Die()
 	
 		
 	if (m_Explosion == expDirected)
-		vecVelocity = g_vecAttackDir * 200;
+		vecVelocity = -g_vecAttackDir * 200;
 	else
 	{
 		vecVelocity.x = 0;
