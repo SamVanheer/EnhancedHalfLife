@@ -28,8 +28,8 @@
 #include "r_efx.h"
 
 #include "cl_dll.h"
-#include "../com_weapons.h"
-#include "../demo.h"
+#include "com_weapons.h"
+#include "demo.h"
 
 extern int g_iUser1;
 
