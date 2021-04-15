@@ -32,10 +32,6 @@ extern engine_studio_api_t IEngineStudio;
 // The renderer object, created on the stack.
 CGameStudioModelRenderer g_StudioRenderer;
 
-CGameStudioModelRenderer::CGameStudioModelRenderer()
-{
-}
-
 ////////////////////////////////////
 // Hooks to class implementation
 ////////////////////////////////////

@@ -18,7 +18,6 @@
 #include "r_studioint.h"
 
 #include "StudioModelRenderer.h"
-#include "GameStudioModelRenderer.h"
 
 int m_nPlayerGaitSequences[MAX_CLIENTS];
 
@@ -57,24 +56,6 @@ CStudioModelRenderer
 */
 CStudioModelRenderer::CStudioModelRenderer()
 {
-	m_fDoInterp			= 1;
-	m_fGaitEstimation	= 1;
-	m_pCurrentEntity	= nullptr;
-	m_pCvarHiModels		= nullptr;
-	m_pCvarDeveloper	= nullptr;
-	m_pCvarDrawEntities	= nullptr;
-	m_pChromeSprite		= nullptr;
-	m_pStudioModelCount	= nullptr;
-	m_pModelsDrawn		= nullptr;
-	m_protationmatrix	= nullptr;
-	m_paliastransform	= nullptr;
-	m_pbonetransform	= nullptr;
-	m_plighttransform	= nullptr;
-	m_pStudioHeader		= nullptr;
-	m_pBodyPart			= nullptr;
-	m_pSubModel			= nullptr;
-	m_pPlayerInfo		= nullptr;
-	m_pRenderModel		= nullptr;
 }
 
 /*
@@ -1099,8 +1080,6 @@ bool CStudioModelRenderer::StudioDrawModel( int flags )
 	{
 		entity_state_t deadplayer;
 
-		int save_interp;
-
 		if (m_pCurrentEntity->curstate.renderamt <= 0 || m_pCurrentEntity->curstate.renderamt > gEngfuncs.GetMaxClients() )
 			return false;
 
@@ -1116,8 +1095,8 @@ bool CStudioModelRenderer::StudioDrawModel( int flags )
 		deadplayer.angles = m_pCurrentEntity->curstate.angles;
 		deadplayer.origin = m_pCurrentEntity->curstate.origin;
 
-		save_interp = m_fDoInterp;
-		m_fDoInterp = 0;
+		const bool save_interp = m_fDoInterp;
+		m_fDoInterp = false;
 		
 		// draw as though it were a player
 		const bool result = StudioDrawPlayer( flags, &deadplayer );

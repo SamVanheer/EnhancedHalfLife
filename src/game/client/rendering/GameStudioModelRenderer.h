@@ -10,5 +10,5 @@
 class CGameStudioModelRenderer : public CStudioModelRenderer
 {
 public:
-	CGameStudioModelRenderer();
+	CGameStudioModelRenderer() = default;
 };
