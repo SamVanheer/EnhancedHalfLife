@@ -1,154 +1,77 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+
 #include "interface.h"
 
-#if !defined ( _WIN32 )
-// Linux doesn't have this function so this emulates its functionality
-//
-//
-void *GetModuleHandle(const char *name)
-{
-		void *handle;
+#include "PlatformHeaders.hpp"
 
-
-		if( name == nullptr)
-		{
-				// hmm, how can this be handled under linux....
-				// is it even needed?
-				return nullptr;
-		}
-
-		if( (handle=dlopen(name, RTLD_NOW))== nullptr)
-		{   
-		//printf("Error:%s\n",dlerror());
-				// couldn't open this file
-				return nullptr;
-		}
-
-		// read "man dlopen" for details
-		// in short dlopen() inc a ref count
-		// so dec the ref count by performing the close
-		dlclose(handle);
-	   return handle;
-}
+#ifdef _WIN32
+constexpr std::string_view LibraryExtension{"dll"};
+#elif defined(OSX)
+constexpr std::string_view LibraryExtension{"dylib"};
+#else
+constexpr std::string_view LibraryExtension{"so"};
 #endif
 
-// ------------------------------------------------------------------------------------ //
-// InterfaceReg.
-// ------------------------------------------------------------------------------------ //
-InterfaceReg *InterfaceReg::s_pInterfaceRegs = nullptr;
+#ifndef _WIN32
+#include <dlfcn.h> // dlopen,dlclose, et al
+#include <unistd.h>
+#endif
 
-
-InterfaceReg::InterfaceReg( InstantiateInterfaceFn fn, const char *pName ) :
-	m_pName(pName)
+InterfaceReg::InterfaceReg(InstantiateInterfaceFn fn, const char* pName)
+	: m_CreateFn(fn)
+	, m_pName(pName)
+	, m_pNext(s_pInterfaceRegs)
 {
-	m_CreateFn = fn;
-	m_pNext = s_pInterfaceRegs;
 	s_pInterfaceRegs = this;
 }
 
-
-
-// ------------------------------------------------------------------------------------ //
-// CreateInterface.
-// ------------------------------------------------------------------------------------ //
-EXPORT_FUNCTION IBaseInterface *CreateInterface( const char *pName, int *pReturnCode )
+static IBaseInterface* CreateInterfaceLocal(const char* pName, InterfaceResult* pReturnCode)
 {
-	InterfaceReg *pCur;
-	
-	for(pCur=InterfaceReg::s_pInterfaceRegs; pCur; pCur=pCur->m_pNext)
+	for (InterfaceReg* pCur = InterfaceReg::s_pInterfaceRegs; pCur; pCur = pCur->m_pNext)
 	{
-		if(strcmp(pCur->m_pName, pName) == 0)
+		if (strcmp(pCur->m_pName, pName) == 0)
 		{
-			if ( pReturnCode )
+			if (pReturnCode)
 			{
-				*pReturnCode = IFACE_OK;
+				*pReturnCode = InterfaceResult::Ok;
 			}
 			return pCur->m_CreateFn();
 		}
 	}
-	
-	if ( pReturnCode )
+
+	if (pReturnCode)
 	{
-		*pReturnCode = IFACE_FAILED;
+		*pReturnCode = InterfaceResult::Failed;
 	}
 	return nullptr;
 }
 
-#ifdef LINUX
-static IBaseInterface *CreateInterfaceLocal( const char *pName, int *pReturnCode )
+EXPORT_FUNCTION IBaseInterface* CreateInterface(const char* pName, InterfaceResult* pReturnCode)
 {
-	InterfaceReg *pCur;
-	
-	for(pCur=InterfaceReg::s_pInterfaceRegs; pCur; pCur=pCur->m_pNext)
-	{
-		if(strcmp(pCur->m_pName, pName) == 0)
-		{
-			if ( pReturnCode )
-			{
-				*pReturnCode = IFACE_OK;
-			}
-			return pCur->m_CreateFn();
-		}
-	}
-	
-	if ( pReturnCode )
-	{
-		*pReturnCode = IFACE_FAILED;
-	}
-	return nullptr;
+	return CreateInterfaceLocal(pName, pReturnCode);
 }
-#endif
+
+CreateInterfaceFn Sys_GetFactoryThis()
+{
+	return &CreateInterfaceLocal;
+}
+
+CSysModule* Sys_LoadModule(const char* pModuleName)
+{
+	CSysModule* module = nullptr;
 
 #ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include "windows.h"
-#endif
-
-//-----------------------------------------------------------------------------
-// Purpose: returns a pointer to a function, given a module
-// Input  : pModuleName - module name
-//			*pName - proc name
-//-----------------------------------------------------------------------------
-//static hlds_run wants to use this function 
-static void *Sys_GetProcAddress( const char *pModuleName, const char *pName )
-{
-	return GetProcAddress( GetModuleHandle(pModuleName), pName );
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: returns a pointer to a function, given a module
-// Input  : pModuleName - module name
-//			*pName - proc name
-//-----------------------------------------------------------------------------
-// hlds_run wants to use this function 
-void *Sys_GetProcAddress( void *pModuleHandle, const char *pName )
-{
-#if defined ( _WIN32 )
-	return GetProcAddress( (HINSTANCE)pModuleHandle, pName );
+	module = reinterpret_cast<CSysModule*>(LoadLibrary(pModuleName));
 #else
-	return GetProcAddress( pModuleHandle, pName );
-#endif
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Loads a DLL/component from disk and returns a handle to it
-// Input  : *pModuleName - filename of the component
-// Output : opaque handle to the module (hides system dependency)
-//-----------------------------------------------------------------------------
-CSysModule	*Sys_LoadModule( const char *pModuleName )
-{
-#if defined ( _WIN32 )
-	HMODULE hDLL = LoadLibrary( pModuleName );
-#else
-	HMODULE hDLL  = NULL;
 	char szAbsoluteModuleName[1024];
 	szAbsoluteModuleName[0] = 0;
-	if ( pModuleName[0] != '/' )
+
+	//If it's not an absolute path, convert it using the current working directory
+	if (pModuleName[0] != '/')
 	{
 		char szCwd[1024];
-		char szAbsoluteModuleName[1024];
 
 		//Prevent loading from garbage paths if the path is too large for the buffer
 		if (!getcwd(szCwd, sizeof(szCwd)))
@@ -156,120 +79,63 @@ CSysModule	*Sys_LoadModule( const char *pModuleName )
 			exit(-1);
 		}
 
-		if ( szCwd[ strlen( szCwd ) - 1 ] == '/' )
-			szCwd[ strlen( szCwd ) - 1 ] = 0;
+		if (szCwd[strlen(szCwd) - 1] == '/')
+			szCwd[strlen(szCwd) - 1] = 0;
 
-		snprintf( szAbsoluteModuleName, sizeof(szAbsoluteModuleName), "%s/%s", szCwd, pModuleName );
+		snprintf(szAbsoluteModuleName, sizeof(szAbsoluteModuleName), "%s/%s", szCwd, pModuleName);
 
-		hDLL = dlopen( szAbsoluteModuleName, RTLD_NOW );
+		pModuleName = szAbsoluteModuleName;
 	}
-	else
-	{
-		snprintf( szAbsoluteModuleName, sizeof(szAbsoluteModuleName), "%s", pModuleName );
-		 hDLL = dlopen( pModuleName, RTLD_NOW );
-	}
+
+	module = dlopen(pModuleName, RTLD_NOW);
 #endif
 
-	if( !hDLL )
+	if (!module)
 	{
 		char str[512];
-#if defined ( _WIN32 )
-		snprintf( str, sizeof(str), "%s.dll", pModuleName );
-		hDLL = LoadLibrary( str );
-#elif defined(OSX)
-		printf("Error:%s\n",dlerror());
-		snprintf( str, sizeof(str), "%s.dylib", szAbsoluteModuleName );
-		hDLL = dlopen(str, RTLD_NOW);		
+
+		snprintf(str, sizeof(str), "%s.%s", pModuleName, LibraryExtension.data());
+
+#if defined(_WIN32)
+		module = reinterpret_cast<CSysModule*>(LoadLibrary(str));
 #else
-		printf("Error:%s\n",dlerror());
-		snprintf( str, sizeof(str), "%s.so", szAbsoluteModuleName );
-		hDLL = dlopen(str, RTLD_NOW);
+		printf("Error:%s\n", dlerror());
+		module = reinterpret_cast<CSysModule*>(dlopen(str, RTLD_NOW));
 #endif
 	}
 
-	return reinterpret_cast<CSysModule *>(hDLL);
+	return module;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Unloads a DLL/component from
-// Input  : *pModuleName - filename of the component
-// Output : opaque handle to the module (hides system dependency)
-//-----------------------------------------------------------------------------
-void Sys_UnloadModule( CSysModule *pModule )
+void Sys_UnloadModule(CSysModule* module)
 {
-	if ( !pModule )
+	if (!module)
+	{
 		return;
+	}
 
-	HMODULE	hDLL = reinterpret_cast<HMODULE>(pModule);
-#if defined ( _WIN32 )
-	FreeLibrary( hDLL );
+#ifdef _WIN32
+	FreeLibrary(reinterpret_cast<HMODULE>(module));
 #else
-	dlclose((void *)hDLL);
+	dlclose(reinterpret_cast<void*>(module));
 #endif
-
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: returns a pointer to a function, given a module
-// Input  : module - windows HMODULE from Sys_LoadModule() 
-//			*pName - proc name
-// Output : factory for this module
-//-----------------------------------------------------------------------------
-CreateInterfaceFn Sys_GetFactory( CSysModule *pModule )
+void* Sys_GetProcAddress(CSysModule* module, const char* pName)
 {
-	if ( !pModule )
+	if (!module)
+	{
 		return nullptr;
+	}
 
-	HMODULE	hDLL = reinterpret_cast<HMODULE>(pModule);
-#if defined ( _WIN32 )
-	return reinterpret_cast<CreateInterfaceFn>(GetProcAddress( hDLL, CREATEINTERFACE_PROCNAME ));
+#ifdef _WIN32
+	return GetProcAddress(reinterpret_cast<HINSTANCE>(module), pName);
 #else
-// Linux gives this error:
-//../public/interface.cpp: In function `IBaseInterface *(*Sys_GetFactory 
-//(CSysModule *)) (const char *, int *)':
-//../public/interface.cpp:154: ISO C++ forbids casting between 
-//pointer-to-function and pointer-to-object
-//
-// so lets get around it :)
-	return (CreateInterfaceFn)(GetProcAddress( hDLL, CREATEINTERFACE_PROCNAME ));
+	return dlsym(module, pName);
 #endif
 }
 
-
-
-//-----------------------------------------------------------------------------
-// Purpose: returns the instance of this module
-// Output : interface_instance_t
-//-----------------------------------------------------------------------------
-CreateInterfaceFn Sys_GetFactoryThis()
+CreateInterfaceFn Sys_GetFactory(CSysModule* module)
 {
-#ifdef LINUX
-	return CreateInterfaceLocal;
-#else
-	return CreateInterface;
-#endif
+	return reinterpret_cast<CreateInterfaceFn>(Sys_GetProcAddress(module, CREATEINTERFACE_PROCNAME.data()));
 }
-
-//-----------------------------------------------------------------------------
-// Purpose: returns the instance of the named module
-// Input  : *pModuleName - name of the module
-// Output : interface_instance_t - instance of that module
-//-----------------------------------------------------------------------------
-CreateInterfaceFn Sys_GetFactory( const char *pModuleName )
-{
-#if defined ( _WIN32 )
-	return static_cast<CreateInterfaceFn>( Sys_GetProcAddress( pModuleName, CREATEINTERFACE_PROCNAME ) );
-#else
-// Linux gives this error:
-//../public/interface.cpp: In function `IBaseInterface *(*Sys_GetFactory 
-//(const char *)) (const char *, int *)':
-//../public/interface.cpp:186: invalid static_cast from type `void *' to 
-//type `IBaseInterface *(*) (const char *, int *)'
-//
-// so lets use the old style cast.
-	return (CreateInterfaceFn)( Sys_GetProcAddress( pModuleName, CREATEINTERFACE_PROCNAME ) );
-#endif
-}
-
-
-
