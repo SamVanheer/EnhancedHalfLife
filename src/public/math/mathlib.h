@@ -87,7 +87,7 @@ inline void AngleVectors(const Vector& angles, Vector& forward, Vector& right, V
 
 void AngleVectorsTranspose(const Vector& angles, Vector* forward, Vector* right, Vector* up);
 
-void AngleMatrix(const float* angles, float(*matrix)[4]);
+void AngleMatrix(const Vector& angles, float(*matrix)[4]);
 void AngleIMatrix(const Vector& angles, float(*matrix)[4]);
 void VectorTransform(const float* in1, float in2[3][4], float* out);
 
@@ -99,7 +99,7 @@ void NormalizeAngles(float* angles);
 *	FIXME:  Use Quaternions to avoid discontinuities
 *	Frac is 0.0 to 1.0 ( i.e., should probably be clamped, but doesn't have to be )
 */
-void InterpolateAngles(float* start, float* end, float* output, float frac);
+void InterpolateAngles(Vector& start, Vector& end, Vector& output, float frac);
 void SmoothInterpolateAngles(Vector& startAngle, Vector& endAngle, Vector& finalAngle, float degreesPerSec, float frametime);
 float AngleBetweenVectors(const Vector& v1, const Vector& v2);
 float UTIL_AngleDiff(float destAngle, float srcAngle);
@@ -127,7 +127,7 @@ float Distance(const Vector& v1, const Vector& v2);
 
 void ConcatTransforms(float in1[3][4], float in2[3][4], float out[3][4]);
 
-void AngleQuaternion(float* angles, vec4_t quaternion);
+void AngleQuaternion(const Vector& angles, vec4_t quaternion);
 
 void QuaternionSlerp(vec4_t p, vec4_t q, float t, vec4_t qt);
 
@@ -135,7 +135,7 @@ void QuaternionMatrix(vec4_t quaternion, float(*matrix)[4]);
 
 void MatrixCopy(float in[3][4], float out[3][4]);
 
-float MaxAngleBetweenAngles(float* a1, float* a2);
+float MaxAngleBetweenAngles(Vector& a1, Vector& a2);
 
 #define BOX_ON_PLANE_SIDE(emins, emaxs, p)	\
 	(((p)->type < 3)?						\

@@ -119,7 +119,7 @@ void AngleVectorsTranspose(const Vector& angles, Vector* forward, Vector* right,
 	}
 }
 
-void AngleMatrix(const float* angles, float(*matrix)[4])
+void AngleMatrix(const Vector& angles, float(*matrix)[4])
 {
 	float		angle;
 	float		sr, sp, sy, cr, cp, cy;
@@ -203,7 +203,7 @@ void NormalizeAngles(float* angles)
 	}
 }
 
-void InterpolateAngles(float* start, float* end, float* output, float frac)
+void InterpolateAngles(Vector& start, Vector& end, Vector& output, float frac)
 {
 	int i;
 	float ang1, ang2;
@@ -534,7 +534,7 @@ void ConcatTransforms(float in1[3][4], float in2[3][4], float out[3][4])
 /**
 *	@details angles index are not the same as ROLL, PITCH, YAW
 */
-void AngleQuaternion(float* angles, vec4_t quaternion)
+void AngleQuaternion(const Vector& angles, vec4_t quaternion)
 {
 	// FIXME: rescale the inputs to 1/2 angle
 	float angle = angles[2] * 0.5;
@@ -630,7 +630,7 @@ void MatrixCopy(float in[3][4], float out[3][4])
 	memcpy(out, in, sizeof(float) * 3 * 4);
 }
 
-float MaxAngleBetweenAngles(float* a1, float* a2)
+float MaxAngleBetweenAngles(Vector& a1, Vector& a2)
 {
 	float d, maxd = 0.0f;
 
