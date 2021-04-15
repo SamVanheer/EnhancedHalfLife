@@ -18,12 +18,12 @@ target_include_directories(hl PRIVATE
 	../engine
 	../common
 	../pm_shared
-	../../public
-	../../public/engine
-	../../public/engine/server
-	../../public/game
-	../../public/game/server
-	../../public/math
+	${INCLUDE_DIRECTORY}/GoldSrc
+	${INCLUDE_DIRECTORY}/GoldSrc/engine
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/server
+	${INCLUDE_DIRECTORY}/GoldSrc/game
+	${INCLUDE_DIRECTORY}/GoldSrc/game/server
+	${INCLUDE_DIRECTORY}/GoldSrc/math
 	../shared
 	../shared/entities/weapons
 	../shared/player_movement
@@ -171,46 +171,46 @@ target_sources(hl PRIVATE
 	server_interface/game.h
 	server_interface/server_interface.cpp
 	server_interface/server_interface.hpp
-	../../public/const.h
-	../../public/crc.h
-	../../public/cvardef.h
-	../../public/director_cmds.h
-	../../public/enums.h
-	../../public/FileSystem.h
-	../../public/hltv.h
-	../../public/in_buttons.h
-	../../public/interface.cpp
-	../../public/interface.h
-	../../public/keydefs.h
-	../../public/netadr.h
-	../../public/Platform.h
-	../../public/PlatformHeaders.hpp
-	../../public/Sequence.h
-	../../public/studio.h
-	../../public/studio_event.h
-	../../public/winsani_in.h
-	../../public/winsani_out.h
-	../../public/engine/com_model.h
-	../../public/engine/custom.h
-	../../public/engine/customentity.h
-	../../public/engine/edict.h
-	../../public/engine/entity_state.h
-	../../public/engine/event_args.h
-	../../public/engine/event_flags.h
-	../../public/engine/pmtrace.h
-	../../public/engine/progdefs.h
-	../../public/engine/progs.h
-	../../public/engine/r_studioint.h
-	../../public/engine/screenfade.h
-	../../public/engine/shake.h
-	../../public/engine/usercmd.h
-	../../public/engine/weaponinfo.h
-	../../public/engine/server/sv_engine_int.hpp
-	../../public/game/voice_common.h
-	../../public/game/server/server_int.hpp
-	../../public/math/mathlib.cpp
-	../../public/math/mathlib.h
-	../../public/math/vector.h)
+	${INCLUDE_DIRECTORY}/GoldSrc/const.h
+	${INCLUDE_DIRECTORY}/GoldSrc/crc.h
+	${INCLUDE_DIRECTORY}/GoldSrc/cvardef.h
+	${INCLUDE_DIRECTORY}/GoldSrc/director_cmds.h
+	${INCLUDE_DIRECTORY}/GoldSrc/enums.h
+	${INCLUDE_DIRECTORY}/GoldSrc/FileSystem.h
+	${INCLUDE_DIRECTORY}/GoldSrc/hltv.h
+	${INCLUDE_DIRECTORY}/GoldSrc/in_buttons.h
+	${INCLUDE_DIRECTORY}/GoldSrc/interface.cpp
+	${INCLUDE_DIRECTORY}/GoldSrc/interface.h
+	${INCLUDE_DIRECTORY}/GoldSrc/keydefs.h
+	${INCLUDE_DIRECTORY}/GoldSrc/netadr.h
+	${INCLUDE_DIRECTORY}/GoldSrc/Platform.h
+	${INCLUDE_DIRECTORY}/GoldSrc/PlatformHeaders.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/Sequence.h
+	${INCLUDE_DIRECTORY}/GoldSrc/studio.h
+	${INCLUDE_DIRECTORY}/GoldSrc/studio_event.h
+	${INCLUDE_DIRECTORY}/GoldSrc/winsani_in.h
+	${INCLUDE_DIRECTORY}/GoldSrc/winsani_out.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/com_model.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/custom.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/customentity.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/edict.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/entity_state.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_args.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_flags.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/pmtrace.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/progdefs.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/progs.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/r_studioint.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/screenfade.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/shake.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/usercmd.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/weaponinfo.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/server/sv_engine_int.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/game/voice_common.h
+	${INCLUDE_DIRECTORY}/GoldSrc/game/server/server_int.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/math/mathlib.cpp
+	${INCLUDE_DIRECTORY}/GoldSrc/math/mathlib.h
+	${INCLUDE_DIRECTORY}/GoldSrc/math/vector.h)
 
 add_subdirectory(../shared shared)
 
@@ -218,7 +218,7 @@ add_shared_sources(hl)
 
 # Create filters
 get_target_property(SERVER_SOURCES hl SOURCES)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/../.. FILES ${SERVER_SOURCES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/../../.. FILES ${SERVER_SOURCES})
 
 if (MSVC)
 	set(HLDS_EXECUTABLE "hlds.exe")

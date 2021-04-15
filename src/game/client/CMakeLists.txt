@@ -42,14 +42,14 @@ target_include_directories(client PRIVATE
 	../server/gamerules
 	../server/persistence
 	../server/server_interface
-	../../public
-	../../public/engine
-	../../public/engine/client
-	../../public/engine/server
-	../../public/game
-	../../public/game/client
-	../../public/game/server
-	../../public/math
+	${INCLUDE_DIRECTORY}/GoldSrc
+	${INCLUDE_DIRECTORY}/GoldSrc/engine
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/server
+	${INCLUDE_DIRECTORY}/GoldSrc/game
+	${INCLUDE_DIRECTORY}/GoldSrc/game/client
+	${INCLUDE_DIRECTORY}/GoldSrc/game/server
+	${INCLUDE_DIRECTORY}/GoldSrc/math
 	../common
 	../pm_shared
 	../engine
@@ -164,68 +164,68 @@ target_sources(client PRIVATE
 	ui/vgui/utils/vgui_slider2.h
 	ui/vgui/utils/voice_banmgr.cpp
 	ui/vgui/utils/voice_banmgr.h
-	../../public/con_nprint.h
-	../../public/const.h
-	../../public/crc.h
-	../../public/cvardef.h
-	../../public/director_cmds.h
-	../../public/enums.h
-	../../public/FileSystem.h
-	../../public/hltv.h
-	../../public/in_buttons.h
-	../../public/interface.cpp
-	../../public/interface.h
-	../../public/keydefs.h
-	../../public/netadr.h
-	../../public/parsemsg.h
-	../../public/Platform.h
-	../../public/PlatformHeaders.hpp
-	../../public/Sequence.h
-	../../public/studio.h
-	../../public/studio_event.h
-	../../public/winsani_in.h
-	../../public/winsani_out.h
-	../../public/engine/com_model.h
-	../../public/engine/custom.h
-	../../public/engine/customentity.h
-	../../public/engine/edict.h
-	../../public/engine/entity_state.h
-	../../public/engine/event_args.h
-	../../public/engine/event_flags.h
-	../../public/engine/pmtrace.h
-	../../public/engine/progdefs.h
-	../../public/engine/progs.h
-	../../public/engine/r_studioint.h
-	../../public/engine/screenfade.h
-	../../public/engine/shake.h
-	../../public/engine/usercmd.h
-	../../public/engine/weaponinfo.h
-	../../public/engine/client/beamdef.h
-	../../public/engine/client/cl_engine_int.hpp
-	../../public/engine/client/cl_entity.h
-	../../public/engine/client/demo_api.h
-	../../public/engine/client/dlight.h
-	../../public/engine/client/entity_types.h
-	../../public/engine/client/event_api.h
-	../../public/engine/client/ivoicetweak.h
-	../../public/engine/client/net_api.h
-	../../public/engine/client/particledef.h
-	../../public/engine/client/particleman.h
-	../../public/engine/client/pman_particlemem.h
-	../../public/engine/client/pman_triangleffect.h
-	../../public/engine/client/ref_params.h
-	../../public/engine/client/r_efx.h
-	../../public/engine/client/triangleapi.h
-	../../public/engine/server/sv_engine_int.hpp
-	../../public/game/voice_common.h
-	../../public/game/client/cdll_int.h
-	../../public/game/client/client_int.hpp
-	../../public/game/client/IGameClientExports.h
-	../../public/game/server/server_int.hpp
-	../../public/math/mathlib.cpp
-	../../public/math/mathlib.h
-	../../public/math/vector.h
-	../../public/steam/steamtypes.h)
+	${INCLUDE_DIRECTORY}/GoldSrc/con_nprint.h
+	${INCLUDE_DIRECTORY}/GoldSrc/const.h
+	${INCLUDE_DIRECTORY}/GoldSrc/crc.h
+	${INCLUDE_DIRECTORY}/GoldSrc/cvardef.h
+	${INCLUDE_DIRECTORY}/GoldSrc/director_cmds.h
+	${INCLUDE_DIRECTORY}/GoldSrc/enums.h
+	${INCLUDE_DIRECTORY}/GoldSrc/FileSystem.h
+	${INCLUDE_DIRECTORY}/GoldSrc/hltv.h
+	${INCLUDE_DIRECTORY}/GoldSrc/in_buttons.h
+	${INCLUDE_DIRECTORY}/GoldSrc/interface.cpp
+	${INCLUDE_DIRECTORY}/GoldSrc/interface.h
+	${INCLUDE_DIRECTORY}/GoldSrc/keydefs.h
+	${INCLUDE_DIRECTORY}/GoldSrc/netadr.h
+	${INCLUDE_DIRECTORY}/GoldSrc/parsemsg.h
+	${INCLUDE_DIRECTORY}/GoldSrc/Platform.h
+	${INCLUDE_DIRECTORY}/GoldSrc/PlatformHeaders.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/Sequence.h
+	${INCLUDE_DIRECTORY}/GoldSrc/studio.h
+	${INCLUDE_DIRECTORY}/GoldSrc/studio_event.h
+	${INCLUDE_DIRECTORY}/GoldSrc/winsani_in.h
+	${INCLUDE_DIRECTORY}/GoldSrc/winsani_out.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/com_model.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/custom.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/customentity.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/edict.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/entity_state.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_args.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_flags.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/pmtrace.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/progdefs.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/progs.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/r_studioint.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/screenfade.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/shake.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/usercmd.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/weaponinfo.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/beamdef.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/cl_engine_int.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/cl_entity.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/demo_api.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/dlight.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/entity_types.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/event_api.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/ivoicetweak.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/net_api.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/particledef.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/particleman.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/pman_particlemem.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/pman_triangleffect.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/ref_params.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/r_efx.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/client/triangleapi.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/server/sv_engine_int.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/game/voice_common.h
+	${INCLUDE_DIRECTORY}/GoldSrc/game/client/cdll_int.h
+	${INCLUDE_DIRECTORY}/GoldSrc/game/client/client_int.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/game/client/IGameClientExports.h
+	${INCLUDE_DIRECTORY}/GoldSrc/game/server/server_int.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/math/mathlib.cpp
+	${INCLUDE_DIRECTORY}/GoldSrc/math/mathlib.h
+	${INCLUDE_DIRECTORY}/GoldSrc/math/vector.h
+	${INCLUDE_DIRECTORY}/GoldSrc/steam/steamtypes.h)
 
 add_subdirectory(../shared shared)
 
@@ -233,7 +233,7 @@ add_shared_sources(client)
 
 # Create filters
 get_target_property(CLIENT_SOURCES client SOURCES)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/../.. FILES ${CLIENT_SOURCES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/../../.. FILES ${CLIENT_SOURCES})
 
 if (MSVC)
 	set(HL_EXECUTABLE "hl.exe")

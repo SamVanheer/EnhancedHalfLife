@@ -26,6 +26,8 @@ elseif (NOT EXISTS ${HALFLIFE_DIRECTORY})
 	message(FATAL_ERROR "The given Half-Life directory path ${HALFLIFE_DIRECTORY} is not valid")
 endif()
 
+set(INCLUDE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../include)
+
 # Find dependencies
 find_package(Threads REQUIRED)
 

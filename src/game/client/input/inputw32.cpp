@@ -21,7 +21,7 @@
 #include "usercmd.h"
 #include "const.h"
 #include "camera.h"
-#include "../public/keydefs.h"
+#include "keydefs.h"
 #include "view.h"
 #include "Exports.h"
 
