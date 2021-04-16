@@ -1620,7 +1620,12 @@ constexpr int SF_TRACK_DONT_MOVE = 0x00000010;
 // train within these dimensions in order to operate when the train is near it.
 //
 
-enum TRAIN_CODE { TRAIN_SAFE, TRAIN_BLOCKING, TRAIN_FOLLOWING };
+enum class TrainCode
+{
+	Safe,
+	Blocking,
+	Following
+};
 
 class CFuncTrackChange : public CFuncPlatRot
 {
@@ -1635,7 +1640,7 @@ public:
 	void			KeyValue( KeyValueData* pkvd ) override;
 	void			Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 	void			EXPORT Find();
-	TRAIN_CODE		EvaluateTrain( CPathTrack *pcurrent );
+	TrainCode		EvaluateTrain( CPathTrack *pcurrent );
 	void			UpdateTrain( Vector &dest );
 	void	HitBottom() override;
 	void	HitTop() override;
@@ -1662,7 +1667,7 @@ public:
 	string_t m_trackTopName;
 	string_t m_trackBottomName;
 	string_t m_trainName;
-	TRAIN_CODE		m_code;
+	TrainCode m_code;
 	ToggleState m_targetState;
 	int				m_use;
 };
@@ -1806,29 +1811,29 @@ void CFuncTrackChange :: Find()
 
 
 
-TRAIN_CODE CFuncTrackChange :: EvaluateTrain( CPathTrack *pcurrent )
+TrainCode CFuncTrackChange :: EvaluateTrain( CPathTrack *pcurrent )
 {
 	// Go ahead and work, we don't have anything to switch, so just be an elevator
 	if ( !pcurrent || !m_train )
-		return TRAIN_SAFE;
+		return TrainCode::Safe;
 
 	if ( m_train->m_ppath == pcurrent || (pcurrent->m_pprevious && m_train->m_ppath == pcurrent->m_pprevious) ||
 		 (pcurrent->m_pnext && m_train->m_ppath == pcurrent->m_pnext) )
 	{
 		if ( m_train->pev->speed != 0 )
-			return TRAIN_BLOCKING;
+			return TrainCode::Blocking;
 
 		Vector dist = pev->origin - m_train->pev->origin;
 		float length = dist.Length2D();
 		if ( length < m_train->m_length )		// Empirically determined close distance
-			return TRAIN_FOLLOWING;
+			return TrainCode::Following;
 		else if ( length > (150 + m_train->m_length) )
-			return TRAIN_SAFE;
+			return TrainCode::Safe;
 
-		return TRAIN_BLOCKING;
+		return TrainCode::Blocking;
 	}
 	
-	return TRAIN_SAFE;
+	return TrainCode::Safe;
 }
 
 
@@ -1859,7 +1864,7 @@ void CFuncTrackChange :: UpdateTrain( Vector &dest )
 
 void CFuncTrackChange :: GoDown()
 {
-	if ( m_code == TRAIN_BLOCKING )
+	if ( m_code == TrainCode::Blocking)
 		return;
 
 	// HitBottom may get called during CFuncPlat::GoDown(), so set up for that
@@ -1882,7 +1887,7 @@ void CFuncTrackChange :: GoDown()
 	// Otherwise, rotate first, move second
 
 	// If the train is moving with the platform, update it
-	if ( m_code == TRAIN_FOLLOWING )
+	if ( m_code == TrainCode::Following)
 	{
 		UpdateTrain( m_start );
 		m_train->m_ppath = nullptr;
@@ -1895,7 +1900,7 @@ void CFuncTrackChange :: GoDown()
 //
 void CFuncTrackChange :: GoUp()
 {
-	if ( m_code == TRAIN_BLOCKING )
+	if ( m_code == TrainCode::Blocking)
 		return;
 
 	// HitTop may get called during CFuncPlat::GoUp(), so set up for that
@@ -1919,7 +1924,7 @@ void CFuncTrackChange :: GoUp()
 	// Otherwise, move first, rotate second
 
 	// If the train is moving with the platform, update it
-	if ( m_code == TRAIN_FOLLOWING )
+	if ( m_code == TrainCode::Following)
 	{
 		UpdateTrain( m_end );
 		m_train->m_ppath = nullptr;
@@ -1956,8 +1961,8 @@ void CFuncTrackChange :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 	else if ( m_toggle_state == ToggleState::AtBottom)
 		m_code = EvaluateTrain( m_trackBottom );
 	else
-		m_code = TRAIN_BLOCKING;
-	if ( m_code == TRAIN_BLOCKING )
+		m_code = TrainCode::Blocking;
+	if ( m_code == TrainCode::Blocking)
 	{
 		// Play alarm and return
 		EMIT_SOUND(ENT(pev), CHAN_VOICE, "buttons/button11.wav", 1, ATTN_NORM);
@@ -1982,7 +1987,7 @@ void CFuncTrackChange :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 void CFuncTrackChange :: HitBottom()
 {
 	CFuncPlatRot :: HitBottom();
-	if ( m_code == TRAIN_FOLLOWING )
+	if ( m_code == TrainCode::Following)
 	{
 //		UpdateTrain();
 		m_train->SetTrack( m_trackBottom );
@@ -2002,7 +2007,7 @@ void CFuncTrackChange :: HitBottom()
 void CFuncTrackChange :: HitTop()
 {
 	CFuncPlatRot :: HitTop();
-	if ( m_code == TRAIN_FOLLOWING )
+	if ( m_code == TrainCode::Following)
 	{
 //		UpdateTrain();
 		m_train->SetTrack( m_trackTop );
@@ -2047,7 +2052,7 @@ void CFuncTrackAuto :: UpdateAutoTargets(ToggleState toggleState )
 	if ( pTarget )
 	{
 		ClearBits( pTarget->pev->spawnflags, SF_PATH_DISABLED );
-		if ( m_code == TRAIN_FOLLOWING && m_train && m_train->pev->speed == 0 )
+		if ( m_code == TrainCode::Following && m_train && m_train->pev->speed == 0 )
 			m_train->Use( this, this, USE_ON, 0 );
 	}
 
@@ -2075,7 +2080,7 @@ void CFuncTrackAuto :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 	{
 		m_code = EvaluateTrain( pTarget );
 		// Safe to fire?
-		if ( m_code == TRAIN_FOLLOWING && m_toggle_state != m_targetState )
+		if ( m_code == TrainCode::Following && m_toggle_state != m_targetState )
 		{
 			DisableUse();
 			if (m_toggle_state == ToggleState::AtTop)
