@@ -1087,7 +1087,7 @@ void CScientist::Heal()
 
 int CScientist::FriendNumber( int arrayNumber )
 {
-	static int array[3] = { 1, 2, 0 };
+	static constexpr int array[3] = { 1, 2, 0 };
 	if ( arrayNumber < 3 )
 		return array[ arrayNumber ];
 	return arrayNumber;
@@ -1262,7 +1262,7 @@ int	CSittingScientist :: Classify ()
 
 int CSittingScientist::FriendNumber( int arrayNumber )
 {
-	static int array[3] = { 2, 1, 0 };
+	static constexpr int array[3] = { 2, 1, 0 };
 	if ( arrayNumber < 3 )
 		return array[ arrayNumber ];
 	return arrayNumber;

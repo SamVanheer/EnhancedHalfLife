@@ -385,7 +385,7 @@ bool CBullsquid :: CheckMeleeAttack2 ( float flDot, float flDist )
 //=========================================================
 bool CBullsquid :: FValidateHintType ( short sHint )
 {
-	static short sSquidHints[] =
+	static constexpr short sSquidHints[] =
 	{
 		HINT_WORLD_HUMAN_BLOOD,
 	};

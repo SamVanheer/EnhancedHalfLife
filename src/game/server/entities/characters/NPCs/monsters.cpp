@@ -2186,7 +2186,7 @@ bool CBaseMonster::TaskIsRunning()
 //=========================================================
 int CBaseMonster::IRelationship ( CBaseEntity *pTarget )
 {
-	static int iEnemy[14][14] =
+	static constexpr int iEnemy[14][14] =
 	{			 //   NONE	 MACH	 PLYR	 HPASS	 HMIL	 AMIL	 APASS	 AMONST	APREY	 APRED	 INSECT	PLRALY	PBWPN	ABWPN
 	/*NONE*/		{ R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO,	R_NO,	R_NO	},
 	/*MACHINE*/		{ R_NO	,R_NO	,R_DL	,R_DL	,R_NO	,R_DL	,R_DL	,R_DL	,R_DL	,R_DL	,R_NO	,R_DL,	R_DL,	R_DL	},
@@ -2889,7 +2889,7 @@ void CBaseMonster::ReportAIState()
 {
 	ALERT_TYPE level = at_console;
 
-	static const char *pStateNames[] = { "None", "Idle", "Combat", "Alert", "Hunt", "Prone", "Scripted", "Dead" };
+	static constexpr const char *pStateNames[] = { "None", "Idle", "Combat", "Alert", "Hunt", "Prone", "Scripted", "Dead" };
 
 	ALERT( level, "%s: ", STRING(pev->classname) );
 	if ( (std::size_t)m_MonsterState < ArraySize(pStateNames) )

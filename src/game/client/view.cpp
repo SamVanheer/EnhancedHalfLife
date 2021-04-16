@@ -1165,7 +1165,7 @@ void V_GetMapChasePosition(int target, Vector& cl_angles, Vector& origin, Vector
 int V_FindViewModelByWeaponModel(int weaponindex)
 {
 
-	static const char * modelmap[][2] =	{
+	static constexpr const char * modelmap[][2] =	{
 
 		{ "models/p_crossbow.mdl",		"models/v_crossbow.mdl"		},
 		{ "models/p_crowbar.mdl",		"models/v_crowbar.mdl"		},

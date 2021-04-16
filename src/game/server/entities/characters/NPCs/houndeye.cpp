@@ -134,7 +134,7 @@ int	CHoundeye :: Classify ()
 //=========================================================
 bool CHoundeye :: FValidateHintType ( short sHint )
 {
-	static short sHoundHints[] =
+	static constexpr short sHoundHints[] =
 	{
 		HINT_WORLD_MACHINERY,
 		HINT_WORLD_BLINKING_LIGHT,

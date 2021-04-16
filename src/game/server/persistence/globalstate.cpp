@@ -44,7 +44,7 @@ globalentity_t* CGlobalState::Find(string_t globalname)
 //#ifdef _DEBUG
 void CGlobalState::DumpGlobals()
 {
-	static const char* estates[] = {"Off", "On", "Dead"};
+	static constexpr const char* estates[] = {"Off", "On", "Dead"};
 	globalentity_t* pTest;
 
 	ALERT(at_console, "-- Globals --\n");

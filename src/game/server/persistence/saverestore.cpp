@@ -137,7 +137,7 @@ constexpr int ENTVARS_COUNT = (sizeof(gEntvarsDescription) / sizeof(gEntvarsDesc
 // CSave
 //
 // --------------------------------------------------------------
-static int gSizes[FIELD_TYPECOUNT] =
+static constexpr int gSizes[FIELD_TYPECOUNT] =
 {
 	sizeof(float),		// FIELD_FLOAT
 	sizeof(int),		// FIELD_STRING

@@ -95,7 +95,7 @@ CSchemeManager::CScheme::~CScheme()
 // Purpose: resolution information
 //			!! needs to be shared out
 //-----------------------------------------------------------------------------
-static int g_ResArray[] =
+static constexpr int g_ResArray[] =
 {
 	320,
 	400,

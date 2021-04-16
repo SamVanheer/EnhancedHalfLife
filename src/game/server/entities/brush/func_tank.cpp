@@ -163,7 +163,7 @@ TYPEDESCRIPTION	CFuncTank::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE( CFuncTank, CBaseEntity );
 
-static Vector gTankSpread[] =
+static constexpr Vector gTankSpread[] =
 {
 	Vector( 0, 0, 0 ),		// perfect
 	Vector( 0.025, 0.025, 0.025 ),	// small cone
