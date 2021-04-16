@@ -148,8 +148,3 @@ struct sentenceGroupEntry
 	sentenceEntry*			firstSentence;	// head of linked list of sentences in group
 	sentenceGroupEntry*		nextEntry;		// next loaded group
 };
-
-sequenceEntry* SequenceGet( const char* fileName, const char* entryName );
-void Sequence_ParseFile( const char* fileName, qboolean isGlobal );
-void Sequence_OnLevelLoad( const char* mapName );
-sentenceEntry* SequencePickSentence( const char *groupName, int pickMethod, int *picked );

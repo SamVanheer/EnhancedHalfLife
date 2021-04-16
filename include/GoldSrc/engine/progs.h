@@ -53,19 +53,3 @@ struct event_state_t
 
 #define	STRUCT_FROM_LINK(l,t,m) ((t *)((byte *)l - (int)&(((t *)0)->m)))
 #define	EDICT_FROM_AREA(l) STRUCT_FROM_LINK(l,edict_t,area)
-
-//============================================================================
-
-extern	char			*pr_strings;
-extern	globalvars_t	gGlobalVariables;
-
-//============================================================================
-
-edict_t		*ED_Alloc (void);
-void		ED_Free (edict_t *ed);
-void		ED_LoadFromFile (char *data);
-
-edict_t		*EDICT_NUM(int n);
-int			NUM_FOR_EDICT(const edict_t *e);
-
-#define PROG_TO_EDICT(e) ((edict_t *)((byte *)sv.edicts + e))

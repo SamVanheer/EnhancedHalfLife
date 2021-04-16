@@ -89,8 +89,3 @@ struct customization_t
 constexpr int FCUST_FROMHPAK = 1 << 0;
 constexpr int FCUST_WIPEDATA = 1 << 1;
 constexpr int FCUST_IGNOREINIT = 1 << 2;
-
-void		COM_ClearCustomizationList(customization_t*pHead, qboolean bCleanDecals);
-qboolean	COM_CreateCustomization(customization_t*pListHead, resource_t *pResource, int playernumber, int flags,
-	customization_t**pCustomization, int *nLumps );
-int			COM_SizeofResourceList ( resource_t *pList, resourceinfo_t *ri );
