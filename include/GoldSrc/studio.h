@@ -137,14 +137,6 @@ struct mstudiobbox_t
 	Vector				bbmax;
 };
 
-#if !defined( CACHE_USER ) && !defined( QUAKEDEF_H )
-#define CACHE_USER
-struct cache_user_t
-{
-	void *data;
-};
-#endif
-
 //
 // demand loaded sequence groups
 //

@@ -47,16 +47,11 @@ enum modtype_t
 };
 
 // must match definition in modelgen.h
-#ifndef SYNCTYPE_T
-#define SYNCTYPE_T
-
 enum synctype_t
 {
 	ST_SYNC=0,
 	ST_RAND
 };
-
-#endif
 
 struct dmodel_t
 {
@@ -209,13 +204,10 @@ struct hull_t
 	Vector		clip_maxs;
 };
 
-#if !defined( CACHE_USER ) && !defined( QUAKEDEF_H )
-#define CACHE_USER
 struct cache_user_t
 {
 	void	*data;
 };
-#endif
 
 struct model_t
 {
