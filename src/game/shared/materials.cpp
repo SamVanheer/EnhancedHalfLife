@@ -26,7 +26,7 @@
 
 struct Material
 {
-	std::array<char, CBTEXTURENAMEMAX> Name;
+	std::array<char, CBTEXTURENAMEMAX> Name{};
 	char Type = CHAR_TEX_CONCRETE;
 };
 
