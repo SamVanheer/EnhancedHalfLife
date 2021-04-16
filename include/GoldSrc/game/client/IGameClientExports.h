@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <string_view>
+
 #include "interface.h"
 
 /**
@@ -24,4 +26,4 @@ public:
 	virtual void UnmutePlayerGameVoice(int playerIndex) = 0;
 };
 
-#define GAMECLIENTEXPORTS_INTERFACE_VERSION "GameClientExports001"
+constexpr std::string_view GAMECLIENTEXPORTS_INTERFACE_VERSION{"GameClientExports001"};

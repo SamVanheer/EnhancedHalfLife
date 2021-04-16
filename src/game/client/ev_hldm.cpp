@@ -1161,9 +1161,9 @@ void EV_EgonFire( event_args_t *args )
 	if ( iStartup )
 	{
 		if ( iFireMode == FIRE_WIDE )
-			gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, EGON_SOUND_STARTUP, 0.98, ATTN_NORM, 0, 125 );
+			gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, EGON_SOUND_STARTUP.data(), 0.98, ATTN_NORM, 0, 125 );
 		else
-			gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, EGON_SOUND_STARTUP, 0.9, ATTN_NORM, 0, 100 );
+			gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, EGON_SOUND_STARTUP.data(), 0.9, ATTN_NORM, 0, 100 );
 	}
 	else
 	{
@@ -1171,12 +1171,12 @@ void EV_EgonFire( event_args_t *args )
 		//This is necessary because multiple sounds can play on the same channel at the same time.
 		//In some cases, more than 1 run sound plays when the egon stops firing, in which case only the earliest entry in the list is stopped.
 		//This ensures no more than 1 of those is ever active at the same time.
-		gEngfuncs.pEventAPI->EV_StopSound(idx, CHAN_STATIC, EGON_SOUND_RUN);
+		gEngfuncs.pEventAPI->EV_StopSound(idx, CHAN_STATIC, EGON_SOUND_RUN.data());
 
 		if ( iFireMode == FIRE_WIDE )
-			gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_STATIC, EGON_SOUND_RUN, 0.98, ATTN_NORM, 0, 125 );
+			gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_STATIC, EGON_SOUND_RUN.data(), 0.98, ATTN_NORM, 0, 125 );
 		else
-			gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_STATIC, EGON_SOUND_RUN, 0.9, ATTN_NORM, 0, 100 );
+			gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_STATIC, EGON_SOUND_RUN.data(), 0.9, ATTN_NORM, 0, 100 );
 	}
 
 	//Only play the weapon anims if I shot it.
@@ -1213,7 +1213,7 @@ void EV_EgonFire( event_args_t *args )
 
 			gEngfuncs.pEventAPI->EV_PopPMStates();
 
-			const int iBeamModelIndex = gEngfuncs.pEventAPI->EV_FindModelIndex( EGON_BEAM_SPRITE );
+			const int iBeamModelIndex = gEngfuncs.pEventAPI->EV_FindModelIndex( EGON_BEAM_SPRITE.data());
 
 			float r = 50.0f;
 			float g = 50.0f;
@@ -1236,7 +1236,7 @@ void EV_EgonFire( event_args_t *args )
 
 			// Vit_amiN: egon beam flare
 			pFlare = gEngfuncs.pEfxAPI->R_TempSprite(tr.endpos, vec3_origin, 1.0,
-				gEngfuncs.pEventAPI->EV_FindModelIndex(EGON_FLARE_SPRITE),
+				gEngfuncs.pEventAPI->EV_FindModelIndex(EGON_FLARE_SPRITE.data()),
 				kRenderGlow, kRenderFxNoDissipation, 1.0, 99999, FTENT_SPRCYCLE | FTENT_PERSIST);
 		}
 	}
@@ -1252,10 +1252,10 @@ void EV_EgonStop( event_args_t *args )
 	const int idx = args->entindex;
 	const Vector origin = args->origin;
 
-	gEngfuncs.pEventAPI->EV_StopSound( idx, CHAN_STATIC, EGON_SOUND_RUN );
+	gEngfuncs.pEventAPI->EV_StopSound( idx, CHAN_STATIC, EGON_SOUND_RUN.data());
 	
 	if ( args->iparam1 )
-		 gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, EGON_SOUND_OFF, 0.98, ATTN_NORM, 0, 100 );
+		 gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, EGON_SOUND_OFF.data(), 0.98, ATTN_NORM, 0, 100 );
 
 	if ( EV_IsLocal( idx ) ) 
 	{

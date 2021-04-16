@@ -254,7 +254,7 @@ DECLARE_COMMAND(m_Ammo, PrevWeapon);
 constexpr int AMMO_SMALL_WIDTH = 10;
 constexpr int AMMO_LARGE_WIDTH = 20;
 
-#define HISTORY_DRAW_TIME	"5"
+constexpr std::string_view HISTORY_DRAW_TIME{"5"};
 
 bool CHudAmmo::Init()
 {
@@ -284,7 +284,7 @@ bool CHudAmmo::Init()
 
 	Reset();
 
-	CVAR_CREATE( "hud_drawhistory_time", HISTORY_DRAW_TIME, 0 );
+	CVAR_CREATE( "hud_drawhistory_time", HISTORY_DRAW_TIME.data(), 0 );
 	CVAR_CREATE( "hud_fastswitch", "0", FCVAR_ARCHIVE );		// controls whether or not weapons can be selected in one keypress
 
 	m_iFlags |= HUD_ACTIVE; //!!!

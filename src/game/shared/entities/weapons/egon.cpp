@@ -52,12 +52,12 @@ void CEgon::Precache()
 	PRECACHE_MODEL("models/w_9mmclip.mdl");
 	PRECACHE_SOUND("items/9mmclip1.wav");
 
-	PRECACHE_SOUND( EGON_SOUND_OFF );
-	PRECACHE_SOUND( EGON_SOUND_RUN );
-	PRECACHE_SOUND( EGON_SOUND_STARTUP );
+	PRECACHE_SOUND( EGON_SOUND_OFF.data());
+	PRECACHE_SOUND( EGON_SOUND_RUN.data());
+	PRECACHE_SOUND( EGON_SOUND_STARTUP.data() );
 
-	PRECACHE_MODEL( EGON_BEAM_SPRITE );
-	PRECACHE_MODEL( EGON_FLARE_SPRITE );
+	PRECACHE_MODEL( EGON_BEAM_SPRITE.data());
+	PRECACHE_MODEL( EGON_FLARE_SPRITE.data());
 
 	PRECACHE_SOUND ("weapons/357_cock1.wav");
 
@@ -399,7 +399,7 @@ void CEgon::CreateEffect()
 #ifndef CLIENT_DLL
 	DestroyEffect();
 
-	m_pBeam = CBeam::BeamCreate( EGON_BEAM_SPRITE, 40 );
+	m_pBeam = CBeam::BeamCreate( EGON_BEAM_SPRITE.data(), 40 );
 	m_pBeam->PointEntInit( pev->origin, m_pPlayer->entindex() );
 	m_pBeam->SetFlags( BEAM_FSINE );
 	m_pBeam->SetEndAttachment( 1 );
@@ -407,7 +407,7 @@ void CEgon::CreateEffect()
 	m_pBeam->pev->flags |= FL_SKIPLOCALHOST;
 	m_pBeam->pev->owner = m_pPlayer->edict();
 
-	m_pNoise = CBeam::BeamCreate( EGON_BEAM_SPRITE, 55 );
+	m_pNoise = CBeam::BeamCreate( EGON_BEAM_SPRITE.data(), 55 );
 	m_pNoise->PointEntInit( pev->origin, m_pPlayer->entindex() );
 	m_pNoise->SetScrollRate( 25 );
 	m_pNoise->SetBrightness( 100 );
@@ -416,7 +416,7 @@ void CEgon::CreateEffect()
 	m_pNoise->pev->flags |= FL_SKIPLOCALHOST;
 	m_pNoise->pev->owner = m_pPlayer->edict();
 
-	m_pSprite = CSprite::SpriteCreate( EGON_FLARE_SPRITE, pev->origin, false);
+	m_pSprite = CSprite::SpriteCreate( EGON_FLARE_SPRITE.data(), pev->origin, false);
 	m_pSprite->pev->scale = 1.0;
 	m_pSprite->SetTransparency( kRenderGlow, 255, 255, 255, 255, kRenderFxNoDissipation );
 	m_pSprite->pev->spawnflags |= SF_SPRITE_TEMPORARY;

@@ -20,8 +20,6 @@
 DECLARE_MESSAGE(m_Flash, FlashBat)
 DECLARE_MESSAGE(m_Flash, Flashlight)
 
-#define BAT_NAME "sprites/%d_Flashlight.spr"
-
 bool CHudFlashlight::Init()
 {
 	m_fOn = false;

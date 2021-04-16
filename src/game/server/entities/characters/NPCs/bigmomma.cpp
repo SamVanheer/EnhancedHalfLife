@@ -166,7 +166,7 @@ void MortarSpray( const Vector &position, const Vector &direction, int spriteMod
 
 // UNDONE:	
 //
-#define BIG_CHILDCLASS		"monster_babycrab"
+constexpr std::string_view BIG_CHILDCLASS{"monster_babycrab"};
 
 class CBigMomma : public CBaseMonster
 {
@@ -597,7 +597,7 @@ bool CBigMomma :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, f
 
 void CBigMomma :: LayHeadcrab()
 {
-	CBaseEntity *pChild = CBaseEntity::Create( BIG_CHILDCLASS, pev->origin, pev->angles, edict() );
+	CBaseEntity *pChild = CBaseEntity::Create( BIG_CHILDCLASS.data(), pev->origin, pev->angles, edict() );
 
 	pChild->pev->spawnflags |= SF_MONSTER_FALL_TO_GROUND;
 
@@ -686,7 +686,7 @@ void CBigMomma :: Precache()
 	PRECACHE_SOUND_ARRAY( pPainSounds );
 	PRECACHE_SOUND_ARRAY( pFootSounds );
 
-	UTIL_PrecacheOther( BIG_CHILDCLASS );
+	UTIL_PrecacheOther( BIG_CHILDCLASS.data() );
 
 	// TEMP: Squid
 	PRECACHE_MODEL("sprites/mommaspit.spr");// spit projectile.

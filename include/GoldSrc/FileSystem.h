@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <string_view>
+
 #include "steam/steamtypes.h"
 #include "interface.h"
 
@@ -179,4 +181,4 @@ public:
 // Steam3/Src compat
 using IBaseFileSystem = IFileSystem;
 
-#define FILESYSTEM_INTERFACE_VERSION "VFileSystem009"
+constexpr std::string_view FILESYSTEM_INTERFACE_VERSION{"VFileSystem009"};

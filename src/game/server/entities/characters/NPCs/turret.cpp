@@ -282,7 +282,7 @@ void CBaseTurret::Precache( )
 	PRECACHE_SOUND ("turret/tu_alert.wav");
 }
 
-#define TURRET_GLOW_SPRITE "sprites/flare3.spr"
+constexpr std::string_view TURRET_GLOW_SPRITE{"sprites/flare3.spr"};
 
 void CTurret::Spawn()
 { 
@@ -302,7 +302,7 @@ void CTurret::Spawn()
 	
 	SetThink(&CTurret::Initialize);	
 
-	m_pEyeGlow = CSprite::SpriteCreate( TURRET_GLOW_SPRITE, pev->origin, false);
+	m_pEyeGlow = CSprite::SpriteCreate( TURRET_GLOW_SPRITE.data(), pev->origin, false);
 	m_pEyeGlow->SetTransparency( kRenderGlow, 255, 0, 0, 0, kRenderFxNoDissipation );
 	m_pEyeGlow->SetAttachment( edict(), 2 );
 	m_eyeBrightness = 0;
@@ -314,7 +314,7 @@ void CTurret::Precache()
 {
 	CBaseTurret::Precache( );
 	PRECACHE_MODEL ("models/turret.mdl");	
-	PRECACHE_MODEL (TURRET_GLOW_SPRITE);
+	PRECACHE_MODEL (TURRET_GLOW_SPRITE.data());
 }
 
 void CMiniTurret::Spawn()

@@ -262,7 +262,7 @@ void CL_LoadParticleMan()
 {
 	char szPDir[512];
 
-	if ( gEngfuncs.COM_ExpandFilename( PARTICLEMAN_DLLNAME, szPDir, sizeof( szPDir ) ) == false )
+	if ( gEngfuncs.COM_ExpandFilename( PARTICLEMAN_DLLNAME.data(), szPDir, sizeof( szPDir ) ) == false )
 	{
 		g_pParticleMan = nullptr;
 		g_hParticleManModule = nullptr;
@@ -279,7 +279,7 @@ void CL_LoadParticleMan()
 		return;
 	}
 
-	g_pParticleMan = (IParticleMan *)particleManFactory( PARTICLEMAN_INTERFACE, nullptr);
+	g_pParticleMan = (IParticleMan *)particleManFactory( PARTICLEMAN_INTERFACE.data(), nullptr);
 
 	if ( g_pParticleMan )
 	{
@@ -385,4 +385,4 @@ public:
 	}
 };
 
-EXPOSE_SINGLE_INTERFACE(CClientExports, IGameClientExports, GAMECLIENTEXPORTS_INTERFACE_VERSION);
+EXPOSE_SINGLE_INTERFACE(CClientExports, IGameClientExports, GAMECLIENTEXPORTS_INTERFACE_VERSION.data());

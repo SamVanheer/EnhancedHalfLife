@@ -87,7 +87,7 @@ bool FileSystem_LoadFileSystem()
 		return false;
 	}
 
-	g_pFileSystem = (IFileSystem*)fileSystemFactory(FILESYSTEM_INTERFACE_VERSION, nullptr);
+	g_pFileSystem = (IFileSystem*)fileSystemFactory(FILESYSTEM_INTERFACE_VERSION.data(), nullptr);
 
 	assert(g_pFileSystem);
 

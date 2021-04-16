@@ -21,8 +21,7 @@
 DECLARE_MESSAGE(m_Health, Health )
 DECLARE_MESSAGE(m_Health, Damage )
 
-#define PAIN_NAME "sprites/%d_pain.spr"
-#define DAMAGE_NAME "sprites/%d_dmg.spr"
+constexpr std::string_view PAIN_NAME{"sprites/%d_pain.spr"};
 
 int giDmgHeight, giDmgWidth;
 
@@ -167,7 +166,7 @@ bool CHudHealth::Draw(float flTime)
 		return true;
 
 	if ( !m_hSprite )
-		m_hSprite = LoadSprite(PAIN_NAME);
+		m_hSprite = LoadSprite(PAIN_NAME.data());
 	
 	// Has health changed? Flash the health #
 	if (m_fFade)

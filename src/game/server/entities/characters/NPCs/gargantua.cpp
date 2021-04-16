@@ -43,13 +43,13 @@ constexpr int GARG_AE_BREATHE = 6;
 
 // Gargantua is immune to any damage but this
 constexpr int GARG_DAMAGE = DMG_ENERGYBEAM | DMG_CRUSH | DMG_MORTAR | DMG_BLAST;
-#define GARG_EYE_SPRITE_NAME		"sprites/gargeye1.spr"
-#define GARG_BEAM_SPRITE_NAME		"sprites/xbeam3.spr"
-#define GARG_BEAM_SPRITE2			"sprites/xbeam3.spr"
-#define GARG_STOMP_SPRITE_NAME		"sprites/gargeye1.spr"
-#define GARG_STOMP_BUZZ_SOUND		"weapons/mine_charge.wav"
+constexpr std::string_view GARG_EYE_SPRITE_NAME{"sprites/gargeye1.spr"};
+constexpr std::string_view GARG_BEAM_SPRITE_NAME{"sprites/xbeam3.spr"};
+constexpr std::string_view GARG_BEAM_SPRITE2{"sprites/xbeam3.spr"};
+constexpr std::string_view GARG_STOMP_SPRITE_NAME{"sprites/gargeye1.spr"};
+constexpr std::string_view GARG_STOMP_BUZZ_SOUND{"weapons/mine_charge.wav"};
 constexpr int GARG_FLAME_LENGTH = 330;
-#define GARG_GIB_MODEL				"models/metalplategibs.mdl"
+constexpr std::string_view GARG_GIB_MODEL{"models/metalplategibs.mdl"};
 
 constexpr float ATTN_GARG = ATTN_NORM;
 
@@ -119,10 +119,10 @@ void CStomp::Spawn()
 	pev->dmgtime = gpGlobals->time;
 
 	pev->framerate = 30;
-	pev->model = MAKE_STRING(GARG_STOMP_SPRITE_NAME);
+	pev->model = MAKE_STRING(GARG_STOMP_SPRITE_NAME.data());
 	pev->rendermode = kRenderTransTexture;
 	pev->renderamt = 0;
-	EMIT_SOUND_DYN( edict(), CHAN_BODY, GARG_STOMP_BUZZ_SOUND, 1, ATTN_NORM, 0, PITCH_NORM * 0.55);
+	EMIT_SOUND_DYN( edict(), CHAN_BODY, GARG_STOMP_BUZZ_SOUND.data(), 1, ATTN_NORM, 0, PITCH_NORM * 0.55);
 }
 
 
@@ -172,7 +172,7 @@ void CStomp::Think()
 		pev->origin = pev->origin + pev->movedir * pev->speed * STOMP_INTERVAL;
 		for ( int i = 0; i < 2; i++ )
 		{
-			CSprite *pSprite = CSprite::SpriteCreate( GARG_STOMP_SPRITE_NAME, pev->origin, true);
+			CSprite *pSprite = CSprite::SpriteCreate( GARG_STOMP_SPRITE_NAME.data(), pev->origin, true);
 			if ( pSprite )
 			{
 				UTIL_TraceLine( pev->origin, pev->origin - Vector(0,0,500), ignore_monsters, edict(), &tr );
@@ -191,7 +191,7 @@ void CStomp::Think()
 		{
 			// Life has run out
 			UTIL_Remove(this);
-			STOP_SOUND( edict(), CHAN_BODY, GARG_STOMP_BUZZ_SOUND );
+			STOP_SOUND( edict(), CHAN_BODY, GARG_STOMP_BUZZ_SOUND.data() );
 		}
 
 	}
@@ -519,9 +519,9 @@ void CGargantua :: FlameCreate()
 	for ( i = 0; i < 4; i++ )
 	{
 		if ( i < 2 )
-			m_pFlame[i] = CBeam::BeamCreate( GARG_BEAM_SPRITE_NAME, 240 );
+			m_pFlame[i] = CBeam::BeamCreate( GARG_BEAM_SPRITE_NAME.data(), 240 );
 		else
-			m_pFlame[i] = CBeam::BeamCreate( GARG_BEAM_SPRITE2, 140 );
+			m_pFlame[i] = CBeam::BeamCreate( GARG_BEAM_SPRITE2.data(), 140 );
 		if ( m_pFlame[i] )
 		{
 			int attach = i%2;
@@ -783,7 +783,7 @@ void CGargantua :: Spawn()
 
 	MonsterInit();
 
-	m_pEyeGlow = CSprite::SpriteCreate( GARG_EYE_SPRITE_NAME, pev->origin, false);
+	m_pEyeGlow = CSprite::SpriteCreate( GARG_EYE_SPRITE_NAME.data(), pev->origin, false);
 	m_pEyeGlow->SetTransparency( kRenderGlow, 255, 255, 255, 0, kRenderFxNoDissipation );
 	m_pEyeGlow->SetAttachment( edict(), 1 );
 	EyeOff();
@@ -798,12 +798,12 @@ void CGargantua :: Spawn()
 void CGargantua :: Precache()
 {
 	PRECACHE_MODEL("models/garg.mdl");
-	PRECACHE_MODEL( GARG_EYE_SPRITE_NAME );
-	PRECACHE_MODEL( GARG_BEAM_SPRITE_NAME );
-	PRECACHE_MODEL( GARG_BEAM_SPRITE2 );
-	gStompSprite = PRECACHE_MODEL( GARG_STOMP_SPRITE_NAME );
-	gGargGibModel = PRECACHE_MODEL( GARG_GIB_MODEL );
-	PRECACHE_SOUND( GARG_STOMP_BUZZ_SOUND );
+	PRECACHE_MODEL( GARG_EYE_SPRITE_NAME.data() );
+	PRECACHE_MODEL( GARG_BEAM_SPRITE_NAME.data() );
+	PRECACHE_MODEL( GARG_BEAM_SPRITE2.data() );
+	gStompSprite = PRECACHE_MODEL( GARG_STOMP_SPRITE_NAME.data() );
+	gGargGibModel = PRECACHE_MODEL( GARG_GIB_MODEL.data() );
+	PRECACHE_SOUND( GARG_STOMP_BUZZ_SOUND.data() );
 
 	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
 	PRECACHE_SOUND_ARRAY(pBeamAttackSounds);
@@ -1131,7 +1131,7 @@ void CGargantua::RunTask( Task_t *pTask )
 			{
 				CGib *pGib = GetClassPtr( (CGib *)nullptr );
 
-				pGib->Spawn( GARG_GIB_MODEL );
+				pGib->Spawn( GARG_GIB_MODEL.data() );
 				
 				int bodyPart = 0;
 				if ( parts > 1 )

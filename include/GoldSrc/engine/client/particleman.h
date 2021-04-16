@@ -1,16 +1,18 @@
 #pragma once
 
+#include <string_view>
+
 #include "interface.h"
 #include "pman_triangleffect.h"
 
-#define PARTICLEMAN_INTERFACE "create_particleman"
+constexpr std::string_view PARTICLEMAN_INTERFACE{"create_particleman"};
 
 #ifdef _WIN32
-#define PARTICLEMAN_DLLNAME "cl_dlls/particleman.dll"
+constexpr std::string_view PARTICLEMAN_DLLNAME{"cl_dlls/particleman.dll"};
 #elif defined(OSX)
-#define PARTICLEMAN_DLLNAME "cl_dlls/particleman.dylib"
+constexpr std::string_view PARTICLEMAN_DLLNAME{"cl_dlls/particleman.dylib"};
 #elif defined(LINUX)
-#define PARTICLEMAN_DLLNAME "cl_dlls/particleman.so"
+constexpr std::string_view PARTICLEMAN_DLLNAME{"cl_dlls/particleman.so"};
 #else
 #error
 #endif

@@ -107,7 +107,6 @@ TYPEDESCRIPTION	CCineMonster::m_SaveData[] =
 IMPLEMENT_SAVERESTORE( CCineMonster, CBaseMonster );
 
 LINK_ENTITY_TO_CLASS( scripted_sequence, CCineMonster );
-#define CLASSNAME "scripted_sequence"
 
 LINK_ENTITY_TO_CLASS( aiscripted_sequence, CCineAI );
 
@@ -663,7 +662,7 @@ int	CCineMonster::IgnoreConditions()
 void ScriptEntityCancel( edict_t *pentCine )
 {
 	// make sure they are a scripted_sequence
-	if (FClassnameIs( pentCine, CLASSNAME ))
+	if (FClassnameIs( pentCine, "scripted_sequence" ))
 	{
 		CCineMonster *pCineTarget = GetClassPtr((CCineMonster *)VARS(pentCine));
 		// make sure they have a monster in mind for the script

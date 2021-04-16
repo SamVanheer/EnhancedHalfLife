@@ -19,7 +19,7 @@
 #include "effects.h"
 
 
-#define XEN_PLANT_GLOW_SPRITE		"sprites/flare3.spr"
+constexpr std::string_view XEN_PLANT_GLOW_SPRITE{"sprites/flare3.spr"};
 constexpr int XEN_PLANT_HIDE_TIME = 5;
 
 
@@ -102,7 +102,7 @@ void CXenPLight :: Spawn()
 	pev->nextthink = gpGlobals->time + 0.1;
 	pev->frame = RANDOM_FLOAT(0,255);
 
-	m_pGlow = CSprite::SpriteCreate( XEN_PLANT_GLOW_SPRITE, pev->origin + Vector(0,0,(pev->mins.z+pev->maxs.z)*0.5), false);
+	m_pGlow = CSprite::SpriteCreate( XEN_PLANT_GLOW_SPRITE.data(), pev->origin + Vector(0,0,(pev->mins.z+pev->maxs.z)*0.5), false);
 	m_pGlow->SetTransparency( kRenderGlow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx );
 	m_pGlow->SetAttachment( edict(), 1 );
 }
@@ -111,7 +111,7 @@ void CXenPLight :: Spawn()
 void CXenPLight :: Precache()
 {
 	PRECACHE_MODEL( "models/light.mdl" );
-	PRECACHE_MODEL( XEN_PLANT_GLOW_SPRITE );
+	PRECACHE_MODEL( XEN_PLANT_GLOW_SPRITE.data() );
 }
 
 
@@ -330,7 +330,7 @@ const char *CXenTree::pAttackMissSounds[] =
 void CXenTree :: Precache()
 {
 	PRECACHE_MODEL( "models/tree.mdl" );
-	PRECACHE_MODEL( XEN_PLANT_GLOW_SPRITE );
+	PRECACHE_MODEL( XEN_PLANT_GLOW_SPRITE.data() );
 	PRECACHE_SOUND_ARRAY( pAttackHitSounds );
 	PRECACHE_SOUND_ARRAY( pAttackMissSounds );
 }
