@@ -8,7 +8,7 @@
 #include "cl_util.h"
 #include "const.h"
 #include "entity_types.h"
-#include "studio_event.h" // def. of mstudioevent_t
+#include "studio.h" // def. of mstudioevent_t
 #include "r_efx.h"
 #include "event_api.h"
 #include "pm_defs.h"

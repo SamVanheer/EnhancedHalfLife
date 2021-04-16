@@ -187,7 +187,6 @@ target_sources(hl PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/PlatformHeaders.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/Sequence.h
 	${INCLUDE_DIRECTORY}/GoldSrc/studio.h
-	${INCLUDE_DIRECTORY}/GoldSrc/studio_event.h
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_in.h
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_out.h
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/com_model.h

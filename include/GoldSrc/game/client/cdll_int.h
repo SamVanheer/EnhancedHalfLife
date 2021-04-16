@@ -26,7 +26,6 @@
 #include "steam/steamtypes.h"
 #include "ref_params.h"
 #include "r_efx.h"
-#include "studio_event.h"
 #include "wrect.h"
 #include "in_buttons.h"
 #include "cl_engine_int.hpp"

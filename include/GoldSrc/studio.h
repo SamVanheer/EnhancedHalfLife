@@ -194,9 +194,6 @@ struct mstudioseqdesc_t
 	int					nextseq;		// auto advancing sequences
 };
 
-// events
-#include "studio_event.h"
-/*
 struct mstudioevent_t
 {
 	int 				frame;
@@ -204,7 +201,6 @@ struct mstudioevent_t
 	int					type;
 	char				options[64];
 };
-*/
 
 // pivots
 struct mstudiopivot_t
