@@ -30,12 +30,12 @@ constexpr int SF_TANK_LINEOFSIGHT = 0x0010;
 constexpr int SF_TANK_CANCONTROL = 0x0020;
 constexpr int SF_TANK_SOUNDON = 0x8000;
 
-enum TANKBULLET
+enum class TankBullet
 {
-	TANK_BULLET_NONE = 0,
-	TANK_BULLET_9MM = 1,
-	TANK_BULLET_MP5 = 2,
-	TANK_BULLET_12MM = 3,
+	None = 0,
+	Cal9mm = 1,
+	MP5 = 2,
+	Cal12mm = 3,
 };
 
 //			Custom damage
@@ -122,7 +122,7 @@ protected:
 	float		m_spriteScale;	// Scale of any sprites we shoot
 	string_t	m_iszSpriteSmoke;
 	string_t	m_iszSpriteFlash;
-	TANKBULLET	m_bulletType;	// Bullet type
+	TankBullet	m_bulletType;	// Bullet type
 	int			m_iBulletDamage; // 0 means use Bullet type's default damage
 	
 	Vector		m_sightOrigin;	// Last sight of target
@@ -290,7 +290,7 @@ void CFuncTank :: KeyValue( KeyValueData *pkvd )
 	}
 	else if (FStrEq(pkvd->szKeyName, "bullet"))
 	{
-		m_bulletType = (TANKBULLET)atoi(pkvd->szValue);
+		m_bulletType = (TankBullet)atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "bullet_damage" )) 
@@ -735,20 +735,20 @@ void CFuncTankGun::Fire( const Vector &barrelEnd, const Vector &forward, entvars
 			{
 				switch( m_bulletType )
 				{
-				case TANK_BULLET_9MM:
+				case TankBullet::Cal9mm:
 					FireBullets( 1, barrelEnd, forward, gTankSpread[m_spread], WORLD_BOUNDARY, BULLET_MONSTER_9MM, 1, m_iBulletDamage, pevAttacker );
 					break;
 
-				case TANK_BULLET_MP5:
+				case TankBullet::MP5:
 					FireBullets( 1, barrelEnd, forward, gTankSpread[m_spread], WORLD_BOUNDARY, BULLET_MONSTER_MP5, 1, m_iBulletDamage, pevAttacker );
 					break;
 
-				case TANK_BULLET_12MM:
+				case TankBullet::Cal12mm:
 					FireBullets( 1, barrelEnd, forward, gTankSpread[m_spread], WORLD_BOUNDARY, BULLET_MONSTER_12MM, 1, m_iBulletDamage, pevAttacker );
 					break;
 
 				default:
-				case TANK_BULLET_NONE:
+				case TankBullet::None:
 					break;
 				}
 			}
