@@ -393,7 +393,7 @@ void CSatchel::Throw()
 		SendWeaponAnim( SATCHEL_RADIO_DRAW );
 
 		// player "shoot" animation
-		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
+		m_pPlayer->SetAnimation(PlayerAnim::Attack1);
 
 		m_chargeReady = 1;
 		

@@ -159,7 +159,7 @@ void CHandGrenade::WeaponIdle()
 		}
 
 		// player "shoot" animation
-		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
+		m_pPlayer->SetAnimation(PlayerAnim::Attack1);
 
 		//m_flReleaseThrow = 0;
 		m_flStartThrow = 0;

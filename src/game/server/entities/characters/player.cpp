@@ -785,7 +785,7 @@ void CBasePlayer::Killed( entvars_t *pevAttacker, int iGib )
 		}
 	}
 
-	SetAnimation( PLAYER_DIE );
+	SetAnimation( PlayerAnim::Die );
 	
 	m_iRespawnFrames = 0;
 
@@ -843,7 +843,7 @@ void CBasePlayer::Killed( entvars_t *pevAttacker, int iGib )
 
 
 // Set the activity based on an event or current state
-void CBasePlayer::SetAnimation( PLAYER_ANIM playerAnim )
+void CBasePlayer::SetAnimation( PlayerAnim playerAnim )
 {
 	int animDesired;
 	float speed;
@@ -854,25 +854,25 @@ void CBasePlayer::SetAnimation( PLAYER_ANIM playerAnim )
 	if (pev->flags & FL_FROZEN)
 	{
 		speed = 0;
-		playerAnim = PLAYER_IDLE;
+		playerAnim = PlayerAnim::Idle;
 	}
 
 	switch (playerAnim) 
 	{
-	case PLAYER_JUMP:
+	case PlayerAnim::Jump:
 		m_IdealActivity = ACT_HOP;
 		break;
 	
-	case PLAYER_SUPERJUMP:
+	case PlayerAnim::SuperJump:
 		m_IdealActivity = ACT_LEAP;
 		break;
 	
-	case PLAYER_DIE:
+	case PlayerAnim::Die:
 		m_IdealActivity = ACT_DIESIMPLE;
 		m_IdealActivity = GetDeathActivity( );
 		break;
 
-	case PLAYER_ATTACK1:	
+	case PlayerAnim::Attack1:
 		switch( m_Activity )
 		{
 		case ACT_HOVER:
@@ -887,8 +887,8 @@ void CBasePlayer::SetAnimation( PLAYER_ANIM playerAnim )
 			break;
 		}
 		break;
-	case PLAYER_IDLE:
-	case PLAYER_WALK:
+	case PlayerAnim::Idle:
+	case PlayerAnim::Walk:
 		if ( !FBitSet( pev->flags, FL_ONGROUND ) && (m_Activity == ACT_HOP || m_Activity == ACT_LEAP) )	// Still jumping
 		{
 			m_IdealActivity = m_Activity;
@@ -1516,14 +1516,14 @@ void CBasePlayer::Jump()
 
 	// ClearBits(pev->flags, FL_ONGROUND);		// don't stairwalk
 	
-	SetAnimation( PLAYER_JUMP );
+	SetAnimation(PlayerAnim::Jump);
 
 	if ( m_fLongJump &&
 		(pev->button & IN_DUCK) &&
 		( pev->flDuckTime > 0 ) &&
 		pev->velocity.Length() > 50 )
 	{
-		SetAnimation( PLAYER_SUPERJUMP );
+		SetAnimation(PlayerAnim::SuperJump);
 	}
 
 	// If you're standing on a conveyor, add it's velocity to yours (for momentum)
@@ -1560,7 +1560,7 @@ void CBasePlayer::Duck( )
 	{
 		if ( m_IdealActivity != ACT_LEAP )
 		{
-			SetAnimation( PLAYER_WALK );
+			SetAnimation(PlayerAnim::Walk);
 		}
 	}
 }
@@ -2508,7 +2508,7 @@ void CBasePlayer::PostThink()
 
 		if ( IsAlive() )
 		{
-			SetAnimation( PLAYER_WALK );
+			SetAnimation(PlayerAnim::Walk);
 		}
 	}
 
@@ -2526,11 +2526,11 @@ void CBasePlayer::PostThink()
 	if ( IsAlive() )
 	{
 		if (!pev->velocity.x && !pev->velocity.y)
-			SetAnimation( PLAYER_IDLE );
+			SetAnimation(PlayerAnim::Idle);
 		else if ((pev->velocity.x || pev->velocity.y) && (FBitSet(pev->flags, FL_ONGROUND)))
-			SetAnimation( PLAYER_WALK );
+			SetAnimation(PlayerAnim::Walk);
 		else if (pev->waterlevel > WaterLevel::Feet)
-			SetAnimation( PLAYER_WALK );
+			SetAnimation(PlayerAnim::Walk);
 	}
 
 	StudioFrameAdvance( );

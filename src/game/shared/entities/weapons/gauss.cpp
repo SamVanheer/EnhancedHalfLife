@@ -337,7 +337,7 @@ void CGauss::StartFire()
 		}
 #endif
 		// player "shoot" animation
-		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
+		m_pPlayer->SetAnimation(PlayerAnim::Attack1);
 	}
 
 	// time until aftershock 'static discharge' sound

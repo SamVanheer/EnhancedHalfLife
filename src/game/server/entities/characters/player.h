@@ -52,14 +52,14 @@ constexpr int SUIT_NEXT_IN_1HOUR = 3600;
 
 constexpr int CSUITNOREPEAT = 32;
 
-enum PLAYER_ANIM
+enum class PlayerAnim
 {
-	PLAYER_IDLE,
-	PLAYER_WALK,
-	PLAYER_JUMP,
-	PLAYER_SUPERJUMP,
-	PLAYER_DIE,
-	PLAYER_ATTACK1,
+	Idle,
+	Walk,
+	Jump,
+	SuperJump,
+	Die,
+	Attack1,
 };
 
 constexpr int MAX_ID_RANGE = 2048;
@@ -239,7 +239,7 @@ public:
 	void DeathSound () override;
 
 	int Classify () override;
-	void SetAnimation( PLAYER_ANIM playerAnim );
+	void SetAnimation(PlayerAnim playerAnim );
 	void SetWeaponAnimType( const char *szExtension );
 	char m_szAnimExtension[32];
 

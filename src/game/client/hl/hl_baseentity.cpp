@@ -241,7 +241,7 @@ void CBasePlayer :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector 
 bool CBasePlayer :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) { return false; }
 void CBasePlayer::PackDeadPlayerItems() { }
 void CBasePlayer::RemoveAllItems(bool removeSuit ) { }
-void CBasePlayer::SetAnimation( PLAYER_ANIM playerAnim ) { }
+void CBasePlayer::SetAnimation(PlayerAnim playerAnim ) { }
 void CBasePlayer::WaterMove() { }
 bool CBasePlayer::IsOnLadder() { return false; }
 void CBasePlayer::PlayerDeathThink() { }

@@ -115,7 +115,7 @@ void CGlock::GlockFire( float flSpread , float flCycleTime, bool fUseAutoAim )
 #endif
 
 	// player "shoot" animation
-	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
+	m_pPlayer->SetAnimation(PlayerAnim::Attack1);
 
 	// silenced
 	if (pev->body == 1)

@@ -190,7 +190,7 @@ bool CCrowbar::Swing( bool fFirst )
 			m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 			
 			// player "shoot" animation
-			m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
+			m_pPlayer->SetAnimation(PlayerAnim::Attack1);
 		}
 	}
 	else
@@ -206,7 +206,7 @@ bool CCrowbar::Swing( bool fFirst )
 		}
 
 		// player "shoot" animation
-		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
+		m_pPlayer->SetAnimation(PlayerAnim::Attack1);
 		
 #ifndef CLIENT_DLL
 
