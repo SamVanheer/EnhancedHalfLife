@@ -176,7 +176,7 @@ void CCineMonster :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 	if ( pTarget )
 	{
 		// am I already playing the script?
-		if ( pTarget->m_scriptState == SCRIPT_PLAYING )
+		if ( pTarget->m_scriptState == ScriptState::Playing)
 			return;
 
 		m_startTime = gpGlobals->time + 0.05;
@@ -332,19 +332,20 @@ void CCineMonster :: PossessEntity()
 		m_saved_effects = pTarget->pev->effects;
 		pTarget->pev->effects |= pev->effects;
 
+		//TODO: define constants
 		switch (m_fMoveTo)
 		{
 		case 0: 
-			pTarget->m_scriptState = SCRIPT_WAIT; 
+			pTarget->m_scriptState = ScriptState::Wait;
 			break;
 
 		case 1: 
-			pTarget->m_scriptState = SCRIPT_WALK_TO_MARK; 
+			pTarget->m_scriptState = ScriptState::WalkToMark;
 			DelayStart( 1 ); 
 			break;
 
 		case 2: 
-			pTarget->m_scriptState = SCRIPT_RUN_TO_MARK; 
+			pTarget->m_scriptState = ScriptState::RunToMark;
 			DelayStart( 1 ); 
 			break;
 
@@ -355,7 +356,7 @@ void CCineMonster :: PossessEntity()
 			pTarget->pev->velocity = vec3_origin;
 			pTarget->pev->effects |= EF_NOINTERP;
 			pTarget->pev->angles.y = pev->angles.y;
-			pTarget->m_scriptState = SCRIPT_WAIT;
+			pTarget->m_scriptState = ScriptState::Wait;
 			m_startTime = gpGlobals->time + 1E6;
 			// UNDONE: Add a flag to do this so people can fixup physics after teleporting monsters
 			//			pTarget->pev->flags &= ~FL_ONGROUND;
@@ -407,15 +408,15 @@ void CCineAI :: PossessEntity()
 		{
 		case 0: 
 		case 5:
-			pTarget->m_scriptState = SCRIPT_WAIT; 
+			pTarget->m_scriptState = ScriptState::Wait;
 			break;
 
 		case 1: 
-			pTarget->m_scriptState = SCRIPT_WALK_TO_MARK; 
+			pTarget->m_scriptState = ScriptState::WalkToMark;
 			break;
 
 		case 2: 
-			pTarget->m_scriptState = SCRIPT_RUN_TO_MARK; 
+			pTarget->m_scriptState = ScriptState::RunToMark;
 			break;
 
 		case 4: 
@@ -426,7 +427,7 @@ void CCineAI :: PossessEntity()
 			pTarget->pev->velocity = vec3_origin;
 			pTarget->pev->effects |= EF_NOINTERP;
 			pTarget->pev->angles.y = pev->angles.y;
-			pTarget->m_scriptState = SCRIPT_WAIT;
+			pTarget->m_scriptState = ScriptState::Wait;
 			m_startTime = gpGlobals->time + 1E6;
 			// UNDONE: Add a flag to do this so people can fixup physics after teleporting monsters
 			pTarget->pev->flags &= ~FL_ONGROUND;
@@ -677,7 +678,7 @@ void ScriptEntityCancel( edict_t *pentCine )
 			if ( pTarget->m_MonsterState == NPCState::Script)
 			{
 				// tell them do die
-				pTarget->m_scriptState = CCineMonster::SCRIPT_CLEANUP;
+				pTarget->m_scriptState = CCineMonster::ScriptState::Cleanup;
 				// do it now
 				pTarget->CineCleanup( );
 			}

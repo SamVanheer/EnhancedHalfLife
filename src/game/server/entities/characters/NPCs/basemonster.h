@@ -24,13 +24,13 @@ private:
 		int					m_afConditions;
 
 public:
-		enum SCRIPTSTATE
+		enum class ScriptState
 		{
-			SCRIPT_PLAYING = 0,		// Playing the sequence
-			SCRIPT_WAIT,				// Waiting on everyone in the script to be ready
-			SCRIPT_CLEANUP,					// Cancelling the script / cleaning up
-			SCRIPT_WALK_TO_MARK,
-			SCRIPT_RUN_TO_MARK,
+			Playing = 0,		// Playing the sequence
+			Wait,				// Waiting on everyone in the script to be ready
+			Cleanup,			// Cancelling the script / cleaning up
+			WalkToMark,
+			RunToMark,
 		};
 
 
@@ -104,7 +104,7 @@ public:
 	Vector				m_HackedGunPos;	// HACK until we can query end of gun
 
 // Scripted sequence Info
-	SCRIPTSTATE			m_scriptState;		// internal cinematic state
+	ScriptState			m_scriptState;		// internal cinematic state
 	CCineMonster		*m_pCine;
 
 	float m_flLastYawTime;

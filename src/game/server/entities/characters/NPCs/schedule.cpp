@@ -1268,7 +1268,7 @@ case TASK_GET_PATH_TO_BESTSCENT:
 		{
 			pev->movetype = MOVETYPE_FLY;
 			ClearBits(pev->flags, FL_ONGROUND);
-			m_scriptState = SCRIPT_PLAYING;
+			m_scriptState = ScriptState::Playing;
 			break;
 		}
 	case TASK_ENABLE_SCRIPT:
