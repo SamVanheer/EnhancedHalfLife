@@ -18,8 +18,15 @@
 // Custom Entities
 
 // Start/End Entity is encoded as 12 bits of entity index, and 4 bits of attachment (4:12)
-#define BEAMENT_ENTITY(x)		((x)&0xFFF)
-#define BEAMENT_ATTACHMENT(x)	(((x)>>12)&0xF)
+constexpr int BEAMENT_ENTITY(int x)
+{
+	return x & 0xFFF;
+}
+
+constexpr int BEAMENT_ATTACHMENT(int x)
+{
+	return (x >> 12) & 0xF;
+}
 
 // Beam types, encoded as a byte
 enum 
