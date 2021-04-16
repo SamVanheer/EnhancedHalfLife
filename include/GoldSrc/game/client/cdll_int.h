@@ -28,11 +28,11 @@
 #include "r_efx.h"
 #include "studio_event.h"
 #include "wrect.h"
+#include "in_buttons.h"
+#include "cl_engine_int.hpp"
 
 // this file is included by both the engine and the client-dll,
 // so make sure engine declarations aren't done twice
-
-typedef int HSPRITE;	// handle to a graphic
 
 constexpr int SCRINFO_SCREENFLASH = 1;
 constexpr int SCRINFO_STRETCHED = 2;
@@ -46,7 +46,6 @@ struct SCREENINFO
 	int		iCharHeight;
 	short	charWidths[256];
 };
-
 
 struct client_data_t
 {
@@ -69,8 +68,6 @@ struct client_sprite_t
 	wrect_t rc;
 };
 
-
-
 struct hud_player_info_t
 {
 	char *name;
@@ -86,11 +83,3 @@ struct hud_player_info_t
 
 	uint64 m_nSteamID;
 };
-
-#include "in_buttons.h"
-
-constexpr int CLDLL_INTERFACE_VERSION = 7;
-
-//#include "server.h" // server_static_t define for apiproxy
-#include "client_int.hpp"
-#include "cl_engine_int.hpp"

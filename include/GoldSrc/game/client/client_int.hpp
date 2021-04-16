@@ -20,6 +20,8 @@ struct TEMPENTITY;
 struct usercmd_t;
 struct weapon_data_t;
 
+constexpr int CLDLL_INTERFACE_VERSION = 7;
+
 /**
 *	@brief Functions exported by the client .dll
 */

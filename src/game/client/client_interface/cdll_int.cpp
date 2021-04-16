@@ -21,6 +21,7 @@
 
 #include "hud.h"
 #include "cl_util.h"
+#include "client_int.hpp"
 #include "netadr.h"
 #include "interface.h"
 #include "materials.hpp"
