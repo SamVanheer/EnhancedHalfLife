@@ -15,16 +15,17 @@
 
 #pragma once
 
+#include "edict.h"
+#include "entity_state.h"
+#include "event_args.h"
+#include "event_flags.h"
+
 #include "progdefs.h"
 
 // 16 simultaneous events, max
 constexpr int MAX_EVENT_QUEUE = 64;
 
 constexpr int DEFAULT_EVENT_RESENDS = 1;
-
-#include "event_flags.h"
-
-#include "event_args.h"
 
 struct event_info_t
 {
@@ -47,9 +48,6 @@ struct event_state_t
 {
 	event_info_t ei[ MAX_EVENT_QUEUE ];
 };
-
-#include "entity_state.h"
-#include "edict.h"
 
 #define	STRUCT_FROM_LINK(l,t,m) ((t *)((byte *)l - (int)&(((t *)0)->m)))
 #define	EDICT_FROM_AREA(l) STRUCT_FROM_LINK(l,edict_t,area)

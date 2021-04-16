@@ -7,9 +7,9 @@
 
 #pragma once
 
-constexpr int MAX_ENT_LEAFS = 48;
-
 #include "progdefs.h"
+
+constexpr int MAX_ENT_LEAFS = 48;
 
 struct edict_t
 {

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "const.h"
+#include "crc.h"
 
 constexpr int MAX_QPATH = 64;    // Must match value in quakedefs.h
 
@@ -48,8 +49,6 @@ constexpr int RES_REQUESTED = 1 << 3;		//!< Already requested a download of this
 constexpr int RES_PRECACHED = 1 << 4;		//!< Already precached
 constexpr int RES_ALWAYS = 1 << 5;			//!< download always even if available on client	
 constexpr int RES_CHECKFILE = 1 << 7;		//!< check file on client
-
-#include "crc.h"
 
 struct resource_t
 {

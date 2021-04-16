@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "pm_info.h"
+#include "weaponinfo.h"
+
 // For entityType below
 constexpr int ENTITY_NORMAL = 1 << 0;
 constexpr int ENTITY_BEAM = 1 << 1;
@@ -117,8 +120,6 @@ struct entity_state_t
 	Vector		vuser4;
 };
 
-#include "pm_info.h"
-
 struct clientdata_t
 {
 	Vector				origin;
@@ -175,8 +176,6 @@ struct clientdata_t
 	Vector				vuser3;
 	Vector				vuser4;
 };
-
-#include "weaponinfo.h"
 
 struct local_state_t
 {

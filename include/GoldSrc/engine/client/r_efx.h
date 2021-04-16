@@ -27,7 +27,6 @@
 // cl_entity_t
 #include "cl_entity.h"
 
-struct cl_entity_t;
 struct model_t;
 struct pmtrace_t;
 

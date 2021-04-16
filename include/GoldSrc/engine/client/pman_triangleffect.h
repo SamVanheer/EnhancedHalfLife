@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pman_particlemem.h" 
+
 constexpr int TRI_COLLIDEWORLD = 0x00000020;
 constexpr int TRI_COLLIDEALL = 0x00001000;	//!< will collide with world and slideboxes
 constexpr int TRI_COLLIDEKILL = 0x00004000;	//!< tent is removed upon collision with anything
@@ -19,9 +21,6 @@ constexpr int LIGHT_INTENSITY = 1 << 6;
 
 constexpr int RENDER_FACEPLAYER = 1 << 7;			//!< m_vAngles == Player view angles
 constexpr int RENDER_FACEPLAYER_ROTATEZ = 1 << 8;	//!< Just like above but m_vAngles.z is untouched so the sprite can rotate.
-
-
-#include "pman_particlemem.h" 
 
 //pure virtual baseclass
 class CCoreTriangleEffect

@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "custom.h"
+
 struct efrag_t;
 struct msurface_t;
 struct surfcache_t;
@@ -296,8 +298,6 @@ struct auxvert_t
 {
 	Vector	fv;		// viewspace x, y
 };
-
-#include "custom.h"
 
 constexpr int MAX_INFO_STRING = 256;
 constexpr int MAX_SCOREBOARDNAME = 32;

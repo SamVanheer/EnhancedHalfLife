@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "entity_state.h"
+#include "progs.h"
+
 struct cl_entity_t;
 struct efrag_t;
 struct mleaf_t;
@@ -62,9 +65,6 @@ struct position_history_t
 
 constexpr int HISTORY_MAX = 64;  // Must be power of 2
 constexpr int HISTORY_MASK = HISTORY_MAX - 1;
-
-#include "entity_state.h"
-#include "progs.h"
 
 struct cl_entity_t
 {
