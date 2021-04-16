@@ -51,14 +51,14 @@ void CGlobalState::DumpGlobals()
 	pTest = m_pList;
 	while (pTest)
 	{
-		ALERT(at_console, "%s: %s (%s)\n", pTest->name, pTest->levelName, estates[pTest->state]);
+		ALERT(at_console, "%s: %s (%s)\n", pTest->name, pTest->levelName, estates[static_cast<std::size_t>(pTest->state)]);
 		pTest = pTest->pNext;
 	}
 }
 //#endif
 
 
-void CGlobalState::EntityAdd(string_t globalname, string_t mapName, GLOBALESTATE state)
+void CGlobalState::EntityAdd(string_t globalname, string_t mapName, GlobalEntState state)
 {
 	ASSERT(!Find(globalname));
 
@@ -73,7 +73,7 @@ void CGlobalState::EntityAdd(string_t globalname, string_t mapName, GLOBALESTATE
 }
 
 
-void CGlobalState::EntitySetState(string_t globalname, GLOBALESTATE state)
+void CGlobalState::EntitySetState(string_t globalname, GlobalEntState state)
 {
 	globalentity_t* pEnt = Find(globalname);
 
@@ -90,13 +90,13 @@ const globalentity_t* CGlobalState::EntityFromTable(string_t globalname)
 }
 
 
-GLOBALESTATE CGlobalState::EntityGetState(string_t globalname)
+GlobalEntState CGlobalState::EntityGetState(string_t globalname)
 {
 	globalentity_t* pEnt = Find(globalname);
 	if (pEnt)
 		return pEnt->state;
 
-	return GLOBAL_OFF;
+	return GlobalEntState::Off;
 }
 
 

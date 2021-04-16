@@ -125,7 +125,7 @@ int DispatchSpawn(edict_t* pent)
 			if (pGlobal)
 			{
 				// Already dead? delete
-				if (pGlobal->state == GLOBAL_DEAD)
+				if (pGlobal->state == GlobalEntState::Dead)
 					return -1;
 				else if (!FStrEq(STRING(gpGlobals->mapname), pGlobal->levelName))
 					pEntity->MakeDormant();	// Hasn't been moved to this level yet, wait but stay alive
@@ -134,7 +134,7 @@ int DispatchSpawn(edict_t* pent)
 			else
 			{
 				// Spawned entities default to 'On'
-				gGlobalState.EntityAdd(pEntity->pev->globalname, gpGlobals->mapname, GLOBAL_ON);
+				gGlobalState.EntityAdd(pEntity->pev->globalname, gpGlobals->mapname, GlobalEntState::On);
 				//				ALERT( at_console, "Added global entity %s (%s)\n", STRING(pEntity->pev->classname), STRING(pEntity->pev->globalname) );
 			}
 		}
@@ -350,7 +350,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 			if (pGlobal)
 			{
 				// Already dead? delete
-				if (pGlobal->state == GLOBAL_DEAD)
+				if (pGlobal->state == GlobalEntState::Dead)
 					return -1;
 				else if (!FStrEq(STRING(gpGlobals->mapname), pGlobal->levelName))
 				{
@@ -362,7 +362,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 			{
 				ALERT(at_error, "Global Entity %s (%s) not in table!!!\n", STRING(pEntity->pev->globalname), STRING(pEntity->pev->classname));
 				// Spawned entities default to 'On'
-				gGlobalState.EntityAdd(pEntity->pev->globalname, gpGlobals->mapname, GLOBAL_ON);
+				gGlobalState.EntityAdd(pEntity->pev->globalname, gpGlobals->mapname, GlobalEntState::On);
 			}
 		}
 	}

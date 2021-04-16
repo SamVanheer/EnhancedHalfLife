@@ -68,7 +68,7 @@ void CBaseEntity::UpdateOnRemove()
 		}
 	}
 	if ( !FStringNull(pev->globalname) )
-		gGlobalState.EntitySetState( pev->globalname, GLOBAL_DEAD );
+		gGlobalState.EntitySetState( pev->globalname, GlobalEntState::Dead);
 }
 
 // Convenient way to delay removing oneself

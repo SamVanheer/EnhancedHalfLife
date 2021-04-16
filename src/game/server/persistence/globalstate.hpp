@@ -17,13 +17,18 @@
 
 class CBaseEntity;
 
-enum GLOBALESTATE { GLOBAL_OFF = 0, GLOBAL_ON = 1, GLOBAL_DEAD = 2 };
+enum class GlobalEntState
+{
+	Off = 0,
+	On = 1,
+	Dead = 2
+};
 
 struct globalentity_t
 {
 	char			name[64];
 	char			levelName[32];
-	GLOBALESTATE	state;
+	GlobalEntState	state;
 	globalentity_t* pNext;
 };
 
@@ -42,11 +47,11 @@ public:
 	}
 
 	void			ClearStates();
-	void			EntityAdd(string_t globalname, string_t mapName, GLOBALESTATE state);
-	void			EntitySetState(string_t globalname, GLOBALESTATE state);
+	void			EntityAdd(string_t globalname, string_t mapName, GlobalEntState state);
+	void			EntitySetState(string_t globalname, GlobalEntState state);
 	void			EntityUpdate(string_t globalname, string_t mapname);
 	const globalentity_t* EntityFromTable(string_t globalname);
-	GLOBALESTATE	EntityGetState(string_t globalname);
+	GlobalEntState	EntityGetState(string_t globalname);
 	int				EntityInTable(string_t globalname) { return (Find(globalname) != nullptr) ? 1 : 0; }
 	bool Save(CSave& save);
 	bool Restore(CRestore& restore);

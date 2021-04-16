@@ -46,7 +46,7 @@ public:
 	
 	string_t	m_globalstate;
 	int			m_triggermode;
-	int			m_initialstate;
+	GlobalEntState m_initialstate;
 };
 
 TYPEDESCRIPTION CEnvGlobal::m_SaveData[] =
@@ -68,8 +68,8 @@ void CEnvGlobal::KeyValue( KeyValueData *pkvd )
 		m_globalstate = ALLOC_STRING( pkvd->szValue );
 	else if ( FStrEq(pkvd->szKeyName, "triggermode") )
 		m_triggermode = atoi( pkvd->szValue );
-	else if ( FStrEq(pkvd->szKeyName, "initialstate") )
-		m_initialstate = atoi( pkvd->szValue );
+	else if ( FStrEq(pkvd->szKeyName, "initialstate") ) //TODO: validate input
+		m_initialstate = static_cast<GlobalEntState>(atoi( pkvd->szValue ));
 	else 
 		CPointEntity::KeyValue( pkvd );
 }
@@ -84,36 +84,37 @@ void CEnvGlobal::Spawn()
 	if ( FBitSet( pev->spawnflags, SF_GLOBAL_SET ) )
 	{
 		if ( !gGlobalState.EntityInTable( m_globalstate ) )
-			gGlobalState.EntityAdd( m_globalstate, gpGlobals->mapname, (GLOBALESTATE)m_initialstate );
+			gGlobalState.EntityAdd( m_globalstate, gpGlobals->mapname, m_initialstate );
 	}
 }
 
 
 void CEnvGlobal::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	GLOBALESTATE oldState = gGlobalState.EntityGetState( m_globalstate );
-	GLOBALESTATE newState;
+	GlobalEntState oldState = gGlobalState.EntityGetState( m_globalstate );
+	GlobalEntState newState;
 
+	//TODO: define constants
 	switch( m_triggermode )
 	{
 	case 0:
-		newState = GLOBAL_OFF;
+		newState = GlobalEntState::Off;
 		break;
 
 	case 1:
-		newState = GLOBAL_ON;
+		newState = GlobalEntState::On;
 		break;
 
 	case 2:
-		newState = GLOBAL_DEAD;
+		newState = GlobalEntState::Dead;
 		break;
 
 	default:
 	case 3:
-		if ( oldState == GLOBAL_ON )
-			newState = GLOBAL_OFF;
-		else if ( oldState == GLOBAL_OFF )
-			newState = GLOBAL_ON;
+		if ( oldState == GlobalEntState::On)
+			newState = GlobalEntState::Off;
+		else if ( oldState == GlobalEntState::Off)
+			newState = GlobalEntState::On;
 		else
 			newState = oldState;
 	}
@@ -223,7 +224,7 @@ bool CMultiSource::IsTriggered( CBaseEntity * )
 
 	if (i == m_iTotal)
 	{
-		if (FStringNull(m_globalstate) || gGlobalState.EntityGetState( m_globalstate ) == GLOBAL_ON )
+		if (FStringNull(m_globalstate) || gGlobalState.EntityGetState( m_globalstate ) == GlobalEntState::On)
 			return true;
 	}
 	

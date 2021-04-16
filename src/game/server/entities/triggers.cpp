@@ -171,7 +171,7 @@ void CAutoTrigger::Precache()
 
 void CAutoTrigger::Think()
 {
-	if ( FStringNull(m_globalstate) || gGlobalState.EntityGetState( m_globalstate ) == GLOBAL_ON )
+	if ( FStringNull(m_globalstate) || gGlobalState.EntityGetState( m_globalstate ) == GlobalEntState::On)
 	{
 		SUB_UseTargets( this, triggerType, 0 );
 		if ( pev->spawnflags & SF_AUTO_FIREONCE )
