@@ -112,7 +112,7 @@ public:
 
 	bool FValidateCover ( const Vector &vecCoverLocation ) override;
 
-	MONSTERSTATE GetIdealState () override;
+	NPCState GetIdealState () override;
 	Schedule_t	*GetScheduleOfType ( int iType ) override;
 };
 

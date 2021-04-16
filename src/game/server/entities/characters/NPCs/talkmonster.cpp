@@ -498,7 +498,7 @@ void CTalkMonster :: RunTask( Task_t *pTask )
 		edict_t *pPlayer;
 
 		// track head to the client for a while.
-		if ( m_MonsterState == MONSTERSTATE_IDLE		&& 
+		if ( m_MonsterState == NPCState ::Idle &&
 			 !IsMoving()								&&
 			 !IsTalking()								)
 		{
@@ -627,7 +627,7 @@ void CTalkMonster :: RunTask( Task_t *pTask )
 void CTalkMonster :: Killed( entvars_t *pevAttacker, int iGib )
 {
 	// If a client killed me (unless I was already Barnacle'd), make everyone else mad/afraid of him
-	if ( (pevAttacker->flags & FL_CLIENT) && m_MonsterState != MONSTERSTATE_PRONE )
+	if ( (pevAttacker->flags & FL_CLIENT) && m_MonsterState != NPCState::Prone)
 	{
 		AlertFriends();
 		LimitFollowers( CBaseEntity::Instance(pevAttacker), 0 );
@@ -836,7 +836,7 @@ CBaseEntity *CTalkMonster :: FindNearestFriend(bool fPlayer)
 			CBaseMonster *pMonster = pFriend->MyMonsterPointer();
 
 			// If not a monster for some reason, or in a script, or prone
-			if ( !pMonster || pMonster->m_MonsterState == MONSTERSTATE_SCRIPT || pMonster->m_MonsterState == MONSTERSTATE_PRONE )
+			if ( !pMonster || pMonster->m_MonsterState == NPCState::Script || pMonster->m_MonsterState == NPCState::Prone)
 				continue;
 
 			vecCheck = pFriend->pev->origin;
@@ -909,7 +909,7 @@ void CTalkMonster :: IdleRespond()
 bool CTalkMonster :: FOkToSpeak()
 {
 	// if in the grip of a barnacle, don't speak
-	if ( m_MonsterState == MONSTERSTATE_PRONE || m_IdealMonsterState == MONSTERSTATE_PRONE )
+	if ( m_MonsterState == NPCState::Prone || m_IdealMonsterState == NPCState::Prone)
 	{
 		return false;
 	}
@@ -927,7 +927,7 @@ bool CTalkMonster :: FOkToSpeak()
 	if ( pev->spawnflags & SF_MONSTER_GAG )
 		return false;
 
-	if ( m_MonsterState == MONSTERSTATE_PRONE )
+	if ( m_MonsterState == NPCState::Prone)
 		return false;
 
 	// if player is not in pvs, don't speak
@@ -1191,7 +1191,7 @@ bool CTalkMonster :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker
 	if ( IsAlive() )
 	{
 		// if player damaged this entity, have other friends talk about it
-		if (pevAttacker && m_MonsterState != MONSTERSTATE_PRONE && FBitSet(pevAttacker->flags, FL_CLIENT))
+		if (pevAttacker && m_MonsterState != NPCState::Prone && FBitSet(pevAttacker->flags, FL_CLIENT))
 		{
 			CBaseEntity *pFriend = FindNearestFriend(false);
 
@@ -1373,7 +1373,7 @@ void CTalkMonster::StopFollowing(bool clearSchedule )
 		if ( clearSchedule )
 			ClearSchedule();
 		if ( m_hEnemy != nullptr )
-			m_IdealMonsterState = MONSTERSTATE_COMBAT;
+			m_IdealMonsterState = NPCState::Combat;
 	}
 }
 
@@ -1384,7 +1384,7 @@ void CTalkMonster::StartFollowing( CBaseEntity *pLeader )
 		m_pCine->CancelScript();
 
 	if ( m_hEnemy != nullptr )
-		m_IdealMonsterState = MONSTERSTATE_ALERT;
+		m_IdealMonsterState = NPCState::Alert;
 
 	m_hTargetEnt = pLeader;
 	PlaySentence( m_szGrp[TLK_USE], RANDOM_FLOAT(2.8, 3.2), VOL_NORM, ATTN_IDLE );
@@ -1396,7 +1396,7 @@ void CTalkMonster::StartFollowing( CBaseEntity *pLeader )
 
 bool CTalkMonster::CanFollow()
 {
-	if ( m_MonsterState == MONSTERSTATE_SCRIPT )
+	if ( m_MonsterState == NPCState::Script)
 	{
 		if ( !m_pCine->CanInterrupt() )
 			return false;

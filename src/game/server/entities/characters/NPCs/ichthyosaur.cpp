@@ -476,7 +476,7 @@ void CIchthyosaur :: Spawn()
 	pev->health			= gSkillData.ichthyosaurHealth;
 	pev->view_ofs		= Vector ( 0, 0, 16 );
 	m_flFieldOfView		= VIEW_FIELD_WIDE;
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 	SetBits(pev->flags, FL_SWIM);
 	SetFlyingSpeed( ICHTHYOSAUR_SPEED );
 	SetFlyingMomentum( 2.5 );	// Set momentum constant
@@ -522,15 +522,15 @@ Schedule_t* CIchthyosaur::GetSchedule()
 	// ALERT( at_console, "GetSchedule( )\n" );
 	switch(m_MonsterState)
 	{
-	case MONSTERSTATE_IDLE:
+	case NPCState::Idle:
 		m_flightSpeed = 80;
 		return GetScheduleOfType( SCHED_IDLE_WALK );
 
-	case MONSTERSTATE_ALERT:
+	case NPCState::Alert:
 		m_flightSpeed = 150;
 		return GetScheduleOfType( SCHED_IDLE_WALK );
 
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		m_flMaxSpeed = 400;
 		// eat them
 		if ( HasConditions( bits_COND_CAN_MELEE_ATTACK1 ) )
@@ -873,7 +873,7 @@ void CIchthyosaur::MonsterThink ()
 
 	if (pev->deadflag == DEAD_NO)
 	{
-		if (m_MonsterState != MONSTERSTATE_SCRIPT)
+		if (m_MonsterState != NPCState::Script)
 		{
 			Swim( );
 

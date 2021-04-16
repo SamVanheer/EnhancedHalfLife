@@ -286,7 +286,7 @@ void CHAssassin :: Spawn()
 	pev->effects		= 0;
 	pev->health			= gSkillData.hassassinHealth;
 	m_flFieldOfView		= VIEW_FIELD_WIDE; // indicates the width of this monster's forward view cone ( as a dotproduct result )
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 	m_afCapability		= bits_CAP_MELEE_ATTACK1 | bits_CAP_DOORS_GROUP;
 	pev->friction		= 1;
 
@@ -831,8 +831,8 @@ Schedule_t *CHAssassin :: GetSchedule ()
 {
 	switch	( m_MonsterState )
 	{
-	case MONSTERSTATE_IDLE:
-	case MONSTERSTATE_ALERT:
+	case NPCState::Idle:
+	case NPCState::Alert:
 		{
 			if ( HasConditions ( bits_COND_HEAR_SOUND ))
 			{
@@ -852,7 +852,7 @@ Schedule_t *CHAssassin :: GetSchedule ()
 		}
 		break;
 
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		{
 // dead enemy
 			if ( HasConditions( bits_COND_ENEMY_DEAD ) )
@@ -875,7 +875,7 @@ Schedule_t *CHAssassin :: GetSchedule ()
 				{
 					// ALERT( at_console, "jump\n");
 					// jump or jump/shoot
-					if ( m_MonsterState == MONSTERSTATE_COMBAT )
+					if ( m_MonsterState == NPCState::Combat)
 						return GetScheduleOfType ( SCHED_ASSASSIN_JUMP );
 					else
 						return GetScheduleOfType ( SCHED_ASSASSIN_JUMP_ATTACK );
@@ -972,11 +972,11 @@ Schedule_t* CHAssassin :: GetScheduleOfType ( int Type )
 	case SCHED_ASSASSIN_EXPOSED:
 		return slAssassinExposed;
 	case SCHED_FAIL:
-		if (m_MonsterState == MONSTERSTATE_COMBAT)
+		if (m_MonsterState == NPCState::Combat)
 			return slAssassinFail;
 		break;
 	case SCHED_ALERT_STAND:
-		if (m_MonsterState == MONSTERSTATE_COMBAT)
+		if (m_MonsterState == NPCState::Combat)
 			return slAssassinHide;
 		break;
 	case SCHED_CHASE_ENEMY:

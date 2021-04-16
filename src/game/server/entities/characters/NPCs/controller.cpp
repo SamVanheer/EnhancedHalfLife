@@ -367,7 +367,7 @@ void CController :: Spawn()
 	pev->health			= gSkillData.controllerHealth;
 	pev->view_ofs		= Vector( 0, 0, -2 );// position of the eyes relative to monster's origin.
 	m_flFieldOfView		= VIEW_FIELD_FULL;// indicates the width of this monster's forward view cone ( as a dotproduct result )
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 
 	MonsterInit();
 }
@@ -727,13 +727,13 @@ Schedule_t *CController :: GetSchedule ()
 {
 	switch	( m_MonsterState )
 	{
-	case MONSTERSTATE_IDLE:
+	case NPCState::Idle:
 		break;
 
-	case MONSTERSTATE_ALERT:
+	case NPCState::Alert:
 		break;
 
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		{
 			Vector vecTmp = Intersect(vec3_origin, Vector( 100, 4, 7 ), Vector( 2, 10, -3 ), 20.0 );
 

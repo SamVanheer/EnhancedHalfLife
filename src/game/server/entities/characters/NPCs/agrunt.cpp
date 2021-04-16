@@ -281,7 +281,7 @@ bool CAGrunt::ShouldSpeak()
 
 	if ( pev->spawnflags & SF_MONSTER_GAG )
 	{
-		if ( m_MonsterState != MONSTERSTATE_COMBAT )
+		if ( m_MonsterState != NPCState::Combat)
 		{
 			// if gagged, don't talk outside of combat.
 			// if not going to talk because of this, put the talk time 
@@ -583,7 +583,7 @@ void CAGrunt :: Spawn()
 	pev->effects		= 0;
 	pev->health			= gSkillData.agruntHealth;
 	m_flFieldOfView		= 0.2;// indicates the width of this monster's forward view cone ( as a dotproduct result )
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 	m_afCapability		= 0;
 	m_afCapability		|= bits_CAP_SQUAD;
 
@@ -1061,7 +1061,7 @@ Schedule_t *CAGrunt :: GetSchedule ()
 
 	switch	( m_MonsterState )
 	{
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		{
 // dead enemy
 			if ( HasConditions( bits_COND_ENEMY_DEAD ) )

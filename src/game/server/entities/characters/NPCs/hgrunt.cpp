@@ -331,7 +331,7 @@ bool CHGrunt :: FOkToSpeak()
 
 	if ( pev->spawnflags & SF_MONSTER_GAG )
 	{
-		if ( m_MonsterState != MONSTERSTATE_COMBAT )
+		if ( m_MonsterState != NPCState::Combat)
 		{
 			// no talking outside of combat if gagged.
 			return false;
@@ -984,7 +984,7 @@ void CHGrunt :: Spawn()
 	pev->effects		= 0;
 	pev->health			= gSkillData.hgruntHealth;
 	m_flFieldOfView		= 0.2;// indicates the width of this monster's forward view cone ( as a dotproduct result )
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 	m_flNextGrenadeCheck = gpGlobals->time + 1;
 	m_flNextPainTime	= gpGlobals->time;
 	m_iSentence			= HGRUNT_SENT_NONE;
@@ -1931,7 +1931,7 @@ void CHGrunt :: SetActivity ( Activity NewActivity )
 		}
 		break;
 	case ACT_IDLE:
-		if ( m_MonsterState == MONSTERSTATE_COMBAT )
+		if ( m_MonsterState == NPCState::Combat)
 		{
 			NewActivity = ACT_IDLE_ANGRY;
 		}
@@ -1974,7 +1974,7 @@ Schedule_t *CHGrunt :: GetSchedule()
 	m_iSentence = HGRUNT_SENT_NONE;
 
 	// flying? If PRONE, barnacle has me. IF not, it's assumed I am rapelling. 
-	if ( pev->movetype == MOVETYPE_FLY && m_MonsterState != MONSTERSTATE_PRONE )
+	if ( pev->movetype == MOVETYPE_FLY && m_MonsterState != NPCState::Prone)
 	{
 		if (pev->flags & FL_ONGROUND)
 		{
@@ -1985,7 +1985,7 @@ Schedule_t *CHGrunt :: GetSchedule()
 		else
 		{
 			// repel down a rope, 
-			if ( m_MonsterState == MONSTERSTATE_COMBAT )
+			if ( m_MonsterState == NPCState::Combat)
 				return GetScheduleOfType ( SCHED_GRUNT_REPEL_ATTACK );
 			else
 				return GetScheduleOfType ( SCHED_GRUNT_REPEL );
@@ -2028,7 +2028,7 @@ Schedule_t *CHGrunt :: GetSchedule()
 	}
 	switch	( m_MonsterState )
 	{
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		{
 // dead enemy
 			if ( HasConditions( bits_COND_ENEMY_DEAD ) )

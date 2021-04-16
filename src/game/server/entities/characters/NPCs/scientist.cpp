@@ -88,7 +88,7 @@ public:
 	// Override these to set behavior
 	Schedule_t *GetScheduleOfType ( int Type ) override;
 	Schedule_t *GetSchedule () override;
-	MONSTERSTATE GetIdealState () override;
+	NPCState GetIdealState () override;
 
 	void DeathSound() override;
 	void PainSound() override;
@@ -663,7 +663,7 @@ void CScientist :: Spawn()
 	pev->health			= gSkillData.scientistHealth;
 	pev->view_ofs		= Vector ( 0, 0, 50 );// position of the eyes relative to monster's origin.
 	m_flFieldOfView		= VIEW_FIELD_WIDE; // NOTE: we need a wide field of view so scientists will notice player and say hello
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 
 //	m_flDistTooFar		= 256.0;
 
@@ -902,8 +902,8 @@ Schedule_t *CScientist :: GetSchedule ()
 
 	switch( m_MonsterState )
 	{
-	case MONSTERSTATE_ALERT:	
-	case MONSTERSTATE_IDLE:
+	case NPCState::Alert:
+	case NPCState::Idle:
 		if ( pEnemy )
 		{
 			if ( HasConditions( bits_COND_SEE_ENEMY ) )
@@ -984,7 +984,7 @@ Schedule_t *CScientist :: GetSchedule ()
 		// try to say something about smells
 		TrySmellTalk();
 		break;
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		if ( HasConditions( bits_COND_NEW_ENEMY ) )
 			return slFear;					// Point and scream!
 		if ( HasConditions( bits_COND_SEE_ENEMY ) )
@@ -1000,12 +1000,12 @@ Schedule_t *CScientist :: GetSchedule ()
 	return CTalkMonster::GetSchedule();
 }
 
-MONSTERSTATE CScientist :: GetIdealState ()
+NPCState CScientist :: GetIdealState ()
 {
 	switch ( m_MonsterState )
 	{
-	case MONSTERSTATE_ALERT:
-	case MONSTERSTATE_IDLE:
+	case NPCState::Alert:
+	case NPCState::Idle:
 		if ( HasConditions( bits_COND_NEW_ENEMY ) )
 		{
 			if ( IsFollowing() )
@@ -1014,7 +1014,7 @@ MONSTERSTATE CScientist :: GetIdealState ()
 				if ( relationship != R_FR || relationship != R_HT && !HasConditions( bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE ) )
 				{
 					// Don't go to combat if you're following the player
-					m_IdealMonsterState = MONSTERSTATE_ALERT;
+					m_IdealMonsterState = NPCState::Alert;
 					return m_IdealMonsterState;
 				}
 				StopFollowing(true);
@@ -1028,7 +1028,7 @@ MONSTERSTATE CScientist :: GetIdealState ()
 		}
 		break;
 
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		{
 			CBaseEntity *pEnemy = m_hEnemy;
 			if ( pEnemy != nullptr )
@@ -1036,21 +1036,21 @@ MONSTERSTATE CScientist :: GetIdealState ()
 				if ( DisregardEnemy( pEnemy ) )		// After 15 seconds of being hidden, return to alert
 				{
 					// Strip enemy when going to alert
-					m_IdealMonsterState = MONSTERSTATE_ALERT;
+					m_IdealMonsterState = NPCState::Alert;
 					m_hEnemy = nullptr;
 					return m_IdealMonsterState;
 				}
 				// Follow if only scared a little
 				if ( m_hTargetEnt != nullptr )
 				{
-					m_IdealMonsterState = MONSTERSTATE_ALERT;
+					m_IdealMonsterState = NPCState::Alert;
 					return m_IdealMonsterState;
 				}
 
 				if ( HasConditions ( bits_COND_SEE_ENEMY ) )
 				{
 					m_fearTime = gpGlobals->time;
-					m_IdealMonsterState = MONSTERSTATE_COMBAT;
+					m_IdealMonsterState = NPCState::Combat;
 					return m_IdealMonsterState;
 				}
 

@@ -61,7 +61,7 @@ public:
 	// Override these to set behavior
 	Schedule_t *GetScheduleOfType ( int Type ) override;
 	Schedule_t *GetSchedule () override;
-	MONSTERSTATE GetIdealState () override;
+	NPCState GetIdealState () override;
 
 	void DeathSound() override;
 	void PainSound() override;
@@ -414,7 +414,7 @@ void CBarney :: Spawn()
 	pev->health			= gSkillData.barneyHealth;
 	pev->view_ofs		= Vector ( 0, 0, 50 );// position of the eyes relative to monster's origin.
 	m_flFieldOfView		= VIEW_FIELD_WIDE; // NOTE: we need a wide field of view so npc will notice player and say hello
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 
 	pev->body			= 0; // gun in holster
 	m_fGunDrawn			= false;
@@ -511,7 +511,7 @@ bool CBarney :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 	if ( !IsAlive() || pev->deadflag == DEAD_DYING )
 		return ret;
 
-	if ( m_MonsterState != MONSTERSTATE_PRONE && (pevAttacker->flags & FL_CLIENT) )
+	if ( m_MonsterState != NPCState::Prone && (pevAttacker->flags & FL_CLIENT) )
 	{
 		m_flPlayerDamage += flDamage;
 
@@ -698,7 +698,7 @@ Schedule_t *CBarney :: GetSchedule ()
 
 	switch( m_MonsterState )
 	{
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		{
 // dead enemy
 			if ( HasConditions( bits_COND_ENEMY_DEAD ) )
@@ -720,8 +720,8 @@ Schedule_t *CBarney :: GetSchedule ()
 		}
 		break;
 
-	case MONSTERSTATE_ALERT:	
-	case MONSTERSTATE_IDLE:
+	case NPCState::Alert:
+	case NPCState::Idle:
 		if ( HasConditions(bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE))
 		{
 			// flinch if hurt
@@ -759,7 +759,7 @@ Schedule_t *CBarney :: GetSchedule ()
 	return CTalkMonster::GetSchedule();
 }
 
-MONSTERSTATE CBarney :: GetIdealState ()
+NPCState CBarney :: GetIdealState ()
 {
 	return CTalkMonster::GetIdealState();
 }

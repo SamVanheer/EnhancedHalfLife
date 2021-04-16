@@ -202,7 +202,7 @@ void CLeech::Spawn()
 	m_flTurning = 0;
 	m_fPathBlocked = false;
 	SetActivity( ACT_SWIM );
-	SetState( MONSTERSTATE_IDLE );
+	SetState(NPCState::Idle);
 	m_stateTime = gpGlobals->time + RANDOM_FLOAT( 1, 5 );
 }
 
@@ -241,10 +241,10 @@ void CLeech::RecalculateWaterlevel()
 void CLeech::SwitchLeechState()
 {
 	m_stateTime = gpGlobals->time + RANDOM_FLOAT( 3, 6 );
-	if ( m_MonsterState == MONSTERSTATE_COMBAT )
+	if ( m_MonsterState == NPCState::Combat)
 	{
 		m_hEnemy = nullptr;
-		SetState( MONSTERSTATE_IDLE );
+		SetState(NPCState::Idle);
 		// We may be up against the player, so redo the side checks
 		m_sideTime = 0;
 	}
@@ -255,7 +255,7 @@ void CLeech::SwitchLeechState()
 		if ( pEnemy && pEnemy->pev->waterlevel != WaterLevel::Dry)
 		{
 			m_hEnemy = pEnemy;
-			SetState( MONSTERSTATE_COMBAT );
+			SetState(NPCState::Combat);
 			m_stateTime = gpGlobals->time + RANDOM_FLOAT( 18, 25 );
 			AlertSound();
 		}
@@ -493,7 +493,7 @@ void CLeech::UpdateMotion()
 	// bank
 	pev->avelocity.z = - (pev->angles.z + (pev->avelocity.y * 0.25));
 
-	if ( m_MonsterState == MONSTERSTATE_COMBAT && HasConditions( bits_COND_CAN_MELEE_ATTACK1 ) )
+	if ( m_MonsterState == NPCState::Combat && HasConditions( bits_COND_CAN_MELEE_ATTACK1 ) )
 		m_IdealActivity = ACT_MELEE_ATTACK1;
 
 	// Out of water check
@@ -577,7 +577,7 @@ void CLeech::SwimThink()
 	ClearConditions( bits_COND_CAN_MELEE_ATTACK1 );
 	switch( m_MonsterState )
 	{
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		pTarget = m_hEnemy;
 		if ( !pTarget )
 			SwitchLeechState();

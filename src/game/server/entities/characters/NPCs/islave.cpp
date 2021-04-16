@@ -536,7 +536,7 @@ void CISlave :: Spawn()
 	pev->health			= gSkillData.slaveHealth;
 	pev->view_ofs		= Vector ( 0, 0, 64 );// position of the eyes relative to monster's origin.
 	m_flFieldOfView		= VIEW_FIELD_WIDE; // NOTE: we need a wide field of view so npc will notice player and say hello
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 	m_afCapability		= bits_CAP_HEAR | bits_CAP_TURN_HEAD | bits_CAP_RANGE_ATTACK2 | bits_CAP_DOORS_GROUP;
 
 	m_voicePitch		= RANDOM_LONG( 85, 110 );
@@ -658,7 +658,7 @@ Schedule_t *CISlave :: GetSchedule()
 
 	switch (m_MonsterState)
 	{
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 // dead enemy
 		if ( HasConditions( bits_COND_ENEMY_DEAD ) )
 		{

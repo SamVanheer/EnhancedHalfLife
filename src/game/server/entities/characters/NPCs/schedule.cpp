@@ -235,12 +235,12 @@ void CBaseMonster :: MaintainSchedule ()
 			// - schedule is done but schedule indicates it wants GetIdealState called
 			//   after successful completion (by setting bits_COND_SCHEDULE_DONE in iInterruptMask)
 			// DEAD & SCRIPT are not suggestions, they are commands!
-			if ( m_IdealMonsterState != MONSTERSTATE_DEAD && 
-				 (m_IdealMonsterState != MONSTERSTATE_SCRIPT || m_IdealMonsterState == m_MonsterState) )
+			if ( m_IdealMonsterState != NPCState::Dead &&
+				 (m_IdealMonsterState != NPCState::Script || m_IdealMonsterState == m_MonsterState) )
 			{
 				if (	(m_afConditions && !HasConditions(bits_COND_SCHEDULE_DONE)) ||
 						(m_pSchedule && (m_pSchedule->iInterruptMask & bits_COND_SCHEDULE_DONE)) ||
-						((m_MonsterState == MONSTERSTATE_COMBAT) && (m_hEnemy == nullptr))	)
+						((m_MonsterState == NPCState::Combat) && (m_hEnemy == nullptr))	)
 				{
 					GetIdealState();
 				}
@@ -258,7 +258,7 @@ void CBaseMonster :: MaintainSchedule ()
 			else
 			{
 				SetState( m_IdealMonsterState );
-				if ( m_MonsterState == MONSTERSTATE_SCRIPT || m_MonsterState == MONSTERSTATE_DEAD )
+				if ( m_MonsterState == NPCState::Script || m_MonsterState == NPCState::Dead)
 					pNewSchedule = CBaseMonster::GetSchedule();
 				else
 					pNewSchedule = GetSchedule();
@@ -1302,7 +1302,7 @@ case TASK_GET_PATH_TO_BESTSCENT:
 
 	case TASK_SUGGEST_STATE:
 		{
-			m_IdealMonsterState = (MONSTERSTATE)(int)pTask->flData;
+			m_IdealMonsterState = (NPCState)(int)pTask->flData;
 			TaskComplete();
 			break;
 		}
@@ -1352,17 +1352,17 @@ Schedule_t *CBaseMonster :: GetSchedule ()
 {
 	switch	( m_MonsterState )
 	{
-	case MONSTERSTATE_PRONE:
+	case NPCState::Prone:
 		{
 			return GetScheduleOfType( SCHED_BARNACLE_VICTIM_GRAB );
 			break;
 		}
-	case MONSTERSTATE_NONE:
+	case NPCState::None:
 		{
-			ALERT ( at_aiconsole, "MONSTERSTATE IS NONE!\n" );
+			ALERT ( at_aiconsole, "NPCState IS NONE!\n" );
 			break;
 		}
-	case MONSTERSTATE_IDLE:
+	case NPCState::Idle:
 		{
 			if ( HasConditions ( bits_COND_HEAR_SOUND ) )
 			{
@@ -1380,7 +1380,7 @@ Schedule_t *CBaseMonster :: GetSchedule ()
 			}
 			break;
 		}
-	case MONSTERSTATE_ALERT:
+	case NPCState::Alert:
 		{
 			if ( HasConditions( bits_COND_ENEMY_DEAD ) && LookupActivity( ACT_VICTORY_DANCE ) != ACTIVITY_NOT_AVAILABLE )
 			{
@@ -1409,7 +1409,7 @@ Schedule_t *CBaseMonster :: GetSchedule ()
 			}
 			break;
 		}
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		{
 			if ( HasConditions( bits_COND_ENEMY_DEAD ) )
 			{
@@ -1423,7 +1423,7 @@ Schedule_t *CBaseMonster :: GetSchedule ()
 				}
 				else
 				{
-					SetState( MONSTERSTATE_ALERT );
+					SetState(NPCState::Alert);
 					return GetSchedule();
 				}
 			}
@@ -1487,12 +1487,12 @@ Schedule_t *CBaseMonster :: GetSchedule ()
 			}
 			break;
 		}
-	case MONSTERSTATE_DEAD:
+	case NPCState::Dead:
 		{
 			return GetScheduleOfType( SCHED_DIE );
 			break;
 		}
-	case MONSTERSTATE_SCRIPT:
+	case NPCState::Script:
 		{
 			ASSERT( m_pCine != nullptr );
 			if ( !m_pCine )

@@ -212,7 +212,7 @@ public:
 	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) override;
 	int IRelationship ( CBaseEntity *pTarget ) override;
 	int IgnoreConditions () override;
-	MONSTERSTATE GetIdealState () override;
+	NPCState GetIdealState () override;
 
 	bool Save(CSave& save) override;
 	bool Restore( CRestore &restore ) override;
@@ -680,7 +680,7 @@ void CBullsquid :: Spawn()
 	pev->effects		= 0;
 	pev->health			= gSkillData.bullsquidHealth;
 	m_flFieldOfView		= 0.2;// indicates the width of this monster's forward view cone ( as a dotproduct result )
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 
 	m_fCanThreatDisplay	= true;
 	m_flNextSpitTime = gpGlobals->time;
@@ -1024,7 +1024,7 @@ Schedule_t *CBullsquid :: GetSchedule()
 {
 	switch	( m_MonsterState )
 	{
-	case MONSTERSTATE_ALERT:
+	case NPCState::Alert:
 		{
 			if ( HasConditions(bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE) )
 			{
@@ -1059,7 +1059,7 @@ Schedule_t *CBullsquid :: GetSchedule()
 
 			break;
 		}
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		{
 // dead enemy
 			if ( HasConditions( bits_COND_ENEMY_DEAD ) )
@@ -1245,7 +1245,7 @@ void CBullsquid :: RunTask ( Task_t *pTask )
 // the feature that makes it lose interest in headcrabs for 
 // a while if something injures it. 
 //=========================================================
-MONSTERSTATE CBullsquid :: GetIdealState ()
+NPCState CBullsquid :: GetIdealState ()
 {
 	int	iConditions;
 
@@ -1254,7 +1254,7 @@ MONSTERSTATE CBullsquid :: GetIdealState ()
 	// If no schedule conditions, the new ideal state is probably the reason we're in here.
 	switch ( m_MonsterState )
 	{
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		/*
 		COMBAT goes to ALERT upon death of enemy
 		*/
@@ -1263,7 +1263,7 @@ MONSTERSTATE CBullsquid :: GetIdealState ()
 			{
 				// if the squid has a headcrab enemy and something hurts it, it's going to forget about the crab for a while.
 				m_hEnemy = nullptr;
-				m_IdealMonsterState = MONSTERSTATE_ALERT;
+				m_IdealMonsterState = NPCState::Alert;
 			}
 			break;
 		}

@@ -169,19 +169,20 @@ constexpr byte BLOOD_COLOR_RED = (byte)247;
 constexpr byte BLOOD_COLOR_YELLOW = (byte)195;
 constexpr byte BLOOD_COLOR_GREEN = BLOOD_COLOR_YELLOW;
 
-enum MONSTERSTATE
+enum class NPCState
 {
-	MONSTERSTATE_NONE = 0,
-	MONSTERSTATE_IDLE,
-	MONSTERSTATE_COMBAT,
-	MONSTERSTATE_ALERT,
-	MONSTERSTATE_HUNT,
-	MONSTERSTATE_PRONE,
-	MONSTERSTATE_SCRIPT,
-	MONSTERSTATE_PLAYDEAD,
-	MONSTERSTATE_DEAD
+	None = 0,
+	Idle,
+	Combat,
+	Alert,
+	Hunt,
+	Prone,
+	Script,
+	PlayDead,
+	Dead
 };
 
+constexpr std::size_t NPCStatesCount = static_cast<std::size_t>(NPCState::Dead) + 1;
 
 
 // Things that toggle (buttons/triggers/doors) need this

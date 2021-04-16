@@ -512,7 +512,7 @@ bool CSquadMonster :: NoFriendlyFire()
 // GetIdealState - surveys the Conditions information available
 // and finds the best new state for a monster.
 //=========================================================
-MONSTERSTATE CSquadMonster :: GetIdealState ()
+NPCState CSquadMonster :: GetIdealState ()
 {
 	int	iConditions;
 
@@ -521,8 +521,8 @@ MONSTERSTATE CSquadMonster :: GetIdealState ()
 	// If no schedule conditions, the new ideal state is probably the reason we're in here.
 	switch ( m_MonsterState )
 	{
-	case MONSTERSTATE_IDLE:
-	case MONSTERSTATE_ALERT:
+	case NPCState::Idle:
+	case NPCState::Alert:
 		if ( HasConditions ( bits_COND_NEW_ENEMY ) && InSquad() )
 		{
 			SquadMakeEnemy ( m_hEnemy );

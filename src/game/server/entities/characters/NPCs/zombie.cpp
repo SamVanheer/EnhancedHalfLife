@@ -279,7 +279,7 @@ void CZombie :: Spawn()
 	pev->health			= gSkillData.zombieHealth;
 	pev->view_ofs		= VEC_VIEW;// position of the eyes relative to monster's origin.
 	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 	m_afCapability		= bits_CAP_DOORS_GROUP;
 
 	MonsterInit();

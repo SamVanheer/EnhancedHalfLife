@@ -50,8 +50,8 @@ public:
 		
 		int					m_LastHitGroup; // the last body region that took damage
 		
-		MONSTERSTATE		m_MonsterState;// monster's current state
-		MONSTERSTATE		m_IdealMonsterState;// monster should change to this state
+		NPCState			m_MonsterState;// monster's current state
+		NPCState			m_IdealMonsterState;// monster should change to this state
 	
 		TaskStatus			m_iTaskStatus;
 		Schedule_t			*m_pSchedule;
@@ -189,7 +189,7 @@ public:
 		virtual Schedule_t *GetScheduleOfType( int Type );
 		virtual Schedule_t *GetSchedule();
 		virtual void ScheduleChange() {}
-		// virtual bool CanPlaySequence() { return ((m_pCine == nullptr) && (m_MonsterState == MONSTERSTATE_NONE || m_MonsterState == MONSTERSTATE_IDLE || m_IdealMonsterState == MONSTERSTATE_IDLE)); }
+		// virtual bool CanPlaySequence() { return ((m_pCine == nullptr) && (m_MonsterState == NPCState::None || m_MonsterState == NPCState::Idle || m_IdealMonsterState == NPCState::Idle)); }
 		virtual bool CanPlaySequence(bool fDisregardState, int interruptLevel );
 		virtual bool CanPlaySentence(bool fDisregardState ) { return IsAlive(); }
 		virtual void PlaySentence( const char *pszSentence, float duration, float volume, float attenuation );
@@ -198,10 +198,10 @@ public:
 		virtual void SentenceStop();
 
 		Task_t *GetTask ();
-		virtual MONSTERSTATE GetIdealState ();
+		virtual NPCState GetIdealState ();
 		virtual void SetActivity ( Activity NewActivity );
 		void SetSequenceByName ( const char *szSequence );
-		void SetState ( MONSTERSTATE State );
+		void SetState (NPCState State );
 		virtual void ReportAIState();
 
 		void CheckAttacks ( CBaseEntity *pTarget, float flDist );

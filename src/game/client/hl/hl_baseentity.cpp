@@ -220,7 +220,7 @@ void CBaseMonster :: GibMonster() { }
 bool CBaseMonster :: HasHumanGibs() { return false; }
 bool CBaseMonster :: HasAlienGibs() { return false; }
 Activity CBaseMonster :: GetDeathActivity () { return ACT_DIE_HEADSHOT; }
-MONSTERSTATE CBaseMonster :: GetIdealState () { return MONSTERSTATE_ALERT; }
+NPCState CBaseMonster :: GetIdealState () { return NPCState::Alert; }
 Schedule_t* CBaseMonster :: GetScheduleOfType ( int Type ) { return nullptr; }
 Schedule_t *CBaseMonster :: GetSchedule () { return nullptr; }
 void CBaseMonster :: RunTask ( Task_t *pTask ) { }

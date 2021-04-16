@@ -66,7 +66,7 @@ public:
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
 	void Killed( entvars_t *pevAttacker, int iGib ) override;
 
-	MONSTERSTATE GetIdealState () override { return MONSTERSTATE_IDLE; }
+	NPCState GetIdealState () override { return NPCState::Idle; }
 	//TODO: should override base, but has different signature
 	int CanPlaySequence(bool fDisregardState ) { return true; }
 
@@ -283,7 +283,7 @@ void CTentacle :: Spawn( )
 	if (m_flMaxYaw <= 0)
 		m_flMaxYaw = 65;
 
-	m_MonsterState = MONSTERSTATE_IDLE;
+	m_MonsterState = NPCState::Idle;
 
 	// SetThink( Test );
 	UTIL_SetOrigin( pev, pev->origin );
@@ -460,7 +460,7 @@ void CTentacle :: Cycle()
 
 	// ALERT( at_console, "%s %d %d %d %f %f\n", STRING( pev->targetname ), pev->sequence, m_iGoalAnim, m_iDir, pev->framerate, pev->health );
 
-	if (m_MonsterState == MONSTERSTATE_SCRIPT || m_IdealMonsterState == MONSTERSTATE_SCRIPT)
+	if (m_MonsterState == NPCState::Script || m_IdealMonsterState == NPCState::Script)
 	{
 		pev->angles.y = m_flInitialYaw;
 		pev->ideal_yaw = m_flInitialYaw;	

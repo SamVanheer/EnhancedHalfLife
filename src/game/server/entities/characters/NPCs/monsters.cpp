@@ -174,7 +174,7 @@ void CBaseMonster :: BarnacleVictimBitten ( entvars_t *pevBarnacle )
 //=========================================================
 void CBaseMonster :: BarnacleVictimReleased ()
 {
-	m_IdealMonsterState = MONSTERSTATE_IDLE;
+	m_IdealMonsterState = NPCState::Idle;
 
 	pev->velocity = vec3_origin;
 	pev->movetype = MOVETYPE_STEP;
@@ -517,7 +517,7 @@ void CBaseMonster :: MonsterThink ()
 // start or end a fidget
 // This needs a better home -- switching animations over time should be encapsulated on a per-activity basis
 // perhaps MaintainActivity() or a ShiftAnimationOverTime() or something.
-	if ( m_MonsterState != MONSTERSTATE_SCRIPT && m_MonsterState != MONSTERSTATE_DEAD && m_Activity == ACT_IDLE && m_fSequenceFinished )
+	if ( m_MonsterState != NPCState::Script && m_MonsterState != NPCState::Dead && m_Activity == ACT_IDLE && m_fSequenceFinished )
 	{
 		int iSequence;
 
@@ -562,7 +562,7 @@ void CBaseMonster :: MonsterThink ()
 void CBaseMonster :: MonsterUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
 	//Don't do this because it can resurrect dying monsters
-	//m_IdealMonsterState = MONSTERSTATE_ALERT;
+	//m_IdealMonsterState = NPCState::Alert;
 }
 
 //=========================================================
@@ -582,7 +582,7 @@ int CBaseMonster :: IgnoreConditions ()
 		iIgnoreConditions |= bits_COND_SMELL_FOOD;
 	}
 
-	if ( m_MonsterState == MONSTERSTATE_SCRIPT && m_pCine )
+	if ( m_MonsterState == NPCState::Script && m_pCine )
 		iIgnoreConditions |= m_pCine->IgnoreConditions();
 
 	return iIgnoreConditions;
@@ -926,7 +926,7 @@ bool CBaseMonster :: FBecomeProne ()
 		pev->flags -= FL_ONGROUND;
 	}
 
-	m_IdealMonsterState = MONSTERSTATE_PRONE;
+	m_IdealMonsterState = NPCState::Prone;
 	return true;
 }
 
@@ -2008,7 +2008,7 @@ void CBaseMonster :: MonsterInit ()
 	pev->ideal_yaw		= pev->angles.y;
 	pev->max_health		= pev->health;
 	pev->deadflag		= DEAD_NO;
-	m_IdealMonsterState	= MONSTERSTATE_IDLE;// Assume monster will be idle, until proven otherwise
+	m_IdealMonsterState	= NPCState::Idle;// Assume monster will be idle, until proven otherwise
 
 	m_IdealActivity = ACT_IDLE;
 
@@ -2124,7 +2124,7 @@ void CBaseMonster :: StartMonster ()
 			{
 				ALERT ( at_aiconsole, "Can't Create Route!\n" );
 			}
-			SetState( MONSTERSTATE_IDLE );
+			SetState(NPCState::Idle);
 			ChangeSchedule( GetScheduleOfType( SCHED_IDLE_WALK ) );
 		}
 	}
@@ -2139,7 +2139,7 @@ void CBaseMonster :: StartMonster ()
 	
 	if ( !FStringNull(pev->targetname) )// wait until triggered
 	{
-		SetState( MONSTERSTATE_IDLE );
+		SetState(NPCState::Idle);
 		// UNDONE: Some scripted sequence monsters don't have an idle?
 		SetActivity( ACT_IDLE );
 		ChangeSchedule( GetScheduleOfType( SCHED_WAIT_TRIGGER ) );
@@ -2617,7 +2617,7 @@ void CBaseMonster :: HandleAnimEvent( MonsterEvent_t *pEvent )
 	switch( pEvent->event )
 	{
 	case SCRIPT_EVENT_DEAD:
-		if ( m_MonsterState == MONSTERSTATE_SCRIPT )
+		if ( m_MonsterState == NPCState::Script)
 		{
 			pev->deadflag = DEAD_DYING;
 			// Kill me now! (and fade out when CineCleanup() is called)
@@ -2632,7 +2632,7 @@ void CBaseMonster :: HandleAnimEvent( MonsterEvent_t *pEvent )
 #endif
 		break;
 	case SCRIPT_EVENT_NOT_DEAD:
-		if ( m_MonsterState == MONSTERSTATE_SCRIPT )
+		if ( m_MonsterState == NPCState::Script)
 		{
 			pev->deadflag = DEAD_NO;
 			// This is for life/death sequences where the player can determine whether a character is dead or alive after the script 
@@ -2891,11 +2891,13 @@ void CBaseMonster::ReportAIState()
 {
 	ALERT_TYPE level = at_console;
 
-	static constexpr const char *pStateNames[] = { "None", "Idle", "Combat", "Alert", "Hunt", "Prone", "Scripted", "Dead" };
+	static constexpr const char *pStateNames[] = { "None", "Idle", "Combat", "Alert", "Hunt", "Prone", "Scripted", "PlayDead", "Dead" };
+
+	static_assert(ArraySize(pStateNames) == NPCStatesCount);
 
 	ALERT( level, "%s: ", STRING(pev->classname) );
 	if ( (std::size_t)m_MonsterState < ArraySize(pStateNames) )
-		ALERT( level, "State: %s, ", pStateNames[m_MonsterState] );
+		ALERT( level, "State: %s, ", pStateNames[static_cast<std::size_t>(m_MonsterState)] );
 	int i = 0;
 	while ( activity_map[i].type != 0 )
 	{
@@ -3021,9 +3023,9 @@ bool CBaseMonster :: FCheckAITrigger ()
 		break;
 	case AITRIGGER_SEEPLAYER_NOT_IN_COMBAT:
 		if ( HasConditions ( bits_COND_SEE_CLIENT ) && 
-			 m_MonsterState != MONSTERSTATE_COMBAT	&& 
-			 m_MonsterState != MONSTERSTATE_PRONE	&& 
-			 m_MonsterState != MONSTERSTATE_SCRIPT)
+			 m_MonsterState != NPCState ::Combat &&
+			 m_MonsterState != NPCState ::Prone &&
+			 m_MonsterState != NPCState::Script)
 		{
 			fFireTarget = true;
 		}
@@ -3096,7 +3098,7 @@ bool CBaseMonster :: FCheckAITrigger ()
 //=========================================================	
 bool CBaseMonster :: CanPlaySequence(bool fDisregardMonsterState, int interruptLevel )
 {
-	if ( m_pCine || !IsAlive() || m_MonsterState == MONSTERSTATE_PRONE )
+	if ( m_pCine || !IsAlive() || m_MonsterState == NPCState::Prone)
 	{
 		// monster is already running a scripted sequence or dead!
 		return false;
@@ -3108,13 +3110,13 @@ bool CBaseMonster :: CanPlaySequence(bool fDisregardMonsterState, int interruptL
 		return true;
 	}
 
-	if ( m_MonsterState == MONSTERSTATE_NONE || m_MonsterState == MONSTERSTATE_IDLE || m_IdealMonsterState == MONSTERSTATE_IDLE )
+	if ( m_MonsterState == NPCState::None || m_MonsterState == NPCState::Idle || m_IdealMonsterState == NPCState::Idle)
 	{
 		// ok to go, but only in these states
 		return true;
 	}
 	
-	if ( m_MonsterState == MONSTERSTATE_ALERT && interruptLevel >= SS_INTERRUPT_BY_NAME )
+	if ( m_MonsterState == NPCState::Alert && interruptLevel >= SS_INTERRUPT_BY_NAME )
 		return true;
 
 	// unknown situation
@@ -3221,7 +3223,7 @@ bool CBaseMonster :: FacingIdeal()
 bool CBaseMonster :: FCanActiveIdle ()
 {
 	/*
-	if ( m_MonsterState == MONSTERSTATE_IDLE && m_IdealMonsterState == MONSTERSTATE_IDLE && !IsMoving() )
+	if ( m_MonsterState == NPCState::Idle && m_IdealMonsterState == NPCState::Idle && !IsMoving() )
 	{
 		return true;
 	}

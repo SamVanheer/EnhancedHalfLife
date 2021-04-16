@@ -599,7 +599,7 @@ void CBaseMonster :: Killed( entvars_t *pevAttacker, int iGib )
 
 	// clear the deceased's sound channels.(may have been firing or reloading when killed)
 	EMIT_SOUND(ENT(pev), CHAN_WEAPON, "common/null.wav", 1, ATTN_NORM);
-	m_IdealMonsterState = MONSTERSTATE_DEAD;
+	m_IdealMonsterState = NPCState::Dead;
 	// Make sure this condition is fired too (TakeDamage breaks out before this happens on death)
 	SetConditions( bits_COND_LIGHT_DAMAGE );
 	
@@ -629,7 +629,7 @@ void CBaseMonster :: Killed( entvars_t *pevAttacker, int iGib )
 	
 	//pev->enemy = ENT( pevAttacker );//why? (sjb)
 	
-	m_IdealMonsterState = MONSTERSTATE_DEAD;
+	m_IdealMonsterState = NPCState::Dead;
 }
 
 //
@@ -892,7 +892,7 @@ bool CBaseMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker
 
 	
 	// HACKHACK Don't kill monsters in a script.  Let them break their scripts first
-	if ( m_MonsterState == MONSTERSTATE_SCRIPT )
+	if ( m_MonsterState == NPCState::Script)
 	{
 		SetConditions( bits_COND_LIGHT_DAMAGE );
 		return false;

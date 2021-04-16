@@ -239,7 +239,7 @@ void CHoundeye :: SetActivity ( Activity NewActivity )
 	if ( NewActivity == m_Activity )
 		return;
 
-	if ( m_MonsterState == MONSTERSTATE_COMBAT && NewActivity == ACT_IDLE && RANDOM_LONG(0,1) )
+	if ( m_MonsterState == NPCState::Combat && NewActivity == ACT_IDLE && RANDOM_LONG(0,1) )
 	{
 		// play pissed idle.
 		iSequence = LookupSequence( "madidle" );
@@ -336,7 +336,7 @@ void CHoundeye :: Spawn()
 	pev->health			= gSkillData.houndeyeHealth;
 	pev->yaw_speed		= 5;//!!! should we put this in the monster's changeanim function since turn rates may vary with state/anim?
 	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 	m_fAsleep			= false; // everyone spawns awake
 	m_fDontBlink		= false;
 	m_afCapability		|= bits_CAP_SQUAD;
@@ -843,7 +843,7 @@ void CHoundeye :: RunTask ( Task_t *pTask )
 void CHoundeye::PrescheduleThink ()
 {
 	// if the hound is mad and is running, make hunt noises.
-	if ( m_MonsterState == MONSTERSTATE_COMBAT && m_Activity == ACT_RUN && RANDOM_FLOAT( 0, 1 ) < 0.2 )
+	if ( m_MonsterState == NPCState::Combat && m_Activity == ACT_RUN && RANDOM_FLOAT( 0, 1 ) < 0.2 )
 	{
 		WarnSound();
 	}
@@ -1224,7 +1224,7 @@ Schedule_t* CHoundeye :: GetScheduleOfType ( int Type )
 		}
 	case SCHED_FAIL:
 		{
-			if ( m_MonsterState == MONSTERSTATE_COMBAT )
+			if ( m_MonsterState == NPCState::Combat)
 			{
 				if ( !FNullEnt( FIND_CLIENT_IN_PVS( edict() ) ) )
 				{
@@ -1256,7 +1256,7 @@ Schedule_t *CHoundeye :: GetSchedule()
 {
 	switch	( m_MonsterState )
 	{
-	case MONSTERSTATE_COMBAT:
+	case NPCState::Combat:
 		{
 // dead enemy
 			if ( HasConditions( bits_COND_ENEMY_DEAD ) )

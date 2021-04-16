@@ -275,7 +275,7 @@ Task_t	tlAlertStand1[] =
 	{ TASK_STOP_MOVING,			0						 },
 	{ TASK_SET_ACTIVITY,		(float)ACT_IDLE			 },
 	{ TASK_WAIT,				(float)20				 },
-	{ TASK_SUGGEST_STATE,		(float)MONSTERSTATE_IDLE },
+	{ TASK_SUGGEST_STATE,		(float)NPCState::Idle },
 };
 
 Schedule_t	slAlertStand[] =

@@ -118,7 +118,7 @@ void CGenericMonster :: Spawn()
 	m_bloodColor		= BLOOD_COLOR_RED;
 	pev->health			= 8;
 	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
-	m_MonsterState		= MONSTERSTATE_NONE;
+	m_MonsterState		= NPCState::None;
 
 	MonsterInit();
 

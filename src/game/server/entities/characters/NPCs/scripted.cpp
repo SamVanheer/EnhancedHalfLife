@@ -203,7 +203,7 @@ void CCineMonster :: Touch( CBaseEntity *pOther )
 	if (m_pentTarget && OFFSET(pOther->pev) == OFFSET(m_pentTarget))
 	{
 		CBaseMonster *pTarget = GetClassPtr((CBaseMonster *)VARS(m_pentTarget));
-		pTarget->m_monsterState == MONSTERSTATE_SCRIPT;
+		pTarget->m_monsterState == NPCState::Script;
 	}
 */
 }
@@ -363,7 +363,7 @@ void CCineMonster :: PossessEntity()
 		}
 //		ALERT( at_aiconsole, "\"%s\" found and used (INT: %s)\n", STRING( pTarget->pev->targetname ), FBitSet(pev->spawnflags, SF_SCRIPT_NOINTERRUPT)?"No":"Yes" );
 
-		pTarget->m_IdealMonsterState = MONSTERSTATE_SCRIPT;
+		pTarget->m_IdealMonsterState = NPCState::Script;
 		if (!FStringNull(m_iszIdle))
 		{
 			StartSequence( pTarget, m_iszIdle, false);
@@ -438,7 +438,7 @@ void CCineAI :: PossessEntity()
 		
 		ALERT( at_aiconsole, "\"%s\" found and used\n", STRING( pTarget->pev->targetname ) );
 
-		pTarget->m_IdealMonsterState = MONSTERSTATE_SCRIPT;
+		pTarget->m_IdealMonsterState = NPCState::Script;
 
 /*
 		if (m_iszIdle)
@@ -451,7 +451,7 @@ void CCineAI :: PossessEntity()
 		}
 */
 		// Already in a scripted state?
-		if ( pTarget->m_MonsterState == MONSTERSTATE_SCRIPT )
+		if ( pTarget->m_MonsterState == NPCState::Script)
 		{
 			pNewSchedule = pTarget->GetScheduleOfType( SCHED_AISCRIPT );
 			pTarget->ChangeSchedule( pNewSchedule );
@@ -575,8 +575,8 @@ void CCineMonster :: SequenceDone ( CBaseMonster *pMonster )
 //=========================================================
 void CCineMonster :: FixScriptMonsterSchedule( CBaseMonster *pMonster )
 {
-	if ( pMonster->m_IdealMonsterState != MONSTERSTATE_DEAD )
-		pMonster->m_IdealMonsterState = MONSTERSTATE_IDLE;
+	if ( pMonster->m_IdealMonsterState != NPCState::Dead)
+		pMonster->m_IdealMonsterState = NPCState::Idle;
 	pMonster->ClearSchedule();
 }
 
@@ -616,7 +616,7 @@ bool CBaseMonster :: ExitScriptedSequence( )
 	{
 		// is this legal?
 		// BUGBUG -- This doesn't call Killed()
-		m_IdealMonsterState = MONSTERSTATE_DEAD;
+		m_IdealMonsterState = NPCState::Dead;
 		return false;
 	}
 
@@ -674,7 +674,7 @@ void ScriptEntityCancel( edict_t *pentCine )
 		if (pTarget)
 		{
 			// make sure their monster is actually playing a script
-			if ( pTarget->m_MonsterState == MONSTERSTATE_SCRIPT )
+			if ( pTarget->m_MonsterState == NPCState::Script)
 			{
 				// tell them do die
 				pTarget->m_scriptState = CCineMonster::SCRIPT_CLEANUP;
@@ -807,7 +807,7 @@ bool CBaseMonster :: CineCleanup( )
 		pev->health			= 0;
 		pev->framerate		= 0.0;
 		pev->solid			= SOLID_NOT;
-		SetState( MONSTERSTATE_DEAD );
+		SetState(NPCState::Dead);
 		pev->deadflag = DEAD_DEAD;
 		UTIL_SetSize( pev, pev->mins, Vector(pev->maxs.x, pev->maxs.y, pev->mins.z + 2) );
 
@@ -883,12 +883,12 @@ bool CBaseMonster :: CineCleanup( )
 	// set them back into a normal state
 	pev->enemy = nullptr;
 	if ( pev->health > 0 )
-		m_IdealMonsterState = MONSTERSTATE_IDLE; // m_previousState;
+		m_IdealMonsterState = NPCState::Idle; // m_previousState;
 	else
 	{
 		// Dropping out because he got killed
 		// Can't call killed() no attacker and weirdness (late gibbing) may result
-		m_IdealMonsterState = MONSTERSTATE_DEAD;
+		m_IdealMonsterState = NPCState::Dead;
 		SetConditions( bits_COND_LIGHT_DAMAGE );
 		pev->deadflag = DEAD_DYING;
 		FCheckAITrigger();
