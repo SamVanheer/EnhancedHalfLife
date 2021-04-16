@@ -149,14 +149,14 @@ public:
 	virtual bool    IsTriggered( CBaseEntity *pActivator ) {return true;}
 	virtual CBaseMonster *MyMonsterPointer() { return nullptr;}
 	virtual CSquadMonster *MySquadMonsterPointer() { return nullptr;}
-	virtual	int		GetToggleState() { return TS_AT_TOP; }
+	virtual	ToggleState GetToggleState() { return ToggleState::AtTop; }
 	virtual int 	GiveAmmo( int iAmount, const char *szName, int iMax ) { return -1; }
 	virtual float	GetDelay() { return 0; }
 	virtual bool	IsMoving() { return pev->velocity != vec3_origin; }
 	virtual void	OverrideReset() {}
 	virtual int		DamageDecal( int bitsDamageType );
 	// This is ONLY used by the node graph to test movement through a door
-	virtual void	SetToggleState( int state ) {}
+	virtual void	SetToggleState(ToggleState state ) {}
 	virtual void    StartSneaking() {}
 	virtual void    StopSneaking() {}
 	virtual bool	OnControls( entvars_t *pev ) { return false; }
@@ -459,7 +459,7 @@ class CBaseToggle : public CBaseAnimating
 public:
 	void				KeyValue( KeyValueData *pkvd ) override;
 
-	TOGGLE_STATE		m_toggle_state;
+	ToggleState			m_toggle_state;
 	float				m_flActivateFinished;//like attack_finished, but for doors
 	float				m_flMoveDistance;// how far a door should slide or rotate
 	float				m_flWait;
@@ -486,7 +486,7 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int		GetToggleState() override { return m_toggle_state; }
+	ToggleState GetToggleState() override { return m_toggle_state; }
 	float	GetDelay() override { return m_flWait; }
 
 	// common member functions

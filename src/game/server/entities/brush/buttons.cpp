@@ -476,7 +476,7 @@ void CBaseButton::Spawn( )
 	if (m_flLip == 0)
 		m_flLip = 4;
 
-	m_toggle_state = TS_AT_BOTTOM;
+	m_toggle_state = ToggleState::AtBottom;
 	m_vecPosition1 = pev->origin;
 	// Subtract 2 from size because the engine expands bboxes by 1 in all directions making the size too big
 	m_vecPosition2	= m_vecPosition1 + (pev->movedir * (fabs( pev->movedir.x * (pev->size.x-2) ) + fabs( pev->movedir.y * (pev->size.y-2) ) + fabs( pev->movedir.z * (pev->size.z-2) ) - m_flLip));
@@ -579,11 +579,11 @@ void CBaseButton::ButtonUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 {
 	// Ignore touches if button is moving, or pushed-in and waiting to auto-come-out.
 	// UNDONE: Should this use ButtonResponseToTouch() too?
-	if (m_toggle_state == TS_GOING_UP || m_toggle_state == TS_GOING_DOWN )
+	if (m_toggle_state == ToggleState::GoingUp || m_toggle_state == ToggleState::GoingDown)
 		return;		
 
 	m_hActivator = pActivator;
-	if ( m_toggle_state == TS_AT_TOP)
+	if ( m_toggle_state == ToggleState::AtTop)
 	{
 		if (!m_fStayPushed && FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
 		{
@@ -601,12 +601,12 @@ void CBaseButton::ButtonUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 CBaseButton::BUTTON_CODE CBaseButton::ButtonResponseToTouch()
 {
 	// Ignore touches if button is moving, or pushed-in and waiting to auto-come-out.
-	if (m_toggle_state == TS_GOING_UP ||
-		m_toggle_state == TS_GOING_DOWN ||
-		(m_toggle_state == TS_AT_TOP && !m_fStayPushed && !FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE) ) )
+	if (m_toggle_state == ToggleState::GoingUp ||
+		m_toggle_state == ToggleState::GoingDown ||
+		(m_toggle_state == ToggleState::AtTop && !m_fStayPushed && !FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE) ) )
 		return BUTTON_NOTHING;
 
-	if (m_toggle_state == TS_AT_TOP)
+	if (m_toggle_state == ToggleState::AtTop)
 	{
 		if((FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE) ) && !m_fStayPushed)
 		{
@@ -675,8 +675,8 @@ void CBaseButton::ButtonActivate( )
 		PlayLockSounds(pev, &m_ls, false, true);
 	}
 
-	ASSERT(m_toggle_state == TS_AT_BOTTOM);
-	m_toggle_state = TS_GOING_UP;
+	ASSERT(m_toggle_state == ToggleState::AtBottom);
+	m_toggle_state = ToggleState::GoingUp;
 	
 	SetMoveDone( &CBaseButton::TriggerAndWait );
 	if (!m_fRotating)
@@ -690,12 +690,12 @@ void CBaseButton::ButtonActivate( )
 //
 void CBaseButton::TriggerAndWait()
 {
-	ASSERT(m_toggle_state == TS_GOING_UP);
+	ASSERT(m_toggle_state == ToggleState::GoingUp);
 
 	if (!UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
 		return;
 
-	m_toggle_state = TS_AT_TOP;
+	m_toggle_state = ToggleState::AtTop;
 	
 	// If button automatically comes back out, start it moving out.
 	// Else re-instate touch method
@@ -727,8 +727,8 @@ void CBaseButton::TriggerAndWait()
 //
 void CBaseButton::ButtonReturn()
 {
-	ASSERT(m_toggle_state == TS_AT_TOP);
-	m_toggle_state = TS_GOING_DOWN;
+	ASSERT(m_toggle_state == ToggleState::AtTop);
+	m_toggle_state = ToggleState::GoingDown;
 	
 	SetMoveDone( &CBaseButton::ButtonBackHome );
 	if (!m_fRotating)
@@ -745,8 +745,8 @@ void CBaseButton::ButtonReturn()
 //
 void CBaseButton::ButtonBackHome()
 {
-	ASSERT(m_toggle_state == TS_GOING_DOWN);
-	m_toggle_state = TS_AT_BOTTOM;
+	ASSERT(m_toggle_state == ToggleState::GoingDown);
+	m_toggle_state = ToggleState::AtBottom;
 
 	if ( FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE) )
 	{
@@ -843,7 +843,7 @@ void CRotButton::Spawn()
 		pev->takedamage = DAMAGE_YES;
 	}
 
-	m_toggle_state = TS_AT_BOTTOM;
+	m_toggle_state = ToggleState::AtBottom;
 	m_vecAngle1	= pev->angles;
 	m_vecAngle2	= pev->angles + pev->movedir * m_flMoveDistance;
 	ASSERTSZ(m_vecAngle1 != m_vecAngle2, "rotating button start/end positions are equal");

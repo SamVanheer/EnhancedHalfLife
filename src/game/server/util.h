@@ -186,13 +186,13 @@ constexpr std::size_t NPCStatesCount = static_cast<std::size_t>(NPCState::Dead) 
 
 
 // Things that toggle (buttons/triggers/doors) need this
-enum TOGGLE_STATE
-	{
-	TS_AT_TOP,
-	TS_AT_BOTTOM,
-	TS_GOING_UP,
-	TS_GOING_DOWN
-	};
+enum class ToggleState
+{
+	AtTop,
+	AtBottom,
+	GoingUp,
+	GoingDown
+};
 
 // Misc useful
 inline bool FStrEq(const char*sz1, const char*sz2)

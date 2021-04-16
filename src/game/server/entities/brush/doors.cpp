@@ -43,7 +43,7 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 	
-	void SetToggleState( int state ) override;
+	void SetToggleState(ToggleState state ) override;
 
 	// used to selectivly override defaults
 	void EXPORT DoorTouch( CBaseEntity *pOther );
@@ -304,7 +304,7 @@ void CBaseDoor::Spawn( )
 		m_vecPosition1 = pev->origin;
 	}
 
-	m_toggle_state = TS_AT_BOTTOM;
+	m_toggle_state = ToggleState::AtBottom;
 	
 	// if the door is flagged for USE button activation only, use nullptr touch function
 	if ( FBitSet ( pev->spawnflags, SF_DOOR_USE_ONLY ) )
@@ -316,9 +316,9 @@ void CBaseDoor::Spawn( )
 }
  
 
-void CBaseDoor :: SetToggleState( int state )
+void CBaseDoor :: SetToggleState(ToggleState state )
 {
-	if ( state == TS_AT_TOP )
+	if ( state == ToggleState::AtTop)
 		UTIL_SetOrigin( pev, m_vecPosition2 );
 	else
 		UTIL_SetOrigin( pev, m_vecPosition1 );
@@ -512,7 +512,7 @@ void CBaseDoor::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 {
 	m_hActivator = pActivator;
 	// if not ready to be used, ignore "use" command.
-	if (m_toggle_state == TS_AT_BOTTOM || FBitSet(pev->spawnflags, SF_DOOR_NO_AUTO_RETURN) && m_toggle_state == TS_AT_TOP)
+	if (m_toggle_state == ToggleState::AtBottom || FBitSet(pev->spawnflags, SF_DOOR_NO_AUTO_RETURN) && m_toggle_state == ToggleState::AtTop)
 		DoorActivate();
 }
 
@@ -524,7 +524,7 @@ bool CBaseDoor::DoorActivate( )
 	if (!UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
 		return false;
 
-	if (FBitSet(pev->spawnflags, SF_DOOR_NO_AUTO_RETURN) && m_toggle_state == TS_AT_TOP)
+	if (FBitSet(pev->spawnflags, SF_DOOR_NO_AUTO_RETURN) && m_toggle_state == ToggleState::AtTop)
 	{// door should close
 		DoorGoDown();
 	}
@@ -556,17 +556,17 @@ void CBaseDoor::DoorGoUp()
 	entvars_t	*pevActivator;
 
 	// It could be going-down, if blocked.
-	ASSERT(m_toggle_state == TS_AT_BOTTOM || m_toggle_state == TS_GOING_DOWN);
+	ASSERT(m_toggle_state == ToggleState::AtBottom || m_toggle_state == ToggleState::GoingDown);
 
 	// emit door moving and stop sounds on CHAN_STATIC so that the multicast doesn't
 	// filter them out and leave a client stuck with looping door sounds!
 	if ( !FBitSet( pev->spawnflags, SF_DOOR_SILENT ) )
 	{
-		if ( m_toggle_state != TS_GOING_UP && m_toggle_state != TS_GOING_DOWN )
+		if ( m_toggle_state != ToggleState::GoingUp && m_toggle_state != ToggleState::GoingDown)
 			EMIT_SOUND(ENT(pev), CHAN_STATIC, STRING(pev->noiseMoving), 1, ATTN_NORM);
 	}
 
-	m_toggle_state = TS_GOING_UP;
+	m_toggle_state = ToggleState::GoingUp;
 	
 	SetMoveDone( &CBaseDoor::DoorHitTop );
 	if ( FClassnameIs(pev, "func_door_rotating"))		// !!! BUGBUG Triggered doors don't work with this yet
@@ -609,8 +609,8 @@ void CBaseDoor::DoorHitTop()
 		EMIT_SOUND(ENT(pev), CHAN_STATIC, STRING(pev->noiseArrived), 1, ATTN_NORM);
 	}
 
-	ASSERT(m_toggle_state == TS_GOING_UP);
-	m_toggle_state = TS_AT_TOP;
+	ASSERT(m_toggle_state == ToggleState::GoingUp);
+	m_toggle_state = ToggleState::AtTop;
 	
 	// toggle-doors don't come down automatically, they wait for refire.
 	if (FBitSet(pev->spawnflags, SF_DOOR_NO_AUTO_RETURN))
@@ -646,14 +646,14 @@ void CBaseDoor::DoorGoDown()
 {
 	if ( !FBitSet( pev->spawnflags, SF_DOOR_SILENT ) )
 	{
-		if ( m_toggle_state != TS_GOING_UP && m_toggle_state != TS_GOING_DOWN )
+		if ( m_toggle_state != ToggleState::GoingUp && m_toggle_state != ToggleState::GoingDown)
 			EMIT_SOUND(ENT(pev), CHAN_STATIC, STRING(pev->noiseMoving), 1, ATTN_NORM);
 	}
 	
 #ifdef DOOR_ASSERT
-	ASSERT(m_toggle_state == TS_AT_TOP);
+	ASSERT(m_toggle_state == ToggleState::AtTop);
 #endif // DOOR_ASSERT
-	m_toggle_state = TS_GOING_DOWN;
+	m_toggle_state = ToggleState::GoingDown;
 
 	SetMoveDone( &CBaseDoor::DoorHitBottom );
 	if ( FClassnameIs(pev, "func_door_rotating"))//rotating door
@@ -673,8 +673,8 @@ void CBaseDoor::DoorHitBottom()
 		EMIT_SOUND(ENT(pev), CHAN_STATIC, STRING(pev->noiseArrived), 1, ATTN_NORM);
 	}
 
-	ASSERT(m_toggle_state == TS_GOING_DOWN);
-	m_toggle_state = TS_AT_BOTTOM;
+	ASSERT(m_toggle_state == ToggleState::GoingDown);
+	m_toggle_state = ToggleState::AtBottom;
 
 	// Re-instate touch method, cycle is complete
 	if ( FBitSet ( pev->spawnflags, SF_DOOR_USE_ONLY ) )
@@ -706,7 +706,7 @@ void CBaseDoor::Blocked( CBaseEntity *pOther )
 
 	if (m_flWait >= 0)
 	{
-		if (m_toggle_state == TS_GOING_DOWN)
+		if (m_toggle_state == ToggleState::GoingDown)
 		{
 			DoorGoUp();
 		}
@@ -753,7 +753,7 @@ void CBaseDoor::Blocked( CBaseEntity *pOther )
 						if ( !FBitSet( pev->spawnflags, SF_DOOR_SILENT ) )
 							STOP_SOUND(ENT(pev), CHAN_STATIC, STRING(pev->noiseMoving) );
 
-						if ( pDoor->m_toggle_state == TS_GOING_DOWN)
+						if ( pDoor->m_toggle_state == ToggleState::GoingDown)
 							pDoor->DoorGoUp();
 						else
 							pDoor->DoorGoDown();
@@ -807,7 +807,7 @@ class CRotDoor : public CBaseDoor
 {
 public:
 	void Spawn() override;
-	void SetToggleState( int state ) override;
+	void SetToggleState(ToggleState state ) override;
 };
 
 LINK_ENTITY_TO_CLASS( func_door_rotating, CRotDoor );
@@ -852,7 +852,7 @@ void CRotDoor::Spawn()
 		pev->movedir = pev->movedir * -1;
 	}
 
-	m_toggle_state = TS_AT_BOTTOM;
+	m_toggle_state = ToggleState::AtBottom;
 
 	if ( FBitSet ( pev->spawnflags, SF_DOOR_USE_ONLY ) )
 	{
@@ -863,9 +863,9 @@ void CRotDoor::Spawn()
 }
 
 
-void CRotDoor :: SetToggleState( int state )
+void CRotDoor :: SetToggleState(ToggleState state )
 {
-	if ( state == TS_AT_TOP )
+	if ( state == ToggleState::AtTop)
 		pev->angles = m_vecAngle2;
 	else
 		pev->angles = m_vecAngle1;
