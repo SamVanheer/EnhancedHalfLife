@@ -28,9 +28,9 @@ protected:
 public:
 
 	virtual void SetUp( cl_enginefunc_t *pEnginefuncs ) = 0;
-	virtual void Update ( void ) = 0;
+	virtual void Update () = 0;
 	virtual void SetVariables ( float flGravity, Vector vViewAngles ) = 0;
-	virtual void ResetParticles ( void ) = 0;
+	virtual void ResetParticles () = 0;
 	virtual void ApplyForce ( Vector vOrigin, Vector vDirection, float flRadius, float flStrength, float flDuration ) = 0;
 	virtual void AddCustomParticleClassSize ( unsigned long lSize ) = 0;
 
@@ -67,7 +67,7 @@ class CBaseParticle : public CCoreTriangleEffect
 {
 public:
 	virtual void Think( float time ){ g_pParticleMan->CoreThink( this, time ); }
-	virtual void Draw( void ) { g_pParticleMan->CoreDraw( this ); }
+	virtual void Draw() { g_pParticleMan->CoreDraw( this ); }
 	virtual void Animate( float time ) { g_pParticleMan->CoreAnimate( this, time ); }
 	virtual void AnimateAndDie( float time ) { g_pParticleMan->CoreAnimateAndDie( this, time ); }
 	virtual void Expand( float time ) { g_pParticleMan->CoreExpand( this, time ); }
@@ -77,9 +77,9 @@ public:
 	virtual void CalculateVelocity( float time ) { g_pParticleMan->CoreCalculateVelocity( this, time ); }
 	virtual void CheckCollision( float time ) { g_pParticleMan->CoreCheckCollision( this, time ); }
 	virtual void Touch(Vector pos, Vector normal, int index) { g_pParticleMan->CoreTouch( this, pos, normal, index ); }
-	virtual void Die ( void ) { g_pParticleMan->CoreDie( this ); }
-	virtual void Force ( void ) { g_pParticleMan->CoreForce( this ); }
-	virtual bool CheckVisibility ( void ) { return g_pParticleMan->CoreCheckVisibility( this ); } 
+	virtual void Die () { g_pParticleMan->CoreDie( this ); }
+	virtual void Force () { g_pParticleMan->CoreForce( this ); }
+	virtual bool CheckVisibility () { return g_pParticleMan->CoreCheckVisibility( this ); } 
 
 	virtual void InitializeSprite( Vector org, Vector normal, model_t *sprite, float size, float brightness )
 	{

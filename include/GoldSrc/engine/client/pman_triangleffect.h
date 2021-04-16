@@ -50,8 +50,8 @@ public:
 	}//this asks for a new block of memory from the MiniMen class
 		
 	virtual void Think( float time ) = 0;
-	virtual bool CheckVisibility ( void ) = 0;
-	virtual void Draw( void ) = 0;
+	virtual bool CheckVisibility () = 0;
+	virtual void Draw() = 0;
 	virtual void Animate( float time ) = 0;
 	virtual void AnimateAndDie( float time ) = 0;
 	virtual void Expand( float time ) = 0;
@@ -61,9 +61,9 @@ public:
 	virtual void CalculateVelocity( float time ) = 0;
 	virtual void CheckCollision( float time ) = 0;
 	virtual void Touch(Vector pos, Vector normal, int index) = 0;
-	virtual void Die ( void ) = 0;
+	virtual void Die () = 0;
 	virtual void InitializeSprite( Vector org, Vector normal, model_t * sprite, float size, float brightness ) = 0;
-	virtual void Force ( void ) = 0;
+	virtual void Force () = 0;
 
 	float m_flSize; //scale of object
 	float m_flScaleSpeed; //speed at which object expands
@@ -125,12 +125,12 @@ public:
 		m_iRenderFlags |= iFlag;
 	}
 
-	int    GetRenderFlags( void )
+	int    GetRenderFlags()
 	{
 		 return m_iRenderFlags;
 	}
 
-	bool   GetParticlePVS ( void )
+	bool   GetParticlePVS ()
 	{
 		return m_bInPVS;
 	}
@@ -140,7 +140,7 @@ public:
 		m_bInPVS = bPVSStat;
 	}
 	
-	float GetNextPVSCheck( void )
+	float GetNextPVSCheck()
 	{
 		 return m_flNextPVSCheck;
 	}
@@ -160,7 +160,7 @@ public:
 		 m_iCollisionFlags &= ~iFlag;
 	}
 	
-	int  GetCollisionFlags ( void )
+	int  GetCollisionFlags ()
 	{
 		return m_iCollisionFlags;
 	}
@@ -170,7 +170,7 @@ public:
 		m_iRenderFlags |= iFlag;
 	}
 
-	float GetPlayerDistance ( void ) {	return m_flPlayerDistance; 	}
+	float GetPlayerDistance () {	return m_flPlayerDistance; 	}
 	void  SetPlayerDistance ( float flDistance ) {	m_flPlayerDistance = flDistance; 	}
 
 protected:

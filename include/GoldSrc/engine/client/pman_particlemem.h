@@ -34,7 +34,7 @@ public:
 		delete[] m_pData;
 	}
   
-	inline char *Memory(void) { return m_pData; }
+	inline char *Memory() { return m_pData; }
 
 	MemoryBlock * next;
 	MemoryBlock * prev;
@@ -66,12 +66,12 @@ public:
 	}
 	
 	
-	MemoryBlock * Front( void )
+	MemoryBlock * Front()
 	{
 		return(m_pHead);
 	}
 
-	MemoryBlock * Pop( void )
+	MemoryBlock * Pop()
 	{
 		if(!m_pHead)
 			return nullptr;
@@ -118,7 +118,7 @@ public:
 		pItem->prev = nullptr;
 	}
 
-	void Reset( void )
+	void Reset()
 	{
 		while(m_pHead)
 			Delete(m_pHead);
@@ -159,34 +159,34 @@ protected:
 	// ------------ Memory pool manager calls.
 	// Find a free block and mark it as "in use".  Return nullptr
 	//  if no free blocks found.
-	char *AllocateFreeBlock(void);
+	char *AllocateFreeBlock();
 public:
 
 	// Return a pointer to usable block of memory.
-	char *newBlock(void);
+	char *newBlock();
 
 	// Mark a target memory item as no longer "in use".
 	void deleteBlock(MemoryBlock *p);
 
 	// Return the remaining capacity of the memory pool as a percent.
-	long PercentUsed(void);
+	long PercentUsed();
 
-	void ProcessAll( void ); //Processes all
+	void ProcessAll(); //Processes all
 
-	void Reset( void ); //clears memory, setting all particles to not used.
+	void Reset(); //clears memory, setting all particles to not used.
 
 	static int ApplyForce( Vector vOrigin, Vector vDirection, float flRadius, float flStrength );
 
-	static CMiniMem *Instance(void);
-	static long MaxBlockSize(void);
+	static CMiniMem *Instance();
+	static long MaxBlockSize();
 
 	bool CheckSize( int iSize );
 
-	int GetTotalParticles( void ) { return m_iTotalParticles;	}
-	int GetDrawnParticles( void ) { return m_iParticlesDrawn;	}
-	void IncreaseParticlesDrawn( void ){ m_iParticlesDrawn++;	}
+	int GetTotalParticles() { return m_iTotalParticles;	}
+	int GetDrawnParticles() { return m_iParticlesDrawn;	}
+	void IncreaseParticlesDrawn(){ m_iParticlesDrawn++;	}
 	
-	void Shutdown( void );
+	void Shutdown();
 	
 	visibleparticles_t *m_pVisibleParticles;
 };
