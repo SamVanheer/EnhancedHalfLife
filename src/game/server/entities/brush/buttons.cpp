@@ -391,9 +391,9 @@ void CBaseButton::KeyValue( KeyValueData *pkvd )
 //
 bool CBaseButton::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
-	BUTTON_CODE code = ButtonResponseToTouch();
+	ButtonCode code = ButtonResponseToTouch();
 	
-	if ( code == BUTTON_NOTHING )
+	if ( code == ButtonCode::Nothing)
 		return false;
 	// Temporarily disable the touch function, until movement is finished.
 	SetTouch(nullptr);
@@ -402,7 +402,7 @@ bool CBaseButton::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	if ( m_hActivator == nullptr)
 		return false;
 
-	if ( code == BUTTON_RETURN )
+	if ( code == ButtonCode::Return)
 	{
 		EMIT_SOUND(ENT(pev), CHAN_VOICE, STRING(pev->noise), 1, ATTN_NORM);
 
@@ -598,25 +598,25 @@ void CBaseButton::ButtonUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 }
 
 
-CBaseButton::BUTTON_CODE CBaseButton::ButtonResponseToTouch()
+CBaseButton::ButtonCode CBaseButton::ButtonResponseToTouch()
 {
 	// Ignore touches if button is moving, or pushed-in and waiting to auto-come-out.
 	if (m_toggle_state == ToggleState::GoingUp ||
 		m_toggle_state == ToggleState::GoingDown ||
 		(m_toggle_state == ToggleState::AtTop && !m_fStayPushed && !FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE) ) )
-		return BUTTON_NOTHING;
+		return ButtonCode::Nothing;
 
 	if (m_toggle_state == ToggleState::AtTop)
 	{
 		if((FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE) ) && !m_fStayPushed)
 		{
-			return BUTTON_RETURN;
+			return ButtonCode::Return;
 		}
 	}
 	else
-		return BUTTON_ACTIVATE;
+		return ButtonCode::Activate;
 
-	return BUTTON_NOTHING;
+	return ButtonCode::Nothing;
 }
 
 
@@ -631,9 +631,9 @@ void CBaseButton:: ButtonTouch( CBaseEntity *pOther )
 
 	m_hActivator = pOther;
 
-	BUTTON_CODE code = ButtonResponseToTouch();
+	ButtonCode code = ButtonResponseToTouch();
 
-	if ( code == BUTTON_NOTHING )
+	if ( code == ButtonCode::Nothing)
 		return;
 
 	if (!UTIL_IsMasterTriggered(m_sMaster, pOther))
@@ -646,7 +646,7 @@ void CBaseButton:: ButtonTouch( CBaseEntity *pOther )
 	// Temporarily disable the touch function, until movement is finished.
 	SetTouch(nullptr);
 
-	if ( code == BUTTON_RETURN )
+	if ( code == ButtonCode::Return)
 	{
 		EMIT_SOUND(ENT(pev), CHAN_VOICE, STRING(pev->noise), 1, ATTN_NORM);
 		SUB_UseTargets( m_hActivator, USE_TOGGLE, 0 );

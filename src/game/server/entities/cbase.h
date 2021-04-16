@@ -578,8 +578,14 @@ public:
 	bool Save( CSave &save ) override;
 	bool Restore( CRestore &restore ) override;
 	
-	enum BUTTON_CODE { BUTTON_NOTHING, BUTTON_ACTIVATE, BUTTON_RETURN };
-	BUTTON_CODE	ButtonResponseToTouch();
+	enum class ButtonCode
+	{
+		Nothing,
+		Activate,
+		Return
+	};
+
+	ButtonCode ButtonResponseToTouch();
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 	// Buttons that don't take damage can be IMPULSE used
