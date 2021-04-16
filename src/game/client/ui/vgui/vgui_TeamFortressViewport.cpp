@@ -1052,10 +1052,10 @@ void TeamFortressViewport::UpdateSpectatorPanel()
 		// in first person mode colorize player names
 		if ( (g_iUser1 == OBS_IN_EYE) && player )
 		{
-			const float * color = GetClientColor( player );
-			int r = color[0]*255;
-			int g = color[1]*255;
-			int b = color[2]*255;
+			const Vector* color = &GetClientColor( player );
+			int r = color->x*255;
+			int g = color->y*255;
+			int b = color->z*255;
 			
 			// set team color, a bit transparent
 			m_pSpectatorPanel->m_BottomMainLabel->setFgColor(r,g,b,0);

@@ -197,7 +197,7 @@ protected:
 	bool m_bReparseString = false; // set to true whenever the m_szStatusBar needs to be recalculated
 
 	// an array of colors...one color for each line
-	const float* m_pflNameColors[MAX_STATUSBAR_LINES]{};
+	const Vector* m_pflNameColors[MAX_STATUSBAR_LINES]{};
 };
 
 struct extra_player_info_t

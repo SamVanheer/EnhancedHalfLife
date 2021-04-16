@@ -48,7 +48,7 @@ class TeamFortressViewport;
 char* GetVGUITGAName(const char *pszName);
 BitmapTGA *LoadTGAForRes(const char* pImageName);
 void ScaleColors( int &r, int &g, int &b, int a );
-const float* GetClientColor(int clientIndex);
+const Vector& GetClientColor(int clientIndex);
 constexpr Vector g_ColorBlue{0.6, 0.8, 1.0};
 constexpr Vector g_ColorRed{1.0, 0.25, 0.25};
 constexpr Vector g_ColorGreen{0.6, 1.0, 0.6};

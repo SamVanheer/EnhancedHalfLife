@@ -57,7 +57,7 @@ void CHudStatusBar :: Reset()
 
 	// reset our colors for the status bar lines (yellow is default)
 	for ( i = 0; i < MAX_STATUSBAR_LINES; i++ )
-		m_pflNameColors[i] = g_ColorYellow;
+		m_pflNameColors[i] = &g_ColorYellow;
 }
 
 void CHudStatusBar :: ParseStatusString( int line_num )
@@ -131,7 +131,7 @@ void CHudStatusBar :: ParseStatusString( int line_num )
 							if ( g_PlayerInfoList[indexval].name != nullptr)
 							{
 								safe_strcpy( szRepString, g_PlayerInfoList[indexval].name );
-								m_pflNameColors[line_num] = GetClientColor( indexval );
+								m_pflNameColors[line_num] = &GetClientColor( indexval );
 							}
 							else
 							{
@@ -167,7 +167,7 @@ bool CHudStatusBar :: Draw( float fTime )
 	{
 		for ( int i = 0; i < MAX_STATUSBAR_LINES; i++ )
 		{
-			m_pflNameColors[i] = g_ColorYellow;
+			m_pflNameColors[i] = &g_ColorYellow;
 			ParseStatusString( i );
 		}
 		m_bReparseString = false;
@@ -193,7 +193,7 @@ bool CHudStatusBar :: Draw( float fTime )
 		}
 
 		if ( m_pflNameColors[i] )
-			gEngfuncs.pfnDrawSetTextColor( m_pflNameColors[i][0], m_pflNameColors[i][1], m_pflNameColors[i][2] );
+			gEngfuncs.pfnDrawSetTextColor( m_pflNameColors[i]->x, m_pflNameColors[i]->y, m_pflNameColors[i]->z );
 
 		DrawConsoleString( x, y, m_szStatusBar[i] );
 	}

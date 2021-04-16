@@ -614,7 +614,7 @@ bool CHudSpectator::Draw(float flTime)
 				) continue;
 		}
 
-		const float* color = GetClientColor( i+1 );
+		const Vector color = GetClientColor( i+1 );
 
 		// draw the players name and health underneath
 		snprintf(string, sizeof(string), "%s", g_PlayerInfoList[i+1].name );

@@ -19,6 +19,7 @@
 
 #include "vgui_TeamFortressViewport.h"
 
+//TODO: move this all into saytext class
 constexpr int MAX_LINES = 5;
 constexpr int MAX_CHARS_PER_LINE = 256;  /* it can be less than this, depending on char size */
 
@@ -28,7 +29,7 @@ constexpr int LINE_START = 10;
 static float SCROLL_SPEED = 5;
 
 static char g_szLineBuffer[ MAX_LINES + 1 ][ MAX_CHARS_PER_LINE ];
-static const float *g_pflNameColors[ MAX_LINES + 1 ];
+static const Vector* g_pflNameColors[ MAX_LINES + 1 ];
 static int g_iNameLengths[ MAX_LINES + 1 ];
 static float flScrollTime = 0;  // the time at which the lines next scroll up
 
@@ -122,13 +123,14 @@ bool CHudSayText :: Draw( float flTime )
 	{
 		if (*g_szLineBuffer[i])
 		{
+			//TODO: define this constant
 			if (*g_szLineBuffer[i] == 2 && g_pflNameColors[i])
 			{
 				// it's a saytext string
 
 				// draw the first x characters in the player color
 				safe_strcpy(tempBuffer, g_szLineBuffer[i], std::min(g_iNameLengths[i] + 1, MaxPlayerStringLength));
-				gEngfuncs.pfnDrawSetTextColor(g_pflNameColors[i][0], g_pflNameColors[i][1], g_pflNameColors[i][2]);
+				gEngfuncs.pfnDrawSetTextColor(g_pflNameColors[i]->x, g_pflNameColors[i]->y, g_pflNameColors[i]->z);
 				const int x = DrawConsoleString(LINE_START, y, tempBuffer + 1); // don't draw the control code at the start
 
 				safe_strcpy(tempBuffer, g_szLineBuffer[i] + g_iNameLengths[i]);
@@ -197,7 +199,7 @@ void CHudSayText :: SayTextPrint( const char *pszBuf, int iBufSize, int clientIn
 			if ( nameInString )
 			{
 				g_iNameLengths[i] = strlen( pName ) + (nameInString - pszBuf);
-				g_pflNameColors[i] = GetClientColor( clientIndex );
+				g_pflNameColors[i] = &GetClientColor( clientIndex );
 			}
 		}
 	}
