@@ -388,57 +388,6 @@ class CNodeEnt : public CBaseEntity
 };
 
 /**
-*	@brief CStack - last in, first out.
-*	TODO: can probably be replaced by std::stack
-*/
-class CStack
-{
-public:
-	CStack();
-	void	Push(int value);
-	int		Pop();
-	int		Top();
-	int		Empty() { return m_level == 0; }
-	int		Size() { return m_level; }
-
-	/**
-	*	@brief copies every element on the stack into an array LIFO 
-	*/
-	void    CopyToArray(int* piArray);
-
-private:
-	int		m_stack[MAX_STACK_NODES];
-	int		m_level;
-};
-
-/**
-*	@brief CQueue - first in, first out.
-*	TODO: can probably be replaced by std::deque or std::list/forward_list
-*/
-class CQueue
-{
-public:
-
-	CQueue();// constructor
-	inline int Full() { return (m_cSize == MAX_STACK_NODES); }
-	inline int Empty() { return (m_cSize == 0); }
-	//inline int Tail () { return ( m_queue[ m_tail ] ); }
-	inline int Size() { return (m_cSize); }
-	void Insert(int, float);
-	int Remove(float&);
-
-private:
-	int	m_cSize;
-	struct tag_QUEUE_NODE
-	{
-		int   Id;
-		float Priority;
-	} m_queue[MAX_STACK_NODES];
-	int m_head;
-	int m_tail;
-};
-
-/**
 *	@brief Priority queue (smallest item out first).
 *	TODO: can probably be replaced by std::priority_queue
 */
