@@ -472,51 +472,27 @@ void CRenderFxManager::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TY
 	}
 }
 
-
-//TODO: break this up so the base class doesn't have stuff from derived classes in it
 class CBaseTrigger : public CBaseToggle
 {
 public:
-	void EXPORT TeleportTouch(CBaseEntity* pOther);
+	int	ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	void KeyValue(KeyValueData* pkvd) override;
-	void EXPORT MultiTouch(CBaseEntity* pOther);
 
-	/**
-	*	@brief When touched, a hurt trigger does DMG points of damage each half-second
-	*/
-	void EXPORT HurtTouch(CBaseEntity* pOther);
-	void EXPORT CDAudioTouch(CBaseEntity* pOther);
+	void InitTrigger();
 	void ActivateMultiTrigger(CBaseEntity* pActivator);
 
 	/**
 	*	@brief the wait time has passed, so set back up for another activation
 	*/
 	void EXPORT MultiWaitOver();
-	void EXPORT CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
 
 	/**
 	*	@brief If this is the USE function for a trigger, its state will toggle every time it's fired
 	*/
 	void EXPORT ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
-	void InitTrigger();
-
-	int	ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 };
 
 LINK_ENTITY_TO_CLASS(trigger, CBaseTrigger);
-
-void CBaseTrigger::InitTrigger()
-{
-	// trigger angles are used for one-way touches.  An angle of 0 is assumed
-	// to mean no restrictions, so use a yaw of 360 instead.
-	if (pev->angles != vec3_origin)
-		SetMovedir(pev);
-	pev->solid = SOLID_TRIGGER;
-	pev->movetype = MOVETYPE_NONE;
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
-	if (CVAR_GET_FLOAT("showtriggers") == 0)
-		SetBits(pev->effects, EF_NODRAW);
-}
 
 void CBaseTrigger::KeyValue(KeyValueData* pkvd)
 {
@@ -539,6 +515,81 @@ void CBaseTrigger::KeyValue(KeyValueData* pkvd)
 		CBaseToggle::KeyValue(pkvd);
 }
 
+void CBaseTrigger::InitTrigger()
+{
+	// trigger angles are used for one-way touches.  An angle of 0 is assumed
+	// to mean no restrictions, so use a yaw of 360 instead.
+	if (pev->angles != vec3_origin)
+		SetMovedir(pev);
+	pev->solid = SOLID_TRIGGER;
+	pev->movetype = MOVETYPE_NONE;
+	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	if (CVAR_GET_FLOAT("showtriggers") == 0)
+		SetBits(pev->effects, EF_NODRAW);
+}
+
+void CBaseTrigger::ActivateMultiTrigger(CBaseEntity* pActivator)
+{
+	if (pev->nextthink > gpGlobals->time)
+		return;         // still waiting for reset time
+
+	if (!UTIL_IsMasterTriggered(m_sMaster, pActivator))
+		return;
+	//TODO: is trigger_secret even a thing anymore?
+	if (FClassnameIs(pev, "trigger_secret"))
+	{
+		if (pev->enemy == nullptr || !FClassnameIs(pev->enemy, "player"))
+			return;
+		gpGlobals->found_secrets++;
+	}
+
+	if (!FStringNull(pev->noise))
+		EmitSound(CHAN_VOICE, STRING(pev->noise));
+
+	m_hActivator = pActivator;
+	SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
+
+	if (!FStringNull(pev->message) && pActivator->IsPlayer())
+	{
+		UTIL_ShowMessage(STRING(pev->message), pActivator);
+	}
+
+	if (m_flWait > 0)
+	{
+		SetThink(&CBaseTrigger::MultiWaitOver);
+		pev->nextthink = gpGlobals->time + m_flWait;
+	}
+	else
+	{
+		// we can't just remove (self) here, because this is a touch function
+		// called while C code is looping through area links...
+		SetTouch(nullptr);
+		pev->nextthink = gpGlobals->time + 0.1;
+		SetThink(&CBaseTrigger::SUB_Remove);
+	}
+}
+
+void CBaseTrigger::MultiWaitOver()
+{
+	SetThink(nullptr);
+}
+
+void CBaseTrigger::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+{
+	if (pev->solid == SOLID_NOT)
+	{// if the trigger is off, turn it on
+		pev->solid = SOLID_TRIGGER;
+
+		// Force retouch
+		gpGlobals->force_retouch++;
+	}
+	else
+	{// turn the trigger off
+		pev->solid = SOLID_NOT;
+	}
+	UTIL_SetOrigin(pev, pev->origin);
+}
+
 /**
 *	@brief hurts anything that touches it. if the trigger has a targetname, firing it will toggle state
 *	@details trigger hurt that causes radiation will do a radius check
@@ -548,10 +599,217 @@ class CTriggerHurt : public CBaseTrigger
 {
 public:
 	void Spawn() override;
+	/**
+	*	@brief When touched, a hurt trigger does DMG points of damage each half-second
+	*/
+	void EXPORT HurtTouch(CBaseEntity* pOther);
 	void EXPORT RadiationThink();
 };
 
 LINK_ENTITY_TO_CLASS(trigger_hurt, CTriggerHurt);
+
+void CTriggerHurt::Spawn()
+{
+	InitTrigger();
+	SetTouch(&CTriggerHurt::HurtTouch);
+
+	if (!FStringNull(pev->targetname))
+	{
+		SetUse(&CTriggerHurt::ToggleUse);
+	}
+	else
+	{
+		SetUse(nullptr);
+	}
+
+	if (m_bitsDamageInflict & DMG_RADIATION)
+	{
+		SetThink(&CTriggerHurt::RadiationThink);
+		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(0.0, 0.5);
+	}
+
+	if (FBitSet(pev->spawnflags, SF_TRIGGER_HURT_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
+		pev->solid = SOLID_NOT;
+
+	UTIL_SetOrigin(pev, pev->origin);		// Link into the list
+}
+
+void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
+{
+	float fldmg;
+
+	if (!pOther->pev->takedamage)
+		return;
+
+	if ((pev->spawnflags & SF_TRIGGER_HURT_CLIENTONLYTOUCH) && !pOther->IsPlayer())
+	{
+		// this trigger is only allowed to touch clients, and this ain't a client.
+		return;
+	}
+
+	if ((pev->spawnflags & SF_TRIGGER_HURT_NO_CLIENTS) && pOther->IsPlayer())
+		return;
+
+	// HACKHACK -- In multiplayer, players touch this based on packet receipt.
+	// So the players who send packets later aren't always hurt.  Keep track of
+	// how much time has passed and whether or not you've touched that player
+	if (g_pGameRules->IsMultiplayer())
+	{
+		if (pev->dmgtime > gpGlobals->time)
+		{
+			if (gpGlobals->time != pev->pain_finished)
+			{// too early to hurt again, and not same frame with a different entity
+				if (pOther->IsPlayer())
+				{
+					int playerMask = 1 << (pOther->entindex() - 1);
+
+					// If I've already touched this player (this time), then bail out
+					if (pev->impulse & playerMask)
+						return;
+
+					// Mark this player as touched
+					// BUGBUG - There can be only 32 players!
+					pev->impulse |= playerMask;
+				}
+				else
+				{
+					return;
+				}
+			}
+		}
+		else
+		{
+			// New clock, "un-touch" all players
+			pev->impulse = 0;
+			if (pOther->IsPlayer())
+			{
+				int playerMask = 1 << (pOther->entindex() - 1);
+
+				// Mark this player as touched
+				// BUGBUG - There can be only 32 players!
+				pev->impulse |= playerMask;
+			}
+		}
+	}
+	else	// Original code -- single player
+	{
+		if (pev->dmgtime > gpGlobals->time && gpGlobals->time != pev->pain_finished)
+		{// too early to hurt again, and not same frame with a different entity
+			return;
+		}
+	}
+
+
+
+	// If this is time_based damage (poison, radiation), override the pev->dmg with a 
+	// default for the given damage type.  Monsters only take time-based damage
+	// while touching the trigger.  Player continues taking damage for a while after
+	// leaving the trigger
+
+	fldmg = pev->dmg * 0.5;	// 0.5 seconds worth of damage, pev->dmg is damage/second
+
+
+	// JAY: Cut this because it wasn't fully realized.  Damage is simpler now.
+#if 0
+	switch (m_bitsDamageInflict)
+	{
+	default: break;
+	case DMG_POISON:		fldmg = POISON_DAMAGE / 4; break;
+	case DMG_NERVEGAS:		fldmg = NERVEGAS_DAMAGE / 4; break;
+	case DMG_RADIATION:		fldmg = RADIATION_DAMAGE / 4; break;
+	case DMG_PARALYZE:		fldmg = PARALYZE_DAMAGE / 4; break; // UNDONE: cut this? should slow movement to 50%
+	case DMG_ACID:			fldmg = ACID_DAMAGE / 4; break;
+	case DMG_SLOWBURN:		fldmg = SLOWBURN_DAMAGE / 4; break;
+	case DMG_SLOWFREEZE:	fldmg = SLOWFREEZE_DAMAGE / 4; break;
+	}
+#endif
+
+	if (fldmg < 0)
+		pOther->TakeHealth(-fldmg, m_bitsDamageInflict);
+	else
+		pOther->TakeDamage(pev, pev, fldmg, m_bitsDamageInflict);
+
+	// Store pain time so we can get all of the other entities on this frame
+	pev->pain_finished = gpGlobals->time;
+
+	// Apply damage every half second
+	pev->dmgtime = gpGlobals->time + 0.5;// half second delay until this trigger can hurt toucher again
+
+
+
+	if (!FStringNull(pev->target))
+	{
+		// trigger has a target it wants to fire. 
+		if (pev->spawnflags & SF_TRIGGER_HURT_CLIENTONLYFIRE)
+		{
+			// if the toucher isn't a client, don't fire the target!
+			if (!pOther->IsPlayer())
+			{
+				return;
+			}
+		}
+
+		SUB_UseTargets(pOther, USE_TOGGLE, 0);
+		if (pev->spawnflags & SF_TRIGGER_HURT_TARGETONCE)
+			pev->target = iStringNull;
+	}
+}
+
+void CTriggerHurt::RadiationThink()
+{
+
+	edict_t* pentPlayer;
+	CBasePlayer* pPlayer = nullptr;
+	float flRange;
+	entvars_t* pevTarget;
+	Vector vecSpot1;
+	Vector vecSpot2;
+	Vector vecRange;
+	Vector origin;
+	Vector view_ofs;
+
+	// check to see if a player is in pvs
+	// if not, continue	
+
+	// set origin to center of trigger so that this check works
+	origin = pev->origin;
+	view_ofs = pev->view_ofs;
+
+	pev->origin = (pev->absmin + pev->absmax) * 0.5;
+	pev->view_ofs = pev->view_ofs * 0.0;
+
+	pentPlayer = FIND_CLIENT_IN_PVS(edict());
+
+	pev->origin = origin;
+	pev->view_ofs = view_ofs;
+
+	// reset origin
+
+	if (!FNullEnt(pentPlayer))
+	{
+
+		pPlayer = GetClassPtr((CBasePlayer*)VARS(pentPlayer));
+
+		pevTarget = VARS(pentPlayer);
+
+		// get range to player;
+
+		vecSpot1 = (pev->absmin + pev->absmax) * 0.5;
+		vecSpot2 = (pevTarget->absmin + pevTarget->absmax) * 0.5;
+
+		vecRange = vecSpot1 - vecSpot2;
+		flRange = vecRange.Length();
+
+		// if player's current geiger counter range is larger
+		// than range to this trigger hurt, reset player's
+		// geiger counter range 
+
+		if (pPlayer->m_flgeigerRange >= flRange)
+			pPlayer->m_flgeigerRange = flRange;
+	}
+
+	pev->nextthink = gpGlobals->time + 0.25;
+}
 
 class CTriggerMonsterJump : public CBaseTrigger
 {
@@ -757,225 +1015,6 @@ void CTargetCDAudio::Play()
 	UTIL_Remove(this);
 }
 
-void CTriggerHurt::Spawn()
-{
-	InitTrigger();
-	SetTouch(&CTriggerHurt::HurtTouch);
-
-	if (!FStringNull(pev->targetname))
-	{
-		SetUse(&CTriggerHurt::ToggleUse);
-	}
-	else
-	{
-		SetUse(nullptr);
-	}
-
-	if (m_bitsDamageInflict & DMG_RADIATION)
-	{
-		SetThink(&CTriggerHurt::RadiationThink);
-		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(0.0, 0.5);
-	}
-
-	if (FBitSet(pev->spawnflags, SF_TRIGGER_HURT_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
-		pev->solid = SOLID_NOT;
-
-	UTIL_SetOrigin(pev, pev->origin);		// Link into the list
-}
-
-void CTriggerHurt::RadiationThink()
-{
-
-	edict_t* pentPlayer;
-	CBasePlayer* pPlayer = nullptr;
-	float flRange;
-	entvars_t* pevTarget;
-	Vector vecSpot1;
-	Vector vecSpot2;
-	Vector vecRange;
-	Vector origin;
-	Vector view_ofs;
-
-	// check to see if a player is in pvs
-	// if not, continue	
-
-	// set origin to center of trigger so that this check works
-	origin = pev->origin;
-	view_ofs = pev->view_ofs;
-
-	pev->origin = (pev->absmin + pev->absmax) * 0.5;
-	pev->view_ofs = pev->view_ofs * 0.0;
-
-	pentPlayer = FIND_CLIENT_IN_PVS(edict());
-
-	pev->origin = origin;
-	pev->view_ofs = view_ofs;
-
-	// reset origin
-
-	if (!FNullEnt(pentPlayer))
-	{
-
-		pPlayer = GetClassPtr((CBasePlayer*)VARS(pentPlayer));
-
-		pevTarget = VARS(pentPlayer);
-
-		// get range to player;
-
-		vecSpot1 = (pev->absmin + pev->absmax) * 0.5;
-		vecSpot2 = (pevTarget->absmin + pevTarget->absmax) * 0.5;
-
-		vecRange = vecSpot1 - vecSpot2;
-		flRange = vecRange.Length();
-
-		// if player's current geiger counter range is larger
-		// than range to this trigger hurt, reset player's
-		// geiger counter range 
-
-		if (pPlayer->m_flgeigerRange >= flRange)
-			pPlayer->m_flgeigerRange = flRange;
-	}
-
-	pev->nextthink = gpGlobals->time + 0.25;
-}
-
-void CBaseTrigger::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
-{
-	if (pev->solid == SOLID_NOT)
-	{// if the trigger is off, turn it on
-		pev->solid = SOLID_TRIGGER;
-
-		// Force retouch
-		gpGlobals->force_retouch++;
-	}
-	else
-	{// turn the trigger off
-		pev->solid = SOLID_NOT;
-	}
-	UTIL_SetOrigin(pev, pev->origin);
-}
-
-void CBaseTrigger::HurtTouch(CBaseEntity* pOther)
-{
-	float fldmg;
-
-	if (!pOther->pev->takedamage)
-		return;
-
-	if ((pev->spawnflags & SF_TRIGGER_HURT_CLIENTONLYTOUCH) && !pOther->IsPlayer())
-	{
-		// this trigger is only allowed to touch clients, and this ain't a client.
-		return;
-	}
-
-	if ((pev->spawnflags & SF_TRIGGER_HURT_NO_CLIENTS) && pOther->IsPlayer())
-		return;
-
-	// HACKHACK -- In multiplayer, players touch this based on packet receipt.
-	// So the players who send packets later aren't always hurt.  Keep track of
-	// how much time has passed and whether or not you've touched that player
-	if (g_pGameRules->IsMultiplayer())
-	{
-		if (pev->dmgtime > gpGlobals->time)
-		{
-			if (gpGlobals->time != pev->pain_finished)
-			{// too early to hurt again, and not same frame with a different entity
-				if (pOther->IsPlayer())
-				{
-					int playerMask = 1 << (pOther->entindex() - 1);
-
-					// If I've already touched this player (this time), then bail out
-					if (pev->impulse & playerMask)
-						return;
-
-					// Mark this player as touched
-					// BUGBUG - There can be only 32 players!
-					pev->impulse |= playerMask;
-				}
-				else
-				{
-					return;
-				}
-			}
-		}
-		else
-		{
-			// New clock, "un-touch" all players
-			pev->impulse = 0;
-			if (pOther->IsPlayer())
-			{
-				int playerMask = 1 << (pOther->entindex() - 1);
-
-				// Mark this player as touched
-				// BUGBUG - There can be only 32 players!
-				pev->impulse |= playerMask;
-			}
-		}
-	}
-	else	// Original code -- single player
-	{
-		if (pev->dmgtime > gpGlobals->time && gpGlobals->time != pev->pain_finished)
-		{// too early to hurt again, and not same frame with a different entity
-			return;
-		}
-	}
-
-
-
-	// If this is time_based damage (poison, radiation), override the pev->dmg with a 
-	// default for the given damage type.  Monsters only take time-based damage
-	// while touching the trigger.  Player continues taking damage for a while after
-	// leaving the trigger
-
-	fldmg = pev->dmg * 0.5;	// 0.5 seconds worth of damage, pev->dmg is damage/second
-
-
-	// JAY: Cut this because it wasn't fully realized.  Damage is simpler now.
-#if 0
-	switch (m_bitsDamageInflict)
-	{
-	default: break;
-	case DMG_POISON:		fldmg = POISON_DAMAGE / 4; break;
-	case DMG_NERVEGAS:		fldmg = NERVEGAS_DAMAGE / 4; break;
-	case DMG_RADIATION:		fldmg = RADIATION_DAMAGE / 4; break;
-	case DMG_PARALYZE:		fldmg = PARALYZE_DAMAGE / 4; break; // UNDONE: cut this? should slow movement to 50%
-	case DMG_ACID:			fldmg = ACID_DAMAGE / 4; break;
-	case DMG_SLOWBURN:		fldmg = SLOWBURN_DAMAGE / 4; break;
-	case DMG_SLOWFREEZE:	fldmg = SLOWFREEZE_DAMAGE / 4; break;
-	}
-#endif
-
-	if (fldmg < 0)
-		pOther->TakeHealth(-fldmg, m_bitsDamageInflict);
-	else
-		pOther->TakeDamage(pev, pev, fldmg, m_bitsDamageInflict);
-
-	// Store pain time so we can get all of the other entities on this frame
-	pev->pain_finished = gpGlobals->time;
-
-	// Apply damage every half second
-	pev->dmgtime = gpGlobals->time + 0.5;// half second delay until this trigger can hurt toucher again
-
-
-
-	if (!FStringNull(pev->target))
-	{
-		// trigger has a target it wants to fire. 
-		if (pev->spawnflags & SF_TRIGGER_HURT_CLIENTONLYFIRE)
-		{
-			// if the toucher isn't a client, don't fire the target!
-			if (!pOther->IsPlayer())
-			{
-				return;
-			}
-		}
-
-		SUB_UseTargets(pOther, USE_TOGGLE, 0);
-		if (pev->spawnflags & SF_TRIGGER_HURT_TARGETONCE)
-			pev->target = iStringNull;
-	}
-}
-
 /**
 *	@brief Variable sized repeatable trigger. Must be targeted at one or more entities.
 *	@details "wait" : Seconds between triggerings. (.2 default)
@@ -984,10 +1023,11 @@ class CTriggerMultiple : public CBaseTrigger
 {
 public:
 	void Spawn() override;
+
+	void EXPORT MultiTouch(CBaseEntity* pOther);
 };
 
 LINK_ENTITY_TO_CLASS(trigger_multiple, CTriggerMultiple);
-
 
 void CTriggerMultiple::Spawn()
 {
@@ -1000,30 +1040,7 @@ void CTriggerMultiple::Spawn()
 	SetTouch(&CTriggerMultiple::MultiTouch);
 }
 
-
-/**
-*	@brief Variable sized trigger. Triggers once, then removes itself.
-*	@details You must set the key "target" to the name of another object in the level that has a matching "targetname".
-*	if "killtarget" is set, any objects that have a matching "target" will be removed when the trigger is fired.
-*	if "angle" is set, the trigger will only fire when someone is facing the direction of the angle.  Use "360" for an angle of 0.
-*/
-class CTriggerOnce : public CTriggerMultiple
-{
-public:
-	void Spawn() override;
-};
-
-LINK_ENTITY_TO_CLASS(trigger_once, CTriggerOnce);
-void CTriggerOnce::Spawn()
-{
-	m_flWait = -1;
-
-	CTriggerMultiple::Spawn();
-}
-
-
-
-void CBaseTrigger::MultiTouch(CBaseEntity* pOther)
+void CTriggerMultiple::MultiTouch(CBaseEntity* pOther)
 {
 	entvars_t* pevToucher;
 
@@ -1049,53 +1066,52 @@ void CBaseTrigger::MultiTouch(CBaseEntity* pOther)
 	}
 }
 
-void CBaseTrigger::ActivateMultiTrigger(CBaseEntity* pActivator)
+/**
+*	@brief Variable sized trigger. Triggers once, then removes itself.
+*	@details You must set the key "target" to the name of another object in the level that has a matching "targetname".
+*	if "killtarget" is set, any objects that have a matching "target" will be removed when the trigger is fired.
+*	if "angle" is set, the trigger will only fire when someone is facing the direction of the angle.  Use "360" for an angle of 0.
+*/
+class CTriggerOnce : public CTriggerMultiple
 {
-	if (pev->nextthink > gpGlobals->time)
-		return;         // still waiting for reset time
+public:
+	void Spawn() override;
+};
 
-	if (!UTIL_IsMasterTriggered(m_sMaster, pActivator))
-		return;
-	//TODO: is trigger_secret even a thing anymore?
-	if (FClassnameIs(pev, "trigger_secret"))
-	{
-		if (pev->enemy == nullptr || !FClassnameIs(pev->enemy, "player"))
-			return;
-		gpGlobals->found_secrets++;
-	}
+LINK_ENTITY_TO_CLASS(trigger_once, CTriggerOnce);
+void CTriggerOnce::Spawn()
+{
+	m_flWait = -1;
 
-	if (!FStringNull(pev->noise))
-		EmitSound(CHAN_VOICE, STRING(pev->noise));
-
-	m_hActivator = pActivator;
-	SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
-
-	if (!FStringNull(pev->message) && pActivator->IsPlayer())
-	{
-		UTIL_ShowMessage(STRING(pev->message), pActivator);
-	}
-
-	if (m_flWait > 0)
-	{
-		SetThink(&CBaseTrigger::MultiWaitOver);
-		pev->nextthink = gpGlobals->time + m_flWait;
-	}
-	else
-	{
-		// we can't just remove (self) here, because this is a touch function
-		// called while C code is looping through area links...
-		SetTouch(nullptr);
-		pev->nextthink = gpGlobals->time + 0.1;
-		SetThink(&CBaseTrigger::SUB_Remove);
-	}
+	CTriggerMultiple::Spawn();
 }
 
-void CBaseTrigger::MultiWaitOver()
+/**
+*	@brief Acts as an intermediary for an action that takes multiple inputs.
+*	@details If nomessage is not set, it will print "1 more.. " etc when triggered and "sequence complete" when finished.
+*	After the counter has been triggered "cTriggersLeft" times (default 2), it will fire all of it's targets and remove itself.
+*/
+class CTriggerCounter : public CBaseTrigger
 {
-	SetThink(nullptr);
+public:
+	void Spawn() override;
+
+	void EXPORT CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+};
+LINK_ENTITY_TO_CLASS(trigger_counter, CTriggerCounter);
+
+void CTriggerCounter::Spawn()
+{
+	// By making the flWait be -1, this counter-trigger will disappear after it's activated
+	// (but of course it needs cTriggersLeft "uses" before that happens).
+	m_flWait = -1;
+
+	if (m_cTriggersLeft == 0)
+		m_cTriggersLeft = 2;
+	SetUse(&CTriggerCounter::CounterUse);
 }
 
-void CBaseTrigger::CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CTriggerCounter::CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	m_cTriggersLeft--;
 	m_hActivator = pActivator;
@@ -1128,30 +1144,6 @@ void CBaseTrigger::CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE
 		ALERT(at_console, "Sequence completed!");
 
 	ActivateMultiTrigger(m_hActivator);
-}
-
-
-/**
-*	@brief Acts as an intermediary for an action that takes multiple inputs.
-*	@details If nomessage is not set, it will print "1 more.. " etc when triggered and "sequence complete" when finished.
-*	After the counter has been triggered "cTriggersLeft" times (default 2), it will fire all of it's targets and remove itself.
-*/
-class CTriggerCounter : public CBaseTrigger
-{
-public:
-	void Spawn() override;
-};
-LINK_ENTITY_TO_CLASS(trigger_counter, CTriggerCounter);
-
-void CTriggerCounter::Spawn()
-{
-	// By making the flWait be -1, this counter-trigger will disappear after it's activated
-	// (but of course it needs cTriggersLeft "uses" before that happens).
-	m_flWait = -1;
-
-	if (m_cTriggersLeft == 0)
-		m_cTriggersLeft = 2;
-	SetUse(&CTriggerCounter::CounterUse);
 }
 
 //TODO: move changelevel related stuff into its own file
@@ -1705,7 +1697,25 @@ void CTriggerPush::Touch(CBaseEntity* pOther)
 	}
 }
 
-void CBaseTrigger::TeleportTouch(CBaseEntity* pOther)
+class CTriggerTeleport : public CBaseTrigger
+{
+public:
+	void Spawn() override;
+
+	void EXPORT TeleportTouch(CBaseEntity* pOther);
+};
+
+LINK_ENTITY_TO_CLASS(trigger_teleport, CTriggerTeleport);
+LINK_ENTITY_TO_CLASS(info_teleport_destination, CPointEntity);
+
+void CTriggerTeleport::Spawn()
+{
+	InitTrigger();
+
+	SetTouch(&CTriggerTeleport::TeleportTouch);
+}
+
+void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 {
 	entvars_t* pevToucher = pOther->pev;
 	edict_t* pentTarget = nullptr;
@@ -1760,26 +1770,6 @@ void CBaseTrigger::TeleportTouch(CBaseEntity* pOther)
 	pevToucher->fixangle = FIXANGLE_ABSOLUTE;
 	pevToucher->velocity = pevToucher->basevelocity = vec3_origin;
 }
-
-
-class CTriggerTeleport : public CBaseTrigger
-{
-public:
-	void Spawn() override;
-};
-LINK_ENTITY_TO_CLASS(trigger_teleport, CTriggerTeleport);
-
-void CTriggerTeleport::Spawn()
-{
-	InitTrigger();
-
-	SetTouch(&CTriggerTeleport::TeleportTouch);
-}
-
-
-LINK_ENTITY_TO_CLASS(info_teleport_destination, CPointEntity);
-
-
 
 class CTriggerSave : public CBaseTrigger
 {
