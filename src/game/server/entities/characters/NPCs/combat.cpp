@@ -300,7 +300,7 @@ void CBaseMonster :: GibMonster()
 	TraceResult	tr;
 	bool		gibbed = false;
 
-	EMIT_SOUND(ENT(pev), CHAN_WEAPON, "common/bodysplat.wav", 1, ATTN_NORM);		
+	EmitSound(CHAN_WEAPON, "common/bodysplat.wav");
 
 	// only humans throw skulls !!!UNDONE - eventually monsters will have their own sets of gibs
 	if ( HasHumanGibs() )
@@ -598,7 +598,7 @@ void CBaseMonster :: Killed( entvars_t *pevAttacker, int iGib )
 	Remember( bits_MEMORY_KILLED );
 
 	// clear the deceased's sound channels.(may have been firing or reloading when killed)
-	EMIT_SOUND(ENT(pev), CHAN_WEAPON, "common/null.wav", 1, ATTN_NORM);
+	EmitSound(CHAN_WEAPON, "common/null.wav");
 	m_IdealMonsterState = NPCState::Dead;
 	// Make sure this condition is fired too (TakeDamage breaks out before this happens on death)
 	SetConditions( bits_COND_LIGHT_DAMAGE );
@@ -738,7 +738,7 @@ void CGib :: BounceGibTouch ( CBaseEntity *pOther )
 		
 			volume = 0.8 * std::min(1.0, ((float)zvel) / 450.0);
 
-			CBreakable::MaterialSoundRandom( edict(), (Materials)m_material, volume );
+			CBreakable::MaterialSoundRandom( this, (Materials)m_material, volume );
 		}
 	}
 }

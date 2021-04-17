@@ -153,7 +153,7 @@ void CItem::Materialize()
 	if ( pev->effects & EF_NODRAW )
 	{
 		// changing from invisible state to visible.
-		EMIT_SOUND_DYN( ENT(pev), CHAN_WEAPON, "items/suitchargeok1.wav", 1, ATTN_NORM, 0, 150 );
+		EmitSound(CHAN_WEAPON, "items/suitchargeok1.wav", VOL_NORM, ATTN_NORM, 150 );
 		pev->effects &= ~EF_NODRAW;
 		pev->effects |= EF_MUZZLEFLASH;
 	}
@@ -181,9 +181,9 @@ class CItemSuit : public CItem
 			return false;
 
 		if ( pev->spawnflags & SF_SUIT_SHORTLOGON )
-			EMIT_SOUND_SUIT(pPlayer->edict(), "!HEV_A0");		// short version of suit logon,
+			EMIT_SOUND_SUIT(pPlayer, "!HEV_A0");		// short version of suit logon,
 		else
-			EMIT_SOUND_SUIT(pPlayer->edict(), "!HEV_AAx");	// long version of suit logon
+			EMIT_SOUND_SUIT(pPlayer, "!HEV_AAx");	// long version of suit logon
 
 		pPlayer->pev->weapons |= (1<<WEAPON_SUIT);
 		return true;
@@ -223,7 +223,7 @@ class CItemBattery : public CItem
 			pPlayer->pev->armorvalue += gSkillData.batteryCapacity;
 			pPlayer->pev->armorvalue = std::min(pPlayer->pev->armorvalue, static_cast<float>(MAX_NORMAL_BATTERY));
 
-			EMIT_SOUND( pPlayer->edict(), CHAN_ITEM, "items/gunpickup2.wav", 1, ATTN_NORM );
+			pPlayer->EmitSound(CHAN_ITEM, "items/gunpickup2.wav");
 
 			MESSAGE_BEGIN( MSG_ONE, gmsgItemPickup, nullptr, pPlayer->pev );
 				WRITE_STRING( STRING(pev->classname) );
@@ -324,7 +324,7 @@ class CItemLongJump : public CItem
 				WRITE_STRING( STRING(pev->classname) );
 			MESSAGE_END();
 
-			EMIT_SOUND_SUIT( pPlayer->edict(), "!HEV_A1" );	// Play the longjump sound UNDONE: Kelly? correct sound?
+			EMIT_SOUND_SUIT( pPlayer, "!HEV_A1" );	// Play the longjump sound UNDONE: Kelly? correct sound?
 			return true;		
 		}
 		return false;

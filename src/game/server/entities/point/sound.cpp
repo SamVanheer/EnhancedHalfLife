@@ -1158,9 +1158,14 @@ int SENTENCEG_GetIndex(const char *szgroupname)
 // play from the group. Ipick is only needed if you plan on stopping
 // the sound before playback is done (see SENTENCEG_Stop).
 
-int SENTENCEG_PlayRndI(edict_t *entity, int isentenceg, 
-					  float volume, float attenuation, int flags, int pitch)
+int SENTENCEG_PlayRndI(CBaseEntity* entity, int isentenceg,
+					  float volume, float attenuation, int pitch, int flags)
 {
+	if (!entity)
+	{
+		return -1;
+	}
+
 	char name[64];
 	int ipick;
 
@@ -1171,15 +1176,20 @@ int SENTENCEG_PlayRndI(edict_t *entity, int isentenceg,
 
 	ipick = USENTENCEG_Pick(isentenceg, name, sizeof(name));
 	if (ipick > 0 && name)
-		EMIT_SOUND_DYN(entity, CHAN_VOICE, name, volume, attenuation, flags, pitch);
+		entity->EmitSound(CHAN_VOICE, name, volume, attenuation, pitch, flags);
 	return ipick;
 }
 
 // same as above, but takes sentence group name instead of index
 
-int SENTENCEG_PlayRndSz(edict_t *entity, const char *szgroupname, 
-					  float volume, float attenuation, int flags, int pitch)
+int SENTENCEG_PlayRndSz(CBaseEntity* entity, const char *szgroupname,
+					  float volume, float attenuation, int pitch, int flags)
 {
+	if (!entity)
+	{
+		return -1;
+	}
+
 	char name[64];
 	int ipick;
 	int isentenceg;
@@ -1198,16 +1208,21 @@ int SENTENCEG_PlayRndSz(edict_t *entity, const char *szgroupname,
 
 	ipick = USENTENCEG_Pick(isentenceg, name, sizeof(name));
 	if (ipick >= 0 && name[0])
-		EMIT_SOUND_DYN(entity, CHAN_VOICE, name, volume, attenuation, flags, pitch);
+		entity->EmitSound(CHAN_VOICE, name, volume, attenuation, pitch, flags);
 
 	return ipick;
 }
 
 // play sentences in sequential order from sentence group.  Reset after last sentence.
 
-int SENTENCEG_PlaySequentialSz(edict_t *entity, const char *szgroupname, 
-					  float volume, float attenuation, int flags, int pitch, int ipick, int freset)
+int SENTENCEG_PlaySequentialSz(CBaseEntity* entity, const char *szgroupname,
+					  float volume, float attenuation, int pitch, int ipick, int freset, int flags)
 {
+	if (!entity)
+	{
+		return -1;
+	}
+
 	char name[64];
 	int ipicknext;
 	int isentenceg;
@@ -1223,7 +1238,7 @@ int SENTENCEG_PlaySequentialSz(edict_t *entity, const char *szgroupname,
 
 	ipicknext = USENTENCEG_PickSequential(isentenceg, name, sizeof(name), ipick, freset);
 	if (ipicknext >= 0 && name[0])
-		EMIT_SOUND_DYN(entity, CHAN_VOICE, name, volume, attenuation, flags, pitch);
+		entity->EmitSound(CHAN_VOICE, name, volume, attenuation, pitch, flags);
 	return ipicknext;
 }
 
@@ -1231,8 +1246,13 @@ int SENTENCEG_PlaySequentialSz(edict_t *entity, const char *szgroupname,
 // for this entity, for the given sentence within the sentence group, stop
 // the sentence.
 
-void SENTENCEG_Stop(edict_t *entity, int isentenceg, int ipick)
+void SENTENCEG_Stop(CBaseEntity* entity, int isentenceg, int ipick)
 {
+	if (!entity)
+	{
+		return;
+	}
+
 	char buffer[64];
 	char sznum[8];
 	
@@ -1247,7 +1267,7 @@ void SENTENCEG_Stop(edict_t *entity, int isentenceg, int ipick)
 	snprintf(sznum, sizeof(sznum), "%d", ipick);
 	safe_strcat(buffer, sznum);
 
-	STOP_SOUND(entity, CHAN_VOICE, buffer);
+	entity->StopSound(CHAN_VOICE, buffer);
 }
 
 // open sentences.txt, scan for groups, build rgsentenceg
@@ -1420,7 +1440,7 @@ void EMIT_SOUND_DYN(edict_t *entity, int channel, const char *sample, float volu
 
 // play a specific sentence over the HEV suit speaker - just pass player entity, and !sentencename
 
-void EMIT_SOUND_SUIT(edict_t *entity, const char *sample)
+void EMIT_SOUND_SUIT(CBaseEntity* entity, const char *sample)
 {
 	float fvol;
 	int pitch = PITCH_NORM;
@@ -1430,12 +1450,12 @@ void EMIT_SOUND_SUIT(edict_t *entity, const char *sample)
 		pitch = RANDOM_LONG(0,6) + 98;
 
 	if (fvol > 0.05)
-		EMIT_SOUND_DYN(entity, CHAN_STATIC, sample, fvol, ATTN_NORM, 0, pitch);
+		entity->EmitSound(CHAN_STATIC, sample, fvol, ATTN_NORM, pitch);
 }
 
 // play a sentence, randomly selected from the passed in group id, over the HEV suit speaker
 
-void EMIT_GROUPID_SUIT(edict_t *entity, int isentenceg)
+void EMIT_GROUPID_SUIT(CBaseEntity* entity, int isentenceg)
 {
 	float fvol;
 	int pitch = PITCH_NORM;
@@ -1445,12 +1465,12 @@ void EMIT_GROUPID_SUIT(edict_t *entity, int isentenceg)
 		pitch = RANDOM_LONG(0,6) + 98;
 
 	if (fvol > 0.05)
-		SENTENCEG_PlayRndI(entity, isentenceg, fvol, ATTN_NORM, 0, pitch);
+		SENTENCEG_PlayRndI(entity, isentenceg, fvol, ATTN_NORM, pitch);
 }
 
 // play a sentence, randomly selected from the passed in groupname
 
-void EMIT_GROUPNAME_SUIT(edict_t *entity, const char *groupname)
+void EMIT_GROUPNAME_SUIT(CBaseEntity* entity, const char *groupname)
 {
 	float fvol;
 	int pitch = PITCH_NORM;
@@ -1460,7 +1480,7 @@ void EMIT_GROUPNAME_SUIT(edict_t *entity, const char *groupname)
 		pitch = RANDOM_LONG(0,6) + 98;
 
 	if (fvol > 0.05)
-		SENTENCEG_PlayRndSz(entity, groupname, fvol, ATTN_NORM, 0, pitch);
+		SENTENCEG_PlayRndSz(entity, groupname, fvol, ATTN_NORM, pitch);
 }
 
 // play a strike sound based on the texture that was hit by the attack traceline.  VecSrc/VecEnd are the
@@ -1610,15 +1630,15 @@ float TEXTURETYPE_PlaySound(TraceResult *ptr,  Vector vecSrc, Vector vecEnd, int
 			{
 				case 0: UTIL_EmitAmbientSound(ENT(0), ptr->vecEndPos, "buttons/spark5.wav", flVolume, ATTN_NORM, 0, 100); break;
 				case 1: UTIL_EmitAmbientSound(ENT(0), ptr->vecEndPos, "buttons/spark6.wav", flVolume, ATTN_NORM, 0, 100); break;
-				// case 0: EMIT_SOUND(ENT(pev), CHAN_VOICE, "buttons/spark5.wav", flVolume, ATTN_NORM);	break;
-				// case 1: EMIT_SOUND(ENT(pev), CHAN_VOICE, "buttons/spark6.wav", flVolume, ATTN_NORM);	break;
+				// case 0: EmitSound(CHAN_VOICE, "buttons/spark5.wav", flVolume); break;
+				// case 1: EmitSound(CHAN_VOICE, "buttons/spark6.wav", flVolume); break;
 			}
 		}
 	}
 
 	// play material hit sound
 	UTIL_EmitAmbientSound(ENT(0), ptr->vecEndPos, rgsz[RANDOM_LONG(0,cnt-1)], fvol, fattn, 0, 96 + RANDOM_LONG(0,0xf));
-	//EMIT_SOUND_DYN( ENT(m_pPlayer->pev), CHAN_WEAPON, rgsz[RANDOM_LONG(0,cnt-1)], fvol, ATTN_NORM, 0, 96 + RANDOM_LONG(0,0xf));
+	//m_pPlayer->EmitSound(CHAN_WEAPON, rgsz[RANDOM_LONG(0,cnt-1)], fvol, ATTN_NORM, 96 + RANDOM_LONG(0,0xf));
 			
 	return fvolbar;
 }
@@ -1741,7 +1761,7 @@ void CSpeaker :: SpeakerThink()
 	{
 		// make random announcement from sentence group
 
-		if (SENTENCEG_PlayRndSz(ENT(pev), szSoundFile, flvolume, flattenuation, flags, pitch) < 0)
+		if (SENTENCEG_PlayRndSz(this, szSoundFile, flvolume, flattenuation, pitch, flags) < 0)
 			ALERT(at_console, "Level Design Error!\nSPEAKER has bad sentence group name: %s\n",szSoundFile); 
 
 		// set next announcement time for random 5 to 10 minute delay

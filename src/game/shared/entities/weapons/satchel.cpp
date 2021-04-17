@@ -144,9 +144,9 @@ void CSatchelCharge :: BounceSound()
 {
 	switch ( RANDOM_LONG( 0, 2 ) )
 	{
-	case 0:	EMIT_SOUND(ENT(pev), CHAN_VOICE, "weapons/g_bounce1.wav", 1, ATTN_NORM);	break;
-	case 1:	EMIT_SOUND(ENT(pev), CHAN_VOICE, "weapons/g_bounce2.wav", 1, ATTN_NORM);	break;
-	case 2:	EMIT_SOUND(ENT(pev), CHAN_VOICE, "weapons/g_bounce3.wav", 1, ATTN_NORM);	break;
+	case 0:	EmitSound(CHAN_VOICE, "weapons/g_bounce1.wav"); break;
+	case 1:	EmitSound(CHAN_VOICE, "weapons/g_bounce2.wav"); break;
+	case 2:	EmitSound(CHAN_VOICE, "weapons/g_bounce3.wav"); break;
 	}
 }
 
@@ -305,7 +305,7 @@ void CSatchel::Holster()
 	{
 		SendWeaponAnim( SATCHEL_DROP );
 	}
-	EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "common/null.wav", 1.0, ATTN_NORM);
+	m_pPlayer->EmitSound(CHAN_WEAPON, "common/null.wav");
 
 	if ( !m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] && m_chargeReady == ChargeState::NoSatchelsDeployed)
 	{

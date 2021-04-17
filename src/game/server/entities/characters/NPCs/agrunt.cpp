@@ -314,7 +314,7 @@ void CAGrunt :: PrescheduleThink ()
 			m_iLastWord = num;
 
 			// play a new sound
-			EMIT_SOUND ( ENT(pev), CHAN_VOICE, pIdleSounds[ num ], 1.0, ATTN_NORM );
+			EmitSound(CHAN_VOICE, pIdleSounds[ num ]);
 
 			// is this word our last?
 			if ( RANDOM_LONG( 1, 10 ) <= 1 )
@@ -337,7 +337,7 @@ void CAGrunt :: DeathSound ()
 {
 	StopTalking();
 
-	EMIT_SOUND ( ENT(pev), CHAN_VOICE, pDieSounds[RANDOM_LONG(0, ArraySize(pDieSounds)-1)], 1.0, ATTN_NORM );
+	EmitSound(CHAN_VOICE, pDieSounds[RANDOM_LONG(0, ArraySize(pDieSounds)-1)]);
 }
 
 //=========================================================
@@ -347,7 +347,7 @@ void CAGrunt :: AlertSound ()
 {
 	StopTalking();
 
-	EMIT_SOUND ( ENT(pev), CHAN_VOICE, pAlertSounds[RANDOM_LONG(0, ArraySize(pAlertSounds)-1)], 1.0, ATTN_NORM );
+	EmitSound(CHAN_VOICE, pAlertSounds[RANDOM_LONG(0, ArraySize(pAlertSounds)-1)]);
 }
 
 //=========================================================
@@ -357,7 +357,7 @@ void CAGrunt :: AttackSound ()
 {
 	StopTalking();
 
-	EMIT_SOUND ( ENT(pev), CHAN_VOICE, pAttackSounds[RANDOM_LONG(0, ArraySize(pAttackSounds)-1)], 1.0, ATTN_NORM );
+	EmitSound(CHAN_VOICE, pAttackSounds[RANDOM_LONG(0, ArraySize(pAttackSounds)-1)]);
 }
 
 //=========================================================
@@ -374,7 +374,7 @@ void CAGrunt :: PainSound ()
 
 	StopTalking();
 
-	EMIT_SOUND ( ENT(pev), CHAN_VOICE, pPainSounds[RANDOM_LONG(0, ArraySize(pPainSounds)-1)], 1.0, ATTN_NORM );
+	EmitSound(CHAN_VOICE, pPainSounds[RANDOM_LONG(0, ArraySize(pPainSounds)-1)]);
 }
 
 //=========================================================
@@ -470,9 +470,9 @@ void CAGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			
 			switch ( RANDOM_LONG ( 0 , 2 ) )
 			{
-				case 0:	EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, "agrunt/ag_fire1.wav", 1.0, ATTN_NORM, 0, 100 );	break;
-				case 1:	EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, "agrunt/ag_fire2.wav", 1.0, ATTN_NORM, 0, 100 );	break;
-				case 2:	EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, "agrunt/ag_fire3.wav", 1.0, ATTN_NORM, 0, 100 );	break;
+				case 0:	EmitSound(CHAN_WEAPON, "agrunt/ag_fire1.wav"); break;
+				case 1:	EmitSound(CHAN_WEAPON, "agrunt/ag_fire2.wav"); break;
+				case 2:	EmitSound(CHAN_WEAPON, "agrunt/ag_fire3.wav"); break;
 			}
 
 			CBaseMonster *pHornetMonster = pHornet->MyMonsterPointer();
@@ -488,16 +488,16 @@ void CAGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		switch (RANDOM_LONG(0,1))
 		{
 		// left foot
-		case 0:	EMIT_SOUND_DYN ( ENT(pev), CHAN_BODY, "player/pl_ladder2.wav", 1, ATTN_NORM, 0, 70 );	break;
-		case 1:	EMIT_SOUND_DYN ( ENT(pev), CHAN_BODY, "player/pl_ladder4.wav", 1, ATTN_NORM, 0, 70 );	break;
+		case 0:	EmitSound(CHAN_BODY, "player/pl_ladder2.wav", VOL_NORM, ATTN_NORM, 70 ); break;
+		case 1:	EmitSound(CHAN_BODY, "player/pl_ladder4.wav", VOL_NORM, ATTN_NORM, 70 ); break;
 		}
 		break;
 	case AGRUNT_AE_RIGHT_FOOT:
 		// right foot
 		switch (RANDOM_LONG(0,1))
 		{
-		case 0:	EMIT_SOUND_DYN ( ENT(pev), CHAN_BODY, "player/pl_ladder1.wav", 1, ATTN_NORM, 0, 70 );	break;
-		case 1:	EMIT_SOUND_DYN ( ENT(pev), CHAN_BODY, "player/pl_ladder3.wav", 1, ATTN_NORM, 0 ,70);	break;
+		case 0:	EmitSound(CHAN_BODY, "player/pl_ladder1.wav", VOL_NORM, ATTN_NORM, 70); break;
+		case 1:	EmitSound(CHAN_BODY, "player/pl_ladder3.wav", VOL_NORM, ATTN_NORM, 70); break;
 		}
 		break;
 
@@ -517,7 +517,7 @@ void CAGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 					pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * 250;
 				}
 
-				EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackHitSounds[ RANDOM_LONG(0, ArraySize(pAttackHitSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+				EmitSound(CHAN_WEAPON, pAttackHitSounds[ RANDOM_LONG(0, ArraySize(pAttackHitSounds)-1) ], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5,5) );
 
 				Vector vecArmPos, vecArmAng;
 				GetAttachment( 0, vecArmPos, vecArmAng );
@@ -526,7 +526,7 @@ void CAGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			else
 			{
 				// Play a random attack miss sound
-				EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackMissSounds[ RANDOM_LONG(0, ArraySize(pAttackMissSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+				EmitSound(CHAN_WEAPON, pAttackMissSounds[ RANDOM_LONG(0, ArraySize(pAttackMissSounds)-1) ], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5,5) );
 			}
 		}
 		break;
@@ -547,7 +547,7 @@ void CAGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 					pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * -250;
 				}
 
-				EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackHitSounds[ RANDOM_LONG(0, ArraySize(pAttackHitSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+				EmitSound(CHAN_WEAPON, pAttackHitSounds[ RANDOM_LONG(0, ArraySize(pAttackHitSounds)-1) ], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5,5) );
 
 				Vector vecArmPos, vecArmAng;
 				GetAttachment( 0, vecArmPos, vecArmAng );
@@ -556,7 +556,7 @@ void CAGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			else
 			{
 				// Play a random attack miss sound
-				EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackMissSounds[ RANDOM_LONG(0, ArraySize(pAttackMissSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+				EmitSound(CHAN_WEAPON, pAttackMissSounds[ RANDOM_LONG(0, ArraySize(pAttackMissSounds)-1) ], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5,5) );
 			}
 		}
 		break;

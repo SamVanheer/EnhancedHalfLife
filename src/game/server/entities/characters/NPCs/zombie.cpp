@@ -154,14 +154,14 @@ void CZombie :: PainSound()
 	int pitch = 95 + RANDOM_LONG(0,9);
 
 	if (RANDOM_LONG(0,5) < 2)
-		EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pPainSounds[ RANDOM_LONG(0, ArraySize(pPainSounds)-1) ], 1.0, ATTN_NORM, 0, pitch );
+		EmitSound(CHAN_VOICE, pPainSounds[ RANDOM_LONG(0, ArraySize(pPainSounds)-1) ], VOL_NORM, ATTN_NORM, pitch );
 }
 
 void CZombie :: AlertSound()
 {
 	int pitch = 95 + RANDOM_LONG(0,9);
 
-	EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pAlertSounds[ RANDOM_LONG(0, ArraySize(pAlertSounds)-1) ], 1.0, ATTN_NORM, 0, pitch );
+	EmitSound(CHAN_VOICE, pAlertSounds[ RANDOM_LONG(0, ArraySize(pAlertSounds)-1) ], VOL_NORM, ATTN_NORM, pitch );
 }
 
 void CZombie :: IdleSound()
@@ -169,7 +169,7 @@ void CZombie :: IdleSound()
 	int pitch = 100 + RANDOM_LONG(-5,5);
 
 	// Play a random idle sound
-	EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pIdleSounds[ RANDOM_LONG(0, ArraySize(pIdleSounds)-1) ], 1.0, ATTN_NORM, 0, pitch );
+	EmitSound(CHAN_VOICE, pIdleSounds[ RANDOM_LONG(0, ArraySize(pIdleSounds)-1) ], VOL_NORM, ATTN_NORM, pitch );
 }
 
 void CZombie :: AttackSound()
@@ -177,7 +177,7 @@ void CZombie :: AttackSound()
 	int pitch = 100 + RANDOM_LONG(-5,5);
 
 	// Play a random attack sound
-	EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pAttackSounds[ RANDOM_LONG(0, ArraySize(pAttackSounds)-1) ], 1.0, ATTN_NORM, 0, pitch );
+	EmitSound(CHAN_VOICE, pAttackSounds[ RANDOM_LONG(0, ArraySize(pAttackSounds)-1) ], VOL_NORM, ATTN_NORM, pitch );
 }
 
 
@@ -203,10 +203,10 @@ void CZombie :: HandleAnimEvent( MonsterEvent_t *pEvent )
 					pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_right * 100;
 				}
 				// Play a random attack hit sound
-				EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackHitSounds[ RANDOM_LONG(0, ArraySize(pAttackHitSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+				EmitSound(CHAN_WEAPON, pAttackHitSounds[ RANDOM_LONG(0, ArraySize(pAttackHitSounds)-1) ], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5,5) );
 			}
 			else // Play a random attack miss sound
-				EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackMissSounds[ RANDOM_LONG(0, ArraySize(pAttackMissSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+				EmitSound(CHAN_WEAPON, pAttackMissSounds[ RANDOM_LONG(0, ArraySize(pAttackMissSounds)-1) ], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5,5) );
 
 			if (RANDOM_LONG(0,1))
 				AttackSound();
@@ -226,10 +226,10 @@ void CZombie :: HandleAnimEvent( MonsterEvent_t *pEvent )
 					pHurt->pev->punchangle.x = 5;
 					pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * 100;
 				}
-				EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackHitSounds[ RANDOM_LONG(0, ArraySize(pAttackHitSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+				EmitSound(CHAN_WEAPON, pAttackHitSounds[ RANDOM_LONG(0, ArraySize(pAttackHitSounds)-1) ], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5,5) );
 			}
 			else
-				EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackMissSounds[ RANDOM_LONG(0, ArraySize(pAttackMissSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+				EmitSound(CHAN_WEAPON, pAttackMissSounds[ RANDOM_LONG(0, ArraySize(pAttackMissSounds)-1) ], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5,5) );
 
 			if (RANDOM_LONG(0,1))
 				AttackSound();
@@ -247,10 +247,10 @@ void CZombie :: HandleAnimEvent( MonsterEvent_t *pEvent )
 					pHurt->pev->punchangle.x = 5;
 					pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_forward * -100;
 				}
-				EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackHitSounds[ RANDOM_LONG(0, ArraySize(pAttackHitSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+				EmitSound(CHAN_WEAPON, pAttackHitSounds[ RANDOM_LONG(0, ArraySize(pAttackHitSounds)-1) ], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5,5) );
 			}
 			else
-				EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackMissSounds[ RANDOM_LONG(0, ArraySize(pAttackMissSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+				EmitSound(CHAN_WEAPON, pAttackMissSounds[ RANDOM_LONG(0, ArraySize(pAttackMissSounds)-1) ], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5,5) );
 
 			if (RANDOM_LONG(0,1))
 				AttackSound();

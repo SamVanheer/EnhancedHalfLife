@@ -1129,7 +1129,7 @@ void CBaseTrigger :: ActivateMultiTrigger( CBaseEntity *pActivator )
 	}
 
 	if (!FStringNull(pev->noise))
-		EMIT_SOUND(ENT(pev), CHAN_VOICE, STRING(pev->noise), 1, ATTN_NORM);
+		EmitSound(CHAN_VOICE, STRING(pev->noise));
 
 // don't trigger again until reset
 // pev->takedamage = DAMAGE_NO;

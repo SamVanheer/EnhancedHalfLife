@@ -2077,7 +2077,7 @@ void CMessage::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useT
 	}
 	if (!FStringNull(pev->noise))
 	{
-		EMIT_SOUND( edict(), CHAN_BODY, STRING(pev->noise), pev->scale, pev->speed );
+		EmitSound(CHAN_BODY, STRING(pev->noise), pev->scale, pev->speed );
 	}
 	if ( pev->spawnflags & SF_MESSAGE_ONCE )
 		UTIL_Remove( this );
@@ -2233,7 +2233,7 @@ void CItemSoda::Spawn()
 
 void CItemSoda::CanThink ()
 {
-	EMIT_SOUND (ENT(pev), CHAN_WEAPON, "weapons/g_bounce3.wav", 1, ATTN_NORM );
+	EmitSound(CHAN_WEAPON, "weapons/g_bounce3.wav");
 
 	pev->solid = SOLID_TRIGGER;
 	UTIL_SetSize ( pev, Vector ( -8, -8, 0 ), Vector ( 8, 8, 8 ) );

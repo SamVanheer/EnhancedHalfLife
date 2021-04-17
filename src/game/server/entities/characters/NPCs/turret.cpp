@@ -424,7 +424,7 @@ void CBaseTurret::Ping()
 	else if (m_flPingTime <= gpGlobals->time)
 	{
 		m_flPingTime = gpGlobals->time + 1;
-		EMIT_SOUND(ENT(pev), CHAN_ITEM, "turret/tu_ping.wav", 1, ATTN_NORM);
+		EmitSound(CHAN_ITEM, "turret/tu_ping.wav");
 		EyeOn( );
 	}
 	else if (m_eyeBrightness > 0)
@@ -619,7 +619,7 @@ void CBaseTurret::ActiveThink()
 void CTurret::Shoot(Vector &vecSrc, Vector &vecDirToEnemy)
 {
 	FireBullets( 1, vecSrc, vecDirToEnemy, TURRET_SPREAD, TURRET_RANGE, BULLET_MONSTER_12MM, 1 );
-	EMIT_SOUND(ENT(pev), CHAN_WEAPON, "turret/tu_fire1.wav", 1, 0.6);
+	EmitSound(CHAN_WEAPON, "turret/tu_fire1.wav", VOL_NORM, 0.6);
 	pev->effects = pev->effects | EF_MUZZLEFLASH;
 }
 
@@ -630,9 +630,9 @@ void CMiniTurret::Shoot(Vector &vecSrc, Vector &vecDirToEnemy)
 
 	switch(RANDOM_LONG(0,2))
 	{
-	case 0: EMIT_SOUND(ENT(pev), CHAN_WEAPON, "weapons/hks1.wav", 1, ATTN_NORM); break;
-	case 1: EMIT_SOUND(ENT(pev), CHAN_WEAPON, "weapons/hks2.wav", 1, ATTN_NORM); break;
-	case 2: EMIT_SOUND(ENT(pev), CHAN_WEAPON, "weapons/hks3.wav", 1, ATTN_NORM); break;
+	case 0: EmitSound(CHAN_WEAPON, "weapons/hks1.wav"); break;
+	case 1: EmitSound(CHAN_WEAPON, "weapons/hks2.wav"); break;
+	case 2: EmitSound(CHAN_WEAPON, "weapons/hks3.wav"); break;
 	}
 	pev->effects = pev->effects | EF_MUZZLEFLASH;
 }
@@ -647,7 +647,7 @@ void CBaseTurret::Deploy()
 	{
 		m_iOn = true;
 		SetTurretAnim(TURRET_ANIM_DEPLOY);
-		EMIT_SOUND(ENT(pev), CHAN_BODY, "turret/tu_deploy.wav", TURRET_MACHINE_VOLUME, ATTN_NORM);
+		EmitSound(CHAN_BODY, "turret/tu_deploy.wav", TURRET_MACHINE_VOLUME);
 		SUB_UseTargets( this, USE_ON, 0 );
 	}
 
@@ -697,7 +697,7 @@ void CBaseTurret::Retire()
 		else if (pev->sequence != TURRET_ANIM_RETIRE)
 		{
 			SetTurretAnim(TURRET_ANIM_RETIRE);
-			EMIT_SOUND_DYN(ENT(pev), CHAN_BODY, "turret/tu_deploy.wav", TURRET_MACHINE_VOLUME, ATTN_NORM, 0, 120);
+			EmitSound(CHAN_BODY, "turret/tu_deploy.wav", TURRET_MACHINE_VOLUME, ATTN_NORM, 120);
 			SUB_UseTargets( this, USE_OFF, 0 );
 		}
 		else if (m_fSequenceFinished) 
@@ -737,7 +737,7 @@ void CTurret::SpinUpCall()
 		if (!m_iStartSpin)
 		{
 			pev->nextthink = gpGlobals->time + 1.0; // spinup delay
-			EMIT_SOUND(ENT(pev), CHAN_BODY, "turret/tu_spinup.wav", TURRET_MACHINE_VOLUME, ATTN_NORM);
+			EmitSound(CHAN_BODY, "turret/tu_spinup.wav", TURRET_MACHINE_VOLUME);
 			m_iStartSpin = true;
 			pev->framerate = 0.1;
 		}
@@ -745,7 +745,7 @@ void CTurret::SpinUpCall()
 		else if (pev->framerate >= 1.0)
 		{
 			pev->nextthink = gpGlobals->time + 0.1; // retarget delay
-			EMIT_SOUND(ENT(pev), CHAN_STATIC, "turret/tu_active2.wav", TURRET_MACHINE_VOLUME, ATTN_NORM);
+			EmitSound(CHAN_STATIC, "turret/tu_active2.wav", TURRET_MACHINE_VOLUME);
 			SetThink(&CTurret::ActiveThink);
 			m_iStartSpin = false;
 			m_iSpin = true;
@@ -770,8 +770,8 @@ void CTurret::SpinDownCall()
 		SetTurretAnim( TURRET_ANIM_SPIN );
 		if (pev->framerate == 1.0)
 		{
-			EMIT_SOUND_DYN(ENT(pev), CHAN_STATIC, "turret/tu_active2.wav", 0, 0, SND_STOP, 100);
-			EMIT_SOUND(ENT(pev), CHAN_ITEM, "turret/tu_spindown.wav", TURRET_MACHINE_VOLUME, ATTN_NORM);
+			StopSound(CHAN_STATIC, "turret/tu_active2.wav");
+			EmitSound(CHAN_ITEM, "turret/tu_spindown.wav", TURRET_MACHINE_VOLUME);
 		}
 		pev->framerate -= 0.02;
 		if (pev->framerate <= 0)
@@ -912,7 +912,7 @@ void CBaseTurret::AutoSearchThink()
 	if (m_hEnemy != nullptr)
 	{
 		SetThink(&CBaseTurret::Deploy);
-		EMIT_SOUND(ENT(pev), CHAN_BODY, "turret/tu_alert.wav", TURRET_MACHINE_VOLUME, ATTN_NORM);
+		EmitSound(CHAN_BODY, "turret/tu_alert.wav", TURRET_MACHINE_VOLUME);
 	}
 }
 
@@ -931,13 +931,13 @@ void CBaseTurret ::	TurretDeath()
 		float flRndSound = RANDOM_FLOAT ( 0 , 1 );
 
 		if ( flRndSound <= 0.33 )
-			EMIT_SOUND(ENT(pev), CHAN_BODY, "turret/tu_die.wav", 1.0, ATTN_NORM);
+			EmitSound(CHAN_BODY, "turret/tu_die.wav");
 		else if ( flRndSound <= 0.66 )
-			EMIT_SOUND(ENT(pev), CHAN_BODY, "turret/tu_die2.wav", 1.0, ATTN_NORM);
+			EmitSound(CHAN_BODY, "turret/tu_die2.wav");
 		else 
-			EMIT_SOUND(ENT(pev), CHAN_BODY, "turret/tu_die3.wav", 1.0, ATTN_NORM);
+			EmitSound(CHAN_BODY, "turret/tu_die3.wav");
 
-		EMIT_SOUND_DYN(ENT(pev), CHAN_STATIC, "turret/tu_active2.wav", 0, 0, SND_STOP, 100);
+		StopSound(CHAN_STATIC, "turret/tu_active2.wav");
 
 		if (m_iOrientation == TurretOrientation::Floor)
 			m_vecGoalAngles.x = -15;
@@ -1190,9 +1190,9 @@ void CSentry::Shoot(Vector &vecSrc, Vector &vecDirToEnemy)
 	
 	switch(RANDOM_LONG(0,2))
 	{
-	case 0: EMIT_SOUND(ENT(pev), CHAN_WEAPON, "weapons/hks1.wav", 1, ATTN_NORM); break;
-	case 1: EMIT_SOUND(ENT(pev), CHAN_WEAPON, "weapons/hks2.wav", 1, ATTN_NORM); break;
-	case 2: EMIT_SOUND(ENT(pev), CHAN_WEAPON, "weapons/hks3.wav", 1, ATTN_NORM); break;
+	case 0: EmitSound(CHAN_WEAPON, "weapons/hks1.wav"); break;
+	case 1: EmitSound(CHAN_WEAPON, "weapons/hks2.wav"); break;
+	case 2: EmitSound(CHAN_WEAPON, "weapons/hks3.wav"); break;
 	}
 	pev->effects = pev->effects | EF_MUZZLEFLASH;
 }
@@ -1253,13 +1253,13 @@ void CSentry ::	SentryDeath()
 		float flRndSound = RANDOM_FLOAT ( 0 , 1 );
 
 		if ( flRndSound <= 0.33 )
-			EMIT_SOUND(ENT(pev), CHAN_BODY, "turret/tu_die.wav", 1.0, ATTN_NORM);
+			EmitSound(CHAN_BODY, "turret/tu_die.wav");
 		else if ( flRndSound <= 0.66 )
-			EMIT_SOUND(ENT(pev), CHAN_BODY, "turret/tu_die2.wav", 1.0, ATTN_NORM);
+			EmitSound(CHAN_BODY, "turret/tu_die2.wav");
 		else 
-			EMIT_SOUND(ENT(pev), CHAN_BODY, "turret/tu_die3.wav", 1.0, ATTN_NORM);
+			EmitSound(CHAN_BODY, "turret/tu_die3.wav");
 
-		EMIT_SOUND_DYN(ENT(pev), CHAN_STATIC, "turret/tu_active2.wav", 0, 0, SND_STOP, 100);
+		StopSound(CHAN_STATIC, "turret/tu_active2.wav");
 
 		SetBoneController( 0, 0 );
 		SetBoneController( 1, 0 );

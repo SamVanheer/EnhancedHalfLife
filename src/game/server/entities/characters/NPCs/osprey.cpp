@@ -437,8 +437,8 @@ void COsprey::Flight( )
 
 	if (m_iSoundState == 0)
 	{
-		EMIT_SOUND_DYN(ENT(pev), CHAN_STATIC, "apache/ap_rotor4.wav", 1.0, 0.15, 0, 110 );
-		// EMIT_SOUND_DYN(ENT(pev), CHAN_STATIC, "apache/ap_whine1.wav", 0.5, 0.2, 0, 110 );
+		EmitSound(CHAN_STATIC, "apache/ap_rotor4.wav", VOL_NORM, 0.15, 110);
+		// EmitSound(CHAN_STATIC, "apache/ap_whine1.wav", 0.5, 0.2, 110);
 
 		m_iSoundState = SND_CHANGE_PITCH; // hack for going through level transitions
 	}
@@ -465,11 +465,11 @@ void COsprey::Flight( )
 			if (pitch != m_iPitch)
 			{
 				m_iPitch = pitch;
-				EMIT_SOUND_DYN(ENT(pev), CHAN_STATIC, "apache/ap_rotor4.wav", 1.0, 0.15, SND_CHANGE_PITCH | SND_CHANGE_VOL, pitch);
+				EmitSound(CHAN_STATIC, "apache/ap_rotor4.wav", VOL_NORM, 0.15, pitch, SND_CHANGE_PITCH | SND_CHANGE_VOL);
 				// ALERT( at_console, "%.0f\n", pitch );
 			}
 		}
-		// EMIT_SOUND_DYN(ENT(pev), CHAN_STATIC, "apache/ap_whine1.wav", flVol, 0.2, SND_CHANGE_PITCH | SND_CHANGE_VOL, pitch);
+		// EmitSound(CHAN_STATIC, "apache/ap_whine1.wav", flVol, 0.2, pitch, SND_CHANGE_PITCH | SND_CHANGE_VOL);
 	}
 
 }
@@ -505,7 +505,7 @@ void COsprey :: Killed( entvars_t *pevAttacker, int iGib )
 	pev->gravity = 0.3;
 	pev->velocity = m_velocity;
 	pev->avelocity = Vector( RANDOM_FLOAT( -20, 20 ), 0, RANDOM_FLOAT( -50, 50 ) );
-	STOP_SOUND( ENT(pev), CHAN_STATIC, "apache/ap_rotor4.wav" );
+	StopSound(CHAN_STATIC, "apache/ap_rotor4.wav" );
 
 	UTIL_SetSize( pev, Vector( -32, -32, -64), Vector( 32, 32, 0) );
 	SetThink( &COsprey::DyingThink );
@@ -673,7 +673,7 @@ void COsprey :: DyingThink()
 			WRITE_BYTE( 0 );		// speed
 		MESSAGE_END();
 
-		EMIT_SOUND(ENT(pev), CHAN_STATIC, "weapons/mortarhit.wav", 1.0, 0.3);
+		EmitSound(CHAN_STATIC, "weapons/mortarhit.wav", VOL_NORM, 0.3);
 
 		RadiusDamage( pev->origin, pev, pev, 300, CLASS_NONE, DMG_BLAST );
 

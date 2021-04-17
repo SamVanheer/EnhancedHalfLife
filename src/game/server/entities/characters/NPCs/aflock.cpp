@@ -249,8 +249,8 @@ void CFlockingFlyer :: MakeSound()
 		// make agitated sounds
 		switch ( RANDOM_LONG( 0, 1 ) )
 		{
-		case 0:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "boid/boid_alert1.wav", 1, ATTN_NORM );	break;
-		case 1:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "boid/boid_alert2.wav", 1, ATTN_NORM );	break;
+		case 0:	EmitSound(CHAN_WEAPON, "boid/boid_alert1.wav"); break;
+		case 1:	EmitSound(CHAN_WEAPON, "boid/boid_alert2.wav"); break;
 		}
 
 		return;
@@ -259,8 +259,8 @@ void CFlockingFlyer :: MakeSound()
 	// make normal sound
 	switch ( RANDOM_LONG( 0, 1 ) )
 	{
-	case 0:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "boid/boid_idle1.wav", 1, ATTN_NORM );	break;
-	case 1:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "boid/boid_idle2.wav", 1, ATTN_NORM );	break;
+	case 0:	EmitSound(CHAN_WEAPON, "boid/boid_idle1.wav"); break;
+	case 1:	EmitSound(CHAN_WEAPON, "boid/boid_idle2.wav"); break;
 	}
 }
 

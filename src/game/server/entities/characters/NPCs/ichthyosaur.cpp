@@ -125,7 +125,7 @@ public:
 	template<std::size_t Size>
 	void EMIT_ICKY_SOUND(int chan, const char* (&array)[Size])
 	{
-		EMIT_SOUND_DYN(ENT(pev), chan, array[RANDOM_LONG(0, ArraySize(array) - 1)], 1.0, 0.6, 0, RANDOM_LONG(95, 105));
+		EmitSound(chan, array[RANDOM_LONG(0, ArraySize(array) - 1)], VOL_NORM, 0.6, RANDOM_LONG(95, 105));
 	}
 };
 

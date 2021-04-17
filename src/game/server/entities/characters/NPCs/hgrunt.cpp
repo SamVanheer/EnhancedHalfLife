@@ -254,7 +254,7 @@ void CHGrunt :: SpeakSentence()
 
 	if (FOkToSpeak())
 	{
-		SENTENCEG_PlayRndSz( ENT(pev), pGruntSentences[ m_iSentence ], HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
+		SENTENCEG_PlayRndSz(this, pGruntSentences[ m_iSentence ], HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 		JustSpoke();
 	}
 }
@@ -695,15 +695,15 @@ void CHGrunt :: IdleSound()
 			switch (RANDOM_LONG(0,2))
 			{
 			case 0: // check in
-				SENTENCEG_PlayRndSz(ENT(pev), "HG_CHECK", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, m_voicePitch);
+				SENTENCEG_PlayRndSz(this, "HG_CHECK", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, m_voicePitch);
 				g_fGruntQuestion = GruntQuestion::CheckIn;
 				break;
 			case 1: // question
-				SENTENCEG_PlayRndSz(ENT(pev), "HG_QUEST", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, m_voicePitch);
+				SENTENCEG_PlayRndSz(this, "HG_QUEST", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, m_voicePitch);
 				g_fGruntQuestion = GruntQuestion::Question;
 				break;
 			case 2: // statement
-				SENTENCEG_PlayRndSz(ENT(pev), "HG_IDLE", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, m_voicePitch);
+				SENTENCEG_PlayRndSz(this, "HG_IDLE", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, m_voicePitch);
 				break;
 			}
 		}
@@ -712,10 +712,10 @@ void CHGrunt :: IdleSound()
 			switch (g_fGruntQuestion)
 			{
 			case GruntQuestion::CheckIn: // check in
-				SENTENCEG_PlayRndSz(ENT(pev), "HG_CLEAR", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, m_voicePitch);
+				SENTENCEG_PlayRndSz(this, "HG_CLEAR", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, m_voicePitch);
 				break;
 			case GruntQuestion::Question: // question 
-				SENTENCEG_PlayRndSz(ENT(pev), "HG_ANSWER", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, m_voicePitch);
+				SENTENCEG_PlayRndSz(this, "HG_ANSWER", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, m_voicePitch);
 				break;
 			}
 			g_fGruntQuestion = GruntQuestion::None;
@@ -876,7 +876,7 @@ void CHGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			break;
 
 		case HGRUNT_AE_RELOAD:
-			EMIT_SOUND( ENT(pev), CHAN_WEAPON, "hgrunt/gr_reload1.wav", 1, ATTN_NORM );
+			EmitSound(CHAN_WEAPON, "hgrunt/gr_reload1.wav");
 			m_cAmmoLoaded = m_cClipSize;
 			ClearConditions(bits_COND_NO_AMMO_LOADED);
 			break;
@@ -895,7 +895,7 @@ void CHGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 
 		case HGRUNT_AE_GREN_LAUNCH:
 		{
-			EMIT_SOUND(ENT(pev), CHAN_WEAPON, "weapons/glauncher.wav", 0.8, ATTN_NORM);
+			EmitSound(CHAN_WEAPON, "weapons/glauncher.wav", 0.8);
 			CGrenade::ShootContact( pev, GetGunPosition(), m_vecTossVelocity );
 			m_fThrowGrenade = false;
 			if (g_SkillLevel == SkillLevel::Hard)
@@ -921,18 +921,18 @@ void CHGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 				// the first round of the three round burst plays the sound and puts a sound in the world sound list.
 				if ( RANDOM_LONG(0,1) )
 				{
-					EMIT_SOUND( ENT(pev), CHAN_WEAPON, "hgrunt/gr_mgun1.wav", 1, ATTN_NORM );
+					EmitSound(CHAN_WEAPON, "hgrunt/gr_mgun1.wav");
 				}
 				else
 				{
-					EMIT_SOUND( ENT(pev), CHAN_WEAPON, "hgrunt/gr_mgun2.wav", 1, ATTN_NORM );
+					EmitSound(CHAN_WEAPON, "hgrunt/gr_mgun2.wav");
 				}
 			}
 			else
 			{
 				Shotgun( );
 
-				EMIT_SOUND(ENT(pev), CHAN_WEAPON, "weapons/sbarrel1.wav", 1, ATTN_NORM );
+				EmitSound(CHAN_WEAPON, "weapons/sbarrel1.wav");
 			}
 		
 			CSoundEnt::InsertSound ( bits_SOUND_COMBAT, pev->origin, 384, 0.3 );
@@ -963,7 +963,7 @@ void CHGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		{
 			if ( FOkToSpeak() )
 			{
-				SENTENCEG_PlayRndSz(ENT(pev), "HG_ALERT", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
+				SENTENCEG_PlayRndSz(this, "HG_ALERT", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 				 JustSpoke();
 			}
 
@@ -1180,19 +1180,19 @@ void CHGrunt :: PainSound ()
 		switch ( RANDOM_LONG(0,6) )
 		{
 		case 0:	
-			EMIT_SOUND( ENT(pev), CHAN_VOICE, "hgrunt/gr_pain3.wav", 1, ATTN_NORM );	
+			EmitSound(CHAN_VOICE, "hgrunt/gr_pain3.wav");
 			break;
 		case 1:
-			EMIT_SOUND( ENT(pev), CHAN_VOICE, "hgrunt/gr_pain4.wav", 1, ATTN_NORM );	
+			EmitSound(CHAN_VOICE, "hgrunt/gr_pain4.wav");
 			break;
 		case 2:
-			EMIT_SOUND( ENT(pev), CHAN_VOICE, "hgrunt/gr_pain5.wav", 1, ATTN_NORM );	
+			EmitSound(CHAN_VOICE, "hgrunt/gr_pain5.wav");
 			break;
 		case 3:
-			EMIT_SOUND( ENT(pev), CHAN_VOICE, "hgrunt/gr_pain1.wav", 1, ATTN_NORM );	
+			EmitSound(CHAN_VOICE, "hgrunt/gr_pain1.wav");
 			break;
 		case 4:
-			EMIT_SOUND( ENT(pev), CHAN_VOICE, "hgrunt/gr_pain2.wav", 1, ATTN_NORM );	
+			EmitSound(CHAN_VOICE, "hgrunt/gr_pain2.wav");
 			break;
 		}
 
@@ -1208,13 +1208,13 @@ void CHGrunt :: DeathSound ()
 	switch ( RANDOM_LONG(0,2) )
 	{
 	case 0:	
-		EMIT_SOUND( ENT(pev), CHAN_VOICE, "hgrunt/gr_die1.wav", 1, ATTN_IDLE );	
+		EmitSound(CHAN_VOICE, "hgrunt/gr_die1.wav", VOL_NORM, ATTN_IDLE);
 		break;
 	case 1:
-		EMIT_SOUND( ENT(pev), CHAN_VOICE, "hgrunt/gr_die2.wav", 1, ATTN_IDLE );	
+		EmitSound(CHAN_VOICE, "hgrunt/gr_die2.wav", VOL_NORM, ATTN_IDLE);
 		break;
 	case 2:
-		EMIT_SOUND( ENT(pev), CHAN_VOICE, "hgrunt/gr_die3.wav", 1, ATTN_IDLE );	
+		EmitSound(CHAN_VOICE, "hgrunt/gr_die3.wav", VOL_NORM, ATTN_IDLE);
 		break;
 	}
 }
@@ -2020,7 +2020,7 @@ Schedule_t *CHGrunt :: GetSchedule()
 				
 				if (FOkToSpeak())
 				{
-					SENTENCEG_PlayRndSz( ENT(pev), "HG_GREN", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
+					SENTENCEG_PlayRndSz(this, "HG_GREN", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 					JustSpoke();
 				}
 				return GetScheduleOfType( SCHED_TAKE_COVER_FROM_BEST_SOUND );
@@ -2069,13 +2069,13 @@ Schedule_t *CHGrunt :: GetSchedule()
 						{
 							if ((m_hEnemy != nullptr) && m_hEnemy->IsPlayer())
 								// player
-								SENTENCEG_PlayRndSz( ENT(pev), "HG_ALERT", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
+								SENTENCEG_PlayRndSz(this, "HG_ALERT", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 							else if ((m_hEnemy != nullptr) &&
 									(m_hEnemy->Classify() != CLASS_PLAYER_ALLY) && 
 									(m_hEnemy->Classify() != CLASS_HUMAN_PASSIVE) && 
 									(m_hEnemy->Classify() != CLASS_MACHINE))
 								// monster
-								SENTENCEG_PlayRndSz( ENT(pev), "HG_MONST", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
+								SENTENCEG_PlayRndSz(this, "HG_MONST", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 
 							JustSpoke();
 						}
@@ -2177,7 +2177,7 @@ Schedule_t *CHGrunt :: GetSchedule()
 					//!!!KELLY - this grunt is about to throw or fire a grenade at the player. Great place for "fire in the hole"  "frag out" etc
 					if (FOkToSpeak())
 					{
-						SENTENCEG_PlayRndSz( ENT(pev), "HG_THROW", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
+						SENTENCEG_PlayRndSz(this, "HG_THROW", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 						JustSpoke();
 					}
 					return GetScheduleOfType( SCHED_RANGE_ATTACK2 );
@@ -2202,7 +2202,7 @@ Schedule_t *CHGrunt :: GetSchedule()
 					// grunt's covered position. Good place for a taunt, I guess?
 					if (FOkToSpeak() && RANDOM_LONG(0,1))
 					{
-						SENTENCEG_PlayRndSz( ENT(pev), "HG_TAUNT", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
+						SENTENCEG_PlayRndSz(this, "HG_TAUNT", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 						JustSpoke();
 					}
 					return GetScheduleOfType( SCHED_STANDOFF );
@@ -2234,7 +2234,7 @@ Schedule_t* CHGrunt :: GetScheduleOfType ( int Type )
 				{
 					if (FOkToSpeak())
 					{
-						SENTENCEG_PlayRndSz( ENT(pev), "HG_THROW", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
+						SENTENCEG_PlayRndSz( this, "HG_THROW", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 						JustSpoke();
 					}
 					return slGruntTossGrenadeCover;

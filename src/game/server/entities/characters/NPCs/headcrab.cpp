@@ -259,7 +259,7 @@ void CHeadCrab :: HandleAnimEvent( MonsterEvent_t *pEvent )
 
 			int iSound = RANDOM_LONG(0,2);
 			if ( iSound != 0 )
-				EMIT_SOUND_DYN( edict(), CHAN_VOICE, pAttackSounds[iSound], GetSoundVolue(), ATTN_IDLE, 0, GetVoicePitch() );
+				EmitSound(CHAN_VOICE, pAttackSounds[iSound], GetSoundVolue(), ATTN_IDLE, GetVoicePitch() );
 
 			pev->velocity = vecJumpDir;
 			m_flNextAttack = gpGlobals->time + 2;
@@ -355,7 +355,7 @@ void CHeadCrab :: LeapTouch ( CBaseEntity *pOther )
 	// Don't hit if back on ground
 	if ( !FBitSet( pev->flags, FL_ONGROUND ) )
 	{
-		EMIT_SOUND_DYN( edict(), CHAN_WEAPON, RANDOM_SOUND_ARRAY(pBiteSounds), GetSoundVolue(), ATTN_IDLE, 0, GetVoicePitch() );
+		EmitSound(CHAN_WEAPON, RANDOM_SOUND_ARRAY(pBiteSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch() );
 		
 		pOther->TakeDamage( pev, pev, GetDamageAmount(), DMG_SLASH );
 	}
@@ -383,7 +383,7 @@ void CHeadCrab :: StartTask ( Task_t *pTask )
 	{
 	case TASK_RANGE_ATTACK1:
 		{
-			EMIT_SOUND_DYN( edict(), CHAN_WEAPON, pAttackSounds[0], GetSoundVolue(), ATTN_IDLE, 0, GetVoicePitch() );
+		EmitSound(CHAN_WEAPON, pAttackSounds[0], GetSoundVolue(), ATTN_IDLE, GetVoicePitch() );
 			m_IdealActivity = ACT_RANGE_ATTACK1;
 			SetTouch ( &CHeadCrab::LeapTouch );
 			break;
@@ -438,7 +438,7 @@ bool CHeadCrab :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, f
 //=========================================================
 void CHeadCrab :: IdleSound ()
 {
-	EMIT_SOUND_DYN( edict(), CHAN_VOICE, RANDOM_SOUND_ARRAY(pIdleSounds), GetSoundVolue(), ATTN_IDLE, 0, GetVoicePitch() );
+	EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pIdleSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch() );
 }
 
 //=========================================================
@@ -446,7 +446,7 @@ void CHeadCrab :: IdleSound ()
 //=========================================================
 void CHeadCrab :: AlertSound ()
 {
-	EMIT_SOUND_DYN( edict(), CHAN_VOICE, RANDOM_SOUND_ARRAY(pAlertSounds), GetSoundVolue(), ATTN_IDLE, 0, GetVoicePitch() );
+	EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pAlertSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch() );
 }
 
 //=========================================================
@@ -454,7 +454,7 @@ void CHeadCrab :: AlertSound ()
 //=========================================================
 void CHeadCrab :: PainSound ()
 {
-	EMIT_SOUND_DYN( edict(), CHAN_VOICE, RANDOM_SOUND_ARRAY(pPainSounds), GetSoundVolue(), ATTN_IDLE, 0, GetVoicePitch() );
+	EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pPainSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch() );
 }
 
 //=========================================================
@@ -462,7 +462,7 @@ void CHeadCrab :: PainSound ()
 //=========================================================
 void CHeadCrab :: DeathSound ()
 {
-	EMIT_SOUND_DYN( edict(), CHAN_VOICE, RANDOM_SOUND_ARRAY(pDeathSounds), GetSoundVolue(), ATTN_IDLE, 0, GetVoicePitch() );
+	EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pDeathSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch() );
 }
 
 Schedule_t* CHeadCrab :: GetScheduleOfType ( int Type )

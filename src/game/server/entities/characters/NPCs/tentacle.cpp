@@ -616,7 +616,7 @@ void CTentacle :: Cycle()
 					case 1: sound = "tentacle/te_sing2.wav"; break;
 					}
 
-					EMIT_SOUND(ENT(pev), CHAN_VOICE, sound, 1.0, ATTN_NORM);
+					EmitSound(CHAN_VOICE, sound);
 
 					m_flNextSong = gpGlobals->time + RANDOM_FLOAT( 10, 20 );
 				}
@@ -927,13 +927,13 @@ void CTentacle :: Start()
 
 	if ( !g_fFlySound )
 	{
-		EMIT_SOUND (ENT(pev), CHAN_BODY, "ambience/flies.wav", 1, ATTN_NORM );
+		EmitSound(CHAN_BODY, "ambience/flies.wav");
 		g_fFlySound = true;
 //		pev->nextthink = gpGlobals-> time + 0.1;
 	}
 	else if ( !g_fSquirmSound )
 	{
-		EMIT_SOUND (ENT(pev), CHAN_BODY, "ambience/squirm2.wav", 1, ATTN_NORM );
+		EmitSound(CHAN_BODY, "ambience/squirm2.wav");
 		g_fSquirmSound = true;
 	}
 	

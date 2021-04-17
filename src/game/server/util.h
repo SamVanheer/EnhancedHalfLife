@@ -443,10 +443,10 @@ int USENTENCEG_PickSequential(int isentenceg, char *szfound, std::size_t foundSi
 void USENTENCEG_InitLRU(unsigned char *plru, int count);
 
 void SENTENCEG_Init();
-void SENTENCEG_Stop(edict_t *entity, int isentenceg, int ipick);
-int SENTENCEG_PlayRndI(edict_t *entity, int isentenceg, float volume, float attenuation, int flags, int pitch);
-int SENTENCEG_PlayRndSz(edict_t *entity, const char *szrootname, float volume, float attenuation, int flags, int pitch);
-int SENTENCEG_PlaySequentialSz(edict_t *entity, const char *szrootname, float volume, float attenuation, int flags, int pitch, int ipick, int freset);
+void SENTENCEG_Stop(CBaseEntity* entity, int isentenceg, int ipick);
+int SENTENCEG_PlayRndI(CBaseEntity* entity, int isentenceg, float volume, float attenuation, int pitch, int flags = 0);
+int SENTENCEG_PlayRndSz(CBaseEntity* entity, const char *szrootname, float volume, float attenuation, int pitch, int flags = 0);
+int SENTENCEG_PlaySequentialSz(CBaseEntity* entity, const char *szrootname, float volume, float attenuation, int pitch, int ipick, int freset, int flags = 0);
 int SENTENCEG_GetIndex(const char *szrootname);
 int SENTENCEG_Lookup(const char *sample, char *sentencenum, std::size_t sentencenumSize);
 
@@ -461,20 +461,9 @@ float TEXTURETYPE_PlaySound(TraceResult *ptr,  Vector vecSrc, Vector vecEnd, int
 void EMIT_SOUND_DYN(edict_t *entity, int channel, const char *sample, float volume, float attenuation,
 						   int flags, int pitch);
 
-
-inline void EMIT_SOUND(edict_t *entity, int channel, const char *sample, float volume, float attenuation)
-{
-	EMIT_SOUND_DYN(entity, channel, sample, volume, attenuation, 0, PITCH_NORM);
-}
-
-inline void STOP_SOUND(edict_t *entity, int channel, const char *sample)
-{
-	EMIT_SOUND_DYN(entity, channel, sample, 0, 0, SND_STOP, PITCH_NORM);
-}
-
-void EMIT_SOUND_SUIT(edict_t *entity, const char *sample);
-void EMIT_GROUPID_SUIT(edict_t *entity, int isentenceg);
-void EMIT_GROUPNAME_SUIT(edict_t *entity, const char *groupname);
+void EMIT_SOUND_SUIT(CBaseEntity* entity, const char *sample);
+void EMIT_GROUPID_SUIT(CBaseEntity* entity, int isentenceg);
+void EMIT_GROUPNAME_SUIT(CBaseEntity* entity, const char *groupname);
 
 template<std::size_t Size>
 void PRECACHE_SOUND_ARRAY(const char* (&a)[Size])

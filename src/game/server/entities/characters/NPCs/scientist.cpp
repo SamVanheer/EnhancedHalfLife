@@ -793,11 +793,11 @@ void CScientist :: PainSound ()
 
 	switch (RANDOM_LONG(0,4))
 	{
-	case 0: EMIT_SOUND_DYN( ENT(pev), CHAN_VOICE, "scientist/sci_pain1.wav", 1, ATTN_NORM, 0, GetVoicePitch()); break;
-	case 1: EMIT_SOUND_DYN( ENT(pev), CHAN_VOICE, "scientist/sci_pain2.wav", 1, ATTN_NORM, 0, GetVoicePitch()); break;
-	case 2: EMIT_SOUND_DYN( ENT(pev), CHAN_VOICE, "scientist/sci_pain3.wav", 1, ATTN_NORM, 0, GetVoicePitch()); break;
-	case 3: EMIT_SOUND_DYN( ENT(pev), CHAN_VOICE, "scientist/sci_pain4.wav", 1, ATTN_NORM, 0, GetVoicePitch()); break;
-	case 4: EMIT_SOUND_DYN( ENT(pev), CHAN_VOICE, "scientist/sci_pain5.wav", 1, ATTN_NORM, 0, GetVoicePitch()); break;
+	case 0: EmitSound(CHAN_VOICE, "scientist/sci_pain1.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 1: EmitSound(CHAN_VOICE, "scientist/sci_pain2.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 2: EmitSound(CHAN_VOICE, "scientist/sci_pain3.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 3: EmitSound(CHAN_VOICE, "scientist/sci_pain4.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 4: EmitSound(CHAN_VOICE, "scientist/sci_pain5.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
 	}
 }
 
@@ -1406,7 +1406,7 @@ int CSittingScientist :: FIdleSpeak ()
 		pTalkMonster->SetAnswerQuestion( this );
 		
 		IdleHeadTurn(pentFriend->pev->origin);
-		SENTENCEG_PlayRndSz( ENT(pev), m_szGrp[TLK_PQUESTION], 1.0, ATTN_IDLE, 0, pitch );
+		SENTENCEG_PlayRndSz(this, m_szGrp[TLK_PQUESTION], 1.0, ATTN_IDLE, pitch );
 		// set global min delay for next conversation
 		CTalkMonster::g_talkWaitTime = gpGlobals->time + RANDOM_FLOAT(4.8, 5.2);
 		return true;
@@ -1415,7 +1415,7 @@ int CSittingScientist :: FIdleSpeak ()
 	// otherwise, play an idle statement
 	if (RANDOM_LONG(0,1))
 	{
-		SENTENCEG_PlayRndSz( ENT(pev), m_szGrp[TLK_PIDLE], 1.0, ATTN_IDLE, 0, pitch );
+		SENTENCEG_PlayRndSz(this, m_szGrp[TLK_PIDLE], 1.0, ATTN_IDLE, pitch );
 		// set global min delay for next conversation
 		CTalkMonster::g_talkWaitTime = gpGlobals->time + RANDOM_FLOAT(4.8, 5.2);
 		return true;

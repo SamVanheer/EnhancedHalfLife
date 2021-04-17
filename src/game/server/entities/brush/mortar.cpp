@@ -167,7 +167,7 @@ void CFuncMortarField :: FieldUse( CBaseEntity *pActivator, CBaseEntity *pCaller
 
 	int pitch = RANDOM_LONG(95,124);
 
-	EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "weapons/mortar.wav", 1.0, ATTN_NONE, 0, pitch);	
+	EmitSound(CHAN_VOICE, "weapons/mortar.wav", VOL_NORM, ATTN_NONE, pitch);
 
 	float t = 2.5;
 	for (int i = 0; i < m_iCount; i++)
@@ -284,7 +284,7 @@ void CMortar::MortarExplode()
 
 #if 0
 	int pitch = RANDOM_LONG(95,124);
-	EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "weapons/mortarhit.wav", 1.0, 0.55, 0, pitch);
+	EmitSound(CHAN_VOICE, "weapons/mortarhit.wav", VOL_NORM, 0.55, pitch);
 
 	// ForceSound( SNDRADIUS_MP5, bits_SOUND_COMBAT );
 

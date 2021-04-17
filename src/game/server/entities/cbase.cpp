@@ -234,7 +234,15 @@ int	CBaseEntity :: DamageDecal( int bitsDamageType )
 	return DECAL_GUNSHOT1 + RANDOM_LONG(0,4);
 }
 
+void CBaseEntity::EmitSound(int channel, const char* fileName, float volume, float attenuation, int pitch, int flags)
+{
+	EMIT_SOUND_DYN(edict(), channel, fileName, volume, attenuation, flags, pitch);
+}
 
+void CBaseEntity::StopSound(int channel, const char* fileName)
+{
+	EMIT_SOUND_DYN(edict(), channel, fileName, 0, 0, SND_STOP, PITCH_NORM);
+}
 
 // NOTE: szName must be a pointer to constant memory, e.g. "monster_class" because the entity
 // will keep a pointer to it after this call.

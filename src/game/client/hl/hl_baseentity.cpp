@@ -37,8 +37,6 @@ globalvars_t  *gpGlobals;
 ItemInfo CBasePlayerItem::ItemInfoArray[MAX_WEAPONS];
 AmmoInfo CBasePlayerItem::AmmoInfoArray[MAX_AMMO_TYPES];
 
-void EMIT_SOUND_DYN(edict_t *entity, int channel, const char *sample, float volume, float attenuation, int flags, int pitch) { }
-
 // CBaseEntity Stubs
 bool CBaseEntity :: TakeHealth( float flHealth, int bitsDamageType ) { return true; }
 bool CBaseEntity :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) { return true; }
@@ -54,6 +52,7 @@ bool CBaseEntity::ShouldToggle( USE_TYPE useType, bool currentState ) { return f
 int	CBaseEntity :: DamageDecal( int bitsDamageType ) { return -1; }
 CBaseEntity * CBaseEntity::Create( const char *szName, const Vector &vecOrigin, const Vector &vecAngles, edict_t *pentOwner ) { return nullptr; }
 void CBaseEntity::SUB_Remove() { }
+void CBaseEntity::EmitSound(int channel, const char* fileName, float volume, float attenuation, int pitch, int flags) {}
 
 // CBaseDelay Stubs
 void CBaseDelay :: KeyValue( KeyValueData * ) { }

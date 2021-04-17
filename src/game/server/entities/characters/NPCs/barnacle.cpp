@@ -189,7 +189,7 @@ void CBarnacle :: BarnacleThink ()
 		// prey has just been lifted into position ( if the victim origin + eye height + 8 is higher than the bottom of the barnacle, it is assumed that the head is within barnacle's body )
 				m_fLiftingPrey = false;
 
-				EMIT_SOUND( ENT(pev), CHAN_WEAPON, "barnacle/bcl_bite3.wav", 1, ATTN_NORM );	
+				EmitSound(CHAN_WEAPON, "barnacle/bcl_bite3.wav");
 
 				pVictim = m_hEnemy->MyMonsterPointer();
 
@@ -227,9 +227,9 @@ void CBarnacle :: BarnacleThink ()
 			{
 				switch ( RANDOM_LONG(0,2) )
 				{
-				case 0:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "barnacle/bcl_chew1.wav", 1, ATTN_NORM );	break;
-				case 1:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "barnacle/bcl_chew2.wav", 1, ATTN_NORM );	break;
-				case 2:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "barnacle/bcl_chew3.wav", 1, ATTN_NORM );	break;
+				case 0:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew1.wav");	break;
+				case 1:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew2.wav");	break;
+				case 2:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew3.wav");	break;
 				}
 
 				pVictim->BarnacleVictimBitten( pev );
@@ -259,9 +259,9 @@ void CBarnacle :: BarnacleThink ()
 
 			switch ( RANDOM_LONG(0,2) )
 			{
-			case 0:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "barnacle/bcl_chew1.wav", 1, ATTN_NORM );	break;
-			case 1:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "barnacle/bcl_chew2.wav", 1, ATTN_NORM );	break;
-			case 2:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "barnacle/bcl_chew3.wav", 1, ATTN_NORM );	break;
+			case 0:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew1.wav");	break;
+			case 1:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew2.wav");	break;
+			case 2:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew3.wav");	break;
 			}
 		}
 
@@ -272,7 +272,7 @@ void CBarnacle :: BarnacleThink ()
 			// tongue is fully extended, and is touching someone.
 			if ( pTouchEnt->FBecomeProne() )
 			{
-				EMIT_SOUND( ENT(pev), CHAN_WEAPON, "barnacle/bcl_alert2.wav", 1, ATTN_NORM );	
+				EmitSound(CHAN_WEAPON, "barnacle/bcl_alert2.wav");
 
 				SetSequenceByName ( "attack1" );
 				m_flTongueAdj = -20;
@@ -339,8 +339,8 @@ void CBarnacle :: Killed( entvars_t *pevAttacker, int iGib )
 
 	switch ( RANDOM_LONG ( 0, 1 ) )
 	{
-	case 0:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "barnacle/bcl_die1.wav", 1, ATTN_NORM );	break;
-	case 1:	EMIT_SOUND( ENT(pev), CHAN_WEAPON, "barnacle/bcl_die3.wav", 1, ATTN_NORM );	break;
+	case 0:	EmitSound(CHAN_WEAPON, "barnacle/bcl_die1.wav");	break;
+	case 1:	EmitSound(CHAN_WEAPON, "barnacle/bcl_die3.wav");	break;
 	}
 	
 	SetActivity ( ACT_DIESIMPLE );

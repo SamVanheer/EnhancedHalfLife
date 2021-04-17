@@ -78,7 +78,7 @@ bool CHealthKit::MyTouch( CBasePlayer *pPlayer )
 			WRITE_STRING( STRING(pev->classname) );
 		MESSAGE_END();
 
-		EMIT_SOUND(ENT(pPlayer->pev), CHAN_ITEM, "items/smallmedkit1.wav", 1, ATTN_NORM);
+		pPlayer->EmitSound(CHAN_ITEM, "items/smallmedkit1.wav");
 
 		if ( g_pGameRules->ItemShouldRespawn( this ) )
 		{
@@ -205,7 +205,7 @@ void CWallHealth::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE u
 		if (m_flSoundTime <= gpGlobals->time)
 		{
 			m_flSoundTime = gpGlobals->time + 0.62;
-			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/medshotno1.wav", 1.0, ATTN_NORM );
+			EmitSound(CHAN_ITEM, "items/medshotno1.wav");
 		}
 		return;
 	}
@@ -222,13 +222,13 @@ void CWallHealth::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE u
 	if (m_iOn == ChargerState::Off)
 	{
 		m_iOn = ChargerState::Starting;
-		EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/medshot4.wav", 1.0, ATTN_NORM );
+		EmitSound(CHAN_ITEM, "items/medshot4.wav");
 		m_flSoundTime = 0.56 + gpGlobals->time;
 	}
 	if ((m_iOn == ChargerState::Starting) && (m_flSoundTime <= gpGlobals->time))
 	{
 		m_iOn = ChargerState::Charging;
-		EMIT_SOUND(ENT(pev), CHAN_STATIC, "items/medcharge4.wav", 1.0, ATTN_NORM );
+		EmitSound(CHAN_STATIC, "items/medcharge4.wav");
 	}
 
 
@@ -244,7 +244,7 @@ void CWallHealth::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE u
 
 void CWallHealth::Recharge()
 {
-		EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/medshot4.wav", 1.0, ATTN_NORM );
+	EmitSound(CHAN_ITEM, "items/medshot4.wav");
 	m_iJuice = gSkillData.healthchargerCapacity;
 	pev->frame = 0;			
 	SetThink( &CWallHealth::SUB_DoNothing );
@@ -254,7 +254,7 @@ void CWallHealth::Off()
 {
 	// Stop looping sound.
 	if (m_iOn == ChargerState::Charging)
-		STOP_SOUND( ENT(pev), CHAN_STATIC, "items/medcharge4.wav" );
+		StopSound(CHAN_STATIC, "items/medcharge4.wav" );
 
 	m_iOn = ChargerState::Off;
 

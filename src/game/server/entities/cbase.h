@@ -320,10 +320,14 @@ public:
 	virtual	bool FVisible ( CBaseEntity *pEntity );
 	virtual	bool FVisible ( const Vector &vecOrigin );
 
+	void EmitSound(int channel, const char* fileName, float volume = VOL_NORM, float attenuation = ATTN_NORM, int pitch = PITCH_NORM, int flags = 0);
+
+	void StopSound(int channel, const char* fileName);
+
 	template<std::size_t Size>
 	void EMIT_SOUND_ARRAY_DYN(int chan, const char* (&array)[Size])
 	{
-		EMIT_SOUND_DYN(ENT(pev), chan, RANDOM_SOUND_ARRAY(array), 1.0, ATTN_NORM, 0, RANDOM_LONG(95, 105));
+		EmitSound(chan, RANDOM_SOUND_ARRAY(array), VOL_NORM, ATTN_NORM, RANDOM_LONG(95, 105));
 	}
 };
 
@@ -376,7 +380,7 @@ struct locksound_t			// sounds that doors and buttons make when locked/unlocked
 	bool	bEOFUnlocked;			// true if hit end of list of unlocked sentences
 };
 
-void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton);
+void PlayLockSounds(CBaseEntity* entity, locksound_t *pls, int flocked, int fbutton);
 
 //
 // MultiSouce
