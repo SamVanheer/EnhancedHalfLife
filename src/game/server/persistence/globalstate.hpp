@@ -58,6 +58,9 @@ public:
 	static TYPEDESCRIPTION m_SaveData[];
 
 	//#ifdef _DEBUG
+	/**
+	*	@brief This is available all the time now on impulse 104, remove later
+	*/
 	void			DumpGlobals();
 	//#endif
 

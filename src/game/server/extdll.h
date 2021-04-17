@@ -15,14 +15,17 @@
 
 #pragma once
 
-//
-// Global header file for extension DLLs
-//
+/**
+*	@file
+* 
+*	Global header file for extension DLLs
+*/
 
 #include "Platform.h"
 
 // Header file containing definition of globalvars_t and entvars_t
-typedef unsigned int func_t;					//
+//TODO: move this somewhere else
+typedef unsigned int func_t;
 
 // Vector class
 #include "mathlib.h"

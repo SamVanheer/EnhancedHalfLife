@@ -133,11 +133,6 @@ void CHalfLifeTeamplay::Think()
 	last_time = time_remaining;
 }
 
-//=========================================================
-// ClientCommand
-// the user has typed a command which is unrecognized by everything else;
-// this check to see if the gamerules knows anything about the command
-//=========================================================
 bool CHalfLifeTeamplay::ClientCommand(CBasePlayer* pPlayer, const char* pcmd)
 {
 	if (g_VoiceGameMgr.ClientCommand(pPlayer, pcmd))
@@ -193,10 +188,6 @@ const char* CHalfLifeTeamplay::SetDefaultPlayerTeam(CBasePlayer* pPlayer)
 	return pPlayer->m_szTeamName;
 }
 
-
-//=========================================================
-// InitHUD
-//=========================================================
 void CHalfLifeTeamplay::InitHUD(CBasePlayer* pPlayer)
 {
 	int i;
@@ -295,10 +286,6 @@ void CHalfLifeTeamplay::ChangePlayerTeam(CBasePlayer* pPlayer, const char* pTeam
 	MESSAGE_END();
 }
 
-
-//=========================================================
-// ClientUserInfoChanged
-//=========================================================
 void CHalfLifeTeamplay::ClientUserInfoChanged(CBasePlayer* pPlayer, char* infobuffer)
 {
 	char text[1024];
@@ -347,9 +334,6 @@ void CHalfLifeTeamplay::ClientUserInfoChanged(CBasePlayer* pPlayer, char* infobu
 	RecountTeams(true);
 }
 
-//=========================================================
-// Deathnotice. 
-//=========================================================
 void CHalfLifeTeamplay::DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pevInflictor)
 {
 	if (m_DisableDeathMessages)
@@ -376,8 +360,6 @@ void CHalfLifeTeamplay::DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, en
 	CHalfLifeMultiplay::DeathNotice(pVictim, pKiller, pevInflictor);
 }
 
-//=========================================================
-//=========================================================
 void CHalfLifeTeamplay::PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor)
 {
 	if (!m_DisableDeathPenalty)
@@ -387,10 +369,6 @@ void CHalfLifeTeamplay::PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, e
 	}
 }
 
-
-//=========================================================
-// IsTeamplay
-//=========================================================
 bool CHalfLifeTeamplay::IsTeamplay()
 {
 	return true;
@@ -411,8 +389,6 @@ bool CHalfLifeTeamplay::FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* 
 	return CHalfLifeMultiplay::FPlayerCanTakeDamage(pPlayer, pAttacker);
 }
 
-//=========================================================
-//=========================================================
 int CHalfLifeTeamplay::PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTarget)
 {
 	// half life multiplay has a simple concept of Player Relationships.
@@ -428,8 +404,6 @@ int CHalfLifeTeamplay::PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTa
 	return GR_NOTTEAMMATE;
 }
 
-//=========================================================
-//=========================================================
 bool CHalfLifeTeamplay::ShouldAutoAim(CBasePlayer* pPlayer, edict_t* target)
 {
 	// always autoaim, unless target is a teammate
@@ -443,8 +417,6 @@ bool CHalfLifeTeamplay::ShouldAutoAim(CBasePlayer* pPlayer, edict_t* target)
 	return CHalfLifeMultiplay::ShouldAutoAim(pPlayer, target);
 }
 
-//=========================================================
-//=========================================================
 int CHalfLifeTeamplay::IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled)
 {
 	if (!pKilled)
@@ -459,8 +431,6 @@ int CHalfLifeTeamplay::IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKill
 	return 1;
 }
 
-//=========================================================
-//=========================================================
 const char* CHalfLifeTeamplay::GetTeamID(CBaseEntity* pEntity)
 {
 	if (pEntity == nullptr || pEntity->pev == nullptr)
@@ -539,9 +509,6 @@ const char* CHalfLifeTeamplay::TeamWithFewestPlayers()
 	return pTeamName;
 }
 
-
-//=========================================================
-//=========================================================
 void CHalfLifeTeamplay::RecountTeams(bool bResendInfo)
 {
 	// loop through all teams, recounting everything

@@ -32,16 +32,18 @@ class CBasePlayerItem;
 
 constexpr int TEAM_NAME_LENGTH = 16;
 
-inline void MESSAGE_BEGIN(int msg_dest, int msg_type, const float* pOrigin, entvars_t* ent);  // implementation later in this file
+inline void MESSAGE_BEGIN(int msg_dest, int msg_type, const float* pOrigin, entvars_t* ent);
 
 extern globalvars_t* gpGlobals;
 
-// Use this instead of ALLOC_STRING on constant strings
 inline const char* STRING(string_t offset)
 {
 	return gpGlobals->pStringBase + static_cast<unsigned int>(offset);
 }
 
+/**
+*	@brief Use this instead of ALLOC_STRING on constant strings
+*/
 inline string_t MAKE_STRING(const char* str)
 {
 	return reinterpret_cast<uint64>(str) - reinterpret_cast<uint64>(STRING(0));
@@ -61,7 +63,9 @@ inline edict_t* FIND_ENTITY_BY_TARGETNAME(edict_t* entStart, const char* pszName
 	return FIND_ENTITY_BY_STRING(entStart, "targetname", pszName);
 }
 
-// for doing a reverse lookup. Say you have a door, and want to find its button.
+/**
+*	@brief for doing a reverse lookup. Say you have a door, and want to find its button.
+*/
 inline edict_t* FIND_ENTITY_BY_TARGET(edict_t* entStart, const char* pszName)
 {
 	return FIND_ENTITY_BY_STRING(entStart, "target", pszName);
@@ -91,12 +95,17 @@ constexpr bool FBitSet(const T& flBitVector, int bit)
 // Makes these more explicit, and easier to find
 #define DLL_GLOBAL
 
-// More explicit than "int"
+/**
+*	@brief More explicit than "int"
+*	TODO: remove
+*/
 typedef int EOFFSET;
 
-// This is the glue that hooks .MAP entity class names to our CPP classes
-// The _declspec forces them to be exported by name so we can do a lookup with GetProcAddress()
-// The function is used to intialize / allocate the object for the entity
+/**
+*	@brief This is the glue that hooks .MAP entity class names to our CPP classes
+*	The _declspec forces them to be exported by name so we can do a lookup with GetProcAddress()
+*	The function is used to intialize / allocate the object for the entity
+*/
 #define LINK_ENTITY_TO_CLASS(mapClassName,DLLClassName) \
 	extern "C" DLLEXPORT void mapClassName( entvars_t *pev ); \
 	void mapClassName( entvars_t *pev ) { GetClassPtr( (DLLClassName *)pev ); }
@@ -185,7 +194,9 @@ enum class NPCState
 constexpr std::size_t NPCStatesCount = static_cast<std::size_t>(NPCState::Dead) + 1;
 
 
-// Things that toggle (buttons/triggers/doors) need this
+/**
+*	@brief Things that toggle (buttons/triggers/doors) need this
+*/
 enum class ToggleState
 {
 	AtTop,
@@ -233,16 +244,30 @@ CBasePlayer* FindPlayerByName(const char* pTestName);
 #define UTIL_EntitiesInPVS(pent)			(*g_engfuncs.pfnEntitiesInPVS)(pent)
 void			UTIL_MakeVectors(const Vector& vecAngles);
 
-// Pass in an array of pointers and an array size, it fills the array and returns the number inserted
+/**
+*	@brief Pass in an array of pointers and an array size, it fills the array and returns the number inserted
+*/
 int			UTIL_MonstersInSphere(CBaseEntity** pList, int listMax, const Vector& center, float radius);
 int			UTIL_EntitiesInBox(CBaseEntity** pList, int listMax, const Vector& mins, const Vector& maxs, int flagMask);
 
-void			UTIL_MakeAimVectors(const Vector& vecAngles); // like MakeVectors, but assumes pitch isn't inverted
+/**
+*	@brief like MakeVectors, but assumes pitch isn't inverted
+*/
+void			UTIL_MakeAimVectors(const Vector& vecAngles);
 void			UTIL_MakeInvVectors(const Vector& vec, globalvars_t* pgv);
 
 void			UTIL_SetOrigin(entvars_t* pev, const Vector& vecOrigin);
 void			UTIL_EmitAmbientSound(edict_t* entity, const Vector& vecOrigin, const char* samp, float vol, float attenuation, int fFlags, int pitch);
 void			UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, uint32 ulColor, uint32 ulCount);
+
+/**
+*	@brief Shake the screen of all clients within radius
+* 
+*	@details radius == 0, shake all clients
+*	UNDONE: Allow caller to shake clients not ONGROUND?
+*	UNDONE: Fix falloff model (disabled)?
+*	UNDONE: Affect user controls?
+*/
 void			UTIL_ScreenShake(const Vector& center, float amplitude, float frequency, float duration, float radius);
 void			UTIL_ScreenShakeAll(const Vector& center, float amplitude, float frequency, float duration);
 void			UTIL_ShowMessage(const char* pString, CBaseEntity* pPlayer);
@@ -268,6 +293,11 @@ Vector		UTIL_RandomBloodVector();
 bool			UTIL_ShouldShowBlood(int bloodColor);
 void			UTIL_BloodDecalTrace(TraceResult* pTrace, int bloodColor);
 void			UTIL_DecalTrace(TraceResult* pTrace, int decalNumber);
+
+/**
+*	@brief A player is trying to apply his custom decal for the spray can.
+*	Tell connected clients to display it, or use the default spray can decal if the custom can't be loaded.
+*/
 void			UTIL_PlayerDecalTrace(TraceResult* pTrace, int playernum, int decalNumber, bool bIsCustom);
 void			UTIL_GunshotDecalTrace(TraceResult* pTrace, int decalNumber);
 void			UTIL_Sparks(const Vector& position);
@@ -279,15 +309,21 @@ void			UTIL_Remove(CBaseEntity* pEntity);
 bool			UTIL_IsValidEntity(edict_t* pent);
 bool			UTIL_TeamsMatch(const char* pTeamName1, const char* pTeamName2);
 
-// Search for water transition along a vertical line
+/**
+*	@brief Search for water transition along a vertical line
+*/
 float		UTIL_WaterLevel(const Vector& position, float minz, float maxz);
 void			UTIL_Bubbles(Vector mins, Vector maxs, int count);
 void			UTIL_BubbleTrail(Vector from, Vector to, int count);
 
-// allows precacheing of other entities
+/**
+*	@brief allows precaching of other entities
+*/
 void			UTIL_PrecacheOther(const char* szClassname);
 
-// prints a message to each client
+/**
+*	@brief prints a message to each client
+*/
 void			UTIL_ClientPrintAll(int msg_dest, const char* msg_name,
 	const char* param1 = nullptr, const char* param2 = nullptr, const char* param3 = nullptr, const char* param4 = nullptr);
 inline void			UTIL_CenterPrintAll(const char* msg_name,
@@ -298,12 +334,20 @@ inline void			UTIL_CenterPrintAll(const char* msg_name,
 
 bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon);
 
-// prints messages through the HUD
+/**
+*	@brief prints messages through the HUD
+*/
 void ClientPrint(entvars_t* client, int msg_dest, const char* msg_name,
 	const char* param1 = nullptr, const char* param2 = nullptr, const char* param3 = nullptr, const char* param4 = nullptr);
 
-// prints a message to the HUD say (chat)
+/**
+*	@brief prints a message to the HUD say (chat)
+*/
 void			UTIL_SayText(const char* pText, CBaseEntity* pEntity);
+
+/**
+*	@copydoc UTIL_SayText(const char*, CBaseEntity*)
+*/
 void			UTIL_SayTextAll(const char* pText, CBaseEntity* pEntity);
 
 
@@ -322,24 +366,40 @@ struct hudtextparms_t
 };
 
 // prints as transparent 'title' to the HUD
+/**
+*	@brief prints as transparent 'title' to the HUD
+*/
 void			UTIL_HudMessageAll(const hudtextparms_t& textparms, const char* pMessage);
+/**
+*	@copydoc UTIL_HudMessageAll(const hudtextparms_t&, const char*)
+*/
 void			UTIL_HudMessage(CBaseEntity* pEntity, const hudtextparms_t& textparms, const char* pMessage);
 
-// for handy use with ClientPrint params
-char* UTIL_dtos1(int d);
-char* UTIL_dtos2(int d);
-char* UTIL_dtos3(int d);
-char* UTIL_dtos4(int d);
+char* UTIL_dtos1(int d);	//!< for handy use with ClientPrint params
+char* UTIL_dtos2(int d);	//!< @copydoc UTIL_dtos1(int)
+char* UTIL_dtos3(int d);	//!< @copydoc UTIL_dtos1(int)
+char* UTIL_dtos4(int d);	//!< @copydoc UTIL_dtos1(int)
 
-// Writes message to console with timestamp and FragLog header.
+/**
+*	@brief Writes message to console with timestamp and FragLog header.
+*/
 void			UTIL_LogPrintf(const char* fmt, ...);
 
-// Sorta like FInViewCone, but for nonmonsters. 
+/**
+*	@brief returns the dot product of a line from src to check and vecdir.
+*	@details Sorta like FInViewCone, but for nonmonsters.
+*/
 float UTIL_DotPoints(const Vector& vecSrc, const Vector& vecCheck, const Vector& vecDir);
 
-void UTIL_StripToken(const char* pKey, char* pDest);// for redundant keynames
+/**
+*	@brief for redundant keynames. Strips trailing #<number> added by Hammer from keys
+*/
+void UTIL_StripToken(const char* pKey, char* pDest);
 
 // Misc functions
+/**
+*	@brief QuakeEd only writes a single float for angles (bad idea), so up and down are just constant angles.
+*/
 void SetMovedir(entvars_t* pev);
 Vector VecBModelOrigin(entvars_t* pevBModel);
 int BuildChangeList(LEVELLIST* pLevelList, int maxList);
@@ -376,7 +436,7 @@ constexpr int AMBIENT_SOUND_LARGERADIUS = 8;
 constexpr int AMBIENT_SOUND_START_SILENT = 16;
 constexpr int AMBIENT_SOUND_NOT_LOOPING = 32;
 
-constexpr int SPEAKER_START_SILENT = 1;	// wait for trigger 'on' to start announcements
+constexpr int SPEAKER_START_SILENT = 1;	//!< wait for trigger 'on' to start announcements
 
 constexpr int SND_SPAWNING = 1 << 8;		//!< duplicated in protocol.h we're spawing, used in some cases for ambients 
 constexpr int SND_STOP = 1 << 5;			//!< duplicated in protocol.h stop sound
@@ -458,12 +518,14 @@ int SENTENCEG_Lookup(const char* sample, char* sentencenum, std::size_t sentence
 
 float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int iBulletType);
 
-// NOTE: use EMIT_SOUND_DYN to set the pitch of a sound. Pitch of 100
-// is no pitch shift.  Pitch > 100 up to 255 is a higher pitch, pitch < 100
-// down to 1 is a lower pitch.   150 to 70 is the realistic range.
-// EMIT_SOUND_DYN with pitch != 100 should be used sparingly, as it's not quite as
-// fast as EMIT_SOUND (the pitchshift mixer is not native coded).
-
+/**
+*	@brief use EMIT_SOUND_DYN to set the pitch of a sound.
+*
+*	Pitch of 100 is no pitch shift. Pitch > 100 up to 255 is a higher pitch, pitch < 100 down to 1 is a lower pitch.
+*	150 to 70 is the realistic range.
+*	EMIT_SOUND_DYN with pitch != 100 should be used sparingly,
+*	as it's not quite as fast as EMIT_SOUND (the pitchshift mixer is not native coded).
+*/
 void EMIT_SOUND_DYN(edict_t* entity, int channel, const char* sample, float volume, float attenuation,
 	int flags, int pitch);
 
@@ -502,6 +564,9 @@ constexpr int GROUP_OP_NAND = 1;
 extern int g_groupmask;
 extern int g_groupop;
 
+/**
+*	@brief Smart version, it'll clean itself up when it pops off stack
+*/
 class UTIL_GroupTrace
 {
 public:

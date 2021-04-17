@@ -27,10 +27,9 @@
 
 extern DLL_GLOBAL bool	g_fGameOver;
 
+//TODO: redundant. Gamerules can tell you this
 bool g_teamplay = false;
 
-//=========================================================
-//=========================================================
 bool CGameRules::CanHaveAmmo(CBasePlayer* pPlayer, const char* pszAmmoName, int iMaxCarry)
 {
 	int iAmmoIndex;
@@ -52,8 +51,6 @@ bool CGameRules::CanHaveAmmo(CBasePlayer* pPlayer, const char* pszAmmoName, int 
 	return false;
 }
 
-//=========================================================
-//=========================================================
 edict_t* CGameRules::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
 {
 	edict_t* pentSpawnSpot = EntSelectSpawnPoint(pPlayer);
@@ -68,8 +65,6 @@ edict_t* CGameRules::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
 	return pentSpawnSpot;
 }
 
-//=========================================================
-//=========================================================
 bool CGameRules::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
 {
 	// only living players can have items
@@ -101,9 +96,6 @@ bool CGameRules::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapo
 	return true;
 }
 
-//=========================================================
-// load the SkillData struct with the proper values based on the skill level.
-//=========================================================
 void CGameRules::RefreshSkillData()
 {
 	auto skill = static_cast<SkillLevel>(CVAR_GET_FLOAT("skill"));
@@ -282,10 +274,6 @@ void CGameRules::RefreshSkillData()
 	gSkillData.plrLeg = GetSkillCvar("sk_player_leg");
 	gSkillData.plrArm = GetSkillCvar("sk_player_arm");
 }
-
-//=========================================================
-// instantiate the proper game rules object
-//=========================================================
 
 CGameRules* InstallGameRules()
 {

@@ -24,6 +24,7 @@
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 
 // give health
+//TODO: rename this to be accurate (give instead of take)
 bool CBaseEntity::TakeHealth(float flHealth, int bitsDamageType)
 {
 	if (!pev->takedamage)
@@ -40,8 +41,6 @@ bool CBaseEntity::TakeHealth(float flHealth, int bitsDamageType)
 
 	return true;
 }
-
-// inflict damage on this entity.  bitsDamageType indicates type of damage inflicted, ie: DMG_CRUSH
 
 bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
@@ -244,8 +243,6 @@ void CBaseEntity::StopSound(int channel, const char* fileName)
 	EMIT_SOUND_DYN(edict(), channel, fileName, 0, 0, SND_STOP, PITCH_NORM);
 }
 
-// NOTE: szName must be a pointer to constant memory, e.g. "monster_class" because the entity
-// will keep a pointer to it after this call.
 CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner)
 {
 	edict_t* pent;

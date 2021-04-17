@@ -20,16 +20,14 @@ class CPlane
 public:
 	CPlane();
 
-	//=========================================================
-	// InitializePlane - Takes a normal for the plane and a
-	// point on the plane and 
-	//=========================================================
+	/**
+	*	@brief Takes a normal for the plane and a point on the plane
+	*/
 	void InitializePlane(const Vector& vecNormal, const Vector& vecPoint);
 
-	//=========================================================
-	// PointInFront - determines whether the given vector is 
-	// in front of the plane. 
-	//=========================================================
+	/**
+	*	@brief determines whether the given vector is in front of the plane. 
+	*/
 	bool PointInFront(const Vector& vecPoint);
 
 	Vector	m_vecNormal;

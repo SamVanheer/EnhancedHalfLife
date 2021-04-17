@@ -20,10 +20,6 @@ CPlane::CPlane()
 	m_fInitialized = false;
 }
 
-//=========================================================
-// InitializePlane - Takes a normal for the plane and a
-// point on the plane and 
-//=========================================================
 void CPlane::InitializePlane(const Vector& vecNormal, const Vector& vecPoint)
 {
 	m_vecNormal = vecNormal;
@@ -31,11 +27,6 @@ void CPlane::InitializePlane(const Vector& vecNormal, const Vector& vecPoint)
 	m_fInitialized = true;
 }
 
-
-//=========================================================
-// PointInFront - determines whether the given vector is 
-// in front of the plane. 
-//=========================================================
 bool CPlane::PointInFront(const Vector& vecPoint)
 {
 	float flFace;

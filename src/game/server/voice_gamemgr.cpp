@@ -17,27 +17,32 @@ constexpr float UPDATE_INTERVAL = 0.3;
 
 
 // These are stored off as CVoiceGameMgr is created and deleted.
-CPlayerBitVec	g_PlayerModEnable;		// Set to 1 for each player if the player wants to use voice in this mod.
-										// (If it's zero, then the server reports that the game rules are saying the
-										// player can't hear anyone).
 
-CPlayerBitVec	g_BanMasks[VOICE_MAX_PLAYERS];	// Tells which players don't want to hear each other.
-												// These are indexed as clients and each bit represents a client
-												// (so player entity is bit+1).
+/**
+*	@brief Set to 1 for each player if the player wants to use voice in this mod.
+*	(If it's zero, then the server reports that the game rules are saying the player can't hear anyone).
+*/
+CPlayerBitVec	g_PlayerModEnable;
 
-CPlayerBitVec	g_SentGameRulesMasks[VOICE_MAX_PLAYERS];	// These store the masks we last sent to each client so we can determine if
-CPlayerBitVec	g_SentBanMasks[VOICE_MAX_PLAYERS];			// we need to resend them.
-CPlayerBitVec	g_bWantModEnable;
+/**
+*	@brief Tells which players don't want to hear each other.
+*	These are indexed as clients and each bit represents a client (so player entity is bit+1).
+*/
+CPlayerBitVec	g_BanMasks[VOICE_MAX_PLAYERS];
+
+/**
+*	@brief These store the masks we last sent to each client so we can determine if we need to resend them.
+*/
+CPlayerBitVec	g_SentGameRulesMasks[VOICE_MAX_PLAYERS];
+CPlayerBitVec	g_SentBanMasks[VOICE_MAX_PLAYERS];			//!< @copydoc g_SentGameRulesMasks
+CPlayerBitVec	g_bWantModEnable;							//!< @copydoc g_SentGameRulesMasks
 
 cvar_t voice_serverdebug = {"voice_serverdebug", "0"};
 
-// Set game rules to allow all clients to talk to each other.
-// Muted players still can't talk to each other.
+/**
+*	@brief Set game rules to allow all clients to talk to each other. Muted players still can't talk to each other.
+*/
 cvar_t sv_alltalk = {"sv_alltalk", "0", FCVAR_SERVER};
-
-// ------------------------------------------------------------------------ //
-// Static helpers.
-// ------------------------------------------------------------------------ //
 
 static void VoiceServerDebug(char const* pFmt, ...)
 {
@@ -53,12 +58,6 @@ static void VoiceServerDebug(char const* pFmt, ...)
 
 	ALERT(at_console, "%s", msg);
 }
-
-
-
-// ------------------------------------------------------------------------ //
-// CVoiceGameMgr.
-// ------------------------------------------------------------------------ //
 
 CVoiceGameMgr::CVoiceGameMgr()
 {
@@ -121,8 +120,6 @@ void CVoiceGameMgr::ClientConnected(edict_t* pEdict)
 	g_SentBanMasks[index].Init(0);
 }
 
-// Called to determine if the Receiver has muted (blocked) the Sender
-// Returns true if the receiver has blocked the sender
 bool CVoiceGameMgr::PlayerHasBlockedPlayer(CBasePlayer* pReceiver, CBasePlayer* pSender)
 {
 	int iReceiverIndex, iSenderIndex;

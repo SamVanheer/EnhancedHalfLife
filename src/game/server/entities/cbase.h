@@ -29,7 +29,7 @@ CBaseEntity
 				CBaseGroup
 */
 
-constexpr int MAX_PATH_SIZE = 10; // max number of nodes available for a path.
+constexpr int MAX_PATH_SIZE = 10; //!< max number of nodes available for a path.
 
 // These are caps bits to indicate what an object's capabilities (currently used for save/restore and level transitions)
 constexpr int FCAP_CUSTOMSAVE = 0x00000001;
@@ -94,9 +94,9 @@ constexpr int CLASS_ALIEN_PREY = 8;
 constexpr int CLASS_ALIEN_PREDATOR = 9;
 constexpr int CLASS_INSECT = 10;
 constexpr int CLASS_PLAYER_ALLY = 11;
-constexpr int CLASS_PLAYER_BIOWEAPON = 12; // hornets and snarks.launched by players
-constexpr int CLASS_ALIEN_BIOWEAPON = 13; // hornets and snarks.launched by the alien menace
-constexpr int CLASS_BARNACLE = 99; // special because no one pays attention to it, and it eats a wide cross-section of creatures.
+constexpr int CLASS_PLAYER_BIOWEAPON = 12;	//!< hornets and snarks.launched by players
+constexpr int CLASS_ALIEN_BIOWEAPON = 13;	//!< hornets and snarks.launched by the alien menace
+constexpr int CLASS_BARNACLE = 99;			//!< special because no one pays attention to it, and it eats a wide cross-section of creatures.
 
 class CBaseEntity;
 class CBaseMonster;
@@ -108,19 +108,30 @@ constexpr int SF_NORESPAWN = 1 << 30; // !!!set this bit on guns and stuff that 
 
 #include "ehandle.hpp"
 
-//
-// Base Entity.  All entity types derive from this
-//
+/**
+*	@brief Base Entity.  All entity types derive from this
+*/
 class CBaseEntity
 {
 public:
-	// Constructor.  Set engine to use C/C++ callback functions
-	// pointers to engine data
-	entvars_t* pev;		// Don't need to save/restore this pointer, the engine resets it
+	/**
+	*	@brief Constructor.  Set engine to use C/C++ callback functions pointers to engine data
+	*
+	*	Don't need to save/restore this pointer, the engine resets it
+	*/
+	entvars_t* pev;
 
+	//TODO: these are not safe because the target entity can be killtargeted at any time
 	// path corners
-	CBaseEntity* m_pGoalEnt;// path corner we are heading towards
-	CBaseEntity* m_pLink;// used for temporary link-list operations. 
+	/**
+	*	@brief path corner we are heading towards
+	*/
+	CBaseEntity* m_pGoalEnt;
+
+	/**
+	*	@brief used for temporary link-list operations. 
+	*/
+	CBaseEntity* m_pLink;
 
 	virtual ~CBaseEntity() {}
 
@@ -146,18 +157,31 @@ public:
 	virtual int		ObjectCaps() { return FCAP_ACROSS_TRANSITION; }
 	virtual void	Activate() {}
 
-	// Setup the object->object collision box (pev->mins / pev->maxs is the object->world collision box)
+	/**
+	*	@brief Setup the object->object collision box (pev->mins / pev->maxs is the object->world collision box)
+	*/
 	virtual void	SetObjectCollisionBox();
 
-	// Classify - returns the type of group (i.e, "houndeye", or "human military" so that monsters with different classnames
-	// still realize that they are teammates. (overridden for monsters that form groups)
+	/**
+	*	@brief returns the type of group (i.e, "houndeye", or "human military")
+	*	so that monsters with different classnames still realize that they are teammates.
+	*	(overridden for monsters that form groups)
+	*/
 	virtual int Classify() { return CLASS_NONE; }
-	virtual void DeathNotice(entvars_t* pevChild) {}// monster maker children use this to tell the monster maker that they have died.
+
+	/**
+	*	@brief monster maker children use this to tell the monster maker that they have died.
+	*/
+	virtual void DeathNotice(entvars_t* pevChild) {}
 
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	virtual void	TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType);
+
+	/**
+	*	@brief inflict damage on this entity. bitsDamageType indicates type of damage inflicted, ie: DMG_CRUSH
+	*/
 	virtual bool	TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
 	virtual bool	TakeHealth(float flHealth, int bitsDamageType);
 	virtual void	Killed(entvars_t* pevAttacker, int iGib);
@@ -171,7 +195,9 @@ public:
 	virtual bool	IsMoving() { return pev->velocity != vec3_origin; }
 	virtual void	OverrideReset() {}
 	virtual int		DamageDecal(int bitsDamageType);
-	// This is ONLY used by the node graph to test movement through a door
+	/**
+	*	@brief This is ONLY used by the node graph to test movement through a door (TODO never actually called, can remove)
+	*/
 	virtual void	SetToggleState(ToggleState state) {}
 	virtual void    StartSneaking() {}
 	virtual void    StopSneaking() {}
@@ -205,10 +231,20 @@ public:
 	}
 	virtual void Blocked(CBaseEntity* pOther) { if (m_pfnBlocked) (this->*m_pfnBlocked)(pOther); }
 
+	/**
+	*	@brief This updates global tables that need to know about entities being removed
+	*/
 	void UpdateOnRemove();
 
 	// common member functions
+	/**
+	*	@brief Convenient way to delay removing oneself
+	*/
 	void EXPORT SUB_Remove();
+
+	/**
+	*	@brief Convenient way to explicitly do nothing (passed to functions that require a method)
+	*/
 	void EXPORT SUB_DoNothing();
 	void EXPORT SUB_StartFadeOut();
 	void EXPORT SUB_FadeOut();
@@ -219,8 +255,19 @@ public:
 
 	virtual CBaseEntity* Respawn() { return nullptr; }
 
+	/**
+	*	@brief Trigger targets specified in pev->target
+	*
+	*	@details Search for (string)pev->targetname in all entities that match (string)pev->target and call their Use function (if they have one)
+	*
+	*	CBaseDelay classes only:
+	*	If m_flDelay is set, a DelayedUse entity will be created that will actually do the SUB_UseTargets after that many seconds have passed.
+	*	Removes all entities with a targetname that match m_iszKillTarget, and removes them, so some events can remove other triggers.
+	*/
 	void SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value);
-	// Do the bounding boxes of these two intersect?
+	/**
+	*	@brief Do the bounding boxes of these two intersect?
+	*/
 	bool	Intersects(CBaseEntity* pOther);
 	void	MakeDormant();
 	bool	IsDormant();
@@ -298,11 +345,15 @@ public:
 
 	// virtual functions used by a few classes
 
-	// used by monsters that are created by the MonsterMaker
+	/**
+	*	@brief used by monsters that are created by the MonsterMaker TODO never used, DeathNotice is used for this
+	*/
 	virtual	void UpdateOwner() {}
 
 
-	//
+	/**
+	*	@brief NOTE: szName must be a pointer to constant memory, e.g. "monster_class" because the entity will keep a pointer to it after this call.
+	*/
 	static CBaseEntity* Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner = nullptr);
 
 	virtual bool FBecomeProne() { return false; }
@@ -310,10 +361,10 @@ public:
 	EOFFSET eoffset() { return OFFSET(pev); }
 	int	  entindex() { return ENTINDEX(edict()); }
 
-	virtual Vector Center() { return (pev->absmax + pev->absmin) * 0.5; } // center point of entity
-	virtual Vector EyePosition() { return pev->origin + pev->view_ofs; }			// position of eyes
-	virtual Vector EarPosition() { return pev->origin + pev->view_ofs; }			// position of ears
-	virtual Vector BodyTarget(const Vector& posSrc) { return Center(); }		// position to shoot at
+	virtual Vector Center() { return (pev->absmax + pev->absmin) * 0.5; }	//!< center point of entity
+	virtual Vector EyePosition() { return pev->origin + pev->view_ofs; }	//!< position of eyes
+	virtual Vector EarPosition() { return pev->origin + pev->view_ofs; }	//!< position of ears
+	virtual Vector BodyTarget(const Vector& posSrc) { return Center(); }	//!< position to shoot at
 
 	virtual int Illumination() { return GETENTITYILLUM(ENT(pev)); }
 
@@ -363,28 +414,26 @@ public:
 private:
 };
 
-
-struct locksound_t			// sounds that doors and buttons make when locked/unlocked
+/**
+*	@brief sounds that doors and buttons make when locked/unlocked
+*/
+struct locksound_t
 {
-	string_t	sLockedSound;		// sound a door makes when it's locked
-	string_t	sLockedSentence;	// sentence group played when door is locked
-	string_t	sUnlockedSound;		// sound a door makes when it's unlocked
-	string_t	sUnlockedSentence;	// sentence group played when door is unlocked
+	string_t	sLockedSound;		//!< sound a door makes when it's locked
+	string_t	sLockedSentence;	//!< sentence group played when door is locked
+	string_t	sUnlockedSound;		//!< sound a door makes when it's unlocked
+	string_t	sUnlockedSentence;	//!< sentence group played when door is unlocked
 
-	int		iLockedSentence;		// which sentence in sentence group to play next
-	int		iUnlockedSentence;		// which sentence in sentence group to play next
+	int		iLockedSentence;		//!< which sentence in sentence group to play next
+	int		iUnlockedSentence;		//!< which sentence in sentence group to play next
 
-	float	flwaitSound;			// time delay between playing consecutive 'locked/unlocked' sounds
-	float	flwaitSentence;			// time delay between playing consecutive sentences
-	bool	bEOFLocked;				// true if hit end of list of locked sentences
-	bool	bEOFUnlocked;			// true if hit end of list of unlocked sentences
+	float	flwaitSound;			//!< time delay between playing consecutive 'locked/unlocked' sounds
+	float	flwaitSentence;			//!< time delay between playing consecutive sentences
+	bool	bEOFLocked;				//!< true if hit end of list of locked sentences
+	bool	bEOFUnlocked;			//!< true if hit end of list of unlocked sentences
 };
 
 void PlayLockSounds(CBaseEntity* entity, locksound_t* pls, int flocked, int fbutton);
-
-//
-// MultiSouce
-//
 
 constexpr int MAX_MULTI_TARGETS = 16; //!< maximum number of targets a single multi_manager entity may be assigned.
 constexpr int MS_MAX_TARGETS = 32;
@@ -411,9 +460,9 @@ public:
 };
 
 
-//
-// generic Delay entity.
-//
+/**
+*	@brief generic Delay entity.
+*/
 class CBaseDelay : public CBaseEntity
 {
 public:
@@ -426,6 +475,7 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 	// common member functions
+	//TODO: this is a non-virtual override of the same function in CBaseEntity. Should probably just merge this class into CBaseEntity
 	void SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value);
 	void EXPORT DelayThink();
 };
@@ -440,13 +490,27 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	// Basic Monster Animation functions
-	float StudioFrameAdvance(float flInterval = 0.0); // accumulate animation frame time from last time called until now
+	/**
+	*	@brief advance the animation frame up to the current time
+	* 
+	*	accumulate animation frame time from last time called until now
+	*	if an flInterval is passed in, only advance animation that number of seconds
+	*/
+	float StudioFrameAdvance(float flInterval = 0.0);
 	int	 GetSequenceFlags();
 	int  LookupActivity(int activity);
+
+	/**
+	*	@brief Get activity with highest 'weight'
+	*/
 	int  LookupActivityHeaviest(int activity);
 	int  LookupSequence(const char* label);
 	void ResetSequenceInfo();
-	void DispatchAnimEvents(float flFutureInterval = 0.1); // Handle events that have happend since last time called up until X seconds into the future
+
+	/**
+	*	@brief Handle events that have happend since last time called up until X seconds into the future
+	*/
+	void DispatchAnimEvents(float flFutureInterval = 0.1);
 	virtual void HandleAnimEvent(MonsterEvent_t* pEvent) {}
 	float SetBoneController(int iController, float flValue);
 	void InitBoneControllers();
@@ -461,45 +525,46 @@ public:
 	void SetSequenceBox();
 
 	// animation needs
-	float				m_flFrameRate;		// computed FPS for current sequence
-	float				m_flGroundSpeed;	// computed linear movement rate for current sequence
-	float				m_flLastEventCheck;	// last time the event list was checked
-	bool				m_fSequenceFinished;// flag set when StudioAdvanceFrame moves across a frame boundry
-	bool				m_fSequenceLoops;	// true if the sequence loops
+	float				m_flFrameRate;		//!< computed FPS for current sequence
+	float				m_flGroundSpeed;	//!< computed linear movement rate for current sequence
+	float				m_flLastEventCheck;	//!< last time the event list was checked
+	bool				m_fSequenceFinished;//!< flag set when StudioAdvanceFrame moves across a frame boundry
+	bool				m_fSequenceLoops;	//!< true if the sequence loops
 };
 
 
-//
-// generic Toggle entity.
-//
 constexpr int SF_ITEM_USE_ONLY = 256; //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR_USE_ONLY!!! 
 
+/**
+*	@brief generic Toggle entity.
+*/
 class CBaseToggle : public CBaseAnimating
 {
 public:
 	void				KeyValue(KeyValueData* pkvd) override;
 
 	ToggleState			m_toggle_state;
-	float				m_flActivateFinished;//like attack_finished, but for doors
-	float				m_flMoveDistance;// how far a door should slide or rotate
+	float				m_flActivateFinished;	//!< like attack_finished, but for doors
+	float				m_flMoveDistance;		//!< how far a door should slide or rotate
 	float				m_flWait;
 	float				m_flLip;
-	float				m_flTWidth;// for plats
-	float				m_flTLength;// for plats
+	float				m_flTWidth;		//!< for plats
+	float				m_flTLength;	//!< for plats
 
 	Vector				m_vecPosition1;
 	Vector				m_vecPosition2;
 	Vector				m_vecAngle1;
 	Vector				m_vecAngle2;
 
-	int					m_cTriggersLeft;		// trigger_counter only, # of activations remaining
+	//TODO: only used by trigger_counter, move
+	int					m_cTriggersLeft;		//!< trigger_counter only, # of activations remaining
 	float				m_flHeight;
 	EHANDLE				m_hActivator;
 	void (CBaseToggle::* m_pfnCallWhenMoveDone)();
 	Vector				m_vecFinalDest;
 	Vector				m_vecFinalAngle;
 
-	int					m_bitsDamageInflict;	// DMG_ damage type that the door or tigger does
+	int					m_bitsDamageInflict;	//!< DMG_ damage type that the door or tigger does
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -510,9 +575,26 @@ public:
 	float	GetDelay() override { return m_flWait; }
 
 	// common member functions
+	/**
+	*	@brief calculate pev->velocity and pev->nextthink to reach vecDest from pev->origin traveling at flSpeed
+	*/
 	void LinearMove(Vector	vecDest, float flSpeed);
+
+	/**
+	*	@brief After moving, set origin to exact final destination, call "move done" function
+	*/
 	void EXPORT LinearMoveDone();
+
+	/**
+	*	@brief calculate pev->velocity and pev->nextthink to reach vecDest from pev->origin traveling at flSpeed
+	*
+	*	Just like LinearMove, but rotational.
+	*/
 	void AngularMove(Vector vecDestAngle, float flSpeed);
+
+	/**
+	*	@brief After rotating, set angle to exact final angle, call "move done" function
+	*/
 	void EXPORT AngularMoveDone();
 	bool IsLockedByMaster(); //TODO: non-virtual override
 
@@ -520,11 +602,14 @@ public:
 	static void			AxisDir(entvars_t* pev);
 	static float		AxisDelta(int flags, const Vector& angle1, const Vector& angle2);
 
-	string_t m_sMaster;		// If this button has a master switch, this is the targetname.
-							// A master switch must be of the multisource type. If all 
-							// of the switches in the multisource have been triggered, then
-							// the button will be allowed to operate. Otherwise, it will be
-							// deactivated.
+	/**
+	*	@brief If this button has a master switch, this is the targetname.
+	*
+	*	@details A master switch must be of the multisource type.
+	*	If all of the switches in the multisource have been triggered, then the button will be allowed to operate.
+	*	Otherwise, it will be deactivated.
+	*/
+	string_t m_sMaster;
 };
 #define SetMoveDone( a ) m_pfnCallWhenMoveDone = static_cast <void (CBaseToggle::*)()> (a)
 
@@ -559,9 +644,9 @@ constexpr int bits_CAP_DOORS_GROUP = bits_CAP_USE | bits_CAP_AUTO_DOORS | bits_C
 // when calling KILLED(), a value that governs gib behavior is expected to be 
 // one of these three values
 //TODO: make this an enum
-constexpr int GIB_NORMAL = 0;	// gib if entity was overkilled
-constexpr int GIB_NEVER = 1;	// never gib, no matter how much death damage is done ( freezing, etc )
-constexpr int GIB_ALWAYS = 2;	// always gib ( Houndeye Shock, Barnacle Bite )
+constexpr int GIB_NORMAL = 0;	//!< gib if entity was overkilled
+constexpr int GIB_NEVER = 1;	//!< never gib, no matter how much death damage is done ( freezing, etc )
+constexpr int GIB_ALWAYS = 2;	//!< always gib ( Houndeye Shock, Barnacle Bite )
 
 class CBaseMonster;
 class CCineMonster;
@@ -573,9 +658,9 @@ class CSound;
 const char* ButtonSound(int sound);				// get string of button sound number
 
 
-//
-// Generic Button
-//
+/**
+*	@brief Generic Button
+*/
 class CBaseButton : public CBaseToggle
 {
 public:
@@ -608,29 +693,35 @@ public:
 	ButtonCode ButtonResponseToTouch();
 
 	static	TYPEDESCRIPTION m_SaveData[];
-	// Buttons that don't take damage can be IMPULSE used
+	/**
+	*	@brief Buttons that don't take damage can be IMPULSE used
+	*/
 	int	ObjectCaps() override { return (CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | (pev->takedamage ? 0 : FCAP_IMPULSE_USE); }
 
-	bool	m_fStayPushed;	// button stays pushed in until touched again?
-	bool	m_fRotating;		// a rotating button?  default is a sliding button.
+	bool	m_fStayPushed;		//!< button stays pushed in until touched again?
+	bool	m_fRotating;		//!< a rotating button?  default is a sliding button.
 
-	string_t m_strChangeTarget;	// if this field is not null, this is an index into the engine string array.
-							// when this button is touched, it's target entity's TARGET field will be set
-							// to the button's ChangeTarget. This allows you to make a func_train switch paths, etc.
+	/**
+	*	@brief if this field is not null, this is an index into the engine string array.
+	*	When this button is touched, it's target entity's TARGET field will be set to the button's ChangeTarget.
+	*	This allows you to make a func_train switch paths, etc.
+	*	TODO never actually used, remove
+	*/
+	string_t m_strChangeTarget;
 
-	locksound_t m_ls;			// door lock sounds
+	locksound_t m_ls;			//!< door lock sounds
 
-	byte	m_bLockedSound;		// ordinals from entity selection
+	// ordinals from entity selection
+	byte	m_bLockedSound;
 	byte	m_bLockedSentence;
 	byte	m_bUnlockedSound;
 	byte	m_bUnlockedSentence;
 	int		m_sounds;
 };
 
-//
-// Converts a entvars_t * to a class pointer
-// It will allocate the class and entity if necessary
-//
+/**
+*	@brief Converts a entvars_t * to a class pointer. It will allocate the class and entity if necessary
+*/
 template <class T> T* GetClassPtr(T* a)
 {
 	entvars_t* pev = (entvars_t*)a;
@@ -652,12 +743,11 @@ template <class T> T* GetClassPtr(T* a)
 	return a;
 }
 
-// this moved here from world.cpp, to allow classes to be derived from it
-//=======================
-// CWorld
-//
-// This spawns first when each level begins.
-//=======================
+/**
+*	@brief This spawns first when each level begins.
+*
+*	this moved here from world.cpp, to allow classes to be derived from it
+*/
 class CWorld : public CBaseEntity
 {
 public:

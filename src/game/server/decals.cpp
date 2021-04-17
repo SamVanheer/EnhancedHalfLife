@@ -58,12 +58,12 @@ DLL_DECALLIST gDecals[] = {
 	{ "{spit1", 0 },		// DECAL_SPIT1
 	{ "{spit2", 0 },		// DECAL_SPIT2
 	{ "{bproof1", 0 },		// DECAL_BPROOF1
-	{ "{gargstomp", 0 },	// DECAL_GARGSTOMP1,	// Gargantua stomp crack
-	{ "{smscorch1", 0 },	// DECAL_SMALLSCORCH1,	// Small scorch mark
-	{ "{smscorch2", 0 },	// DECAL_SMALLSCORCH2,	// Small scorch mark
-	{ "{smscorch3", 0 },	// DECAL_SMALLSCORCH3,	// Small scorch mark
-	{ "{mommablob", 0 },	// DECAL_MOMMABIRTH		// BM Birth spray
-	{ "{mommablob", 0 },	// DECAL_MOMMASPLAT		// BM Mortar spray?? need decal
+	{ "{gargstomp", 0 },	// DECAL_GARGSTOMP1
+	{ "{smscorch1", 0 },	// DECAL_SMALLSCORCH1
+	{ "{smscorch2", 0 },	// DECAL_SMALLSCORCH2
+	{ "{smscorch3", 0 },	// DECAL_SMALLSCORCH3
+	{ "{mommablob", 0 },	// DECAL_MOMMABIRTH
+	{ "{mommablob", 0 },	// DECAL_MOMMASPLAT
 };
 
 void InitializeDecalsList()

@@ -17,6 +17,9 @@
 
 class CBaseEntity;
 
+/**
+*	@brief Base class includes common SAVERESTOREDATA pointer, and manages the entity table
+*/
 class CSaveRestoreBuffer
 {
 public:
@@ -50,18 +53,18 @@ public:
 
 	void	WriteShort(const char* pname, const short* value, int count);
 	void	WriteBoolean(const char* pname, const bool* value, int count);
-	void	WriteInt(const char* pname, const int* value, int count);		// Save an int
-	void	WriteFloat(const char* pname, const float* value, int count);	// Save a float
-	void	WriteTime(const char* pname, const float* value, int count);	// Save a float (timevalue)
-	void	WriteData(const char* pname, int size, const char* pdata);		// Save a binary data block
-	void	WriteString(const char* pname, const char* pstring);			// Save a null-terminated string
-	void	WriteString(const char* pname, const string_t* stringId, int count);	// Save a null-terminated string (engine string)
-	void	WriteVector(const char* pname, const Vector& value);				// Save a vector
-	void	WriteVector(const char* pname, const float* value, int count);	// Save a vector
-	void	WritePositionVector(const char* pname, const Vector& value);		// Offset for landmark if necessary
-	void	WritePositionVector(const char* pname, const float* value, int count);	// array of pos vectors
-	void	WriteFunction(const char* pname, void** value, int count);		// Save a function pointer
-	bool	WriteEntVars(const char* pname, entvars_t* pev);		// Save entvars_t (entvars_t)
+	void	WriteInt(const char* pname, const int* value, int count);				//!< Save an int
+	void	WriteFloat(const char* pname, const float* value, int count);			//!< Save a float
+	void	WriteTime(const char* pname, const float* value, int count);			//!< Save a float (timevalue)
+	void	WriteData(const char* pname, int size, const char* pdata);				//!< Save a binary data block
+	void	WriteString(const char* pname, const char* pstring);					//!< Save a null-terminated string
+	void	WriteString(const char* pname, const string_t* stringId, int count);	//!< Save a null-terminated string (engine string)
+	void	WriteVector(const char* pname, const Vector& value);					//!< Save a vector
+	void	WriteVector(const char* pname, const float* value, int count);			//!< Save a vector
+	void	WritePositionVector(const char* pname, const Vector& value);			//!< Offset for landmark if necessary
+	void	WritePositionVector(const char* pname, const float* value, int count);	//!< array of pos vectors
+	void	WriteFunction(const char* pname, void** value, int count);				//!< Save a function pointer
+	bool	WriteEntVars(const char* pname, entvars_t* pev);						//!< Save entvars_t (entvars_t)
 	bool	WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount);
 
 private:
@@ -83,7 +86,7 @@ class CRestore : public CSaveRestoreBuffer
 {
 public:
 	CRestore(SAVERESTOREDATA* pdata) : CSaveRestoreBuffer(pdata) { m_global = 0; m_precache = true; }
-	bool	ReadEntVars(const char* pname, entvars_t* pev);		// entvars_t
+	bool	ReadEntVars(const char* pname, entvars_t* pev);
 	bool	ReadFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount);
 	int		ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount, int startField, int size, char* pName, void* pData);
 	int		ReadInt();
@@ -103,7 +106,8 @@ private:
 
 	void	BufferReadHeader(HEADER* pheader);
 
-	int		m_global;		// Restoring a global entity?
+	//TODO: bool
+	int		m_global;		//!< Restoring a global entity?
 	bool	m_precache;
 };
 

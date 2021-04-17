@@ -38,13 +38,6 @@
 
 extern DLL_GLOBAL	int			gDisplayTitle;
 
-// moved CWorld class definition to cbase.h
-//=======================
-// CWorld
-//
-// This spawns first when each level begins.
-//=======================
-
 LINK_ENTITY_TO_CLASS(worldspawn, CWorld);
 
 constexpr int SF_WORLD_DARK = 0x0001;		//!< Fade from black at startup
@@ -254,12 +247,9 @@ void CWorld::Precache()
 	}
 }
 
-
-//
-// Just to ignore the "wad" field.
-//
 void CWorld::KeyValue(KeyValueData* pkvd)
 {
+	//"wad" is ignored
 	if (FStrEq(pkvd->szKeyName, "skyname"))
 	{
 		// Sent over net now.
@@ -290,6 +280,7 @@ void CWorld::KeyValue(KeyValueData* pkvd)
 	}
 	else if (FStrEq(pkvd->szKeyName, "startdark"))
 	{
+		//TODO: typo
 		// UNDONE: This is a gross hack!!! The CVAR is NOT sent over the client/sever link
 		// but it will work for single player
 		int flag = atoi(pkvd->szValue);

@@ -18,9 +18,9 @@
 class CBaseEntity;
 struct edict_t;
 
-//
-// EHANDLE. Safe way to point to CBaseEntities who may die between frames
-//
+/**
+*	@brief Safe way to point to CBaseEntities who may die between frames
+*/
 class EHANDLE
 {
 private:

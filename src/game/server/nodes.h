@@ -21,76 +21,81 @@
 *	AI node tree stuff.
 */
 
-//=========================================================
-// DEFINE
-//=========================================================
 constexpr int MAX_STACK_NODES = 100;
 constexpr int NO_NODE = -1;
 constexpr int MAX_NODE_HULLS = 4;
 
-constexpr int bits_NODE_LAND = 1 << 0;		// Land node, so nudge if necessary.
-constexpr int bits_NODE_AIR = 1 << 1;		// Air node, don't nudge.
-constexpr int bits_NODE_WATER = 1 << 2;		// Water node, don't nudge.
+constexpr int bits_NODE_LAND = 1 << 0;		//!< Land node, so nudge if necessary.
+constexpr int bits_NODE_AIR = 1 << 1;		//!< Air node, don't nudge.
+constexpr int bits_NODE_WATER = 1 << 2;		//!< Water node, don't nudge.
 constexpr int bits_NODE_GROUP_REALM = bits_NODE_LAND | bits_NODE_AIR | bits_NODE_WATER;
 
-//=========================================================
-// Instance of a node.
-//=========================================================
+/**
+*	@brief Instance of a node.
+*/
 class CNode
 {
 public:
-	Vector	m_vecOrigin;// location of this node in space
-	Vector  m_vecOriginPeek; // location of this node (LAND nodes are NODE_HEIGHT higher).
-	byte    m_Region[3]; // Which of 256 regions do each of the coordinate belong?
-	int		m_afNodeInfo;// bits that tell us more about this location
+	Vector	m_vecOrigin;		//!< location of this node in space
+	Vector  m_vecOriginPeek;	//!< location of this node (LAND nodes are NODE_HEIGHT higher).
+	byte    m_Region[3];		//!< Which of 256 regions do each of the coordinate belong?
+	int		m_afNodeInfo;		//!< bits that tell us more about this location
 
-	int		m_cNumLinks; // how many links this node has
-	int		m_iFirstLink;// index of this node's first link in the link pool.
+	int		m_cNumLinks;		//!< how many links this node has
+	int		m_iFirstLink;		//!< index of this node's first link in the link pool.
 
-	// Where to start looking in the compressed routing table (offset into m_pRouteInfo).
-	// (4 hull sizes -- smallest to largest + fly/swim), and secondly, door capability.
-	//
+	/**
+	*	@brief Where to start looking in the compressed routing table (offset into m_pRouteInfo).
+	*
+	*	(4 hull sizes -- smallest to largest + fly/swim), and secondly, door capability.
+	*/
 	int		m_pNextBestNode[MAX_NODE_HULLS][2];
 
-	// Used in finding the shortest path. m_fClosestSoFar is -1 if not visited.
-	// Then it is the distance to the source. If another path uses this node
-	// and has a closer distance, then m_iPreviousNode is also updated.
-	//
-	float   m_flClosestSoFar; // Used in finding the shortest path.
+	/**
+	*	@brief Used in finding the shortest path.
+	*
+	*	m_fClosestSoFar is -1 if not visited. Then it is the distance to the source.
+	*	If another path uses this node and has a closer distance, then m_iPreviousNode is also updated.
+	*/
+	float   m_flClosestSoFar;
 	int		m_iPreviousNode;
 
-	short	m_sHintType;// there is something interesting in the world at this node's position
-	short	m_sHintActivity;// there is something interesting in the world at this node's position
-	float	m_flHintYaw;// monster on this node should face this yaw to face the hint.
+	short	m_sHintType;	//!< there is something interesting in the world at this node's position
+	short	m_sHintActivity;//!< there is something interesting in the world at this node's position
+	float	m_flHintYaw;	//!< monster on this node should face this yaw to face the hint.
 };
 
-//=========================================================
-// CLink - A link between 2 nodes
-//=========================================================
-constexpr int bits_LINK_SMALL_HULL = 1 << 0;	// headcrab box can fit through this connection
-constexpr int bits_LINK_HUMAN_HULL = 1 << 1;	// player box can fit through this connection
-constexpr int bits_LINK_LARGE_HULL = 1 << 2;	// big box can fit through this connection
-constexpr int bits_LINK_FLY_HULL = 1 << 3;		// a flying big box can fit through this connection
-constexpr int bits_LINK_DISABLED = 1 << 4;		// link is not valid when the set
+constexpr int bits_LINK_SMALL_HULL = 1 << 0;	//!< headcrab box can fit through this connection
+constexpr int bits_LINK_HUMAN_HULL = 1 << 1;	//!< player box can fit through this connection
+constexpr int bits_LINK_LARGE_HULL = 1 << 2;	//!< big box can fit through this connection
+constexpr int bits_LINK_FLY_HULL = 1 << 3;		//!< a flying big box can fit through this connection
+constexpr int bits_LINK_DISABLED = 1 << 4;		//!< link is not valid when the set
 
 constexpr int NODE_SMALL_HULL = 0;
 constexpr int NODE_HUMAN_HULL = 1;
 constexpr int NODE_LARGE_HULL = 2;
 constexpr int NODE_FLY_HULL = 3;
 
+/**
+*	@brief A link between 2 nodes
+*/
 class CLink
 {
 public:
-	int		m_iSrcNode;// the node that 'owns' this link ( keeps us from having to make reverse lookups )
-	int		m_iDestNode;// the node on the other end of the link. 
+	int		m_iSrcNode;		//!< the node that 'owns' this link ( keeps us from having to make reverse lookups )
+	int		m_iDestNode;	//!< the node on the other end of the link. 
 
-	entvars_t* m_pLinkEnt;// the entity that blocks this connection (doors, etc)
+	entvars_t* m_pLinkEnt;	//!< the entity that blocks this connection (doors, etc)
 
-	// m_szLinkEntModelname is not necessarily NULL terminated (so we can store it in a more alignment-friendly 4 bytes)
-	char	m_szLinkEntModelname[4];// the unique name of the brush model that blocks the connection (this is kept for save/restore)
+	/**
+	*	@brief the unique name of the brush model that blocks the connection (this is kept for save/restore)
+	*
+	*	m_szLinkEntModelname is not necessarily NULL terminated (so we can store it in a more alignment-friendly 4 bytes)
+	*/
+	char	m_szLinkEntModelname[4];
 
-	int		m_afLinkInfo;// information about this link
-	float	m_flWeight;// length of the link line segment
+	int		m_afLinkInfo;	//!< information about this link
+	float	m_flWeight;		//!< length of the link line segment
 };
 
 
@@ -103,29 +108,28 @@ struct DIST_INFO
 struct CACHE_ENTRY
 {
 	Vector v;
-	short n;		// Nearest node or -1 if no node found.
+	short n;		//!< Nearest node or -1 if no node found.
 };
 
-//=========================================================
-// CGraph 
-//=========================================================
-constexpr int	GRAPH_VERSION = 17; // !!!increment this whever graph/node/link classes change, to obsolesce older disk files.
+constexpr int	GRAPH_VERSION = 17; //!< !!!increment this whever graph/node/link classes change, to obsolesce older disk files.
+
 class CGraph
 {
 public:
 
+	//TODO: need to use qboolean for boolean members because this class is saved to disk
 	// the graph has two flags, and should not be accessed unless both flags are true!
-	bool	m_fGraphPresent;// is the graph in memory?
-	bool	m_fGraphPointersSet;// are the entity pointers for the graph all set?
-	bool    m_fRoutingComplete; // are the optimal routes computed, yet?
+	bool	m_fGraphPresent;	//!< is the graph in memory?
+	bool	m_fGraphPointersSet;//!< are the entity pointers for the graph all set?
+	bool    m_fRoutingComplete; //!< are the optimal routes computed, yet?
 
-	CNode* m_pNodes;// pointer to the memory block that contains all node info
-	CLink* m_pLinkPool;// big list of all node connections
-	char* m_pRouteInfo; // compressed routing information the nodes use.
+	CNode* m_pNodes;			//!< pointer to the memory block that contains all node info
+	CLink* m_pLinkPool;			//!< big list of all node connections
+	char* m_pRouteInfo;			//!< compressed routing information the nodes use.
 
-	int		m_cNodes;// total number of nodes
-	int		m_cLinks;// total number of links
-	int     m_nRouteInfo; // size of m_pRouteInfo in bytes.
+	int		m_cNodes;			//!< total number of nodes
+	int		m_cLinks;			//!< total number of links
+	int     m_nRouteInfo;		//!< size of m_pRouteInfo in bytes.
 
 	// Tables for making nearest node lookup faster. SortedBy provided nodes in a
 	// order of a particular coordinate. Instead of doing a binary search, RangeStart
@@ -138,7 +142,7 @@ public:
 	//
 	static constexpr int CACHE_SIZE = 128;
 	static constexpr int NUM_RANGES = 256;
-	DIST_INFO* m_di;	// This is m_cNodes long, but the entries don't correspond to CNode entries.
+	DIST_INFO* m_di;	//!< This is m_cNodes long, but the entries don't correspond to CNode entries.
 	int m_RangeStart[3][NUM_RANGES];
 	int m_RangeEnd[3][NUM_RANGES];
 	float m_flShortest;
@@ -146,7 +150,7 @@ public:
 	int m_minX, m_minY, m_minZ, m_maxX, m_maxY, m_maxZ;
 	int m_minBoxX, m_minBoxY, m_minBoxZ, m_maxBoxX, m_maxBoxY, m_maxBoxZ;
 	int m_CheckedCounter;
-	float m_RegionMin[3], m_RegionMax[3]; // The range of nodes.
+	float m_RegionMin[3], m_RegionMax[3]; //!< The range of nodes.
 	CACHE_ENTRY m_Cache[CACHE_SIZE];
 
 
@@ -155,41 +159,144 @@ public:
 	int m_nHashLinks;
 
 
-	// kinda sleazy. In order to allow variety in active idles for monster groups in a room with more than one node, 
-	// we keep track of the last node we searched from and store it here. Subsequent searches by other monsters will pick
-	// up where the last search stopped.
+	/**
+	*	@brief kinda sleazy. In order to allow variety in active idles for monster groups in a room with more than one node,
+	*	we keep track of the last node we searched from and store it here.
+	*	Subsequent searches by other monsters will pick up where the last search stopped.
+	*/
 	int		m_iLastActiveIdleSearch;
 
-	// another such system used to track the search for cover nodes, helps greatly with two monsters trying to get to the same node.
+	/**
+	*	@brief another such system used to track the search for cover nodes, helps greatly with two monsters trying to get to the same node.
+	*/
 	int		m_iLastCoverSearch;
 
 	// functions to create the graph
+	/**
+	*	@brief the first, most basic function of node graph creation, this connects every node to every other node that it can see.
+	*
+	*	@details Expects a pointer to an empty connection pool and a file pointer to write progress to.
+	*	If there's a problem with this process, the index of the offending node will be written to piBadNode
+	*	@return the total number of initial links.
+	*/
 	int		LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode);
+
+	/**
+	*	@brief expects a pointer to a link pool, and a pointer to and already-open file ( if you want status reports written to disk ).
+	*	@return the number of connections that were rejected
+	*/
 	int		RejectInlineLinks(CLink* pLinkPool, FSFile& file);
+
+	/**
+	*	@brief accepts a capability mask (afCapMask),
+	*	and will only find a path usable by a monster with those capabilities returns the number of nodes copied into supplied array
+	*/
 	int		FindShortestPath(int* piPath, int iStart, int iDest, int iHull, int afCapMask);
+
+	/**
+	*	@brief returns the index of the node nearest the given vector -1 is failure (couldn't find a valid near node)
+	*/
 	int		FindNearestNode(const Vector& vecOrigin, CBaseEntity* pEntity);
 	int		FindNearestNode(const Vector& vecOrigin, int afNodeTypes);
+
+	/**
+	*	@brief finds the connection (line) nearest the given point.
+	*
+	*	Returns false if fails, or true if it has stuffed the index into the nearest link pool connection into the passed int pointer,
+	*	and a bool telling whether or  not the point is along the line into the passed bool pointer.
+	*/
 	//int		FindNearestLink ( const Vector &vecTestPoint, int *piNearestLink, bool *pfAlongLine );
+
+	/**
+	*	@brief Sum up graph weights on the path from iStart to iDest to determine path length
+	*/
 	float	PathLength(int iStart, int iDest, int iHull, int afCapMask);
+
+	/**
+	*	@brief Parse the routing table at iCurrentNode for the next node on the shortest path to iDest
+	*/
 	int		NextNodeInRoute(int iCurrentNode, int iDest, int iHull, int iCap);
 
-	enum NODEQUERY { NODEGRAPH_DYNAMIC, NODEGRAPH_STATIC };
-	// A static query means we're asking about the possiblity of handling this entity at ANY time
-	// A dynamic query means we're asking about it RIGHT NOW.  So we should query the current state
+	enum NODEQUERY
+	{
+		NODEGRAPH_DYNAMIC,	//!< A static query means we're asking about the possiblity of handling this entity at ANY time
+		NODEGRAPH_STATIC	//!< A dynamic query means we're asking about it RIGHT NOW.  So we should query the current state
+	};
+
+	/**
+	*	@brief a brush ent is between two nodes that would otherwise be able to see each other.
+	*	Given the monster's capability, determine whether or not the monster can go this way.
+	*/
 	int		HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODEQUERY queryType);
+
+	/**
+	*	@brief sometimes the ent that blocks a path is a usable door,
+	*	in which case the monster just needs to face the door and fire it.
+	* 
+	*	In other cases, the monster needs to operate a button or lever to get the door to open.
+	*	This function will return a pointer to the button if the monster needs to hit a button to open the door,
+	*	or returns a pointer to the door if the monster need only use the door.
+	* 
+	*	@param pNode is the node the monster will be standing on when it will need to stop and trigger the ent.
+	*/
 	entvars_t* LinkEntForLink(CLink* pLink, CNode* pNode);
+
+	/**
+	*	@brief draws a line from the given node to all connected nodes
+	*/
 	void	ShowNodeConnections(int iNode);
+
+	/**
+	*	@brief prepares the graph for use. Frees any memory currently in use by the world graph, NULLs all pointers, and zeros the node count.
+	*/
 	void	InitGraph();
+
+	//TODO: check if functions need to return bool
+
+	/**
+	*	@brief temporary function that mallocs a reasonable number of nodes so we can build the path which will be saved to disk.
+	*/
 	int		AllocNodes();
 
+	/**
+	*	@brief this function checks the date of the BSP file that was just loaded and the date of the associated .NOD file.
+	*	If the NOD file is not present, or is older than the BSP file, we rebuild it.
+	*
+	*	@return false if the .NOD file doesn't qualify and needs to be rebuilt.
+
+	*	!!!BUGBUG - the file times we get back are 20 hours ahead!
+	*	since this happens consistently, we can still correctly determine which of the 2 files is newer.
+	*	This needs to be fixed, though. ( I now suspect that we are getting GMT back from these functions and must compensate for local time ) (sjb)
+	*/
 	int		CheckNODFile(const char* szMapName);
+
+	/**
+	*	@brief attempts to load a node graph from disk.
+	*
+	*	@details if the current level is maps/snar.bsp, maps/graphs/snar.nod will be loaded.
+	*	If file cannot be loaded, the node tree will be created and saved to disk.
+	*/
 	int		FLoadGraph(const char* szMapName);
+
+	/**
+	*	@brief It's not rocket science. this WILL overwrite existing files.
+	*/
 	int		FSaveGraph(const char* szMapName);
+
+	/**
+	*	@brief Takes the modelnames of  all of the brush ents that block connections in the node graph and resolves them into pointers to those entities.
+	*	this is done after loading the graph from disk, whereupon
+	*	the pointers are not valid.
+	*/
 	int		FSetGraphPointers();
 	void	CheckNode(Vector vecOrigin, int iNode);
 
 	void    BuildRegionTables();
 	void    ComputeStaticRoutingTables();
+
+	/**
+	*	@brief Test those routing tables. Doesn't really work, yet.
+	*/
 	void    TestRoutingTables();
 
 	void	HashInsert(int iSrcNode, int iDestNode, int iKey);
@@ -197,10 +304,13 @@ public:
 	void	HashChoosePrimes(int TableSize);
 	void    BuildLinkLookups();
 
+	/**
+	*	@brief Renumber nodes so that nodes that link together are together.
+	*/
 	void    SortNodes();
 
-	int			HullIndex(const CBaseEntity* pEntity);	// what hull the monster uses
-	int			NodeType(const CBaseEntity* pEntity);		// what node type the monster uses
+	int			HullIndex(const CBaseEntity* pEntity);		//!< what hull the monster uses
+	int			NodeType(const CBaseEntity* pEntity);		//!< what node type the monster uses
 	inline int	CapIndex(int afCapMask)
 	{
 		if (afCapMask & (bits_CAP_OPEN_DOORS | bits_CAP_AUTO_DOORS | bits_CAP_USE))
@@ -260,13 +370,16 @@ public:
 #endif
 };
 
-//=========================================================
-// Nodes start out as ents in the level. The node graph 
-// is built, then these ents are discarded. 
-//=========================================================
+/**
+*	@brief Nodes start out as ents in the level. The node graph  is built, then these ents are discarded. 
+*/
 class CNodeEnt : public CBaseEntity
 {
 	void Spawn() override;
+
+	/**
+	*	@brief nodes start out as ents in the world. As they are spawned, the node info is recorded then the ents are discarded.
+	*/
 	void KeyValue(KeyValueData* pkvd) override;
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
@@ -274,10 +387,10 @@ class CNodeEnt : public CBaseEntity
 	short m_sHintActivity;
 };
 
-
-//=========================================================
-// CStack - last in, first out.
-//=========================================================
+/**
+*	@brief CStack - last in, first out.
+*	TODO: can probably be replaced by std::stack
+*/
 class CStack
 {
 public:
@@ -287,6 +400,10 @@ public:
 	int		Top();
 	int		Empty() { return m_level == 0; }
 	int		Size() { return m_level; }
+
+	/**
+	*	@brief copies every element on the stack into an array LIFO 
+	*/
 	void    CopyToArray(int* piArray);
 
 private:
@@ -294,10 +411,10 @@ private:
 	int		m_level;
 };
 
-
-//=========================================================
-// CQueue - first in, first out.
-//=========================================================
+/**
+*	@brief CQueue - first in, first out.
+*	TODO: can probably be replaced by std::deque or std::list/forward_list
+*/
 class CQueue
 {
 public:
@@ -321,10 +438,10 @@ private:
 	int m_tail;
 };
 
-//=========================================================
-// CQueuePriority - Priority queue (smallest item out first).
-//
-//=========================================================
+/**
+*	@brief Priority queue (smallest item out first).
+*	TODO: can probably be replaced by std::priority_queue
+*/
 class CQueuePriority
 {
 public:
@@ -349,10 +466,9 @@ private:
 
 };
 
-//=========================================================
-// hints - these MUST coincide with the HINTS listed under
-// info_node in the FGD file!
-//=========================================================
+/**
+*	@brief these MUST coincide with the HINTS listed under info_node in the FGD file!
+*/
 enum
 {
 	HINT_NONE = 0,

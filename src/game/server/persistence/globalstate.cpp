@@ -40,7 +40,6 @@ globalentity_t* CGlobalState::Find(string_t globalname)
 }
 
 
-// This is available all the time now on impulse 104, remove later
 //#ifdef _DEBUG
 void CGlobalState::DumpGlobals()
 {

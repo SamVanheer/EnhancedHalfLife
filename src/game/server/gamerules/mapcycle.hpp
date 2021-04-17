@@ -32,6 +32,17 @@ struct mapcycle_t
 	mapcycle_item_t* next_item;
 };
 
+/**
+*	@brief Parse commands/key value pairs to issue right after map xxx command is issued on server level transition
+*/
 void ExtractCommandString(char* s, char* szCommand, std::size_t commandSize);
+
+/**
+*	@brief Parses mapcycle.txt file into mapcycle_t structure
+*/
 bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle);
+
+/**
+*	@brief Clean up memory used by mapcycle when switching it
+*/
 void DestroyMapCycle(mapcycle_t* cycle);

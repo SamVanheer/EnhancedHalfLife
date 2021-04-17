@@ -204,7 +204,6 @@ void UTIL_UnsetGroupTrace()
 	ENGINE_SETGROUPMASK(0, 0);
 }
 
-// Smart version, it'll clean itself up when it pops off stack
 UTIL_GroupTrace::UTIL_GroupTrace(int groupmask, int op)
 {
 	m_oldgroupmask = g_groupmask;
@@ -264,10 +263,8 @@ bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapo
 	return g_pGameRules->GetNextBestWeapon(pPlayer, pCurrentWeapon);
 }
 
-//	float UTIL_MoveToOrigin( edict_t *pent, const Vector vecGoal, float flDist, int iMoveType )
 void UTIL_MoveToOrigin(edict_t* pent, const Vector& vecGoal, float flDist, int iMoveType)
 {
-	//		return MOVE_TO_ORIGIN ( pent, vecGoal, flDist, iMoveType ); 
 	MOVE_TO_ORIGIN(pent, vecGoal, flDist, iMoveType);
 }
 
@@ -544,11 +541,6 @@ static short FixedSigned16(float value, float scale)
 	return (short)output;
 }
 
-// Shake the screen of all clients within radius
-// radius == 0, shake all clients
-// UNDONE: Allow caller to shake clients not ONGROUND?
-// UNDONE: Fix falloff model (disabled)?
-// UNDONE: Affect user controls?
 void UTIL_ScreenShake(const Vector& center, float amplitude, float frequency, float duration, float radius)
 {
 	int			i;
@@ -1085,15 +1077,6 @@ void UTIL_DecalTrace(TraceResult* pTrace, int decalNumber)
 	MESSAGE_END();
 }
 
-/*
-==============
-UTIL_PlayerDecalTrace
-
-A player is trying to apply his custom decal for the spray can.
-Tell connected clients to display it, or use the default spray can decal
-if the custom can't be loaded.
-==============
-*/
 void UTIL_PlayerDecalTrace(TraceResult* pTrace, int playernum, int decalNumber, bool bIsCustom)
 {
 	int index;
@@ -1186,6 +1169,7 @@ bool UTIL_TeamsMatch(const char* pTeamName1, const char* pTeamName2)
 	return false;
 }
 
+//TODO: move to string_utils.hpp
 void UTIL_StringToIntArray(int* pVector, int count, const char* pString)
 {
 	char* pstr, * pfront, tempString[128];
@@ -1335,10 +1319,6 @@ void UTIL_PrecacheOther(const char* szClassname)
 	REMOVE_ENTITY(pent);
 }
 
-//=========================================================
-// UTIL_LogPrintf - Prints a logged message to console.
-// Preceded by LOG: ( timestamp ) < message >
-//=========================================================
 void UTIL_LogPrintf(const char* fmt, ...)
 {
 	va_list			argptr;
@@ -1352,10 +1332,6 @@ void UTIL_LogPrintf(const char* fmt, ...)
 	ALERT(at_logged, "%s", string);
 }
 
-//=========================================================
-// UTIL_DotPoints - returns the dot product of a line from
-// src to check and vecdir.
-//=========================================================
 float UTIL_DotPoints(const Vector& vecSrc, const Vector& vecCheck, const Vector& vecDir)
 {
 	Vector2D	vec2LOS;
@@ -1366,10 +1342,6 @@ float UTIL_DotPoints(const Vector& vecSrc, const Vector& vecCheck, const Vector&
 	return DotProduct(vec2LOS, (vecDir.Make2D()));
 }
 
-
-//=========================================================
-// UTIL_StripToken - for redundant keynames
-//=========================================================
 void UTIL_StripToken(const char* pKey, char* pDest)
 {
 	int i = 0;

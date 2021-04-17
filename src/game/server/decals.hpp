@@ -15,9 +15,9 @@
 
 #pragma once
 
-//
-// Dynamic Decals
-//
+/**
+*	@brief Dynamic Decals
+*/
 enum decal_e
 {
 	DECAL_GUNSHOT1 = 0,
@@ -55,13 +55,13 @@ enum decal_e
 	DECAL_BIGSHOT5,
 	DECAL_SPIT1,
 	DECAL_SPIT2,
-	DECAL_BPROOF1,		// Bulletproof glass decal
-	DECAL_GARGSTOMP1,	// Gargantua stomp crack
-	DECAL_SMALLSCORCH1,	// Small scorch mark
-	DECAL_SMALLSCORCH2,	// Small scorch mark
-	DECAL_SMALLSCORCH3,	// Small scorch mark
-	DECAL_MOMMABIRTH,	// Big momma birth splatter
-	DECAL_MOMMASPLAT,
+	DECAL_BPROOF1,		//!< Bulletproof glass decal
+	DECAL_GARGSTOMP1,	//!< Gargantua stomp crack
+	DECAL_SMALLSCORCH1,	//!< Small scorch mark
+	DECAL_SMALLSCORCH2,	//!< Small scorch mark
+	DECAL_SMALLSCORCH3,	//!< Small scorch mark
+	DECAL_MOMMABIRTH,	//!< Big momma birth splatter
+	DECAL_MOMMASPLAT,	//!< BM Mortar spray
 };
 
 struct DLL_DECALLIST

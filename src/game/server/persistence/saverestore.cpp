@@ -132,11 +132,6 @@ TYPEDESCRIPTION	gEntvarsDescription[] =
 
 constexpr int ENTVARS_COUNT = (sizeof(gEntvarsDescription) / sizeof(gEntvarsDescription[0]));
 
-// --------------------------------------------------------------
-//
-// CSave
-//
-// --------------------------------------------------------------
 static constexpr int gSizes[FIELD_TYPECOUNT] =
 {
 	sizeof(float),		// FIELD_FLOAT
@@ -164,7 +159,6 @@ static constexpr int gSizes[FIELD_TYPECOUNT] =
 };
 
 
-// Base class includes common SAVERESTOREDATA pointer, and manages the entity table
 CSaveRestoreBuffer::CSaveRestoreBuffer()
 {
 	m_pdata = nullptr;
@@ -688,12 +682,6 @@ void CSave::BufferData(const char* pdata, int size)
 	m_pdata->pCurrentData += size;
 	m_pdata->size += size;
 }
-
-// --------------------------------------------------------------
-//
-// CRestore
-//
-// --------------------------------------------------------------
 
 int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount, int startField, int size, char* pName, void* pData)
 {

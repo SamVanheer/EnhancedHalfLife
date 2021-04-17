@@ -18,14 +18,6 @@
 #include "mapcycle.hpp"
 #include "CTokenizer.hpp"
 
-/*
-==============
-ExtractCommandString
-
-Parse commands/key value pairs to issue right after map xxx command is issued on server
- level transition
-==============
-*/
 void ExtractCommandString(char* s, char* szCommand, std::size_t commandSize)
 {
 	// Now make rules happen
@@ -73,14 +65,6 @@ void ExtractCommandString(char* s, char* szCommand, std::size_t commandSize)
 	}
 }
 
-/*
-==============
-ReloadMapCycleFile
-
-
-Parses mapcycle.txt file into mapcycle_t structure
-==============
-*/
 bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 {
 	//TODO: clean this up
@@ -203,13 +187,6 @@ bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 	return true;
 }
 
-/*
-==============
-DestroyMapCycle
-
-Clean up memory used by mapcycle when switching it
-==============
-*/
 void DestroyMapCycle(mapcycle_t* cycle)
 {
 	mapcycle_item_t* p, * n, * start;
