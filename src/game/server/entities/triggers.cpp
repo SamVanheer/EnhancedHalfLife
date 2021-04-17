@@ -27,9 +27,6 @@
 #include "trains.h"			// trigger_camera has train functionality
 #include "gamerules.h"
 
-//TODO: remove declaration
-extern DLL_GLOBAL bool		g_fGameOver;
-
 LINK_ENTITY_TO_CLASS(func_friction, CFrictionModifier);
 
 // Global Savedata for changelevel friction modifier
@@ -370,13 +367,6 @@ void CBaseTrigger::ActivateMultiTrigger(CBaseEntity* pActivator)
 
 	if (!UTIL_IsMasterTriggered(m_sMaster, pActivator))
 		return;
-	//TODO: is trigger_secret even a thing anymore?
-	if (FClassnameIs(pev, "trigger_secret"))
-	{
-		if (pev->enemy == nullptr || !FClassnameIs(pev->enemy, "player"))
-			return;
-		gpGlobals->found_secrets++;
-	}
 
 	if (!FStringNull(pev->noise))
 		EmitSound(CHAN_VOICE, STRING(pev->noise));

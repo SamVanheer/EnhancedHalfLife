@@ -195,10 +195,6 @@ public:
 	virtual bool	IsMoving() { return pev->velocity != vec3_origin; }
 	virtual void	OverrideReset() {}
 	virtual int		DamageDecal(int bitsDamageType);
-	/**
-	*	@brief This is ONLY used by the node graph to test movement through a door (TODO never actually called, can remove)
-	*/
-	virtual void	SetToggleState(ToggleState state) {}
 	virtual void    StartSneaking() {}
 	virtual void    StopSneaking() {}
 	virtual bool	OnControls(entvars_t* pev) { return false; }
@@ -344,13 +340,6 @@ public:
 
 
 	// virtual functions used by a few classes
-
-	/**
-	*	@brief used by monsters that are created by the MonsterMaker TODO never used, DeathNotice is used for this
-	*/
-	virtual	void UpdateOwner() {}
-
-
 	/**
 	*	@brief NOTE: szName must be a pointer to constant memory, e.g. "monster_class" because the entity will keep a pointer to it after this call.
 	*/
@@ -700,14 +689,6 @@ public:
 
 	bool	m_fStayPushed;		//!< button stays pushed in until touched again?
 	bool	m_fRotating;		//!< a rotating button?  default is a sliding button.
-
-	/**
-	*	@brief if this field is not null, this is an index into the engine string array.
-	*	When this button is touched, it's target entity's TARGET field will be set to the button's ChangeTarget.
-	*	This allows you to make a func_train switch paths, etc.
-	*	TODO never actually used, remove
-	*/
-	string_t m_strChangeTarget;
 
 	locksound_t m_ls;			//!< door lock sounds
 

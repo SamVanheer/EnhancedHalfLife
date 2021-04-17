@@ -25,8 +25,6 @@
 #include "nodes.h"
 #include "doors.h"
 
-bool FEntIsVisible(entvars_t* pev, entvars_t* pevTarget);
-
 // Landmark class
 void CPointEntity::Spawn()
 {
@@ -438,27 +436,3 @@ float CBaseToggle::AxisDelta(int flags, const Vector& angle1, const Vector& angl
 
 	return angle1.y - angle2.y;
 }
-
-
-/**
-*	@brief returns true if the passed entity is visible to caller, even if not infront ()
-*/
-//TODO: never used?
-bool FEntIsVisible(entvars_t* pev, entvars_t* pevTarget)
-{
-	Vector vecSpot1 = pev->origin + pev->view_ofs;
-	Vector vecSpot2 = pevTarget->origin + pevTarget->view_ofs;
-	TraceResult tr;
-
-	UTIL_TraceLine(vecSpot1, vecSpot2, ignore_monsters, ENT(pev), &tr);
-
-	if (tr.fInOpen && tr.fInWater)
-		return false;                   // sight line crossed contents
-
-	if (tr.flFraction == 1)
-		return true;
-
-	return false;
-}
-
-

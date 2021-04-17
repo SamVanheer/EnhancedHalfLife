@@ -113,18 +113,6 @@ void CChangeLevel::Spawn()
 	//	ALERT( at_console, "TRANSITION: %s (%s)\n", m_szMapName, m_szLandmarkName );
 }
 
-//TODO: never used
-void CChangeLevel::ExecuteChangeLevel()
-{
-	MESSAGE_BEGIN(MSG_ALL, SVC_CDTRACK);
-	WRITE_BYTE(3);
-	WRITE_BYTE(3);
-	MESSAGE_END();
-
-	MESSAGE_BEGIN(MSG_ALL, SVC_INTERMISSION);
-	MESSAGE_END();
-}
-
 static char st_szNextMap[MAX_MAPNAME_LENGTH];
 static char st_szNextSpot[MAX_MAPNAME_LENGTH];
 

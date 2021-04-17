@@ -277,7 +277,6 @@ TYPEDESCRIPTION CBaseButton::m_SaveData[] =
 	DEFINE_FIELD(CBaseButton, m_bLockedSentence, FIELD_CHARACTER),
 	DEFINE_FIELD(CBaseButton, m_bUnlockedSound, FIELD_CHARACTER),
 	DEFINE_FIELD(CBaseButton, m_bUnlockedSentence, FIELD_CHARACTER),
-	DEFINE_FIELD(CBaseButton, m_strChangeTarget, FIELD_STRING),
 	//	DEFINE_FIELD( CBaseButton, m_ls, FIELD_??? ),   // This is restored in Precache()
 };
 
@@ -352,12 +351,7 @@ void CBaseButton::Precache()
 
 void CBaseButton::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "changetarget"))
-	{
-		m_strChangeTarget = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
-	}
-	else if (FStrEq(pkvd->szKeyName, "locked_sound"))
+	if (FStrEq(pkvd->szKeyName, "locked_sound"))
 	{
 		m_bLockedSound = atof(pkvd->szValue);
 		pkvd->fHandled = true;

@@ -43,8 +43,6 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	void SetToggleState(ToggleState state) override;
-
 	// used to selectivly override defaults
 	void EXPORT DoorTouch(CBaseEntity* pOther);
 
@@ -314,16 +312,6 @@ void CBaseDoor::Spawn()
 	else // touchable button
 		SetTouch(&CBaseDoor::DoorTouch);
 }
-
-
-void CBaseDoor::SetToggleState(ToggleState state)
-{
-	if (state == ToggleState::AtTop)
-		UTIL_SetOrigin(pev, m_vecPosition2);
-	else
-		UTIL_SetOrigin(pev, m_vecPosition1);
-}
-
 
 void CBaseDoor::Precache()
 {
@@ -807,7 +795,6 @@ class CRotDoor : public CBaseDoor
 {
 public:
 	void Spawn() override;
-	void SetToggleState(ToggleState state) override;
 };
 
 LINK_ENTITY_TO_CLASS(func_door_rotating, CRotDoor);
@@ -861,18 +848,6 @@ void CRotDoor::Spawn()
 	else // touchable button
 		SetTouch(&CRotDoor::DoorTouch);
 }
-
-
-void CRotDoor::SetToggleState(ToggleState state)
-{
-	if (state == ToggleState::AtTop)
-		pev->angles = m_vecAngle2;
-	else
-		pev->angles = m_vecAngle1;
-
-	UTIL_SetOrigin(pev, pev->origin);
-}
-
 
 class CMomentaryDoor : public CBaseToggle
 {
