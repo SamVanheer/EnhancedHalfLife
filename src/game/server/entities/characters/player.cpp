@@ -4037,7 +4037,7 @@ Vector CBasePlayer :: GetAutoaimVector( float flDelta )
 
 
 	// always use non-sticky autoaim
-	// UNDONE: use sever variable to chose!
+	// UNDONE: use server variable to choose!
 	if (false || g_SkillLevel == SkillLevel::Easy)
 	{
 		m_vecAutoAim = m_vecAutoAim * 0.67 + angles * 0.33;
