@@ -55,6 +55,8 @@ target_sources(hl PRIVATE
 	entities/animation.h
 	entities/cbase.cpp
 	entities/cbase.h
+	entities/changelevel.cpp
+	entities/changelevel.hpp
 	entities/ehandle.cpp
 	entities/ehandle.hpp
 	entities/maprules.cpp
@@ -62,6 +64,7 @@ target_sources(hl PRIVATE
 	entities/monsterevent.h
 	entities/subs.cpp
 	entities/triggers.cpp
+	entities/triggers.hpp
 	entities/world.cpp
 	entities/brush/bmodels.cpp
 	entities/brush/buttons.cpp
