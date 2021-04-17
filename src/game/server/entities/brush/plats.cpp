@@ -1119,11 +1119,11 @@ void CFuncTrackTrain :: StopSound()
 		EMIT_SOUND_DYN(ENT(pev), CHAN_ITEM, "plats/ttrain_brake1.wav", m_flVolume, ATTN_NORM, 0, 100);
 	}
 
-	m_soundPlaying = 0;
+	m_soundPlaying = false;
 }
 
 // update pitch based on speed, start sound if not playing
-// NOTE: when train goes through transition, m_soundPlaying should go to 0, 
+// NOTE: when train goes through transition, m_soundPlaying should go to false, 
 // which will cause the looped sound to restart.
 
 void CFuncTrackTrain :: UpdateSound()
@@ -1140,7 +1140,7 @@ void CFuncTrackTrain :: UpdateSound()
 		// play startup sound for train
 		EMIT_SOUND_DYN(ENT(pev), CHAN_ITEM, "plats/ttrain_start1.wav", m_flVolume, ATTN_NORM, 0, 100);
 		EMIT_SOUND_DYN(ENT(pev), CHAN_STATIC, STRING(pev->noise), m_flVolume, ATTN_NORM, 0, (int) flpitch);
-		m_soundPlaying = 1;
+		m_soundPlaying = true;
 	} 
 	else
 	{
@@ -1648,9 +1648,9 @@ public:
 	virtual void	UpdateAutoTargets(ToggleState toggleState );
 	bool	IsTogglePlat() override { return true; }
 
-	void			DisableUse() { m_use = 0; }
-	void			EnableUse() { m_use = 1; }
-	int				UseEnabled() { return m_use; }
+	void			DisableUse() { m_use = false; }
+	void			EnableUse() { m_use = true; }
+	bool UseEnabled() { return m_use; }
 
 	bool Save(CSave& save) override;
 	bool Restore( CRestore &restore ) override;
@@ -1669,7 +1669,7 @@ public:
 	string_t m_trainName;
 	TrainCode m_code;
 	ToggleState m_targetState;
-	int				m_use;
+	bool m_use;
 };
 LINK_ENTITY_TO_CLASS( func_trackchange, CFuncTrackChange );
 
@@ -1683,7 +1683,7 @@ TYPEDESCRIPTION	CFuncTrackChange::m_SaveData[] =
 	DEFINE_GLOBAL_FIELD( CFuncTrackChange, m_trainName, FIELD_STRING ),
 	DEFINE_FIELD( CFuncTrackChange, m_code, FIELD_INTEGER ),
 	DEFINE_FIELD( CFuncTrackChange, m_targetState, FIELD_INTEGER ),
-	DEFINE_FIELD( CFuncTrackChange, m_use, FIELD_INTEGER ),
+	DEFINE_FIELD( CFuncTrackChange, m_use, FIELD_BOOLEAN ),
 };
 
 IMPLEMENT_SAVERESTORE( CFuncTrackChange, CFuncPlatRot );

@@ -25,7 +25,7 @@
 #include "vgui_TeamFortressViewport.h"
 
 
-extern int g_iAlive;
+extern bool g_iAlive;
 
 extern int g_weaponselect;
 
@@ -39,7 +39,7 @@ int CL_ButtonBits( int );
 extern cvar_t *in_joystick;
 
 int	in_impulse	= 0;
-int	in_cancel	= 0;
+bool in_cancel = false;
 
 cvar_t	*m_pitch;
 cvar_t	*m_yaw;
@@ -480,13 +480,13 @@ void IN_AttackDown()
 void IN_AttackUp()
 {
 	KeyUp( &in_attack );
-	in_cancel = 0;
+	in_cancel = false;
 }
 
 // Special handling
 void IN_Cancel()
 {
-	in_cancel = 1;
+	in_cancel = true;
 }
 
 void IN_Impulse ()

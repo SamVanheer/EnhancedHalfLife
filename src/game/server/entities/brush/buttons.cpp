@@ -131,7 +131,7 @@ TYPEDESCRIPTION CMultiSource::m_SaveData[] =
 {
 	//!!!BUGBUG FIX
 	DEFINE_ARRAY( CMultiSource, m_rgEntities, FIELD_EHANDLE, MS_MAX_TARGETS ),
-	DEFINE_ARRAY( CMultiSource, m_rgTriggered, FIELD_INTEGER, MS_MAX_TARGETS ),
+	DEFINE_ARRAY( CMultiSource, m_rgTriggered, FIELD_BOOLEAN, MS_MAX_TARGETS ),
 	DEFINE_FIELD( CMultiSource, m_iTotal, FIELD_INTEGER ),
 	DEFINE_FIELD( CMultiSource, m_globalstate, FIELD_STRING ),
 };
@@ -192,7 +192,7 @@ void CMultiSource::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE 
 
 	// CONSIDER: a Use input to the multisource always toggles.  Could check useType for ON/OFF/TOGGLE
 
-	m_rgTriggered[i-1] ^= 1;
+	m_rgTriggered[i - 1] = !m_rgTriggered[i - 1];
 
 	// 
 	if ( IsTriggered( pActivator ) )
@@ -217,7 +217,7 @@ bool CMultiSource::IsTriggered( CBaseEntity * )
 
 	while (i < m_iTotal)
 	{
-		if (m_rgTriggered[i] == 0)
+		if (!m_rgTriggered[i])
 			break;
 		i++;
 	}
@@ -898,7 +898,7 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int		m_lastUsed;
+	bool m_lastUsed;
 	int		m_direction;
 	float	m_returnSpeed;
 	Vector	m_start;
@@ -907,7 +907,7 @@ public:
 };
 TYPEDESCRIPTION CMomentaryRotButton::m_SaveData[] =
 {
-	DEFINE_FIELD( CMomentaryRotButton, m_lastUsed, FIELD_INTEGER ),
+	DEFINE_FIELD( CMomentaryRotButton, m_lastUsed, FIELD_BOOLEAN ),
 	DEFINE_FIELD( CMomentaryRotButton, m_direction, FIELD_INTEGER ),
 	DEFINE_FIELD( CMomentaryRotButton, m_returnSpeed, FIELD_FLOAT ),
 	DEFINE_FIELD( CMomentaryRotButton, m_start, FIELD_VECTOR ),
@@ -952,7 +952,7 @@ void CMomentaryRotButton::Spawn()
 	const char *pszSound = ButtonSound( m_sounds );
 	PRECACHE_SOUND(pszSound);
 	pev->noise = ALLOC_STRING(pszSound);
-	m_lastUsed = 0;
+	m_lastUsed = false;
 }
 
 void CMomentaryRotButton::KeyValue( KeyValueData *pkvd )
@@ -1026,7 +1026,7 @@ void CMomentaryRotButton::UpdateSelf( float value )
 		fplaysound = true;
 		m_direction = -m_direction;
 	}
-	m_lastUsed = 1;
+	m_lastUsed = true;
 
 	pev->nextthink = pev->ltime + 0.1;
 	if ( m_direction > 0 && value >= 1.0 )
@@ -1077,7 +1077,7 @@ void CMomentaryRotButton::UpdateTarget( float value )
 void CMomentaryRotButton::Off()
 {
 	pev->avelocity = vec3_origin;
-	m_lastUsed = 0;
+	m_lastUsed = false;
 	if ( FBitSet( pev->spawnflags, SF_PENDULUM_AUTO_RETURN ) && m_returnSpeed > 0 )
 	{
 		SetThink( &CMomentaryRotButton::Return );

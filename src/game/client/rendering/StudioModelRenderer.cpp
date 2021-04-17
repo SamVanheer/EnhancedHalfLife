@@ -887,7 +887,7 @@ void CStudioModelRenderer::StudioSetupBones ()
 			m_pPlayerInfo->gaitsequence = 0;
 		}
 
-		int copy = 1;
+		bool copy = true;
 
 		pseqdesc = (mstudioseqdesc_t *)( (byte *)m_pStudioHeader + m_pStudioHeader->seqindex ) + m_pPlayerInfo->gaitsequence;
 
@@ -898,11 +898,11 @@ void CStudioModelRenderer::StudioSetupBones ()
 		{
 			if ( !strcmp( pbones[i].name, "Bip01 Spine" ) )
 			{
-				copy = 0;
+				copy = false;
 			}
 			else if ( !strcmp( pbones[ pbones[i].parent ].name, "Bip01 Pelvis" ) )
 			{
-				copy = 1;
+				copy = true;
 			}
 				
 			if ( copy )

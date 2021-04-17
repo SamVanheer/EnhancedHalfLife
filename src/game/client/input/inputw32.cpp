@@ -33,7 +33,7 @@ constexpr int MOUSE_BUTTON_COUNT = 5;
 // Set this to 1 to show mouse cursor.  Experimental
 int	g_iVisibleMouse = 0;
 
-extern int iMouseInUse;
+extern bool iMouseInUse;
 
 extern kbutton_t	in_strafe;
 extern kbutton_t	in_mlook;
@@ -87,12 +87,12 @@ POINT		current_pos;
 int			old_mouse_x, old_mouse_y, mx_accum, my_accum;
 float		mouse_x, mouse_y;
 
-static int	restore_spi;
+static bool restore_spi;
 static int	originalmouseparms[3], newmouseparms[3] = {0, 0, 1};
-static int	mouseactive = 0;
-int			mouseinitialized;
-static int	mouseparmsvalid;
 static int	mouseshowtoggle = 1;
+static bool mouseactive = false;
+bool mouseinitialized;
+static bool	mouseparmsvalid;
 
 // joystick defines and variables
 // where should defines be moved?
@@ -152,7 +152,7 @@ cvar_t	*joy_yawsensitivity;
 cvar_t	*joy_wwhack1;
 cvar_t	*joy_wwhack2;
 
-int			joy_avail, joy_advancedinit, joy_haspov;
+bool joy_avail, joy_advancedinit, joy_haspov;
 
 #ifdef _WIN32
 DWORD	s_hMouseThreadId = 0;
@@ -234,10 +234,10 @@ void DLLEXPORT IN_ActivateMouse ()
 	{
 #ifdef _WIN32
 		if (mouseparmsvalid)
-			restore_spi = SystemParametersInfo (SPI_SETMOUSE, 0, newmouseparms, 0);
+			restore_spi = SystemParametersInfo (SPI_SETMOUSE, 0, newmouseparms, 0) != FALSE;
 
 #endif
-		mouseactive = 1;
+		mouseactive = true;
 	}
 
 #ifdef _WIN32
@@ -272,7 +272,7 @@ void DLLEXPORT IN_DeactivateMouse ()
 
 #endif
 
-		mouseactive = 0;
+		mouseactive = false;
 	}
 
 #ifdef _WIN32
@@ -295,9 +295,9 @@ void IN_StartupMouse ()
 	if ( gEngfuncs.CheckParm ("-nomouse", nullptr) )
 		return; 
 
-	mouseinitialized = 1;
+	mouseinitialized = true;
 #ifdef _WIN32
-	mouseparmsvalid = SystemParametersInfo (SPI_GETMOUSE, 0, originalmouseparms, 0);
+	mouseparmsvalid = SystemParametersInfo (SPI_GETMOUSE, 0, originalmouseparms, 0) != FALSE;
 
 	if (mouseparmsvalid)
 	{
@@ -695,7 +695,7 @@ void IN_StartupJoystick ()
 		return; 
  
 	// assume no joystick
-	joy_avail = 0; 
+	joy_avail = false; 
 
 	int nJoysticks = SDL_NumJoysticks();
 	if ( nJoysticks > 0 )
@@ -709,7 +709,7 @@ void IN_StartupJoystick ()
 				{
 					//save the joystick's number of buttons and POV status
 					joy_numbuttons = SDL_CONTROLLER_BUTTON_MAX;
-					joy_haspov = 0;
+					joy_haspov = false;
 					
 					// old button and POV states default to no buttons pressed
 					joy_oldbuttonstate = joy_oldpovstate = 0;
@@ -717,8 +717,8 @@ void IN_StartupJoystick ()
 					// mark the joystick as available and advanced initialization not completed
 					// this is needed as cvars are not available during initialization
 					gEngfuncs.Con_Printf ("joystick found\n\n", SDL_GameControllerName(s_pJoystick)); 
-					joy_avail = 1; 
-					joy_advancedinit = 0;
+					joy_avail = true; 
+					joy_advancedinit = false;
 					break;
 				}
 
@@ -913,10 +913,10 @@ void IN_JoyMove ( float frametime, usercmd_t *cmd )
 
 	// complete initialization if first time in
 	// this is needed as cvars are not available at initialization time
-	if( joy_advancedinit != 1 )
+	if( !joy_advancedinit )
 	{
 		Joy_AdvancedUpdate_f();
-		joy_advancedinit = 1;
+		joy_advancedinit = true;
 	}
 
 	// verify joystick is available and that the user wants to use it

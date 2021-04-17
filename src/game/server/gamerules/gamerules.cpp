@@ -27,7 +27,7 @@
 
 extern DLL_GLOBAL bool	g_fGameOver;
 
-int g_teamplay = 0;
+bool g_teamplay = false;
 
 //=========================================================
 //=========================================================
@@ -295,7 +295,7 @@ CGameRules *InstallGameRules()
 	if ( !gpGlobals->deathmatch )
 	{
 		// generic half-life
-		g_teamplay = 0;
+		g_teamplay = false;
 		return new CHalfLifeRules;
 	}
 	else
@@ -304,19 +304,19 @@ CGameRules *InstallGameRules()
 		{
 			// teamplay
 
-			g_teamplay = 1;
+			g_teamplay = true;
 			return new CHalfLifeTeamplay;
 		}
 		if ((int)gpGlobals->deathmatch == 1)
 		{
 			// vanilla deathmatch
-			g_teamplay = 0;
+			g_teamplay = false;
 			return new CHalfLifeMultiplay;
 		}
 		else
 		{
 			// vanilla deathmatch??
-			g_teamplay = 0;
+			g_teamplay = false;
 			return new CHalfLifeMultiplay;
 		}
 	}

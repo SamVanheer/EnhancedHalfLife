@@ -27,7 +27,7 @@
 using namespace vgui;
 
 
-extern int cam_thirdperson;
+extern bool cam_thirdperson;
 
 
 constexpr float VOICE_MODEL_INTERVAL = 0.3;

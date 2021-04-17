@@ -45,12 +45,12 @@ public:
 	bool Restore( CRestore &restore ) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int			m_animate;
+	bool m_animate;
 };
 
 TYPEDESCRIPTION	CCycler::m_SaveData[] = 
 {
-	DEFINE_FIELD( CCycler, m_animate, FIELD_INTEGER ),
+	DEFINE_FIELD( CCycler, m_animate, FIELD_BOOLEAN ),
 };
 
 IMPLEMENT_SAVERESTORE( CCycler, CBaseMonster );
@@ -128,12 +128,12 @@ void CCycler :: Spawn( )
 
 	if (pev->sequence != 0 || pev->frame != 0)
 	{
-		m_animate = 0;
+		m_animate = false;
 		pev->framerate = 0;
 	}
 	else
 	{
-		m_animate = 1;
+		m_animate = true;
 	}
 }
 
@@ -222,7 +222,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	inline bool		ShouldAnimate() { return m_animate && m_maxFrame > 1.0; }
-	int			m_animate;
+	bool m_animate;
 	float		m_lastTime;
 	float		m_maxFrame;
 };
@@ -231,7 +231,7 @@ LINK_ENTITY_TO_CLASS( cycler_sprite, CCyclerSprite );
 
 TYPEDESCRIPTION	CCyclerSprite::m_SaveData[] = 
 {
-	DEFINE_FIELD( CCyclerSprite, m_animate, FIELD_INTEGER ),
+	DEFINE_FIELD( CCyclerSprite, m_animate, FIELD_BOOLEAN ),
 	DEFINE_FIELD( CCyclerSprite, m_lastTime, FIELD_TIME ),
 	DEFINE_FIELD( CCyclerSprite, m_maxFrame, FIELD_FLOAT ),
 };
@@ -248,7 +248,7 @@ void CCyclerSprite::Spawn()
 
 	pev->frame			= 0;
 	pev->nextthink		= gpGlobals->time + 0.1;
-	m_animate			= 1;
+	m_animate			= true;
 	m_lastTime			= gpGlobals->time;
 
 	PRECACHE_MODEL( STRING(pev->model) );

@@ -631,7 +631,7 @@ bool CBasePlayerWeapon::AddDuplicate( CBasePlayerItem *pOriginal )
 
 bool CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer )
 {
-	int bResult = CBasePlayerItem::AddToPlayer( pPlayer );
+	bool bResult = CBasePlayerItem::AddToPlayer( pPlayer );
 
 	pPlayer->pev->weapons |= (1<<m_iId);
 
@@ -842,7 +842,7 @@ bool CBasePlayerWeapon :: PlayEmptySound()
 	if (m_iPlayEmptySound)
 	{
 		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/357_cock1.wav", 0.8, ATTN_NORM);
-		m_iPlayEmptySound = 0;
+		m_iPlayEmptySound = false;
 		return false;
 	}
 	return false;
@@ -1375,7 +1375,7 @@ void CBasePlayerWeapon::PrintState()
 
 TYPEDESCRIPTION	CRpg::m_SaveData[] = 
 {
-	DEFINE_FIELD( CRpg, m_fSpotActive, FIELD_INTEGER ),
+	DEFINE_FIELD( CRpg, m_fSpotActive, FIELD_BOOLEAN ),
 	DEFINE_FIELD( CRpg, m_cActiveRockets, FIELD_INTEGER ),
 };
 IMPLEMENT_SAVERESTORE( CRpg, CBasePlayerWeapon );

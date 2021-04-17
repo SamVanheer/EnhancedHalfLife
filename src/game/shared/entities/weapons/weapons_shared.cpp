@@ -97,7 +97,7 @@ bool CBasePlayerWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay, in
 
 void CBasePlayerWeapon::ResetEmptySound()
 {
-	m_iPlayEmptySound = 1;
+	m_iPlayEmptySound = true;
 }
 
 bool CanAttack(float attack_time, float curtime, bool isPredicted)

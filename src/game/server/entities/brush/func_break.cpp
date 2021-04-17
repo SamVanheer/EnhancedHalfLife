@@ -914,7 +914,7 @@ void CPushable :: Touch( CBaseEntity *pOther )
 void CPushable :: Move( CBaseEntity *pOther, int push )
 {
 	entvars_t*	pevToucher = pOther->pev;
-	int playerTouch = 0;
+	bool playerTouch = false;
 
 	// Is entity standing on this pushable ?
 	if ( FBitSet(pevToucher->flags,FL_ONGROUND) && pevToucher->groundentity && VARS(pevToucher->groundentity) == pev )
@@ -931,7 +931,7 @@ void CPushable :: Move( CBaseEntity *pOther, int push )
 	{
 		if ( push && !(pevToucher->button & (IN_FORWARD|IN_USE)) )	// Don't push unless the player is pushing forward and NOT use (pull)
 			return;
-		playerTouch = 1;
+		playerTouch = true;
 	}
 
 	float factor;

@@ -320,7 +320,7 @@ void CRpg::Spawn( )
 	m_iId = WEAPON_RPG;
 
 	SET_MODEL(ENT(pev), "models/w_rpg.mdl");
-	m_fSpotActive = 1;
+	m_fSpotActive = true;
 
 #ifdef CLIENT_DLL
 	if ( bIsMultiplayer() )

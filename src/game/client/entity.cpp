@@ -23,7 +23,7 @@ void Game_AddObjects();
 
 extern Vector v_origin;
 
-int g_iAlive = 1;
+bool g_iAlive = true;
 
 /*
 ========================
@@ -417,9 +417,7 @@ void DLLEXPORT HUD_TempEntUpdate (
 
 	while ( pTemp )
 	{
-		int active;
-
-		active = 1;
+		bool active = true;
 
 		life = pTemp->die - client_time;
 		pnext = pTemp->next;
@@ -431,11 +429,11 @@ void DLLEXPORT HUD_TempEntUpdate (
 					pTemp->entity.curstate.rendermode = kRenderTransTexture;
 				pTemp->entity.curstate.renderamt = pTemp->entity.baseline.renderamt * ( 1 + life * pTemp->fadeSpeed );
 				if ( pTemp->entity.curstate.renderamt <= 0 )
-					active = 0;
+					active = false;
 
 			}
 			else 
-				active = 0;
+				active = false;
 		}
 		if ( !active )		// Kill it
 		{

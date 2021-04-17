@@ -60,10 +60,10 @@ Vector cam_ofs;
 
 
 // In third person
-int cam_thirdperson;
-int cam_mousemove; //true if we are moving the cam with the mouse, False if not
-int iMouseInUse=0;
-int cam_distancemove;
+bool cam_thirdperson;
+bool cam_mousemove; //true if we are moving the cam with the mouse, False if not
+bool iMouseInUse = false;
+bool cam_distancemove;
 extern int mouse_x, mouse_y;  //used to determine what the current x and y values are
 int cam_old_mouse_x, cam_old_mouse_y; //holds the last ticks mouse movement
 Point		cam_mouse;
@@ -439,7 +439,7 @@ void CAM_ToThirdPerson()
 
 	if( !cam_thirdperson )
 	{
-		cam_thirdperson = 1; 
+		cam_thirdperson = true; 
 		
 		cam_ofs[ YAW ] = viewangles[ YAW ]; 
 		cam_ofs[ PITCH ] = viewangles[ PITCH ]; 
@@ -451,7 +451,7 @@ void CAM_ToThirdPerson()
 
 void CAM_ToFirstPerson() 
 { 
-	cam_thirdperson = 0;
+	cam_thirdperson = false;
 	
 	gEngfuncs.Cvar_SetValue( "cam_command", 0 );
 }
@@ -511,12 +511,12 @@ void CAM_ClearStates()
 	cam_in.state = 0;
 	cam_out.state = 0;
 
-	cam_thirdperson = 0;
+	cam_thirdperson = false;
 	cam_command->value = 0;
-	cam_mousemove=0;
+	cam_mousemove = false;
 
 	cam_snapto->value = 0;
-	cam_distancemove = 0;
+	cam_distancemove = false;
 
 	cam_ofs[ 0 ] = 0.0;
 	cam_ofs[ 1 ] = 0.0;
@@ -538,8 +538,8 @@ void CAM_StartMouseMove()
 		//variables for mouse camera movement
 		if (!cam_mousemove)
 		{
-			cam_mousemove=1;
-			iMouseInUse=1;
+			cam_mousemove = true;
+			iMouseInUse = true;
 			SDL_GetCursorPos (&cam_mouse);
 
 			if ( ( flSensitivity = gHUD.GetSensitivity() ) != 0 )
@@ -557,8 +557,8 @@ void CAM_StartMouseMove()
 	//we are not in 3rd person view..therefore do not allow camera movement
 	else
 	{   
-		cam_mousemove=0;
-		iMouseInUse=0;
+		cam_mousemove = false;
+		iMouseInUse = false;
 	}
 }
 
@@ -566,8 +566,8 @@ void CAM_StartMouseMove()
 //tell the engine that mouse camera movement is off
 void CAM_EndMouseMove()
 {
-   cam_mousemove=0;
-   iMouseInUse=0;
+   cam_mousemove = false;
+   iMouseInUse = false;
 }
 
 
@@ -584,9 +584,9 @@ void CAM_StartDistance()
 	  //variables for mouse camera movement
 	  if (!cam_distancemove)
 	  {
-		  cam_distancemove=1;
-		  cam_mousemove=1;
-		  iMouseInUse=1;
+		  cam_distancemove = true;
+		  cam_mousemove = true;
+		  iMouseInUse = true;
 		  SDL_GetCursorPos (&cam_mouse);
 		  cam_old_mouse_x=cam_mouse.x*gHUD.GetSensitivity();
 		  cam_old_mouse_y=cam_mouse.y*gHUD.GetSensitivity();
@@ -595,9 +595,9 @@ void CAM_StartDistance()
 	//we are not in 3rd person view..therefore do not allow camera movement
 	else
 	{   
-		cam_distancemove=0;
-		cam_mousemove=0;
-		iMouseInUse=0;
+		cam_distancemove = false;
+		cam_mousemove = false;
+		iMouseInUse = false;
 	}
 }
 
@@ -605,14 +605,14 @@ void CAM_StartDistance()
 //tell the engine that mouse camera movement is off
 void CAM_EndDistance()
 {
-   cam_distancemove=0;
-   cam_mousemove=0;
-   iMouseInUse=0;
+   cam_distancemove = false;
+   cam_mousemove = false;
+   iMouseInUse = false;
 }
 
 int DLLEXPORT CL_IsThirdPerson()
 {
-	return (cam_thirdperson ? 1 : 0) || (g_iUser1 && (g_iUser2 == gEngfuncs.GetLocalPlayer()->index) );
+	return cam_thirdperson || (g_iUser1 && (g_iUser2 == gEngfuncs.GetLocalPlayer()->index) );
 }
 
 void DLLEXPORT CL_CameraOffset( Vector* ofs )

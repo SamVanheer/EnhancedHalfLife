@@ -186,7 +186,7 @@ bool CBasePlayerWeapon :: PlayEmptySound()
 	if (m_iPlayEmptySound)
 	{
 		HUD_PlaySound( "weapons/357_cock1.wav", 0.8 );
-		m_iPlayEmptySound = 0;
+		m_iPlayEmptySound = false;
 		return false; //TODO: incorrect?
 	}
 	return false;
@@ -414,11 +414,11 @@ Set up weapons, player and functions needed to run weapons code client-side.
 */
 void HUD_InitClientWeapons()
 {
-	static int initialized = 0;
+	static bool initialized = false;
 	if ( initialized )
 		return;
 
-	initialized = 1;
+	initialized = true;
 
 	// Set up pointer ( dummy object )
 	gpGlobals = &Globals;
@@ -688,7 +688,7 @@ void HUD_WeaponsPostThink( local_state_t *from, local_state_t*to, usercmd_t *cmd
 
 	if ( player.m_pActiveItem->m_iId == WEAPON_RPG )
 	{
-		 ( ( CRpg * )player.m_pActiveItem)->m_fSpotActive = (int)from->client.vuser2[ 1 ];
+		 ( ( CRpg * )player.m_pActiveItem)->m_fSpotActive = ((int)from->client.vuser2[ 1 ]) != 0;
 		 ( ( CRpg * )player.m_pActiveItem)->m_cActiveRockets = (int)from->client.vuser2[ 2 ];
 	}
 	

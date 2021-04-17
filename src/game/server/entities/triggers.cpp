@@ -283,13 +283,13 @@ public:
 	string_t m_iTargetName	[ MAX_MULTI_TARGETS ];// list if indexes into global string array
 	float	m_flTargetDelay [ MAX_MULTI_TARGETS ];// delay (in seconds) from time of manager fire to target fire
 private:
-	inline bool IsClone() { return (pev->spawnflags & SF_MULTIMAN_CLONE) ? true : false; }
+	inline bool IsClone() { return (pev->spawnflags & SF_MULTIMAN_CLONE) != 0; }
 	inline bool ShouldClone()
 	{ 
 		if ( IsClone() )
 			return false;
 
-		return (pev->spawnflags & SF_MULTIMAN_THREAD) ? true : false;
+		return (pev->spawnflags & SF_MULTIMAN_THREAD) != 0;
 	}
 
 	CMultiManager *Clone();
@@ -2127,7 +2127,7 @@ public:
 	float m_initialSpeed;
 	float m_acceleration;
 	float m_deceleration;
-	int	  m_state;
+	bool m_state;
 };
 LINK_ENTITY_TO_CLASS( trigger_camera, CTriggerCamera );
 
@@ -2146,7 +2146,7 @@ TYPEDESCRIPTION	CTriggerCamera::m_SaveData[] =
 	DEFINE_FIELD( CTriggerCamera, m_initialSpeed, FIELD_FLOAT ),
 	DEFINE_FIELD( CTriggerCamera, m_acceleration, FIELD_FLOAT ),
 	DEFINE_FIELD( CTriggerCamera, m_deceleration, FIELD_FLOAT ),
-	DEFINE_FIELD( CTriggerCamera, m_state, FIELD_INTEGER ),
+	DEFINE_FIELD( CTriggerCamera, m_state, FIELD_BOOLEAN ),
 };
 
 IMPLEMENT_SAVERESTORE(CTriggerCamera,CBaseDelay);
@@ -2201,7 +2201,7 @@ void CTriggerCamera::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 
 	// Toggle state
 	m_state = !m_state;
-	if (m_state == 0)
+	if (!m_state)
 	{
 		m_flReturnTime = gpGlobals->time;
 		return;
@@ -2307,7 +2307,7 @@ void CTriggerCamera::FollowTarget( )
 
 		SUB_UseTargets( this, USE_TOGGLE, 0 );
 		pev->avelocity = vec3_origin;
-		m_state = 0;
+		m_state = false;
 		return;
 	}
 

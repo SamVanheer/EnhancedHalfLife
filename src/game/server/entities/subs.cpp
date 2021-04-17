@@ -406,10 +406,7 @@ void CBaseToggle :: LinearMoveDone()
 
 bool CBaseToggle :: IsLockedByMaster()
 {
-	if (!FStringNull(m_sMaster) && !UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
-		return true;
-	else
-		return false;
+	return !FStringNull(m_sMaster) && !UTIL_IsMasterTriggered(m_sMaster, m_hActivator);
 }
 
 /*

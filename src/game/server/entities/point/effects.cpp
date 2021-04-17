@@ -50,7 +50,7 @@ public:
 	int		m_density;
 	int		m_frequency;
 	int		m_bubbleModel;
-	int		m_state;
+	bool	m_state;
 };
 
 LINK_ENTITY_TO_CLASS( env_bubbles, CBubbling );
@@ -59,7 +59,7 @@ TYPEDESCRIPTION	CBubbling::m_SaveData[] =
 {
 	DEFINE_FIELD( CBubbling, m_density, FIELD_INTEGER ),
 	DEFINE_FIELD( CBubbling, m_frequency, FIELD_INTEGER ),
-	DEFINE_FIELD( CBubbling, m_state, FIELD_INTEGER ),
+	DEFINE_FIELD( CBubbling, m_state, FIELD_BOOLEAN ),
 	// Let spawn restore this!
 	//	DEFINE_FIELD( CBubbling, m_bubbleModel, FIELD_INTEGER ),
 };
@@ -89,10 +89,10 @@ void CBubbling::Spawn()
 	{
 		SetThink( &CBubbling::FizzThink );
 		pev->nextthink = gpGlobals->time + 2.0;
-		m_state = 1;
+		m_state = true;
 	}
 	else 
-		m_state = 0;
+		m_state = false;
 }
 
 void CBubbling::Precache()
@@ -397,7 +397,7 @@ public:
 
 	void	BeamUpdateVars();
 
-	int		m_active;
+	bool m_active;
 	string_t m_iszStartEntity;
 	string_t m_iszEndEntity;
 	float	m_life;
@@ -437,7 +437,7 @@ void CTripBeam::Spawn()
 
 TYPEDESCRIPTION	CLightning::m_SaveData[] = 
 {
-	DEFINE_FIELD( CLightning, m_active, FIELD_INTEGER ),
+	DEFINE_FIELD( CLightning, m_active, FIELD_BOOLEAN ),
 	DEFINE_FIELD( CLightning, m_iszStartEntity, FIELD_STRING ),
 	DEFINE_FIELD( CLightning, m_iszEndEntity, FIELD_STRING ),
 	DEFINE_FIELD( CLightning, m_life, FIELD_FLOAT ),
@@ -480,18 +480,18 @@ void CLightning::Spawn()
 			if ( !(pev->spawnflags & SF_BEAM_STARTON) )
 			{
 				pev->effects = EF_NODRAW;
-				m_active = 0;
+				m_active = false;
 				pev->nextthink = 0;
 			}
 			else
-				m_active = 1;
+				m_active = true;
 		
 			SetUse( &CLightning::ToggleUse );
 		}
 	}
 	else
 	{
-		m_active = 0;
+		m_active = false;
 		if ( !FStringNull(pev->targetname) )
 		{
 			SetUse( &CLightning::StrikeUse );
@@ -586,13 +586,13 @@ void CLightning::ToggleUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 		return;
 	if ( m_active )
 	{
-		m_active = 0;
+		m_active = false;
 		pev->effects |= EF_NODRAW;
 		pev->nextthink = 0;
 	}
 	else
 	{
-		m_active = 1;
+		m_active = true;
 		pev->effects &= ~EF_NODRAW;
 		DoSparks( GetStartPos(), GetEndPos() );
 		if ( pev->dmg > 0 )
@@ -611,7 +611,7 @@ void CLightning::StrikeUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 
 	if ( m_active )
 	{
-		m_active = 0;
+		m_active = false;
 		SetThink( nullptr );
 	}
 	else
@@ -645,7 +645,7 @@ void CLightning::StrikeThink()
 		else
 			pev->nextthink = gpGlobals->time + m_life + m_restrike;
 	}
-	m_active = 1;
+	m_active = true;
 
 	if (FStringNull(m_iszEndEntity))
 	{

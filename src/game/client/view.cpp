@@ -133,7 +133,7 @@ float V_CalcBob ( ref_params_t *pparams )
 struct pitchdrift_t
 {
 	float		pitchvel;
-	int			nodrift;
+	bool		nodrift;
 	float		driftmove;
 	double		laststop;
 };
@@ -150,7 +150,7 @@ void V_StartPitchDrift()
 	if ( pd.nodrift || !pd.pitchvel )
 	{
 		pd.pitchvel = v_centerspeed->value;
-		pd.nodrift = 0;
+		pd.nodrift = false;
 		pd.driftmove = 0;
 	}
 }
@@ -158,7 +158,7 @@ void V_StartPitchDrift()
 void V_StopPitchDrift ()
 {
 	pd.laststop = gEngfuncs.GetClientTime();
-	pd.nodrift = 1;
+	pd.nodrift = true;
 	pd.pitchvel = 0;
 }
 
@@ -1331,7 +1331,7 @@ void V_CalcSpectatorRefdef ( ref_params_t* pparams )
 		}
 
 		if ( gHUD.m_Spectator.m_pip->value )
-			pparams->nextView = 1;	// force a second renderer view
+			pparams->nextView = true;	// force a second renderer view
 
 		gHUD.m_Spectator.m_iDrawCycle = 0;
 
@@ -1345,7 +1345,7 @@ void V_CalcSpectatorRefdef ( ref_params_t* pparams )
 		pparams->viewport[1] = YRES(gHUD.m_Spectator.m_OverviewData.insetWindowY);
 		pparams->viewport[2] = XRES(gHUD.m_Spectator.m_OverviewData.insetWindowWidth);
 		pparams->viewport[3] = YRES(gHUD.m_Spectator.m_OverviewData.insetWindowHeight);
-		pparams->nextView	 = 0;	// on further view
+		pparams->nextView	 = false;	// on further view
 
 		// override some settings in certain modes
 		switch ( (int)gHUD.m_Spectator.m_pip->value )

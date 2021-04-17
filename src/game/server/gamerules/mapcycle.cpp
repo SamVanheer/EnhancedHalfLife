@@ -89,7 +89,7 @@ bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 
 	auto [fileBuffer, length] = FileSystem_LoadFileIntoBuffer(filename);
 
-	int hasbuffer;
+	bool hasbuffer;
 	mapcycle_item_t* item, * newlist = nullptr, * next;
 
 	if (fileBuffer && length)
@@ -99,7 +99,7 @@ bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 		// the first map name in the file becomes the default
 		while (true)
 		{
-			hasbuffer = 0;
+			hasbuffer = false;
 			memset(szBuffer, 0, MAX_RULE_BUFFER);
 
 			tokenizer.Next();
@@ -114,7 +114,7 @@ bool ReloadMapCycleFile(const char* filename, mapcycle_t* cycle)
 				tokenizer.Next();
 				if (!tokenizer.GetToken().empty())
 				{
-					hasbuffer = 1;
+					hasbuffer = true;
 					safe_strcpy(szBuffer, tokenizer.GetToken());
 				}
 			}

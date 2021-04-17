@@ -356,8 +356,8 @@ struct locksound_t			// sounds that doors and buttons make when locked/unlocked
 
 	float	flwaitSound;			// time delay between playing consecutive 'locked/unlocked' sounds
 	float	flwaitSentence;			// time delay between playing consecutive sentences
-	byte	bEOFLocked;				// true if hit end of list of locked sentences
-	byte	bEOFUnlocked;			// true if hit end of list of unlocked sentences
+	bool	bEOFLocked;				// true if hit end of list of locked sentences
+	bool	bEOFUnlocked;			// true if hit end of list of unlocked sentences
 };
 
 void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton);
@@ -384,7 +384,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	EHANDLE		m_rgEntities[MS_MAX_TARGETS];
-	int			m_rgTriggered[MS_MAX_TARGETS];
+	bool		m_rgTriggered[MS_MAX_TARGETS];
 
 	int			m_iTotal;
 	string_t	m_globalstate;

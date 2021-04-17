@@ -356,8 +356,8 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 	TraceResult tr, beam_tr;
 	float flMaxFrac = 1.0;
 	int	nTotal = 0;
-	int fHasPunched = 0;
-	int fFirstBeam = 1;
+	bool fHasPunched = false;
+	bool fFirstBeam = true;
 	int	nMaxHits = 10;
 
 	pentIgnore = ENT( m_pPlayer->pev );
@@ -403,7 +403,7 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 		if ( fFirstBeam )
 		{
 			m_pPlayer->pev->effects |= EF_MUZZLEFLASH;
-			fFirstBeam = 0;
+			fFirstBeam = false;
 	
 			nTotal += 26;
 		}
@@ -451,7 +451,7 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 				// limit it to one hole punch
 				if (fHasPunched)
 					break;
-				fHasPunched = 1;
+				fHasPunched = true;
 
 				// try punching through wall if secondary attack (primary is incapable of breaking through)
 				if ( !m_fPrimaryFire )

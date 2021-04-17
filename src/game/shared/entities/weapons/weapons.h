@@ -319,8 +319,8 @@ public:
 
 	void UpdateItemInfo() override {}	// updates HUD state
 
-	int m_iPlayEmptySound;
-	int m_fFireOnEmpty;		// True when the gun is empty and the player is still holding down the
+	bool m_iPlayEmptySound;
+	bool m_fFireOnEmpty;		// True when the gun is empty and the player is still holding down the
 							// attack key(s)
 	virtual bool PlayEmptySound();
 	virtual void ResetEmptySound();
@@ -362,7 +362,7 @@ public:
 	int		m_iClip;											// number of shots left in the primary weapon clip, -1 it not used
 	int		m_iClientClip;										// the last version of m_iClip sent to hud dll
 	WeaponState m_iClientWeaponState;							// the last version of the weapon state sent to hud dll (is current weapon, is on target)
-	int		m_fInReload;										// Are we in the middle of a reload;
+	bool	m_fInReload;										// Are we in the middle of a reload;
 
 	int		m_iDefaultAmmo;// how much ammo you get when you pick up this weapon as placed by a level designer.
 	
@@ -810,7 +810,7 @@ public:
 	bool ShouldWeaponIdle() override { return true; }
 
 	CLaserSpot *m_pSpot;
-	int m_fSpotActive;
+	bool m_fSpotActive;
 	int m_cActiveRockets;// how many missiles in flight from this launcher right now?
 
 	bool UseDecrement() override
@@ -1227,7 +1227,7 @@ public:
 	bool Deploy() override;
 	void Holster( int skiplocal = 0 ) override;
 	void WeaponIdle() override;
-	int m_fJustThrown;
+	bool m_fJustThrown;
 
 	bool UseDecrement() override
 	{ 

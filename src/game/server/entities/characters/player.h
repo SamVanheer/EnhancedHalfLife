@@ -89,7 +89,7 @@ public:
 	float	m_flNextObserverInput;
 	int		m_iObserverWeapon;	// weapon of current tracked target
 	int		m_iObserverLastMode;// last used observer mode
-	int		IsObserver() { return pev->iuser1; }
+	bool IsObserver() { return pev->iuser1 != 0; }
 
 	int					random_seed;    // See that is shared between client & server for shared weapons code
 
@@ -114,8 +114,8 @@ public:
 	float				m_flFallVelocity;
 	
 	int					m_rgItems[MAX_ITEMS];
-	int					m_fKnownItem;		// True when a new item needs to be added
 	int					m_fNewAmmo;			// True when a new item has been added
+	bool				m_fKnownItem;		// True when a new item needs to be added
 
 	unsigned int		m_afPhysicsFlags;	// physics flags - set when 'normal' physics should be revisited or overriden
 	float				m_fNextSuicideTime; // the time after which the player can next use the suicide command

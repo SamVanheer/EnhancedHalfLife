@@ -41,9 +41,9 @@ extern DLL_GLOBAL uint32	g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;
 extern DLL_GLOBAL uint32	g_ulFrameCount;
 
-extern int giPrecacheGrunt;
+extern bool giPrecacheGrunt;
 
-extern int g_teamplay;
+extern bool g_teamplay;
 
 /*
  * used by kill command and disconnect command
@@ -213,7 +213,7 @@ void ClientPutInServer( edict_t *pEntity )
 // or as
 // blah blah blah
 //
-void Host_Say( edict_t *pEntity, int teamonly )
+void Host_Say( edict_t *pEntity, bool teamonly )
 {
 	CBasePlayer *client;
 	int		j;
@@ -275,7 +275,7 @@ void Host_Say( edict_t *pEntity, int teamonly )
 
 // turn on color set 2  (color on,  no sound)
 	// turn on color set 2  (color on,  no sound)
-	if ( player->IsObserver() && ( teamonly ) )
+	if ( player->IsObserver() && teamonly )
 		snprintf( text, sizeof(text), "%c(SPEC) %s: ", 2, STRING( pEntity->v.netname ) );
 	else if ( teamonly )
 		snprintf( text, sizeof(text), "%c(TEAM) %s: ", 2, STRING( pEntity->v.netname ) );
@@ -389,11 +389,11 @@ void ClientCommand( edict_t *pEntity )
 
 	if ( FStrEq(pcmd, "say" ) )
 	{
-		Host_Say( pEntity, 0 );
+		Host_Say( pEntity, false );
 	}
 	else if ( FStrEq(pcmd, "say_team" ) )
 	{
-		Host_Say( pEntity, 1 );
+		Host_Say( pEntity, true );
 	}
 	else if ( FStrEq(pcmd, "fullupdate" ) )
 	{
@@ -552,18 +552,18 @@ void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 	g_pGameRules->ClientUserInfoChanged( GetClassPtr((CBasePlayer *)&pEntity->v), infobuffer );
 }
 
-static int g_serveractive = 0;
+static bool g_serveractive = false;
 
 void ServerDeactivate()
 {
 	// It's possible that the engine will call this function more times than is necessary
 	//  Therefore, only run it one time for each call to ServerActivate 
-	if ( g_serveractive != 1 )
+	if ( !g_serveractive )
 	{
 		return;
 	}
 
-	g_serveractive = 0;
+	g_serveractive = false;
 
 	// Peform any shutdown operations here...
 	//
@@ -575,7 +575,7 @@ void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
 	CBaseEntity		*pClass;
 
 	// Every call to ServerActivate should be matched by a call to ServerDeactivate
-	g_serveractive = 1;
+	g_serveractive = true;
 
 	// Clients have not been initialized yet
 	for ( i = 0; i < edictCount; i++ )
@@ -1238,12 +1238,12 @@ void Entity_Encode( delta_t* pFields, const unsigned char *from, const unsigned 
 {
 	entity_state_t *f, *t;
 	int localplayer = 0;
-	static int initialized = 0;
+	static bool initialized = false;
 
 	if ( !initialized )
 	{
 		Entity_FieldInit( pFields );
-		initialized = 1;
+		initialized = true;
 	}
 
 	f = (entity_state_t *)from;
@@ -1309,12 +1309,12 @@ void Player_Encode( delta_t* pFields, const unsigned char *from, const unsigned 
 {
 	entity_state_t *f, *t;
 	int localplayer = 0;
-	static int initialized = 0;
+	static bool initialized = false;
 
 	if ( !initialized )
 	{
 		Player_FieldInit( pFields );
-		initialized = 1;
+		initialized = true;
 	}
 
 	f = (entity_state_t *)from;
@@ -1392,12 +1392,12 @@ void Custom_Encode( delta_t* pFields, const unsigned char *from, const unsigned 
 {
 	entity_state_t *f, *t;
 	int beamType;
-	static int initialized = 0;
+	static bool initialized = false;
 
 	if ( !initialized )
 	{
 		Custom_Entity_FieldInit( pFields );
-		initialized = 1;
+		initialized = true;
 	}
 
 	f = (entity_state_t *)from;

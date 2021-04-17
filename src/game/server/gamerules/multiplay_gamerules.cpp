@@ -30,7 +30,7 @@
 
 extern DLL_GLOBAL bool	g_fGameOver;
 
-extern int g_teamplay;
+extern bool g_teamplay;
 
 constexpr int ITEM_RESPAWN_TIME = 30;
 constexpr int WEAPON_RESPAWN_TIME = 20;

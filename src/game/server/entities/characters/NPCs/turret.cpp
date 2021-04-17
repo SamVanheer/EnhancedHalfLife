@@ -91,11 +91,11 @@ public:
 
 	// other functions
 	void SetTurretAnim(TURRET_ANIM anim);
-	int MoveTurret();
+	bool MoveTurret();
 	virtual void Shoot(Vector &vecSrc, Vector &vecDirToEnemy) {}
 
 	float m_flMaxSpin;		// Max time to spin the barrel w/o a target
-	int m_iSpin;
+	bool m_iSpin;
 
 	CSprite *m_pEyeGlow;
 	int		m_eyeBrightness;
@@ -107,9 +107,9 @@ public:
 	int m_iBaseTurnRate;	// angles per second
 	float m_fTurnRate;		// actual turn rate
 	int m_iOrientation;		// 0 = floor, 1 = Ceiling
-	int	m_iOn;
-	int m_fBeserk;			// Sometimes this bitch will just freak out
-	int m_iAutoStart;		// true if the turret auto deploys when a target
+	bool m_iOn;
+	bool m_fBeserk;			// Sometimes this bitch will just freak out
+	bool m_iAutoStart;		// true if the turret auto deploys when a target
 							// enters its range
 
 	Vector m_vecLastSight;
@@ -131,7 +131,7 @@ public:
 TYPEDESCRIPTION	CBaseTurret::m_SaveData[] = 
 {
 	DEFINE_FIELD( CBaseTurret, m_flMaxSpin, FIELD_FLOAT ),
-	DEFINE_FIELD( CBaseTurret, m_iSpin, FIELD_INTEGER ),
+	DEFINE_FIELD( CBaseTurret, m_iSpin, FIELD_BOOLEAN ),
 
 	DEFINE_FIELD( CBaseTurret, m_pEyeGlow, FIELD_CLASSPTR ),
 	DEFINE_FIELD( CBaseTurret, m_eyeBrightness, FIELD_INTEGER ),
@@ -142,9 +142,9 @@ TYPEDESCRIPTION	CBaseTurret::m_SaveData[] =
 	DEFINE_FIELD( CBaseTurret, m_iBaseTurnRate, FIELD_INTEGER ),
 	DEFINE_FIELD( CBaseTurret, m_fTurnRate, FIELD_FLOAT ),
 	DEFINE_FIELD( CBaseTurret, m_iOrientation, FIELD_INTEGER ),
-	DEFINE_FIELD( CBaseTurret, m_iOn, FIELD_INTEGER ),
-	DEFINE_FIELD( CBaseTurret, m_fBeserk, FIELD_INTEGER ),
-	DEFINE_FIELD( CBaseTurret, m_iAutoStart, FIELD_INTEGER ),
+	DEFINE_FIELD( CBaseTurret, m_iOn, FIELD_BOOLEAN ),
+	DEFINE_FIELD( CBaseTurret, m_fBeserk, FIELD_BOOLEAN ),
+	DEFINE_FIELD( CBaseTurret, m_iAutoStart, FIELD_BOOLEAN ),
 
 
 	DEFINE_FIELD( CBaseTurret, m_vecLastSight, FIELD_POSITION_VECTOR ),
@@ -180,12 +180,12 @@ public:
 	void Shoot(Vector &vecSrc, Vector &vecDirToEnemy) override;
 
 private:
-	int m_iStartSpin;
+	bool m_iStartSpin;
 
 };
 TYPEDESCRIPTION	CTurret::m_SaveData[] = 
 {
-	DEFINE_FIELD( CTurret, m_iStartSpin, FIELD_INTEGER ),
+	DEFINE_FIELD( CTurret, m_iStartSpin, FIELD_BOOLEAN ),
 };
 
 IMPLEMENT_SAVERESTORE( CTurret, CBaseTurret );
@@ -348,9 +348,9 @@ void CMiniTurret::Precache()
 
 void CBaseTurret::Initialize()
 {
-	m_iOn = 0;
-	m_fBeserk = 0;
-	m_iSpin = 0;
+	m_iOn = false;
+	m_fBeserk = false;
+	m_iSpin = false;
 
 	SetBoneController( 0, 0 );
 	SetBoneController( 1, 0 );
@@ -638,7 +638,7 @@ void CBaseTurret::Deploy()
 
 	if (pev->sequence != TURRET_ANIM_DEPLOY)
 	{
-		m_iOn = 1;
+		m_iOn = true;
 		SetTurretAnim(TURRET_ANIM_DEPLOY);
 		EMIT_SOUND(ENT(pev), CHAN_BODY, "turret/tu_deploy.wav", TURRET_MACHINE_VOLUME, ATTN_NORM);
 		SUB_UseTargets( this, USE_ON, 0 );
@@ -695,7 +695,7 @@ void CBaseTurret::Retire()
 		}
 		else if (m_fSequenceFinished) 
 		{	
-			m_iOn = 0;
+			m_iOn = false;
 			m_flLastSight = 0;
 			SetTurretAnim(TURRET_ANIM_NONE);
 			pev->maxs.z = m_iRetractHeight;
@@ -731,7 +731,7 @@ void CTurret::SpinUpCall()
 		{
 			pev->nextthink = gpGlobals->time + 1.0; // spinup delay
 			EMIT_SOUND(ENT(pev), CHAN_BODY, "turret/tu_spinup.wav", TURRET_MACHINE_VOLUME, ATTN_NORM);
-			m_iStartSpin = 1;
+			m_iStartSpin = true;
 			pev->framerate = 0.1;
 		}
 		// after the barrel is spun up, turn on the hum
@@ -740,8 +740,8 @@ void CTurret::SpinUpCall()
 			pev->nextthink = gpGlobals->time + 0.1; // retarget delay
 			EMIT_SOUND(ENT(pev), CHAN_STATIC, "turret/tu_active2.wav", TURRET_MACHINE_VOLUME, ATTN_NORM);
 			SetThink(&CTurret::ActiveThink);
-			m_iStartSpin = 0;
-			m_iSpin = 1;
+			m_iStartSpin = false;
+			m_iSpin = true;
 		} 
 		else
 		{
@@ -770,7 +770,7 @@ void CTurret::SpinDownCall()
 		if (pev->framerate <= 0)
 		{
 			pev->framerate = 0;
-			m_iSpin = 0;
+			m_iSpin = false;
 		}
 	}
 }
@@ -1029,7 +1029,7 @@ bool CBaseTurret::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, fl
 	{
 		if (m_iOn && (true || RANDOM_LONG(0, 0x7FFF) > 800))
 		{
-			m_fBeserk = 1;
+			m_fBeserk = true;
 			SetThink(&CBaseTurret::SearchThink);
 		}
 	}
@@ -1037,9 +1037,9 @@ bool CBaseTurret::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, fl
 	return true;
 }
 
-int CBaseTurret::MoveTurret()
+bool CBaseTurret::MoveTurret()
 {
-	int state = 0;
+	bool state = false;
 	// any x movement?
 	
 	if (m_vecCurAngles.x != m_vecGoalAngles.x)
@@ -1064,7 +1064,7 @@ int CBaseTurret::MoveTurret()
 			SetBoneController(1, -m_vecCurAngles.x);
 		else
 			SetBoneController(1, m_vecCurAngles.x);
-		state = 1;
+		state = true;
 	}
 
 	if (m_vecCurAngles.y != m_vecGoalAngles.y)
@@ -1108,7 +1108,7 @@ int CBaseTurret::MoveTurret()
 			SetBoneController(0, m_vecCurAngles.y - pev->angles.y );
 		else 
 			SetBoneController(0, pev->angles.y - 180 - m_vecCurAngles.y );
-		state = 1;
+		state = true;
 	}
 
 	if (!state)

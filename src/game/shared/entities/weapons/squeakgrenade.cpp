@@ -540,7 +540,7 @@ void CSqueak::PrimaryAttack()
 
 			m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
 
-			m_fJustThrown = 1;
+			m_fJustThrown = true;
 
 			m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
@@ -562,7 +562,7 @@ void CSqueak::WeaponIdle()
 
 	if (m_fJustThrown)
 	{
-		m_fJustThrown = 0;
+		m_fJustThrown = false;
 
 		if ( !m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] )
 		{

@@ -143,7 +143,7 @@ TYPEDESCRIPTION	CBasePlayer::m_playerSaveData[] =
 };	
 
 
-int giPrecacheGrunt = 0;
+bool giPrecacheGrunt = false;
 
 LINK_ENTITY_TO_CLASS( player, CBasePlayer );
 
@@ -347,10 +347,10 @@ bool CBasePlayer :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker,
 {
 	// have suit diagnose the problem - ie: report damage type
 	int bitsDamage = bitsDamageType;
-	int ffound = true;
-	int fmajor;
-	int fcritical;
-	int ftrivial;
+	bool ffound = true;
+	bool fmajor;
+	bool fcritical;
+	bool ftrivial;
 	float flRatio;
 	float flBonus;
 	float flHealthPrev = pev->health;
@@ -3159,17 +3159,16 @@ void CBasePlayer::ImpulseCommands( )
 	{
 	case 99:
 		{
-
-		int iOn;
+		bool iOn;
 
 		if (!gmsgLogo)
 		{
-			iOn = 1;
+			iOn = true;
 			gmsgLogo = REG_USER_MSG("Logo", 1);
 		} 
 		else 
 		{
-			iOn = 0;
+			iOn = false;
 		}
 		
 		ASSERT( gmsgLogo > 0 );
@@ -3241,7 +3240,7 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		{
 			if (!giPrecacheGrunt)
 			{
-				giPrecacheGrunt = 1;
+				giPrecacheGrunt = true;
 				ALERT(at_console, "You must now restart to use Grunt-o-matic.\n");
 			}
 			else
