@@ -807,7 +807,7 @@ void CBasePlayer::Killed( entvars_t *pevAttacker, int iGib )
 
 	// Tell Ammo Hud that the player is dead
 	MESSAGE_BEGIN( MSG_ONE, gmsgCurWeapon, nullptr, pev );
-		WRITE_BYTE(0);
+		WRITE_BYTE(static_cast<int>(WeaponState::NotActive));
 		WRITE_BYTE(0XFF);
 		WRITE_BYTE(0xFF);
 	MESSAGE_END();
@@ -1325,7 +1325,7 @@ void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle )
 
 	// Tell Ammo Hud that the player is dead
 	MESSAGE_BEGIN( MSG_ONE, gmsgCurWeapon, nullptr, pev );
-		WRITE_BYTE(0);
+		WRITE_BYTE(static_cast<int>(WeaponState::NotActive));
 		WRITE_BYTE(0XFF);
 		WRITE_BYTE(0xFF);
 	MESSAGE_END();
@@ -3907,7 +3907,7 @@ void CBasePlayer :: UpdateClientData()
 	{
 		//Tell ammo hud that we have no weapon selected
 		MESSAGE_BEGIN(MSG_ONE, gmsgCurWeapon, nullptr, pev);
-		WRITE_BYTE(0);
+		WRITE_BYTE(static_cast<int>(WeaponState::NotActive));
 		WRITE_BYTE(0);
 		WRITE_BYTE(0);
 		MESSAGE_END();

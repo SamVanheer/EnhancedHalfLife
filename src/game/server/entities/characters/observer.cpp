@@ -183,7 +183,7 @@ void CBasePlayer::Observer_CheckProperties()
 		if (!target )
 			return;
 
-		int weapon = (target->m_pActiveItem!=nullptr)?target->m_pActiveItem->m_iId:0;
+		int weapon = (target->m_pActiveItem!=nullptr) ? target->m_pActiveItem->m_iId : WEAPON_NONE;
 		// use fov of tracked client
 		if ( m_iFOV != target->m_iFOV || m_iObserverWeapon != weapon )
 		{
@@ -198,7 +198,7 @@ void CBasePlayer::Observer_CheckProperties()
 			m_iObserverWeapon = weapon;
 			//send weapon update
 			MESSAGE_BEGIN( MSG_ONE, gmsgCurWeapon, nullptr, pev );
-				WRITE_BYTE( 1 );	// 1 = current weapon, not on target
+				WRITE_BYTE(static_cast<int>(WeaponState::Active));
 				WRITE_BYTE( m_iObserverWeapon );	
 				WRITE_BYTE( 0 );	// clip
 			MESSAGE_END();
@@ -208,12 +208,12 @@ void CBasePlayer::Observer_CheckProperties()
 	{
 		m_iFOV = 90;
 		
-		if ( m_iObserverWeapon != 0 )
+		if ( m_iObserverWeapon != WEAPON_NONE)
 		{
-			m_iObserverWeapon = 0;
+			m_iObserverWeapon = WEAPON_NONE;
 
 			MESSAGE_BEGIN( MSG_ONE, gmsgCurWeapon, nullptr, pev );
-				WRITE_BYTE( 1 );	// 1 = current weapon
+				WRITE_BYTE(static_cast<int>(WeaponState::Active));
 				WRITE_BYTE( m_iObserverWeapon );	
 				WRITE_BYTE( 0 );	// clip
 			MESSAGE_END();
@@ -262,7 +262,7 @@ void CBasePlayer::Observer_SetMode( int iMode )
 	// set target if not roaming
 	if (pev->iuser1 == OBS_ROAMING)
 	{
-		pev->iuser2 = 0;
+		pev->iuser2 = OBS_NONE;
 	}
 	else
 		pev->iuser2 = ENTINDEX( m_hObserverTarget->edict() );
