@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2001, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -15,7 +15,7 @@
 
 /**
 *	@file
-* 
+*
 *	precaches and defs for entities and other data that must always be available.
 */
 
@@ -45,7 +45,7 @@ extern DLL_GLOBAL	int			gDisplayTitle;
 // This spawns first when each level begins.
 //=======================
 
-LINK_ENTITY_TO_CLASS( worldspawn, CWorld );
+LINK_ENTITY_TO_CLASS(worldspawn, CWorld);
 
 constexpr int SF_WORLD_DARK = 0x0001;		//!< Fade from black at startup
 constexpr int SF_WORLD_TITLE = 0x0002;		//!< Display game title at startup
@@ -58,16 +58,16 @@ CWorld::~CWorld()
 	g_IsStartingNewMap = true;
 }
 
-void CWorld :: Spawn()
+void CWorld::Spawn()
 {
 	g_fGameOver = false;
-	Precache( );
+	Precache();
 }
 
-void CWorld :: Precache()
+void CWorld::Precache()
 {
 	g_pLastSpawn = nullptr;
-	
+
 #if 1
 	CVAR_SET_STRING("sv_gravity", "800"); // 67ft/sec
 	CVAR_SET_STRING("sv_stepsize", "18");
@@ -84,109 +84,109 @@ void CWorld :: Precache()
 		delete g_pGameRules;
 	}
 
-	g_pGameRules = InstallGameRules( );
+	g_pGameRules = InstallGameRules();
 
 	//!!!UNDONE why is there so much Spawn code in the Precache function? I'll just keep it here 
 
 	///!!!LATER - do we want a sound ent in deathmatch? (sjb)
 	//pSoundEnt = CBaseEntity::Create( "soundent", vec3_origin, vec3_origin, edict() );
-	pSoundEnt = GetClassPtr( ( CSoundEnt *)nullptr );
+	pSoundEnt = GetClassPtr((CSoundEnt*)nullptr);
 	pSoundEnt->Spawn();
 
-	if ( !pSoundEnt )
+	if (!pSoundEnt)
 	{
-		ALERT ( at_console, "**COULD NOT CREATE SOUNDENT**\n" );
+		ALERT(at_console, "**COULD NOT CREATE SOUNDENT**\n");
 	}
 
 	InitBodyQue();
-	
-// init sentence group playback stuff from sentences.txt.
-// ok to call this multiple times, calls after first are ignored.
+
+	// init sentence group playback stuff from sentences.txt.
+	// ok to call this multiple times, calls after first are ignored.
 
 	SENTENCEG_Init();
 
-// init texture type array from materials.txt
+	// init texture type array from materials.txt
 
 	TEXTURETYPE_Init();
 
 
-// the area based ambient sounds MUST be the first precache_sounds
+	// the area based ambient sounds MUST be the first precache_sounds
 
-// player precaches     
-	W_Precache ();									// get weapon precaches
+	// player precaches     
+	W_Precache();									// get weapon precaches
 
 	ClientPrecache();
 
-// sounds used from C physics code
+	// sounds used from C physics code
 	PRECACHE_SOUND("common/null.wav");				// clears sound channels
 
-	PRECACHE_SOUND( "items/suitchargeok1.wav" );//!!! temporary sound for respawning weapons.
-	PRECACHE_SOUND( "items/gunpickup2.wav" );// player picks up a gun.
+	PRECACHE_SOUND("items/suitchargeok1.wav");//!!! temporary sound for respawning weapons.
+	PRECACHE_SOUND("items/gunpickup2.wav");// player picks up a gun.
 
-	PRECACHE_SOUND( "common/bodydrop3.wav" );// dead bodies hitting the ground (animation events)
-	PRECACHE_SOUND( "common/bodydrop4.wav" );
-	
-	g_Language = (int)CVAR_GET_FLOAT( "sv_language" );
-	if ( g_Language == LANGUAGE_GERMAN )
+	PRECACHE_SOUND("common/bodydrop3.wav");// dead bodies hitting the ground (animation events)
+	PRECACHE_SOUND("common/bodydrop4.wav");
+
+	g_Language = (int)CVAR_GET_FLOAT("sv_language");
+	if (g_Language == LANGUAGE_GERMAN)
 	{
-		PRECACHE_MODEL( "models/germangibs.mdl" );
+		PRECACHE_MODEL("models/germangibs.mdl");
 	}
 	else
 	{
-		PRECACHE_MODEL( "models/hgibs.mdl" );
-		PRECACHE_MODEL( "models/agibs.mdl" );
+		PRECACHE_MODEL("models/hgibs.mdl");
+		PRECACHE_MODEL("models/agibs.mdl");
 	}
 
-	PRECACHE_SOUND ("weapons/ric1.wav");
-	PRECACHE_SOUND ("weapons/ric2.wav");
-	PRECACHE_SOUND ("weapons/ric3.wav");
-	PRECACHE_SOUND ("weapons/ric4.wav");
-	PRECACHE_SOUND ("weapons/ric5.wav");
-//
-// Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
-//
+	PRECACHE_SOUND("weapons/ric1.wav");
+	PRECACHE_SOUND("weapons/ric2.wav");
+	PRECACHE_SOUND("weapons/ric3.wav");
+	PRECACHE_SOUND("weapons/ric4.wav");
+	PRECACHE_SOUND("weapons/ric5.wav");
+	//
+	// Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
+	//
 
-	// 0 normal
+		// 0 normal
 	LIGHT_STYLE(0, "m");
-	
+
 	// 1 FLICKER (first variety)
 	LIGHT_STYLE(1, "mmnmmommommnonmmonqnmmo");
-	
+
 	// 2 SLOW STRONG PULSE
 	LIGHT_STYLE(2, "abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba");
-	
+
 	// 3 CANDLE (first variety)
 	LIGHT_STYLE(3, "mmmmmaaaaammmmmaaaaaabcdefgabcdefg");
-	
+
 	// 4 FAST STROBE
 	LIGHT_STYLE(4, "mamamamamama");
-	
+
 	// 5 GENTLE PULSE 1
-	LIGHT_STYLE(5,"jklmnopqrstuvwxyzyxwvutsrqponmlkj");
-	
+	LIGHT_STYLE(5, "jklmnopqrstuvwxyzyxwvutsrqponmlkj");
+
 	// 6 FLICKER (second variety)
 	LIGHT_STYLE(6, "nmonqnmomnmomomno");
-	
+
 	// 7 CANDLE (second variety)
 	LIGHT_STYLE(7, "mmmaaaabcdefgmmmmaaaammmaamm");
-	
+
 	// 8 CANDLE (third variety)
 	LIGHT_STYLE(8, "mmmaaammmaaammmabcdefaaaammmmabcdefmmmaaaa");
-	
+
 	// 9 SLOW STROBE (fourth variety)
 	LIGHT_STYLE(9, "aaaaaaaazzzzzzzz");
-	
+
 	// 10 FLUORESCENT FLICKER
 	LIGHT_STYLE(10, "mmamammmmammamamaaamammma");
 
 	// 11 SLOW PULSE NOT FADE TO BLACK
 	LIGHT_STYLE(11, "abcdefghijklmnopqrrqponmlkjihgfedcba");
-	
+
 	// 12 UNDERWATER LIGHT MUTATION
 	// this light only distorts the lightmap - no contribution
 	// is made to the brightness of affected surfaces
 	LIGHT_STYLE(12, "mmnnmmnnnmmnn");
-	
+
 	// styles 32-62 are assigned by the light program for switchable lights
 
 	// 63 testing
@@ -194,39 +194,39 @@ void CWorld :: Precache()
 
 	InitializeDecalsList();
 
-// init the WorldGraph.
+	// init the WorldGraph.
 	WorldGraph.InitGraph();
 
-// make sure the .NOD file is newer than the .BSP file.
-	if ( !WorldGraph.CheckNODFile ( STRING( gpGlobals->mapname ) ) )
+	// make sure the .NOD file is newer than the .BSP file.
+	if (!WorldGraph.CheckNODFile(STRING(gpGlobals->mapname)))
 	{// NOD file is not present, or is older than the BSP file.
-		WorldGraph.AllocNodes ();
+		WorldGraph.AllocNodes();
 	}
 	else
 	{// Load the node graph for this level
-		if ( !WorldGraph.FLoadGraph ( STRING( gpGlobals->mapname ) ) )
+		if (!WorldGraph.FLoadGraph(STRING(gpGlobals->mapname)))
 		{// couldn't load, so alloc and prepare to build a graph.
-			ALERT ( at_console, "*Error opening .NOD file\n" );
-			WorldGraph.AllocNodes ();
+			ALERT(at_console, "*Error opening .NOD file\n");
+			WorldGraph.AllocNodes();
 		}
 		else
 		{
-			ALERT ( at_console, "\n*Graph Loaded!\n" );
+			ALERT(at_console, "\n*Graph Loaded!\n");
 		}
 	}
 
-	if ( pev->speed > 0 )
-		CVAR_SET_FLOAT( "sv_zmax", pev->speed );
+	if (pev->speed > 0)
+		CVAR_SET_FLOAT("sv_zmax", pev->speed);
 	else
-		CVAR_SET_FLOAT( "sv_zmax", 4096 );
+		CVAR_SET_FLOAT("sv_zmax", 4096);
 
 	if (!FStringNull(pev->netname))
 	{
-		ALERT( at_aiconsole, "Chapter title: %s\n", STRING(pev->netname) );
-		CBaseEntity *pEntity = CBaseEntity::Create( "env_message", vec3_origin, vec3_origin, nullptr );
-		if ( pEntity )
+		ALERT(at_aiconsole, "Chapter title: %s\n", STRING(pev->netname));
+		CBaseEntity* pEntity = CBaseEntity::Create("env_message", vec3_origin, vec3_origin, nullptr);
+		if (pEntity)
 		{
-			pEntity->SetThink( &CBaseEntity::SUB_CallUseToggle );
+			pEntity->SetThink(&CBaseEntity::SUB_CallUseToggle);
 			pEntity->pev->message = pev->netname;
 			pev->netname = iStringNull;
 			pEntity->pev->nextthink = gpGlobals->time + 0.3;
@@ -234,23 +234,23 @@ void CWorld :: Precache()
 		}
 	}
 
-	if ( pev->spawnflags & SF_WORLD_DARK )
-		CVAR_SET_FLOAT( "v_dark", 1.0 );
+	if (pev->spawnflags & SF_WORLD_DARK)
+		CVAR_SET_FLOAT("v_dark", 1.0);
 	else
-		CVAR_SET_FLOAT( "v_dark", 0.0 );
+		CVAR_SET_FLOAT("v_dark", 0.0);
 
-	if ( pev->spawnflags & SF_WORLD_TITLE )
+	if (pev->spawnflags & SF_WORLD_TITLE)
 		gDisplayTitle = true;		// display the game title if this key is set
 	else
 		gDisplayTitle = false;
 
-	if ( pev->spawnflags & SF_WORLD_FORCETEAM )
+	if (pev->spawnflags & SF_WORLD_FORCETEAM)
 	{
-		CVAR_SET_FLOAT( "mp_defaultteam", 1 );
+		CVAR_SET_FLOAT("mp_defaultteam", 1);
 	}
 	else
 	{
-		CVAR_SET_FLOAT( "mp_defaultteam", 0 );
+		CVAR_SET_FLOAT("mp_defaultteam", 0);
 	}
 }
 
@@ -258,72 +258,72 @@ void CWorld :: Precache()
 //
 // Just to ignore the "wad" field.
 //
-void CWorld :: KeyValue( KeyValueData *pkvd )
+void CWorld::KeyValue(KeyValueData* pkvd)
 {
-	if ( FStrEq(pkvd->szKeyName, "skyname") )
+	if (FStrEq(pkvd->szKeyName, "skyname"))
 	{
 		// Sent over net now.
-		CVAR_SET_STRING( "sv_skyname", pkvd->szValue );
+		CVAR_SET_STRING("sv_skyname", pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if ( FStrEq(pkvd->szKeyName, "sounds") )
+	else if (FStrEq(pkvd->szKeyName, "sounds"))
 	{
 		gpGlobals->cdAudioTrack = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if ( FStrEq(pkvd->szKeyName, "WaveHeight") )
+	else if (FStrEq(pkvd->szKeyName, "WaveHeight"))
 	{
 		// Sent over net now.
-		pev->scale = atof(pkvd->szValue) * (1.0/8.0);
+		pev->scale = atof(pkvd->szValue) * (1.0 / 8.0);
 		pkvd->fHandled = true;
-		CVAR_SET_FLOAT( "sv_wateramp", pev->scale );
+		CVAR_SET_FLOAT("sv_wateramp", pev->scale);
 	}
-	else if ( FStrEq(pkvd->szKeyName, "MaxRange") )
+	else if (FStrEq(pkvd->szKeyName, "MaxRange"))
 	{
 		pev->speed = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if ( FStrEq(pkvd->szKeyName, "chaptertitle") )
+	else if (FStrEq(pkvd->szKeyName, "chaptertitle"))
 	{
 		pev->netname = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if ( FStrEq(pkvd->szKeyName, "startdark") )
+	else if (FStrEq(pkvd->szKeyName, "startdark"))
 	{
 		// UNDONE: This is a gross hack!!! The CVAR is NOT sent over the client/sever link
 		// but it will work for single player
 		int flag = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
-		if ( flag )
+		if (flag)
 			pev->spawnflags |= SF_WORLD_DARK;
 	}
-	else if ( FStrEq(pkvd->szKeyName, "newunit") )
+	else if (FStrEq(pkvd->szKeyName, "newunit"))
 	{
 		// Single player only.  Clear save directory if set
-		if ( atoi(pkvd->szValue) )
-			CVAR_SET_FLOAT( "sv_newunit", 1 );
+		if (atoi(pkvd->szValue))
+			CVAR_SET_FLOAT("sv_newunit", 1);
 		pkvd->fHandled = true;
 	}
-	else if ( FStrEq(pkvd->szKeyName, "gametitle") )
+	else if (FStrEq(pkvd->szKeyName, "gametitle"))
 	{
-		if ( atoi(pkvd->szValue) )
+		if (atoi(pkvd->szValue))
 			pev->spawnflags |= SF_WORLD_TITLE;
 
 		pkvd->fHandled = true;
 	}
-	else if ( FStrEq(pkvd->szKeyName, "mapteams") )
+	else if (FStrEq(pkvd->szKeyName, "mapteams"))
 	{
-		pev->team = static_cast<int>(ALLOC_STRING( pkvd->szValue ));
+		pev->team = static_cast<int>(ALLOC_STRING(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if ( FStrEq(pkvd->szKeyName, "defaultteam") )
+	else if (FStrEq(pkvd->szKeyName, "defaultteam"))
 	{
-		if ( atoi(pkvd->szValue) )
+		if (atoi(pkvd->szValue))
 		{
 			pev->spawnflags |= SF_WORLD_FORCETEAM;
 		}
 		pkvd->fHandled = true;
 	}
 	else
-		CBaseEntity::KeyValue( pkvd );
+		CBaseEntity::KeyValue(pkvd);
 }

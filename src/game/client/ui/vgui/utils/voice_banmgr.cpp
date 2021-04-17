@@ -10,7 +10,7 @@
 #include "filesystem_shared.hpp"
 
 constexpr int BANMGR_FILEVERSION = 1;
-char const *g_pBanMgrFilename = "voice_ban.dt";
+char const* g_pBanMgrFilename = "voice_ban.dt";
 
 
 
@@ -19,7 +19,7 @@ unsigned char HashPlayerID(char const playerID[16])
 {
 	unsigned char curHash = 0;
 
-	for(int i=0; i < 16; i++)
+	for (int i = 0; i < 16; i++)
 		curHash += (unsigned char)playerID[i];
 
 	return curHash;
@@ -46,7 +46,7 @@ bool CVoiceBanMgr::Init()
 	// Load in the squelch file.
 	auto fileHandle = g_pFileSystem->Open(g_pBanMgrFilename, "rb", "GAMECONFIG");
 
-	if(fileHandle != FILESYSTEM_INVALID_HANDLE)
+	if (fileHandle != FILESYSTEM_INVALID_HANDLE)
 	{
 		int version;
 		if (sizeof(version) == g_pFileSystem->Read(&version, sizeof(version), fileHandle))
@@ -78,11 +78,11 @@ bool CVoiceBanMgr::Init()
 void CVoiceBanMgr::Term()
 {
 	// Free all the player structures.
-	for(int i=0; i < 256; i++)
+	for (int i = 0; i < 256; i++)
 	{
-		BannedPlayer *pListHead = &m_PlayerHash[i];
-		BannedPlayer *pNext;
-		for(BannedPlayer *pCur=pListHead->m_pNext; pCur != pListHead; pCur=pNext)
+		BannedPlayer* pListHead = &m_PlayerHash[i];
+		BannedPlayer* pNext;
+		for (BannedPlayer* pCur = pListHead->m_pNext; pCur != pListHead; pCur = pNext)
 		{
 			pNext = pCur->m_pNext;
 			delete pCur;
@@ -98,15 +98,15 @@ void CVoiceBanMgr::SaveState()
 	// Save the file out.
 	auto fileHandle = g_pFileSystem->Open(g_pBanMgrFilename, "wb", "GAMECONFIG");
 
-	if(fileHandle != FILESYSTEM_INVALID_HANDLE)
+	if (fileHandle != FILESYSTEM_INVALID_HANDLE)
 	{
 		int version = BANMGR_FILEVERSION;
 		g_pFileSystem->Write(&version, sizeof(version), fileHandle);
 
-		for(int i=0; i < 256; i++)
+		for (int i = 0; i < 256; i++)
 		{
-			BannedPlayer *pListHead = &m_PlayerHash[i];
-			for(BannedPlayer *pCur=pListHead->m_pNext; pCur != pListHead; pCur=pCur->m_pNext)
+			BannedPlayer* pListHead = &m_PlayerHash[i];
+			for (BannedPlayer* pCur = pListHead->m_pNext; pCur != pListHead; pCur = pCur->m_pNext)
 			{
 				g_pFileSystem->Write(pCur->m_PlayerID, 16, fileHandle);
 			}
@@ -125,18 +125,18 @@ bool CVoiceBanMgr::GetPlayerBan(char const playerID[16])
 
 void CVoiceBanMgr::SetPlayerBan(char const playerID[16], bool bSquelch)
 {
-	if(bSquelch)
+	if (bSquelch)
 	{
 		// Is this guy already squelched?
-		if(GetPlayerBan(playerID))
+		if (GetPlayerBan(playerID))
 			return;
-	
+
 		AddBannedPlayer(playerID);
 	}
 	else
 	{
-		BannedPlayer *pPlayer = InternalFindPlayerSquelch(playerID);
-		if(pPlayer)
+		BannedPlayer* pPlayer = InternalFindPlayerSquelch(playerID);
+		if (pPlayer)
 		{
 			pPlayer->m_pPrev->m_pNext = pPlayer->m_pNext;
 			pPlayer->m_pNext->m_pPrev = pPlayer->m_pPrev;
@@ -148,9 +148,9 @@ void CVoiceBanMgr::SetPlayerBan(char const playerID[16], bool bSquelch)
 
 void CVoiceBanMgr::ForEachBannedPlayer(void (*callback)(char id[16]))
 {
-	for(int i=0; i < 256; i++)
+	for (int i = 0; i < 256; i++)
 	{
-		for(BannedPlayer *pCur=m_PlayerHash[i].m_pNext; pCur != &m_PlayerHash[i]; pCur=pCur->m_pNext)
+		for (BannedPlayer* pCur = m_PlayerHash[i].m_pNext; pCur != &m_PlayerHash[i]; pCur = pCur->m_pNext)
 		{
 			callback(pCur->m_PlayerID);
 		}
@@ -161,7 +161,7 @@ void CVoiceBanMgr::ForEachBannedPlayer(void (*callback)(char id[16]))
 void CVoiceBanMgr::Clear()
 {
 	// Tie off the hash table entries.
-	for(int i=0; i < 256; i++)
+	for (int i = 0; i < 256; i++)
 		m_PlayerHash[i].m_pNext = m_PlayerHash[i].m_pPrev = &m_PlayerHash[i];
 }
 
@@ -169,10 +169,10 @@ void CVoiceBanMgr::Clear()
 CVoiceBanMgr::BannedPlayer* CVoiceBanMgr::InternalFindPlayerSquelch(char const playerID[16])
 {
 	int index = HashPlayerID(playerID);
-	BannedPlayer *pListHead = &m_PlayerHash[index];
-	for(BannedPlayer *pCur=pListHead->m_pNext; pCur != pListHead; pCur=pCur->m_pNext)
+	BannedPlayer* pListHead = &m_PlayerHash[index];
+	for (BannedPlayer* pCur = pListHead->m_pNext; pCur != pListHead; pCur = pCur->m_pNext)
 	{
-		if(memcmp(playerID, pCur->m_PlayerID, 16) == 0)
+		if (memcmp(playerID, pCur->m_PlayerID, 16) == 0)
 			return pCur;
 	}
 
@@ -182,8 +182,8 @@ CVoiceBanMgr::BannedPlayer* CVoiceBanMgr::InternalFindPlayerSquelch(char const p
 
 CVoiceBanMgr::BannedPlayer* CVoiceBanMgr::AddBannedPlayer(char const playerID[16])
 {
-	BannedPlayer *pNew = new BannedPlayer;
-	if(!pNew)
+	BannedPlayer* pNew = new BannedPlayer;
+	if (!pNew)
 		return nullptr;
 
 	int index = HashPlayerID(playerID);

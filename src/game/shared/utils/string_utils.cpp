@@ -178,18 +178,18 @@ float UTIL_StringToFloat(std::string_view str, float defaultValue)
 	char* endPos = nullptr;
 	float result = 0;
 	bool isValid = false;
-	
+
 	//Try to use a stack buffer if possible, fall back to allocating only in case of large strings
 	const std::size_t MaxLocalBufferSize = 256;
-	
+
 	if (str.length() < MaxLocalBufferSize)
 	{
 		char buffer[MaxLocalBufferSize];
-		
+
 		safe_strcpy(buffer, str);
-		
+
 		result = std::strtod(buffer, &endPos);
-		
+
 		isValid = &buffer[0] != endPos;
 	}
 	else

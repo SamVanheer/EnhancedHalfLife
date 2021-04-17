@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -24,18 +24,18 @@ class CShower : public CBaseEntity
 {
 	void Spawn() override;
 	void Think() override;
-	void Touch( CBaseEntity *pOther ) override;
+	void Touch(CBaseEntity* pOther) override;
 	int ObjectCaps() override { return FCAP_DONT_SAVE; }
 };
 
-LINK_ENTITY_TO_CLASS( spark_shower, CShower );
+LINK_ENTITY_TO_CLASS(spark_shower, CShower);
 
 void CShower::Spawn()
 {
-	pev->velocity = RANDOM_FLOAT( 200, 300 ) * pev->angles;
-	pev->velocity.x += RANDOM_FLOAT(-100.f,100.f);
-	pev->velocity.y += RANDOM_FLOAT(-100.f,100.f);
-	if ( pev->velocity.z >= 0 )
+	pev->velocity = RANDOM_FLOAT(200, 300) * pev->angles;
+	pev->velocity.x += RANDOM_FLOAT(-100.f, 100.f);
+	pev->velocity.y += RANDOM_FLOAT(-100.f, 100.f);
+	if (pev->velocity.z >= 0)
 		pev->velocity.z += 200;
 	else
 		pev->velocity.z -= 200;
@@ -43,10 +43,10 @@ void CShower::Spawn()
 	pev->gravity = 0.5;
 	pev->nextthink = gpGlobals->time + 0.1;
 	pev->solid = SOLID_NOT;
-	SET_MODEL( edict(), "models/grenade.mdl");	// Need a model, just use the grenade, we don't draw it anyway
+	SET_MODEL(edict(), "models/grenade.mdl");	// Need a model, just use the grenade, we don't draw it anyway
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 	pev->effects |= EF_NODRAW;
-	pev->speed = RANDOM_FLOAT( 0.5, 1.5 );
+	pev->speed = RANDOM_FLOAT(0.5, 1.5);
 
 	pev->angles = vec3_origin;
 }
@@ -54,53 +54,53 @@ void CShower::Spawn()
 
 void CShower::Think()
 {
-	UTIL_Sparks( pev->origin );
+	UTIL_Sparks(pev->origin);
 
 	pev->speed -= 0.1;
-	if ( pev->speed > 0 )
+	if (pev->speed > 0)
 		pev->nextthink = gpGlobals->time + 0.1;
 	else
-		UTIL_Remove( this );
+		UTIL_Remove(this);
 	pev->flags &= ~FL_ONGROUND;
 }
 
-void CShower::Touch( CBaseEntity *pOther )
+void CShower::Touch(CBaseEntity* pOther)
 {
-	if ( pev->flags & FL_ONGROUND )
+	if (pev->flags & FL_ONGROUND)
 		pev->velocity = pev->velocity * 0.1;
 	else
 		pev->velocity = pev->velocity * 0.6;
 
-	if ( (pev->velocity.x*pev->velocity.x+pev->velocity.y*pev->velocity.y) < 10.0 )
+	if ((pev->velocity.x * pev->velocity.x + pev->velocity.y * pev->velocity.y) < 10.0)
 		pev->speed = 0;
 }
 
 class CEnvExplosion : public CBaseMonster
 {
 public:
-	void Spawn( ) override;
-	void EXPORT Smoke ();
-	void KeyValue( KeyValueData *pkvd ) override;
-	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
+	void Spawn() override;
+	void EXPORT Smoke();
+	void KeyValue(KeyValueData* pkvd) override;
+	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
 
 	bool Save(CSave& save) override;
-	bool Restore( CRestore &restore ) override;
+	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int m_iMagnitude;// how large is the fireball? how much damage?
 	int m_spriteScale; // what's the exact fireball sprite scale? 
 };
 
-TYPEDESCRIPTION	CEnvExplosion::m_SaveData[] = 
+TYPEDESCRIPTION	CEnvExplosion::m_SaveData[] =
 {
-	DEFINE_FIELD( CEnvExplosion, m_iMagnitude, FIELD_INTEGER ),
-	DEFINE_FIELD( CEnvExplosion, m_spriteScale, FIELD_INTEGER ),
+	DEFINE_FIELD(CEnvExplosion, m_iMagnitude, FIELD_INTEGER),
+	DEFINE_FIELD(CEnvExplosion, m_spriteScale, FIELD_INTEGER),
 };
 
-IMPLEMENT_SAVERESTORE( CEnvExplosion, CBaseMonster );
-LINK_ENTITY_TO_CLASS( env_explosion, CEnvExplosion );
+IMPLEMENT_SAVERESTORE(CEnvExplosion, CBaseMonster);
+LINK_ENTITY_TO_CLASS(env_explosion, CEnvExplosion);
 
-void CEnvExplosion::KeyValue( KeyValueData *pkvd )
+void CEnvExplosion::KeyValue(KeyValueData* pkvd)
 {
 	if (FStrEq(pkvd->szKeyName, "iMagnitude"))
 	{
@@ -108,11 +108,11 @@ void CEnvExplosion::KeyValue( KeyValueData *pkvd )
 		pkvd->fHandled = true;
 	}
 	else
-		CBaseEntity::KeyValue( pkvd );
+		CBaseEntity::KeyValue(pkvd);
 }
 
 void CEnvExplosion::Spawn()
-{ 
+{
 	pev->solid = SOLID_NOT;
 	pev->effects = EF_NODRAW;
 
@@ -125,15 +125,15 @@ void CEnvExplosion::Spawn()
 	*/
 
 	float flSpriteScale;
-	flSpriteScale = ( m_iMagnitude - 50) * 0.6;
-	
+	flSpriteScale = (m_iMagnitude - 50) * 0.6;
+
 	/*
 	if ( flSpriteScale > 50 )
 	{
 		flSpriteScale = 50;
 	}
 	*/
-	if ( flSpriteScale < 10 )
+	if (flSpriteScale < 10)
 	{
 		flSpriteScale = 10;
 	}
@@ -141,8 +141,8 @@ void CEnvExplosion::Spawn()
 	m_spriteScale = (int)flSpriteScale;
 }
 
-void CEnvExplosion::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
-{ 
+void CEnvExplosion::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+{
 	TraceResult tr;
 
 	pev->model = iStringNull;//invisible
@@ -150,12 +150,12 @@ void CEnvExplosion::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE
 
 	Vector		vecSpot;// trace starts here!
 
-	vecSpot = pev->origin + Vector ( 0 , 0 , 8 );
-	
-	UTIL_TraceLine ( vecSpot, vecSpot + Vector ( 0, 0, -40 ),  ignore_monsters, ENT(pev), & tr);
-	
+	vecSpot = pev->origin + Vector(0, 0, 8);
+
+	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -40), ignore_monsters, ENT(pev), &tr);
+
 	// Pull out of the wall a bit
-	if ( tr.flFraction != 1.0 )
+	if (tr.flFraction != 1.0)
 	{
 		pev->origin = tr.vecEndPos + (tr.vecPlaneNormal * (m_iMagnitude - 24) * 0.6);
 	}
@@ -165,85 +165,85 @@ void CEnvExplosion::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE
 	}
 
 	// draw decal
-	if (! ( pev->spawnflags & SF_ENVEXPLOSION_NODECAL))
+	if (!(pev->spawnflags & SF_ENVEXPLOSION_NODECAL))
 	{
-		if ( RANDOM_FLOAT( 0 , 1 ) < 0.5 )
+		if (RANDOM_FLOAT(0, 1) < 0.5)
 		{
-			UTIL_DecalTrace( &tr, DECAL_SCORCH1 );
+			UTIL_DecalTrace(&tr, DECAL_SCORCH1);
 		}
 		else
 		{
-			UTIL_DecalTrace( &tr, DECAL_SCORCH2 );
+			UTIL_DecalTrace(&tr, DECAL_SCORCH2);
 		}
 	}
 
 	// draw fireball
-	if ( !( pev->spawnflags & SF_ENVEXPLOSION_NOFIREBALL ) )
+	if (!(pev->spawnflags & SF_ENVEXPLOSION_NOFIREBALL))
 	{
-		MESSAGE_BEGIN( MSG_PAS, SVC_TEMPENTITY, pev->origin );
-			WRITE_BYTE( TE_EXPLOSION);
-			WRITE_COORD( pev->origin.x );
-			WRITE_COORD( pev->origin.y );
-			WRITE_COORD( pev->origin.z );
-			WRITE_SHORT( g_sModelIndexFireball );
-			WRITE_BYTE( (byte)m_spriteScale ); // scale * 10
-			WRITE_BYTE( 15  ); // framerate
-			WRITE_BYTE( TE_EXPLFLAG_NONE );
+		MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
+		WRITE_BYTE(TE_EXPLOSION);
+		WRITE_COORD(pev->origin.x);
+		WRITE_COORD(pev->origin.y);
+		WRITE_COORD(pev->origin.z);
+		WRITE_SHORT(g_sModelIndexFireball);
+		WRITE_BYTE((byte)m_spriteScale); // scale * 10
+		WRITE_BYTE(15); // framerate
+		WRITE_BYTE(TE_EXPLFLAG_NONE);
 		MESSAGE_END();
 	}
 	else
 	{
-		MESSAGE_BEGIN( MSG_PAS, SVC_TEMPENTITY, pev->origin );
-			WRITE_BYTE( TE_EXPLOSION);
-			WRITE_COORD( pev->origin.x );
-			WRITE_COORD( pev->origin.y );
-			WRITE_COORD( pev->origin.z );
-			WRITE_SHORT( g_sModelIndexFireball );
-			WRITE_BYTE( 0 ); // no sprite
-			WRITE_BYTE( 15  ); // framerate
-			WRITE_BYTE( TE_EXPLFLAG_NONE );
+		MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
+		WRITE_BYTE(TE_EXPLOSION);
+		WRITE_COORD(pev->origin.x);
+		WRITE_COORD(pev->origin.y);
+		WRITE_COORD(pev->origin.z);
+		WRITE_SHORT(g_sModelIndexFireball);
+		WRITE_BYTE(0); // no sprite
+		WRITE_BYTE(15); // framerate
+		WRITE_BYTE(TE_EXPLFLAG_NONE);
 		MESSAGE_END();
 	}
 
 	// do damage
-	if ( !( pev->spawnflags & SF_ENVEXPLOSION_NODAMAGE ) )
+	if (!(pev->spawnflags & SF_ENVEXPLOSION_NODAMAGE))
 	{
-		RadiusDamage ( pev, pev, m_iMagnitude, CLASS_NONE, DMG_BLAST );
+		RadiusDamage(pev, pev, m_iMagnitude, CLASS_NONE, DMG_BLAST);
 	}
 
-	SetThink( &CEnvExplosion::Smoke );
+	SetThink(&CEnvExplosion::Smoke);
 	pev->nextthink = gpGlobals->time + 0.3;
 
 	// draw sparks
-	if ( !( pev->spawnflags & SF_ENVEXPLOSION_NOSPARKS ) )
+	if (!(pev->spawnflags & SF_ENVEXPLOSION_NOSPARKS))
 	{
-		int sparkCount = RANDOM_LONG(0,3);
+		int sparkCount = RANDOM_LONG(0, 3);
 
-		for ( int i = 0; i < sparkCount; i++ )
+		for (int i = 0; i < sparkCount; i++)
 		{
-			Create( "spark_shower", pev->origin, tr.vecPlaneNormal, nullptr );
+			Create("spark_shower", pev->origin, tr.vecPlaneNormal, nullptr);
 		}
 	}
 }
 
 void CEnvExplosion::Smoke()
 {
-	if ( !( pev->spawnflags & SF_ENVEXPLOSION_NOSMOKE ) )
+	if (!(pev->spawnflags & SF_ENVEXPLOSION_NOSMOKE))
 	{
-		MESSAGE_BEGIN( MSG_PAS, SVC_TEMPENTITY, pev->origin );
-			WRITE_BYTE( TE_SMOKE );
-			WRITE_COORD( pev->origin.x );
-			WRITE_COORD( pev->origin.y );
-			WRITE_COORD( pev->origin.z );
-			WRITE_SHORT( g_sModelIndexSmoke );
-			WRITE_BYTE( (byte)m_spriteScale ); // scale * 10
-			WRITE_BYTE( 12  ); // framerate
+		MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
+		WRITE_BYTE(TE_SMOKE);
+		WRITE_COORD(pev->origin.x);
+		WRITE_COORD(pev->origin.y);
+		WRITE_COORD(pev->origin.z);
+		WRITE_SHORT(g_sModelIndexSmoke);
+		WRITE_BYTE((byte)m_spriteScale); // scale * 10
+		WRITE_BYTE(12); // framerate
 		MESSAGE_END();
 	}
-	
-	if ( !(pev->spawnflags & SF_ENVEXPLOSION_REPEATABLE) )
+
+	if (!(pev->spawnflags & SF_ENVEXPLOSION_REPEATABLE))
 	{
-		UTIL_Remove( this );
+		UTIL_Remove(this);
 	}
 }
 

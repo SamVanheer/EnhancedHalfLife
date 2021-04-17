@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1999, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -15,7 +15,7 @@
 
 /**
 *	@file
-* 
+*
 *	this implementation handles the linking of the engine to the DLL
 */
 
@@ -39,16 +39,16 @@
 #include "shared_interface/shared_interface.hpp"
 
 cl_enginefunc_t gEngfuncs;
-TeamFortressViewport *gViewPort = nullptr;
+TeamFortressViewport* gViewPort = nullptr;
 
 
 #include "particleman.h"
-CSysModule *g_hParticleManModule = nullptr;
+CSysModule* g_hParticleManModule = nullptr;
 
 void CL_LoadParticleMan();
 void CL_UnloadParticleMan();
 
-void InitInput ();
+void InitInput();
 void EV_HookEvents();
 void IN_Commands();
 
@@ -59,7 +59,7 @@ HUD_GetHullBounds
   Engine calls this to enumerate player collision hulls, for prediction.  Return 0 if the hullnumber doesn't exist.
 ================================
 */
-int DLLEXPORT HUD_GetHullBounds( int hullnumber, Vector* mins, Vector* maxs )
+int DLLEXPORT HUD_GetHullBounds(int hullnumber, Vector* mins, Vector* maxs)
 {
 	return Shared_GetHullBounds(hullnumber, *mins, *maxs);
 }
@@ -72,7 +72,7 @@ HUD_ConnectionlessPacket
   size of the response_buffer, so you must zero it out if you choose not to respond.
 ================================
 */
-int	DLLEXPORT HUD_ConnectionlessPacket( const netadr_t *net_from, const char *args, char *response_buffer, int *response_buffer_size )
+int	DLLEXPORT HUD_ConnectionlessPacket(const netadr_t* net_from, const char* args, char* response_buffer, int* response_buffer_size)
 {
 	// Parse stuff from args
 	int max_buffer_size = *response_buffer_size;
@@ -86,22 +86,22 @@ int	DLLEXPORT HUD_ConnectionlessPacket( const netadr_t *net_from, const char *ar
 	return false;
 }
 
-void DLLEXPORT HUD_PlayerMoveInit( playermove_t* ppmove )
+void DLLEXPORT HUD_PlayerMoveInit(playermove_t* ppmove)
 {
-	PM_Init( ppmove );
+	PM_Init(ppmove);
 }
 
-char DLLEXPORT HUD_PlayerMoveTexture( char *name )
+char DLLEXPORT HUD_PlayerMoveTexture(char* name)
 {
-	return TEXTURETYPE_Find( name );
+	return TEXTURETYPE_Find(name);
 }
 
-void DLLEXPORT HUD_PlayerMove( playermove_t* ppmove, int server )
+void DLLEXPORT HUD_PlayerMove(playermove_t* ppmove, int server)
 {
-	PM_Move( ppmove, server );
+	PM_Move(ppmove, server);
 }
 
-int DLLEXPORT Initialize( cl_enginefunc_t *pEnginefuncs, int iVersion )
+int DLLEXPORT Initialize(cl_enginefunc_t* pEnginefuncs, int iVersion)
 {
 	gEngfuncs = *pEnginefuncs;
 
@@ -147,7 +147,7 @@ int DLLEXPORT HUD_VidInit()
 	HUD_Init
 
 Called whenever the client connects
-to a server.  Reinitializes all 
+to a server.  Reinitializes all
 the hud variables.
 ==========================
 */
@@ -169,9 +169,9 @@ redraw the HUD.
 ===========================
 */
 
-int DLLEXPORT HUD_Redraw( float time, int intermission )
+int DLLEXPORT HUD_Redraw(float time, int intermission)
 {
-	gHUD.Redraw( time, intermission );
+	gHUD.Redraw(time, intermission);
 
 	return true;
 }
@@ -190,11 +190,11 @@ returns 1 if anything has been changed, 0 otherwise.
 ==========================
 */
 
-int DLLEXPORT HUD_UpdateClientData(client_data_t *pcldata, float flTime )
+int DLLEXPORT HUD_UpdateClientData(client_data_t* pcldata, float flTime)
 {
 	IN_Commands();
 
-	return gHUD.UpdateClientData(pcldata, flTime );
+	return gHUD.UpdateClientData(pcldata, flTime);
 }
 
 /*
@@ -218,7 +218,7 @@ Called by engine every frame that client .dll is loaded
 ==========================
 */
 
-void DLLEXPORT HUD_Frame( double time )
+void DLLEXPORT HUD_Frame(double time)
 {
 	GetClientVoiceMgr()->Frame(time);
 }
@@ -245,14 +245,14 @@ Called when a director event message was received
 ==========================
 */
 
-void DLLEXPORT HUD_DirectorMessage( int iSize, void *pbuf )
+void DLLEXPORT HUD_DirectorMessage(int iSize, void* pbuf)
 {
-	gHUD.m_Spectator.DirectorMessage( iSize, pbuf );
+	gHUD.m_Spectator.DirectorMessage(iSize, pbuf);
 }
 
 void CL_UnloadParticleMan()
 {
-	Sys_UnloadModule( g_hParticleManModule );
+	Sys_UnloadModule(g_hParticleManModule);
 
 	g_pParticleMan = nullptr;
 	g_hParticleManModule = nullptr;
@@ -262,39 +262,39 @@ void CL_LoadParticleMan()
 {
 	char szPDir[512];
 
-	if ( gEngfuncs.COM_ExpandFilename( PARTICLEMAN_DLLNAME.data(), szPDir, sizeof( szPDir ) ) == false )
+	if (gEngfuncs.COM_ExpandFilename(PARTICLEMAN_DLLNAME.data(), szPDir, sizeof(szPDir)) == false)
 	{
 		g_pParticleMan = nullptr;
 		g_hParticleManModule = nullptr;
 		return;
 	}
 
-	g_hParticleManModule = Sys_LoadModule( szPDir );
-	CreateInterfaceFn particleManFactory = Sys_GetFactory( g_hParticleManModule );
+	g_hParticleManModule = Sys_LoadModule(szPDir);
+	CreateInterfaceFn particleManFactory = Sys_GetFactory(g_hParticleManModule);
 
-	if ( particleManFactory == nullptr)
+	if (particleManFactory == nullptr)
 	{
 		g_pParticleMan = nullptr;
 		g_hParticleManModule = nullptr;
 		return;
 	}
 
-	g_pParticleMan = (IParticleMan *)particleManFactory( PARTICLEMAN_INTERFACE.data(), nullptr);
+	g_pParticleMan = (IParticleMan*)particleManFactory(PARTICLEMAN_INTERFACE.data(), nullptr);
 
-	if ( g_pParticleMan )
+	if (g_pParticleMan)
 	{
-		 g_pParticleMan->SetUp( &gEngfuncs );
+		g_pParticleMan->SetUp(&gEngfuncs);
 
-		 // Add custom particle classes here BEFORE calling anything else or you will die.
-		 g_pParticleMan->AddCustomParticleClassSize ( sizeof ( CBaseParticle ) );
+		// Add custom particle classes here BEFORE calling anything else or you will die.
+		g_pParticleMan->AddCustomParticleClassSize(sizeof(CBaseParticle));
 	}
 }
 
-extern "C" void DLLEXPORT F(void *pv)
+extern "C" void DLLEXPORT F(void* pv)
 {
-	cldll_func_t *pcldll_func = (cldll_func_t *)pv;
+	cldll_func_t* pcldll_func = (cldll_func_t*)pv;
 
-	cldll_func_t cldll_func = 
+	cldll_func_t cldll_func =
 	{
 	Initialize,
 	HUD_Init,
@@ -351,7 +351,7 @@ class CClientExports : public IGameClientExports
 {
 public:
 	// returns the name of the server the user is connected to, if any
-	const char *GetServerHostName() override
+	const char* GetServerHostName() override
 	{
 		/*if (gViewPortInterface)
 		{

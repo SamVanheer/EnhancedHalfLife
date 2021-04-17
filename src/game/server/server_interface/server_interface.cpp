@@ -28,45 +28,45 @@ globalvars_t* gpGlobals;
 
 extern "C"
 {
-void GIVEFNPTRSTODLL_EXPORT GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine, globalvars_t* pGlobals)
-{
-	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
-	gpGlobals = pGlobals;
-}
-
-int GetEntityAPI(DLL_FUNCTIONS* pFunctionTable, int interfaceVersion)
-{
-	if (!pFunctionTable || interfaceVersion != INTERFACE_VERSION)
+	void GIVEFNPTRSTODLL_EXPORT GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine, globalvars_t* pGlobals)
 	{
-		return false;
+		memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
+		gpGlobals = pGlobals;
 	}
 
-	memcpy(pFunctionTable, &gEntityInterface, sizeof(DLL_FUNCTIONS));
-	return true;
-}
-
-int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
-{
-	if (!pFunctionTable || *interfaceVersion != INTERFACE_VERSION)
+	int GetEntityAPI(DLL_FUNCTIONS* pFunctionTable, int interfaceVersion)
 	{
-		// Tell engine what version we had, so it can figure out who is out of date.
-		*interfaceVersion = INTERFACE_VERSION;
-		return false;
+		if (!pFunctionTable || interfaceVersion != INTERFACE_VERSION)
+		{
+			return false;
+		}
+
+		memcpy(pFunctionTable, &gEntityInterface, sizeof(DLL_FUNCTIONS));
+		return true;
 	}
 
-	memcpy(pFunctionTable, &gEntityInterface, sizeof(DLL_FUNCTIONS));
-	return true;
-}
-
-int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
-{
-	if (!pFunctionTable || *interfaceVersion != NEW_DLL_FUNCTIONS_VERSION)
+	int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
 	{
-		*interfaceVersion = NEW_DLL_FUNCTIONS_VERSION;
-		return false;
+		if (!pFunctionTable || *interfaceVersion != INTERFACE_VERSION)
+		{
+			// Tell engine what version we had, so it can figure out who is out of date.
+			*interfaceVersion = INTERFACE_VERSION;
+			return false;
+		}
+
+		memcpy(pFunctionTable, &gEntityInterface, sizeof(DLL_FUNCTIONS));
+		return true;
 	}
 
-	memcpy(pFunctionTable, &gNewDLLFunctions, sizeof(gNewDLLFunctions));
-	return true;
-}
+	int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
+	{
+		if (!pFunctionTable || *interfaceVersion != NEW_DLL_FUNCTIONS_VERSION)
+		{
+			*interfaceVersion = NEW_DLL_FUNCTIONS_VERSION;
+			return false;
+		}
+
+		memcpy(pFunctionTable, &gNewDLLFunctions, sizeof(gNewDLLFunctions));
+		return true;
+	}
 }

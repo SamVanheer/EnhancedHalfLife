@@ -8,7 +8,7 @@ constexpr int TRIANGLE_FPS = 30;
 
 struct visibleparticles_t
 {
-	CCoreTriangleEffect *pVisibleParticle;
+	CCoreTriangleEffect* pVisibleParticle;
 };
 
 /**
@@ -17,12 +17,12 @@ struct visibleparticles_t
 class MemoryBlock
 {
 private:
-	char *m_pData;
+	char* m_pData;
 	//bool m_bBlockIsInUse;
 public:
 	MemoryBlock(long lBlockSize)
-	: next(nullptr), prev(nullptr)
-	  //m_bBlockIsInUse(false) // Initialize block to 'free' state.
+		: next(nullptr), prev(nullptr)
+		//m_bBlockIsInUse(false) // Initialize block to 'free' state.
 	{
 		// Allocate memory here.
 		m_pData = new char[lBlockSize];
@@ -33,11 +33,11 @@ public:
 		// Free memory.
 		delete[] m_pData;
 	}
-  
-	inline char *Memory() { return m_pData; }
 
-	MemoryBlock * next;
-	MemoryBlock * prev;
+	inline char* Memory() { return m_pData; }
+
+	MemoryBlock* next;
+	MemoryBlock* prev;
 };
 
 class MemList
@@ -47,9 +47,9 @@ public:
 
 	~MemList() { Reset(); }
 
-	void Push(MemoryBlock * newItem)
+	void Push(MemoryBlock* newItem)
 	{
-		if(!m_pHead)
+		if (!m_pHead)
 		{
 			m_pHead = newItem;
 			newItem->next = nullptr;
@@ -57,30 +57,30 @@ public:
 			return;
 		}
 
-		MemoryBlock * temp = m_pHead;
+		MemoryBlock* temp = m_pHead;
 		m_pHead = newItem;
 		m_pHead->next = temp;
 		m_pHead->prev = nullptr;
-		
+
 		temp->prev = m_pHead;
 	}
-	
-	
-	MemoryBlock * Front()
+
+
+	MemoryBlock* Front()
 	{
 		return(m_pHead);
 	}
 
-	MemoryBlock * Pop()
+	MemoryBlock* Pop()
 	{
-		if(!m_pHead)
+		if (!m_pHead)
 			return nullptr;
 
-		MemoryBlock * temp = m_pHead;
+		MemoryBlock* temp = m_pHead;
 
 		m_pHead = m_pHead->next;
 
-		if(m_pHead)
+		if (m_pHead)
 			m_pHead->prev = nullptr;
 
 		temp->next = nullptr;
@@ -89,15 +89,15 @@ public:
 		return(temp);
 	}
 
-	void Delete( MemoryBlock * pItem)
+	void Delete(MemoryBlock* pItem)
 	{
 
-		if(m_pHead == pItem)
+		if (m_pHead == pItem)
 		{
-			MemoryBlock * temp = m_pHead;
+			MemoryBlock* temp = m_pHead;
 
 			m_pHead = m_pHead->next;
-			if(m_pHead)
+			if (m_pHead)
 				m_pHead->prev = nullptr;
 
 			temp->next = nullptr;
@@ -105,13 +105,13 @@ public:
 			return;
 		}
 
-		MemoryBlock * prev = pItem->prev;
-		MemoryBlock * next = pItem->next;
+		MemoryBlock* prev = pItem->prev;
+		MemoryBlock* next = pItem->next;
 
-		if(prev)
+		if (prev)
 			prev->next = next;
-		
-		if(next)
+
+		if (next)
 			next->prev = prev;
 
 		pItem->next = nullptr;
@@ -120,17 +120,17 @@ public:
 
 	void Reset()
 	{
-		while(m_pHead)
+		while (m_pHead)
 			Delete(m_pHead);
 	}
 
 private:
-	MemoryBlock * m_pHead;
+	MemoryBlock* m_pHead;
 };
 
 
 // Some helpful typedefs.
-typedef std::vector<MemoryBlock *> VectorOfMemoryBlocks;
+typedef std::vector<MemoryBlock*> VectorOfMemoryBlocks;
 typedef VectorOfMemoryBlocks::iterator MemoryBlockIterator;
 
 /**
@@ -146,7 +146,7 @@ private:
 	static long m_lMemoryBlockSize;
 	static long m_lMaxBlocks;
 	static long m_lMemoryPoolSize;
-	static CMiniMem *_instance;
+	static CMiniMem* _instance;
 
 	int m_iTotalParticles;
 	int m_iParticlesDrawn;
@@ -159,14 +159,14 @@ protected:
 	// ------------ Memory pool manager calls.
 	// Find a free block and mark it as "in use".  Return nullptr
 	//  if no free blocks found.
-	char *AllocateFreeBlock();
+	char* AllocateFreeBlock();
 public:
 
 	// Return a pointer to usable block of memory.
-	char *newBlock();
+	char* newBlock();
 
 	// Mark a target memory item as no longer "in use".
-	void deleteBlock(MemoryBlock *p);
+	void deleteBlock(MemoryBlock* p);
 
 	// Return the remaining capacity of the memory pool as a percent.
 	long PercentUsed();
@@ -175,18 +175,18 @@ public:
 
 	void Reset(); //clears memory, setting all particles to not used.
 
-	static int ApplyForce( Vector vOrigin, Vector vDirection, float flRadius, float flStrength );
+	static int ApplyForce(Vector vOrigin, Vector vDirection, float flRadius, float flStrength);
 
-	static CMiniMem *Instance();
+	static CMiniMem* Instance();
 	static long MaxBlockSize();
 
-	bool CheckSize( int iSize );
+	bool CheckSize(int iSize);
 
-	int GetTotalParticles() { return m_iTotalParticles;	}
-	int GetDrawnParticles() { return m_iParticlesDrawn;	}
-	void IncreaseParticlesDrawn(){ m_iParticlesDrawn++;	}
-	
+	int GetTotalParticles() { return m_iTotalParticles; }
+	int GetDrawnParticles() { return m_iParticlesDrawn; }
+	void IncreaseParticlesDrawn() { m_iParticlesDrawn++; }
+
 	void Shutdown();
-	
-	visibleparticles_t *m_pVisibleParticles;
+
+	visibleparticles_t* m_pVisibleParticles;
 };

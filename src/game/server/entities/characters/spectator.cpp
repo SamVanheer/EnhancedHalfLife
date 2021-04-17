@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2001, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -17,7 +17,7 @@
 
 /**
 *	@file
-* 
+*
 *	Spectator functions
 */
 
@@ -39,7 +39,7 @@ void CBaseSpectator::SpectatorConnect()
 	pev->flags = FL_SPECTATOR;
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_NOCLIP;
-	
+
 	m_pGoalEnt = nullptr;
 }
 
@@ -63,11 +63,11 @@ Called by SpectatorThink if the spectator entered an impulse
 */
 void CBaseSpectator::SpectatorImpulseCommand()
 {
-	static edict_t	*pGoal		= nullptr;
-	edict_t         *pPreviousGoal;
-	edict_t         *pCurrentGoal;
+	static edict_t* pGoal = nullptr;
+	edict_t* pPreviousGoal;
+	edict_t* pCurrentGoal;
 	bool			bFound;
-	
+
 	switch (pev->impulse)
 	{
 	case 1:
@@ -76,7 +76,7 @@ void CBaseSpectator::SpectatorImpulseCommand()
 		// much
 		//TODO: dangerous!
 		pPreviousGoal = pGoal;
-		pCurrentGoal  = pGoal;
+		pCurrentGoal = pGoal;
 		// Start at the current goal, skip the world, and stop if we looped
 		//  back around
 
@@ -100,9 +100,9 @@ void CBaseSpectator::SpectatorImpulseCommand()
 
 		if (!bFound)  // Didn't find a good spot.
 			break;
-		
+
 		pGoal = pCurrentGoal;
-		UTIL_SetOrigin( pev, pGoal->v.origin );
+		UTIL_SetOrigin(pev, pGoal->v.origin);
 		pev->angles = pGoal->v.angles;
 		pev->fixangle = FIXANGLE_NONE;
 		break;
@@ -128,8 +128,8 @@ void  CBaseSpectator::SpectatorThink()
 		pev->flags = FL_SPECTATOR;
 	}
 
-	pev->solid	   = SOLID_NOT;
-	pev->movetype  = MOVETYPE_NOCLIP;
+	pev->solid = SOLID_NOT;
+	pev->movetype = MOVETYPE_NOCLIP;
 
 	if (pev->impulse)
 		SpectatorImpulseCommand();
@@ -148,6 +148,6 @@ void CBaseSpectator::Spawn()
 	pev->flags = FL_SPECTATOR;
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_NOCLIP;
-	
+
 	m_pGoalEnt = nullptr;
 }

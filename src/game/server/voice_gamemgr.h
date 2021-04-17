@@ -21,7 +21,7 @@ public:
 
 	// Called each frame to determine which players are allowed to hear each other.	This overrides
 	// whatever squelch settings players have.
-	virtual bool		CanPlayerHearPlayer(CBasePlayer *pListener, CBasePlayer *pTalker) = 0;
+	virtual bool		CanPlayerHearPlayer(CBasePlayer* pListener, CBasePlayer* pTalker) = 0;
 };
 
 
@@ -29,15 +29,15 @@ public:
 class CVoiceGameMgr
 {
 public:
-						CVoiceGameMgr();
+	CVoiceGameMgr();
 	virtual				~CVoiceGameMgr();
-	
-	bool				Init(
-		IVoiceGameMgrHelper *m_pHelper,
-		int maxClients
-		);
 
-	void				SetHelper(IVoiceGameMgrHelper *pHelper);
+	bool				Init(
+		IVoiceGameMgrHelper* m_pHelper,
+		int maxClients
+	);
+
+	void				SetHelper(IVoiceGameMgrHelper* pHelper);
 
 	// Updates which players can hear which other players.
 	// If gameplay mode is DM, then only players within the PVS can hear each other.
@@ -50,11 +50,11 @@ public:
 
 	// Called on ClientCommand. Checks for the squelch and unsquelch commands.
 	// Returns true if it handled the command.
-	bool				ClientCommand(CBasePlayer *pPlayer, const char *cmd);
+	bool				ClientCommand(CBasePlayer* pPlayer, const char* cmd);
 
 	// Called to determine if the Receiver has muted (blocked) the Sender
 	// Returns true if the receiver has blocked the sender
-	bool				PlayerHasBlockedPlayer(CBasePlayer *pReceiver, CBasePlayer *pSender);
+	bool				PlayerHasBlockedPlayer(CBasePlayer* pReceiver, CBasePlayer* pSender);
 
 
 private:
@@ -67,7 +67,7 @@ private:
 	int					m_msgPlayerVoiceMask;
 	int					m_msgRequestState;
 
-	IVoiceGameMgrHelper	*m_pHelper;
+	IVoiceGameMgrHelper* m_pHelper;
 	int					m_nMaxPlayers;
 	double				m_UpdateInterval;						// How long since the last update.
 };

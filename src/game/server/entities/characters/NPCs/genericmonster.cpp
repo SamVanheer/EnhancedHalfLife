@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2001, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   This source code contains proprietary and confidential information of
@@ -36,17 +36,17 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
-	int  Classify () override;
-	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
-	int ISoundMask () override;
+	int  Classify() override;
+	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	int ISoundMask() override;
 };
-LINK_ENTITY_TO_CLASS( monster_generic, CGenericMonster );
+LINK_ENTITY_TO_CLASS(monster_generic, CGenericMonster);
 
 //=========================================================
 // Classify - indicates this monster's place in the 
 // relationship table.
 //=========================================================
-int	CGenericMonster :: Classify ()
+int	CGenericMonster::Classify()
 {
 	return	CLASS_PLAYER_ALLY;
 }
@@ -55,11 +55,11 @@ int	CGenericMonster :: Classify ()
 // SetYawSpeed - allows each sequence to have a different
 // turn rate associated with it.
 //=========================================================
-void CGenericMonster :: SetYawSpeed ()
+void CGenericMonster::SetYawSpeed()
 {
 	int ys;
 
-	switch ( m_Activity )
+	switch (m_Activity)
 	{
 	case ACT_IDLE:
 	default:
@@ -73,13 +73,13 @@ void CGenericMonster :: SetYawSpeed ()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CGenericMonster :: HandleAnimEvent( MonsterEvent_t *pEvent )
+void CGenericMonster::HandleAnimEvent(MonsterEvent_t* pEvent)
 {
-	switch( pEvent->event )
+	switch (pEvent->event)
 	{
 	case 0:
 	default:
-		CBaseMonster::HandleAnimEvent( pEvent );
+		CBaseMonster::HandleAnimEvent(pEvent);
 		break;
 	}
 }
@@ -87,7 +87,7 @@ void CGenericMonster :: HandleAnimEvent( MonsterEvent_t *pEvent )
 //=========================================================
 // ISoundMask - generic monster can't hear.
 //=========================================================
-int CGenericMonster :: ISoundMask ()
+int CGenericMonster::ISoundMask()
 {
 	return	bits_SOUND_NONE;
 }
@@ -95,34 +95,34 @@ int CGenericMonster :: ISoundMask ()
 //=========================================================
 // Spawn
 //=========================================================
-void CGenericMonster :: Spawn()
+void CGenericMonster::Spawn()
 {
 	Precache();
 
-	SET_MODEL( ENT(pev), STRING(pev->model) );
+	SET_MODEL(ENT(pev), STRING(pev->model));
 
-/*
-	if ( FStrEq( STRING(pev->model), "models/player.mdl" ) )
-		UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
-	else
+	/*
+		if ( FStrEq( STRING(pev->model), "models/player.mdl" ) )
+			UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+		else
+			UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
+	*/
+
+	if (FStrEq(STRING(pev->model), "models/player.mdl") || FStrEq(STRING(pev->model), "models/holo.mdl"))
 		UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
-*/
-
-	if ( FStrEq( STRING(pev->model), "models/player.mdl" ) || FStrEq( STRING(pev->model), "models/holo.mdl" ) )
-		UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
 	else
 		UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid			= SOLID_SLIDEBOX;
-	pev->movetype		= MOVETYPE_STEP;
-	m_bloodColor		= BLOOD_COLOR_RED;
-	pev->health			= 8;
-	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
-	m_MonsterState		= NPCState::None;
+	pev->solid = SOLID_SLIDEBOX;
+	pev->movetype = MOVETYPE_STEP;
+	m_bloodColor = BLOOD_COLOR_RED;
+	pev->health = 8;
+	m_flFieldOfView = 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	m_MonsterState = NPCState::None;
 
 	MonsterInit();
 
-	if ( pev->spawnflags & SF_GENERICMONSTER_NOTSOLID )
+	if (pev->spawnflags & SF_GENERICMONSTER_NOTSOLID)
 	{
 		pev->solid = SOLID_NOT;
 		pev->takedamage = DAMAGE_NO;
@@ -132,10 +132,10 @@ void CGenericMonster :: Spawn()
 //=========================================================
 // Precache - precaches all resources this monster needs
 //=========================================================
-void CGenericMonster :: Precache()
+void CGenericMonster::Precache()
 {
-	PRECACHE_MODEL( STRING(pev->model) );
-}	
+	PRECACHE_MODEL(STRING(pev->model));
+}
 
 //=========================================================
 // AI Schedules Specific to this monster

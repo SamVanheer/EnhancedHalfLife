@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -35,21 +35,21 @@ bool CHudBattery::Init()
 
 bool CHudBattery::VidInit()
 {
-	int HUD_suit_empty = gHUD.GetSpriteIndex( "suit_empty" );
-	int HUD_suit_full = gHUD.GetSpriteIndex( "suit_full" );
+	int HUD_suit_empty = gHUD.GetSpriteIndex("suit_empty");
+	int HUD_suit_full = gHUD.GetSpriteIndex("suit_full");
 
 	m_hSprite1 = m_hSprite2 = 0;  // delaying get sprite handles until we know the sprites are loaded
-	m_prc1 = &gHUD.GetSpriteRect( HUD_suit_empty );
-	m_prc2 = &gHUD.GetSpriteRect( HUD_suit_full );
+	m_prc1 = &gHUD.GetSpriteRect(HUD_suit_empty);
+	m_prc2 = &gHUD.GetSpriteRect(HUD_suit_full);
 	m_iHeight = m_prc2->bottom - m_prc1->top;
 	m_fFade = 0;
 	return true;
 };
 
-bool CHudBattery:: MsgFunc_Battery(const char *pszName,  int iSize, void *pbuf )
+bool CHudBattery::MsgFunc_Battery(const char* pszName, int iSize, void* pbuf)
 {
 	m_iFlags |= HUD_ACTIVE;
-	
+
 	BufferReader reader{pbuf, iSize};
 	int x = reader.ReadShort();
 
@@ -65,7 +65,7 @@ bool CHudBattery:: MsgFunc_Battery(const char *pszName,  int iSize, void *pbuf )
 
 bool CHudBattery::Draw(float flTime)
 {
-	if ( gHUD.m_iHideHUDDisplay & HIDEHUD_HEALTH )
+	if (gHUD.m_iHideHUDDisplay & HIDEHUD_HEALTH)
 		return true;
 
 	int r, g, b, x, y, a;
@@ -73,11 +73,11 @@ bool CHudBattery::Draw(float flTime)
 
 	rc = *m_prc2;
 
-	rc.top  += m_iHeight * ((float)(100-(std::min(100,m_iBat))) * 0.01);	// battery can go from 0 to 100 so * 0.01 goes from 0 to 1
+	rc.top += m_iHeight * ((float)(100 - (std::min(100, m_iBat))) * 0.01);	// battery can go from 0 to 100 so * 0.01 goes from 0 to 1
 
-	UnpackRGB(r,g,b, RGB_YELLOWISH);
+	UnpackRGB(r, g, b, RGB_YELLOWISH);
 
-	if (!(gHUD.m_iWeaponBits & (1<<(WEAPON_SUIT)) ))
+	if (!(gHUD.m_iWeaponBits & (1 << (WEAPON_SUIT))))
 		return true;
 
 	// Has health changed? Flash the health #
@@ -95,32 +95,32 @@ bool CHudBattery::Draw(float flTime)
 
 		// Fade the health number back to dim
 
-		a = MIN_ALPHA +  (m_fFade/FADE_TIME) * 128;
+		a = MIN_ALPHA + (m_fFade / FADE_TIME) * 128;
 
 	}
 	else
 		a = MIN_ALPHA;
 
-	ScaleColors(r, g, b, a );
-	
-	int iOffset = (m_prc1->bottom - m_prc1->top)/6;
+	ScaleColors(r, g, b, a);
+
+	int iOffset = (m_prc1->bottom - m_prc1->top) / 6;
 
 	y = ScreenHeight - gHUD.m_iFontHeight - gHUD.m_iFontHeight / 2;
-	x = ScreenWidth/4;
+	x = ScreenWidth / 4;
 
 	// make sure we have the right sprite handles
-	if ( !m_hSprite1 )
-		m_hSprite1 = gHUD.GetSprite( gHUD.GetSpriteIndex( "suit_empty" ) );
-	if ( !m_hSprite2 )
-		m_hSprite2 = gHUD.GetSprite( gHUD.GetSpriteIndex( "suit_full" ) );
+	if (!m_hSprite1)
+		m_hSprite1 = gHUD.GetSprite(gHUD.GetSpriteIndex("suit_empty"));
+	if (!m_hSprite2)
+		m_hSprite2 = gHUD.GetSprite(gHUD.GetSpriteIndex("suit_full"));
 
-	SPR_Set(m_hSprite1, r, g, b );
-	SPR_DrawAdditive( 0,  x, y - iOffset, m_prc1);
+	SPR_Set(m_hSprite1, r, g, b);
+	SPR_DrawAdditive(0, x, y - iOffset, m_prc1);
 
 	if (rc.bottom > rc.top)
 	{
-		SPR_Set(m_hSprite2, r, g, b );
-		SPR_DrawAdditive( 0, x, y - iOffset + (rc.top - m_prc2->top), &rc);
+		SPR_Set(m_hSprite2, r, g, b);
+		SPR_DrawAdditive(0, x, y - iOffset + (rc.top - m_prc2->top), &rc);
 	}
 
 	x += (m_prc1->right - m_prc1->left);

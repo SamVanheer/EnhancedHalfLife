@@ -24,7 +24,7 @@
 #include "cvardef.h"
 #include "CTokenizer.hpp"
 
-cvar_t *g_CV_BitmapFonts;
+cvar_t* g_CV_BitmapFonts;
 
 
 void Scheme_Init()
@@ -40,12 +40,12 @@ void Scheme_Init()
 class CSchemeManager::CScheme
 {
 public:
-	enum { 
+	enum {
 		SCHEME_NAME_LENGTH = 32,
 		FONT_NAME_LENGTH = 48,
 		FONT_FILENAME_LENGTH = 64,
 	};
-	
+
 	// name
 	char schemeName[SCHEME_NAME_LENGTH];
 
@@ -55,14 +55,14 @@ public:
 	int fontSize;
 	int fontWeight;
 
-	vgui::Font *font;
+	vgui::Font* font;
 	int ownFontPointer; // true if the font is ours to delete
 
 	// scheme
 	byte fgColor[4];
 	byte bgColor[4];
 	byte armedFgColor[4];
-	byte armedBgColor[4]; 
+	byte armedBgColor[4];
 	byte mousedownFgColor[4];
 	byte mousedownBgColor[4];
 	byte borderColor[4];
@@ -85,7 +85,7 @@ CSchemeManager::CScheme::CScheme()
 CSchemeManager::CScheme::~CScheme()
 {
 	// only delete our font pointer if we own it
-	if ( ownFontPointer )
+	if (ownFontPointer)
 	{
 		delete font;
 	}
@@ -109,15 +109,15 @@ static constexpr int g_ResArray[] =
 };
 static int g_NumReses = sizeof(g_ResArray) / sizeof(int);
 
-static std::unique_ptr<byte[]> LoadFileByResolution( const char *filePrefix, int xRes, const char *filePostfix )
+static std::unique_ptr<byte[]> LoadFileByResolution(const char* filePrefix, int xRes, const char* filePostfix)
 {
 	// find our resolution in the res array
 	int resNum = g_NumReses - 1;
-	while ( g_ResArray[resNum] > xRes )
+	while (g_ResArray[resNum] > xRes)
 	{
 		resNum--;
 
-		if ( resNum < 0 )
+		if (resNum < 0)
 			return {};
 	}
 
@@ -126,7 +126,7 @@ static std::unique_ptr<byte[]> LoadFileByResolution( const char *filePrefix, int
 	{
 		// try load
 		char fname[256];
-		snprintf( fname, sizeof(fname), "%s%d%s", filePrefix, g_ResArray[resNum], filePostfix );
+		snprintf(fname, sizeof(fname), "%s%d%s", filePrefix, g_ResArray[resNum], filePostfix);
 
 		if (auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer(fname); fileBuffer)
 		{
@@ -139,10 +139,10 @@ static std::unique_ptr<byte[]> LoadFileByResolution( const char *filePrefix, int
 	return {};
 }
 
-static void ParseRGBAFromString( byte colorArray[4], const char *colorVector )
+static void ParseRGBAFromString(byte colorArray[4], const char* colorVector)
 {
 	int r, g, b, a;
-	sscanf( colorVector, "%d %d %d %d", &r, &g, &b, &a );
+	sscanf(colorVector, "%d %d %d %d", &r, &g, &b, &a);
 	colorArray[0] = r;
 	colorArray[1] = g;
 	colorArray[2] = b;
@@ -155,14 +155,14 @@ static void ParseRGBAFromString( byte colorArray[4], const char *colorVector )
 // Input  : xRes - 
 //			yRes - dimensions of output window
 //-----------------------------------------------------------------------------
-CSchemeManager::CSchemeManager( int xRes, int yRes )
+CSchemeManager::CSchemeManager(int xRes, int yRes)
 {
 	// basic setup
 	m_pSchemeList = nullptr;
 	m_iNumSchemes = 0;
 
 	// find the closest matching scheme file to our resolution
-	auto fileBuffer = LoadFileByResolution( "", xRes, "_textscheme.txt" );
+	auto fileBuffer = LoadFileByResolution("", xRes, "_textscheme.txt");
 	m_xRes = xRes;
 
 	//
@@ -175,9 +175,9 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 
 	const static int numTmpSchemes = 64;
 	static CScheme tmpSchemes[numTmpSchemes];
-	memset( tmpSchemes, 0, sizeof(tmpSchemes) );
+	memset(tmpSchemes, 0, sizeof(tmpSchemes));
 	int currentScheme = -1;
-	CScheme *pScheme = nullptr;
+	CScheme* pScheme = nullptr;
 
 	if (fileBuffer)
 	{
@@ -335,11 +335,11 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 	}
 
 	// make sure we have at least 1 valid font
-	if ( currentScheme < 0 )
+	if (currentScheme < 0)
 	{
 		currentScheme = 0;
-		safe_strcpy( tmpSchemes[0].schemeName, "Default Scheme" );
-		safe_strcpy( tmpSchemes[0].fontName, "Arial" );
+		safe_strcpy(tmpSchemes[0].schemeName, "Default Scheme");
+		safe_strcpy(tmpSchemes[0].fontName, "Arial");
 		tmpSchemes[0].fontSize = 0;
 		tmpSchemes[0].fgColor[0] = tmpSchemes[0].fgColor[1] = tmpSchemes[0].fgColor[2] = tmpSchemes[0].fgColor[3] = 255;
 		tmpSchemes[0].armedFgColor[0] = tmpSchemes[0].armedFgColor[1] = tmpSchemes[0].armedFgColor[2] = tmpSchemes[0].armedFgColor[3] = 255;
@@ -349,23 +349,23 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 	// we have the full list of schemes in the tmpSchemes array
 	// now allocate the correct sized list
 	m_iNumSchemes = currentScheme + 1; // 0-based index
-	m_pSchemeList = new CScheme[ m_iNumSchemes ];
+	m_pSchemeList = new CScheme[m_iNumSchemes];
 
 	// copy in the data
-	memcpy( m_pSchemeList, tmpSchemes, sizeof(CScheme) * m_iNumSchemes );
+	memcpy(m_pSchemeList, tmpSchemes, sizeof(CScheme) * m_iNumSchemes);
 
 	// create the fonts
-	for ( int i = 0; i < m_iNumSchemes; i++ )
+	for (int i = 0; i < m_iNumSchemes; i++)
 	{
 		m_pSchemeList[i].font = nullptr;
 
 		// see if the current font values exist in a previously loaded font
-		for ( int j = 0; j < i; j++ )
+		for (int j = 0; j < i; j++)
 		{
 			// check if the font name, size, and weight are the same
-			if ( !stricmp(m_pSchemeList[i].fontName, m_pSchemeList[j].fontName)  
+			if (!stricmp(m_pSchemeList[i].fontName, m_pSchemeList[j].fontName)
 				&& m_pSchemeList[i].fontSize == m_pSchemeList[j].fontSize
-				&& m_pSchemeList[i].fontWeight == m_pSchemeList[j].fontWeight )
+				&& m_pSchemeList[i].fontWeight == m_pSchemeList[j].fontWeight)
 			{
 				// copy the pointer, but mark i as not owning it
 				m_pSchemeList[i].font = m_pSchemeList[j].font;
@@ -374,23 +374,23 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 		}
 
 		// if we haven't found the font already, load it ourselves
-		if ( !m_pSchemeList[i].font )
+		if (!m_pSchemeList[i].font)
 		{
 			std::unique_ptr<byte[]> fontFileBuffer;
 			std::size_t fontFileSize = 0;
 
-			if(g_CV_BitmapFonts && g_CV_BitmapFonts->value)
+			if (g_CV_BitmapFonts && g_CV_BitmapFonts->value)
 			{
 				int fontRes = 640;
-				if ( m_xRes >= 1600 )
+				if (m_xRes >= 1600)
 					fontRes = 1600;
-				else if ( m_xRes >= 1280 )
+				else if (m_xRes >= 1280)
 					fontRes = 1280;
-				else if ( m_xRes >= 1152 )
+				else if (m_xRes >= 1152)
 					fontRes = 1152;
-				else if ( m_xRes >= 1024 )
+				else if (m_xRes >= 1024)
 					fontRes = 1024;
-				else if ( m_xRes >= 800 )
+				else if (m_xRes >= 800)
 					fontRes = 800;
 
 				char fontFilename[512];
@@ -400,23 +400,23 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 				fontFileBuffer = std::move(std::get<0>(result));
 				fontFileSize = std::get<1>(result);
 
-				if(!fontFileBuffer)
+				if (!fontFileBuffer)
 					gEngfuncs.Con_Printf("Missing bitmap font: %s\n", fontFilename);
 			}
 
 			m_pSchemeList[i].font = new vgui::Font(
-				m_pSchemeList[i].fontName, 
+				m_pSchemeList[i].fontName,
 				fontFileBuffer.get(),
 				fontFileSize != 0 ? static_cast<int>(fontFileSize) : -1,
-				m_pSchemeList[i].fontSize, 
-				0, 
-				0, 
-				m_pSchemeList[i].fontWeight, 
-				false, 
-				false, 
-				false, 
+				m_pSchemeList[i].fontSize,
+				0,
+				0,
+				m_pSchemeList[i].fontWeight,
+				false,
+				false,
+				false,
 				false);
-			
+
 			m_pSchemeList[i].ownFontPointer = true;
 		}
 
@@ -435,7 +435,7 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 //-----------------------------------------------------------------------------
 CSchemeManager::~CSchemeManager()
 {
-	delete [] m_pSchemeList;
+	delete[] m_pSchemeList;
 	m_iNumSchemes = 0;
 }
 
@@ -444,12 +444,12 @@ CSchemeManager::~CSchemeManager()
 // Input  : char *schemeName - string name of the scheme
 // Output : SchemeHandle_t handle to the scheme
 //-----------------------------------------------------------------------------
-SchemeHandle_t CSchemeManager::getSchemeHandle( const char *schemeName )
+SchemeHandle_t CSchemeManager::getSchemeHandle(const char* schemeName)
 {
 	// iterate through the list
-	for ( int i = 0; i < m_iNumSchemes; i++ )
+	for (int i = 0; i < m_iNumSchemes; i++)
 	{
-		if ( !stricmp(schemeName, m_pSchemeList[i].schemeName) )
+		if (!stricmp(schemeName, m_pSchemeList[i].schemeName))
 			return i;
 	}
 
@@ -461,9 +461,9 @@ SchemeHandle_t CSchemeManager::getSchemeHandle( const char *schemeName )
 // Input  : schemeHandle - 
 // Output : CScheme
 //-----------------------------------------------------------------------------
-CSchemeManager::CScheme *CSchemeManager::getSafeScheme( SchemeHandle_t schemeHandle )
+CSchemeManager::CScheme* CSchemeManager::getSafeScheme(SchemeHandle_t schemeHandle)
 {
-	if ( schemeHandle < m_iNumSchemes )
+	if (schemeHandle < m_iNumSchemes)
 		return m_pSchemeList + schemeHandle;
 
 	return m_pSchemeList;
@@ -475,68 +475,68 @@ CSchemeManager::CScheme *CSchemeManager::getSafeScheme( SchemeHandle_t schemeHan
 // Input  : schemeHandle - 
 // Output : vgui::Font
 //-----------------------------------------------------------------------------
-vgui::Font *CSchemeManager::getFont( SchemeHandle_t schemeHandle )
+vgui::Font* CSchemeManager::getFont(SchemeHandle_t schemeHandle)
 {
-	return getSafeScheme( schemeHandle )->font;
+	return getSafeScheme(schemeHandle)->font;
 }
 
-void CSchemeManager::getFgColor( SchemeHandle_t schemeHandle, int &r, int &g, int &b, int &a )
+void CSchemeManager::getFgColor(SchemeHandle_t schemeHandle, int& r, int& g, int& b, int& a)
 {
-	CScheme *pScheme = getSafeScheme( schemeHandle );
+	CScheme* pScheme = getSafeScheme(schemeHandle);
 	r = pScheme->fgColor[0];
 	g = pScheme->fgColor[1];
 	b = pScheme->fgColor[2];
 	a = pScheme->fgColor[3];
 }
 
-void CSchemeManager::getBgColor( SchemeHandle_t schemeHandle, int &r, int &g, int &b, int &a )
+void CSchemeManager::getBgColor(SchemeHandle_t schemeHandle, int& r, int& g, int& b, int& a)
 {
-	CScheme *pScheme = getSafeScheme( schemeHandle );
+	CScheme* pScheme = getSafeScheme(schemeHandle);
 	r = pScheme->bgColor[0];
 	g = pScheme->bgColor[1];
 	b = pScheme->bgColor[2];
 	a = pScheme->bgColor[3];
 }
 
-void CSchemeManager::getFgArmedColor( SchemeHandle_t schemeHandle, int &r, int &g, int &b, int &a )
+void CSchemeManager::getFgArmedColor(SchemeHandle_t schemeHandle, int& r, int& g, int& b, int& a)
 {
-	CScheme *pScheme = getSafeScheme( schemeHandle );
+	CScheme* pScheme = getSafeScheme(schemeHandle);
 	r = pScheme->armedFgColor[0];
 	g = pScheme->armedFgColor[1];
 	b = pScheme->armedFgColor[2];
 	a = pScheme->armedFgColor[3];
 }
 
-void CSchemeManager::getBgArmedColor( SchemeHandle_t schemeHandle, int &r, int &g, int &b, int &a )
+void CSchemeManager::getBgArmedColor(SchemeHandle_t schemeHandle, int& r, int& g, int& b, int& a)
 {
-	CScheme *pScheme = getSafeScheme( schemeHandle );
+	CScheme* pScheme = getSafeScheme(schemeHandle);
 	r = pScheme->armedBgColor[0];
 	g = pScheme->armedBgColor[1];
 	b = pScheme->armedBgColor[2];
 	a = pScheme->armedBgColor[3];
 }
 
-void CSchemeManager::getFgMousedownColor( SchemeHandle_t schemeHandle, int &r, int &g, int &b, int &a )
+void CSchemeManager::getFgMousedownColor(SchemeHandle_t schemeHandle, int& r, int& g, int& b, int& a)
 {
-	CScheme *pScheme = getSafeScheme( schemeHandle );
+	CScheme* pScheme = getSafeScheme(schemeHandle);
 	r = pScheme->mousedownFgColor[0];
 	g = pScheme->mousedownFgColor[1];
 	b = pScheme->mousedownFgColor[2];
 	a = pScheme->mousedownFgColor[3];
 }
 
-void CSchemeManager::getBgMousedownColor( SchemeHandle_t schemeHandle, int &r, int &g, int &b, int &a )
+void CSchemeManager::getBgMousedownColor(SchemeHandle_t schemeHandle, int& r, int& g, int& b, int& a)
 {
-	CScheme *pScheme = getSafeScheme( schemeHandle );
+	CScheme* pScheme = getSafeScheme(schemeHandle);
 	r = pScheme->mousedownBgColor[0];
 	g = pScheme->mousedownBgColor[1];
 	b = pScheme->mousedownBgColor[2];
 	a = pScheme->mousedownBgColor[3];
 }
 
-void CSchemeManager::getBorderColor( SchemeHandle_t schemeHandle, int &r, int &g, int &b, int &a )
+void CSchemeManager::getBorderColor(SchemeHandle_t schemeHandle, int& r, int& g, int& b, int& a)
 {
-	CScheme *pScheme = getSafeScheme( schemeHandle );
+	CScheme* pScheme = getSafeScheme(schemeHandle);
 	r = pScheme->borderColor[0];
 	g = pScheme->borderColor[1];
 	b = pScheme->borderColor[2];

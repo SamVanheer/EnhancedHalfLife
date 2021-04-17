@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -16,7 +16,7 @@
 #pragma once
 
 struct globalvars_t
-{	
+{
 	float		time;
 	float		frametime;
 	float		force_retouch;
@@ -36,7 +36,7 @@ struct globalvars_t
 	Vector		trace_endpos;
 	Vector		trace_plane_normal;
 	float		trace_plane_dist;
-	edict_t		*trace_ent;
+	edict_t* trace_ent;
 	float		trace_inopen;
 	float		trace_inwater;
 	int			trace_hitgroup;
@@ -45,9 +45,9 @@ struct globalvars_t
 	int			cdAudioTrack;
 	int			maxClients;
 	int			maxEntities;
-	const char	*pStringBase;
+	const char* pStringBase;
 
-	void		*pSaveData;
+	void* pSaveData;
 	Vector		vecLandmarkOffset;
 };
 
@@ -62,7 +62,7 @@ struct entvars_t
 	Vector		velocity;
 	Vector		basevelocity;
 	Vector      clbasevelocity;  // Base velocity that was passed in to server physics so 
-							     //  client can predict conveyors correctly.  Server zeroes it, so we need to store here, too.
+								 //  client can predict conveyors correctly.  Server zeroes it, so we need to store here, too.
 	Vector		movedir;
 
 	Vector		angles;			// Model angles
@@ -87,7 +87,7 @@ struct entvars_t
 
 	string_t viewmodel;		// player's viewmodel
 	string_t weaponmodel;	// what other players see
-	
+
 	Vector		absmin;		// BB max translated to world coord
 	Vector		absmax;		// BB max translated to world coord
 	Vector		mins;		// local BB min
@@ -100,13 +100,13 @@ struct entvars_t
 	int			movetype;
 	int			solid;
 
-	int			skin;			
+	int			skin;
 	int			body;			// sub-model selection for studiomodels
 	int 		effects;
-	
+
 	float		gravity;		// % of "normal" gravity
 	float		friction;		// inverse elasticity of MOVETYPE_BOUNCE
-	
+
 	int			light_level;
 
 	int			sequence;		// animation sequence
@@ -135,16 +135,16 @@ struct entvars_t
 	int			button;
 	int			impulse;
 
-	edict_t		*chain;			// Entity pointer when linked into a linked list
-	edict_t		*dmg_inflictor;
-	edict_t		*enemy;
-	edict_t		*aiment;		// entity pointer when MOVETYPE_FOLLOW
-	edict_t		*owner;
-	edict_t		*groundentity;
+	edict_t* chain;			// Entity pointer when linked into a linked list
+	edict_t* dmg_inflictor;
+	edict_t* enemy;
+	edict_t* aiment;		// entity pointer when MOVETYPE_FOLLOW
+	edict_t* owner;
+	edict_t* groundentity;
 
 	int			spawnflags;
 	int			flags;
-	
+
 	int			colormap;		// lowbyte topcolor, highbyte bottomcolor
 	int			team;
 
@@ -154,7 +154,7 @@ struct entvars_t
 	float		armorvalue;
 	WaterLevel waterlevel;
 	int			watertype;
-	
+
 	string_t	target;
 	string_t	targetname;
 	string_t	netname;
@@ -164,18 +164,18 @@ struct entvars_t
 	float		dmg_save;
 	float		dmg;
 	float		dmgtime;
-	
+
 	string_t	noise;
 	string_t	noise1;
 	string_t	noise2;
 	string_t	noise3;
-	
+
 	float		speed;
 	float		air_finished;
 	float		pain_finished;
 	float		radsuit_finished;
-	
-	edict_t		*pContainingEntity;
+
+	edict_t* pContainingEntity;
 
 	int			playerclass;
 	float		maxspeed;
@@ -211,8 +211,8 @@ struct entvars_t
 	Vector		vuser2;
 	Vector		vuser3;
 	Vector		vuser4;
-	edict_t		*euser1;
-	edict_t		*euser2;
-	edict_t		*euser3;
-	edict_t		*euser4;
+	edict_t* euser1;
+	edict_t* euser2;
+	edict_t* euser3;
+	edict_t* euser4;
 };

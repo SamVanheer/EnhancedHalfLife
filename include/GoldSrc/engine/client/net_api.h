@@ -19,7 +19,7 @@ constexpr int NETAPI_REQUEST_DETAILS = 4;
 //  kill the request hook after receiving the first response
 constexpr int FNETAPI_MULTIPLE_RESPONSE = 1 << 0;
 
-typedef void ( *net_api_response_func_t ) ( struct net_response_t* response );
+typedef void (*net_api_response_func_t) (struct net_response_t* response);
 
 constexpr int NET_SUCCESS = 0;
 constexpr int NET_ERROR_TIMEOUT = 1 << 0;
@@ -51,13 +51,13 @@ struct net_response_t
 	// WARNING:  You must copy this buffer in the callback function, because it is freed
 	//  by the engine right after the call!!!!
 	// ALSO:  For NETAPI_REQUEST_SERVERLIST requests, this will be a pointer to a linked list of net_adrlist_t's
-	void		*response;
+	void* response;
 };
 
 struct net_status_t
 {
-		// Connected to remote server?  1 == yes, 0 otherwise
-	int			connected; 
+	// Connected to remote server?  1 == yes, 0 otherwise
+	int			connected;
 	// Client's IP address
 	netadr_t	local_address;
 	// Address of remote server
@@ -75,15 +75,15 @@ struct net_status_t
 struct net_api_t
 {
 	// APIs
-	void		( *InitNetworking )();
-	void		( *Status ) (net_status_t* status );
-	void		( *SendRequest) ( int context, int request, int flags, double timeout, netadr_t* remote_address, net_api_response_func_t response );
-	void		( *CancelRequest ) ( int context );
-	void		( *CancelAllRequests ) ();
-	char		*( *AdrToString ) (netadr_t* a );
-	int			( *CompareAdr ) (netadr_t* a, netadr_t* b );
-	int			( *StringToAdr ) ( char *s, netadr_t* a );
-	const char *( *ValueForKey ) ( const char *s, const char *key );
-	void		( *RemoveKey ) ( char *s, const char *key );
-	void		( *SetValueForKey ) (char *s, const char *key, const char *value, int maxsize );
+	void		(*InitNetworking)();
+	void		(*Status) (net_status_t* status);
+	void		(*SendRequest) (int context, int request, int flags, double timeout, netadr_t* remote_address, net_api_response_func_t response);
+	void		(*CancelRequest) (int context);
+	void		(*CancelAllRequests) ();
+	char* (*AdrToString) (netadr_t* a);
+	int			(*CompareAdr) (netadr_t* a, netadr_t* b);
+	int			(*StringToAdr) (char* s, netadr_t* a);
+	const char* (*ValueForKey) (const char* s, const char* key);
+	void		(*RemoveKey) (char* s, const char* key);
+	void		(*SetValueForKey) (char* s, const char* key, const char* value, int maxsize);
 };

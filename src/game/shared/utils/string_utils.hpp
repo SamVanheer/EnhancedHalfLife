@@ -40,7 +40,7 @@ inline char* safe_strcpy(char* dst, const char* src, std::size_t len_dst)
 }
 
 template<std::size_t Size>
-inline char* safe_strcpy(char (&dst)[Size], const char* src)
+inline char* safe_strcpy(char(&dst)[Size], const char* src)
 {
 	return safe_strcpy(dst, src, Size);
 }

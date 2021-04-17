@@ -70,7 +70,7 @@ using qboolean = int;
 #endif //_WIN32
 
 template<typename T, std::size_t Size>
-constexpr std::size_t ArraySize(const T (&)[Size])
+constexpr std::size_t ArraySize(const T(&)[Size])
 {
 	return Size;
 }

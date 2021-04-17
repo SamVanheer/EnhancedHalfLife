@@ -20,13 +20,13 @@
 
 /**
 *	@file
-* 
+*
 *	Declares the server library interface to the engine
 */
 
 extern "C"
 {
-DLLEXPORT int GetEntityAPI(DLL_FUNCTIONS * pFunctionTable, int interfaceVersion);
-DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS * pFunctionTable, int* interfaceVersion);
-DLLEXPORT int GetNewDLLFunctions(NEW_DLL_FUNCTIONS * pFunctionTable, int* interfaceVersion);
+	DLLEXPORT int GetEntityAPI(DLL_FUNCTIONS* pFunctionTable, int interfaceVersion);
+	DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion);
+	DLLEXPORT int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion);
 }

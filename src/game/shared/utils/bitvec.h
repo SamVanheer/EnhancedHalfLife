@@ -15,16 +15,16 @@
 class CBitVecAccessor
 {
 public:
-				CBitVecAccessor(uint32 *pDWords, int iBit);
+	CBitVecAccessor(uint32* pDWords, int iBit);
 
 	void		operator=(int val);
-				operator uint32();
+	operator uint32();
 
 private:
-	uint32	*m_pDWords;
+	uint32* m_pDWords;
 	int				m_iBit;
 };
-	
+
 
 // CBitVec allows you to store a list of bits and do operations on them like they were 
 // an atomic type.
@@ -32,8 +32,8 @@ template<int NUM_BITS>
 class CBitVec
 {
 public:
-	
-					CBitVec();
+
+	CBitVec();
 
 	// Set all values to the specified value (0 or 1..)
 	void			Init(int val = 0);
@@ -42,9 +42,9 @@ public:
 	CBitVecAccessor	operator[](int i);
 
 	// Operations on other bit vectors.
-	CBitVec&		operator=(CBitVec<NUM_BITS> const &other);
-	bool			operator==(CBitVec<NUM_BITS> const &other);
-	bool			operator!=(CBitVec<NUM_BITS> const &other);
+	CBitVec& operator=(CBitVec<NUM_BITS> const& other);
+	bool			operator==(CBitVec<NUM_BITS> const& other);
+	bool			operator!=(CBitVec<NUM_BITS> const& other);
 
 	// Get underlying dword representations of the bits.
 	int				GetNumDWords();
@@ -55,7 +55,7 @@ public:
 
 private:
 
-	enum {NUM_DWORDS = NUM_BITS/32 + !!(NUM_BITS & 31)};
+	enum { NUM_DWORDS = NUM_BITS / 32 + !!(NUM_BITS & 31) };
 	uint32	m_DWords[NUM_DWORDS];
 };
 
@@ -65,7 +65,7 @@ private:
 // CBitVecAccessor inlines.
 // ------------------------------------------------------------------------ //
 
-inline CBitVecAccessor::CBitVecAccessor(uint32 *pDWords, int iBit)
+inline CBitVecAccessor::CBitVecAccessor(uint32* pDWords, int iBit)
 {
 	m_pDWords = pDWords;
 	m_iBit = iBit;
@@ -74,7 +74,7 @@ inline CBitVecAccessor::CBitVecAccessor(uint32 *pDWords, int iBit)
 
 inline void CBitVecAccessor::operator=(int val)
 {
-	if(val)
+	if (val)
 		m_pDWords[m_iBit >> 5] |= (1 << (m_iBit & 31));
 	else
 		m_pDWords[m_iBit >> 5] &= ~(uint32)(1 << (m_iBit & 31));
@@ -101,7 +101,7 @@ inline int CBitVec<NUM_BITS>::GetNumBits()
 template<int NUM_BITS>
 inline CBitVec<NUM_BITS>::CBitVec()
 {
-	for(int i=0; i < NUM_DWORDS; i++)
+	for (int i = 0; i < NUM_DWORDS; i++)
 		m_DWords[i] = 0;
 }
 
@@ -109,7 +109,7 @@ inline CBitVec<NUM_BITS>::CBitVec()
 template<int NUM_BITS>
 inline void CBitVec<NUM_BITS>::Init(int val)
 {
-	for(int i=0; i < GetNumBits(); i++)
+	for (int i = 0; i < GetNumBits(); i++)
 	{
 		(*this)[i] = val;
 	}
@@ -117,7 +117,7 @@ inline void CBitVec<NUM_BITS>::Init(int val)
 
 
 template<int NUM_BITS>
-inline CBitVec<NUM_BITS>& CBitVec<NUM_BITS>::operator=(CBitVec<NUM_BITS> const &other)
+inline CBitVec<NUM_BITS>& CBitVec<NUM_BITS>::operator=(CBitVec<NUM_BITS> const& other)
 {
 	memcpy(m_DWords, other.m_DWords, sizeof(m_DWords));
 	return *this;
@@ -125,7 +125,7 @@ inline CBitVec<NUM_BITS>& CBitVec<NUM_BITS>::operator=(CBitVec<NUM_BITS> const &
 
 
 template<int NUM_BITS>
-inline CBitVecAccessor CBitVec<NUM_BITS>::operator[](int i)	
+inline CBitVecAccessor CBitVec<NUM_BITS>::operator[](int i)
 {
 	assert(i >= 0 && i < GetNumBits());
 	return CBitVecAccessor(m_DWords, i);
@@ -133,10 +133,10 @@ inline CBitVecAccessor CBitVec<NUM_BITS>::operator[](int i)
 
 
 template<int NUM_BITS>
-inline bool CBitVec<NUM_BITS>::operator==(CBitVec<NUM_BITS> const &other)
+inline bool CBitVec<NUM_BITS>::operator==(CBitVec<NUM_BITS> const& other)
 {
-	for(int i=0; i < NUM_DWORDS; i++)
-		if(m_DWords[i] != other.m_DWords[i])
+	for (int i = 0; i < NUM_DWORDS; i++)
+		if (m_DWords[i] != other.m_DWords[i])
 			return false;
 
 	return true;
@@ -144,7 +144,7 @@ inline bool CBitVec<NUM_BITS>::operator==(CBitVec<NUM_BITS> const &other)
 
 
 template<int NUM_BITS>
-inline bool CBitVec<NUM_BITS>::operator!=(CBitVec<NUM_BITS> const &other)
+inline bool CBitVec<NUM_BITS>::operator!=(CBitVec<NUM_BITS> const& other)
 {
 	return !(*this == other);
 }

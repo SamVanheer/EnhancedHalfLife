@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2001, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -29,13 +29,13 @@ class CSatchelCharge : public CGrenade
 	void Precache() override;
 	void BounceSound() override;
 
-	void EXPORT SatchelSlide( CBaseEntity *pOther );
+	void EXPORT SatchelSlide(CBaseEntity* pOther);
 	void EXPORT SatchelThink();
 
 public:
 	void Deactivate();
 };
-LINK_ENTITY_TO_CLASS( monster_satchel, CSatchelCharge );
+LINK_ENTITY_TO_CLASS(monster_satchel, CSatchelCharge);
 
 //=========================================================
 // Deactivate - do whatever it is we do to an orphaned 
@@ -44,25 +44,25 @@ LINK_ENTITY_TO_CLASS( monster_satchel, CSatchelCharge );
 void CSatchelCharge::Deactivate()
 {
 	pev->solid = SOLID_NOT;
-	UTIL_Remove( this );
+	UTIL_Remove(this);
 }
 
 
-void CSatchelCharge :: Spawn()
+void CSatchelCharge::Spawn()
 {
-	Precache( );
+	Precache();
 	// motor
 	pev->movetype = MOVETYPE_BOUNCE;
 	pev->solid = SOLID_BBOX;
 
 	SET_MODEL(ENT(pev), "models/w_satchel.mdl");
 	//UTIL_SetSize(pev, Vector( -16, -16, -4), Vector(16, 16, 32));	// Old box -- size of headcrab monsters/players get blocked by this
-	UTIL_SetSize(pev, Vector( -4, -4, -4), Vector(4, 4, 4));	// Uses point-sized, and can be stepped over
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetSize(pev, Vector(-4, -4, -4), Vector(4, 4, 4));	// Uses point-sized, and can be stepped over
+	UTIL_SetOrigin(pev, pev->origin);
 
-	SetTouch( &CSatchelCharge::SatchelSlide );
-	SetUse( &CSatchelCharge::DetonateUse );
-	SetThink( &CSatchelCharge::SatchelThink );
+	SetTouch(&CSatchelCharge::SatchelSlide);
+	SetUse(&CSatchelCharge::DetonateUse);
+	SetThink(&CSatchelCharge::SatchelThink);
 	pev->nextthink = gpGlobals->time + 0.1;
 
 	pev->gravity = 0.5;
@@ -74,12 +74,12 @@ void CSatchelCharge :: Spawn()
 }
 
 
-void CSatchelCharge::SatchelSlide( CBaseEntity *pOther )
+void CSatchelCharge::SatchelSlide(CBaseEntity* pOther)
 {
-	entvars_t	*pevOther = pOther->pev;
+	entvars_t* pevOther = pOther->pev;
 
 	// don't hit the guy that launched this grenade
-	if ( pOther->edict() == pev->owner )
+	if (pOther->edict() == pev->owner)
 		return;
 
 	// pev->avelocity = Vector (300, 300, 300);
@@ -87,31 +87,31 @@ void CSatchelCharge::SatchelSlide( CBaseEntity *pOther )
 
 	// HACKHACK - On ground isn't always set, so look for ground underneath
 	TraceResult tr;
-	UTIL_TraceLine( pev->origin, pev->origin - Vector(0,0,10), ignore_monsters, edict(), &tr );
+	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 10), ignore_monsters, edict(), &tr);
 
-	if ( tr.flFraction < 1.0 )
+	if (tr.flFraction < 1.0)
 	{
 		// add a bit of static friction
 		pev->velocity = pev->velocity * 0.95;
 		pev->avelocity = pev->avelocity * 0.9;
 		// play sliding sound, volume based on velocity
 	}
-	if ( !(pev->flags & FL_ONGROUND) && pev->velocity.Length2D() > 10 )
+	if (!(pev->flags & FL_ONGROUND) && pev->velocity.Length2D() > 10)
 	{
 		BounceSound();
 	}
-	StudioFrameAdvance( );
+	StudioFrameAdvance();
 }
 
 
-void CSatchelCharge :: SatchelThink()
+void CSatchelCharge::SatchelThink()
 {
-	StudioFrameAdvance( );
+	StudioFrameAdvance();
 	pev->nextthink = gpGlobals->time + 0.1;
 
 	if (!IsInWorld())
 	{
-		UTIL_Remove( this );
+		UTIL_Remove(this);
 		return;
 	}
 
@@ -129,10 +129,10 @@ void CSatchelCharge :: SatchelThink()
 	else
 	{
 		pev->velocity.z -= 8;
-	}	
+	}
 }
 
-void CSatchelCharge :: Precache()
+void CSatchelCharge::Precache()
 {
 	PRECACHE_MODEL("models/grenade.mdl");
 	PRECACHE_SOUND("weapons/g_bounce1.wav");
@@ -140,9 +140,9 @@ void CSatchelCharge :: Precache()
 	PRECACHE_SOUND("weapons/g_bounce3.wav");
 }
 
-void CSatchelCharge :: BounceSound()
+void CSatchelCharge::BounceSound()
 {
-	switch ( RANDOM_LONG( 0, 2 ) )
+	switch (RANDOM_LONG(0, 2))
 	{
 	case 0:	EmitSound(CHAN_VOICE, "weapons/g_bounce1.wav"); break;
 	case 1:	EmitSound(CHAN_VOICE, "weapons/g_bounce2.wav"); break;
@@ -151,58 +151,58 @@ void CSatchelCharge :: BounceSound()
 }
 
 
-LINK_ENTITY_TO_CLASS( weapon_satchel, CSatchel );
+LINK_ENTITY_TO_CLASS(weapon_satchel, CSatchel);
 
 
 //=========================================================
 // CALLED THROUGH the newly-touched weapon's instance. The existing player weapon is pOriginal
 //=========================================================
-bool CSatchel::AddDuplicate( CBasePlayerItem *pOriginal )
+bool CSatchel::AddDuplicate(CBasePlayerItem* pOriginal)
 {
-	CSatchel *pSatchel;
+	CSatchel* pSatchel;
 
 #ifdef CLIENT_DLL
-	if ( bIsMultiplayer() )
+	if (bIsMultiplayer())
 #else
-	if ( g_pGameRules->IsMultiplayer() )
+	if (g_pGameRules->IsMultiplayer())
 #endif
 	{
-		pSatchel = (CSatchel *)pOriginal;
+		pSatchel = (CSatchel*)pOriginal;
 
-		if ( pSatchel->m_chargeReady != ChargeState::NoSatchelsDeployed)
+		if (pSatchel->m_chargeReady != ChargeState::NoSatchelsDeployed)
 		{
 			// player has some satchels deployed. Refuse to add more.
 			return false;
 		}
 	}
 
-	return CBasePlayerWeapon::AddDuplicate ( pOriginal );
+	return CBasePlayerWeapon::AddDuplicate(pOriginal);
 }
 
 //=========================================================
 //=========================================================
-bool CSatchel::AddToPlayer( CBasePlayer *pPlayer )
+bool CSatchel::AddToPlayer(CBasePlayer* pPlayer)
 {
-	int bResult = CBasePlayerItem::AddToPlayer( pPlayer );
+	int bResult = CBasePlayerItem::AddToPlayer(pPlayer);
 
-	pPlayer->pev->weapons |= (1<<m_iId);
+	pPlayer->pev->weapons |= (1 << m_iId);
 	m_chargeReady = ChargeState::NoSatchelsDeployed;// this satchel charge weapon now forgets that any satchels are deployed by it.
 
-	if ( bResult )
+	if (bResult)
 	{
-		return AddWeapon( );
+		return AddWeapon();
 	}
 	return false;
 }
 
-void CSatchel::Spawn( )
+void CSatchel::Spawn()
 {
-	Precache( );
+	Precache();
 	m_iId = WEAPON_SATCHEL;
 	SET_MODEL(ENT(pev), "models/w_satchel.mdl");
 
 	m_iDefaultAmmo = SATCHEL_DEFAULT_GIVE;
-		
+
 	FallInit();// get ready to fall down.
 }
 
@@ -215,11 +215,11 @@ void CSatchel::Precache()
 	PRECACHE_MODEL("models/p_satchel.mdl");
 	PRECACHE_MODEL("models/p_satchel_radio.mdl");
 
-	UTIL_PrecacheOther( "monster_satchel" );
+	UTIL_PrecacheOther("monster_satchel");
 }
 
 
-bool CSatchel::GetItemInfo(ItemInfo *p)
+bool CSatchel::GetItemInfo(ItemInfo* p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "Satchel Charge";
@@ -240,13 +240,13 @@ bool CSatchel::GetItemInfo(ItemInfo *p)
 //=========================================================
 bool CSatchel::IsUseable()
 {
-	if ( m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] > 0 ) 
+	if (m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] > 0)
 	{
 		// player is carrying some satchels
 		return true;
 	}
 
-	if ( m_chargeReady != ChargeState::NoSatchelsDeployed)
+	if (m_chargeReady != ChargeState::NoSatchelsDeployed)
 	{
 		// player isn't carrying any satchels, but has some out
 		return true;
@@ -257,13 +257,13 @@ bool CSatchel::IsUseable()
 
 bool CSatchel::CanDeploy()
 {
-	if ( m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] > 0 ) 
+	if (m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] > 0)
 	{
 		// player is carrying some satchels
 		return true;
 	}
 
-	if ( m_chargeReady != ChargeState::NoSatchelsDeployed)
+	if (m_chargeReady != ChargeState::NoSatchelsDeployed)
 	{
 		// player isn't carrying any satchels, but has some out
 		return true;
@@ -272,23 +272,23 @@ bool CSatchel::CanDeploy()
 	return false;
 }
 
-bool CSatchel::Deploy( )
+bool CSatchel::Deploy()
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
 	//m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 
 	bool result;
 
-	if ( m_chargeReady != ChargeState::NoSatchelsDeployed)
-		result = DefaultDeploy( "models/v_satchel_radio.mdl", "models/p_satchel_radio.mdl", SATCHEL_RADIO_DRAW, "hive" );
+	if (m_chargeReady != ChargeState::NoSatchelsDeployed)
+		result = DefaultDeploy("models/v_satchel_radio.mdl", "models/p_satchel_radio.mdl", SATCHEL_RADIO_DRAW, "hive");
 	else
-		result = DefaultDeploy( "models/v_satchel.mdl", "models/p_satchel.mdl", SATCHEL_DRAW, "trip" );
+		result = DefaultDeploy("models/v_satchel.mdl", "models/p_satchel.mdl", SATCHEL_DRAW, "trip");
 
 	if (result)
 	{
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 2;
 	}
-	
+
 	return result;
 }
 
@@ -296,21 +296,21 @@ bool CSatchel::Deploy( )
 void CSatchel::Holster()
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
-	
-	if ( m_chargeReady != ChargeState::NoSatchelsDeployed)
+
+	if (m_chargeReady != ChargeState::NoSatchelsDeployed)
 	{
-		SendWeaponAnim( SATCHEL_RADIO_HOLSTER );
+		SendWeaponAnim(SATCHEL_RADIO_HOLSTER);
 	}
 	else
 	{
-		SendWeaponAnim( SATCHEL_DROP );
+		SendWeaponAnim(SATCHEL_DROP);
 	}
 	m_pPlayer->EmitSound(CHAN_WEAPON, "common/null.wav");
 
-	if ( !m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] && m_chargeReady == ChargeState::NoSatchelsDeployed)
+	if (!m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] && m_chargeReady == ChargeState::NoSatchelsDeployed)
 	{
-		m_pPlayer->pev->weapons &= ~(1<<WEAPON_SATCHEL);
-		SetThink( &CSatchel::DestroyItem );
+		m_pPlayer->pev->weapons &= ~(1 << WEAPON_SATCHEL);
+		SetThink(&CSatchel::DestroyItem);
 		pev->nextthink = gpGlobals->time + 0.1;
 	}
 }
@@ -322,25 +322,25 @@ void CSatchel::PrimaryAttack()
 	switch (m_chargeReady)
 	{
 	case ChargeState::NoSatchelsDeployed:
-		{
-		Throw( );
-		}
-		break;
+	{
+		Throw();
+	}
+	break;
 	case ChargeState::SatchelsDeployed:
+	{
+		SendWeaponAnim(SATCHEL_RADIO_FIRE);
+
+		edict_t* pPlayer = m_pPlayer->edict();
+
+		CBaseEntity* pSatchel = nullptr;
+
+		while ((pSatchel = UTIL_FindEntityInSphere(pSatchel, m_pPlayer->pev->origin, WORLD_BOUNDARY)) != nullptr)
 		{
-		SendWeaponAnim( SATCHEL_RADIO_FIRE );
-
-		edict_t *pPlayer = m_pPlayer->edict( );
-
-		CBaseEntity *pSatchel = nullptr;
-
-		while ((pSatchel = UTIL_FindEntityInSphere( pSatchel, m_pPlayer->pev->origin, WORLD_BOUNDARY)) != nullptr)
-		{
-			if (FClassnameIs( pSatchel->pev, "monster_satchel"))
+			if (FClassnameIs(pSatchel->pev, "monster_satchel"))
 			{
 				if (pSatchel->pev->owner == pPlayer)
 				{
-					pSatchel->Use( m_pPlayer, m_pPlayer, USE_ON, 0 );
+					pSatchel->Use(m_pPlayer, m_pPlayer, USE_ON, 0);
 					m_chargeReady = ChargeState::Reloading;
 				}
 			}
@@ -351,52 +351,52 @@ void CSatchel::PrimaryAttack()
 		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.5;
 		break;
-		}
+	}
 
 	case ChargeState::Reloading:
 		// we're reloading, don't allow fire
-		{
-		}
-		break;
+	{
+	}
+	break;
 	}
 }
 
 
 void CSatchel::SecondaryAttack()
 {
-	if ( m_chargeReady != ChargeState::Reloading)
+	if (m_chargeReady != ChargeState::Reloading)
 	{
-		Throw( );
+		Throw();
 	}
 }
 
 
 void CSatchel::Throw()
 {
-	if ( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] )
+	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 	{
 		Vector vecSrc = m_pPlayer->pev->origin;
 
 		Vector vecThrow = gpGlobals->v_forward * 274 + m_pPlayer->pev->velocity;
 
 #ifndef CLIENT_DLL
-		CBaseEntity *pSatchel = Create( "monster_satchel", vecSrc, vec3_origin, m_pPlayer->edict() );
+		CBaseEntity* pSatchel = Create("monster_satchel", vecSrc, vec3_origin, m_pPlayer->edict());
 		pSatchel->pev->velocity = vecThrow;
 		pSatchel->pev->avelocity.y = 400;
 
 		m_pPlayer->pev->viewmodel = MAKE_STRING("models/v_satchel_radio.mdl");
 		m_pPlayer->pev->weaponmodel = MAKE_STRING("models/p_satchel_radio.mdl");
 #else
-		LoadVModel ( "models/v_satchel_radio.mdl", m_pPlayer );
+		LoadVModel("models/v_satchel_radio.mdl", m_pPlayer);
 #endif
 
-		SendWeaponAnim( SATCHEL_RADIO_DRAW );
+		SendWeaponAnim(SATCHEL_RADIO_DRAW);
 
 		// player "shoot" animation
 		m_pPlayer->SetAnimation(PlayerAnim::Attack1);
 
 		m_chargeReady = ChargeState::SatchelsDeployed;
-		
+
 		m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
 
 		m_flNextPrimaryAttack = GetNextAttackDelay(1.0);
@@ -407,23 +407,23 @@ void CSatchel::Throw()
 
 void CSatchel::WeaponIdle()
 {
-	if ( m_flTimeWeaponIdle > UTIL_WeaponTimeBase() )
+	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
-	switch( m_chargeReady )
+	switch (m_chargeReady)
 	{
 	case ChargeState::NoSatchelsDeployed:
-		SendWeaponAnim( SATCHEL_FIDGET1 );
+		SendWeaponAnim(SATCHEL_FIDGET1);
 		// use tripmine animations
-		safe_strcpy( m_pPlayer->m_szAnimExtension, "trip" );
+		safe_strcpy(m_pPlayer->m_szAnimExtension, "trip");
 		break;
 	case ChargeState::SatchelsDeployed:
-		SendWeaponAnim( SATCHEL_RADIO_FIDGET1 );
+		SendWeaponAnim(SATCHEL_RADIO_FIDGET1);
 		// use hivehand animations
-		safe_strcpy( m_pPlayer->m_szAnimExtension, "hive" );
+		safe_strcpy(m_pPlayer->m_szAnimExtension, "hive");
 		break;
 	case ChargeState::Reloading:
-		if ( !m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] )
+		if (!m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 		{
 			m_chargeReady = ChargeState::NoSatchelsDeployed;
 			RetireWeapon();
@@ -434,20 +434,20 @@ void CSatchel::WeaponIdle()
 		m_pPlayer->pev->viewmodel = MAKE_STRING("models/v_satchel.mdl");
 		m_pPlayer->pev->weaponmodel = MAKE_STRING("models/p_satchel.mdl");
 #else
-		LoadVModel ( "models/v_satchel.mdl", m_pPlayer );
+		LoadVModel("models/v_satchel.mdl", m_pPlayer);
 #endif
 
-		SendWeaponAnim( SATCHEL_DRAW );
+		SendWeaponAnim(SATCHEL_DRAW);
 
 		// use tripmine animations
-		safe_strcpy( m_pPlayer->m_szAnimExtension, "trip" );
+		safe_strcpy(m_pPlayer->m_szAnimExtension, "trip");
 
 		m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;
 		m_chargeReady = ChargeState::NoSatchelsDeployed;
 		break;
 	}
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );// how long till we do this again.
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15);// how long till we do this again.
 }
 
 void CSatchel::GetWeaponData(weapon_data_t& data)
@@ -466,25 +466,25 @@ void CSatchel::SetWeaponData(const weapon_data_t& data)
 //
 // Made this global on purpose.
 //=========================================================
-void DeactivateSatchels( CBasePlayer *pOwner )
+void DeactivateSatchels(CBasePlayer* pOwner)
 {
-	edict_t *pFind; 
+	edict_t* pFind;
 
-	pFind = FIND_ENTITY_BY_CLASSNAME(nullptr, "monster_satchel" );
+	pFind = FIND_ENTITY_BY_CLASSNAME(nullptr, "monster_satchel");
 
-	while ( !FNullEnt( pFind ) )
+	while (!FNullEnt(pFind))
 	{
-		CBaseEntity *pEnt = CBaseEntity::Instance( pFind );
-		CSatchelCharge *pSatchel = (CSatchelCharge *)pEnt;
+		CBaseEntity* pEnt = CBaseEntity::Instance(pFind);
+		CSatchelCharge* pSatchel = (CSatchelCharge*)pEnt;
 
-		if ( pSatchel )
+		if (pSatchel)
 		{
-			if ( pSatchel->pev->owner == pOwner->edict() )
+			if (pSatchel->pev->owner == pOwner->edict())
 			{
 				pSatchel->Deactivate();
 			}
 		}
 
-		pFind = FIND_ENTITY_BY_CLASSNAME( pFind, "monster_satchel" );
+		pFind = FIND_ENTITY_BY_CLASSNAME(pFind, "monster_satchel");
 	}
 }

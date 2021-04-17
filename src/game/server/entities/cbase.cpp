@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2001, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -24,13 +24,13 @@
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 
 // give health
-bool CBaseEntity :: TakeHealth( float flHealth, int bitsDamageType )
+bool CBaseEntity::TakeHealth(float flHealth, int bitsDamageType)
 {
 	if (!pev->takedamage)
 		return false;
 
-// heal
-	if ( pev->health >= pev->max_health )
+	// heal
+	if (pev->health >= pev->max_health)
 		return false;
 
 	pev->health += flHealth;
@@ -43,7 +43,7 @@ bool CBaseEntity :: TakeHealth( float flHealth, int bitsDamageType )
 
 // inflict damage on this entity.  bitsDamageType indicates type of damage inflicted, ie: DMG_CRUSH
 
-bool CBaseEntity :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	Vector			vecTemp;
 
@@ -51,42 +51,42 @@ bool CBaseEntity :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker,
 		return false;
 
 	// UNDONE: some entity types may be immune or resistant to some bitsDamageType
-	
+
 	// if Attacker == Inflictor, the attack was a melee or other instant-hit attack.
 	// (that is, no actual entity projectile was involved in the attack so use the shooter's origin). 
-	if ( pevAttacker == pevInflictor )	
+	if (pevAttacker == pevInflictor)
 	{
-		vecTemp = pevInflictor->origin - ( VecBModelOrigin(pev) );
+		vecTemp = pevInflictor->origin - (VecBModelOrigin(pev));
 	}
 	else
-	// an actual missile was involved.
+		// an actual missile was involved.
 	{
-		vecTemp = pevInflictor->origin - ( VecBModelOrigin(pev) );
+		vecTemp = pevInflictor->origin - (VecBModelOrigin(pev));
 	}
 
-// this global is still used for glass and other non-monster killables, along with decals.
+	// this global is still used for glass and other non-monster killables, along with decals.
 	g_vecAttackDir = vecTemp.Normalize();
-		
-// save damage based on the target's armor level
 
-// figure momentum add (don't let hurt brushes or other triggers move player)
-	if ((!FNullEnt(pevInflictor)) && (pev->movetype == MOVETYPE_WALK || pev->movetype == MOVETYPE_STEP) && (pevAttacker->solid != SOLID_TRIGGER) )
+	// save damage based on the target's armor level
+
+	// figure momentum add (don't let hurt brushes or other triggers move player)
+	if ((!FNullEnt(pevInflictor)) && (pev->movetype == MOVETYPE_WALK || pev->movetype == MOVETYPE_STEP) && (pevAttacker->solid != SOLID_TRIGGER))
 	{
 		Vector vecDir = pev->origin - (pevInflictor->absmin + pevInflictor->absmax) * 0.5;
 		vecDir = vecDir.Normalize();
 
 		float flForce = flDamage * ((32 * 32 * 72.0) / (pev->size.x * pev->size.y * pev->size.z)) * 5;
-		
-		if (flForce > 1000.0) 
+
+		if (flForce > 1000.0)
 			flForce = 1000.0;
 		pev->velocity = pev->velocity + vecDir * flForce;
 	}
 
-// do the damage
+	// do the damage
 	pev->health -= flDamage;
 	if (pev->health <= 0)
 	{
-		Killed( pevAttacker, GIB_NORMAL );
+		Killed(pevAttacker, GIB_NORMAL);
 		return false;
 	}
 
@@ -94,59 +94,59 @@ bool CBaseEntity :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker,
 }
 
 
-void CBaseEntity :: Killed( entvars_t *pevAttacker, int iGib )
+void CBaseEntity::Killed(entvars_t* pevAttacker, int iGib)
 {
 	pev->takedamage = DAMAGE_NO;
 	pev->deadflag = DEAD_DEAD;
-	UTIL_Remove( this );
+	UTIL_Remove(this);
 }
 
 
-CBaseEntity *CBaseEntity::GetNextTarget()
+CBaseEntity* CBaseEntity::GetNextTarget()
 {
-	if ( FStringNull( pev->target ) )
+	if (FStringNull(pev->target))
 		return nullptr;
-	edict_t *pTarget = FIND_ENTITY_BY_TARGETNAME ( nullptr, STRING(pev->target) );
-	if ( FNullEnt(pTarget) )
+	edict_t* pTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target));
+	if (FNullEnt(pTarget))
 		return nullptr;
 
-	return Instance( pTarget );
+	return Instance(pTarget);
 }
 
 // Global Savedata for Delay
-TYPEDESCRIPTION	CBaseEntity::m_SaveData[] = 
+TYPEDESCRIPTION	CBaseEntity::m_SaveData[] =
 {
-	DEFINE_FIELD( CBaseEntity, m_pGoalEnt, FIELD_CLASSPTR ),
+	DEFINE_FIELD(CBaseEntity, m_pGoalEnt, FIELD_CLASSPTR),
 
-	DEFINE_FIELD( CBaseEntity, m_pfnThink, FIELD_FUNCTION ),		// UNDONE: Build table of these!!!
-	DEFINE_FIELD( CBaseEntity, m_pfnTouch, FIELD_FUNCTION ),
-	DEFINE_FIELD( CBaseEntity, m_pfnUse, FIELD_FUNCTION ),
-	DEFINE_FIELD( CBaseEntity, m_pfnBlocked, FIELD_FUNCTION ),
+	DEFINE_FIELD(CBaseEntity, m_pfnThink, FIELD_FUNCTION),		// UNDONE: Build table of these!!!
+	DEFINE_FIELD(CBaseEntity, m_pfnTouch, FIELD_FUNCTION),
+	DEFINE_FIELD(CBaseEntity, m_pfnUse, FIELD_FUNCTION),
+	DEFINE_FIELD(CBaseEntity, m_pfnBlocked, FIELD_FUNCTION),
 };
 
 
-bool CBaseEntity::Save( CSave &save )
+bool CBaseEntity::Save(CSave& save)
 {
-	if ( save.WriteEntVars( "ENTVARS", pev ) )
-		return save.WriteFields( "BASE", this, m_SaveData, ArraySize(m_SaveData) );
+	if (save.WriteEntVars("ENTVARS", pev))
+		return save.WriteFields("BASE", this, m_SaveData, ArraySize(m_SaveData));
 
 	return false;
 }
 
-bool CBaseEntity::Restore( CRestore &restore )
+bool CBaseEntity::Restore(CRestore& restore)
 {
-	bool status = restore.ReadEntVars( "ENTVARS", pev );
-	if ( status )
-		status = restore.ReadFields( "BASE", this, m_SaveData, ArraySize(m_SaveData) );
+	bool status = restore.ReadEntVars("ENTVARS", pev);
+	if (status)
+		status = restore.ReadFields("BASE", this, m_SaveData, ArraySize(m_SaveData));
 
-	if ( pev->modelindex != 0 && !FStringNull(pev->model) )
+	if (pev->modelindex != 0 && !FStringNull(pev->model))
 	{
 		Vector mins, maxs;
 		mins = pev->mins;	// Set model is about to destroy these
 		maxs = pev->maxs;
 
 
-		PRECACHE_MODEL( STRING(pev->model) );
+		PRECACHE_MODEL(STRING(pev->model));
 		SET_MODEL(ENT(pev), STRING(pev->model));
 		UTIL_SetSize(pev, mins, maxs);	// Reset them
 	}
@@ -156,51 +156,51 @@ bool CBaseEntity::Restore( CRestore &restore )
 
 void CBaseEntity::SetObjectCollisionBox()
 {
-	::SetObjectCollisionBox( pev );
+	::SetObjectCollisionBox(pev);
 }
 
 
-bool CBaseEntity :: Intersects( CBaseEntity *pOther )
+bool CBaseEntity::Intersects(CBaseEntity* pOther)
 {
-	if ( pOther->pev->absmin.x > pev->absmax.x ||
-		 pOther->pev->absmin.y > pev->absmax.y ||
-		 pOther->pev->absmin.z > pev->absmax.z ||
-		 pOther->pev->absmax.x < pev->absmin.x ||
-		 pOther->pev->absmax.y < pev->absmin.y ||
-		 pOther->pev->absmax.z < pev->absmin.z )
-		 return false;
+	if (pOther->pev->absmin.x > pev->absmax.x ||
+		pOther->pev->absmin.y > pev->absmax.y ||
+		pOther->pev->absmin.z > pev->absmax.z ||
+		pOther->pev->absmax.x < pev->absmin.x ||
+		pOther->pev->absmax.y < pev->absmin.y ||
+		pOther->pev->absmax.z < pev->absmin.z)
+		return false;
 	return true;
 }
 
-void CBaseEntity :: MakeDormant()
+void CBaseEntity::MakeDormant()
 {
-	SetBits( pev->flags, FL_DORMANT );
-	
+	SetBits(pev->flags, FL_DORMANT);
+
 	// Don't touch
 	pev->solid = SOLID_NOT;
 	// Don't move
 	pev->movetype = MOVETYPE_NONE;
 	// Don't draw
-	SetBits( pev->effects, EF_NODRAW );
+	SetBits(pev->effects, EF_NODRAW);
 	// Don't think
 	pev->nextthink = 0;
 	// Relink
-	UTIL_SetOrigin( pev, pev->origin );
+	UTIL_SetOrigin(pev, pev->origin);
 }
 
-bool CBaseEntity :: IsDormant()
+bool CBaseEntity::IsDormant()
 {
-	return FBitSet( pev->flags, FL_DORMANT );
+	return FBitSet(pev->flags, FL_DORMANT);
 }
 
-bool CBaseEntity :: IsInWorld()
+bool CBaseEntity::IsInWorld()
 {
 	// position 
 	if (!UTIL_IsInWorld(pev->origin))
 	{
 		return false;
 	}
-	
+
 	// speed
 	if (pev->velocity.x >= 2000) return false;
 	if (pev->velocity.y >= 2000) return false;
@@ -212,26 +212,26 @@ bool CBaseEntity :: IsInWorld()
 	return true;
 }
 
-bool CBaseEntity::ShouldToggle( USE_TYPE useType, bool currentState )
+bool CBaseEntity::ShouldToggle(USE_TYPE useType, bool currentState)
 {
-	if ( useType != USE_TOGGLE && useType != USE_SET )
+	if (useType != USE_TOGGLE && useType != USE_SET)
 	{
-		if ( (currentState && useType == USE_ON) || (!currentState && useType == USE_OFF) )
+		if ((currentState && useType == USE_ON) || (!currentState && useType == USE_OFF))
 			return false;
 	}
 	return true;
 }
 
 
-int	CBaseEntity :: DamageDecal( int bitsDamageType )
+int	CBaseEntity::DamageDecal(int bitsDamageType)
 {
-	if ( pev->rendermode == kRenderTransAlpha )
+	if (pev->rendermode == kRenderTransAlpha)
 		return -1;
 
-	if ( pev->rendermode != kRenderNormal )
+	if (pev->rendermode != kRenderNormal)
 		return DECAL_BPROOF1;
 
-	return DECAL_GUNSHOT1 + RANDOM_LONG(0,4);
+	return DECAL_GUNSHOT1 + RANDOM_LONG(0, 4);
 }
 
 void CBaseEntity::EmitSound(int channel, const char* fileName, float volume, float attenuation, int pitch, int flags)
@@ -246,22 +246,22 @@ void CBaseEntity::StopSound(int channel, const char* fileName)
 
 // NOTE: szName must be a pointer to constant memory, e.g. "monster_class" because the entity
 // will keep a pointer to it after this call.
-CBaseEntity * CBaseEntity::Create( const char *szName, const Vector &vecOrigin, const Vector &vecAngles, edict_t *pentOwner )
+CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner)
 {
-	edict_t	*pent;
-	CBaseEntity *pEntity;
+	edict_t* pent;
+	CBaseEntity* pEntity;
 
-	pent = CREATE_NAMED_ENTITY( MAKE_STRING( szName ));
-	if ( FNullEnt( pent ) )
+	pent = CREATE_NAMED_ENTITY(MAKE_STRING(szName));
+	if (FNullEnt(pent))
 	{
-		ALERT ( at_console, "NULL Ent in Create!\n" );
+		ALERT(at_console, "NULL Ent in Create!\n");
 		return nullptr;
 	}
-	pEntity = Instance( pent );
+	pEntity = Instance(pent);
 	pEntity->pev->owner = pentOwner;
 	pEntity->pev->origin = vecOrigin;
 	pEntity->pev->angles = vecAngles;
-	DispatchSpawn( pEntity->edict() );
+	DispatchSpawn(pEntity->edict());
 	return pEntity;
 }
 

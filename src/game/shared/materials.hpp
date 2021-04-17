@@ -17,7 +17,7 @@
 
 /**
 *	@file
-* 
+*
 *	Used to detect the texture the player is standing on, map the texture name to a material type.
 *	Play footstep sound based on material type.
 */

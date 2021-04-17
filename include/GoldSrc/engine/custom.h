@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -39,7 +39,7 @@ struct _resourceinfo_t
 
 struct resourceinfo_t
 {
-	_resourceinfo_t info[ 8 ];
+	_resourceinfo_t info[8];
 };
 
 constexpr int RES_FATALIFMISSING = 1 << 0;  //!< Disconnect if we can't get this file.
@@ -58,13 +58,13 @@ struct resource_t
 	int               nDownloadSize;       // Size in Bytes if this must be downloaded.
 	unsigned char     ucFlags;
 
-// For handling client to client resource propagation
+	// For handling client to client resource propagation
 	unsigned char     rgucMD5_hash[16];    // To determine if we already have it.
 	unsigned char     playernum;           // Which player index this resource is associated with, if it's a custom resource.
 
-	unsigned char	  rguc_reserved[ 32 ]; // For future expansion
-	resource_t*			pNext;              // Next in chain.
-	resource_t*			pPrev;
+	unsigned char	  rguc_reserved[32]; // For future expansion
+	resource_t* pNext;              // Next in chain.
+	resource_t* pPrev;
 };
 
 /**
@@ -80,8 +80,8 @@ struct customization_t
 						   //  (e.g., raw decal .wad make into texture_t *)
 	int        nUserData1; // Customization specific data
 	int        nUserData2; // Customization specific data
-	void *pInfo;          // Buffer that holds the data structure that references the data (e.g., the cachewad_t)
-	void *pBuffer;       // Buffer that holds the data for the customization (the raw .wad data)
+	void* pInfo;          // Buffer that holds the data structure that references the data (e.g., the cachewad_t)
+	void* pBuffer;       // Buffer that holds the data for the customization (the raw .wad data)
 	customization_t* pNext; // Next in chain
 };
 

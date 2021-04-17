@@ -71,7 +71,7 @@ inline CGlobalState gGlobalState;
 
 /**
 *	@brief Find the matching global entity.
-*	
+*
 *	Spit out an error if the designer made entities of different classes with the same global name
 */
 CBaseEntity* FindGlobalEntity(string_t classname, string_t globalname);

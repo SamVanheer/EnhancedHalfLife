@@ -10,7 +10,7 @@
 // These provide access to the voice controls.
 enum VoiceTweakControl
 {
-	MicrophoneVolume=0,			// values 0-1.
+	MicrophoneVolume = 0,			// values 0-1.
 	OtherSpeakerScale,			// values 0-1. Scales how loud other players are.
 	MicBoost,					// 20 db gain to voice input
 };
@@ -22,7 +22,7 @@ struct IVoiceTweak
 	// without sending to the server. 
 	int				(*StartVoiceTweakMode)();	// Returns 0 on error.
 	void			(*EndVoiceTweakMode)();
-	
+
 	// Get/set control values.
 	void			(*SetControlFloat)(VoiceTweakControl iControl, float value);
 	float			(*GetControlFloat)(VoiceTweakControl iControl);

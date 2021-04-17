@@ -7,7 +7,7 @@
 
 /**
 *	@file
-* 
+*
 *	Triangle rendering, if any
 *	Triangle rendering apis are in gEngfuncs.pTriAPI
 */
@@ -45,6 +45,6 @@ Render any triangles with transparent rendermode needs here
 */
 void DLLEXPORT HUD_DrawTransparentTriangles()
 {
-	if ( g_pParticleMan )
-		 g_pParticleMan->Update();
+	if (g_pParticleMan)
+		g_pParticleMan->Update();
 }

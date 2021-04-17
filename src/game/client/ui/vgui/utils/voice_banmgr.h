@@ -12,8 +12,8 @@ class CVoiceBanMgr
 {
 public:
 
-				CVoiceBanMgr();
-				~CVoiceBanMgr();	
+	CVoiceBanMgr();
+	~CVoiceBanMgr();
 
 	// Init loads the list of squelched players from disk.
 	bool		Init();
@@ -35,12 +35,12 @@ protected:
 	{
 	public:
 		char			m_PlayerID[16];
-		BannedPlayer	*m_pPrev, *m_pNext;
+		BannedPlayer* m_pPrev, * m_pNext;
 	};
 
 	void				Clear();
-	BannedPlayer*	InternalFindPlayerSquelch(char const playerID[16]);
-	BannedPlayer*	AddBannedPlayer(char const playerID[16]);
+	BannedPlayer* InternalFindPlayerSquelch(char const playerID[16]);
+	BannedPlayer* AddBannedPlayer(char const playerID[16]);
 
 
 protected:

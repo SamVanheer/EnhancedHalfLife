@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -22,7 +22,7 @@
 
 /**
 *	@brief Maximum value that a coordinate can have before it's considered out of the map.
-*	
+*
 *	Applies to both positive and negative values ([-WORLD_BOUNDARY, WORLD_BOUNDARY])
 */
 constexpr float WORLD_BOUNDARY = 4096;
@@ -137,7 +137,7 @@ enum class WaterLevel
 	Waist,		//!< waist in water
 	Head		//!< head in water
 };
-		
+
 //
 // temp entity events
 //
@@ -695,8 +695,8 @@ constexpr int TE_BOUNCE_SHELL = 1;
 constexpr int TE_BOUNCE_SHOTSHELL = 2;
 
 // Rendering constants
-enum 
-{	
+enum
+{
 	kRenderNormal,			// src
 	kRenderTransColor,		// c*a+dest*(1-a)
 	kRenderTransTexture,	// src*a+dest*(1-a)
@@ -705,21 +705,21 @@ enum
 	kRenderTransAdd,		// src*a+dest
 };
 
-enum 
-{	
-	kRenderFxNone = 0, 
-	kRenderFxPulseSlow, 
-	kRenderFxPulseFast, 
-	kRenderFxPulseSlowWide, 
-	kRenderFxPulseFastWide, 
-	kRenderFxFadeSlow, 
-	kRenderFxFadeFast, 
-	kRenderFxSolidSlow, 
-	kRenderFxSolidFast, 	   
-	kRenderFxStrobeSlow, 
-	kRenderFxStrobeFast, 
-	kRenderFxStrobeFaster, 
-	kRenderFxFlickerSlow, 
+enum
+{
+	kRenderFxNone = 0,
+	kRenderFxPulseSlow,
+	kRenderFxPulseFast,
+	kRenderFxPulseSlowWide,
+	kRenderFxPulseFastWide,
+	kRenderFxFadeSlow,
+	kRenderFxFadeFast,
+	kRenderFxSolidSlow,
+	kRenderFxSolidFast,
+	kRenderFxStrobeSlow,
+	kRenderFxStrobeFast,
+	kRenderFxStrobeFaster,
+	kRenderFxFlickerSlow,
 	kRenderFxFlickerFast,
 	kRenderFxNoDissipation,
 	kRenderFxDistort,			// Distort/scale/translate flicker
@@ -767,6 +767,6 @@ struct trace_t
 	float	fraction;		// time completed, 1.0 = didn't hit anything
 	Vector	endpos;			// final position
 	plane_t	plane;			// surface normal at impact
-	edict_t	*ent;			// entity the surface is on
+	edict_t* ent;			// entity the surface is on
 	int		hitgroup;		// 0 == generic, non zero is specific body part
 };

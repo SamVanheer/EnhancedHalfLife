@@ -9,7 +9,7 @@
 
 /**
 *	@file
-* 
+*
 *	defines and such for a 3rd person camera
 */
 

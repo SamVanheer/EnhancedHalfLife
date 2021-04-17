@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -17,12 +17,12 @@
 #include "cl_util.h"
 #include "parsemsg.h"
 
-DECLARE_MESSAGE(m_Train, Train )
+DECLARE_MESSAGE(m_Train, Train)
 
 
 bool CHudTrain::Init()
 {
-	HOOK_MESSAGE( Train );
+	HOOK_MESSAGE(Train);
 
 	m_iPos = 0;
 	m_iFlags = 0;
@@ -40,21 +40,21 @@ bool CHudTrain::VidInit()
 
 bool CHudTrain::Draw(float fTime)
 {
-	if ( !m_hSprite )
+	if (!m_hSprite)
 		m_hSprite = LoadSprite("sprites/%d_train.spr");
 
 	if (m_iPos)
 	{
 		int r, g, b, x, y;
 
-		UnpackRGB(r,g,b, RGB_YELLOWISH);
-		SPR_Set(m_hSprite, r, g, b );
+		UnpackRGB(r, g, b, RGB_YELLOWISH);
+		SPR_Set(m_hSprite, r, g, b);
 
 		// This should show up to the right and part way up the armor number
-		y = ScreenHeight - SPR_Height(m_hSprite,0) - gHUD.m_iFontHeight;
-		x = ScreenWidth/3 + SPR_Width(m_hSprite,0)/4;
+		y = ScreenHeight - SPR_Height(m_hSprite, 0) - gHUD.m_iFontHeight;
+		x = ScreenWidth / 3 + SPR_Width(m_hSprite, 0) / 4;
 
-		SPR_DrawAdditive( m_iPos - 1,  x, y, nullptr);
+		SPR_DrawAdditive(m_iPos - 1, x, y, nullptr);
 
 	}
 
@@ -62,7 +62,7 @@ bool CHudTrain::Draw(float fTime)
 }
 
 
-bool CHudTrain::MsgFunc_Train(const char *pszName,  int iSize, void *pbuf)
+bool CHudTrain::MsgFunc_Train(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};
 

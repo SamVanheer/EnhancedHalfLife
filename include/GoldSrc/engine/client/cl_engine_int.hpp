@@ -31,7 +31,7 @@ struct cmdalias_t
 {
 	cmdalias_t* next;
 	char	name[MAX_ALIAS_NAME];
-	char	*value;
+	char* value;
 };
 
 struct Point
@@ -47,7 +47,7 @@ typedef int HSPRITE;	// handle to a graphic
 */
 struct cl_enginefunc_t
 {
-	HSPRITE (*pfnSPR_Load)(const char* szPicName);
+	HSPRITE(*pfnSPR_Load)(const char* szPicName);
 	int (*pfnSPR_Frames)(HSPRITE hPic);
 	int (*pfnSPR_Height)(HSPRITE hPic, int frame);
 	int (*pfnSPR_Width)(HSPRITE hPic, int frame);
@@ -142,9 +142,9 @@ struct cl_enginefunc_t
 	int (*COM_ExpandFilename)(const char* fileName, char* nameOutBuffer, int nameOutBufferSize);
 	const char* (*PlayerInfo_ValueForKey)(int playerNum, const char* key);
 	void (*PlayerInfo_SetValueForKey)(const char* key, const char* value);
-	qboolean (*GetPlayerUniqueID)(int iPlayer, char playerID[16]);
+	qboolean(*GetPlayerUniqueID)(int iPlayer, char playerID[16]);
 	int (*GetTrackerIDForPlayer)(int playerSlot);
-	int (*GetPlayerForTrackerID)(int trackerID)	;
+	int (*GetPlayerForTrackerID)(int trackerID);
 	int (*pfnServerCmdUnreliable)(char* szCmdString);
 	void (*pfnGetMousePos)(Point* ppt);
 	void (*pfnSetMousePos)(int x, int y);

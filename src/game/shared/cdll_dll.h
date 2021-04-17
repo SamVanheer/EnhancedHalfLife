@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2001, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -19,7 +19,7 @@
 
 /**
 *	@file
-* 
+*
 *	this file is included by both the game-dll and the client-dll
 */
 
@@ -56,7 +56,7 @@ constexpr int CLIMB_PUNCH_Z = 7;					//!< how far to 'punch' client Z axis when 
 constexpr int PLAYER_FATAL_FALL_SPEED = 1024;		//!< approx 60 feet
 constexpr int PLAYER_MAX_SAFE_FALL_SPEED = 580;		//!< approx 20 feet
 constexpr float DAMAGE_FOR_FALL_SPEED
-	= 100.0f / (PLAYER_FATAL_FALL_SPEED - PLAYER_MAX_SAFE_FALL_SPEED);	//!< damage per unit per second.
+= 100.0f / (PLAYER_FATAL_FALL_SPEED - PLAYER_MAX_SAFE_FALL_SPEED);	//!< damage per unit per second.
 constexpr int PLAYER_MIN_BOUNCE_SPEED = 200;
 constexpr float PLAYER_FALL_PUNCH_THRESHHOLD = 350; //!< won't punch player's screen/make scrape noise unless player falling at least this fast.
 
@@ -129,15 +129,15 @@ constexpr int DMG_MORTAR = 1 << 23;				//!< Hit by air raid (done to distinguish
 *	@brief mask for time-based damage
 */
 constexpr int DMG_TIMEBASED = DMG_DROWN
-							| DMG_PARALYZE
-							| DMG_NERVEGAS
-							| DMG_POISON
-							| DMG_RADIATION
-							| DMG_DROWNRECOVER
-							| DMG_ACID
-							| DMG_SLOWBURN
-							| DMG_SLOWFREEZE
-							| DMG_MORTAR;
+| DMG_PARALYZE
+| DMG_NERVEGAS
+| DMG_POISON
+| DMG_RADIATION
+| DMG_DROWNRECOVER
+| DMG_ACID
+| DMG_SLOWBURN
+| DMG_SLOWFREEZE
+| DMG_MORTAR;
 
 //TF ADDITIONS
 constexpr int DMG_IGNITE = 1 << 24;				//!< Players hit by this begin to burn

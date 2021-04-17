@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -16,19 +16,19 @@
 #include "hud.h"
 #include "cl_util.h"
 
-int CL_ButtonBits( int );
-void CL_ResetButtonBits( int bits );
+int CL_ButtonBits(int);
+void CL_ResetButtonBits(int bits);
 
 extern float v_idlescale;
 float in_fov;
-void HUD_SetCmdBits( int bits );
+void HUD_SetCmdBits(int bits);
 
-bool CHud::UpdateClientData(client_data_t *cdata, float time)
+bool CHud::UpdateClientData(client_data_t* cdata, float time)
 {
 	memcpy(m_vecOrigin, cdata->origin, sizeof(Vector));
 	memcpy(m_vecAngles, cdata->viewangles, sizeof(Vector));
-	
-	m_iKeyBits = CL_ButtonBits( 0 );
+
+	m_iKeyBits = CL_ButtonBits(0);
 	m_iWeaponBits = cdata->iWeaponBits;
 
 	in_fov = cdata->fov;
@@ -37,7 +37,7 @@ bool CHud::UpdateClientData(client_data_t *cdata, float time)
 
 	cdata->fov = m_iFOV;
 
-	CL_ResetButtonBits( m_iKeyBits );
+	CL_ResetButtonBits(m_iKeyBits);
 
 	// return true if in anything in the client_data struct has been changed, 0 otherwise
 	return true;

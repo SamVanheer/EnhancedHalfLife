@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -17,8 +17,8 @@
 
 struct playermove_t;
 
-void PM_Init(playermove_t* ppmove );
-void PM_Move (playermove_t* ppmove, int server );
+void PM_Init(playermove_t* ppmove);
+void PM_Move(playermove_t* ppmove, int server);
 
 int PM_GetVisEntInfo(int ent);
 int PM_GetPhysEntInfo(int ent);

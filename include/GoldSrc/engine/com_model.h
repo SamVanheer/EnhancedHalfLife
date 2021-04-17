@@ -42,16 +42,16 @@ constexpr int CACHE_SIZE = 32;		// used to align key data structures
 
 enum modtype_t
 {
-	mod_brush, 
-	mod_sprite, 
-	mod_alias, 
+	mod_brush,
+	mod_sprite,
+	mod_alias,
 	mod_studio
 };
 
 // must match definition in modelgen.h
 enum synctype_t
 {
-	ST_SYNC=0,
+	ST_SYNC = 0,
 	ST_RAND
 };
 
@@ -91,8 +91,8 @@ struct texture_t
 	unsigned	width, height;
 	int			anim_total;				// total tenths in sequence ( 0 = no)
 	int			anim_min, anim_max;		// time for this frame min <=time< max
-	texture_t*	anim_next;		// in the animation sequence
-	texture_t*	alternate_anims;	// bmodels in frame 1 use these
+	texture_t* anim_next;		// in the animation sequence
+	texture_t* alternate_anims;	// bmodels in frame 1 use these
 	unsigned	offsets[MIPLEVELS];		// four mip maps stored
 	unsigned	paloffset;
 };
@@ -103,22 +103,22 @@ struct mtexinfo_t
 								// [i][3] is the s/t offset relative to the origin.
 								// s or t = dot(3Dpoint,vecs[i])+vecs[i][3]
 	float		mipadjust;		// ?? mipmap limits for very small surfaces
-	texture_t	*texture;
+	texture_t* texture;
 	int			flags;			// sky or slime, no lightmap or 256 subdivision
 };
 
 struct mnode_t
 {
-// common with leaf
+	// common with leaf
 	int			contents;		// 0, to differentiate from leafs
 	int			visframe;		// node needs to be traversed if current
-	
+
 	short		minmaxs[6];		// for bounding box culling
 
 	mnode_t* parent;
 
-// node specific
-	mplane_t	*plane;
+	// node specific
+	mplane_t* plane;
 	mnode_t* children[2];
 
 	unsigned short		firstsurface;
@@ -128,8 +128,8 @@ struct mnode_t
 // JAY: Compress this as much as possible
 struct decal_t
 {
-	decal_t		*pnext;			// linked list for each surface
-	msurface_t	*psurface;		// Surface id for persistence / unlinking
+	decal_t* pnext;			// linked list for each surface
+	msurface_t* psurface;		// Surface id for persistence / unlinking
 	short		dx;				// Offsets into surface texture (in texture coordinates, so we don't need floats)
 	short		dy;
 	short		texture;		// Decal texture
@@ -141,19 +141,19 @@ struct decal_t
 
 struct mleaf_t
 {
-// common with node
+	// common with node
 	int			contents;		// wil be a negative contents number
 	int			visframe;		// node needs to be traversed if current
 
 	short		minmaxs[6];		// for bounding box culling
 
-	mnode_t*	parent;
+	mnode_t* parent;
 
-// leaf specific
-	byte*		compressed_vis;
-	efrag_t*	efrags;
+	// leaf specific
+	byte* compressed_vis;
+	efrag_t* efrags;
 
-	msurface_t	**firstmarksurface;
+	msurface_t** firstmarksurface;
 	int			nummarksurfaces;
 	int			key;			// BSP sequence number for leaf's contents
 	byte		ambient_sound_level[NUM_AMBIENTS];
@@ -167,27 +167,27 @@ struct msurface_t
 	int			dlightbits;		// dynamically generated. Indicates if the surface illumination 
 								// is modified by an animated light.
 
-	mplane_t	*plane;			// pointer to shared plane			
+	mplane_t* plane;			// pointer to shared plane			
 	int			flags;			// see SURF_ #defines
 
 	int			firstedge;	// look up in model->surfedges[], negative numbers
 	int			numedges;	// are backwards edges
-	
+
 // surface generation data
-	surfcache_t*	cachespots[MIPLEVELS];
+	surfcache_t* cachespots[MIPLEVELS];
 
 	short		texturemins[2]; // smallest s/t position on the surface.
 	short		extents[2];		// ?? s/t texture size, 1..256 for all non-sky surfaces
 
-	mtexinfo_t	*texinfo;		
-	
-// lighting info
+	mtexinfo_t* texinfo;
+
+	// lighting info
 	byte		styles[MAXLIGHTMAPS]; // index into d_lightstylevalue[] for animated lights 
 									  // no one surface can be effected by more than 4 
 									  // animated lights.
-	color24		*samples;
-	
-	decal_t		*pdecals;
+	color24* samples;
+
+	decal_t* pdecals;
 };
 
 struct dclipnode_t
@@ -198,8 +198,8 @@ struct dclipnode_t
 
 struct hull_t
 {
-	dclipnode_t	*clipnodes;
-	mplane_t	*planes;
+	dclipnode_t* clipnodes;
+	mplane_t* planes;
 	int			firstclipnode;
 	int			lastclipnode;
 	Vector		clip_mins;
@@ -208,78 +208,78 @@ struct hull_t
 
 struct cache_user_t
 {
-	void	*data;
+	void* data;
 };
 
 struct model_t
 {
-	char		name[ MAX_MODEL_NAME ];
+	char		name[MAX_MODEL_NAME];
 	qboolean	needload;		// bmodels and sprites don't cache normally
 
 	modtype_t	type;
 	int			numframes;
 	synctype_t	synctype;
-	
+
 	int			flags;
 
-//
-// volume occupied by the model
-//		
+	//
+	// volume occupied by the model
+	//		
 	Vector		mins, maxs;
 	float		radius;
 
-//
-// brush model
-//
+	//
+	// brush model
+	//
 	int			firstmodelsurface, nummodelsurfaces;
 
 	int			numsubmodels;
-	dmodel_t	*submodels;
+	dmodel_t* submodels;
 
 	int			numplanes;
-	mplane_t	*planes;
+	mplane_t* planes;
 
 	int			numleafs;		// number of visible leafs, not counting 0
-	mleaf_t		*leafs;
+	mleaf_t* leafs;
 
 	int			numvertexes;
-	mvertex_t	*vertexes;
+	mvertex_t* vertexes;
 
 	int			numedges;
-	medge_t		*edges;
+	medge_t* edges;
 
 	int			numnodes;
-	mnode_t		*nodes;
+	mnode_t* nodes;
 
 	int			numtexinfo;
-	mtexinfo_t	*texinfo;
+	mtexinfo_t* texinfo;
 
 	int			numsurfaces;
-	msurface_t	*surfaces;
+	msurface_t* surfaces;
 
 	int			numsurfedges;
-	int			*surfedges;
+	int* surfedges;
 
 	int			numclipnodes;
-	dclipnode_t	*clipnodes;
+	dclipnode_t* clipnodes;
 
 	int			nummarksurfaces;
-	msurface_t	**marksurfaces;
+	msurface_t** marksurfaces;
 
 	hull_t		hulls[MAX_MAP_HULLS];
 
 	int			numtextures;
-	texture_t	**textures;
+	texture_t** textures;
 
-	byte		*visdata;
+	byte* visdata;
 
-	color24		*lightdata;
+	color24* lightdata;
 
-	char		*entities;
+	char* entities;
 
-//
-// additional model data
-//
+	//
+	// additional model data
+	//
 	cache_user_t	cache;		// only access through Mod_Extradata
 
 };
@@ -291,7 +291,7 @@ struct alight_t
 	int			ambientlight;	// clip at 128
 	int			shadelight;		// clip at 192 - ambientlight
 	Vector		color;
-	float		*plightvec;
+	float* plightvec;
 };
 
 struct auxvert_t
@@ -307,10 +307,10 @@ struct player_info_t
 	int		userid;
 
 	// User info string
-	char	userinfo[ MAX_INFO_STRING ];
+	char	userinfo[MAX_INFO_STRING];
 
 	// Name
-	char	name[ MAX_SCOREBOARDNAME ];
+	char	name[MAX_SCOREBOARDNAME];
 
 	// Spectator or not, unused
 	int		spectator;
@@ -324,7 +324,7 @@ struct player_info_t
 	int		bottomcolor;
 
 	// last frame rendered
-	int		renderframe;	
+	int		renderframe;
 
 	// Gait frame estimation
 	int		gaitsequence;

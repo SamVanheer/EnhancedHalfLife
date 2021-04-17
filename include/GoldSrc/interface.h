@@ -98,7 +98,7 @@ enum class InterfaceResult
 
 constexpr std::string_view CREATEINTERFACE_PROCNAME{"CreateInterface"};
 
-extern "C" EXPORT_FUNCTION IBaseInterface* CreateInterface(const char* pName, InterfaceResult* pReturnCode);
+extern "C" EXPORT_FUNCTION IBaseInterface * CreateInterface(const char* pName, InterfaceResult * pReturnCode);
 
 using CreateInterfaceFn = decltype(CreateInterface)*;
 

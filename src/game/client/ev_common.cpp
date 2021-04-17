@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -15,7 +15,7 @@
 
 /**
 *	@file
-* 
+*
 *	shared event functions
 */
 
@@ -43,9 +43,9 @@ GetEntity
 Return's the requested cl_entity_t
 =================
 */
-cl_entity_t* GetEntity( int idx )
+cl_entity_t* GetEntity(int idx)
 {
-	return gEngfuncs.GetEntityByIndex( idx );
+	return gEngfuncs.GetEntityByIndex(idx);
 }
 
 /*
@@ -67,10 +67,10 @@ EV_CreateTracer
 Creates a tracer effect
 =================
 */
-void EV_CreateTracer(Vector start, const Vector& end )
+void EV_CreateTracer(Vector start, const Vector& end)
 {
 	//start is modified by this function
-	gEngfuncs.pEfxAPI->R_TracerEffect( start, end );
+	gEngfuncs.pEfxAPI->R_TracerEffect(start, end);
 }
 
 /*
@@ -80,9 +80,9 @@ EV_IsPlayer
 Is the entity's index in the player range?
 =================
 */
-bool EV_IsPlayer( int idx )
+bool EV_IsPlayer(int idx)
 {
-	if ( idx >= 1 && idx <= gEngfuncs.GetMaxClients() )
+	if (idx >= 1 && idx <= gEngfuncs.GetMaxClients())
 		return true;
 
 	return false;
@@ -95,13 +95,13 @@ EV_IsLocal
 Is the entity == the local player
 =================
 */
-bool EV_IsLocal( int idx )
+bool EV_IsLocal(int idx)
 {
 	// check if we are in some way in first person spec mode
-	if (IsFirstPersonSpectator()  )
+	if (IsFirstPersonSpectator())
 		return (g_iUser2 == idx);
 	else
-		return gEngfuncs.pEventAPI->EV_IsLocal( idx - 1 ) ? true : false;
+		return gEngfuncs.pEventAPI->EV_IsLocal(idx - 1) ? true : false;
 }
 
 /*
@@ -111,21 +111,21 @@ EV_GetGunPosition
 Figure out the height of the gun
 =================
 */
-void EV_GetGunPosition( event_args_t *args, Vector& pos, const Vector& origin )
+void EV_GetGunPosition(event_args_t* args, Vector& pos, const Vector& origin)
 {
 	const int idx = args->entindex;
 
 	Vector view_ofs = VEC_VIEW;
 
-	if ( EV_IsPlayer( idx ) )
+	if (EV_IsPlayer(idx))
 	{
 		// in spec mode use entity viewheigh, not own
-		if ( EV_IsLocal( idx ) && !IsFirstPersonSpectator() )
+		if (EV_IsLocal(idx) && !IsFirstPersonSpectator())
 		{
 			// Grab predicted result for local player
-			gEngfuncs.pEventAPI->EV_LocalPlayerViewheight( view_ofs );
+			gEngfuncs.pEventAPI->EV_LocalPlayerViewheight(view_ofs);
 		}
-		else if ( args->ducking == 1 )
+		else if (args->ducking == 1)
 		{
 			view_ofs = VEC_DUCK_VIEW;
 		}
@@ -141,10 +141,10 @@ EV_EjectBrass
 Bullet shell casings
 =================
 */
-void EV_EjectBrass(const Vector& origin, const Vector& velocity, float rotation, int model, int soundtype )
+void EV_EjectBrass(const Vector& origin, const Vector& velocity, float rotation, int model, int soundtype)
 {
 	const Vector endpos{0, rotation, 0};
-	gEngfuncs.pEfxAPI->R_TempModel( origin, velocity, endpos, 2.5, model, soundtype );
+	gEngfuncs.pEfxAPI->R_TempModel(origin, velocity, endpos, 2.5, model, soundtype);
 }
 
 /*
@@ -154,30 +154,30 @@ EV_GetDefaultShellInfo
 Determine where to eject shells from
 =================
 */
-void EV_GetDefaultShellInfo( event_args_t *args,
+void EV_GetDefaultShellInfo(event_args_t* args,
 	const Vector& origin, const Vector& velocity,
 	Vector& ShellVelocity, Vector& ShellOrigin,
 	const Vector& forward, const Vector& right, const Vector& up,
-	float forwardScale, float upScale, float rightScale )
+	float forwardScale, float upScale, float rightScale)
 {
 	const int idx = args->entindex;
 
 	Vector view_ofs = VEC_VIEW;
 
-	if ( EV_IsPlayer( idx ) )
+	if (EV_IsPlayer(idx))
 	{
-		if ( EV_IsLocal( idx ) )
+		if (EV_IsLocal(idx))
 		{
-			gEngfuncs.pEventAPI->EV_LocalPlayerViewheight( view_ofs );
+			gEngfuncs.pEventAPI->EV_LocalPlayerViewheight(view_ofs);
 		}
-		else if ( args->ducking == 1 )
+		else if (args->ducking == 1)
 		{
 			view_ofs = VEC_DUCK_VIEW;
 		}
 	}
 
-	const float fR = gEngfuncs.pfnRandomFloat( 50, 70 );
-	const float fU = gEngfuncs.pfnRandomFloat( 100, 150 );
+	const float fR = gEngfuncs.pfnRandomFloat(50, 70);
+	const float fU = gEngfuncs.pfnRandomFloat(100, 150);
 
 	ShellVelocity = velocity + right * fR + up * fU + forward * 25;
 	ShellOrigin = origin + view_ofs + up * upScale + forward * forwardScale + right * rightScale;
@@ -193,8 +193,8 @@ Flag weapon/view model for muzzle flash
 void EV_MuzzleFlash()
 {
 	// Add muzzle flash to current weapon model
-	cl_entity_t *ent = GetViewEntity();
-	if ( !ent )
+	cl_entity_t* ent = GetViewEntity();
+	if (!ent)
 	{
 		return;
 	}

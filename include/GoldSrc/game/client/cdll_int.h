@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1999, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -17,8 +17,8 @@
 
 /**
 *	@file
-* 
-*	4-23-98  
+*
+*	4-23-98
 *	JOHN:  client dll interface declarations
 */
 
@@ -54,7 +54,7 @@ struct client_data_t
 	// fields that can be changed by the cldll
 	Vector viewangles;
 	int		iWeaponBits;
-//	int		iAccessoryBits;
+	//	int		iAccessoryBits;
 	float	fov;	// field of view
 };
 
@@ -69,14 +69,14 @@ struct client_sprite_t
 
 struct hud_player_info_t
 {
-	char *name;
+	char* name;
 	short ping;
 	byte thisplayer;  // true if this is the calling player
 
 	byte spectator;
 	byte packetloss;
 
-	char *model;
+	char* model;
 	short topcolor;
 	short bottomcolor;
 

@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -15,9 +15,9 @@
 
 #pragma once
 
-enum ptype_t 
+enum ptype_t
 {
-	pt_static, 
+	pt_static,
 	pt_grav,
 	pt_slowgrav,
 	pt_fire,
@@ -33,21 +33,21 @@ enum ptype_t
 // !!! if this is changed, it must be changed in d_ifacea.h too !!!
 struct particle_t
 {
-// driver-usable fields
+	// driver-usable fields
 	Vector		org;
 	short		color;
 	short		packedColor;
-// drivers never touch the following fields
+	// drivers never touch the following fields
 	particle_t* next;
 	Vector		vel;
 	float		ramp;
 	float		die;
 	ptype_t		type;
-	void		(*deathfunc)(particle_t* particle );
+	void		(*deathfunc)(particle_t* particle);
 
 	// for pt_clientcusttom, we'll call this function each frame
-	void		(*callback)(particle_t* particle, float frametime );
-	
+	void		(*callback)(particle_t* particle, float frametime);
+
 	// For deathfunc, etc.
 	unsigned char context;
 };

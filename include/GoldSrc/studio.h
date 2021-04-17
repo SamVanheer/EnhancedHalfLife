@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -23,7 +23,7 @@ STUDIO MODELS
 Studio models are position independent, so the cache manager can move them.
 ==============================================================================
 */
- 
+
 
 constexpr int MAXSTUDIOTRIANGLES = 20000;	// TODO: tune this
 constexpr int MAXSTUDIOVERTS = 2048;		// TODO: tune this
@@ -50,10 +50,10 @@ struct studiohdr_t
 
 	Vector				eyeposition;	// ideal eye position
 	Vector				min;			// ideal movement hull size
-	Vector				max;			
+	Vector				max;
 
 	Vector				bbmin;			// clipping bounding box
-	Vector				bbmax;		
+	Vector				bbmax;
 
 	int					flags;
 
@@ -64,8 +64,8 @@ struct studiohdr_t
 	int					bonecontrollerindex;
 
 	int					numhitboxes;			// complex bounding boxes
-	int					hitboxindex;			
-	
+	int					hitboxindex;
+
 	int					numseq;				// animation sequences
 	int					seqindex;
 
@@ -80,7 +80,7 @@ struct studiohdr_t
 	int					numskinfamilies;
 	int					skinindex;
 
-	int					numbodyparts;		
+	int					numbodyparts;
 	int					bodypartindex;
 
 	int					numattachments;		// queryable attachable points
@@ -167,7 +167,7 @@ struct mstudioseqdesc_t
 	int					numpivots;	// number of foot pivots
 	int					pivotindex;
 
-	int					motiontype;	
+	int					motiontype;
 	int					motionbone;
 	Vector				linearmovement;
 	int					automoveposindex;
@@ -190,7 +190,7 @@ struct mstudioseqdesc_t
 	int					entrynode;		// transition node at entry
 	int					exitnode;		// transition node at exit
 	int					nodeflags;		// transition rules
-	
+
 	int					nextseq;		// auto advancing sequences
 };
 
@@ -306,7 +306,7 @@ struct mstudiotrivert_t
 {
 	short				vertindex;		// index into vertex array
 	short				normindex;		// index into normal array
-	short				s,t;			// s,t position on skin
+	short				s, t;			// s,t position on skin
 };
 #endif
 

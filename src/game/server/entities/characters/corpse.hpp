@@ -29,7 +29,7 @@ void InitBodyQue();
 
 /**
 *	@brief make a body que entry for the given ent so the ent can be respawned elsewhere
-* 
+*
 *	GLOBALS ASSUMED SET:  g_eoBodyQueueHead
 */
 void CopyToBodyQue(entvars_t* pev);

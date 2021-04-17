@@ -10,5 +10,5 @@
 #include "VGUI_BitmapTGA.h"
 
 
-vgui::BitmapTGA* vgui_LoadTGA(char const *pFilename);
-vgui::BitmapTGA* vgui_LoadTGANoInvertAlpha(char const *pFilename);
+vgui::BitmapTGA* vgui_LoadTGA(char const* pFilename);
+vgui::BitmapTGA* vgui_LoadTGANoInvertAlpha(char const* pFilename);

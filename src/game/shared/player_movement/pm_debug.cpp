@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -36,14 +36,14 @@ static constexpr int PM_boxpnt[6][4] =
 	{ 7, 5, 1, 3 }, // -X
 	{ 7, 3, 2, 6 }, // -Y
 	{ 7, 6, 4, 5 }, // -Z
-};	
+};
 
 void PM_ShowClipBox()
 {
 #if defined( _DEBUG )
-	constexpr Vector offset{ 0, 0, 0 };
+	constexpr Vector offset{0, 0, 0};
 
-	if ( !pmove->runfuncs )
+	if (!pmove->runfuncs)
 		return;
 
 	// More debugging, draw the particle bbox for player and for the entity we are looking directly at.
@@ -58,7 +58,7 @@ void PM_ShowClipBox()
 
 	Vector org = pmove->origin;
 
-	if ( pmove->server )
+	if (pmove->server)
 	{
 		org = org + offset;
 	}
@@ -68,18 +68,18 @@ void PM_ShowClipBox()
 	}
 
 	// Show our BBOX in particles.
-	PM_DrawBBox( pmove->player_mins[pmove->usehull], pmove->player_maxs[pmove->usehull], org, pmove->server ? 132 : 0, 0.1 );
+	PM_DrawBBox(pmove->player_mins[pmove->usehull], pmove->player_maxs[pmove->usehull], org, pmove->server ? 132 : 0, 0.1);
 
-	PM_ParticleLine( org, org, pmove->server ? 132 : 0, 0.1, 5.0 );
-/*
-	for ( int i = 0; i < pmove->numphysent; i++ )
-	{
-		if ( pmove->physents[ i ].info >= 1 && pmove->physents[ i ].info <= 4 )
+	PM_ParticleLine(org, org, pmove->server ? 132 : 0, 0.1, 5.0);
+	/*
+		for ( int i = 0; i < pmove->numphysent; i++ )
 		{
-			PM_DrawBBox( pmove->player_mins[pmove->usehull], pmove->player_maxs[pmove->usehull], pmove->physents[i].origin, 132, 0.1 );
+			if ( pmove->physents[ i ].info >= 1 && pmove->physents[ i ].info <= 4 )
+			{
+				PM_DrawBBox( pmove->player_mins[pmove->usehull], pmove->player_maxs[pmove->usehull], pmove->physents[i].origin, 132, 0.1 );
+			}
 		}
-	}
-*/
+	*/
 #endif
 }
 
@@ -95,14 +95,14 @@ void PM_ParticleLine(const Vector& start, const Vector& end, int pcolor, float l
 	// Determine distance;
 
 	Vector diff = end - start;
-	
+
 	const float len = VectorNormalize(diff);
-	
+
 	for (float curdist = 0; curdist <= len; curdist += linestep)
 	{
 		const Vector curpos = start + curdist * diff;
-		
-		pmove->PM_Particle( curpos, pcolor, life, 0, vert);
+
+		pmove->PM_Particle(curpos, pcolor, life, 0, vert);
 	}
 
 }
@@ -144,7 +144,7 @@ void PM_DrawPhysEntBBox(int num, int pcolor, float life)
 		const Vector org = pe->origin;
 
 		Vector modelmins, modelmaxs;
-		pmove->PM_GetModelBounds( pe->model, modelmins, modelmaxs );
+		pmove->PM_GetModelBounds(pe->model, modelmins, modelmaxs);
 		for (int j = 0; j < 8; j++)
 		{
 			tmp[0] = (j & 1) ? modelmins[0] - gap : modelmaxs[0] + gap;
@@ -163,9 +163,9 @@ void PM_DrawPhysEntBBox(int num, int pcolor, float life)
 			for (int j = 0; j < 8; j++)
 			{
 				tmp = p[j];
-				p[j][0] = DotProduct  ( tmp, forward );
-				p[j][1] = DotProduct ( tmp, right );
-				p[j][2] = DotProduct  ( tmp, up );
+				p[j][0] = DotProduct(tmp, forward);
+				p[j][1] = DotProduct(tmp, right);
+				p[j][2] = DotProduct(tmp, up);
 			}
 		}
 
@@ -223,8 +223,8 @@ void PM_DrawBBox(Vector mins, Vector maxs, Vector origin, int pcolor, float life
 	for (int j = 0; j < 8; j++)
 	{
 		tmp[0] = (j & 1) ? mins[0] - gap : maxs[0] + gap;
-		tmp[1] = (j & 2) ? mins[1] - gap : maxs[1] + gap ;
-		tmp[2] = (j & 4) ? mins[2] - gap : maxs[2] + gap ;
+		tmp[1] = (j & 2) ? mins[1] - gap : maxs[1] + gap;
+		tmp[2] = (j & 4) ? mins[2] - gap : maxs[2] + gap;
 
 		tmp = tmp + origin;
 		p[j] = tmp;
@@ -254,14 +254,14 @@ Tries to shoot a ray out by about 128 units.
 void PM_ViewEntity()
 {
 #if 0
-	if ( !pm_showclip.value )
+	if (!pm_showclip.value)
 		return;
 #endif
 
 	Vector forward, right, up;
-	AngleVectors (pmove->angles, &forward, &right, &up);  // Determine movement angles
+	AngleVectors(pmove->angles, &forward, &right, &up);  // Determine movement angles
 
-	float fup = 0.5*( pmove->player_mins[pmove->usehull][2] + pmove->player_maxs[pmove->usehull][2] );
+	float fup = 0.5 * (pmove->player_mins[pmove->usehull][2] + pmove->player_maxs[pmove->usehull][2]);
 	fup += pmove->view_ofs[2];
 	fup -= 4;
 
@@ -270,7 +270,7 @@ void PM_ViewEntity()
 	const Vector origin = pmove->origin;
 	const Vector end = origin + raydist * forward;
 
-	const pmtrace_t trace = pmove->PM_PlayerTrace( origin, end, PM_STUDIO_BOX, -1 );
+	const pmtrace_t trace = pmove->PM_PlayerTrace(origin, end, PM_STUDIO_BOX, -1);
 
 	int pcolor = 77;
 
@@ -278,7 +278,7 @@ void PM_ViewEntity()
 	{
 		pcolor = 111;
 	}
-	
+
 	// Draw the hull or bbox.
 	if (trace.ent > 0)
 	{

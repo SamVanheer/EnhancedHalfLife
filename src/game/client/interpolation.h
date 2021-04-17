@@ -12,7 +12,7 @@
 /**
 *	@brief Bezier inpolation class
 */
-class CInterpolation  
+class CInterpolation
 {
 public:
 
@@ -20,17 +20,17 @@ public:
 	virtual ~CInterpolation();
 
 	void SetWaypoints(Vector* prev, Vector start, Vector end, Vector* next);
-	void SetViewAngles(Vector start, Vector end );
+	void SetViewAngles(Vector start, Vector end);
 	void SetFOVs(float start, float end);
 	void SetSmoothing(bool start, bool end);
-	
+
 	// get interpolated point 0 =< t =< 1, 0 = start, 1 = end
-	void Interpolate(float t, Vector& point, Vector& angle, float * fov);
-	
+	void Interpolate(float t, Vector& point, Vector& angle, float* fov);
+
 protected:
 
-	void BezierInterpolatePoint( float t, Vector& point );
-	void InterpolateAngle( float t, Vector& angle );
+	void BezierInterpolatePoint(float t, Vector& point);
+	void InterpolateAngle(float t, Vector& angle);
 
 	Vector	m_StartPoint;
 	Vector	m_EndPoint;
@@ -39,7 +39,7 @@ protected:
 	Vector	m_Center;
 	float	m_StartFov;
 	float	m_EndFov;
-		
+
 	bool	m_SmoothStart;
 	bool	m_SmoothEnd;
 };

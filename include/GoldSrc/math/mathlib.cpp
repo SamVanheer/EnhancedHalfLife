@@ -149,7 +149,7 @@ void AngleMatrix(const Vector& angles, float(*matrix)[4])
 	matrix[2][3] = 0.0;
 }
 
-void AngleIMatrix(const Vector& angles, float (*matrix)[4])
+void AngleIMatrix(const Vector& angles, float(*matrix)[4])
 {
 	float		angle;
 	float		sr, sp, sy, cr, cp, cy;
