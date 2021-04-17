@@ -821,7 +821,6 @@ bool CBasePlayerWeapon :: DefaultDeploy( const char *szViewModel, const char *sz
 	if (!CanDeploy( ))
 		return false;
 
-	m_pPlayer->TabulateAmmo();
 	m_pPlayer->pev->viewmodel = MAKE_STRING(szViewModel);
 	m_pPlayer->pev->weaponmodel = MAKE_STRING(szWeaponModel);
 	safe_strcpy( m_pPlayer->m_szAnimExtension, szAnimExt );

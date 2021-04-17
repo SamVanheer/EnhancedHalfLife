@@ -670,14 +670,14 @@ void HUD_WeaponsPostThink( local_state_t *from, local_state_t*to, usercmd_t *cmd
 	player.m_flAmmoStartCharge = from->client.fuser3;
 
 	//Stores all our ammo info, so the client side weapons can use them.
-	player.ammo_9mm			= (int)from->client.vuser1[0];
-	player.ammo_357			= (int)from->client.vuser1[1];
-	player.ammo_argrens		= (int)from->client.vuser1[2];
-	player.ammo_bolts		= (int)from->client.ammo_nails; //is an int anyways...
-	player.ammo_buckshot	= (int)from->client.ammo_shells; 
-	player.ammo_uranium		= (int)from->client.ammo_cells;
-	player.ammo_hornets		= (int)from->client.vuser2[0];
-	player.ammo_rockets		= (int)from->client.ammo_rockets;
+	player.SetAmmoCount("9mm", (int)from->client.vuser1[0]);
+	player.SetAmmoCount("357", (int)from->client.vuser1[1]);
+	player.SetAmmoCount("ARgrenades", (int)from->client.vuser1[2]);
+	player.SetAmmoCount("bolts", (int)from->client.ammo_nails); //is an int anyways...
+	player.SetAmmoCount("buckshot", (int)from->client.ammo_shells);
+	player.SetAmmoCount("uranium", (int)from->client.ammo_cells);
+	player.SetAmmoCount("Hornets", (int)from->client.vuser2[0]);
+	player.SetAmmoCount("rockets", (int)from->client.ammo_rockets);
 
 	
 	// Point to current weapon object
@@ -744,15 +744,15 @@ void HUD_WeaponsPostThink( local_state_t *from, local_state_t*to, usercmd_t *cmd
 	to->client.maxspeed					= player.pev->maxspeed;
 
 	//HL Weapons
-	to->client.vuser1[0]				= player.ammo_9mm;
-	to->client.vuser1[1]				= player.ammo_357;
-	to->client.vuser1[2]				= player.ammo_argrens;
+	to->client.vuser1[0]				= player.GetAmmoCount("9mm");
+	to->client.vuser1[1]				= player.GetAmmoCount("357");
+	to->client.vuser1[2]				= player.GetAmmoCount("ARgrenades");
 
-	to->client.ammo_nails				= player.ammo_bolts;
-	to->client.ammo_shells				= player.ammo_buckshot;
-	to->client.ammo_cells				= player.ammo_uranium;
-	to->client.vuser2[0]				= player.ammo_hornets;
-	to->client.ammo_rockets				= player.ammo_rockets;
+	to->client.ammo_nails				= player.GetAmmoCount("bolts");
+	to->client.ammo_shells				= player.GetAmmoCount("buckshot");
+	to->client.ammo_cells				= player.GetAmmoCount("uranium");
+	to->client.vuser2[0]				= player.GetAmmoCount("Hornets");
+	to->client.ammo_rockets				= player.GetAmmoCount("rockets");
 
 	if ( player.m_pActiveItem->m_iId == WEAPON_RPG )
 	{

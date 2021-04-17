@@ -297,7 +297,6 @@ const char *CBasePlayer::TeamID() { return ""; }
 int CBasePlayer :: GiveAmmo( int iCount, const char *szName, int iMax ) { return 0; }
 void CBasePlayer::AddPoints( int score, bool bAllowNegativeScore ) { }
 void CBasePlayer::AddPointsToTeam( int score, bool bAllowNegativeScore ) { }
-void CBasePlayer::TabulateAmmo() {}
 
 void ClearMultiDamage() { }
 void ApplyMultiDamage(entvars_t *pevInflictor, entvars_t *pevAttacker ) { }

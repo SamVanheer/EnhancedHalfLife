@@ -267,6 +267,29 @@ public:
 
 	//TODO: this API is misused by treating the result as a bool when it can return a non-zero value for invalid input
 	int  GiveAmmo( int iAmount, const char *szName, int iMax );
+
+	int GetAmmoCount(const char* name) const
+	{
+		auto index = GetAmmoIndex(name);
+
+		if (index != -1)
+		{
+			return m_rgAmmo[index];
+		}
+
+		return -1;
+	}
+
+	void SetAmmoCount(const char* name, int amount)
+	{
+		auto index = GetAmmoIndex(name);
+
+		if (index != -1)
+		{
+			m_rgAmmo[index] = amount;
+		}
+	}
+
 	void SendAmmoUpdate();
 
 	void WaterMove();
@@ -296,8 +319,6 @@ public:
 	void SetCustomDecalFrames( int nFrames );
 	int GetCustomDecalFrames();
 
-	void TabulateAmmo();
-
 	float m_flStartCharge;
 	float m_flAmmoStartCharge;
 	float m_flPlayAftershock;
@@ -319,16 +340,6 @@ public:
 	int m_iAutoWepSwitch;
 
 	bool m_bRestored;
-
-	//We use this variables to store each ammo count.
-	int ammo_9mm;
-	int ammo_357;
-	int ammo_bolts;
-	int ammo_buckshot;
-	int ammo_rockets;
-	int ammo_uranium;
-	int ammo_hornets;
-	int ammo_argrens;
 };
 
 extern bool gInitHUD;
