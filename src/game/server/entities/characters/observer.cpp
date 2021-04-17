@@ -175,7 +175,7 @@ void CBasePlayer::Observer_CheckTarget()
 
 void CBasePlayer::Observer_CheckProperties()
 {
-	// try to find a traget if we have no current one
+	// try to find a target if we have no current one
 	if ( pev->iuser1 == OBS_IN_EYE && m_hObserverTarget != nullptr)
 	{
 		CBasePlayer* target = UTIL_PlayerByIndex( ENTINDEX(m_hObserverTarget->edict()));
@@ -269,7 +269,7 @@ void CBasePlayer::Observer_SetMode( int iMode )
 	
 	pev->iuser3 = 0;	// clear second target from death cam
 	
-	// print spepctaor mode on client screen
+	// print spectator mode on client screen
 
 	char modemsg[16];
 	snprintf(modemsg, sizeof(modemsg), "#Spec_Mode%i", pev->iuser1 );
