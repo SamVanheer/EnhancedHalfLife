@@ -19,6 +19,7 @@
 #include "util.h"
 #include "cbase.h"
 #include "player.h"
+#include "changelevel.hpp"
 #include "spectator.h"
 #include "client.h"
 #include "soundent.h"
@@ -649,7 +650,7 @@ void ParmsChangeLevel()
 	SAVERESTOREDATA* pSaveData = (SAVERESTOREDATA*)gpGlobals->pSaveData;
 
 	if (pSaveData)
-		pSaveData->connectionCount = BuildChangeList(pSaveData->levelList, MAX_LEVEL_CONNECTIONS);
+		pSaveData->connectionCount = CChangeLevel::BuildChangeList(pSaveData->levelList, MAX_LEVEL_CONNECTIONS);
 }
 
 

@@ -64,7 +64,7 @@ public:
 	/**
 	*	@brief This builds the list of all transitions on this level and which entities are in their PVS's and can / should be moved across.
 	*/
-	static int ChangeList(LEVELLIST* pLevelList, int maxList);
+	static int BuildChangeList(LEVELLIST* pLevelList, int maxList);
 
 	/**
 	*	@brief Add a transition to the list, but ignore duplicates (a designer may have placed multiple trigger_changelevels with the same landmark)

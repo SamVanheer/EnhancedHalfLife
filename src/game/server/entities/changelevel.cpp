@@ -235,12 +235,6 @@ bool CChangeLevel::AddTransitionToList(LEVELLIST* pLevelList, int listCount, con
 	return true;
 }
 
-//TODO: move changelevel to a header so this isn't needed
-int BuildChangeList(LEVELLIST* pLevelList, int maxList)
-{
-	return CChangeLevel::ChangeList(pLevelList, maxList);
-}
-
 bool CChangeLevel::InTransitionVolume(CBaseEntity* pEntity, char* pVolumeName)
 {
 	edict_t* pentVolume;
@@ -282,7 +276,7 @@ constexpr int MAX_ENTITY = 512;
 
 // This has grown into a complicated beast
 // Can we make this more elegant?
-int CChangeLevel::ChangeList(LEVELLIST* pLevelList, int maxList)
+int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 {
 	edict_t* pentChangelevel, * pentLandmark;
 	int			i, count;

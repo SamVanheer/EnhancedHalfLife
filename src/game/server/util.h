@@ -402,7 +402,6 @@ void UTIL_StripToken(const char* pKey, char* pDest);
 */
 void SetMovedir(entvars_t* pev);
 Vector VecBModelOrigin(entvars_t* pevBModel);
-int BuildChangeList(LEVELLIST* pLevelList, int maxList);
 
 //
 // How did I ever live without ASSERT?
