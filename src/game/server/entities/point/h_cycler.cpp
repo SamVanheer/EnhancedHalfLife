@@ -307,7 +307,7 @@ public:
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
 	bool Deploy() override;
-	void Holster( int skiplocal = 0 ) override;
+	void Holster() override;
 	string_t m_iszModel;
 	int m_iModel;
 };
@@ -341,7 +341,7 @@ bool CWeaponCycler::Deploy( )
 }
 
 
-void CWeaponCycler::Holster( int skiplocal /* = 0 */ )
+void CWeaponCycler::Holster()
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 }

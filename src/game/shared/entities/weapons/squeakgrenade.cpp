@@ -473,7 +473,7 @@ bool CSqueak::Deploy( )
 }
 
 
-void CSqueak::Holster( int skiplocal /* = 0 */ )
+void CSqueak::Holster()
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	

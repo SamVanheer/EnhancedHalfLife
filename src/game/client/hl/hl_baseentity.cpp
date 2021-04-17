@@ -323,7 +323,7 @@ void CBasePlayerItem::DestroyItem() { }
 bool CBasePlayerItem::AddToPlayer( CBasePlayer *pPlayer ) { return true; }
 void CBasePlayerItem::Drop() { }
 void CBasePlayerItem::Kill() { }
-void CBasePlayerItem::Holster( int skiplocal ) { }
+void CBasePlayerItem::Holster() { }
 void CBasePlayerItem::AttachToPlayer ( CBasePlayer *pPlayer ) { }
 bool CBasePlayerWeapon::AddDuplicate( CBasePlayerItem *pOriginal ) { return false; }
 bool CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer ) { return false; }

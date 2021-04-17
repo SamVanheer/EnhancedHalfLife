@@ -160,14 +160,14 @@ CBasePlayerWeapon :: DefaultDeploy
 
 =====================
 */
-bool CBasePlayerWeapon :: DefaultDeploy(const char *szViewModel, const char *szWeaponModel, int iAnim, const char *szAnimExt, int skiplocal, int	body )
+bool CBasePlayerWeapon :: DefaultDeploy(const char *szViewModel, const char *szWeaponModel, int iAnim, const char *szAnimExt, int body )
 {
 	if ( !CanDeploy() )
 		return false;
 
 	gEngfuncs.CL_LoadModel( szViewModel, reinterpret_cast<int*>(&m_pPlayer->pev->viewmodel) );
 	
-	SendWeaponAnim( iAnim, skiplocal, body );
+	SendWeaponAnim( iAnim, body );
 
 	g_irunninggausspred = false;
 	m_pPlayer->m_flNextAttack = 0.5;
@@ -199,7 +199,7 @@ CBasePlayerWeapon::Holster
 Put away weapon
 =====================
 */
-void CBasePlayerWeapon::Holster( int skiplocal /* = 0 */ )
+void CBasePlayerWeapon::Holster()
 { 
 	m_fInReload = false; // cancel any reload in progress.
 	g_irunninggausspred = false;
@@ -213,7 +213,7 @@ CBasePlayerWeapon::SendWeaponAnim
 Animate weapon model
 =====================
 */
-void CBasePlayerWeapon::SendWeaponAnim( int iAnim, int skiplocal, int body )
+void CBasePlayerWeapon::SendWeaponAnim( int iAnim, int body )
 {
 	m_pPlayer->pev->weaponanim = iAnim;
 	
