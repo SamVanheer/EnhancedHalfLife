@@ -167,7 +167,6 @@ public:
 	virtual CBaseMonster *MyMonsterPointer() { return nullptr;}
 	virtual CSquadMonster *MySquadMonsterPointer() { return nullptr;}
 	virtual	ToggleState GetToggleState() { return ToggleState::AtTop; }
-	virtual int 	GiveAmmo( int iAmount, const char *szName, int iMax ) { return -1; }
 	virtual float	GetDelay() { return 0; }
 	virtual bool	IsMoving() { return pev->velocity != vec3_origin; }
 	virtual void	OverrideReset() {}

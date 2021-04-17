@@ -909,7 +909,9 @@ void CBasePlayerAmmo :: DefaultTouch( CBaseEntity *pOther )
 		return;
 	}
 
-	if (AddAmmo( pOther ))
+	auto player = static_cast<CBasePlayer*>(pOther);
+
+	if (AddAmmo(player))
 	{
 		if ( g_pGameRules->AmmoShouldRespawn( this ) == GR_AMMO_RESPAWN_YES )
 		{

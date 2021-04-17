@@ -265,7 +265,8 @@ public:
 	void GiveNamedItem( const char *szName );
 	void EnableControl(bool fControl);
 
-	int  GiveAmmo( int iAmount, const char *szName, int iMax ) override;
+	//TODO: this API is misused by treating the result as a bool when it can return a non-zero value for invalid input
+	int  GiveAmmo( int iAmount, const char *szName, int iMax );
 	void SendAmmoUpdate();
 
 	void WaterMove();

@@ -602,7 +602,7 @@ class CGaussAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_gaussammo.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	bool AddAmmo( CBaseEntity *pOther ) override
+	bool AddAmmo(CBasePlayer* pOther) override
 	{ 
 		if (pOther->GiveAmmo( AMMO_URANIUMBOX_GIVE, "uranium", URANIUM_MAX_CARRY ) != -1)
 		{

@@ -569,7 +569,7 @@ class CRpgAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_rpgammo.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	bool AddAmmo( CBaseEntity *pOther ) override
+	bool AddAmmo(CBasePlayer* pOther) override
 	{ 
 		int iGive;
 

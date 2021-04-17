@@ -514,7 +514,7 @@ class CCrossbowAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_crossbow_clip.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	bool AddAmmo( CBaseEntity *pOther ) override
+	bool AddAmmo(CBasePlayer* pOther) override
 	{ 
 		if (pOther->GiveAmmo( AMMO_CROSSBOWCLIP_GIVE, "bolts", BOLT_MAX_CARRY ) != -1)
 		{

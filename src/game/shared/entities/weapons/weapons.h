@@ -378,7 +378,7 @@ class CBasePlayerAmmo : public CBaseEntity
 public:
 	void Spawn() override;
 	void EXPORT DefaultTouch( CBaseEntity *pOther ); // default weapon touch
-	virtual bool AddAmmo( CBaseEntity *pOther ) { return true; }
+	virtual bool AddAmmo(CBasePlayer* pOther) { return true; }
 
 	CBaseEntity* Respawn() override;
 	void EXPORT Materialize();
