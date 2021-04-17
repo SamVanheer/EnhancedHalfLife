@@ -735,7 +735,6 @@ public:
 	void Reload() override;
 	void WeaponIdle() override;
 	void ItemPostFrame() override;
-	int m_fInReload;
 	float m_flNextReload;
 	int m_iShell;
 

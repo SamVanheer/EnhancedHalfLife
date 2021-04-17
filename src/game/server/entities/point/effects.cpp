@@ -1619,7 +1619,6 @@ public:
 	void EXPORT TestThink();
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value ) override;
 
-	int		m_iLoop;
 	int		m_iBeam;
 	CBeam	*m_pBeam[24];
 	float	m_flBeamTime[24];

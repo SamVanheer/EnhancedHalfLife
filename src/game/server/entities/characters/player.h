@@ -114,7 +114,6 @@ public:
 	float				m_flFallVelocity;
 	
 	int					m_rgItems[MAX_ITEMS];
-	int					m_fNewAmmo;			// True when a new item has been added
 	bool				m_fKnownItem;		// True when a new item needs to be added
 
 	unsigned int		m_afPhysicsFlags;	// physics flags - set when 'normal' physics should be revisited or overriden
