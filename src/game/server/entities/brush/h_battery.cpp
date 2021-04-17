@@ -25,6 +25,14 @@
 #include "skill.h"
 #include "gamerules.h"
 
+enum class ChargerState
+{
+	Off,
+	Starting,
+	Charging
+};
+
+//TODO: merge with health charger
 class CRecharge : public CBaseToggle
 {
 public:
@@ -43,7 +51,7 @@ public:
 	float m_flNextCharge; 
 	int		m_iReactivate ; // DeathMatch Delay until reactvated
 	int		m_iJuice;
-	int		m_iOn;			// 0 = off, 1 = startup, 2 = going
+	ChargerState m_iOn;
 	float   m_flSoundTime;
 };
 
@@ -146,15 +154,15 @@ void CRecharge::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 		return;
 	
 	// Play the on sound or the looping charging sound
-	if (!m_iOn)
+	if (m_iOn == ChargerState::Off)
 	{
-		m_iOn++;
+		m_iOn = ChargerState::Starting;
 		EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/suitchargeok1.wav", 0.85, ATTN_NORM );
 		m_flSoundTime = 0.56 + gpGlobals->time;
 	}
-	if ((m_iOn == 1) && (m_flSoundTime <= gpGlobals->time))
+	if ((m_iOn == ChargerState::Starting) && (m_flSoundTime <= gpGlobals->time))
 	{
-		m_iOn++;
+		m_iOn = ChargerState::Charging;
 		EMIT_SOUND(ENT(pev), CHAN_STATIC, "items/suitcharge1.wav", 0.85, ATTN_NORM );
 	}
 
@@ -183,10 +191,10 @@ void CRecharge::Recharge()
 void CRecharge::Off()
 {
 	// Stop looping sound.
-	if (m_iOn > 1)
+	if (m_iOn == ChargerState::Charging)
 		STOP_SOUND( ENT(pev), CHAN_STATIC, "items/suitcharge1.wav" );
 
-	m_iOn = 0;
+	m_iOn = ChargerState::Off;
 
 	if ((!m_iJuice) &&  ( ( m_iReactivate = g_pGameRules->FlHEVChargerRechargeTime() ) > 0) )
 	{

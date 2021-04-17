@@ -44,6 +44,12 @@ enum TURRET_ANIM
 	TURRET_ANIM_DIE,
 };
 
+enum class TurretOrientation
+{
+	Floor = 0,
+	Ceiling
+};
+
 class CBaseTurret : public CBaseMonster
 {
 public:
@@ -106,7 +112,7 @@ public:
 
 	int m_iBaseTurnRate;	// angles per second
 	float m_fTurnRate;		// actual turn rate
-	int m_iOrientation;		// 0 = floor, 1 = Ceiling
+	TurretOrientation m_iOrientation;
 	bool m_iOn;
 	bool m_fBeserk;			// Sometimes this bitch will just freak out
 	bool m_iAutoStart;		// true if the turret auto deploys when a target
@@ -213,7 +219,8 @@ void CBaseTurret::KeyValue( KeyValueData *pkvd )
 	}
 	else if (FStrEq(pkvd->szKeyName, "orientation"))
 	{
-		m_iOrientation = atoi(pkvd->szValue);
+		//TODO: validate input
+		m_iOrientation = static_cast<TurretOrientation>(atoi(pkvd->szValue));
 		pkvd->fHandled = true;
 
 	}
@@ -358,7 +365,7 @@ void CBaseTurret::Initialize()
 	if (m_iBaseTurnRate == 0) m_iBaseTurnRate = TURRET_TURNRATE;
 	if (m_flMaxWait == 0) m_flMaxWait = TURRET_MAXWAIT;
 	m_flStartYaw = pev->angles.y;
-	if (m_iOrientation == 1)
+	if (m_iOrientation == TurretOrientation::Ceiling)
 	{
 		pev->idealpitch = 180;
 		pev->angles.x = 180;
@@ -558,7 +565,7 @@ void CBaseTurret::ActiveThink()
 		if (RANDOM_LONG(0,9) == 0)
 		{
 			m_vecGoalAngles.y = RANDOM_FLOAT(0,360);
-			m_vecGoalAngles.x = RANDOM_FLOAT(0,90) - 90 * m_iOrientation;
+			m_vecGoalAngles.x = RANDOM_FLOAT(0,90) - 90 * static_cast<int>(m_iOrientation);
 			TakeDamage(pev,pev,1, DMG_GENERIC); // don't beserk forever
 			return;
 		}
@@ -582,7 +589,7 @@ void CBaseTurret::ActiveThink()
 		// now all numbers should be in [1...360]
 		// pin to turret limitations to [-90...15]
 
-		if (m_iOrientation == 0)
+		if (m_iOrientation == TurretOrientation::Floor)
 		{
 			if (vec.x > 90)
 				vec.x = 90;
@@ -652,7 +659,7 @@ void CBaseTurret::Deploy()
 
 		m_vecCurAngles.x = 0;
 
-		if (m_iOrientation == 1)
+		if (m_iOrientation == TurretOrientation::Ceiling)
 		{
 			m_vecCurAngles.y = UTIL_AngleMod( pev->angles.y + 180 );
 		}
@@ -932,7 +939,7 @@ void CBaseTurret ::	TurretDeath()
 
 		EMIT_SOUND_DYN(ENT(pev), CHAN_STATIC, "turret/tu_active2.wav", 0, 0, SND_STOP, 100);
 
-		if (m_iOrientation == 0)
+		if (m_iOrientation == TurretOrientation::Floor)
 			m_vecGoalAngles.x = -15;
 		else
 			m_vecGoalAngles.x = -90;
@@ -951,17 +958,17 @@ void CBaseTurret ::	TurretDeath()
 			WRITE_BYTE( TE_SMOKE );
 			WRITE_COORD( RANDOM_FLOAT( pev->absmin.x, pev->absmax.x ) );
 			WRITE_COORD( RANDOM_FLOAT( pev->absmin.y, pev->absmax.y ) );
-			WRITE_COORD( pev->origin.z - m_iOrientation * 64 );
+			WRITE_COORD( pev->origin.z - static_cast<int>(m_iOrientation) * 64 );
 			WRITE_SHORT( g_sModelIndexSmoke );
 			WRITE_BYTE( 25 ); // scale * 10
-			WRITE_BYTE( 10 - m_iOrientation * 5); // framerate
+			WRITE_BYTE( 10 - static_cast<int>(m_iOrientation) * 5); // framerate
 		MESSAGE_END();
 	}
 	
 	if (pev->dmgtime + RANDOM_FLOAT( 0, 5 ) > gpGlobals->time)
 	{
 		Vector vecSrc = Vector( RANDOM_FLOAT( pev->absmin.x, pev->absmax.x ), RANDOM_FLOAT( pev->absmin.y, pev->absmax.y ), 0 );
-		if (m_iOrientation == 0)
+		if (m_iOrientation == TurretOrientation::Floor)
 			vecSrc = vecSrc + Vector( 0, 0, RANDOM_FLOAT( pev->origin.z, pev->absmax.z ) );
 		else
 			vecSrc = vecSrc + Vector( 0, 0, RANDOM_FLOAT( pev->absmin.z, pev->origin.z ) );
@@ -1060,7 +1067,7 @@ bool CBaseTurret::MoveTurret()
 				m_vecCurAngles.x = m_vecGoalAngles.x;
 		}
 
-		if (m_iOrientation == 0)
+		if (m_iOrientation == TurretOrientation::Floor)
 			SetBoneController(1, -m_vecCurAngles.x);
 		else
 			SetBoneController(1, m_vecCurAngles.x);
@@ -1104,7 +1111,7 @@ bool CBaseTurret::MoveTurret()
 			m_vecCurAngles.y = m_vecGoalAngles.y;
 
 		//ALERT(at_console, "%.2f -> %.2f\n", m_vecCurAngles.y, y);
-		if (m_iOrientation == 0)
+		if (m_iOrientation == TurretOrientation::Floor)
 			SetBoneController(0, m_vecCurAngles.y - pev->angles.y );
 		else 
 			SetBoneController(0, pev->angles.y - 180 - m_vecCurAngles.y );

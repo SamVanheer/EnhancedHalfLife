@@ -95,7 +95,12 @@ bool CHealthKit::MyTouch( CBasePlayer *pPlayer )
 	return false;
 }
 
-
+enum class ChargerState
+{
+	Off,
+	Starting,
+	Charging
+};
 
 //-------------------------------------------------------------
 // Wall mounted health kit
@@ -118,7 +123,7 @@ public:
 	float m_flNextCharge; 
 	int		m_iReactivate ; // DeathMatch Delay until reactvated
 	int		m_iJuice;
-	int		m_iOn;			// 0 = off, 1 = startup, 2 = going
+	ChargerState m_iOn;
 	float   m_flSoundTime;
 };
 
@@ -214,15 +219,15 @@ void CWallHealth::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE u
 		return;
 
 	// Play the on sound or the looping charging sound
-	if (!m_iOn)
+	if (m_iOn == ChargerState::Off)
 	{
-		m_iOn++;
+		m_iOn = ChargerState::Starting;
 		EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/medshot4.wav", 1.0, ATTN_NORM );
 		m_flSoundTime = 0.56 + gpGlobals->time;
 	}
-	if ((m_iOn == 1) && (m_flSoundTime <= gpGlobals->time))
+	if ((m_iOn == ChargerState::Starting) && (m_flSoundTime <= gpGlobals->time))
 	{
-		m_iOn++;
+		m_iOn = ChargerState::Charging;
 		EMIT_SOUND(ENT(pev), CHAN_STATIC, "items/medcharge4.wav", 1.0, ATTN_NORM );
 	}
 
@@ -248,10 +253,10 @@ void CWallHealth::Recharge()
 void CWallHealth::Off()
 {
 	// Stop looping sound.
-	if (m_iOn > 1)
+	if (m_iOn == ChargerState::Charging)
 		STOP_SOUND( ENT(pev), CHAN_STATIC, "items/medcharge4.wav" );
 
-	m_iOn = 0;
+	m_iOn = ChargerState::Off;
 
 	if ((!m_iJuice) &&  ( ( m_iReactivate = g_pGameRules->FlHealthChargerRechargeTime() ) > 0) )
 	{

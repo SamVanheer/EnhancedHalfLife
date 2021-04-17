@@ -39,7 +39,14 @@
 #include	"effects.h"
 #include	"customentity.h"
 
-int g_fGruntQuestion;				// true if an idle grunt asked a question. Cleared when someone answers.
+enum class GruntQuestion
+{
+	None,
+	CheckIn,
+	Question,
+};
+
+GruntQuestion g_fGruntQuestion = GruntQuestion::None; // true if an idle grunt asked a question. Cleared when someone answers.
 
 //=========================================================
 // monster-specific DEFINE's
@@ -680,20 +687,20 @@ void CHGrunt :: SetYawSpeed ()
 
 void CHGrunt :: IdleSound()
 {
-	if (FOkToSpeak() && (g_fGruntQuestion || RANDOM_LONG(0,1)))
+	if (FOkToSpeak() && (g_fGruntQuestion != GruntQuestion::None || RANDOM_LONG(0,1)))
 	{
-		if (!g_fGruntQuestion)
+		if (g_fGruntQuestion == GruntQuestion::None)
 		{
 			// ask question or make statement
 			switch (RANDOM_LONG(0,2))
 			{
 			case 0: // check in
 				SENTENCEG_PlayRndSz(ENT(pev), "HG_CHECK", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, m_voicePitch);
-				g_fGruntQuestion = 1;
+				g_fGruntQuestion = GruntQuestion::CheckIn;
 				break;
 			case 1: // question
 				SENTENCEG_PlayRndSz(ENT(pev), "HG_QUEST", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, m_voicePitch);
-				g_fGruntQuestion = 2;
+				g_fGruntQuestion = GruntQuestion::Question;
 				break;
 			case 2: // statement
 				SENTENCEG_PlayRndSz(ENT(pev), "HG_IDLE", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, m_voicePitch);
@@ -704,14 +711,14 @@ void CHGrunt :: IdleSound()
 		{
 			switch (g_fGruntQuestion)
 			{
-			case 1: // check in
+			case GruntQuestion::CheckIn: // check in
 				SENTENCEG_PlayRndSz(ENT(pev), "HG_CLEAR", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, m_voicePitch);
 				break;
-			case 2: // question 
+			case GruntQuestion::Question: // question 
 				SENTENCEG_PlayRndSz(ENT(pev), "HG_ANSWER", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, m_voicePitch);
 				break;
 			}
-			g_fGruntQuestion = 0;
+			g_fGruntQuestion = GruntQuestion::None;
 		}
 		JustSpoke();
 	}

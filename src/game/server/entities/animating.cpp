@@ -13,6 +13,8 @@
 *
 ****/
 
+#include <limits>
+
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -267,8 +269,8 @@ void CBaseAnimating :: SetSequenceBox()
 		bounds[0] = mins;
 		bounds[1] = maxs;
 		
-		Vector rmin( 9999, 9999, 9999 );
-		Vector rmax( -9999, -9999, -9999 );
+		Vector rmin(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+		Vector rmax(std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest());
 		Vector base, transformed;
 
 		for (int i = 0; i <= 1; i++ )

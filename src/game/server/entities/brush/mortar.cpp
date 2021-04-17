@@ -20,6 +20,13 @@
 #include "decals.hpp"
 #include "soundent.h"
 
+enum class MortarControlType
+{
+	Random,
+	Activator,
+	Table
+};
+
 /**
 *	@brief the "LaBuznik" mortar device 
 */
@@ -45,7 +52,7 @@ public:
 	float m_flSpread;
 	float m_flDelay;
 	int m_iCount;
-	int m_fControl;
+	MortarControlType m_fControl;
 };
 
 LINK_ENTITY_TO_CLASS( func_mortar_field, CFuncMortarField );
@@ -82,7 +89,8 @@ void CFuncMortarField :: KeyValue( KeyValueData *pkvd )
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_fControl"))
 	{
-		m_fControl = atoi(pkvd->szValue);
+		//TODO: validate input
+		m_fControl = static_cast<MortarControlType>(atoi(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iCount"))
@@ -124,16 +132,16 @@ void CFuncMortarField :: FieldUse( CBaseEntity *pActivator, CBaseEntity *pCaller
 
 	switch( m_fControl )
 	{
-	case 0:	// random
+	case MortarControlType::Random:	// random
 		break;
-	case 1: // Trigger Activator
+	case MortarControlType::Activator: // Trigger Activator
 		if (pActivator != nullptr)
 		{
 			vecStart.x = pActivator->pev->origin.x;
 			vecStart.y = pActivator->pev->origin.y;
 		}
 		break;
-	case 2: // table
+	case MortarControlType::Table: // table
 		{
 			CBaseEntity *pController;
 

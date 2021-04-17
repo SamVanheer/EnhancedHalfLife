@@ -58,6 +58,23 @@ constexpr int FCAP_FORCE_TRANSITION = 0x00000080;	//!< ALWAYS goes across transi
 
 enum USE_TYPE { USE_OFF = 0, USE_ON = 1, USE_SET = 2, USE_TOGGLE = 3 };
 
+enum class TriggerState
+{
+	Off,
+	On,
+	Toggle
+};
+
+constexpr USE_TYPE UTIL_TriggerStateToTriggerType(TriggerState state)
+{
+	switch (state)
+	{
+	case TriggerState::Off:		return USE_OFF;
+	case TriggerState::Toggle:	return USE_TOGGLE;
+	default:					return USE_ON;
+	}
+}
+
 void FireTargets( const char *targetName, CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
 typedef void (CBaseEntity::*BASEPTR)();

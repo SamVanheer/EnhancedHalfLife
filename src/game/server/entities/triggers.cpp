@@ -137,19 +137,7 @@ void CAutoTrigger::KeyValue( KeyValueData *pkvd )
 	}
 	else if (FStrEq(pkvd->szKeyName, "triggerstate"))
 	{
-		int type = atoi( pkvd->szValue );
-		switch( type )
-		{
-		case 0:
-			triggerType = USE_OFF;
-			break;
-		case 2:
-			triggerType = USE_TOGGLE;
-			break;
-		default:
-			triggerType = USE_ON;
-			break;
-		}
+		triggerType = UTIL_TriggerStateToTriggerType(static_cast<TriggerState>(atoi(pkvd->szValue)));
 		pkvd->fHandled = true;
 	}
 	else
@@ -212,19 +200,7 @@ void CTriggerRelay::KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "triggerstate"))
 	{
-		int type = atoi( pkvd->szValue );
-		switch( type )
-		{
-		case 0:
-			triggerType = USE_OFF;
-			break;
-		case 2:
-			triggerType = USE_TOGGLE;
-			break;
-		default:
-			triggerType = USE_ON;
-			break;
-		}
+		triggerType = UTIL_TriggerStateToTriggerType(static_cast<TriggerState>(atoi(pkvd->szValue)));
 		pkvd->fHandled = true;
 	}
 	else
@@ -1144,7 +1120,7 @@ void CBaseTrigger :: ActivateMultiTrigger( CBaseEntity *pActivator )
 
 	if (!UTIL_IsMasterTriggered(m_sMaster,pActivator))
 		return;
-
+	//TODO: is trigger_secret even a thing anymore?
 	if (FClassnameIs(pev, "trigger_secret"))
 	{
 		if ( pev->enemy == nullptr || !FClassnameIs(pev->enemy, "player"))

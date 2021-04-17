@@ -863,6 +863,13 @@ enum gauss_e
 class CGauss : public CBasePlayerWeapon
 {
 public:
+	enum class AttackState
+	{
+		NotAttacking = 0,
+		SpinUp,
+		Charging,
+		Aftershock,
+	};
 
 #ifndef CLIENT_DLL
 	bool Save(CSave& save) override;
@@ -894,7 +901,7 @@ public:
 	// was this weapon just fired primary or secondary?
 	// we need to know so we can pick the right set of effects. 
 	bool m_fPrimaryFire;
-	int m_fInAttack;
+	AttackState m_fInAttack;
 
 	bool UseDecrement() override
 	{ 
@@ -1119,6 +1126,12 @@ enum satchel_radio_e
 class CSatchel : public CBasePlayerWeapon
 {
 public:
+	enum class ChargeState
+	{
+		NoSatchelsDeployed = 0,
+		SatchelsDeployed,
+		Reloading,
+	};
 
 #ifndef CLIENT_DLL
 	bool Save(CSave& save) override;
@@ -1154,7 +1167,7 @@ public:
 	void GetWeaponData(weapon_data_t& data) override;
 	void SetWeaponData(const weapon_data_t& data) override;
 
-	int m_chargeReady;
+	ChargeState m_chargeReady;
 };
 
 enum tripmine_e

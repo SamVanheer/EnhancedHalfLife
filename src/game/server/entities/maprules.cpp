@@ -369,19 +369,7 @@ void CGameTeamMaster::KeyValue( KeyValueData *pkvd )
 	}
 	else if (FStrEq(pkvd->szKeyName, "triggerstate"))
 	{
-		int type = atoi( pkvd->szValue );
-		switch( type )
-		{
-		case 0:
-			triggerType = USE_OFF;
-			break;
-		case 2:
-			triggerType = USE_TOGGLE;
-			break;
-		default:
-			triggerType = USE_ON;
-			break;
-		}
+		triggerType = UTIL_TriggerStateToTriggerType(static_cast<TriggerState>(atoi(pkvd->szValue)));
 		pkvd->fHandled = true;
 	}
 	else
@@ -757,7 +745,7 @@ void CGameCounterSet::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 
 constexpr int SF_PLAYEREQUIP_USEONLY = 0x0001;
 constexpr int MAX_EQUIP = 32;
-
+//TODO: make save game compatible
 class CGamePlayerEquip : public CRulePointEntity
 {
 public:

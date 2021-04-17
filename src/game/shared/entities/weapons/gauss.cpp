@@ -122,7 +122,7 @@ void CGauss::Holster()
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	
 	SendWeaponAnim( GAUSS_HOLSTER );
-	m_fInAttack = 0;
+	m_fInAttack = AttackState::NotAttacking;
 }
 
 
@@ -149,7 +149,7 @@ void CGauss::PrimaryAttack()
 	m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] -= 2;
 
 	StartFire();
-	m_fInAttack = 0;
+	m_fInAttack = AttackState::NotAttacking;
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.2;
 }
@@ -159,11 +159,11 @@ void CGauss::SecondaryAttack()
 	// don't fire underwater
 	if ( m_pPlayer->pev->waterlevel == WaterLevel::Head)
 	{
-		if ( m_fInAttack != 0 )
+		if ( m_fInAttack != AttackState::NotAttacking)
 		{
 			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/electro4.wav", 1.0, ATTN_NORM, 0, 80 + RANDOM_LONG(0,0x3f));
 			SendWeaponAnim( GAUSS_IDLE );
-			m_fInAttack = 0;
+			m_fInAttack = AttackState::NotAttacking;
 		}
 		else
 		{
@@ -174,7 +174,7 @@ void CGauss::SecondaryAttack()
 		return;
 	}
 
-	if ( m_fInAttack == 0 )
+	if ( m_fInAttack == AttackState::NotAttacking)
 	{
 		if ( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 )
 		{
@@ -192,7 +192,7 @@ void CGauss::SecondaryAttack()
 		m_pPlayer->m_iWeaponVolume = GAUSS_PRIMARY_CHARGE_VOLUME;
 		
 		SendWeaponAnim( GAUSS_SPINUP );
-		m_fInAttack = 1;
+		m_fInAttack = AttackState::SpinUp;
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.5;
 		m_pPlayer->m_flStartCharge = gpGlobals->time;
 		m_pPlayer->m_flAmmoStartCharge = UTIL_WeaponTimeBase() + GetFullChargeTime();
@@ -201,12 +201,12 @@ void CGauss::SecondaryAttack()
 
 		m_iSoundState = SND_CHANGE_PITCH;
 	}
-	else if (m_fInAttack == 1)
+	else if (m_fInAttack == AttackState::SpinUp)
 	{
 		if (m_flTimeWeaponIdle < UTIL_WeaponTimeBase())
 		{
 			SendWeaponAnim( GAUSS_SPIN );
-			m_fInAttack = 2;
+			m_fInAttack = AttackState::Charging;
 		}
 	}
 	else
@@ -234,7 +234,7 @@ void CGauss::SecondaryAttack()
 		{
 			// out of ammo! force the gun to fire
 			StartFire();
-			m_fInAttack = 0;
+			m_fInAttack = AttackState::NotAttacking;
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
 			m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1;
 			return;
@@ -268,7 +268,7 @@ void CGauss::SecondaryAttack()
 			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/electro4.wav", 1.0, ATTN_NORM, 0, 80 + RANDOM_LONG(0,0x3f));
 			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_ITEM,   "weapons/electro6.wav", 1.0, ATTN_NORM, 0, 75 + RANDOM_LONG(0,0x3f));
 			
-			m_fInAttack = 0;
+			m_fInAttack = AttackState::NotAttacking;
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
 			m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
 				
@@ -317,7 +317,8 @@ void CGauss::StartFire()
 #endif
 	}
 
-	if (m_fInAttack != 3)
+	//TODO: Aftershock state is never set so what is this exactly?
+	if (m_fInAttack != AttackState::Aftershock)
 	{
 		//ALERT ( at_console, "Time:%f Damage:%f\n", gpGlobals->time - m_pPlayer->m_flStartCharge, flDamage );
 
@@ -543,10 +544,10 @@ void CGauss::WeaponIdle()
 	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
-	if (m_fInAttack != 0)
+	if (m_fInAttack != AttackState::NotAttacking)
 	{
 		StartFire();
-		m_fInAttack = 0;
+		m_fInAttack = AttackState::NotAttacking;
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 2.0;
 	}
 	else
@@ -577,12 +578,12 @@ void CGauss::WeaponIdle()
 
 void CGauss::GetWeaponData(weapon_data_t& data)
 {
-	data.iuser2 = m_fInAttack;
+	data.iuser2 = static_cast<int>(m_fInAttack);
 }
 
 void CGauss::SetWeaponData(const weapon_data_t& data)
 {
-	m_fInAttack = data.iuser2;
+	m_fInAttack = static_cast<AttackState>(data.iuser2);
 }
 
 
