@@ -15,8 +15,26 @@
 
 #pragma once
 
-enum Explosions { expRandom, expDirected };
-enum Materials { matGlass = 0, matWood, matMetal, matFlesh, matCinderBlock, matCeilingTile, matComputer, matUnbreakableGlass, matRocks, matNone, matLastMaterial };
+enum class Explosions
+{
+	Random,
+	Directed
+};
+
+enum class Materials
+{
+	Glass = 0,
+	Wood,
+	Metal,
+	Flesh,
+	CinderBlock,
+	CeilingTile,
+	Computer,
+	UnbreakableGlass,
+	Rocks,
+	None,
+	LastMaterial
+};
 
 constexpr int NUM_SHARDS = 6; // this many shards spawned when breakable objects break;
 

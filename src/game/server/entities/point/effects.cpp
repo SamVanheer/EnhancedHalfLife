@@ -1362,7 +1362,7 @@ public:
 
 	int	m_iGibs;
 	int m_iGibCapacity;
-	int m_iGibMaterial;
+	Materials m_iGibMaterial;
 	int m_iGibModelIndex;
 	float m_flGibVelocity;
 	float m_flVariance;
@@ -1548,24 +1548,24 @@ void CEnvShooter::KeyValue(KeyValueData* pkvd)
 		switch (iNoise)
 		{
 		case 0:
-			m_iGibMaterial = matGlass;
+			m_iGibMaterial = Materials::Glass;
 			break;
 		case 1:
-			m_iGibMaterial = matWood;
+			m_iGibMaterial = Materials::Wood;
 			break;
 		case 2:
-			m_iGibMaterial = matMetal;
+			m_iGibMaterial = Materials::Metal;
 			break;
 		case 3:
-			m_iGibMaterial = matFlesh;
+			m_iGibMaterial = Materials::Flesh;
 			break;
 		case 4:
-			m_iGibMaterial = matRocks;
+			m_iGibMaterial = Materials::Rocks;
 			break;
 
 		default:
 		case -1:
-			m_iGibMaterial = matNone;
+			m_iGibMaterial = Materials::None;
 			break;
 		}
 	}

@@ -21,6 +21,7 @@
 *	monster-related utility code
 */
 
+#include "brush/func_break.h"
 #include "skill.h"
 
 // CHECKLOCALMOVE result types 
@@ -153,7 +154,7 @@ public:
 
 	int		m_bloodColor;
 	int		m_cBloodDecals;
-	int		m_material;
+	Materials m_material;
 	float	m_lifeTime;
 };
 

@@ -731,14 +731,14 @@ void CGib::BounceGibTouch(CBaseEntity* pOther)
 			m_cBloodDecals--;
 		}
 
-		if (m_material != matNone && RANDOM_LONG(0, 2) == 0)
+		if (m_material != Materials::None && RANDOM_LONG(0, 2) == 0)
 		{
 			float volume;
 			float zvel = fabs(pev->velocity.z);
 
 			volume = 0.8 * std::min(1.0, ((float)zvel) / 450.0);
 
-			CBreakable::MaterialSoundRandom(this, (Materials)m_material, volume);
+			CBreakable::MaterialSoundRandom(this, m_material, volume);
 		}
 	}
 }
@@ -795,7 +795,7 @@ void CGib::Spawn(const char* szGibModel)
 	SetThink(&CGib::WaitTillLand);
 	SetTouch(&CGib::BounceGibTouch);
 
-	m_material = matNone;
+	m_material = Materials::None;
 	m_cBloodDecals = 5;// how many blood decals this gib can place (1 per bounce until none remain). 
 }
 
