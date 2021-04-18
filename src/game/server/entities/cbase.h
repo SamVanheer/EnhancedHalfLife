@@ -650,13 +650,10 @@ class CBaseButton : public CBaseToggle
 public:
 	void Spawn() override;
 	void Precache() override;
-	void RotSpawn();
 	void KeyValue(KeyValueData* pkvd) override;
 
 	void ButtonActivate();
-	void SparkSoundCache();
 
-	void EXPORT ButtonShot();
 	void EXPORT ButtonTouch(CBaseEntity* pOther);
 	void EXPORT ButtonSpark();
 	void EXPORT TriggerAndWait();
