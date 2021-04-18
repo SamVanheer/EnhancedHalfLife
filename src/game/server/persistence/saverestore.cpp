@@ -190,12 +190,6 @@ int	CSaveRestoreBuffer::EntityIndex(entvars_t* pevLookup)
 	return EntityIndex(ENT(pevLookup));
 }
 
-int	CSaveRestoreBuffer::EntityIndex(EOFFSET eoLookup)
-{
-	return EntityIndex(ENT(eoLookup));
-}
-
-
 int	CSaveRestoreBuffer::EntityIndex(edict_t* pentLookup)
 {
 	if (!m_pdata || pentLookup == nullptr)
@@ -496,7 +490,7 @@ void EntvarsKeyvalue(entvars_t* pev, KeyValueData* pkvd)
 			case FIELD_EVARS:
 			case FIELD_CLASSPTR:
 			case FIELD_EDICT:
-			case FIELD_ENTITY:
+			case FIELD_OBSOLETE1:
 			case FIELD_POINTER:
 				ALERT(at_error, "Bad field in entity!!\n");
 				break;
@@ -562,7 +556,6 @@ bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFi
 		case FIELD_CLASSPTR:
 		case FIELD_EVARS:
 		case FIELD_EDICT:
-		case FIELD_ENTITY:
 		case FIELD_EHANDLE:
 			if (pTest->fieldSize > MAX_ENTITYARRAY)
 				ALERT(at_error, "Can't save more than %d entities in an array!!!\n", MAX_ENTITYARRAY);
@@ -578,9 +571,6 @@ bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFi
 					break;
 				case FIELD_EDICT:
 					entityArray[j] = EntityIndex(((edict_t**)pOutputData)[j]);
-					break;
-				case FIELD_ENTITY:
-					entityArray[j] = EntityIndex(((EOFFSET*)pOutputData)[j]);
 					break;
 				case FIELD_EHANDLE:
 					entityArray[j] = EntityIndex((CBaseEntity*)(((EHANDLE*)pOutputData)[j]));
@@ -788,14 +778,6 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 							*((EHANDLE*)pOutputData) = CBaseEntity::Instance(pent);
 						else
 							*((EHANDLE*)pOutputData) = nullptr;
-						break;
-					case FIELD_ENTITY:
-						entityIndex = *(int*)pInputData;
-						pent = EntityFromIndex(entityIndex);
-						if (pent)
-							*((EOFFSET*)pOutputData) = OFFSET(pent);
-						else
-							*((EOFFSET*)pOutputData) = 0;
 						break;
 					case FIELD_VECTOR:
 						((float*)pOutputData)[0] = ((float*)pInputData)[0];

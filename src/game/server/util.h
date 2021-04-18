@@ -96,12 +96,6 @@ constexpr bool FBitSet(const T& flBitVector, int bit)
 #define DLL_GLOBAL
 
 /**
-*	@brief More explicit than "int"
-*	TODO: remove
-*/
-typedef int EOFFSET;
-
-/**
 *	@brief This is the glue that hooks .MAP entity class names to our CPP classes
 *	The _declspec forces them to be exported by name so we can do a lookup with GetProcAddress()
 *	The function is used to intialize / allocate the object for the entity
@@ -112,7 +106,7 @@ typedef int EOFFSET;
 
 
 //
-// Conversion among the three types of "entity", including identity-conversions.
+// Conversion among the two types of "entity", including identity-conversions.
 //
 #ifdef DEBUG
 edict_t* DBG_EntOfVars(const entvars_t* pev);
@@ -121,24 +115,6 @@ inline edict_t* ENT(const entvars_t* pev) { return DBG_EntOfVars(pev); }
 inline edict_t* ENT(const entvars_t* pev) { return pev->pContainingEntity; }
 #endif
 inline edict_t* ENT(edict_t* pent) { return pent; }
-inline edict_t* ENT(EOFFSET eoffset) { return (*g_engfuncs.pfnPEntityOfEntOffset)(eoffset); }
-inline EOFFSET OFFSET(EOFFSET eoffset) { return eoffset; }
-inline EOFFSET OFFSET(const edict_t* pent)
-{
-#if _DEBUG
-	if (!pent)
-		ALERT(at_error, "Bad ent in OFFSET()\n");
-#endif
-	return (*g_engfuncs.pfnEntOffsetOfPEntity)(pent);
-}
-inline EOFFSET OFFSET(entvars_t* pev)
-{
-#if _DEBUG
-	if (!pev)
-		ALERT(at_error, "Bad pev in OFFSET()\n");
-#endif
-	return OFFSET(ENT(pev));
-}
 inline entvars_t* VARS(entvars_t* pev) { return pev; }
 
 inline entvars_t* VARS(edict_t* pent)
@@ -149,18 +125,18 @@ inline entvars_t* VARS(edict_t* pent)
 	return &pent->v;
 }
 
-inline entvars_t* VARS(EOFFSET eoffset) { return VARS(ENT(eoffset)); }
-inline int	  ENTINDEX(edict_t* pEdict) { return (*g_engfuncs.pfnIndexOfEdict)(pEdict); }
+inline int ENTINDEX(const edict_t* pEdict) { return (*g_engfuncs.pfnIndexOfEdict)(pEdict); }
+inline int ENTINDEX(entvars_t* pev) { return ENTINDEX(ENT(pev)); }
 inline edict_t* INDEXENT(int iEdictNum) { return (*g_engfuncs.pfnPEntityOfEntIndex)(iEdictNum); }
 inline void MESSAGE_BEGIN(int msg_dest, int msg_type, const float* pOrigin, entvars_t* ent) {
 	(*g_engfuncs.pfnMessageBegin)(msg_dest, msg_type, pOrigin, ENT(ent));
 }
 
-// Testing the three types of "entity" for nullity
-constexpr EOFFSET eoNullEntity = 0;
-inline bool FNullEnt(EOFFSET eoffset) { return eoffset == 0; }
-inline bool FNullEnt(const edict_t* pent) { return pent == nullptr || FNullEnt(OFFSET(pent)); }
-inline bool FNullEnt(entvars_t* pev) { return pev == nullptr || FNullEnt(OFFSET(pev)); }
+inline entvars_t* INDEXVARS(int iEdictNum) { return &INDEXENT(iEdictNum)->v; }
+
+// Testing the two types of "entity" for nullity
+inline bool FNullEnt(const edict_t* pent) { return pent == nullptr || ENTINDEX(pent) == 0; }
+inline bool FNullEnt(entvars_t* pev) { return pev == nullptr || ENTINDEX(pev) == 0; }
 
 // Testing strings for nullity
 constexpr string_t iStringNull = 0;

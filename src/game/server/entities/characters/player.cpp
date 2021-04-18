@@ -1069,7 +1069,7 @@ void CBasePlayer::WaterMove()
 				pev->dmg += 1;
 				if (pev->dmg > 5)
 					pev->dmg = 5;
-				TakeDamage(VARS(eoNullEntity), VARS(eoNullEntity), pev->dmg, DMG_DROWN);
+				TakeDamage(INDEXVARS(0), INDEXVARS(0), pev->dmg, DMG_DROWN);
 				pev->pain_finished = gpGlobals->time + 1;
 
 				// track drowning damage, give it back when
@@ -1110,12 +1110,12 @@ void CBasePlayer::WaterMove()
 	if (pev->watertype == CONTENTS_LAVA)		// do damage
 	{
 		if (pev->dmgtime < gpGlobals->time)
-			TakeDamage(VARS(eoNullEntity), VARS(eoNullEntity), 10 * static_cast<int>(pev->waterlevel), DMG_BURN);
+			TakeDamage(INDEXVARS(0), INDEXVARS(0), 10 * static_cast<int>(pev->waterlevel), DMG_BURN);
 	}
 	else if (pev->watertype == CONTENTS_SLIME)		// do damage
 	{
 		pev->dmgtime = gpGlobals->time + 1;
-		TakeDamage(VARS(eoNullEntity), VARS(eoNullEntity), 4 * static_cast<int>(pev->waterlevel), DMG_ACID);
+		TakeDamage(INDEXVARS(0), INDEXVARS(0), 4 * static_cast<int>(pev->waterlevel), DMG_ACID);
 	}
 
 	if (!FBitSet(pev->flags, FL_INWATER))
@@ -2480,7 +2480,7 @@ void CBasePlayer::PostThink()
 
 			if (flFallDamage > 0)
 			{
-				TakeDamage(VARS(eoNullEntity), VARS(eoNullEntity), flFallDamage, DMG_FALL);
+				TakeDamage(INDEXVARS(0), INDEXVARS(0), flFallDamage, DMG_FALL);
 				pev->punchangle.x = 0;
 			}
 		}

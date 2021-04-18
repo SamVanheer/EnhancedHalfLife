@@ -1522,7 +1522,7 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 		if (pEntity)
 			pTextureName = TRACE_TEXTURE(ENT(pEntity->pev), vecSrc, vecEnd);
 		else
-			pTextureName = TRACE_TEXTURE(ENT(0), vecSrc, vecEnd);
+			pTextureName = TRACE_TEXTURE(INDEXENT(0), vecSrc, vecEnd);
 
 		if (pTextureName)
 		{
@@ -1630,8 +1630,8 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 			float flVolume = RANDOM_FLOAT(0.7, 1.0);//random volume range
 			switch (RANDOM_LONG(0, 1))
 			{
-			case 0: UTIL_EmitAmbientSound(ENT(0), ptr->vecEndPos, "buttons/spark5.wav", flVolume, ATTN_NORM, 0, 100); break;
-			case 1: UTIL_EmitAmbientSound(ENT(0), ptr->vecEndPos, "buttons/spark6.wav", flVolume, ATTN_NORM, 0, 100); break;
+			case 0: UTIL_EmitAmbientSound(INDEXENT(0), ptr->vecEndPos, "buttons/spark5.wav", flVolume, ATTN_NORM, 0, 100); break;
+			case 1: UTIL_EmitAmbientSound(INDEXENT(0), ptr->vecEndPos, "buttons/spark6.wav", flVolume, ATTN_NORM, 0, 100); break;
 				// case 0: EmitSound(CHAN_VOICE, "buttons/spark5.wav", flVolume); break;
 				// case 1: EmitSound(CHAN_VOICE, "buttons/spark6.wav", flVolume); break;
 			}
@@ -1639,7 +1639,7 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 	}
 
 	// play material hit sound
-	UTIL_EmitAmbientSound(ENT(0), ptr->vecEndPos, rgsz[RANDOM_LONG(0, cnt - 1)], fvol, fattn, 0, 96 + RANDOM_LONG(0, 0xf));
+	UTIL_EmitAmbientSound(INDEXENT(0), ptr->vecEndPos, rgsz[RANDOM_LONG(0, cnt - 1)], fvol, fattn, 0, 96 + RANDOM_LONG(0, 0xf));
 	//m_pPlayer->EmitSound(CHAN_WEAPON, rgsz[RANDOM_LONG(0,cnt-1)], fvol, ATTN_NORM, 96 + RANDOM_LONG(0,0xf));
 
 	return fvolbar;

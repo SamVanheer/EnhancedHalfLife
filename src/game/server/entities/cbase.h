@@ -272,7 +272,7 @@ public:
 	static CBaseEntity* Instance(edict_t* pent)
 	{
 		if (!pent)
-			pent = ENT(0);
+			pent = INDEXENT(0);
 		CBaseEntity* pEnt = (CBaseEntity*)GET_PRIVATE(pent);
 		return pEnt;
 	}
@@ -280,12 +280,10 @@ public:
 	static CBaseEntity* Instance(entvars_t* pev)
 	{
 		if (!pev)
-			return Instance(ENT(0));
+			return Instance(INDEXENT(0));
 
 		return Instance(ENT(pev));
 	}
-
-	static CBaseEntity* Instance(int eoffset) { return Instance(ENT(eoffset)); }
 
 	CBaseMonster* GetMonsterPointer(entvars_t* pevMonster)
 	{
@@ -347,7 +345,6 @@ public:
 
 	virtual bool FBecomeProne() { return false; }
 	edict_t* edict() { return ENT(pev); }
-	EOFFSET eoffset() { return OFFSET(pev); }
 	int	  entindex() { return ENTINDEX(edict()); }
 
 	virtual Vector Center() { return (pev->absmax + pev->absmin) * 0.5; }	//!< center point of entity

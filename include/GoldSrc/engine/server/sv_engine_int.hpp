@@ -342,7 +342,7 @@ enum FIELDTYPE
 {
 	FIELD_FLOAT = 0,		// Any floating point value
 	FIELD_STRING,			// A string ID (return from ALLOC_STRING)
-	FIELD_ENTITY,			// An entity offset (EOFFSET)
+	FIELD_OBSOLETE1,		// An entity offset (EOFFSET). DO NOT USE. OBSOLETE
 	FIELD_CLASSPTR,			// CBaseEntity *
 	FIELD_EHANDLE,			// Entity handle
 	FIELD_EVARS,			// EVARS *
