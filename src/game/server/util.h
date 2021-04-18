@@ -132,7 +132,7 @@ inline void MESSAGE_BEGIN(int msg_dest, int msg_type, const float* pOrigin, entv
 	(*g_engfuncs.pfnMessageBegin)(msg_dest, msg_type, pOrigin, ENT(ent));
 }
 
-inline entvars_t* INDEXVARS(int iEdictNum) { return &INDEXENT(iEdictNum)->v; }
+inline entvars_t* INDEXVARS(int iEdictNum) { return VARS(INDEXENT(iEdictNum)); }
 
 // Testing the two types of "entity" for nullity
 inline bool FNullEnt(const edict_t* pent) { return pent == nullptr || ENTINDEX(pent) == 0; }
