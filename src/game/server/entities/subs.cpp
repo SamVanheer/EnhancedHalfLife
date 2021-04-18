@@ -49,13 +49,11 @@ LINK_ENTITY_TO_CLASS(info_null, CNullEntity);
 
 void CBaseEntity::UpdateOnRemove()
 {
-	int	i;
-
 	if (FBitSet(pev->flags, FL_GRAPHED))
 	{
 		// this entity was a LinkEnt in the world node graph, so we must remove it from
 		// the graph since we are removing it from the world.
-		for (i = 0; i < WorldGraph.m_cLinks; i++)
+		for (int i = 0; i < WorldGraph.m_cLinks; i++)
 		{
 			if (WorldGraph.m_pLinkPool[i].m_pLinkEnt == pev)
 			{
@@ -84,7 +82,6 @@ void CBaseEntity::SUB_Remove()
 void CBaseEntity::SUB_DoNothing()
 {
 }
-
 
 // Global Savedata for Delay
 TYPEDESCRIPTION	CBaseDelay::m_SaveData[] =
@@ -121,14 +118,14 @@ void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, floa
 	}
 }
 
-
 void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
-	edict_t* pentTarget = nullptr;
 	if (!targetName)
 		return;
 
 	ALERT(at_aiconsole, "Firing: (%s)\n", targetName);
+
+	edict_t* pentTarget = nullptr;
 
 	for (;;)
 	{
@@ -146,7 +143,6 @@ void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* p
 }
 
 LINK_ENTITY_TO_CLASS(DelayedUse, CBaseDelay);
-
 
 void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value)
 {
@@ -174,7 +170,7 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float
 		pTemp->m_iszKillTarget = m_iszKillTarget;
 		pTemp->m_flDelay = 0; // prevent "recursion"
 		pTemp->pev->target = pev->target;
-
+		//TODO: do this properly
 		// HACKHACK
 		// This wasn't in the release build of Half-Life.  We should have moved m_hActivator into this class
 		// but changing member variable hierarchy would break save/restore without some ugly code.
@@ -219,14 +215,6 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float
 	}
 }
 
-
-/*
-void CBaseDelay :: SUB_UseTargetsEntMethod()
-{
-	SUB_UseTargets(pev);
-}
-*/
-
 //TODO: move to util.cpp
 void SetMovedir(entvars_t* pev)
 {
@@ -247,9 +235,6 @@ void SetMovedir(entvars_t* pev)
 	pev->angles = vec3_origin;
 }
 
-
-
-
 void CBaseDelay::DelayThink()
 {
 	CBaseEntity* pActivator = nullptr;
@@ -262,7 +247,6 @@ void CBaseDelay::DelayThink()
 	SUB_UseTargets(pActivator, (USE_TYPE)pev->button, 0);
 	REMOVE_ENTITY(ENT(pev));
 }
-
 
 // Global Savedata for Toggle
 TYPEDESCRIPTION	CBaseToggle::m_SaveData[] =
@@ -287,8 +271,8 @@ TYPEDESCRIPTION	CBaseToggle::m_SaveData[] =
 	DEFINE_FIELD(CBaseToggle, m_sMaster, FIELD_STRING),
 	DEFINE_FIELD(CBaseToggle, m_bitsDamageInflict, FIELD_INTEGER),	// damage type inflicted
 };
-IMPLEMENT_SAVERESTORE(CBaseToggle, CBaseAnimating);
 
+IMPLEMENT_SAVERESTORE(CBaseToggle, CBaseAnimating);
 
 void CBaseToggle::KeyValue(KeyValueData* pkvd)
 {
@@ -331,10 +315,10 @@ void CBaseToggle::LinearMove(Vector	vecDest, float flSpeed)
 	}
 
 	// set destdelta to the vector needed to move
-	Vector vecDestDelta = vecDest - pev->origin;
+	const Vector vecDestDelta = vecDest - pev->origin;
 
 	// divide vector length by speed to get time to reach dest
-	float flTravelTime = vecDestDelta.Length() / flSpeed;
+	const float flTravelTime = vecDestDelta.Length() / flSpeed;
 
 	// set nextthink to trigger a call to LinearMoveDone when dest is reached
 	pev->nextthink = pev->ltime + flTravelTime;
@@ -346,8 +330,10 @@ void CBaseToggle::LinearMove(Vector	vecDest, float flSpeed)
 
 void CBaseToggle::LinearMoveDone()
 {
-	Vector delta = m_vecFinalDest - pev->origin;
-	float error = delta.Length();
+	const Vector delta = m_vecFinalDest - pev->origin;
+	const float error = delta.Length();
+	//If we're more than 1/32th of a unit away from the target position, move us through linear movement.
+	//Otherwise snap us to the position immediately.
 	if (error > 0.03125)
 	{
 		LinearMove(m_vecFinalDest, 100);
@@ -381,10 +367,10 @@ void CBaseToggle::AngularMove(Vector vecDestAngle, float flSpeed)
 	}
 
 	// set destdelta to the vector needed to move
-	Vector vecDestDelta = vecDestAngle - pev->angles;
+	const Vector vecDestDelta = vecDestAngle - pev->angles;
 
 	// divide by speed to get time to reach dest
-	float flTravelTime = vecDestDelta.Length() / flSpeed;
+	const float flTravelTime = vecDestDelta.Length() / flSpeed;
 
 	// set nextthink to trigger a call to AngularMoveDone when dest is reached
 	pev->nextthink = pev->ltime + flTravelTime;
@@ -403,7 +389,6 @@ void CBaseToggle::AngularMoveDone()
 		(this->*m_pfnCallWhenMoveDone)();
 }
 
-
 float CBaseToggle::AxisValue(int flags, const Vector& angles)
 {
 	if (FBitSet(flags, SF_DOOR_ROTATE_Z))
@@ -414,7 +399,6 @@ float CBaseToggle::AxisValue(int flags, const Vector& angles)
 	return angles.y;
 }
 
-
 void CBaseToggle::AxisDir(entvars_t* pev)
 {
 	if (FBitSet(pev->spawnflags, SF_DOOR_ROTATE_Z))
@@ -424,7 +408,6 @@ void CBaseToggle::AxisDir(entvars_t* pev)
 	else
 		pev->movedir = vec3_right;		// around y-axis
 }
-
 
 float CBaseToggle::AxisDelta(int flags, const Vector& angle1, const Vector& angle2)
 {

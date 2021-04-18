@@ -44,8 +44,6 @@ bool CBaseEntity::TakeHealth(float flHealth, int bitsDamageType)
 
 bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
-	Vector			vecTemp;
-
 	if (!pev->takedamage)
 		return false;
 
@@ -53,6 +51,7 @@ bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 
 	// if Attacker == Inflictor, the attack was a melee or other instant-hit attack.
 	// (that is, no actual entity projectile was involved in the attack so use the shooter's origin). 
+	Vector vecTemp;
 	if (pevAttacker == pevInflictor)
 	{
 		vecTemp = pevInflictor->origin - (VecBModelOrigin(pev));
@@ -92,14 +91,12 @@ bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	return true;
 }
 
-
 void CBaseEntity::Killed(entvars_t* pevAttacker, int iGib)
 {
 	pev->takedamage = DAMAGE_NO;
 	pev->deadflag = DEAD_DEAD;
 	UTIL_Remove(this);
 }
-
 
 CBaseEntity* CBaseEntity::GetNextTarget()
 {
@@ -122,7 +119,6 @@ TYPEDESCRIPTION	CBaseEntity::m_SaveData[] =
 	DEFINE_FIELD(CBaseEntity, m_pfnUse, FIELD_FUNCTION),
 	DEFINE_FIELD(CBaseEntity, m_pfnBlocked, FIELD_FUNCTION),
 };
-
 
 bool CBaseEntity::Save(CSave& save)
 {
@@ -157,7 +153,6 @@ void CBaseEntity::SetObjectCollisionBox()
 {
 	::SetObjectCollisionBox(pev);
 }
-
 
 bool CBaseEntity::Intersects(CBaseEntity* pOther)
 {
@@ -221,7 +216,6 @@ bool CBaseEntity::ShouldToggle(USE_TYPE useType, bool currentState)
 	return true;
 }
 
-
 int	CBaseEntity::DamageDecal(int bitsDamageType)
 {
 	if (pev->rendermode == kRenderTransAlpha)
@@ -245,21 +239,19 @@ void CBaseEntity::StopSound(int channel, const char* fileName)
 
 CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner)
 {
-	edict_t* pent;
-	CBaseEntity* pEntity;
-
-	pent = CREATE_NAMED_ENTITY(MAKE_STRING(szName));
+	edict_t* pent = CREATE_NAMED_ENTITY(MAKE_STRING(szName));
 	if (FNullEnt(pent))
 	{
 		ALERT(at_console, "NULL Ent in Create!\n");
 		return nullptr;
 	}
-	pEntity = Instance(pent);
+
+	CBaseEntity* pEntity = Instance(pent);
 	pEntity->pev->owner = pentOwner;
 	pEntity->pev->origin = vecOrigin;
 	pEntity->pev->angles = vecAngles;
+
 	DispatchSpawn(pEntity->edict());
+
 	return pEntity;
 }
-
-
