@@ -151,7 +151,7 @@ LINK_ENTITY_TO_CLASS(DelayedUse, CBaseDelay);
 void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value)
 {
 	//
-	// exit immediatly if we don't have a target or kill target
+	// exit immediately if we don't have a target or kill target
 	//
 	if (FStringNull(pev->target) && FStringNull(m_iszKillTarget))
 		return;
