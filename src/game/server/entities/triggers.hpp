@@ -253,9 +253,17 @@ public:
 class CTriggerCounter : public CBaseTrigger
 {
 public:
+	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
 
 	void EXPORT CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+
+	bool Save(CSave& save) override;
+	bool Restore(CRestore& restore) override;
+
+	static TYPEDESCRIPTION m_SaveData[];
+
+	int m_cTriggersLeft; //!< # of activations remaining
 };
 
 /**

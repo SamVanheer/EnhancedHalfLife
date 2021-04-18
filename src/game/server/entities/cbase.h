@@ -542,8 +542,6 @@ public:
 	Vector				m_vecAngle1;
 	Vector				m_vecAngle2;
 
-	//TODO: only used by trigger_counter, move
-	int					m_cTriggersLeft;		//!< trigger_counter only, # of activations remaining
 	float				m_flHeight;
 	EHANDLE				m_hActivator;
 	void (CBaseToggle::* m_pfnCallWhenMoveDone)();

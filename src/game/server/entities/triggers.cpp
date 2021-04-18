@@ -333,11 +333,6 @@ void CBaseTrigger::KeyValue(KeyValueData* pkvd)
 		pev->dmg = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "count"))
-	{
-		m_cTriggersLeft = (int)atof(pkvd->szValue);
-		pkvd->fHandled = true;
-	}
 	else if (FStrEq(pkvd->szKeyName, "damagetype"))
 	{
 		m_bitsDamageInflict = atoi(pkvd->szValue);
@@ -831,6 +826,24 @@ void CTriggerOnce::Spawn()
 }
 
 LINK_ENTITY_TO_CLASS(trigger_counter, CTriggerCounter);
+
+TYPEDESCRIPTION CTriggerCounter::m_SaveData[] =
+{
+	DEFINE_FIELD(CTriggerCounter, m_cTriggersLeft, FIELD_INTEGER),
+};
+
+IMPLEMENT_SAVERESTORE(CTriggerCounter, CBaseTrigger);
+
+void CTriggerCounter::KeyValue(KeyValueData* pkvd)
+{
+	if (FStrEq(pkvd->szKeyName, "count"))
+	{
+		m_cTriggersLeft = (int)atof(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else
+		CBaseTrigger::KeyValue(pkvd);
+}
 
 void CTriggerCounter::Spawn()
 {
