@@ -63,7 +63,7 @@ public:
 	float HearingSensitivity() override { return 2.0; }
 
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
-	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void HandleAnimEvent(MonsterEvent_t& event) override;
 	void Killed(entvars_t* pevAttacker, int iGib) override;
 
 	NPCState GetIdealState() override { return NPCState::Idle; }
@@ -643,7 +643,7 @@ void CTentacle::Cycle()
 				m_flSoundYaw -= RANDOM_FLOAT(2, 8);
 		}
 
-		pev->sequence = FindTransition(pev->sequence, m_iGoalAnim, &m_iDir);
+		pev->sequence = FindTransition(pev->sequence, m_iGoalAnim, m_iDir);
 
 		if (m_iDir > 0)
 		{
@@ -764,7 +764,7 @@ void CTentacle::DieThink()
 		}
 
 		// ALERT( at_console, "%d : %d => ", pev->sequence, m_iGoalAnim );
-		pev->sequence = FindTransition(pev->sequence, m_iGoalAnim, &m_iDir);
+		pev->sequence = FindTransition(pev->sequence, m_iGoalAnim, m_iDir);
 		// ALERT( at_console, "%d\n", pev->sequence );
 
 		if (m_iDir > 0)
@@ -808,11 +808,11 @@ void CTentacle::DieThink()
 }
 
 
-void CTentacle::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CTentacle::HandleAnimEvent(MonsterEvent_t& event)
 {
 	const char* sound;
 
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case 1:	// bang 
 	{
@@ -912,7 +912,7 @@ void CTentacle::HandleAnimEvent(MonsterEvent_t* pEvent)
 		break;
 
 	default:
-		CBaseMonster::HandleAnimEvent(pEvent);
+		CBaseMonster::HandleAnimEvent(event);
 	}
 }
 

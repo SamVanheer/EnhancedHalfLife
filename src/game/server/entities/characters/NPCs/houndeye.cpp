@@ -77,7 +77,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void HandleAnimEvent(MonsterEvent_t& event) override;
 	void SetYawSpeed() override;
 	void WarmUpSound();
 	void AlertSound() override;
@@ -268,9 +268,9 @@ void CHoundeye::SetActivity(Activity NewActivity)
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CHoundeye::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CHoundeye::HandleAnimEvent(MonsterEvent_t& event)
 {
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case HOUND_AE_WARN:
 		// do stuff for this event.
@@ -314,7 +314,7 @@ void CHoundeye::HandleAnimEvent(MonsterEvent_t* pEvent)
 		break;
 
 	default:
-		CSquadMonster::HandleAnimEvent(pEvent);
+		CSquadMonster::HandleAnimEvent(event);
 		break;
 	}
 }

@@ -74,7 +74,7 @@ public:
 	void SetYawSpeed() override;
 	int  Classify() override;
 	int  ISoundMask() override;
-	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void HandleAnimEvent(MonsterEvent_t& event) override;
 	void SetObjectCollisionBox() override
 	{
 		pev->absmin = pev->origin + Vector(-32, -32, 0);
@@ -413,9 +413,9 @@ void CAGrunt::SetYawSpeed()
 //
 // Returns number of events handled, 0 if none.
 //=========================================================
-void CAGrunt::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CAGrunt::HandleAnimEvent(MonsterEvent_t& event)
 {
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case AGRUNT_AE_HORNET1:
 	case AGRUNT_AE_HORNET2:
@@ -563,7 +563,7 @@ void CAGrunt::HandleAnimEvent(MonsterEvent_t* pEvent)
 	break;
 
 	default:
-		CSquadMonster::HandleAnimEvent(pEvent);
+		CSquadMonster::HandleAnimEvent(event);
 		break;
 	}
 }

@@ -38,7 +38,7 @@ public:
 	void Precache() override;
 	CBaseEntity* TongueTouchEnt(float* pflLength);
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void HandleAnimEvent(MonsterEvent_t& event) override;
 	void EXPORT BarnacleThink();
 	void EXPORT WaitTillDead();
 	void Killed(entvars_t* pevAttacker, int iGib) override;
@@ -84,15 +84,15 @@ int	CBarnacle::Classify()
 //
 // Returns number of events handled, 0 if none.
 //=========================================================
-void CBarnacle::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CBarnacle::HandleAnimEvent(MonsterEvent_t& event)
 {
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case BARNACLE_AE_PUKEGIB:
 		CGib::SpawnRandomGibs(pev, 1, 1);
 		break;
 	default:
-		CBaseMonster::HandleAnimEvent(pEvent);
+		CBaseMonster::HandleAnimEvent(event);
 		break;
 	}
 }

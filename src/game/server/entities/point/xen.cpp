@@ -266,7 +266,7 @@ public:
 	void		Touch(CBaseEntity* pOther) override;
 	void		Think() override;
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override { Attack(); return false; }
-	void		HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void		HandleAnimEvent(MonsterEvent_t& event) override;
 	void		Attack();
 	int			Classify() override { return CLASS_BARNACLE; }
 
@@ -356,9 +356,9 @@ void CXenTree::Attack()
 }
 
 
-void CXenTree::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CXenTree::HandleAnimEvent(MonsterEvent_t& event)
 {
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case TREE_AE_ATTACK:
 	{
@@ -391,7 +391,7 @@ void CXenTree::HandleAnimEvent(MonsterEvent_t* pEvent)
 	return;
 	}
 
-	CActAnimating::HandleAnimEvent(pEvent);
+	CActAnimating::HandleAnimEvent(event);
 }
 
 void CXenTree::Think()

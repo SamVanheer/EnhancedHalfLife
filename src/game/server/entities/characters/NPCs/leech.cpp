@@ -103,7 +103,7 @@ public:
 	void SwitchLeechState();
 
 	// Base entity functions
-	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void HandleAnimEvent(MonsterEvent_t& event) override;
 	int	BloodColor() override { return DONT_BLEED; }
 	void Killed(entvars_t* pevAttacker, int iGib) override;
 	void Activate() override;
@@ -312,9 +312,9 @@ bool CLeech::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float f
 }
 
 
-void CLeech::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CLeech::HandleAnimEvent(MonsterEvent_t& event)
 {
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case LEECH_AE_ATTACK:
 		AttackSound();
@@ -344,7 +344,7 @@ void CLeech::HandleAnimEvent(MonsterEvent_t* pEvent)
 		break;
 
 	default:
-		CBaseMonster::HandleAnimEvent(pEvent);
+		CBaseMonster::HandleAnimEvent(event);
 		break;
 	}
 }

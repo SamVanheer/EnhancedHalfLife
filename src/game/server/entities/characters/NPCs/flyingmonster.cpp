@@ -129,9 +129,9 @@ void CFlyingMonster::Killed(entvars_t* pevAttacker, int iGib)
 }
 
 
-void CFlyingMonster::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CFlyingMonster::HandleAnimEvent(MonsterEvent_t& event)
 {
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case FLYING_AE_FLAP:
 		m_flightSpeed = 400;
@@ -143,7 +143,7 @@ void CFlyingMonster::HandleAnimEvent(MonsterEvent_t* pEvent)
 		break;
 
 	default:
-		CBaseMonster::HandleAnimEvent(pEvent);
+		CBaseMonster::HandleAnimEvent(event);
 		break;
 	}
 }

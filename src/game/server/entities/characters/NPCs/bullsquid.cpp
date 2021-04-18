@@ -194,7 +194,7 @@ public:
 	void SetYawSpeed() override;
 	int  ISoundMask() override;
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void HandleAnimEvent(MonsterEvent_t& event) override;
 	void IdleSound() override;
 	void PainSound() override;
 	void DeathSound() override;
@@ -522,9 +522,9 @@ void CBullsquid::SetYawSpeed()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CBullsquid::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CBullsquid::HandleAnimEvent(MonsterEvent_t& event)
 {
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case BSQUID_AE_SPIT:
 	{
@@ -660,7 +660,7 @@ void CBullsquid::HandleAnimEvent(MonsterEvent_t* pEvent)
 	break;
 
 	default:
-		CBaseMonster::HandleAnimEvent(pEvent);
+		CBaseMonster::HandleAnimEvent(event);
 	}
 }
 

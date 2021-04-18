@@ -38,7 +38,7 @@ public:
 	void Precache() override;
 	void SetYawSpeed() override;
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void HandleAnimEvent(MonsterEvent_t& event) override;
 	int IgnoreConditions() override;
 
 	float m_flNextFlinch;
@@ -185,9 +185,9 @@ void CZombie::AttackSound()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CZombie::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CZombie::HandleAnimEvent(MonsterEvent_t& event)
 {
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case ZOMBIE_AE_ATTACK_RIGHT:
 	{
@@ -258,7 +258,7 @@ void CZombie::HandleAnimEvent(MonsterEvent_t* pEvent)
 	break;
 
 	default:
-		CBaseMonster::HandleAnimEvent(pEvent);
+		CBaseMonster::HandleAnimEvent(event);
 		break;
 	}
 }

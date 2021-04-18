@@ -87,7 +87,7 @@ public:
 	void AlertSound() override;
 	void PrescheduleThink() override;
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void HandleAnimEvent(MonsterEvent_t& event) override;
 	bool CheckRangeAttack1(float flDot, float flDist) override;
 	bool CheckRangeAttack2(float flDot, float flDist) override;
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
@@ -211,9 +211,9 @@ void CHeadCrab::SetYawSpeed()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CHeadCrab::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CHeadCrab::HandleAnimEvent(MonsterEvent_t& event)
 {
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case HC_AE_JUMPATTACK:
 	{
@@ -267,7 +267,7 @@ void CHeadCrab::HandleAnimEvent(MonsterEvent_t* pEvent)
 	break;
 
 	default:
-		CBaseMonster::HandleAnimEvent(pEvent);
+		CBaseMonster::HandleAnimEvent(event);
 		break;
 	}
 }

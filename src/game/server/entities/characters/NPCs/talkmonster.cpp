@@ -759,9 +759,9 @@ float CTalkMonster::TargetDistance()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CTalkMonster::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CTalkMonster::HandleAnimEvent(MonsterEvent_t& event)
 {
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case SCRIPT_EVENT_SENTENCE_RND1:		// Play a named sentence group 25% of the time
 		if (RANDOM_LONG(0, 99) < 75)
@@ -771,12 +771,12 @@ void CTalkMonster::HandleAnimEvent(MonsterEvent_t* pEvent)
 
 	case SCRIPT_EVENT_SENTENCE:				// Play a named sentence group
 		ShutUpFriends();
-		PlaySentence(pEvent->options, RANDOM_FLOAT(2.8, 3.4), VOL_NORM, ATTN_IDLE);
+		PlaySentence(event.options, RANDOM_FLOAT(2.8, 3.4), VOL_NORM, ATTN_IDLE);
 		//ALERT(at_console, "script event speak\n");
 		break;
 
 	default:
-		CBaseMonster::HandleAnimEvent(pEvent);
+		CBaseMonster::HandleAnimEvent(event);
 		break;
 	}
 }

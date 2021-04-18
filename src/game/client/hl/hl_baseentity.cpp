@@ -177,14 +177,13 @@ int CBaseAnimating::LookupSequence(const char* label) { return 0; }
 void CBaseAnimating::ResetSequenceInfo() { }
 int CBaseAnimating::GetSequenceFlags() { return 0; }
 void CBaseAnimating::DispatchAnimEvents(float flInterval) { }
-void CBaseMonster::HandleAnimEvent(MonsterEvent_t* pEvent) { }
+void CBaseMonster::HandleAnimEvent(MonsterEvent_t& event) { }
 float CBaseAnimating::SetBoneController(int iController, float flValue) { return 0.0; }
 void CBaseAnimating::InitBoneControllers() { }
 float CBaseAnimating::SetBlending(int iBlender, float flValue) { return 0; }
 void CBaseAnimating::GetBonePosition(int iBone, Vector& origin, Vector& angles) { }
 void CBaseAnimating::GetAttachment(int iAttachment, Vector& origin, Vector& angles) { }
-int CBaseAnimating::FindTransition(int iEndingSequence, int iGoalSequence, int* piDir) { return -1; }
-void CBaseAnimating::GetAutomovement(Vector& origin, Vector& angles, float flInterval) { }
+int CBaseAnimating::FindTransition(int iEndingSequence, int iGoalSequence, int& iDir) { return -1; }
 void CBaseAnimating::SetBodygroup(int iGroup, int iValue) { }
 int CBaseAnimating::GetBodygroup(int iGroup) { return 0; }
 Vector CBaseMonster::GetGunPosition() { return vec3_origin; }

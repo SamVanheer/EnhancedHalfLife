@@ -153,7 +153,7 @@ public:
 	virtual CBaseEntity* BestVisibleEnemy();// finds best visible enemy for attack
 	virtual bool FInViewCone(CBaseEntity* pEntity);// see if pEntity is in monster's view cone
 	virtual bool FInViewCone(Vector* pOrigin);// see if given location is in monster's view cone
-	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void HandleAnimEvent(MonsterEvent_t& event) override;
 
 	virtual int CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist);// check validity of a straight move through space
 	virtual void Move(float flInterval = 0.1);

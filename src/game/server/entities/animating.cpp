@@ -87,7 +87,7 @@ void CBaseAnimating::ResetSequenceInfo()
 {
 	void* pmodel = GET_MODEL_PTR(ENT(pev));
 
-	GetSequenceInfo(pmodel, pev, &m_flFrameRate, &m_flGroundSpeed);
+	GetSequenceInfo(pmodel, pev, m_flFrameRate, m_flGroundSpeed);
 	m_fSequenceLoops = ((GetSequenceFlags() & STUDIO_LOOPING) != 0);
 	pev->animtime = gpGlobals->time;
 	pev->framerate = 1.0;
@@ -104,8 +104,6 @@ int CBaseAnimating::GetSequenceFlags()
 
 void CBaseAnimating::DispatchAnimEvents(float flInterval)
 {
-	MonsterEvent_t	event;
-
 	void* pmodel = GET_MODEL_PTR(ENT(pev));
 
 	if (!pmodel)
@@ -118,17 +116,18 @@ void CBaseAnimating::DispatchAnimEvents(float flInterval)
 	flInterval = 0.1;
 
 	// FIX: this still sometimes hits events twice
-	float flStart = pev->frame + (m_flLastEventCheck - pev->animtime) * m_flFrameRate * pev->framerate;
-	float flEnd = pev->frame + flInterval * m_flFrameRate * pev->framerate;
+	const float flStart = pev->frame + (m_flLastEventCheck - pev->animtime) * m_flFrameRate * pev->framerate;
+	const float flEnd = pev->frame + flInterval * m_flFrameRate * pev->framerate;
 	m_flLastEventCheck = pev->animtime + flInterval;
 
 	m_fSequenceFinished = flEnd >= 256 || flEnd <= 0.0;
 
 	int index = 0;
 
-	while ((index = GetAnimationEvent(pmodel, pev, &event, flStart, flEnd, index)) != 0)
+	MonsterEvent_t	event;
+	while ((index = GetAnimationEvent(pmodel, pev, event, flStart, flEnd, index)) != 0)
 	{
-		HandleAnimEvent(&event);
+		HandleAnimEvent(event);
 	}
 }
 
@@ -166,26 +165,20 @@ void CBaseAnimating::GetAttachment(int iAttachment, Vector& origin, Vector& angl
 	GET_ATTACHMENT(ENT(pev), iAttachment, origin, angles);
 }
 
-int CBaseAnimating::FindTransition(int iEndingSequence, int iGoalSequence, int* piDir)
+int CBaseAnimating::FindTransition(int iEndingSequence, int iGoalSequence, int& iDir)
 {
 	void* pmodel = GET_MODEL_PTR(ENT(pev));
-
-	if (piDir == nullptr)
-	{
-		int iDir;
-		int sequence = ::FindTransition(pmodel, iEndingSequence, iGoalSequence, &iDir);
-		if (iDir != 1)
-			return -1;
-		else
-			return sequence;
-	}
-
-	return ::FindTransition(pmodel, iEndingSequence, iGoalSequence, piDir);
+	return ::FindTransition(pmodel, iEndingSequence, iGoalSequence, iDir);
 }
 
-void CBaseAnimating::GetAutomovement(Vector& origin, Vector& angles, float flInterval)
+int CBaseAnimating::FindTransition(int iEndingSequence, int iGoalSequence)
 {
-
+	int iDir;
+	int sequence = FindTransition(iEndingSequence, iGoalSequence, iDir);
+	if (iDir != 1)
+		return -1;
+	else
+		return sequence;
 }
 
 void CBaseAnimating::SetBodygroup(int iGroup, int iValue)
@@ -199,7 +192,7 @@ int CBaseAnimating::GetBodygroup(int iGroup)
 }
 
 
-bool CBaseAnimating::ExtractBbox(int sequence, float* mins, float* maxs)
+bool CBaseAnimating::ExtractBbox(int sequence, Vector& mins, Vector& maxs)
 {
 	return ::ExtractBbox(GET_MODEL_PTR(ENT(pev)), sequence, mins, maxs);
 }
@@ -213,17 +206,11 @@ void CBaseAnimating::SetSequenceBox()
 	{
 		// expand box for rotation
 		// find min / max for rotations
-		float yaw = pev->angles.y * (M_PI / 180.0);
+		const float yaw = pev->angles.y * (M_PI / 180.0);
 
-		Vector xvector, yvector;
-		xvector.x = cos(yaw);
-		xvector.y = sin(yaw);
-		yvector.x = -sin(yaw);
-		yvector.y = cos(yaw);
-		Vector bounds[2];
-
-		bounds[0] = mins;
-		bounds[1] = maxs;
+		const Vector xvector{cos(yaw), sin(yaw), 0};
+		const Vector yvector{-sin(yaw), cos(yaw), 0};
+		const Vector bounds[2] = {mins, maxs};
 
 		Vector rmin(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
 		Vector rmax(std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest());

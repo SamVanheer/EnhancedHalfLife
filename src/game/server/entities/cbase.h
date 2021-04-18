@@ -497,17 +497,17 @@ public:
 	*	@brief Handle events that have happend since last time called up until X seconds into the future
 	*/
 	void DispatchAnimEvents(float flFutureInterval = 0.1);
-	virtual void HandleAnimEvent(MonsterEvent_t* pEvent) {}
+	virtual void HandleAnimEvent(MonsterEvent_t& event) {}
 	float SetBoneController(int iController, float flValue);
 	void InitBoneControllers();
 	float SetBlending(int iBlender, float flValue);
 	void GetBonePosition(int iBone, Vector& origin, Vector& angles);
-	void GetAutomovement(Vector& origin, Vector& angles, float flInterval = 0.1);
-	int  FindTransition(int iEndingSequence, int iGoalSequence, int* piDir);
+	int FindTransition(int iEndingSequence, int iGoalSequence, int& iDir);
+	int FindTransition(int iEndingSequence, int iGoalSequence);
 	void GetAttachment(int iAttachment, Vector& origin, Vector& angles);
 	void SetBodygroup(int iGroup, int iValue);
 	int GetBodygroup(int iGroup);
-	bool ExtractBbox(int sequence, float* mins, float* maxs);
+	bool ExtractBbox(int sequence, Vector& mins, Vector& maxs);
 	void SetSequenceBox();
 
 	// animation needs

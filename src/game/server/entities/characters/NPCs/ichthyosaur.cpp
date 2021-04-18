@@ -54,7 +54,7 @@ public:
 	void  Precache() override;
 	void  SetYawSpeed() override;
 	int   Classify() override;
-	void  HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void  HandleAnimEvent(MonsterEvent_t& event) override;
 	CUSTOM_SCHEDULES;
 
 	bool Save(CSave& save) override;
@@ -409,10 +409,10 @@ void CIchthyosaur::BecomeDead()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CIchthyosaur::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CIchthyosaur::HandleAnimEvent(MonsterEvent_t& event)
 {
 	bool bDidAttack = false;
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case ICHTHYOSAUR_AE_SHAKE_RIGHT:
 	case ICHTHYOSAUR_AE_SHAKE_LEFT:
@@ -449,7 +449,7 @@ void CIchthyosaur::HandleAnimEvent(MonsterEvent_t* pEvent)
 	}
 	break;
 	default:
-		CFlyingMonster::HandleAnimEvent(pEvent);
+		CFlyingMonster::HandleAnimEvent(event);
 		break;
 	}
 

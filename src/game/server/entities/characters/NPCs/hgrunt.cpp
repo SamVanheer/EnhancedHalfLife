@@ -130,7 +130,7 @@ public:
 	void SetYawSpeed() override;
 	int  Classify() override;
 	int ISoundMask() override;
-	void HandleAnimEvent(MonsterEvent_t* pEvent) override;
+	void HandleAnimEvent(MonsterEvent_t& event) override;
 	bool FCanCheckAttacks() override;
 	bool CheckMeleeAttack1(float flDot, float flDist) override;
 	bool CheckRangeAttack1(float flDot, float flDist) override;
@@ -841,12 +841,12 @@ void CHGrunt::Shotgun()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CHGrunt::HandleAnimEvent(MonsterEvent_t* pEvent)
+void CHGrunt::HandleAnimEvent(MonsterEvent_t& event)
 {
 	Vector	vecShootDir;
 	Vector	vecShootOrigin;
 
-	switch (pEvent->event)
+	switch (event.event)
 	{
 	case HGRUNT_AE_DROP_GUN:
 	{
@@ -970,7 +970,7 @@ void CHGrunt::HandleAnimEvent(MonsterEvent_t* pEvent)
 	}
 
 	default:
-		CSquadMonster::HandleAnimEvent(pEvent);
+		CSquadMonster::HandleAnimEvent(event);
 		break;
 	}
 }
