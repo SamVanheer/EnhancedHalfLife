@@ -65,7 +65,6 @@ public:
 	bool FindEntity();
 	virtual void PossessEntity();
 
-	void ReleaseEntity(CBaseMonster* pEntity);
 	void CancelScript();
 	virtual bool StartSequence(CBaseMonster* pTarget, string_t iszSeq, bool completeOnEmpty);
 	virtual bool FCanOverrideState();

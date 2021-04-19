@@ -144,8 +144,6 @@ struct moveclip_t
 	bool		monsterclip;
 };
 
-extern trace_t SV_ClipMoveToEntity(edict_t* ent, Vector start, Vector mins, Vector maxs, Vector end);
-
 void DLLEXPORT CAM_Think()
 {
 	Vector origin;
