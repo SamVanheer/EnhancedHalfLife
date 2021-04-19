@@ -2612,7 +2612,7 @@ void CBaseMonster::SetEyePosition()
 	}
 }
 
-void CBaseMonster::HandleAnimEvent(MonsterEvent_t& event)
+void CBaseMonster::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

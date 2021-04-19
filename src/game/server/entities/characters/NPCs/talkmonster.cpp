@@ -759,7 +759,7 @@ float CTalkMonster::TargetDistance()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CTalkMonster::HandleAnimEvent(MonsterEvent_t& event)
+void CTalkMonster::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

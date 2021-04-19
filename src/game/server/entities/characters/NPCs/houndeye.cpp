@@ -77,7 +77,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	void SetYawSpeed() override;
 	void WarmUpSound();
 	void AlertSound() override;
@@ -268,7 +268,7 @@ void CHoundeye::SetActivity(Activity NewActivity)
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CHoundeye::HandleAnimEvent(MonsterEvent_t& event)
+void CHoundeye::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

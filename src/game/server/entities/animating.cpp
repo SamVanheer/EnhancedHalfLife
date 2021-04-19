@@ -124,7 +124,7 @@ void CBaseAnimating::DispatchAnimEvents(float flInterval)
 
 	int index = 0;
 
-	MonsterEvent_t	event;
+	AnimationEvent event;
 	while ((index = GetAnimationEvent(pmodel, pev, event, flStart, flEnd, index)) != 0)
 	{
 		HandleAnimEvent(event);

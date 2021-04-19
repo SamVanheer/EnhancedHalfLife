@@ -189,7 +189,7 @@ public:
 
 	void SetYawSpeed() override;
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	void LayHeadcrab();
 
 	string_t GetNodeSequence()
@@ -430,7 +430,7 @@ void CBigMomma::SetYawSpeed()
 //
 // Returns number of events handled, 0 if none.
 //=========================================================
-void CBigMomma::HandleAnimEvent(MonsterEvent_t& event)
+void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

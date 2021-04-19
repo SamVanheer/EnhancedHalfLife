@@ -44,7 +44,7 @@ public:
 		pev->absmax = pev->origin + Vector(16 * N_SCALE, 16 * N_SCALE, 28 * N_SCALE);
 	}
 
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 
 	void EXPORT StartupThink();
 	void EXPORT HuntThink();
@@ -1043,7 +1043,7 @@ void CNihilanth::TargetSphere(USE_TYPE useType, float value)
 
 
 
-void CNihilanth::HandleAnimEvent(MonsterEvent_t& event)
+void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

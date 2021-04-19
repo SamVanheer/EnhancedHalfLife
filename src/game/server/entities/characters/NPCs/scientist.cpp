@@ -67,7 +67,7 @@ public:
 
 	void SetYawSpeed() override;
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	void RunTask(Task_t* pTask) override;
 	void StartTask(Task_t* pTask) override;
 	int	ObjectCaps() override { return CTalkMonster::ObjectCaps() | FCAP_IMPULSE_USE; }
@@ -622,7 +622,7 @@ void CScientist::SetYawSpeed()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CScientist::HandleAnimEvent(MonsterEvent_t& event)
+void CScientist::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

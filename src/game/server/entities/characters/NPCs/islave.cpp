@@ -48,7 +48,7 @@ public:
 	int	 ISoundMask() override;
 	int  Classify() override;
 	int  IRelationship(CBaseEntity* pTarget) override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	bool CheckRangeAttack1(float flDot, float flDist) override;
 	bool CheckRangeAttack2(float flDot, float flDist) override;
 	void CallForHelp(const char* szClassname, float flDist, EHANDLE hEnemy, Vector& vecLocation);
@@ -307,7 +307,7 @@ void CISlave::SetYawSpeed()
 //
 // Returns number of events handled, 0 if none.
 //=========================================================
-void CISlave::HandleAnimEvent(MonsterEvent_t& event)
+void CISlave::HandleAnimEvent(AnimationEvent& event)
 {
 	// ALERT( at_console, "event %d : %f\n", pEvent->event, pev->frame );
 	switch (event.event)

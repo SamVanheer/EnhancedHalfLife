@@ -38,7 +38,7 @@ public:
 	void Precache() override;
 	void SetYawSpeed() override;
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	int IgnoreConditions() override;
 
 	float m_flNextFlinch;
@@ -185,7 +185,7 @@ void CZombie::AttackSound()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CZombie::HandleAnimEvent(MonsterEvent_t& event)
+void CZombie::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

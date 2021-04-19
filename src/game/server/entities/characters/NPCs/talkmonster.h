@@ -120,7 +120,7 @@ public:
 	Schedule_t* GetScheduleOfType(int Type) override;
 	void			StartTask(Task_t* pTask) override;
 	void			RunTask(Task_t* pTask) override;
-	void			HandleAnimEvent(MonsterEvent_t& event) override;
+	void			HandleAnimEvent(AnimationEvent& event) override;
 	void			PrescheduleThink() override;
 
 

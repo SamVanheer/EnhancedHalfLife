@@ -195,7 +195,7 @@ int GetSequenceFlags(void* pmodel, entvars_t* pev)
 }
 
 
-int GetAnimationEvent(void* pmodel, entvars_t* pev, MonsterEvent_t& monsterEvent, float flStart, float flEnd, int index)
+int GetAnimationEvent(void* pmodel, entvars_t* pev, AnimationEvent& animationEvent, float flStart, float flEnd, int index)
 {
 	studiohdr_t* pstudiohdr = (studiohdr_t*)pmodel;
 	if (!pstudiohdr || pev->sequence >= pstudiohdr->numseq)
@@ -227,8 +227,8 @@ int GetAnimationEvent(void* pmodel, entvars_t* pev, MonsterEvent_t& monsterEvent
 		if ((pevent[index].frame >= flStart && pevent[index].frame < flEnd) ||
 			((pseqdesc->flags & STUDIO_LOOPING) && flEnd >= pseqdesc->numframes - 1 && pevent[index].frame < flEnd - pseqdesc->numframes + 1))
 		{
-			monsterEvent.event = pevent[index].event;
-			monsterEvent.options = pevent[index].options;
+			animationEvent.event = pevent[index].event;
+			animationEvent.options = pevent[index].options;
 			return index + 1;
 		}
 	}

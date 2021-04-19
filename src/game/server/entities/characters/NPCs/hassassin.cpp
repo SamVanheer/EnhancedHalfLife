@@ -66,7 +66,7 @@ public:
 	int  Classify() override;
 	int  ISoundMask() override;
 	void Shoot();
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	Schedule_t* GetSchedule() override;
 	Schedule_t* GetScheduleOfType(int Type) override;
 	bool CheckMeleeAttack1(float flDot, float flDist) override;	// jump
@@ -237,7 +237,7 @@ void CHAssassin::Shoot()
 //
 // Returns number of events handled, 0 if none.
 //=========================================================
-void CHAssassin::HandleAnimEvent(MonsterEvent_t& event)
+void CHAssassin::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

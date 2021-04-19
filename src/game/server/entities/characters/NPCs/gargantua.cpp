@@ -225,7 +225,7 @@ public:
 	int  Classify() override;
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 
 	bool CheckMeleeAttack1(float flDot, float flDist) override;		// Swipe
 	bool CheckMeleeAttack2(float flDot, float flDist) override;		// Flames
@@ -971,7 +971,7 @@ bool CGargantua::CheckRangeAttack1(float flDot, float flDist)
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CGargantua::HandleAnimEvent(MonsterEvent_t& event)
+void CGargantua::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

@@ -266,7 +266,7 @@ public:
 	void		Touch(CBaseEntity* pOther) override;
 	void		Think() override;
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override { Attack(); return false; }
-	void		HandleAnimEvent(MonsterEvent_t& event) override;
+	void		HandleAnimEvent(AnimationEvent& event) override;
 	void		Attack();
 	int			Classify() override { return CLASS_BARNACLE; }
 
@@ -356,7 +356,7 @@ void CXenTree::Attack()
 }
 
 
-void CXenTree::HandleAnimEvent(MonsterEvent_t& event)
+void CXenTree::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{
@@ -433,7 +433,7 @@ public:
 	void		Touch(CBaseEntity* pOther) override;
 	void		Think() override;
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override { Attack(); return false; }
-	//	void		HandleAnimEvent( MonsterEvent_t *pEvent );
+	//	void HandleAnimEvent(AnimationEvent& event);
 	void		Attack() {}
 
 	static const char* pModelNames[];

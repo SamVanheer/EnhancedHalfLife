@@ -34,5 +34,5 @@ int FindTransition(void* pmodel, int iEndingAnim, int iGoalAnim, int& iDir);
 void SetBodygroup(void* pmodel, entvars_t* pev, int iGroup, int iValue);
 int GetBodygroup(void* pmodel, entvars_t* pev, int iGroup);
 
-int GetAnimationEvent(void* pmodel, entvars_t* pev, MonsterEvent_t& monsterEvent, float flStart, float flEnd, int index);
+int GetAnimationEvent(void* pmodel, entvars_t* pev, AnimationEvent& animationEvent, float flStart, float flEnd, int index);
 bool ExtractBbox(void* pmodel, int sequence, Vector& mins, Vector& maxs);

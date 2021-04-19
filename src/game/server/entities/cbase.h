@@ -497,7 +497,7 @@ public:
 	*	@brief Handle events that have happend since last time called up until X seconds into the future
 	*/
 	void DispatchAnimEvents(float flFutureInterval = 0.1);
-	virtual void HandleAnimEvent(MonsterEvent_t& event) {}
+	virtual void HandleAnimEvent(AnimationEvent& event) {}
 	float SetBoneController(int iController, float flValue);
 	void InitBoneControllers();
 	float SetBlending(int iBlender, float flValue);

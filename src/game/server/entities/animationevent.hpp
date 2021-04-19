@@ -15,7 +15,7 @@
 
 #pragma once
 
-struct MonsterEvent_t
+struct AnimationEvent
 {
 	int			event;
 	char* options;

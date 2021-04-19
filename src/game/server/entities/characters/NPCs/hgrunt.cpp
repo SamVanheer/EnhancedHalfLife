@@ -130,7 +130,7 @@ public:
 	void SetYawSpeed() override;
 	int  Classify() override;
 	int ISoundMask() override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	bool FCanCheckAttacks() override;
 	bool CheckMeleeAttack1(float flDot, float flDist) override;
 	bool CheckRangeAttack1(float flDot, float flDist) override;
@@ -841,7 +841,7 @@ void CHGrunt::Shotgun()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CHGrunt::HandleAnimEvent(MonsterEvent_t& event)
+void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 {
 	Vector	vecShootDir;
 	Vector	vecShootOrigin;

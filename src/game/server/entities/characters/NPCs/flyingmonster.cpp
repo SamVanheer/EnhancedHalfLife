@@ -129,7 +129,7 @@ void CFlyingMonster::Killed(entvars_t* pevAttacker, int iGib)
 }
 
 
-void CFlyingMonster::HandleAnimEvent(MonsterEvent_t& event)
+void CFlyingMonster::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

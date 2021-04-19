@@ -74,7 +74,7 @@ public:
 	void SetYawSpeed() override;
 	int  Classify() override;
 	int  ISoundMask() override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	void SetObjectCollisionBox() override
 	{
 		pev->absmin = pev->origin + Vector(-32, -32, 0);
@@ -413,7 +413,7 @@ void CAGrunt::SetYawSpeed()
 //
 // Returns number of events handled, 0 if none.
 //=========================================================
-void CAGrunt::HandleAnimEvent(MonsterEvent_t& event)
+void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

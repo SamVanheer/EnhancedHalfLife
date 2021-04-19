@@ -194,7 +194,7 @@ public:
 	void SetYawSpeed() override;
 	int  ISoundMask() override;
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	void IdleSound() override;
 	void PainSound() override;
 	void DeathSound() override;
@@ -522,7 +522,7 @@ void CBullsquid::SetYawSpeed()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CBullsquid::HandleAnimEvent(MonsterEvent_t& event)
+void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

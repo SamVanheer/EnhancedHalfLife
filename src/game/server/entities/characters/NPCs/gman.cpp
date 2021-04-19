@@ -35,7 +35,7 @@ public:
 	void Precache() override;
 	void SetYawSpeed() override;
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	int ISoundMask() override;
 
 	bool Save(CSave& save) override;
@@ -95,7 +95,7 @@ void CGMan::SetYawSpeed()
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CGMan::HandleAnimEvent(MonsterEvent_t& event)
+void CGMan::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

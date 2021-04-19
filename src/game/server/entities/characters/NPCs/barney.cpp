@@ -48,7 +48,7 @@ public:
 	void BarneyFirePistol();
 	void AlertSound() override;
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 
 	void RunTask(Task_t* pTask) override;
 	void StartTask(Task_t* pTask) override;
@@ -373,7 +373,7 @@ void CBarney::BarneyFirePistol()
 //
 // Returns number of events handled, 0 if none.
 //=========================================================
-void CBarney::HandleAnimEvent(MonsterEvent_t& event)
+void CBarney::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

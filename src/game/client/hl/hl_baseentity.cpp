@@ -177,7 +177,7 @@ int CBaseAnimating::LookupSequence(const char* label) { return 0; }
 void CBaseAnimating::ResetSequenceInfo() { }
 int CBaseAnimating::GetSequenceFlags() { return 0; }
 void CBaseAnimating::DispatchAnimEvents(float flInterval) { }
-void CBaseMonster::HandleAnimEvent(MonsterEvent_t& event) { }
+void CBaseMonster::HandleAnimEvent(AnimationEvent& event) { }
 float CBaseAnimating::SetBoneController(int iController, float flValue) { return 0.0; }
 void CBaseAnimating::InitBoneControllers() { }
 float CBaseAnimating::SetBlending(int iBlender, float flValue) { return 0; }

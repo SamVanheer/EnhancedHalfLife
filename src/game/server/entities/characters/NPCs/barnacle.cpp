@@ -38,7 +38,7 @@ public:
 	void Precache() override;
 	CBaseEntity* TongueTouchEnt(float* pflLength);
 	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	void EXPORT BarnacleThink();
 	void EXPORT WaitTillDead();
 	void Killed(entvars_t* pevAttacker, int iGib) override;
@@ -84,7 +84,7 @@ int	CBarnacle::Classify()
 //
 // Returns number of events handled, 0 if none.
 //=========================================================
-void CBarnacle::HandleAnimEvent(MonsterEvent_t& event)
+void CBarnacle::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
 	{

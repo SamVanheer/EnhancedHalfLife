@@ -63,7 +63,7 @@ public:
 	float HearingSensitivity() override { return 2.0; }
 
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
-	void HandleAnimEvent(MonsterEvent_t& event) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 	void Killed(entvars_t* pevAttacker, int iGib) override;
 
 	NPCState GetIdealState() override { return NPCState::Idle; }
@@ -808,7 +808,7 @@ void CTentacle::DieThink()
 }
 
 
-void CTentacle::HandleAnimEvent(MonsterEvent_t& event)
+void CTentacle::HandleAnimEvent(AnimationEvent& event)
 {
 	const char* sound;
 
