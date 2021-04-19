@@ -280,8 +280,7 @@ void CWorld::KeyValue(KeyValueData* pkvd)
 	}
 	else if (FStrEq(pkvd->szKeyName, "startdark"))
 	{
-		//TODO: typo
-		// UNDONE: This is a gross hack!!! The CVAR is NOT sent over the client/sever link
+		// UNDONE: This is a gross hack!!! The CVAR is NOT sent over the client/server link
 		// but it will work for single player
 		int flag = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
