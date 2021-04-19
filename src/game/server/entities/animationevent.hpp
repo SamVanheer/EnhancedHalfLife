@@ -17,8 +17,8 @@
 
 struct AnimationEvent
 {
-	int			event;
-	char* options;
+	int event;
+	const char* options;
 };
 
 constexpr int EVENT_SPECIFIC = 0;
