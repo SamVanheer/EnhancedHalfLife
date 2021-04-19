@@ -46,7 +46,6 @@
 
 using byte = unsigned char;
 using word = unsigned short;
-using func_t = unsigned int;
 using string_t = unsigned int;
 using qboolean = int;
 
