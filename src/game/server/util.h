@@ -51,6 +51,11 @@ inline string_t MAKE_STRING(const char* str)
 
 string_t ALLOC_STRING(const char* str);
 
+/**
+*	@brief Version of ALLOC_STRING that parses and converts escape characters
+*/
+string_t ALLOC_ESCAPED_STRING(const char* str);
+
 void ClearStringPool();
 
 inline edict_t* FIND_ENTITY_BY_CLASSNAME(edict_t* entStart, const char* pszName)
