@@ -50,7 +50,7 @@ constexpr int FCAP_FORCE_TRANSITION = 0x00000080;	//!< ALWAYS goes across transi
 #include "globalstate.hpp"
 #include "schedule.h"
 
-#include "monsterevent.h"
+#include "animationevent.hpp"
 
 #include "Platform.h"
 

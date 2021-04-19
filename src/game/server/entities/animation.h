@@ -17,7 +17,7 @@
 
 constexpr int ACTIVITY_NOT_AVAILABLE = -1;
 
-#include "monsterevent.h"
+#include "animationevent.hpp"
 
 bool IsSoundEvent(int eventNumber);
 
