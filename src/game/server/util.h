@@ -278,7 +278,6 @@ void			UTIL_PlayerDecalTrace(TraceResult* pTrace, int playernum, int decalNumber
 void			UTIL_GunshotDecalTrace(TraceResult* pTrace, int decalNumber);
 void			UTIL_Sparks(const Vector& position);
 void			UTIL_Ricochet(const Vector& position, float scale);
-void			UTIL_StringToIntArray(int* pVector, int count, const char* pString);
 
 char* UTIL_VarArgs(const char* format, ...);
 void			UTIL_Remove(CBaseEntity* pEntity);

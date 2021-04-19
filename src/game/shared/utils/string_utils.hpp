@@ -16,6 +16,7 @@
 #pragma once
 
 #include <algorithm>
+#include <array>
 #include <cstddef>
 #include <string_view>
 
@@ -141,6 +142,33 @@ Vector UTIL_StringToVector(std::string_view str);
 float UTIL_StringToFloat(std::string_view str, float defaultValue = 0);
 
 int UTIL_StringToInt(std::string_view str, int defaultValue = 0);
+
+template<std::size_t Size>
+std::array<int, Size> UTIL_StringToIntArray(std::string_view str)
+{
+	std::array<int, Size> result{{}};
+
+	std::size_t index = 0;
+
+	for (std::size_t j = 0; j < Size; ++j)
+	{
+		result[j] = UTIL_StringToInt(str.substr(index));
+
+		while (index < str.length() && str[index] != ' ')
+		{
+			++index;
+		}
+
+		if (index >= str.length())
+		{
+			break;
+		}
+
+		++index;
+	}
+
+	return result;
+}
 
 /**
 *	@brief Extracts the base name of a file (no path, no extension, assumes '/' as path separator)

@@ -261,8 +261,7 @@ void CGameText::KeyValue(KeyValueData* pkvd)
 	}
 	else if (FStrEq(pkvd->szKeyName, "color"))
 	{
-		int color[4];
-		UTIL_StringToIntArray(color, 4, pkvd->szValue);
+		const auto color = UTIL_StringToIntArray<4>(pkvd->szValue);
 		m_textParms.r1 = color[0];
 		m_textParms.g1 = color[1];
 		m_textParms.b1 = color[2];
@@ -271,8 +270,7 @@ void CGameText::KeyValue(KeyValueData* pkvd)
 	}
 	else if (FStrEq(pkvd->szKeyName, "color2"))
 	{
-		int color[4];
-		UTIL_StringToIntArray(color, 4, pkvd->szValue);
+		const auto color = UTIL_StringToIntArray<4>(pkvd->szValue);
 		m_textParms.r2 = color[0];
 		m_textParms.g2 = color[1];
 		m_textParms.b2 = color[2];

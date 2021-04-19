@@ -1169,33 +1169,6 @@ bool UTIL_TeamsMatch(const char* pTeamName1, const char* pTeamName2)
 	return false;
 }
 
-//TODO: move to string_utils.hpp
-void UTIL_StringToIntArray(int* pVector, int count, const char* pString)
-{
-	char* pstr, * pfront, tempString[128];
-	int	j;
-
-	safe_strcpy(tempString, pString);
-	pstr = pfront = tempString;
-
-	for (j = 0; j < count; j++)			// lifted from pr_edict.c
-	{
-		pVector[j] = atoi(pfront);
-
-		while (*pstr && *pstr != ' ')
-			pstr++;
-		if (!*pstr)
-			break;
-		pstr++;
-		pfront = pstr;
-	}
-
-	for (j++; j < count; j++)
-	{
-		pVector[j] = 0;
-	}
-}
-
 float UTIL_WaterLevel(const Vector& position, float minz, float maxz)
 {
 	Vector midUp = position;
