@@ -248,7 +248,6 @@ public:
 	void EyeOff();
 	void EyeOn(int level);
 	void EyeUpdate();
-	void Leap();
 	void StompAttack();
 	void FlameCreate();
 	void FlameUpdate();
