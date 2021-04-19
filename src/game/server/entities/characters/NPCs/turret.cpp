@@ -72,8 +72,8 @@ public:
 	void EXPORT AutoSearchThink();
 	void EXPORT TurretDeath();
 
-	virtual void EXPORT SpinDownCall() { m_iSpin = 0; }
-	virtual void EXPORT SpinUpCall() { m_iSpin = 1; }
+	virtual void EXPORT SpinDownCall() { m_iSpin = false; }
+	virtual void EXPORT SpinUpCall() { m_iSpin = true; }
 
 	// void SpinDown();
 	// float EXPORT SpinDownCall() { return SpinDown(); }

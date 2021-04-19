@@ -227,7 +227,7 @@ public:
 	*	@brief a brush ent is between two nodes that would otherwise be able to see each other.
 	*	Given the monster's capability, determine whether or not the monster can go this way.
 	*/
-	int		HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODEQUERY queryType);
+	bool HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODEQUERY queryType);
 
 	/**
 	*	@brief sometimes the ent that blocks a path is a usable door,
@@ -251,12 +251,10 @@ public:
 	*/
 	void	InitGraph();
 
-	//TODO: check if functions need to return bool
-
 	/**
 	*	@brief temporary function that mallocs a reasonable number of nodes so we can build the path which will be saved to disk.
 	*/
-	int		AllocNodes();
+	bool AllocNodes();
 
 	/**
 	*	@brief this function checks the date of the BSP file that was just loaded and the date of the associated .NOD file.
@@ -268,7 +266,7 @@ public:
 	*	since this happens consistently, we can still correctly determine which of the 2 files is newer.
 	*	This needs to be fixed, though. ( I now suspect that we are getting GMT back from these functions and must compensate for local time ) (sjb)
 	*/
-	int		CheckNODFile(const char* szMapName);
+	bool CheckNODFile(const char* szMapName);
 
 	/**
 	*	@brief attempts to load a node graph from disk.
@@ -276,19 +274,19 @@ public:
 	*	@details if the current level is maps/snar.bsp, maps/graphs/snar.nod will be loaded.
 	*	If file cannot be loaded, the node tree will be created and saved to disk.
 	*/
-	int		FLoadGraph(const char* szMapName);
+	bool FLoadGraph(const char* szMapName);
 
 	/**
 	*	@brief It's not rocket science. this WILL overwrite existing files.
 	*/
-	int		FSaveGraph(const char* szMapName);
+	bool FSaveGraph(const char* szMapName);
 
 	/**
 	*	@brief Takes the modelnames of  all of the brush ents that block connections in the node graph and resolves them into pointers to those entities.
 	*	this is done after loading the graph from disk, whereupon
 	*	the pointers are not valid.
 	*/
-	int		FSetGraphPointers();
+	bool FSetGraphPointers();
 	void	CheckNode(Vector vecOrigin, int iNode);
 
 	void    BuildRegionTables();

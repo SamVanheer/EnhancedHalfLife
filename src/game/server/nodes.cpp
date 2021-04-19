@@ -93,7 +93,7 @@ void CGraph::InitGraph()
 	m_iLastCoverSearch = 0;
 }
 
-int CGraph::AllocNodes()
+bool CGraph::AllocNodes()
 {
 	//  malloc all of the nodes
 	WorldGraph.m_pNodes = (CNode*)calloc(sizeof(CNode), MAX_NODES);
@@ -171,7 +171,7 @@ entvars_t* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 	}
 }
 
-int	CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODEQUERY queryType)
+bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODEQUERY queryType)
 {
 	edict_t* pentWorld;
 	CBaseEntity* pDoor;
@@ -1076,7 +1076,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 	if (m_cNodes <= 0)
 	{
 		ALERT(at_aiconsole, "No Nodes!\n");
-		return false;
+		return 0;
 	}
 
 	// if the file pointer is bad, don't blow up, just don't write the
@@ -1214,13 +1214,13 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 				ALERT(at_aiconsole, "**LinkVisibleNodes:\nNode %d has NodeLinks > MAX_NODE_INITIAL_LINKS", i);
 				file.Printf("** NODE %d HAS NodeLinks > MAX_NODE_INITIAL_LINKS **\n", i);
 				*piBadNode = i;
-				return	false;
+				return 0;
 			}
 			else if (cTotalLinks > MAX_NODE_INITIAL_LINKS * m_cNodes)
 			{// this is paranoia
 				ALERT(at_aiconsole, "**LinkVisibleNodes:\nTotalLinks > MAX_NODE_INITIAL_LINKS * NUMNODES");
 				*piBadNode = i;
-				return	false;
+				return 0;
 			}
 
 			if (cLinksThisNode == 0)
@@ -2082,7 +2082,7 @@ void CQueuePriority::Heap_SiftUp()
 	}
 }
 
-int CGraph::FLoadGraph(const char* szMapName)
+bool CGraph::FLoadGraph(const char* szMapName)
 {
 	//TODO: rewrite graph loading
 	int		iVersion;
@@ -2243,7 +2243,7 @@ NoMemory:
 	return false;
 }
 
-int CGraph::FSaveGraph(const char* szMapName)
+bool CGraph::FSaveGraph(const char* szMapName)
 {
 
 	int		iVersion = GRAPH_VERSION;
@@ -2302,7 +2302,7 @@ int CGraph::FSaveGraph(const char* szMapName)
 	return true;
 }
 
-int CGraph::FSetGraphPointers()
+bool CGraph::FSetGraphPointers()
 {
 	int	i;
 	edict_t* pentLinkEnt;
@@ -2346,17 +2346,15 @@ int CGraph::FSetGraphPointers()
 	return true;
 }
 
-int CGraph::CheckNODFile(const char* szMapName)
+bool CGraph::CheckNODFile(const char* szMapName)
 {
-	int 		retValue;
-
 	std::filesystem::path bspFilename = std::filesystem::path{"maps"} / szMapName;
 	bspFilename += ".bsp";
 
 	std::filesystem::path graphFilename = std::filesystem::path{"maps"} / "graphs" / szMapName;
 	graphFilename += ".nod";
 
-	retValue = true;
+	bool retValue = true;
 
 	int iCompare;
 	if (COMPARE_FILE_TIME(bspFilename.string().c_str(), graphFilename.string().c_str(), &iCompare))
