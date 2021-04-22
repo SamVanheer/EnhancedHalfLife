@@ -33,7 +33,12 @@ void IN_Init();
 void IN_Move(float frametime, usercmd_t* cmd);
 void IN_Shutdown();
 void V_Init();
-int CL_ButtonBits(int);
+
+/**
+*	@brief Returns appropriate button info for keyboard and mouse state
+*	Set bResetState to true to clear old state info
+*/
+int CL_ButtonBits(bool bResetState);
 
 // xxx need client dll function to get and clear impuse
 extern cvar_t* in_joystick;
@@ -469,11 +474,9 @@ void IN_MLookUp()
 float CL_KeyState(kbutton_t* key)
 {
 	float		val = 0.0;
-	int			impulsedown, impulseup, down;
-
-	impulsedown = key->state & KEYBUTTON_IMPULSE_DOWN;
-	impulseup = key->state & KEYBUTTON_IMPULSE_UP;
-	down = key->state & KEYBUTTON_DOWN;
+	const bool impulsedown = (key->state & KEYBUTTON_IMPULSE_DOWN) != 0;
+	const bool impulseup = (key->state & KEYBUTTON_IMPULSE_UP) != 0;
+	const bool down = (key->state & KEYBUTTON_DOWN) != 0;
 
 	if (impulsedown && !impulseup)
 	{
@@ -634,7 +637,7 @@ void DLLEXPORT CL_CreateMove(float frametime, usercmd_t* cmd, int active)
 	//
 	// set button and flag bits
 	//
-	cmd->buttons = CL_ButtonBits(1);
+	cmd->buttons = CL_ButtonBits(true);
 
 	// If they're in a modal dialog, ignore the attack button.
 	if (GetClientVoiceMgr()->IsInSquelchMode())
@@ -675,12 +678,7 @@ bool CL_IsDead()
 	return gHUD.m_Health.m_iHealth <= 0;
 }
 
-/**
-*	@brief Returns appropriate button info for keyboard and mouse state
-*	Set bResetState to 1 to clear old state info
-*/
-//TODO: bool param
-int CL_ButtonBits(int bResetState)
+int CL_ButtonBits(bool bResetState)
 {
 	int bits = 0;
 
@@ -788,7 +786,7 @@ int CL_ButtonBits(int bResetState)
 
 void CL_ResetButtonBits(int bits)
 {
-	int bitsNew = CL_ButtonBits(0) ^ bits;
+	int bitsNew = CL_ButtonBits(false) ^ bits;
 
 	// Has the attack button been changed
 	if (bitsNew & IN_ATTACK)

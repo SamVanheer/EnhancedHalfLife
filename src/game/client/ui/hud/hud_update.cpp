@@ -16,7 +16,7 @@
 #include "hud.h"
 #include "cl_util.h"
 
-int CL_ButtonBits(int);
+int CL_ButtonBits(bool);
 void CL_ResetButtonBits(int bits);
 
 extern float v_idlescale;
@@ -27,7 +27,7 @@ bool CHud::UpdateClientData(client_data_t* cdata, float time)
 	memcpy(m_vecOrigin, cdata->origin, sizeof(Vector));
 	memcpy(m_vecAngles, cdata->viewangles, sizeof(Vector));
 
-	m_iKeyBits = CL_ButtonBits(0);
+	m_iKeyBits = CL_ButtonBits(false);
 	m_iWeaponBits = cdata->iWeaponBits;
 
 	in_fov = cdata->fov;
