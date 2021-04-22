@@ -19,7 +19,6 @@
 #include "monsters.h"
 #include "schedule.h"
 #include "flyingmonster.h"
-#include "nodes.h"
 #include "soundent.h"
 #include "animation.h"
 #include "effects.h"

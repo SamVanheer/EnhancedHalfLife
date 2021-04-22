@@ -18,7 +18,6 @@
 #include "cbase.h"
 #include "monsters.h"
 #include "weapons.h"
-#include "nodes.h"
 #include "effects.h"
 
 constexpr int SF_WAITFORTRIGGER = 0x04 | 0x40; // UNDONE: Fix!
