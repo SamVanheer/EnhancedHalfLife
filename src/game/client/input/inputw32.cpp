@@ -34,7 +34,7 @@ constexpr int MOUSE_BUTTON_COUNT = 5;
 *	@brief Set this to true to show mouse cursor. Experimental
 */
 //TODO: bool
-int	g_iVisibleMouse = 0;
+bool g_iVisibleMouse = false;
 
 extern bool iMouseInUse;
 

@@ -749,7 +749,7 @@ public:
 	void	Spawn() override;
 	void	Precache() override;
 	void	Touch(CBaseEntity* pOther) override;
-	void	Move(CBaseEntity* pMover, int push);
+	void	Move(CBaseEntity* pMover, bool push);
 	void	KeyValue(KeyValueData* pkvd) override;
 
 	/**
@@ -870,7 +870,7 @@ void CPushable::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useT
 	}
 
 	if (pActivator->pev->velocity != vec3_origin)
-		Move(pActivator, 0);
+		Move(pActivator, false);
 }
 
 void CPushable::Touch(CBaseEntity* pOther)
@@ -878,11 +878,10 @@ void CPushable::Touch(CBaseEntity* pOther)
 	if (FClassnameIs(pOther->pev, "worldspawn"))
 		return;
 
-	Move(pOther, 1);
+	Move(pOther, true);
 }
 
-//TODO: bool push
-void CPushable::Move(CBaseEntity* pOther, int push)
+void CPushable::Move(CBaseEntity* pOther, bool push)
 {
 	entvars_t* pevToucher = pOther->pev;
 	bool playerTouch = false;

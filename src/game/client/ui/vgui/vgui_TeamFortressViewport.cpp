@@ -60,7 +60,7 @@
 #include "screenfade.h"
 #include "CTokenizer.hpp"
 
-extern int g_iVisibleMouse;
+extern bool g_iVisibleMouse;
 class CCommandMenu;
 int g_iPlayerClass;
 int g_iTeamNumber;

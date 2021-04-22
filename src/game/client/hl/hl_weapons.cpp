@@ -775,7 +775,7 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 
 void DLLEXPORT HUD_PostRunCmd(local_state_t* from, local_state_t* to, usercmd_t* cmd, int runfuncs, double time, unsigned int random_seed)
 {
-	g_runfuncs = runfuncs;
+	g_runfuncs = runfuncs != 0;
 
 #if defined( CLIENT_WEAPONS )
 	if (cl_lw && cl_lw->value)

@@ -57,7 +57,11 @@ void			stub_SetModel(edict_t* e, const char* m);
 
 extern cvar_t* cl_lw;
 
-extern int g_runfuncs;
+/**
+*	@brief g_runfuncs is true if this is the first time we've predicted a particular movement/firing command.
+*	If it is true, then we should play events/sounds etc., otherwise, we just will be updating state info, but not firing events
+*/
+inline bool g_runfuncs = false;
 extern Vector v_angles;
 extern Vector v_client_aimangles;
 extern float g_lastFOV;

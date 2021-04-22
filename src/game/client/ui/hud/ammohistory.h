@@ -92,8 +92,7 @@ public:
 	/**
 	*	@brief Menu selection code
 	*/
-	//TODO: fAdvance should be bool
-	void SelectSlot(int iSlot, int fAdvance, int iDirection);
+	void SelectSlot(int iSlot, bool fAdvance, int iDirection);
 	WEAPON* GetNextActivePos(int iSlot, int iSlotPos);
 
 	int HasAmmo(WEAPON* p);

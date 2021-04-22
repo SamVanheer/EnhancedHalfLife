@@ -399,9 +399,8 @@ public:
 
 	/**
 	*	@brief Return true if you want to add yourself to the player
-	* TODO bool
 	*/
-	virtual int AddWeapon() { ExtractAmmo(this); return true; }
+	virtual bool AddWeapon() { ExtractAmmo(this); return true; }
 
 	// generic "shared" ammo handlers
 	bool AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip, int iMaxCarry);
