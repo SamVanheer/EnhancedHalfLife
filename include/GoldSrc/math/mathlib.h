@@ -93,6 +93,9 @@ void VectorTransform(const float* in1, float in2[3][4], float* out);
 
 void NormalizeAngles(float* angles);
 
+float UTIL_FixAngle(float angle);
+void UTIL_FixupAngles(Vector& v);
+
 /**
 *	@brief Interpolate Euler angles.
 *

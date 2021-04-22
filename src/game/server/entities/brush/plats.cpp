@@ -1013,23 +1013,6 @@ void CFuncTrackTrain::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYP
 	}
 }
 
-//TODO: move these to mathlib
-static float Fix(float angle)
-{
-	while (angle < 0)
-		angle += 360;
-	while (angle > 360)
-		angle -= 360;
-
-	return angle;
-}
-static void FixupAngles(Vector& v)
-{
-	v.x = Fix(v.x);
-	v.y = Fix(v.y);
-	v.z = Fix(v.z);
-}
-
 constexpr int TRAIN_STARTPITCH = 60;
 constexpr int TRAIN_MAXPITCH = 200;
 constexpr int TRAIN_MAXSPEED = 1000;	// approx max speed for sound pitch calculation
@@ -1139,8 +1122,8 @@ void CFuncTrackTrain::Next()
 	angles.y += 180;
 
 	// !!!  All of this crap has to be done to make the angles not wrap around, revisit this.
-	FixupAngles(angles);
-	FixupAngles(pev->angles);
+	UTIL_FixupAngles(angles);
+	UTIL_FixupAngles(pev->angles);
 
 	if (!pnext || (delta.x == 0 && delta.y == 0))
 		angles = pev->angles;

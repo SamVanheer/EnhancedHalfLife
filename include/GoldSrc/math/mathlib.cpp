@@ -203,6 +203,23 @@ void NormalizeAngles(float* angles)
 	}
 }
 
+float UTIL_FixAngle(float angle)
+{
+	while (angle < 0)
+		angle += 360;
+	while (angle > 360)
+		angle -= 360;
+
+	return angle;
+}
+
+void UTIL_FixupAngles(Vector& v)
+{
+	v.x = UTIL_FixAngle(v.x);
+	v.y = UTIL_FixAngle(v.y);
+	v.z = UTIL_FixAngle(v.z);
+}
+
 void InterpolateAngles(Vector& start, Vector& end, Vector& output, float frac)
 {
 	int i;
@@ -347,7 +364,6 @@ float UTIL_Approach(float target, float value, float speed)
 
 	return value;
 }
-
 
 float UTIL_ApproachAngle(float target, float value, float speed)
 {
