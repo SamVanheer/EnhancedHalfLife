@@ -39,15 +39,42 @@ struct entvars_t;
 
 constexpr int MAX_MAPNAME_LENGTH = 32;
 
-//TODO: verify that these work
+/**
+*	@brief Logging types
+*	@details With the exception of at_logged in multiplayer all types are only logged if developer level is at least 1
+*/
 enum ALERT_TYPE
 {
+	/**
+	*	@brief Logs message to the console with the format "NOTE: %s"
+	*/
 	at_notice,
-	at_console,		//!< same as at_notice, but forces a ConPrintf, not a message box
-	at_aiconsole,	//!< same as at_console, but only shown if developer level is 2!
+
+	/**
+	*	@brief Logs message to the console with the format "%s"
+	*/
+	at_console,
+
+	/**
+	*	@brief same as at_console, but only shown if developer level is 2!
+	*/
+	at_aiconsole,
+
+	/**
+	*	@brief Logs message to the console with the format "WARNING: %s"
+	*/
 	at_warning,
+
+	/**
+	*	@brief Logs message to the console with the format "ERROR: %s"
+	*/
 	at_error,
-	at_logged		//!< Server print to console ( only in multiplayer games ).
+
+	/**
+	*	@brief Server print to console ( only in multiplayer games ).
+	*	Note: will prefix garbage to the string in singleplayer!
+	*/
+	at_logged
 };
 
 // 4-22-98  JOHN: added for use in pfnClientPrintf
