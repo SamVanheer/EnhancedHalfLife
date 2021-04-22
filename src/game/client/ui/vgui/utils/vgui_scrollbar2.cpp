@@ -5,7 +5,6 @@
 // $NoKeywords: $
 //=============================================================================
 
-
 #include "vgui_scrollbar2.h"
 #include "vgui_slider2.h"
 #include "vgui_loadtga.h"
@@ -16,7 +15,6 @@
 #include<VGUI_LineBorder.h>
 
 using namespace vgui;
-
 
 namespace
 {
@@ -52,13 +50,12 @@ public:
 		_scrollBar->doButtonPressed(_buttonIndex);
 	}
 };
-
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Default scrollbar button
-//			Draws in new scoreboard style
-//-----------------------------------------------------------------------------
+/**
+*	@brief Default scrollbar button
+*	Draws in new scoreboard style
+*/
 class ScrollBarButton : public Button
 {
 private:
@@ -88,17 +85,6 @@ public:
 	}
 };
 
-
-
-
-//-----------------------------------------------------------------------------
-// Purpose: Constructor
-// Input  : x - 
-//			y - 
-//			wide - 
-//			tall - 
-//			vertical - 
-//-----------------------------------------------------------------------------
 ScrollBar2::ScrollBar2(int x, int y, int wide, int tall, bool vertical) : Panel(x, y, wide, tall)
 {
 	_slider = nullptr;

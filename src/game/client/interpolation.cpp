@@ -11,7 +11,9 @@
 #include "cl_util.h"
 #include "interpolation.h"
 
-// = determinant of matrix a,b,c
+/**
+*	@brief determinant of matrix a,b,c
+*/
 inline float Determinant(const Vector& a, const Vector& b, const Vector& c)
 {
 	return (a[2] * (b[0] * c[1] - b[1] * c[0]) +
@@ -19,7 +21,10 @@ inline float Determinant(const Vector& a, const Vector& b, const Vector& c)
 		a[0] * (b[1] * c[2] - b[2] * c[1]));
 }
 
-// slove 3 vector linear system of equations v0 = x*v1 + y*v2 + z*v3 (if possible)
+//TODO: typo
+/**
+*	@brief slove 3 vector linear system of equations v0 = x*v1 + y*v2 + z*v3 (if possible)
+*/
 bool SolveLSE(const Vector& v0, const Vector& v1, const Vector& v2, const Vector& v3, float* x, float* y, float* z)
 {
 	const float d = Determinant(v1, v2, v3);
@@ -39,7 +44,9 @@ bool SolveLSE(const Vector& v0, const Vector& v1, const Vector& v2, const Vector
 	return true;
 }
 
-// p = closest point between vector lines a1+x*m1 and a2+x*m2
+/**
+*	@brief p = closest point between vector lines a1+x*m1 and a2+x*m2
+*/
 bool GetPointBetweenLines(Vector& p, Vector a1, Vector m1, Vector a2, Vector m2)
 {
 	float x, z;
@@ -58,7 +65,9 @@ bool GetPointBetweenLines(Vector& p, Vector a1, Vector m1, Vector a2, Vector m2)
 	return true;
 }
 
-// Bernstein Poynom B(u) with n = 2, i = 0
+/**
+*	@brief Bernstein Poynom B(u) with n = 2, i = 0
+*/
 inline constexpr float BernsteinPolynom20(float u)
 {
 	return (1.0f - u) * (1.0f - u);
@@ -154,7 +163,6 @@ void CInterpolation::SetWaypoints(Vector* prev, Vector start, Vector end, Vector
 
 void CInterpolation::Interpolate(float t, Vector& point, Vector& angle, float* fov)
 {
-
 	if (m_SmoothStart && m_SmoothEnd)
 	{
 		t = (1.0f - t) * (t * t) + t * (1.0f - ((t - 1.0f) * (t - 1.0f)));
@@ -225,6 +233,3 @@ void CInterpolation::InterpolateAngle(float t, Vector& angle)
 
 	NormalizeAngles(angle);
 }
-
-
-

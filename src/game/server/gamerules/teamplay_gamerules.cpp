@@ -13,14 +13,14 @@
 *
 ****/
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"player.h"
-#include	"weapons.h"
-#include	"gamerules.h"
-#include	"teamplay_gamerules.h"
-#include	"game.h"
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "player.h"
+#include "weapons.h"
+#include "gamerules.h"
+#include "teamplay_gamerules.h"
+#include "game.h"
 #include "UserMessages.h"
 #include "voice_gamemgr.h"
 
@@ -160,7 +160,6 @@ void CHalfLifeTeamplay::UpdateGameMode(CBasePlayer* pPlayer)
 	MESSAGE_END();
 }
 
-
 const char* CHalfLifeTeamplay::SetDefaultPlayerTeam(CBasePlayer* pPlayer)
 {
 	// copy out the team name from the model
@@ -236,7 +235,6 @@ void CHalfLifeTeamplay::InitHUD(CBasePlayer* pPlayer)
 		}
 	}
 }
-
 
 void CHalfLifeTeamplay::ChangePlayerTeam(CBasePlayer* pPlayer, const char* pTeamName, bool bKill, bool bGib)
 {
@@ -440,7 +438,6 @@ const char* CHalfLifeTeamplay::GetTeamID(CBaseEntity* pEntity)
 	return pEntity->TeamID();
 }
 
-
 int CHalfLifeTeamplay::GetTeamIndex(std::string_view teamName)
 {
 	if (!teamName.empty())
@@ -456,7 +453,6 @@ int CHalfLifeTeamplay::GetTeamIndex(std::string_view teamName)
 	return -1;	// No match
 }
 
-
 const char* CHalfLifeTeamplay::GetIndexedTeamName(int teamIndex)
 {
 	if (teamIndex < 0 || teamIndex >= num_teams)
@@ -464,7 +460,6 @@ const char* CHalfLifeTeamplay::GetIndexedTeamName(int teamIndex)
 
 	return team_names[teamIndex];
 }
-
 
 bool CHalfLifeTeamplay::IsValidTeam(const char* pTeamName)
 {

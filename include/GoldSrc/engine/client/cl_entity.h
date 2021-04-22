@@ -34,9 +34,9 @@ struct efrag_t
 
 struct mouth_t
 {
-	byte					mouthopen;		// 0 = mouth closed, 255 = mouth agape
-	byte					sndcount;		// counter for running average
-	int						sndavg;			// running average
+	byte					mouthopen;		//!< 0 = mouth closed, 255 = mouth agape
+	byte					sndcount;		//!< counter for running average
+	int						sndavg;			//!< running average
 };
 
 struct latchedvars_t
@@ -68,20 +68,20 @@ constexpr int HISTORY_MASK = HISTORY_MAX - 1;
 
 struct cl_entity_t
 {
-	int						index;      // Index into cl_entities ( should match actual slot, but not necessarily )
+	int						index;      //!< Index into cl_entities ( should match actual slot, but not necessarily )
 
-	qboolean				player;     // True if this entity is a "player"
+	qboolean				player;     //!< True if this entity is a "player"
 
-	entity_state_t			baseline;   // The original state from which to delta during an uncompressed message
-	entity_state_t			prevstate;  // The state information from the penultimate message received from the server
-	entity_state_t			curstate;   // The state information from the last message received from server
+	entity_state_t			baseline;   //!< The original state from which to delta during an uncompressed message
+	entity_state_t			prevstate;  //!< The state information from the penultimate message received from the server
+	entity_state_t			curstate;   //!< The state information from the last message received from server
 
-	int						current_position;  // Last received history update index
-	position_history_t		ph[HISTORY_MAX];   // History of position and angle updates for this player
+	int						current_position;  //!< Last received history update index
+	position_history_t		ph[HISTORY_MAX];   //!< History of position and angle updates for this player
 
-	mouth_t					mouth;			// For synchronizing mouth movements.
+	mouth_t					mouth;			//!< For synchronizing mouth movements.
 
-	latchedvars_t			latched;		// Variables used by studio model rendering routines
+	latchedvars_t			latched;		//!< Variables used by studio model rendering routines
 
 	// Information based on interplocation, extrapolation, prediction, or just copied from last msg received.
 	//
@@ -97,11 +97,11 @@ struct cl_entity_t
 	// Other entity local information
 	int						trivial_accept;
 
-	model_t* model;			// cl.model_precache[ curstate.modelindes ];  all visible entities have a model
-	efrag_t* efrag;			// linked list of efrags
-	mnode_t* topnode;		// for bmodels, first world node that splits bmodel, or nullptr if not split
+	model_t* model;			//!< cl.model_precache[ curstate.modelindes ];  all visible entities have a model
+	efrag_t* efrag;			//!< linked list of efrags
+	mnode_t* topnode;		//!< for bmodels, first world node that splits bmodel, or nullptr if not split
 
-	float					syncbase;		// for client-side animations -- used by obsolete alias animation system, remove?
-	int						visframe;		// last frame this entity was found in an active leaf
+	float					syncbase;		//!< for client-side animations -- used by obsolete alias animation system, remove?
+	int						visframe;		//!< last frame this entity was found in an active leaf
 	colorVec				cvFloorColor;
 };

@@ -20,6 +20,8 @@
 *
 *	4-23-98
 *	JOHN:  client dll interface declarations
+*	this file is included by both the engine and the client-dll,
+*	so make sure engine declarations aren't done twice
 */
 
 #include "const.h"
@@ -29,9 +31,6 @@
 #include "wrect.h"
 #include "in_buttons.h"
 #include "cl_engine_int.hpp"
-
-// this file is included by both the engine and the client-dll,
-// so make sure engine declarations aren't done twice
 
 constexpr int SCRINFO_SCREENFLASH = 1;
 constexpr int SCRINFO_STRETCHED = 2;
@@ -71,7 +70,7 @@ struct hud_player_info_t
 {
 	char* name;
 	short ping;
-	byte thisplayer;  // true if this is the calling player
+	byte thisplayer;  //!< true if this is the calling player
 
 	byte spectator;
 	byte packetloss;

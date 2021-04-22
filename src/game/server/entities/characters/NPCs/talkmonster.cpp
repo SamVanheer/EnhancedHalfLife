@@ -12,16 +12,16 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-#include	"schedule.h"
-#include	"talkmonster.h"
-#include	"defaultai.h"
-#include	"scripted.h"
-#include	"soundent.h"
-#include	"animation.h"
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "monsters.h"
+#include "schedule.h"
+#include "talkmonster.h"
+#include "defaultai.h"
+#include "scripted.h"
+#include "soundent.h"
+#include "animation.h"
 
 float	CTalkMonster::g_talkWaitTime = 0;		// time delay until it's ok to speak: used so that two NPCs don't talk at once
 
@@ -45,14 +45,12 @@ TYPEDESCRIPTION	CTalkMonster::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CTalkMonster, CBaseMonster);
 
-// array of friend names
 const char* CTalkMonster::m_szFriends[TLK_CFRIENDS] =
 {
 	"monster_barney",
 	"monster_scientist",
 	"monster_sitting_scientist",
 };
-
 
 //=========================================================
 // AI Schedules Specific to talking monsters
@@ -80,7 +78,6 @@ Schedule_t	slIdleResponse[] =
 		bits_COND_HEAVY_DAMAGE,
 		0,
 		"Idle Response"
-
 	},
 };
 
@@ -206,7 +203,6 @@ Schedule_t	slMoveAway[] =
 	},
 };
 
-
 Task_t	tlMoveAwayFail[] =
 {
 	{ TASK_STOP_MOVING,				(float)0		},
@@ -223,8 +219,6 @@ Schedule_t	slMoveAwayFail[] =
 		"MoveAwayFail"
 	},
 };
-
-
 
 Task_t	tlMoveAwayFollow[] =
 {
@@ -315,7 +309,6 @@ Schedule_t	slTlkIdleWatchClient[] =
 	},
 };
 
-
 Task_t	tlTlkIdleEyecontact[] =
 {
 	{ TASK_TLK_IDEALYAW,	(float)0		},// look at who I'm talking to
@@ -338,7 +331,6 @@ Schedule_t	slTlkIdleEyecontact[] =
 	},
 };
 
-
 DEFINE_CUSTOM_SCHEDULES(CTalkMonster)
 {
 	slIdleResponse,
@@ -356,7 +348,6 @@ DEFINE_CUSTOM_SCHEDULES(CTalkMonster)
 
 IMPLEMENT_CUSTOM_SCHEDULES(CTalkMonster, CBaseMonster);
 
-
 void CTalkMonster::SetActivity(Activity newActivity)
 {
 	if (newActivity == ACT_IDLE && IsTalking())
@@ -367,7 +358,6 @@ void CTalkMonster::SetActivity(Activity newActivity)
 
 	CBaseMonster::SetActivity(newActivity);
 }
-
 
 void CTalkMonster::StartTask(Task_t* pTask)
 {
@@ -486,7 +476,6 @@ void CTalkMonster::StartTask(Task_t* pTask)
 		CBaseMonster::StartTask(pTask);
 	}
 }
-
 
 void CTalkMonster::RunTask(Task_t* pTask)
 {
@@ -623,7 +612,6 @@ void CTalkMonster::RunTask(Task_t* pTask)
 	}
 }
 
-
 void CTalkMonster::Killed(entvars_t* pevAttacker, int iGib)
 {
 	// If a client killed me (unless I was already Barnacle'd), make everyone else mad/afraid of him
@@ -639,8 +627,6 @@ void CTalkMonster::Killed(entvars_t* pevAttacker, int iGib)
 	SetUse(nullptr);
 	CBaseMonster::Killed(pevAttacker, iGib);
 }
-
-
 
 CBaseEntity* CTalkMonster::EnumFriends(CBaseEntity* pPrevious, int listNumber, bool bTrace)
 {
@@ -674,7 +660,6 @@ CBaseEntity* CTalkMonster::EnumFriends(CBaseEntity* pPrevious, int listNumber, b
 	return nullptr;
 }
 
-
 void CTalkMonster::AlertFriends()
 {
 	CBaseEntity* pFriend = nullptr;
@@ -695,8 +680,6 @@ void CTalkMonster::AlertFriends()
 	}
 }
 
-
-
 void CTalkMonster::ShutUpFriends()
 {
 	CBaseEntity* pFriend = nullptr;
@@ -716,9 +699,6 @@ void CTalkMonster::ShutUpFriends()
 	}
 }
 
-
-// UNDONE: Keep a follow time in each follower, make a list of followers in this function and do LRU
-// UNDONE: Check this in Restore to keep restored monsters from joining a full list of followers
 void CTalkMonster::LimitFollowers(CBaseEntity* pPlayer, int maxFollowers)
 {
 	CBaseEntity* pFriend = nullptr;
@@ -744,7 +724,6 @@ void CTalkMonster::LimitFollowers(CBaseEntity* pPlayer, int maxFollowers)
 	}
 }
 
-
 float CTalkMonster::TargetDistance()
 {
 	// If we lose the player, or he dies, return a really large distance
@@ -754,11 +733,6 @@ float CTalkMonster::TargetDistance()
 	return (m_hTargetEnt->pev->origin - pev->origin).Length();
 }
 
-
-//=========================================================
-// HandleAnimEvent - catches the monster-specific messages
-// that occur when tagged animation frames are played.
-//=========================================================
 void CTalkMonster::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
@@ -781,8 +755,6 @@ void CTalkMonster::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-// monsters derived from ctalkmonster should call this in precache()
-
 void CTalkMonster::TalkInit()
 {
 	// every new talking monster must reset this global, otherwise
@@ -792,15 +764,12 @@ void CTalkMonster::TalkInit()
 
 	m_voicePitch = 100;
 }
-//=========================================================
-// FindNearestFriend
-// Scan for nearest, visible friend. If fPlayer is true, look for
-// nearest player
-//=========================================================
+
 CBaseEntity* CTalkMonster::FindNearestFriend(bool fPlayer)
 {
 	CBaseEntity* pFriend = nullptr;
 	CBaseEntity* pNearest = nullptr;
+	//TODO: use proper constant
 	float range = 10000000.0;
 	TraceResult tr;
 	Vector vecStart = pev->origin;
@@ -870,7 +839,6 @@ int CTalkMonster::GetVoicePitch()
 	return m_voicePitch + RANDOM_LONG(0, 3);
 }
 
-
 void CTalkMonster::Touch(CBaseEntity* pOther)
 {
 	// Did the player touch me?
@@ -894,12 +862,6 @@ void CTalkMonster::Touch(CBaseEntity* pOther)
 	}
 }
 
-
-
-//=========================================================
-// IdleRespond
-// Respond to a previous question
-//=========================================================
 void CTalkMonster::IdleRespond()
 {
 	int pitch = GetVoicePitch();
@@ -943,7 +905,6 @@ bool CTalkMonster::FOkToSpeak()
 	return true;
 }
 
-
 bool CTalkMonster::CanPlaySentence(bool fDisregardState)
 {
 	if (fDisregardState)
@@ -951,9 +912,6 @@ bool CTalkMonster::CanPlaySentence(bool fDisregardState)
 	return FOkToSpeak();
 }
 
-//=========================================================
-// FIdleStare
-//=========================================================
 bool CTalkMonster::FIdleStare()
 {
 	if (!FOkToSpeak())
@@ -965,10 +923,6 @@ bool CTalkMonster::FIdleStare()
 	return true;
 }
 
-//=========================================================
-// IdleHello
-// Try to greet player first time he's seen
-//=========================================================
 bool CTalkMonster::FIdleHello()
 {
 	if (!FOkToSpeak())
@@ -1000,8 +954,6 @@ bool CTalkMonster::FIdleHello()
 	return false;
 }
 
-
-// turn head towards supplied origin
 void CTalkMonster::IdleHeadTurn(Vector& vecFriend)
 {
 	// turn head in desired direction only if ent has a turnable head
@@ -1017,10 +969,6 @@ void CTalkMonster::IdleHeadTurn(Vector& vecFriend)
 	}
 }
 
-//=========================================================
-// FIdleSpeak
-// ask question of nearby friend, or make statement
-//=========================================================
 bool CTalkMonster::FIdleSpeak()
 {
 	// try to start a conversation, or make statement
@@ -1163,10 +1111,6 @@ void CTalkMonster::PlaySentence(const char* pszSentence, float duration, float v
 	SetBits(m_bitsSaid, bit_saidHelloPlayer);
 }
 
-//=========================================================
-// Talk - set a timer that tells us when the monster is done
-// talking.
-//=========================================================
 void CTalkMonster::Talk(float flDuration)
 {
 	if (flDuration <= 0)
@@ -1180,7 +1124,6 @@ void CTalkMonster::Talk(float flDuration)
 	}
 }
 
-// Prepare this talking monster to answer question
 void CTalkMonster::SetAnswerQuestion(CTalkMonster* pSpeaker)
 {
 	if (!m_pCine)
@@ -1207,7 +1150,6 @@ bool CTalkMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	}
 	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
 }
-
 
 Schedule_t* CTalkMonster::GetScheduleOfType(int Type)
 {
@@ -1303,9 +1245,6 @@ Schedule_t* CTalkMonster::GetScheduleOfType(int Type)
 	return CBaseMonster::GetScheduleOfType(Type);
 }
 
-//=========================================================
-// IsTalking - am I saying a sentence right now?
-//=========================================================
 bool CTalkMonster::IsTalking()
 {
 	if (m_flStopTalkTime > gpGlobals->time)
@@ -1316,9 +1255,6 @@ bool CTalkMonster::IsTalking()
 	return false;
 }
 
-//=========================================================
-// If there's a player around, watch him.
-//=========================================================
 void CTalkMonster::PrescheduleThink()
 {
 	if (!HasConditions(bits_COND_SEE_CLIENT))
@@ -1327,7 +1263,6 @@ void CTalkMonster::PrescheduleThink()
 	}
 }
 
-// try to smell something
 void CTalkMonster::TrySmellTalk()
 {
 	if (!FOkToSpeak())
@@ -1348,8 +1283,6 @@ void CTalkMonster::TrySmellTalk()
 	}
 }
 
-
-
 int CTalkMonster::IRelationship(CBaseEntity* pTarget)
 {
 	if (pTarget->IsPlayer())
@@ -1357,7 +1290,6 @@ int CTalkMonster::IRelationship(CBaseEntity* pTarget)
 			return R_HT;
 	return CBaseMonster::IRelationship(pTarget);
 }
-
 
 void CTalkMonster::StopFollowing(bool clearSchedule)
 {
@@ -1379,7 +1311,6 @@ void CTalkMonster::StopFollowing(bool clearSchedule)
 	}
 }
 
-
 void CTalkMonster::StartFollowing(CBaseEntity* pLeader)
 {
 	if (m_pCine)
@@ -1395,7 +1326,6 @@ void CTalkMonster::StartFollowing(CBaseEntity* pLeader)
 	ClearSchedule();
 }
 
-
 bool CTalkMonster::CanFollow()
 {
 	if (m_MonsterState == NPCState::Script)
@@ -1409,7 +1339,6 @@ bool CTalkMonster::CanFollow()
 
 	return !IsFollowing();
 }
-
 
 void CTalkMonster::FollowerUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
@@ -1459,7 +1388,6 @@ void CTalkMonster::KeyValue(KeyValueData* pkvd)
 		CBaseMonster::KeyValue(pkvd);
 }
 
-
 void CTalkMonster::Precache()
 {
 	if (!FStringNull(m_iszUse))
@@ -1467,4 +1395,3 @@ void CTalkMonster::Precache()
 	if (!FStringNull(m_iszUnUse))
 		m_szGrp[TLK_UNUSE] = STRING(m_iszUnUse);
 }
-

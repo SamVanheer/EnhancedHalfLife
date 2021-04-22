@@ -19,7 +19,7 @@
 
 DECLARE_MESSAGE(m_Train, Train)
 
-
+//TODO: unnecessary semicolons
 bool CHudTrain::Init()
 {
 	HOOK_MESSAGE(Train);
@@ -60,7 +60,6 @@ bool CHudTrain::Draw(float fTime)
 
 	return true;
 }
-
 
 bool CHudTrain::MsgFunc_Train(const char* pszName, int iSize, void* pbuf)
 {

@@ -68,7 +68,6 @@ IMPLEMENT_SAVERESTORE(CRecharge, CBaseEntity);
 
 LINK_ENTITY_TO_CLASS(func_recharge, CRecharge);
 
-
 void CRecharge::KeyValue(KeyValueData* pkvd)
 {
 	if (FStrEq(pkvd->szKeyName, "style") ||
@@ -108,7 +107,6 @@ void CRecharge::Precache()
 	PRECACHE_SOUND("items/suitchargeno1.wav");
 	PRECACHE_SOUND("items/suitchargeok1.wav");
 }
-
 
 void CRecharge::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {

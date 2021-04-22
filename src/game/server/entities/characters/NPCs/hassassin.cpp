@@ -13,15 +13,15 @@
 *
 ****/
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-#include	"schedule.h"
-#include	"squadmonster.h"
-#include	"weapons.h"
-#include	"soundent.h"
-#include	"game.h"
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "monsters.h"
+#include "schedule.h"
+#include "squadmonster.h"
+#include "weapons.h"
+#include "soundent.h"
+#include "game.h"
 
 //=========================================================
 // monster-specific schedule types
@@ -69,10 +69,9 @@ public:
 	void HandleAnimEvent(AnimationEvent& event) override;
 	Schedule_t* GetSchedule() override;
 	Schedule_t* GetScheduleOfType(int Type) override;
-	bool CheckMeleeAttack1(float flDot, float flDist) override;	// jump
-	// bool CheckMeleeAttack2 ( float flDot, float flDist ) override;
-	bool CheckRangeAttack1(float flDot, float flDist) override;	// shoot
-	bool CheckRangeAttack2(float flDot, float flDist) override;	// throw grenade
+	bool CheckMeleeAttack1(float flDot, float flDist) override;	//!< jump like crazy if the enemy gets too close. 
+	bool CheckRangeAttack1(float flDot, float flDist) override;	//!< drop a cap in their ass
+	bool CheckRangeAttack2(float flDot, float flDist) override;	//!< toss grenade is enemy gets in the way and is too close.
 	void StartTask(Task_t* pTask) override;
 	void RunAI() override;
 	void RunTask(Task_t* pTask) override;
@@ -100,8 +99,8 @@ public:
 
 	int		m_iShell;
 };
-LINK_ENTITY_TO_CLASS(monster_human_assassin, CHAssassin);
 
+LINK_ENTITY_TO_CLASS(monster_human_assassin, CHAssassin);
 
 TYPEDESCRIPTION	CHAssassin::m_SaveData[] =
 {
@@ -121,25 +120,14 @@ TYPEDESCRIPTION	CHAssassin::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CHAssassin, CBaseMonster);
 
-
-//=========================================================
-// DieSound
-//=========================================================
 void CHAssassin::DeathSound()
 {
 }
 
-//=========================================================
-// IdleSound
-//=========================================================
 void CHAssassin::IdleSound()
 {
 }
 
-//=========================================================
-// ISoundMask - returns a bit mask indicating which types
-// of sounds this monster regards. 
-//=========================================================
 int CHAssassin::ISoundMask()
 {
 	return	bits_SOUND_WORLD |
@@ -148,20 +136,11 @@ int CHAssassin::ISoundMask()
 		bits_SOUND_PLAYER;
 }
 
-
-//=========================================================
-// Classify - indicates this monster's place in the 
-// relationship table.
-//=========================================================
 int	CHAssassin::Classify()
 {
 	return	CLASS_HUMAN_MILITARY;
 }
 
-//=========================================================
-// SetYawSpeed - allows each sequence to have a different
-// turn rate associated with it.
-//=========================================================
 void CHAssassin::SetYawSpeed()
 {
 	int ys;
@@ -180,10 +159,6 @@ void CHAssassin::SetYawSpeed()
 	pev->yaw_speed = ys;
 }
 
-
-//=========================================================
-// Shoot
-//=========================================================
 void CHAssassin::Shoot()
 {
 	if (m_hEnemy == nullptr)
@@ -230,13 +205,6 @@ void CHAssassin::Shoot()
 	m_cAmmoLoaded--;
 }
 
-
-//=========================================================
-// HandleAnimEvent - catches the monster-specific messages
-// that occur when tagged animation frames are played.
-//
-// Returns number of events handled, 0 if none.
-//=========================================================
 void CHAssassin::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
@@ -270,9 +238,6 @@ void CHAssassin::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-//=========================================================
-// Spawn
-//=========================================================
 void CHAssassin::Spawn()
 {
 	Precache();
@@ -299,9 +264,6 @@ void CHAssassin::Spawn()
 	MonsterInit();
 }
 
-//=========================================================
-// Precache - precaches all resources this monster needs
-//=========================================================
 void CHAssassin::Precache()
 {
 	PRECACHE_MODEL("models/hassassin.mdl");
@@ -314,14 +276,8 @@ void CHAssassin::Precache()
 	m_iShell = PRECACHE_MODEL("models/shell.mdl");// brass shell
 }
 
-
-
 //=========================================================
 // AI Schedules Specific to this monster
-//=========================================================
-
-//=========================================================
-// Fail Schedule
 //=========================================================
 Task_t	tlAssassinFail[] =
 {
@@ -351,10 +307,6 @@ Schedule_t	slAssassinFail[] =
 	},
 };
 
-
-//=========================================================
-// Enemy exposed Agrunt's cover
-//=========================================================
 Task_t	tlAssassinExposed[] =
 {
 	{ TASK_STOP_MOVING,			(float)0							},
@@ -374,11 +326,6 @@ Schedule_t slAssassinExposed[] =
 	},
 };
 
-
-//=========================================================
-// Take cover from enemy! Tries lateral cover before node 
-// cover! 
-//=========================================================
 Task_t	tlAssassinTakeCoverFromEnemy[] =
 {
 	{ TASK_STOP_MOVING,				(float)0					},
@@ -391,6 +338,9 @@ Task_t	tlAssassinTakeCoverFromEnemy[] =
 	{ TASK_FACE_ENEMY,				(float)0					},
 };
 
+/**
+*	@brief Tries lateral cover before node cover! 
+*/
 Schedule_t	slAssassinTakeCoverFromEnemy[] =
 {
 	{
@@ -405,11 +355,6 @@ Schedule_t	slAssassinTakeCoverFromEnemy[] =
 	},
 };
 
-
-//=========================================================
-// Take cover from enemy! Tries lateral cover before node 
-// cover! 
-//=========================================================
 Task_t	tlAssassinTakeCoverFromEnemy2[] =
 {
 	{ TASK_STOP_MOVING,				(float)0					},
@@ -424,6 +369,9 @@ Task_t	tlAssassinTakeCoverFromEnemy2[] =
 	{ TASK_FACE_ENEMY,				(float)0					},
 };
 
+/**
+*	@brief Tries lateral cover before node cover! 
+*/
 Schedule_t	slAssassinTakeCoverFromEnemy2[] =
 {
 	{
@@ -438,10 +386,6 @@ Schedule_t	slAssassinTakeCoverFromEnemy2[] =
 	},
 };
 
-
-//=========================================================
-// hide from the loudest sound source
-//=========================================================
 Task_t	tlAssassinTakeCoverFromBestSound[] =
 {
 	{ TASK_SET_FAIL_SCHEDULE,			(float)SCHED_MELEE_ATTACK1	},
@@ -453,6 +397,9 @@ Task_t	tlAssassinTakeCoverFromBestSound[] =
 	{ TASK_TURN_LEFT,					(float)179					},
 };
 
+/**
+*	@brief hide from the loudest sound source
+*/
 Schedule_t	slAssassinTakeCoverFromBestSound[] =
 {
 	{
@@ -464,13 +411,6 @@ Schedule_t	slAssassinTakeCoverFromBestSound[] =
 	},
 };
 
-
-
-
-
-//=========================================================
-// AlertIdle Schedules
-//=========================================================
 Task_t	tlAssassinHide[] =
 {
 	{ TASK_STOP_MOVING,			0						 },
@@ -497,11 +437,6 @@ Schedule_t	slAssassinHide[] =
 	},
 };
 
-
-
-//=========================================================
-// HUNT Schedules
-//=========================================================
 Task_t tlAssassinHunt[] =
 {
 	{ TASK_GET_PATH_TO_ENEMY,	(float)0		},
@@ -524,10 +459,6 @@ Schedule_t slAssassinHunt[] =
 	},
 };
 
-
-//=========================================================
-// Jumping Schedules
-//=========================================================
 Task_t	tlAssassinJump[] =
 {
 	{ TASK_STOP_MOVING,			(float)0		},
@@ -546,17 +477,12 @@ Schedule_t	slAssassinJump[] =
 	},
 };
 
-
-//=========================================================
-// repel 
-//=========================================================
 Task_t	tlAssassinJumpAttack[] =
 {
 	{ TASK_SET_FAIL_SCHEDULE,	(float)SCHED_ASSASSIN_JUMP_LAND	},
 	// { TASK_SET_ACTIVITY,		(float)ACT_FLY	},
 	{ TASK_ASSASSIN_FALL_TO_GROUND, (float)0		},
 };
-
 
 Schedule_t	slAssassinJumpAttack[] =
 {
@@ -569,10 +495,6 @@ Schedule_t	slAssassinJumpAttack[] =
 	},
 };
 
-
-//=========================================================
-// repel 
-//=========================================================
 Task_t	tlAssassinJumpLand[] =
 {
 	{ TASK_SET_FAIL_SCHEDULE,		(float)SCHED_ASSASSIN_EXPOSED	},
@@ -615,10 +537,6 @@ DEFINE_CUSTOM_SCHEDULES(CHAssassin)
 
 IMPLEMENT_CUSTOM_SCHEDULES(CHAssassin, CBaseMonster);
 
-
-//=========================================================
-// CheckMeleeAttack1 - jump like crazy if the enemy gets too close. 
-//=========================================================
 bool CHAssassin::CheckMeleeAttack1(float flDot, float flDist)
 {
 	if (m_flNextJump < gpGlobals->time && (flDist <= 128 || HasMemory(bits_MEMORY_BADJUMP)) && m_hEnemy != nullptr)
@@ -645,10 +563,6 @@ bool CHAssassin::CheckMeleeAttack1(float flDot, float flDist)
 	return false;
 }
 
-//=========================================================
-// CheckRangeAttack1  - drop a cap in their ass
-//
-//=========================================================
 bool CHAssassin::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (!HasConditions(bits_COND_ENEMY_OCCLUDED) && flDist > 64 && flDist <= 2048 /* && flDot >= 0.5 */ /* && NoFriendlyFire() */)
@@ -668,9 +582,6 @@ bool CHAssassin::CheckRangeAttack1(float flDot, float flDist)
 	return false;
 }
 
-//=========================================================
-// CheckRangeAttack2 - toss grenade is enemy gets in the way and is too close. 
-//=========================================================
 bool CHAssassin::CheckRangeAttack2(float flDot, float flDist)
 {
 	m_fThrowGrenade = false;
@@ -702,10 +613,6 @@ bool CHAssassin::CheckRangeAttack2(float flDot, float flDist)
 	return false;
 }
 
-
-//=========================================================
-// RunAI
-//=========================================================
 void CHAssassin::RunAI()
 {
 	CBaseMonster::RunAI();
@@ -751,10 +658,6 @@ void CHAssassin::RunAI()
 	}
 }
 
-
-//=========================================================
-// StartTask
-//=========================================================
 void CHAssassin::StartTask(Task_t* pTask)
 {
 	switch (pTask->iTask)
@@ -777,10 +680,6 @@ void CHAssassin::StartTask(Task_t* pTask)
 	}
 }
 
-
-//=========================================================
-// RunTask 
-//=========================================================
 void CHAssassin::RunTask(Task_t* pTask)
 {
 	switch (pTask->iTask)
@@ -821,12 +720,6 @@ void CHAssassin::RunTask(Task_t* pTask)
 	}
 }
 
-//=========================================================
-// GetSchedule - Decides which type of schedule best suits
-// the monster's current state and conditions. Then calls
-// monster's member function to get a pointer to a schedule
-// of the proper type.
-//=========================================================
 Schedule_t* CHAssassin::GetSchedule()
 {
 	switch (m_MonsterState)
@@ -955,8 +848,6 @@ Schedule_t* CHAssassin::GetSchedule()
 	return CBaseMonster::GetSchedule();
 }
 
-//=========================================================
-//=========================================================
 Schedule_t* CHAssassin::GetScheduleOfType(int Type)
 {
 	// ALERT( at_console, "%d\n", m_iFrustration );

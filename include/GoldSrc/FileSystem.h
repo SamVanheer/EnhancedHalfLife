@@ -12,17 +12,10 @@
 #include "steam/steamtypes.h"
 #include "interface.h"
 
-//-----------------------------------------------------------------------------
-// Forward declarations
-//-----------------------------------------------------------------------------
 typedef void* FileHandle_t;
 typedef int FileFindHandle_t;
 typedef int WaitForResourcesHandle_t;
 
-
-//-----------------------------------------------------------------------------
-// Enums used by the interface
-//-----------------------------------------------------------------------------
 #ifndef FILESYSTEM_INTERNAL_H
 enum FileSystemSeek_t
 {
@@ -38,16 +31,24 @@ enum
 
 enum FileWarningLevel_t
 {
-	// Don't print anything
+	/**
+	*	@brief Don't print anything
+	*/
 	FILESYSTEM_WARNING_QUIET = 0,
 
-	// On shutdown, report names of files left unclosed
+	/**
+	*	@brief On shutdown, report names of files left unclosed
+	*/
 	FILESYSTEM_WARNING_REPORTUNCLOSED,
 
-	// Report number of times a file was opened, closed
+	/**
+	*	@brief Report number of times a file was opened, closed
+	*/
 	FILESYSTEM_WARNING_REPORTUSAGE,
 
-	// Report all open/close events to console ( !slow! )
+	/**
+	*	@brief Report all open/close events to console ( !slow! )
+	*/
 	FILESYSTEM_WARNING_REPORTALLACCESSES
 };
 
@@ -57,9 +58,9 @@ constexpr FileHandle_t FILESYSTEM_INVALID_HANDLE = static_cast<FileHandle_t>(0);
 // turn off any windows defines
 #undef GetCurrentDirectory
 
-//-----------------------------------------------------------------------------
-// Purpose: Main file system interface
-//-----------------------------------------------------------------------------
+/**
+*	@brief Main file system interface
+*/
 class IFileSystem : public IBaseInterface
 {
 public:
@@ -67,31 +68,35 @@ public:
 	virtual void			Mount() = 0;
 	virtual void			Unmount() = 0;
 
-	// Remove all search paths (including write path?)
+	/**
+	*	@brief Remove all search paths (including write path?)
+	*/
 	virtual void			RemoveAllSearchPaths() = 0;
 
-	// Add paths in priority order (mod dir, game dir, ....)
-	// If one or more .pak files are in the specified directory, then they are
-	//  added after the file system path
-	// If the path is the relative path to a .bsp file, then any previous .bsp file 
-	//  override is cleared and the current .bsp is searched for an embedded PAK file
-	//  and this file becomes the highest priority search path ( i.e., it's looked at first
-	//   even before the mod's file system path ).
+	/**
+	*	@brief Add paths in priority order (mod dir, game dir, ....)
+	*	@details If one or more .pak files are in the specified directory,
+	*	then they are added after the file system path
+	*	If the path is the relative path to a .bsp file,
+	*	then any previous .bsp file override is cleared and the current .bsp is searched for an embedded PAK file
+	*	 and this file becomes the highest priority search path
+	*	( i.e., it's looked at first even before the mod's file system path ).
+	*/
 	virtual void			AddSearchPath(const char* pPath, const char* pathID) = 0;
 	virtual bool			RemoveSearchPath(const char* pPath) = 0;
 
-	// Deletes a file
 	virtual void			RemoveFile(const char* pRelativePath, const char* pathID) = 0;
 
-	// this isn't implementable on STEAM as is.
 	virtual void			CreateDirHierarchy(const char* path, const char* pathID) = 0;
 
 	// File I/O and info
 	virtual bool			FileExists(const char* pFileName) = 0;
 	virtual bool			IsDirectory(const char* pFileName) = 0;
 
-	// opens a file
-	// if pathID is nullptr, all paths will be searched for the file
+	/**
+	*	@brief opens a file
+	*	@param pathID if nullptr, all paths will be searched for the file
+	*/
 	virtual FileHandle_t	Open(const char* pFileName, const char* pOptions, const char* pathID = 0L) = 0;
 
 	virtual void			Close(FileHandle_t file) = 0;
@@ -115,10 +120,7 @@ public:
 	virtual char* ReadLine(char* pOutput, int maxChars, FileHandle_t file) = 0;
 	virtual int				FPrintf(FileHandle_t file, const char* pFormat, ...) = 0;
 
-	// direct filesystem buffer access
-	// returns a handle to a buffer containing the file data
-	// this is the optimal way to access the complete data for a file, 
-	// since the file preloader has probably already got it in memory
+	// Read buffers are obsolete and don't work
 	virtual void* GetReadBuffer(FileHandle_t file, int* outBufferSize, bool failIfNotInCache) = 0;
 	virtual void            ReleaseReadBuffer(FileHandle_t file, void* readBuffer) = 0;
 
@@ -132,17 +134,24 @@ public:
 
 	virtual const char* GetLocalPath(const char* pFileName, char* pLocalPath, int localPathBufferSize) = 0;
 
-	// Note: This is sort of a secondary feature; but it's really useful to have it here
+	/**
+	*	@brief Note: This is sort of a secondary feature; but it's really useful to have it here
+	*/
 	virtual char* ParseFile(char* pFileBytes, char* pToken, bool* pWasQuoted) = 0;
 
-	// Returns true on success ( based on current list of search paths, otherwise false if 
-	//  it can't be resolved )
+	/**
+	*	@brief Returns true on success ( based on current list of search paths, otherwise false if it can't be resolved )
+	*/
 	virtual bool			FullPathToRelativePath(const char* pFullpath, char* pRelative) = 0;
 
-	// Gets the current working directory
+	/**
+	*	@brief Gets the current working directory
+	*/
 	virtual bool			GetCurrentDirectory(char* pDirectory, int maxlen) = 0;
 
-	// Dump to printf/OutputDebugString the list of files that have not been closed
+	/**
+	*	@brief Dump to printf/OutputDebugString the list of files that have not been closed
+	*/
 	virtual void			PrintOpenedFiles() = 0;
 
 	virtual void			SetWarningFunc(void (*pfnWarning)(const char* fmt, ...)) = 0;
@@ -157,22 +166,24 @@ public:
 	virtual void			GetInterfaceVersion(char* p, int maxlen) = 0;
 	virtual bool			IsFileImmediatelyAvailable(const char* pFileName) = 0;
 
-	// starts waiting for resources to be available
-	// returns FILESYSTEM_INVALID_HANDLE if there is nothing to wait on
+	//Resource waiting is obsolete and does nothing
 	virtual WaitForResourcesHandle_t WaitForResources(const char* resourcelist) = 0;
-	// get progress on waiting for resources; progress is a float [0, 1], complete is true on the waiting being done
-	// returns false if no progress is available
-	// any calls after complete is true or on an invalid handle will return false, 0.0f, true
-	virtual bool			GetWaitForResourcesProgress(WaitForResourcesHandle_t handle, float* progress /* out */, bool* complete /* out */) = 0;
-	// cancels a progress call
+	virtual bool			GetWaitForResourcesProgress(WaitForResourcesHandle_t handle, float* progress , bool* complete) = 0;
 	virtual void			CancelWaitForResources(WaitForResourcesHandle_t handle) = 0;
-	// returns true if the appID has all its caches fully preloaded
+
+	/**
+	*	@brief Always returns true
+	*/
 	virtual bool			IsAppReadyForOfflinePlay(int appID) = 0;
 
-	// interface for custom pack files > 4Gb
+	/**
+	*	@brief interface for custom pack files > 4Gb
+	*/
 	virtual bool			AddPackFile(const char* fullpath, const char* pathID) = 0;
 
-	// open a file but force the data to come from the steam cache, NOT from disk
+	/**
+	*	@brief Don't use this
+	*/
 	virtual FileHandle_t	OpenFromCacheForRead(const char* pFileName, const char* pOptions, const char* pathID = 0L) = 0;
 
 	virtual void			AddSearchPathNoWrite(const char* pPath, const char* pathID) = 0;

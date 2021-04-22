@@ -169,4 +169,3 @@ const PartnerId_t k_uPartnerIdInvalid = 0;
 #else
 #define k_uPartnerIdInvalid 0x0;
 #endif
-

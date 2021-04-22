@@ -36,50 +36,22 @@ bool IsFirstPersonSpectator()
 	return g_iUser1 == OBS_IN_EYE || (g_iUser1 && (gHUD.m_Spectator.m_pip->value == INSET_IN_EYE));
 }
 
-/*
-=================
-GetEntity
-
-Return's the requested cl_entity_t
-=================
-*/
 cl_entity_t* GetEntity(int idx)
 {
 	return gEngfuncs.GetEntityByIndex(idx);
 }
 
-/*
-=================
-GetViewEntity
-
-Return's the current weapon/view model
-=================
-*/
 cl_entity_t* GetViewEntity()
 {
 	return gEngfuncs.GetViewModel();
 }
 
-/*
-=================
-EV_CreateTracer
-
-Creates a tracer effect
-=================
-*/
 void EV_CreateTracer(Vector start, const Vector& end)
 {
 	//start is modified by this function
 	gEngfuncs.pEfxAPI->R_TracerEffect(start, end);
 }
 
-/*
-=================
-EV_IsPlayer
-
-Is the entity's index in the player range?
-=================
-*/
 bool EV_IsPlayer(int idx)
 {
 	if (idx >= 1 && idx <= gEngfuncs.GetMaxClients())
@@ -88,13 +60,6 @@ bool EV_IsPlayer(int idx)
 	return false;
 }
 
-/*
-=================
-EV_IsLocal
-
-Is the entity == the local player
-=================
-*/
 bool EV_IsLocal(int idx)
 {
 	// check if we are in some way in first person spec mode
@@ -104,13 +69,6 @@ bool EV_IsLocal(int idx)
 		return gEngfuncs.pEventAPI->EV_IsLocal(idx - 1) ? true : false;
 }
 
-/*
-=================
-EV_GetGunPosition
-
-Figure out the height of the gun
-=================
-*/
 void EV_GetGunPosition(event_args_t* args, Vector& pos, const Vector& origin)
 {
 	const int idx = args->entindex;
@@ -134,26 +92,12 @@ void EV_GetGunPosition(event_args_t* args, Vector& pos, const Vector& origin)
 	pos = origin + view_ofs;
 }
 
-/*
-=================
-EV_EjectBrass
-
-Bullet shell casings
-=================
-*/
 void EV_EjectBrass(const Vector& origin, const Vector& velocity, float rotation, int model, int soundtype)
 {
 	const Vector endpos{0, rotation, 0};
 	gEngfuncs.pEfxAPI->R_TempModel(origin, velocity, endpos, 2.5, model, soundtype);
 }
 
-/*
-=================
-EV_GetDefaultShellInfo
-
-Determine where to eject shells from
-=================
-*/
 void EV_GetDefaultShellInfo(event_args_t* args,
 	const Vector& origin, const Vector& velocity,
 	Vector& ShellVelocity, Vector& ShellOrigin,
@@ -183,13 +127,6 @@ void EV_GetDefaultShellInfo(event_args_t* args,
 	ShellOrigin = origin + view_ofs + up * upScale + forward * forwardScale + right * rightScale;
 }
 
-/*
-=================
-EV_MuzzleFlash
-
-Flag weapon/view model for muzzle flash
-=================
-*/
 void EV_MuzzleFlash()
 {
 	// Add muzzle flash to current weapon model

@@ -19,24 +19,39 @@
 #include "monsters.h"
 #include "dll_functions.hpp"
 
-// Monstermaker spawnflags
-constexpr int SF_MONSTERMAKER_START_ON = 1;		// start active ( if has targetname )
-constexpr int SF_MONSTERMAKER_CYCLIC = 4;		// drop one monster every time fired.
-constexpr int SF_MONSTERMAKER_MONSTERCLIP = 8;	// Children are blocked by monsterclip
+constexpr int SF_MONSTERMAKER_START_ON = 1;		//!< start active ( if has targetname )
+constexpr int SF_MONSTERMAKER_CYCLIC = 4;		//!< drop one monster every time fired.
+constexpr int SF_MONSTERMAKER_MONSTERCLIP = 8;	//!< Children are blocked by monsterclip
 
-//=========================================================
-// MonsterMaker - this ent creates monsters during the game.
-//=========================================================
+/**
+*	@brief this ent creates monsters during the game.
+*/
 class CMonsterMaker : public CBaseMonster
 {
 public:
 	void Spawn() override;
 	void Precache() override;
 	void KeyValue(KeyValueData* pkvd) override;
+
+	/**
+	*	@brief activates/deactivates the monster maker
+	*/
 	void EXPORT ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+
+	/**
+	*	@brief drops one monster from the monstermaker each time we call this.
+	*/
 	void EXPORT CyclicUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+
+	/**
+	*	@brief creates a new monster every so often
+	*/
 	void EXPORT MakerThink();
-	void DeathNotice(entvars_t* pevChild) override;// monster maker children use this to tell the monster maker that they have died.
+	void DeathNotice(entvars_t* pevChild) override;//!< monster maker children use this to tell the monster maker that they have died.
+	
+	/**
+	*	@brief this is the code that drops the monster
+	*/
 	void MakeMonster();
 
 	bool Save(CSave& save) override;
@@ -44,18 +59,18 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	string_t m_iszMonsterClassname;// classname of the monster(s) that will be created.
+	string_t m_iszMonsterClassname;//!< classname of the monster(s) that will be created.
 
-	int	 m_cNumMonsters;// max number of monsters this ent can create
+	int	 m_cNumMonsters;//!< max number of monsters this ent can create
 
 
-	int  m_cLiveChildren;// how many monsters made by this monster maker that are currently alive
-	int	 m_iMaxLiveChildren;// max number of monsters that this maker may have out at one time.
+	int  m_cLiveChildren;//!< how many monsters made by this monster maker that are currently alive
+	int	 m_iMaxLiveChildren;//!< max number of monsters that this maker may have out at one time.
 
-	float m_flGround; // z coord of the ground under me, used to make sure no monsters are under the maker when it drops a new child
+	float m_flGround; //!< z coord of the ground under me, used to make sure no monsters are under the maker when it drops a new child
 
 	bool m_fActive;
-	bool m_fFadeChildren;// should we make the children fadeout?
+	bool m_fFadeChildren;//!< should we make the children fadeout?
 };
 
 LINK_ENTITY_TO_CLASS(monstermaker, CMonsterMaker);
@@ -70,7 +85,6 @@ TYPEDESCRIPTION	CMonsterMaker::m_SaveData[] =
 	DEFINE_FIELD(CMonsterMaker, m_fActive, FIELD_BOOLEAN),
 	DEFINE_FIELD(CMonsterMaker, m_fFadeChildren, FIELD_BOOLEAN),
 };
-
 
 IMPLEMENT_SAVERESTORE(CMonsterMaker, CBaseMonster);
 
@@ -95,7 +109,6 @@ void CMonsterMaker::KeyValue(KeyValueData* pkvd)
 	else
 		CBaseMonster::KeyValue(pkvd);
 }
-
 
 void CMonsterMaker::Spawn()
 {
@@ -151,9 +164,6 @@ void CMonsterMaker::Precache()
 	UTIL_PrecacheOther(STRING(m_iszMonsterClassname));
 }
 
-//=========================================================
-// MakeMonster-  this is the code that drops the monster
-//=========================================================
 void CMonsterMaker::MakeMonster()
 {
 	edict_t* pent;
@@ -230,18 +240,11 @@ void CMonsterMaker::MakeMonster()
 	}
 }
 
-//=========================================================
-// CyclicUse - drops one monster from the monstermaker
-// each time we call this.
-//=========================================================
 void CMonsterMaker::CyclicUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	MakeMonster();
 }
 
-//=========================================================
-// ToggleUse - activates/deactivates the monster maker
-//=========================================================
 void CMonsterMaker::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	if (!ShouldToggle(useType, m_fActive))
@@ -261,9 +264,6 @@ void CMonsterMaker::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE
 	pev->nextthink = gpGlobals->time;
 }
 
-//=========================================================
-// MakerThink - creates a new monster every so often
-//=========================================================
 void CMonsterMaker::MakerThink()
 {
 	pev->nextthink = gpGlobals->time + m_flDelay;
@@ -271,9 +271,6 @@ void CMonsterMaker::MakerThink()
 	MakeMonster();
 }
 
-
-//=========================================================
-//=========================================================
 void CMonsterMaker::DeathNotice(entvars_t* pevChild)
 {
 	// ok, we've gotten the deathnotice from our child, now clear out its owner if we don't want it to fade.
@@ -284,5 +281,3 @@ void CMonsterMaker::DeathNotice(entvars_t* pevChild)
 		pevChild->owner = nullptr;
 	}
 }
-
-

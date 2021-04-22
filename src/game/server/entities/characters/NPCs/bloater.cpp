@@ -13,18 +13,16 @@
 *
 ****/
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-#include	"schedule.h"
-
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "monsters.h"
+#include "schedule.h"
 
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
 constexpr int BLOATER_AE_ATTACK_MELEE1 = 0x01;
-
 
 class CBloater : public CBaseMonster
 {
@@ -48,19 +46,11 @@ public:
 
 LINK_ENTITY_TO_CLASS(monster_bloater, CBloater);
 
-//=========================================================
-// Classify - indicates this monster's place in the 
-// relationship table.
-//=========================================================
 int	CBloater::Classify()
 {
 	return	CLASS_ALIEN_MONSTER;
 }
 
-//=========================================================
-// SetYawSpeed - allows each sequence to have a different
-// turn rate associated with it.
-//=========================================================
 void CBloater::SetYawSpeed()
 {
 	int ys;
@@ -158,11 +148,6 @@ void CBloater::AttackSnd()
 #endif
 }
 
-
-//=========================================================
-// HandleAnimEvent - catches the monster-specific messages
-// that occur when tagged animation frames are played.
-//=========================================================
 void CBloater::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
@@ -180,9 +165,6 @@ void CBloater::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-//=========================================================
-// Spawn
-//=========================================================
 void CBloater::Spawn()
 {
 	Precache();
@@ -202,15 +184,7 @@ void CBloater::Spawn()
 	MonsterInit();
 }
 
-//=========================================================
-// Precache - precaches all resources this monster needs
-//=========================================================
 void CBloater::Precache()
 {
 	PRECACHE_MODEL("models/floater.mdl");
 }
-
-//=========================================================
-// AI Schedules Specific to this monster
-//=========================================================
-

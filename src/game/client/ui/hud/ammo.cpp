@@ -26,10 +26,17 @@
 #include "cbase.h"
 #include "weapons.h"
 
-WEAPON* gpActiveSel;	// nullptr means off, 1 means just the menu bar, otherwise
-						// this points to the active weapon menu item
-WEAPON* gpLastSel;		// Last weapon menu selection 
+/**
+*	@brief nullptr means off, 1 means just the menu bar, otherwise this points to the active weapon menu item
+*/
+//TODO: rework this
+WEAPON* gpActiveSel;
+WEAPON* gpLastSel;		//!< Last weapon menu selection 
 
+/**
+*	@brief Finds and returns the matching sprite name 'psz' and resolution 'iRes' in the given sprite list 'pList'
+*	@param iCount is the number of items in the pList
+*/
 client_sprite_t* GetSpriteList(client_sprite_t* pList, const char* psz, int iRes, int iCount);
 
 WeaponsResource gWR;
@@ -65,7 +72,6 @@ int WeaponsResource::HasAmmo(WEAPON* p)
 	return (p->iAmmoType == -1) || p->iClip > 0 || CountAmmo(p->iAmmoType)
 		|| CountAmmo(p->iAmmo2Type) || (p->iFlags & ITEM_FLAG_SELECTONEMPTY);
 }
-
 
 void WeaponsResource::LoadWeaponSprites(WEAPON* pWeapon)
 {
@@ -192,7 +198,6 @@ void WeaponsResource::LoadWeaponSprites(WEAPON* pWeapon)
 
 }
 
-// Returns the first weapon for a given slot.
 WEAPON* WeaponsResource::GetFirstPos(int iSlot)
 {
 	WEAPON* pret = nullptr;
@@ -209,7 +214,6 @@ WEAPON* WeaponsResource::GetFirstPos(int iSlot)
 	return pret;
 }
 
-
 WEAPON* WeaponsResource::GetNextActivePos(int iSlot, int iSlotPos)
 {
 	if (iSlotPos >= MAX_WEAPON_POSITIONS || iSlot >= MAX_WEAPON_SLOTS)
@@ -222,7 +226,6 @@ WEAPON* WeaponsResource::GetNextActivePos(int iSlot, int iSlotPos)
 
 	return p;
 }
-
 
 int giBucketHeight, giBucketWidth, giABHeight, giABWidth; // Ammo Bar width and height
 
@@ -336,10 +339,6 @@ bool CHudAmmo::VidInit()
 	return true;
 }
 
-//
-// Think:
-//  Used for selection of weapon menu item.
-//
 void CHudAmmo::Think()
 {
 	if (gHUD.m_fPlayerDead)
@@ -384,10 +383,6 @@ void CHudAmmo::Think()
 
 }
 
-//
-// Helper function to return a Ammo pointer from id
-//
-
 HSPRITE* WeaponsResource::GetAmmoPicFromWeapon(int iAmmoId, wrect_t& rect)
 {
 	for (int i = 0; i < MAX_WEAPONS; i++)
@@ -406,9 +401,6 @@ HSPRITE* WeaponsResource::GetAmmoPicFromWeapon(int iAmmoId, wrect_t& rect)
 
 	return nullptr;
 }
-
-
-// Menu Selection Code
 
 void WeaponsResource::SelectSlot(int iSlot, int fAdvance, int iDirection)
 {
@@ -473,13 +465,6 @@ void WeaponsResource::SelectSlot(int iSlot, int fAdvance, int iDirection)
 		gpActiveSel = p;
 }
 
-//------------------------------------------------------------------------
-// Message Handlers
-//------------------------------------------------------------------------
-
-//
-// AmmoX  -- Update the count of a known type of ammo
-// 
 bool CHudAmmo::MsgFunc_AmmoX(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};
@@ -526,7 +511,6 @@ bool CHudAmmo::MsgFunc_ItemPickup(const char* pszName, int iSize, void* pbuf)
 	return true;
 }
 
-
 bool CHudAmmo::MsgFunc_HideWeapon(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};
@@ -551,11 +535,6 @@ bool CHudAmmo::MsgFunc_HideWeapon(const char* pszName, int iSize, void* pbuf)
 	return true;
 }
 
-// 
-//  CurWeapon: Update hud state with the current weapon and clip count. Ammo
-//  counts are updated with AmmoX. Server assures that the Weapon ammo type 
-//  numbers match a real ammo type.
-//
 bool CHudAmmo::MsgFunc_CurWeapon(const char* pszName, int iSize, void* pbuf)
 {
 	static wrect_t nullrc;
@@ -626,9 +605,6 @@ bool CHudAmmo::MsgFunc_CurWeapon(const char* pszName, int iSize, void* pbuf)
 	return true;
 }
 
-//
-// WeaponList -- Tells the hud about a new weapon type.
-//
 bool CHudAmmo::MsgFunc_WeaponList(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};
@@ -659,10 +635,6 @@ bool CHudAmmo::MsgFunc_WeaponList(const char* pszName, int iSize, void* pbuf)
 
 }
 
-//------------------------------------------------------------------------
-// Command Handlers
-//------------------------------------------------------------------------
-// Slot button pressed
 void CHudAmmo::SlotInput(int iSlot)
 {
 	if (gViewPort && gViewPort->SlotInput(iSlot))
@@ -733,8 +705,6 @@ void CHudAmmo::UserCmd_Close()
 		EngineClientCmd("escape");
 }
 
-
-// Selects the next item in the weapon menu
 void CHudAmmo::UserCmd_NextWeapon()
 {
 	if (gHUD.m_fPlayerDead || (gHUD.m_iHideHUDDisplay & (HIDEHUD_WEAPONS | HIDEHUD_ALL)))
@@ -775,7 +745,6 @@ void CHudAmmo::UserCmd_NextWeapon()
 	gpActiveSel = nullptr;
 }
 
-// Selects the previous item in the menu
 void CHudAmmo::UserCmd_PrevWeapon()
 {
 	if (gHUD.m_fPlayerDead || (gHUD.m_iHideHUDDisplay & (HIDEHUD_WEAPONS | HIDEHUD_ALL)))
@@ -815,12 +784,6 @@ void CHudAmmo::UserCmd_PrevWeapon()
 
 	gpActiveSel = nullptr;
 }
-
-
-
-//-------------------------------------------------------------------------
-// Drawing code
-//-------------------------------------------------------------------------
 
 bool CHudAmmo::Draw(float flTime)
 {
@@ -937,10 +900,9 @@ bool CHudAmmo::Draw(float flTime)
 	return true;
 }
 
-
-//
-// Draws the ammo bar on the hud
-//
+/**
+*	@brief Draws the ammo bar on the hud
+*/
 int DrawBar(int x, int y, int width, int height, float f)
 {
 	int r, g, b;
@@ -970,8 +932,6 @@ int DrawBar(int x, int y, int width, int height, float f)
 	return (x + width);
 }
 
-
-
 void DrawAmmoBar(WEAPON* p, int x, int y, int width, int height)
 {
 	if (!p)
@@ -1000,12 +960,9 @@ void DrawAmmoBar(WEAPON* p, int x, int y, int width, int height)
 	}
 }
 
-
-
-
-//
-// Draw Weapon Menu
-//
+/**
+*	@brief Draw Weapon Menu
+*/
 bool CHudAmmo::DrawWList(float flTime)
 {
 	int r, g, b, x, y, a, i;
@@ -1166,15 +1123,7 @@ bool CHudAmmo::DrawWList(float flTime)
 
 }
 
-
-/* =================================
-	GetSpriteList
-
-Finds and returns the matching
-sprite name 'psz' and resolution 'iRes'
-in the given sprite list 'pList'
-iCount is the number of items in the pList
-================================= */
+//TODO: move this
 client_sprite_t* GetSpriteList(client_sprite_t* pList, const char* psz, int iRes, int iCount)
 {
 	if (!pList)

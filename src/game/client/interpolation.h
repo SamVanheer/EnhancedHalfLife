@@ -24,7 +24,9 @@ public:
 	void SetFOVs(float start, float end);
 	void SetSmoothing(bool start, bool end);
 
-	// get interpolated point 0 =< t =< 1, 0 = start, 1 = end
+	/**
+	*	@brief get interpolated point 0 =< t =< 1, 0 = start, 1 = end
+	*/
 	void Interpolate(float t, Vector& point, Vector& angle, float* fov);
 
 protected:

@@ -20,6 +20,7 @@
 DECLARE_MESSAGE(m_Flash, FlashBat)
 DECLARE_MESSAGE(m_Flash, Flashlight)
 
+//TODO: unnecessary semicolons
 bool CHudFlashlight::Init()
 {
 	m_fOn = false;
@@ -126,7 +127,6 @@ bool CHudFlashlight::Draw(float flTime)
 		SPR_Set(m_hSprite2, r, g, b);
 		SPR_DrawAdditive(0, x + iOffset, y, &rc);
 	}
-
 
 	return true;
 }

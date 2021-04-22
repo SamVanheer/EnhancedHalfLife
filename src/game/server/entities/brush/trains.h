@@ -71,7 +71,6 @@ public:
 	CPathTrack* m_paltpath;
 };
 
-
 class CFuncTrackTrain : public CBaseEntity
 {
 public:
@@ -94,6 +93,12 @@ public:
 	bool OnControls(entvars_t* pev) override;
 
 	void StopSound();
+
+	/**
+	*	@brief update pitch based on speed, start sound if not playing
+	*	NOTE: when train goes through transition, m_soundPlaying should go to false, 
+	*	which will cause the looped sound to restart.
+	*/
 	void UpdateSound();
 
 	static CFuncTrackTrain* Instance(edict_t* pent);

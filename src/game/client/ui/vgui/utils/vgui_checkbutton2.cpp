@@ -9,13 +9,9 @@
 #include "vgui_checkbutton2.h"
 #include "vgui_loadtga.h"
 
-
 constexpr int EXTRA_X = 5;
 
-
 using namespace vgui;
-
-
 
 CCheckButton2::CCheckButton2() :
 	m_Label(""),
@@ -40,12 +36,10 @@ CCheckButton2::CCheckButton2() :
 	setPaintBackgroundEnabled(false);
 }
 
-
 CCheckButton2::~CCheckButton2()
 {
 	DeleteImages();
 }
-
 
 void CCheckButton2::SetImages(char const* pChecked, char const* pUnchecked)
 {
@@ -58,7 +52,6 @@ void CCheckButton2::SetImages(char const* pChecked, char const* pUnchecked)
 	SetupControls();
 }
 
-
 void CCheckButton2::SetImages(Image* pChecked, Image* pUnchecked)
 {
 	DeleteImages();
@@ -69,7 +62,6 @@ void CCheckButton2::SetImages(Image* pChecked, Image* pUnchecked)
 
 	SetupControls();
 }
-
 
 void CCheckButton2::DeleteImages()
 {
@@ -86,19 +78,16 @@ void CCheckButton2::DeleteImages()
 	SetupControls();
 }
 
-
 void CCheckButton2::SetCheckboxLeft(bool bLeftAlign)
 {
 	m_bCheckboxLeft = bLeftAlign;
 	SetupControls();
 }
 
-
 bool CCheckButton2::GetCheckboxLeft()
 {
 	return m_bCheckboxLeft;
 }
-
 
 void CCheckButton2::SetText(char const* pText, ...)
 {
@@ -113,32 +102,27 @@ void CCheckButton2::SetText(char const* pText, ...)
 	SetupControls();
 }
 
-
 void CCheckButton2::SetTextColor(int r, int g, int b, int a)
 {
 	m_Label.setFgColor(r, g, b, a);
 	repaint();
 }
 
-
 void CCheckButton2::SetHandler(ICheckButton2Handler* pHandler)
 {
 	m_pHandler = pHandler;
 }
-
 
 bool CCheckButton2::IsChecked()
 {
 	return m_bChecked;
 }
 
-
 void CCheckButton2::SetChecked(bool bChecked)
 {
 	m_bChecked = bChecked;
 	SetupControls();
 }
-
 
 void CCheckButton2::internalMousePressed(MouseCode code)
 {
@@ -149,7 +133,6 @@ void CCheckButton2::internalMousePressed(MouseCode code)
 
 	SetupControls();
 }
-
 
 void CCheckButton2::SetupControls()
 {
@@ -184,13 +167,7 @@ void CCheckButton2::SetupControls()
 	repaint();
 }
 
-
 void CCheckButton2::mousePressed(MouseCode code, Panel* panel)
 {
 	internalMousePressed(code);
 }
-
-
-
-
-

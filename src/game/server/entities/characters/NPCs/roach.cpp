@@ -13,13 +13,13 @@
 *
 ****/
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-#include	"schedule.h"
-#include	"soundent.h"
-#include	"decals.hpp"
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "monsters.h"
+#include "schedule.h"
+#include "soundent.h"
+#include "decals.hpp"
 
 constexpr int ROACH_IDLE = 0;
 constexpr int ROACH_BORED = 1;
@@ -27,10 +27,6 @@ constexpr int ROACH_SCARED_BY_ENT = 2;
 constexpr int ROACH_SCARED_BY_LIGHT = 3;
 constexpr int ROACH_SMELL_FOOD = 4;
 constexpr int ROACH_EAT = 5;
-
-//=========================================================
-// Monster's Anim Events Go Here
-//=========================================================
 
 /**
 *	@brief cockroach
@@ -43,6 +39,10 @@ public:
 	void SetYawSpeed() override;
 	void EXPORT MonsterThink() override;
 	void Move(float flInterval) override;
+
+	/**
+	*	@brief Picks a new spot for roach to run to.
+	*/
 	void PickNewDest(int iCondition);
 	void EXPORT Touch(CBaseEntity* pOther) override;
 	void Killed(entvars_t* pevAttacker, int iGib) override;
@@ -50,6 +50,10 @@ public:
 	float	m_flLastLightLevel;
 	float	m_flNextSmellTime;
 	int		Classify() override;
+
+	/**
+	*	@brief overriden for the roach, which can virtually see 360 degrees.
+	*/
 	void	Look(int iDistance) override;
 	int		ISoundMask() override;
 
@@ -58,30 +62,19 @@ public:
 	int		m_iMode;
 	// -----------------------------
 };
+
 LINK_ENTITY_TO_CLASS(monster_cockroach, CRoach);
 
-//=========================================================
-// ISoundMask - returns a bit mask indicating which types
-// of sounds this monster regards. In the base class implementation,
-// monsters care about all sounds, but no scents.
-//=========================================================
 int CRoach::ISoundMask()
 {
 	return	bits_SOUND_CARCASS | bits_SOUND_MEAT;
 }
 
-//=========================================================
-// Classify - indicates this monster's place in the 
-// relationship table.
-//=========================================================
 int	CRoach::Classify()
 {
 	return CLASS_INSECT;
 }
 
-//=========================================================
-// Touch
-//=========================================================
 void CRoach::Touch(CBaseEntity* pOther)
 {
 	Vector		vecSpot;
@@ -101,10 +94,6 @@ void CRoach::Touch(CBaseEntity* pOther)
 	TakeDamage(pOther->pev, pOther->pev, pev->health, DMG_CRUSH);
 }
 
-//=========================================================
-// SetYawSpeed - allows each sequence to have a different
-// turn rate associated with it.
-//=========================================================
 void CRoach::SetYawSpeed()
 {
 	int ys;
@@ -114,9 +103,6 @@ void CRoach::SetYawSpeed()
 	pev->yaw_speed = ys;
 }
 
-//=========================================================
-// Spawn
-//=========================================================
 void CRoach::Spawn()
 {
 	Precache();
@@ -143,9 +129,6 @@ void CRoach::Spawn()
 	m_flNextSmellTime = gpGlobals->time;
 }
 
-//=========================================================
-// Precache - precaches all resources this monster needs
-//=========================================================
 void CRoach::Precache()
 {
 	PRECACHE_MODEL("models/roach.mdl");
@@ -155,10 +138,6 @@ void CRoach::Precache()
 	PRECACHE_SOUND("roach/rch_smash.wav");
 }
 
-
-//=========================================================
-// Killed.
-//=========================================================
 void CRoach::Killed(entvars_t* pevAttacker, int iGib)
 {
 	pev->solid = SOLID_NOT;
@@ -183,9 +162,6 @@ void CRoach::Killed(entvars_t* pevAttacker, int iGib)
 	UTIL_Remove(this);
 }
 
-//=========================================================
-// MonsterThink, overridden for roaches.
-//=========================================================
 void CRoach::MonsterThink()
 {
 	if (FNullEnt(FIND_CLIENT_IN_PVS(edict())))
@@ -291,9 +267,6 @@ void CRoach::MonsterThink()
 	}
 }
 
-//=========================================================
-// Picks a new spot for roach to run to.(
-//=========================================================
 void CRoach::PickNewDest(int iCondition)
 {
 	Vector	vecNewDir;
@@ -346,9 +319,6 @@ void CRoach::PickNewDest(int iCondition)
 	}
 }
 
-//=========================================================
-// roach's move function
-//=========================================================
 void CRoach::Move(float flInterval)
 {
 	float		flWaypointDist;
@@ -398,10 +368,6 @@ void CRoach::Move(float flInterval)
 	}
 }
 
-//=========================================================
-// Look - overriden for the roach, which can virtually see 
-// 360 degrees.
-//=========================================================
 void CRoach::Look(int iDistance)
 {
 	CBaseEntity* pSightEnt = nullptr;// the current visible entity that we're dealing with
@@ -455,8 +421,3 @@ void CRoach::Look(int iDistance)
 	}
 	SetConditions(iSighted);
 }
-
-//=========================================================
-// AI Schedules Specific to this monster
-//=========================================================
-

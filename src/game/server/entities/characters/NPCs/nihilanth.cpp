@@ -24,6 +24,9 @@
 constexpr int N_SCALE = 15;
 constexpr int N_SPHERES = 20;
 
+/**
+*	@brief Nihilanth, final Boss monster
+*/
 class CNihilanth : public CBaseMonster
 {
 public:
@@ -168,6 +171,9 @@ TYPEDESCRIPTION	CNihilanth::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CNihilanth, CBaseMonster);
 
+/**
+*	@brief Controller bouncy ball attack
+*/
 class CNihilanthHVR : public CBaseMonster
 {
 public:
@@ -215,7 +221,6 @@ public:
 
 LINK_ENTITY_TO_CLASS(nihilanth_energy_ball, CNihilanthHVR);
 
-
 TYPEDESCRIPTION	CNihilanthHVR::m_SaveData[] =
 {
 	DEFINE_FIELD(CNihilanthHVR, m_flIdealVel, FIELD_FLOAT),
@@ -225,13 +230,7 @@ TYPEDESCRIPTION	CNihilanthHVR::m_SaveData[] =
 	DEFINE_FIELD(CNihilanthHVR, m_nFrames, FIELD_INTEGER),
 };
 
-
 IMPLEMENT_SAVERESTORE(CNihilanthHVR, CBaseMonster);
-
-
-//=========================================================
-// Nihilanth, final Boss monster
-//=========================================================
 
 const char* CNihilanth::pAttackSounds[] =
 {
@@ -273,7 +272,6 @@ const char* CNihilanth::pDeathSounds[] =
 {
 	"X/x_die1.wav",
 };
-
 
 void CNihilanth::Spawn()
 {
@@ -324,7 +322,6 @@ void CNihilanth::Spawn()
 	*/
 }
 
-
 void CNihilanth::Precache()
 {
 	PRECACHE_MODEL("models/nihilanth.mdl");
@@ -342,8 +339,6 @@ void CNihilanth::Precache()
 	PRECACHE_SOUND_ARRAY(pDeathSounds);
 	PRECACHE_SOUND("debris/beamstart7.wav");
 }
-
-
 
 void CNihilanth::PainSound()
 {
@@ -367,13 +362,11 @@ void CNihilanth::DeathSound()
 	EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pDeathSounds), VOL_NORM, 0.1);
 }
 
-
 void CNihilanth::NullThink()
 {
 	StudioFrameAdvance();
 	pev->nextthink = gpGlobals->time + 0.5;
 }
-
 
 void CNihilanth::StartupUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
@@ -381,7 +374,6 @@ void CNihilanth::StartupUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 	pev->nextthink = gpGlobals->time + 0.1;
 	SetUse(&CNihilanth::CommandUse);
 }
-
 
 void CNihilanth::StartupThink()
 {
@@ -413,7 +405,6 @@ void CNihilanth::StartupThink()
 	SetUse(&CNihilanth::CommandUse);
 	pev->nextthink = gpGlobals->time + 0.1;
 }
-
 
 void CNihilanth::Killed(entvars_t* pevAttacker, int iGib)
 {
@@ -537,8 +528,6 @@ void CNihilanth::DyingThink()
 	return;
 }
 
-
-
 void CNihilanth::CrashTouch(CBaseEntity* pOther)
 {
 	// only crash if we hit something solid
@@ -549,14 +538,10 @@ void CNihilanth::CrashTouch(CBaseEntity* pOther)
 	}
 }
 
-
-
 void CNihilanth::GibMonster()
 {
 	// EmitSound(CHAN_VOICE, "common/bodysplat.wav", 0.75, ATTN_NORM, 200);		
 }
-
-
 
 void CNihilanth::FloatSequence()
 {
@@ -585,7 +570,6 @@ void CNihilanth::FloatSequence()
 		pev->sequence = LookupSequence("float");
 	}
 }
-
 
 void CNihilanth::ShootBalls()
 {
@@ -622,7 +606,6 @@ void CNihilanth::ShootBalls()
 		}
 	}
 }
-
 
 void CNihilanth::MakeFriend(Vector vecStart)
 {
@@ -672,7 +655,6 @@ void CNihilanth::MakeFriend(Vector vecStart)
 		}
 	}
 }
-
 
 void CNihilanth::NextActivity()
 {
@@ -899,8 +881,6 @@ void CNihilanth::HuntThink()
 	Flight();
 }
 
-
-
 void CNihilanth::Flight()
 {
 	// estimate where I'll be facing in one seconds
@@ -968,7 +948,6 @@ void CNihilanth::Flight()
 	// ALERT( at_console, "%5.0f %5.0f : %4.0f : %3.0f : %2.0f\n", m_posDesired.z, pev->origin.z, m_velocity.z, m_avelocity.y, m_flForce ); 
 }
 
-
 bool CNihilanth::AbsorbSphere()
 {
 	for (int i = 0; i < N_SPHERES; i++)
@@ -984,7 +963,6 @@ bool CNihilanth::AbsorbSphere()
 	}
 	return false;
 }
-
 
 bool CNihilanth::EmitSphere()
 {
@@ -1015,7 +993,6 @@ bool CNihilanth::EmitSphere()
 	return true;
 }
 
-
 void CNihilanth::TargetSphere(USE_TYPE useType, float value)
 {
 	CBaseMonster* pSphere;
@@ -1040,8 +1017,6 @@ void CNihilanth::TargetSphere(USE_TYPE useType, float value)
 	pSphere->Use(this, this, useType, value);
 	pSphere->pev->velocity = m_vecDesired * RANDOM_FLOAT(50, 100) + Vector(RANDOM_FLOAT(-50, 50), RANDOM_FLOAT(-50, 50), RANDOM_FLOAT(-50, 50));
 }
-
-
 
 void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 {
@@ -1189,8 +1164,6 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-
-
 void CNihilanth::CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	switch (useType)
@@ -1230,7 +1203,6 @@ void CNihilanth::CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 	}
 }
 
-
 bool CNihilanth::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	if (pevInflictor->owner == edict())
@@ -1248,8 +1220,6 @@ bool CNihilanth::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 	pev->health -= flDamage;
 	return false;
 }
-
-
 
 void CNihilanth::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
 {
@@ -1270,8 +1240,6 @@ void CNihilanth::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecD
 	AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
 }
 
-
-
 CBaseEntity* CNihilanth::RandomTargetname(const char* szName)
 {
 	int total = 0;
@@ -1287,20 +1255,6 @@ CBaseEntity* CNihilanth::RandomTargetname(const char* szName)
 	return pEntity;
 }
 
-
-
-
-
-
-
-
-
-//=========================================================
-// Controller bouncy ball attack
-//=========================================================
-
-
-
 void CNihilanthHVR::Spawn()
 {
 	Precache();
@@ -1309,7 +1263,6 @@ void CNihilanthHVR::Spawn()
 	pev->renderamt = 255;
 	pev->scale = 3.0;
 }
-
 
 void CNihilanthHVR::Precache()
 {
@@ -1324,8 +1277,6 @@ void CNihilanthHVR::Precache()
 	PRECACHE_SOUND("weapons/electro4.wav");
 	PRECACHE_SOUND("x/x_teleattack1.wav");
 }
-
-
 
 void CNihilanthHVR::CircleInit(CBaseEntity* pTarget)
 {
@@ -1352,7 +1303,6 @@ void CNihilanthHVR::CircleInit(CBaseEntity* pTarget)
 
 	m_hTargetEnt = pTarget;
 }
-
 
 CBaseEntity* CNihilanthHVR::RandomClassname(const char* szName)
 {
@@ -1430,9 +1380,6 @@ void CNihilanthHVR::HoverThink()
 
 	pev->frame = ((int)pev->frame + 1) % m_nFrames;
 }
-
-
-
 
 void CNihilanthHVR::ZapInit(CBaseEntity* pEnemy)
 {
@@ -1536,7 +1483,6 @@ void CNihilanthHVR::ZapThink()
 	// Crawl( );
 }
 
-
 void CNihilanthHVR::ZapTouch(CBaseEntity* pOther)
 {
 	UTIL_EmitAmbientSound(edict(), pev->origin, "weapons/electro4.wav", 1.0, ATTN_NORM, 0, RANDOM_LONG(90, 95));
@@ -1555,8 +1501,6 @@ void CNihilanthHVR::ZapTouch(CBaseEntity* pOther)
 	UTIL_Remove(this);
 	pev->nextthink = gpGlobals->time + 0.2;
 }
-
-
 
 void CNihilanthHVR::TeleportInit(CNihilanth* pOwner, CBaseEntity* pEnemy, CBaseEntity* pTarget, CBaseEntity* pTouch)
 {
@@ -1582,7 +1526,6 @@ void CNihilanthHVR::TeleportInit(CNihilanth* pOwner, CBaseEntity* pEnemy, CBaseE
 	EmitSound(CHAN_WEAPON, "x/x_teleattack1.wav", VOL_NORM, 0.2);
 }
 
-
 void CNihilanthHVR::GreenBallInit()
 {
 	pev->movetype = MOVETYPE_FLY;
@@ -1597,7 +1540,6 @@ void CNihilanthHVR::GreenBallInit()
 
 	SetTouch(&CNihilanthHVR::RemoveTouch);
 }
-
 
 void CNihilanthHVR::TeleportThink()
 {
@@ -1644,7 +1586,6 @@ void CNihilanthHVR::TeleportThink()
 	pev->frame = (int)(pev->frame + 1) % 20;
 }
 
-
 void CNihilanthHVR::AbsorbInit()
 {
 	SetThink(&CNihilanthHVR::DissipateThink);
@@ -1690,7 +1631,6 @@ void CNihilanthHVR::TeleportTouch(CBaseEntity* pOther)
 	UTIL_Remove(this);
 }
 
-
 void CNihilanthHVR::DissipateThink()
 {
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -1724,7 +1664,6 @@ void CNihilanthHVR::DissipateThink()
 	WRITE_COORD(0); // decay
 	MESSAGE_END();
 }
-
 
 bool CNihilanthHVR::CircleTarget(Vector vecTarget)
 {
@@ -1780,7 +1719,6 @@ bool CNihilanthHVR::CircleTarget(Vector vecTarget)
 	return fClose;
 }
 
-
 void CNihilanthHVR::MovetoTarget(Vector vecTarget)
 {
 	if (m_vecIdeal == vec3_origin)
@@ -1797,9 +1735,6 @@ void CNihilanthHVR::MovetoTarget(Vector vecTarget)
 	m_vecIdeal = m_vecIdeal + (vecTarget - pev->origin).Normalize() * 300;
 	pev->velocity = m_vecIdeal;
 }
-
-
-
 
 void CNihilanthHVR::Crawl()
 {
@@ -1826,7 +1761,6 @@ void CNihilanthHVR::Crawl()
 	WRITE_BYTE(10);		// speed
 	MESSAGE_END();
 }
-
 
 void CNihilanthHVR::RemoveTouch(CBaseEntity* pOther)
 {

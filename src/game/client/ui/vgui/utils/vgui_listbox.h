@@ -13,16 +13,15 @@
 #include "vgui_slider2.h"
 #include "vgui_scrollbar2.h"
 
-
 namespace vgui
 {
-
-// Listbox class used by voice code. Based off of vgui's list panel but with some modifications:
-// - This listbox clips its child items to its rectangle.
-// - You can access things like the scrollbar and find out the item width.
-// - The scrollbar scrolls one element at a time and the range is correct.
-
-// Note: this listbox does not provide notification when items are 
+/**
+*	@brief Listbox class used by voice code. Based off of vgui's list panel but with some modifications:
+*	@details This listbox clips its child items to its rectangle.
+*	You can access things like the scrollbar and find out the item width.
+*	The scrollbar scrolls one element at a time and the range is correct.
+*	Note: this listbox does not provide notification when items are 
+*/
 class CListBox : public Panel
 {
 public:
@@ -33,25 +32,37 @@ public:
 	void			Init();
 	void			Term();
 
-	// Add an item to the listbox. This automatically sets the item's parent to the listbox 
-	// and resizes the item's width to fit within the listbox.
+	/**
+	*	@brief Add an item to the listbox.
+	*	This automatically sets the item's parent to the listbox
+	*	and resizes the item's width to fit within the listbox.
+	*/
 	void			AddItem(Panel* pPanel);
 
-	// Get the number of items currently in the listbox.
+	/**
+	*	@brief Get the number of items currently in the listbox.
+	*/
 	int				GetNumItems();
 
-	// Get the width that listbox items will be set to (this changes if you resize the listbox).
+	/**
+	*	@brief Get the width that listbox items will be set to (this changes if you resize the listbox).
+	*/
 	int				GetItemWidth();
 
-	// Get/set the scrollbar position (position says which element is at the top of the listbox).
+	/**
+	*	@brief Get/set the scrollbar position (position says which element is at the top of the listbox).
+	*/
 	int				GetScrollPos();
 	void			SetScrollPos(int pos);
 
-	// sets the last item the listbox should scroll to
-	// scroll to GetNumItems() if not set
+	/**
+	*	@brief sets the last item the listbox should scroll to scroll to GetNumItems() if not set
+	*/
 	void			SetScrollRange(int maxScroll);
 
-	// returns the maximum value the scrollbar can scroll to
+	/**
+	*	@brief returns the maximum value the scrollbar can scroll to
+	*/
 	int				GetScrollMax();
 
 	// vgui overrides.
@@ -61,7 +72,6 @@ public:
 	virtual void	setSize(int wide, int tall);
 	virtual void	setPixelScroll(int value);
 	virtual void	paintBackground();
-
 
 protected:
 
@@ -83,11 +93,9 @@ protected:
 		vgui::CListBox* m_pListBox;
 	};
 
-
 protected:
 
 	void			InternalLayout();
-
 
 protected:
 
@@ -103,5 +111,4 @@ protected:
 
 	int				m_iScrollMax;
 };
-
 }

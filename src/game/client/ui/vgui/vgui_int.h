@@ -7,6 +7,7 @@
 
 #pragma once
 
+//TODO: remove extern "C"
 extern "C"
 {
 	void VGui_Startup();

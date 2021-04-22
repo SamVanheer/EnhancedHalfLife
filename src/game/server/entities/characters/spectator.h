@@ -18,11 +18,31 @@
 class CBaseSpectator : public CBaseEntity
 {
 public:
+	/**
+	*	@brief Called when spectator is initialized:
+	*	UNDONE: Is this actually being called because spectators are not allocated in normal fashion?
+	*/
 	void Spawn() override;
+
+	/**
+	*	@brief called when a spectator connects to a server
+	*/
 	void SpectatorConnect();
+
+	/**
+	*	@brief called when a spectator disconnects from a server
+	*/
 	void SpectatorDisconnect();
+
+	/**
+	*	@brief Called every frame after physics are run
+	*/
 	void SpectatorThink();
 
 private:
+
+	/**
+	*	@brief Called by SpectatorThink if the spectator entered an impulse
+	*/
 	void SpectatorImpulseCommand();
 };

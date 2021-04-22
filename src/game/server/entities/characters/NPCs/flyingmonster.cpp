@@ -12,12 +12,12 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-#include	"schedule.h"
-#include	"flyingmonster.h"
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "monsters.h"
+#include "schedule.h"
+#include "flyingmonster.h"
 
 constexpr int FLYING_AE_FLAP = 8;
 constexpr int FLYING_AE_FLAPSOUND = 9;
@@ -54,12 +54,10 @@ int CFlyingMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd,
 	return LOCALMOVE_VALID;
 }
 
-
 bool CFlyingMonster::FTriangulate(const Vector& vecStart, const Vector& vecEnd, float flDist, CBaseEntity* pTargetEnt, Vector* pApex)
 {
 	return CBaseMonster::FTriangulate(vecStart, vecEnd, flDist, pTargetEnt, pApex);
 }
-
 
 Activity CFlyingMonster::GetStoppedActivity()
 {
@@ -68,7 +66,6 @@ Activity CFlyingMonster::GetStoppedActivity()
 
 	return ACT_HOVER;
 }
-
 
 void CFlyingMonster::Stop()
 {
@@ -82,7 +79,6 @@ void CFlyingMonster::Stop()
 	pev->angles.x = 0;
 	m_vecTravel = vec3_origin;
 }
-
 
 float CFlyingMonster::ChangeYaw(int speed)
 {
@@ -118,7 +114,6 @@ float CFlyingMonster::ChangeYaw(int speed)
 	return CBaseMonster::ChangeYaw(speed);
 }
 
-
 void CFlyingMonster::Killed(entvars_t* pevAttacker, int iGib)
 {
 	pev->movetype = MOVETYPE_STEP;
@@ -127,7 +122,6 @@ void CFlyingMonster::Killed(entvars_t* pevAttacker, int iGib)
 	pev->angles.x = 0;
 	CBaseMonster::Killed(pevAttacker, iGib);
 }
-
 
 void CFlyingMonster::HandleAnimEvent(AnimationEvent& event)
 {
@@ -148,14 +142,12 @@ void CFlyingMonster::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-
 void CFlyingMonster::Move(float flInterval)
 {
 	if (pev->movetype == MOVETYPE_FLY)
 		m_flGroundSpeed = m_flightSpeed;
 	CBaseMonster::Move(flInterval);
 }
-
 
 bool CFlyingMonster::ShouldAdvanceRoute(float flWaypointDist)
 {
@@ -168,7 +160,6 @@ bool CFlyingMonster::ShouldAdvanceRoute(float flWaypointDist)
 
 	return false;
 }
-
 
 void CFlyingMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, float flInterval)
 {
@@ -209,7 +200,6 @@ void CFlyingMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, 
 	else
 		CBaseMonster::MoveExecute(pTargetEnt, vecDir, flInterval);
 }
-
 
 float CFlyingMonster::CeilingZ(const Vector& position)
 {
@@ -290,4 +280,3 @@ float CFlyingMonster::FloorZ(const Vector& position)
 
 	return down.z;
 }
-

@@ -11,13 +11,9 @@
 #include "VGUI_ImagePanel.h"
 #include "vgui_defaultinputsignal.h"
 
-
 namespace vgui
 {
-
-
 class CCheckButton2;
-
 
 class ICheckButton2Handler
 {
@@ -25,11 +21,12 @@ public:
 	virtual void	StateChanged(CCheckButton2* pButton) = 0;
 };
 
-
-// VGUI checkbox class.
-// - Provides access to the checkbox images.
-// - Provides an easy callback mechanism for state changes.
-// - Default background is invisible, and default text color is white.
+/**
+*	@brief VGUI checkbox class.
+*	@details Provides access to the checkbox images.
+*	Provides an easy callback mechanism for state changes.
+*	Default background is invisible, and default text color is white.
+*/
 class CCheckButton2 : public Panel, public CDefaultInputSignal
 {
 public:
@@ -39,7 +36,7 @@ public:
 
 	// Initialize the button with these.
 	void		SetImages(char const* pChecked, char const* pUnchecked);
-	void		SetImages(Image* pChecked, Image* pUnchecked);		// If you use this, the button will never delete the images.
+	void		SetImages(Image* pChecked, Image* pUnchecked);		//!< If you use this, the button will never delete the images.
 	void		DeleteImages();
 
 	// The checkbox can be to the left or the right of the text (default is left).
@@ -57,23 +54,18 @@ public:
 	bool		IsChecked();
 	void		SetChecked(bool bChecked);
 
-
-
 	// Panel overrides.
 public:
 
 	virtual void	internalMousePressed(MouseCode code);
 
-
 protected:
 
 	void			SetupControls();
 
-
 	// InputSignal overrides.
 protected:
 	virtual void mousePressed(MouseCode code, Panel* panel);
-
 
 public:
 	ICheckButton2Handler* m_pHandler;
@@ -88,6 +80,4 @@ public:
 
 	bool		m_bChecked;
 };
-
-
 }

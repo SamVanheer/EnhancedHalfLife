@@ -46,7 +46,6 @@ void CHudStatusIcons::Reset()
 	m_iFlags &= ~HUD_ACTIVE;
 }
 
-// Draw status icons along the left-hand side of the screen
 bool CHudStatusIcons::Draw(float flTime)
 {
 	if (gEngfuncs.IsSpectateOnly())
@@ -70,13 +69,6 @@ bool CHudStatusIcons::Draw(float flTime)
 	return true;
 }
 
-// Message handler for StatusIcon message
-// accepts five values:
-//		byte   : true = ENABLE icon, false = DISABLE icon
-//		string : the sprite name to display
-//		byte   : red
-//		byte   : green
-//		byte   : blue
 bool CHudStatusIcons::MsgFunc_StatusIcon(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};
@@ -99,7 +91,6 @@ bool CHudStatusIcons::MsgFunc_StatusIcon(const char* pszName, int iSize, void* p
 	return true;
 }
 
-// add the icon to the icon list, and set it's drawing color
 void CHudStatusIcons::EnableIcon(const char* pszIconName, unsigned char red, unsigned char green, unsigned char blue)
 {
 	int i;

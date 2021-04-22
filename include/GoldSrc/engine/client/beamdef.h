@@ -39,7 +39,7 @@ struct BEAM
 	Vector		source;
 	Vector		target;
 	Vector		delta;
-	float		t;		// 0 .. 1 over lifetime of beam
+	float		t;		//!< 0 .. 1 over lifetime of beam
 	float		freq;
 	float		die;
 	float		width;

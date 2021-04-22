@@ -60,6 +60,10 @@ public:
 
 	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+
+	/**
+	*	@brief ID as a machine
+	*/
 	int	 Classify() override;
 
 	int BloodColor() override { return DONT_BLEED; }
@@ -68,7 +72,18 @@ public:
 	// Think functions
 
 	void EXPORT ActiveThink();
+
+	//TODO: typo
+	/**
+	*	@brief This search function will sit with the turret deployed and look for a new target. 
+	*	After a set amount of time, the barrel will spin down. After m_flMaxWait, the turret will retact.
+	*/
 	void EXPORT SearchThink();
+
+	/**
+	*	@brief This think function will deploy the turret when something comes into range.
+	*	This is for automatically activated turrets.
+	*/
 	void EXPORT AutoSearchThink();
 	void EXPORT TurretDeath();
 
@@ -133,7 +148,6 @@ public:
 	float	m_flSpinUpTime;	// Amount of time until the barrel should spin down when searching
 };
 
-
 TYPEDESCRIPTION	CBaseTurret::m_SaveData[] =
 {
 	DEFINE_FIELD(CBaseTurret, m_flMaxSpin, FIELD_FLOAT),
@@ -189,13 +203,13 @@ private:
 	bool m_iStartSpin;
 
 };
+
 TYPEDESCRIPTION	CTurret::m_SaveData[] =
 {
 	DEFINE_FIELD(CTurret, m_iStartSpin, FIELD_BOOLEAN),
 };
 
 IMPLEMENT_SAVERESTORE(CTurret, CBaseTurret);
-
 
 class CMiniTurret : public CBaseTurret
 {
@@ -205,7 +219,6 @@ public:
 	// other functions
 	void Shoot(Vector& vecSrc, Vector& vecDirToEnemy) override;
 };
-
 
 LINK_ENTITY_TO_CLASS(monster_turret, CTurret);
 LINK_ENTITY_TO_CLASS(monster_miniturret, CMiniTurret);
@@ -245,7 +258,6 @@ void CBaseTurret::KeyValue(KeyValueData* pkvd)
 		CBaseMonster::KeyValue(pkvd);
 }
 
-
 void CBaseTurret::Spawn()
 {
 	Precache();
@@ -271,7 +283,6 @@ void CBaseTurret::Spawn()
 	m_flFieldOfView = VIEW_FIELD_FULL;
 	// m_flSightRange = TURRET_RANGE;
 }
-
 
 void CBaseTurret::Precache()
 {
@@ -342,7 +353,6 @@ void CMiniTurret::Spawn()
 	SetThink(&CMiniTurret::Initialize);
 	pev->nextthink = gpGlobals->time + 0.3;
 }
-
 
 void CMiniTurret::Precache()
 {
@@ -415,7 +425,6 @@ void CBaseTurret::TurretUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 	}
 }
 
-
 void CBaseTurret::Ping()
 {
 	// make the pinging noise every second while searching
@@ -433,7 +442,6 @@ void CBaseTurret::Ping()
 	}
 }
 
-
 void CBaseTurret::EyeOn()
 {
 	if (m_pEyeGlow)
@@ -446,7 +454,6 @@ void CBaseTurret::EyeOn()
 	}
 }
 
-
 void CBaseTurret::EyeOff()
 {
 	if (m_pEyeGlow)
@@ -458,7 +465,6 @@ void CBaseTurret::EyeOff()
 		}
 	}
 }
-
 
 void CBaseTurret::ActiveThink()
 {
@@ -615,14 +621,12 @@ void CBaseTurret::ActiveThink()
 	MoveTurret();
 }
 
-
 void CTurret::Shoot(Vector& vecSrc, Vector& vecDirToEnemy)
 {
 	FireBullets(1, vecSrc, vecDirToEnemy, TURRET_SPREAD, TURRET_RANGE, BULLET_MONSTER_12MM, 1);
 	EmitSound(CHAN_WEAPON, "turret/tu_fire1.wav", VOL_NORM, 0.6);
 	pev->effects = pev->effects | EF_MUZZLEFLASH;
 }
-
 
 void CMiniTurret::Shoot(Vector& vecSrc, Vector& vecDirToEnemy)
 {
@@ -636,7 +640,6 @@ void CMiniTurret::Shoot(Vector& vecSrc, Vector& vecDirToEnemy)
 	}
 	pev->effects = pev->effects | EF_MUZZLEFLASH;
 }
-
 
 void CBaseTurret::Deploy()
 {
@@ -723,7 +726,6 @@ void CBaseTurret::Retire()
 	}
 }
 
-
 void CTurret::SpinUpCall()
 {
 	StudioFrameAdvance();
@@ -762,7 +764,6 @@ void CTurret::SpinUpCall()
 	}
 }
 
-
 void CTurret::SpinDownCall()
 {
 	if (m_iSpin)
@@ -781,7 +782,6 @@ void CTurret::SpinDownCall()
 		}
 	}
 }
-
 
 void CBaseTurret::SetTurretAnim(TURRET_ANIM anim)
 {
@@ -818,12 +818,6 @@ void CBaseTurret::SetTurretAnim(TURRET_ANIM anim)
 	}
 }
 
-
-//
-// This search function will sit with the turret deployed and look for a new target. 
-// After a set amount of time, the barrel will spin down. After m_flMaxWait, the turret will
-// retact.
-//
 void CBaseTurret::SearchThink()
 {
 	// ensure rethink
@@ -882,11 +876,6 @@ void CBaseTurret::SearchThink()
 	}
 }
 
-
-// 
-// This think function will deploy the turret when something comes into range. This is for
-// automatically activated turrets.
-//
 void CBaseTurret::AutoSearchThink()
 {
 	// ensure rethink
@@ -915,7 +904,6 @@ void CBaseTurret::AutoSearchThink()
 		EmitSound(CHAN_BODY, "turret/tu_alert.wav", TURRET_MACHINE_VOLUME);
 	}
 }
-
 
 void CBaseTurret::TurretDeath()
 {
@@ -983,8 +971,6 @@ void CBaseTurret::TurretDeath()
 	}
 }
 
-
-
 void CBaseTurret::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
 {
 	if (ptr->iHitgroup == 10)
@@ -1004,8 +990,6 @@ void CBaseTurret::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vec
 
 	AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
 }
-
-// take damage. bitsDamageType indicates type of damage sustained, ie: DMG_BULLET
 
 bool CBaseTurret::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
@@ -1126,9 +1110,6 @@ bool CBaseTurret::MoveTurret()
 	return state;
 }
 
-//
-// ID as a machine
-//
 int	CBaseTurret::Classify()
 {
 	if (m_iOn || m_iAutoStart)
@@ -1136,12 +1117,9 @@ int	CBaseTurret::Classify()
 	return CLASS_NONE;
 }
 
-
-
-
-//=========================================================
-// Sentry gun - smallest turret, placed near grunt entrenchments
-//=========================================================
+/**
+*	@brief smallest turret, placed near grunt entrenchments
+*/
 class CSentry : public CBaseTurret
 {
 public:
@@ -1229,7 +1207,6 @@ bool CSentry::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float 
 	return true;
 }
 
-
 void CSentry::SentryTouch(CBaseEntity* pOther)
 {
 	if (pOther && (pOther->IsPlayer() || (pOther->pev->flags & FL_MONSTER)))
@@ -1237,7 +1214,6 @@ void CSentry::SentryTouch(CBaseEntity* pOther)
 		TakeDamage(pOther->pev, pOther->pev, 0, 0);
 	}
 }
-
 
 void CSentry::SentryDeath()
 {
@@ -1302,4 +1278,3 @@ void CSentry::SentryDeath()
 		SetThink(nullptr);
 	}
 }
-

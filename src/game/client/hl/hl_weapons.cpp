@@ -67,13 +67,8 @@ CSatchel g_Satchel;
 CTripmine g_Tripmine;
 CSqueak g_Snark;
 
-
-/*
-======================
-AlertMessage
-
-Print debug messages to console
-======================
+/**
+*	@brief Print debug messages to console
 */
 void AlertMessage(ALERT_TYPE atype, const char* szFmt, ...)
 {
@@ -88,25 +83,19 @@ void AlertMessage(ALERT_TYPE atype, const char* szFmt, ...)
 	gEngfuncs.Con_Printf(string);
 }
 
-//Returns if it's multiplayer.
-//Mostly used by the client side weapons.
 bool bIsMultiplayer()
 {
 	return gEngfuncs.GetMaxClients() != 1;
 }
-//Just loads a v_ model.
+
 void LoadVModel(const char* szViewModel, CBasePlayer* m_pPlayer)
 {
 	gEngfuncs.CL_LoadModel(szViewModel, reinterpret_cast<int*>(&m_pPlayer->pev->viewmodel));
 }
 
-/*
-=====================
-HUD_PrepEntity
-
-Links the raw entity to an entvars_s holder.  If a player is passed in as the owner, then
-we set up the m_pPlayer field.
-=====================
+/**
+*	@brief Links the raw entity to an entvars_t holder.
+*	If a player is passed in as the owner, then we set up the m_pPlayer field.
 */
 void HUD_PrepEntity(CBaseEntity* pEntity, CBasePlayer* pWeaponOwner)
 {
@@ -142,24 +131,14 @@ void HUD_PrepEntity(CBaseEntity* pEntity, CBasePlayer* pWeaponOwner)
 	}
 }
 
-/*
-=====================
-CBaseEntity :: Killed
-
-If weapons code "kills" an entity, just set its effects to EF_NODRAW
-=====================
+/**
+*	@brief If weapons code "kills" an entity, just set its effects to EF_NODRAW
 */
 void CBaseEntity::Killed(entvars_t* pevAttacker, int iGib)
 {
 	pev->effects |= EF_NODRAW;
 }
 
-/*
-=====================
-CBasePlayerWeapon :: DefaultDeploy
-
-=====================
-*/
 bool CBasePlayerWeapon::DefaultDeploy(const char* szViewModel, const char* szWeaponModel, int iAnim, const char* szAnimExt, int body)
 {
 	if (!CanDeploy())
@@ -175,12 +154,6 @@ bool CBasePlayerWeapon::DefaultDeploy(const char* szViewModel, const char* szWea
 	return true;
 }
 
-/*
-=====================
-CBasePlayerWeapon :: PlayEmptySound
-
-=====================
-*/
 bool CBasePlayerWeapon::PlayEmptySound()
 {
 	if (m_iPlayEmptySound)
@@ -192,13 +165,6 @@ bool CBasePlayerWeapon::PlayEmptySound()
 	return false;
 }
 
-/*
-=====================
-CBasePlayerWeapon::Holster
-
-Put away weapon
-=====================
-*/
 void CBasePlayerWeapon::Holster()
 {
 	m_fInReload = false; // cancel any reload in progress.
@@ -206,13 +172,6 @@ void CBasePlayerWeapon::Holster()
 	m_pPlayer->pev->viewmodel = iStringNull;
 }
 
-/*
-=====================
-CBasePlayerWeapon::SendWeaponAnim
-
-Animate weapon model
-=====================
-*/
 void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 {
 	m_pPlayer->pev->weaponanim = iAnim;
@@ -220,12 +179,8 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 	HUD_SendWeaponAnim(iAnim, body, 0);
 }
 
-/*
-=====================
-CBaseEntity::FireBulletsPlayer
-
-Only produces random numbers to match the server ones.
-=====================
+/**
+*	@brief Only produces random numbers to match the server ones.
 */
 Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t* pevAttacker, int shared_rand)
 {
@@ -257,13 +212,6 @@ Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDi
 	return Vector(x * vecSpread.x, y * vecSpread.y, 0.0);
 }
 
-/*
-=====================
-CBasePlayer::SelectItem
-
-  Switch weapons
-=====================
-*/
 void CBasePlayer::SelectItem(const char* pstr)
 {
 	if (!pstr)
@@ -290,12 +238,6 @@ void CBasePlayer::SelectItem(const char* pstr)
 	}
 }
 
-/*
-=====================
-CBasePlayer::Killed
-
-=====================
-*/
 void CBasePlayer::Killed(entvars_t* pevAttacker, int iGib)
 {
 	// Holster weapon immediately, to allow it to cleanup
@@ -305,12 +247,6 @@ void CBasePlayer::Killed(entvars_t* pevAttacker, int iGib)
 	g_irunninggausspred = false;
 }
 
-/*
-=====================
-CBasePlayer::Spawn
-
-=====================
-*/
 void CBasePlayer::Spawn()
 {
 	if (m_pActiveItem)
@@ -319,25 +255,15 @@ void CBasePlayer::Spawn()
 	g_irunninggausspred = false;
 }
 
-/*
-=====================
-UTIL_TraceLine
-
-Don't actually trace, but act like the trace didn't hit anything.
-=====================
-*/
 void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, edict_t* pentIgnore, TraceResult* ptr)
 {
+	//Don't actually trace, but act like the trace didn't hit anything.
 	memset(ptr, 0, sizeof(*ptr));
 	ptr->flFraction = 1.0;
 }
 
-/*
-=====================
-UTIL_ParticleBox
-
-For debugging, draw a box around a player made out of particles
-=====================
+/**
+*	@brief For debugging, draw a box around a player made out of particles
 */
 void UTIL_ParticleBox(CBasePlayer* player, float* mins, float* maxs, float life, unsigned char r, unsigned char g, unsigned char b)
 {
@@ -353,12 +279,8 @@ void UTIL_ParticleBox(CBasePlayer* player, float* mins, float* maxs, float life,
 	gEngfuncs.pEfxAPI->R_ParticleBox(mmin, mmax, 5.0, 0, 255, 0);
 }
 
-/*
-=====================
-UTIL_ParticleBoxes
-
-For debugging, draw boxes for other collidable players
-=====================
+/**
+*	@brief For debugging, draw boxes for other collidable players
 */
 void UTIL_ParticleBoxes()
 {
@@ -394,24 +316,16 @@ void UTIL_ParticleBoxes()
 	gEngfuncs.pEventAPI->EV_PopPMStates();
 }
 
-/*
-=====================
-UTIL_ParticleLine
-
-For debugging, draw a line made out of particles
-=====================
+/**
+*	@brief For debugging, draw a line made out of particles
 */
 void UTIL_ParticleLine(CBasePlayer* player, float* start, float* end, float life, unsigned char r, unsigned char g, unsigned char b)
 {
 	gEngfuncs.pEfxAPI->R_ParticleLine(start, end, r, g, b, life);
 }
 
-/*
-=====================
-HUD_InitClientWeapons
-
-Set up weapons, player and functions needed to run weapons code client-side.
-=====================
+/**
+*	@brief Set up weapons, player and functions needed to run weapons code client-side.
 */
 void HUD_InitClientWeapons()
 {
@@ -467,12 +381,9 @@ void HUD_InitClientWeapons()
 	HUD_PrepEntity(&g_Snark, &player);
 }
 
-/*
-=====================
-HUD_GetLastOrg
-
-Retruns the last position that we stored for egon beam endpoint.
-=====================
+//TODO: typo
+/**
+*	@brief Retruns the last position that we stored for egon beam endpoint.
 */
 void HUD_GetLastOrg(float* org)
 {
@@ -485,12 +396,8 @@ void HUD_GetLastOrg(float* org)
 	}
 }
 
-/*
-=====================
-HUD_SetLastOrg
-
-Remember our exact predicted origin so we can draw the egon to the right position.
-=====================
+/**
+*	@brief Remember our exact predicted origin so we can draw the egon to the right position.
 */
 void HUD_SetLastOrg()
 {
@@ -503,12 +410,8 @@ void HUD_SetLastOrg()
 	}
 }
 
-/*
-=====================
-HUD_WeaponsPostThink
-
-Run Weapon firing code on client
-=====================
+/**
+*	@brief Run Weapon firing code on client
 */
 void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd, double time, unsigned int random_seed)
 {
@@ -871,17 +774,6 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 	g_finalstate = nullptr;
 }
 
-/*
-=====================
-HUD_PostRunCmd
-
-Client calls this during prediction, after it has moved the player and updated any info changed into to->
-time is the current client clock based on prediction
-cmd is the command that caused the movement, etc
-runfuncs is 1 if this is the first time we've predicted this command.  If so, sounds and effects should play, otherwise, they should
-be ignored
-=====================
-*/
 void DLLEXPORT HUD_PostRunCmd(local_state_t* from, local_state_t* to, usercmd_t* cmd, int runfuncs, double time, unsigned int random_seed)
 {
 	g_runfuncs = runfuncs;

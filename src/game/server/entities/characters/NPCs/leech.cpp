@@ -32,18 +32,14 @@
 // Try this on a model with hulls/tracehull?
 //
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-
-
-
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "monsters.h"
 
 // Animation events
 constexpr int LEECH_AE_ATTACK = 1;
 constexpr int LEECH_AE_FLOP = 2;
-
 
 // Movement constants
 
@@ -55,8 +51,6 @@ constexpr int LEECH_SWIM_DECEL = 10;
 constexpr int LEECH_TURN_RATE = 90;
 constexpr int LEECH_SIZEX = 10;
 constexpr float LEECH_FRAMETIME = 0.1;
-
-
 
 #define DEBUG_BEAMS		0
 
@@ -97,6 +91,10 @@ public:
 	void AttackSound();
 	void AlertSound() override;
 	void UpdateMotion();
+
+	/**
+	*	@brief returns normalized distance to obstacle
+	*/
 	float ObstacleDistance(CBaseEntity* pTarget);
 	void MakeVectors();
 	void RecalculateWaterlevel();
@@ -139,8 +137,6 @@ private:
 #endif
 };
 
-
-
 LINK_ENTITY_TO_CLASS(monster_leech, CLeech);
 
 TYPEDESCRIPTION	CLeech::m_SaveData[] =
@@ -161,7 +157,6 @@ TYPEDESCRIPTION	CLeech::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CLeech, CBaseMonster);
 
-
 const char* CLeech::pAttackSounds[] =
 {
 	"leech/leech_bite1.wav",
@@ -174,7 +169,6 @@ const char* CLeech::pAlertSounds[] =
 	"leech/leech_alert1.wav",
 	"leech/leech_alert2.wav",
 };
-
 
 void CLeech::Spawn()
 {
@@ -206,13 +200,10 @@ void CLeech::Spawn()
 	m_stateTime = gpGlobals->time + RANDOM_FLOAT(1, 5);
 }
 
-
 void CLeech::Activate()
 {
 	RecalculateWaterlevel();
 }
-
-
 
 void CLeech::RecalculateWaterlevel()
 {
@@ -236,7 +227,6 @@ void CLeech::RecalculateWaterlevel()
 	m_height = RANDOM_FLOAT(m_bottom, m_top);
 	m_waterTime = gpGlobals->time + RANDOM_FLOAT(5, 7);
 }
-
 
 void CLeech::SwitchLeechState()
 {
@@ -262,15 +252,12 @@ void CLeech::SwitchLeechState()
 	}
 }
 
-
 int CLeech::IRelationship(CBaseEntity* pTarget)
 {
 	if (pTarget->IsPlayer())
 		return R_DL;
 	return CBaseMonster::IRelationship(pTarget);
 }
-
-
 
 void CLeech::AttackSound()
 {
@@ -281,12 +268,10 @@ void CLeech::AttackSound()
 	}
 }
 
-
 void CLeech::AlertSound()
 {
 	EmitSound(CHAN_VOICE, pAlertSounds[RANDOM_LONG(0, ArraySize(pAlertSounds) - 1)], VOL_NORM, ATTN_NORM * 0.5);
 }
-
 
 void CLeech::Precache()
 {
@@ -296,7 +281,6 @@ void CLeech::Precache()
 	PRECACHE_SOUND_ARRAY(pAttackSounds);
 	PRECACHE_SOUND_ARRAY(pAlertSounds);
 }
-
 
 bool CLeech::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
@@ -310,7 +294,6 @@ bool CLeech::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float f
 
 	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
 }
-
 
 void CLeech::HandleAnimEvent(AnimationEvent& event)
 {
@@ -349,7 +332,6 @@ void CLeech::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-
 void CLeech::MakeVectors()
 {
 	Vector tmp = pev->angles;
@@ -357,10 +339,6 @@ void CLeech::MakeVectors()
 	UTIL_MakeVectors(tmp);
 }
 
-
-//
-// ObstacleDistance - returns normalized distance to obstacle
-//
 float CLeech::ObstacleDistance(CBaseEntity* pTarget)
 {
 	TraceResult		tr;
@@ -413,7 +391,6 @@ float CLeech::ObstacleDistance(CBaseEntity* pTarget)
 	return 1.0;
 }
 
-
 void CLeech::DeadThink()
 {
 	if (m_fSequenceFinished)
@@ -447,8 +424,6 @@ void CLeech::DeadThink()
 		}
 	}
 }
-
-
 
 void CLeech::UpdateMotion()
 {
@@ -546,7 +521,6 @@ void CLeech::UpdateMotion()
 	m_pt->SetColor(0, 0, 255);
 #endif
 }
-
 
 void CLeech::SwimThink()
 {
@@ -680,7 +654,6 @@ void CLeech::SwimThink()
 	UpdateMotion();
 }
 
-
 void CLeech::Killed(entvars_t* pevAttacker, int iGib)
 {
 	Vector			vecSplatDir;
@@ -713,5 +686,3 @@ void CLeech::Killed(entvars_t* pevAttacker, int iGib)
 	pev->takedamage = DAMAGE_NO;
 	SetThink(&CLeech::DeadThink);
 }
-
-

@@ -103,8 +103,8 @@ void SpectatorSpray()
 			trace->endpos[0], trace->endpos[1], trace->endpos[2], trace->ent);
 		gEngfuncs.pfnServerCmd(string);
 	}
-
 }
+
 void SpectatorHelp()
 {
 	if (gViewPort)
@@ -153,9 +153,6 @@ void ToggleScores()
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: 
-//-----------------------------------------------------------------------------
 bool CHudSpectator::Init()
 {
 	gHUD.AddHudElem(this);
@@ -311,11 +308,6 @@ bool UTIL_FindEntityInMap(const char* name, Vector& origin, Vector& angle)
 
 }
 
-//-----------------------------------------------------------------------------
-// SetSpectatorStartPosition(): 
-// Get valid map position and 'beam' spectator to this position
-//-----------------------------------------------------------------------------
-
 void CHudSpectator::SetSpectatorStartPosition()
 {
 	// search for info_player start
@@ -342,7 +334,6 @@ void CHudSpectator::SetSpectatorStartPosition()
 
 	iJumpSpectator = true;	// jump anyway
 }
-
 
 void CHudSpectator::SetCameraView(Vector pos, Vector angle, float fov)
 {
@@ -519,9 +510,6 @@ bool CHudSpectator::GetDirectorCamera(Vector& position, Vector& angle)
 
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Loads new icons
-//-----------------------------------------------------------------------------
 bool CHudSpectator::VidInit()
 {
 	m_hsprPlayer = SPR_Load("sprites/iplayer.spr");
@@ -548,11 +536,6 @@ float CHudSpectator::GetFOV()
 	return m_FOV;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : flTime - 
-//			intermission - 
-//-----------------------------------------------------------------------------
 bool CHudSpectator::Draw(float flTime)
 {
 	int lx;
@@ -628,7 +611,6 @@ bool CHudSpectator::Draw(float flTime)
 
 	return true;
 }
-
 
 void CHudSpectator::DirectorMessage(int iSize, void* pbuf)
 {
@@ -904,7 +886,6 @@ void CHudSpectator::FindNextPlayer(bool bReverse)
 
 	iJumpSpectator = true;
 }
-
 
 void CHudSpectator::FindPlayer(const char* name)
 {
@@ -1190,7 +1171,6 @@ bool CHudSpectator::IsActivePlayer(cl_entity_t* ent)
 		g_PlayerInfoList[ent->index].name != nullptr
 		);
 }
-
 
 bool CHudSpectator::ParseOverviewFile()
 {
@@ -1687,8 +1667,6 @@ void CHudSpectator::DrawOverviewEntities()
 
 }
 
-
-
 void CHudSpectator::DrawOverview()
 {
 	// draw only in sepctator mode
@@ -1706,6 +1684,7 @@ void CHudSpectator::DrawOverview()
 	DrawOverviewEntities();
 	CheckOverviewEntities();
 }
+
 void CHudSpectator::CheckOverviewEntities()
 {
 	double time = gEngfuncs.GetClientTime();
@@ -1779,6 +1758,7 @@ bool CHudSpectator::AddOverviewEntityToList(HSPRITE sprite, cl_entity_t* ent, do
 
 	return false;	// maximum overview entities reached
 }
+
 void CHudSpectator::CheckSettings()
 {
 	// disallow same inset mode as main mode:
@@ -1875,6 +1855,7 @@ int CHudSpectator::ToggleInset(bool allowOff)
 
 	return newInsetMode;
 }
+
 void CHudSpectator::Reset()
 {
 	// Reset HUD
@@ -1922,4 +1903,3 @@ void CHudSpectator::InitHUDData()
 	// reset HUD FOV
 	gHUD.m_iFOV = CVAR_GET_FLOAT("default_fov");
 }
-

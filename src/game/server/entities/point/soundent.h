@@ -35,57 +35,94 @@ constexpr int SOUNDLISTTYPE_ACTIVE = 2;
 
 constexpr int SOUND_NEVER_EXPIRE = -1;		//!< with this set as a sound's ExpireTime, the sound will never expire.
 
-//=========================================================
-// CSound - an instance of a sound in the world.
-//=========================================================
+/**
+*	@brief an instance of a sound in the world.
+*/
 class CSound
 {
 public:
-
+	//TODO: typo
+	/**
+	*	@brief zeros all fields for a sound
+	*/
 	void	Clear();
+
+	/**
+	*	@brief clears the volume, origin, and type for a sound, but doesn't expire or unlink it. 
+	*/
 	void	Reset();
 
-	Vector	m_vecOrigin;	// sound's location in space
-	int		m_iType;		// what type of sound this is
-	int		m_iVolume;		// how loud the sound is
-	float	m_flExpireTime;	// when the sound should be purged from the list
-	int		m_iNext;		// index of next sound in this list ( Active or Free )
-	int		m_iNextAudible;	// temporary link that monsters use to build a list of audible sounds
+	Vector	m_vecOrigin;	//!< sound's location in space
+	int		m_iType;		//!< what type of sound this is
+	int		m_iVolume;		//!< how loud the sound is
+	float	m_flExpireTime;	//!< when the sound should be purged from the list
+	int		m_iNext;		//!< index of next sound in this list ( Active or Free )
+	int		m_iNextAudible;	//!< temporary link that monsters use to build a list of audible sounds
 
 	bool	FIsSound();
 	bool	FIsScent();
 };
 
-//=========================================================
-// CSoundEnt - a single instance of this entity spawns when
-// the world spawns. The SoundEnt's job is to update the 
-// world's Free and Active sound lists.
-//=========================================================
+/**
+*	@brief a single instance of this entity spawns when the world spawns.
+*	The SoundEnt's job is to update the world's Free and Active sound lists.
+*/
 class CSoundEnt : public CBaseEntity
 {
 public:
 
 	void Precache() override;
 	void Spawn() override;
+
+	/**
+	*	@brief at interval, the entire active sound list is checked for sounds
+	*	that have ExpireTimes less than or equal to the current world time,
+	*	and these sounds are deallocated.
+	*/
 	void Think() override;
+
+	/**
+	*	@brief clears all sounds and moves them into the free sound list.
+	*/
 	void Initialize();
 
+	/**
+	*	@brief Allocates a free sound and fills it with sound info.
+	*/
 	static void		InsertSound(int iType, const Vector& vecOrigin, int iVolume, float flDuration);
+
+	/**
+	*	@brief clears the passed active sound and moves it to the top of the free list.
+	*	TAKE CARE to only call this function for sounds in the Active list!!
+	*/
 	static void		FreeSound(int iSound, int iPrevious);
 	static int		ActiveList();// return the head of the active list
 	static int		FreeList();// return the head of the free list
 	static CSound* SoundPointerForIndex(int iIndex);// return a pointer for this index in the sound list
+
+	/**
+	*	@brief Clients are numbered from 1 to MAXCLIENTS, but the client reserved sounds in the soundlist are from 0 to MAXCLIENTS - 1,
+	*	so this function ensures that a client gets the proper index to his reserved sound in the soundlist.
+	*/
 	static int		ClientSoundIndex(edict_t* pClient);
 
 	bool	IsEmpty() { return m_iActiveSound == SOUNDLIST_EMPTY; }
+
+	/**
+	*	@brief returns the number of sounds in the desired sound list.
+	*/
 	int		ISoundsInList(int iListType);
+
+	/**
+	*	@brief moves a sound from the Free list to the Active list returns the index of the alloc'd sound
+	*/
 	int		IAllocSound();
 	int		ObjectCaps() override { return FCAP_DONT_SAVE; }
 
-	int		m_iFreeSound;	// index of the first sound in the free sound list
-	int		m_iActiveSound; // indes of the first sound in the active sound list
-	int		m_cLastActiveSounds; // keeps track of the number of active sounds at the last update. (for diagnostic work)
-	bool	m_fShowReport; // if true, dump information about free/active sounds.
+	int		m_iFreeSound;	//!< index of the first sound in the free sound list
+	int		m_iActiveSound; //!< indes of the first sound in the active sound list
+	int		m_cLastActiveSounds; //!< keeps track of the number of active sounds at the last update. (for diagnostic work)
+	bool	m_fShowReport; //!< if true, dump information about free/active sounds.
 
 private:
 	CSound		m_SoundPool[MAX_WORLD_SOUNDS];

@@ -12,11 +12,9 @@ struct entity_state_t;
 class CStudioModelRenderer
 {
 public:
-	// Construction/Destruction
 	CStudioModelRenderer();
 	virtual ~CStudioModelRenderer();
 
-	// Initialization
 	virtual void Init();
 
 public:

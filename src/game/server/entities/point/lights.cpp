@@ -23,8 +23,11 @@
 #include "util.h"
 #include "cbase.h"
 
-
-
+/**
+*	@brief Non-displayed light.
+*	Default style is 0
+*	If targeted, it will toggle between on or off.
+*/
 class CLight : public CPointEntity
 {
 public:
@@ -41,6 +44,7 @@ private:
 	int		m_iStyle;
 	string_t m_iszPattern;
 };
+
 LINK_ENTITY_TO_CLASS(light, CLight);
 
 TYPEDESCRIPTION	CLight::m_SaveData[] =
@@ -51,10 +55,6 @@ TYPEDESCRIPTION	CLight::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CLight, CPointEntity);
 
-
-//
-// Cache user-entity-field values until spawn is called.
-//
 void CLight::KeyValue(KeyValueData* pkvd)
 {
 	if (FStrEq(pkvd->szKeyName, "style"))
@@ -78,13 +78,6 @@ void CLight::KeyValue(KeyValueData* pkvd)
 	}
 }
 
-/*QUAKED light (0 1 0) (-8 -8 -8) (8 8 8) LIGHT_START_OFF
-Non-displayed light.
-Default light value is 300
-Default style is 0
-If targeted, it will toggle between on or off.
-*/
-
 void CLight::Spawn()
 {
 	if (FStringNull(pev->targetname))
@@ -104,7 +97,6 @@ void CLight::Spawn()
 			LIGHT_STYLE(m_iStyle, "m");
 	}
 }
-
 
 void CLight::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
@@ -129,11 +121,8 @@ void CLight::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType
 	}
 }
 
-//
 // shut up spawn functions for new spotlights
-//
 LINK_ENTITY_TO_CLASS(light_spot, CLight);
-
 
 class CEnvLight : public CLight
 {
@@ -180,7 +169,6 @@ void CEnvLight::KeyValue(KeyValueData* pkvd)
 		CLight::KeyValue(pkvd);
 	}
 }
-
 
 void CEnvLight::Spawn()
 {

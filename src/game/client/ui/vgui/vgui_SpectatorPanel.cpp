@@ -10,9 +10,6 @@
 
 #include "Exports.h"
 
-/**
-*	@brief Sets the location of the input for chat text
-*/
 void DLLEXPORT HUD_ChatInputPosition(int* x, int* y)
 {
 	if (g_iUser1 != 0 || gEngfuncs.IsSpectateOnly())
@@ -28,17 +25,12 @@ void DLLEXPORT HUD_ChatInputPosition(int* x, int* y)
 	}
 }
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
 SpectatorPanel::SpectatorPanel(int x, int y, int wide, int tall) : Panel(x, y, wide, tall)
 {
 }
 
 SpectatorPanel::~SpectatorPanel()
 {
-
 }
 
 void SpectatorPanel::ActionSignal(int cmd)
@@ -74,7 +66,6 @@ void SpectatorPanel::ActionSignal(int cmd)
 	}
 
 }
-
 
 void SpectatorPanel::Initialize()
 {
@@ -230,7 +221,6 @@ void SpectatorPanel::Initialize()
 	m_ExtraInfo->setVisible(false);
 	m_Separator->setVisible(false);
 	m_TimerImage->setVisible(false);
-
 }
 
 void SpectatorPanel::ShowMenu(bool isVisible)
@@ -276,7 +266,6 @@ void SpectatorPanel::ShowMenu(bool isVisible)
 
 	gViewPort->UpdateCursorState();
 }
-
 
 const char* GetSpectatorLabel(int iMode)
 {
@@ -356,9 +345,6 @@ void SpectatorPanel::EnableInsetView(bool isEnabled)
 
 	m_CamButton->setText(CHudTextMessage::BufferedLocaliseTextString(GetSpectatorLabel(g_iUser1)));
 }
-
-
-
 
 void SpectatorPanel::Update()
 {

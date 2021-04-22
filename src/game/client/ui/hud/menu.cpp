@@ -57,24 +57,19 @@ bool CHudMenu::VidInit()
 	return true;
 }
 
-
-/*=================================
-  ParseEscapeToken
-
-  Interprets the given escape token (backslash followed by a letter). The
-  first character of the token must be a backslash.  The second character
-  specifies the operation to perform:
-
-   \w : White text (this is the default)
-   \d : Dim (gray) text
-   \y : Yellow text
-   \r : Red text
-   \R : Right-align (just for the remainder of the current line)
-=================================*/
-
 //TODO: get rid of these globals
 static int menu_r, menu_g, menu_b, menu_x, menu_ralign;
 
+/**
+*	@brief Interprets the given escape token (backslash followed by a letter).
+*	@details The first character of the token must be a backslash.
+*	The second character specifies the operation to perform:
+*		\w : White text (this is the default)
+*		\d : Dim (gray) text
+*		\y : Yellow text
+*		\r : Red text
+*		\R : Right-align (just for the remainder of the current line)
+*/
 static inline const char* ParseEscapeToken(const char* token)
 {
 	if (*token != '\\')
@@ -119,7 +114,6 @@ static inline const char* ParseEscapeToken(const char* token)
 
 	return ++token;
 }
-
 
 bool CHudMenu::Draw(float flTime)
 {
@@ -200,7 +194,6 @@ bool CHudMenu::Draw(float flTime)
 	return true;
 }
 
-// selects an item from the menu
 void CHudMenu::SelectMenuItem(int menu_item)
 {
 	// if menu_item is in a valid slot,  send a menuselect command to the server
@@ -216,14 +209,6 @@ void CHudMenu::SelectMenuItem(int menu_item)
 	}
 }
 
-
-// Message handler for ShowMenu message
-// takes four values:
-//		short: a bitfield of keys that are valid input
-//		char : the duration, in seconds, the menu should stay up. -1 means is stays until something is chosen.
-//		byte : a boolean, true if there is more string yet to be received before displaying the menu, false if it's the last string
-//		string: menu string to display
-// if this message is never received, then scores will simply be the combined totals of the players.
 bool CHudMenu::MsgFunc_ShowMenu(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};

@@ -40,9 +40,6 @@ struct DAMAGE_IMAGE
 	int	x, y;
 };
 
-//
-//-----------------------------------------------------
-//
 class CHudHealth : public CHudBase
 {
 public:
@@ -56,6 +53,10 @@ public:
 	int m_HUD_dmg_bio = 0;
 	int m_HUD_cross = 0;
 	float m_fAttackFront = 0, m_fAttackRear = 0, m_fAttackLeft = 0, m_fAttackRight = 0;
+
+	/**
+	*	@brief Returns back a color from the Green <-> Yellow <-> Red ramp
+	*/
 	void GetPainColor(int& r, int& g, int& b);
 	float m_fFade = 0;
 

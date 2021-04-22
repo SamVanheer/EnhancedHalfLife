@@ -41,7 +41,6 @@
 cl_enginefunc_t gEngfuncs;
 TeamFortressViewport* gViewPort = nullptr;
 
-
 #include "particleman.h"
 CSysModule* g_hParticleManModule = nullptr;
 
@@ -52,26 +51,11 @@ void InitInput();
 void EV_HookEvents();
 void IN_Commands();
 
-/*
-================================
-HUD_GetHullBounds
-
-  Engine calls this to enumerate player collision hulls, for prediction.  Return 0 if the hullnumber doesn't exist.
-================================
-*/
 int DLLEXPORT HUD_GetHullBounds(int hullnumber, Vector* mins, Vector* maxs)
 {
 	return Shared_GetHullBounds(hullnumber, *mins, *maxs);
 }
 
-/*
-================================
-HUD_ConnectionlessPacket
-
- Return 1 if the packet is valid.  Set response_buffer_size if you want to send a response packet.  Incoming, it holds the max
-  size of the response_buffer, so you must zero it out if you choose not to respond.
-================================
-*/
 int	DLLEXPORT HUD_ConnectionlessPacket(const netadr_t* net_from, const char* args, char* response_buffer, int* response_buffer_size)
 {
 	// Parse stuff from args
@@ -122,17 +106,6 @@ int DLLEXPORT Initialize(cl_enginefunc_t* pEnginefuncs, int iVersion)
 	return true;
 }
 
-
-/*
-==========================
-	HUD_VidInit
-
-Called when the game initializes
-and whenever the vid_mode is changed
-so the HUD can reinitialize itself.
-==========================
-*/
-
 int DLLEXPORT HUD_VidInit()
 {
 	gHUD.VidInit();
@@ -142,32 +115,12 @@ int DLLEXPORT HUD_VidInit()
 	return true;
 }
 
-/*
-==========================
-	HUD_Init
-
-Called whenever the client connects
-to a server.  Reinitializes all
-the hud variables.
-==========================
-*/
-
 void DLLEXPORT HUD_Init()
 {
 	InitInput();
 	gHUD.Init();
 	Scheme_Init();
 }
-
-
-/*
-==========================
-	HUD_Redraw
-
-called every screen frame to
-redraw the HUD.
-===========================
-*/
 
 int DLLEXPORT HUD_Redraw(float time, int intermission)
 {
@@ -176,20 +129,6 @@ int DLLEXPORT HUD_Redraw(float time, int intermission)
 	return true;
 }
 
-
-/*
-==========================
-	HUD_UpdateClientData
-
-called every time shared client
-dll/engine data gets changed,
-and gives the cdll a chance
-to modify the data.
-
-returns 1 if anything has been changed, 0 otherwise.
-==========================
-*/
-
 int DLLEXPORT HUD_UpdateClientData(client_data_t* pcldata, float flTime)
 {
 	IN_Commands();
@@ -197,53 +136,20 @@ int DLLEXPORT HUD_UpdateClientData(client_data_t* pcldata, float flTime)
 	return gHUD.UpdateClientData(pcldata, flTime);
 }
 
-/*
-==========================
-	HUD_Reset
-
-Called at start and end of demos to restore to "non"HUD state.
-==========================
-*/
-
 void DLLEXPORT HUD_Reset()
 {
 	gHUD.VidInit();
 }
-
-/*
-==========================
-HUD_Frame
-
-Called by engine every frame that client .dll is loaded
-==========================
-*/
 
 void DLLEXPORT HUD_Frame(double time)
 {
 	GetClientVoiceMgr()->Frame(time);
 }
 
-
-/*
-==========================
-HUD_VoiceStatus
-
-Called when a player starts or stops talking.
-==========================
-*/
-
 void DLLEXPORT HUD_VoiceStatus(int entindex, qboolean bTalking)
 {
 	GetClientVoiceMgr()->UpdateSpeakerStatus(entindex, bTalking);
 }
-
-/*
-==========================
-HUD_DirectorMessage
-
-Called when a director event message was received
-==========================
-*/
 
 void DLLEXPORT HUD_DirectorMessage(int iSize, void* pbuf)
 {
@@ -344,9 +250,9 @@ extern "C" void DLLEXPORT F(void* pv)
 
 #include "IGameClientExports.h"
 
-//-----------------------------------------------------------------------------
-// Purpose: Exports functions that are used by the gameUI for UI dialogs
-//-----------------------------------------------------------------------------
+/**
+*	@brief Exports functions that are used by the gameUI for UI dialogs
+*/
 class CClientExports : public IGameClientExports
 {
 public:

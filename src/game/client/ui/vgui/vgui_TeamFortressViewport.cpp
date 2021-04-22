@@ -80,6 +80,10 @@ constexpr int SBOARD_INDENT_X_400 = 0;
 constexpr int SBOARD_INDENT_Y_400 = 20;
 
 void IN_ResetMouse();
+
+/**
+*	@brief Creates a new CMessageWindowPanel
+*/
 CMenuPanel* CMessageWindowPanel_Create(const char* szMOTD, const char* szTitle, int iShadeFullscreen, int iRemoveMe, int x, int y, int wide, int tall);
 
 using namespace vgui;
@@ -95,7 +99,10 @@ int iTeamColors[5][3] =
 	{ 145, 215, 140 },	// Green
 };
 
-// Get the name of TGA file, based on GameDir
+/**
+*	@brief Get the name of TGA file, based on GameDir
+*/
+//TODO: never used?
 char* GetVGUITGAName(const char* pszName)
 {
 	int i;
@@ -115,9 +122,6 @@ char* GetVGUITGAName(const char* pszName)
 	return gd;
 }
 
-//================================================================
-// COMMAND MENU
-//================================================================
 void CCommandMenu::AddButton(CommandButton* pButton)
 {
 	if (m_iButtons >= MAX_BUTTONS)
@@ -160,12 +164,6 @@ void CCommandMenu::RemoveAllButtons()
 
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Tries to find a button that has a key bound to the input, and
-//			presses the button if found
-// Input  : keyNum - the character number of the input key
-// Output : Returns true if the command menu should close, false otherwise
-//-----------------------------------------------------------------------------
 bool CCommandMenu::KeyInput(int keyNum)
 {
 	// loop through all our buttons looking for one bound to keyNum
@@ -195,10 +193,6 @@ bool CCommandMenu::KeyInput(int keyNum)
 	return false;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: clears the current menus buttons of any armed (highlighted) 
-//			state, and all their sub buttons
-//-----------------------------------------------------------------------------
 void CCommandMenu::ClearButtonsOfArmedState()
 {
 	for (int i = 0; i < GetNumButtons(); i++)
@@ -212,11 +206,6 @@ void CCommandMenu::ClearButtonsOfArmedState()
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *pSubMenu - 
-// Output : CommandButton
-//-----------------------------------------------------------------------------
 CommandButton* CCommandMenu::FindButtonWithSubmenu(CCommandMenu* pSubMenu)
 {
 	for (int i = 0; i < GetNumButtons(); i++)
@@ -228,7 +217,6 @@ CommandButton* CCommandMenu::FindButtonWithSubmenu(CCommandMenu* pSubMenu)
 	return nullptr;
 }
 
-// Recalculate the visible buttons
 bool CCommandMenu::RecalculateVisibles(int iYOffset, bool bHideAll)
 {
 	int		i, iCurrentY = 0;
@@ -300,7 +288,6 @@ bool CCommandMenu::RecalculateVisibles(int iYOffset, bool bHideAll)
 	return iVisibleButtons ? true : false;
 }
 
-// Make sure all submenus can fit on the screen
 void CCommandMenu::RecalculatePositions(int iYOffset)
 {
 	int iTop;
@@ -345,8 +332,6 @@ void CCommandMenu::RecalculatePositions(int iYOffset)
 		m_aButtons[i]->UpdateSubMenus(iAdjust);
 }
 
-
-// Make this menu and all menus above it in the chain visible
 void CCommandMenu::MakeVisible(CCommandMenu* pChildMenu)
 {
 	/*
@@ -369,8 +354,6 @@ void CCommandMenu::MakeVisible(CCommandMenu* pChildMenu)
 		m_pParentMenu->MakeVisible(this);
 }
 
-//================================================================
-// CreateSubMenu
 CCommandMenu* TeamFortressViewport::CreateSubMenu(CommandButton* pButton, CCommandMenu* pParentMenu, int iYOffset, int iXOffset)
 {
 	int iXPos = 0;
@@ -412,11 +395,6 @@ CCommandMenu* TeamFortressViewport::CreateSubMenu(CommandButton* pButton, CComma
 	return pMenu;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Makes sure the memory allocated for TeamFortressViewport is nulled out
-// Input  : stAllocateBlock - 
-// Output : void *
-//-----------------------------------------------------------------------------
 void* TeamFortressViewport::operator new(size_t stAllocateBlock)
 {
 	//	void *mem = Panel::operator new( stAllocateBlock );
@@ -425,9 +403,9 @@ void* TeamFortressViewport::operator new(size_t stAllocateBlock)
 	return mem;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: InputSignal handler for the main viewport
-//-----------------------------------------------------------------------------
+/**
+*	@brief InputSignal handler for the main viewport
+*/
 class CViewPortInputHandler : public InputSignal
 {
 public:
@@ -461,8 +439,6 @@ public:
 	void keyFocusTicked(Panel* panel) override {}
 };
 
-
-//================================================================
 TeamFortressViewport::TeamFortressViewport(int x, int y, int wide, int tall) : Panel(x, y, wide, tall), m_SchemeManager(wide, tall)
 {
 	gViewPort = this;
@@ -550,9 +526,6 @@ TeamFortressViewport::TeamFortressViewport(int x, int y, int wide, int tall) : P
 	UpdatePlayerMenu(m_PlayerMenu);
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Called everytime a new level is started. Viewport clears out it's data.
-//-----------------------------------------------------------------------------
 void TeamFortressViewport::Initialize()
 {
 	// Force each menu to Initialize
@@ -590,10 +563,6 @@ void TeamFortressViewport::Initialize()
 	App::getInstance()->setCursorOveride(App::getInstance()->getScheme()->getCursor(Scheme::scu_none));
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Read the Command Menu structure from the txt file and create the menu.
-//			Returns Index of menu in m_pCommandMenus
-//-----------------------------------------------------------------------------
 int TeamFortressViewport::CreateCommandMenu(const char* menuFile, int direction, int yOffset, bool flatDesign, float flButtonSizeX, float flButtonSizeY, int xOffset)
 {
 	// COMMAND MENU
@@ -769,7 +738,6 @@ int TeamFortressViewport::CreateCommandMenu(const char* menuFile, int direction,
 	return newIndex;
 }
 
-//=======================================================================
 void TeamFortressViewport::ShowCommandMenu(int menuIndex)
 {
 	if (!m_iInitialized)
@@ -813,10 +781,6 @@ void TeamFortressViewport::ShowCommandMenu(int menuIndex)
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Handles the key input of "-commandmenu"
-// Input  : 
-//-----------------------------------------------------------------------------
 void TeamFortressViewport::InputSignalHideCommandMenu()
 {
 	if (!m_iInitialized)
@@ -829,9 +793,6 @@ void TeamFortressViewport::InputSignalHideCommandMenu()
 	HideCommandMenu();
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Hides the command menu
-//-----------------------------------------------------------------------------
 void TeamFortressViewport::HideCommandMenu()
 {
 	if (!m_iInitialized)
@@ -863,9 +824,6 @@ void TeamFortressViewport::HideCommandMenu()
 	UpdateCursorState();
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Bring up the scoreboard
-//-----------------------------------------------------------------------------
 void TeamFortressViewport::ShowScoreBoard()
 {
 	if (m_pScoreBoard)
@@ -879,9 +837,6 @@ void TeamFortressViewport::ShowScoreBoard()
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Returns true if the scoreboard is up
-//-----------------------------------------------------------------------------
 bool TeamFortressViewport::IsScoreBoardVisible()
 {
 	if (m_pScoreBoard)
@@ -890,9 +845,6 @@ bool TeamFortressViewport::IsScoreBoardVisible()
 	return false;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Hide the scoreboard
-//-----------------------------------------------------------------------------
 void TeamFortressViewport::HideScoreBoard()
 {
 	// Prevent removal of scoreboard during intermission
@@ -909,10 +861,6 @@ void TeamFortressViewport::HideScoreBoard()
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Activate's the player special ability
-//			called when the player hits their "special" key
-//-----------------------------------------------------------------------------
 void TeamFortressViewport::InputPlayerSpecial()
 {
 	if (!m_iInitialized)
@@ -922,7 +870,6 @@ void TeamFortressViewport::InputPlayerSpecial()
 	EngineClientCmd("_special");
 }
 
-// Set the submenu of the Command Menu
 void TeamFortressViewport::SetCurrentCommandMenu(CCommandMenu* pNewMenu)
 {
 	for (int i = 0; i < m_iNumMenus; i++)
@@ -950,11 +897,9 @@ void TeamFortressViewport::UpdateCommandMenu(int menuIndex)
 
 void TeamFortressViewport::UpdatePlayerMenu(int menuIndex)
 {
-
 	cl_entity_t* pEnt = nullptr;
 	float flLabelSize = ((ScreenWidth - (XRES(CAMOPTIONS_BUTTON_X) + 15)) - XRES(24 + 15)) - XRES((15 + OPTIONS_BUTTON_X + 15) + 38);
 	gViewPort->GetAllPlayersInfo();
-
 
 	for (int i = 1; i < MAX_PLAYERS; i++)
 	{
@@ -983,9 +928,7 @@ void TeamFortressViewport::UpdatePlayerMenu(int menuIndex)
 		pButton->addActionSignal(new CMenuHandler_SpectateFollow(g_PlayerInfoList[pEnt->index].name));
 		// Create an input signal that'll popup the current menu
 		pButton->addInputSignal(new CMenuHandler_PopupSubMenuInput(pButton, m_pCommandMenus[menuIndex]));
-
 	}
-
 }
 
 void TeamFortressViewport::UpdateSpectatorPanel()
@@ -1078,7 +1021,6 @@ void TeamFortressViewport::UpdateSpectatorPanel()
 		m_pSpectatorPanel->m_BottomMainLabel->setText("%s", pBottomText);
 		m_pSpectatorPanel->m_BottomMainButton->setText(pBottomText);
 
-
 		// update extra info field
 		char szText[64];
 
@@ -1122,7 +1064,6 @@ void TeamFortressViewport::UpdateSpectatorPanel()
 	m_flSpectatorPanelLastUpdated = gHUD.m_flTime + 1.0; // update every second
 }
 
-//======================================================================
 void TeamFortressViewport::CreateScoreBoard()
 {
 	int xdent = SBOARD_INDENT_X, ydent = SBOARD_INDENT_Y;
@@ -1142,8 +1083,6 @@ void TeamFortressViewport::CreateScoreBoard()
 	m_pScoreBoard->setVisible(false);
 }
 
-//======================================================================
-// Set the VGUI Menu
 void TeamFortressViewport::SetCurrentMenu(CMenuPanel* pMenu)
 {
 	m_pCurrentMenu = pMenu;
@@ -1161,8 +1100,6 @@ void TeamFortressViewport::SetCurrentMenu(CMenuPanel* pMenu)
 	}
 }
 
-//================================================================
-// Text Window
 CMenuPanel* TeamFortressViewport::CreateTextWindow(int iTextToShow)
 {
 	char sz[256];
@@ -1246,8 +1183,6 @@ CMenuPanel* TeamFortressViewport::CreateTextWindow(int iTextToShow)
 	return pMOTDPanel;
 }
 
-//================================================================
-// VGUI Menus
 void TeamFortressViewport::ShowVGUIMenu(int iMenu)
 {
 	CMenuPanel* pNewMenu = nullptr;
@@ -1320,7 +1255,6 @@ void TeamFortressViewport::ShowVGUIMenu(int iMenu)
 	}
 }
 
-// Removes all VGUI Menu's onscreen
 void TeamFortressViewport::HideVGUIMenu()
 {
 	while (m_pCurrentMenu)
@@ -1329,7 +1263,6 @@ void TeamFortressViewport::HideVGUIMenu()
 	}
 }
 
-// Remove the top VGUI menu, and bring up the next one
 void TeamFortressViewport::HideTopMenu()
 {
 	if (m_pCurrentMenu)
@@ -1344,7 +1277,6 @@ void TeamFortressViewport::HideTopMenu()
 	UpdateCursorState();
 }
 
-// Return true if the HUD's allowed to print text messages
 bool TeamFortressViewport::AllowedToPrintText()
 {
 	// Prevent text messages when fullscreen menus are up
@@ -1358,11 +1290,6 @@ bool TeamFortressViewport::AllowedToPrintText()
 	return true;
 }
 
-//======================================================================================
-//======================================================================================
-// SPECTATOR MENU
-//======================================================================================
-// Spectator "Menu" explaining the Spectator buttons
 void TeamFortressViewport::CreateSpectatorMenu()
 {
 	// Create the Panel
@@ -1372,11 +1299,6 @@ void TeamFortressViewport::CreateSpectatorMenu()
 	m_pSpectatorPanel->Initialize();
 }
 
-//======================================================================================
-// UPDATE HUD SECTIONS
-//======================================================================================
-// We've got an update on player info
-// Recalculate any menus that use it.
 void TeamFortressViewport::UpdateOnPlayerInfo()
 {
 	if (m_pScoreBoard)
@@ -1476,8 +1398,6 @@ void TeamFortressViewport::paintBackground()
 	VGui_ViewportPaintBackground(extents);
 }
 
-//================================================================
-// Input Handler for Drag N Drop panels
 void CDragNDropHandler::cursorMoved(int x, int y, Panel* panel)
 {
 	if (m_bDragging)
@@ -1513,8 +1433,6 @@ void CDragNDropHandler::mouseReleased(MouseCode code, Panel* panel)
 	App::getInstance()->setMouseCapture(nullptr);
 }
 
-//================================================================
-// Number Key Input
 bool TeamFortressViewport::SlotInput(int iSlot)
 {
 	// If there's a menu up, give it the input
@@ -1524,7 +1442,6 @@ bool TeamFortressViewport::SlotInput(int iSlot)
 	return false;
 }
 
-// Direct Key Input
 bool TeamFortressViewport::KeyInput(int down, int keynum, const char* pszCurrentBinding)
 {
 	// Open Text Window?
@@ -1569,8 +1486,6 @@ bool TeamFortressViewport::KeyInput(int down, int keynum, const char* pszCurrent
 	return true;
 }
 
-//================================================================
-// Message Handlers
 bool TeamFortressViewport::MsgFunc_TeamNames(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};
@@ -1660,12 +1575,6 @@ bool TeamFortressViewport::MsgFunc_ScoreInfo(const char* pszName, int iSize, voi
 	return true;
 }
 
-// Message handler for TeamScore message
-// accepts three values:
-//		string: team name
-//		short: teams kills
-//		short: teams deaths 
-// if this message is never received, then scores will simply be the combined totals of the players.
 bool TeamFortressViewport::MsgFunc_TeamScore(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};
@@ -1690,10 +1599,6 @@ bool TeamFortressViewport::MsgFunc_TeamScore(const char* pszName, int iSize, voi
 	return true;
 }
 
-// Message handler for TeamInfo message
-// accepts two values:
-//		byte: client number
-//		string: client team name
 bool TeamFortressViewport::MsgFunc_TeamInfo(const char* pszName, int iSize, void* pbuf)
 {
 	if (!m_pScoreBoard)

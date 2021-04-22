@@ -7,10 +7,7 @@
 
 #include "vgui_listbox.h"
 
-
-
 using namespace vgui;
-
 
 CListBox::CListBox() : Panel(0, 0, 0, 0),
 m_ItemsPanel(0, 0, 0, 0),
@@ -203,5 +200,3 @@ int	CListBox::GetScrollMax()
 
 	return m_iScrollMax;
 }
-
-

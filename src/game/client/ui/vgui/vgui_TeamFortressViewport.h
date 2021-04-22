@@ -46,6 +46,10 @@ class CTransparentPanel;
 class TeamFortressViewport;
 
 char* GetVGUITGAName(const char* pszName);
+
+/**
+*	@brief Loads a .tga file and returns a pointer to the VGUI tga object
+*/
 BitmapTGA* LoadTGAForRes(const char* pImageName);
 void ScaleColors(int& r, int& g, int& b, int a);
 const Vector& GetClientColor(int clientIndex);
@@ -113,6 +117,10 @@ public:
 
 public:
 	void LoadImage(const char* pImageName);
+
+	/**
+	*	@brief Button with Class image beneath it
+	*/
 	CImageLabel(const char* pImageName, int x, int y);
 	CImageLabel(const char* pImageName, int x, int y, int wide, int tall);
 
@@ -153,6 +161,9 @@ public:
 
 //============================================================
 // Command Buttons
+/**
+*	@brief All TFC Hud buttons are derived from this one.
+*/
 class CommandButton : public Button
 {
 private:
@@ -169,6 +180,10 @@ private:
 
 	SchemeHandle_t m_hTextScheme;
 
+	/**
+	*	@brief Prepends the button text with the current bound key
+	*	if no bound key, then a clear space ' ' instead
+	*/
 	void RecalculateText();
 
 public:
@@ -198,7 +213,14 @@ public:
 	int GetPlayerClass() { return m_iPlayerClass; };
 	CCommandMenu* GetSubMenu() { return m_pSubMenu; };
 
+	/**
+	*	@brief Returns the command menu that the button is part of, if any
+	*/
 	CCommandMenu* getParentMenu();
+
+	/**
+	*	@brief Sets the menu that contains this button
+	*/
 	void setParentMenu(CCommandMenu* pParentMenu);
 
 	// Overloaded vgui functions
@@ -206,6 +228,9 @@ public:
 	virtual void setText(const char* text);
 	virtual void paintBackground();
 
+	/**
+	*	@brief Highlights the current button, and all it's parent menus
+	*/
 	void cursorEntered();
 	void cursorExited();
 
@@ -387,8 +412,20 @@ public:
 	float		m_flButtonSizeY;
 	int			m_iSpectCmdMenu;
 	void		AddButton(CommandButton* pButton);
+
+	/**
+	*	@brief Recalculate the visible buttons
+	*/
 	bool		RecalculateVisibles(int iNewYPos, bool bHideAll);
+
+	/**
+	*	@brief Make sure all submenus can fit on the screen
+	*/
 	void		RecalculatePositions(int iYOffset);
+
+	/**
+	*	@brief Make this menu and all menus above it in the chain visible
+	*/
 	void		MakeVisible(CCommandMenu* pChildMenu);
 
 	CCommandMenu* GetParentMenu() { return m_pParentMenu; };
@@ -398,13 +435,23 @@ public:
 	int			GetNumButtons() { return m_iButtons; };
 	CommandButton* FindButtonWithSubmenu(CCommandMenu* pSubMenu);
 
+	/**
+	*	@brief clears the current menus buttons of any armed (highlighted)  state, and all their sub buttons
+	*/
 	void		ClearButtonsOfArmedState();
 
 	void		RemoveAllButtons();
 
-
+	/**
+	*	@brief Tries to find a button that has a key bound to the input, and presses the button if found
+	*	@param keyNum the character number of the input key
+	*	@return true if the command menu should close, false otherwise
+	*/
 	bool		KeyInput(int keyNum);
 
+	/**
+	*	@brief Various overloaded paint functions for Custom VGUI objects
+	*/
 	virtual void paintBackground();
 };
 
@@ -497,6 +544,9 @@ private:
 	int			 m_iUser3;
 
 	// VGUI Menus
+	/**
+	*	@brief Spectator "Menu" explaining the Spectator buttons
+	*/
 	void		 CreateSpectatorMenu();
 
 	// Scheme handler
@@ -520,23 +570,48 @@ private:
 
 public:
 	TeamFortressViewport(int x, int y, int wide, int tall);
+
+	/**
+	*	@brief Called everytime a new level is started. Viewport clears out it's data.
+	*/
 	void Initialize();
 
+	/**
+	*	@brief Read the Command Menu structure from the txt file and create the menu.
+	*	@return Index of menu in m_pCommandMenus
+	*/
 	int		CreateCommandMenu(const char* menuFile, int direction, int yOffset, bool flatDesign, float flButtonSizeX, float flButtonSizeY, int xOffset);
 	void	CreateScoreBoard();
 
 	void UpdateCursorState();
 	void UpdateCommandMenu(int menuIndex);
+
+	/**
+	*	@brief We've got an update on player info
+	*	Recalculate any menus that use it.
+	*/
 	void UpdateOnPlayerInfo();
 	void UpdateHighlights();
 	void UpdateSpectatorPanel();
 
+	/**
+	*	@brief Direct Key Input
+	*/
 	bool KeyInput(int down, int keynum, const char* pszCurrentBinding);
+
+	/**
+	*	@brief Activate's the player special ability
+	*	called when the player hits their "special" key
+	*/
 	void InputPlayerSpecial();
 	void GetAllPlayersInfo();
 	void DeathMsg(int killer, int victim);
 
 	void ShowCommandMenu(int menuIndex);
+
+	/**
+	*	@brief Handles the key input of "-commandmenu"
+	*/
 	void InputSignalHideCommandMenu();
 	void HideCommandMenu();
 	void SetCurrentCommandMenu(CCommandMenu* pNewMenu);
@@ -546,10 +621,21 @@ public:
 	void HideScoreBoard();
 	bool IsScoreBoardVisible();
 
+	/**
+	*	@brief Return true if the HUD's allowed to print text messages
+	*/
 	bool AllowedToPrintText();
 
 	void ShowVGUIMenu(int iMenu);
+
+	/**
+	*	@brief Removes all VGUI Menu's onscreen
+	*/
 	void HideVGUIMenu();
+
+	/**
+	*	@brief Remove the top VGUI menu, and bring up the next one
+	*/
 	void HideTopMenu();
 
 	CMenuPanel* CreateTextWindow(int iTextToShow);
@@ -567,10 +653,29 @@ public:
 	bool MsgFunc_MOTD(const char* pszName, int iSize, void* pbuf);
 	bool MsgFunc_ServerName(const char* pszName, int iSize, void* pbuf);
 	bool MsgFunc_ScoreInfo(const char* pszName, int iSize, void* pbuf);
+
+	/**
+	*	@brief Message handler for TeamScore message
+	*	@details accepts three values:
+	*		string: team name
+	*		short: teams kills
+	*		short: teams deaths 
+	*	if this message is never received, then scores will simply be the combined totals of the players.
+	*/
 	bool MsgFunc_TeamScore(const char* pszName, int iSize, void* pbuf);
+
+	/**
+	*	@brief Message handler for TeamInfo message
+	*	@details accepts two values:
+	*		byte: client number
+	*		string: client team name
+	*/
 	bool MsgFunc_TeamInfo(const char* pszName, int iSize, void* pbuf);
 
 	// Input
+	/**
+	*	@brief Number Key Input
+	*/
 	bool SlotInput(int iSlot);
 
 	virtual void paintBackground();
@@ -578,6 +683,9 @@ public:
 	CSchemeManager* GetSchemeManager() { return &m_SchemeManager; }
 	ScorePanel* GetScoreBoard() { return m_pScoreBoard; }
 
+	/**
+	*	@brief Makes sure the memory allocated for TeamFortressViewport is nulled out
+	*/
 	void* operator new(size_t stAllocateBlock);
 
 public:

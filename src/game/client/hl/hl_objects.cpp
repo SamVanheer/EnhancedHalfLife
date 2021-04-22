@@ -99,12 +99,8 @@ void UpdateBeams()
 	}
 }
 
-/*
-=====================
-Game_AddObjects
-
-Add game specific, client-side objects here
-=====================
+/**
+*	@brief Add game specific, client-side objects here
 */
 void Game_AddObjects()
 {

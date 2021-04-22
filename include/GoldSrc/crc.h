@@ -17,7 +17,9 @@
 
 #include "steam/steamtypes.h"
 
-// MD5 Hash
+/*
+*	@brief MD5 Hash
+*/
 struct MD5Context_t
 {
 	unsigned int buf[4];

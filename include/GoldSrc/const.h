@@ -15,10 +15,13 @@
 
 #pragma once
 
-//
-// Constants shared by the engine and dlls
-// This header file included by engine files and DLL files.
-// Most came from server.h
+/**
+*	@file
+* 
+*	Constants shared by the engine and dlls
+*	This header file included by engine files and DLL files.
+*	Most came from server.h
+*/
 
 /**
 *	@brief Maximum value that a coordinate can have before it's considered out of the map.
@@ -126,7 +129,6 @@ constexpr int EF_NIGHTVISION = 256;			//!< player nightvision
 constexpr int EF_SNIPERLASER = 512;			//!< sniper laser effect
 constexpr int EF_FIBERCAMERA = 1024;		//!< fiber camera
 
-
 // entity flags
 constexpr int EFLAG_SLERP = 1;				//!< do studio interpolation of this entity
 
@@ -183,7 +185,6 @@ constexpr int TE_EXPLFLAG_NOADDITIVE = 1;	//!< sprite will be drawn opaque (ensu
 constexpr int TE_EXPLFLAG_NODLIGHTS = 2;	//!< do not render dynamic lights
 constexpr int TE_EXPLFLAG_NOSOUND = 4;		//!< do not play client explosion sound
 constexpr int TE_EXPLFLAG_NOPARTICLES = 8;	//!< do not draw particles
-
 
 constexpr int TE_TAREXPLOSION = 4;		// Quake1 "tarbaby" explosion with sound
 // coord coord coord (position) 
@@ -585,8 +586,6 @@ constexpr int TE_USERTRACER = 127; // larger message than the standard tracer, b
 // byte ( life * 10 )
 // byte ( color ) this is an index into an array of color vectors in the engine. (0 - )
 // byte ( length * 10 )
-
-
 
 constexpr int MSG_BROADCAST = 0;		//!< unreliable to all
 constexpr int MSG_ONE = 1;				//!< reliable to one (msg_entity)

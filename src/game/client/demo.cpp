@@ -12,6 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
+
 #include "hud.h"
 #include "cl_util.h"
 #include "demo.h"
@@ -26,13 +27,6 @@ float g_demozoom;
 
 // FIXME:  There should be buffer helper functions to avoid all of the *(int *)& crap.
 
-/*
-=====================
-Demo_WriteBuffer
-
-Write some data to the demo stream
-=====================
-*/
 void Demo_WriteBuffer(int type, int size, unsigned char* buffer)
 {
 	int pos = 0;
@@ -46,13 +40,6 @@ void Demo_WriteBuffer(int type, int size, unsigned char* buffer)
 	gEngfuncs.pDemoAPI->WriteBuffer(size + sizeof(int), buf);
 }
 
-/*
-=====================
-Demo_ReadBuffer
-
-Engine wants us to parse some data from the demo stream
-=====================
-*/
 void DLLEXPORT Demo_ReadBuffer(int size, unsigned char* buffer)
 {
 	int type;

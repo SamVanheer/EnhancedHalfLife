@@ -21,7 +21,7 @@
 /**
 *	@brief Associate script file name with callback functions.
 *
-*	Note that the format is always the same.
+*	@details Note that the format is always the same.
 *	Of course, a clever mod team could actually embed parameters, behavior into the actual .sc files
 *	and create a .sc file parser and hook their functionality through that.. i.e., a scripting system.
 *	That was what we were going to do, but we ran out of time...oh well.

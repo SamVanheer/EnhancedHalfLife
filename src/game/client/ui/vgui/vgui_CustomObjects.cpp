@@ -41,7 +41,9 @@ const char* sArrowFilenames[] =
 	"arrowrt",
 };
 
-// Get the name of TGA file, without a gamedir
+/**
+*	@brief Get the name of TGA file, without a gamedir
+*/
 char* GetTGANameForRes(const char* pszName)
 {
 	int i;
@@ -56,9 +58,6 @@ char* GetTGANameForRes(const char* pszName)
 	return gd;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Loads a .tga file and returns a pointer to the VGUI tga object
-//-----------------------------------------------------------------------------
 BitmapTGA* LoadTGAForRes(const char* pImageName)
 {
 	BitmapTGA* pTGA;
@@ -70,8 +69,6 @@ BitmapTGA* LoadTGAForRes(const char* pImageName)
 	return pTGA;
 }
 
-//===========================================================
-// All TFC Hud buttons are derived from this one.
 CommandButton::CommandButton(const char* text, int x, int y, int wide, int tall, bool bNoHighlight) : Button("", x, y, wide, tall)
 {
 	m_iPlayerClass = 0;
@@ -119,10 +116,6 @@ void CommandButton::Init()
 	m_cBoundKey = 0;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Prepends the button text with the current bound key
-//			if no bound key, then a clear space ' ' instead
-//-----------------------------------------------------------------------------
 void CommandButton::RecalculateText()
 {
 	char szBuf[128];
@@ -231,9 +224,6 @@ void CommandButton::paintBackground()
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Highlights the current button, and all it's parent menus
-//-----------------------------------------------------------------------------
 void CommandButton::cursorEntered()
 {
 	// unarm all the other buttons in this menu
@@ -256,9 +246,6 @@ void CommandButton::cursorEntered()
 	setArmed(true);
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: 
-//-----------------------------------------------------------------------------
 void CommandButton::cursorExited()
 {
 	// only clear ourselves if we have do not have a containing menu
@@ -270,26 +257,16 @@ void CommandButton::cursorExited()
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Returns the command menu that the button is part of, if any
-// Output : CCommandMenu *
-//-----------------------------------------------------------------------------
 CCommandMenu* CommandButton::getParentMenu()
 {
 	return m_pParentMenu;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Sets the menu that contains this button
-// Input  : *pParentMenu - 
-//-----------------------------------------------------------------------------
 void CommandButton::setParentMenu(CCommandMenu* pParentMenu)
 {
 	m_pParentMenu = pParentMenu;
 }
 
-//===========================================================
-// Button with Class image beneath it
 CImageLabel::CImageLabel(const char* pImageName, int x, int y) : Label("", x, y)
 {
 	setContentFitted(true);
@@ -304,8 +281,6 @@ CImageLabel::CImageLabel(const char* pImageName, int x, int y, int wide, int tal
 	setImage(m_pTGA);
 }
 
-//===========================================================
-// Image size
 int CImageLabel::getImageWide()
 {
 	if (m_pTGA)
@@ -365,8 +340,6 @@ void CImageLabel::LoadImage(const char* pImageName)
 	setImage(m_pTGA);
 }
 
-//===========================================================
-// Various overloaded paint functions for Custom VGUI objects
 void CCommandMenu::paintBackground()
 {
 	// Transparent black background
@@ -379,9 +352,6 @@ void CCommandMenu::paintBackground()
 	drawFilledRect(0, 0, _size[0], _size[1]);
 }
 
-//=================================================================================
-// CUSTOM SCROLLPANEL
-//=================================================================================
 CTFScrollButton::CTFScrollButton(int iArrow, const char* text, int x, int y, int wide, int tall) : CommandButton(text, x, y, wide, tall)
 {
 	// Set text color to orange
@@ -481,10 +451,6 @@ CTFScrollPanel::CTFScrollPanel(int x, int y, int wide, int tall) : ScrollPanel(x
 	pScrollBar->setPaintEnabled(false);
 }
 
-
-//=================================================================================
-// CUSTOM HANDLERS
-//=================================================================================
 void CHandler_MenuButtonOver::cursorEntered(Panel* panel)
 {
 	if (gViewPort && m_pMenuPanel)
@@ -501,4 +467,3 @@ void CMenuHandler_StringCommandClassSelect::actionPerformed(Panel* panel)
 	if (bAutoKill && g_iPlayerClass != 0)
 		gEngfuncs.pfnClientCmd("kill");
 }
-

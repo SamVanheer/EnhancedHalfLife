@@ -15,15 +15,14 @@
 //
 // $NoKeywords: $
 //=============================================================================
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"player.h"
-#include	"weapons.h"
-#include	"pm_shared.h"
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "player.h"
+#include "weapons.h"
+#include "pm_shared.h"
 #include "UserMessages.h"
 
-// Find the next client in the game for this player to spectate
 void CBasePlayer::Observer_FindNextPlayer(bool bReverse)
 {
 	// MOD AUTHORS: Modify the logic of this function if you want to restrict the observer to watching
@@ -82,7 +81,6 @@ void CBasePlayer::Observer_FindNextPlayer(bool bReverse)
 	}
 }
 
-// Handle buttons in observer mode
 void CBasePlayer::Observer_HandleButtons()
 {
 	// Slow down mouse clicks
@@ -222,10 +220,8 @@ void CBasePlayer::Observer_CheckProperties()
 	}
 }
 
-// Attempt to change the observer mode
 void CBasePlayer::Observer_SetMode(int iMode)
 {
-
 	// Just abort if we're changing to the mode we're already in
 	if (iMode == pev->iuser1)
 		return;

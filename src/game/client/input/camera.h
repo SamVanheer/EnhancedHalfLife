@@ -13,9 +13,14 @@
 *	defines and such for a 3rd person camera
 */
 
-// pitch, yaw, dist
+/**
+*	@brief pitch, yaw, dist
+*/
 extern Vector cam_ofs;
-// Using third person camera
+
+/**
+*	@brief Using third person camera
+*/
 extern bool cam_thirdperson;
 
 void CAM_Init();

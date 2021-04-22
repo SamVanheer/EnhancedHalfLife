@@ -24,10 +24,9 @@ enum class TaskStatus
 	Complete		  //!< Completed, get next task
 };
 
-
-//=========================================================
-// These are the schedule types
-//=========================================================
+/**
+*	@brief These are the schedule types
+*/
 enum SCHEDULE_TYPE
 {
 	SCHED_NONE = 0,
@@ -76,9 +75,9 @@ enum SCHEDULE_TYPE
 	LAST_COMMON_SCHEDULE			// Leave this at the bottom
 };
 
-//=========================================================
-// These are the shared tasks
-//=========================================================
+/**
+*	@brief These are the shared tasks
+*/
 enum SHARED_TASKS
 {
 	TASK_INVALID = 0,
@@ -174,14 +173,12 @@ enum SHARED_TASKS
 	LAST_COMMON_TASK, // LEAVE THIS AT THE BOTTOM!! (sjb)
 };
 
-
 // These go in the flData member of the TASK_WALK_TO_TARGET, TASK_RUN_TO_TARGET
 enum
 {
 	TARGET_MOVE_NORMAL = 0,
 	TARGET_MOVE_SCRIPTED = 1,
 };
-
 
 // A goal should be used for a task that requires several schedules to complete.  
 // The goal index should indicate which schedule (ordinally) the monster is running.  
@@ -280,7 +277,6 @@ constexpr int bits_COND_SPECIAL2 = 1 << 29;			//!< Defined by individual monster
 
 constexpr int bits_COND_TASK_FAILED = 1 << 30;
 constexpr int bits_COND_SCHEDULE_DONE = 1 << 31;
-
 
 constexpr int bits_COND_ALL_SPECIAL = bits_COND_SPECIAL1 | bits_COND_SPECIAL2;
 

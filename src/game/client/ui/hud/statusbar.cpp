@@ -201,18 +201,6 @@ bool CHudStatusBar::Draw(float fTime)
 	return true;
 }
 
-// Message handler for StatusText message
-// accepts two values:
-//		byte: line number of status bar text 
-//		string: status bar text
-// this string describes how the status bar should be drawn
-// a semi-regular expression:
-// ( slotnum ([a..z] [%pX] [%iX])*)*
-// where slotnum is an index into the Value table (see below)
-// if slotnum is 0, the string is always drawn
-// if StatusValue[slotnum] != 0, the following string is drawn, upto the next newline - otherwise the text is skipped upto next newline
-// %pX, where X is an integer, will substitute a player name here, getting the player index from StatusValue[X]
-// %iX, where X is an integer, will substitute a number here, getting the number from StatusValue[X]
 bool CHudStatusBar::MsgFunc_StatusText(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};
@@ -230,10 +218,6 @@ bool CHudStatusBar::MsgFunc_StatusText(const char* pszName, int iSize, void* pbu
 	return true;
 }
 
-// Message handler for StatusText message
-// accepts two values:
-//		byte: index into the status value array
-//		short: value to store
 bool CHudStatusBar::MsgFunc_StatusValue(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};

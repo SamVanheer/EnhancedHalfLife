@@ -36,4 +36,3 @@ HSPRITE LoadSprite(const char* pszName)
 
 	return SPR_Load(sz);
 }
-

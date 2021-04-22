@@ -15,13 +15,10 @@
 
 #pragma once
 
-/*
-==============================================================================
-
-STUDIO MODELS
-
-Studio models are position independent, so the cache manager can move them.
-==============================================================================
+/**
+*	@file
+* 
+*	Studio models are position independent, so the cache manager can move them.
 */
 
 
@@ -236,8 +233,6 @@ union mstudioanimvalue_t
 	short		value;
 };
 
-
-
 // body part index
 struct mstudiobodyparts_t
 {
@@ -246,8 +241,6 @@ struct mstudiobodyparts_t
 	int					base;
 	int					modelindex; // index into models array
 };
-
-
 
 // skin info
 struct mstudiotexture_t
@@ -258,7 +251,6 @@ struct mstudiotexture_t
 	int						height;
 	int						index;
 };
-
 
 // skin families
 // short	index[skinfamilies][skinref]
@@ -286,9 +278,7 @@ struct mstudiomodel_t
 	int					groupindex;
 };
 
-
 // Vector	boundingbox[model][bone][2];	// complex intersection info
-
 
 // meshes
 struct mstudiomesh_t

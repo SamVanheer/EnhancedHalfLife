@@ -27,9 +27,6 @@
 #include "animation.h"
 #include "soundent.h"
 
-//=========================================================
-// SetState
-//=========================================================
 void CBaseMonster::SetState(NPCState State)
 {
 	/*
@@ -57,9 +54,6 @@ void CBaseMonster::SetState(NPCState State)
 	m_IdealMonsterState = State;
 }
 
-//=========================================================
-// RunAI
-//=========================================================
 void CBaseMonster::RunAI()
 {
 	// to test model's eye height
@@ -113,10 +107,6 @@ void CBaseMonster::RunAI()
 	m_afConditions &= ~(bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE);
 }
 
-//=========================================================
-// GetIdealState - surveys the Conditions information available
-// and finds the best new state for a monster.
-//=========================================================
 NPCState CBaseMonster::GetIdealState()
 {
 	int	iConditions;
@@ -232,4 +222,3 @@ NPCState CBaseMonster::GetIdealState()
 
 	return m_IdealMonsterState;
 }
-

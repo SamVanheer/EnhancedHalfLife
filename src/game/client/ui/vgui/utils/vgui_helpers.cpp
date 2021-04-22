@@ -7,9 +7,7 @@
 
 #include "vgui_helpers.h"
 
-
 using namespace vgui;
-
 
 void AlignPanel(Panel* pChild, Panel* pParent, int alignment)
 {
@@ -39,7 +37,3 @@ void AlignPanel(Panel* pChild, Panel* pParent, int alignment)
 	else if (alignment == Label::a_center)
 		pChild->setPos(xCenter, yCenter);
 }
-
-
-
-

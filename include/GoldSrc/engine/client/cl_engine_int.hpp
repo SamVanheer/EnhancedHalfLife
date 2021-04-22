@@ -40,7 +40,7 @@ struct Point
 	long y;
 };
 
-typedef int HSPRITE;	// handle to a graphic
+typedef int HSPRITE;	//!< handle to a graphic
 
 /**
 *	@brief Functions exported by the engine

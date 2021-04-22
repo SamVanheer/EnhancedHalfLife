@@ -46,34 +46,55 @@ inline cvar_t* CVAR_CREATE(const char* cv, const char* val, const int flags) { r
 #define SPR_Frames (*gEngfuncs.pfnSPR_Frames)
 #define SPR_GetList (*gEngfuncs.pfnSPR_GetList)
 
-// SPR_Draw  draws a the current sprite as solid
+/**
+*	@brief draws a the current sprite as solid
+*/
 #define SPR_Draw (*gEngfuncs.pfnSPR_Draw)
-// SPR_DrawHoles  draws the current sprites,  with color index255 not drawn (transparent)
+
+/**
+*	@brief draws the current sprites, with color index255 not drawn (transparent)
+*/
 #define SPR_DrawHoles (*gEngfuncs.pfnSPR_DrawHoles)
-// SPR_DrawAdditive  adds the sprites RGB values to the background  (additive transulency)
+
+/**
+*	@brief adds the sprites RGB values to the background (additive transulency)
+*/
 #define SPR_DrawAdditive (*gEngfuncs.pfnSPR_DrawAdditive)
 
-// SPR_EnableScissor  sets a clipping rect for HUD sprites.  (0,0) is the top-left hand corner of the screen.
+/**
+*	@brief sets a clipping rect for HUD sprites. (0,0) is the top-left hand corner of the screen.
+*/
 #define SPR_EnableScissor (*gEngfuncs.pfnSPR_EnableScissor)
-// SPR_DisableScissor  disables the clipping rect
+
+/**
+*	@brief disables the clipping rect
+*/
 #define SPR_DisableScissor (*gEngfuncs.pfnSPR_DisableScissor)
-//
+
 #define FillRGBA (*gEngfuncs.pfnFillRGBA)
 
-
-// ScreenHeight returns the height of the screen, in pixels
+/**
+* @brief returns the height of the screen, in pixels
+*/
 #define ScreenHeight (gHUD.m_scrinfo.iHeight)
-// ScreenWidth returns the width of the screen, in pixels
+/**
+*	@brief returns the width of the screen, in pixels
+*/
 #define ScreenWidth (gHUD.m_scrinfo.iWidth)
 
 constexpr float BASE_XRES = 640.f;
 
-// use this to project world coordinates to screen coordinates
+/**
+*	@brief use this to project world coordinates to screen coordinates
+*/
 inline float XPROJECT(float x)
 {
 	return (1.0f + x) * ScreenWidth * 0.5;
 }
 
+/**
+*	@copydoc XPROJECT
+*/
 inline float YPROJECT(float y)
 {
 	return (1.0f - y) * ScreenHeight * 0.5f;
@@ -94,9 +115,14 @@ inline float YRES(float y)
 #define EngineClientCmd (*gEngfuncs.pfnClientCmd)
 #define SetCrosshair (*gEngfuncs.pfnSetCrosshair)
 
-
-// Gets the height & width of a sprite,  at the specified frame
+/**
+*	@brief Gets the height of a sprite, at the specified frame
+*/
 inline int SPR_Height(HSPRITE x, int f) { return gEngfuncs.pfnSPR_Height(x, f); }
+
+/**
+*	@brief Gets the width of a sprite, at the specified frame
+*/
 inline int SPR_Width(HSPRITE x, int f) { return gEngfuncs.pfnSPR_Width(x, f); }
 
 inline 	client_textmessage_t* TextMessageGet(const char* pName) { return gEngfuncs.pfnTextMessageGet(pName); }

@@ -20,9 +20,9 @@ struct dlight_t
 	Vector	origin;
 	float	radius;
 	color24	color;
-	float	die;				// stop lighting after this time
-	float	decay;				// drop this each second
-	float	minlight;			// don't add when contributing less
+	float	die;				//!< stop lighting after this time
+	float	decay;				//!< drop this each second
+	float	minlight;			//!< don't add when contributing less
 	int		key;
-	qboolean	dark;			// subtracts light instead of adding
+	qboolean	dark;			//!< subtracts light instead of adding
 };

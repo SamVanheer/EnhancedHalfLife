@@ -44,7 +44,6 @@ protected:
 	unsigned int	HashString(const char* pszToken);
 };
 
-
 class CSave : public CSaveRestoreBuffer
 {
 public:

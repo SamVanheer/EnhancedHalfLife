@@ -12,8 +12,6 @@
 constexpr int BANMGR_FILEVERSION = 1;
 char const* g_pBanMgrFilename = "voice_ban.dt";
 
-
-
 // Hash a player ID to a byte.
 unsigned char HashPlayerID(char const playerID[16])
 {
@@ -25,19 +23,15 @@ unsigned char HashPlayerID(char const playerID[16])
 	return curHash;
 }
 
-
-
 CVoiceBanMgr::CVoiceBanMgr()
 {
 	Clear();
 }
 
-
 CVoiceBanMgr::~CVoiceBanMgr()
 {
 	Term();
 }
-
 
 bool CVoiceBanMgr::Init()
 {
@@ -74,7 +68,6 @@ bool CVoiceBanMgr::Init()
 	return true;
 }
 
-
 void CVoiceBanMgr::Term()
 {
 	// Free all the player structures.
@@ -91,7 +84,6 @@ void CVoiceBanMgr::Term()
 
 	Clear();
 }
-
 
 void CVoiceBanMgr::SaveState()
 {
@@ -116,12 +108,10 @@ void CVoiceBanMgr::SaveState()
 	}
 }
 
-
 bool CVoiceBanMgr::GetPlayerBan(char const playerID[16])
 {
 	return !!InternalFindPlayerSquelch(playerID);
 }
-
 
 void CVoiceBanMgr::SetPlayerBan(char const playerID[16], bool bSquelch)
 {
@@ -145,7 +135,6 @@ void CVoiceBanMgr::SetPlayerBan(char const playerID[16], bool bSquelch)
 	}
 }
 
-
 void CVoiceBanMgr::ForEachBannedPlayer(void (*callback)(char id[16]))
 {
 	for (int i = 0; i < 256; i++)
@@ -157,14 +146,12 @@ void CVoiceBanMgr::ForEachBannedPlayer(void (*callback)(char id[16]))
 	}
 }
 
-
 void CVoiceBanMgr::Clear()
 {
 	// Tie off the hash table entries.
 	for (int i = 0; i < 256; i++)
 		m_PlayerHash[i].m_pNext = m_PlayerHash[i].m_pPrev = &m_PlayerHash[i];
 }
-
 
 CVoiceBanMgr::BannedPlayer* CVoiceBanMgr::InternalFindPlayerSquelch(char const playerID[16])
 {
@@ -179,7 +166,6 @@ CVoiceBanMgr::BannedPlayer* CVoiceBanMgr::InternalFindPlayerSquelch(char const p
 	return nullptr;
 }
 
-
 CVoiceBanMgr::BannedPlayer* CVoiceBanMgr::AddBannedPlayer(char const playerID[16])
 {
 	BannedPlayer* pNew = new BannedPlayer;
@@ -193,4 +179,3 @@ CVoiceBanMgr::BannedPlayer* CVoiceBanMgr::AddBannedPlayer(char const playerID[16
 	pNew->m_pPrev->m_pNext = pNew->m_pNext->m_pPrev = pNew;
 	return pNew;
 }
-

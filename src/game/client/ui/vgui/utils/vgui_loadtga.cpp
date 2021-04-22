@@ -12,10 +12,9 @@
 #include "VGUI_InputStream.h"
 #include "filesystem_shared.hpp"
 
-
-// ---------------------------------------------------------------------- //
-// Helper class for loading tga files.
-// ---------------------------------------------------------------------- //
+/**
+*	@brief Helper class for loading tga files.
+*/
 class MemoryInputStream : public vgui::InputStream
 {
 public:

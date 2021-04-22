@@ -12,10 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-//
-//	MDC - copying from cstrike\cl_dll so career-mode stuff can catch messages
-//  in this dll. (and C++ifying it)
-//
 
 #pragma once
 

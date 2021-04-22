@@ -88,7 +88,6 @@ void CEnvGlobal::Spawn()
 	}
 }
 
-
 void CEnvGlobal::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	GlobalEntState oldState = gGlobalState.EntityGetState(m_globalstate);
@@ -125,8 +124,6 @@ void CEnvGlobal::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 		gGlobalState.EntityAdd(m_globalstate, gpGlobals->mapname, newState);
 }
 
-
-
 TYPEDESCRIPTION CMultiSource::m_SaveData[] =
 {
 	//!!!BUGBUG FIX
@@ -139,9 +136,6 @@ TYPEDESCRIPTION CMultiSource::m_SaveData[] =
 IMPLEMENT_SAVERESTORE(CMultiSource, CBaseEntity);
 
 LINK_ENTITY_TO_CLASS(multisource, CMultiSource);
-//
-// Cache user-entity-field values until spawn is called.
-//
 
 void CMultiSource::KeyValue(KeyValueData* pkvd)
 {
@@ -204,7 +198,6 @@ void CMultiSource::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE u
 		SUB_UseTargets(nullptr, useType, 0);
 	}
 }
-
 
 bool CMultiSource::IsTriggered(CBaseEntity*)
 {
@@ -280,7 +273,6 @@ TYPEDESCRIPTION CBaseButton::m_SaveData[] =
 	//	DEFINE_FIELD( CBaseButton, m_ls, FIELD_??? ),   // This is restored in Precache()
 };
 
-
 IMPLEMENT_SAVERESTORE(CBaseButton, CBaseToggle);
 
 void CBaseButton::Precache()
@@ -345,10 +337,6 @@ void CBaseButton::Precache()
 	}
 }
 
-//
-// Cache user-entity-field values until spawn is called.
-//
-
 void CBaseButton::KeyValue(KeyValueData* pkvd)
 {
 	if (FStrEq(pkvd->szKeyName, "locked_sound"))
@@ -380,9 +368,6 @@ void CBaseButton::KeyValue(KeyValueData* pkvd)
 		CBaseToggle::KeyValue(pkvd);
 }
 
-//
-// ButtonShot
-//
 bool CBaseButton::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	ButtonCode code = ButtonResponseToTouch();
@@ -411,25 +396,7 @@ bool CBaseButton::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	return false;
 }
 
-/*QUAKED func_button (0 .5 .8) ?
-When a button is touched, it moves some distance in the direction of it's angle,
-triggers all of it's targets, waits some time, then returns to it's original position
-where it can be triggered again.
-
-"angle"		determines the opening direction
-"target"	all entities with a matching targetname will be used
-"speed"		override the default 40 speed
-"wait"		override the default 1 second wait (-1 = never return)
-"lip"		override the default 4 pixel lip remaining at end of move
-"health"	if set, the button must be killed instead of touched
-"sounds"
-0) steam metal
-1) wooden clunk
-2) metallic click
-3) in-out
-*/
 LINK_ENTITY_TO_CLASS(func_button, CBaseButton);
-
 
 void CBaseButton::Spawn()
 {
@@ -496,10 +463,6 @@ void CBaseButton::Spawn()
 	}
 }
 
-
-// Button sound table. 
-// Also used by CBaseDoor to get 'touched' door lock/unlock sounds
-
 const char* ButtonSound(int sound)
 {
 	const char* pszSound;
@@ -536,10 +499,9 @@ const char* ButtonSound(int sound)
 	return pszSound;
 }
 
-//
-// Makes flagged buttons spark when turned off
-//
-
+/**
+*	@brief Makes flagged buttons spark when turned off
+*/
 void DoSpark(CBaseEntity* entity, const Vector& location)
 {
 	Vector tmp = location + entity->pev->size * 0.5;
@@ -565,10 +527,6 @@ void CBaseButton::ButtonSpark()
 	DoSpark(this, pev->mins);
 }
 
-
-//
-// Button's Use function
-//
 void CBaseButton::ButtonUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	// Ignore touches if button is moving, or pushed-in and waiting to auto-come-out.
@@ -591,7 +549,6 @@ void CBaseButton::ButtonUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 		ButtonActivate();
 }
 
-
 CBaseButton::ButtonCode CBaseButton::ButtonResponseToTouch()
 {
 	// Ignore touches if button is moving, or pushed-in and waiting to auto-come-out.
@@ -613,10 +570,6 @@ CBaseButton::ButtonCode CBaseButton::ButtonResponseToTouch()
 	return ButtonCode::Nothing;
 }
 
-
-//
-// Touching a button simply "activates" it.
-//
 void CBaseButton::ButtonTouch(CBaseEntity* pOther)
 {
 	// Ignore touches by anything but players
@@ -650,9 +603,6 @@ void CBaseButton::ButtonTouch(CBaseEntity* pOther)
 		ButtonActivate();
 }
 
-//
-// Starts the button moving "in/up".
-//
 void CBaseButton::ButtonActivate()
 {
 	EmitSound(CHAN_VOICE, STRING(pev->noise));
@@ -679,9 +629,6 @@ void CBaseButton::ButtonActivate()
 		AngularMove(m_vecAngle2, pev->speed);
 }
 
-//
-// Button has reached the "in/up" position.  Activate its "targets", and pause before "popping out".
-//
 void CBaseButton::TriggerAndWait()
 {
 	ASSERT(m_toggle_state == ToggleState::GoingUp);
@@ -715,10 +662,6 @@ void CBaseButton::TriggerAndWait()
 	SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
 }
 
-
-//
-// Starts the button moving "out/down".
-//
 void CBaseButton::ButtonReturn()
 {
 	ASSERT(m_toggle_state == ToggleState::AtTop);
@@ -733,10 +676,6 @@ void CBaseButton::ButtonReturn()
 	pev->frame = 0;			// use normal textures
 }
 
-
-//
-// Button has returned to start state.  Quiesce it.
-//
 void CBaseButton::ButtonBackHome()
 {
 	ASSERT(m_toggle_state == ToggleState::GoingDown);
@@ -786,11 +725,9 @@ void CBaseButton::ButtonBackHome()
 	}
 }
 
-
-
-//
-// Rotating button (aka "lever")
-//
+/**
+*	@brief Rotating button (aka "lever")
+*/
 class CRotButton : public CBaseButton
 {
 public:
@@ -857,11 +794,11 @@ void CRotButton::Spawn()
 	//SetTouch( ButtonTouch );
 }
 
-
-// Make this button behave like a door (HACKHACK)
-// This will disable use and make the button solid
-// rotating buttons were made SOLID_NOT by default since their were some
-// collision problems with them...
+/**
+*	@brief Make this button behave like a door (HACKHACK)
+*	@details This will disable use and make the button solid
+*	rotating buttons were made SOLID_NOT by default since their were some collision problems with them...
+*/
 constexpr int SF_MOMENTARY_DOOR = 0x0001;
 
 class CMomentaryRotButton : public CBaseToggle
@@ -899,6 +836,7 @@ public:
 	Vector	m_end;
 	int		m_sounds;
 };
+
 TYPEDESCRIPTION CMomentaryRotButton::m_SaveData[] =
 {
 	DEFINE_FIELD(CMomentaryRotButton, m_lastUsed, FIELD_BOOLEAN),
@@ -970,6 +908,7 @@ void CMomentaryRotButton::PlaySound()
 	EmitSound(CHAN_VOICE, STRING(pev->noise));
 }
 
+//TODO: typo
 // BUGBUG: This design causes a latentcy.  When the button is retriggered, the first impulse
 // will send the target in the wrong direction because the parameter is calculated based on the
 // current, not future position.
@@ -983,7 +922,6 @@ void CMomentaryRotButton::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE
 	Vector dest = pev->angles + pev->avelocity * (pev->nextthink - pev->ltime);
 	float value1 = CBaseToggle::AxisDelta(pev->spawnflags, dest, m_start) / m_flMoveDistance;
 	UpdateTarget(value1);
-
 }
 
 void CMomentaryRotButton::UpdateAllButtons(float value, int start)
@@ -1091,7 +1029,6 @@ void CMomentaryRotButton::Return()
 		UpdateTarget(value);
 }
 
-
 void CMomentaryRotButton::UpdateSelfReturn(float value)
 {
 	if (value <= 0)
@@ -1107,11 +1044,6 @@ void CMomentaryRotButton::UpdateSelfReturn(float value)
 		pev->nextthink = pev->ltime + 0.1;
 	}
 }
-
-
-//----------------------------------------------------------------
-// Spark
-//----------------------------------------------------------------
 
 constexpr int SF_SPARK_TOGGLE = 1 << 5;
 constexpr int SF_SPARK_START_ON = 1 << 6;
@@ -1133,7 +1065,6 @@ public:
 
 	float	m_flDelay;
 };
-
 
 TYPEDESCRIPTION CEnvSpark::m_SaveData[] =
 {
@@ -1170,7 +1101,6 @@ void CEnvSpark::Spawn()
 
 	Precache();
 }
-
 
 void CEnvSpark::Precache()
 {
@@ -1256,7 +1186,6 @@ void CButtonTarget::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE 
 		SUB_UseTargets(pActivator, USE_OFF, 0);
 }
 
-
 int	CButtonTarget::ObjectCaps()
 {
 	int caps = CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION;
@@ -1266,7 +1195,6 @@ int	CButtonTarget::ObjectCaps()
 	else
 		return caps;
 }
-
 
 bool CButtonTarget::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {

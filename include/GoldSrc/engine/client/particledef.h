@@ -27,10 +27,12 @@ enum ptype_t
 	pt_blob2,
 	pt_vox_slowgrav,
 	pt_vox_grav,
-	pt_clientcustom   // Must have callback function specified
+	pt_clientcustom   //!< Must have callback function specified
 };
 
-// !!! if this is changed, it must be changed in d_ifacea.h too !!!
+/**
+*	@brief !!! if this is changed, it must be changed in d_ifacea.h too !!!
+*/
 struct particle_t
 {
 	// driver-usable fields
@@ -45,9 +47,13 @@ struct particle_t
 	ptype_t		type;
 	void		(*deathfunc)(particle_t* particle);
 
-	// for pt_clientcusttom, we'll call this function each frame
+	/**
+	*	@brief for pt_clientcusttom, we'll call this function each frame
+	*/
 	void		(*callback)(particle_t* particle, float frametime);
 
-	// For deathfunc, etc.
+	/**
+	*	@brief For deathfunc, etc.
+	*/
 	unsigned char context;
 };

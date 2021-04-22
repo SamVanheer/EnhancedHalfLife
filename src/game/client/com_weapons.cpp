@@ -27,23 +27,22 @@
 #include "entity_state.h"
 #include "r_efx.h"
 
-// g_runfuncs is true if this is the first time we've "predicated" a particular movement/firing
-//  command.  If it is 1, then we should play events/sounds etc., otherwise, we just will be
-//  updating state info, but not firing events
+//TODO: typo
+//TODO: bool
+/**
+*	@brief g_runfuncs is true if this is the first time we've "predicated" a particular movement/firing command.
+*	If it is true, then we should play events/sounds etc., otherwise, we just will be updating state info, but not firing events
+*/
 int	g_runfuncs = 0;
 
-// During our weapon prediction processing, we'll need to reference some data that is part of
-//  the final state passed into the postthink functionality.  We'll set this pointer and then
-//  reset it to nullptr as appropriate
+/**
+*	@brief During our weapon prediction processing,
+*	we'll need to reference some data that is part of the final state passed into the postthink functionality.
+*	We'll set this pointer and then reset it to nullptr as appropriate
+*/
 local_state_t* g_finalstate = nullptr;
 
-/*
-====================
-COM_Log
-
-Log debug messages to file ( appends )
-====================
-*/
+//TODO: never used
 void COM_Log(const char* pszFile, const char* fmt, ...)
 {
 	va_list		argptr;
@@ -73,17 +72,11 @@ void COM_Log(const char* pszFile, const char* fmt, ...)
 	}
 }
 
-// remember the current animation for the view model, in case we get out of sync with
-//  server.
+/**
+*	@brief remember the current animation for the view model, in case we get out of sync with server.
+*/
 static int g_currentanim;
 
-/*
-=====================
-HUD_SendWeaponAnim
-
-Change weapon model animation
-=====================
-*/
 void HUD_SendWeaponAnim(int iAnim, int body, int force)
 {
 	// Don't actually change it.
@@ -96,25 +89,11 @@ void HUD_SendWeaponAnim(int iAnim, int body, int force)
 	gEngfuncs.pfnWeaponAnim(iAnim, body);
 }
 
-/*
-=====================
-HUD_GetWeaponAnim
-
-Retrieve current predicted weapon animation
-=====================
-*/
 int HUD_GetWeaponAnim()
 {
 	return g_currentanim;
 }
 
-/*
-=====================
-HUD_PlaySound
-
-Play a sound, if we are seeing this command for the first time
-=====================
-*/
 void HUD_PlaySound(const char* sound, float volume)
 {
 	if (!g_runfuncs || !g_finalstate)
@@ -123,13 +102,6 @@ void HUD_PlaySound(const char* sound, float volume)
 	gEngfuncs.pfnPlaySoundByNameAtLocation(sound, volume, g_finalstate->playerstate.origin);
 }
 
-/*
-=====================
-HUD_PlaybackEvent
-
-Directly queue up an event on the client
-=====================
-*/
 void HUD_PlaybackEvent(int flags, const edict_t* pInvoker, unsigned short eventindex, float delay,
 	const float* origin, const float* angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2)
 {
@@ -142,30 +114,16 @@ void HUD_PlaybackEvent(int flags, const edict_t* pInvoker, unsigned short eventi
 	gEngfuncs.pfnPlaybackEvent(flags, pInvoker, eventindex, delay, org, ang, fparam1, fparam2, iparam1, iparam2, bparam1, bparam2);
 }
 
-/*
-=====================
-HUD_SetMaxSpeed
-
-=====================
-*/
 void HUD_SetMaxSpeed(const edict_t* ed, float speed)
 {
 }
 
-
-/*
-=====================
-UTIL_WeaponTimeBase
-
-Always 0.0 on client, even if not predicting weapons ( won't get called
- in that case )
-=====================
-*/
 float UTIL_WeaponTimeBase()
 {
 	return 0.0;
 }
 
+//TODO: duplicated in server util.cpp
 static unsigned int glSeed = 0;
 
 unsigned int seed_table[256] =
@@ -201,11 +159,6 @@ void U_Srand(unsigned int seed)
 	glSeed = seed_table[seed & 0xff];
 }
 
-/*
-=====================
-UTIL_SharedRandomLong
-=====================
-*/
 int UTIL_SharedRandomLong(unsigned int seed, int low, int high)
 {
 	unsigned int range;
@@ -230,11 +183,6 @@ int UTIL_SharedRandomLong(unsigned int seed, int low, int high)
 	}
 }
 
-/*
-=====================
-UTIL_SharedRandomFloat
-=====================
-*/
 float UTIL_SharedRandomFloat(unsigned int seed, float low, float high)
 {
 	//
@@ -263,14 +211,8 @@ float UTIL_SharedRandomFloat(unsigned int seed, float low, float high)
 	}
 }
 
-/*
-======================
-stub_*
-
-stub functions for such things as precaching.  So we don't have to modify weapons code that
- is compiled into both game and client .dlls.
-======================
-*/
+//stub functions for such things as precaching.
+//So we don't have to modify weapons code that is compiled into both gameand client.dlls.
 int				stub_PrecacheModel(const char* s) { return 0; }
 int				stub_PrecacheSound(const char* s) { return 0; }
 unsigned short	stub_PrecacheEvent(int type, const char* s) { return 0; }

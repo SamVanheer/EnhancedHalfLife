@@ -21,6 +21,19 @@
 #define noiseMoving noise1
 #define noiseArrived noise2
 
+//TODO: typo
+/**
+*	@details if two doors touch, they are assumed to be connected and operate as a unit.
+*	TOGGLE causes the door to wait in both the start and end states for a trigger event.
+*	START_OPEN causes the door to move to its destination when spawned, and operate in reverse.
+*	It is used to temporarily or permanently close off an area when triggered (not usefull for touch or takedamage doors).
+*	"movedir"        determines the opening direction
+*	"targetname"	if set, no touch function will be set and a remote button or trigger field activates the door.
+*	"speed"         movement speed (100 default)
+*	"wait"          wait before returning (0 default, -1 = never return)
+*	"lip"           lip remaining at end of move (0 default)
+*	"dmg"           damage to inflict when blocked (0 default)
+*/
 class CBaseDoor : public CBaseToggle
 {
 public:
@@ -43,29 +56,50 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	// used to selectivly override defaults
+	/**
+	*	@brief used to selectivly override defaults
+	*	@details Doors not tied to anything (e.g. button, another door) can be touched, to make them activate.
+	*/
 	void EXPORT DoorTouch(CBaseEntity* pOther);
 
 	// local functions
+	/**
+	*	@brief Causes the door to "do its thing", i.e. start moving, and cascade activation.
+	*/
 	bool DoorActivate();
+
+	/**
+	*	@brief Starts the door going to its "up" position (simply m_vecPosition2)
+	*/
 	void EXPORT DoorGoUp();
+
+	/**
+	*	@brief Starts the door going to its "down" position (simply m_vecPosition1).
+	*/
 	void EXPORT DoorGoDown();
+
+	/**
+	*	@brief The door has reached the "up" position. Either go back down, or wait for another activation.
+	*/
 	void EXPORT DoorHitTop();
+
+	/**
+	*	@brief The door has reached the "down" position. Back to quiescence.
+	*/
 	void EXPORT DoorHitBottom();
 
-	byte	m_bHealthValue;// some doors are medi-kit doors, they give players health
+	byte	m_bHealthValue;//!< some doors are medi-kit doors, they give players health
 
-	byte	m_bMoveSnd;			// sound a door makes while moving
-	byte	m_bStopSnd;			// sound a door makes when it stops
+	byte	m_bMoveSnd;			//!< sound a door makes while moving
+	byte	m_bStopSnd;			//!< sound a door makes when it stops
 
-	locksound_t m_ls;			// door lock sounds
+	locksound_t m_ls;			//!< door lock sounds
 
-	byte	m_bLockedSound;		// ordinals from entity selection
+	byte	m_bLockedSound;		//!< ordinals from entity selection
 	byte	m_bLockedSentence;
 	byte	m_bUnlockedSound;
 	byte	m_bUnlockedSentence;
 };
-
 
 TYPEDESCRIPTION	CBaseDoor::m_SaveData[] =
 {
@@ -82,16 +116,9 @@ TYPEDESCRIPTION	CBaseDoor::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CBaseDoor, CBaseToggle);
 
-
 constexpr int DOOR_SENTENCEWAIT = 6;
 constexpr int DOOR_SOUNDWAIT = 3;
 constexpr float BUTTON_SOUNDWAIT = 0.5;
-
-// play door or button locked or unlocked sounds. 
-// pass in pointer to valid locksound struct. 
-// if flocked is true, play 'door is locked' sound,
-// otherwise play 'door is unlocked' sound
-// NOTE: this routine is shared by doors and buttons
 
 void PlayLockSounds(CBaseEntity* entity, locksound_t* pls, int flocked, int fbutton)
 {
@@ -178,13 +205,8 @@ void PlayLockSounds(CBaseEntity* entity, locksound_t* pls, int flocked, int fbut
 	}
 }
 
-//
-// Cache user-entity-field values until spawn is called.
-//
-
 void CBaseDoor::KeyValue(KeyValueData* pkvd)
 {
-
 	if (FStrEq(pkvd->szKeyName, "skin"))//skin is used for content type
 	{
 		pev->skin = atof(pkvd->szValue);
@@ -234,37 +256,12 @@ void CBaseDoor::KeyValue(KeyValueData* pkvd)
 		CBaseToggle::KeyValue(pkvd);
 }
 
-/*QUAKED func_door (0 .5 .8) ? START_OPEN x DOOR_DONT_LINK TOGGLE
-if two doors touch, they are assumed to be connected and operate as a unit.
-
-TOGGLE causes the door to wait in both the start and end states for a trigger event.
-
-START_OPEN causes the door to move to its destination when spawned, and operate in reverse.
-It is used to temporarily or permanently close off an area when triggered (not usefull for
-touch or takedamage doors).
-
-"angle"         determines the opening direction
-"targetname"	if set, no touch field will be spawned and a remote button or trigger
-				field activates the door.
-"health"        if set, door must be shot open
-"speed"         movement speed (100 default)
-"wait"          wait before returning (3 default, -1 = never return)
-"lip"           lip remaining at end of move (8 default)
-"dmg"           damage to inflict when blocked (2 default)
-"sounds"
-0)      no sound
-1)      stone
-2)      base
-3)      stone chain
-4)      screechy metal
-*/
-
 LINK_ENTITY_TO_CLASS(func_door, CBaseDoor);
-//
-// func_water - same as a door. 
-//
-LINK_ENTITY_TO_CLASS(func_water, CBaseDoor);
 
+/**
+*	@brief func_water - same as a door. 
+*/
+LINK_ENTITY_TO_CLASS(func_water, CBaseDoor);
 
 void CBaseDoor::Spawn()
 {
@@ -459,9 +456,6 @@ void CBaseDoor::Precache()
 	}
 }
 
-//
-// Doors not tied to anything (e.g. button, another door) can be touched, to make them activate.
-//
 void CBaseDoor::DoorTouch(CBaseEntity* pOther)
 {
 	entvars_t* pevToucher = pOther->pev;
@@ -492,10 +486,6 @@ void CBaseDoor::DoorTouch(CBaseEntity* pOther)
 		SetTouch(nullptr); // Temporarily disable the touch function, until movement is finished.
 }
 
-
-//
-// Used by SUB_UseTargets, when a door is the target of a button.
-//
 void CBaseDoor::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	m_hActivator = pActivator;
@@ -504,9 +494,6 @@ void CBaseDoor::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useT
 		DoorActivate();
 }
 
-//
-// Causes the door to "do its thing", i.e. start moving, and cascade activation.
-//
 bool CBaseDoor::DoorActivate()
 {
 	if (!UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
@@ -536,9 +523,6 @@ bool CBaseDoor::DoorActivate()
 	return true;
 }
 
-//
-// Starts the door going to its "up" position (simply ToggleData->vecPosition2).
-//
 void CBaseDoor::DoorGoUp()
 {
 	entvars_t* pevActivator;
@@ -585,10 +569,6 @@ void CBaseDoor::DoorGoUp()
 		LinearMove(m_vecPosition2, pev->speed);
 }
 
-
-//
-// The door has reached the "up" position.  Either go back down, or wait for another activation.
-//
 void CBaseDoor::DoorHitTop()
 {
 	if (!FBitSet(pev->spawnflags, SF_DOOR_SILENT))
@@ -626,10 +606,6 @@ void CBaseDoor::DoorHitTop()
 	SUB_UseTargets(m_hActivator, USE_TOGGLE, 0); // this isn't finished
 }
 
-
-//
-// Starts the door going to its "down" position (simply ToggleData->vecPosition1).
-//
 void CBaseDoor::DoorGoDown()
 {
 	if (!FBitSet(pev->spawnflags, SF_DOOR_SILENT))
@@ -650,9 +626,6 @@ void CBaseDoor::DoorGoDown()
 		LinearMove(m_vecPosition1, pev->speed);
 }
 
-//
-// The door has reached the "down" position.  Back to quiescence.
-//
 void CBaseDoor::DoorHitBottom()
 {
 	if (!FBitSet(pev->spawnflags, SF_DOOR_SILENT))
@@ -752,44 +725,24 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 	}
 }
 
-
-/*QUAKED FuncRotDoorSpawn (0 .5 .8) ? START_OPEN REVERSE
-DOOR_DONT_LINK TOGGLE X_AXIS Y_AXIS
-if two doors touch, they are assumed to be connected and operate as
-a unit.
-
-TOGGLE causes the door to wait in both the start and end states for
-a trigger event.
-
-START_OPEN causes the door to move to its destination when spawned,
-and operate in reverse.  It is used to temporarily or permanently
-close off an area when triggered (not usefull for touch or
-takedamage doors).
-
-You need to have an origin brush as part of this entity.  The
-center of that brush will be
-the point around which it is rotated. It will rotate around the Z
-axis by default.  You can
-check either the X_AXIS or Y_AXIS box to change that.
-
-"distance" is how many degrees the door will be rotated.
-"speed" determines how fast the door moves; default value is 100.
-
-REVERSE will cause the door to rotate in the opposite direction.
-
-"angle"		determines the opening direction
-"targetname" if set, no touch field will be spawned and a remote
-button or trigger field activates the door.
-"health"	if set, door must be shot open
-"speed"		movement speed (100 default)
-"wait"		wait before returning (3 default, -1 = never return)
-"dmg"		damage to inflict when blocked (2 default)
-"sounds"
-0)	no sound
-1)	stone
-2)	base
-3)	stone chain
-4)	screechy metal
+//TODO: typo
+/**
+*	@details if two doors touch, they are assumed to be connected and operate as a unit.
+*	TOGGLE causes the door to wait in both the start and end states for a trigger event.
+*	START_OPEN causes the door to move to its destination when spawned, and operate in reverse.
+*	It is used to temporarily or permanently close off an area when triggered (not usefull for touch or takedamage doors).
+*	You need to have an origin brush as part of this entity.
+*	The center of that brush will be the point around which it is rotated.
+*	It will rotate around the Z axis by default.
+*	You can check either the X_AXIS or Y_AXIS box to change that.
+* 
+*	"distance" is how many degrees the door will be rotated.
+*	"speed" determines how fast the door moves; default value is 100.
+*	REVERSE will cause the door to rotate in the opposite direction.
+*	"movedir"		determines the opening direction
+*	"targetname"	if set, no touch field will be spawned and a remote button or trigger field activates the door.
+*	"speed"			movement speed (100 default)
+*	"wait"			wait before returning (0 default, -1 = never return)
 */
 class CRotDoor : public CBaseDoor
 {
@@ -798,7 +751,6 @@ public:
 };
 
 LINK_ENTITY_TO_CLASS(func_door_rotating, CRotDoor);
-
 
 void CRotDoor::Spawn()
 {
@@ -863,6 +815,9 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
+	/**
+	*	@brief The door has reached needed position.
+	*/
 	void EXPORT DoorMoveDone();
 
 	byte	m_bMoveSnd;			// sound a door makes while moving	
@@ -1007,9 +962,6 @@ void CMomentaryDoor::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	LinearMove(move, speed);
 }
 
-//
-// The door has reached needed position.
-//
 void CMomentaryDoor::DoorMoveDone()
 {
 	StopSound(CHAN_STATIC, STRING(pev->noiseMoving));

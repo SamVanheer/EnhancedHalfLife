@@ -51,7 +51,6 @@ void CShower::Spawn()
 	pev->angles = vec3_origin;
 }
 
-
 void CShower::Think()
 {
 	UTIL_Sparks(pev->origin);

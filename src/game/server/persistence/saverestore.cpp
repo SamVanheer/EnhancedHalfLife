@@ -158,18 +158,15 @@ static constexpr int gSizes[FIELD_TYPECOUNT] =
 	sizeof(int),		// FIELD_SOUNDNAME
 };
 
-
 CSaveRestoreBuffer::CSaveRestoreBuffer()
 {
 	m_pdata = nullptr;
 }
 
-
 CSaveRestoreBuffer::CSaveRestoreBuffer(SAVERESTOREDATA* pdata)
 {
 	m_pdata = pdata;
 }
-
 
 CSaveRestoreBuffer :: ~CSaveRestoreBuffer()
 {
@@ -181,7 +178,6 @@ int	CSaveRestoreBuffer::EntityIndex(CBaseEntity* pEntity)
 		return -1;
 	return EntityIndex(pEntity->pev);
 }
-
 
 int	CSaveRestoreBuffer::EntityIndex(entvars_t* pevLookup)
 {
@@ -207,7 +203,6 @@ int	CSaveRestoreBuffer::EntityIndex(edict_t* pentLookup)
 	return -1;
 }
 
-
 edict_t* CSaveRestoreBuffer::EntityFromIndex(int entityIndex)
 {
 	if (!m_pdata || entityIndex < 0)
@@ -225,7 +220,6 @@ edict_t* CSaveRestoreBuffer::EntityFromIndex(int entityIndex)
 	return nullptr;
 }
 
-
 int	CSaveRestoreBuffer::EntityFlagsSet(int entityIndex, int flags)
 {
 	if (!m_pdata || entityIndex < 0)
@@ -237,7 +231,6 @@ int	CSaveRestoreBuffer::EntityFlagsSet(int entityIndex, int flags)
 
 	return m_pdata->pTable[entityIndex].flags;
 }
-
 
 void CSaveRestoreBuffer::BufferRewind(int size)
 {
@@ -305,7 +298,6 @@ void CSave::WriteData(const char* pname, int size, const char* pdata)
 	BufferField(pname, size, pdata);
 }
 
-
 void CSave::WriteShort(const char* pname, const short* data, int count)
 {
 	BufferField(pname, sizeof(short) * count, (const char*)data);
@@ -328,12 +320,10 @@ void CSave::WriteInt(const char* pname, const int* data, int count)
 	BufferField(pname, sizeof(int) * count, (const char*)data);
 }
 
-
 void CSave::WriteFloat(const char* pname, const float* data, int count)
 {
 	BufferField(pname, sizeof(float) * count, (const char*)data);
 }
-
 
 void CSave::WriteTime(const char* pname, const float* data, int count)
 {
@@ -355,7 +345,6 @@ void CSave::WriteTime(const char* pname, const float* data, int count)
 	}
 }
 
-
 void CSave::WriteString(const char* pname, const char* pdata)
 {
 #ifdef TOKENIZE
@@ -365,7 +354,6 @@ void CSave::WriteString(const char* pname, const char* pdata)
 	BufferField(pname, strlen(pdata) + 1, pdata);
 #endif
 }
-
 
 void CSave::WriteString(const char* pname, const string_t* stringId, int count)
 {
@@ -394,20 +382,16 @@ void CSave::WriteString(const char* pname, const string_t* stringId, int count)
 #endif
 }
 
-
 void CSave::WriteVector(const char* pname, const Vector& value)
 {
 	WriteVector(pname, &value.x, 1);
 }
-
 
 void CSave::WriteVector(const char* pname, const float* value, int count)
 {
 	BufferHeader(pname, sizeof(float) * 3 * count);
 	BufferData((const char*)value, sizeof(float) * 3 * count);
 }
-
-
 
 void CSave::WritePositionVector(const char* pname, const Vector& value)
 {
@@ -420,7 +404,6 @@ void CSave::WritePositionVector(const char* pname, const Vector& value)
 
 	WriteVector(pname, value);
 }
-
 
 void CSave::WritePositionVector(const char* pname, const float* value, int count)
 {
@@ -440,7 +423,6 @@ void CSave::WritePositionVector(const char* pname, const float* value, int count
 	}
 }
 
-
 void CSave::WriteFunction(const char* pname, void** data, int count)
 {
 	const char* functionName;
@@ -451,7 +433,6 @@ void CSave::WriteFunction(const char* pname, void** data, int count)
 	else
 		ALERT(at_error, "Invalid function pointer in entity!");
 }
-
 
 void EntvarsKeyvalue(entvars_t* pev, KeyValueData* pkvd)
 {
@@ -501,14 +482,10 @@ void EntvarsKeyvalue(entvars_t* pev, KeyValueData* pkvd)
 	}
 }
 
-
-
 bool CSave::WriteEntVars(const char* pname, entvars_t* pev)
 {
 	return WriteFields(pname, pev, gEntvarsDescription, ENTVARS_COUNT);
 }
-
-
 
 bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount)
 {
@@ -618,7 +595,6 @@ bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFi
 	return true;
 }
 
-
 void CSave::BufferString(char* pdata, int len)
 {
 	char c = 0;
@@ -626,7 +602,6 @@ void CSave::BufferString(char* pdata, int len)
 	BufferData(pdata, len);		// Write the string
 	BufferData(&c, 1);			// Write a null terminator
 }
-
 
 bool CSave::DataEmpty(const char* pdata, int size)
 {
@@ -638,13 +613,11 @@ bool CSave::DataEmpty(const char* pdata, int size)
 	return true;
 }
 
-
 void CSave::BufferField(const char* pname, int size, const char* pdata)
 {
 	BufferHeader(pname, size);
 	BufferData(pdata, size);
 }
-
 
 void CSave::BufferHeader(const char* pname, int size)
 {
@@ -654,7 +627,6 @@ void CSave::BufferHeader(const char* pname, int size)
 	BufferData((const char*)&size, sizeof(short));
 	BufferData((const char*)&hashvalue, sizeof(short));
 }
-
 
 void CSave::BufferData(const char* pdata, int size)
 {
@@ -847,12 +819,10 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 	return -1;
 }
 
-
 bool CRestore::ReadEntVars(const char* pname, entvars_t* pev)
 {
 	return ReadFields(pname, pev, gEntvarsDescription, ENTVARS_COUNT);
 }
-
 
 bool CRestore::ReadFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount)
 {
@@ -896,7 +866,6 @@ bool CRestore::ReadFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* p
 	return true;
 }
 
-
 void CRestore::BufferReadHeader(HEADER* pheader)
 {
 	ASSERT(pheader != nullptr);
@@ -905,7 +874,6 @@ void CRestore::BufferReadHeader(HEADER* pheader)
 	pheader->pData = BufferPointer();			// Field Data is next
 	BufferSkipBytes(pheader->size);			// Advance to next field
 }
-
 
 short	CRestore::ReadShort()
 {
@@ -945,7 +913,6 @@ char* CRestore::ReadNamedString(const char* pName)
 #endif
 }
 
-
 char* CRestore::BufferPointer()
 {
 	if (!m_pdata)
@@ -973,7 +940,6 @@ void CRestore::BufferReadBytes(char* pOutput, int size)
 	m_pdata->pCurrentData += size;
 	m_pdata->size += size;
 }
-
 
 void CRestore::BufferSkipBytes(int bytes)
 {

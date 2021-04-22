@@ -39,8 +39,8 @@ constexpr int FFADE_MODULATE = 0x0002;	//!< Modulate (don't blend)
 constexpr int FFADE_STAYOUT = 0x0004;	//!< ignores the duration, stays faded out until new ScreenFade message received
 constexpr int FFADE_LONGFADE = 0x0008;	//!< used to indicate the fade can be longer than 16 seconds (added for czero)
 
-
 // This structure is sent over the net to describe a screen fade event
+//TODO: used?
 struct ScreenFade
 {
 	unsigned short 	duration;		// FIXED 4.12 seconds duration

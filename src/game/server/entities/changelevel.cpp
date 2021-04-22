@@ -259,7 +259,7 @@ bool CChangeLevel::InTransitionVolume(CBaseEntity* pEntity, char* pVolumeName)
 
 /**
 *	@brief We can only ever move 512 entities across a transition
-* */
+*/
 constexpr int MAX_ENTITY = 512;
 
 // This has grown into a complicated beast
@@ -497,7 +497,6 @@ void CRevertSaved::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE u
 	SetThink(&CRevertSaved::MessageThink);
 }
 
-
 void CRevertSaved::MessageThink()
 {
 	UTIL_ShowMessageAll(STRING(pev->message));
@@ -510,7 +509,6 @@ void CRevertSaved::MessageThink()
 	else
 		LoadThink();
 }
-
 
 void CRevertSaved::LoadThink()
 {

@@ -15,14 +15,17 @@
 
 #pragma once
 
-//
-// Defines entity interface between engine and DLLs.
-// This header file included by engine files and DLL files.
-//
-// Before including this header, DLLs must:
-//		include progdefs.h
-// This is conveniently done for them in extdll.h
-//
+//TODO: include progdefs.h
+/**
+*	@file
+* 
+*	Defines entity interface between engine and DLLs.
+*	This header file included by engine files and DLL files.
+*	
+*	Before including this header, DLLs must:
+*		include progdefs.h
+*	This is conveniently done for them in extdll.h
+*/
 
 #include "steam/steamtypes.h"
 #include "cvardef.h"
@@ -36,14 +39,15 @@ struct entvars_t;
 
 constexpr int MAX_MAPNAME_LENGTH = 32;
 
+//TODO: verify that these work
 enum ALERT_TYPE
 {
 	at_notice,
-	at_console,		// same as at_notice, but forces a ConPrintf, not a message box
-	at_aiconsole,	// same as at_console, but only shown if developer level is 2!
+	at_console,		//!< same as at_notice, but forces a ConPrintf, not a message box
+	at_aiconsole,	//!< same as at_console, but only shown if developer level is 2!
 	at_warning,
 	at_error,
-	at_logged		// Server print to console ( only in multiplayer games ).
+	at_logged		//!< Server print to console ( only in multiplayer games ).
 };
 
 // 4-22-98  JOHN: added for use in pfnClientPrintf
@@ -57,10 +61,10 @@ enum PRINT_TYPE
 // For integrity checking of content on clients
 enum FORCE_TYPE
 {
-	force_exactfile,					// File on client must exactly match server's file
-	force_model_samebounds,				// For model files only, the geometry must fit in the same bbox
-	force_model_specifybounds,			// For model files only, the geometry must fit in the specified bbox
-	force_model_specifybounds_if_avail,	// For Steam model files only, the geometry must fit in the specified bbox (if the file is available)
+	force_exactfile,					//!< File on client must exactly match server's file
+	force_model_samebounds,				//!< For model files only, the geometry must fit in the same bbox
+	force_model_specifybounds,			//!< For model files only, the geometry must fit in the specified bbox
+	force_model_specifybounds_if_avail,	//!< For Steam model files only, the geometry must fit in the specified bbox (if the file is available)
 };
 
 constexpr int TRACE_IGNORE_NOTHING = 0;
@@ -70,20 +74,22 @@ constexpr int TRACE_IGNORE_GLASS = 1 << 8;
 // Returned by TraceLine
 struct TraceResult
 {
-	int		fAllSolid;			// if true, plane is not valid
-	int		fStartSolid;		// if true, the initial point was in a solid area
+	int		fAllSolid;			//!< if true, plane is not valid
+	int		fStartSolid;		//!< if true, the initial point was in a solid area
 	int		fInOpen;
 	int		fInWater;
-	float	flFraction;			// time completed, 1.0 = didn't hit anything
-	Vector	vecEndPos;			// final position
+	float	flFraction;			//!< time completed, 1.0 = didn't hit anything
+	Vector	vecEndPos;			//!< final position
 	float	flPlaneDist;
-	Vector	vecPlaneNormal;		// surface normal at impact
-	edict_t* pHit;				// entity the surface is on
-	int		iHitgroup;			// 0 == generic, non zero is specific body part
+	Vector	vecPlaneNormal;		//!< surface normal at impact
+	edict_t* pHit;				//!< entity the surface is on
+	int		iHitgroup;			//!< 0 == generic, non zero is specific body part
 };
 
-// Engine hands this to DLLs for functionality callbacks
-// ONLY ADD NEW FUNCTIONS TO THE END OF THIS STRUCT.
+/**
+*	@brief Engine hands this to DLLs for functionality callbacks
+*	ONLY ADD NEW FUNCTIONS TO THE END OF THIS STRUCT.
+*/
 struct enginefuncs_t
 {
 	int			(*pfnPrecacheModel)			(const char* s);
@@ -166,11 +172,27 @@ struct enginefuncs_t
 	void		(*pfnGetBonePosition)		(const edict_t* pEdict, int iBone, float* rgflOrigin, float* rgflAngles);
 	uint32(*pfnFunctionFromName)	(const char* pName);
 	const char* (*pfnNameForFunction)		(uint32 function);
-	void		(*pfnClientPrintf)			(edict_t* pEdict, PRINT_TYPE ptype, const char* szMsg); // JOHN: engine callbacks so game DLL can print messages to individual clients
+
+	/**
+	*	@brief JOHN: engine callbacks so game DLL can print messages to individual clients
+	*/
+	void		(*pfnClientPrintf)			(edict_t* pEdict, PRINT_TYPE ptype, const char* szMsg);
 	void		(*pfnServerPrint)			(const char* szMsg);
-	const char* (*pfnCmd_Args)				();		// these 3 added 
-	const char* (*pfnCmd_Argv)				(int argc);	// so game DLL can easily 
-	int			(*pfnCmd_Argc)				();		// access client 'cmd' strings
+
+	/**
+	*	@brief these 3 added so game DLL can easily access client 'cmd' strings
+	*/
+	const char* (*pfnCmd_Args)				();
+
+	/**
+	*	@copydoc pfnCmd_Args
+	*/
+	const char* (*pfnCmd_Argv)				(int argc);
+
+	/**
+	*	@copydoc pfnCmd_Args
+	*/
+	int			(*pfnCmd_Argc)				();
 	void		(*pfnGetAttachment)			(const edict_t* pEdict, int iAttachment, float* rgflOrigin, float* rgflAngles);
 	void		(*pfnCRC32_Init)			(CRC32_t* pulCRC);
 	void        (*pfnCRC32_ProcessBuffer)   (CRC32_t* pulCRC, const void* p, int len);
@@ -183,27 +205,49 @@ struct enginefuncs_t
 	void		(*pfnCrosshairAngle)		(const edict_t* pClient, float pitch, float yaw);
 	byte* (*pfnLoadFileForMe)         (const char* filename, int* pLength);
 	void        (*pfnFreeFile)              (void* buffer);
-	void        (*pfnEndSection)            (const char* pszSectionName); // trigger_endsection
+
+	/**
+	*	@brief trigger_endsection
+	*/
+	void        (*pfnEndSection)            (const char* pszSectionName);
 	int 		(*pfnCompareFileTime)       (const char* filename1, const char* filename2, int* iCompare);
 	void        (*pfnGetGameDir)            (char* szGetGameDir);
 	void		(*pfnCvar_RegisterVariable) (cvar_t* variable);
 	void        (*pfnFadeClientVolume)      (const edict_t* pEdict, int fadePercent, int fadeOutSeconds, int holdTime, int fadeInSeconds);
 	void        (*pfnSetClientMaxspeed)     (const edict_t* pEdict, float fNewMaxspeed);
-	edict_t* (*pfnCreateFakeClient)		(const char* netname);	// returns nullptr if fake client can't be created
+
+	/**
+	*	@brief returns nullptr if fake client can't be created
+	*/
+	edict_t* (*pfnCreateFakeClient)		(const char* netname);
 	void		(*pfnRunPlayerMove)			(edict_t* fakeclient, const float* viewangles, float forwardmove, float sidemove, float upmove, unsigned short buttons, byte impulse, byte msec);
 	int			(*pfnNumberOfEntities)		();
-	char* (*pfnGetInfoKeyBuffer)		(edict_t* e);	// passing in nullptr gets the serverinfo
+
+	/**
+	*	@brief passing in nullptr gets the serverinfo
+	*/
+	char* (*pfnGetInfoKeyBuffer)		(edict_t* e);
 	char* (*pfnInfoKeyValue)			(char* infobuffer, const char* key);
 	void		(*pfnSetKeyValue)			(char* infobuffer, const char* key, const char* value);
 	void		(*pfnSetClientKeyValue)		(int clientIndex, char* infobuffer, const char* key, const char* value);
 	int			(*pfnIsMapValid)			(const char* filename);
 	void		(*pfnStaticDecal)			(const float* origin, int decalIndex, int entityIndex, int modelIndex);
 	int			(*pfnPrecacheGeneric)		(const char* s);
-	int			(*pfnGetPlayerUserId)		(edict_t* e); // returns the server assigned userid for this player.  useful for logging frags, etc.  returns -1 if the edict couldn't be found in the list of clients
-	void		(*pfnBuildSoundMsg)			(edict_t* entity, int channel, const char* sample, /*int*/float volume, float attenuation, int fFlags, int pitch, int msg_dest, int msg_type, const float* pOrigin, edict_t* ed);
+
+	/**
+	*	@brief returns the server assigned userid for this player.
+	*	useful for logging frags, etc.
+	*	@return -1 if the edict couldn't be found in the list of clients
+	*/
+	int			(*pfnGetPlayerUserId)		(edict_t* e);
+	void		(*pfnBuildSoundMsg)			(edict_t* entity, int channel, const char* sample, float volume, float attenuation, int fFlags, int pitch, int msg_dest, int msg_type, const float* pOrigin, edict_t* ed);
 	int			(*pfnIsDedicatedServer)		();// is this a dedicated server?
 	cvar_t* (*pfnCVarGetPointer)		(const char* szVarName);
-	unsigned int (*pfnGetPlayerWONId)		(edict_t* e); // returns the server assigned WONid for this player.  useful for logging frags, etc.  returns -1 if the edict couldn't be found in the list of clients
+
+	/**
+	*	@brief Always returns -1 because WON is not supported by Steam Half-Life
+	*/
+	unsigned int (*pfnGetPlayerWONId)		(edict_t* e);
 
 	// YWB 8/1/99 TFF Physics additions
 	void		(*pfnInfo_RemoveKey)		(char* s, const char* key);
@@ -232,18 +276,26 @@ struct enginefuncs_t
 	int			(*pfnCreateInstancedBaseline) (int classname, entity_state_t* baseline);
 	void		(*pfnCvar_DirectSet)		(cvar_t* var, const char* value);
 
-	// Forces the client and server to be running with the same version of the specified file
-	//  ( e.g., a player model ).
-	// Calling this has no effect in single player
+	/**
+	*	@brief Forces the client and server to be running with the same version of the specified file
+	*	( e.g., a player model ).
+	*	Calling this has no effect in single player
+	*/
 	void		(*pfnForceUnmodified)		(FORCE_TYPE type, float* mins, float* maxs, const char* filename);
 
 	void		(*pfnGetPlayerStats)		(const edict_t* pClient, int* ping, int* packet_loss);
 
 	void		(*pfnAddServerCommand)		(const char* cmd_name, void (*function) ());
 
-	// For voice communications, set which clients hear eachother.
-	// NOTE: these functions take player entity indices (starting at 1).
+	/**
+	*	@brief For voice communications, set which clients hear eachother.
+	*	NOTE: these functions take player entity indices (starting at 1).
+	*/
 	qboolean(*pfnVoice_GetClientListening)(int iReceiver, int iSender);
+
+	/**
+	*	@copydoc pfnVoice_GetClientListening
+	*/
 	qboolean(*pfnVoice_SetClientListening)(int iReceiver, int iSender, qboolean bListen);
 
 	const char* (*pfnGetPlayerAuthId)		(edict_t* e);
@@ -264,13 +316,31 @@ struct enginefuncs_t
 	// BGC: return the number of characters of the localized string referenced by using "label"
 	int			(*pfnGetLocalizedStringLength)(const char* label);
 
-	// BGC: added to facilitate persistent storage of tutor message decay values for
-	// different career game profiles.  Also needs to persist regardless of mp.dll being
-	// destroyed and recreated.
+	/**
+	*	@brief BGC: added to facilitate persistent storage of tutor message decay values for
+	*	different career game profiles.
+	*	Also needs to persist regardless of mp.dll being destroyed and recreated.
+	*/
 	void (*pfnRegisterTutorMessageShown)(int mid);
+
+	/**
+	*	@copydoc pfnRegisterTutorMessageShown
+	*/
 	int (*pfnGetTimesTutorMessageShown)(int mid);
+
+	/**
+	*	@copydoc pfnRegisterTutorMessageShown
+	*/
 	void (*ProcessTutorMessageDecayBuffer)(int* buffer, int bufferLength);
+
+	/**
+	*	@copydoc pfnRegisterTutorMessageShown
+	*/
 	void (*ConstructTutorMessageDecayBuffer)(int* buffer, int bufferLength);
+
+	/**
+	*	@copydoc pfnRegisterTutorMessageShown
+	*/
 	void (*ResetTutorMessageDecayData)();
 
 	void (*pfnQueryClientCvarValue)(const edict_t* player, const char* cvarName);
@@ -279,13 +349,15 @@ struct enginefuncs_t
 	edict_t* (*pfnPEntityOfEntIndexAllEntities)(int iEntIndex);
 };
 
-// Passed to pfnKeyValue
+/**
+*	@brief Passed to pfnKeyValue
+*/
 struct KeyValueData
 {
-	const char* szClassName;	// in: entity classname
-	const char* szKeyName;		// in: name of key
-	const char* szValue;		// in: value of key
-	int32		fHandled;		// out: DLL sets to true if key-value pair was understood
+	const char* szClassName;	//!< in: entity classname
+	const char* szKeyName;		//!< in: name of key
+	const char* szValue;		//!< in: value of key
+	int32		fHandled;		//!< out: DLL sets to true if key-value pair was understood
 };
 
 struct LEVELLIST
@@ -296,17 +368,17 @@ struct LEVELLIST
 	Vector		vecLandmarkOrigin;
 };
 
-constexpr int MAX_LEVEL_CONNECTIONS = 16;		// These are encoded in the lower 16bits of ENTITYTABLE->flags
+constexpr int MAX_LEVEL_CONNECTIONS = 16;		//!< These are encoded in the lower 16bits of ENTITYTABLE->flags
 
 struct ENTITYTABLE
 {
-	int			id;				// Ordinal ID of this entity (used for entity <--> pointer conversions)
-	edict_t* pent;			// Pointer to the in-game entity
+	int			id;				//!< Ordinal ID of this entity (used for entity <--> pointer conversions)
+	edict_t* pent;				//!< Pointer to the in-game entity
 
-	int			location;		// Offset from the base data of this entity
-	int			size;			// Byte size of this entity's data
-	int			flags;			// This could be a short -- bit mask of transitions that this entity is in the PVS of
-	string_t	classname;		// entity class name
+	int			location;		//!< Offset from the base data of this entity
+	int			size;			//!< Byte size of this entity's data
+	int			flags;			//!< This could be a short -- bit mask of transitions that this entity is in the PVS of
+	string_t	classname;		//!< entity class name
 };
 
 constexpr int FENTTABLE_PLAYER = 0x80000000;
@@ -316,50 +388,49 @@ constexpr int FENTTABLE_GLOBAL = 0x10000000;
 
 struct SAVERESTOREDATA
 {
-	char* pBaseData;		// Start of all entity save data
-	char* pCurrentData;	// Current buffer pointer for sequential access
-	int			size;			// Current data size
-	int			bufferSize;		// Total space for data
-	int			tokenSize;		// Size of the linear list of tokens
-	int			tokenCount;		// Number of elements in the pTokens table
-	char** pTokens;		// Hash table of entity strings (sparse)
-	int			currentIndex;	// Holds a global entity table ID
-	int			tableCount;		// Number of elements in the entity table
-	int			connectionCount;// Number of elements in the levelList[]
-	ENTITYTABLE* pTable;		// Array of ENTITYTABLE elements (1 for each entity)
-	LEVELLIST	levelList[MAX_LEVEL_CONNECTIONS];		// List of connections from this level
+	char* pBaseData;			//!< Start of all entity save data
+	char* pCurrentData;			//!< Current buffer pointer for sequential access
+	int			size;			//!< Current data size
+	int			bufferSize;		//!< Total space for data
+	int			tokenSize;		//!< Size of the linear list of tokens
+	int			tokenCount;		//!< Number of elements in the pTokens table
+	char** pTokens;				//!< Hash table of entity strings (sparse)
+	int			currentIndex;	//!< Holds a global entity table ID
+	int			tableCount;		//!< Number of elements in the entity table
+	int			connectionCount;//!< Number of elements in the levelList[]
+	ENTITYTABLE* pTable;		//!< Array of ENTITYTABLE elements (1 for each entity)
+	LEVELLIST	levelList[MAX_LEVEL_CONNECTIONS];		//!< List of connections from this level
 
 	// smooth transition
 	int			fUseLandmark;
-	char		szLandmarkName[20];// landmark we'll spawn near in next level
-	Vector		vecLandmarkOffset;// for landmark transitions
+	char		szLandmarkName[20];//!< landmark we'll spawn near in next level
+	Vector		vecLandmarkOffset;//!< for landmark transitions
 	float		time;
-	char		szCurrentMapName[MAX_MAPNAME_LENGTH];	// To check global entities
-
+	char		szCurrentMapName[MAX_MAPNAME_LENGTH];	//!< To check global entities
 };
 
 enum FIELDTYPE
 {
-	FIELD_FLOAT = 0,		// Any floating point value
-	FIELD_STRING,			// A string ID (return from ALLOC_STRING)
-	FIELD_OBSOLETE1,		// An entity offset (EOFFSET). DO NOT USE. OBSOLETE
-	FIELD_CLASSPTR,			// CBaseEntity *
-	FIELD_EHANDLE,			// Entity handle
-	FIELD_EVARS,			// EVARS *
-	FIELD_EDICT,			// edict_t *, or edict_t *  (same thing)
-	FIELD_VECTOR,			// Any vector
-	FIELD_POSITION_VECTOR,	// A world coordinate (these are fixed up across level transitions automagically)
-	FIELD_POINTER,			// Arbitrary data pointer... to be removed, use an array of FIELD_CHARACTER
-	FIELD_INTEGER,			// Any integer or enum
-	FIELD_FUNCTION,			// A class function pointer (Think, Use, etc)
-	FIELD_BOOLEAN,			// boolean, implemented as an int, I may use this as a hint for compression
-	FIELD_SHORT,			// 2 byte integer
-	FIELD_CHARACTER,		// a byte
-	FIELD_TIME,				// a floating point time (these are fixed up automatically too!)
-	FIELD_MODELNAME,		// Engine string that is a model name (needs precache)
-	FIELD_SOUNDNAME,		// Engine string that is a sound name (needs precache)
+	FIELD_FLOAT = 0,		//!< Any floating point value
+	FIELD_STRING,			//!< A string ID (return from ALLOC_STRING)
+	FIELD_OBSOLETE1,		//!< An entity offset (EOFFSET). DO NOT USE. OBSOLETE
+	FIELD_CLASSPTR,			//!< CBaseEntity *
+	FIELD_EHANDLE,			//!< Entity handle
+	FIELD_EVARS,			//!< EVARS *
+	FIELD_EDICT,			//!< edict_t *, or edict_t *  (same thing)
+	FIELD_VECTOR,			//!< Any vector
+	FIELD_POSITION_VECTOR,	//!< A world coordinate (these are fixed up across level transitions automagically)
+	FIELD_POINTER,			//!< Arbitrary data pointer... to be removed, use an array of FIELD_CHARACTER
+	FIELD_INTEGER,			//!< Any integer or enum
+	FIELD_FUNCTION,			//!< A class function pointer (Think, Use, etc)
+	FIELD_BOOLEAN,			//!< boolean, implemented as an int, I may use this as a hint for compression
+	FIELD_SHORT,			//!< 2 byte integer
+	FIELD_CHARACTER,		//!< a byte
+	FIELD_TIME,				//!< a floating point time (these are fixed up automatically too!)
+	FIELD_MODELNAME,		//!< Engine string that is a model name (needs precache)
+	FIELD_SOUNDNAME,		//!< Engine string that is a sound name (needs precache)
 
-	FIELD_TYPECOUNT,		// MUST BE LAST
+	FIELD_TYPECOUNT,		//!< MUST BE LAST
 };
 
 #define _FIELD(type,name,fieldtype,count,flags)		{ fieldtype, #name, static_cast<int>(offsetof(type, name)), count, flags }
@@ -369,8 +440,7 @@ enum FIELDTYPE
 #define DEFINE_ENTITY_GLOBAL_FIELD(name,fieldtype)	_FIELD(entvars_t, name, fieldtype, 1, FTYPEDESC_GLOBAL )
 #define DEFINE_GLOBAL_FIELD(type,name,fieldtype)	_FIELD(type, name, fieldtype, 1, FTYPEDESC_GLOBAL )
 
-
-constexpr int FTYPEDESC_GLOBAL = 0x0001;		// This field is masked for global entity save/restore
+constexpr int FTYPEDESC_GLOBAL = 0x0001;		//!< This field is masked for global entity save/restore
 
 struct TYPEDESCRIPTION
 {

@@ -7,13 +7,18 @@
 
 #pragma once
 
-// Types of demo messages we can write/parse
+/**
+*	@brief Types of demo messages we can write/parse
+*/
 enum
 {
 	TYPE_SNIPERDOT = 0,
 	TYPE_ZOOM
 };
 
+/**
+*	@brief Write some data to the demo stream
+*/
 void Demo_WriteBuffer(int type, int size, unsigned char* buffer);
 
 extern int g_demosniper;

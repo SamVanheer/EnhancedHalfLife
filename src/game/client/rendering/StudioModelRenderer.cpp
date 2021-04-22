@@ -21,15 +21,8 @@
 
 int m_nPlayerGaitSequences[MAX_CLIENTS];
 
-// Global engine <-> studio model rendering code interface
 engine_studio_api_t IEngineStudio;
 
-/*
-====================
-Init
-
-====================
-*/
 void CStudioModelRenderer::Init()
 {
 	// Set up some variables shared with engine
@@ -48,32 +41,14 @@ void CStudioModelRenderer::Init()
 	m_protationmatrix = (float(*)[3][4])IEngineStudio.StudioGetRotationMatrix();
 }
 
-/*
-====================
-CStudioModelRenderer
-
-====================
-*/
 CStudioModelRenderer::CStudioModelRenderer()
 {
 }
 
-/*
-====================
-~CStudioModelRenderer
-
-====================
-*/
 CStudioModelRenderer::~CStudioModelRenderer()
 {
 }
 
-/*
-====================
-StudioCalcBoneAdj
-
-====================
-*/
 void CStudioModelRenderer::StudioCalcBoneAdj(float dadt, float* adj, const byte* pcontroller1, const byte* pcontroller2, byte mouthopen)
 {
 	int					i, j;
@@ -134,13 +109,6 @@ void CStudioModelRenderer::StudioCalcBoneAdj(float dadt, float* adj, const byte*
 	}
 }
 
-
-/*
-====================
-StudioCalcBoneQuaterion
-
-====================
-*/
 void CStudioModelRenderer::StudioCalcBoneQuaterion(int frame, float s, mstudiobone_t* pbone, mstudioanim_t* panim, float* adj, float* q)
 {
 	int					j, k;
@@ -221,12 +189,6 @@ void CStudioModelRenderer::StudioCalcBoneQuaterion(int frame, float s, mstudiobo
 	}
 }
 
-/*
-====================
-StudioCalcBonePosition
-
-====================
-*/
 void CStudioModelRenderer::StudioCalcBonePosition(int frame, float s, mstudiobone_t* pbone, mstudioanim_t* panim, float* adj, float* pos)
 {
 	int					j, k;
@@ -289,12 +251,6 @@ void CStudioModelRenderer::StudioCalcBonePosition(int frame, float s, mstudiobon
 	}
 }
 
-/*
-====================
-StudioSlerpBones
-
-====================
-*/
 void CStudioModelRenderer::StudioSlerpBones(vec4_t q1[], float pos1[][3], vec4_t q2[], float pos2[][3], float s)
 {
 	int			i;
@@ -319,12 +275,6 @@ void CStudioModelRenderer::StudioSlerpBones(vec4_t q1[], float pos1[][3], vec4_t
 	}
 }
 
-/*
-====================
-StudioGetAnim
-
-====================
-*/
 mstudioanim_t* CStudioModelRenderer::StudioGetAnim(model_t* m_pSubModel, mstudioseqdesc_t* pseqdesc)
 {
 	mstudioseqgroup_t* pseqgroup;
@@ -353,12 +303,6 @@ mstudioanim_t* CStudioModelRenderer::StudioGetAnim(model_t* m_pSubModel, mstudio
 	return (mstudioanim_t*)((byte*)paSequences[pseqdesc->seqgroup].data + pseqdesc->animindex);
 }
 
-/*
-====================
-StudioPlayerBlend
-
-====================
-*/
 void CStudioModelRenderer::StudioPlayerBlend(mstudioseqdesc_t* pseqdesc, int* pBlend, float* pPitch)
 {
 	// calc up/down pointing
@@ -383,12 +327,6 @@ void CStudioModelRenderer::StudioPlayerBlend(mstudioseqdesc_t* pseqdesc, int* pB
 	}
 }
 
-/*
-====================
-StudioSetUpTransform
-
-====================
-*/
 void CStudioModelRenderer::StudioSetUpTransform(int trivial_accept)
 {
 	int				i;
@@ -514,13 +452,6 @@ void CStudioModelRenderer::StudioSetUpTransform(int trivial_accept)
 	(*m_protationmatrix)[2][3] = modelpos[2];
 }
 
-
-/*
-====================
-StudioEstimateInterpolant
-
-====================
-*/
 float CStudioModelRenderer::StudioEstimateInterpolant()
 {
 	float dadt = 1.0;
@@ -536,12 +467,6 @@ float CStudioModelRenderer::StudioEstimateInterpolant()
 	return dadt;
 }
 
-/*
-====================
-StudioCalcRotations
-
-====================
-*/
 void CStudioModelRenderer::StudioCalcRotations(float pos[][3], vec4_t* q, mstudioseqdesc_t* pseqdesc, mstudioanim_t* panim, float f)
 {
 	int					i;
@@ -619,12 +544,6 @@ void CStudioModelRenderer::StudioCalcRotations(float pos[][3], vec4_t* q, mstudi
 	}
 }
 
-/*
-====================
-Studio_FxTransform
-
-====================
-*/
 void CStudioModelRenderer::StudioFxTransform(cl_entity_t* ent, float transform[3][4])
 {
 	switch (ent->curstate.renderfx)
@@ -664,12 +583,6 @@ void CStudioModelRenderer::StudioFxTransform(cl_entity_t* ent, float transform[3
 	}
 }
 
-/*
-====================
-StudioEstimateFrame
-
-====================
-*/
 float CStudioModelRenderer::StudioEstimateFrame(mstudioseqdesc_t* pseqdesc)
 {
 	double				dfdt, f;
@@ -727,12 +640,6 @@ float CStudioModelRenderer::StudioEstimateFrame(mstudioseqdesc_t* pseqdesc)
 	return f;
 }
 
-/*
-====================
-StudioSetupBones
-
-====================
-*/
 void CStudioModelRenderer::StudioSetupBones()
 {
 	int					i;
@@ -948,13 +855,6 @@ void CStudioModelRenderer::StudioSetupBones()
 	}
 }
 
-
-/*
-====================
-StudioSaveBones
-
-====================
-*/
 void CStudioModelRenderer::StudioSaveBones()
 {
 	int		i;
@@ -972,13 +872,6 @@ void CStudioModelRenderer::StudioSaveBones()
 	}
 }
 
-
-/*
-====================
-StudioMergeBones
-
-====================
-*/
 void CStudioModelRenderer::StudioMergeBones(model_t* m_pSubModel)
 {
 	int					i, j;
@@ -1060,12 +953,6 @@ void CStudioModelRenderer::StudioMergeBones(model_t* m_pSubModel)
 	}
 }
 
-/*
-====================
-StudioDrawModel
-
-====================
-*/
 bool CStudioModelRenderer::StudioDrawModel(int flags)
 {
 	alight_t lighting;
@@ -1169,12 +1056,6 @@ bool CStudioModelRenderer::StudioDrawModel(int flags)
 	return true;
 }
 
-/*
-====================
-StudioEstimateGait
-
-====================
-*/
 void CStudioModelRenderer::StudioEstimateGait(entity_state_t* pplayer)
 {
 	float dt;
@@ -1241,12 +1122,6 @@ void CStudioModelRenderer::StudioEstimateGait(entity_state_t* pplayer)
 
 }
 
-/*
-====================
-StudioProcessGait
-
-====================
-*/
 void CStudioModelRenderer::StudioProcessGait(entity_state_t* pplayer)
 {
 	mstudioseqdesc_t* pseqdesc;
@@ -1339,12 +1214,6 @@ void CStudioModelRenderer::StudioProcessGait(entity_state_t* pplayer)
 		m_pPlayerInfo->gaitframe += pseqdesc->numframes;
 }
 
-/*
-====================
-StudioDrawPlayer
-
-====================
-*/
 bool CStudioModelRenderer::StudioDrawPlayer(int flags, entity_state_t* pplayer)
 {
 	alight_t lighting;
@@ -1499,12 +1368,6 @@ bool CStudioModelRenderer::StudioDrawPlayer(int flags, entity_state_t* pplayer)
 	return true;
 }
 
-/*
-====================
-StudioCalcAttachments
-
-====================
-*/
 void CStudioModelRenderer::StudioCalcAttachments()
 {
 	int i;
@@ -1524,12 +1387,6 @@ void CStudioModelRenderer::StudioCalcAttachments()
 	}
 }
 
-/*
-====================
-StudioRenderModel
-
-====================
-*/
 void CStudioModelRenderer::StudioRenderModel()
 {
 	IEngineStudio.SetChromeOrigin();
@@ -1562,12 +1419,6 @@ void CStudioModelRenderer::StudioRenderModel()
 	}
 }
 
-/*
-====================
-StudioRenderFinal_Software
-
-====================
-*/
 void CStudioModelRenderer::StudioRenderFinal_Software()
 {
 	int i;
@@ -1607,12 +1458,6 @@ void CStudioModelRenderer::StudioRenderFinal_Software()
 	IEngineStudio.RestoreRenderer();
 }
 
-/*
-====================
-StudioRenderFinal_Hardware
-
-====================
-*/
 void CStudioModelRenderer::StudioRenderFinal_Hardware()
 {
 	int i;
@@ -1657,12 +1502,6 @@ void CStudioModelRenderer::StudioRenderFinal_Hardware()
 	IEngineStudio.RestoreRenderer();
 }
 
-/*
-====================
-StudioRenderFinal
-
-====================
-*/
 void CStudioModelRenderer::StudioRenderFinal()
 {
 	if (IEngineStudio.IsHardware())
@@ -1674,5 +1513,3 @@ void CStudioModelRenderer::StudioRenderFinal()
 		StudioRenderFinal_Software();
 	}
 }
-
-

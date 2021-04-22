@@ -22,8 +22,9 @@
 constexpr int ENTITY_NORMAL = 1 << 0;
 constexpr int ENTITY_BEAM = 1 << 1;
 
-// Entity state is used for the baseline and for delta compression of a packet of 
-//  entities that is sent to a client.
+/**
+*	@brief Entity state is used for the baseline and for delta compression of a packet of entities that is sent to a client.
+*/
 struct entity_state_t
 {
 	// Fields which are filled in by routines outside of delta compression

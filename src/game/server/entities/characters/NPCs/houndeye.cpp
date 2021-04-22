@@ -90,7 +90,16 @@ public:
 	void SonicAttack();
 	void PrescheduleThink() override;
 	void SetActivity(Activity NewActivity) override;
+
+	/**
+	*	@brief writes a color vector to the network based on the size of the group. 
+	*/
 	void WriteBeamColor();
+
+	/**
+	*	@brief overridden for houndeyes so that they try to get within half of their max attack radius before attacking,
+	*	so as to increase their chances of doing damage.
+	*/
 	bool CheckRangeAttack1(float flDot, float flDist) override;
 	bool FValidateHintType(short sHint) override;
 	bool FCanActiveIdle() override;
@@ -108,6 +117,7 @@ public:
 	bool m_fDontBlink;// don't try to open/close eye if this bit is set!
 	Vector	m_vecPackCenter; // the center of the pack. The leader maintains this by averaging the origins of all pack members.
 };
+
 LINK_ENTITY_TO_CLASS(monster_houndeye, CHoundeye);
 
 TYPEDESCRIPTION	CHoundeye::m_SaveData[] =
@@ -120,18 +130,11 @@ TYPEDESCRIPTION	CHoundeye::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CHoundeye, CSquadMonster);
 
-//=========================================================
-// Classify - indicates this monster's place in the 
-// relationship table.
-//=========================================================
 int	CHoundeye::Classify()
 {
 	return	CLASS_ALIEN_MONSTER;
 }
 
-//=========================================================
-//  FValidateHintType 
-//=========================================================
 bool CHoundeye::FValidateHintType(short sHint)
 {
 	static constexpr short sHoundHints[] =
@@ -154,10 +157,6 @@ bool CHoundeye::FValidateHintType(short sHint)
 	return false;
 }
 
-
-//=========================================================
-// FCanActiveIdle
-//=========================================================
 bool CHoundeye::FCanActiveIdle()
 {
 	if (InSquad())
@@ -181,12 +180,6 @@ bool CHoundeye::FCanActiveIdle()
 	return true;
 }
 
-
-//=========================================================
-// CheckRangeAttack1 - overridden for houndeyes so that they
-// try to get within half of their max attack radius before
-// attacking, so as to increase their chances of doing damage.
-//=========================================================
 bool CHoundeye::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (flDist <= (HOUNDEYE_MAX_ATTACK_RADIUS * 0.5) && flDot >= 0.3)
@@ -196,10 +189,6 @@ bool CHoundeye::CheckRangeAttack1(float flDot, float flDist)
 	return false;
 }
 
-//=========================================================
-// SetYawSpeed - allows each sequence to have a different
-// turn rate associated with it.
-//=========================================================
 void CHoundeye::SetYawSpeed()
 {
 	int ys;
@@ -229,9 +218,6 @@ void CHoundeye::SetYawSpeed()
 	pev->yaw_speed = ys;
 }
 
-//=========================================================
-// SetActivity 
-//=========================================================
 void CHoundeye::SetActivity(Activity NewActivity)
 {
 	int	iSequence;
@@ -264,10 +250,6 @@ void CHoundeye::SetActivity(Activity NewActivity)
 	}
 }
 
-//=========================================================
-// HandleAnimEvent - catches the monster-specific messages
-// that occur when tagged animation frames are played.
-//=========================================================
 void CHoundeye::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
@@ -319,9 +301,6 @@ void CHoundeye::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-//=========================================================
-// Spawn
-//=========================================================
 void CHoundeye::Spawn()
 {
 	Precache();
@@ -344,9 +323,6 @@ void CHoundeye::Spawn()
 	MonsterInit();
 }
 
-//=========================================================
-// Precache - precaches all resources this monster needs
-//=========================================================
 void CHoundeye::Precache()
 {
 	PRECACHE_MODEL("models/houndeye.mdl");
@@ -382,9 +358,6 @@ void CHoundeye::Precache()
 	m_iSpriteTexture = PRECACHE_MODEL("sprites/shockwave.spr");
 }
 
-//=========================================================
-// IdleSound
-//=========================================================
 void CHoundeye::IdleSound()
 {
 	switch (RANDOM_LONG(0, 2))
@@ -401,9 +374,6 @@ void CHoundeye::IdleSound()
 	}
 }
 
-//=========================================================
-// IdleSound
-//=========================================================
 void CHoundeye::WarmUpSound()
 {
 	switch (RANDOM_LONG(0, 1))
@@ -417,9 +387,6 @@ void CHoundeye::WarmUpSound()
 	}
 }
 
-//=========================================================
-// WarnSound 
-//=========================================================
 void CHoundeye::WarnSound()
 {
 	switch (RANDOM_LONG(0, 2))
@@ -436,9 +403,6 @@ void CHoundeye::WarnSound()
 	}
 }
 
-//=========================================================
-// AlertSound 
-//=========================================================
 void CHoundeye::AlertSound()
 {
 
@@ -461,9 +425,6 @@ void CHoundeye::AlertSound()
 	}
 }
 
-//=========================================================
-// DeathSound 
-//=========================================================
 void CHoundeye::DeathSound()
 {
 	switch (RANDOM_LONG(0, 2))
@@ -480,9 +441,6 @@ void CHoundeye::DeathSound()
 	}
 }
 
-//=========================================================
-// PainSound 
-//=========================================================
 void CHoundeye::PainSound()
 {
 	switch (RANDOM_LONG(0, 2))
@@ -499,10 +457,6 @@ void CHoundeye::PainSound()
 	}
 }
 
-//=========================================================
-// WriteBeamColor - writes a color vector to the network 
-// based on the size of the group. 
-//=========================================================
 void CHoundeye::WriteBeamColor()
 {
 	byte	bRed, bGreen, bBlue;
@@ -548,10 +502,6 @@ void CHoundeye::WriteBeamColor()
 	WRITE_BYTE(bBlue);
 }
 
-
-//=========================================================
-// SonicAttack
-//=========================================================
 void CHoundeye::SonicAttack()
 {
 	float		flAdjustedDamage;
@@ -663,9 +613,6 @@ void CHoundeye::SonicAttack()
 	}
 }
 
-//=========================================================
-// start task
-//=========================================================
 void CHoundeye::StartTask(Task_t* pTask)
 {
 	m_iTaskStatus = TaskStatus::Running;
@@ -765,9 +712,6 @@ void CHoundeye::StartTask(Task_t* pTask)
 	}
 }
 
-//=========================================================
-// RunTask 
-//=========================================================
 void CHoundeye::RunTask(Task_t* pTask)
 {
 	switch (pTask->iTask)
@@ -837,9 +781,6 @@ void CHoundeye::RunTask(Task_t* pTask)
 	}
 }
 
-//=========================================================
-// PrescheduleThink
-//=========================================================
 void CHoundeye::PrescheduleThink()
 {
 	// if the hound is mad and is running, make hunt noises.
@@ -910,7 +851,6 @@ Schedule_t	slHoundGuardPack[] =
 	},
 };
 
-// primary range attack
 Task_t	tlHoundYell1[] =
 {
 	{ TASK_STOP_MOVING,			(float)0					},
@@ -926,6 +866,9 @@ Task_t	tlHoundYell2[] =
 	{ TASK_RANGE_ATTACK1,		(float)0					},
 };
 
+/**
+*	@brief primary range attack
+*/
 Schedule_t	slHoundRangeAttack[] =
 {
 	{
@@ -946,7 +889,6 @@ Schedule_t	slHoundRangeAttack[] =
 	},
 };
 
-// lie down and fall asleep
 Task_t	tlHoundSleep[] =
 {
 	{ TASK_STOP_MOVING,			(float)0		},
@@ -961,6 +903,9 @@ Task_t	tlHoundSleep[] =
 	//{ TASK_WAIT_RANDOM,			(float)10				},
 };
 
+/**
+*	@brief lie down and fall asleep
+*/
 Schedule_t	slHoundSleep[] =
 {
 	{
@@ -978,7 +923,6 @@ Schedule_t	slHoundSleep[] =
 	},
 };
 
-// wake and stand up lazily
 Task_t	tlHoundWakeLazy[] =
 {
 	{ TASK_STOP_MOVING,			(float)0			},
@@ -988,6 +932,9 @@ Task_t	tlHoundWakeLazy[] =
 	{ TASK_HOUND_WAKE_UP,		(float)0			},
 };
 
+/**
+*	@brief wake and stand up lazily
+*/
 Schedule_t	slHoundWakeLazy[] =
 {
 	{
@@ -999,7 +946,6 @@ Schedule_t	slHoundWakeLazy[] =
 	},
 };
 
-// wake and stand up with great urgency!
 Task_t	tlHoundWakeUrgent[] =
 {
 	{ TASK_HOUND_OPEN_EYE,		(float)0			},
@@ -1008,6 +954,9 @@ Task_t	tlHoundWakeUrgent[] =
 	{ TASK_HOUND_WAKE_UP,		(float)0			},
 };
 
+/**
+*	@brief wake and stand up with great urgency!
+*/
 Schedule_t	slHoundWakeUrgent[] =
 {
 	{
@@ -1018,7 +967,6 @@ Schedule_t	slHoundWakeUrgent[] =
 		"WakeUrgent"
 	},
 };
-
 
 Task_t	tlHoundSpecialAttack1[] =
 {
@@ -1080,7 +1028,6 @@ Schedule_t	slHoundHopRetreat[] =
 	},
 };
 
-// hound fails in combat with client in the PVS
 Task_t	tlHoundCombatFailPVS[] =
 {
 	{ TASK_STOP_MOVING,				0			},
@@ -1088,6 +1035,9 @@ Task_t	tlHoundCombatFailPVS[] =
 	{ TASK_WAIT_FACE_ENEMY,			(float)1	},
 };
 
+/**
+*	@brief hound fails in combat with client in the PVS
+*/
 Schedule_t	slHoundCombatFailPVS[] =
 {
 	{
@@ -1101,7 +1051,6 @@ Schedule_t	slHoundCombatFailPVS[] =
 	},
 };
 
-// hound fails in combat with no client in the PVS. Don't keep peeping!
 Task_t	tlHoundCombatFailNoPVS[] =
 {
 	{ TASK_STOP_MOVING,				0				},
@@ -1111,6 +1060,9 @@ Task_t	tlHoundCombatFailNoPVS[] =
 	{ TASK_WAIT_PVS,				0				},
 };
 
+/**
+*	@brief hound fails in combat with no client in the PVS. Don't keep peeping!
+*/
 Schedule_t	slHoundCombatFailNoPVS[] =
 {
 	{
@@ -1141,9 +1093,6 @@ DEFINE_CUSTOM_SCHEDULES(CHoundeye)
 
 IMPLEMENT_CUSTOM_SCHEDULES(CHoundeye, CSquadMonster);
 
-//=========================================================
-// GetScheduleOfType 
-//=========================================================
 Schedule_t* CHoundeye::GetScheduleOfType(int Type)
 {
 	if (m_fAsleep)
@@ -1249,9 +1198,6 @@ Schedule_t* CHoundeye::GetScheduleOfType(int Type)
 	}
 }
 
-//=========================================================
-// GetSchedule 
-//=========================================================
 Schedule_t* CHoundeye::GetSchedule()
 {
 	switch (m_MonsterState)

@@ -13,18 +13,18 @@
 *
 ****/
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"player.h"
-#include	"weapons.h"
-#include	"gamerules.h"
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "player.h"
+#include "weapons.h"
+#include "gamerules.h"
 
-#include	"skill.h"
-#include	"game.h"
-#include	"items.h"
-#include	"voice_gamemgr.h"
-#include	"hltv.h"
+#include "skill.h"
+#include "game.h"
+#include "items.h"
+#include "voice_gamemgr.h"
+#include "hltv.h"
 #include "UserMessages.h"
 #include "mapcycle.hpp"
 
@@ -54,6 +54,7 @@ public:
 		return true;
 	}
 };
+
 static CMultiplayGameMgrHelper g_GameMgrHelper;
 
 CHalfLifeMultiplay::CHalfLifeMultiplay()
@@ -1224,5 +1225,3 @@ void CHalfLifeMultiplay::SendMOTDToClient(edict_t* client)
 		MESSAGE_END();
 	}
 }
-
-

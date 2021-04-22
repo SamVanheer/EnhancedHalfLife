@@ -21,19 +21,12 @@
 *	Spectator functions
 */
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-#include	"spectator.h"
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "monsters.h"
+#include "spectator.h"
 
-/*
-===========
-SpectatorConnect
-
-called when a spectator connects to a server
-============
-*/
 void CBaseSpectator::SpectatorConnect()
 {
 	pev->flags = FL_SPECTATOR;
@@ -43,24 +36,10 @@ void CBaseSpectator::SpectatorConnect()
 	m_pGoalEnt = nullptr;
 }
 
-/*
-===========
-SpectatorDisconnect
-
-called when a spectator disconnects from a server
-============
-*/
 void CBaseSpectator::SpectatorDisconnect()
 {
 }
 
-/*
-================
-SpectatorImpulseCommand
-
-Called by SpectatorThink if the spectator entered an impulse
-================
-*/
 void CBaseSpectator::SpectatorImpulseCommand()
 {
 	static edict_t* pGoal = nullptr;
@@ -114,13 +93,6 @@ void CBaseSpectator::SpectatorImpulseCommand()
 	pev->impulse = 0;
 }
 
-/*
-================
-SpectatorThink
-
-Called every frame after physics are run
-================
-*/
 void  CBaseSpectator::SpectatorThink()
 {
 	if (!(pev->flags & FL_SPECTATOR))
@@ -135,14 +107,6 @@ void  CBaseSpectator::SpectatorThink()
 		SpectatorImpulseCommand();
 }
 
-/*
-===========
-Spawn
-
-  Called when spectator is initialized:
-  UNDONE:  Is this actually being called because spectators are not allocated in normal fashion?
-============
-*/
 void CBaseSpectator::Spawn()
 {
 	pev->flags = FL_SPECTATOR;

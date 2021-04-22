@@ -45,9 +45,12 @@ static int tracerCount[MAX_CLIENTS];
 
 extern cvar_t* cl_lw;
 
-// play a strike sound based on the texture that was hit by the attack traceline.  VecSrc/VecEnd are the
-// original traceline endpoints used by the attacker, iBulletType is the type of bullet that hit the texture.
-// returns volume of strike instrument (crowbar) to play
+/**
+*	@brief play a strike sound based on the texture that was hit by the attack traceline.
+*	VecSrc/VecEnd are the original traceline endpoints used by the attacker
+*	@param iBulletType is the type of bullet that hit the texture
+*	@returns volum of strike instrument (crowbar) to play
+*/
 float EV_HLDM_PlayTextureSound(int idx, pmtrace_t* ptr, const Vector& vecSrc, const Vector& vecEnd, int iBulletType)
 {
 	// hit the world, try to play sound based on texture material type
@@ -291,13 +294,8 @@ bool EV_HLDM_CheckTracer(int idx, const Vector& vecSrc, const Vector& end, const
 	return tracer;
 }
 
-
-/*
-================
-FireBullets
-
-Go to the trouble of combining multiple pellets into a single damage call.
-================
+/**
+*	@brief Go to the trouble of combining multiple pellets into a single damage call.
 */
 void EV_HLDM_FireBullets(int idx,
 	const Vector& forward, const Vector& right, const Vector& up,
@@ -381,9 +379,6 @@ void EV_HLDM_FireBullets(int idx,
 	}
 }
 
-//======================
-//	    GLOCK START
-//======================
 void EV_FireGlock1(event_args_t* args)
 {
 	const int idx = args->entindex;
@@ -459,13 +454,7 @@ void EV_FireGlock2(event_args_t* args)
 	EV_HLDM_FireBullets(idx, forward, right, up, 1, vecSrc, vecAiming, WORLD_SIZE, BULLET_PLAYER_9MM, 0, &tracerCount[idx - 1], args->fparam1, args->fparam2);
 
 }
-//======================
-//	   GLOCK END
-//======================
 
-//======================
-//	  SHOTGUN START
-//======================
 void EV_FireShotGunDouble(event_args_t* args)
 {
 	const int idx = args->entindex;
@@ -556,13 +545,7 @@ void EV_FireShotGunSingle(event_args_t* args)
 		EV_HLDM_FireBullets(idx, forward, right, up, 6, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx - 1], 0.08716, 0.08716);
 	}
 }
-//======================
-//	   SHOTGUN END
-//======================
 
-//======================
-//	    MP5 START
-//======================
 void EV_FireMP5(event_args_t* args)
 {
 	const int idx = args->entindex;
@@ -638,14 +621,7 @@ void EV_FireMP52(event_args_t* args)
 		break;
 	}
 }
-//======================
-//		 MP5 END
-//======================
 
-//======================
-//	   PHYTON START 
-//	     ( .357 )
-//======================
 void EV_FirePython(event_args_t* args)
 {
 	const int idx = args->entindex;
@@ -685,14 +661,7 @@ void EV_FirePython(event_args_t* args)
 
 	EV_HLDM_FireBullets(idx, forward, right, up, 1, vecSrc, vecAiming, WORLD_SIZE, BULLET_PLAYER_357, 0, nullptr, args->fparam1, args->fparam2);
 }
-//======================
-//	    PHYTON END 
-//	     ( .357 )
-//======================
 
-//======================
-//	   GAUSS START 
-//======================
 void EV_SpinGauss(event_args_t* args)
 {
 	const int idx = args->entindex;
@@ -705,12 +674,6 @@ void EV_SpinGauss(event_args_t* args)
 	gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, "ambience/pulsemachine.wav", 1.0, ATTN_NORM, iSoundState, pitch);
 }
 
-/*
-==============================
-EV_StopPreviousGauss
-
-==============================
-*/
 void EV_StopPreviousGauss(int idx)
 {
 	// Make sure we don't have a gauss spin event in the queue for this guy
@@ -953,13 +916,7 @@ void EV_FireGauss(event_args_t* args)
 		}
 	}
 }
-//======================
-//	   GAUSS END 
-//======================
 
-//======================
-//	   CROWBAR START
-//======================
 int g_iSwing;
 
 //Only predict the miss sounds, hit sounds are still played 
@@ -987,18 +944,10 @@ void EV_Crowbar(event_args_t* args)
 		}
 	}
 }
-//======================
-//	   CROWBAR END 
-//======================
 
-//======================
-//	  CROSSBOW START
-//======================
-//=====================
-// EV_BoltCallback
-// This function is used to correct the origin and angles 
-// of the bolt, so it looks like it's stuck on the wall.
-//=====================
+/**
+*	@brief This function is used to correct the origin and angles of the bolt, so it looks like it's stuck on the wall.
+*/
 void EV_BoltCallback(TEMPENTITY* ent, float frametime, float currenttime)
 {
 	ent->entity.origin = ent->entity.baseline.vuser1;
@@ -1084,6 +1033,7 @@ void EV_FireCrossbow2(event_args_t* args)
 	gEngfuncs.pEventAPI->EV_PopPMStates();
 }
 
+//TODO: typo
 //TODO: Fully predict the fliying bolt.
 void EV_FireCrossbow(event_args_t* args)
 {
@@ -1104,13 +1054,7 @@ void EV_FireCrossbow(event_args_t* args)
 		V_PunchAxis(0, -2.0);
 	}
 }
-//======================
-//	   CROSSBOW END 
-//======================
 
-//======================
-//	    RPG START 
-//======================
 void EV_FireRpg(event_args_t* args)
 {
 	const int idx = args->entindex;
@@ -1127,13 +1071,7 @@ void EV_FireRpg(event_args_t* args)
 		V_PunchAxis(0, -5.0);
 	}
 }
-//======================
-//	     RPG END 
-//======================
 
-//======================
-//	    EGON END 
-//======================
 constexpr int g_fireAnims1[] = {EGON_FIRE1, EGON_FIRE2, EGON_FIRE3, EGON_FIRE4};
 constexpr int g_fireAnims2[] = {EGON_ALTFIRECYCLE};
 
@@ -1294,13 +1232,7 @@ void EV_EgonStop(event_args_t* args)
 		}
 	}
 }
-//======================
-//	    EGON END 
-//======================
 
-//======================
-//	   HORNET START
-//======================
 void EV_HornetGunFire(event_args_t* args)
 {
 	const int idx = args->entindex;
@@ -1320,13 +1252,7 @@ void EV_HornetGunFire(event_args_t* args)
 	case 2:	gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, "agrunt/ag_fire3.wav", 1, ATTN_NORM, 0, 100);	break;
 	}
 }
-//======================
-//	   HORNET END
-//======================
 
-//======================
-//	   TRIPMINE START
-//======================
 //We only check if it's possible to put a trip mine
 //and if it is, then we play the animation. Server still places it.
 void EV_TripmineFire(event_args_t* args)
@@ -1362,13 +1288,7 @@ void EV_TripmineFire(event_args_t* args)
 
 	gEngfuncs.pEventAPI->EV_PopPMStates();
 }
-//======================
-//	   TRIPMINE END
-//======================
 
-//======================
-//	   SQUEAK START
-//======================
 void EV_SnarkFire(event_args_t* args)
 {
 	const int idx = args->entindex;
@@ -1399,9 +1319,6 @@ void EV_SnarkFire(event_args_t* args)
 
 	gEngfuncs.pEventAPI->EV_PopPMStates();
 }
-//======================
-//	   SQUEAK END
-//======================
 
 void EV_TrainPitchAdjust(event_args_t* args)
 {

@@ -42,11 +42,9 @@ AmmoInfo CBasePlayerItem::AmmoInfoArray[MAX_AMMO_TYPES];
 
 MULTIDAMAGE gMultiDamage;
 
-//=========================================================
-// MaxAmmoCarry - pass in a name and this function will tell
-// you the maximum amount of that type of ammunition that a 
-// player can carry.
-//=========================================================
+/**
+*	@brief pass in a name and this function will tell you the maximum amount of that type of ammunition that a player can carry.
+*/
 int MaxAmmoCarry(string_t iszName)
 {
 	for (int i = 0; i < MAX_WEAPONS; i++)
@@ -61,33 +59,12 @@ int MaxAmmoCarry(string_t iszName)
 	return -1;
 }
 
-
-/*
-==============================================================================
-
-MULTI-DAMAGE
-
-Collects multiple small damages into a single damage
-
-==============================================================================
-*/
-
-//
-// ClearMultiDamage - resets the global multi damage accumulator
-//
 void ClearMultiDamage()
 {
 	gMultiDamage.pEntity = nullptr;
 	gMultiDamage.amount = 0;
 	gMultiDamage.type = 0;
 }
-
-
-//
-// ApplyMultiDamage - inflicts contents of global multi damage register on gMultiDamage.pEntity
-//
-// GLOBALS USED:
-//		gMultiDamage
 
 void ApplyMultiDamage(entvars_t* pevInflictor, entvars_t* pevAttacker)
 {
@@ -100,10 +77,6 @@ void ApplyMultiDamage(entvars_t* pevInflictor, entvars_t* pevAttacker)
 
 	gMultiDamage.pEntity->TakeDamage(pevInflictor, pevAttacker, gMultiDamage.amount, gMultiDamage.type);
 }
-
-
-// GLOBALS USED:
-//		gMultiDamage
 
 void AddMultiDamage(entvars_t* pevInflictor, CBaseEntity* pEntity, float flDamage, int bitsDamageType)
 {
@@ -122,16 +95,10 @@ void AddMultiDamage(entvars_t* pevInflictor, CBaseEntity* pEntity, float flDamag
 	gMultiDamage.amount += flDamage;
 }
 
-/*
-================
-SpawnBlood
-================
-*/
 void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage)
 {
 	UTIL_BloodDrips(vecSpot, g_vecAttackDir, bloodColor, (int)flDamage);
 }
-
 
 int DamageDecal(CBaseEntity* pEntity, int bitsDamageType)
 {
@@ -143,7 +110,6 @@ int DamageDecal(CBaseEntity* pEntity, int bitsDamageType)
 
 void DecalGunshot(TraceResult* pTrace, int iBulletType)
 {
-	// Is the entity valid
 	if (!UTIL_IsValidEntity(pTrace->pHit))
 		return;
 
@@ -178,11 +144,6 @@ void DecalGunshot(TraceResult* pTrace, int iBulletType)
 	}
 }
 
-
-
-//
-// EjectBrass - tosses a brass shell from passed origin at passed velocity
-//
 void EjectBrass(const Vector& vecOrigin, const Vector& vecVelocity, float rotation, int model, int soundtype)
 {
 	// FIX: when the player shoots, their gun isn't in the same position as it is on the model other players see.
@@ -220,7 +181,9 @@ void ExplodeModel(const Vector& vecOrigin, float speed, int model, int count)
 }
 #endif
 
-// Precaches the weapon and queues the weapon info for sending to clients
+/**
+*	@brief Precaches the weapon and queues the weapon info for sending to clients
+*/
 void UTIL_PrecacheOtherWeapon(const char* szClassname)
 {
 	edict_t* pent;
@@ -260,7 +223,6 @@ void UTIL_PrecacheOtherWeapon(const char* szClassname)
 	REMOVE_ENTITY(pent);
 }
 
-// called by worldspawn
 void W_Precache()
 {
 	memset(CBasePlayerItem::ItemInfoArray, 0, sizeof(CBasePlayerItem::ItemInfoArray));
@@ -361,9 +323,6 @@ void W_Precache()
 
 }
 
-
-
-
 TYPEDESCRIPTION	CBasePlayerItem::m_SaveData[] =
 {
 	DEFINE_FIELD(CBasePlayerItem, m_pPlayer, FIELD_CLASSPTR),
@@ -373,8 +332,8 @@ TYPEDESCRIPTION	CBasePlayerItem::m_SaveData[] =
 	// DEFINE_FIELD( CBasePlayerItem, m_iIdPrimary, FIELD_INTEGER ),
 	// DEFINE_FIELD( CBasePlayerItem, m_iIdSecondary, FIELD_INTEGER ),
 };
-IMPLEMENT_SAVERESTORE(CBasePlayerItem, CBaseAnimating);
 
+IMPLEMENT_SAVERESTORE(CBasePlayerItem, CBaseAnimating);
 
 TYPEDESCRIPTION	CBasePlayerWeapon::m_SaveData[] =
 {
@@ -397,17 +356,12 @@ TYPEDESCRIPTION	CBasePlayerWeapon::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CBasePlayerWeapon, CBasePlayerItem);
 
-
 void CBasePlayerItem::SetObjectCollisionBox()
 {
 	pev->absmin = pev->origin + Vector(-24, -24, 0);
 	pev->absmax = pev->origin + Vector(24, 24, 16);
 }
 
-
-//=========================================================
-// Sets up movetype, size, solidtype for a new weapon. 
-//=========================================================
 void CBasePlayerItem::FallInit()
 {
 	pev->movetype = MOVETYPE_TOSS;
@@ -422,13 +376,6 @@ void CBasePlayerItem::FallInit()
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
-//=========================================================
-// FallThink - Items that have just spawned run this think
-// to catch them when they hit the ground. Once we're sure
-// that the object is grounded, we change its solid type
-// to trigger and set it in a large box that helps the
-// player get it.
-//=========================================================
 void CBasePlayerItem::FallThink()
 {
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -451,9 +398,6 @@ void CBasePlayerItem::FallThink()
 	}
 }
 
-//=========================================================
-// Materialize - make a CBasePlayerItem visible and tangible
-//=========================================================
 void CBasePlayerItem::Materialize()
 {
 	if (pev->effects & EF_NODRAW)
@@ -472,10 +416,6 @@ void CBasePlayerItem::Materialize()
 
 }
 
-//=========================================================
-// AttemptToMaterialize - the item is trying to rematerialize,
-// should it do so now or wait longer?
-//=========================================================
 void CBasePlayerItem::AttemptToMaterialize()
 {
 	float time = g_pGameRules->FlWeaponTryRespawn(this);
@@ -489,10 +429,6 @@ void CBasePlayerItem::AttemptToMaterialize()
 	pev->nextthink = gpGlobals->time + time;
 }
 
-//=========================================================
-// CheckRespawn - a player is taking this weapon, should 
-// it respawn?
-//=========================================================
 void CBasePlayerItem::CheckRespawn()
 {
 	switch (g_pGameRules->WeaponShouldRespawn(this))
@@ -506,10 +442,6 @@ void CBasePlayerItem::CheckRespawn()
 	}
 }
 
-//=========================================================
-// Respawn- this item is already in the world, but it is
-// invisible and intangible. Make it visible and tangible.
-//=========================================================
 CBaseEntity* CBasePlayerItem::Respawn()
 {
 	// make a copy of this weapon that is invisible and inaccessible to players (no touch function). The weapon spawn/respawn code
@@ -614,7 +546,6 @@ void CBasePlayerItem::AttachToPlayer(CBasePlayer* pPlayer)
 	SetTouch(nullptr);
 }
 
-// CALLED THROUGH the newly-touched weapon's instance. The existing player weapon is pOriginal
 bool CBasePlayerWeapon::AddDuplicate(CBasePlayerItem* pOriginal)
 {
 	if (m_iDefaultAmmo)
@@ -627,7 +558,6 @@ bool CBasePlayerWeapon::AddDuplicate(CBasePlayerItem* pOriginal)
 		return ExtractClipAmmo((CBasePlayerWeapon*)pOriginal);
 	}
 }
-
 
 bool CBasePlayerWeapon::AddToPlayer(CBasePlayer* pPlayer)
 {
@@ -702,7 +632,6 @@ bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer)
 	return true;
 }
 
-
 void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 {
 	const bool skiplocal = UseDecrement();
@@ -757,7 +686,6 @@ bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxC
 	return iIdAmmo > 0 ? true : false;
 }
 
-
 bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName, int iMax)
 {
 	int iIdAmmo;
@@ -774,12 +702,6 @@ bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName, int iMa
 	return iIdAmmo > 0 ? true : false;
 }
 
-//=========================================================
-// IsUseable - this function determines whether or not a 
-// weapon is useable by the player in its current state. 
-// (does it have ammo loaded? do I have any ammo for the 
-// weapon?, etc)
-//=========================================================
 bool CBasePlayerWeapon::IsUseable()
 {
 	if (m_iClip > 0)
@@ -844,15 +766,11 @@ bool CBasePlayerWeapon::PlayEmptySound()
 	return false;
 }
 
-//=========================================================
-//=========================================================
 int CBasePlayerWeapon::PrimaryAmmoIndex()
 {
 	return m_iPrimaryAmmoType;
 }
 
-//=========================================================
-//=========================================================
 int CBasePlayerWeapon::SecondaryAmmoIndex()
 {
 	return m_iSecondaryAmmoType;
@@ -932,14 +850,6 @@ void CBasePlayerAmmo::DefaultTouch(CBaseEntity* pOther)
 	}
 }
 
-//=========================================================
-// called by the new item with the existing item as parameter
-//
-// if we call ExtractAmmo(), it's because the player is picking up this type of weapon for 
-// the first time. If it is spawned by the world, m_iDefaultAmmo will have a default ammo amount in it.
-// if  this is a weapon dropped by a dying player, has 0 m_iDefaultAmmo, which means only the ammo in 
-// the weapon clip comes along. 
-//=========================================================
 bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon)
 {
 	bool result = false;
@@ -960,9 +870,6 @@ bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon)
 	return result;
 }
 
-//=========================================================
-// called by the new item's class with the existing item as parameter
-//=========================================================
 int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon)
 {
 	int			iAmmo;
@@ -979,9 +886,6 @@ int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon)
 	return pWeapon->m_pPlayer->GiveAmmo(iAmmo, pszAmmo1(), iMaxAmmo1()); // , &m_iPrimaryAmmoType
 }
 
-//=========================================================
-// RetireWeapon - no more ammo for this gun, put it away.
-//=========================================================
 void CBasePlayerWeapon::RetireWeapon()
 {
 	// first, no viewmodel at all.
@@ -998,9 +902,6 @@ void CBasePlayerWeapon::RetireWeapon()
 	}
 }
 
-//=========================================================================
-// GetNextAttackDelay - An accurate way of calcualting the next attack time.
-//=========================================================================
 float CBasePlayerWeapon::GetNextAttackDelay(float delay)
 {
 	if (m_flLastFireTime == 0 || m_flNextPrimaryAttack == -1)
@@ -1029,11 +930,6 @@ float CBasePlayerWeapon::GetNextAttackDelay(float delay)
 	return flNextAttack;
 }
 
-
-//*********************************************************
-// weaponbox code:
-//*********************************************************
-
 LINK_ENTITY_TO_CLASS(weaponbox, CWeaponBox);
 
 TYPEDESCRIPTION	CWeaponBox::m_SaveData[] =
@@ -1046,16 +942,11 @@ TYPEDESCRIPTION	CWeaponBox::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CWeaponBox, CBaseEntity);
 
-//=========================================================
-//
-//=========================================================
 void CWeaponBox::Precache()
 {
 	PRECACHE_MODEL("models/w_weaponbox.mdl");
 }
 
-//=========================================================
-//=========================================================
 void CWeaponBox::KeyValue(KeyValueData* pkvd)
 {
 	if (m_cAmmoTypes < MAX_AMMO_TYPES)
@@ -1071,9 +962,6 @@ void CWeaponBox::KeyValue(KeyValueData* pkvd)
 	}
 }
 
-//=========================================================
-// CWeaponBox - Spawn 
-//=========================================================
 void CWeaponBox::Spawn()
 {
 	Precache();
@@ -1086,10 +974,6 @@ void CWeaponBox::Spawn()
 	SET_MODEL(ENT(pev), "models/w_weaponbox.mdl");
 }
 
-//=========================================================
-// CWeaponBox - Kill - the think function that removes the
-// box from the world.
-//=========================================================
 void CWeaponBox::Kill()
 {
 	CBasePlayerItem* pWeapon;
@@ -1112,10 +996,6 @@ void CWeaponBox::Kill()
 	UTIL_Remove(this);
 }
 
-//=========================================================
-// CWeaponBox - Touch: try to add my contents to the toucher
-// if the toucher is a player.
-//=========================================================
 void CWeaponBox::Touch(CBaseEntity* pOther)
 {
 	if (!(pev->flags & FL_ONGROUND))
@@ -1184,9 +1064,6 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 	UTIL_Remove(this);
 }
 
-//=========================================================
-// CWeaponBox - PackWeapon: Add this weapon to the box
-//=========================================================
 bool CWeaponBox::PackWeapon(CBasePlayerItem* pWeapon)
 {
 	// is one of these weapons already packed in this box?
@@ -1235,9 +1112,6 @@ bool CWeaponBox::PackWeapon(CBasePlayerItem* pWeapon)
 	return true;
 }
 
-//=========================================================
-// CWeaponBox - PackAmmo
-//=========================================================
 bool CWeaponBox::PackAmmo(string_t iszName, int iCount)
 {
 	int iMaxCarry;
@@ -1261,10 +1135,7 @@ bool CWeaponBox::PackAmmo(string_t iszName, int iCount)
 	return false;
 }
 
-//=========================================================
-// CWeaponBox - GiveAmmo
-//=========================================================
-int CWeaponBox::GiveAmmo(int iCount, const char* szName, int iMax, int* pIndex/* = nullptr*/)
+int CWeaponBox::GiveAmmo(int iCount, const char* szName, int iMax, int* pIndex)
 {
 	int i;
 
@@ -1299,10 +1170,6 @@ int CWeaponBox::GiveAmmo(int iCount, const char* szName, int iMax, int* pIndex/*
 	return i;
 }
 
-//=========================================================
-// CWeaponBox::HasWeapon - is a weapon of this type already
-// packed in this box?
-//=========================================================
 bool CWeaponBox::HasWeapon(CBasePlayerItem* pCheckItem)
 {
 	CBasePlayerItem* pItem = m_rgpPlayerItems[pCheckItem->iItemSlot()];
@@ -1319,9 +1186,6 @@ bool CWeaponBox::HasWeapon(CBasePlayerItem* pCheckItem)
 	return false;
 }
 
-//=========================================================
-// CWeaponBox::IsEmpty - is there anything in this box?
-//=========================================================
 bool CWeaponBox::IsEmpty()
 {
 	int i;
@@ -1346,14 +1210,11 @@ bool CWeaponBox::IsEmpty()
 	return true;
 }
 
-//=========================================================
-//=========================================================
 void CWeaponBox::SetObjectCollisionBox()
 {
 	pev->absmin = pev->origin + Vector(-16, -16, 0);
 	pev->absmax = pev->origin + Vector(16, 16, 16);
 }
-
 
 void CBasePlayerWeapon::PrintState()
 {
@@ -1370,12 +1231,12 @@ void CBasePlayerWeapon::PrintState()
 	ALERT(at_console, "m_iclip:  %i\n", m_iClip);
 }
 
-
 TYPEDESCRIPTION	CRpg::m_SaveData[] =
 {
 	DEFINE_FIELD(CRpg, m_fSpotActive, FIELD_BOOLEAN),
 	DEFINE_FIELD(CRpg, m_cActiveRockets, FIELD_INTEGER),
 };
+
 IMPLEMENT_SAVERESTORE(CRpg, CBasePlayerWeapon);
 
 TYPEDESCRIPTION	CRpgRocket::m_SaveData[] =
@@ -1383,6 +1244,7 @@ TYPEDESCRIPTION	CRpgRocket::m_SaveData[] =
 	DEFINE_FIELD(CRpgRocket, m_flIgniteTime, FIELD_TIME),
 	DEFINE_FIELD(CRpgRocket, m_pLauncher, FIELD_EHANDLE),
 };
+
 IMPLEMENT_SAVERESTORE(CRpgRocket, CGrenade);
 
 TYPEDESCRIPTION	CShotgun::m_SaveData[] =
@@ -1393,6 +1255,7 @@ TYPEDESCRIPTION	CShotgun::m_SaveData[] =
 	// DEFINE_FIELD( CShotgun, m_iShell, FIELD_INTEGER ),
 	DEFINE_FIELD(CShotgun, m_flPumpTime, FIELD_TIME),
 };
+
 IMPLEMENT_SAVERESTORE(CShotgun, CBasePlayerWeapon);
 
 TYPEDESCRIPTION	CGauss::m_SaveData[] =
@@ -1403,6 +1266,7 @@ TYPEDESCRIPTION	CGauss::m_SaveData[] =
 	//	DEFINE_FIELD( CGauss, m_flNextAmmoBurn, FIELD_TIME ),
 		DEFINE_FIELD(CGauss, m_fPrimaryFire, FIELD_BOOLEAN),
 };
+
 IMPLEMENT_SAVERESTORE(CGauss, CBasePlayerWeapon);
 
 TYPEDESCRIPTION	CEgon::m_SaveData[] =
@@ -1416,11 +1280,12 @@ TYPEDESCRIPTION	CEgon::m_SaveData[] =
 		DEFINE_FIELD(CEgon, m_shakeTime, FIELD_TIME),
 		DEFINE_FIELD(CEgon, m_flAmmoUseTime, FIELD_TIME),
 };
+
 IMPLEMENT_SAVERESTORE(CEgon, CBasePlayerWeapon);
 
 TYPEDESCRIPTION	CSatchel::m_SaveData[] =
 {
 	DEFINE_FIELD(CSatchel, m_chargeReady, FIELD_INTEGER),
 };
-IMPLEMENT_SAVERESTORE(CSatchel, CBasePlayerWeapon);
 
+IMPLEMENT_SAVERESTORE(CSatchel, CBasePlayerWeapon);

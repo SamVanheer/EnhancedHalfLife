@@ -25,6 +25,7 @@ client_textmessage_t	g_pCustomMessage;
 const char* g_pCustomName = "Custom";
 char g_pCustomText[1024];
 
+//TODO: unnecessary semicolons
 bool CHudMessage::Init()
 {
 	HOOK_MESSAGE(HudText);
@@ -45,7 +46,6 @@ bool CHudMessage::VidInit()
 	return true;
 };
 
-
 void CHudMessage::Reset()
 {
 	memset(m_pMessages, 0, sizeof(m_pMessages[0]) * maxHUDMessages);
@@ -54,7 +54,6 @@ void CHudMessage::Reset()
 	m_gameTitleTime = 0;
 	m_pGameTitle = nullptr;
 }
-
 
 float CHudMessage::FadeBlend(float fadein, float fadeout, float hold, float localTime)
 {
@@ -81,7 +80,6 @@ float CHudMessage::FadeBlend(float fadein, float fadeout, float hold, float loca
 	return fadeBlend;
 }
 
-
 int	CHudMessage::XPosition(float x, int width, int totalWidth)
 {
 	int xPos;
@@ -106,7 +104,6 @@ int	CHudMessage::XPosition(float x, int width, int totalWidth)
 	return xPos;
 }
 
-
 int CHudMessage::YPosition(float y, int height)
 {
 	int yPos;
@@ -129,7 +126,6 @@ int CHudMessage::YPosition(float y, int height)
 
 	return yPos;
 }
-
 
 void CHudMessage::MessageScanNextChar()
 {
@@ -193,7 +189,6 @@ void CHudMessage::MessageScanNextChar()
 	}
 }
 
-
 void CHudMessage::MessageScanStart()
 {
 	switch (m_parms.pMessage->effect)
@@ -233,7 +228,6 @@ void CHudMessage::MessageScanStart()
 		break;
 	}
 }
-
 
 void CHudMessage::MessageDrawScan(client_textmessage_t* pMessage, float time)
 {
@@ -305,7 +299,6 @@ void CHudMessage::MessageDrawScan(client_textmessage_t* pMessage, float time)
 		m_parms.y += gHUD.m_scrinfo.iCharHeight;
 	}
 }
-
 
 bool CHudMessage::Draw(float fTime)
 {
@@ -408,7 +401,6 @@ bool CHudMessage::Draw(float fTime)
 	return true;
 }
 
-
 void CHudMessage::MessageAdd(const char* pName, float time)
 {
 	int i, j;
@@ -473,7 +465,6 @@ void CHudMessage::MessageAdd(const char* pName, float time)
 	}
 }
 
-
 bool CHudMessage::MsgFunc_HudText(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};
@@ -490,7 +481,6 @@ bool CHudMessage::MsgFunc_HudText(const char* pszName, int iSize, void* pbuf)
 
 	return true;
 }
-
 
 bool CHudMessage::MsgFunc_GameTitle(const char* pszName, int iSize, void* pbuf)
 {
@@ -524,5 +514,4 @@ void CHudMessage::MessageAdd(client_textmessage_t* newMessage)
 			return;
 		}
 	}
-
 }

@@ -39,7 +39,6 @@ globalentity_t* CGlobalState::Find(string_t globalname)
 	return pTest;
 }
 
-
 //#ifdef _DEBUG
 void CGlobalState::DumpGlobals()
 {
@@ -56,7 +55,6 @@ void CGlobalState::DumpGlobals()
 }
 //#endif
 
-
 void CGlobalState::EntityAdd(string_t globalname, string_t mapName, GlobalEntState state)
 {
 	ASSERT(!Find(globalname));
@@ -71,7 +69,6 @@ void CGlobalState::EntityAdd(string_t globalname, string_t mapName, GlobalEntSta
 	m_listCount++;
 }
 
-
 void CGlobalState::EntitySetState(string_t globalname, GlobalEntState state)
 {
 	globalentity_t* pEnt = Find(globalname);
@@ -80,14 +77,12 @@ void CGlobalState::EntitySetState(string_t globalname, GlobalEntState state)
 		pEnt->state = state;
 }
 
-
 const globalentity_t* CGlobalState::EntityFromTable(string_t globalname)
 {
 	globalentity_t* pEnt = Find(globalname);
 
 	return pEnt;
 }
-
 
 GlobalEntState CGlobalState::EntityGetState(string_t globalname)
 {
@@ -97,7 +92,6 @@ GlobalEntState CGlobalState::EntityGetState(string_t globalname)
 
 	return GlobalEntState::Off;
 }
-
 
 // Global Savedata for Delay
 TYPEDESCRIPTION	CGlobalState::m_SaveData[] =
@@ -112,7 +106,6 @@ TYPEDESCRIPTION	gGlobalEntitySaveData[] =
 	DEFINE_ARRAY(globalentity_t, levelName, FIELD_CHARACTER, 32),
 	DEFINE_FIELD(globalentity_t, state, FIELD_INTEGER),
 };
-
 
 bool CGlobalState::Save(CSave& save)
 {
@@ -164,7 +157,6 @@ void CGlobalState::EntityUpdate(string_t globalname, string_t mapname)
 		safe_strcpy(pEnt->levelName, STRING(mapname));
 }
 
-
 void CGlobalState::ClearStates()
 {
 	globalentity_t* pFree = m_pList;
@@ -177,20 +169,17 @@ void CGlobalState::ClearStates()
 	Reset();
 }
 
-
 void SaveGlobalState(SAVERESTOREDATA* pSaveData)
 {
 	CSave saveHelper(pSaveData);
 	gGlobalState.Save(saveHelper);
 }
 
-
 void RestoreGlobalState(SAVERESTOREDATA* pSaveData)
 {
 	CRestore restoreHelper(pSaveData);
 	gGlobalState.Restore(restoreHelper);
 }
-
 
 void ResetGlobalState()
 {

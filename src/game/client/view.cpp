@@ -32,6 +32,7 @@ extern engine_studio_api_t IEngineStudio;
 
 extern kbutton_t	in_mlook;
 
+//TODO: typo
 /*
 The view is allowed to move slightly from it's true position for bobbing,
 but if it exceeds 8 pixels linear distance (spherical, not box), the list of
@@ -87,6 +88,7 @@ cvar_t	v_ipitch_level = {"v_ipitch_level", "0.3", 0, 0.3};
 
 float	v_idlescale;  // used by TFC for concussion grenade effect
 
+//TODO: typo
 // Quakeworld bob code, this fixes jitters in the mutliplayer since the clock (pparams->time) isn't quite linear
 float V_CalcBob(ref_params_t* pparams)
 {
@@ -162,15 +164,10 @@ void V_StopPitchDrift()
 	pd.pitchvel = 0;
 }
 
-/*
-===============
-V_DriftPitch
-
-Moves the client pitch angle towards idealpitch sent by the server.
-
-If the user is adjusting pitch manually, either with lookup/lookdown,
-mlook and mouse, or klook and keyboard, pitch drifting is constantly stopped.
-===============
+/**
+*	@brief Moves the client pitch angle towards idealpitch sent by the server.
+*	@details If the user is adjusting pitch manually, either with lookup/lookdown,
+*	mlook and mouse, or klook and keyboard, pitch drifting is constantly stopped.
 */
 void V_DriftPitch(ref_params_t* pparams)
 {
@@ -240,17 +237,6 @@ void V_DriftPitch(ref_params_t* pparams)
 	}
 }
 
-/*
-==============================================================================
-						VIEW RENDERING
-==============================================================================
-*/
-
-/*
-==================
-V_CalcGunAngle
-==================
-*/
 void V_CalcGunAngle(ref_params_t* pparams)
 {
 	cl_entity_t* viewent = gEngfuncs.GetViewModel();
@@ -269,12 +255,8 @@ void V_CalcGunAngle(ref_params_t* pparams)
 	viewent->latched.prevangles = viewent->angles;
 }
 
-/*
-==============
-V_AddIdle
-
-Idle swaying
-==============
+/**
+*	@brief Idle swaying
 */
 void V_AddIdle(ref_params_t* pparams)
 {
@@ -283,13 +265,8 @@ void V_AddIdle(ref_params_t* pparams)
 	pparams->viewangles[YAW] += v_idlescale * sin(pparams->time * v_iyaw_cycle.value) * v_iyaw_level.value;
 }
 
-
-/*
-==============
-V_CalcViewRoll
-
-Roll is induced by movement and damage
-==============
+/**
+*	@brief Roll is induced by movement and damage
 */
 void V_CalcViewRoll(ref_params_t* pparams)
 {
@@ -310,13 +287,6 @@ void V_CalcViewRoll(ref_params_t* pparams)
 	}
 }
 
-
-/*
-==================
-V_CalcIntermissionRefdef
-
-==================
-*/
 void V_CalcIntermissionRefdef(ref_params_t* pparams)
 {
 	// ent is the player model ( visible when out of body )
@@ -365,12 +335,6 @@ struct viewinterp_t
 	int CurrentAngle;
 };
 
-/*
-==================
-V_CalcRefdef
-
-==================
-*/
 void V_CalcNormalRefdef(ref_params_t* pparams)
 {
 	static viewinterp_t		ViewInterp;
@@ -704,7 +668,9 @@ void V_SmoothInterpolateAngles(Vector& startAngle, Vector& endAngle, Vector& fin
 	SmoothInterpolateAngles(startAngle, endAngle, finalAngle, degreesPerSec, v_frametime);
 }
 
-// Get the origin of the Observer based around the target's position and angles
+/**
+*	@brief Get the origin of the Observer based around the target's position and angles
+*/
 void V_GetChaseOrigin(Vector& angles, Vector& origin, float distance, Vector& returnvec)
 {
 	// Trace back from the target using the player's view angles
@@ -949,9 +915,6 @@ void V_GetDoubleTargetsCam(cl_entity_t* ent1, cl_entity_t* ent2, Vector& angle, 
 
 	/* take middle between two viewangles
 	InterpolateAngles( newAngle, tempVec, newAngle, 0.5f); */
-
-
-
 }
 
 void V_GetDirectedChasePosition(cl_entity_t* ent1, cl_entity_t* ent2, Vector& angle, Vector& origin)
@@ -1025,8 +988,6 @@ void V_GetChasePos(int target, Vector* cl_angles, Vector& origin, Vector& angles
 		return;
 	}
 
-
-
 	if (gHUD.m_Spectator.m_autoDirector->value)
 	{
 		if (g_iUser3)
@@ -1060,7 +1021,6 @@ void V_ResetChaseCam()
 {
 	v_resetCamera = true;
 }
-
 
 void V_GetInEyePos(int target, Vector& origin, Vector& angles)
 {
@@ -1164,7 +1124,6 @@ void V_GetMapChasePosition(int target, Vector& cl_angles, Vector& origin, Vector
 
 int V_FindViewModelByWeaponModel(int weaponindex)
 {
-
 	static constexpr const char* modelmap[][2] = {
 
 		{ "models/p_crossbow.mdl",		"models/v_crossbow.mdl"		},
@@ -1204,16 +1163,8 @@ int V_FindViewModelByWeaponModel(int weaponindex)
 	}
 	else
 		return 0;
-
 }
 
-
-/*
-==================
-V_CalcSpectatorRefdef
-
-==================
-*/
 void V_CalcSpectatorRefdef(ref_params_t* pparams)
 {
 	static Vector			velocity(0.0f, 0.0f, 0.0f);
@@ -1380,8 +1331,6 @@ void V_CalcSpectatorRefdef(ref_params_t* pparams)
 
 }
 
-
-
 void DLLEXPORT V_CalcRefdef(ref_params_t* pparams)
 {
 	// intermission / finale rendering
@@ -1418,23 +1367,11 @@ void DLLEXPORT V_CalcRefdef(ref_params_t* pparams)
 	*/
 }
 
-/*
-=============
-V_PunchAxis
-
-Client side punch effect
-=============
-*/
 void V_PunchAxis(int axis, float punch)
 {
 	ev_punchangle[axis] = punch;
 }
 
-/*
-=============
-V_Init
-=============
-*/
 void V_Init()
 {
 	gEngfuncs.pfnAddCommand("centerview", V_StartPitchDrift);
@@ -1452,7 +1389,6 @@ void V_Init()
 	cl_waterdist = gEngfuncs.pfnRegisterVariable("cl_waterdist", "4", 0);
 	cl_chasedist = gEngfuncs.pfnRegisterVariable("cl_chasedist", "112", 0);
 }
-
 
 //#define TRACE_TEST
 #if defined( TRACE_TEST )

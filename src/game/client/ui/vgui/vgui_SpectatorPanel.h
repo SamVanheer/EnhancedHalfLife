@@ -25,10 +25,8 @@ constexpr int BANNER_HEIGHT = 64;
 constexpr int OPTIONS_BUTTON_X = 96;
 constexpr int CAMOPTIONS_BUTTON_X = 200;
 
-
 constexpr int SEPERATOR_WIDTH = 15;
 constexpr int SEPERATOR_HEIGHT = 15;
-
 
 constexpr int TEAM_NUMBER = 2;
 
@@ -80,8 +78,6 @@ public:
 	bool			m_menuVisible;
 	bool			m_insetVisible;
 };
-
-
 
 class CSpectatorHandler_Command : public ActionSignal
 {

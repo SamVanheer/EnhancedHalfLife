@@ -32,7 +32,9 @@ public:
 
 using InstantiateInterfaceFn = IBaseInterface * (*)();
 
-// Used internally to register classes.
+/**
+*	@brief Used internally to register classes.
+*/
 class InterfaceReg
 {
 public:
@@ -87,9 +89,6 @@ public:
 #define EXPORT_FUNCTION __attribute__ ((visibility("default")))
 #endif
 
-// This function is automatically exported and allows you to access any interfaces exposed with the above macros.
-// if pReturnCode is set, it will return one of the following values
-// extend this for other error conditions/code
 enum class InterfaceResult
 {
 	Ok = 0,
@@ -98,6 +97,11 @@ enum class InterfaceResult
 
 constexpr std::string_view CREATEINTERFACE_PROCNAME{"CreateInterface"};
 
+/**
+*	@brief This function is automatically exported and allows you to access any interfaces exposed with the above macros.
+*	@details extend this for other error conditions/code
+*	@param pReturnCode if set, it will return one of the following values
+*/
 extern "C" EXPORT_FUNCTION IBaseInterface * CreateInterface(const char* pName, InterfaceResult * pReturnCode);
 
 using CreateInterfaceFn = decltype(CreateInterface)*;

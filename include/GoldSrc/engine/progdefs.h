@@ -51,7 +51,6 @@ struct globalvars_t
 	Vector		vecLandmarkOffset;
 };
 
-
 struct entvars_t
 {
 	string_t	classname;

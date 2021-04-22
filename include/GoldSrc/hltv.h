@@ -1,6 +1,10 @@
-// all shared consts between server, clients and proxy
-
 #pragma once
+
+/**
+*	@file
+* 
+*	all shared consts between server, clients and proxy
+*/
 
 #include "director_cmds.h"
 

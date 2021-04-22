@@ -24,10 +24,6 @@ constexpr int MAX_SPEC_HUD_MESSAGES = 8;
 constexpr int OVERVIEW_TILE_SIZE = 128;		// don't change this
 constexpr int OVERVIEW_MAX_LAYERS = 1;
 
-//-----------------------------------------------------------------------------
-// Purpose: Handles the drawing of the spectator stuff (camera & top-down map and all the things on it )
-//-----------------------------------------------------------------------------
-
 struct overviewInfo_t
 {
 	char		map[64];	// cl.levelname or empty
@@ -64,6 +60,9 @@ struct cameraWayPoint_t
 constexpr int MAX_OVERVIEW_ENTITIES = 128;
 constexpr int MAX_CAM_WAYPOINTS = 32;
 
+/**
+*	@brief Handles the drawing of the spectator stuff (camera & top-down map and all the things on it )
+*/
 class CHudSpectator : public CHudBase
 {
 public:
@@ -87,8 +86,16 @@ public:
 	void FindNextPlayer(bool bReverse);
 	void FindPlayer(const char* name);
 	void DirectorMessage(int iSize, void* pbuf);
+
+	/**
+	*	@brief Get valid map position and 'beam' spectator to this position
+	*/
 	void SetSpectatorStartPosition();
 	bool Init() override;
+
+	/**
+	*	@brief Loads new icons
+	*/
 	bool VidInit() override;
 
 	bool Draw(float flTime) override;
@@ -108,8 +115,8 @@ public:
 	int m_iObserverFlags = 0;
 	int m_iSpectatorNumber = 0;
 
-	float m_mapZoom = 0;		// zoom the user currently uses
-	Vector m_mapOrigin{vec3_origin};	// origin where user rotates around
+	float m_mapZoom = 0;		//!< zoom the user currently uses
+	Vector m_mapOrigin{vec3_origin};	//!< origin where user rotates around
 	cvar_t* m_drawnames = nullptr;
 	cvar_t* m_drawcone = nullptr;
 	cvar_t* m_drawstatus = nullptr;
@@ -118,11 +125,11 @@ public:
 	bool m_chatEnabled = false;
 
 	bool m_IsInterpolating = false;
-	int m_ChaseEntity = 0;	// if != 0, follow this entity with viewangles
-	int m_WayPoint = 0;		// current waypoint 1
-	int m_NumWayPoints = 0;	// current number of waypoints
-	Vector m_cameraOrigin{vec3_origin};	// a help camera
-	Vector m_cameraAngles{vec3_origin};	// and it's angles
+	int m_ChaseEntity = 0;	//!< if != 0, follow this entity with viewangles
+	int m_WayPoint = 0;		//!< current waypoint 1
+	int m_NumWayPoints = 0;	//!< current number of waypoints
+	Vector m_cameraOrigin{vec3_origin};	//!< a help camera
+	Vector m_cameraAngles{vec3_origin};	//!< and it's angles
 	CInterpolation m_WayInterpolation{};
 
 private:

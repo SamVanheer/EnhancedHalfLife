@@ -23,32 +23,23 @@
 #include "VGUI_MouseCode.h"
 #include "CTokenizer.hpp"
 
-
 using namespace vgui;
-
 
 extern bool cam_thirdperson;
 
-
 constexpr float VOICE_MODEL_INTERVAL = 0.3;
-constexpr float SCOREBOARD_BLINK_FREQUENCY = 0.3f;	// How often to blink the scoreboard icons.
+constexpr float SCOREBOARD_BLINK_FREQUENCY = 0.3f;	//!< How often to blink the scoreboard icons.
 constexpr float SQUELCHOSCILLATE_PER_SECOND = 2.0f;
 
-// ---------------------------------------------------------------------- //
-// The voice manager for the client.
-// ---------------------------------------------------------------------- //
+/**
+*	@brief The voice manager for the client.
+*/
 CVoiceStatus g_VoiceStatus;
 
 CVoiceStatus* GetClientVoiceMgr()
 {
 	return &g_VoiceStatus;
 }
-
-
-
-// ---------------------------------------------------------------------- //
-// CVoiceStatus.
-// ---------------------------------------------------------------------- //
 
 static CVoiceStatus* g_pInternalVoiceStatus = nullptr;
 
@@ -68,7 +59,6 @@ int __MsgFunc_ReqState(const char* pszName, int iSize, void* pbuf)
 	return true;
 }
 
-
 int g_BannedPlayerPrintCount;
 void ForEachBannedPlayer(char id[16])
 {
@@ -86,22 +76,17 @@ void ForEachBannedPlayer(char id[16])
 	gEngfuncs.pfnConsolePrint(str);
 }
 
-
 void ShowBannedCallback()
 {
 	if (g_pInternalVoiceStatus)
 	{
 		g_BannedPlayerPrintCount = 0;
 		gEngfuncs.pfnConsolePrint("------- BANNED PLAYERS -------\n");
+		//TODO: rework ban manager to allow stateful callbacks so it doesn't use a global
 		g_pInternalVoiceStatus->m_BanMgr.ForEachBannedPlayer(ForEachBannedPlayer);
 		gEngfuncs.pfnConsolePrint("------------------------------\n");
 	}
 }
-
-
-// ---------------------------------------------------------------------- //
-// CVoiceStatus.
-// ---------------------------------------------------------------------- //
 
 CVoiceStatus::~CVoiceStatus()
 {
@@ -124,7 +109,6 @@ CVoiceStatus::~CVoiceStatus()
 
 	FreeBitmaps();
 }
-
 
 bool CVoiceStatus::Init(
 	IVoiceStatusHelper* pHelper,
@@ -184,7 +168,6 @@ bool CVoiceStatus::Init(
 
 	return true;
 }
-
 
 bool CVoiceStatus::VidInit()
 {
@@ -281,7 +264,6 @@ void CVoiceStatus::Frame(double frametime)
 		UpdateBanButton(i);
 }
 
-
 void CVoiceStatus::CreateEntities()
 {
 	if (!m_VoiceHeadModel)
@@ -333,7 +315,6 @@ void CVoiceStatus::CreateEntities()
 		gEngfuncs.CL_CreateVisibleEntity(ET_NORMAL, pEnt);
 	}
 }
-
 
 void CVoiceStatus::UpdateSpeakerStatus(int entindex, bool bTalking)
 {
@@ -441,7 +422,6 @@ void CVoiceStatus::UpdateSpeakerStatus(int entindex, bool bTalking)
 
 	RepositionLabels();
 }
-
 
 void CVoiceStatus::UpdateServerState(bool bForce)
 {
@@ -578,7 +558,6 @@ void CVoiceStatus::UpdateBanButton(int iClient)
 	}
 }
 
-
 void CVoiceStatus::HandleVoiceMaskMsg(int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};
@@ -652,7 +631,6 @@ CVoiceLabel* CVoiceStatus::GetFreeVoiceLabel()
 {
 	return FindVoiceLabel(-1);
 }
-
 
 void CVoiceStatus::RepositionLabels()
 {
@@ -730,7 +708,6 @@ void CVoiceStatus::RepositionLabels()
 	}
 }
 
-
 void CVoiceStatus::FreeBitmaps()
 {
 	// Delete all the images we have loaded.
@@ -774,11 +751,6 @@ void CVoiceStatus::FreeBitmaps()
 		m_pLocalLabel->setImage(nullptr);
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: returns true if the target client has been banned
-// Input  : playerID - 
-// Output : Returns true on success, false on failure.
-//-----------------------------------------------------------------------------
 bool CVoiceStatus::IsPlayerBlocked(int iPlayer)
 {
 	char playerID[16];
@@ -788,21 +760,11 @@ bool CVoiceStatus::IsPlayerBlocked(int iPlayer)
 	return m_BanMgr.GetPlayerBan(playerID);
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: returns true if the player can't hear the other client due to game rules (eg. the other team)
-// Input  : playerID - 
-// Output : Returns true on success, false on failure.
-//-----------------------------------------------------------------------------
 bool CVoiceStatus::IsPlayerAudible(int iPlayer)
 {
 	return !!m_AudiblePlayers[iPlayer - 1];
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: blocks/unblocks the target client from being heard
-// Input  : playerID - 
-// Output : Returns true on success, false on failure.
-//-----------------------------------------------------------------------------
 void CVoiceStatus::SetPlayerBlockedState(int iPlayer, bool blocked)
 {
 	if (gEngfuncs.pfnGetCvarFloat("voice_clientdebug"))

@@ -40,7 +40,9 @@ bool CBaseDMStart::IsTriggered(CBaseEntity* pEntity)
 	return UTIL_IsMasterTriggered(pev->netname, pEntity);
 }
 
-// checks if the spot is clear of players
+/**
+*	@brief checks if the spot is clear of players
+*/
 bool IsSpawnPointValid(CBaseEntity* pPlayer, CBaseEntity* pSpot)
 {
 	CBaseEntity* ent = nullptr;

@@ -68,9 +68,9 @@ struct ref_params_t
 	// Movevars
 	movevars_t* movevars;
 
-	int		viewport[4];		// the viewport coordinates x ,y , width, height
+	int		viewport[4];		//!< the viewport coordinates x ,y , width, height
 
-	int		nextView;			// the renderer calls ClientDLL_CalcRefdef() and Renderview
-								// so long in cycles until this value is 0 (multiple views)
-	int		onlyClientDraw;		// if !=0 nothing is drawn by the engine except clientDraw functions
+	int		nextView;			//!< the renderer calls ClientDLL_CalcRefdef() and Renderview
+								//!< so long in cycles until this value is 0 (multiple views)
+	int		onlyClientDraw;		//!< if !=0 nothing is drawn by the engine except clientDraw functions
 };

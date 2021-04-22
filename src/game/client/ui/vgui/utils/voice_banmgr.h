@@ -7,7 +7,9 @@
 
 #pragma once
 
-// This class manages the (persistent) list of squelched players.
+/**
+*	@brief This class manages the (persistent) list of squelched players.
+*/
 class CVoiceBanMgr
 {
 public:
@@ -15,19 +17,24 @@ public:
 	CVoiceBanMgr();
 	~CVoiceBanMgr();
 
-	// Init loads the list of squelched players from disk.
+	/**
+	*	@brief Init loads the list of squelched players from disk.
+	*/
 	bool		Init();
 	void		Term();
 
-	// Saves the state into voice_squelch.dt.
+	/**
+	*	@brief Saves the state into voice_squelch.dt.
+	*/
 	void		SaveState();
 
 	bool		GetPlayerBan(char const playerID[16]);
 	void		SetPlayerBan(char const playerID[16], bool bSquelch);
 
-	// Call your callback for each banned player.
+	/**
+	*	@brief Call your callback for each banned player.
+	*/
 	void		ForEachBannedPlayer(void (*callback)(char id[16]));
-
 
 protected:
 
@@ -41,7 +48,6 @@ protected:
 	void				Clear();
 	BannedPlayer* InternalFindPlayerSquelch(char const playerID[16]);
 	BannedPlayer* AddBannedPlayer(char const playerID[16]);
-
 
 protected:
 

@@ -15,12 +15,11 @@
 
 // UNDONE: Don't flinch every time you get hit
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-#include	"schedule.h"
-
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "monsters.h"
+#include "schedule.h"
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -103,19 +102,11 @@ const char* CZombie::pPainSounds[] =
 	"zombie/zo_pain2.wav",
 };
 
-//=========================================================
-// Classify - indicates this monster's place in the 
-// relationship table.
-//=========================================================
 int	CZombie::Classify()
 {
 	return	CLASS_ALIEN_MONSTER;
 }
 
-//=========================================================
-// SetYawSpeed - allows each sequence to have a different
-// turn rate associated with it.
-//=========================================================
 void CZombie::SetYawSpeed()
 {
 	int ys;
@@ -180,11 +171,6 @@ void CZombie::AttackSound()
 	EmitSound(CHAN_VOICE, pAttackSounds[RANDOM_LONG(0, ArraySize(pAttackSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
 }
 
-
-//=========================================================
-// HandleAnimEvent - catches the monster-specific messages
-// that occur when tagged animation frames are played.
-//=========================================================
 void CZombie::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
@@ -263,9 +249,6 @@ void CZombie::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-//=========================================================
-// Spawn
-//=========================================================
 void CZombie::Spawn()
 {
 	Precache();
@@ -285,9 +268,6 @@ void CZombie::Spawn()
 	MonsterInit();
 }
 
-//=========================================================
-// Precache - precaches all resources this monster needs
-//=========================================================
 void CZombie::Precache()
 {
 	PRECACHE_MODEL("models/zombie.mdl");
@@ -299,12 +279,6 @@ void CZombie::Precache()
 	PRECACHE_SOUND_ARRAY(pAlertSounds);
 	PRECACHE_SOUND_ARRAY(pPainSounds);
 }
-
-//=========================================================
-// AI Schedules Specific to this monster
-//=========================================================
-
-
 
 int CZombie::IgnoreConditions()
 {
@@ -328,5 +302,4 @@ int CZombie::IgnoreConditions()
 	}
 
 	return iIgnore;
-
 }

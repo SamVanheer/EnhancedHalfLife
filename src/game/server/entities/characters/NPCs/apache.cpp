@@ -85,6 +85,7 @@ class CApache : public CBaseMonster
 	int m_iDoSmokePuff;
 	CBeam* m_pBeam;
 };
+
 LINK_ENTITY_TO_CLASS(monster_apache, CApache);
 
 TYPEDESCRIPTION	CApache::m_SaveData[] =
@@ -108,8 +109,8 @@ TYPEDESCRIPTION	CApache::m_SaveData[] =
 		DEFINE_FIELD(CApache, m_flGoalSpeed, FIELD_FLOAT),
 		DEFINE_FIELD(CApache, m_iDoSmokePuff, FIELD_INTEGER),
 };
-IMPLEMENT_SAVERESTORE(CApache, CBaseMonster);
 
+IMPLEMENT_SAVERESTORE(CApache, CBaseMonster);
 
 void CApache::Spawn()
 {
@@ -148,7 +149,6 @@ void CApache::Spawn()
 	m_iRockets = 10;
 }
 
-
 void CApache::Precache()
 {
 	PRECACHE_MODEL("models/apache.mdl");
@@ -172,14 +172,11 @@ void CApache::Precache()
 	UTIL_PrecacheOther("hvr_rocket");
 }
 
-
-
 void CApache::NullThink()
 {
 	StudioFrameAdvance();
 	pev->nextthink = gpGlobals->time + 0.5;
 }
-
 
 void CApache::StartupUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
@@ -404,7 +401,6 @@ void CApache::DyingThink()
 	}
 }
 
-
 void CApache::FlyTouch(CBaseEntity* pOther)
 {
 	// bounce if we hit something solid
@@ -417,7 +413,6 @@ void CApache::FlyTouch(CBaseEntity* pOther)
 	}
 }
 
-
 void CApache::CrashTouch(CBaseEntity* pOther)
 {
 	// only crash if we hit something solid
@@ -429,13 +424,10 @@ void CApache::CrashTouch(CBaseEntity* pOther)
 	}
 }
 
-
-
 void CApache::GibMonster()
 {
 	// EmitSound(CHAN_VOICE, "common/bodysplat.wav", 0.75, ATTN_NORM, 200);		
 }
-
 
 void CApache::HuntThink()
 {
@@ -583,7 +575,6 @@ void CApache::HuntThink()
 		}
 	}
 }
-
 
 void CApache::Flight()
 {
@@ -739,7 +730,6 @@ void CApache::Flight()
 	}
 }
 
-
 void CApache::FireRocket()
 {
 	static float side = 1.0;
@@ -778,8 +768,6 @@ void CApache::FireRocket()
 
 	side = -side;
 }
-
-
 
 bool CApache::FireGun()
 {
@@ -862,8 +850,6 @@ bool CApache::FireGun()
 	return false;
 }
 
-
-
 void CApache::ShowDamage()
 {
 	if (m_iDoSmokePuff > 0 || RANDOM_LONG(0, 99) > pev->health)
@@ -881,7 +867,6 @@ void CApache::ShowDamage()
 	if (m_iDoSmokePuff > 0)
 		m_iDoSmokePuff--;
 }
-
 
 bool CApache::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
@@ -904,8 +889,6 @@ bool CApache::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float 
 	// ALERT( at_console, "%.0f\n", flDamage );
 	return CBaseEntity::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
 }
-
-
 
 void CApache::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
 {
@@ -930,10 +913,6 @@ void CApache::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir,
 	}
 }
 
-
-
-
-
 class CApacheHVR : public CGrenade
 {
 	void Spawn() override;
@@ -948,6 +927,7 @@ class CApacheHVR : public CGrenade
 	int m_iTrail;
 	Vector m_vecForward;
 };
+
 LINK_ENTITY_TO_CLASS(hvr_rocket, CApacheHVR);
 
 TYPEDESCRIPTION	CApacheHVR::m_SaveData[] =
@@ -981,14 +961,12 @@ void CApacheHVR::Spawn()
 	pev->dmg = 150;
 }
 
-
 void CApacheHVR::Precache()
 {
 	PRECACHE_MODEL("models/HVR.mdl");
 	m_iTrail = PRECACHE_MODEL("sprites/smoke.spr");
 	PRECACHE_SOUND("weapons/rocket1.wav");
 }
-
 
 void CApacheHVR::IgniteThink()
 {
@@ -1019,7 +997,6 @@ void CApacheHVR::IgniteThink()
 	SetThink(&CApacheHVR::AccelerateThink);
 	pev->nextthink = gpGlobals->time + 0.1;
 }
-
 
 void CApacheHVR::AccelerateThink()
 {

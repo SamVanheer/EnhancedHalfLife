@@ -15,18 +15,27 @@
 
 #pragma once
 
-// this is the max number of items in each bucket
+/**
+*	@brief this is the max number of items in each bucket
+*/
 constexpr int MAX_WEAPON_POSITIONS = MAX_WEAPON_SLOTS;
 
 class WeaponsResource
 {
 private:
 	// Information about weapons & ammo
-	WEAPON		rgWeapons[MAX_WEAPONS];	// Weapons Array
+	WEAPON		rgWeapons[MAX_WEAPONS];	//!< Weapons Array
 
 	// counts of weapons * ammo
-	WEAPON* rgSlots[MAX_WEAPON_SLOTS + 1][MAX_WEAPON_POSITIONS + 1];	// The slots currently in use by weapons.  The value is a pointer to the weapon;  if it's nullptr, no weapon is there
-	int			riAmmo[MAX_AMMO_TYPES];							// count of each ammo type
+	/**
+	*	@brief The slots currently in use by weapons. The value is a pointer to the weapon; if it's nullptr, no weapon is there
+	*/
+	WEAPON* rgSlots[MAX_WEAPON_SLOTS + 1][MAX_WEAPON_POSITIONS + 1];
+
+	/**
+	*	@brief count of each ammo type
+	*/
+	int			riAmmo[MAX_AMMO_TYPES];
 
 public:
 	void Init()
@@ -42,7 +51,6 @@ public:
 		memset(riAmmo, 0, sizeof riAmmo);
 	}
 
-	///// WEAPON /////
 	int			iOldWeaponBits;
 
 	WEAPON* GetWeapon(int iId) { return &rgWeapons[iId]; }
@@ -75,19 +83,30 @@ public:
 
 	void LoadWeaponSprites(WEAPON* wp);
 	void LoadAllWeaponSprites();
+
+	/**
+	*	@brief Returns the first weapon for a given slot.
+	*/
 	WEAPON* GetFirstPos(int iSlot);
+
+	/**
+	*	@brief Menu selection code
+	*/
+	//TODO: fAdvance should be bool
 	void SelectSlot(int iSlot, int fAdvance, int iDirection);
 	WEAPON* GetNextActivePos(int iSlot, int iSlotPos);
 
 	int HasAmmo(WEAPON* p);
 
-	///// AMMO /////
 	AMMO GetAmmo(int iId) { return iId; }
 
 	void SetAmmo(int iId, int iCount) { riAmmo[iId] = iCount; }
 
 	int CountAmmo(int iId);
 
+	/**
+	*	@brief Helper function to return a Ammo pointer from id
+	*/
 	HSPRITE* GetAmmoPicFromWeapon(int iAmmoId, wrect_t& rect);
 };
 
@@ -133,10 +152,11 @@ public:
 	void AddToHistory(int iType, const char* szName, int iCount = 0);
 
 	void CheckClearHistory();
+
+	/**
+	*	@brief Draw Ammo pickup history
+	*/
 	bool DrawAmmoHistory(float flTime);
 };
 
 extern HistoryResource gHR;
-
-
-

@@ -19,5 +19,5 @@ enum netsrc_t
 {
 	NS_CLIENT,
 	NS_SERVER,
-	NS_MULTICAST	// xxxMO
+	NS_MULTICAST
 };

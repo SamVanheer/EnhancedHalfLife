@@ -37,15 +37,14 @@ class CAirtank : public CGrenade
 	bool m_state = false;
 };
 
-
 LINK_ENTITY_TO_CLASS(item_airtank, CAirtank);
+
 TYPEDESCRIPTION	CAirtank::m_SaveData[] =
 {
 	DEFINE_FIELD(CAirtank, m_state, FIELD_BOOLEAN),
 };
 
 IMPLEMENT_SAVERESTORE(CAirtank, CGrenade);
-
 
 void CAirtank::Spawn()
 {
@@ -74,7 +73,6 @@ void CAirtank::Precache()
 	PRECACHE_SOUND("doors/aliendoor3.wav");
 }
 
-
 void CAirtank::Killed(entvars_t* pevAttacker, int iGib)
 {
 	pev->owner = ENT(pevAttacker);
@@ -84,14 +82,12 @@ void CAirtank::Killed(entvars_t* pevAttacker, int iGib)
 	Explode(pev->origin, vec3_down);
 }
 
-
 void CAirtank::TankThink()
 {
 	// Fire trigger
 	m_state = true;
 	SUB_UseTargets(this, USE_TOGGLE, 0);
 }
-
 
 void CAirtank::TankTouch(CBaseEntity* pOther)
 {

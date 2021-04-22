@@ -36,6 +36,11 @@ class CBarnacle : public CBaseMonster
 public:
 	void Spawn() override;
 	void Precache() override;
+
+	/**
+	*	@brief does a trace along the barnacle's tongue to see if any entity is touching it.
+	*	Also stores the length of the trace in the int pointer provided.
+	*/
 	CBaseEntity* TongueTouchEnt(float* pflLength);
 	int  Classify() override;
 	void HandleAnimEvent(AnimationEvent& event) override;
@@ -68,22 +73,11 @@ TYPEDESCRIPTION	CBarnacle::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CBarnacle, CBaseMonster);
 
-
-//=========================================================
-// Classify - indicates this monster's place in the 
-// relationship table.
-//=========================================================
 int	CBarnacle::Classify()
 {
 	return	CLASS_ALIEN_MONSTER;
 }
 
-//=========================================================
-// HandleAnimEvent - catches the monster-specific messages
-// that occur when tagged animation frames are played.
-//
-// Returns number of events handled, 0 if none.
-//=========================================================
 void CBarnacle::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
@@ -97,9 +91,6 @@ void CBarnacle::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-//=========================================================
-// Spawn
-//=========================================================
 void CBarnacle::Spawn()
 {
 	Precache();
@@ -140,8 +131,6 @@ bool CBarnacle::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
 }
 
-//=========================================================
-//=========================================================
 void CBarnacle::BarnacleThink()
 {
 	CBaseEntity* pTouchEnt;
@@ -315,9 +304,6 @@ void CBarnacle::BarnacleThink()
 	StudioFrameAdvance(0.1);
 }
 
-//=========================================================
-// Killed.
-//=========================================================
 void CBarnacle::Killed(entvars_t* pevAttacker, int iGib)
 {
 	CBaseMonster* pVictim;
@@ -352,8 +338,6 @@ void CBarnacle::Killed(entvars_t* pevAttacker, int iGib)
 	SetThink(&CBarnacle::WaitTillDead);
 }
 
-//=========================================================
-//=========================================================
 void CBarnacle::WaitTillDead()
 {
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -369,9 +353,6 @@ void CBarnacle::WaitTillDead()
 	}
 }
 
-//=========================================================
-// Precache - precaches all resources this monster needs
-//=========================================================
 void CBarnacle::Precache()
 {
 	PRECACHE_MODEL("models/barnacle.mdl");
@@ -385,11 +366,6 @@ void CBarnacle::Precache()
 	PRECACHE_SOUND("barnacle/bcl_die3.wav");
 }
 
-//=========================================================
-// TongueTouchEnt - does a trace along the barnacle's tongue
-// to see if any entity is touching it. Also stores the length
-// of the trace in the int pointer provided.
-//=========================================================
 constexpr int BARNACLE_CHECK_SPACING = 8;
 CBaseEntity* CBarnacle::TongueTouchEnt(float* pflLength)
 {

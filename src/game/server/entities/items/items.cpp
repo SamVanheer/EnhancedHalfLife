@@ -78,7 +78,6 @@ void CWorldItem::Spawn()
 	REMOVE_ENTITY(edict());
 }
 
-
 void CItem::Spawn()
 {
 	pev->movetype = MOVETYPE_TOSS;
@@ -192,8 +191,6 @@ class CItemSuit : public CItem
 
 LINK_ENTITY_TO_CLASS(item_suit, CItemSuit);
 
-
-
 class CItemBattery : public CItem
 {
 	void Spawn() override
@@ -249,7 +246,6 @@ class CItemBattery : public CItem
 
 LINK_ENTITY_TO_CLASS(item_battery, CItemBattery);
 
-
 class CItemAntidote : public CItem
 {
 	void Spawn() override
@@ -272,7 +268,6 @@ class CItemAntidote : public CItem
 };
 
 LINK_ENTITY_TO_CLASS(item_antidote, CItemAntidote);
-
 
 class CItemSecurity : public CItem
 {

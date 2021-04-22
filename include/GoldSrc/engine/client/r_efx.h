@@ -96,11 +96,15 @@ struct TEMPENTITY
 	void		(*callback)		(TEMPENTITY* ent, float frametime, float currenttime);
 	TEMPENTITY* next;
 	int			priority;
-	short		clientIndex;	// if attached, this is the index of the client to stick to
-								// if COLLIDEALL, this is the index of the client to ignore
-								// TENTS with FTENT_PLYRATTACHMENT MUST set the clientindex! 
 
-	Vector		tentOffset;		// if attached, client origin + tentOffset = tent origin.
+	/**
+	*	@details if attached, this is the index of the client to stick to
+	*	if COLLIDEALL, this is the index of the client to ignore
+	*	TENTS with FTENT_PLYRATTACHMENT MUST set the clientindex! 
+	*/
+	short		clientIndex;
+
+	Vector		tentOffset;		//!< if attached, client origin + tentOffset = tent origin.
 	cl_entity_t	entity;
 
 	// baseline.origin		- velocity
@@ -182,6 +186,10 @@ struct efx_api_t
 	TEMPENTITY* (*CL_TentEntAllocCustom)		(float* origin, model_t* model, int high, void (*callback) (TEMPENTITY* ent, float frametime, float currenttime));
 	void		(*R_GetPackedColor)			(short* packed, short color);
 	short		(*R_LookupColor)				(unsigned char r, unsigned char g, unsigned char b);
-	void		(*R_DecalRemoveAll)			(int textureIndex); //textureIndex points to the decal index in the array, not the actual texture index.
+
+	/**
+	*	@param textureIndex points to the decal index in the array, not the actual texture index.
+	*/
+	void		(*R_DecalRemoveAll)			(int textureIndex);
 	void		(*R_FireCustomDecal)			(int textureIndex, int entity, int modelIndex, float* position, int flags, float scale);
 };

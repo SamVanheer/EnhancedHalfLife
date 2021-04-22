@@ -50,9 +50,6 @@ constexpr int MAX_PLAYER_NAME_LENGTH = 32;
 
 constexpr int MAX_MOTD_LENGTH = 1536;
 
-//
-//-----------------------------------------------------
-//
 class CHudBase
 {
 public:
@@ -76,27 +73,37 @@ struct HUDLIST
 	HUDLIST* pNext;
 };
 
-//
-//-----------------------------------------------------
-//
 #include "voice_status.h" // base voice handling class
 #include "hud_spectator.h"
 
-
-//
-//-----------------------------------------------------
-//
 class CHudAmmo : public CHudBase
 {
 public:
 	bool Init() override;
 	bool VidInit() override;
 	bool Draw(float flTime) override;
+
+	/**
+	*	@brief Used for selection of weapon menu item.
+	*/
 	void Think() override;
 	void Reset() override;
 	bool DrawWList(float flTime);
+
+	/**
+	*	@brief Update hud state with the current weapon and clip count.
+	*	Ammo counts are updated with AmmoX. Server assures that the Weapon ammo type numbers match a real ammo type.
+	*/
 	bool MsgFunc_CurWeapon(const char* pszName, int iSize, void* pbuf);
+
+	/**
+	*	@brief Tells the hud about a new weapon type.
+	*/
 	bool MsgFunc_WeaponList(const char* pszName, int iSize, void* pbuf);
+
+	/**
+	*	@brief Update the count of a known type of ammo
+	*/
 	bool MsgFunc_AmmoX(const char* pszName, int iSize, void* pbuf);
 	bool MsgFunc_AmmoPickup(const char* pszName, int iSize, void* pbuf);
 	bool MsgFunc_WeapPickup(const char* pszName, int iSize, void* pbuf);
@@ -115,7 +122,15 @@ public:
 	void UserCmd_Slot9();
 	void UserCmd_Slot10();
 	void UserCmd_Close();
+
+	/**
+	*	@brief Selects the next item in the weapon menu
+	*/
 	void UserCmd_NextWeapon();
+
+	/**
+	*	@brief Selects the previous item in the menu
+	*/
 	void UserCmd_PrevWeapon();
 
 private:
@@ -126,17 +141,10 @@ private:
 	int m_HUD_selection = 0;
 };
 
-//
-//-----------------------------------------------------
-//
-
 #include "health.h"
 
 constexpr int FADE_TIME = 100;
 
-//
-//-----------------------------------------------------
-//
 class CHudGeiger : public CHudBase
 {
 public:
@@ -149,9 +157,6 @@ private:
 	int m_iGeigerRange = 0;
 };
 
-//
-//-----------------------------------------------------
-//
 class CHudTrain : public CHudBase
 {
 public:
@@ -179,7 +184,28 @@ public:
 	void Reset() override;
 	void ParseStatusString(int line_num);
 
+	/**
+	*	@brief Message handler for StatusText message
+	*	@details accepts two values:
+	*		byte: line number of status bar text 
+	*		string: status bar text
+	*	this string describes how the status bar should be drawn
+	*	a semi-regular expression:
+	*	( slotnum ([a..z] [%pX] [%iX])*)*
+	*	where slotnum is an index into the Value table (see below)
+	*	if slotnum is 0, the string is always drawn
+	*	if StatusValue[slotnum] != 0, the following string is drawn, upto the next newline - otherwise the text is skipped upto next newline
+	*	%pX, where X is an integer, will substitute a player name here, getting the player index from StatusValue[X]
+	*	%iX, where X is an integer, will substitute a number here, getting the number from StatusValue[X]
+	*/
 	bool MsgFunc_StatusText(const char* pszName, int iSize, void* pbuf);
+
+	/**
+	*	@brief Message handler for StatusText message
+	*	@details accepts two values:
+	*		byte: index into the status value array
+	*		short: value to store
+	*/
 	bool MsgFunc_StatusValue(const char* pszName, int iSize, void* pbuf);
 
 protected:
@@ -227,9 +253,6 @@ struct team_info_t
 
 #include "player_info.h"
 
-//
-//-----------------------------------------------------
-//
 class CHudDeathNotice : public CHudBase
 {
 public:
@@ -237,6 +260,10 @@ public:
 	void InitHUDData() override;
 	bool VidInit() override;
 	bool Draw(float flTime) override;
+
+	/**
+	*	@brief This message handler may be better off elsewhere
+	*/
 	bool MsgFunc_DeathMsg(const char* pszName, int iSize, void* pbuf);
 
 private:
@@ -254,6 +281,16 @@ public:
 	bool VidInit() override;
 	void Reset() override;
 	bool Draw(float flTime) override;
+
+	/**
+	*	@brief Message handler for ShowMenu message
+	*	@details takes four values:
+	*		short: a bitfield of keys that are valid input
+	*		char : the duration, in seconds, the menu should stay up. -1 means is stays until something is chosen.
+	*		byte : a boolean, true if there is more string yet to be received before displaying the menu, false if it's the last string
+	*		string: menu string to display
+	*	if this message is never received, then scores will simply be the combined totals of the players.
+	*/
 	bool MsgFunc_ShowMenu(const char* pszName, int iSize, void* pbuf);
 
 	void SelectMenuItem(int menu_item);
@@ -264,9 +301,6 @@ public:
 	bool m_fWaitingForMore = false;
 };
 
-//
-//-----------------------------------------------------
-//
 class CHudSayText : public CHudBase
 {
 public:
@@ -284,9 +318,6 @@ private:
 	cvar_t* m_HUD_saytext_time = nullptr;
 };
 
-//
-//-----------------------------------------------------
-//
 class CHudBattery : public CHudBase
 {
 public:
@@ -305,10 +336,6 @@ private:
 	int m_iHeight = 0;		// width of the battery innards
 };
 
-
-//
-//-----------------------------------------------------
-//
 class CHudFlashlight : public CHudBase
 {
 public:
@@ -332,9 +359,6 @@ private:
 	int m_iWidth = 0;		// width of the battery innards
 };
 
-//
-//-----------------------------------------------------
-//
 const int maxHUDMessages = 16;
 struct message_parms_t
 {
@@ -360,15 +384,40 @@ class CHudTextMessage : public CHudBase
 {
 public:
 	bool Init() override;
+
+	/**
+	*	@brief Searches through the string for any msg names (indicated by a '#')
+	*	any found are looked up in titles.txt and the new message substituted
+	*	the new value is pushed into dst_buffer
+	*/
 	static char* LocaliseTextString(const char* msg, char* dst_buffer, int buffer_size);
+
+	/**
+	*	@brief As LocaliseTextString, but with a local static buffer
+	*/
 	static char* BufferedLocaliseTextString(const char* msg);
+
+	/**
+	*	@brief Simplified version of LocaliseTextString; assumes string is only one word
+	*/
 	const char* LookupString(const char* msg_name, int* msg_dest = nullptr);
+
+	/**
+	*	@brief Message handler for text messages
+	*	@details displays a string, looking them up from the titles.txt file, which can be localised
+	*	parameters:
+	*	  byte:   message direction  ( HUD_PRINTCONSOLE, HUD_PRINTNOTIFY, HUD_PRINTCENTER, HUD_PRINTTALK )
+	*	  string: message
+	*	optional parameters:
+	*	  string: message parameter 1
+	*	  string: message parameter 2
+	*	  string: message parameter 3
+	*	  string: message parameter 4
+	*	any string that starts with the character '#' is a message name, and is used to look up the real message in titles.txt
+	*	the next (optional) one to four strings are parameters for that string (which can also be message names if they begin with '#')
+	*/
 	bool MsgFunc_TextMsg(const char* pszName, int iSize, void* pbuf);
 };
-
-//
-//-----------------------------------------------------
-//
 
 class CHudMessage : public CHudBase
 {
@@ -401,9 +450,6 @@ private:
 	int m_HUD_title_half = 0;
 };
 
-//
-//-----------------------------------------------------
-//
 constexpr int MAX_SPRITE_NAME_LENGTH = 24;
 
 class CHudStatusIcons : public CHudBase
@@ -412,7 +458,21 @@ public:
 	bool Init() override;
 	bool VidInit() override;
 	void Reset() override;
+
+	/**
+	*	@brief Draw status icons along the left-hand side of the screen
+	*/
 	bool Draw(float flTime) override;
+
+	/**
+	*	@brief Message handler for StatusIcon message
+	*	@details accepts five values:
+	*		byte   : true = ENABLE icon, false = DISABLE icon
+	*		string : the sprite name to display
+	*		byte   : red
+	*		byte   : green
+	*		byte   : blue
+	*/
 	bool MsgFunc_StatusIcon(const char* pszName, int iSize, void* pbuf);
 
 	enum
@@ -424,6 +484,9 @@ public:
 
 	//had to make these public so CHud could access them (to enable concussion icon)
 	//could use a friend declaration instead...
+	/**
+	*	@brief add the icon to the icon list, and set it's drawing color
+	*/
 	void EnableIcon(const char* pszIconName, unsigned char red, unsigned char green, unsigned char blue);
 	void DisableIcon(const char* pszIconName);
 
@@ -439,10 +502,6 @@ private:
 	icon_sprite_t m_IconList[MAX_ICONSPRITES]{};
 };
 
-//
-//-----------------------------------------------------
-//
-
 /**
 *	@brief CHud handles the message, calculation, and drawing the HUD
 */
@@ -450,10 +509,18 @@ class CHud
 {
 public:
 	CHud() = default;
-	~CHud();			// destructor, frees allocated memory
+
+	/**
+	*	@brief cleans up memory allocated for m_rg* arrays
+	*/
+	~CHud();
 
 	int DrawHudNumber(int x, int y, int iFlags, int iNumber, int r, int g, int b);
 	int DrawHudString(int x, int y, int iMaxX, char* szString, int r, int g, int b);
+
+	/**
+	*	@brief draws a string from right to left (right-aligned)
+	*/
 	int DrawHudStringReverse(int xpos, int ypos, int iMinX, char* szString, int r, int g, int b);
 	int DrawHudNumberString(int xpos, int ypos, int iMinX, int iNumber, int r, int g, int b);
 	int GetNumWidth(int iNumber, int iFlags);
@@ -471,12 +538,25 @@ public:
 		return m_rgrcRects[index];
 	}
 
-	int GetSpriteIndex(const char* SpriteName);	// gets a sprite index, for use in the m_rghSprites[] array
+	/**
+	*	@brief searches through the sprite list loaded from hud.txt for a name matching SpriteName
+	*	returns an index into the gHUD.m_rghSprites[] array
+	*	returns -1 if sprite not found
+	*/
+	int GetSpriteIndex(const char* SpriteName);
 
+	/**
+	*	@brief This is called every time the DLL is loaded
+	*/
 	void Init();
 	void VidInit();
 	void Shutdown();
 	void Think();
+
+	/**
+	*	@brief step through the local data, placing the appropriate graphics & text as appropriate
+	*	@return true if they've changed, false otherwise
+	*/
 	bool Redraw(float flTime, bool intermission);
 	bool UpdateClientData(client_data_t* cdata, float time);
 
@@ -494,9 +574,9 @@ public:
 
 public:
 	HSPRITE m_hsprCursor{};
-	float m_flTime = 0;	   // the current client time
-	float m_fOldTime = 0;  // the time at which the HUD was last redrawn
-	double m_flTimeDelta = 0; // the difference between flTime and fOldTime
+	float m_flTime = 0;	   //!< the current client time
+	float m_fOldTime = 0;  //!< the time at which the HUD was last redrawn
+	double m_flTimeDelta = 0; //!< the difference between flTime and fOldTime
 	Vector m_vecOrigin{vec3_origin};
 	Vector m_vecAngles{vec3_origin};
 	int m_iKeyBits = 0;
@@ -559,4 +639,3 @@ extern int g_iTeamNumber;
 extern int g_iUser1;
 extern int g_iUser2;
 extern int g_iUser3;
-

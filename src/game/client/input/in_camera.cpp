@@ -19,8 +19,6 @@
 
 float CL_KeyState(kbutton_t* key);
 
-//-------------------------------------------------- Constants
-
 constexpr double CAM_DIST_DELTA = 1.0;
 constexpr double CAM_ANGLE_DELTA = 2.5;
 constexpr double CAM_ANGLE_SPEED = 2.5;
@@ -39,8 +37,6 @@ enum ECAM_Command
 	CAM_COMMAND_TOFIRSTPERSON = 2
 };
 
-//-------------------------------------------------- Global Variables
-
 cvar_t* cam_command;
 cvar_t* cam_snapto;
 cvar_t* cam_idealyaw;
@@ -55,24 +51,18 @@ cvar_t* c_minyaw;
 cvar_t* c_maxdistance;
 cvar_t* c_mindistance;
 
-// pitch, yaw, dist
 Vector cam_ofs;
 
-
-// In third person
 bool cam_thirdperson;
-bool cam_mousemove; //true if we are moving the cam with the mouse, False if not
+bool cam_mousemove; //!< true if we are moving the cam with the mouse, False if not
 bool iMouseInUse = false;
 bool cam_distancemove;
-extern int mouse_x, mouse_y;  //used to determine what the current x and y values are
-int cam_old_mouse_x, cam_old_mouse_y; //holds the last ticks mouse movement
+extern int mouse_x, mouse_y;  //!< used to determine what the current x and y values are
+int cam_old_mouse_x, cam_old_mouse_y; //!< holds the last ticks mouse movement
 Point		cam_mouse;
-//-------------------------------------------------- Local Variables
 
 static kbutton_t cam_pitchup, cam_pitchdown, cam_yawleft, cam_yawright;
 static kbutton_t cam_in, cam_out, cam_move;
-
-//-------------------------------------------------- Prototypes
 
 void CAM_ToThirdPerson();
 void CAM_ToFirstPerson();
@@ -88,8 +78,6 @@ void SDL_GetCursorPos(Point* p)
 void SDL_SetCursorPos(const int x, const int y)
 {
 }
-
-//-------------------------------------------------- Local Functions
 
 float MoveToward(float cur, float goal, float maxspeed)
 {
@@ -128,9 +116,6 @@ float MoveToward(float cur, float goal, float maxspeed)
 
 	return cur;
 }
-
-
-//-------------------------------------------------- Gobal Functions
 
 struct moveclip_t
 {
@@ -560,19 +545,18 @@ void CAM_StartMouseMove()
 	}
 }
 
-//the key has been released for camera movement
-//tell the engine that mouse camera movement is off
+/**
+*	@brief the key has been released for camera movement tell the engine that mouse camera movement is off
+*/
 void CAM_EndMouseMove()
 {
 	cam_mousemove = false;
 	iMouseInUse = false;
 }
 
-
-//----------------------------------------------------------
-//routines to start the process of moving the cam in or out 
-//using the mouse
-//----------------------------------------------------------
+/**
+*	@brief routines to start the process of moving the cam in or out using the mouse
+*/
 void CAM_StartDistance()
 {
 	//only move the cam with mouse if we are in third person.
@@ -599,8 +583,9 @@ void CAM_StartDistance()
 	}
 }
 
-//the key has been released for camera movement
-//tell the engine that mouse camera movement is off
+/**
+*	@brief the key has been released for camera movement, tell the engine that mouse camera movement is off
+*/
 void CAM_EndDistance()
 {
 	cam_distancemove = false;

@@ -30,7 +30,10 @@
 
 constexpr int MOUSE_BUTTON_COUNT = 5;
 
-// Set this to 1 to show mouse cursor.  Experimental
+/**
+*	@brief Set this to true to show mouse cursor. Experimental
+*/
+//TODO: bool
 int	g_iVisibleMouse = 0;
 
 extern bool iMouseInUse;
@@ -65,18 +68,31 @@ extern globalvars_t* gpGlobals;
 cvar_t* m_filter;
 cvar_t* sensitivity;
 
-// Custom mouse acceleration (0 disable, 1 to enable, 2 enable with separate yaw/pitch rescale)
+/**
+*	@brief Custom mouse acceleration (0 disable, 1 to enable, 2 enable with separate yaw/pitch rescale)
+*/
 static cvar_t* m_customaccel;
-//Formula: mousesensitivity = ( rawmousedelta^m_customaccel_exponent ) * m_customaccel_scale + sensitivity
-// If mode is 2, then x and y sensitivity are scaled by m_pitch and m_yaw respectively.
-// Custom mouse acceleration value.
+
+/**
+*	@brief Formula: mousesensitivity = ( rawmousedelta^m_customaccel_exponent ) * m_customaccel_scale + sensitivity
+*	If mode is 2, then x and y sensitivity are scaled by m_pitch and m_yaw respectively.
+*	Custom mouse acceleration value.
+*/
 static cvar_t* m_customaccel_scale;
-//Max mouse move scale factor, 0 for no limit
+
+/**
+*	@brief Max mouse move scale factor, 0 for no limit
+*/
 static cvar_t* m_customaccel_max;
-//Mouse move is raised to this power before being scaled by scale factor
+
+/**
+*	@brief Mouse move is raised to this power before being scaled by scale factor
+*/
 static cvar_t* m_customaccel_exponent;
 
-// if threaded mouse is enabled then the time to sleep between polls
+/**
+*	@brief if threaded mouse is enabled then the time to sleep between polls
+*/
 static cvar_t* m_mousethread_sleep;
 
 int			mouse_buttons;
@@ -95,9 +111,9 @@ static bool	mouseparmsvalid;
 
 // joystick defines and variables
 // where should defines be moved?
-constexpr int JOY_ABSOLUTE_AXIS = 0x00000000;		// control like a joystick
-constexpr int JOY_RELATIVE_AXIS = 0x00000010;		// control like a mouse, spinner, trackball
-constexpr int JOY_MAX_AXES = 6;				// X, Y, Z, R, U, V
+constexpr int JOY_ABSOLUTE_AXIS = 0x00000000;		//!< control like a joystick
+constexpr int JOY_RELATIVE_AXIS = 0x00000010;		//!< control like a mouse, spinner, trackball
+constexpr int JOY_MAX_AXES = 6;				//!< X, Y, Z, R, U, V
 constexpr int JOY_AXIS_X = 0;
 constexpr int JOY_AXIS_Y = 1;
 constexpr int JOY_AXIS_Z = 2;
@@ -113,8 +129,6 @@ enum _ControlList
 	AxisSide,
 	AxisTurn
 };
-
-
 
 unsigned int	dwAxisMap[JOY_MAX_AXES];
 int	dwControlMap[JOY_MAX_AXES];
@@ -161,11 +175,6 @@ HANDLE	s_hMouseDoneQuitEvent = nullptr;
 SDL_bool mouseRelative = SDL_TRUE;
 #endif
 
-/*
-===========
-Force_CenterView_f
-===========
-*/
 void Force_CenterView_f()
 {
 	Vector viewangles;
@@ -187,7 +196,6 @@ long ThreadInterlockedExchange(long* pDest, long value)
 {
 	return InterlockedExchange(pDest, value);
 }
-
 
 DWORD WINAPI MousePos_ThreadFunction(LPVOID p)
 {
@@ -222,11 +230,6 @@ DWORD WINAPI MousePos_ThreadFunction(LPVOID p)
 }
 #endif
 
-/*
-===========
-IN_ActivateMouse
-===========
-*/
 void DLLEXPORT IN_ActivateMouse()
 {
 	if (mouseinitialized)
@@ -255,12 +258,6 @@ void DLLEXPORT IN_ActivateMouse()
 #endif
 }
 
-
-/*
-===========
-IN_DeactivateMouse
-===========
-*/
 void DLLEXPORT IN_DeactivateMouse()
 {
 	if (mouseinitialized)
@@ -284,11 +281,6 @@ void DLLEXPORT IN_DeactivateMouse()
 	SDL_SetRelativeMouseMode(SDL_FALSE);
 }
 
-/*
-===========
-IN_StartupMouse
-===========
-*/
 void IN_StartupMouse()
 {
 	if (gEngfuncs.CheckParm("-nomouse", nullptr))
@@ -321,11 +313,6 @@ void IN_StartupMouse()
 	mouse_buttons = MOUSE_BUTTON_COUNT;
 }
 
-/*
-===========
-IN_Shutdown
-===========
-*/
 void IN_Shutdown()
 {
 	IN_DeactivateMouse();
@@ -359,24 +346,16 @@ void IN_Shutdown()
 #endif
 }
 
-/*
-===========
-IN_GetMousePos
-
-Ask for mouse position from engine
-===========
+/**
+*	@brief Ask for mouse position from engine
 */
 void IN_GetMousePos(int* mx, int* my)
 {
 	gEngfuncs.GetMousePosition(mx, my);
 }
 
-/*
-===========
-IN_ResetMouse
-
-FIXME: Call through to engine?
-===========
+/**
+*	@brief FIXME: Call through to engine?
 */
 void IN_ResetMouse()
 {
@@ -398,11 +377,6 @@ void IN_ResetMouse()
 #endif
 }
 
-/*
-===========
-IN_MouseEvent
-===========
-*/
 void DLLEXPORT IN_MouseEvent(int mstate)
 {
 	int		i;
@@ -429,12 +403,9 @@ void DLLEXPORT IN_MouseEvent(int mstate)
 	mouse_oldbuttonstate = mstate;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Allows modulation of mouse scaling/senstivity value and application
-//  of custom algorithms.
-// Input  : *x - 
-//			*y - 
-//-----------------------------------------------------------------------------
+/**
+*	@brief Purpose: Allows modulation of mouse scaling/senstivity value and application of custom algorithms.
+*/
 void IN_ScaleMouse(float* x, float* y)
 {
 	float mx = *x;
@@ -478,11 +449,6 @@ void IN_ScaleMouse(float* x, float* y)
 	}
 }
 
-/*
-===========
-IN_MouseMove
-===========
-*/
 void IN_MouseMove(float frametime, usercmd_t* cmd)
 {
 	int		mx, my;
@@ -628,11 +594,6 @@ void IN_MouseMove(float frametime, usercmd_t* cmd)
 	*/
 }
 
-/*
-===========
-IN_Accumulate
-===========
-*/
 void DLLEXPORT IN_Accumulate()
 {
 	//only accumulate mouse if we are not moving the camera with the mouse
@@ -667,11 +628,6 @@ void DLLEXPORT IN_Accumulate()
 
 }
 
-/*
-===================
-IN_ClearStates
-===================
-*/
 void DLLEXPORT IN_ClearStates()
 {
 	if (!mouseactive)
@@ -682,11 +638,6 @@ void DLLEXPORT IN_ClearStates()
 	mouse_oldbuttonstate = 0;
 }
 
-/*
-===============
-IN_StartupJoystick
-===============
-*/
 void IN_StartupJoystick()
 {
 	// abort startup if user requests no joystick
@@ -731,7 +682,6 @@ void IN_StartupJoystick()
 
 }
 
-
 int RawValuePointer(int axis)
 {
 	switch (axis)
@@ -749,11 +699,6 @@ int RawValuePointer(int axis)
 	}
 }
 
-/*
-===========
-Joy_AdvancedUpdate_f
-===========
-*/
 void Joy_AdvancedUpdate_f()
 {
 
@@ -810,12 +755,6 @@ void Joy_AdvancedUpdate_f()
 	}
 }
 
-
-/*
-===========
-IN_Commands
-===========
-*/
 void IN_Commands()
 {
 	int		i, key_index;
@@ -882,24 +821,12 @@ void IN_Commands()
 	}
 }
 
-
-/*
-===============
-IN_ReadJoystick
-===============
-*/
 int IN_ReadJoystick()
 {
 	SDL_JoystickUpdate();
 	return 1;
 }
 
-
-/*
-===========
-IN_JoyMove
-===========
-*/
 void IN_JoyMove(float frametime, usercmd_t* cmd)
 {
 	float	speed, aspeed;
@@ -1082,11 +1009,6 @@ void IN_JoyMove(float frametime, usercmd_t* cmd)
 	gEngfuncs.SetViewAngles(viewangles);
 }
 
-/*
-===========
-IN_Move
-===========
-*/
 void IN_Move(float frametime, usercmd_t* cmd)
 {
 	if (!iMouseInUse && mouseactive)
@@ -1097,11 +1019,6 @@ void IN_Move(float frametime, usercmd_t* cmd)
 	IN_JoyMove(frametime, cmd);
 }
 
-/*
-===========
-IN_Init
-===========
-*/
 void IN_Init()
 {
 	m_filter = gEngfuncs.pfnRegisterVariable("m_filter", "0", FCVAR_ARCHIVE);

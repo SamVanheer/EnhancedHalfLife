@@ -13,7 +13,6 @@
 
 namespace vgui
 {
-
 enum MouseCode;
 class IntChangeSignal;
 
@@ -57,5 +56,4 @@ protected:
 	virtual void fireIntChangeSignal();
 	void paintBackground() override;
 };
-
 }

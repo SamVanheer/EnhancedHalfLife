@@ -1,8 +1,11 @@
 #pragma once
 
-//
-// these are the key numbers that should be passed to Key_Event
-//
+/**
+*	@file
+* 
+*	these are the key numbers that should be passed to Key_Event
+*/
+
 constexpr int K_TAB = 9;
 constexpr int K_ENTER = 13;
 constexpr int K_ESCAPE = 27;
@@ -56,7 +59,6 @@ constexpr int K_KP_PLUS = 174;
 constexpr int K_CAPSLOCK = 175;
 constexpr int K_KP_MUL = 176;
 constexpr int K_WIN = 177;
-
 
 //
 // joystick buttons

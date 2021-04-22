@@ -24,7 +24,6 @@
 
 constexpr int SF_WAITFORTRIGGER = 0x40;
 
-
 constexpr int MAX_CARRY = 24;
 
 class COsprey : public CBaseMonster
@@ -129,8 +128,8 @@ TYPEDESCRIPTION	COsprey::m_SaveData[] =
 	DEFINE_FIELD(COsprey, m_iDoLeftSmokePuff, FIELD_INTEGER),
 	DEFINE_FIELD(COsprey, m_iDoRightSmokePuff, FIELD_INTEGER),
 };
-IMPLEMENT_SAVERESTORE(COsprey, CBaseMonster);
 
+IMPLEMENT_SAVERESTORE(COsprey, CBaseMonster);
 
 void COsprey::Spawn()
 {
@@ -169,7 +168,6 @@ void COsprey::Spawn()
 	m_ang2 = pev->angles;
 	m_vel2 = pev->velocity;
 }
-
 
 void COsprey::Precache()
 {
@@ -220,7 +218,6 @@ void COsprey::FindAllThink()
 	m_startTime = gpGlobals->time;
 }
 
-
 void COsprey::DeployThink()
 {
 	UTIL_MakeAimVectors(pev->angles);
@@ -251,8 +248,6 @@ void COsprey::DeployThink()
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
-
-
 bool COsprey::HasDead()
 {
 	for (int i = 0; i < m_iUnits; i++)
@@ -268,7 +263,6 @@ bool COsprey::HasDead()
 	}
 	return false;
 }
-
 
 CBaseMonster* COsprey::MakeGrunt(Vector vecSrc)
 {
@@ -311,7 +305,6 @@ CBaseMonster* COsprey::MakeGrunt(Vector vecSrc)
 	return nullptr;
 }
 
-
 void COsprey::HoverThink()
 {
 	int i;
@@ -333,7 +326,6 @@ void COsprey::HoverThink()
 	UTIL_MakeAimVectors(pev->angles);
 	ShowDamage();
 }
-
 
 void COsprey::UpdateGoal()
 {
@@ -370,7 +362,6 @@ void COsprey::UpdateGoal()
 	}
 }
 
-
 void COsprey::FlyThink()
 {
 	StudioFrameAdvance();
@@ -398,7 +389,6 @@ void COsprey::FlyThink()
 	Flight();
 	ShowDamage();
 }
-
 
 void COsprey::Flight()
 {
@@ -475,12 +465,10 @@ void COsprey::Flight()
 
 }
 
-
 void COsprey::HitTouch(CBaseEntity* pOther)
 {
 	pev->nextthink = gpGlobals->time + 2.0;
 }
-
 
 /*
 bool COsprey::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
@@ -497,8 +485,6 @@ bool COsprey::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float
 	return false;
 }
 */
-
-
 
 void COsprey::Killed(entvars_t* pevAttacker, int iGib)
 {
@@ -529,7 +515,6 @@ void COsprey::CrashTouch(CBaseEntity* pOther)
 		m_velocity = pev->velocity;
 	}
 }
-
 
 void COsprey::DyingThink()
 {
@@ -719,7 +704,6 @@ void COsprey::DyingThink()
 	}
 }
 
-
 void COsprey::ShowDamage()
 {
 	if (m_iDoLeftSmokePuff > 0 || RANDOM_LONG(0, 99) > m_flLeftHealth)
@@ -753,7 +737,6 @@ void COsprey::ShowDamage()
 			m_iDoRightSmokePuff--;
 	}
 }
-
 
 void COsprey::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
 {
@@ -789,8 +772,3 @@ void COsprey::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir,
 		UTIL_Sparks(ptr->vecEndPos);
 	}
 }
-
-
-
-
-

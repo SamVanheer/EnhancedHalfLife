@@ -72,12 +72,29 @@ constexpr int MOVE_STRAFE = 1;				//!< moves in direction specified, no matter w
 // spawn flags 256 and above are already taken by the engine
 void UTIL_MoveToOrigin(edict_t* pent, const Vector& vecGoal, float flDist, int iMoveType);
 
+/**
+*	@brief returns the velocity at which an object should be lobbed from vecspot1 to land near vecspot2.
+*	@return vec3_origin if toss is not feasible.
+*/
 Vector VecCheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flGravityAdj = 1.0);
+
+/**
+*	@brief returns the velocity vector at which an object should be thrown from vecspot1 to hit vecspot2.
+*	@return vec3_origin if throw is not feasible.
+*/
 Vector VecCheckThrow(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj = 1.0);
 extern DLL_GLOBAL Vector		g_vecAttackDir;
+
+/**
+*	@brief tosses a brass shell from passed origin at passed velocity
+*/
 void EjectBrass(const Vector& vecOrigin, const Vector& vecVelocity, float rotation, int model, int soundtype);
 void ExplodeModel(const Vector& vecOrigin, float speed, int model, int count);
 
+/**
+*	@brief a more accurate ( and slower ) version of FVisible.
+*	!!!UNDONE - make this CBaseMonster?
+*/
 bool FBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetOrigin, float flSize = 0.0);
 
 // monster to monster relationship types
@@ -140,9 +157,25 @@ enum
 class CGib : public CBaseEntity
 {
 public:
+	/**
+	*	@brief Throw a chunk
+	*/
 	void Spawn(const char* szGibModel);
+
+	/**
+	*	@brief Gib bounces on the ground or wall, sponges some blood down, too!
+	*/
 	void EXPORT BounceGibTouch(CBaseEntity* pOther);
+
+	/**
+	*	@brief Sticky gib puts blood on the wall and stays put. 
+	*/
 	void EXPORT StickyGibTouch(CBaseEntity* pOther);
+
+	/**
+	*	@brief in order to emit their meaty scent from the proper location,
+	*	gibs should wait until they stop bouncing to emit their scent. That's what this function does.
+	*/
 	void EXPORT WaitTillLand();
 	void		LimitVelocity();
 

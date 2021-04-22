@@ -65,12 +65,10 @@ bool CHudDeathNotice::Init()
 	return true;
 }
 
-
 void CHudDeathNotice::InitHUDData()
 {
 	memset(rgDeathNoticeList, 0, sizeof(rgDeathNoticeList));
 }
-
 
 bool CHudDeathNotice::VidInit()
 {
@@ -142,7 +140,6 @@ bool CHudDeathNotice::Draw(float flTime)
 	return true;
 }
 
-// This message handler may be better off elsewhere
 bool CHudDeathNotice::MsgFunc_DeathMsg(const char* pszName, int iSize, void* pbuf)
 {
 	m_iFlags |= HUD_ACTIVE;
@@ -283,7 +280,3 @@ bool CHudDeathNotice::MsgFunc_DeathMsg(const char* pszName, int iSize, void* pbu
 
 	return true;
 }
-
-
-
-

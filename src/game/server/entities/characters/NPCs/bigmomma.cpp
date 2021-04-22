@@ -13,14 +13,14 @@
 *
 ****/
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-#include	"schedule.h"
-#include	"decals.hpp"
-#include	"weapons.h"
-#include	"game.h"
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "monsters.h"
+#include "schedule.h"
+#include "decals.hpp"
+#include "weapons.h"
+#include "game.h"
 
 constexpr int SF_INFOBM_RUN = 0x0001;
 constexpr int SF_INFOBM_WAIT = 0x0002;
@@ -60,7 +60,6 @@ void CInfoBM::Spawn()
 {
 }
 
-
 void CInfoBM::KeyValue(KeyValueData* pkvd)
 {
 	if (FStrEq(pkvd->szKeyName, "radius"))
@@ -92,9 +91,9 @@ void CInfoBM::KeyValue(KeyValueData* pkvd)
 		CPointEntity::KeyValue(pkvd);
 }
 
-//=========================================================
-// Mortar shot entity
-//=========================================================
+/**
+*	@brief Mortar shot entity
+*/
 class CBMortar : public CBaseEntity
 {
 public:
@@ -120,7 +119,6 @@ TYPEDESCRIPTION	CBMortar::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CBMortar, CBaseEntity);
 
-
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
@@ -143,8 +141,6 @@ constexpr int BIG_AE_ATTACK_SOUND = 16;		//!< attack sound
 constexpr int BIG_AE_BIRTH_SOUND = 17;		//!< birth sound
 constexpr int BIG_AE_EARLY_TARGET = 50;		//!< Fire target early
 
-
-
 // User defined conditions
 constexpr int bits_COND_NODE_SEQUENCE = bits_COND_SPECIAL1; 		// pev->netname contains the name of a sequence to play
 
@@ -162,7 +158,6 @@ constexpr int bits_MEMORY_FIRED_NODE = bits_MEMORY_CUSTOM4;
 int gSpitSprite, gSpitDebrisSprite;
 Vector VecCheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float maxHeight);
 void MortarSpray(const Vector& position, const Vector& direction, int spriteModel, int count);
-
 
 // UNDONE:	
 //
@@ -201,7 +196,6 @@ public:
 		}
 		return iStringNull;
 	}
-
 
 	string_t GetNodePresequence()
 	{
@@ -281,9 +275,9 @@ public:
 		pev->absmax = pev->origin + Vector(95, 95, 190);
 	}
 
-	bool CheckMeleeAttack1(float flDot, float flDist) override;	// Slash
-	bool CheckMeleeAttack2(float flDot, float flDist) override;	// Lay a crab
-	bool CheckRangeAttack1(float flDot, float flDist) override;	// Mortar launch
+	bool CheckMeleeAttack1(float flDot, float flDist) override;	//!< Slash
+	bool CheckMeleeAttack2(float flDot, float flDist) override;	//!< Lay a crab
+	bool CheckRangeAttack1(float flDot, float flDist) override;	//!< Mortar launch
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -308,6 +302,7 @@ private:
 	float	m_painSoundTime;
 	int		m_crabCount;
 };
+
 LINK_ENTITY_TO_CLASS(monster_bigmomma, CBigMomma);
 
 TYPEDESCRIPTION	CBigMomma::m_SaveData[] =
@@ -381,8 +376,6 @@ const char* CBigMomma::pFootSounds[] =
 	"gonarch/gon_step3.wav",
 };
 
-
-
 void CBigMomma::KeyValue(KeyValueData* pkvd)
 {
 #if 0
@@ -396,19 +389,11 @@ void CBigMomma::KeyValue(KeyValueData* pkvd)
 		CBaseMonster::KeyValue(pkvd);
 }
 
-//=========================================================
-// Classify - indicates this monster's place in the 
-// relationship table.
-//=========================================================
 int	CBigMomma::Classify()
 {
 	return	CLASS_ALIEN_MONSTER;
 }
 
-//=========================================================
-// SetYawSpeed - allows each sequence to have a different
-// turn rate associated with it.
-//=========================================================
 void CBigMomma::SetYawSpeed()
 {
 	int ys;
@@ -424,12 +409,6 @@ void CBigMomma::SetYawSpeed()
 	pev->yaw_speed = ys;
 }
 
-//=========================================================
-// HandleAnimEvent - catches the monster-specific messages
-// that occur when tagged animation frames are played.
-//
-// Returns number of events handled, 0 if none.
-//=========================================================
 void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
@@ -575,7 +554,6 @@ void CBigMomma::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDi
 	CBaseMonster::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
 }
 
-
 bool CBigMomma::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	// Don't take any acid damage -- BigMomma's mortar is acid
@@ -621,8 +599,6 @@ void CBigMomma::LayHeadcrab()
 	m_crabCount++;
 }
 
-
-
 void CBigMomma::DeathNotice(entvars_t* pevChild)
 {
 	if (m_crabCount > 0)		// Some babies may cross a transition, but we reset the count then
@@ -633,7 +609,6 @@ void CBigMomma::DeathNotice(entvars_t* pevChild)
 		EMIT_SOUND_ARRAY_DYN(CHAN_WEAPON, pChildDieSounds);
 	}
 }
-
 
 void CBigMomma::LaunchMortar()
 {
@@ -648,9 +623,6 @@ void CBigMomma::LaunchMortar()
 	MortarSpray(startPos, vec3_up, gSpitSprite, 24);
 }
 
-//=========================================================
-// Spawn
-//=========================================================
 void CBigMomma::Spawn()
 {
 	Precache();
@@ -669,9 +641,6 @@ void CBigMomma::Spawn()
 	MonsterInit();
 }
 
-//=========================================================
-// Precache - precaches all resources this monster needs
-//=========================================================
 void CBigMomma::Precache()
 {
 	PRECACHE_MODEL("models/big_mom.mdl");
@@ -698,13 +667,11 @@ void CBigMomma::Precache()
 	PRECACHE_SOUND("bullchicken/bc_spithit2.wav");
 }
 
-
 void CBigMomma::Activate()
 {
 	if (m_hTargetEnt == nullptr)
 		Remember(bits_MEMORY_ADVANCE_NODE);	// Start 'er up
 }
-
 
 void CBigMomma::NodeStart(string_t iszNextNode)
 {
@@ -731,7 +698,6 @@ void CBigMomma::NodeStart(string_t iszNextNode)
 	m_hTargetEnt = pTarget;
 }
 
-
 void CBigMomma::NodeReach()
 {
 	CBaseEntity* pTarget = m_hTargetEnt;
@@ -756,8 +722,6 @@ void CBigMomma::NodeReach()
 		Remember(bits_MEMORY_ADVANCE_NODE);	// Move on if no health at this node
 }
 
-
-// Slash
 bool CBigMomma::CheckMeleeAttack1(float flDot, float flDist)
 {
 	if (flDot >= 0.7)
@@ -768,15 +732,11 @@ bool CBigMomma::CheckMeleeAttack1(float flDot, float flDist)
 	return false;
 }
 
-
-// Lay a crab
 bool CBigMomma::CheckMeleeAttack2(float flDot, float flDist)
 {
 	return CanLayCrab();
 }
 
-
-// Mortar launch
 bool CBigMomma::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (flDist <= BIG_MORTARDIST && m_mortarTime < gpGlobals->time)
@@ -817,7 +777,6 @@ enum
 	TASK_NODE_YAW,									// Get the best facing direction for this node
 };
 
-
 Task_t	tlBigNode[] =
 {
 	{ TASK_SET_FAIL_SCHEDULE,	(float)SCHED_NODE_FAIL },
@@ -845,7 +804,6 @@ Schedule_t	slBigNode[] =
 	},
 };
 
-
 Task_t	tlNodeFail[] =
 {
 	{ TASK_NODE_DELAY,			(float)10		},	// Try to do something else for 10 seconds
@@ -871,9 +829,6 @@ DEFINE_CUSTOM_SCHEDULES(CBigMomma)
 
 IMPLEMENT_CUSTOM_SCHEDULES(CBigMomma, CBaseMonster);
 
-
-
-
 Schedule_t* CBigMomma::GetScheduleOfType(int Type)
 {
 	switch (Type)
@@ -890,7 +845,6 @@ Schedule_t* CBigMomma::GetScheduleOfType(int Type)
 	return CBaseMonster::GetScheduleOfType(Type);
 }
 
-
 bool CBigMomma::ShouldGoToNode()
 {
 	if (HasMemory(bits_MEMORY_ADVANCE_NODE))
@@ -901,8 +855,6 @@ bool CBigMomma::ShouldGoToNode()
 	return false;
 }
 
-
-
 Schedule_t* CBigMomma::GetSchedule()
 {
 	if (ShouldGoToNode())
@@ -912,7 +864,6 @@ Schedule_t* CBigMomma::GetSchedule()
 
 	return CBaseMonster::GetSchedule();
 }
-
 
 void CBigMomma::StartTask(Task_t* pTask)
 {
@@ -1023,9 +974,6 @@ void CBigMomma::StartTask(Task_t* pTask)
 	}
 }
 
-//=========================================================
-// RunTask
-//=========================================================
 void CBigMomma::RunTask(Task_t* pTask)
 {
 	switch (pTask->iTask)
@@ -1076,8 +1024,6 @@ void CBigMomma::RunTask(Task_t* pTask)
 	}
 }
 
-
-
 Vector VecCheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float maxHeight)
 {
 	TraceResult		tr;
@@ -1121,14 +1067,6 @@ Vector VecCheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2
 	return vecGrenadeVel;
 }
 
-
-
-
-// ---------------------------------
-//
-// Mortar
-//
-// ---------------------------------
 void MortarSpray(const Vector& position, const Vector& direction, int spriteModel, int count)
 {
 	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, position);
@@ -1145,7 +1083,6 @@ void MortarSpray(const Vector& position, const Vector& direction, int spriteMode
 	WRITE_BYTE(80);			// noise ( client will divide by 100 )
 	MESSAGE_END();
 }
-
 
 // UNDONE: right now this is pretty much a copy of the squid spit with minor changes to the way it does damage
 void CBMortar::Spawn()
@@ -1199,7 +1136,6 @@ CBMortar* CBMortar::Shoot(edict_t* pOwner, Vector vecStart, Vector vecVelocity)
 
 	return pSpit;
 }
-
 
 void CBMortar::Touch(CBaseEntity* pOther)
 {

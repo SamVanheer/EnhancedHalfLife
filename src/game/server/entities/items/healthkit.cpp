@@ -28,28 +28,9 @@ class CHealthKit : public CItem
 	void Spawn() override;
 	void Precache() override;
 	bool MyTouch(CBasePlayer* pPlayer) override;
-
-	/*
-		int		Save( CSave &save ) override;
-		int		Restore( CRestore &restore ) override;
-
-		static	TYPEDESCRIPTION m_SaveData[];
-	*/
-
 };
-
 
 LINK_ENTITY_TO_CLASS(item_healthkit, CHealthKit);
-
-/*
-TYPEDESCRIPTION	CHealthKit::m_SaveData[] =
-{
-
-};
-
-
-IMPLEMENT_SAVERESTORE( CHealthKit, CItem);
-*/
 
 void CHealthKit::Spawn()
 {
@@ -102,9 +83,9 @@ enum class ChargerState
 	Charging
 };
 
-//-------------------------------------------------------------
-// Wall mounted health kit
-//-------------------------------------------------------------
+/**
+*	@brief Wall mounted health kit
+*/
 class CWallHealth : public CBaseToggle
 {
 public:
@@ -121,7 +102,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	float m_flNextCharge;
-	int		m_iReactivate; // DeathMatch Delay until reactvated
+	int		m_iReactivate; //!< DeathMatch Delay until reactvated
 	int		m_iJuice;
 	ChargerState m_iOn;
 	float   m_flSoundTime;
@@ -139,7 +120,6 @@ TYPEDESCRIPTION CWallHealth::m_SaveData[] =
 IMPLEMENT_SAVERESTORE(CWallHealth, CBaseEntity);
 
 LINK_ENTITY_TO_CLASS(func_healthcharger, CWallHealth);
-
 
 void CWallHealth::KeyValue(KeyValueData* pkvd)
 {
@@ -181,7 +161,6 @@ void CWallHealth::Precache()
 	PRECACHE_SOUND("items/medshotno1.wav");
 	PRECACHE_SOUND("items/medcharge4.wav");
 }
-
 
 void CWallHealth::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {

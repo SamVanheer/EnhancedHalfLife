@@ -16,8 +16,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-
-#include<VGUI_LineBorder.h>
+#include <VGUI_LineBorder.h>
 
 #include "hud.h"
 #include "cl_util.h"
@@ -62,16 +61,10 @@ SBColumnInfo g_ColumnInfo[NUM_COLUMNS] =
 	{nullptr,		2,			Label::a_east},		// blank column to take up the slack
 };
 
-
 constexpr int TEAM_NO = 0;
 constexpr int TEAM_YES = 1;
 constexpr int TEAM_SPECTATORS = 2;
 constexpr int TEAM_BLANK = 3;
-
-
-//-----------------------------------------------------------------------------
-// ScorePanel::HitTestPanel.
-//-----------------------------------------------------------------------------
 
 void ScorePanel::HitTestPanel::internalMousePressed(MouseCode code)
 {
@@ -81,11 +74,6 @@ void ScorePanel::HitTestPanel::internalMousePressed(MouseCode code)
 	}
 }
 
-
-
-//-----------------------------------------------------------------------------
-// Purpose: Create the ScoreBoard panel
-//-----------------------------------------------------------------------------
 ScorePanel::ScorePanel(int x, int y, int wide, int tall) : Panel(x, y, wide, tall)
 {
 	CSchemeManager* pSchemes = gViewPort->GetSchemeManager();
@@ -230,10 +218,6 @@ ScorePanel::ScorePanel(int x, int y, int wide, int tall) : Panel(x, y, wide, tal
 	Initialize();
 }
 
-
-//-----------------------------------------------------------------------------
-// Purpose: Called each time a new level is started.
-//-----------------------------------------------------------------------------
 void ScorePanel::Initialize()
 {
 	// Clear out scoreboard data
@@ -250,9 +234,6 @@ bool HACK_GetPlayerUniqueID(int iPlayer, char playerID[16])
 	return !!gEngfuncs.GetPlayerUniqueID(iPlayer, playerID); // TODO remove after testing
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Recalculate the internal scoreboard data
-//-----------------------------------------------------------------------------
 void ScorePanel::Update()
 {
 	int i;
@@ -300,9 +281,6 @@ void ScorePanel::Update()
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Sort all the teams
-//-----------------------------------------------------------------------------
 void ScorePanel::SortTeams()
 {
 	// clear out team scores
@@ -403,9 +381,6 @@ void ScorePanel::SortTeams()
 	SortPlayers(TeamType::Spectators, nullptr);
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Sort a list of players
-//-----------------------------------------------------------------------------
 void ScorePanel::SortPlayers(TeamType iTeam, char* team)
 {
 	bool bCreatedTeam = false;
@@ -461,9 +436,6 @@ void ScorePanel::SortPlayers(TeamType iTeam, char* team)
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Recalculate the existing teams in the match
-//-----------------------------------------------------------------------------
 void ScorePanel::RebuildTeams()
 {
 	// clear out player counts from teams
@@ -522,7 +494,6 @@ void ScorePanel::RebuildTeams()
 	// Update the scoreboard
 	Update();
 }
-
 
 void ScorePanel::FillGrid()
 {
@@ -821,10 +792,6 @@ void ScorePanel::FillGrid()
 	m_PlayerList.setSize(x, y);
 }
 
-
-//-----------------------------------------------------------------------------
-// Purpose: Setup highlights for player names in scoreboard
-//-----------------------------------------------------------------------------
 void ScorePanel::DeathMsg(int killer, int victim)
 {
 	// if we were the one killed,  or the world killed us, set the scoreboard to indicate suicide
@@ -838,14 +805,12 @@ void ScorePanel::DeathMsg(int killer, int victim)
 	}
 }
 
-
 void ScorePanel::Open()
 {
 	RebuildTeams();
 	setVisible(true);
 	m_HitTestPanel.setVisible(true);
 }
-
 
 void ScorePanel::mousePressed(MouseCode code, Panel* panel)
 {
@@ -919,11 +884,6 @@ void ScorePanel::cursorMoved(int x, int y, Panel* panel)
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Handles mouse movement over a cell
-// Input  : row - 
-//			col - 
-//-----------------------------------------------------------------------------
 void ScorePanel::MouseOverCell(int row, int col)
 {
 	CLabelHeader* label = &m_PlayerEntries[col][row];
@@ -954,9 +914,6 @@ void ScorePanel::MouseOverCell(int row, int col)
 	m_iHighlightRow = row;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose: Label paint functions - take into account current highligh status
-//-----------------------------------------------------------------------------
 void CLabelHeader::paintBackground()
 {
 	Color oldBg;
@@ -972,10 +929,6 @@ void CLabelHeader::paintBackground()
 	setBgColor(oldBg);
 }
 
-
-//-----------------------------------------------------------------------------
-// Purpose: Label paint functions - take into account current highligh status
-//-----------------------------------------------------------------------------
 void CLabelHeader::paint()
 {
 	Color oldFg;
@@ -1016,7 +969,6 @@ void CLabelHeader::paint()
 
 	setFgColor(oldFg[0], oldFg[1], oldFg[2], oldFg[3]);
 }
-
 
 void CLabelHeader::calcAlignment(int iwide, int itall, int& x, int& y)
 {

@@ -9,14 +9,16 @@
 
 #include "netadr.h"
 
-constexpr int NETAPI_REQUEST_SERVERLIST = 0;  // Doesn't need a remote address
+constexpr int NETAPI_REQUEST_SERVERLIST = 0;  //!< Doesn't need a remote address
 constexpr int NETAPI_REQUEST_PING = 1;
 constexpr int NETAPI_REQUEST_RULES = 2;
 constexpr int NETAPI_REQUEST_PLAYERS = 3;
 constexpr int NETAPI_REQUEST_DETAILS = 4;
 
-// Set this flag for things like broadcast requests, etc. where the engine should not
-//  kill the request hook after receiving the first response
+/**
+*	@brief Set this flag for things like broadcast requests, etc.
+*	where the engine should not kill the request hook after receiving the first response
+*/
 constexpr int FNETAPI_MULTIPLE_RESPONSE = 1 << 0;
 
 typedef void (*net_api_response_func_t) (struct net_response_t* response);
@@ -34,47 +36,74 @@ struct net_adrlist_t
 
 struct net_response_t
 {
-	// NET_SUCCESS or an error code
+	/**
+	*	@brief NET_SUCCESS or an error code
+	*/
 	int			error;
 
-	// Context ID
+	/**
+	*	@brief Context ID
+	*/
 	int			context;
-	// Type
 	int			type;
 
-	// Server that is responding to the request
+	/**
+	*	@brief Server that is responding to the request
+	*/
 	netadr_t	remote_address;
 
-	// Response RTT ping time
+	/**
+	*	@brief Response RTT ping time
+	*/
 	double		ping;
-	// Key/Value pair string ( separated by backlash \ characters )
-	// WARNING:  You must copy this buffer in the callback function, because it is freed
-	//  by the engine right after the call!!!!
-	// ALSO:  For NETAPI_REQUEST_SERVERLIST requests, this will be a pointer to a linked list of net_adrlist_t's
+	/**
+	*	@brief Key/Value pair string ( separated by backlash \ characters )
+	*	WARNING:  You must copy this buffer in the callback function,
+	*	because it is freed by the engine right after the call!!!!
+	*	ALSO:  For NETAPI_REQUEST_SERVERLIST requests, this will be a pointer to a linked list of net_adrlist_t's
+	*/
 	void* response;
 };
 
 struct net_status_t
 {
-	// Connected to remote server?  1 == yes, 0 otherwise
+	/**
+	*	@brief Connected to remote server?  1 == yes, 0 otherwise
+	*/
 	int			connected;
-	// Client's IP address
+	/**
+	*	@brief Client's IP address
+	*/
 	netadr_t	local_address;
-	// Address of remote server
+
+	/**
+	*	@brief Address of remote server
+	*/
 	netadr_t	remote_address;
-	// Packet Loss ( as a percentage )
+
+	/**
+	*	@brief Packet Loss ( as a percentage )
+	*/
 	int			packet_loss;
-	// Latency, in seconds ( multiply by 1000.0 to get milliseconds )
+
+	/**
+	*	@brief Latency, in seconds ( multiply by 1000.0 to get milliseconds )
+	*/
 	double		latency;
-	// Connection time, in seconds
+
+	/**
+	*	@brief Connection time, in seconds
+	*/
 	double		connection_time;
-	// Rate setting ( for incoming data )
+
+	/**
+	*	@brief Rate setting ( for incoming data )
+	*/
 	double		rate;
 };
 
 struct net_api_t
 {
-	// APIs
 	void		(*InitNetworking)();
 	void		(*Status) (net_status_t* status);
 	void		(*SendRequest) (int context, int request, int flags, double timeout, netadr_t* remote_address, net_api_response_func_t response);

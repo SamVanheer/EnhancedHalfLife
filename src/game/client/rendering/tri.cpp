@@ -24,25 +24,11 @@
 #include "particleman.h"
 #include "tri.h"
 
-/*
-=================
-HUD_DrawNormalTriangles
-
-Non-transparent triangles-- add them here
-=================
-*/
 void DLLEXPORT HUD_DrawNormalTriangles()
 {
 	gHUD.m_Spectator.DrawOverview();
 }
 
-/*
-=================
-HUD_DrawTransparentTriangles
-
-Render any triangles with transparent rendermode needs here
-=================
-*/
 void DLLEXPORT HUD_DrawTransparentTriangles()
 {
 	if (g_pParticleMan)

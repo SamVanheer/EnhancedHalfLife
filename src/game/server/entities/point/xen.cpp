@@ -12,16 +12,15 @@
 *   without written permission from Valve LLC.
 *
 ****/
+
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
 #include "animation.h"
 #include "effects.h"
 
-
 constexpr std::string_view XEN_PLANT_GLOW_SPRITE{"sprites/flare3.spr"};
 constexpr int XEN_PLANT_HIDE_TIME = 5;
-
 
 class CActAnimating : public CBaseAnimating
 {
@@ -57,9 +56,6 @@ void CActAnimating::SetActivity(Activity act)
 		ResetSequenceInfo();
 	}
 }
-
-
-
 
 class CXenPLight : public CActAnimating
 {
@@ -107,13 +103,11 @@ void CXenPLight::Spawn()
 	m_pGlow->SetAttachment(edict(), 1);
 }
 
-
 void CXenPLight::Precache()
 {
 	PRECACHE_MODEL("models/light.mdl");
 	PRECACHE_MODEL(XEN_PLANT_GLOW_SPRITE.data());
 }
-
 
 void CXenPLight::Think()
 {
@@ -149,7 +143,6 @@ void CXenPLight::Think()
 	}
 }
 
-
 void CXenPLight::Touch(CBaseEntity* pOther)
 {
 	if (pOther->IsPlayer())
@@ -162,7 +155,6 @@ void CXenPLight::Touch(CBaseEntity* pOther)
 	}
 }
 
-
 void CXenPLight::LightOn()
 {
 	SUB_UseTargets(this, USE_ON, 0);
@@ -170,15 +162,12 @@ void CXenPLight::LightOn()
 		m_pGlow->pev->effects &= ~EF_NODRAW;
 }
 
-
 void CXenPLight::LightOff()
 {
 	SUB_UseTargets(this, USE_OFF, 0);
 	if (m_pGlow)
 		m_pGlow->pev->effects |= EF_NODRAW;
 }
-
-
 
 class CXenHair : public CActAnimating
 {
@@ -211,19 +200,16 @@ void CXenHair::Spawn()
 	pev->nextthink = gpGlobals->time + RANDOM_FLOAT(0.1, 0.4);	// Load balance these a bit
 }
 
-
 void CXenHair::Think()
 {
 	StudioFrameAdvance();
 	pev->nextthink = gpGlobals->time + 0.5;
 }
 
-
 void CXenHair::Precache()
 {
 	PRECACHE_MODEL("models/hair.mdl");
 }
-
 
 class CXenTreeTrigger : public CBaseEntity
 {
@@ -231,6 +217,7 @@ public:
 	void		Touch(CBaseEntity* pOther) override;
 	static CXenTreeTrigger* TriggerCreate(edict_t* pOwner, const Vector& position);
 };
+
 LINK_ENTITY_TO_CLASS(xen_ttrigger, CXenTreeTrigger);
 
 CXenTreeTrigger* CXenTreeTrigger::TriggerCreate(edict_t* pOwner, const Vector& position)
@@ -245,7 +232,6 @@ CXenTreeTrigger* CXenTreeTrigger::TriggerCreate(edict_t* pOwner, const Vector& p
 	return pTrigger;
 }
 
-
 void CXenTreeTrigger::Touch(CBaseEntity* pOther)
 {
 	if (pev->owner)
@@ -254,7 +240,6 @@ void CXenTreeTrigger::Touch(CBaseEntity* pOther)
 		pEntity->Touch(pOther);
 	}
 }
-
 
 constexpr int TREE_AE_ATTACK = 1;
 
@@ -335,7 +320,6 @@ void CXenTree::Precache()
 	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
 }
 
-
 void CXenTree::Touch(CBaseEntity* pOther)
 {
 	if (!pOther->IsPlayer() && FClassnameIs(pOther->pev, "monster_bigmomma"))
@@ -343,7 +327,6 @@ void CXenTree::Touch(CBaseEntity* pOther)
 
 	Attack();
 }
-
 
 void CXenTree::Attack()
 {
@@ -354,7 +337,6 @@ void CXenTree::Attack()
 		EMIT_SOUND_ARRAY_DYN(CHAN_WEAPON, pAttackMissSounds);
 	}
 }
-
 
 void CXenTree::HandleAnimEvent(AnimationEvent& event)
 {
@@ -417,14 +399,9 @@ void CXenTree::Think()
 	}
 }
 
-
 // UNDONE:	These need to smoke somehow when they take damage
 //			Touch behavior?
 //			Cause damage in smoke area
-
-//
-// Spores
-//
 class CXenSpore : public CActAnimating
 {
 public:
@@ -456,7 +433,9 @@ class CXenSporeLarge : public CXenSpore
 	static const Vector m_hullSizes[];
 };
 
-// Fake collision box for big spores
+/**
+*	@brief Fake collision box for big spores
+*/
 class CXenHull : public CPointEntity
 {
 public:
@@ -482,7 +461,6 @@ CXenHull* CXenHull::CreateHull(CBaseEntity* source, const Vector& mins, const Ve
 	return pHull;
 }
 
-
 LINK_ENTITY_TO_CLASS(xen_spore_small, CXenSporeSmall);
 LINK_ENTITY_TO_CLASS(xen_spore_medium, CXenSporeMed);
 LINK_ENTITY_TO_CLASS(xen_spore_large, CXenSporeLarge);
@@ -494,6 +472,7 @@ void CXenSporeSmall::Spawn()
 	CXenSpore::Spawn();
 	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 64));
 }
+
 void CXenSporeMed::Spawn()
 {
 	pev->skin = 1;
@@ -501,8 +480,9 @@ void CXenSporeMed::Spawn()
 	UTIL_SetSize(pev, Vector(-40, -40, 0), Vector(40, 40, 120));
 }
 
-
-// I just eyeballed these -- fill in hulls for the legs
+/**
+*	@brief I just eyeballed these -- fill in hulls for the legs
+*/
 const Vector CXenSporeLarge::m_hullSizes[] =
 {
 	Vector(90, -25, 0),
@@ -551,17 +531,14 @@ const char* CXenSpore::pModelNames[] =
 	"models/fungus(large).mdl",
 };
 
-
 void CXenSpore::Precache()
 {
 	PRECACHE_MODEL(pModelNames[pev->skin]);
 }
 
-
 void CXenSpore::Touch(CBaseEntity* pOther)
 {
 }
-
 
 void CXenSpore::Think()
 {
@@ -580,5 +557,3 @@ void CXenSpore::Think()
 	}
 #endif
 }
-
-

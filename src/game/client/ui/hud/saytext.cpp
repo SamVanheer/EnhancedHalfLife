@@ -54,7 +54,6 @@ bool CHudSayText::Init()
 	return true;
 }
 
-
 void CHudSayText::InitHUDData()
 {
 	memset(g_szLineBuffer, 0, sizeof g_szLineBuffer);
@@ -66,7 +65,6 @@ bool CHudSayText::VidInit()
 {
 	return true;
 }
-
 
 int ScrollTextUp()
 {

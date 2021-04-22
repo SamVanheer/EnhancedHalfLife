@@ -381,6 +381,10 @@ void UTIL_StripToken(const char* pKey, char* pDest);
 *	@brief QuakeEd only writes a single float for angles (bad idea), so up and down are just constant angles.
 */
 void SetMovedir(entvars_t* pev);
+
+/**
+*	@brief calculates origin of a bmodel from absmin/size because all bmodel origins are 0 0 0
+*/
 Vector VecBModelOrigin(entvars_t* pevBModel);
 
 //
@@ -483,18 +487,75 @@ constexpr int CVOXFILESENTENCEMAX = 1536;
 extern char gszallsentencenames[CVOXFILESENTENCEMAX][CBSENTENCENAME_MAX];
 extern int gcallsentences;
 
+/**
+*	@brief pick a random sentence from rootname0 to rootnameX.
+*	picks from the rgsentenceg[isentenceg] least recently used, modifies lru array. returns the sentencename.
+*	@details note, lru must be seeded with 0-n randomized sentence numbers, with the rest of the lru filled with -1.
+*	The first integer in the lru is actually the size of the list.
+*	@return ipick, the ordinal of the picked sentence within the group.
+*/
 int USENTENCEG_Pick(int isentenceg, char* szfound, std::size_t foundSize);
+
+/**
+*	@brief ignore lru. pick next sentence from sentence group.
+*	Go in order until we hit the last sentence, then repeat list if freset is true.
+*	@param freset if false, then repeat last sentence.
+*	@param ipick requested sentence ordinal.  
+*	@return ipick 'next' is returned. -1 indicates an error.
+*/
 int USENTENCEG_PickSequential(int isentenceg, char* szfound, std::size_t foundSize, int ipick, int freset);
+
+/**
+*	@brief randomize list of sentence name indices
+*/
 void USENTENCEG_InitLRU(unsigned char* plru, int count);
 
+/**
+*	@brief open sentences.txt, scan for groups, build rgsentenceg
+*	Should be called from world spawn, only works on the first call and is ignored subsequently.
+*/
 void SENTENCEG_Init();
+
+/**
+*	@brief for this entity, for the given sentence within the sentence group, stop the sentence.
+*/
 void SENTENCEG_Stop(CBaseEntity* entity, int isentenceg, int ipick);
+
+/**
+*	@brief given sentence group index, play random sentence for given entity.
+*	@return ipick - which sentence was picked to play from the group.
+*	@details Ipick is only needed if you plan on stopping the sound before playback is done (see SENTENCEG_Stop).
+*/
 int SENTENCEG_PlayRndI(CBaseEntity* entity, int isentenceg, float volume, float attenuation, int pitch, int flags = 0);
+
+/**
+*	@brief same as SENTENCEG_PlayRndI, but takes sentence group name instead of index
+*/
 int SENTENCEG_PlayRndSz(CBaseEntity* entity, const char* szrootname, float volume, float attenuation, int pitch, int flags = 0);
+
+/**
+*	@brief play sentences in sequential order from sentence group. Reset after last sentence.
+*/
 int SENTENCEG_PlaySequentialSz(CBaseEntity* entity, const char* szrootname, float volume, float attenuation, int pitch, int ipick, int freset, int flags = 0);
+
+/**
+*	@brief Given sentence group rootname (name without number suffix), get sentence group index (isentenceg).
+*	@return -1 if no such name.
+*/
 int SENTENCEG_GetIndex(const char* szrootname);
+
+/**
+*	@brief convert sentence (sample) name to !sentencenum
+*	@return !sentencenum
+*/
 int SENTENCEG_Lookup(const char* sample, char* sentencenum, std::size_t sentencenumSize);
 
+/**
+*	@brief play a strike sound based on the texture that was hit by the attack traceline.
+*	VecSrc/VecEnd are the original traceline endpoints used by the attacker
+*	@param iBulletType the type of bullet that hit the texture.
+*	@return volume of strike instrument (crowbar) to play
+*/
 float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int iBulletType);
 
 /**
@@ -508,8 +569,19 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 void EMIT_SOUND_DYN(edict_t* entity, int channel, const char* sample, float volume, float attenuation,
 	int flags, int pitch);
 
+/**
+*	@brief play a specific sentence over the HEV suit speaker - just pass player entity, and !sentencename
+*/
 void EMIT_SOUND_SUIT(CBaseEntity* entity, const char* sample);
+
+/**
+*	@brief play a sentence, randomly selected from the passed in group id, over the HEV suit speaker
+*/
 void EMIT_GROUPID_SUIT(CBaseEntity* entity, int isentenceg);
+
+/**
+*	@brief play a sentence, randomly selected from the passed in groupname
+*/
 void EMIT_GROUPNAME_SUIT(CBaseEntity* entity, const char* groupname);
 
 template<std::size_t Size>
@@ -562,6 +634,9 @@ void UTIL_UnsetGroupTrace();
 int UTIL_SharedRandomLong(unsigned int seed, int low, int high);
 float UTIL_SharedRandomFloat(unsigned int seed, float low, float high);
 
+/**
+*	@brief Always 0.0 on client, even if not predicting weapons ( won't get called in that case )
+*/
 float UTIL_WeaponTimeBase();
 
 CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe);

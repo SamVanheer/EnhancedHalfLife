@@ -94,9 +94,9 @@ private:
 
 };
 
-//-----------------------------------------------------------------------------
-// Purpose: Custom label for cells in the Scoreboard's Table Header
-//-----------------------------------------------------------------------------
+/**
+*	@brief Custom label for cells in the Scoreboard's Table Header
+*/
 class CLabelHeader : public Label
 {
 public:
@@ -196,14 +196,23 @@ public:
 		_dualImage->GetImage(1)->setFont(font);
 	}
 
-	// this adjust the absolute position of the text after alignment is calculated
+	/**
+	*	@brief this adjust the absolute position of the text after alignment is calculated
+	*/
 	void setTextOffset(int x, int y)
 	{
 		_offset[0] = x;
 		_offset[1] = y;
 	}
 
+	/**
+	*	@brief take into account current highligh status
+	*/
 	void paint() override;
+
+	/**
+	*	@brief take into account current highligh status
+	*/
 	void paintBackground() override;
 	void calcAlignment(int iwide, int itall, int& x, int& y);
 
@@ -220,9 +229,9 @@ class ScoreTablePanel;
 #include "vgui_grid.h"
 #include "vgui_defaultinputsignal.h"
 
-//-----------------------------------------------------------------------------
-// Purpose: Scoreboard back panel
-//-----------------------------------------------------------------------------
+/**
+*	@brief Scoreboard back panel
+*/
 class ScorePanel : public Panel, public vgui::CDefaultInputSignal
 {
 private:
@@ -280,11 +289,13 @@ public:
 	int				m_iLastKilledBy;
 	int				m_fLastKillTime;
 
-
 public:
 
 	ScorePanel(int x, int y, int wide, int tall);
 
+	/**
+	*	@brief Recalculate the internal scoreboard data
+	*/
 	void Update();
 
 	void SortTeams();
@@ -293,8 +304,14 @@ public:
 
 	void FillGrid();
 
+	/**
+	*	@brief Setup highlights for player names in scoreboard
+	*/
 	void DeathMsg(int killer, int victim);
 
+	/**
+	*	@brief Called each time a new level is started.
+	*/
 	void Initialize();
 
 	void Open();

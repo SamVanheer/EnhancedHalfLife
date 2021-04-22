@@ -13,19 +13,15 @@
 *
 ****/
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-#include	"schedule.h"
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "monsters.h"
+#include "schedule.h"
 #include "soundent.h"
 
 // For holograms, make them not solid so the player can walk through them
 constexpr int	SF_GENERICMONSTER_NOTSOLID = 4;
-
-//=========================================================
-// Monster's Anim Events Go Here
-//=========================================================
 
 /**
 *	@brief purely for scripted sequence work.
@@ -38,23 +34,19 @@ public:
 	void SetYawSpeed() override;
 	int  Classify() override;
 	void HandleAnimEvent(AnimationEvent& event) override;
+
+	/**
+	*	@brief generic monster can't hear.
+	*/
 	int ISoundMask() override;
 };
 LINK_ENTITY_TO_CLASS(monster_generic, CGenericMonster);
 
-//=========================================================
-// Classify - indicates this monster's place in the 
-// relationship table.
-//=========================================================
 int	CGenericMonster::Classify()
 {
 	return	CLASS_PLAYER_ALLY;
 }
 
-//=========================================================
-// SetYawSpeed - allows each sequence to have a different
-// turn rate associated with it.
-//=========================================================
 void CGenericMonster::SetYawSpeed()
 {
 	int ys;
@@ -69,10 +61,6 @@ void CGenericMonster::SetYawSpeed()
 	pev->yaw_speed = ys;
 }
 
-//=========================================================
-// HandleAnimEvent - catches the monster-specific messages
-// that occur when tagged animation frames are played.
-//=========================================================
 void CGenericMonster::HandleAnimEvent(AnimationEvent& event)
 {
 	switch (event.event)
@@ -84,17 +72,11 @@ void CGenericMonster::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-//=========================================================
-// ISoundMask - generic monster can't hear.
-//=========================================================
 int CGenericMonster::ISoundMask()
 {
 	return	bits_SOUND_NONE;
 }
 
-//=========================================================
-// Spawn
-//=========================================================
 void CGenericMonster::Spawn()
 {
 	Precache();
@@ -129,14 +111,7 @@ void CGenericMonster::Spawn()
 	}
 }
 
-//=========================================================
-// Precache - precaches all resources this monster needs
-//=========================================================
 void CGenericMonster::Precache()
 {
 	PRECACHE_MODEL(STRING(pev->model));
 }
-
-//=========================================================
-// AI Schedules Specific to this monster
-//=========================================================

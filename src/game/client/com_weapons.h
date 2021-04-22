@@ -18,15 +18,33 @@
 struct edict_t;
 struct local_state_t;
 
+/**
+*	@brief Log debug messages to file ( appends )
+*/
 void			COM_Log(const char* pszFile, const char* fmt, ...);
 bool CL_IsDead();
 
 float			UTIL_SharedRandomFloat(unsigned int seed, float low, float high);
 int				UTIL_SharedRandomLong(unsigned int seed, int low, int high);
 
+/**
+*	@brief Retrieve current predicted weapon animation
+*/
 int				HUD_GetWeaponAnim();
+
+/**
+*	@brief Change weapon model animation
+*/
 void			HUD_SendWeaponAnim(int iAnim, int body, int force);
+
+/**
+*	@brief Play a sound, if we are seeing this command for the first time
+*/
 void			HUD_PlaySound(const char* sound, float volume);
+
+/**
+*	@brief Directly queue up an event on the client
+*/
 void			HUD_PlaybackEvent(int flags, const edict_t* pInvoker, unsigned short eventindex, float delay, const float* origin, const float* angles,
 	float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2);
 void			HUD_SetMaxSpeed(const edict_t* ed, float speed);

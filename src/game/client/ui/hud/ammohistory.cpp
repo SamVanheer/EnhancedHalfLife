@@ -28,7 +28,9 @@ HistoryResource gHR;
 constexpr int MAX_ITEM_NAME = 32;
 int HISTORY_DRAW_TIME = 5;
 
-// keep a list of items
+/**
+*	@brief keep a list of items
+*/
 struct ITEM_INFO
 {
 	char szName[MAX_ITEM_NAME];
@@ -83,7 +85,6 @@ void HistoryResource::AddToHistory(int iType, const char* szName, int iCount)
 	freeslot->DisplayTime = gHUD.m_flTime + HISTORY_DRAW_TIME;
 }
 
-
 void HistoryResource::CheckClearHistory()
 {
 	for (int i = 0; i < MAX_HISTORY; i++)
@@ -95,9 +96,6 @@ void HistoryResource::CheckClearHistory()
 	iCurrentHistorySlot = 0;
 }
 
-//
-// Draw Ammo pickup history
-//
 bool HistoryResource::DrawAmmoHistory(float flTime)
 {
 	for (int i = 0; i < MAX_HISTORY; i++)
@@ -179,5 +177,3 @@ bool HistoryResource::DrawAmmoHistory(float flTime)
 
 	return true;
 }
-
-

@@ -150,6 +150,10 @@ public:
 
 	// initialization functions
 	virtual void	Spawn() {}
+
+	/**
+	*	@brief precaches all resources this entity needs
+	*/
 	virtual void	Precache() {}
 	virtual void	KeyValue(KeyValueData* pkvd) { pkvd->fHandled = false; }
 	virtual bool	Save(CSave& save);
@@ -242,11 +246,27 @@ public:
 	*	@brief Convenient way to explicitly do nothing (passed to functions that require a method)
 	*/
 	void EXPORT SUB_DoNothing();
+
+	/**
+	*	@brief fade out - slowly fades a entity out, then removes it.
+	*	@details DON'T USE ME FOR GIBS AND STUFF IN MULTIPLAYER! 
+	*	SET A FUTURE THINK AND A RENDERMODE!!
+	*/
 	void EXPORT SUB_StartFadeOut();
 	void EXPORT SUB_FadeOut();
 	void EXPORT SUB_CallUseToggle() { this->Use(this, this, USE_TOGGLE, 0); }
 	bool		ShouldToggle(USE_TYPE useType, bool currentState);
+
+	/**
+	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
+	*	This version is used by Monsters.
+	*/
 	void		FireBullets(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t* pevAttacker = nullptr);
+	
+	/**
+	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
+	*	This version is used by Players, uses the random seed generator to sync client and server side shots.
+	*/
 	Vector		FireBulletsPlayer(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t* pevAttacker = nullptr, int shared_rand = 0);
 
 	virtual CBaseEntity* Respawn() { return nullptr; }
@@ -354,7 +374,14 @@ public:
 
 	virtual int Illumination() { return GETENTITYILLUM(ENT(pev)); }
 
+	/**
+	*	@brief returns true if a line can be traced from the caller's eyes to the target
+	*/
 	virtual	bool FVisible(CBaseEntity* pEntity);
+
+	/**
+	*	@brief returns true if a line can be traced from the caller's eyes to the target vector
+	*/
 	virtual	bool FVisible(const Vector& vecOrigin);
 
 	void EmitSound(int channel, const char* fileName, float volume = VOL_NORM, float attenuation = ATTN_NORM, int pitch = PITCH_NORM, int flags = 0);
@@ -419,6 +446,12 @@ struct locksound_t
 	bool	bEOFUnlocked;			//!< true if hit end of list of unlocked sentences
 };
 
+/**
+*	@brief play door or button locked or unlocked sounds. 
+*	@details pass in pointer to valid locksound struct. 
+*	NOTE: this routine is shared by doors and buttons
+*	@param flocked if true, play 'door is locked' sound, otherwise play 'door is unlocked' sound
+*/
 void PlayLockSounds(CBaseEntity* entity, locksound_t* pls, int flocked, int fbutton);
 
 constexpr int MAX_MULTI_TARGETS = 16; //!< maximum number of targets a single multi_manager entity may be assigned.
@@ -497,6 +530,10 @@ public:
 	*	@brief Handle events that have happend since last time called up until X seconds into the future
 	*/
 	void DispatchAnimEvents(float flFutureInterval = 0.1);
+
+	/**
+	*	@brief catches the entity-specific messages that occur when tagged animation frames are played.
+	*/
 	virtual void HandleAnimEvent(AnimationEvent& event) {}
 	float SetBoneController(int iController, float flValue);
 	void InitBoneControllers();
@@ -638,12 +675,24 @@ class CSound;
 
 #include "basemonster.h"
 
-
-const char* ButtonSound(int sound);				// get string of button sound number
+/**
+*	@brief Button sound table. get string of button sound number
+*	@details Also used by CBaseDoor to get 'touched' door lock/unlock sounds
+*/
+const char* ButtonSound(int sound);
 
 
 /**
 *	@brief Generic Button
+* TODO typos
+*	@details When a button is touched, it moves some distance in the direction of it's angle,
+*	triggers all of it's targets, waits some time, then returns to it's original position where it can be triggered again.
+*	"movedir"	determines the opening direction
+*	"target"	all entities with a matching targetname will be used
+*	"speed"		override the default 40 speed
+*	"wait"		override the default 1 second wait (-1 = never return)
+*	"lip"		override the default 4 unit lip remaining at end of move
+*	"health"	if set, the button must be killed instead of touched
 */
 class CBaseButton : public CBaseToggle
 {
@@ -652,12 +701,30 @@ public:
 	void Precache() override;
 	void KeyValue(KeyValueData* pkvd) override;
 
+	/**
+	*	@brief Starts the button moving "in/up".
+	*/
 	void ButtonActivate();
 
+	/**
+	*	@brief Touching a button simply "activates" it.
+	*/
 	void EXPORT ButtonTouch(CBaseEntity* pOther);
 	void EXPORT ButtonSpark();
+
+	/**
+	*	@brief Button has reached the "in/up" position.  Activate its "targets", and pause before "popping out".
+	*/
 	void EXPORT TriggerAndWait();
+
+	/**
+	*	@brief Starts the button moving "out/down".
+	*/
 	void EXPORT ButtonReturn();
+
+	/**
+	*	@brief Button has returned to start state. Quiesce it.
+	*/
 	void EXPORT ButtonBackHome();
 	void EXPORT ButtonUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;

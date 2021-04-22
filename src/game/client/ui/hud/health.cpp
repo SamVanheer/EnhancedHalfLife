@@ -17,7 +17,6 @@
 #include "cl_util.h"
 #include "parsemsg.h"
 
-
 DECLARE_MESSAGE(m_Health, Health)
 DECLARE_MESSAGE(m_Health, Damage)
 
@@ -104,7 +103,6 @@ bool CHudHealth::MsgFunc_Health(const char* pszName, int iSize, void* pbuf)
 	return true;
 }
 
-
 bool CHudHealth::MsgFunc_Damage(const char* pszName, int iSize, void* pbuf)
 {
 	BufferReader reader{pbuf, iSize};
@@ -127,9 +125,6 @@ bool CHudHealth::MsgFunc_Damage(const char* pszName, int iSize, void* pbuf)
 	return true;
 }
 
-
-// Returns back a color from the
-// Green <-> Yellow <-> Red ramp
 void CHudHealth::GetPainColor(int& r, int& g, int& b)
 {
 	int iHealth = m_iHealth;
@@ -420,7 +415,6 @@ bool CHudHealth::DrawDamage(float flTime)
 
 	return true;
 }
-
 
 void CHudHealth::UpdateTiles(float flTime, long bitsDamage)
 {

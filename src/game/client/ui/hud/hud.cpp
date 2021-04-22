@@ -68,8 +68,8 @@ public:
 			return false;
 	}
 };
-static CHLVoiceStatusHelper g_VoiceStatusHelper;
 
+static CHLVoiceStatusHelper g_VoiceStatusHelper;
 
 client_sprite_t* GetSpriteList(client_sprite_t* pList, const char* psz, int iRes, int iCount);
 
@@ -81,13 +81,11 @@ cvar_t* cl_bobtilt = nullptr;
 
 void ShutdownInput();
 
-//DECLARE_MESSAGE(m_Logo, Logo)
 int __MsgFunc_Logo(const char* pszName, int iSize, void* pbuf)
 {
 	return gHUD.MsgFunc_Logo(pszName, iSize, pbuf);
 }
 
-//DECLARE_MESSAGE(m_Logo, Logo)
 int __MsgFunc_ResetHUD(const char* pszName, int iSize, void* pbuf)
 {
 	return gHUD.MsgFunc_ResetHUD(pszName, iSize, pbuf);
@@ -193,7 +191,6 @@ int __MsgFunc_TeamInfo(const char* pszName, int iSize, void* pbuf)
 	return false;
 }
 
-// This is called every time the DLL is loaded
 void CHud::Init()
 {
 	HOOK_MESSAGE(Logo);
@@ -220,7 +217,6 @@ void CHud::Init()
 
 	CVAR_CREATE("hud_classautokill", "1", FCVAR_ARCHIVE | FCVAR_USERINFO);		// controls whether or not to suicide immediately on TF class switch
 	CVAR_CREATE("hud_takesshots", "0", FCVAR_ARCHIVE);		// controls whether or not to automatically take screenshots at the end of a round
-
 
 	m_iLogo = 0;
 	m_iFOV = 0;
@@ -273,8 +269,6 @@ void CHud::Init()
 	MsgFunc_ResetHUD(nullptr, 0, nullptr);
 }
 
-// CHud destructor
-// cleans up memory allocated for m_rg* arrays
 CHud :: ~CHud()
 {
 	delete[] m_rghSprites;
@@ -294,10 +288,6 @@ CHud :: ~CHud()
 	}
 }
 
-// GetSpriteIndex()
-// searches through the sprite list loaded from hud.txt for a name matching SpriteName
-// returns an index into the gHUD.m_rghSprites[] array
-// returns 0 if sprite not found
 int CHud::GetSpriteIndex(const char* SpriteName)
 {
 	// look through the loaded sprite name list for SpriteName
@@ -433,12 +423,6 @@ bool CHud::MsgFunc_Logo(const char* pszName, int iSize, void* pbuf)
 
 float g_lastFOV = 0.0;
 
-/*
-=================
-HUD_IsGame
-
-=================
-*/
 bool HUD_IsGame(std::string_view game)
 {
 	std::string_view gamedir = gEngfuncs.pfnGetGameDirectory();
@@ -451,12 +435,8 @@ bool HUD_IsGame(std::string_view game)
 	return false;
 }
 
-/*
-=====================
-HUD_GetFOV
-
-Returns last FOV
-=====================
+/**
+*	@brief Returns last FOV
 */
 float HUD_GetFOV()
 {
@@ -522,7 +502,6 @@ bool CHud::MsgFunc_SetFOV(const char* pszName, int iSize, void* pbuf)
 	return true;
 }
 
-
 void CHud::AddHudElem(CHudBase* phudelem)
 {
 	HUDLIST* pdl, * ptemp;
@@ -557,5 +536,3 @@ float CHud::GetSensitivity()
 {
 	return m_flMouseSensitivity;
 }
-
-

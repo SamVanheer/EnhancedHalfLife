@@ -13,14 +13,13 @@
 
 namespace vgui
 {
-
 class IntChangeSignal;
 class Button;
 class Slider2;
 
-//-----------------------------------------------------------------------------
-// Purpose: Hacked up version of the vgui scrollbar
-//-----------------------------------------------------------------------------
+/**
+*	@brief Hacked up version of the vgui scrollbar
+*/
 class VGUIAPI ScrollBar2 : public Panel
 {
 public:
@@ -52,5 +51,4 @@ protected:
 	Dar<IntChangeSignal*> _intChangeSignalDar;
 	int     _buttonPressedScrollValue;
 };
-
 }

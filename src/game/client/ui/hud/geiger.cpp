@@ -20,6 +20,8 @@
 
 DECLARE_MESSAGE(m_Geiger, Geiger)
 
+//TODO: unnecessary semicolons
+
 bool CHudGeiger::Init()
 {
 	HOOK_MESSAGE(Geiger);

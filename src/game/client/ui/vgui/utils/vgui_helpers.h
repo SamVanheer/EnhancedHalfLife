@@ -10,7 +10,6 @@
 #include "VGUI_Panel.h"
 #include "VGUI_Label.h"
 
-
 inline int PanelTop(vgui::Panel* pPanel) { int x, y, w, h; pPanel->getBounds(x, y, w, h); return y; }
 inline int PanelLeft(vgui::Panel* pPanel) { int x, y, w, h; pPanel->getBounds(x, y, w, h); return x; }
 inline int PanelRight(vgui::Panel* pPanel) { int x, y, w, h; pPanel->getBounds(x, y, w, h); return x + w; }

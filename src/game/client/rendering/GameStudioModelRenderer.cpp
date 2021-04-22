@@ -21,55 +21,41 @@
 #include "GameStudioModelRenderer.h"
 #include "Exports.h"
 
-//
-// Override the StudioModelRender virtual member functions here to implement custom bone
-// setup, blending, etc.
-//
+/**
+*	@file
+* 
+*	Override the StudioModelRender virtual member functions here to implement custom bone setup, blending, etc.
+*/
 
-// Global engine <-> studio model rendering code interface
+/**
+*	@brief Global engine <-> studio model rendering code interface
+*/
 extern engine_studio_api_t IEngineStudio;
 
-// The renderer object, created on the stack.
+//TODO: not created on the stack
+/**
+*	@brief The renderer object, created on the stack.
+*/
 CGameStudioModelRenderer g_StudioRenderer;
 
-////////////////////////////////////
-// Hooks to class implementation
-////////////////////////////////////
-
-/*
-====================
-R_StudioDrawPlayer
-
-====================
-*/
 int R_StudioDrawPlayer(int flags, entity_state_t* pplayer)
 {
 	return g_StudioRenderer.StudioDrawPlayer(flags, pplayer);
 }
 
-/*
-====================
-R_StudioDrawModel
-
-====================
-*/
 int R_StudioDrawModel(int flags)
 {
 	return g_StudioRenderer.StudioDrawModel(flags);
 }
 
-/*
-====================
-R_StudioInit
-
-====================
-*/
 void R_StudioInit()
 {
 	g_StudioRenderer.Init();
 }
 
-// The simple drawing interface we'll pass back to the engine
+/**
+*	@brief The simple drawing interface we'll pass back to the engine
+*/
 r_studio_interface_t studio =
 {
 	STUDIO_INTERFACE_VERSION,
@@ -77,13 +63,6 @@ r_studio_interface_t studio =
 	R_StudioDrawPlayer,
 };
 
-/*
-====================
-HUD_GetStudioModelInterface
-
-Export this function for the engine to use the studio renderer class to render objects.
-====================
-*/
 int DLLEXPORT HUD_GetStudioModelInterface(int version, r_studio_interface_t** ppinterface, engine_studio_api_t* pstudio)
 {
 	if (version != STUDIO_INTERFACE_VERSION)

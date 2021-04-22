@@ -45,8 +45,3 @@ void VGui_Shutdown()
 	delete gViewPort;
 	gViewPort = nullptr;
 }
-
-
-
-
-

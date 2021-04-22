@@ -27,14 +27,12 @@ constexpr int grgLogoFrame[MAX_LOGO_FRAMES] =
 	29, 29, 29, 29, 29, 28, 27, 26, 25, 24, 30, 31
 };
 
-
 extern int g_iVisibleMouse;
 
 float HUD_GetFOV();
 
 extern cvar_t* sensitivity;
 
-// Think
 void CHud::Think()
 {
 	m_scrinfo.iSize = sizeof(m_scrinfo);
@@ -86,9 +84,6 @@ void CHud::Think()
 	}
 }
 
-// Redraw
-// step through the local data,  placing the appropriate graphics & text as appropriate
-// returns 1 if they've changed, 0 otherwise
 bool CHud::Redraw(float flTime, bool intermission)
 {
 	m_fOldTime = m_flTime;	// save time of previous redraw
@@ -225,7 +220,6 @@ int CHud::DrawHudNumberString(int xpos, int ypos, int iMinX, int iNumber, int r,
 
 }
 
-// draws a string from right to left (right-aligned)
 int CHud::DrawHudStringReverse(int xpos, int ypos, int iMinX, char* szString, int r, int g, int b)
 {
 	return xpos - gEngfuncs.pfnDrawStringReverse(xpos, ypos, szString, r, g, b);
@@ -297,7 +291,6 @@ int CHud::DrawHudNumber(int x, int y, int iFlags, int iNumber, int r, int g, int
 
 	return x;
 }
-
 
 int CHud::GetNumWidth(int iNumber, int iFlags)
 {
@@ -371,4 +364,3 @@ int CHud::DrawHudNumberReverse(int x, int y, int number, int flags, int r, int g
 
 	return x;
 }
-
