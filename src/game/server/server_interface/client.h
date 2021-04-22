@@ -50,10 +50,6 @@ void ClientPrecache();
 const char* GetGameDescription();
 void PlayerCustomization(edict_t* pEntity, customization_t* pCust);
 
-void SpectatorConnect(edict_t* pEntity);
-void SpectatorDisconnect(edict_t* pEntity);
-void SpectatorThink(edict_t* pEntity);
-
 void Sys_Error(const char* error_string);
 
 void SetupVisibility(edict_t* pViewEntity, edict_t* pClient, unsigned char** pvs, unsigned char** pas);

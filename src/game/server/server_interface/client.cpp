@@ -18,7 +18,6 @@
 #include "cbase.h"
 #include "player.h"
 #include "changelevel.hpp"
-#include "spectator.h"
 #include "client.h"
 #include "soundent.h"
 #include "gamerules.h"
@@ -732,33 +731,6 @@ void PlayerCustomization(edict_t* pEntity, customization_t* pCust)
 		ALERT(at_console, "PlayerCustomization:  Unknown customization type!\n");
 		break;
 	}
-}
-
-void SpectatorConnect(edict_t* pEntity)
-{
-	entvars_t* pev = &pEntity->v;
-	CBaseSpectator* pPlayer = (CBaseSpectator*)GET_PRIVATE(pEntity);
-
-	if (pPlayer)
-		pPlayer->SpectatorConnect();
-}
-
-void SpectatorDisconnect(edict_t* pEntity)
-{
-	entvars_t* pev = &pEntity->v;
-	CBaseSpectator* pPlayer = (CBaseSpectator*)GET_PRIVATE(pEntity);
-
-	if (pPlayer)
-		pPlayer->SpectatorDisconnect();
-}
-
-void SpectatorThink(edict_t* pEntity)
-{
-	entvars_t* pev = &pEntity->v;
-	CBaseSpectator* pPlayer = (CBaseSpectator*)GET_PRIVATE(pEntity);
-
-	if (pPlayer)
-		pPlayer->SpectatorThink();
 }
 
 // PAS and PVS routines for client messaging

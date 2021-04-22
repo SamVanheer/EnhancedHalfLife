@@ -83,8 +83,6 @@ target_sources(hl PRIVATE
 	entities/characters/observer.cpp
 	entities/characters/player.cpp
 	entities/characters/player.h
-	entities/characters/spectator.cpp
-	entities/characters/spectator.h
 	entities/characters/NPCs/aflock.cpp
 	entities/characters/NPCs/agrunt.cpp
 	entities/characters/NPCs/apache.cpp
