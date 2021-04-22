@@ -27,9 +27,6 @@
 
 extern DLL_GLOBAL bool	g_fGameOver;
 
-//TODO: redundant. Gamerules can tell you this
-bool g_teamplay = false;
-
 bool CGameRules::CanHaveAmmo(CBasePlayer* pPlayer, const char* pszAmmoName, int iMaxCarry)
 {
 	int iAmmoIndex;
@@ -283,7 +280,6 @@ CGameRules* InstallGameRules()
 	if (!gpGlobals->deathmatch)
 	{
 		// generic half-life
-		g_teamplay = false;
 		return new CHalfLifeRules;
 	}
 	else
@@ -291,20 +287,16 @@ CGameRules* InstallGameRules()
 		if (teamplay.value > 0)
 		{
 			// teamplay
-
-			g_teamplay = true;
 			return new CHalfLifeTeamplay;
 		}
 		if ((int)gpGlobals->deathmatch == 1)
 		{
 			// vanilla deathmatch
-			g_teamplay = false;
 			return new CHalfLifeMultiplay;
 		}
 		else
 		{
 			// vanilla deathmatch??
-			g_teamplay = false;
 			return new CHalfLifeMultiplay;
 		}
 	}

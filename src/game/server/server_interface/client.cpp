@@ -42,8 +42,6 @@ extern DLL_GLOBAL uint32	g_ulFrameCount;
 
 extern bool giPrecacheGrunt;
 
-extern bool g_teamplay;
-
 qboolean ClientConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128])
 {
 	return g_pGameRules->ClientConnected(pEntity, pszName, pszAddress, szRejectReason);
@@ -292,7 +290,7 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 		temp = "say";
 
 	// team match?
-	if (g_teamplay)
+	if (g_pGameRules->IsTeamplay())
 	{
 		UTIL_LogPrintf("\"%s<%i><%s><%s>\" %s \"%s\"\n",
 			STRING(pEntity->v.netname),
@@ -459,7 +457,7 @@ void ClientUserInfoChanged(edict_t* pEntity, char* infobuffer)
 		}
 
 		// team match?
-		if (g_teamplay)
+		if (g_pGameRules->IsTeamplay())
 		{
 			UTIL_LogPrintf("\"%s<%i><%s><%s>\" changed name to \"%s\"\n",
 				STRING(pEntity->v.netname),
