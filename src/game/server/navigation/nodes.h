@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 /**
 *	@file
 *
@@ -125,7 +127,7 @@ public:
 
 	CNode* m_pNodes;			//!< pointer to the memory block that contains all node info
 	CLink* m_pLinkPool;			//!< big list of all node connections
-	char* m_pRouteInfo;			//!< compressed routing information the nodes use.
+	std::int8_t* m_pRouteInfo;	//!< compressed routing information the nodes use.
 
 	int		m_cNodes;			//!< total number of nodes
 	int		m_cLinks;			//!< total number of links

@@ -469,13 +469,13 @@ int CGraph::NextNodeInRoute(int iCurrentNode, int iDest, int iHull, int iCap)
 {
 	int iNext = iCurrentNode;
 	int nCount = iDest + 1;
-	char* pRoute = m_pRouteInfo + m_pNodes[iCurrentNode].m_pNextBestNode[iHull][iCap];
+	std::int8_t* pRoute = m_pRouteInfo + m_pNodes[iCurrentNode].m_pNextBestNode[iHull][iCap];
 
 	// Until we decode the next best node
 	//
 	while (nCount > 0)
 	{
-		char ch = *pRoute++;
+		std::int8_t ch = *pRoute++;
 		//ALERT(at_aiconsole, "C(%d)", ch);
 		if (ch < 0)
 		{
@@ -2523,7 +2523,7 @@ void CGraph::ComputeStaticRoutingTables()
 
 	int* pMyPath = new int[m_cNodes];
 	unsigned short* BestNextNodes = new unsigned short[m_cNodes];
-	char* pRoute = new char[m_cNodes * 2];
+	std::int8_t* pRoute = new std::int8_t[m_cNodes * 2];
 
 
 	if (Routes && pMyPath && BestNextNodes && pRoute)
@@ -2618,7 +2618,7 @@ void CGraph::ComputeStaticRoutingTables()
 					int cSequence = 0;
 					int cRepeats = 0;
 					int CompressedSize = 0;
-					char* p = pRoute;
+					std::int8_t* p = pRoute;
 					for (int i = 0; i < m_cNodes; i++)
 					{
 						bool CanRepeat = ((BestNextNodes[i] == iLastNode) && cRepeats < 127);
@@ -2779,7 +2779,7 @@ void CGraph::ComputeStaticRoutingTables()
 						}
 						else
 						{
-							char* Tmp = (char*)calloc(sizeof(char), (m_nRouteInfo + nRoute));
+							std::int8_t* Tmp = (std::int8_t*)calloc(sizeof(std::int8_t), (m_nRouteInfo + nRoute));
 							memcpy(Tmp, m_pRouteInfo, m_nRouteInfo);
 							free(m_pRouteInfo);
 							m_pRouteInfo = Tmp;
@@ -2792,7 +2792,7 @@ void CGraph::ComputeStaticRoutingTables()
 					else
 					{
 						m_nRouteInfo = nRoute;
-						m_pRouteInfo = (char*)calloc(sizeof(char), nRoute);
+						m_pRouteInfo = (std::int8_t*)calloc(sizeof(std::int8_t), nRoute);
 						memcpy(m_pRouteInfo, pRoute, nRoute);
 						m_pNodes[iFrom].m_pNextBestNode[iHull][iCap] = 0;
 						nTotalCompressedSize += CompressedSize;

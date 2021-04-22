@@ -155,7 +155,7 @@ bool CGraph::FLoadGraph(const char* szMapName)
 		// Malloc for the routing info.
 		//
 		m_fRoutingComplete = false;
-		m_pRouteInfo = (char*)calloc(sizeof(char), m_nRouteInfo);
+		m_pRouteInfo = (std::int8_t*)calloc(sizeof(std::int8_t), m_nRouteInfo);
 		if (!m_pRouteInfo)
 		{
 			ALERT(at_aiconsole, "***ERROR**\nCounldn't malloc %d route bytes!\n", m_nRouteInfo);
@@ -169,10 +169,10 @@ bool CGraph::FLoadGraph(const char* szMapName)
 
 		// Read in the route information.
 		//
-		if (size < (sizeof(char) * m_nRouteInfo)) goto ShortFile;
-		size -= sizeof(char) * m_nRouteInfo;
-		memcpy(m_pRouteInfo, pMemFile, sizeof(char) * m_nRouteInfo);
-		pMemFile += sizeof(char) * m_nRouteInfo;
+		if (size < (sizeof(std::int8_t) * m_nRouteInfo)) goto ShortFile;
+		size -= sizeof(std::int8_t) * m_nRouteInfo;
+		memcpy(m_pRouteInfo, pMemFile, sizeof(std::int8_t) * m_nRouteInfo);
+		pMemFile += sizeof(std::int8_t) * m_nRouteInfo;
 		m_fRoutingComplete = true;
 
 		// malloc for the hash links
@@ -257,7 +257,7 @@ bool CGraph::FSaveGraph(const char* szMapName)
 	//
 	if (m_pRouteInfo && m_nRouteInfo)
 	{
-		file.Write(m_pRouteInfo, sizeof(char) * m_nRouteInfo);
+		file.Write(m_pRouteInfo, sizeof(std::int8_t) * m_nRouteInfo);
 	}
 
 	if (m_pHashLinks && m_nHashLinks)
