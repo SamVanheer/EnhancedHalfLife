@@ -15,7 +15,14 @@
 
 #pragma once
 
+/**
+*	@brief Message function is in the engine, not the client
+*/
 inline int gmsgShake = 0;
+
+/**
+*	@brief Message function is in the engine, not the client
+*/
 inline int gmsgFade = 0;
 inline int gmsgFlashlight = 0;
 inline int gmsgFlashBattery = 0;
