@@ -125,7 +125,6 @@ class CGraph
 {
 public:
 
-	//TODO: need to use qboolean for boolean members because this class is saved to disk
 	// the graph has two flags, and should not be accessed unless both flags are true!
 	bool	m_fGraphPresent;	//!< is the graph in memory?
 	bool	m_fGraphPointersSet;//!< are the entity pointers for the graph all set?
