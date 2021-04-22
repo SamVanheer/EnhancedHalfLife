@@ -16,6 +16,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 
 /**
 *	@file
@@ -78,16 +79,11 @@ constexpr int NODE_HUMAN_HULL = 1;
 constexpr int NODE_LARGE_HULL = 2;
 constexpr int NODE_FLY_HULL = 3;
 
-/**
-*	@brief A link between 2 nodes
-*/
-class CLink
+class CDiskLink
 {
 public:
 	int		m_iSrcNode;		//!< the node that 'owns' this link ( keeps us from having to make reverse lookups )
 	int		m_iDestNode;	//!< the node on the other end of the link. 
-
-	entvars_t* m_pLinkEnt;	//!< the entity that blocks this connection (doors, etc)
 
 	/**
 	*	@brief the unique name of the brush model that blocks the connection (this is kept for save/restore)
@@ -100,10 +96,22 @@ public:
 	float	m_flWeight;		//!< length of the link line segment
 };
 
+/**
+*	@brief A link between 2 nodes
+*/
+class CLink  : public CDiskLink
+{
+public:
+	entvars_t* m_pLinkEnt;	//!< the entity that blocks this connection (doors, etc)
+};
 
-struct DIST_INFO
+struct DiskDistInfo
 {
 	int m_SortedBy[3];
+};
+
+struct DIST_INFO : public DiskDistInfo
+{
 	int m_CheckedEvent;
 };
 
@@ -112,8 +120,6 @@ struct CACHE_ENTRY
 	Vector v;
 	short n;		//!< Nearest node or -1 if no node found.
 };
-
-constexpr int	GRAPH_VERSION = 17; //!< !!!increment this whever graph/node/link classes change, to obsolesce older disk files.
 
 class CGraph
 {
@@ -125,9 +131,9 @@ public:
 	bool	m_fGraphPointersSet;//!< are the entity pointers for the graph all set?
 	bool    m_fRoutingComplete; //!< are the optimal routes computed, yet?
 
-	CNode* m_pNodes;			//!< pointer to the memory block that contains all node info
-	CLink* m_pLinkPool;			//!< big list of all node connections
-	std::int8_t* m_pRouteInfo;	//!< compressed routing information the nodes use.
+	std::unique_ptr<CNode[]> m_pNodes;				//!< pointer to the memory block that contains all node info
+	std::unique_ptr<CLink[]> m_pLinkPool;			//!< big list of all node connections
+	std::unique_ptr<std::int8_t[]> m_pRouteInfo;	//!< compressed routing information the nodes use.
 
 	int		m_cNodes;			//!< total number of nodes
 	int		m_cLinks;			//!< total number of links
@@ -144,7 +150,7 @@ public:
 	//
 	static constexpr int CACHE_SIZE = 128;
 	static constexpr int NUM_RANGES = 256;
-	DIST_INFO* m_di;	//!< This is m_cNodes long, but the entries don't correspond to CNode entries.
+	std::unique_ptr<DIST_INFO[]> m_di;	//!< This is m_cNodes long, but the entries don't correspond to CNode entries.
 	int m_RangeStart[3][NUM_RANGES];
 	int m_RangeEnd[3][NUM_RANGES];
 	float m_flShortest;
@@ -158,7 +164,7 @@ public:
 	static constexpr int HashPrimesCount = 16;
 
 	int m_HashPrimes[HashPrimesCount];
-	short* m_pHashLinks;
+	std::unique_ptr<std::int16_t[]> m_pHashLinks;
 	int m_nHashLinks;
 
 

@@ -13,13 +13,17 @@
 *
 ****/
 
+#include <algorithm>
 #include <filesystem>
+#include <memory>
+#include <new>
 
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
 #include "nodes.h"
 #include "nodes_io.hpp"
+#include "BinaryReader.hpp"
 
 bool CGraph::CheckNODFile(const char* szMapName)
 {
@@ -48,10 +52,144 @@ bool CGraph::CheckNODFile(const char* szMapName)
 	return retValue;
 }
 
+bool InternalLoadGraphFromDisk(const std::unique_ptr<byte[]>& fileBuffer, std::size_t size, CGraph& graph)
+{
+	BinaryReader reader{fileBuffer.get(), size};
+
+	const std::int32_t version = reader.ReadInt32();
+
+	if (version != GRAPH_VERSION)
+	{
+		// This file was written by a different build of the dll!
+		//
+		ALERT(at_aiconsole, "**ERROR** Graph version is %d, expected %d\n", static_cast<int>(version), GRAPH_VERSION);
+		return false;
+	}
+
+	DiskGraph diskGraph{};
+
+	if (reader.Read(reinterpret_cast<byte*>(&diskGraph), sizeof(diskGraph)) != sizeof(diskGraph))
+	{
+		return false;
+	}
+
+	//Validate graph data
+	if (diskGraph.NodeCount < 0
+		|| diskGraph.LinkCount < 0
+		|| diskGraph.RouteInfoCount < 0
+		|| diskGraph.HashLinkCount < 0)
+	{
+		return false;
+	}
+
+	//TODO: these ranges could potentially be just out of the valid range due to floatin point errors, so maybe disable this check?
+	for (std::size_t i = 0; i < CGraph::NUM_RANGES; ++i)
+	{
+		for (std::size_t j = 0; j < 3; ++j)
+		{
+			//TODO: define constants for this range
+			if (diskGraph.RangeStart[j][i] < 0 || diskGraph.RangeStart[j][i] > 255
+				|| diskGraph.RangeEnd[j][i] < 0 || diskGraph.RangeEnd[j][i] > 255)
+			{
+				return false;
+			}
+		}
+	}
+
+	for (std::size_t j = 0; j < 3; ++j)
+	{
+		if (diskGraph.RegionMin[j] > diskGraph.RegionMax[j])
+		{
+			return false;
+		}
+	}
+
+	//Load arrays
+	auto nodes = std::make_unique<CNode[]>(diskGraph.NodeCount);
+	reader.ReadArray(nodes.get(), diskGraph.NodeCount);
+	
+	auto links = std::make_unique<CLink[]>(diskGraph.LinkCount);
+	{
+		auto diskLinks = std::make_unique<CDiskLink[]>(diskGraph.LinkCount);
+		reader.ReadArray(diskLinks.get(), diskGraph.LinkCount);
+
+		std::transform(diskLinks.get(), diskLinks.get() + diskGraph.LinkCount, links.get(), [](const auto& diskLink)
+			{
+				CLink link{diskLink};
+				link.m_pLinkEnt = nullptr;
+				return link;
+			});
+	}
+
+	auto distanceInfo = std::make_unique<DIST_INFO[]>(diskGraph.NodeCount);
+	{
+		auto diskDistanceInfo = std::make_unique<DiskDistInfo[]>(diskGraph.NodeCount);
+		reader.ReadArray(diskDistanceInfo.get(), diskGraph.NodeCount);
+
+		std::transform(diskDistanceInfo.get(), diskDistanceInfo.get() + diskGraph.NodeCount, distanceInfo.get(), [](const auto& diskDistInfo)
+			{
+				DIST_INFO distInfo{diskDistInfo};
+				distInfo.m_CheckedEvent = 0;
+				return distInfo;
+			});
+	}
+
+	auto routeInfo = std::make_unique<std::int8_t[]>(diskGraph.RouteInfoCount);
+	reader.ReadArray(routeInfo.get(), diskGraph.RouteInfoCount);
+
+	auto hashLinks = std::make_unique<std::int16_t[]>(diskGraph.HashLinkCount);
+	reader.ReadArray(hashLinks.get(), diskGraph.HashLinkCount);
+
+	if (reader.GetOffset() < reader.GetSizeInBytes())
+	{
+		ALERT(at_aiconsole, "***WARNING***:Node graph was longer than expected by %zu bytes.!\n", (reader.GetSizeInBytes() - reader.GetOffset()));
+	}
+
+	//Now copy the data over
+	graph.m_fRoutingComplete = (diskGraph.Flags & DISKGRAPH_FLAG_ROUTINGCOMPLETE) != 0;
+
+	graph.m_cNodes = diskGraph.NodeCount;
+	graph.m_cLinks = diskGraph.LinkCount;
+	graph.m_nRouteInfo = diskGraph.RouteInfoCount;
+
+	for (std::size_t i = 0; i < CGraph::NUM_RANGES; ++i)
+	{
+		for (std::size_t j = 0; j < 3; ++j)
+		{
+			graph.m_RangeStart[j][i] = diskGraph.RangeStart[j][i];
+			graph.m_RangeEnd[j][i] = diskGraph.RangeEnd[j][i];
+		}
+	}
+
+	for (std::size_t j = 0; j < 3; ++j)
+	{
+		graph.m_RegionMin[j] = diskGraph.RegionMin[j];
+		graph.m_RegionMax[j] = diskGraph.RegionMax[j];
+	}
+
+	for (std::size_t i = 0; i < CGraph::HashPrimesCount; ++i)
+	{
+		graph.m_HashPrimes[i] = diskGraph.HashPrimes[i];
+	}
+
+	graph.m_nHashLinks = diskGraph.HashLinkCount;
+
+	graph.m_pNodes = std::move(nodes);
+	graph.m_pLinkPool = std::move(links);
+	graph.m_pRouteInfo = std::move(routeInfo);
+	graph.m_di = std::move(distanceInfo);
+	graph.m_pHashLinks = std::move(hashLinks);
+
+	// Set the graph present flag, clear the pointers set flag
+	graph.m_fGraphPresent = true;
+	graph.m_fGraphPointersSet = false;
+
+	return true;
+}
+
 bool CGraph::FLoadGraph(const char* szMapName)
 {
-	//TODO: rewrite graph loading
-	int		iVersion;
+	InitGraph();
 
 	// make sure the directories have been made
 	std::filesystem::path dirName = std::filesystem::path{"maps"} / "graphs";
@@ -62,158 +200,24 @@ bool CGraph::FLoadGraph(const char* szMapName)
 
 	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer(filename.string().c_str());
 
-	byte* pMemFile = fileBuffer.get();
-
 	if (!fileBuffer)
 	{
 		return false;
 	}
-	else
+
+	try
 	{
-		// Read the graph version number
-		//
-		if (size < sizeof(int)) goto ShortFile;
-		size -= sizeof(int);
-		memcpy(&iVersion, pMemFile, sizeof(int));
-		pMemFile += sizeof(int);
-
-		if (iVersion != GRAPH_VERSION)
-		{
-			// This file was written by a different build of the dll!
-			//
-			ALERT(at_aiconsole, "**ERROR** Graph version is %d, expected %d\n", iVersion, GRAPH_VERSION);
-			goto ShortFile;
-		}
-
-		// Read the graph class
-		//
-		if (size < sizeof(CGraph)) goto ShortFile;
-		size -= sizeof(CGraph);
-		memcpy(this, pMemFile, sizeof(CGraph));
-		pMemFile += sizeof(CGraph);
-
-		// Set the pointers to zero, just in case we run out of memory.
-		//
-		m_pNodes = nullptr;
-		m_pLinkPool = nullptr;
-		m_di = nullptr;
-		m_pRouteInfo = nullptr;
-		m_pHashLinks = nullptr;
-
-
-		// Malloc for the nodes
-		//
-		m_pNodes = (CNode*)calloc(sizeof(CNode), m_cNodes);
-
-		if (!m_pNodes)
-		{
-			ALERT(at_aiconsole, "**ERROR**\nCouldn't malloc %d nodes!\n", m_cNodes);
-			goto NoMemory;
-		}
-
-		// Read in all the nodes
-		//
-		if (size < (sizeof(CNode) * m_cNodes)) goto ShortFile;
-		size -= sizeof(CNode) * m_cNodes;
-		memcpy(m_pNodes, pMemFile, sizeof(CNode) * m_cNodes);
-		pMemFile += sizeof(CNode) * m_cNodes;
-
-
-		// Malloc for the link pool
-		//
-		m_pLinkPool = (CLink*)calloc(sizeof(CLink), m_cLinks);
-
-		if (!m_pLinkPool)
-		{
-			ALERT(at_aiconsole, "**ERROR**\nCouldn't malloc %d link!\n", m_cLinks);
-			goto NoMemory;
-		}
-
-		// Read in all the links
-		//
-		if (size < (sizeof(CLink) * m_cLinks)) goto ShortFile;
-		size -= sizeof(CLink) * m_cLinks;
-		memcpy(m_pLinkPool, pMemFile, sizeof(CLink) * m_cLinks);
-		pMemFile += sizeof(CLink) * m_cLinks;
-
-		// Malloc for the sorting info.
-		//
-		m_di = (DIST_INFO*)calloc(sizeof(DIST_INFO), m_cNodes);
-		if (!m_di)
-		{
-			ALERT(at_aiconsole, "***ERROR**\nCouldn't malloc %d entries sorting nodes!\n", m_cNodes);
-			goto NoMemory;
-		}
-
-		// Read it in.
-		//
-		if (size < (sizeof(DIST_INFO) * m_cNodes)) goto ShortFile;
-		size -= sizeof(DIST_INFO) * m_cNodes;
-		memcpy(m_di, pMemFile, sizeof(DIST_INFO) * m_cNodes);
-		pMemFile += sizeof(DIST_INFO) * m_cNodes;
-
-		// Malloc for the routing info.
-		//
-		m_fRoutingComplete = false;
-		m_pRouteInfo = (std::int8_t*)calloc(sizeof(std::int8_t), m_nRouteInfo);
-		if (!m_pRouteInfo)
-		{
-			ALERT(at_aiconsole, "***ERROR**\nCounldn't malloc %d route bytes!\n", m_nRouteInfo);
-			goto NoMemory;
-		}
-		m_CheckedCounter = 0;
-		for (int i = 0; i < m_cNodes; i++)
-		{
-			m_di[i].m_CheckedEvent = 0;
-		}
-
-		// Read in the route information.
-		//
-		if (size < (sizeof(std::int8_t) * m_nRouteInfo)) goto ShortFile;
-		size -= sizeof(std::int8_t) * m_nRouteInfo;
-		memcpy(m_pRouteInfo, pMemFile, sizeof(std::int8_t) * m_nRouteInfo);
-		pMemFile += sizeof(std::int8_t) * m_nRouteInfo;
-		m_fRoutingComplete = true;
-
-		// malloc for the hash links
-		//
-		m_pHashLinks = (short*)calloc(sizeof(short), m_nHashLinks);
-		if (!m_pHashLinks)
-		{
-			ALERT(at_aiconsole, "***ERROR**\nCounldn't malloc %d hash link bytes!\n", m_nHashLinks);
-			goto NoMemory;
-		}
-
-		// Read in the hash link information
-		//
-		if (size < (sizeof(short) * m_nHashLinks)) goto ShortFile;
-		size -= sizeof(short) * m_nHashLinks;
-		memcpy(m_pHashLinks, pMemFile, sizeof(short) * m_nHashLinks);
-		pMemFile += sizeof(short) * m_nHashLinks;
-
-		// Set the graph present flag, clear the pointers set flag
-		//
-		m_fGraphPresent = true;
-		m_fGraphPointersSet = false;
-
-		if (size != 0)
-		{
-			ALERT(at_aiconsole, "***WARNING***:Node graph was longer than expected by %zu bytes.!\n", size);
-		}
-
-		return true;
+		return InternalLoadGraphFromDisk(fileBuffer, size, *this);
 	}
-
-ShortFile:
-NoMemory:
-	return false;
+	catch (const std::exception& e)
+	{
+		ALERT(at_aiconsole, "Error reading graph: %s\n", e.what());
+		return false;
+	}
 }
 
 bool CGraph::FSaveGraph(const char* szMapName)
 {
-
-	int		iVersion = GRAPH_VERSION;
-
 	if (!m_fGraphPresent || !m_fGraphPointersSet)
 	{// protect us in the case that the node graph isn't available or built
 		ALERT(at_aiconsole, "Graph not ready!\n");
@@ -231,38 +235,88 @@ bool CGraph::FSaveGraph(const char* szMapName)
 
 	FSFile file{filenameString.c_str(), "wb", "GAMECONFIG"};
 
-	ALERT(at_aiconsole, "Created: %s\n", filenameString.c_str());
-
 	if (!file)
-	{// couldn't create
+	{
 		ALERT(at_aiconsole, "Couldn't Create: %s\n", filenameString.c_str());
 		return false;
 	}
 
+	ALERT(at_aiconsole, "Created: %s\n", filenameString.c_str());
+
 	// write the version
-	file.Write(&iVersion, sizeof(int));
+	const std::int32_t iVersion = GRAPH_VERSION;
+	file.Write(&iVersion, sizeof(std::int32_t));
 
-	// write the CGraph class
-	file.Write(this, sizeof(CGraph));
+	// write the DiskGraph struct
+	DiskGraph diskGraph{};
 
-	// write the nodes
-	file.Write(m_pNodes, sizeof(CNode) * m_cNodes);
+	if (m_fRoutingComplete)
+	{
+		diskGraph.Flags |= DISKGRAPH_FLAG_ROUTINGCOMPLETE;
+	}
 
-	// write the links
-	file.Write(m_pLinkPool, sizeof(CLink) * m_cLinks);
+	diskGraph.NodeCount = m_cNodes;
+	diskGraph.LinkCount = m_cLinks;
+	diskGraph.RouteInfoCount = m_nRouteInfo;
 
-	file.Write(m_di, sizeof(DIST_INFO) * m_cNodes);
+	for (std::size_t i = 0; i < CGraph::NUM_RANGES; ++i)
+	{
+		for (std::size_t j = 0; j < 3; ++j)
+		{
+			diskGraph.RangeStart[j][i] = m_RangeStart[j][i];
+			diskGraph.RangeEnd[j][i] = m_RangeEnd[j][i];
+		}
+	}
 
-	// Write the route info.
-	//
+	for (std::size_t j = 0; j < 3; ++j)
+	{
+		diskGraph.RegionMin[j] = m_RegionMin[j];
+		diskGraph.RegionMax[j] = m_RegionMax[j];
+	}
+
+	for (std::size_t i = 0; i < CGraph::HashPrimesCount; ++i)
+	{
+		diskGraph.HashPrimes[i] = m_HashPrimes[i];
+	}
+
+	diskGraph.HashLinkCount = m_nHashLinks;
+
+	file.Write(&diskGraph, sizeof(diskGraph));
+
+	file.Write(m_pNodes.get(), sizeof(CNode) * m_cNodes);
+
+	{
+		// write the links
+		//Don't write the entity pointer
+		auto diskLinks = std::make_unique<CDiskLink[]>(m_cLinks);
+
+		std::transform(m_pLinkPool.get(), m_pLinkPool.get() + m_cLinks, diskLinks.get(), [](const auto& link)
+			{
+				return link;
+			});
+
+		file.Write(diskLinks.get(), sizeof(CDiskLink) * m_cLinks);
+	}
+
+	{
+		auto diskDistInfo = std::make_unique<DiskDistInfo[]>(m_cNodes);
+
+		std::transform(m_di.get(), m_di.get() + m_cNodes, diskDistInfo.get(), [](const auto& distInfo)
+			{
+				return distInfo;
+			});
+
+		file.Write(diskDistInfo.get(), sizeof(DiskDistInfo) * m_cNodes);
+	}
+
 	if (m_pRouteInfo && m_nRouteInfo)
 	{
-		file.Write(m_pRouteInfo, sizeof(std::int8_t) * m_nRouteInfo);
+		file.Write(m_pRouteInfo.get(), sizeof(std::int8_t) * m_nRouteInfo);
 	}
 
 	if (m_pHashLinks && m_nHashLinks)
 	{
-		file.Write(m_pHashLinks, sizeof(short) * m_nHashLinks);
+		file.Write(m_pHashLinks.get(), sizeof(std::int16_t) * m_nHashLinks);
 	}
 
 	return true;

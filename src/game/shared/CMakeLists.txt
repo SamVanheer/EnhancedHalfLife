@@ -31,6 +31,7 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shared_interface/shared_interface.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shared_interface/shared_interface.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/BinaryReader.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/bitvec.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CStringPool.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CStringPool.hpp

@@ -14,3 +14,44 @@
 ****/
 
 #pragma once
+
+#include <cstdint>
+
+#include "nodes.h"
+
+constexpr std::int32_t GRAPH_VERSION = 17; //!< !!!increment this whever graph/node/link classes change, to obsolesce older disk files.
+
+constexpr std::uint32_t DISKGRAPH_FLAG_ROUTINGCOMPLETE = 1 << 0;
+
+/**
+*	@brief Structure written to the node graph file on disk
+*	@details The on-disk format of the graph is as follows:
+*	std::int32_t Version
+*	DiskGraph graph
+*	CNode Nodes[graph.NodeCount]
+*	CDiskLink LinkPool[graph.LinkCount]
+*	DiskDistInfo DistanceInfo[graph.NodeCount]
+*	std::int8_t RouteInfo[graph.RouteInfoSize]
+*	std::int16_t HashLinks[graph.HashLinkCount]
+*/
+struct DiskGraph
+{
+	/**
+	*	@brief Boolean flags for this graph
+	*/
+	std::uint32_t Flags;
+	
+	std::int32_t NodeCount;
+	std::int32_t LinkCount;
+	std::int32_t RouteInfoCount;
+
+	std::int32_t RangeStart[3][CGraph::NUM_RANGES];
+	std::int32_t RangeEnd[3][CGraph::NUM_RANGES];
+
+	float RegionMin[3];
+	float RegionMax[3];
+
+	std::int32_t HashPrimes[CGraph::HashPrimesCount];
+
+	std::int32_t HashLinkCount;
+};

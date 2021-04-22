@@ -15,6 +15,7 @@
 
 #include <filesystem>
 #include <limits>
+#include <new>
 
 #include "extdll.h"
 #include "util.h"
@@ -41,51 +42,17 @@ LINK_ENTITY_TO_CLASS(info_node_air, CNodeEnt);
 
 void CGraph::InitGraph()
 {
-
 	// Make the graph unavailable
-	//
 	m_fGraphPresent = false;
 	m_fGraphPointersSet = false;
 	m_fRoutingComplete = false;
 
-	// Free the link pool
-	//
-	if (m_pLinkPool)
-	{
-		free(m_pLinkPool);
-		m_pLinkPool = nullptr;
-	}
+	m_pLinkPool.reset();
+	m_pNodes.reset();
+	m_di.reset();
+	m_pRouteInfo.reset();
+	m_pHashLinks.reset();
 
-	// Free the node info
-	//
-	if (m_pNodes)
-	{
-		free(m_pNodes);
-		m_pNodes = nullptr;
-	}
-
-	if (m_di)
-	{
-		free(m_di);
-		m_di = nullptr;
-	}
-
-	// Free the routing info.
-	//
-	if (m_pRouteInfo)
-	{
-		free(m_pRouteInfo);
-		m_pRouteInfo = nullptr;
-	}
-
-	if (m_pHashLinks)
-	{
-		free(m_pHashLinks);
-		m_pHashLinks = nullptr;
-	}
-
-	// Zero node and link counts
-	//
 	m_cNodes = 0;
 	m_cLinks = 0;
 	m_nRouteInfo = 0;
@@ -96,17 +63,18 @@ void CGraph::InitGraph()
 
 bool CGraph::AllocNodes()
 {
-	//  malloc all of the nodes
-	WorldGraph.m_pNodes = (CNode*)calloc(sizeof(CNode), MAX_NODES);
-
-	// could not malloc space for all the nodes!
-	if (!WorldGraph.m_pNodes)
+	try
 	{
-		ALERT(at_aiconsole, "**ERROR**\nCouldn't malloc %d nodes!\n", WorldGraph.m_cNodes);
+		//  alloc all of the nodes
+		WorldGraph.m_pNodes = std::make_unique<CNode[]>(MAX_NODES);
+		return true;
+	}
+	catch (const std::bad_alloc&)
+	{
+		// could not alloc space for all the nodes!
+		ALERT(at_aiconsole, "**ERROR**\nCouldn't alloc %d nodes!\n", WorldGraph.m_cNodes);
 		return false;
 	}
-
-	return true;
 }
 
 entvars_t* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
@@ -469,7 +437,7 @@ int CGraph::NextNodeInRoute(int iCurrentNode, int iDest, int iHull, int iCap)
 {
 	int iNext = iCurrentNode;
 	int nCount = iDest + 1;
-	std::int8_t* pRoute = m_pRouteInfo + m_pNodes[iCurrentNode].m_pNextBestNode[iHull][iCap];
+	std::int8_t* pRoute = m_pRouteInfo.get() + m_pNodes[iCurrentNode].m_pNextBestNode[iHull][iCap];
 
 	// Until we decode the next best node
 	//
@@ -1507,8 +1475,6 @@ void CTestHull::BuildNodeGraph()
 {
 	TraceResult	tr;
 
-	CLink* pTempPool; // temporary link pool 
-
 	CNode* pSrcNode;// node we're currently working with
 	CNode* pDestNode;// the other node in comparison operations
 
@@ -1544,14 +1510,18 @@ void CTestHull::BuildNodeGraph()
 	SetThink(&CTestHull::SUB_Remove);// no matter what happens, the hull gets rid of itself.
 	pev->nextthink = gpGlobals->time;
 
-	// 	malloc a swollen temporary connection pool that we trim down after we know exactly how many connections there are.
-	pTempPool = (CLink*)calloc(sizeof(CLink), (WorldGraph.m_cNodes * MAX_NODE_INITIAL_LINKS));
-	if (!pTempPool)
+	std::unique_ptr<CLink[]> pTempPool;
+
+	try
 	{
-		ALERT(at_aiconsole, "**Could not malloc TempPool!\n");
+		// 	alloc a swollen temporary connection pool that we trim down after we know exactly how many connections there are.
+		pTempPool = std::make_unique<CLink[]>(WorldGraph.m_cNodes * MAX_NODE_INITIAL_LINKS);
+	}
+	catch (const std::bad_alloc&)
+	{
+		ALERT(at_aiconsole, "**Could not alloc TempPool!\n");
 		return;
 	}
-
 
 	// make sure directories have been made
 	//text node report filename
@@ -1568,12 +1538,6 @@ void CTestHull::BuildNodeGraph()
 	if (!file)
 	{// file error
 		ALERT(at_aiconsole, "Couldn't create %s!\n", nrpFilenameString.c_str());
-
-		if (pTempPool)
-		{
-			free(pTempPool);
-		}
-
 		return;
 	}
 
@@ -1646,7 +1610,7 @@ void CTestHull::BuildNodeGraph()
 		}
 	}
 
-	cPoolLinks = WorldGraph.LinkVisibleNodes(pTempPool, file, &iBadNode);
+	cPoolLinks = WorldGraph.LinkVisibleNodes(pTempPool.get(), file, &iBadNode);
 
 	if (!cPoolLinks)
 	{
@@ -1655,12 +1619,6 @@ void CTestHull::BuildNodeGraph()
 		SetThink(&CTestHull::ShowBadNode);// send the hull off to show the offending node.
 		//pev->solid = SOLID_NOT;
 		pev->origin = WorldGraph.m_pNodes[iBadNode].m_vecOrigin;
-
-		if (pTempPool)
-		{
-			free(pTempPool);
-		}
-
 		return;
 	}
 
@@ -1720,11 +1678,6 @@ void CTestHull::BuildNodeGraph()
 				if (j < 0)
 				{
 					ALERT(at_aiconsole, "**** j = %d ****\n", j);
-					if (pTempPool)
-					{
-						free(pTempPool);
-					}
-
 					return;
 				}
 
@@ -1826,21 +1779,20 @@ void CTestHull::BuildNodeGraph()
 	}
 	file.Printf("-------------------------------------------------------------------------------\n\n\n");
 
-	cPoolLinks -= WorldGraph.RejectInlineLinks(pTempPool, file);
+	cPoolLinks -= WorldGraph.RejectInlineLinks(pTempPool.get(), file);
 
-	// now malloc a pool just large enough to hold the links that are actually used
-	WorldGraph.m_pLinkPool = (CLink*)calloc(sizeof(CLink), cPoolLinks);
-
-	if (!WorldGraph.m_pLinkPool)
-	{// couldn't make the link pool!
-		ALERT(at_aiconsole, "Couldn't malloc LinkPool!\n");
-		if (pTempPool)
-		{
-			free(pTempPool);
-		}
-
+	try
+	{
+		// now alloc a pool just large enough to hold the links that are actually used
+		WorldGraph.m_pLinkPool = std::make_unique<CLink[]>(cPoolLinks);
+	}
+	catch (const std::bad_alloc&)
+	{
+		// couldn't make the link pool!
+		ALERT(at_aiconsole, "Couldn't alloc LinkPool!\n");
 		return;
 	}
+
 	WorldGraph.m_cLinks = cPoolLinks;
 
 	//copy only the used portions of the TempPool into the graph's link pool
@@ -1859,6 +1811,8 @@ void CTestHull::BuildNodeGraph()
 		}
 	}
 
+	//Free the temp pool
+	pTempPool.reset();
 
 	// Node sorting numbers linked nodes close to each other
 	//
@@ -1920,12 +1874,6 @@ void CTestHull::BuildNodeGraph()
 		{
 			WorldGraph.m_pNodes[i].m_vecOrigin.z -= NODE_HEIGHT;
 		}
-	}
-
-
-	if (pTempPool)
-	{// free the temp pool
-		free(pTempPool);
 	}
 
 	// We now have some graphing capabilities.
@@ -2127,7 +2075,7 @@ bool CGraph::FSetGraphPointers()
 	return true;
 }
 
-constexpr short ENTRY_STATE_EMPTY = -1;
+constexpr std::int16_t ENTRY_STATE_EMPTY = -1;
 
 struct tagNodePair
 {
@@ -2331,12 +2279,17 @@ void CGraph::BuildLinkLookups()
 	m_nHashLinks = 3 * m_cLinks / 2 + 3;
 
 	HashChoosePrimes(m_nHashLinks);
-	m_pHashLinks = (short*)calloc(sizeof(short), m_nHashLinks);
-	if (!m_pHashLinks)
+
+	try
+	{
+		m_pHashLinks = std::make_unique<std::int16_t[]>(m_nHashLinks);
+	}
+	catch (const std::bad_alloc&)
 	{
 		ALERT(at_aiconsole, "Couldn't allocated Link Lookup Table.\n");
 		return;
 	}
+
 	int i;
 	for (i = 0; i < m_nHashLinks; i++)
 	{
@@ -2364,12 +2317,14 @@ void CGraph::BuildLinkLookups()
 
 void CGraph::BuildRegionTables()
 {
-	if (m_di) free(m_di);
+	m_di.reset();
 
-	// Go ahead and setup for range searching the nodes for FindNearestNodes
-	//
-	m_di = (DIST_INFO*)calloc(sizeof(DIST_INFO), m_cNodes);
-	if (!m_di)
+	try
+	{
+		// Go ahead and setup for range searching the nodes for FindNearestNodes
+		m_di = std::make_unique<DIST_INFO[]>(m_cNodes);
+	}
+	catch (const std::bad_alloc&)
 	{
 		ALERT(at_aiconsole, "Couldn't allocated node ordering array.\n");
 		return;
@@ -2519,15 +2474,15 @@ void CGraph::ComputeStaticRoutingTables()
 	};
 
 	int nRoutes = m_cNodes * m_cNodes;
-	short* Routes = new short[nRoutes];
 
-	int* pMyPath = new int[m_cNodes];
-	unsigned short* BestNextNodes = new unsigned short[m_cNodes];
-	std::int8_t* pRoute = new std::int8_t[m_cNodes * 2];
-
-
-	if (Routes && pMyPath && BestNextNodes && pRoute)
+	//TODO: this code doesn't handle out of memory properly and will fail to generate routing tables if out of memory occurs
+	try
 	{
+		auto routes = std::make_unique<short[]>(nRoutes);
+		auto myPath = std::make_unique<int[]>(m_cNodes);
+		auto bestNextNodes = std::make_unique<unsigned short[]>(m_cNodes);
+		auto route = std::make_unique<std::int8_t[]>(m_cNodes * 2);
+
 		int nTotalCompressedSize = 0;
 		for (int iHull = 0; iHull < MAX_NODE_HULLS; iHull++)
 		{
@@ -2553,7 +2508,7 @@ void CGraph::ComputeStaticRoutingTables()
 				{
 					for (int iTo = 0; iTo < m_cNodes; iTo++)
 					{
-						Routes[fromTo(iFrom, iTo)] = -1;
+						routes[fromTo(iFrom, iTo)] = -1;
 					}
 				}
 
@@ -2561,9 +2516,9 @@ void CGraph::ComputeStaticRoutingTables()
 				{
 					for (int iTo = m_cNodes - 1; iTo >= 0; iTo--)
 					{
-						if (Routes[fromTo(iFrom, iTo)] != -1) continue;
+						if (routes[fromTo(iFrom, iTo)] != -1) continue;
 
-						int cPathSize = FindShortestPath(pMyPath, iFrom, iTo, iHull, iCapMask);
+						int cPathSize = FindShortestPath(myPath.get(), iFrom, iTo, iHull, iCapMask);
 
 						// Use the computed path to update the routing table.
 						//
@@ -2571,12 +2526,12 @@ void CGraph::ComputeStaticRoutingTables()
 						{
 							for (int iNode = 0; iNode < cPathSize - 1; iNode++)
 							{
-								int iStart = pMyPath[iNode];
-								int iNext = pMyPath[iNode + 1];
+								int iStart = myPath[iNode];
+								int iNext = myPath[iNode + 1];
 								for (int iNode1 = iNode + 1; iNode1 < cPathSize; iNode1++)
 								{
-									int iEnd = pMyPath[iNode1];
-									Routes[fromTo(iStart, iEnd)] = iNext;
+									int iEnd = myPath[iNode1];
+									routes[fromTo(iStart, iEnd)] = iNext;
 								}
 							}
 #if 0
@@ -2592,15 +2547,15 @@ void CGraph::ComputeStaticRoutingTables()
 								for (int iNode1 = iNode - 1; iNode1 >= 0; iNode1--)
 								{
 									int iEnd = pMyPath[iNode1];
-									Routes[fromTo(iStart, iEnd)] = iNext;
+									routes[fromTo(iStart, iEnd)] = iNext;
 								}
 							}
 #endif
 						}
 						else
 						{
-							Routes[fromTo(iFrom, iTo)] = iFrom;
-							Routes[fromTo(iTo, iFrom)] = iTo;
+							routes[fromTo(iFrom, iTo)] = iFrom;
+							routes[fromTo(iTo, iFrom)] = iTo;
 						}
 					}
 				}
@@ -2609,7 +2564,7 @@ void CGraph::ComputeStaticRoutingTables()
 				{
 					for (int iTo = 0; iTo < m_cNodes; iTo++)
 					{
-						BestNextNodes[iTo] = Routes[fromTo(iFrom, iTo)];
+						bestNextNodes[iTo] = routes[fromTo(iFrom, iTo)];
 					}
 
 					// Compress this node's routing table.
@@ -2618,11 +2573,11 @@ void CGraph::ComputeStaticRoutingTables()
 					int cSequence = 0;
 					int cRepeats = 0;
 					int CompressedSize = 0;
-					std::int8_t* p = pRoute;
+					std::int8_t* p = route.get();
 					for (int i = 0; i < m_cNodes; i++)
 					{
-						bool CanRepeat = ((BestNextNodes[i] == iLastNode) && cRepeats < 127);
-						bool CanSequence = (BestNextNodes[i] == i && cSequence < 128);
+						bool CanRepeat = ((bestNextNodes[i] == iLastNode) && cRepeats < 127);
+						bool CanSequence = (bestNextNodes[i] == i && cSequence < 128);
 
 						if (cRepeats)
 						{
@@ -2719,7 +2674,7 @@ void CGraph::ComputeStaticRoutingTables()
 								cRepeats++;
 							}
 						}
-						iLastNode = BestNextNodes[i];
+						iLastNode = bestNextNodes[i];
 					}
 					if (cRepeats)
 					{
@@ -2762,13 +2717,13 @@ void CGraph::ComputeStaticRoutingTables()
 
 					// Go find a place to store this thing and point to it.
 					//
-					int nRoute = p - pRoute;
+					int nRoute = p - route.get();
 					if (m_pRouteInfo)
 					{
 						int i;
 						for (i = 0; i < m_nRouteInfo - nRoute; i++)
 						{
-							if (memcmp(m_pRouteInfo + i, pRoute, nRoute) == 0)
+							if (memcmp(m_pRouteInfo.get() + i, route.get(), nRoute) == 0)
 							{
 								break;
 							}
@@ -2779,11 +2734,10 @@ void CGraph::ComputeStaticRoutingTables()
 						}
 						else
 						{
-							std::int8_t* Tmp = (std::int8_t*)calloc(sizeof(std::int8_t), (m_nRouteInfo + nRoute));
-							memcpy(Tmp, m_pRouteInfo, m_nRouteInfo);
-							free(m_pRouteInfo);
-							m_pRouteInfo = Tmp;
-							memcpy(m_pRouteInfo + m_nRouteInfo, pRoute, nRoute);
+							auto tmp = std::make_unique<std::int8_t[]>(m_nRouteInfo + nRoute);
+							memcpy(tmp.get(), m_pRouteInfo.get(), m_nRouteInfo);
+							m_pRouteInfo = std::move(tmp);
+							memcpy(m_pRouteInfo.get() + m_nRouteInfo, route.get(), nRoute);
 							m_pNodes[iFrom].m_pNextBestNode[iHull][iCap] = m_nRouteInfo;
 							m_nRouteInfo += nRoute;
 							nTotalCompressedSize += CompressedSize;
@@ -2792,8 +2746,8 @@ void CGraph::ComputeStaticRoutingTables()
 					else
 					{
 						m_nRouteInfo = nRoute;
-						m_pRouteInfo = (std::int8_t*)calloc(sizeof(std::int8_t), nRoute);
-						memcpy(m_pRouteInfo, pRoute, nRoute);
+						m_pRouteInfo = std::make_unique<std::int8_t[]>(nRoute);
+						memcpy(m_pRouteInfo.get(), route.get(), nRoute);
 						m_pNodes[iFrom].m_pNextBestNode[iHull][iCap] = 0;
 						nTotalCompressedSize += CompressedSize;
 					}
@@ -2802,14 +2756,10 @@ void CGraph::ComputeStaticRoutingTables()
 		}
 		ALERT(at_aiconsole, "Size of Routes = %d\n", nTotalCompressedSize);
 	}
-	if (Routes) delete Routes;
-	if (BestNextNodes) delete BestNextNodes;
-	if (pRoute) delete pRoute;
-	if (pMyPath) delete pMyPath;
-	Routes = nullptr;
-	BestNextNodes = nullptr;
-	pRoute = nullptr;
-	pMyPath = nullptr;
+	catch (const std::bad_alloc&)
+	{
+		//TODO: need to wipe partial routing data
+	}
 
 #if 0
 	TestRoutingTables();
@@ -2819,127 +2769,126 @@ void CGraph::ComputeStaticRoutingTables()
 
 void CGraph::TestRoutingTables()
 {
-	int* pMyPath = new int[m_cNodes];
-	int* pMyPath2 = new int[m_cNodes];
-	if (pMyPath && pMyPath2)
+	try
 	{
-		for (int iHull = 0; iHull < MAX_NODE_HULLS; iHull++)
+		auto myPath = std::make_unique<int[]>(m_cNodes);
+		auto myPath2 = std::make_unique<int[]>(m_cNodes);
+		if (myPath && myPath2)
 		{
-			for (int iCap = 0; iCap < 2; iCap++)
+			for (int iHull = 0; iHull < MAX_NODE_HULLS; iHull++)
 			{
-				int iCapMask;
-				switch (iCap)
+				for (int iCap = 0; iCap < 2; iCap++)
 				{
-				case 0:
-					iCapMask = 0;
-					break;
-
-				case 1:
-					iCapMask = bits_CAP_OPEN_DOORS | bits_CAP_AUTO_DOORS | bits_CAP_USE;
-					break;
-				}
-
-				for (int iFrom = 0; iFrom < m_cNodes; iFrom++)
-				{
-					for (int iTo = 0; iTo < m_cNodes; iTo++)
+					int iCapMask;
+					switch (iCap)
 					{
-						m_fRoutingComplete = false;
-						int cPathSize1 = FindShortestPath(pMyPath, iFrom, iTo, iHull, iCapMask);
-						m_fRoutingComplete = true;
-						int cPathSize2 = FindShortestPath(pMyPath2, iFrom, iTo, iHull, iCapMask);
+					case 0:
+						iCapMask = 0;
+						break;
 
-						// Unless we can look at the entire path, we can verify that it's correct.
-						//
-						if (cPathSize2 == MAX_PATH_SIZE) continue;
+					case 1:
+						iCapMask = bits_CAP_OPEN_DOORS | bits_CAP_AUTO_DOORS | bits_CAP_USE;
+						break;
+					}
 
-						// Compare distances.
-						//
-#if 1
-						float flDistance1 = 0.0;
-
-						for (int i = 0; i < cPathSize1 - 1; i++)
+					for (int iFrom = 0; iFrom < m_cNodes; iFrom++)
+					{
+						for (int iTo = 0; iTo < m_cNodes; iTo++)
 						{
-							// Find the link from pMyPath[i] to pMyPath[i+1]
-							//
-							if (pMyPath[i] == pMyPath[i + 1]) continue;
-							int iVisitNode;
-							bool bFound = false;
-							for (int iLink = 0; iLink < m_pNodes[pMyPath[i]].m_cNumLinks; iLink++)
-							{
-								iVisitNode = INodeLink(pMyPath[i], iLink);
-								if (iVisitNode == pMyPath[i + 1])
-								{
-									flDistance1 += m_pLinkPool[m_pNodes[pMyPath[i]].m_iFirstLink + iLink].m_flWeight;
-									bFound = true;
-									break;
-								}
-							}
-							if (!bFound)
-							{
-								ALERT(at_aiconsole, "No link.\n");
-							}
-						}
-
-						float flDistance2 = 0.0;
-						for (int i = 0; i < cPathSize2 - 1; i++)
-						{
-							// Find the link from pMyPath2[i] to pMyPath2[i+1]
-							//
-							if (pMyPath2[i] == pMyPath2[i + 1]) continue;
-							int iVisitNode;
-							bool bFound = false;
-							for (int iLink = 0; iLink < m_pNodes[pMyPath2[i]].m_cNumLinks; iLink++)
-							{
-								iVisitNode = INodeLink(pMyPath2[i], iLink);
-								if (iVisitNode == pMyPath2[i + 1])
-								{
-									flDistance2 += m_pLinkPool[m_pNodes[pMyPath2[i]].m_iFirstLink + iLink].m_flWeight;
-									bFound = true;
-									break;
-								}
-							}
-							if (!bFound)
-							{
-								ALERT(at_aiconsole, "No link.\n");
-							}
-						}
-						if (fabs(flDistance1 - flDistance2) > 0.10)
-						{
-#else
-						if (cPathSize1 != cPathSize2 || memcmp(pMyPath, pMyPath2, sizeof(int) * cPathSize1) != 0)
-						{
-#endif
-							ALERT(at_aiconsole, "Routing is inconsistent!!!\n");
-							ALERT(at_aiconsole, "(%d to %d |%d/%d)1:", iFrom, iTo, iHull, iCap);
-							for (int i = 0; i < cPathSize1; i++)
-							{
-								ALERT(at_aiconsole, "%d ", pMyPath[i]);
-							}
-							ALERT(at_aiconsole, "\n(%d to %d |%d/%d)2:", iFrom, iTo, iHull, iCap);
-							for (int i = 0; i < cPathSize2; i++)
-							{
-								ALERT(at_aiconsole, "%d ", pMyPath2[i]);
-							}
-							ALERT(at_aiconsole, "\n");
 							m_fRoutingComplete = false;
-							cPathSize1 = FindShortestPath(pMyPath, iFrom, iTo, iHull, iCapMask);
+							int cPathSize1 = FindShortestPath(myPath.get(), iFrom, iTo, iHull, iCapMask);
 							m_fRoutingComplete = true;
-							cPathSize2 = FindShortestPath(pMyPath2, iFrom, iTo, iHull, iCapMask);
-							goto EnoughSaid;
-						}
+							int cPathSize2 = FindShortestPath(myPath2.get(), iFrom, iTo, iHull, iCapMask);
+
+							// Unless we can look at the entire path, we can verify that it's correct.
+							//
+							if (cPathSize2 == MAX_PATH_SIZE) continue;
+
+							// Compare distances.
+							//
+#if 1
+							float flDistance1 = 0.0;
+
+							for (int i = 0; i < cPathSize1 - 1; i++)
+							{
+								// Find the link from pMyPath[i] to pMyPath[i+1]
+								//
+								if (myPath[i] == myPath[i + 1]) continue;
+								int iVisitNode;
+								bool bFound = false;
+								for (int iLink = 0; iLink < m_pNodes[myPath[i]].m_cNumLinks; iLink++)
+								{
+									iVisitNode = INodeLink(myPath[i], iLink);
+									if (iVisitNode == myPath[i + 1])
+									{
+										flDistance1 += m_pLinkPool[m_pNodes[myPath[i]].m_iFirstLink + iLink].m_flWeight;
+										bFound = true;
+										break;
+									}
+								}
+								if (!bFound)
+								{
+									ALERT(at_aiconsole, "No link.\n");
+								}
+							}
+
+							float flDistance2 = 0.0;
+							for (int i = 0; i < cPathSize2 - 1; i++)
+							{
+								// Find the link from pMyPath2[i] to pMyPath2[i+1]
+								//
+								if (myPath2[i] == myPath2[i + 1]) continue;
+								int iVisitNode;
+								bool bFound = false;
+								for (int iLink = 0; iLink < m_pNodes[myPath2[i]].m_cNumLinks; iLink++)
+								{
+									iVisitNode = INodeLink(myPath2[i], iLink);
+									if (iVisitNode == myPath2[i + 1])
+									{
+										flDistance2 += m_pLinkPool[m_pNodes[myPath2[i]].m_iFirstLink + iLink].m_flWeight;
+										bFound = true;
+										break;
+									}
+								}
+								if (!bFound)
+								{
+									ALERT(at_aiconsole, "No link.\n");
+								}
+							}
+							if (fabs(flDistance1 - flDistance2) > 0.10)
+							{
+#else
+							if (cPathSize1 != cPathSize2 || memcmp(myPath.get(), myPath2.get(), sizeof(int) * cPathSize1) != 0)
+							{
+#endif
+								ALERT(at_aiconsole, "Routing is inconsistent!!!\n");
+								ALERT(at_aiconsole, "(%d to %d |%d/%d)1:", iFrom, iTo, iHull, iCap);
+								for (int i = 0; i < cPathSize1; i++)
+								{
+									ALERT(at_aiconsole, "%d ", myPath[i]);
+								}
+								ALERT(at_aiconsole, "\n(%d to %d |%d/%d)2:", iFrom, iTo, iHull, iCap);
+								for (int i = 0; i < cPathSize2; i++)
+								{
+									ALERT(at_aiconsole, "%d ", myPath2[i]);
+								}
+								ALERT(at_aiconsole, "\n");
+								m_fRoutingComplete = false;
+								cPathSize1 = FindShortestPath(myPath.get(), iFrom, iTo, iHull, iCapMask);
+								m_fRoutingComplete = true;
+								cPathSize2 = FindShortestPath(myPath2.get(), iFrom, iTo, iHull, iCapMask);
+								return;
+							}
 						}
 					}
 				}
 			}
 		}
-
-EnoughSaid:
-
-	if (pMyPath) delete pMyPath;
-	if (pMyPath2) delete pMyPath2;
-	pMyPath = nullptr;
-	pMyPath2 = nullptr;
 	}
+	catch (const std::bad_alloc&)
+	{
+	}
+}
 
 /**
 *	@brief Draws a graph of the shorted path from all nodes to current location (typically the player).
