@@ -12,6 +12,9 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
+
+#include <limits>
+
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -769,8 +772,7 @@ CBaseEntity* CTalkMonster::FindNearestFriend(bool fPlayer)
 {
 	CBaseEntity* pFriend = nullptr;
 	CBaseEntity* pNearest = nullptr;
-	//TODO: use proper constant
-	float range = 10000000.0;
+	float range = std::numeric_limits<float>::max();
 	TraceResult tr;
 	Vector vecStart = pev->origin;
 	Vector vecCheck;

@@ -14,14 +14,15 @@
 ****/
 
 #include <filesystem>
+#include <limits>
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-#include	"nodes.h"
-#include	"animation.h"
-#include	"doors.h"
+#include "extdll.h"
+#include "util.h"
+#include "cbase.h"
+#include "monsters.h"
+#include "nodes.h"
+#include "animation.h"
+#include "doors.h"
 #include "dll_functions.hpp"
 #include "corpse.hpp"
 
@@ -2627,9 +2628,8 @@ void CGraph::BuildRegionTables()
 	int i;
 	for (i = 0; i < 3; i++)
 	{
-		//TODO: use constants
-		m_RegionMin[i] = 999999999.0; // just a big number out there;
-		m_RegionMax[i] = -999999999.0; // just a big number out there;
+		m_RegionMin[i] = std::numeric_limits<float>::max(); // just a big number out there;
+		m_RegionMax[i] = std::numeric_limits<float>::lowest(); // just a big number out there;
 	}
 	for (i = 0; i < m_cNodes; i++)
 	{

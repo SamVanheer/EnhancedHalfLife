@@ -32,6 +32,14 @@ constexpr int SF_BUTTON_TOUCH_ONLY = 256;	// button only fires as a result of US
 
 constexpr int SF_GLOBAL_SET = 1;			// Set global state to initial state on spawn
 
+enum class GlobalTriggerMode
+{
+	Off,
+	On,
+	Dead,
+	Toggle
+};
+
 class CEnvGlobal : public CPointEntity
 {
 public:
@@ -45,7 +53,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	string_t	m_globalstate;
-	int			m_triggermode;
+	GlobalTriggerMode m_triggermode;
 	GlobalEntState m_initialstate;
 };
 
@@ -66,8 +74,8 @@ void CEnvGlobal::KeyValue(KeyValueData* pkvd)
 
 	if (FStrEq(pkvd->szKeyName, "globalstate"))		// State name
 		m_globalstate = ALLOC_STRING(pkvd->szValue);
-	else if (FStrEq(pkvd->szKeyName, "triggermode"))
-		m_triggermode = atoi(pkvd->szValue);
+	else if (FStrEq(pkvd->szKeyName, "triggermode")) //TODO: validate input
+		m_triggermode = static_cast<GlobalTriggerMode>(atoi(pkvd->szValue));
 	else if (FStrEq(pkvd->szKeyName, "initialstate")) //TODO: validate input
 		m_initialstate = static_cast<GlobalEntState>(atoi(pkvd->szValue));
 	else
@@ -93,23 +101,22 @@ void CEnvGlobal::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 	GlobalEntState oldState = gGlobalState.EntityGetState(m_globalstate);
 	GlobalEntState newState;
 
-	//TODO: define constants
 	switch (m_triggermode)
 	{
-	case 0:
+	case GlobalTriggerMode::Off:
 		newState = GlobalEntState::Off;
 		break;
 
-	case 1:
+	case GlobalTriggerMode::On:
 		newState = GlobalEntState::On;
 		break;
 
-	case 2:
+	case GlobalTriggerMode::Dead:
 		newState = GlobalEntState::Dead;
 		break;
 
 	default:
-	case 3:
+	case GlobalTriggerMode::Toggle:
 		if (oldState == GlobalEntState::On)
 			newState = GlobalEntState::Off;
 		else if (oldState == GlobalEntState::Off)

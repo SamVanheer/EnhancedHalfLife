@@ -1042,14 +1042,14 @@ Schedule_t* CBaseMonster::GetScheduleOfType(int Type)
 
 		switch (m_pCine->m_fMoveTo)
 		{
-		case 0:
-		case 4:
+		case ScriptedMoveTo::No:
+		case ScriptedMoveTo::Instantaneous:
 			return slWaitScript;
-		case 1:
+		case ScriptedMoveTo::Walk:
 			return slWalkToScript;
-		case 2:
+		case ScriptedMoveTo::Run:
 			return slRunToScript;
-		case 5:
+		case ScriptedMoveTo::TurnToFace:
 			return slFaceScript;
 		}
 		break;

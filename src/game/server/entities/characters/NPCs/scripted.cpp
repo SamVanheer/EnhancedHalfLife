@@ -41,7 +41,8 @@ void CCineMonster::KeyValue(KeyValueData* pkvd)
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_fMoveTo"))
 	{
-		m_fMoveTo = atoi(pkvd->szValue);
+		//TODO: validate input
+		m_fMoveTo = static_cast<ScriptedMoveTo>(atoi(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_flRepeat"))
@@ -273,24 +274,23 @@ void CCineMonster::PossessEntity()
 		m_saved_effects = pTarget->pev->effects;
 		pTarget->pev->effects |= pev->effects;
 
-		//TODO: define constants
 		switch (m_fMoveTo)
 		{
-		case 0:
+		case ScriptedMoveTo::No:
 			pTarget->m_scriptState = ScriptState::Wait;
 			break;
 
-		case 1:
+		case ScriptedMoveTo::Walk:
 			pTarget->m_scriptState = ScriptState::WalkToMark;
 			DelayStart(1);
 			break;
 
-		case 2:
+		case ScriptedMoveTo::Run:
 			pTarget->m_scriptState = ScriptState::RunToMark;
 			DelayStart(1);
 			break;
 
-		case 4:
+		case ScriptedMoveTo::Instantaneous:
 			UTIL_SetOrigin(pTarget->pev, pev->origin);
 			pTarget->pev->ideal_yaw = pev->angles.y;
 			pTarget->pev->avelocity = vec3_origin;
@@ -343,23 +343,22 @@ void CCineAI::PossessEntity()
 		m_saved_effects = pTarget->pev->effects;
 		pTarget->pev->effects |= pev->effects;
 
-		//TODO: define constants
 		switch (m_fMoveTo)
 		{
-		case 0:
-		case 5:
+		case ScriptedMoveTo::No:
+		case ScriptedMoveTo::TurnToFace:
 			pTarget->m_scriptState = ScriptState::Wait;
 			break;
 
-		case 1:
+		case ScriptedMoveTo::Walk:
 			pTarget->m_scriptState = ScriptState::WalkToMark;
 			break;
 
-		case 2:
+		case ScriptedMoveTo::Run:
 			pTarget->m_scriptState = ScriptState::RunToMark;
 			break;
 
-		case 4:
+		case ScriptedMoveTo::Instantaneous:
 			// zap the monster instantly to the site of the script entity.
 			UTIL_SetOrigin(pTarget->pev, pev->origin);
 			pTarget->pev->ideal_yaw = pev->angles.y;
@@ -798,6 +797,14 @@ bool CBaseMonster::CineCleanup()
 	return true;
 }
 
+enum class SentenceAttenuation
+{
+	SmallRadius,
+	MediumRadius,
+	LargeRadius,
+	PlayEverywhere
+};
+
 class CScriptedSentence : public CBaseToggle
 {
 public:
@@ -919,23 +926,22 @@ void CScriptedSentence::Spawn()
 		pev->nextthink = gpGlobals->time + 1.0;
 	}
 
-	//TODO: define constants
-	switch (pev->impulse)
+	switch (static_cast<SentenceAttenuation>(pev->impulse))
 	{
-	case 1: // Medium radius
+	case SentenceAttenuation::MediumRadius: // Medium radius
 		m_flAttenuation = ATTN_STATIC;
 		break;
 
-	case 2:	// Large radius
+	case SentenceAttenuation::LargeRadius:	// Large radius
 		m_flAttenuation = ATTN_NORM;
 		break;
 
-	case 3:	//EVERYWHERE
+	case SentenceAttenuation::PlayEverywhere:	//EVERYWHERE
 		m_flAttenuation = ATTN_NONE;
 		break;
 
 	default:
-	case 0: // Small radius
+	case SentenceAttenuation::SmallRadius: // Small radius
 		m_flAttenuation = ATTN_IDLE;
 		break;
 	}

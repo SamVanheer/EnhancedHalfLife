@@ -41,6 +41,15 @@ enum SS_INTERRUPT
 constexpr int SCRIPT_FINISHSCHED_DEFAULT = 0;
 constexpr int SCRIPT_FINISHSCHED_AMBUSH = 1;
 
+enum class ScriptedMoveTo
+{
+	No = 0,
+	Walk = 1,
+	Run = 2,
+	Instantaneous = 4,
+	TurnToFace = 5
+};
+
 /**
 *	@details Not sure if this is still accurate:
 *	targetname "me" - there can be more than one with the same name, and they act in concert
@@ -129,7 +138,7 @@ public:
 	string_t m_iszIdle;		// string index for idle animation
 	string_t m_iszPlay;		// string index for scripted animation
 	string_t m_iszEntity;	// entity that is wanted for this script
-	int m_fMoveTo;
+	ScriptedMoveTo m_fMoveTo;
 	int m_iFinishSchedule;
 	float m_flRadius;		// range to search
 	float m_flRepeat;	// repeat rate
