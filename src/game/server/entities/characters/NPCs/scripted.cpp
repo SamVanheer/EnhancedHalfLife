@@ -197,17 +197,6 @@ void CCineMonster::Touch(CBaseEntity* pOther)
 }
 */
 
-void CCineMonster::Die()
-{
-	SetThink(&CCineMonster::SUB_Remove);
-}
-
-//TODO: remove
-void CCineMonster::Pain()
-{
-
-}
-
 bool CCineMonster::FindEntity()
 {
 	edict_t* pentTarget;
@@ -1084,12 +1073,6 @@ public:
 	void Spawn() override;
 
 	/**
-	*	@brief Furniture is killed
-	*	TODO: never used?
-	*/
-	void Die();
-
-	/**
 	*	@brief ID's Furniture as neutral (noone will attack it)
 	*/
 	int	 Classify() override;
@@ -1097,12 +1080,6 @@ public:
 };
 
 LINK_ENTITY_TO_CLASS(monster_furniture, CFurniture);
-
-void CFurniture::Die()
-{
-	SetThink(&CFurniture::SUB_Remove);
-	pev->nextthink = gpGlobals->time;
-}
 
 void CFurniture::Spawn()
 {

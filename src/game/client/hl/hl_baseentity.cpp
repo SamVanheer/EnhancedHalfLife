@@ -258,7 +258,6 @@ void CBasePlayer::UpdatePlayerSound() { }
 void CBasePlayer::PostThink() { }
 void CBasePlayer::Precache() { }
 bool CBasePlayer::Save(CSave& save) { return false; }
-void CBasePlayer::RenewItems() { }
 bool CBasePlayer::Restore(CRestore& restore) { return false; }
 void CBasePlayer::SelectNextItem(int iItem) { }
 bool CBasePlayer::HasWeapons() { return false; }

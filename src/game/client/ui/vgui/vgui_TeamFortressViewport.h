@@ -45,8 +45,6 @@ class DragNDropPanel;
 class CTransparentPanel;
 class TeamFortressViewport;
 
-char* GetVGUITGAName(const char* pszName);
-
 /**
 *	@brief Loads a .tga file and returns a pointer to the VGUI tga object
 */

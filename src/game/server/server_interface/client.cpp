@@ -12,8 +12,6 @@
 *   without written permission from Valve LLC.
 *
 ****/
-// Robin, 4-22-98: Moved set_suicide_frame() here from player.cpp to allow us to 
-//				   have one without a hardcoded player.mdl in tf_client.cpp
 
 #include "extdll.h"
 #include "util.h"
@@ -45,23 +43,6 @@ extern DLL_GLOBAL uint32	g_ulFrameCount;
 extern bool giPrecacheGrunt;
 
 extern bool g_teamplay;
-
-//TODO: never used
-/*
- * used by kill command and disconnect command
- * ROBIN: Moved here from player.cpp, to allow multiple player models
- */
-void set_suicide_frame(entvars_t* pev)
-{
-	if (!FStrEq(STRING(pev->model), "models/player.mdl"))
-		return; // allready gibbed
-
-//	pev->frame		= $deatha11;
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_TOSS;
-	pev->deadflag = DEAD_DEAD;
-	pev->nextthink = -1;
-}
 
 qboolean ClientConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128])
 {

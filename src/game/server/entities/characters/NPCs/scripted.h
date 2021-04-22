@@ -78,8 +78,6 @@ public:
 
 	// void EXPORT CineSpawnThink();
 	void EXPORT CineThink();
-	void Pain();
-	void Die();
 
 	/**
 	*	@brief find all the cinematic entities with my targetname and tell them to wait before starting

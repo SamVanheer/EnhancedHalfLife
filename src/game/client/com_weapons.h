@@ -18,10 +18,6 @@
 struct edict_t;
 struct local_state_t;
 
-/**
-*	@brief Log debug messages to file ( appends )
-*/
-void			COM_Log(const char* pszFile, const char* fmt, ...);
 bool CL_IsDead();
 
 float			UTIL_SharedRandomFloat(unsigned int seed, float low, float high);

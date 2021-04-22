@@ -199,10 +199,7 @@ public:
 	virtual bool	IsMoving() { return pev->velocity != vec3_origin; }
 	virtual void	OverrideReset() {}
 	virtual int		DamageDecal(int bitsDamageType);
-	virtual void    StartSneaking() {}
-	virtual void    StopSneaking() {}
 	virtual bool	OnControls(entvars_t* pev) { return false; }
-	virtual bool    IsSneaking() { return false; }
 	virtual bool	IsAlive() { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
 	virtual bool	IsBSPModel() { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
 	virtual bool	ReflectGauss() { return (IsBSPModel() && !pev->takedamage); }

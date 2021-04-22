@@ -34,36 +34,6 @@
 */
 local_state_t* g_finalstate = nullptr;
 
-//TODO: never used
-void COM_Log(const char* pszFile, const char* fmt, ...)
-{
-	va_list		argptr;
-	char		string[1024];
-	const char* pfilename;
-
-	if (!pszFile)
-	{
-		pfilename = "c:\\hllog.txt";
-	}
-	else
-	{
-		pfilename = pszFile;
-	}
-
-	va_start(argptr, fmt);
-	vsnprintf(string, sizeof(string), fmt, argptr);
-	va_end(argptr);
-
-	//Now logs to "game/moddir" instead of "game"
-	auto fileHandle = g_pFileSystem->Open(pfilename, "a+t", "GAMECONFIG");
-
-	if (fileHandle != FILESYSTEM_INVALID_HANDLE)
-	{
-		g_pFileSystem->FPrintf(fileHandle, "%s", string);
-		g_pFileSystem->Close(fileHandle);
-	}
-}
-
 /**
 *	@brief remember the current animation for the view model, in case we get out of sync with server.
 */

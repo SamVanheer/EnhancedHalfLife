@@ -92,7 +92,6 @@ TYPEDESCRIPTION	CBasePlayer::m_playerSaveData[] =
 	DEFINE_ARRAY(CBasePlayer, m_rgAmmo, FIELD_INTEGER, MAX_AMMO_TYPES),
 	DEFINE_FIELD(CBasePlayer, m_idrowndmg, FIELD_INTEGER),
 	DEFINE_FIELD(CBasePlayer, m_idrownrestored, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayer, m_tSneaking, FIELD_TIME),
 
 	DEFINE_FIELD(CBasePlayer, m_iTrain, FIELD_INTEGER),
 	DEFINE_FIELD(CBasePlayer, m_bitsHUDDamage, FIELD_INTEGER),
@@ -2477,7 +2476,6 @@ void CBasePlayer::Spawn()
 
 	m_bloodColor = BLOOD_COLOR_RED;
 	m_flNextAttack = UTIL_WeaponTimeBase();
-	StartSneaking();
 
 	m_iFlashBattery = 99;
 	m_flFlashLightTime = 1; // force first message
@@ -2578,11 +2576,6 @@ bool CBasePlayer::Save(CSave& save)
 	return save.WriteFields("PLAYER", this, m_playerSaveData, ArraySize(m_playerSaveData));
 }
 
-void CBasePlayer::RenewItems()
-{
-	//TODO: remove
-}
-
 bool CBasePlayer::Restore(CRestore& restore)
 {
 	if (!CBaseMonster::Restore(restore))
@@ -2633,8 +2626,6 @@ bool CBasePlayer::Restore(CRestore& restore)
 	{
 		g_engfuncs.pfnSetPhysicsKeyValue(edict(), "slj", "0");
 	}
-
-	RenewItems();
 
 #if defined( CLIENT_WEAPONS )
 	// HACK:	This variable is saved/restored in CBaseMonster as a time variable, but we're using it

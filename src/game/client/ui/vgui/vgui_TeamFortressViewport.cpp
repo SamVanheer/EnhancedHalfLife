@@ -99,29 +99,6 @@ int iTeamColors[5][3] =
 	{ 145, 215, 140 },	// Green
 };
 
-/**
-*	@brief Get the name of TGA file, based on GameDir
-*/
-//TODO: never used?
-char* GetVGUITGAName(const char* pszName)
-{
-	int i;
-	char sz[256];
-	static char gd[sizeof(sz) * 2];
-	const char* gamedir;
-
-	if (ScreenWidth < 640)
-		i = 320;
-	else
-		i = 640;
-	snprintf(sz, sizeof(sz), pszName, i);
-
-	gamedir = gEngfuncs.pfnGetGameDirectory();
-	snprintf(gd, sizeof(gd), "%s/gfx/vgui/%s.tga", gamedir, sz);
-
-	return gd;
-}
-
 void CCommandMenu::AddButton(CommandButton* pButton)
 {
 	if (m_iButtons >= MAX_BUTTONS)
