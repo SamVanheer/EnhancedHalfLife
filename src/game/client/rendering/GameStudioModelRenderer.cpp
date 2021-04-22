@@ -32,9 +32,8 @@
 */
 extern engine_studio_api_t IEngineStudio;
 
-//TODO: not created on the stack
 /**
-*	@brief The renderer object, created on the stack.
+*	@brief The renderer object
 */
 CGameStudioModelRenderer g_StudioRenderer;
 
