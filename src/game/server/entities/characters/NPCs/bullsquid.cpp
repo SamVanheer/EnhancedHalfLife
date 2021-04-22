@@ -18,7 +18,7 @@
 #include "cbase.h"
 #include "monsters.h"
 #include "schedule.h"
-#include "nodes.h"
+#include "navigation/nodes.h"
 #include "effects.h"
 #include "decals.hpp"
 #include "soundent.h"

@@ -25,7 +25,7 @@
 #include "monsters.h"
 #include "animation.h"
 #include "scripted.h"
-#include "nodes.h"
+#include "navigation/nodes.h"
 #include "defaultai.h"
 #include "soundent.h"
 

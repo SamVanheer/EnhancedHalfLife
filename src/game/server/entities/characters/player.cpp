@@ -27,7 +27,7 @@
 #include "cbase.h"
 #include "player.h"
 #include "trains.h"
-#include "nodes.h"
+#include "navigation/nodes.h"
 #include "weapons.h"
 #include "soundent.h"
 #include "monsters.h"

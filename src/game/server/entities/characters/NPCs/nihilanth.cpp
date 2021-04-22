@@ -18,7 +18,7 @@
 #include "cbase.h"
 #include "monsters.h"
 #include "weapons.h"
-#include "nodes.h"
+#include "navigation/nodes.h"
 #include "effects.h"
 
 constexpr int N_SCALE = 15;

@@ -22,7 +22,7 @@
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
-#include "nodes.h"
+#include "navigation/nodes.h"
 #include "soundent.h"
 #include "client.h"
 #include "decals.hpp"

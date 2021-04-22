@@ -38,8 +38,6 @@ target_sources(hl PRIVATE
 	decals.hpp
 	extdll.h
 	globals.cpp
-	nodes.cpp
-	nodes.h
 	plane.cpp
 	plane.h
 	skill.cpp
@@ -159,6 +157,8 @@ target_sources(hl PRIVATE
 	gamerules/singleplay_gamerules.cpp
 	gamerules/teamplay_gamerules.cpp
 	gamerules/teamplay_gamerules.h
+	navigation/nodes.cpp
+	navigation/nodes.h
 	persistence/globalstate.cpp
 	persistence/globalstate.hpp
 	persistence/saverestore.cpp
