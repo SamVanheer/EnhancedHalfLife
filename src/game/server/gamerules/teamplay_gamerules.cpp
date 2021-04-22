@@ -13,6 +13,8 @@
 *
 ****/
 
+#include <limits>
+
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -96,7 +98,7 @@ void CHalfLifeTeamplay::Think()
 	float flFragLimit = fraglimit.value;
 	if (flFragLimit)
 	{
-		int bestfrags = 9999;
+		int bestfrags = std::numeric_limits<int>::max();
 		int remain;
 
 		// check if any team is over the frag limit

@@ -13,6 +13,8 @@
 *
 ****/
 
+#include <limits>
+
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -205,7 +207,7 @@ void CHalfLifeMultiplay::Think()
 
 	if (flFragLimit)
 	{
-		int bestfrags = 9999;
+		int bestfrags = std::numeric_limits<int>::max();
 		int remain;
 
 		// check if any player is over the frag limit

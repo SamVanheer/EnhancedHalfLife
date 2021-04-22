@@ -16,6 +16,8 @@
 // $NoKeywords: $
 //=============================================================================
 
+#include <limits>
+
 #include <VGUI_LineBorder.h>
 
 #include "hud.h"
@@ -344,7 +346,7 @@ void ScorePanel::SortTeams()
 	// Draw the teams
 	while (true)
 	{
-		int highest_frags = -99999; int lowest_deaths = 99999;
+		int highest_frags = std::numeric_limits<int>::lowest(); int lowest_deaths = std::numeric_limits<int>::max();
 		int best_team = 0;
 
 		for (i = 1; i <= m_iNumTeams; i++)
@@ -389,7 +391,7 @@ void ScorePanel::SortPlayers(TeamType iTeam, char* team)
 	while (true)
 	{
 		// Find the top ranking player
-		int highest_frags = -99999;	int lowest_deaths = 99999;
+		int highest_frags = std::numeric_limits<int>::lowest();	int lowest_deaths = std::numeric_limits<int>::max();
 		int best_player;
 		best_player = 0;
 

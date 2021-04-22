@@ -269,7 +269,7 @@ int	CGraph::FindNearestLink(const Vector& vecTestPoint, int* piNearestLink, bool
 	iNearestLink = -1;// prepare for failure
 	fSuccess = false;
 
-	flMinDist = 9999;// anything will be closer than this
+	flMinDist = std::numeric_limits<float>::max();// anything will be closer than this
 
 // go through all of the nodes, and each node's connections	
 	int	cSkip = 0;// how many links proper pairing allowed us to skip
@@ -838,7 +838,7 @@ int	CGraph::FindNearestNode(const Vector& vecOrigin, int afNodeTypes)
 	}
 
 	m_iNearest = -1;
-	m_flShortest = 999999.0; // just a big number.
+	m_flShortest = std::numeric_limits<float>::max(); // just a big number.
 
 	// If we can find a visible point, then let CalcBounds set the limits, but if
 	// we have no visible point at all to start with, then don't restrict the limits.
@@ -2861,7 +2861,7 @@ void CGraph::ComputeStaticRoutingTables()
 
 					// Compress this node's routing table.
 					//
-					int iLastNode = 9999999; // just really big.
+					int iLastNode = std::numeric_limits<int>::max(); // just really big.
 					int cSequence = 0;
 					int cRepeats = 0;
 					int CompressedSize = 0;
