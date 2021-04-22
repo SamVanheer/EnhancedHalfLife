@@ -257,9 +257,9 @@ void KeyDown(kbutton_t* b)
 		return;
 	}
 
-	if (b->state & 1)
+	if (b->state & KEYBUTTON_DOWN)
 		return;		// still down
-	b->state |= 1 + 2;	// down + impulse down
+	b->state |= KEYBUTTON_DOWN + KEYBUTTON_IMPULSE_DOWN;
 }
 
 void KeyUp(kbutton_t* b)
@@ -273,7 +273,7 @@ void KeyUp(kbutton_t* b)
 	else
 	{ // typed manually at the console, assume for unsticking, so clear all
 		b->down[0] = b->down[1] = 0;
-		b->state = 4;	// impulse up
+		b->state = KEYBUTTON_IMPULSE_UP;	// impulse up
 		return;
 	}
 
@@ -289,11 +289,11 @@ void KeyUp(kbutton_t* b)
 		return;		// some other key is still holding it down
 	}
 
-	if (!(b->state & 1))
+	if (!(b->state & KEYBUTTON_DOWN))
 		return;		// still up (this should not happen)
 
-	b->state &= ~1;		// now up
-	b->state |= 4; 		// impulse up
+	b->state &= ~KEYBUTTON_DOWN;		// now up
+	b->state |= KEYBUTTON_IMPULSE_UP; 		// impulse up
 }
 
 int DLLEXPORT HUD_Key_Event(int down, int keynum, const char* pszCurrentBinding)
@@ -454,7 +454,7 @@ void IN_ScoreUp()
 void IN_MLookUp()
 {
 	KeyUp(&in_mlook);
-	if (!(in_mlook.state & 1) && lookspring->value)
+	if (!(in_mlook.state & KEYBUTTON_DOWN) && lookspring->value)
 	{
 		V_StartPitchDrift();
 	}
@@ -471,9 +471,9 @@ float CL_KeyState(kbutton_t* key)
 	float		val = 0.0;
 	int			impulsedown, impulseup, down;
 
-	impulsedown = key->state & 2;
-	impulseup = key->state & 4;
-	down = key->state & 1;
+	impulsedown = key->state & KEYBUTTON_IMPULSE_DOWN;
+	impulseup = key->state & KEYBUTTON_IMPULSE_UP;
+	down = key->state & KEYBUTTON_DOWN;
 
 	if (impulsedown && !impulseup)
 	{
@@ -508,7 +508,7 @@ float CL_KeyState(kbutton_t* key)
 	}
 
 	// clear impulses
-	key->state &= 1;
+	key->state &= KEYBUTTON_DOWN;
 	return val;
 }
 
@@ -520,7 +520,7 @@ void CL_AdjustAngles(float frametime, float* viewangles)
 	float	speed;
 	float	up, down;
 
-	if (in_speed.state & 1)
+	if (in_speed.state & KEYBUTTON_DOWN)
 	{
 		speed = frametime * cl_anglespeedkey->value;
 	}
@@ -529,13 +529,13 @@ void CL_AdjustAngles(float frametime, float* viewangles)
 		speed = frametime;
 	}
 
-	if (!(in_strafe.state & 1))
+	if (!(in_strafe.state & KEYBUTTON_DOWN))
 	{
 		viewangles[YAW] -= speed * cl_yawspeed->value * CL_KeyState(&in_right);
 		viewangles[YAW] += speed * cl_yawspeed->value * CL_KeyState(&in_left);
 		viewangles[YAW] = anglemod(viewangles[YAW]);
 	}
-	if (in_klook.state & 1)
+	if (in_klook.state & KEYBUTTON_DOWN)
 	{
 		V_StopPitchDrift();
 		viewangles[PITCH] -= speed * cl_pitchspeed->value * CL_KeyState(&in_forward);
@@ -580,7 +580,7 @@ void DLLEXPORT CL_CreateMove(float frametime, usercmd_t* cmd, int active)
 
 		gEngfuncs.SetViewAngles(viewangles);
 
-		if (in_strafe.state & 1)
+		if (in_strafe.state & KEYBUTTON_DOWN)
 		{
 			cmd->sidemove += cl_sidespeed->value * CL_KeyState(&in_right);
 			cmd->sidemove -= cl_sidespeed->value * CL_KeyState(&in_left);
@@ -592,14 +592,14 @@ void DLLEXPORT CL_CreateMove(float frametime, usercmd_t* cmd, int active)
 		cmd->upmove += cl_upspeed->value * CL_KeyState(&in_up);
 		cmd->upmove -= cl_upspeed->value * CL_KeyState(&in_down);
 
-		if (!(in_klook.state & 1))
+		if (!(in_klook.state & KEYBUTTON_DOWN))
 		{
 			cmd->forwardmove += cl_forwardspeed->value * CL_KeyState(&in_forward);
 			cmd->forwardmove -= cl_backspeed->value * CL_KeyState(&in_back);
 		}
 
 		// adjust for speed key
-		if (in_speed.state & 1)
+		if (in_speed.state & KEYBUTTON_DOWN)
 		{
 			cmd->forwardmove *= cl_movespeedkey->value;
 			cmd->sidemove *= cl_movespeedkey->value;
@@ -679,36 +679,37 @@ bool CL_IsDead()
 *	@brief Returns appropriate button info for keyboard and mouse state
 *	Set bResetState to 1 to clear old state info
 */
+//TODO: bool param
 int CL_ButtonBits(int bResetState)
 {
 	int bits = 0;
 
-	if (in_attack.state & 3)
+	if (in_attack.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_ATTACK;
 	}
 
-	if (in_duck.state & 3)
+	if (in_duck.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_DUCK;
 	}
 
-	if (in_jump.state & 3)
+	if (in_jump.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_JUMP;
 	}
 
-	if (in_forward.state & 3)
+	if (in_forward.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_FORWARD;
 	}
 
-	if (in_back.state & 3)
+	if (in_back.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_BACK;
 	}
 
-	if (in_use.state & 3)
+	if (in_use.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_USE;
 	}
@@ -718,42 +719,42 @@ int CL_ButtonBits(int bResetState)
 		bits |= IN_CANCEL;
 	}
 
-	if (in_left.state & 3)
+	if (in_left.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_LEFT;
 	}
 
-	if (in_right.state & 3)
+	if (in_right.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_RIGHT;
 	}
 
-	if (in_moveleft.state & 3)
+	if (in_moveleft.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_MOVELEFT;
 	}
 
-	if (in_moveright.state & 3)
+	if (in_moveright.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_MOVERIGHT;
 	}
 
-	if (in_attack2.state & 3)
+	if (in_attack2.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_ATTACK2;
 	}
 
-	if (in_reload.state & 3)
+	if (in_reload.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_RELOAD;
 	}
 
-	if (in_alt1.state & 3)
+	if (in_alt1.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_ALT1;
 	}
 
-	if (in_score.state & 3)
+	if (in_score.state & KEYBUTTON_MASK_ANYDOWN)
 	{
 		bits |= IN_SCORE;
 	}
@@ -766,20 +767,20 @@ int CL_ButtonBits(int bResetState)
 
 	if (bResetState)
 	{
-		in_attack.state &= ~2;
-		in_duck.state &= ~2;
-		in_jump.state &= ~2;
-		in_forward.state &= ~2;
-		in_back.state &= ~2;
-		in_use.state &= ~2;
-		in_left.state &= ~2;
-		in_right.state &= ~2;
-		in_moveleft.state &= ~2;
-		in_moveright.state &= ~2;
-		in_attack2.state &= ~2;
-		in_reload.state &= ~2;
-		in_alt1.state &= ~2;
-		in_score.state &= ~2;
+		in_attack.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_duck.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_jump.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_forward.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_back.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_use.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_left.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_right.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_moveleft.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_moveright.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_attack2.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_reload.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_alt1.state &= ~KEYBUTTON_IMPULSE_DOWN;
+		in_score.state &= ~KEYBUTTON_IMPULSE_DOWN;
 	}
 
 	return bits;
@@ -800,7 +801,7 @@ void CL_ResetButtonBits(int bits)
 		else
 		{
 			// totally clear state
-			in_attack.state &= ~7;
+			in_attack.state &= ~KEYBUTTON_MASK_ALL;
 		}
 	}
 }
