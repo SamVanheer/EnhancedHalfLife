@@ -455,7 +455,7 @@ void IN_MouseMove(float frametime, usercmd_t* cmd)
 
 	gEngfuncs.GetViewAngles(viewangles);
 
-	if (in_mlook.state & 1)
+	if (in_mlook.state & KEYBUTTON_DOWN)
 	{
 		V_StopPitchDrift();
 	}
@@ -533,12 +533,12 @@ void IN_MouseMove(float frametime, usercmd_t* cmd)
 		IN_ScaleMouse(&mouse_x, &mouse_y);
 
 		// add mouse X/Y movement to cmd
-		if ((in_strafe.state & 1) || (lookstrafe->value && (in_mlook.state & 1)))
+		if ((in_strafe.state & KEYBUTTON_DOWN) || (lookstrafe->value && (in_mlook.state & KEYBUTTON_DOWN)))
 			cmd->sidemove += m_side->value * mouse_x;
 		else
 			viewangles[YAW] -= m_yaw->value * mouse_x;
 
-		if ((in_mlook.state & 1) && !(in_strafe.state & 1))
+		if ((in_mlook.state & KEYBUTTON_DOWN) && !(in_strafe.state & KEYBUTTON_DOWN))
 		{
 			viewangles[PITCH] += m_pitch->value * mouse_y;
 			if (viewangles[PITCH] > cl_pitchdown->value)
@@ -548,7 +548,7 @@ void IN_MouseMove(float frametime, usercmd_t* cmd)
 		}
 		else
 		{
-			if ((in_strafe.state & 1) && gEngfuncs.IsNoClipping())
+			if ((in_strafe.state & KEYBUTTON_DOWN) && gEngfuncs.IsNoClipping())
 			{
 				cmd->upmove -= m_forward->value * mouse_y;
 			}
@@ -856,7 +856,7 @@ void IN_JoyMove(float frametime, usercmd_t* cmd)
 		return;
 	}
 
-	if (in_speed.state & 1)
+	if (in_speed.state & KEYBUTTON_DOWN)
 		speed = cl_movespeedkey->value;
 	else
 		speed = 1;
@@ -891,7 +891,7 @@ void IN_JoyMove(float frametime, usercmd_t* cmd)
 		switch (dwAxisMap[i])
 		{
 		case AxisForward:
-			if ((joy_advanced->value == 0.0) && (in_jlook.state & 1))
+			if ((joy_advanced->value == 0.0) && (in_jlook.state & KEYBUTTON_DOWN))
 			{
 				// user wants forward control to become look control
 				if (fabs(fAxisValue) > joy_pitchthreshold->value)
@@ -938,7 +938,7 @@ void IN_JoyMove(float frametime, usercmd_t* cmd)
 			break;
 
 		case AxisTurn:
-			if ((in_strafe.state & 1) || (lookstrafe->value && (in_jlook.state & 1)))
+			if ((in_strafe.state & KEYBUTTON_DOWN) || (lookstrafe->value && (in_jlook.state & KEYBUTTON_DOWN)))
 			{
 				// user wants turn control to become side control
 				if (fabs(fAxisValue) > joy_sidethreshold->value)
@@ -965,7 +965,7 @@ void IN_JoyMove(float frametime, usercmd_t* cmd)
 			break;
 
 		case AxisLook:
-			if (in_jlook.state & 1)
+			if (in_jlook.state & KEYBUTTON_DOWN)
 			{
 				if (fabs(fAxisValue) > joy_pitchthreshold->value)
 				{

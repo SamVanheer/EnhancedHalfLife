@@ -487,12 +487,12 @@ void CAM_ClearStates()
 
 	gEngfuncs.GetViewAngles(viewangles);
 
-	cam_pitchup.state = 0;
-	cam_pitchdown.state = 0;
-	cam_yawleft.state = 0;
-	cam_yawright.state = 0;
-	cam_in.state = 0;
-	cam_out.state = 0;
+	cam_pitchup.state = KEYBUTTON_NONE;
+	cam_pitchdown.state = KEYBUTTON_NONE;
+	cam_yawleft.state = KEYBUTTON_NONE;
+	cam_yawright.state = KEYBUTTON_NONE;
+	cam_in.state = KEYBUTTON_NONE;
+	cam_out.state = KEYBUTTON_NONE;
 
 	cam_thirdperson = false;
 	cam_command->value = 0;

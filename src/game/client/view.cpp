@@ -179,7 +179,7 @@ void V_DriftPitch(ref_params_t* pparams)
 	// don't count small mouse motion
 	if (pd.nodrift)
 	{
-		if (v_centermove->value > 0 && !(in_mlook.state & 1))
+		if (v_centermove->value > 0 && !(in_mlook.state & KEYBUTTON_DOWN))
 		{
 			// this is for lazy players. if they stopped, looked around and then continued
 			// to move the view will be centered automatically if they move more than

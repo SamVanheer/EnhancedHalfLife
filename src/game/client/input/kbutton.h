@@ -7,6 +7,8 @@
 
 #pragma once
 
+constexpr int KEYBUTTON_NONE = 0;
+
 /**
 *	@brief the current state of the key
 */
