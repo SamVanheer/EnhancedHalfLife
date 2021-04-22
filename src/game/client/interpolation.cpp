@@ -21,9 +21,8 @@ inline float Determinant(const Vector& a, const Vector& b, const Vector& c)
 		a[0] * (b[1] * c[2] - b[2] * c[1]));
 }
 
-//TODO: typo
 /**
-*	@brief slove 3 vector linear system of equations v0 = x*v1 + y*v2 + z*v3 (if possible)
+*	@brief solve 3 vector linear system of equations v0 = x*v1 + y*v2 + z*v3 (if possible)
 */
 bool SolveLSE(const Vector& v0, const Vector& v1, const Vector& v2, const Vector& v3, float* x, float* y, float* z)
 {

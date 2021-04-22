@@ -381,9 +381,8 @@ void HUD_InitClientWeapons()
 	HUD_PrepEntity(&g_Snark, &player);
 }
 
-//TODO: typo
 /**
-*	@brief Retruns the last position that we stored for egon beam endpoint.
+*	@brief Returns the last position that we stored for egon beam endpoint.
 */
 void HUD_GetLastOrg(float* org)
 {

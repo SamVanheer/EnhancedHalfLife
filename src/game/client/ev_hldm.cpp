@@ -1033,8 +1033,7 @@ void EV_FireCrossbow2(event_args_t* args)
 	gEngfuncs.pEventAPI->EV_PopPMStates();
 }
 
-//TODO: typo
-//TODO: Fully predict the fliying bolt.
+//TODO: Fully predict the flying bolt.
 void EV_FireCrossbow(event_args_t* args)
 {
 	const int idx = args->entindex;

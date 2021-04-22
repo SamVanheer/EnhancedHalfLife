@@ -908,8 +908,7 @@ void CMomentaryRotButton::PlaySound()
 	EmitSound(CHAN_VOICE, STRING(pev->noise));
 }
 
-//TODO: typo
-// BUGBUG: This design causes a latentcy.  When the button is retriggered, the first impulse
+// BUGBUG: This design causes a latency.  When the button is retriggered, the first impulse
 // will send the target in the wrong direction because the parameter is calculated based on the
 // current, not future position.
 void CMomentaryRotButton::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)

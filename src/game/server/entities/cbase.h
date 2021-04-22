@@ -684,9 +684,8 @@ const char* ButtonSound(int sound);
 
 /**
 *	@brief Generic Button
-* TODO typos
-*	@details When a button is touched, it moves some distance in the direction of it's angle,
-*	triggers all of it's targets, waits some time, then returns to it's original position where it can be triggered again.
+*	@details When a button is touched, it moves some distance in the direction of its angle,
+*	triggers all of its targets, waits some time, then returns to its original position where it can be triggered again.
 *	"movedir"	determines the opening direction
 *	"target"	all entities with a matching targetname will be used
 *	"speed"		override the default 40 speed

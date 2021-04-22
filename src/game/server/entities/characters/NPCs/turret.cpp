@@ -73,10 +73,9 @@ public:
 
 	void EXPORT ActiveThink();
 
-	//TODO: typo
 	/**
 	*	@brief This search function will sit with the turret deployed and look for a new target. 
-	*	After a set amount of time, the barrel will spin down. After m_flMaxWait, the turret will retact.
+	*	After a set amount of time, the barrel will spin down. After m_flMaxWait, the turret will retract.
 	*/
 	void EXPORT SearchThink();
 

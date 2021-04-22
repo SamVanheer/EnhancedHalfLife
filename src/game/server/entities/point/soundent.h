@@ -41,9 +41,8 @@ constexpr int SOUND_NEVER_EXPIRE = -1;		//!< with this set as a sound's ExpireTi
 class CSound
 {
 public:
-	//TODO: typo
 	/**
-	*	@brief zeros all fields for a sound
+	*	@brief zeroes all fields for a sound
 	*/
 	void	Clear();
 

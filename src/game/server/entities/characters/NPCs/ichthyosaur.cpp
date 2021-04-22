@@ -41,9 +41,8 @@ constexpr int EYE_LOOK = 4;
 constexpr int ICHTHYOSAUR_AE_SHAKE_RIGHT = 1;
 constexpr int ICHTHYOSAUR_AE_SHAKE_LEFT = 2;
 
-//TODO: typo
 /**
-*	@brief evin, satan fish monster
+*	@brief evil, satan fish monster
 */
 class CIchthyosaur : public CFlyingMonster
 {

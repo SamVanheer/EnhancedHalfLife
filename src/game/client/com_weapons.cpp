@@ -27,10 +27,9 @@
 #include "entity_state.h"
 #include "r_efx.h"
 
-//TODO: typo
 //TODO: bool
 /**
-*	@brief g_runfuncs is true if this is the first time we've "predicated" a particular movement/firing command.
+*	@brief g_runfuncs is true if this is the first time we've predicted a particular movement/firing command.
 *	If it is true, then we should play events/sounds etc., otherwise, we just will be updating state info, but not firing events
 */
 int	g_runfuncs = 0;

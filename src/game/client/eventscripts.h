@@ -44,9 +44,8 @@ void EV_CreateTracer(Vector start, const Vector& end);
 bool IsFirstPersonSpectator();
 cl_entity_t* GetEntity(int idx);
 
-//TODO: typo
 /**
-*	@brief Return's the current weapon/view model
+*	@brief Returns the current weapon/view model
 */
 cl_entity_t* GetViewEntity();
 

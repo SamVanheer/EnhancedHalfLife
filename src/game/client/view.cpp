@@ -32,12 +32,11 @@ extern engine_studio_api_t IEngineStudio;
 
 extern kbutton_t	in_mlook;
 
-//TODO: typo
 /*
-The view is allowed to move slightly from it's true position for bobbing,
+The view is allowed to move slightly from its true position for bobbing,
 but if it exceeds 8 pixels linear distance (spherical, not box), the list of
 entities sent from the server may not include everything in the pvs, especially
-when crossing a water boudnary.
+when crossing a water boundary.
 */
 
 extern cvar_t* cl_forwardspeed;
@@ -88,8 +87,7 @@ cvar_t	v_ipitch_level = {"v_ipitch_level", "0.3", 0, 0.3};
 
 float	v_idlescale;  // used by TFC for concussion grenade effect
 
-//TODO: typo
-// Quakeworld bob code, this fixes jitters in the mutliplayer since the clock (pparams->time) isn't quite linear
+// Quakeworld bob code, this fixes jitters in the multiplayer since the clock (pparams->time) isn't quite linear
 float V_CalcBob(ref_params_t* pparams)
 {
 	static	double	bobtime;
