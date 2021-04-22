@@ -19,7 +19,6 @@
 
 DECLARE_MESSAGE(m_Battery, Battery)
 
-//TODO: unnecessary semicolons
 bool CHudBattery::Init()
 {
 	m_iBat = 0;
@@ -31,7 +30,7 @@ bool CHudBattery::Init()
 	gHUD.AddHudElem(this);
 
 	return true;
-};
+}
 
 bool CHudBattery::VidInit()
 {
@@ -44,7 +43,7 @@ bool CHudBattery::VidInit()
 	m_iHeight = m_prc2->bottom - m_prc1->top;
 	m_fFade = 0;
 	return true;
-};
+}
 
 bool CHudBattery::MsgFunc_Battery(const char* pszName, int iSize, void* pbuf)
 {

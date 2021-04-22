@@ -19,7 +19,6 @@
 
 DECLARE_MESSAGE(m_Train, Train)
 
-//TODO: unnecessary semicolons
 bool CHudTrain::Init()
 {
 	HOOK_MESSAGE(Train);
@@ -29,14 +28,14 @@ bool CHudTrain::Init()
 	gHUD.AddHudElem(this);
 
 	return true;
-};
+}
 
 bool CHudTrain::VidInit()
 {
 	m_hSprite = 0;
 
 	return true;
-};
+}
 
 bool CHudTrain::Draw(float fTime)
 {

@@ -125,5 +125,4 @@ protected:
 	CGridEntry* m_GridEntries;
 
 };
-//TODO: unnecessary semicolon
-};
+}

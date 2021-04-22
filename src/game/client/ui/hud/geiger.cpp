@@ -20,8 +20,6 @@
 
 DECLARE_MESSAGE(m_Geiger, Geiger)
 
-//TODO: unnecessary semicolons
-
 bool CHudGeiger::Init()
 {
 	HOOK_MESSAGE(Geiger);
@@ -34,12 +32,12 @@ bool CHudGeiger::Init()
 	srand((unsigned)time(nullptr));
 
 	return true;
-};
+}
 
 bool CHudGeiger::VidInit()
 {
 	return true;
-};
+}
 
 bool CHudGeiger::MsgFunc_Geiger(const char* pszName, int iSize, void* pbuf)
 {

@@ -20,7 +20,6 @@
 DECLARE_MESSAGE(m_Flash, FlashBat)
 DECLARE_MESSAGE(m_Flash, Flashlight)
 
-//TODO: unnecessary semicolons
 bool CHudFlashlight::Init()
 {
 	m_fOn = false;
@@ -33,7 +32,7 @@ bool CHudFlashlight::Init()
 	gHUD.AddHudElem(this);
 
 	return true;
-};
+}
 
 void CHudFlashlight::Reset()
 {
@@ -55,7 +54,7 @@ bool CHudFlashlight::VidInit()
 	m_iWidth = m_prc2->right - m_prc2->left;
 
 	return true;
-};
+}
 
 bool CHudFlashlight::MsgFunc_FlashBat(const char* pszName, int iSize, void* pbuf)
 {

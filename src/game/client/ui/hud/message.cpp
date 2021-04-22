@@ -25,7 +25,6 @@ client_textmessage_t	g_pCustomMessage;
 const char* g_pCustomName = "Custom";
 char g_pCustomText[1024];
 
-//TODO: unnecessary semicolons
 bool CHudMessage::Init()
 {
 	HOOK_MESSAGE(HudText);
@@ -36,7 +35,7 @@ bool CHudMessage::Init()
 	Reset();
 
 	return true;
-};
+}
 
 bool CHudMessage::VidInit()
 {
@@ -44,7 +43,7 @@ bool CHudMessage::VidInit()
 	m_HUD_title_life = gHUD.GetSpriteIndex("title_life");
 
 	return true;
-};
+}
 
 void CHudMessage::Reset()
 {
