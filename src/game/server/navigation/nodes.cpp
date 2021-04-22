@@ -2146,7 +2146,7 @@ void CGraph::HashInsert(int iSrcNode, int iDestNode, int iKey)
 	CRC32_PROCESS_BUFFER(&dwHash, &np, sizeof(np));
 	dwHash = CRC32_FINAL(dwHash);
 
-	int di = m_HashPrimes[dwHash & 15];
+	int di = m_HashPrimes[dwHash & (HashPrimesCount - 1)];
 	int i = (dwHash >> 4) % m_nHashLinks;
 	while (m_pHashLinks[i] != ENTRY_STATE_EMPTY)
 	{
@@ -2167,7 +2167,7 @@ void CGraph::HashSearch(int iSrcNode, int iDestNode, int& iKey)
 	CRC32_PROCESS_BUFFER(&dwHash, &np, sizeof(np));
 	dwHash = CRC32_FINAL(dwHash);
 
-	int di = m_HashPrimes[dwHash & 15];
+	int di = m_HashPrimes[dwHash & (HashPrimesCount - 1)];
 	int i = (dwHash >> 4) % m_nHashLinks;
 	while (m_pHashLinks[i] != ENTRY_STATE_EMPTY)
 	{
@@ -2256,8 +2256,8 @@ void CGraph::HashChoosePrimes(int TableSize)
 	{
 		int Pick = RANDOM_LONG(0, 15 - iPrime);
 		int Temp = m_HashPrimes[Pick];
-		m_HashPrimes[Pick] = m_HashPrimes[15 - iPrime];
-		m_HashPrimes[15 - iPrime] = Temp;
+		m_HashPrimes[Pick] = m_HashPrimes[(HashPrimesCount - 1) - iPrime];
+		m_HashPrimes[(HashPrimesCount - 1) - iPrime] = Temp;
 	}
 }
 

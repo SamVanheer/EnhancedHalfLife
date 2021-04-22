@@ -155,8 +155,9 @@ public:
 	float m_RegionMin[3], m_RegionMax[3]; //!< The range of nodes.
 	CACHE_ENTRY m_Cache[CACHE_SIZE];
 
+	static constexpr int HashPrimesCount = 16;
 
-	int m_HashPrimes[16];
+	int m_HashPrimes[HashPrimesCount];
 	short* m_pHashLinks;
 	int m_nHashLinks;
 
