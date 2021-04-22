@@ -159,6 +159,8 @@ target_sources(hl PRIVATE
 	gamerules/teamplay_gamerules.h
 	navigation/nodes.cpp
 	navigation/nodes.h
+	navigation/nodes_io.cpp
+	navigation/nodes_io.hpp
 	persistence/globalstate.cpp
 	persistence/globalstate.hpp
 	persistence/saverestore.cpp
