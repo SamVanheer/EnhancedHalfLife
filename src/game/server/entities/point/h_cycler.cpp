@@ -74,24 +74,6 @@ public:
 
 LINK_ENTITY_TO_CLASS(cycler, CGenericCycler);
 
-/**
-*	@brief Probe droid imported for tech demo compatibility
-*	PROBE DROID
-*/
-class CCyclerProbe : public CCycler
-{
-public:
-	void Spawn() override;
-};
-
-LINK_ENTITY_TO_CLASS(cycler_prdroid, CCyclerProbe);
-
-void CCyclerProbe::Spawn()
-{
-	pev->origin = pev->origin + Vector(0, 0, 16);
-	GenericCyclerSpawn("models/prdroid.mdl", Vector(-16, -16, -16), Vector(16, 16, 16));
-}
-
 void CCycler::GenericCyclerSpawn(const char* szModel, Vector vecMin, Vector vecMax)
 {
 	if (!szModel || !*szModel)
