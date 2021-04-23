@@ -45,6 +45,8 @@ constexpr int HUD_PRINTCONSOLE = 2;
 constexpr int HUD_PRINTTALK = 3;
 constexpr int HUD_PRINTCENTER = 4;
 
+constexpr char HUD_SAYTEXT_PRINTTALK = 2;
+
 constexpr int WEAPON_SUIT = 31;
 
 constexpr int CLIMB_SHAKE_FREQUENCY = 22;			//!< how many frames in between screen shakes when climbing

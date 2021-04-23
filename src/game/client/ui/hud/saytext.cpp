@@ -63,7 +63,7 @@ int CHudSayText::ScrollTextUp()
 
 	if (m_szLineBuffer[0][0] == ' ') // also scroll up following lines
 	{
-		m_szLineBuffer[0][0] = 2;
+		m_szLineBuffer[0][0] = HUD_SAYTEXT_PRINTTALK;
 		return 1 + ScrollTextUp();
 	}
 
@@ -107,8 +107,7 @@ bool CHudSayText::Draw(float flTime)
 	{
 		if (*m_szLineBuffer[i])
 		{
-			//TODO: define this constant
-			if (*m_szLineBuffer[i] == 2 && m_pflNameColors[i])
+			if (*m_szLineBuffer[i] == HUD_SAYTEXT_PRINTTALK && m_pflNameColors[i])
 			{
 				// it's a saytext string
 
@@ -171,7 +170,7 @@ void CHudSayText::SayTextPrint(const char* pszBuf, int iBufSize, int clientIndex
 	m_pflNameColors[i] = nullptr;
 
 	// if it's a say message, search for the players name in the string
-	if (*pszBuf == 2 && clientIndex > 0)
+	if (*pszBuf == HUD_SAYTEXT_PRINTTALK && clientIndex > 0)
 	{
 		gEngfuncs.pfnGetPlayerInfo(clientIndex, &g_PlayerInfoList[clientIndex]);
 		const char* pName = g_PlayerInfoList[clientIndex].name;
