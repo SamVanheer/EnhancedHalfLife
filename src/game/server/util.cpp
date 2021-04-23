@@ -1268,6 +1268,30 @@ void UTIL_StripToken(const char* pKey, char* pDest)
 	pDest[i] = 0;
 }
 
+void SetMovedir(entvars_t* pev)
+{
+	if (pev->angles == Vector(0, -1, 0))
+	{
+		pev->movedir = vec3_up;
+	}
+	else if (pev->angles == Vector(0, -2, 0))
+	{
+		pev->movedir = vec3_down;
+	}
+	else
+	{
+		UTIL_MakeVectors(pev->angles);
+		pev->movedir = gpGlobals->v_forward;
+	}
+
+	pev->angles = vec3_origin;
+}
+
+Vector GetBrushModelOrigin(entvars_t* pevBModel)
+{
+	return pevBModel->absmin + (pevBModel->size * 0.5);
+}
+
 int UTIL_CountPlayers()
 {
 	int	num = 0;

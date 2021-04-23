@@ -97,6 +97,8 @@ void ExplodeModel(const Vector& vecOrigin, float speed, int model, int count);
 */
 bool IsBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetOrigin, float flSize = 0.0);
 
+void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, int g, int b);
+
 // monster to monster relationship types
 constexpr int R_AL = -2;	// (ALLY) pals. Good alternative to R_NO when applicable.
 constexpr int R_FR = -1;	// (FEAR)will run

@@ -812,9 +812,6 @@ void CController::RunAI()
 	}
 }
 
-//TODO: move
-void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, int g, int b);
-
 void CController::Stop()
 {
 	m_IdealActivity = GetStoppedActivity();

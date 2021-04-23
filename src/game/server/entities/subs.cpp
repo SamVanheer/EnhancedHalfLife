@@ -215,26 +215,6 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float
 	}
 }
 
-//TODO: move to util.cpp
-void SetMovedir(entvars_t* pev)
-{
-	if (pev->angles == Vector(0, -1, 0))
-	{
-		pev->movedir = vec3_up;
-	}
-	else if (pev->angles == Vector(0, -2, 0))
-	{
-		pev->movedir = vec3_down;
-	}
-	else
-	{
-		UTIL_MakeVectors(pev->angles);
-		pev->movedir = gpGlobals->v_forward;
-	}
-
-	pev->angles = vec3_origin;
-}
-
 void CBaseDelay::DelayThink()
 {
 	CBaseEntity* pActivator = nullptr;

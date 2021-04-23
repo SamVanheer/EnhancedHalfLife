@@ -37,11 +37,6 @@ constexpr int SF_ROTATING_NOT_SOLID = 64;	// some special rotating objects are n
 
 constexpr int SF_PENDULUM_SWING = 2;	// spawnflag that makes a pendulum a rope swing.
 
-Vector GetBrushModelOrigin(entvars_t* pevBModel)
-{
-	return pevBModel->absmin + (pevBModel->size * 0.5);
-}
-
 /**
 *	@brief This is just a solid wall if not inhibited
 */
