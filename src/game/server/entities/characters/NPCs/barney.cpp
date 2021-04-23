@@ -44,7 +44,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
-	int  ISoundMask() override;
+	int  SoundMask() override;
 
 	/**
 	*	@brief shoots one round from the pistol at the enemy barney is facing.
@@ -241,7 +241,7 @@ void CBarney::RunTask(Task_t* pTask)
 	}
 }
 
-int CBarney::ISoundMask()
+int CBarney::SoundMask()
 {
 	return	bits_SOUND_WORLD |
 		bits_SOUND_COMBAT |
@@ -261,7 +261,7 @@ void CBarney::AlertSound()
 {
 	if (m_hEnemy != nullptr)
 	{
-		if (FOkToSpeak())
+		if (OkToSpeak())
 		{
 			PlaySentence("BA_ATTACK", RANDOM_FLOAT(2.8, 3.2), VOL_NORM, ATTN_IDLE);
 		}
@@ -631,13 +631,13 @@ Schedule_t* CBarney::GetSchedule()
 	if (HasConditions(bits_COND_HEAR_SOUND))
 	{
 		CSound* pSound;
-		pSound = PBestSound();
+		pSound = BestSound();
 
 		ASSERT(pSound != nullptr);
 		if (pSound && (pSound->m_iType & bits_SOUND_DANGER))
 			return GetScheduleOfType(SCHED_TAKE_COVER_FROM_BEST_SOUND);
 	}
-	if (HasConditions(bits_COND_ENEMY_DEAD) && FOkToSpeak())
+	if (HasConditions(bits_COND_ENEMY_DEAD) && OkToSpeak())
 	{
 		PlaySentence("BA_KILL", 4, VOL_NORM, ATTN_NORM);
 	}
@@ -734,7 +734,7 @@ const char* CDeadBarney::m_szPoses[] = {"lying_on_back", "lying_on_side", "lying
 
 void CDeadBarney::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "pose"))
+	if (AreStringsEqual(pkvd->szKeyName, "pose"))
 	{
 		m_iPose = atoi(pkvd->szValue);
 		pkvd->fHandled = true;

@@ -167,7 +167,7 @@ public:
 	*	@brief returns the difference ( in degrees ) between monster's current yaw and ideal_yaw
 	*	Positive result is left turn, negative is right turn
 	*/
-	float FlYawDiff();
+	float YawDiff();
 
 	float DamageForce(float damage);
 
@@ -181,7 +181,7 @@ public:
 	/**
 	*	@brief returns an integer that describes the relationship between two types of monster.
 	*/
-	virtual int IRelationship(CBaseEntity* pTarget);
+	virtual int GetRelationship(CBaseEntity* pTarget);
 
 	/**
 	*	@brief after a monster is spawned, it needs to be dropped into the world,
@@ -222,13 +222,13 @@ public:
 	*	@brief returns true is the passed ent is in the caller's forward view cone.
 	*	The dot product is performed in 2d, making the view cone infinitely tall. 
 	*/
-	virtual bool FInViewCone(CBaseEntity* pEntity);
+	virtual bool IsInViewCone(CBaseEntity* pEntity);
 
 	/**
 	*	@brief returns true is the passed vector is in the caller's forward view cone.
 	*	The dot product is performed in 2d, making the view cone infinitely tall. 
 	*/
-	virtual bool FInViewCone(Vector* pOrigin);
+	virtual bool IsInViewCone(Vector* pOrigin);
 	void HandleAnimEvent(AnimationEvent& event) override;
 
 	/**
@@ -271,12 +271,12 @@ public:
 	/**
 	*	@brief Returns true if monster's m_pSchedule is anything other than nullptr.
 	*/
-	bool FHaveSchedule();
+	bool HasSchedule();
 
 	/**
 	*	@brief returns true as long as the current schedule is still the proper schedule to be executing, taking into account all conditions
 	*/
-	bool FScheduleValid();
+	bool IsScheduleValid();
 
 	/**
 	*	@brief blanks out the caller's schedule pointer and index.
@@ -286,7 +286,7 @@ public:
 	/**
 	*	@brief Returns true if the caller is on the last task in the schedule
 	*/
-	bool FScheduleDone();
+	bool IsScheduleDone();
 
 	/**
 	*	@brief replaces the monster's schedule pointer with the passed pointer, and sets the ScheduleIndex back to 0
@@ -387,7 +387,7 @@ public:
 	*	If this is possible, ROUTE_SIZE waypoints will be copied into the callers m_Route.
 	*	@return true if the operation succeeds (path is valid) or false if failed (no path  exists )
 	*/
-	bool FGetNodeRoute(Vector vecDest);
+	bool GetNodeRoute(Vector vecDest);
 
 	inline void TaskComplete() { if (!HasConditions(bits_COND_TASK_FAILED)) m_iTaskStatus = TaskStatus::Complete; }
 	void MovementComplete();
@@ -400,18 +400,18 @@ public:
 	/**
 	*	@brief returns an integer with all Conditions bits that are currently set and also set in the current schedule's Interrupt mask.
 	*/
-	int IScheduleFlags();
+	int ScheduleFlags();
 
 	/**
 	*	@brief after calculating a path to the monster's target,
 	*	this function copies as many waypoints as possible from that path to the monster's Route array
 	*/
-	bool FRefreshRoute();
+	bool RefreshRoute();
 
 	/**
 	*	@brief returns true is the Route is cleared out ( invalid )
 	*/
-	bool FRouteClear();
+	bool IsRouteClear();
 
 	/**
 	*	@brief Attempts to make the route more direct by cutting out unnecessary nodes & cutting corners.
@@ -428,7 +428,7 @@ public:
 	*	@brief tries to overcome local obstacles by triangulating a path around them.
 	*	@param[out] pApex is how far the obstruction that we are trying to triangulate around is from the monster.
 	*/
-	virtual bool FTriangulate(const Vector& vecStart, const Vector& vecEnd, float flDist, CBaseEntity* pTargetEnt, Vector* pApex);
+	virtual bool Triangulate(const Vector& vecStart, const Vector& vecEnd, float flDist, CBaseEntity* pTargetEnt, Vector* pApex);
 
 	/**
 	*	@brief gets a yaw value for the caller that would face the supplied vector.
@@ -475,13 +475,13 @@ public:
 	/**
 	*	@brief determines whether or not the chosen cover location is a good one to move to.
 	*/
-	virtual bool FValidateCover(const Vector& vecCoverLocation) { return true; }
+	virtual bool ValidateCover(const Vector& vecCoverLocation) { return true; }
 	virtual float CoverRadius() { return 784; } // Default cover radius
 
 	/**
 	*	@brief prequalifies a monster to do more fine checking of potential attacks. 
 	*/
-	virtual bool FCanCheckAttacks();
+	virtual bool CanCheckAttacks();
 	virtual void CheckAmmo() {}
 
 	/**
@@ -499,9 +499,9 @@ public:
 	/**
 	*	@brief tells use whether or not the monster cares about the type of Hint Node given
 	*/
-	virtual bool FValidateHintType(short sHint);
+	virtual bool ValidateHintType(short sHint);
 	int FindHintNode();
-	virtual bool FCanActiveIdle();
+	virtual bool CanActiveIdle();
 
 	/**
 	*	@brief measures the difference between the way the monster is facing
@@ -513,7 +513,7 @@ public:
 	*	@brief subtracts the volume of the given sound from the distance the sound source is from the caller,
 	*	and returns that value, which is considered to be the 'local' volume of the sound. 
 	*/
-	float FLSoundVolume(CSound* pSound);
+	float SoundVolume(CSound* pSound);
 
 	bool MoveToNode(Activity movementAct, float waitTime, const Vector& goal);
 	bool MoveToTarget(Activity movementAct, float waitTime);
@@ -529,24 +529,24 @@ public:
 	*	@brief returns a bit mask indicating which types of sounds this monster regards.
 	*	In the base class implementation, monsters care about all sounds, but no scents.
 	*/
-	virtual int ISoundMask();
+	virtual int SoundMask();
 
 	/**
 	*	@brief returns a pointer to the sound the monster should react to. Right now responds only to nearest sound.
 	*/
-	virtual CSound* PBestSound();
+	virtual CSound* BestSound();
 
 	/**
 	*	@brief returns a pointer to the scent the monster should react to. Right now responds only to nearest scent
 	*/
-	virtual CSound* PBestScent();
+	virtual CSound* BestScent();
 	virtual float HearingSensitivity() { return 1.0; }
 
 	/**
 	*	@brief tries to send a monster into PRONE state.
 	*	right now only used when a barnacle snatches someone, so may have some special case stuff for that.
 	*/
-	bool FBecomeProne() override;
+	bool BecomeProne() override;
 
 	/**
 	*	@brief called by Barnacle victims when the barnacle pulls their head into its mouth
@@ -566,7 +566,7 @@ public:
 	/**
 	*	@brief returns true if a monster is 'hungry'.
 	*/
-	bool FShouldEat();
+	bool ShouldEat();
 
 	/**
 	*	@brief makes a monster 'full' for a little while.
@@ -592,7 +592,7 @@ public:
 	*	If yes, the monster's TriggerTarget is fired.
 	*	@return true if the target is fired.
 	*/
-	bool FCheckAITrigger();
+	bool CheckAITrigger();
 
 	/**
 	*	@brief check to see if the monster's bounding box is lying flat on a surface (traces from all four corners are same length.)

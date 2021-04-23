@@ -140,7 +140,7 @@ bool CHalfLifeTeamplay::ClientCommand(CBasePlayer* pPlayer, const char* pcmd)
 	if (g_VoiceGameMgr.ClientCommand(pPlayer, pcmd))
 		return true;
 
-	if (FStrEq(pcmd, "menuselect"))
+	if (AreStringsEqual(pcmd, "menuselect"))
 	{
 		if (CMD_ARGC() < 2)
 			return true;
@@ -374,7 +374,7 @@ bool CHalfLifeTeamplay::IsTeamplay()
 	return true;
 }
 
-bool CHalfLifeTeamplay::FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker)
+bool CHalfLifeTeamplay::PlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker)
 {
 	if (pAttacker && PlayerRelationship(pPlayer, pAttacker) == GR_TEAMMATE)
 	{
@@ -386,7 +386,7 @@ bool CHalfLifeTeamplay::FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* 
 		}
 	}
 
-	return CHalfLifeMultiplay::FPlayerCanTakeDamage(pPlayer, pAttacker);
+	return CHalfLifeMultiplay::PlayerCanTakeDamage(pPlayer, pAttacker);
 }
 
 int CHalfLifeTeamplay::PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTarget)
@@ -417,7 +417,7 @@ bool CHalfLifeTeamplay::ShouldAutoAim(CBasePlayer* pPlayer, edict_t* target)
 	return CHalfLifeMultiplay::ShouldAutoAim(pPlayer, target);
 }
 
-int CHalfLifeTeamplay::IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled)
+int CHalfLifeTeamplay::PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled)
 {
 	if (!pKilled)
 		return 0;

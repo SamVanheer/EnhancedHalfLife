@@ -73,7 +73,7 @@ public:
 	void Precache() override;
 	void SetYawSpeed() override;
 	int  Classify() override;
-	int  ISoundMask() override;
+	int  SoundMask() override;
 	void HandleAnimEvent(AnimationEvent& event) override;
 	void SetObjectCollisionBox() override
 	{
@@ -88,7 +88,7 @@ public:
 	*	@brief this is overridden for alien grunts because they can use their smart weapons against unseen enemies.
 	*	Base class doesn't attack anyone it can't see.
 	*/
-	bool FCanCheckAttacks() override;
+	bool CanCheckAttacks() override;
 
 	/**
 	*	@brief alien grunts zap the crap out of any enemy that gets too close. 
@@ -111,7 +111,7 @@ public:
 	/**
 	*	@brief overridden because Human Grunts are Alien Grunt's nemesis.
 	*/
-	int IRelationship(CBaseEntity* pTarget) override;
+	int GetRelationship(CBaseEntity* pTarget) override;
 
 	/**
 	*	@brief won't speak again for 10-20 seconds.
@@ -212,17 +212,17 @@ const char* CAGrunt::pAlertSounds[] =
 	"agrunt/ag_alert5.wav",
 };
 
-int CAGrunt::IRelationship(CBaseEntity* pTarget)
+int CAGrunt::GetRelationship(CBaseEntity* pTarget)
 {
-	if (FClassnameIs(pTarget->pev, "monster_human_grunt"))
+	if (ClassnameIs(pTarget->pev, "monster_human_grunt"))
 	{
 		return R_NM;
 	}
 
-	return CSquadMonster::IRelationship(pTarget);
+	return CSquadMonster::GetRelationship(pTarget);
 }
 
-int CAGrunt::ISoundMask()
+int CAGrunt::SoundMask()
 {
 	return	bits_SOUND_WORLD |
 		bits_SOUND_COMBAT |
@@ -824,7 +824,7 @@ DEFINE_CUSTOM_SCHEDULES(CAGrunt)
 
 IMPLEMENT_CUSTOM_SCHEDULES(CAGrunt, CSquadMonster);
 
-bool CAGrunt::FCanCheckAttacks()
+bool CAGrunt::CanCheckAttacks()
 {
 	if (!HasConditions(bits_COND_ENEMY_TOOFAR))
 	{
@@ -980,7 +980,7 @@ Schedule_t* CAGrunt::GetSchedule()
 	if (HasConditions(bits_COND_HEAR_SOUND))
 	{
 		CSound* pSound;
-		pSound = PBestSound();
+		pSound = BestSound();
 
 		ASSERT(pSound != nullptr);
 		if (pSound && (pSound->m_iType & bits_SOUND_DANGER))

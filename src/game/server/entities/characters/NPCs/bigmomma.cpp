@@ -62,27 +62,27 @@ void CInfoBM::Spawn()
 
 void CInfoBM::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "radius"))
+	if (AreStringsEqual(pkvd->szKeyName, "radius"))
 	{
 		pev->scale = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "reachdelay"))
+	else if (AreStringsEqual(pkvd->szKeyName, "reachdelay"))
 	{
 		pev->speed = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "reachtarget"))
+	else if (AreStringsEqual(pkvd->szKeyName, "reachtarget"))
 	{
 		pev->message = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "reachsequence"))
+	else if (AreStringsEqual(pkvd->szKeyName, "reachsequence"))
 	{
 		pev->netname = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "presequence"))
+	else if (AreStringsEqual(pkvd->szKeyName, "presequence"))
 	{
 		m_preSequence = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -156,7 +156,7 @@ constexpr int bits_MEMORY_COMPLETED_NODE = bits_MEMORY_CUSTOM3;
 constexpr int bits_MEMORY_FIRED_NODE = bits_MEMORY_CUSTOM4;
 
 int gSpitSprite, gSpitDebrisSprite;
-Vector VecCheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float maxHeight);
+Vector CheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float maxHeight);
 void MortarSpray(const Vector& position, const Vector& direction, int spriteModel, int count);
 
 // UNDONE:	
@@ -379,7 +379,7 @@ const char* CBigMomma::pFootSounds[] =
 void CBigMomma::KeyValue(KeyValueData* pkvd)
 {
 #if 0
-	if (FStrEq(pkvd->szKeyName, "volume"))
+	if (AreStringsEqual(pkvd->szKeyName, "volume"))
 	{
 		m_volume = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -518,7 +518,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 	case BIG_AE_EARLY_TARGET:
 	{
 		CBaseEntity* pTarget = m_hTargetEnt;
-		if (pTarget && !FStringNull(pTarget->pev->message))
+		if (pTarget && !IsStringNull(pTarget->pev->message))
 			FireTargets(STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0);
 		Remember(bits_MEMORY_FIRED_NODE);
 	}
@@ -679,11 +679,11 @@ void CBigMomma::NodeStart(string_t iszNextNode)
 
 	CBaseEntity* pTarget = nullptr;
 
-	if (!FStringNull(pev->netname))
+	if (!IsStringNull(pev->netname))
 	{
 		edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->netname));
 
-		if (!FNullEnt(pentTarget))
+		if (!IsNullEnt(pentTarget))
 			pTarget = Instance(pentTarget);
 	}
 
@@ -712,7 +712,7 @@ void CBigMomma::NodeReach()
 
 	if (!HasMemory(bits_MEMORY_FIRED_NODE))
 	{
-		if (!FStringNull(pTarget->pev->message))
+		if (!IsStringNull(pTarget->pev->message))
 			FireTargets(STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0);
 	}
 	Forget(bits_MEMORY_FIRED_NODE);
@@ -747,7 +747,7 @@ bool CBigMomma::CheckRangeAttack1(float flDot, float flDist)
 		{
 			Vector startPos = pev->origin;
 			startPos.z += 180;
-			pev->movedir = VecCheckSplatToss(pev, startPos, pEnemy->BodyTarget(pev->origin), RANDOM_FLOAT(150, 500));
+			pev->movedir = CheckSplatToss(pev, startPos, pEnemy->BodyTarget(pev->origin), RANDOM_FLOAT(150, 500));
 			if (pev->movedir != vec3_origin)
 				return true;
 		}
@@ -905,7 +905,7 @@ void CBigMomma::StartTask(Task_t* pTask)
 			sequence = GetNodePresequence();
 
 		ALERT(at_aiconsole, "BM: Playing node sequence %s\n", STRING(sequence));
-		if (!FStringNull(sequence))
+		if (!IsStringNull(sequence))
 		{
 			const int sequenceIndex = LookupSequence(STRING(sequence));
 			if (sequenceIndex != -1)
@@ -1024,7 +1024,7 @@ void CBigMomma::RunTask(Task_t* pTask)
 	}
 }
 
-Vector VecCheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float maxHeight)
+Vector CheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float maxHeight)
 {
 	TraceResult		tr;
 	Vector			vecMidPoint;// halfway point between Spot1 and Spot2

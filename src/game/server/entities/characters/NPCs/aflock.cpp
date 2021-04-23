@@ -101,7 +101,7 @@ public:
 	/**
 	*	@brief returns true if there is an obstacle ahead
 	*/
-	bool FPathBlocked();
+	bool PathBlocked();
 	//void KeyValue( KeyValueData *pkvd ) override;
 
 	bool Save(CSave& save) override;
@@ -174,12 +174,12 @@ IMPLEMENT_SAVERESTORE(CFlockingFlyer, CBaseMonster);
 
 void CFlockingFlyerFlock::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "iFlockSize"))
+	if (AreStringsEqual(pkvd->szKeyName, "iFlockSize"))
 	{
 		m_cFlockSize = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "flFlockRadius"))
+	else if (AreStringsEqual(pkvd->szKeyName, "flFlockRadius"))
 	{
 		m_flFlockRadius = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -328,7 +328,7 @@ void CFlockingFlyer::FallHack()
 {
 	if (pev->flags & FL_ONGROUND)
 	{
-		if (!FClassnameIs(pev->groundentity, "worldspawn"))
+		if (!ClassnameIs(pev->groundentity, "worldspawn"))
 		{
 			pev->flags &= ~FL_ONGROUND;
 			pev->nextthink = gpGlobals->time + 0.1;
@@ -386,7 +386,7 @@ void CFlockingFlyer::IdleThink()
 	pev->nextthink = gpGlobals->time + 0.2;
 
 	// see if there's a client in the same pvs as the monster
-	if (!FNullEnt(FIND_CLIENT_IN_PVS(edict())))
+	if (!IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
 	{
 		SetThink(&CFlockingFlyer::Start);
 		pev->nextthink = gpGlobals->time + 0.1;
@@ -445,7 +445,7 @@ void CFlockingFlyer::FormFlock()
 			if (pRecruit && pRecruit != this && pRecruit->IsAlive() && !pRecruit->m_pCine)
 			{
 				// Can we recruit this guy?
-				if (FClassnameIs(pRecruit->pev, "monster_flyer"))
+				if (ClassnameIs(pRecruit->pev, "monster_flyer"))
 				{
 					squadCount++;
 					SquadAdd((CFlockingFlyer*)pRecruit);
@@ -503,7 +503,7 @@ void CFlockingFlyer::SpreadFlock2()
 	}
 }
 
-bool CFlockingFlyer::FPathBlocked()
+bool CFlockingFlyer::PathBlocked()
 {
 	TraceResult		tr;
 	Vector			vecDist;// used for general measurements
@@ -569,7 +569,7 @@ void CFlockingFlyer::FlockLeaderThink()
 	UTIL_MakeVectors(pev->angles);
 
 	// is the way ahead clear?
-	if (!FPathBlocked())
+	if (!PathBlocked())
 	{
 		// if the boid is turning, stop the trend.
 		if (m_fTurning)
@@ -641,7 +641,7 @@ void CFlockingFlyer::FlockLeaderThink()
 		pev->velocity.z = 0;
 
 	// maybe it did, though.
-	if (FBitSet(pev->flags, FL_ONGROUND))
+	if (IsBitSet(pev->flags, FL_ONGROUND))
 	{
 		UTIL_SetOrigin(pev, pev->origin + Vector(0, 0, 1));
 		pev->velocity.z = 0;
@@ -684,7 +684,7 @@ void CFlockingFlyer::FlockFollowerThink()
 	//
 	// We can see the leader, so try to catch up to it
 	//
-	if (FInViewCone(m_pSquadLeader))
+	if (IsInViewCone(m_pSquadLeader))
 	{
 		// if we're too far away, speed up
 		if (flDistToLeader > AFLOCK_TOO_FAR)

@@ -436,12 +436,12 @@ void CGrenade::UseSatchelCharges(entvars_t* pevOwner, SATCHELCODE code)
 	pentOwner = pOwner->edict();
 
 	pentFind = FIND_ENTITY_BY_CLASSNAME(nullptr, "grenade");
-	while (!FNullEnt(pentFind))
+	while (!IsNullEnt(pentFind))
 	{
 		CBaseEntity* pEnt = Instance(pentFind);
 		if (pEnt)
 		{
-			if (FBitSet(pEnt->pev->spawnflags, SF_DETONATE) && pEnt->pev->owner == pentOwner)
+			if (IsBitSet(pEnt->pev->spawnflags, SF_DETONATE) && pEnt->pev->owner == pentOwner)
 			{
 				if (code == SATCHEL_DETONATE)
 					pEnt->Use(pOwner, pOwner, USE_ON, 0);

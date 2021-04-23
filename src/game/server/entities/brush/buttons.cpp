@@ -72,11 +72,11 @@ void CEnvGlobal::KeyValue(KeyValueData* pkvd)
 {
 	pkvd->fHandled = true;
 
-	if (FStrEq(pkvd->szKeyName, "globalstate"))		// State name
+	if (AreStringsEqual(pkvd->szKeyName, "globalstate"))		// State name
 		m_globalstate = ALLOC_STRING(pkvd->szValue);
-	else if (FStrEq(pkvd->szKeyName, "triggermode")) //TODO: validate input
+	else if (AreStringsEqual(pkvd->szKeyName, "triggermode")) //TODO: validate input
 		m_triggermode = static_cast<GlobalTriggerMode>(atoi(pkvd->szValue));
-	else if (FStrEq(pkvd->szKeyName, "initialstate")) //TODO: validate input
+	else if (AreStringsEqual(pkvd->szKeyName, "initialstate")) //TODO: validate input
 		m_initialstate = static_cast<GlobalEntState>(atoi(pkvd->szValue));
 	else
 		CPointEntity::KeyValue(pkvd);
@@ -84,12 +84,12 @@ void CEnvGlobal::KeyValue(KeyValueData* pkvd)
 
 void CEnvGlobal::Spawn()
 {
-	if (FStringNull(m_globalstate))
+	if (IsStringNull(m_globalstate))
 	{
 		REMOVE_ENTITY(ENT(pev));
 		return;
 	}
-	if (FBitSet(pev->spawnflags, SF_GLOBAL_SET))
+	if (IsBitSet(pev->spawnflags, SF_GLOBAL_SET))
 	{
 		if (!gGlobalState.EntityInTable(m_globalstate))
 			gGlobalState.EntityAdd(m_globalstate, gpGlobals->mapname, m_initialstate);
@@ -146,14 +146,14 @@ LINK_ENTITY_TO_CLASS(multisource, CMultiSource);
 
 void CMultiSource::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "style") ||
-		FStrEq(pkvd->szKeyName, "height") ||
-		FStrEq(pkvd->szKeyName, "killtarget") ||
-		FStrEq(pkvd->szKeyName, "value1") ||
-		FStrEq(pkvd->szKeyName, "value2") ||
-		FStrEq(pkvd->szKeyName, "value3"))
+	if (AreStringsEqual(pkvd->szKeyName, "style") ||
+		AreStringsEqual(pkvd->szKeyName, "height") ||
+		AreStringsEqual(pkvd->szKeyName, "killtarget") ||
+		AreStringsEqual(pkvd->szKeyName, "value1") ||
+		AreStringsEqual(pkvd->szKeyName, "value2") ||
+		AreStringsEqual(pkvd->szKeyName, "value3"))
 		pkvd->fHandled = true;
-	else if (FStrEq(pkvd->szKeyName, "globalstate"))
+	else if (AreStringsEqual(pkvd->szKeyName, "globalstate"))
 	{
 		m_globalstate = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -200,7 +200,7 @@ void CMultiSource::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE u
 	{
 		ALERT(at_aiconsole, "Multisource %s enabled (%d inputs)\n", STRING(pev->targetname), m_iTotal);
 		USE_TYPE useType = USE_TOGGLE;
-		if (!FStringNull(m_globalstate))
+		if (!IsStringNull(m_globalstate))
 			useType = USE_ON;
 		SUB_UseTargets(nullptr, useType, 0);
 	}
@@ -224,7 +224,7 @@ bool CMultiSource::IsTriggered(CBaseEntity*)
 
 	if (i == m_iTotal)
 	{
-		if (FStringNull(m_globalstate) || gGlobalState.EntityGetState(m_globalstate) == GlobalEntState::On)
+		if (IsStringNull(m_globalstate) || gGlobalState.EntityGetState(m_globalstate) == GlobalEntState::On)
 			return true;
 	}
 
@@ -244,7 +244,7 @@ void CMultiSource::Register()
 
 	pentTarget = FIND_ENTITY_BY_STRING(nullptr, "target", STRING(pev->targetname));
 
-	while (!FNullEnt(pentTarget) && (m_iTotal < MS_MAX_TARGETS))
+	while (!IsNullEnt(pentTarget) && (m_iTotal < MS_MAX_TARGETS))
 	{
 		CBaseEntity* pTarget = CBaseEntity::Instance(pentTarget);
 		if (pTarget)
@@ -254,7 +254,7 @@ void CMultiSource::Register()
 	}
 
 	pentTarget = FIND_ENTITY_BY_STRING(nullptr, "classname", "multi_manager");
-	while (!FNullEnt(pentTarget) && (m_iTotal < MS_MAX_TARGETS))
+	while (!IsNullEnt(pentTarget) && (m_iTotal < MS_MAX_TARGETS))
 	{
 		CBaseEntity* pTarget = CBaseEntity::Instance(pentTarget);
 		if (pTarget && pTarget->HasTarget(pev->targetname))
@@ -286,7 +286,7 @@ void CBaseButton::Precache()
 {
 	const char* pszSound;
 
-	if (FBitSet(pev->spawnflags, SF_BUTTON_SPARK_IF_OFF))// this button should spark in OFF state
+	if (IsBitSet(pev->spawnflags, SF_BUTTON_SPARK_IF_OFF))// this button should spark in OFF state
 	{
 		PRECACHE_SOUND("buttons/spark1.wav");
 		PRECACHE_SOUND("buttons/spark2.wav");
@@ -346,27 +346,27 @@ void CBaseButton::Precache()
 
 void CBaseButton::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "locked_sound"))
+	if (AreStringsEqual(pkvd->szKeyName, "locked_sound"))
 	{
 		m_bLockedSound = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "locked_sentence"))
+	else if (AreStringsEqual(pkvd->szKeyName, "locked_sentence"))
 	{
 		m_bLockedSentence = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "unlocked_sound"))
+	else if (AreStringsEqual(pkvd->szKeyName, "unlocked_sound"))
 	{
 		m_bUnlockedSound = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "unlocked_sentence"))
+	else if (AreStringsEqual(pkvd->szKeyName, "unlocked_sentence"))
 	{
 		m_bUnlockedSentence = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "sounds"))
+	else if (AreStringsEqual(pkvd->szKeyName, "sounds"))
 	{
 		m_sounds = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -419,7 +419,7 @@ void CBaseButton::Spawn()
 
 	Precache();
 
-	if (FBitSet(pev->spawnflags, SF_BUTTON_SPARK_IF_OFF))// this button should spark in OFF state
+	if (IsBitSet(pev->spawnflags, SF_BUTTON_SPARK_IF_OFF))// this button should spark in OFF state
 	{
 		SetThink(&CBaseButton::ButtonSpark);
 		pev->nextthink = gpGlobals->time + 0.5;// no hurry, make sure everything else spawns
@@ -459,7 +459,7 @@ void CBaseButton::Spawn()
 
 	// if the button is flagged for USE button activation only, take away it's touch function and add a use function
 
-	if (FBitSet(pev->spawnflags, SF_BUTTON_TOUCH_ONLY)) // touchable button
+	if (IsBitSet(pev->spawnflags, SF_BUTTON_TOUCH_ONLY)) // touchable button
 	{
 		SetTouch(&CBaseButton::ButtonTouch);
 	}
@@ -544,7 +544,7 @@ void CBaseButton::ButtonUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 	m_hActivator = pActivator;
 	if (m_toggle_state == ToggleState::AtTop)
 	{
-		if (!m_fStayPushed && FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
+		if (!m_fStayPushed && IsBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
 		{
 			EmitSound(CHAN_VOICE, STRING(pev->noise));
 
@@ -561,12 +561,12 @@ CBaseButton::ButtonCode CBaseButton::ButtonResponseToTouch()
 	// Ignore touches if button is moving, or pushed-in and waiting to auto-come-out.
 	if (m_toggle_state == ToggleState::GoingUp ||
 		m_toggle_state == ToggleState::GoingDown ||
-		(m_toggle_state == ToggleState::AtTop && !m_fStayPushed && !FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE)))
+		(m_toggle_state == ToggleState::AtTop && !m_fStayPushed && !IsBitSet(pev->spawnflags, SF_BUTTON_TOGGLE)))
 		return ButtonCode::Nothing;
 
 	if (m_toggle_state == ToggleState::AtTop)
 	{
-		if ((FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE)) && !m_fStayPushed)
+		if ((IsBitSet(pev->spawnflags, SF_BUTTON_TOGGLE)) && !m_fStayPushed)
 		{
 			return ButtonCode::Return;
 		}
@@ -580,7 +580,7 @@ CBaseButton::ButtonCode CBaseButton::ButtonResponseToTouch()
 void CBaseButton::ButtonTouch(CBaseEntity* pOther)
 {
 	// Ignore touches by anything but players
-	if (!FClassnameIs(pOther->pev, "player"))
+	if (!ClassnameIs(pOther->pev, "player"))
 		return;
 
 	m_hActivator = pOther;
@@ -647,9 +647,9 @@ void CBaseButton::TriggerAndWait()
 
 	// If button automatically comes back out, start it moving out.
 	// Else re-instate touch method
-	if (m_fStayPushed || FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
+	if (m_fStayPushed || IsBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
 	{
-		if (!FBitSet(pev->spawnflags, SF_BUTTON_TOUCH_ONLY)) // this button only works if USED, not touched!
+		if (!IsBitSet(pev->spawnflags, SF_BUTTON_TOUCH_ONLY)) // this button only works if USED, not touched!
 		{
 			// ALL buttons are now use only
 			SetTouch(nullptr);
@@ -688,7 +688,7 @@ void CBaseButton::ButtonBackHome()
 	ASSERT(m_toggle_state == ToggleState::GoingDown);
 	m_toggle_state = ToggleState::AtBottom;
 
-	if (FBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
+	if (IsBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
 	{
 		//EmitSound(CHAN_VOICE, STRING(pev->noise));
 
@@ -696,17 +696,17 @@ void CBaseButton::ButtonBackHome()
 	}
 
 
-	if (!FStringNull(pev->target))
+	if (!IsStringNull(pev->target))
 	{
 		edict_t* pentTarget = nullptr;
 		for (;;)
 		{
 			pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
 
-			if (FNullEnt(pentTarget))
+			if (IsNullEnt(pentTarget))
 				break;
 
-			if (!FClassnameIs(pentTarget, "multisource"))
+			if (!ClassnameIs(pentTarget, "multisource"))
 				continue;
 			CBaseEntity* pTarget = CBaseEntity::Instance(pentTarget);
 
@@ -716,7 +716,7 @@ void CBaseButton::ButtonBackHome()
 	}
 
 	// Re-instate touch method, movement cycle is complete.
-	if (!FBitSet(pev->spawnflags, SF_BUTTON_TOUCH_ONLY)) // this button only works if USED, not touched!
+	if (!IsBitSet(pev->spawnflags, SF_BUTTON_TOUCH_ONLY)) // this button only works if USED, not touched!
 	{
 		// All buttons are now use only	
 		SetTouch(nullptr);
@@ -725,7 +725,7 @@ void CBaseButton::ButtonBackHome()
 		SetTouch(&CBaseButton::ButtonTouch);
 
 	// reset think for a sparking button
-	if (FBitSet(pev->spawnflags, SF_BUTTON_SPARK_IF_OFF))
+	if (IsBitSet(pev->spawnflags, SF_BUTTON_SPARK_IF_OFF))
 	{
 		SetThink(&CBaseButton::ButtonSpark);
 		pev->nextthink = gpGlobals->time + 0.5;// no hurry.
@@ -758,7 +758,7 @@ void CRotButton::Spawn()
 	CBaseToggle::AxisDir(pev);
 
 	// check for clockwise rotation
-	if (FBitSet(pev->spawnflags, SF_DOOR_ROTATE_BACKWARDS))
+	if (IsBitSet(pev->spawnflags, SF_DOOR_ROTATE_BACKWARDS))
 		pev->movedir = pev->movedir * -1;
 
 	pev->movetype = MOVETYPE_PUSH;
@@ -790,7 +790,7 @@ void CRotButton::Spawn()
 	m_fRotating = true;
 
 	// if the button is flagged for USE button activation only, take away it's touch function and add a use function
-	if (!FBitSet(pev->spawnflags, SF_BUTTON_TOUCH_ONLY))
+	if (!IsBitSet(pev->spawnflags, SF_BUTTON_TOUCH_ONLY))
 	{
 		SetTouch(nullptr);
 		SetUse(&CRotButton::ButtonUse);
@@ -896,12 +896,12 @@ void CMomentaryRotButton::Spawn()
 
 void CMomentaryRotButton::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "returnspeed"))
+	if (AreStringsEqual(pkvd->szKeyName, "returnspeed"))
 	{
 		m_returnSpeed = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "sounds"))
+	else if (AreStringsEqual(pkvd->szKeyName, "sounds"))
 	{
 		m_sounds = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -938,10 +938,10 @@ void CMomentaryRotButton::UpdateAllButtons(float value, int start)
 	{
 
 		pentTarget = FIND_ENTITY_BY_STRING(pentTarget, "target", STRING(pev->target));
-		if (FNullEnt(pentTarget))
+		if (IsNullEnt(pentTarget))
 			break;
 
-		if (FClassnameIs(VARS(pentTarget), "momentary_rot_button"))
+		if (ClassnameIs(VARS(pentTarget), "momentary_rot_button"))
 		{
 			CMomentaryRotButton* pEntity = CMomentaryRotButton::Instance(pentTarget);
 			if (pEntity)
@@ -995,13 +995,13 @@ void CMomentaryRotButton::UpdateSelf(float value)
 
 void CMomentaryRotButton::UpdateTarget(float value)
 {
-	if (!FStringNull(pev->target))
+	if (!IsStringNull(pev->target))
 	{
 		edict_t* pentTarget = nullptr;
 		for (;;)
 		{
 			pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
-			if (FNullEnt(pentTarget))
+			if (IsNullEnt(pentTarget))
 				break;
 			CBaseEntity* pEntity = CBaseEntity::Instance(pentTarget);
 			if (pEntity)
@@ -1016,7 +1016,7 @@ void CMomentaryRotButton::Off()
 {
 	pev->avelocity = vec3_origin;
 	m_lastUsed = false;
-	if (FBitSet(pev->spawnflags, SF_PENDULUM_AUTO_RETURN) && m_returnSpeed > 0)
+	if (IsBitSet(pev->spawnflags, SF_PENDULUM_AUTO_RETURN) && m_returnSpeed > 0)
 	{
 		SetThink(&CMomentaryRotButton::Return);
 		pev->nextthink = pev->ltime + 0.1;
@@ -1087,9 +1087,9 @@ void CEnvSpark::Spawn()
 	SetThink(nullptr);
 	SetUse(nullptr);
 
-	if (FBitSet(pev->spawnflags, SF_SPARK_TOGGLE)) // Use for on/off
+	if (IsBitSet(pev->spawnflags, SF_SPARK_TOGGLE)) // Use for on/off
 	{
-		if (FBitSet(pev->spawnflags, SF_SPARK_START_ON)) // Start on
+		if (IsBitSet(pev->spawnflags, SF_SPARK_START_ON)) // Start on
 		{
 			SetThink(&CEnvSpark::SparkThink);	// start sparking
 			SetUse(&CEnvSpark::SparkStop);		// set up +USE to stop sparking
@@ -1120,17 +1120,17 @@ void CEnvSpark::Precache()
 
 void CEnvSpark::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "MaxDelay"))
+	if (AreStringsEqual(pkvd->szKeyName, "MaxDelay"))
 	{
 		m_flDelay = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "style") ||
-		FStrEq(pkvd->szKeyName, "height") ||
-		FStrEq(pkvd->szKeyName, "killtarget") ||
-		FStrEq(pkvd->szKeyName, "value1") ||
-		FStrEq(pkvd->szKeyName, "value2") ||
-		FStrEq(pkvd->szKeyName, "value3"))
+	else if (AreStringsEqual(pkvd->szKeyName, "style") ||
+		AreStringsEqual(pkvd->szKeyName, "height") ||
+		AreStringsEqual(pkvd->szKeyName, "killtarget") ||
+		AreStringsEqual(pkvd->szKeyName, "value1") ||
+		AreStringsEqual(pkvd->szKeyName, "value2") ||
+		AreStringsEqual(pkvd->szKeyName, "value3"))
 		pkvd->fHandled = true;
 	else
 		CBaseEntity::KeyValue(pkvd);
@@ -1177,7 +1177,7 @@ void CButtonTarget::Spawn()
 	SET_MODEL(ENT(pev), STRING(pev->model));
 	pev->takedamage = DAMAGE_YES;
 
-	if (FBitSet(pev->spawnflags, SF_BTARGET_ON))
+	if (IsBitSet(pev->spawnflags, SF_BTARGET_ON))
 		pev->frame = 1;
 }
 
@@ -1196,7 +1196,7 @@ int	CButtonTarget::ObjectCaps()
 {
 	int caps = CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION;
 
-	if (FBitSet(pev->spawnflags, SF_BTARGET_USE))
+	if (IsBitSet(pev->spawnflags, SF_BTARGET_USE))
 		return caps | FCAP_IMPULSE_USE;
 	else
 		return caps;

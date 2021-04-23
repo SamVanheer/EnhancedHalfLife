@@ -86,7 +86,7 @@ public:
 
 void CDeadHEV::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "pose"))
+	if (AreStringsEqual(pkvd->szKeyName, "pose"))
 	{
 		m_iPose = atoi(pkvd->szValue);
 		pkvd->fHandled = true;

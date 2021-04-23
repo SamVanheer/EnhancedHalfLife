@@ -38,7 +38,7 @@ public:
 	/**
 	*	@brief hornets will never get mad at each other, no matter who the owner is.
 	*/
-	int  IRelationship(CBaseEntity* pTarget) override;
+	int  GetRelationship(CBaseEntity* pTarget) override;
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];

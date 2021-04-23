@@ -197,7 +197,7 @@ void CWorld::Precache()
 	}
 	else
 	{// Load the node graph for this level
-		if (!WorldGraph.FLoadGraph(STRING(gpGlobals->mapname)))
+		if (!WorldGraph.LoadGraph(STRING(gpGlobals->mapname)))
 		{// couldn't load, so alloc and prepare to build a graph.
 			ALERT(at_console, "*Error opening .NOD file\n");
 			WorldGraph.AllocNodes();
@@ -213,7 +213,7 @@ void CWorld::Precache()
 	else
 		CVAR_SET_FLOAT("sv_zmax", 4096);
 
-	if (!FStringNull(pev->netname))
+	if (!IsStringNull(pev->netname))
 	{
 		ALERT(at_aiconsole, "Chapter title: %s\n", STRING(pev->netname));
 		CBaseEntity* pEntity = CBaseEntity::Create("env_message", vec3_origin, vec3_origin, nullptr);
@@ -250,35 +250,35 @@ void CWorld::Precache()
 void CWorld::KeyValue(KeyValueData* pkvd)
 {
 	//"wad" is ignored
-	if (FStrEq(pkvd->szKeyName, "skyname"))
+	if (AreStringsEqual(pkvd->szKeyName, "skyname"))
 	{
 		// Sent over net now.
 		CVAR_SET_STRING("sv_skyname", pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "sounds"))
+	else if (AreStringsEqual(pkvd->szKeyName, "sounds"))
 	{
 		gpGlobals->cdAudioTrack = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "WaveHeight"))
+	else if (AreStringsEqual(pkvd->szKeyName, "WaveHeight"))
 	{
 		// Sent over net now.
 		pev->scale = atof(pkvd->szValue) * (1.0 / 8.0);
 		pkvd->fHandled = true;
 		CVAR_SET_FLOAT("sv_wateramp", pev->scale);
 	}
-	else if (FStrEq(pkvd->szKeyName, "MaxRange"))
+	else if (AreStringsEqual(pkvd->szKeyName, "MaxRange"))
 	{
 		pev->speed = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "chaptertitle"))
+	else if (AreStringsEqual(pkvd->szKeyName, "chaptertitle"))
 	{
 		pev->netname = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "startdark"))
+	else if (AreStringsEqual(pkvd->szKeyName, "startdark"))
 	{
 		// UNDONE: This is a gross hack!!! The CVAR is NOT sent over the client/server link
 		// but it will work for single player
@@ -287,26 +287,26 @@ void CWorld::KeyValue(KeyValueData* pkvd)
 		if (flag)
 			pev->spawnflags |= SF_WORLD_DARK;
 	}
-	else if (FStrEq(pkvd->szKeyName, "newunit"))
+	else if (AreStringsEqual(pkvd->szKeyName, "newunit"))
 	{
 		// Single player only.  Clear save directory if set
 		if (atoi(pkvd->szValue))
 			CVAR_SET_FLOAT("sv_newunit", 1);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "gametitle"))
+	else if (AreStringsEqual(pkvd->szKeyName, "gametitle"))
 	{
 		if (atoi(pkvd->szValue))
 			pev->spawnflags |= SF_WORLD_TITLE;
 
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "mapteams"))
+	else if (AreStringsEqual(pkvd->szKeyName, "mapteams"))
 	{
 		pev->team = static_cast<int>(ALLOC_STRING(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "defaultteam"))
+	else if (AreStringsEqual(pkvd->szKeyName, "defaultteam"))
 	{
 		if (atoi(pkvd->szValue))
 		{

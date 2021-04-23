@@ -58,37 +58,37 @@ IMPLEMENT_SAVERESTORE(CBasePlatTrain, CBaseToggle);
 
 void CBasePlatTrain::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "lip"))
+	if (AreStringsEqual(pkvd->szKeyName, "lip"))
 	{
 		m_flLip = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "wait"))
+	else if (AreStringsEqual(pkvd->szKeyName, "wait"))
 	{
 		m_flWait = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "height"))
+	else if (AreStringsEqual(pkvd->szKeyName, "height"))
 	{
 		m_flHeight = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "rotation"))
+	else if (AreStringsEqual(pkvd->szKeyName, "rotation"))
 	{
 		m_vecFinalAngle.x = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "movesnd"))
+	else if (AreStringsEqual(pkvd->szKeyName, "movesnd"))
 	{
 		m_bMoveSnd = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "stopsnd"))
+	else if (AreStringsEqual(pkvd->szKeyName, "stopsnd"))
 	{
 		m_bStopSnd = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "volume"))
+	else if (AreStringsEqual(pkvd->szKeyName, "volume"))
 	{
 		m_volume = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -330,7 +330,7 @@ void CFuncPlat::Spawn()
 
 	// If this platform is the target of some button, it starts at the TOP position,
 	// and is brought down by that button.  Otherwise, it starts at BOTTOM.
-	if (!FStringNull(pev->targetname))
+	if (!IsStringNull(pev->targetname))
 	{
 		UTIL_SetOrigin(pev, m_vecPosition1);
 		m_toggle_state = ToggleState::AtTop;
@@ -384,7 +384,7 @@ void CPlatTrigger::Touch(CBaseEntity* pOther)
 
 	// Ignore touches by non-players
 	entvars_t* pevToucher = pOther->pev;
-	if (!FClassnameIs(pevToucher, "player"))
+	if (!ClassnameIs(pevToucher, "player"))
 		return;
 
 	// Ignore touches by corpses
@@ -426,7 +426,7 @@ void CFuncPlat::PlatUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE 
 
 void CFuncPlat::GoDown()
 {
-	if (!FStringNull(pev->noiseMovement))
+	if (!IsStringNull(pev->noiseMovement))
 		EmitSound(CHAN_STATIC, STRING(pev->noiseMovement), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::AtTop || m_toggle_state == ToggleState::GoingUp);
@@ -437,10 +437,10 @@ void CFuncPlat::GoDown()
 
 void CFuncPlat::HitBottom()
 {
-	if (!FStringNull(pev->noiseMovement))
+	if (!IsStringNull(pev->noiseMovement))
 		StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
 
-	if (!FStringNull(pev->noiseStopMoving))
+	if (!IsStringNull(pev->noiseStopMoving))
 		EmitSound(CHAN_WEAPON, STRING(pev->noiseStopMoving), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::GoingDown);
@@ -449,7 +449,7 @@ void CFuncPlat::HitBottom()
 
 void CFuncPlat::GoUp()
 {
-	if (!FStringNull(pev->noiseMovement))
+	if (!IsStringNull(pev->noiseMovement))
 		EmitSound(CHAN_STATIC, STRING(pev->noiseMovement), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::AtBottom || m_toggle_state == ToggleState::GoingDown);
@@ -460,10 +460,10 @@ void CFuncPlat::GoUp()
 
 void CFuncPlat::HitTop()
 {
-	if (!FStringNull(pev->noiseMovement))
+	if (!IsStringNull(pev->noiseMovement))
 		StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
 
-	if (!FStringNull(pev->noiseStopMoving))
+	if (!IsStringNull(pev->noiseStopMoving))
 		EmitSound(CHAN_WEAPON, STRING(pev->noiseStopMoving), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::GoingUp);
@@ -483,7 +483,7 @@ void CFuncPlat::Blocked(CBaseEntity* pOther)
 	// Hurt the blocker a little
 	pOther->TakeDamage(pev, pev, 1, DMG_CRUSH);
 
-	if (!FStringNull(pev->noiseMovement))
+	if (!IsStringNull(pev->noiseMovement))
 		StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
 
 	// Send the platform back where it came from
@@ -536,7 +536,7 @@ void CFuncPlatRot::SetupRotation()
 		m_start = vec3_origin;
 		m_end = vec3_origin;
 	}
-	if (!FStringNull(pev->targetname))	// Start at top
+	if (!IsStringNull(pev->targetname))	// Start at top
 	{
 		pev->angles = m_end;
 	}
@@ -638,7 +638,7 @@ IMPLEMENT_SAVERESTORE(CFuncTrain, CBasePlatTrain);
 
 void CFuncTrain::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "sounds"))
+	if (AreStringsEqual(pkvd->szKeyName, "sounds"))
 	{
 		m_sounds = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -674,7 +674,7 @@ void CFuncTrain::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 			pev->target = pev->enemy->v.targetname;
 		pev->nextthink = 0;
 		pev->velocity = vec3_origin;
-		if (!FStringNull(pev->noiseStopMoving))
+		if (!IsStringNull(pev->noiseStopMoving))
 			EmitSound(CHAN_VOICE, STRING(pev->noiseStopMoving), m_volume);
 	}
 }
@@ -682,21 +682,21 @@ void CFuncTrain::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 void CFuncTrain::Wait()
 {
 	// Fire the pass target if there is one
-	if (!FStringNull(m_pevCurrentTarget->message))
+	if (!IsStringNull(m_pevCurrentTarget->message))
 	{
 		FireTargets(STRING(m_pevCurrentTarget->message), this, this, USE_TOGGLE, 0);
-		if (FBitSet(m_pevCurrentTarget->spawnflags, SF_CORNER_FIREONCE))
+		if (IsBitSet(m_pevCurrentTarget->spawnflags, SF_CORNER_FIREONCE))
 			m_pevCurrentTarget->message = iStringNull;
 	}
 
 	// need pointer to LAST target.
-	if (FBitSet(m_pevCurrentTarget->spawnflags, SF_TRAIN_WAIT_RETRIGGER) || (pev->spawnflags & SF_TRAIN_WAIT_RETRIGGER))
+	if (IsBitSet(m_pevCurrentTarget->spawnflags, SF_TRAIN_WAIT_RETRIGGER) || (pev->spawnflags & SF_TRAIN_WAIT_RETRIGGER))
 	{
 		pev->spawnflags |= SF_TRAIN_WAIT_RETRIGGER;
 		// clear the sound channel.
-		if (!FStringNull(pev->noiseMovement))
+		if (!IsStringNull(pev->noiseMovement))
 			StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
-		if (!FStringNull(pev->noiseStopMoving))
+		if (!IsStringNull(pev->noiseStopMoving))
 			EmitSound(CHAN_VOICE, STRING(pev->noiseStopMoving), m_volume);
 		pev->nextthink = 0;
 		return;
@@ -707,9 +707,9 @@ void CFuncTrain::Wait()
 	if (m_flWait != 0)
 	{// -1 wait will wait forever!		
 		pev->nextthink = pev->ltime + m_flWait;
-		if (!FStringNull(pev->noiseMovement))
+		if (!IsStringNull(pev->noiseMovement))
 			StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
-		if (!FStringNull(pev->noiseStopMoving))
+		if (!IsStringNull(pev->noiseStopMoving))
 			EmitSound(CHAN_VOICE, STRING(pev->noiseStopMoving), m_volume);
 		SetThink(&CFuncTrain::Next);
 	}
@@ -729,10 +729,10 @@ void CFuncTrain::Next()
 
 	if (!pTarg)
 	{
-		if (!FStringNull(pev->noiseMovement))
+		if (!IsStringNull(pev->noiseMovement))
 			StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
 		// Play stop sound
-		if (!FStringNull(pev->noiseStopMoving))
+		if (!IsStringNull(pev->noiseStopMoving))
 			EmitSound(CHAN_VOICE, STRING(pev->noiseStopMoving), m_volume);
 		return;
 	}
@@ -752,7 +752,7 @@ void CFuncTrain::Next()
 
 	pev->enemy = pTarg->edict();//hack
 
-	if (FBitSet(m_pevCurrentTarget->spawnflags, SF_CORNER_TELEPORT))
+	if (IsBitSet(m_pevCurrentTarget->spawnflags, SF_CORNER_TELEPORT))
 	{
 		// Path corner has indicated a teleport to the next corner.
 		SetBits(pev->effects, EF_NOINTERP);
@@ -766,9 +766,9 @@ void CFuncTrain::Next()
 		// CHANGED this from CHAN_VOICE to CHAN_STATIC around OEM beta time because trains should
 		// use CHAN_STATIC for their movement sounds to prevent sound field problems.
 		// this is not a hack or temporary fix, this is how things should be. (sjb).
-		if (!FStringNull(pev->noiseMovement))
+		if (!IsStringNull(pev->noiseMovement))
 			StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
-		if (!FStringNull(pev->noiseMovement))
+		if (!IsStringNull(pev->noiseMovement))
 			EmitSound(CHAN_STATIC, STRING(pev->noiseMovement), m_volume);
 		ClearBits(pev->effects, EF_NOINTERP);
 		SetMoveDone(&CFuncTrain::Wait);
@@ -789,7 +789,7 @@ void CFuncTrain::Activate()
 
 		UTIL_SetOrigin(pev, pevTarg->origin - (pev->mins + pev->maxs) * 0.5);
 
-		if (FStringNull(pev->targetname))
+		if (IsStringNull(pev->targetname))
 		{	// not triggered, so start immediately
 			pev->nextthink = pev->ltime + 0.1;
 			SetThink(&CFuncTrain::Next);
@@ -805,7 +805,7 @@ void CFuncTrain::Spawn()
 	if (pev->speed == 0)
 		pev->speed = 100;
 
-	if (FStringNull(pev->target))
+	if (IsStringNull(pev->target))
 		ALERT(at_console, "FuncTrain with no target");
 
 	if (pev->dmg == 0)
@@ -813,7 +813,7 @@ void CFuncTrain::Spawn()
 
 	pev->movetype = MOVETYPE_PUSH;
 
-	if (FBitSet(pev->spawnflags, SF_TRACKTRAIN_PASSABLE))
+	if (IsBitSet(pev->spawnflags, SF_TRACKTRAIN_PASSABLE))
 		pev->solid = SOLID_NOT;
 	else
 		pev->solid = SOLID_BSP;
@@ -902,33 +902,33 @@ LINK_ENTITY_TO_CLASS(func_tracktrain, CFuncTrackTrain);
 
 void CFuncTrackTrain::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "wheels"))
+	if (AreStringsEqual(pkvd->szKeyName, "wheels"))
 	{
 		m_length = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "height"))
+	else if (AreStringsEqual(pkvd->szKeyName, "height"))
 	{
 		m_height = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "startspeed"))
+	else if (AreStringsEqual(pkvd->szKeyName, "startspeed"))
 	{
 		m_startSpeed = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "sounds"))
+	else if (AreStringsEqual(pkvd->szKeyName, "sounds"))
 	{
 		m_sounds = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "volume"))
+	else if (AreStringsEqual(pkvd->szKeyName, "volume"))
 	{
 		m_flVolume = (float)(atoi(pkvd->szValue));
 		m_flVolume *= 0.1;
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "bank"))
+	else if (AreStringsEqual(pkvd->szKeyName, "bank"))
 	{
 		m_flBank = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -952,7 +952,7 @@ void CFuncTrackTrain::Blocked(CBaseEntity* pOther)
 	entvars_t* pevOther = pOther->pev;
 
 	// Blocker is on-ground on the train
-	if (FBitSet(pevOther->flags, FL_ONGROUND) && VARS(pevOther->groundentity) == pev)
+	if (IsBitSet(pevOther->flags, FL_ONGROUND) && VARS(pevOther->groundentity) == pev)
 	{
 		float deltaSpeed = fabs(pev->speed);
 		if (deltaSpeed > 50)
@@ -1020,7 +1020,7 @@ constexpr int TRAIN_MAXSPEED = 1000;	// approx max speed for sound pitch calcula
 void CFuncTrackTrain::StopSound()
 {
 	// if sound playing, stop it
-	if (m_soundPlaying && !FStringNull(pev->noise))
+	if (m_soundPlaying && !IsStringNull(pev->noise))
 	{
 		unsigned short us_encode;
 		unsigned short us_sound = ((unsigned short)(m_sounds) & 0x0007) << 12;
@@ -1043,7 +1043,7 @@ void CFuncTrackTrain::UpdateSound()
 {
 	float flpitch;
 
-	if (FStringNull(pev->noise))
+	if (IsStringNull(pev->noise))
 		return;
 
 	flpitch = TRAIN_STARTPITCH + (fabs(pev->speed) * (TRAIN_MAXPITCH - TRAIN_STARTPITCH) / TRAIN_MAXSPEED);
@@ -1160,10 +1160,10 @@ void CFuncTrackTrain::Next()
 
 			m_ppath = pnext;
 			// Fire the pass target if there is one
-			if (!FStringNull(pFire->pev->message))
+			if (!IsStringNull(pFire->pev->message))
 			{
 				FireTargets(STRING(pFire->pev->message), this, this, USE_TOGGLE, 0);
-				if (FBitSet(pFire->pev->spawnflags, SF_PATH_FIREONCE))
+				if (IsBitSet(pFire->pev->spawnflags, SF_PATH_FIREONCE))
 					pFire->pev->message = iStringNull;
 			}
 
@@ -1253,7 +1253,7 @@ void CFuncTrackTrain::DeadEnd()
 	if (pTrack)
 	{
 		ALERT(at_aiconsole, "at %s\n", STRING(pTrack->pev->targetname));
-		if (!FStringNull(pTrack->pev->netname))
+		if (!IsStringNull(pTrack->pev->netname))
 			FireTargets(STRING(pTrack->pev->netname), this, this, USE_TOGGLE, 0);
 	}
 	else
@@ -1296,7 +1296,7 @@ void CFuncTrackTrain::Find()
 		return;
 
 	entvars_t* pevTarget = m_ppath->pev;
-	if (!FClassnameIs(pevTarget, "path_track"))
+	if (!ClassnameIs(pevTarget, "path_track"))
 	{
 		ALERT(at_error, "func_track_train must be on a path of path_track\n");
 		m_ppath = nullptr;
@@ -1336,7 +1336,7 @@ void CFuncTrackTrain::NearestPath()
 	while ((pTrack = UTIL_FindEntityInSphere(pTrack, pev->origin, 1024)) != nullptr)
 	{
 		// filter out non-tracks
-		if (!(pTrack->pev->flags & (FL_CLIENT | FL_MONSTER)) && FClassnameIs(pTrack->pev, "path_track"))
+		if (!(pTrack->pev->flags & (FL_CLIENT | FL_MONSTER)) && ClassnameIs(pTrack->pev, "path_track"))
 		{
 			dist = (pev->origin - pTrack->pev->origin).Length();
 			if (dist < closest)
@@ -1380,7 +1380,7 @@ void CFuncTrackTrain::OverrideReset()
 
 CFuncTrackTrain* CFuncTrackTrain::Instance(edict_t* pent)
 {
-	if (FClassnameIs(pent, "func_tracktrain"))
+	if (ClassnameIs(pent, "func_tracktrain"))
 		return (CFuncTrackTrain*)GET_PRIVATE(pent);
 	return nullptr;
 }
@@ -1399,7 +1399,7 @@ void CFuncTrackTrain::Spawn()
 
 	m_dir = 1;
 
-	if (FStringNull(pev->target))
+	if (IsStringNull(pev->target))
 		ALERT(at_console, "FuncTrain with no target");
 
 	if (pev->spawnflags & SF_TRACKTRAIN_PASSABLE)
@@ -1472,9 +1472,9 @@ void CFuncTrainControls::Find()
 	{
 		pTarget = FIND_ENTITY_BY_TARGETNAME(pTarget, STRING(pev->target));
 	}
-	while (!FNullEnt(pTarget) && !FClassnameIs(pTarget, "func_tracktrain"));
+	while (!IsNullEnt(pTarget) && !ClassnameIs(pTarget, "func_tracktrain"));
 
-	if (FNullEnt(pTarget))
+	if (IsNullEnt(pTarget))
 	{
 		ALERT(at_console, "No train %s\n", STRING(pev->target));
 		return;
@@ -1586,12 +1586,12 @@ IMPLEMENT_SAVERESTORE(CFuncTrackChange, CFuncPlatRot);
 void CFuncTrackChange::Spawn()
 {
 	Setup();
-	if (FBitSet(pev->spawnflags, SF_TRACK_DONT_MOVE))
+	if (IsBitSet(pev->spawnflags, SF_TRACK_DONT_MOVE))
 		m_vecPosition2.z = pev->origin.z;
 
 	SetupRotation();
 
-	if (FBitSet(pev->spawnflags, SF_TRACK_STARTBOTTOM))
+	if (IsBitSet(pev->spawnflags, SF_TRACK_STARTBOTTOM))
 	{
 		UTIL_SetOrigin(pev, m_vecPosition2);
 		m_toggle_state = ToggleState::AtBottom;
@@ -1631,17 +1631,17 @@ void CFuncTrackChange::Touch(CBaseEntity* pOther)
 
 void CFuncTrackChange::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "train"))
+	if (AreStringsEqual(pkvd->szKeyName, "train"))
 	{
 		m_trainName = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "toptrack"))
+	else if (AreStringsEqual(pkvd->szKeyName, "toptrack"))
 	{
 		m_trackTopName = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "bottomtrack"))
+	else if (AreStringsEqual(pkvd->szKeyName, "bottomtrack"))
 	{
 		m_trackBottomName = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -1664,15 +1664,15 @@ void CFuncTrackChange::Find()
 	edict_t* target;
 
 	target = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_trackTopName));
-	if (!FNullEnt(target))
+	if (!IsNullEnt(target))
 	{
 		m_trackTop = CPathTrack::Instance(target);
 		target = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_trackBottomName));
-		if (!FNullEnt(target))
+		if (!IsNullEnt(target))
 		{
 			m_trackBottom = CPathTrack::Instance(target);
 			target = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_trainName));
-			if (!FNullEnt(target))
+			if (!IsNullEnt(target))
 			{
 				m_train = CFuncTrackTrain::Instance(FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_trainName)));
 				if (!m_train)
@@ -1760,7 +1760,7 @@ void CFuncTrackChange::GoDown()
 
 	UpdateAutoTargets(ToggleState::GoingDown);
 	// If ROTMOVE, move & rotate
-	if (FBitSet(pev->spawnflags, SF_TRACK_DONT_MOVE))
+	if (IsBitSet(pev->spawnflags, SF_TRACK_DONT_MOVE))
 	{
 		SetMoveDone(&CFuncTrackChange::CallHitBottom);
 		m_toggle_state = ToggleState::GoingDown;
@@ -1791,7 +1791,7 @@ void CFuncTrackChange::GoUp()
 	// before you call GoUp();
 
 	UpdateAutoTargets(ToggleState::GoingUp);
-	if (FBitSet(pev->spawnflags, SF_TRACK_DONT_MOVE))
+	if (IsBitSet(pev->spawnflags, SF_TRACK_DONT_MOVE))
 	{
 		m_toggle_state = ToggleState::GoingUp;
 		SetMoveDone(&CFuncTrackChange::CallHitTop);
@@ -1948,7 +1948,7 @@ void CFuncTrackAuto::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	else
 		pTarget = nullptr;
 
-	if (FClassnameIs(pActivator->pev, "func_tracktrain"))
+	if (ClassnameIs(pActivator->pev, "func_tracktrain"))
 	{
 		m_code = EvaluateTrain(pTarget);
 		// Safe to fire?
@@ -2089,10 +2089,10 @@ void CGunTarget::Wait()
 	}
 
 	// Fire the pass target if there is one
-	if (!FStringNull(pTarget->pev->message))
+	if (!IsStringNull(pTarget->pev->message))
 	{
 		FireTargets(STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0);
-		if (FBitSet(pTarget->pev->spawnflags, SF_CORNER_FIREONCE))
+		if (IsBitSet(pTarget->pev->spawnflags, SF_CORNER_FIREONCE))
 			pTarget->pev->message = iStringNull;
 	}
 
@@ -2126,7 +2126,7 @@ bool	CGunTarget::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 		{
 			pev->health = 0;
 			Stop();
-			if (!FStringNull(pev->message))
+			if (!IsStringNull(pev->message))
 				FireTargets(STRING(pev->message), this, this, USE_TOGGLE, 0);
 		}
 	}

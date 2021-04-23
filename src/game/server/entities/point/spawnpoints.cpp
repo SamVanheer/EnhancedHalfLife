@@ -26,7 +26,7 @@ LINK_ENTITY_TO_CLASS(info_landmark, CPointEntity);
 
 void CBaseDMStart::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "master"))
+	if (AreStringsEqual(pkvd->szKeyName, "master"))
 	{
 		pev->netname = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -75,10 +75,10 @@ static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 	if (g_pGameRules->IsCoOp())
 	{
 		pSpot = UTIL_FindEntityByClassname(lastSpawn, "info_player_coop");
-		if (!FNullEnt(pSpot))
+		if (!IsNullEnt(pSpot))
 			return pSpot;
 		pSpot = UTIL_FindEntityByClassname(lastSpawn, "info_player_start");
-		if (!FNullEnt(pSpot))
+		if (!IsNullEnt(pSpot))
 			return pSpot;
 	}
 	else if (g_pGameRules->IsDeathmatch())
@@ -87,7 +87,7 @@ static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 		// Randomize the start spot
 		for (int i = RANDOM_LONG(1, 5); i > 0; i--)
 			pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_deathmatch");
-		if (FNullEnt(pSpot))  // skip over the null point
+		if (IsNullEnt(pSpot))  // skip over the null point
 			pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_deathmatch");
 
 		CBaseEntity* pFirstSpot = pSpot;
@@ -115,7 +115,7 @@ static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 		while (pSpot != pFirstSpot); // loop if we're not back to the start
 
 	 // we haven't found a place to spawn yet,  so kill any guy at the first spawn point and spawn there
-		if (!FNullEnt(pSpot))
+		if (!IsNullEnt(pSpot))
 		{
 			CBaseEntity* ent = nullptr;
 			while ((ent = UTIL_FindEntityInSphere(ent, pSpot->pev->origin, 128)) != nullptr)
@@ -129,16 +129,16 @@ static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 	}
 
 	// If startspot is set, (re)spawn there.
-	if (FStringNull(gpGlobals->startspot) || !strlen(STRING(gpGlobals->startspot)))
+	if (IsStringNull(gpGlobals->startspot) || !strlen(STRING(gpGlobals->startspot)))
 	{
 		pSpot = UTIL_FindEntityByClassname(nullptr, "info_player_start");
-		if (!FNullEnt(pSpot))
+		if (!IsNullEnt(pSpot))
 			return pSpot;
 	}
 	else
 	{
 		pSpot = UTIL_FindEntityByTargetname(nullptr, STRING(gpGlobals->startspot));
-		if (!FNullEnt(pSpot))
+		if (!IsNullEnt(pSpot))
 			return pSpot;
 	}
 
@@ -149,7 +149,7 @@ edict_t* EntSelectSpawnPoint(CBaseEntity* pPlayer)
 {
 	CBaseEntity* pSpot = FindSpawnPoint(pPlayer, g_pLastSpawn);
 
-	if (FNullEnt(pSpot))
+	if (IsNullEnt(pSpot))
 	{
 		ALERT(at_error, "PutClientInServer: no info_player_start on level");
 		return INDEXENT(0);

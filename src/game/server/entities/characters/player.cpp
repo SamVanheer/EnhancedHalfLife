@@ -288,7 +288,7 @@ bool CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 
 	CBaseEntity* pAttacker = CBaseEntity::Instance(pevAttacker);
 
-	if (!g_pGameRules->FPlayerCanTakeDamage(this, pAttacker))
+	if (!g_pGameRules->PlayerCanTakeDamage(this, pAttacker))
 	{
 		// Refuse the damage
 		return false;
@@ -794,7 +794,7 @@ void CBasePlayer::SetAnimation(PlayerAnim playerAnim)
 		break;
 	case PlayerAnim::Idle:
 	case PlayerAnim::Walk:
-		if (!FBitSet(pev->flags, FL_ONGROUND) && (m_Activity == ACT_HOP || m_Activity == ACT_LEAP))	// Still jumping
+		if (!IsBitSet(pev->flags, FL_ONGROUND) && (m_Activity == ACT_HOP || m_Activity == ACT_LEAP))	// Still jumping
 		{
 			m_IdealActivity = m_Activity;
 		}
@@ -836,7 +836,7 @@ void CBasePlayer::SetAnimation(PlayerAnim playerAnim)
 		return;
 
 	case ACT_RANGE_ATTACK1:
-		if (FBitSet(pev->flags, FL_DUCKING))	// crouching
+		if (IsBitSet(pev->flags, FL_DUCKING))	// crouching
 			safe_strcpy(szAnim, "crouch_shoot_");
 		else
 			safe_strcpy(szAnim, "ref_shoot_");
@@ -864,7 +864,7 @@ void CBasePlayer::SetAnimation(PlayerAnim playerAnim)
 	case ACT_WALK:
 		if (m_Activity != ACT_RANGE_ATTACK1 || m_fSequenceFinished)
 		{
-			if (FBitSet(pev->flags, FL_DUCKING))	// crouching
+			if (IsBitSet(pev->flags, FL_DUCKING))	// crouching
 				safe_strcpy(szAnim, "crouch_aim_");
 			else
 				safe_strcpy(szAnim, "ref_aim_");
@@ -880,7 +880,7 @@ void CBasePlayer::SetAnimation(PlayerAnim playerAnim)
 		}
 	}
 
-	if (FBitSet(pev->flags, FL_DUCKING))
+	if (IsBitSet(pev->flags, FL_DUCKING))
 	{
 		if (speed == 0)
 		{
@@ -988,7 +988,7 @@ void CBasePlayer::WaterMove()
 
 	if (pev->waterlevel == WaterLevel::Dry)
 	{
-		if (FBitSet(pev->flags, FL_INWATER))
+		if (IsBitSet(pev->flags, FL_INWATER))
 		{
 			ClearBits(pev->flags, FL_INWATER);
 		}
@@ -1020,7 +1020,7 @@ void CBasePlayer::WaterMove()
 		TakeDamage(INDEXVARS(0), INDEXVARS(0), 4 * static_cast<int>(pev->waterlevel), DMG_ACID);
 	}
 
-	if (!FBitSet(pev->flags, FL_INWATER))
+	if (!IsBitSet(pev->flags, FL_INWATER))
 	{
 		SetBits(pev->flags, FL_INWATER);
 		pev->dmgtime = 0;
@@ -1036,7 +1036,7 @@ void CBasePlayer::PlayerDeathThink()
 {
 	float flForward;
 
-	if (FBitSet(pev->flags, FL_ONGROUND))
+	if (IsBitSet(pev->flags, FL_ONGROUND))
 	{
 		flForward = pev->velocity.Length() - 20;
 		if (flForward <= 0)
@@ -1066,7 +1066,7 @@ void CBasePlayer::PlayerDeathThink()
 
 	// once we're done animating our death and we're on the ground, we want to set movetype to None so our dead body won't do collisions and stuff anymore
 	// this prevents a bug where the dead body would go to a player's head if he walked over it while the dead player was clicking their button to respawn
-	if (pev->movetype != MOVETYPE_NONE && FBitSet(pev->flags, FL_ONGROUND))
+	if (pev->movetype != MOVETYPE_NONE && IsBitSet(pev->flags, FL_ONGROUND))
 		pev->movetype = MOVETYPE_NONE;
 
 	if (pev->deadflag == DEAD_DYING)
@@ -1085,7 +1085,7 @@ void CBasePlayer::PlayerDeathThink()
 		if (fAnyButtonDown)
 			return;
 
-		if (g_pGameRules->FPlayerCanRespawn(this))
+		if (g_pGameRules->PlayerCanRespawn(this))
 		{
 			m_fDeadTime = gpGlobals->time;
 			pev->deadflag = DEAD_RESPAWNABLE;
@@ -1133,7 +1133,7 @@ void CBasePlayer::StartDeathCam()
 
 	pSpot = FIND_ENTITY_BY_CLASSNAME(nullptr, "info_intermission");
 
-	if (!FNullEnt(pSpot))
+	if (!IsNullEnt(pSpot))
 	{
 		// at least one intermission spot in the world.
 		iRand = RANDOM_LONG(0, 3);
@@ -1278,7 +1278,7 @@ void CBasePlayer::PlayerUse()
 			{	// Start controlling the train!
 				CBaseEntity* pTrain = CBaseEntity::Instance(pev->groundentity);
 
-				if (pTrain && !(pev->button & IN_JUMP) && FBitSet(pev->flags, FL_ONGROUND) && (pTrain->ObjectCaps() & FCAP_DIRECTIONAL_USE) && pTrain->OnControls(pev))
+				if (pTrain && !(pev->button & IN_JUMP) && IsBitSet(pev->flags, FL_ONGROUND) && (pTrain->ObjectCaps() & FCAP_DIRECTIONAL_USE) && pTrain->OnControls(pev))
 				{
 					m_afPhysicsFlags |= PFLAG_ONTRAIN;
 					m_iTrain = TrainSpeed(pTrain->pev->speed, pTrain->pev->impulse);
@@ -1306,7 +1306,7 @@ void CBasePlayer::PlayerUse()
 			// !!!PERFORMANCE- should this check be done on a per case basis AFTER we've determined that
 			// this object is actually usable? This dot is being done for every object within PLAYER_SEARCH_RADIUS
 			// when player hits the use key. How many objects can be in that area, anyway? (sjb)
-			vecLOS = (VecBModelOrigin(pObject->pev) - (pev->origin + pev->view_ofs));
+			vecLOS = (GetBrushModelOrigin(pObject->pev) - (pev->origin + pev->view_ofs));
 
 			// This essentially moves the origin of the target to the corner nearest the player to test to see 
 			// if it's "hull" is in the view cone
@@ -1361,7 +1361,7 @@ void CBasePlayer::Jump()
 	Vector		vecSpot;
 	TraceResult	tr;
 
-	if (FBitSet(pev->flags, FL_WATERJUMP))
+	if (IsBitSet(pev->flags, FL_WATERJUMP))
 		return;
 
 	if (pev->waterlevel >= WaterLevel::Waist)
@@ -1372,7 +1372,7 @@ void CBasePlayer::Jump()
 	// jump velocity is sqrt( height * gravity * 2)
 
 	// If this isn't the first frame pressing the jump button, break out.
-	if (!FBitSet(m_afButtonPressed, IN_JUMP))
+	if (!IsBitSet(m_afButtonPressed, IN_JUMP))
 		return;         // don't pogo stick
 
 	if (!(pev->flags & FL_ONGROUND) || !pev->groundentity)
@@ -1509,7 +1509,7 @@ void CBasePlayer::UpdateStatusBar()
 
 	if (tr.flFraction != 1.0)
 	{
-		if (!FNullEnt(tr.pHit))
+		if (!IsNullEnt(tr.pHit))
 		{
 			CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit);
 
@@ -1599,7 +1599,7 @@ void CBasePlayer::PreThink()
 	ItemPreFrame();
 	WaterMove();
 
-	if (g_pGameRules && g_pGameRules->FAllowFlashlight())
+	if (g_pGameRules && g_pGameRules->AllowFlashlight())
 		m_iHideHUD &= ~HIDEHUD_FLASHLIGHT;
 	else
 		m_iHideHUD |= HIDEHUD_FLASHLIGHT;
@@ -1671,7 +1671,7 @@ void CBasePlayer::PreThink()
 				return;
 			}
 		}
-		else if (!FBitSet(pev->flags, FL_ONGROUND) || FBitSet(pTrain->pev->spawnflags, SF_TRACKTRAIN_NOCONTROL) || (pev->button & (IN_MOVELEFT | IN_MOVERIGHT)))
+		else if (!IsBitSet(pev->flags, FL_ONGROUND) || IsBitSet(pTrain->pev->spawnflags, SF_TRACKTRAIN_NOCONTROL) || (pev->button & (IN_MOVELEFT | IN_MOVERIGHT)))
 		{
 			// Turn off the train if you jump, strafe, or the train controls go dead
 			m_afPhysicsFlags &= ~PFLAG_ONTRAIN;
@@ -1711,10 +1711,10 @@ void CBasePlayer::PreThink()
 
 
 	// If trying to duck, already ducked, or in the process of ducking
-	if ((pev->button & IN_DUCK) || FBitSet(pev->flags, FL_DUCKING) || (m_afPhysicsFlags & PFLAG_DUCKING))
+	if ((pev->button & IN_DUCK) || IsBitSet(pev->flags, FL_DUCKING) || (m_afPhysicsFlags & PFLAG_DUCKING))
 		Duck();
 
-	if (!FBitSet(pev->flags, FL_ONGROUND))
+	if (!IsBitSet(pev->flags, FL_ONGROUND))
 	{
 		m_flFallVelocity = -pev->velocity.z;
 	}
@@ -2177,7 +2177,7 @@ void CBasePlayer::UpdatePlayerSound()
 	// now calculate the best target volume for the sound. If the player's weapon
 	// is louder than his body/movement, use the weapon volume, else, use the body volume.
 
-	if (FBitSet(pev->flags, FL_ONGROUND))
+	if (IsBitSet(pev->flags, FL_ONGROUND))
 	{
 		iBodyVolume = pev->velocity.Length();
 
@@ -2281,7 +2281,7 @@ void CBasePlayer::PostThink()
 		// Handle Tank controlling
 		if (m_pTank != nullptr)
 		{ // if they've moved too far from the gun,  or selected a weapon, unuse the gun
-			if (m_pTank->OnControls(pev) && FStringNull(pev->weaponmodel))
+			if (m_pTank->OnControls(pev) && IsStringNull(pev->weaponmodel))
 			{
 				m_pTank->Use(this, this, USE_SET, 2);	// try fire the gun
 			}
@@ -2301,7 +2301,7 @@ void CBasePlayer::PostThink()
 		// of maximum safe distance will make no sound. Falling farther than max safe distance will play a 
 		// fallpain sound, and damage will be inflicted based on how far the player fell
 
-		if ((FBitSet(pev->flags, FL_ONGROUND)) && (pev->health > 0) && m_flFallVelocity >= PLAYER_FALL_PUNCH_THRESHHOLD)
+		if ((IsBitSet(pev->flags, FL_ONGROUND)) && (pev->health > 0) && m_flFallVelocity >= PLAYER_FALL_PUNCH_THRESHHOLD)
 		{
 			// ALERT ( at_console, "%f\n", m_flFallVelocity );
 
@@ -2316,7 +2316,7 @@ void CBasePlayer::PostThink()
 			else if (m_flFallVelocity > PLAYER_MAX_SAFE_FALL_SPEED)
 			{// after this point, we start doing damage
 
-				float flFallDamage = g_pGameRules->FlPlayerFallDamage(this);
+				float flFallDamage = g_pGameRules->PlayerFallDamage(this);
 
 				if (flFallDamage > pev->health)
 				{//splat
@@ -2337,7 +2337,7 @@ void CBasePlayer::PostThink()
 			}
 		}
 
-		if (FBitSet(pev->flags, FL_ONGROUND))
+		if (IsBitSet(pev->flags, FL_ONGROUND))
 		{
 			if (m_flFallVelocity > 64 && !g_pGameRules->IsMultiplayer())
 			{
@@ -2352,7 +2352,7 @@ void CBasePlayer::PostThink()
 		{
 			if (!pev->velocity.x && !pev->velocity.y)
 				SetAnimation(PlayerAnim::Idle);
-			else if ((pev->velocity.x || pev->velocity.y) && (FBitSet(pev->flags, FL_ONGROUND)))
+			else if ((pev->velocity.x || pev->velocity.y) && (IsBitSet(pev->flags, FL_ONGROUND)))
 				SetAnimation(PlayerAnim::Walk);
 			else if (pev->waterlevel > WaterLevel::Feet)
 				SetAnimation(PlayerAnim::Walk);
@@ -2487,7 +2487,7 @@ void CBasePlayer::Spawn()
 	g_ulModelIndexPlayer = pev->modelindex;
 	pev->sequence = LookupActivity(ACT_IDLE);
 
-	if (FBitSet(pev->flags, FL_DUCKING))
+	if (IsBitSet(pev->flags, FL_DUCKING))
 		UTIL_SetSize(pev, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX);
 	else
 		UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
@@ -2532,7 +2532,7 @@ void CBasePlayer::Precache()
 	// !!!BUGBUG - now that we have multiplayer, this needs to be moved!
 	if (WorldGraph.m_fGraphPresent && !WorldGraph.m_fGraphPointersSet)
 	{
-		if (!WorldGraph.FSetGraphPointers())
+		if (!WorldGraph.SetGraphPointers())
 		{
 			ALERT(at_console, "**Graph pointers were not set!\n");
 		}
@@ -2601,7 +2601,7 @@ bool CBasePlayer::Restore(CRestore& restore)
 
 	g_ulModelIndexPlayer = pev->modelindex;
 
-	if (FBitSet(pev->flags, FL_DUCKING))
+	if (IsBitSet(pev->flags, FL_DUCKING))
 	{
 		// Use the crouch HACK
 		//FixPlayerCrouchStuck( edict() );
@@ -2699,7 +2699,7 @@ void CBasePlayer::SelectItem(const char* pstr)
 
 			while (pItem)
 			{
-				if (FClassnameIs(pItem->pev, pstr))
+				if (ClassnameIs(pItem->pev, pstr))
 					break;
 				pItem = pItem->m_pNext;
 			}
@@ -2860,7 +2860,7 @@ void CBasePlayer::GiveNamedItem(const char* pszName)
 	string_t istr = MAKE_STRING(pszName);
 
 	pent = CREATE_NAMED_ENTITY(istr);
-	if (FNullEnt(pent))
+	if (IsNullEnt(pent))
 	{
 		ALERT(at_console, "NULL Ent in GiveNamedItem!\n");
 		return;
@@ -2874,12 +2874,12 @@ void CBasePlayer::GiveNamedItem(const char* pszName)
 
 bool CBasePlayer::FlashlightIsOn()
 {
-	return FBitSet(pev->effects, EF_DIMLIGHT);
+	return IsBitSet(pev->effects, EF_DIMLIGHT);
 }
 
 void CBasePlayer::FlashlightTurnOn()
 {
-	if (!g_pGameRules->FAllowFlashlight())
+	if (!g_pGameRules->AllowFlashlight())
 	{
 		return;
 	}
@@ -3101,7 +3101,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 		{
 			ALERT(at_console, "Classname: %s", STRING(pEntity->pev->classname));
 
-			if (!FStringNull(pEntity->pev->targetname))
+			if (!IsStringNull(pEntity->pev->targetname))
 			{
 				ALERT(at_console, " - Targetname: %s\n", STRING(pEntity->pev->targetname));
 			}
@@ -3111,7 +3111,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 			}
 
 			ALERT(at_console, "Model: %s\n", STRING(pEntity->pev->model));
-			if (!FStringNull(pEntity->pev->globalname))
+			if (!IsStringNull(pEntity->pev->globalname))
 				ALERT(at_console, "Globalname: %s\n", STRING(pEntity->pev->globalname));
 		}
 		break;
@@ -3178,11 +3178,11 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 {
 	CBasePlayerItem* pInsert;
 
-	pInsert = m_rgpPlayerItems[pItem->iItemSlot()];
+	pInsert = m_rgpPlayerItems[pItem->ItemSlot()];
 
 	while (pInsert)
 	{
-		if (FClassnameIs(pInsert->pev, STRING(pItem->pev->classname)))
+		if (ClassnameIs(pInsert->pev, STRING(pItem->pev->classname)))
 		{
 			if (pItem->AddDuplicate(pInsert))
 			{
@@ -3212,11 +3212,11 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 		g_pGameRules->PlayerGotWeapon(this, pItem);
 		pItem->CheckRespawn();
 
-		pItem->m_pNext = m_rgpPlayerItems[pItem->iItemSlot()];
-		m_rgpPlayerItems[pItem->iItemSlot()] = pItem;
+		pItem->m_pNext = m_rgpPlayerItems[pItem->ItemSlot()];
+		m_rgpPlayerItems[pItem->ItemSlot()] = pItem;
 
 		// should we switch to this item?
-		if (g_pGameRules->FShouldSwitchWeapon(this, pItem))
+		if (g_pGameRules->ShouldSwitchWeapon(this, pItem))
 		{
 			SwitchWeapon(pItem);
 		}
@@ -3246,11 +3246,11 @@ bool CBasePlayer::RemovePlayerItem(CBasePlayerItem* pItem)
 	if (m_pLastItem == pItem)
 		m_pLastItem = nullptr;
 
-	CBasePlayerItem* pPrev = m_rgpPlayerItems[pItem->iItemSlot()];
+	CBasePlayerItem* pPrev = m_rgpPlayerItems[pItem->ItemSlot()];
 
 	if (pPrev == pItem)
 	{
-		m_rgpPlayerItems[pItem->iItemSlot()] = pItem->m_pNext;
+		m_rgpPlayerItems[pItem->ItemSlot()] = pItem->m_pNext;
 		return true;
 	}
 	else
@@ -3665,7 +3665,7 @@ void CBasePlayer::UpdateClientData()
 	m_bRestored = false;
 }
 
-bool CBasePlayer::FBecomeProne()
+bool CBasePlayer::BecomeProne()
 {
 	m_afPhysicsFlags |= PFLAG_ONBARNACLE;
 	return true;
@@ -3880,7 +3880,7 @@ Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelt
 		}
 
 		// don't shoot at friends
-		if (IRelationship(pEntity) < 0)
+		if (GetRelationship(pEntity) < 0)
 		{
 			if (!pEntity->IsPlayer() && !g_pGameRules->IsDeathmatch())
 				// ALERT( at_console, "friend\n");
@@ -4000,22 +4000,22 @@ void CBasePlayer::DropPlayerItem(const char* pszItemName)
 			// drop half of the ammo for this weapon.
 			int	iAmmoIndex;
 
-			iAmmoIndex = GetAmmoIndex(pWeapon->pszAmmo1()); // ???
+			iAmmoIndex = GetAmmoIndex(pWeapon->Ammo1Name()); // ???
 
 			if (iAmmoIndex != -1)
 			{
 				// this weapon weapon uses ammo, so pack an appropriate amount.
-				if (pWeapon->iFlags() & ITEM_FLAG_EXHAUSTIBLE)
+				if (pWeapon->Flags() & ITEM_FLAG_EXHAUSTIBLE)
 				{
 					// pack up all the ammo, this weapon is its own ammo type
-					pWeaponBox->PackAmmo(MAKE_STRING(pWeapon->pszAmmo1()), m_rgAmmo[iAmmoIndex]);
+					pWeaponBox->PackAmmo(MAKE_STRING(pWeapon->Ammo1Name()), m_rgAmmo[iAmmoIndex]);
 					m_rgAmmo[iAmmoIndex] = 0;
 
 				}
 				else
 				{
 					// pack half of the ammo
-					pWeaponBox->PackAmmo(MAKE_STRING(pWeapon->pszAmmo1()), m_rgAmmo[iAmmoIndex] / 2);
+					pWeaponBox->PackAmmo(MAKE_STRING(pWeapon->Ammo1Name()), m_rgAmmo[iAmmoIndex] / 2);
 					m_rgAmmo[iAmmoIndex] /= 2;
 				}
 
@@ -4028,11 +4028,11 @@ void CBasePlayer::DropPlayerItem(const char* pszItemName)
 
 bool CBasePlayer::HasPlayerItem(CBasePlayerItem* pCheckItem)
 {
-	CBasePlayerItem* pItem = m_rgpPlayerItems[pCheckItem->iItemSlot()];
+	CBasePlayerItem* pItem = m_rgpPlayerItems[pCheckItem->ItemSlot()];
 
 	while (pItem)
 	{
-		if (FClassnameIs(pItem->pev, STRING(pCheckItem->pev->classname)))
+		if (ClassnameIs(pItem->pev, STRING(pCheckItem->pev->classname)))
 		{
 			return true;
 		}
@@ -4156,7 +4156,7 @@ void CInfoIntermission::Think()
 	// find my target
 	pTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target));
 
-	if (!FNullEnt(pTarget))
+	if (!IsNullEnt(pTarget))
 	{
 		pev->v_angle = VectorAngles((pTarget->v.origin - pev->origin).Normalize());
 		pev->v_angle.x = -pev->v_angle.x;

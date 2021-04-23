@@ -45,9 +45,9 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
-	int	 ISoundMask() override;
+	int	 SoundMask() override;
 	int  Classify() override;
-	int  IRelationship(CBaseEntity* pTarget) override;
+	int  GetRelationship(CBaseEntity* pTarget) override;
 	void HandleAnimEvent(AnimationEvent& event) override;
 
 	/**
@@ -171,12 +171,12 @@ int	CISlave::Classify()
 	return	CLASS_ALIEN_MILITARY;
 }
 
-int CISlave::IRelationship(CBaseEntity* pTarget)
+int CISlave::GetRelationship(CBaseEntity* pTarget)
 {
 	if ((pTarget->IsPlayer()))
 		if ((pev->spawnflags & SF_MONSTER_WAIT_UNTIL_PROVOKED) && !(m_afMemory & bits_MEMORY_PROVOKED))
 			return R_NO;
-	return CBaseMonster::IRelationship(pTarget);
+	return CBaseMonster::GetRelationship(pTarget);
 }
 
 void CISlave::CallForHelp(const char* szClassname, float flDist, EHANDLE hEnemy, Vector& vecLocation)
@@ -184,7 +184,7 @@ void CISlave::CallForHelp(const char* szClassname, float flDist, EHANDLE hEnemy,
 	// ALERT( at_aiconsole, "help " );
 
 	// skip ones not on my netname
-	if (FStringNull(pev->netname))
+	if (IsStringNull(pev->netname))
 		return;
 
 	CBaseEntity* pEntity = nullptr;
@@ -259,7 +259,7 @@ void CISlave::DeathSound()
 	EmitSound(CHAN_WEAPON, pDeathSounds[RANDOM_LONG(0, ArraySize(pDeathSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
 }
 
-int CISlave::ISoundMask()
+int CISlave::SoundMask()
 {
 	return	bits_SOUND_WORLD |
 		bits_SOUND_COMBAT |
@@ -543,7 +543,7 @@ void CISlave::Precache()
 bool CISlave::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	// don't slash one of your own
-	if ((bitsDamageType & DMG_SLASH) && pevAttacker && IRelationship(Instance(pevAttacker)) < R_DL)
+	if ((bitsDamageType & DMG_SLASH) && pevAttacker && GetRelationship(Instance(pevAttacker)) < R_DL)
 		return false;
 
 	m_afMemory |= bits_MEMORY_PROVOKED;
@@ -607,7 +607,7 @@ Schedule_t* CISlave::GetSchedule()
 	if (HasConditions(bits_COND_HEAR_SOUND))
 	{
 		CSound* pSound;
-		pSound = PBestSound();
+		pSound = BestSound();
 
 		ASSERT(pSound != nullptr);
 

@@ -175,19 +175,19 @@ void CAmbientGeneric::Spawn()
 			80  : "Large Radius"
 	*/
 
-	if (FBitSet(pev->spawnflags, AMBIENT_SOUND_EVERYWHERE))
+	if (IsBitSet(pev->spawnflags, AMBIENT_SOUND_EVERYWHERE))
 	{
 		m_flAttenuation = ATTN_NONE;
 	}
-	else if (FBitSet(pev->spawnflags, AMBIENT_SOUND_SMALLRADIUS))
+	else if (IsBitSet(pev->spawnflags, AMBIENT_SOUND_SMALLRADIUS))
 	{
 		m_flAttenuation = ATTN_IDLE;
 	}
-	else if (FBitSet(pev->spawnflags, AMBIENT_SOUND_MEDIUMRADIUS))
+	else if (IsBitSet(pev->spawnflags, AMBIENT_SOUND_MEDIUMRADIUS))
 	{
 		m_flAttenuation = ATTN_STATIC;
 	}
-	else if (FBitSet(pev->spawnflags, AMBIENT_SOUND_LARGERADIUS))
+	else if (IsBitSet(pev->spawnflags, AMBIENT_SOUND_LARGERADIUS))
 	{
 		m_flAttenuation = ATTN_NORM;
 	}
@@ -198,7 +198,7 @@ void CAmbientGeneric::Spawn()
 
 	const char* szSoundFile = STRING(pev->message);
 
-	if (FStringNull(pev->message) || strlen(szSoundFile) < 1)
+	if (IsStringNull(pev->message) || strlen(szSoundFile) < 1)
 	{
 		ALERT(at_error, "EMPTY AMBIENT AT: %f, %f, %f\n", pev->origin.x, pev->origin.y, pev->origin.z);
 		pev->nextthink = gpGlobals->time + 0.1;
@@ -221,7 +221,7 @@ void CAmbientGeneric::Spawn()
 
 	m_fActive = false;
 
-	if (FBitSet(pev->spawnflags, AMBIENT_SOUND_NOT_LOOPING))
+	if (IsBitSet(pev->spawnflags, AMBIENT_SOUND_NOT_LOOPING))
 		m_fLooping = false;
 	else
 		m_fLooping = true;
@@ -232,7 +232,7 @@ void CAmbientGeneric::Precache()
 {
 	const char* szSoundFile = STRING(pev->message);
 
-	if (!FStringNull(pev->message) && strlen(szSoundFile) > 1)
+	if (!IsStringNull(pev->message) && strlen(szSoundFile) > 1)
 	{
 		if (*szSoundFile != '!')
 			PRECACHE_SOUND(szSoundFile);
@@ -240,7 +240,7 @@ void CAmbientGeneric::Precache()
 	// init all dynamic modulation parms
 	InitModulationParms();
 
-	if (!FBitSet(pev->spawnflags, AMBIENT_SOUND_START_SILENT))
+	if (!IsBitSet(pev->spawnflags, AMBIENT_SOUND_START_SILENT))
 	{
 		// start the sound ASAP
 		if (m_fLooping)
@@ -639,14 +639,14 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 	// NOTE: also requires changing InitModulationParms code.
 
 	// preset
-	if (FStrEq(pkvd->szKeyName, "preset"))
+	if (AreStringsEqual(pkvd->szKeyName, "preset"))
 	{
 		m_dpv.preset = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 
 	// pitchrun
-	else if (FStrEq(pkvd->szKeyName, "pitch"))
+	else if (AreStringsEqual(pkvd->szKeyName, "pitch"))
 	{
 		m_dpv.pitchrun = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -656,7 +656,7 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 	}
 
 	// pitchstart
-	else if (FStrEq(pkvd->szKeyName, "pitchstart"))
+	else if (AreStringsEqual(pkvd->szKeyName, "pitchstart"))
 	{
 		m_dpv.pitchstart = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -666,7 +666,7 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 	}
 
 	// spinup
-	else if (FStrEq(pkvd->szKeyName, "spinup"))
+	else if (AreStringsEqual(pkvd->szKeyName, "spinup"))
 	{
 		m_dpv.spinup = atoi(pkvd->szValue);
 
@@ -680,7 +680,7 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 	}
 
 	// spindown
-	else if (FStrEq(pkvd->szKeyName, "spindown"))
+	else if (AreStringsEqual(pkvd->szKeyName, "spindown"))
 	{
 		m_dpv.spindown = atoi(pkvd->szValue);
 
@@ -694,7 +694,7 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 	}
 
 	// volstart
-	else if (FStrEq(pkvd->szKeyName, "volstart"))
+	else if (AreStringsEqual(pkvd->szKeyName, "volstart"))
 	{
 		m_dpv.volstart = atoi(pkvd->szValue);
 
@@ -707,7 +707,7 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 	}
 
 	// fadein
-	else if (FStrEq(pkvd->szKeyName, "fadein"))
+	else if (AreStringsEqual(pkvd->szKeyName, "fadein"))
 	{
 		m_dpv.fadein = atoi(pkvd->szValue);
 
@@ -721,7 +721,7 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 	}
 
 	// fadeout
-	else if (FStrEq(pkvd->szKeyName, "fadeout"))
+	else if (AreStringsEqual(pkvd->szKeyName, "fadeout"))
 	{
 		m_dpv.fadeout = atoi(pkvd->szValue);
 
@@ -735,7 +735,7 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 	}
 
 	// lfotype
-	else if (FStrEq(pkvd->szKeyName, "lfotype"))
+	else if (AreStringsEqual(pkvd->szKeyName, "lfotype"))
 	{
 		m_dpv.lfotype = atoi(pkvd->szValue);
 		if (m_dpv.lfotype > 4) m_dpv.lfotype = LFO_TRIANGLE;
@@ -743,7 +743,7 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 	}
 
 	// lforate
-	else if (FStrEq(pkvd->szKeyName, "lforate"))
+	else if (AreStringsEqual(pkvd->szKeyName, "lforate"))
 	{
 		m_dpv.lforate = atoi(pkvd->szValue);
 
@@ -755,7 +755,7 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 		pkvd->fHandled = true;
 	}
 	// lfomodpitch
-	else if (FStrEq(pkvd->szKeyName, "lfomodpitch"))
+	else if (AreStringsEqual(pkvd->szKeyName, "lfomodpitch"))
 	{
 		m_dpv.lfomodpitch = atoi(pkvd->szValue);
 		if (m_dpv.lfomodpitch > 100) m_dpv.lfomodpitch = 100;
@@ -766,7 +766,7 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 	}
 
 	// lfomodvol
-	else if (FStrEq(pkvd->szKeyName, "lfomodvol"))
+	else if (AreStringsEqual(pkvd->szKeyName, "lfomodvol"))
 	{
 		m_dpv.lfomodvol = atoi(pkvd->szValue);
 		if (m_dpv.lfomodvol > 100) m_dpv.lfomodvol = 100;
@@ -776,7 +776,7 @@ void CAmbientGeneric::KeyValue(KeyValueData* pkvd)
 	}
 
 	// cspinup
-	else if (FStrEq(pkvd->szKeyName, "cspinup"))
+	else if (AreStringsEqual(pkvd->szKeyName, "cspinup"))
 	{
 		m_dpv.cspinup = atoi(pkvd->szValue);
 		if (m_dpv.cspinup > 100) m_dpv.cspinup = 100;
@@ -824,12 +824,12 @@ IMPLEMENT_SAVERESTORE(CEnvSound, CBaseEntity);
 void CEnvSound::KeyValue(KeyValueData* pkvd)
 {
 
-	if (FStrEq(pkvd->szKeyName, "radius"))
+	if (AreStringsEqual(pkvd->szKeyName, "radius"))
 	{
 		m_flRadius = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	if (FStrEq(pkvd->szKeyName, "roomtype"))
+	if (AreStringsEqual(pkvd->szKeyName, "roomtype"))
 	{
 		m_flRoomtype = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -839,7 +839,7 @@ void CEnvSound::KeyValue(KeyValueData* pkvd)
 /**
 *	@brief returns true if the given sound entity (pev) is in range and can see the given player entity (pevTarget)
 */
-bool FEnvSoundInRange(entvars_t* pev, entvars_t* pevTarget, float* pflRange)
+bool IsEnvSoundInRange(entvars_t* pev, entvars_t* pevTarget, float* pflRange)
 {
 	CEnvSound* pSound = GetClassPtr((CEnvSound*)pev);
 	Vector vecSpot1 = pev->origin + pev->view_ofs;
@@ -882,7 +882,7 @@ void CEnvSound::Think()
 	edict_t* pentPlayer = FIND_CLIENT_IN_PVS(edict());
 	CBasePlayer* pPlayer = nullptr;
 
-	if (FNullEnt(pentPlayer))
+	if (IsNullEnt(pentPlayer))
 	{
 		// no player in pvs of sound entity, slow it down
 		pev->nextthink = gpGlobals->time + SlowThinkInterval;
@@ -895,7 +895,7 @@ void CEnvSound::Think()
 	// check to see if this is the sound entity that is 
 	// currently affecting this player
 
-	if (!FNullEnt(pPlayer->m_pentSndLast) && (pPlayer->m_pentSndLast == ENT(pev))) {
+	if (!IsNullEnt(pPlayer->m_pentSndLast) && (pPlayer->m_pentSndLast == ENT(pev))) {
 
 		// this is the entity currently affecting player, check
 		// for validity
@@ -905,7 +905,7 @@ void CEnvSound::Think()
 			// we're looking at a valid sound entity affecting
 			// player, make sure it's still valid, update range
 
-			if (FEnvSoundInRange(pev, VARS(pentPlayer), &flRange)) {
+			if (IsEnvSoundInRange(pev, VARS(pentPlayer), &flRange)) {
 				pPlayer->m_flSndRange = flRange;
 				pev->nextthink = gpGlobals->time + FastThinkInterval;
 				return;
@@ -933,7 +933,7 @@ void CEnvSound::Think()
 	// if we got this far, we're looking at an entity that is contending
 	// for current player sound. the closest entity to player wins.
 
-	if (FEnvSoundInRange(pev, VARS(pentPlayer), &flRange))
+	if (IsEnvSoundInRange(pev, VARS(pentPlayer), &flRange))
 	{
 		if (flRange < pPlayer->m_flSndRange || pPlayer->m_flSndRange == 0)
 		{
@@ -1555,7 +1555,7 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 
 	// did we hit a breakable?
 
-	if (pEntity && FClassnameIs(pEntity->pev, "func_breakable"))
+	if (pEntity && ClassnameIs(pEntity->pev, "func_breakable"))
 	{
 		// drop volumes, the object will already play a damaged sound
 		fvol /= 1.5;
@@ -1625,7 +1625,7 @@ void CSpeaker::Spawn()
 {
 	const char* szSoundFile = STRING(pev->message);
 
-	if (!m_preset && (FStringNull(pev->message) || strlen(szSoundFile) < 1))
+	if (!m_preset && (IsStringNull(pev->message) || strlen(szSoundFile) < 1))
 	{
 		ALERT(at_error, "SPEAKER with no Level/Sentence! at: %f, %f, %f\n", pev->origin.x, pev->origin.y, pev->origin.z);
 		pev->nextthink = gpGlobals->time + 0.1;
@@ -1651,7 +1651,7 @@ constexpr float ANNOUNCE_MINUTES_MAX = 2.25;
 
 void CSpeaker::Precache()
 {
-	if (!FBitSet(pev->spawnflags, SPEAKER_START_SILENT))
+	if (!IsBitSet(pev->spawnflags, SPEAKER_START_SILENT))
 		// set first announcement time for random n second
 		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(5.0, 15.0);
 }
@@ -1768,7 +1768,7 @@ void CSpeaker::KeyValue(KeyValueData* pkvd)
 {
 
 	// preset
-	if (FStrEq(pkvd->szKeyName, "preset"))
+	if (AreStringsEqual(pkvd->szKeyName, "preset"))
 	{
 		m_preset = atoi(pkvd->szValue);
 		pkvd->fHandled = true;

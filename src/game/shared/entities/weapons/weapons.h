@@ -352,17 +352,17 @@ public:
 	/**
 	*	@brief return 0 to MAX_ITEMS_SLOTS, used in hud
 	*/
-	virtual int iItemSlot() { return 0; }
+	virtual int ItemSlot() { return 0; }
 
-	int			iItemPosition() { return ItemInfoArray[m_iId].iPosition; }
-	const char* pszAmmo1() { return ItemInfoArray[m_iId].pszAmmo1; }
-	int			iMaxAmmo1() { return ItemInfoArray[m_iId].iMaxAmmo1; }
-	const char* pszAmmo2() { return ItemInfoArray[m_iId].pszAmmo2; }
-	int			iMaxAmmo2() { return ItemInfoArray[m_iId].iMaxAmmo2; }
+	int			ItemPosition() { return ItemInfoArray[m_iId].iPosition; }
+	const char* Ammo1Name() { return ItemInfoArray[m_iId].pszAmmo1; }
+	int			MaxAmmo1() { return ItemInfoArray[m_iId].iMaxAmmo1; }
+	const char* Ammo2Name() { return ItemInfoArray[m_iId].pszAmmo2; }
+	int			MaxAmmo2() { return ItemInfoArray[m_iId].iMaxAmmo2; }
 	const char* pszName() { return ItemInfoArray[m_iId].pszName; }
-	int			iMaxClip() { return ItemInfoArray[m_iId].iMaxClip; }
-	int			iWeight() { return ItemInfoArray[m_iId].iWeight; }
-	int			iFlags() { return ItemInfoArray[m_iId].iFlags; }
+	int			MaxClip() { return ItemInfoArray[m_iId].iMaxClip; }
+	int			Weight() { return ItemInfoArray[m_iId].iWeight; }
+	int			Flags() { return ItemInfoArray[m_iId].iFlags; }
 };
 
 /**
@@ -647,7 +647,7 @@ class CGlock : public CBasePlayerWeapon
 public:
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 2; }
+	int ItemSlot() override { return 2; }
 	bool GetItemInfo(ItemInfo* p) override;
 
 	void PrimaryAttack() override;
@@ -691,7 +691,7 @@ class CCrowbar : public CBasePlayerWeapon
 public:
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 1; }
+	int ItemSlot() override { return 1; }
 	void EXPORT SwingAgain();
 	void EXPORT Smack();
 	bool GetItemInfo(ItemInfo* p) override;
@@ -732,7 +732,7 @@ class CPython : public CBasePlayerWeapon
 public:
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 2; }
+	int ItemSlot() override { return 2; }
 	bool GetItemInfo(ItemInfo* p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 	void PrimaryAttack() override;
@@ -772,7 +772,7 @@ class CMP5 : public CBasePlayerWeapon
 public:
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 3; }
+	int ItemSlot() override { return 3; }
 	bool GetItemInfo(ItemInfo* p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
@@ -819,7 +819,7 @@ class CCrossbow : public CBasePlayerWeapon
 public:
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 3; }
+	int ItemSlot() override { return 3; }
 	bool GetItemInfo(ItemInfo* p) override;
 
 	void FireBolt();
@@ -873,7 +873,7 @@ public:
 
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 3; }
+	int ItemSlot() override { return 3; }
 	bool GetItemInfo(ItemInfo* p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
@@ -941,7 +941,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void Reload() override;
-	int iItemSlot() override { return 4; }
+	int ItemSlot() override { return 4; }
 	bool GetItemInfo(ItemInfo* p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
@@ -1027,7 +1027,7 @@ public:
 
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 4; }
+	int ItemSlot() override { return 4; }
 	bool GetItemInfo(ItemInfo* p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
@@ -1111,7 +1111,7 @@ public:
 
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 4; }
+	int ItemSlot() override { return 4; }
 	bool GetItemInfo(ItemInfo* p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
@@ -1183,7 +1183,7 @@ class CHgun : public CBasePlayerWeapon
 public:
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 4; }
+	int ItemSlot() override { return 4; }
 	bool GetItemInfo(ItemInfo* p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
@@ -1229,7 +1229,7 @@ class CHandGrenade : public CBasePlayerWeapon
 public:
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 5; }
+	int ItemSlot() override { return 5; }
 	bool GetItemInfo(ItemInfo* p) override;
 
 	void PrimaryAttack() override;
@@ -1289,7 +1289,7 @@ public:
 
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 5; }
+	int ItemSlot() override { return 5; }
 	bool GetItemInfo(ItemInfo* p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 	void PrimaryAttack() override;
@@ -1336,7 +1336,7 @@ class CTripmine : public CBasePlayerWeapon
 public:
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 5; }
+	int ItemSlot() override { return 5; }
 	bool GetItemInfo(ItemInfo* p) override;
 	void SetObjectCollisionBox() override
 	{
@@ -1379,7 +1379,7 @@ class CSqueak : public CBasePlayerWeapon
 public:
 	void Spawn() override;
 	void Precache() override;
-	int iItemSlot() override { return 5; }
+	int ItemSlot() override { return 5; }
 	bool GetItemInfo(ItemInfo* p) override;
 
 	void PrimaryAttack() override;

@@ -545,7 +545,7 @@ void CBaseMonster::CallGibMonster()
 	}
 
 	pev->deadflag = DEAD_DEAD;
-	FCheckAITrigger();
+	CheckAITrigger();
 
 	// don't let the status bar glitch for players.with <0 health.
 	if (pev->health < -99)
@@ -711,7 +711,7 @@ void CGib::StickyGibTouch(CBaseEntity* pOther)
 	SetThink(&CGib::SUB_Remove);
 	pev->nextthink = gpGlobals->time + 10;
 
-	if (!FClassnameIs(pOther->pev, "worldspawn"))
+	if (!ClassnameIs(pOther->pev, "worldspawn"))
 	{
 		pev->nextthink = gpGlobals->time;
 		return;
@@ -791,7 +791,7 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 
 	// grab the vector of the incoming attack. ( pretend that the inflictor is a little lower than it really is, so the body will tend to fly upward a bit).
 	Vector vecDir = vec3_origin;
-	if (!FNullEnt(pevInflictor))
+	if (!IsNullEnt(pevInflictor))
 	{
 		CBaseEntity* pInflictor = CBaseEntity::Instance(pevInflictor);
 		if (pInflictor)
@@ -819,7 +819,7 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	}
 
 	// if this is a player, move him around!
-	if ((!FNullEnt(pevInflictor)) && (pev->movetype == MOVETYPE_WALK) && (!pevAttacker || pevAttacker->solid != SOLID_TRIGGER))
+	if ((!IsNullEnt(pevInflictor)) && (pev->movetype == MOVETYPE_WALK) && (!pevAttacker || pevAttacker->solid != SOLID_TRIGGER))
 	{
 		pev->velocity = pev->velocity + vecDir * -DamageForce(flDamage);
 	}
@@ -858,7 +858,7 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	}
 
 	// react to the damage (get mad)
-	if ((pev->flags & FL_MONSTER) && !FNullEnt(pevAttacker))
+	if ((pev->flags & FL_MONSTER) && !IsNullEnt(pevAttacker))
 	{
 		if (pevAttacker->flags & (FL_MONSTER | FL_CLIENT))
 		{// only if the attack was a monster or client!
@@ -900,7 +900,7 @@ bool CBaseMonster::DeadTakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacke
 {
 	// grab the vector of the incoming attack. ( pretend that the inflictor is a little lower than it really is, so the body will tend to fly upward a bit).
 	Vector vecDir = vec3_origin;
-	if (!FNullEnt(pevInflictor))
+	if (!IsNullEnt(pevInflictor))
 	{
 		CBaseEntity* pInflictor = CBaseEntity::Instance(pevInflictor);
 		if (pInflictor)
@@ -916,7 +916,7 @@ bool CBaseMonster::DeadTakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacke
 	pev->origin.z += 1;
 
 	// let the damage scoot the corpse around a bit.
-	if (!FNullEnt(pevInflictor) && (pevAttacker->solid != SOLID_TRIGGER))
+	if (!IsNullEnt(pevInflictor) && (pevAttacker->solid != SOLID_TRIGGER))
 	{
 		pev->velocity = pev->velocity + vecDir * -DamageForce(flDamage);
 	}
@@ -1065,7 +1065,7 @@ CBaseEntity* CBaseMonster::CheckTraceHullAttack(float flDist, int iDamage, int i
 	return nullptr;
 }
 
-bool CBaseMonster::FInViewCone(CBaseEntity* pEntity)
+bool CBaseMonster::IsInViewCone(CBaseEntity* pEntity)
 {
 	Vector2D	vec2LOS;
 	float	flDot;
@@ -1087,7 +1087,7 @@ bool CBaseMonster::FInViewCone(CBaseEntity* pEntity)
 	}
 }
 
-bool CBaseMonster::FInViewCone(Vector* pOrigin)
+bool CBaseMonster::IsInViewCone(Vector* pOrigin)
 {
 	Vector2D	vec2LOS;
 	float		flDot;
@@ -1109,13 +1109,13 @@ bool CBaseMonster::FInViewCone(Vector* pOrigin)
 	}
 }
 
-bool CBaseEntity::FVisible(CBaseEntity* pEntity)
+bool CBaseEntity::IsVisible(CBaseEntity* pEntity)
 {
 	TraceResult tr;
 	Vector		vecLookerOrigin;
 	Vector		vecTargetOrigin;
 
-	if (FBitSet(pEntity->pev->flags, FL_NOTARGET))
+	if (IsBitSet(pEntity->pev->flags, FL_NOTARGET))
 		return false;
 
 	// don't look through water
@@ -1138,7 +1138,7 @@ bool CBaseEntity::FVisible(CBaseEntity* pEntity)
 	}
 }
 
-bool CBaseEntity::FVisible(const Vector& vecOrigin)
+bool CBaseEntity::IsVisible(const Vector& vecOrigin)
 {
 	TraceResult tr;
 	Vector		vecLookerOrigin;
@@ -1331,7 +1331,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 				pEntity->TraceAttack(pevAttacker, 50, vecDir, &tr, DMG_CLUB);
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				// only decal glass
-				if (!FNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != 0)
+				if (!IsNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != 0)
 				{
 					UTIL_DecalTrace(&tr, DECAL_GLASSBREAK1 + RANDOM_LONG(0, 2));
 				}
@@ -1411,7 +1411,7 @@ Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDi
 				pEntity->TraceAttack(pevAttacker, 50, vecDir, &tr, DMG_CLUB);
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				// only decal glass
-				if (!FNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != 0)
+				if (!IsNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != 0)
 				{
 					UTIL_DecalTrace(&tr, DECAL_GLASSBREAK1 + RANDOM_LONG(0, 2));
 				}

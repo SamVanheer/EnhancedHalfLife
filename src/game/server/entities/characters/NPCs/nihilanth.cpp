@@ -854,7 +854,7 @@ void CNihilanth::HuntThink()
 	// look for current enemy	
 	if (m_hEnemy != nullptr && m_hRecharger == nullptr)
 	{
-		if (FVisible(m_hEnemy))
+		if (IsVisible(m_hEnemy))
 		{
 			if (m_flLastSeen < gpGlobals->time - 5)
 				m_flPrevSeen = gpGlobals->time;

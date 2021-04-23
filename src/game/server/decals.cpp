@@ -88,13 +88,13 @@ LINK_ENTITY_TO_CLASS(infodecal, CDecal);
 // UNDONE:  These won't get sent to joining players in multi-player
 void CDecal::Spawn()
 {
-	if (pev->skin < 0 || (gpGlobals->deathmatch && FBitSet(pev->spawnflags, SF_DECAL_NOTINDEATHMATCH)))
+	if (pev->skin < 0 || (gpGlobals->deathmatch && IsBitSet(pev->spawnflags, SF_DECAL_NOTINDEATHMATCH)))
 	{
 		REMOVE_ENTITY(ENT(pev));
 		return;
 	}
 
-	if (FStringNull(pev->targetname))
+	if (IsStringNull(pev->targetname))
 	{
 		SetThink(&CDecal::StaticDecal);
 		// if there's no targetname, the decal will spray itself on as soon as the world is done spawning.
@@ -155,7 +155,7 @@ void CDecal::StaticDecal()
 
 void CDecal::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "texture"))
+	if (AreStringsEqual(pkvd->szKeyName, "texture"))
 	{
 		pev->skin = DECAL_INDEX(pkvd->szValue);
 

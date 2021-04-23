@@ -101,8 +101,8 @@ public:
 	*	so as to increase their chances of doing damage.
 	*/
 	bool CheckRangeAttack1(float flDot, float flDist) override;
-	bool FValidateHintType(short sHint) override;
-	bool FCanActiveIdle() override;
+	bool ValidateHintType(short sHint) override;
+	bool CanActiveIdle() override;
 	Schedule_t* GetScheduleOfType(int Type) override;
 	Schedule_t* GetSchedule() override;
 
@@ -135,7 +135,7 @@ int	CHoundeye::Classify()
 	return	CLASS_ALIEN_MONSTER;
 }
 
-bool CHoundeye::FValidateHintType(short sHint)
+bool CHoundeye::ValidateHintType(short sHint)
 {
 	static constexpr short sHoundHints[] =
 	{
@@ -157,7 +157,7 @@ bool CHoundeye::FValidateHintType(short sHint)
 	return false;
 }
 
-bool CHoundeye::FCanActiveIdle()
+bool CHoundeye::CanActiveIdle()
 {
 	if (InSquad())
 	{
@@ -564,7 +564,7 @@ void CHoundeye::SonicAttack()
 	{
 		if (pEntity->pev->takedamage != DAMAGE_NO)
 		{
-			if (!FClassnameIs(pEntity->pev, "monster_houndeye"))
+			if (!ClassnameIs(pEntity->pev, "monster_houndeye"))
 			{// houndeyes don't hurt other houndeyes with their attack
 
 				// houndeyes do FULL damage if the ent in question is visible. Half damage otherwise.
@@ -586,7 +586,7 @@ void CHoundeye::SonicAttack()
 
 				flAdjustedDamage -= (flDist / HOUNDEYE_MAX_ATTACK_RADIUS) * flAdjustedDamage;
 
-				if (!FVisible(pEntity))
+				if (!IsVisible(pEntity))
 				{
 					if (pEntity->IsPlayer())
 					{
@@ -595,7 +595,7 @@ void CHoundeye::SonicAttack()
 						// so that monsters in other parts of the level don't take the damage and get pissed.
 						flAdjustedDamage *= 0.5;
 					}
-					else if (!FClassnameIs(pEntity->pev, "func_breakable") && !FClassnameIs(pEntity->pev, "func_pushable"))
+					else if (!ClassnameIs(pEntity->pev, "func_breakable") && !ClassnameIs(pEntity->pev, "func_pushable"))
 					{
 						// do not hurt nonclients through walls, but allow damage to be done to breakables
 						flAdjustedDamage = 0;
@@ -1102,13 +1102,13 @@ Schedule_t* CHoundeye::GetScheduleOfType(int Type)
 		{
 			CSound* pWakeSound;
 
-			pWakeSound = PBestSound();
+			pWakeSound = BestSound();
 			ASSERT(pWakeSound != nullptr);
 			if (pWakeSound)
 			{
 				MakeIdealYaw(pWakeSound->m_vecOrigin);
 
-				if (FLSoundVolume(pWakeSound) >= HOUNDEYE_SOUND_STARTLE_VOLUME)
+				if (SoundVolume(pWakeSound) >= HOUNDEYE_SOUND_STARTLE_VOLUME)
 				{
 					// awakened by a loud sound
 					return &slHoundWakeUrgent[0];
@@ -1175,7 +1175,7 @@ Schedule_t* CHoundeye::GetScheduleOfType(int Type)
 	{
 		if (m_MonsterState == NPCState::Combat)
 		{
-			if (!FNullEnt(FIND_CLIENT_IN_PVS(edict())))
+			if (!IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
 			{
 				// client in PVS
 				return &slHoundCombatFailPVS[0];

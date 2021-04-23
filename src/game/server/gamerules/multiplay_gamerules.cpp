@@ -266,7 +266,7 @@ bool CHalfLifeMultiplay::IsCoOp()
 	return gpGlobals->coop;
 }
 
-bool CHalfLifeMultiplay::FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
+bool CHalfLifeMultiplay::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
 {
 	if (!pWeapon->CanDeploy())
 	{
@@ -298,7 +298,7 @@ bool CHalfLifeMultiplay::FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerIt
 		return false;
 	}
 
-	if (pWeapon->iWeight() > pPlayer->m_pActiveItem->iWeight())
+	if (pWeapon->Weight() > pPlayer->m_pActiveItem->Weight())
 	{
 		return true;
 	}
@@ -329,7 +329,7 @@ bool CHalfLifeMultiplay::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem
 
 		while (pCheck)
 		{
-			if (pCheck->iWeight() > -1 && pCheck->iWeight() == pCurrentWeapon->iWeight() && pCheck != pCurrentWeapon)
+			if (pCheck->Weight() > -1 && pCheck->Weight() == pCurrentWeapon->Weight() && pCheck != pCurrentWeapon)
 			{
 				// this weapon is from the same category. 
 				if (pCheck->CanDeploy())
@@ -340,7 +340,7 @@ bool CHalfLifeMultiplay::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem
 					}
 				}
 			}
-			else if (pCheck->iWeight() > iBestWeight && pCheck != pCurrentWeapon)// don't reselect the weapon we're trying to get rid of
+			else if (pCheck->Weight() > iBestWeight && pCheck != pCurrentWeapon)// don't reselect the weapon we're trying to get rid of
 			{
 				//ALERT ( at_console, "Considering %s\n", STRING( pCheck->pev->classname ) );
 				// we keep updating the 'best' weapon just in case we can't find a weapon of the same weight
@@ -349,7 +349,7 @@ bool CHalfLifeMultiplay::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem
 				if (pCheck->CanDeploy())
 				{
 					// if this weapon is useable, flag it as the best
-					iBestWeight = pCheck->iWeight();
+					iBestWeight = pCheck->Weight();
 					pBest = pCheck;
 				}
 			}
@@ -390,7 +390,7 @@ void CHalfLifeMultiplay::InitHUD(CBasePlayer* pl)
 {
 	// notify other clients of player joining the game
 	UTIL_ClientPrintAll(HUD_PRINTNOTIFY, UTIL_VarArgs("%s has joined the game\n",
-		(!FStringNull(pl->pev->netname) && STRING(pl->pev->netname)[0] != 0) ? STRING(pl->pev->netname) : "unconnected"));
+		(!IsStringNull(pl->pev->netname) && STRING(pl->pev->netname)[0] != 0) ? STRING(pl->pev->netname) : "unconnected"));
 
 	// team match?
 	if (IsTeamplay())
@@ -482,7 +482,7 @@ void CHalfLifeMultiplay::ClientDisconnected(edict_t* pClient)
 	}
 }
 
-float CHalfLifeMultiplay::FlPlayerFallDamage(CBasePlayer* pPlayer)
+float CHalfLifeMultiplay::PlayerFallDamage(CBasePlayer* pPlayer)
 {
 	int iFallDamage = (int)falldamage.value;
 
@@ -499,7 +499,7 @@ float CHalfLifeMultiplay::FlPlayerFallDamage(CBasePlayer* pPlayer)
 	}
 }
 
-bool CHalfLifeMultiplay::FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker)
+bool CHalfLifeMultiplay::PlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker)
 {
 	return true;
 }
@@ -548,12 +548,12 @@ void CHalfLifeMultiplay::PlayerSpawn(CBasePlayer* pPlayer)
 	pPlayer->m_iAutoWepSwitch = originalAutoWepSwitch;
 }
 
-bool CHalfLifeMultiplay::FPlayerCanRespawn(CBasePlayer* pPlayer)
+bool CHalfLifeMultiplay::PlayerCanRespawn(CBasePlayer* pPlayer)
 {
 	return true;
 }
 
-float CHalfLifeMultiplay::FlPlayerSpawnTime(CBasePlayer* pPlayer)
+float CHalfLifeMultiplay::PlayerSpawnTime(CBasePlayer* pPlayer)
 {
 	return gpGlobals->time;//now!
 }
@@ -563,7 +563,7 @@ bool CHalfLifeMultiplay::AllowAutoTargetCrosshair()
 	return (aimcrosshair.value != 0);
 }
 
-int CHalfLifeMultiplay::IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled)
+int CHalfLifeMultiplay::PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled)
 {
 	return 1;
 }
@@ -588,7 +588,7 @@ void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, 
 	else if (ktmp && ktmp->IsPlayer())
 	{
 		// if a player dies in a deathmatch game and the killer is a client, award the killer some points
-		pKiller->frags += IPointsForKill(peKiller, pVictim);
+		pKiller->frags += PointsForKill(peKiller, pVictim);
 
 		FireTargets("game_playerkill", ktmp, ktmp, USE_TOGGLE, 0);
 	}
@@ -810,7 +810,7 @@ void CHalfLifeMultiplay::DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, e
 		safe_strcat ( szText, STRING( pVictim->pev->netname ) );
 		safe_strcat ( szText, "\n" );
 	}
-	else if ( FClassnameIs ( pKiller, "worldspawn" ) )
+	else if ( ClassnameIs ( pKiller, "worldspawn" ) )
 	{
 		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
 		safe_strcat ( szText, " fell or drowned or something.\n" );
@@ -834,12 +834,12 @@ void CHalfLifeMultiplay::PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* 
 {
 }
 
-float CHalfLifeMultiplay::FlWeaponRespawnTime(CBasePlayerItem* pWeapon)
+float CHalfLifeMultiplay::WeaponRespawnTime(CBasePlayerItem* pWeapon)
 {
 	if (weaponstay.value > 0)
 	{
 		// make sure it's only certain weapons
-		if (!(pWeapon->iFlags() & ITEM_FLAG_LIMITINWORLD))
+		if (!(pWeapon->Flags() & ITEM_FLAG_LIMITINWORLD))
 		{
 			return gpGlobals->time + 0;		// weapon respawns almost instantly
 		}
@@ -852,21 +852,21 @@ float CHalfLifeMultiplay::FlWeaponRespawnTime(CBasePlayerItem* pWeapon)
 // marked with the ITEM_FLAG_LIMITINWORLD will delay their respawn
 constexpr int ENTITY_INTOLERANCE = 100;
 
-float CHalfLifeMultiplay::FlWeaponTryRespawn(CBasePlayerItem* pWeapon)
+float CHalfLifeMultiplay::WeaponTryRespawn(CBasePlayerItem* pWeapon)
 {
-	if (pWeapon && pWeapon->m_iId && (pWeapon->iFlags() & ITEM_FLAG_LIMITINWORLD))
+	if (pWeapon && pWeapon->m_iId && (pWeapon->Flags() & ITEM_FLAG_LIMITINWORLD))
 	{
 		if (NUMBER_OF_ENTITIES() < (gpGlobals->maxEntities - ENTITY_INTOLERANCE))
 			return 0;
 
 		// we're past the entity tolerance level,  so delay the respawn
-		return FlWeaponRespawnTime(pWeapon);
+		return WeaponRespawnTime(pWeapon);
 	}
 
 	return 0;
 }
 
-Vector CHalfLifeMultiplay::VecWeaponRespawnSpot(CBasePlayerItem* pWeapon)
+Vector CHalfLifeMultiplay::WeaponRespawnSpot(CBasePlayerItem* pWeapon)
 {
 	return pWeapon->pev->origin;
 }
@@ -885,7 +885,7 @@ bool CHalfLifeMultiplay::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem
 {
 	if (weaponstay.value > 0)
 	{
-		if (pItem->iFlags() & ITEM_FLAG_LIMITINWORLD)
+		if (pItem->Flags() & ITEM_FLAG_LIMITINWORLD)
 			return CGameRules::CanHavePlayerItem(pPlayer, pItem);
 
 		// check if the player already has this weapon
@@ -927,12 +927,12 @@ int CHalfLifeMultiplay::ItemShouldRespawn(CItem* pItem)
 	return GR_ITEM_RESPAWN_YES;
 }
 
-float CHalfLifeMultiplay::FlItemRespawnTime(CItem* pItem)
+float CHalfLifeMultiplay::ItemRespawnTime(CItem* pItem)
 {
 	return gpGlobals->time + ITEM_RESPAWN_TIME;
 }
 
-Vector CHalfLifeMultiplay::VecItemRespawnSpot(CItem* pItem)
+Vector CHalfLifeMultiplay::ItemRespawnSpot(CItem* pItem)
 {
 	return pItem->pev->origin;
 }
@@ -959,23 +959,23 @@ int CHalfLifeMultiplay::AmmoShouldRespawn(CBasePlayerAmmo* pAmmo)
 	return GR_AMMO_RESPAWN_YES;
 }
 
-float CHalfLifeMultiplay::FlAmmoRespawnTime(CBasePlayerAmmo* pAmmo)
+float CHalfLifeMultiplay::AmmoRespawnTime(CBasePlayerAmmo* pAmmo)
 {
 	return gpGlobals->time + AMMO_RESPAWN_TIME;
 }
 
-Vector CHalfLifeMultiplay::VecAmmoRespawnSpot(CBasePlayerAmmo* pAmmo)
+Vector CHalfLifeMultiplay::AmmoRespawnSpot(CBasePlayerAmmo* pAmmo)
 {
 	return pAmmo->pev->origin;
 }
 
-float CHalfLifeMultiplay::FlHealthChargerRechargeTime()
+float CHalfLifeMultiplay::HealthChargerRechargeTime()
 {
 	return 60;
 }
 
 
-float CHalfLifeMultiplay::FlHEVChargerRechargeTime()
+float CHalfLifeMultiplay::HEVChargerRechargeTime()
 {
 	return 30;
 }
@@ -993,7 +993,7 @@ int CHalfLifeMultiplay::DeadPlayerAmmo(CBasePlayer* pPlayer)
 edict_t* CHalfLifeMultiplay::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
 {
 	edict_t* pentSpawnSpot = CGameRules::GetPlayerSpawnSpot(pPlayer);
-	if (IsMultiplayer() && !FStringNull(pentSpawnSpot->v.target))
+	if (IsMultiplayer() && !IsStringNull(pentSpawnSpot->v.target))
 	{
 		FireTargets(STRING(pentSpawnSpot->v.target), pPlayer, pPlayer, USE_TOGGLE, 0);
 	}
@@ -1018,12 +1018,12 @@ bool CHalfLifeMultiplay::PlayFootstepSounds(CBasePlayer* pl, float fvol)
 	return false;
 }
 
-bool CHalfLifeMultiplay::FAllowFlashlight()
+bool CHalfLifeMultiplay::AllowFlashlight()
 {
 	return flashlight.value != 0;
 }
 
-bool CHalfLifeMultiplay::FAllowMonsters()
+bool CHalfLifeMultiplay::AllowMonsters()
 {
 	return (allowmonsters.value != 0);
 }

@@ -64,7 +64,7 @@ public:
 	void Precache() override;
 	void SetYawSpeed() override;
 	int  Classify() override;
-	int  ISoundMask() override;
+	int  SoundMask() override;
 	void Shoot();
 	void HandleAnimEvent(AnimationEvent& event) override;
 	Schedule_t* GetSchedule() override;
@@ -128,7 +128,7 @@ void CHAssassin::IdleSound()
 {
 }
 
-int CHAssassin::ISoundMask()
+int CHAssassin::SoundMask()
 {
 	return	bits_SOUND_WORLD |
 		bits_SOUND_COMBAT |
@@ -585,7 +585,7 @@ bool CHAssassin::CheckRangeAttack1(float flDot, float flDist)
 bool CHAssassin::CheckRangeAttack2(float flDot, float flDist)
 {
 	m_fThrowGrenade = false;
-	if (!FBitSet(m_hEnemy->pev->flags, FL_ONGROUND))
+	if (!IsBitSet(m_hEnemy->pev->flags, FL_ONGROUND))
 	{
 		// don't throw grenades at anything that isn't on the ground!
 		return false;
@@ -597,7 +597,7 @@ bool CHAssassin::CheckRangeAttack2(float flDot, float flDist)
 
 	if (m_flNextGrenadeCheck < gpGlobals->time && !HasConditions(bits_COND_ENEMY_OCCLUDED) && flDist <= 512 /* && flDot >= 0.5 */ /* && NoFriendlyFire() */)
 	{
-		Vector vecToss = VecCheckThrow(pev, GetGunPosition(), m_hEnemy->Center(), flDist, 0.5); // use dist as speed to get there in 1 second
+		Vector vecToss = CheckThrow(pev, GetGunPosition(), m_hEnemy->Center(), flDist, 0.5); // use dist as speed to get there in 1 second
 
 		if (vecToss != vec3_origin)
 		{
@@ -730,7 +730,7 @@ Schedule_t* CHAssassin::GetSchedule()
 		if (HasConditions(bits_COND_HEAR_SOUND))
 		{
 			CSound* pSound;
-			pSound = PBestSound();
+			pSound = BestSound();
 
 			ASSERT(pSound != nullptr);
 			if (pSound && (pSound->m_iType & bits_SOUND_DANGER))
@@ -778,7 +778,7 @@ Schedule_t* CHAssassin::GetSchedule()
 		if (HasConditions(bits_COND_HEAR_SOUND))
 		{
 			CSound* pSound;
-			pSound = PBestSound();
+			pSound = BestSound();
 
 			ASSERT(pSound != nullptr);
 			if (pSound && (pSound->m_iType & bits_SOUND_DANGER))

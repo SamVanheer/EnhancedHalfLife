@@ -116,7 +116,7 @@ public:
 	/**
 	*	@brief returns false, scripted sequences cannot possess entities regardless of state.
 	*/
-	virtual bool FCanOverrideState();
+	virtual bool CanOverrideState();
 
 	/**
 	*	@brief called when a scripted sequence animation sequence is done playing
@@ -171,7 +171,7 @@ class CCineAI : public CCineMonster
 	/**
 	*	@brief returns true because scripted AI can possess entities regardless of their state.
 	*/
-	bool FCanOverrideState() override;
+	bool CanOverrideState() override;
 
 	/**
 	*	@brief When a monster finishes a scripted sequence,

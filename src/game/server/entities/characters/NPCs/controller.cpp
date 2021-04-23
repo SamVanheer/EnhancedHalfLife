@@ -832,7 +832,7 @@ void CController::Move(float flInterval)
 	CBaseEntity* pTargetEnt;
 
 	// Don't move if no valid route
-	if (FRouteClear())
+	if (IsRouteClear())
 	{
 		ALERT(at_aiconsole, "Tried to move with no route!\n");
 		TaskFail();
@@ -850,7 +850,7 @@ void CController::Move(float flInterval)
 			RouteSimplify(m_hEnemy);
 		else
 			RouteSimplify(m_hTargetEnt);
-		FRefreshRoute();
+		RefreshRoute();
 		return;
 	}
 #else
@@ -930,7 +930,7 @@ void CController::Move(float flInterval)
 			else
 			{
 				// try to triangulate around whatever is in the way.
-				if (FTriangulate(pev->origin, m_Route[m_iRouteIndex].vecLocation, flDist, pTargetEnt, &vecApex))
+				if (Triangulate(pev->origin, m_Route[m_iRouteIndex].vecLocation, flDist, pTargetEnt, &vecApex))
 				{
 					InsertWaypoint(vecApex, bits_MF_TO_DETOUR);
 					RouteSimplify(pTargetEnt);
@@ -941,7 +941,7 @@ void CController::Move(float flInterval)
 					Stop();
 					if (m_moveWaitTime > 0)
 					{
-						FRefreshRoute();
+						RefreshRoute();
 						m_flMoveWaitFinished = gpGlobals->time + m_moveWaitTime * 0.5;
 					}
 					else
@@ -990,7 +990,7 @@ void CController::Move(float flInterval)
 			RouteSimplify(m_hEnemy);
 		else
 			RouteSimplify(m_hTargetEnt);
-		FRefreshRoute();
+		RefreshRoute();
 
 		if (m_flGroundSpeed > 100)
 			m_flGroundSpeed -= 40;

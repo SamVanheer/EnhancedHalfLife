@@ -74,7 +74,7 @@ public:
 	int FriendNumber(int arrayNumber) override;
 	void SetActivity(Activity newActivity) override;
 	Activity GetStoppedActivity() override;
-	int ISoundMask() override;
+	int SoundMask() override;
 	void DeclineFollowing() override;
 
 	float	CoverRadius() override { return 1200; }		// Need more room for cover because scientists want to get far away!
@@ -415,7 +415,7 @@ void CScientist::DeclineFollowing()
 
 void CScientist::Scream()
 {
-	if (FOkToSpeak())
+	if (OkToSpeak())
 	{
 		Talk(10);
 		m_hTalkTarget = m_hEnemy;
@@ -435,7 +435,7 @@ void CScientist::StartTask(Task_t* pTask)
 	switch (pTask->iTask)
 	{
 	case TASK_SAY_HEAL:
-		//		if ( FOkToSpeak() )
+		//		if ( OkToSpeak() )
 		Talk(2);
 		m_hTalkTarget = m_hTargetEnt;
 		PlaySentence("SC_HEAL", 2, VOL_NORM, ATTN_IDLE);
@@ -455,7 +455,7 @@ void CScientist::StartTask(Task_t* pTask)
 		break;
 
 	case TASK_SAY_FEAR:
-		if (FOkToSpeak())
+		if (OkToSpeak())
 		{
 			Talk(2);
 			m_hTalkTarget = m_hEnemy;
@@ -524,7 +524,7 @@ void CScientist::RunTask(Task_t* pTask)
 			{
 				m_vecMoveGoal = m_hTargetEnt->pev->origin;
 				distance = (m_vecMoveGoal - pev->origin).Length2D();
-				FRefreshRoute();
+				RefreshRoute();
 			}
 
 			// Set the appropriate activity based on an overlapping range
@@ -727,7 +727,7 @@ bool CScientist::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 	return CTalkMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
 }
 
-int CScientist::ISoundMask()
+int CScientist::SoundMask()
 {
 	return	bits_SOUND_WORLD |
 		bits_SOUND_COMBAT |
@@ -841,7 +841,7 @@ Schedule_t* CScientist::GetSchedule()
 	if (HasConditions(bits_COND_HEAR_SOUND))
 	{
 		CSound* pSound;
-		pSound = PBestSound();
+		pSound = BestSound();
 
 		ASSERT(pSound != nullptr);
 		if (pSound && (pSound->m_iType & bits_SOUND_DANGER))
@@ -873,7 +873,7 @@ Schedule_t* CScientist::GetSchedule()
 		if (HasConditions(bits_COND_HEAR_SOUND))
 		{
 			CSound* pSound;
-			pSound = PBestSound();
+			pSound = BestSound();
 
 			ASSERT(pSound != nullptr);
 			if (pSound)
@@ -903,7 +903,7 @@ Schedule_t* CScientist::GetSchedule()
 
 			// Nothing scary, just me and the player
 			if (pEnemy != nullptr)
-				relationship = IRelationship(pEnemy);
+				relationship = GetRelationship(pEnemy);
 
 			// UNDONE: Model fear properly, fix R_FR and add multiple levels of fear
 			if (relationship != R_DL && relationship != R_HT)
@@ -958,7 +958,7 @@ NPCState CScientist::GetIdealState()
 		{
 			if (IsFollowing())
 			{
-				int relationship = IRelationship(m_hEnemy);
+				int relationship = GetRelationship(m_hEnemy);
 				if (relationship != R_FR || relationship != R_HT && !HasConditions(bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE))
 				{
 					// Don't go to combat if you're following the player
@@ -1055,7 +1055,7 @@ const char* CDeadScientist::m_szPoses[] = {"lying_on_back", "lying_on_stomach", 
 
 void CDeadScientist::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "pose"))
+	if (AreStringsEqual(pkvd->szKeyName, "pose"))
 	{
 		m_iPose = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -1129,7 +1129,7 @@ public:
 	/**
 	*	@brief ask question of nearby friend, or make statement
 	*/
-	int FIdleSpeak();
+	int IdleSpeak();
 	int		m_baseSequence;
 	int		m_headTurn;
 	float	m_flResponseDelay;
@@ -1220,7 +1220,7 @@ void CSittingScientist::SittingThink()
 	StudioFrameAdvance();
 
 	// try to greet player
-	if (FIdleHello())
+	if (IdleHello())
 	{
 		pent = FindNearestFriend(true);
 		if (pent)
@@ -1258,12 +1258,12 @@ void CSittingScientist::SittingThink()
 
 			// turn towards player or nearest friend and speak
 
-			if (!FBitSet(m_bitsSaid, bit_saidHelloPlayer))
+			if (!IsBitSet(m_bitsSaid, bit_saidHelloPlayer))
 				pent = FindNearestFriend(true);
 			else
 				pent = FindNearestFriend(false);
 
-			if (!FIdleSpeak() || !pent)
+			if (!IdleSpeak() || !pent)
 			{
 				m_headTurn = RANDOM_LONG(0, 8) * 10 - 40;
 				pev->sequence = m_baseSequence + SITTING_ANIM_sitting3;
@@ -1291,7 +1291,7 @@ void CSittingScientist::SittingThink()
 			if (RANDOM_LONG(0, 99) < 5)
 			{
 				//ALERT(at_console, "sitting speak2\n");
-				FIdleSpeak();
+				IdleSpeak();
 			}
 		}
 		else if (i < 80)
@@ -1316,12 +1316,12 @@ void CSittingScientist::SetAnswerQuestion(CTalkMonster* pSpeaker)
 	m_hTalkTarget = (CBaseMonster*)pSpeaker;
 }
 
-int CSittingScientist::FIdleSpeak()
+int CSittingScientist::IdleSpeak()
 {
 	// try to start a conversation, or make statement
 	int pitch;
 
-	if (!FOkToSpeak())
+	if (!OkToSpeak())
 		return false;
 
 	// set global min delay for next conversation

@@ -38,7 +38,7 @@ public:
 	/**
 	*	@brief generic monster can't hear.
 	*/
-	int ISoundMask() override;
+	int SoundMask() override;
 };
 LINK_ENTITY_TO_CLASS(monster_generic, CGenericMonster);
 
@@ -72,7 +72,7 @@ void CGenericMonster::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-int CGenericMonster::ISoundMask()
+int CGenericMonster::SoundMask()
 {
 	return	bits_SOUND_NONE;
 }
@@ -84,13 +84,13 @@ void CGenericMonster::Spawn()
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	/*
-		if ( FStrEq( STRING(pev->model), "models/player.mdl" ) )
+		if ( AreStringsEqual( STRING(pev->model), "models/player.mdl" ) )
 			UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 		else
 			UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
 	*/
 
-	if (FStrEq(STRING(pev->model), "models/player.mdl") || FStrEq(STRING(pev->model), "models/holo.mdl"))
+	if (AreStringsEqual(STRING(pev->model), "models/player.mdl") || AreStringsEqual(STRING(pev->model), "models/holo.mdl"))
 		UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
 	else
 		UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);

@@ -116,7 +116,7 @@ void DecalGunshot(TraceResult* pTrace, int iBulletType)
 	{
 		CBaseEntity* pEntity = nullptr;
 		// Decal the wall with a gunshot
-		if (!FNullEnt(pTrace->pHit))
+		if (!IsNullEnt(pTrace->pHit))
 			pEntity = CBaseEntity::Instance(pTrace->pHit);
 
 		switch (iBulletType)
@@ -188,7 +188,7 @@ void UTIL_PrecacheOtherWeapon(const char* szClassname)
 	edict_t* pent;
 
 	pent = CREATE_NAMED_ENTITY(MAKE_STRING(szClassname));
-	if (FNullEnt(pent))
+	if (IsNullEnt(pent))
 	{
 		ALERT(at_console, "NULL Ent in UTIL_PrecacheOtherWeapon\n");
 		return;
@@ -383,7 +383,7 @@ void CBasePlayerItem::FallThink()
 	{
 		// clatter if we have an owner (i.e., dropped by someone)
 		// don't clatter if the gun is waiting to respawn (if it's waiting, it is invisible!)
-		if (!FNullEnt(pev->owner))
+		if (!IsNullEnt(pev->owner))
 		{
 			int pitch = 95 + RANDOM_LONG(0, 29);
 			EmitSound(CHAN_VOICE, "items/weapondrop1.wav", VOL_NORM, ATTN_NORM, pitch);
@@ -417,7 +417,7 @@ void CBasePlayerItem::Materialize()
 
 void CBasePlayerItem::AttemptToMaterialize()
 {
-	float time = g_pGameRules->FlWeaponTryRespawn(this);
+	float time = g_pGameRules->WeaponTryRespawn(this);
 
 	if (time == 0)
 	{
@@ -445,7 +445,7 @@ CBaseEntity* CBasePlayerItem::Respawn()
 {
 	// make a copy of this weapon that is invisible and inaccessible to players (no touch function). The weapon spawn/respawn code
 	// will decide when to make the weapon visible and touchable.
-	CBaseEntity* pNewWeapon = CBaseEntity::Create(STRING(pev->classname), g_pGameRules->VecWeaponRespawnSpot(this), pev->angles, pev->owner);
+	CBaseEntity* pNewWeapon = CBaseEntity::Create(STRING(pev->classname), g_pGameRules->WeaponRespawnSpot(this), pev->angles, pev->owner);
 
 	if (pNewWeapon)
 	{
@@ -457,7 +457,7 @@ CBaseEntity* CBasePlayerItem::Respawn()
 
 		// not a typo! We want to know when the weapon the player just picked up should respawn! This new entity we created is the replacement,
 		// but when it should respawn is based on conditions belonging to the weapon that was taken.
-		pNewWeapon->pev->nextthink = g_pGameRules->FlWeaponRespawnTime(this);
+		pNewWeapon->pev->nextthink = g_pGameRules->WeaponRespawnTime(this);
 	}
 	else
 	{
@@ -566,8 +566,8 @@ bool CBasePlayerWeapon::AddToPlayer(CBasePlayer* pPlayer)
 
 	if (!m_iPrimaryAmmoType)
 	{
-		m_iPrimaryAmmoType = pPlayer->GetAmmoIndex(pszAmmo1());
-		m_iSecondaryAmmoType = pPlayer->GetAmmoIndex(pszAmmo2());
+		m_iPrimaryAmmoType = pPlayer->GetAmmoIndex(Ammo1Name());
+		m_iSecondaryAmmoType = pPlayer->GetAmmoIndex(Ammo2Name());
 	}
 
 
@@ -709,7 +709,7 @@ bool CBasePlayerWeapon::IsUseable()
 	}
 
 	//Player has unlimited ammo for this weapon or does not use magazines
-	if (iMaxAmmo1() == WEAPON_NOCLIP)
+	if (MaxAmmo1() == WEAPON_NOCLIP)
 	{
 		return true;
 	}
@@ -719,10 +719,10 @@ bool CBasePlayerWeapon::IsUseable()
 		return true;
 	}
 
-	if (pszAmmo2())
+	if (Ammo2Name())
 	{
 		//Player has unlimited ammo for this weapon or does not use magazines
-		if (iMaxAmmo2() == WEAPON_NOCLIP)
+		if (MaxAmmo2() == WEAPON_NOCLIP)
 		{
 			return true;
 		}
@@ -797,10 +797,10 @@ CBaseEntity* CBasePlayerAmmo::Respawn()
 	pev->effects |= EF_NODRAW;
 	SetTouch(nullptr);
 
-	UTIL_SetOrigin(pev, g_pGameRules->VecAmmoRespawnSpot(this));// move to wherever I'm supposed to repawn.
+	UTIL_SetOrigin(pev, g_pGameRules->AmmoRespawnSpot(this));// move to wherever I'm supposed to repawn.
 
 	SetThink(&CBasePlayerAmmo::Materialize);
-	pev->nextthink = g_pGameRules->FlAmmoRespawnTime(this);
+	pev->nextthink = g_pGameRules->AmmoRespawnTime(this);
 
 	return this;
 }
@@ -853,17 +853,17 @@ bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon)
 {
 	bool result = false;
 
-	if (pszAmmo1() != nullptr)
+	if (Ammo1Name() != nullptr)
 	{
 		// blindly call with m_iDefaultAmmo. It's either going to be a value or zero. If it is zero,
 		// we only get the ammo in the weapon's clip, which is what we want. 
-		result = pWeapon->AddPrimaryAmmo(m_iDefaultAmmo, pszAmmo1(), iMaxClip(), iMaxAmmo1());
+		result = pWeapon->AddPrimaryAmmo(m_iDefaultAmmo, Ammo1Name(), MaxClip(), MaxAmmo1());
 		m_iDefaultAmmo = 0;
 	}
 
-	if (pszAmmo2() != nullptr)
+	if (Ammo2Name() != nullptr)
 	{
-		result = pWeapon->AddSecondaryAmmo(0, pszAmmo2(), iMaxAmmo2()) || result;
+		result = pWeapon->AddSecondaryAmmo(0, Ammo2Name(), MaxAmmo2()) || result;
 	}
 
 	return result;
@@ -882,7 +882,7 @@ int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon)
 		iAmmo = m_iClip;
 	}
 
-	return pWeapon->m_pPlayer->GiveAmmo(iAmmo, pszAmmo1(), iMaxAmmo1()); // , &m_iPrimaryAmmoType
+	return pWeapon->m_pPlayer->GiveAmmo(iAmmo, Ammo1Name(), MaxAmmo1()); // , &m_iPrimaryAmmoType
 }
 
 void CBasePlayerWeapon::RetireWeapon()
@@ -1020,7 +1020,7 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 	// dole out ammo
 	for (i = 0; i < MAX_AMMO_TYPES; i++)
 	{
-		if (!FStringNull(m_rgiszAmmo[i]))
+		if (!IsStringNull(m_rgiszAmmo[i]))
 		{
 			// there's some ammo of this type. 
 			pPlayer->GiveAmmo(m_rgAmmo[i], STRING(m_rgiszAmmo[i]), MaxAmmoCarry(m_rgiszAmmo[i]));
@@ -1080,7 +1080,7 @@ bool CWeaponBox::PackWeapon(CBasePlayerItem* pWeapon)
 		}
 	}
 
-	int iWeaponSlot = pWeapon->iItemSlot();
+	int iWeaponSlot = pWeapon->ItemSlot();
 
 	if (m_rgpPlayerItems[iWeaponSlot])
 	{
@@ -1115,7 +1115,7 @@ bool CWeaponBox::PackAmmo(string_t iszName, int iCount)
 {
 	int iMaxCarry;
 
-	if (FStringNull(iszName))
+	if (IsStringNull(iszName))
 	{
 		// error here
 		ALERT(at_console, "NULL String in PackAmmo!\n");
@@ -1138,7 +1138,7 @@ int CWeaponBox::GiveAmmo(int iCount, const char* szName, int iMax, int* pIndex)
 {
 	int i;
 
-	for (i = 1; i < MAX_AMMO_TYPES && !FStringNull(m_rgiszAmmo[i]); i++)
+	for (i = 1; i < MAX_AMMO_TYPES && !IsStringNull(m_rgiszAmmo[i]); i++)
 	{
 		if (stricmp(szName, STRING(m_rgiszAmmo[i])) == 0)
 		{
@@ -1171,11 +1171,11 @@ int CWeaponBox::GiveAmmo(int iCount, const char* szName, int iMax, int* pIndex)
 
 bool CWeaponBox::HasWeapon(CBasePlayerItem* pCheckItem)
 {
-	CBasePlayerItem* pItem = m_rgpPlayerItems[pCheckItem->iItemSlot()];
+	CBasePlayerItem* pItem = m_rgpPlayerItems[pCheckItem->ItemSlot()];
 
 	while (pItem)
 	{
-		if (FClassnameIs(pItem->pev, STRING(pCheckItem->pev->classname)))
+		if (ClassnameIs(pItem->pev, STRING(pCheckItem->pev->classname)))
 		{
 			return true;
 		}
@@ -1199,7 +1199,7 @@ bool CWeaponBox::IsEmpty()
 
 	for (i = 0; i < MAX_AMMO_TYPES; i++)
 	{
-		if (!FStringNull(m_rgiszAmmo[i]))
+		if (!IsStringNull(m_rgiszAmmo[i]))
 		{
 			// still have a bit of this type of ammo
 			return false;

@@ -20,7 +20,7 @@
 
 globalentity_t* CGlobalState::Find(string_t globalname)
 {
-	if (FStringNull(globalname))
+	if (IsStringNull(globalname))
 		return nullptr;
 
 	globalentity_t* pTest;
@@ -30,7 +30,7 @@ globalentity_t* CGlobalState::Find(string_t globalname)
 	pTest = m_pList;
 	while (pTest)
 	{
-		if (FStrEq(pEntityName, pTest->name))
+		if (AreStringsEqual(pEntityName, pTest->name))
 			break;
 
 		pTest = pTest->pNext;
@@ -193,7 +193,7 @@ CBaseEntity* FindGlobalEntity(string_t classname, string_t globalname)
 	CBaseEntity* pReturn = CBaseEntity::Instance(pent);
 	if (pReturn)
 	{
-		if (!FClassnameIs(pReturn->pev, STRING(classname)))
+		if (!ClassnameIs(pReturn->pev, STRING(classname)))
 		{
 			ALERT(at_console, "Global entity found %s, wrong class %s\n", STRING(globalname), STRING(pReturn->pev->classname));
 			pReturn = nullptr;

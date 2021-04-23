@@ -121,17 +121,17 @@ void CBubbling::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useT
 
 void CBubbling::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "density"))
+	if (AreStringsEqual(pkvd->szKeyName, "density"))
 	{
 		m_density = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "frequency"))
+	else if (AreStringsEqual(pkvd->szKeyName, "frequency"))
 	{
 		m_frequency = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "current"))
+	else if (AreStringsEqual(pkvd->szKeyName, "current"))
 	{
 		pev->speed = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -143,7 +143,7 @@ void CBubbling::KeyValue(KeyValueData* pkvd)
 
 void CBubbling::FizzThink()
 {
-	MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, VecBModelOrigin(pev));
+	MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, GetBrushModelOrigin(pev));
 	WRITE_BYTE(TE_FIZZ);
 	WRITE_SHORT((short)ENTINDEX(edict()));
 	WRITE_SHORT((short)m_bubbleModel);
@@ -457,7 +457,7 @@ IMPLEMENT_SAVERESTORE(CLightning, CBeam);
 
 void CLightning::Spawn()
 {
-	if (FStringNull(m_iszSpriteName))
+	if (IsStringNull(m_iszSpriteName))
 	{
 		SetThink(&CLightning::SUB_Remove);
 		return;
@@ -475,7 +475,7 @@ void CLightning::Spawn()
 			SetThink(&CLightning::DamageThink);
 			pev->nextthink = gpGlobals->time + 0.1;
 		}
-		if (!FStringNull(pev->targetname))
+		if (!IsStringNull(pev->targetname))
 		{
 			if (!(pev->spawnflags & SF_BEAM_STARTON))
 			{
@@ -492,11 +492,11 @@ void CLightning::Spawn()
 	else
 	{
 		m_active = false;
-		if (!FStringNull(pev->targetname))
+		if (!IsStringNull(pev->targetname))
 		{
 			SetUse(&CLightning::StrikeUse);
 		}
-		if (FStringNull(pev->targetname) || FBitSet(pev->spawnflags, SF_BEAM_STARTON))
+		if (IsStringNull(pev->targetname) || IsBitSet(pev->spawnflags, SF_BEAM_STARTON))
 		{
 			SetThink(&CLightning::StrikeThink);
 			pev->nextthink = gpGlobals->time + 1.0;
@@ -520,57 +520,57 @@ void CLightning::Activate()
 
 void CLightning::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "LightningStart"))
+	if (AreStringsEqual(pkvd->szKeyName, "LightningStart"))
 	{
 		m_iszStartEntity = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "LightningEnd"))
+	else if (AreStringsEqual(pkvd->szKeyName, "LightningEnd"))
 	{
 		m_iszEndEntity = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "life"))
+	else if (AreStringsEqual(pkvd->szKeyName, "life"))
 	{
 		m_life = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "BoltWidth"))
+	else if (AreStringsEqual(pkvd->szKeyName, "BoltWidth"))
 	{
 		m_boltWidth = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "NoiseAmplitude"))
+	else if (AreStringsEqual(pkvd->szKeyName, "NoiseAmplitude"))
 	{
 		m_noiseAmplitude = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "TextureScroll"))
+	else if (AreStringsEqual(pkvd->szKeyName, "TextureScroll"))
 	{
 		m_speed = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "StrikeTime"))
+	else if (AreStringsEqual(pkvd->szKeyName, "StrikeTime"))
 	{
 		m_restrike = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "texture"))
+	else if (AreStringsEqual(pkvd->szKeyName, "texture"))
 	{
 		m_iszSpriteName = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "framestart"))
+	else if (AreStringsEqual(pkvd->szKeyName, "framestart"))
 	{
 		m_frameStart = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "Radius"))
+	else if (AreStringsEqual(pkvd->szKeyName, "Radius"))
 	{
 		m_radius = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "damage"))
+	else if (AreStringsEqual(pkvd->szKeyName, "damage"))
 	{
 		pev->dmg = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -620,7 +620,7 @@ void CLightning::StrikeUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TY
 		pev->nextthink = gpGlobals->time + 0.1;
 	}
 
-	if (!FBitSet(pev->spawnflags, SF_BEAM_TOGGLE))
+	if (!IsBitSet(pev->spawnflags, SF_BEAM_TOGGLE))
 		SetUse(nullptr);
 }
 
@@ -629,7 +629,7 @@ bool IsPointEntity(CBaseEntity* pEnt)
 {
 	if (!pEnt->pev->modelindex)
 		return true;
-	if (FClassnameIs(pEnt->pev, "info_target") || FClassnameIs(pEnt->pev, "info_landmark") || FClassnameIs(pEnt->pev, "path_corner"))
+	if (ClassnameIs(pEnt->pev, "info_target") || ClassnameIs(pEnt->pev, "info_landmark") || ClassnameIs(pEnt->pev, "path_corner"))
 		return true;
 
 	return false;
@@ -647,9 +647,9 @@ void CLightning::StrikeThink()
 	}
 	m_active = true;
 
-	if (FStringNull(m_iszEndEntity))
+	if (IsStringNull(m_iszEndEntity))
 	{
-		if (FStringNull(m_iszStartEntity))
+		if (IsStringNull(m_iszStartEntity))
 		{
 			RandomArea();
 		}
@@ -960,7 +960,7 @@ IMPLEMENT_SAVERESTORE(CLaser, CBeam);
 
 void CLaser::Spawn()
 {
-	if (FStringNull(pev->model))
+	if (IsStringNull(pev->model))
 	{
 		SetThink(&CLaser::SUB_Remove);
 		return;
@@ -973,7 +973,7 @@ void CLaser::Spawn()
 
 	PointsInit(pev->origin, pev->origin);
 
-	if (!m_pSprite && !FStringNull(m_iszSpriteName))
+	if (!m_pSprite && !IsStringNull(m_iszSpriteName))
 		m_pSprite = CSprite::SpriteCreate(STRING(m_iszSpriteName), pev->origin, true);
 	else
 		m_pSprite = nullptr;
@@ -981,7 +981,7 @@ void CLaser::Spawn()
 	if (m_pSprite)
 		m_pSprite->SetTransparency(kRenderGlow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
 
-	if (!FStringNull(pev->targetname) && !(pev->spawnflags & SF_BEAM_STARTON))
+	if (!IsStringNull(pev->targetname) && !(pev->spawnflags & SF_BEAM_STARTON))
 		TurnOff();
 	else
 		TurnOn();
@@ -990,49 +990,49 @@ void CLaser::Spawn()
 void CLaser::Precache()
 {
 	pev->modelindex = PRECACHE_MODEL(STRING(pev->model));
-	if (!FStringNull(m_iszSpriteName))
+	if (!IsStringNull(m_iszSpriteName))
 		PRECACHE_MODEL(STRING(m_iszSpriteName));
 }
 
 
 void CLaser::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "LaserTarget"))
+	if (AreStringsEqual(pkvd->szKeyName, "LaserTarget"))
 	{
 		pev->message = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "width"))
+	else if (AreStringsEqual(pkvd->szKeyName, "width"))
 	{
 		SetWidth((int)atof(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "NoiseAmplitude"))
+	else if (AreStringsEqual(pkvd->szKeyName, "NoiseAmplitude"))
 	{
 		SetNoise(atoi(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "TextureScroll"))
+	else if (AreStringsEqual(pkvd->szKeyName, "TextureScroll"))
 	{
 		SetScrollRate(atoi(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "texture"))
+	else if (AreStringsEqual(pkvd->szKeyName, "texture"))
 	{
 		pev->model = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "EndSprite"))
+	else if (AreStringsEqual(pkvd->szKeyName, "EndSprite"))
 	{
 		m_iszSpriteName = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "framestart"))
+	else if (AreStringsEqual(pkvd->szKeyName, "framestart"))
 	{
 		pev->frame = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "damage"))
+	else if (AreStringsEqual(pkvd->szKeyName, "damage"))
 	{
 		pev->dmg = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -1191,7 +1191,7 @@ void CSprite::Spawn()
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
-	if (!FStringNull(pev->targetname) && !(pev->spawnflags & SF_SPRITE_STARTON))
+	if (!IsStringNull(pev->targetname) && !(pev->spawnflags & SF_SPRITE_STARTON))
 		TurnOff();
 	else
 		TurnOn();
@@ -1399,22 +1399,22 @@ void CGibShooter::Precache()
 
 void CGibShooter::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "m_iGibs"))
+	if (AreStringsEqual(pkvd->szKeyName, "m_iGibs"))
 	{
 		m_iGibs = m_iGibCapacity = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "m_flVelocity"))
+	else if (AreStringsEqual(pkvd->szKeyName, "m_flVelocity"))
 	{
 		m_flGibVelocity = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "m_flVariance"))
+	else if (AreStringsEqual(pkvd->szKeyName, "m_flVariance"))
 	{
 		m_flVariance = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "m_flGibLife"))
+	else if (AreStringsEqual(pkvd->szKeyName, "m_flGibLife"))
 	{
 		m_flGibLife = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -1536,12 +1536,12 @@ LINK_ENTITY_TO_CLASS(env_shooter, CEnvShooter);
 
 void CEnvShooter::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "shootmodel"))
+	if (AreStringsEqual(pkvd->szKeyName, "shootmodel"))
 	{
 		pev->model = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "shootsounds"))
+	else if (AreStringsEqual(pkvd->szKeyName, "shootsounds"))
 	{
 		int iNoise = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -1756,7 +1756,7 @@ void CBlood::Spawn()
 
 void CBlood::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "color"))
+	if (AreStringsEqual(pkvd->szKeyName, "color"))
 	{
 		int color = atoi(pkvd->szValue);
 		switch (color)
@@ -1771,7 +1771,7 @@ void CBlood::KeyValue(KeyValueData* pkvd)
 
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "amount"))
+	else if (AreStringsEqual(pkvd->szKeyName, "amount"))
 	{
 		SetBloodAmount(atof(pkvd->szValue));
 		pkvd->fHandled = true;
@@ -1879,22 +1879,22 @@ void CShake::Spawn()
 
 void CShake::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "amplitude"))
+	if (AreStringsEqual(pkvd->szKeyName, "amplitude"))
 	{
 		SetAmplitude(atof(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "frequency"))
+	else if (AreStringsEqual(pkvd->szKeyName, "frequency"))
 	{
 		SetFrequency(atof(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "duration"))
+	else if (AreStringsEqual(pkvd->szKeyName, "duration"))
 	{
 		SetDuration(atof(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "radius"))
+	else if (AreStringsEqual(pkvd->szKeyName, "radius"))
 	{
 		SetRadius(atof(pkvd->szValue));
 		pkvd->fHandled = true;
@@ -1944,12 +1944,12 @@ void CFade::Spawn()
 
 void CFade::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "duration"))
+	if (AreStringsEqual(pkvd->szKeyName, "duration"))
 	{
 		SetDuration(atof(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "holdtime"))
+	else if (AreStringsEqual(pkvd->szKeyName, "holdtime"))
 	{
 		SetHoldTime(atof(pkvd->szValue));
 		pkvd->fHandled = true;
@@ -2033,23 +2033,23 @@ void CMessage::Spawn()
 
 void CMessage::Precache()
 {
-	if (!FStringNull(pev->noise))
+	if (!IsStringNull(pev->noise))
 		PRECACHE_SOUND(STRING(pev->noise));
 }
 
 void CMessage::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "messagesound"))
+	if (AreStringsEqual(pkvd->szKeyName, "messagesound"))
 	{
 		pev->noise = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "messagevolume"))
+	else if (AreStringsEqual(pkvd->szKeyName, "messagevolume"))
 	{
 		pev->scale = atof(pkvd->szValue) * 0.1;
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "messageattenuation"))
+	else if (AreStringsEqual(pkvd->szKeyName, "messageattenuation"))
 	{
 		pev->impulse = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -2076,7 +2076,7 @@ void CMessage::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useTy
 		if (pPlayer)
 			UTIL_ShowMessage(STRING(pev->message), pPlayer);
 	}
-	if (!FStringNull(pev->noise))
+	if (!IsStringNull(pev->noise))
 	{
 		EmitSound(CHAN_BODY, STRING(pev->noise), pev->scale, pev->speed);
 	}
@@ -2253,7 +2253,7 @@ void CItemSoda::CanTouch(CBaseEntity* pOther)
 
 	pOther->TakeHealth(1, DMG_GENERIC);// a bit of health.
 
-	if (!FNullEnt(pev->owner))
+	if (!IsNullEnt(pev->owner))
 	{
 		// tell the machine the can was taken
 		pev->owner->v.frags = 0;

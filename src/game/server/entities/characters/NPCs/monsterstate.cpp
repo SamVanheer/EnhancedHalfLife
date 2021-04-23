@@ -74,7 +74,7 @@ void CBaseMonster::RunAI()
 		// things will happen before the player gets there!
 		// UPDATE: We now let COMBAT state monsters think and act fully outside of player PVS. This allows the player to leave 
 		// an area where monsters are fighting, and the fight will continue.
-		if (!FNullEnt(FIND_CLIENT_IN_PVS(edict())) || (m_MonsterState == NPCState::Combat))
+		if (!IsNullEnt(FIND_CLIENT_IN_PVS(edict())) || (m_MonsterState == NPCState::Combat))
 		{
 			Look(m_flDistLook);
 			Listen();// check for audible sounds. 
@@ -94,7 +94,7 @@ void CBaseMonster::RunAI()
 		CheckAmmo();
 	}
 
-	FCheckAITrigger();
+	CheckAITrigger();
 
 	PrescheduleThink();
 
@@ -110,7 +110,7 @@ NPCState CBaseMonster::GetIdealState()
 {
 	int	iConditions;
 
-	iConditions = IScheduleFlags();
+	iConditions = ScheduleFlags();
 
 	// If no schedule conditions, the new ideal state is probably the reason we're in here.
 	switch (m_MonsterState)
@@ -145,7 +145,7 @@ NPCState CBaseMonster::GetIdealState()
 		{
 			CSound* pSound;
 
-			pSound = PBestSound();
+			pSound = BestSound();
 			ASSERT(pSound != nullptr);
 			if (pSound)
 			{
@@ -176,7 +176,7 @@ NPCState CBaseMonster::GetIdealState()
 		else if (iConditions & bits_COND_HEAR_SOUND)
 		{
 			m_IdealMonsterState = NPCState::Alert;
-			CSound* pSound = PBestSound();
+			CSound* pSound = BestSound();
 			ASSERT(pSound != nullptr);
 			if (pSound)
 				MakeIdealYaw(pSound->m_vecOrigin);

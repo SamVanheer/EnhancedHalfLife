@@ -53,7 +53,7 @@ void CFrictionModifier::ChangeFriction(CBaseEntity* pOther)
 
 void CFrictionModifier::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "modifier"))
+	if (AreStringsEqual(pkvd->szKeyName, "modifier"))
 	{
 		m_frictionFraction = atof(pkvd->szValue) / 100.0;
 		pkvd->fHandled = true;
@@ -74,12 +74,12 @@ IMPLEMENT_SAVERESTORE(CAutoTrigger, CBaseDelay);
 
 void CAutoTrigger::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "globalstate"))
+	if (AreStringsEqual(pkvd->szKeyName, "globalstate"))
 	{
 		m_globalstate = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "triggerstate"))
+	else if (AreStringsEqual(pkvd->szKeyName, "triggerstate"))
 	{
 		triggerType = UTIL_TriggerStateToTriggerType(static_cast<TriggerState>(atoi(pkvd->szValue)));
 		pkvd->fHandled = true;
@@ -100,7 +100,7 @@ void CAutoTrigger::Precache()
 
 void CAutoTrigger::Think()
 {
-	if (FStringNull(m_globalstate) || gGlobalState.EntityGetState(m_globalstate) == GlobalEntState::On)
+	if (IsStringNull(m_globalstate) || gGlobalState.EntityGetState(m_globalstate) == GlobalEntState::On)
 	{
 		SUB_UseTargets(this, triggerType, 0);
 		if (pev->spawnflags & SF_AUTO_FIREONCE)
@@ -119,7 +119,7 @@ IMPLEMENT_SAVERESTORE(CTriggerRelay, CBaseDelay);
 
 void CTriggerRelay::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "triggerstate"))
+	if (AreStringsEqual(pkvd->szKeyName, "triggerstate"))
 	{
 		triggerType = UTIL_TriggerStateToTriggerType(static_cast<TriggerState>(atoi(pkvd->szValue)));
 		pkvd->fHandled = true;
@@ -160,7 +160,7 @@ void CMultiManager::KeyValue(KeyValueData* pkvd)
 	// if ( !pkvd->fHandled )
 	// ... etc.
 
-	if (FStrEq(pkvd->szKeyName, "wait"))
+	if (AreStringsEqual(pkvd->szKeyName, "wait"))
 	{
 		m_flWait = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -210,7 +210,7 @@ void CMultiManager::Spawn()
 bool CMultiManager::HasTarget(string_t targetname)
 {
 	for (int i = 0; i < m_cTargets; i++)
-		if (FStrEq(STRING(targetname), STRING(m_iTargetName[i])))
+		if (AreStringsEqual(STRING(targetname), STRING(m_iTargetName[i])))
 			return true;
 
 	return false;
@@ -302,23 +302,23 @@ void CRenderFxManager::Spawn()
 
 void CRenderFxManager::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
-	if (!FStringNull(pev->target))
+	if (!IsStringNull(pev->target))
 	{
 		edict_t* pentTarget = nullptr;
 		while (true)
 		{
 			pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
-			if (FNullEnt(pentTarget))
+			if (IsNullEnt(pentTarget))
 				break;
 
 			entvars_t* pevTarget = VARS(pentTarget);
-			if (!FBitSet(pev->spawnflags, SF_RENDER_MASKFX))
+			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKFX))
 				pevTarget->renderfx = pev->renderfx;
-			if (!FBitSet(pev->spawnflags, SF_RENDER_MASKAMT))
+			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKAMT))
 				pevTarget->renderamt = pev->renderamt;
-			if (!FBitSet(pev->spawnflags, SF_RENDER_MASKMODE))
+			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKMODE))
 				pevTarget->rendermode = pev->rendermode;
-			if (!FBitSet(pev->spawnflags, SF_RENDER_MASKCOLOR))
+			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKCOLOR))
 				pevTarget->rendercolor = pev->rendercolor;
 		}
 	}
@@ -328,12 +328,12 @@ LINK_ENTITY_TO_CLASS(trigger, CBaseTrigger);
 
 void CBaseTrigger::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "damage"))
+	if (AreStringsEqual(pkvd->szKeyName, "damage"))
 	{
 		pev->dmg = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "damagetype"))
+	else if (AreStringsEqual(pkvd->szKeyName, "damagetype"))
 	{
 		m_bitsDamageInflict = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -363,13 +363,13 @@ void CBaseTrigger::ActivateMultiTrigger(CBaseEntity* pActivator)
 	if (!UTIL_IsMasterTriggered(m_sMaster, pActivator))
 		return;
 
-	if (!FStringNull(pev->noise))
+	if (!IsStringNull(pev->noise))
 		EmitSound(CHAN_VOICE, STRING(pev->noise));
 
 	m_hActivator = pActivator;
 	SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
 
-	if (!FStringNull(pev->message) && pActivator->IsPlayer())
+	if (!IsStringNull(pev->message) && pActivator->IsPlayer())
 	{
 		UTIL_ShowMessage(STRING(pev->message), pActivator);
 	}
@@ -417,7 +417,7 @@ void CTriggerHurt::Spawn()
 	InitTrigger();
 	SetTouch(&CTriggerHurt::HurtTouch);
 
-	if (!FStringNull(pev->targetname))
+	if (!IsStringNull(pev->targetname))
 	{
 		SetUse(&CTriggerHurt::ToggleUse);
 	}
@@ -432,7 +432,7 @@ void CTriggerHurt::Spawn()
 		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(0.0, 0.5);
 	}
 
-	if (FBitSet(pev->spawnflags, SF_TRIGGER_HURT_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
+	if (IsBitSet(pev->spawnflags, SF_TRIGGER_HURT_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
 		pev->solid = SOLID_NOT;
 
 	UTIL_SetOrigin(pev, pev->origin);		// Link into the list
@@ -539,7 +539,7 @@ void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
 	// Apply damage every half second
 	pev->dmgtime = gpGlobals->time + 0.5;// half second delay until this trigger can hurt toucher again
 
-	if (!FStringNull(pev->target))
+	if (!IsStringNull(pev->target))
 	{
 		// trigger has a target it wants to fire. 
 		if (pev->spawnflags & SF_TRIGGER_HURT_CLIENTONLYFIRE)
@@ -587,7 +587,7 @@ void CTriggerHurt::RadiationThink()
 
 	// reset origin
 
-	if (!FNullEnt(pentPlayer))
+	if (!IsNullEnt(pentPlayer))
 	{
 
 		pPlayer = GetClassPtr((CBasePlayer*)VARS(pentPlayer));
@@ -625,7 +625,7 @@ void CTriggerMonsterJump::Spawn()
 	pev->speed = 200;
 	m_flHeight = 150;
 
-	if (!FStringNull(pev->targetname))
+	if (!IsStringNull(pev->targetname))
 	{// if targetted, spawn turned off
 		pev->solid = SOLID_NOT;
 		UTIL_SetOrigin(pev, pev->origin); // Unlink from trigger list
@@ -644,14 +644,14 @@ void CTriggerMonsterJump::Touch(CBaseEntity* pOther)
 {
 	entvars_t* pevOther = pOther->pev;
 
-	if (!FBitSet(pevOther->flags, FL_MONSTER))
+	if (!IsBitSet(pevOther->flags, FL_MONSTER))
 	{// touched by a non-monster.
 		return;
 	}
 
 	pevOther->origin.z += 1;
 
-	if (FBitSet(pevOther->flags, FL_ONGROUND))
+	if (IsBitSet(pevOther->flags, FL_ONGROUND))
 	{// clear the onground so physics don't bitch
 		pevOther->flags &= ~FL_ONGROUND;
 	}
@@ -729,7 +729,7 @@ LINK_ENTITY_TO_CLASS(target_cdaudio, CTargetCDAudio);
 
 void CTargetCDAudio::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "radius"))
+	if (AreStringsEqual(pkvd->szKeyName, "radius"))
 	{
 		pev->scale = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -799,7 +799,7 @@ void CTriggerMultiple::MultiTouch(CBaseEntity* pOther)
 	// Only touch clients, monsters, or pushables (depending on flags)
 	if (((pevToucher->flags & FL_CLIENT) && !(pev->spawnflags & SF_TRIGGER_NOCLIENTS)) ||
 		((pevToucher->flags & FL_MONSTER) && (pev->spawnflags & SF_TRIGGER_ALLOWMONSTERS)) ||
-		(pev->spawnflags & SF_TRIGGER_PUSHABLES) && FClassnameIs(pevToucher, "func_pushable"))
+		(pev->spawnflags & SF_TRIGGER_PUSHABLES) && ClassnameIs(pevToucher, "func_pushable"))
 	{
 
 #if 0
@@ -836,7 +836,7 @@ IMPLEMENT_SAVERESTORE(CTriggerCounter, CBaseTrigger);
 
 void CTriggerCounter::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "count"))
+	if (AreStringsEqual(pkvd->szKeyName, "count"))
 	{
 		m_cTriggersLeft = (int)atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -866,8 +866,8 @@ void CTriggerCounter::CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, 
 
 	bool fTellActivator =
 		(m_hActivator != nullptr) &&
-		FClassnameIs(m_hActivator->pev, "player") &&
-		!FBitSet(pev->spawnflags, SPAWNFLAG_NOMESSAGE);
+		ClassnameIs(m_hActivator->pev, "player") &&
+		!IsBitSet(pev->spawnflags, SPAWNFLAG_NOMESSAGE);
 	if (m_cTriggersLeft != 0)
 	{
 		if (fTellActivator)
@@ -935,7 +935,7 @@ void CTriggerPush::Spawn()
 	if (pev->speed == 0)
 		pev->speed = 100;
 
-	if (FBitSet(pev->spawnflags, SF_TRIGGER_PUSH_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
+	if (IsBitSet(pev->spawnflags, SF_TRIGGER_PUSH_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
 		pev->solid = SOLID_NOT;
 
 	SetUse(&CTriggerPush::ToggleUse);
@@ -960,7 +960,7 @@ void CTriggerPush::Touch(CBaseEntity* pOther)
 	if (pevToucher->solid != SOLID_NOT && pevToucher->solid != SOLID_BSP)
 	{
 		// Instant trigger, just transfer velocity and remove
-		if (FBitSet(pev->spawnflags, SF_TRIG_PUSH_ONCE))
+		if (IsBitSet(pev->spawnflags, SF_TRIG_PUSH_ONCE))
 		{
 			pevToucher->velocity = pevToucher->velocity + (pev->speed * pev->movedir);
 			if (pevToucher->velocity.z > 0)
@@ -997,7 +997,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 	edict_t* pentTarget = nullptr;
 
 	// Only teleport monsters or clients
-	if (!FBitSet(pevToucher->flags, FL_CLIENT | FL_MONSTER))
+	if (!IsBitSet(pevToucher->flags, FL_CLIENT | FL_MONSTER))
 		return;
 
 	if (!UTIL_IsMasterTriggered(m_sMaster, pOther))
@@ -1005,7 +1005,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 
 	if (!(pev->spawnflags & SF_TRIGGER_ALLOWMONSTERS))
 	{// no monsters allowed!
-		if (FBitSet(pevToucher->flags, FL_MONSTER))
+		if (IsBitSet(pevToucher->flags, FL_MONSTER))
 		{
 			return;
 		}
@@ -1020,7 +1020,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 	}
 
 	pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
-	if (FNullEnt(pentTarget))
+	if (IsNullEnt(pentTarget))
 		return;
 
 	Vector tmp = VARS(pentTarget)->origin;
@@ -1075,7 +1075,7 @@ IMPLEMENT_SAVERESTORE(CTriggerChangeTarget, CBaseDelay);
 
 void CTriggerChangeTarget::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "m_iszNewTarget"))
+	if (AreStringsEqual(pkvd->szKeyName, "m_iszNewTarget"))
 	{
 		m_iszNewTarget = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -1141,22 +1141,22 @@ void CTriggerCamera::Spawn()
 
 void CTriggerCamera::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "wait"))
+	if (AreStringsEqual(pkvd->szKeyName, "wait"))
 	{
 		m_flWait = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "moveto"))
+	else if (AreStringsEqual(pkvd->szKeyName, "moveto"))
 	{
 		m_sPath = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "acceleration"))
+	else if (AreStringsEqual(pkvd->szKeyName, "acceleration"))
 	{
 		m_acceleration = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "deceleration"))
+	else if (AreStringsEqual(pkvd->szKeyName, "deceleration"))
 	{
 		m_deceleration = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -1190,7 +1190,7 @@ void CTriggerCamera::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	pev->speed = m_initialSpeed;
 	m_targetSpeed = m_initialSpeed;
 
-	if (FBitSet(pev->spawnflags, SF_CAMERA_PLAYER_TARGET))
+	if (IsBitSet(pev->spawnflags, SF_CAMERA_PLAYER_TARGET))
 	{
 		m_hTarget = m_hPlayer;
 	}
@@ -1206,12 +1206,12 @@ void CTriggerCamera::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	}
 
 
-	if (FBitSet(pev->spawnflags, SF_CAMERA_PLAYER_TAKECONTROL))
+	if (IsBitSet(pev->spawnflags, SF_CAMERA_PLAYER_TAKECONTROL))
 	{
 		player->EnableControl(false);
 	}
 
-	if (!FStringNull(m_sPath))
+	if (!IsStringNull(m_sPath))
 	{
 		m_pentPath = Instance(FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_sPath)));
 	}
@@ -1230,7 +1230,7 @@ void CTriggerCamera::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	}
 
 	// copy over player information
-	if (FBitSet(pev->spawnflags, SF_CAMERA_PLAYER_POSITION))
+	if (IsBitSet(pev->spawnflags, SF_CAMERA_PLAYER_POSITION))
 	{
 		UTIL_SetOrigin(pev, pActivator->pev->origin + pActivator->pev->view_ofs);
 		pev->angles.x = -pActivator->pev->angles.x;
@@ -1307,7 +1307,7 @@ void CTriggerCamera::FollowTarget()
 	pev->avelocity.y = dy * 40 * 0.01;
 
 
-	if (!(FBitSet(pev->spawnflags, SF_CAMERA_PLAYER_TAKECONTROL)))
+	if (!(IsBitSet(pev->spawnflags, SF_CAMERA_PLAYER_TAKECONTROL)))
 	{
 		pev->velocity = pev->velocity * 0.8;
 		if (pev->velocity.Length() < 10.0)
@@ -1332,10 +1332,10 @@ void CTriggerCamera::Move()
 	if (m_moveDistance <= 0)
 	{
 		// Fire the passtarget if there is one
-		if (!FStringNull(m_pentPath->pev->message))
+		if (!IsStringNull(m_pentPath->pev->message))
 		{
 			FireTargets(STRING(m_pentPath->pev->message), this, this, USE_TOGGLE, 0);
-			if (FBitSet(m_pentPath->pev->spawnflags, SF_CORNER_FIREONCE))
+			if (IsBitSet(m_pentPath->pev->spawnflags, SF_CORNER_FIREONCE))
 				m_pentPath->pev->message = iStringNull;
 		}
 		// Time to go to the next target

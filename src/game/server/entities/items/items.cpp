@@ -35,7 +35,7 @@ LINK_ENTITY_TO_CLASS(world_items, CWorldItem);
 
 void CWorldItem::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "type"))
+	if (AreStringsEqual(pkvd->szKeyName, "type"))
 	{
 		m_iType = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -140,10 +140,10 @@ CBaseEntity* CItem::Respawn()
 	SetTouch(nullptr);
 	pev->effects |= EF_NODRAW;
 
-	UTIL_SetOrigin(pev, g_pGameRules->VecItemRespawnSpot(this));// blip to whereever you should respawn.
+	UTIL_SetOrigin(pev, g_pGameRules->ItemRespawnSpot(this));// blip to whereever you should respawn.
 
 	SetThink(&CItem::Materialize);
-	pev->nextthink = g_pGameRules->FlItemRespawnTime(this);
+	pev->nextthink = g_pGameRules->ItemRespawnTime(this);
 	return this;
 }
 

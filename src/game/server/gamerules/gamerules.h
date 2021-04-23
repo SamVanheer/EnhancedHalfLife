@@ -80,12 +80,12 @@ public:
 	/**
 	*	@brief Are players allowed to switch on their flashlight?
 	*/
-	virtual bool FAllowFlashlight() = 0;
+	virtual bool AllowFlashlight() = 0;
 
 	/**
 	*	@brief should the player switch to this weapon?
 	*/
-	virtual bool FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) = 0;
+	virtual bool ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) = 0;
 
 	/**
 	*	@brief I can't use this weapon anymore, get me the next best one.
@@ -130,12 +130,12 @@ public:
 	/**
 	*	@brief this client just hit the ground after a fall. How much damage?
 	*/
-	virtual float FlPlayerFallDamage(CBasePlayer* pPlayer) = 0;
+	virtual float PlayerFallDamage(CBasePlayer* pPlayer) = 0;
 
 	/**
 	*	@brief can this player take damage from this attacker?
 	*/
-	virtual bool  FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker) { return true; }
+	virtual bool  PlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker) { return true; }
 	virtual bool ShouldAutoAim(CBasePlayer* pPlayer, edict_t* target) { return true; }
 
 	// Client spawn/respawn control
@@ -152,12 +152,12 @@ public:
 	/**
 	*	@brief is this player allowed to respawn now?
 	*/
-	virtual bool FPlayerCanRespawn(CBasePlayer* pPlayer) = 0;
+	virtual bool PlayerCanRespawn(CBasePlayer* pPlayer) = 0;
 
 	/**
 	*	@brief When in the future will this player be able to spawn?
 	*/
-	virtual float FlPlayerSpawnTime(CBasePlayer* pPlayer) = 0;
+	virtual float PlayerSpawnTime(CBasePlayer* pPlayer) = 0;
 
 	/**
 	*	@brief Place this player on their spawnspot and face them the proper direction.
@@ -181,7 +181,7 @@ public:
 	/**
 	*	@brief how many points do I award whoever kills this player?
 	*/
-	virtual int IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) = 0;
+	virtual int PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) = 0;
 
 	/**
 	*	@brief Called each time a player dies
@@ -213,19 +213,19 @@ public:
 	/**
 	*	@brief when may this weapon respawn?
 	*/
-	virtual float FlWeaponRespawnTime(CBasePlayerItem* pWeapon) = 0;
+	virtual float WeaponRespawnTime(CBasePlayerItem* pWeapon) = 0;
 
 	/**
 	*	@brief can i respawn now, and if not, when should i try again?
 	*	Returns 0 if the weapon can respawn now
 	*/
-	virtual float FlWeaponTryRespawn(CBasePlayerItem* pWeapon) = 0;
+	virtual float WeaponTryRespawn(CBasePlayerItem* pWeapon) = 0;
 
 	/**
 	*	@brief where in the world should this weapon respawn?
 	*	@details Some game variations may choose to randomize spawn locations
 	*/
-	virtual Vector VecWeaponRespawnSpot(CBasePlayerItem* pWeapon) = 0;
+	virtual Vector WeaponRespawnSpot(CBasePlayerItem* pWeapon) = 0;
 
 // Item retrieval
 	/**
@@ -247,13 +247,13 @@ public:
 	/**
 	*	@brief when may this item respawn?
 	*/
-	virtual float FlItemRespawnTime(CItem* pItem) = 0;
+	virtual float ItemRespawnTime(CItem* pItem) = 0;
 
 	/**
 	*	@brief where in the world should this item respawn?
 	*	@details Some game variations may choose to randomize spawn locations
 	*/
-	virtual Vector VecItemRespawnSpot(CItem* pItem) = 0;
+	virtual Vector ItemRespawnSpot(CItem* pItem) = 0;
 
 // Ammo retrieval
 	/**
@@ -275,23 +275,23 @@ public:
 	/**
 	*	@brief when should this ammo item respawn?
 	*/
-	virtual float FlAmmoRespawnTime(CBasePlayerAmmo* pAmmo) = 0;
+	virtual float AmmoRespawnTime(CBasePlayerAmmo* pAmmo) = 0;
 
 	/**
 	*	@brief where in the world should this ammo item respawn? by default, everything spawns
 	*/
-	virtual Vector VecAmmoRespawnSpot(CBasePlayerAmmo* pAmmo) = 0;
+	virtual Vector AmmoRespawnSpot(CBasePlayerAmmo* pAmmo) = 0;
 
 // Healthcharger respawn control
 	/**
 	*	@brief how long until a depleted HealthCharger recharges itself?
 	*/
-	virtual float FlHealthChargerRechargeTime() = 0;
+	virtual float HealthChargerRechargeTime() = 0;
 
 	/**
 	*	@brief how long until a depleted HealthCharger recharges itself?
 	*/
-	virtual float FlHEVChargerRechargeTime() { return 0; }
+	virtual float HEVChargerRechargeTime() { return 0; }
 
 	/**
 	*	@brief What happens to a dead player's weapons. what do I do with a player's weapons when he's killed?
@@ -327,7 +327,7 @@ public:
 	/**
 	*	@brief are monsters allowed
 	*/
-	virtual bool FAllowMonsters() = 0;
+	virtual bool AllowMonsters() = 0;
 
 	/**
 	*	@brief Immediately end a multiplayer game
@@ -350,9 +350,9 @@ public:
 
 	void Think() override;
 	bool IsAllowedToSpawn(CBaseEntity* pEntity) override;
-	bool FAllowFlashlight() override { return true; }
+	bool AllowFlashlight() override { return true; }
 
-	bool FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
+	bool ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
 	bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon) override;
 
 	bool IsMultiplayer() override;
@@ -363,46 +363,46 @@ public:
 	void InitHUD(CBasePlayer* pl) override;
 	void ClientDisconnected(edict_t* pClient) override;
 
-	float FlPlayerFallDamage(CBasePlayer* pPlayer) override;
+	float PlayerFallDamage(CBasePlayer* pPlayer) override;
 
 	void PlayerSpawn(CBasePlayer* pPlayer) override;
 	void PlayerThink(CBasePlayer* pPlayer) override;
-	bool FPlayerCanRespawn(CBasePlayer* pPlayer) override;
-	float FlPlayerSpawnTime(CBasePlayer* pPlayer) override;
+	bool PlayerCanRespawn(CBasePlayer* pPlayer) override;
+	float PlayerSpawnTime(CBasePlayer* pPlayer) override;
 
 	bool AllowAutoTargetCrosshair() override;
 
-	int IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) override;
+	int PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) override;
 	void PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor) override;
 	void DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor) override;
 
 	void PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
 
 	int WeaponShouldRespawn(CBasePlayerItem* pWeapon) override;
-	float FlWeaponRespawnTime(CBasePlayerItem* pWeapon) override;
-	float FlWeaponTryRespawn(CBasePlayerItem* pWeapon) override;
-	Vector VecWeaponRespawnSpot(CBasePlayerItem* pWeapon) override;
+	float WeaponRespawnTime(CBasePlayerItem* pWeapon) override;
+	float WeaponTryRespawn(CBasePlayerItem* pWeapon) override;
+	Vector WeaponRespawnSpot(CBasePlayerItem* pWeapon) override;
 
 	bool CanHaveItem(CBasePlayer* pPlayer, CItem* pItem) override;
 	void PlayerGotItem(CBasePlayer* pPlayer, CItem* pItem) override;
 
 	int ItemShouldRespawn(CItem* pItem) override;
-	float FlItemRespawnTime(CItem* pItem) override;
-	Vector VecItemRespawnSpot(CItem* pItem) override;
+	float ItemRespawnTime(CItem* pItem) override;
+	Vector ItemRespawnSpot(CItem* pItem) override;
 
 	void PlayerGotAmmo(CBasePlayer* pPlayer, char* szName, int iCount) override;
 
 	int AmmoShouldRespawn(CBasePlayerAmmo* pAmmo) override;
-	float FlAmmoRespawnTime(CBasePlayerAmmo* pAmmo) override;
-	Vector VecAmmoRespawnSpot(CBasePlayerAmmo* pAmmo) override;
+	float AmmoRespawnTime(CBasePlayerAmmo* pAmmo) override;
+	Vector AmmoRespawnSpot(CBasePlayerAmmo* pAmmo) override;
 
-	float FlHealthChargerRechargeTime() override;
+	float HealthChargerRechargeTime() override;
 
 	int DeadPlayerWeapons(CBasePlayer* pPlayer) override;
 
 	int DeadPlayerAmmo(CBasePlayer* pPlayer) override;
 
-	bool FAllowMonsters() override;
+	bool AllowMonsters() override;
 	
 	const char* GetTeamID(CBaseEntity* pEntity) override { return ""; }
 	int PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTarget) override;
@@ -419,9 +419,9 @@ public:
 	void Think() override;
 	void RefreshSkillData() override;
 	bool IsAllowedToSpawn(CBaseEntity* pEntity) override;
-	bool FAllowFlashlight() override;
+	bool AllowFlashlight() override;
 
-	bool FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
+	bool ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
 	bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon) override;
 
 	bool IsMultiplayer() override;
@@ -433,20 +433,20 @@ public:
 	void ClientDisconnected(edict_t* pClient) override;
 	void UpdateGameMode(CBasePlayer* pPlayer) override;
 
-	float FlPlayerFallDamage(CBasePlayer* pPlayer) override;
-	bool  FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker) override;
+	float PlayerFallDamage(CBasePlayer* pPlayer) override;
+	bool  PlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker) override;
 
 	void PlayerSpawn(CBasePlayer* pPlayer) override;
 	void PlayerThink(CBasePlayer* pPlayer) override;
-	bool FPlayerCanRespawn(CBasePlayer* pPlayer) override;
-	float FlPlayerSpawnTime(CBasePlayer* pPlayer) override;
+	bool PlayerCanRespawn(CBasePlayer* pPlayer) override;
+	float PlayerSpawnTime(CBasePlayer* pPlayer) override;
 	edict_t* GetPlayerSpawnSpot(CBasePlayer* pPlayer) override;
 
 	bool AllowAutoTargetCrosshair() override;
 	bool ClientCommand(CBasePlayer* pPlayer, const char* pcmd) override;
 	void ClientUserInfoChanged(CBasePlayer* pPlayer, char* infobuffer) override;
 
-	int IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) override;
+	int PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) override;
 	void PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor) override;
 	void DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor) override;
 
@@ -454,25 +454,25 @@ public:
 	bool CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
 
 	int WeaponShouldRespawn(CBasePlayerItem* pWeapon) override;
-	float FlWeaponRespawnTime(CBasePlayerItem* pWeapon) override;
-	float FlWeaponTryRespawn(CBasePlayerItem* pWeapon) override;
-	Vector VecWeaponRespawnSpot(CBasePlayerItem* pWeapon) override;
+	float WeaponRespawnTime(CBasePlayerItem* pWeapon) override;
+	float WeaponTryRespawn(CBasePlayerItem* pWeapon) override;
+	Vector WeaponRespawnSpot(CBasePlayerItem* pWeapon) override;
 
 	bool CanHaveItem(CBasePlayer* pPlayer, CItem* pItem) override;
 	void PlayerGotItem(CBasePlayer* pPlayer, CItem* pItem) override;
 
 	int ItemShouldRespawn(CItem* pItem) override;
-	float FlItemRespawnTime(CItem* pItem) override;
-	Vector VecItemRespawnSpot(CItem* pItem) override;
+	float ItemRespawnTime(CItem* pItem) override;
+	Vector ItemRespawnSpot(CItem* pItem) override;
 
 	void PlayerGotAmmo(CBasePlayer* pPlayer, char* szName, int iCount) override;
 
 	int AmmoShouldRespawn(CBasePlayerAmmo* pAmmo) override;
-	float FlAmmoRespawnTime(CBasePlayerAmmo* pAmmo) override;
-	Vector VecAmmoRespawnSpot(CBasePlayerAmmo* pAmmo) override;
+	float AmmoRespawnTime(CBasePlayerAmmo* pAmmo) override;
+	Vector AmmoRespawnSpot(CBasePlayerAmmo* pAmmo) override;
 
-	float FlHealthChargerRechargeTime() override;
-	float FlHEVChargerRechargeTime() override;
+	float HealthChargerRechargeTime() override;
+	float HEVChargerRechargeTime() override;
 
 	int DeadPlayerWeapons(CBasePlayer* pPlayer) override;
 
@@ -484,7 +484,7 @@ public:
 	bool PlayTextureSounds() override { return false; }
 	bool PlayFootstepSounds(CBasePlayer* pl, float fvol) override;
 
-	bool FAllowMonsters() override;
+	bool AllowMonsters() override;
 
 	void EndMultiplayerGame() override { GoToIntermission(); }
 

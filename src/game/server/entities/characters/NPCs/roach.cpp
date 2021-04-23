@@ -55,7 +55,7 @@ public:
 	*	@brief overriden for the roach, which can virtually see 360 degrees.
 	*/
 	void	Look(int iDistance) override;
-	int		ISoundMask() override;
+	int		SoundMask() override;
 
 	// UNDONE: These don't necessarily need to be save/restored, but if we add more data, it may
 	bool	m_fLightHacked;
@@ -65,7 +65,7 @@ public:
 
 LINK_ENTITY_TO_CLASS(monster_cockroach, CRoach);
 
-int CRoach::ISoundMask()
+int CRoach::SoundMask()
 {
 	return	bits_SOUND_CARCASS | bits_SOUND_MEAT;
 }
@@ -164,7 +164,7 @@ void CRoach::Killed(entvars_t* pevAttacker, int iGib)
 
 void CRoach::MonsterThink()
 {
-	if (FNullEnt(FIND_CLIENT_IN_PVS(edict())))
+	if (IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
 		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(1, 1.5);
 	else
 		pev->nextthink = gpGlobals->time + 0.1;// keep monster thinking
@@ -220,7 +220,7 @@ void CRoach::MonsterThink()
 		// don't do this stuff if eating!
 		if (m_iMode == ROACH_IDLE)
 		{
-			if (FShouldEat())
+			if (ShouldEat())
 			{
 				Listen();
 			}
@@ -379,7 +379,7 @@ void CRoach::Look(int iDistance)
 
 	// don't let monsters outside of the player's PVS act up, or most of the interesting
 	// things will happen before the player gets there!
-	if (FNullEnt(FIND_CLIENT_IN_PVS(edict())))
+	if (IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
 	{
 		return;
 	}
@@ -393,9 +393,9 @@ void CRoach::Look(int iDistance)
 	while ((pSightEnt = UTIL_FindEntityInSphere(pSightEnt, pev->origin, iDistance)) != nullptr)
 	{
 		// only consider ents that can be damaged. !!!temporarily only considering other monsters and clients
-		if (pSightEnt->IsPlayer() || FBitSet(pSightEnt->pev->flags, FL_MONSTER))
+		if (pSightEnt->IsPlayer() || IsBitSet(pSightEnt->pev->flags, FL_MONSTER))
 		{
-			if ( /*FVisible( pSightEnt ) &&*/ !FBitSet(pSightEnt->pev->flags, FL_NOTARGET) && pSightEnt->pev->health > 0)
+			if ( /*IsVisible( pSightEnt ) &&*/ !IsBitSet(pSightEnt->pev->flags, FL_NOTARGET) && pSightEnt->pev->health > 0)
 			{
 				// nullptr the Link pointer for each ent added to the link list. If other ents follow, the will overwrite
 				// this value. If this ent happens to be the last, the list will be properly terminated.
@@ -405,7 +405,7 @@ void CRoach::Look(int iDistance)
 
 				// don't add the Enemy's relationship to the conditions. We only want to worry about conditions when
 				// we see monsters other than the Enemy.
-				switch (IRelationship(pSightEnt))
+				switch (GetRelationship(pSightEnt))
 				{
 				case	R_FR:
 					iSighted |= bits_COND_SEE_FEAR;

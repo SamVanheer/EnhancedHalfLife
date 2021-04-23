@@ -38,7 +38,7 @@ DLL_FUNCTIONS gEntityInterface =
 	DispatchKeyValue,			//pfnKeyValue
 	DispatchSave,				//pfnSave
 	DispatchRestore,			//pfnRestore
-	DispatchObjectCollsionBox,	//pfnAbsBox
+	DispatchObjectCollsionBox,	//pfnAbsBox TODO typo
 
 	SaveWriteFields,			//pfnSaveWriteFields
 	SaveReadFields,				//pfnSaveReadFields
@@ -124,7 +124,7 @@ int DispatchSpawn(edict_t* pent)
 
 
 		// Handle global stuff here
-		if (pEntity && !FStringNull(pEntity->pev->globalname))
+		if (pEntity && !IsStringNull(pEntity->pev->globalname))
 		{
 			const globalentity_t* pGlobal = gGlobalState.EntityFromTable(pEntity->pev->globalname);
 			if (pGlobal)
@@ -132,7 +132,7 @@ int DispatchSpawn(edict_t* pent)
 				// Already dead? delete
 				if (pGlobal->state == GlobalEntState::Dead)
 					return -1;
-				else if (!FStrEq(STRING(gpGlobals->mapname), pGlobal->levelName))
+				else if (!AreStringsEqual(STRING(gpGlobals->mapname), pGlobal->levelName))
 					pEntity->MakeDormant();	// Hasn't been moved to this level yet, wait but stay alive
 				// In this level & not dead, continue on as normal
 			}
@@ -154,7 +154,7 @@ void DispatchThink(edict_t* pent)
 	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pent);
 	if (pEntity)
 	{
-		if (FBitSet(pEntity->pev->flags, FL_DORMANT))
+		if (IsBitSet(pEntity->pev->flags, FL_DORMANT))
 			ALERT(at_error, "Dormant entity %s is thinking!!\n", STRING(pEntity->pev->classname));
 
 		pEntity->Think();
@@ -291,7 +291,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 			// pSaveData->szCurrentMapName is the level this entity is coming from
 			// pGlobla->levelName is the last level the global entity was active in.
 			// If they aren't the same, then this global update is out of date.
-			if (!FStrEq(pSaveData->szCurrentMapName, pGlobal->levelName))
+			if (!AreStringsEqual(pSaveData->szCurrentMapName, pGlobal->levelName))
 				return 0;
 
 			// Compute the new global offset
@@ -349,7 +349,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 				pEntity->OverrideReset();
 			}
 		}
-		else if (pEntity && !FStringNull(pEntity->pev->globalname))
+		else if (pEntity && !IsStringNull(pEntity->pev->globalname))
 		{
 			const globalentity_t* pGlobal = gGlobalState.EntityFromTable(pEntity->pev->globalname);
 			if (pGlobal)
@@ -357,7 +357,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 				// Already dead? delete
 				if (pGlobal->state == GlobalEntState::Dead)
 					return -1;
-				else if (!FStrEq(STRING(gpGlobals->mapname), pGlobal->levelName))
+				else if (!AreStringsEqual(STRING(gpGlobals->mapname), pGlobal->levelName))
 				{
 					pEntity->MakeDormant();	// Hasn't been moved to this level yet, wait but stay alive
 				}

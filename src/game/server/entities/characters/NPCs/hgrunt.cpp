@@ -121,7 +121,7 @@ public:
 	/**
 	*	@brief Overidden for human grunts because they hear the DANGER sound that is made by hand grenades and other dangerous items.
 	*/
-	int ISoundMask() override;
+	int SoundMask() override;
 	void HandleAnimEvent(AnimationEvent& event) override;
 
 	/**
@@ -132,11 +132,11 @@ public:
 	*	ALSO, grenades will not be tossed if there is a friendly in front, this is a bad bug.
 	*	Friendly machine gun fire avoidance will unecessarily prevent the throwing of a grenade as well.
 	*/
-	bool FCanCheckAttacks() override;
+	bool CanCheckAttacks() override;
 	bool CheckMeleeAttack1(float flDot, float flDist) override;
 
 	/**
-	*	@brief overridden for HGrunt, cause FCanCheckAttacks() doesn't disqualify all attacks based on
+	*	@brief overridden for HGrunt, cause CanCheckAttacks() doesn't disqualify all attacks based on
 	*	whether or not the enemy is occluded because unlike the base class,
 	*	the HGrunt can attack when the enemy is occluded (throw grenade over wall, etc).
 	*	We must disqualify the machine gun attack if the enemy is occluded.
@@ -203,12 +203,12 @@ public:
 	/**
 	*	@brief overridden because Alien Grunts are Human Grunt's nemesis.
 	*/
-	int IRelationship(CBaseEntity* pTarget) override;
+	int GetRelationship(CBaseEntity* pTarget) override;
 
 	/**
 	*	@brief someone else is talking - don't speak
 	*/
-	bool FOkToSpeak();
+	bool OkToSpeak();
 	void JustSpoke();
 
 	CUSTOM_SCHEDULES;
@@ -288,21 +288,21 @@ void CHGrunt::SpeakSentence()
 		return;
 	}
 
-	if (FOkToSpeak())
+	if (OkToSpeak())
 	{
 		SENTENCEG_PlayRndSz(this, pGruntSentences[m_iSentence], HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 		JustSpoke();
 	}
 }
 
-int CHGrunt::IRelationship(CBaseEntity* pTarget)
+int CHGrunt::GetRelationship(CBaseEntity* pTarget)
 {
-	if (FClassnameIs(pTarget->pev, "monster_alien_grunt") || (FClassnameIs(pTarget->pev, "monster_gargantua")))
+	if (ClassnameIs(pTarget->pev, "monster_alien_grunt") || (ClassnameIs(pTarget->pev, "monster_gargantua")))
 	{
 		return R_NM;
 	}
 
-	return CSquadMonster::IRelationship(pTarget);
+	return CSquadMonster::GetRelationship(pTarget);
 }
 
 void CHGrunt::GibMonster()
@@ -315,7 +315,7 @@ void CHGrunt::GibMonster()
 		GetAttachment(0, vecGunPos, vecGunAngles);
 
 		CBaseEntity* pGun;
-		if (FBitSet(pev->weapons, HGRUNT_SHOTGUN))
+		if (IsBitSet(pev->weapons, HGRUNT_SHOTGUN))
 		{
 			pGun = DropItem("weapon_shotgun", vecGunPos, vecGunAngles);
 		}
@@ -329,7 +329,7 @@ void CHGrunt::GibMonster()
 			pGun->pev->avelocity = Vector(0, RANDOM_FLOAT(200, 400), 0);
 		}
 
-		if (FBitSet(pev->weapons, HGRUNT_GRENADELAUNCHER))
+		if (IsBitSet(pev->weapons, HGRUNT_GRENADELAUNCHER))
 		{
 			pGun = DropItem("ammo_ARgrenades", vecGunPos, vecGunAngles);
 			if (pGun)
@@ -343,7 +343,7 @@ void CHGrunt::GibMonster()
 	CBaseMonster::GibMonster();
 }
 
-int CHGrunt::ISoundMask()
+int CHGrunt::SoundMask()
 {
 	return	bits_SOUND_WORLD |
 		bits_SOUND_COMBAT |
@@ -351,7 +351,7 @@ int CHGrunt::ISoundMask()
 		bits_SOUND_DANGER;
 }
 
-bool CHGrunt::FOkToSpeak()
+bool CHGrunt::OkToSpeak()
 {
 	// if someone else is talking, don't speak
 	if (gpGlobals->time <= CTalkMonster::g_talkWaitTime)
@@ -367,7 +367,7 @@ bool CHGrunt::FOkToSpeak()
 	}
 
 	// if player is not in pvs, don't speak
-//	if (FNullEnt(FIND_CLIENT_IN_PVS(edict())))
+//	if (IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
 //		return false;
 
 	return true;
@@ -399,7 +399,7 @@ void CHGrunt::PrescheduleThink()
 	}
 }
 
-bool CHGrunt::FCanCheckAttacks()
+bool CHGrunt::CanCheckAttacks()
 {
 	if (!HasConditions(bits_COND_ENEMY_TOOFAR))
 	{
@@ -462,7 +462,7 @@ bool CHGrunt::CheckRangeAttack1(float flDot, float flDist)
 
 bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 {
-	if (!FBitSet(pev->weapons, (HGRUNT_HANDGRENADE | HGRUNT_GRENADELAUNCHER)))
+	if (!IsBitSet(pev->weapons, (HGRUNT_HANDGRENADE | HGRUNT_GRENADELAUNCHER)))
 	{
 		return false;
 	}
@@ -480,7 +480,7 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 		return m_fThrowGrenade;
 	}
 
-	if (!FBitSet(m_hEnemy->pev->flags, FL_ONGROUND) && m_hEnemy->pev->waterlevel == WaterLevel::Dry && m_vecEnemyLKP.z > pev->absmax.z)
+	if (!IsBitSet(m_hEnemy->pev->flags, FL_ONGROUND) && m_hEnemy->pev->waterlevel == WaterLevel::Dry && m_vecEnemyLKP.z > pev->absmax.z)
 	{
 		//!!!BUGBUG - we should make this check movetype and make sure it isn't FLY? Players who jump a lot are unlikely to 
 		// be grenaded.
@@ -491,7 +491,7 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 
 	Vector vecTarget;
 
-	if (FBitSet(pev->weapons, HGRUNT_HANDGRENADE))
+	if (IsBitSet(pev->weapons, HGRUNT_HANDGRENADE))
 	{
 		// find feet
 		if (RANDOM_LONG(0, 1))
@@ -538,9 +538,9 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 	}
 
 
-	if (FBitSet(pev->weapons, HGRUNT_HANDGRENADE))
+	if (IsBitSet(pev->weapons, HGRUNT_HANDGRENADE))
 	{
-		Vector vecToss = VecCheckToss(pev, GetGunPosition(), vecTarget, 0.5);
+		Vector vecToss = CheckToss(pev, GetGunPosition(), vecTarget, 0.5);
 
 		if (vecToss != vec3_origin)
 		{
@@ -561,7 +561,7 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 	}
 	else
 	{
-		Vector vecToss = VecCheckThrow(pev, GetGunPosition(), vecTarget, gSkillData.hgruntGrenadeSpeed, 0.5);
+		Vector vecToss = CheckThrow(pev, GetGunPosition(), vecTarget, gSkillData.hgruntGrenadeSpeed, 0.5);
 
 		if (vecToss != vec3_origin)
 		{
@@ -660,7 +660,7 @@ void CHGrunt::SetYawSpeed()
 
 void CHGrunt::IdleSound()
 {
-	if (FOkToSpeak() && (g_fGruntQuestion != GruntQuestion::None || RANDOM_LONG(0, 1)))
+	if (OkToSpeak() && (g_fGruntQuestion != GruntQuestion::None || RANDOM_LONG(0, 1)))
 	{
 		if (g_fGruntQuestion == GruntQuestion::None)
 		{
@@ -808,7 +808,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 		SetBodygroup(GUN_GROUP, GUN_NONE);
 
 		// now spawn a gun.
-		if (FBitSet(pev->weapons, HGRUNT_SHOTGUN))
+		if (IsBitSet(pev->weapons, HGRUNT_SHOTGUN))
 		{
 			DropItem("weapon_shotgun", vecGunPos, vecGunAngles);
 		}
@@ -816,7 +816,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 		{
 			DropItem("weapon_9mmAR", vecGunPos, vecGunAngles);
 		}
-		if (FBitSet(pev->weapons, HGRUNT_GRENADELAUNCHER))
+		if (IsBitSet(pev->weapons, HGRUNT_GRENADELAUNCHER))
 		{
 			DropItem("ammo_ARgrenades", BodyTarget(pev->origin), vecGunAngles);
 		}
@@ -863,7 +863,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 
 	case HGRUNT_AE_BURST1:
 	{
-		if (FBitSet(pev->weapons, HGRUNT_9MMAR))
+		if (IsBitSet(pev->weapons, HGRUNT_9MMAR))
 		{
 			Shoot();
 
@@ -910,7 +910,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 
 	case HGRUNT_AE_CAUGHT_ENEMY:
 	{
-		if (FOkToSpeak())
+		if (OkToSpeak())
 		{
 			SENTENCEG_PlayRndSz(this, "HG_ALERT", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 			JustSpoke();
@@ -957,7 +957,7 @@ void CHGrunt::Spawn()
 		// pev->weapons = HGRUNT_9MMAR | HGRUNT_GRENADELAUNCHER;
 	}
 
-	if (FBitSet(pev->weapons, HGRUNT_SHOTGUN))
+	if (IsBitSet(pev->weapons, HGRUNT_SHOTGUN))
 	{
 		SetBodygroup(GUN_GROUP, GUN_SHOTGUN);
 		m_cClipSize = 8;
@@ -973,11 +973,11 @@ void CHGrunt::Spawn()
 	else
 		pev->skin = 1;	// dark skin
 
-	if (FBitSet(pev->weapons, HGRUNT_SHOTGUN))
+	if (IsBitSet(pev->weapons, HGRUNT_SHOTGUN))
 	{
 		SetBodygroup(HEAD_GROUP, HEAD_SHOTGUN);
 	}
-	else if (FBitSet(pev->weapons, HGRUNT_GRENADELAUNCHER))
+	else if (IsBitSet(pev->weapons, HGRUNT_GRENADELAUNCHER))
 	{
 		SetBodygroup(HEAD_GROUP, HEAD_M203);
 		pev->skin = 1; // alway dark skin
@@ -1103,7 +1103,7 @@ void CHGrunt::PainSound()
 		if (RANDOM_LONG(0, 99) < 5)
 		{
 			// pain sentences are rare
-			if (FOkToSpeak())
+			if (OkToSpeak())
 			{
 				SENTENCEG_PlayRndSz(ENT(pev), "HG_PAIN", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, PITCH_NORM);
 				JustSpoke();
@@ -1766,7 +1766,7 @@ void CHGrunt::SetActivity(Activity NewActivity)
 	{
 	case ACT_RANGE_ATTACK1:
 		// grunt is either shooting standing or shooting crouched
-		if (FBitSet(pev->weapons, HGRUNT_9MMAR))
+		if (IsBitSet(pev->weapons, HGRUNT_9MMAR))
 		{
 			if (m_fStanding)
 			{
@@ -1891,7 +1891,7 @@ Schedule_t* CHGrunt::GetSchedule()
 	if (HasConditions(bits_COND_HEAR_SOUND))
 	{
 		CSound* pSound;
-		pSound = PBestSound();
+		pSound = BestSound();
 
 		ASSERT(pSound != nullptr);
 		if (pSound)
@@ -1906,7 +1906,7 @@ Schedule_t* CHGrunt::GetSchedule()
 				// It's not safe to play a verbal order here "Scatter", etc cause 
 				// this may only affect a single individual in a squad. 
 
-				if (FOkToSpeak())
+				if (OkToSpeak())
 				{
 					SENTENCEG_PlayRndSz(this, "HG_GREN", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 					JustSpoke();
@@ -1953,7 +1953,7 @@ Schedule_t* CHGrunt::GetSchedule()
 					// schedule where the leader plays a handsign anim
 					// that gives us enough time to hear a short sentence or spoken command
 					// before he starts pluggin away.
-					if (FOkToSpeak())// && RANDOM_LONG(0,1))
+					if (OkToSpeak())// && RANDOM_LONG(0,1))
 					{
 						if ((m_hEnemy != nullptr) && m_hEnemy->IsPlayer())
 							// player
@@ -2001,7 +2001,7 @@ Schedule_t* CHGrunt::GetSchedule()
 				// only try to take cover if we actually have an enemy!
 
 				//!!!KELLY - this grunt was hit and is going to run to cover.
-				if (FOkToSpeak()) // && RANDOM_LONG(0,1))
+				if (OkToSpeak()) // && RANDOM_LONG(0,1))
 				{
 					//SENTENCEG_PlayRndSz( ENT(pev), "HG_COVER", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
 					m_iSentence = HGRUNT_SENT_COVER;
@@ -2021,7 +2021,7 @@ Schedule_t* CHGrunt::GetSchedule()
 		}
 		// can grenade launch
 
-		else if (FBitSet(pev->weapons, HGRUNT_GRENADELAUNCHER) && HasConditions(bits_COND_CAN_RANGE_ATTACK2) && OccupySlot(bits_SLOTS_HGRUNT_GRENADE))
+		else if (IsBitSet(pev->weapons, HGRUNT_GRENADELAUNCHER) && HasConditions(bits_COND_CAN_RANGE_ATTACK2) && OccupySlot(bits_SLOTS_HGRUNT_GRENADE))
 		{
 			// shoot a grenade if you can
 			return GetScheduleOfType(SCHED_RANGE_ATTACK2);
@@ -2063,7 +2063,7 @@ Schedule_t* CHGrunt::GetSchedule()
 			if (HasConditions(bits_COND_CAN_RANGE_ATTACK2) && OccupySlot(bits_SLOTS_HGRUNT_GRENADE))
 			{
 				//!!!KELLY - this grunt is about to throw or fire a grenade at the player. Great place for "fire in the hole"  "frag out" etc
-				if (FOkToSpeak())
+				if (OkToSpeak())
 				{
 					SENTENCEG_PlayRndSz(this, "HG_THROW", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 					JustSpoke();
@@ -2074,7 +2074,7 @@ Schedule_t* CHGrunt::GetSchedule()
 			{
 				//!!!KELLY - grunt cannot see the enemy and has just decided to 
 				// charge the enemy's position. 
-				if (FOkToSpeak())// && RANDOM_LONG(0,1))
+				if (OkToSpeak())// && RANDOM_LONG(0,1))
 				{
 					//SENTENCEG_PlayRndSz( ENT(pev), "HG_CHARGE", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
 					m_iSentence = HGRUNT_SENT_CHARGE;
@@ -2088,7 +2088,7 @@ Schedule_t* CHGrunt::GetSchedule()
 				//!!!KELLY - grunt is going to stay put for a couple seconds to see if
 				// the enemy wanders back out into the open, or approaches the
 				// grunt's covered position. Good place for a taunt, I guess?
-				if (FOkToSpeak() && RANDOM_LONG(0, 1))
+				if (OkToSpeak() && RANDOM_LONG(0, 1))
 				{
 					SENTENCEG_PlayRndSz(this, "HG_TAUNT", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 					JustSpoke();
@@ -2118,7 +2118,7 @@ Schedule_t* CHGrunt::GetScheduleOfType(int Type)
 		{
 			if (g_SkillLevel == SkillLevel::Hard && HasConditions(bits_COND_CAN_RANGE_ATTACK2) && OccupySlot(bits_SLOTS_HGRUNT_GRENADE))
 			{
-				if (FOkToSpeak())
+				if (OkToSpeak())
 				{
 					SENTENCEG_PlayRndSz(this, "HG_THROW", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 					JustSpoke();
@@ -2330,7 +2330,7 @@ const char* CDeadHGrunt::m_szPoses[] = {"deadstomach", "deadside", "deadsitting"
 
 void CDeadHGrunt::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "pose"))
+	if (AreStringsEqual(pkvd->szKeyName, "pose"))
 	{
 		m_iPose = atoi(pkvd->szValue);
 		pkvd->fHandled = true;

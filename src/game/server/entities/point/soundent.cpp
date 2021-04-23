@@ -39,7 +39,7 @@ void CSound::Reset()
 	m_iNext = SOUNDLIST_EMPTY;
 }
 
-bool CSound::FIsSound()
+bool CSound::IsSound()
 {
 	if (m_iType & (bits_SOUND_COMBAT | bits_SOUND_WORLD | bits_SOUND_PLAYER | bits_SOUND_DANGER))
 	{
@@ -49,7 +49,7 @@ bool CSound::FIsSound()
 	return false;
 }
 
-bool CSound::FIsScent()
+bool CSound::IsScent()
 {
 	if (m_iType & (bits_SOUND_CARCASS | bits_SOUND_MEAT | bits_SOUND_GARBAGE))
 	{
@@ -97,8 +97,8 @@ void CSoundEnt::Think()
 
 	if (m_fShowReport)
 	{
-		ALERT(at_aiconsole, "Soundlist: %d / %d  (%d)\n", ISoundsInList(SOUNDLISTTYPE_ACTIVE), ISoundsInList(SOUNDLISTTYPE_FREE), ISoundsInList(SOUNDLISTTYPE_ACTIVE) - m_cLastActiveSounds);
-		m_cLastActiveSounds = ISoundsInList(SOUNDLISTTYPE_ACTIVE);
+		ALERT(at_aiconsole, "Soundlist: %d / %d  (%d)\n", SoundsInList(SOUNDLISTTYPE_ACTIVE), SoundsInList(SOUNDLISTTYPE_FREE), SoundsInList(SOUNDLISTTYPE_ACTIVE) - m_cLastActiveSounds);
+		m_cLastActiveSounds = SoundsInList(SOUNDLISTTYPE_ACTIVE);
 	}
 
 }
@@ -133,7 +133,7 @@ void CSoundEnt::FreeSound(int iSound, int iPrevious)
 	pSoundEnt->m_iFreeSound = iSound;
 }
 
-int CSoundEnt::IAllocSound()
+int CSoundEnt::AllocSound()
 {
 	int iNewSound;
 
@@ -168,7 +168,7 @@ void CSoundEnt::InsertSound(int iType, const Vector& vecOrigin, int iVolume, flo
 		return;
 	}
 
-	iThisSound = pSoundEnt->IAllocSound();
+	iThisSound = pSoundEnt->AllocSound();
 
 	if (iThisSound == SOUNDLIST_EMPTY)
 	{
@@ -203,7 +203,7 @@ void CSoundEnt::Initialize()
 	// now reserve enough sounds for each client
 	for (i = 0; i < gpGlobals->maxClients; i++)
 	{
-		iSound = pSoundEnt->IAllocSound();
+		iSound = pSoundEnt->AllocSound();
 
 		if (iSound == SOUNDLIST_EMPTY)
 		{
@@ -224,7 +224,7 @@ void CSoundEnt::Initialize()
 	}
 }
 
-int CSoundEnt::ISoundsInList(int iListType)
+int CSoundEnt::SoundsInList(int iListType)
 {
 	int i;
 	int iThisSound;

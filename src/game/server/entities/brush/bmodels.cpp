@@ -37,7 +37,7 @@ constexpr int SF_ROTATING_NOT_SOLID = 64;	// some special rotating objects are n
 
 constexpr int SF_PENDULUM_SWING = 2;	// spawnflag that makes a pendulum a rope swing.
 
-Vector VecBModelOrigin(entvars_t* pevBModel)
+Vector GetBrushModelOrigin(entvars_t* pevBModel)
 {
 	return pevBModel->absmin + (pevBModel->size * 0.5);
 }
@@ -193,7 +193,7 @@ class CFuncIllusionary : public CBaseToggle
 {
 public:
 	void Spawn() override;
-	void EXPORT SloshTouch(CBaseEntity* pOther);
+	void EXPORT SloshTouch(CBaseEntity* pOther); //TODO: no implementation
 	void KeyValue(KeyValueData* pkvd) override;
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 };
@@ -202,7 +202,7 @@ LINK_ENTITY_TO_CLASS(func_illusionary, CFuncIllusionary);
 
 void CFuncIllusionary::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "skin"))//skin is used for content type
+	if (AreStringsEqual(pkvd->szKeyName, "skin"))//skin is used for content type
 	{
 		pev->skin = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -319,12 +319,12 @@ LINK_ENTITY_TO_CLASS(func_rotating, CFuncRotating);
 
 void CFuncRotating::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "fanfriction"))
+	if (AreStringsEqual(pkvd->szKeyName, "fanfriction"))
 	{
 		m_flFanFriction = atof(pkvd->szValue) / 100;
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "Volume"))
+	else if (AreStringsEqual(pkvd->szKeyName, "Volume"))
 	{
 		m_flVolume = atof(pkvd->szValue) / 10.0;
 
@@ -334,13 +334,13 @@ void CFuncRotating::KeyValue(KeyValueData* pkvd)
 			m_flVolume = 0.0;
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "spawnorigin"))
+	else if (AreStringsEqual(pkvd->szKeyName, "spawnorigin"))
 	{
 		const Vector tmp = UTIL_StringToVector(pkvd->szValue);
 		if (tmp != vec3_origin)
 			pev->origin = tmp;
 	}
-	else if (FStrEq(pkvd->szKeyName, "sounds"))
+	else if (AreStringsEqual(pkvd->szKeyName, "sounds"))
 	{
 		m_sounds = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -363,15 +363,15 @@ void CFuncRotating::Spawn()
 	// if the designer didn't set a sound attenuation, default to one.
 	m_flAttenuation = ATTN_NORM;
 
-	if (FBitSet(pev->spawnflags, SF_BRUSH_ROTATE_SMALLRADIUS))
+	if (IsBitSet(pev->spawnflags, SF_BRUSH_ROTATE_SMALLRADIUS))
 	{
 		m_flAttenuation = ATTN_IDLE;
 	}
-	else if (FBitSet(pev->spawnflags, SF_BRUSH_ROTATE_MEDIUMRADIUS))
+	else if (IsBitSet(pev->spawnflags, SF_BRUSH_ROTATE_MEDIUMRADIUS))
 	{
 		m_flAttenuation = ATTN_STATIC;
 	}
-	else if (FBitSet(pev->spawnflags, SF_BRUSH_ROTATE_LARGERADIUS))
+	else if (IsBitSet(pev->spawnflags, SF_BRUSH_ROTATE_LARGERADIUS))
 	{
 		m_flAttenuation = ATTN_NORM;
 	}
@@ -382,19 +382,19 @@ void CFuncRotating::Spawn()
 		m_flFanFriction = 1;
 	}
 
-	if (FBitSet(pev->spawnflags, SF_BRUSH_ROTATE_Z_AXIS))
+	if (IsBitSet(pev->spawnflags, SF_BRUSH_ROTATE_Z_AXIS))
 		pev->movedir = vec3_up;
-	else if (FBitSet(pev->spawnflags, SF_BRUSH_ROTATE_X_AXIS))
+	else if (IsBitSet(pev->spawnflags, SF_BRUSH_ROTATE_X_AXIS))
 		pev->movedir = vec3_forward;
 	else
 		pev->movedir = vec3_right;	// y-axis
 
 	// check for reverse rotation
-	if (FBitSet(pev->spawnflags, SF_BRUSH_ROTATE_BACKWARDS))
+	if (IsBitSet(pev->spawnflags, SF_BRUSH_ROTATE_BACKWARDS))
 		pev->movedir = pev->movedir * -1;
 
 	// some rotating objects like fake volumetric lights will not be solid.
-	if (FBitSet(pev->spawnflags, SF_ROTATING_NOT_SOLID))
+	if (IsBitSet(pev->spawnflags, SF_ROTATING_NOT_SOLID))
 	{
 		pev->solid = SOLID_NOT;
 		pev->skin = CONTENTS_EMPTY;
@@ -419,13 +419,13 @@ void CFuncRotating::Spawn()
 	//		pev->dmg = 2;
 
 	// instant-use brush?
-	if (FBitSet(pev->spawnflags, SF_BRUSH_ROTATE_INSTANT))
+	if (IsBitSet(pev->spawnflags, SF_BRUSH_ROTATE_INSTANT))
 	{
 		SetThink(&CFuncRotating::SUB_CallUseToggle);
 		pev->nextthink = pev->ltime + 1.5;	// leave a magic delay for client to start up
 	}
 	// can this brush inflict pain?
-	if (FBitSet(pev->spawnflags, SF_BRUSH_HURT))
+	if (IsBitSet(pev->spawnflags, SF_BRUSH_HURT))
 	{
 		SetTouch(&CFuncRotating::HurtTouch);
 	}
@@ -439,7 +439,7 @@ void CFuncRotating::Precache()
 
 	// set up fan sounds
 
-	if (!FStringNull(pev->message) && strlen(szSoundFile) > 0)
+	if (!IsStringNull(pev->message) && strlen(szSoundFile) > 0)
 	{
 		// if a path is set for a wave, use it
 
@@ -475,7 +475,7 @@ void CFuncRotating::Precache()
 
 		case 0:
 		default:
-			if (!FStringNull(pev->message) && strlen(szSoundFile) > 0)
+			if (!IsStringNull(pev->message) && strlen(szSoundFile) > 0)
 			{
 				PRECACHE_SOUND(szSoundFile);
 
@@ -513,7 +513,7 @@ void CFuncRotating::HurtTouch(CBaseEntity* pOther)
 
 	pOther->TakeDamage(pev, pev, pev->dmg, DMG_CRUSH);
 
-	pevOther->velocity = (pevOther->origin - VecBModelOrigin(pev)).Normalize() * pev->dmg;
+	pevOther->velocity = (pevOther->origin - GetBrushModelOrigin(pev)).Normalize() * pev->dmg;
 }
 
 constexpr int FANPITCHMIN = 30;
@@ -633,7 +633,7 @@ void CFuncRotating::Rotate()
 void CFuncRotating::RotatingUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	// is this a brush that should accelerate and decelerate when turned on/off (fan)?
-	if (FBitSet(pev->spawnflags, SF_BRUSH_ACCDCC))
+	if (IsBitSet(pev->spawnflags, SF_BRUSH_ACCDCC))
 	{
 		// fan is spinning, so stop it.
 		if (pev->avelocity != vec3_origin)
@@ -653,7 +653,7 @@ void CFuncRotating::RotatingUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 			pev->nextthink = pev->ltime + 0.1;
 		}
 	}
-	else if (!FBitSet(pev->spawnflags, SF_BRUSH_ACCDCC))//this is a normal start/stop brush.
+	else if (!IsBitSet(pev->spawnflags, SF_BRUSH_ACCDCC))//this is a normal start/stop brush.
 	{
 		if (pev->avelocity != vec3_origin)
 		{
@@ -729,12 +729,12 @@ IMPLEMENT_SAVERESTORE(CPendulum, CBaseEntity);
 
 void CPendulum::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "distance"))
+	if (AreStringsEqual(pkvd->szKeyName, "distance"))
 	{
 		m_distance = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "damp"))
+	else if (AreStringsEqual(pkvd->szKeyName, "damp"))
 	{
 		m_damp = atof(pkvd->szValue) * 0.001;
 		pkvd->fHandled = true;
@@ -748,7 +748,7 @@ void CPendulum::Spawn()
 	// set the axis of rotation
 	CBaseToggle::AxisDir(pev);
 
-	if (FBitSet(pev->spawnflags, SF_DOOR_PASSABLE))
+	if (IsBitSet(pev->spawnflags, SF_DOOR_PASSABLE))
 		pev->solid = SOLID_NOT;
 	else
 		pev->solid = SOLID_BSP;
@@ -767,7 +767,7 @@ void CPendulum::Spawn()
 	m_start = pev->angles;
 	m_center = pev->angles + (m_distance * 0.5) * pev->movedir;
 
-	if (FBitSet(pev->spawnflags, SF_BRUSH_ROTATE_INSTANT))
+	if (IsBitSet(pev->spawnflags, SF_BRUSH_ROTATE_INSTANT))
 	{
 		SetThink(&CPendulum::SUB_CallUseToggle);
 		pev->nextthink = gpGlobals->time + 0.1;
@@ -775,7 +775,7 @@ void CPendulum::Spawn()
 	pev->speed = 0;
 	SetUse(&CPendulum::PendulumUse);
 
-	if (FBitSet(pev->spawnflags, SF_PENDULUM_SWING))
+	if (IsBitSet(pev->spawnflags, SF_PENDULUM_SWING))
 	{
 		SetTouch(&CPendulum::RopeTouch);
 	}
@@ -785,7 +785,7 @@ void CPendulum::PendulumUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 {
 	if (pev->speed)		// Pendulum is moving, stop it and auto-return if necessary
 	{
-		if (FBitSet(pev->spawnflags, SF_PENDULUM_AUTO_RETURN))
+		if (IsBitSet(pev->spawnflags, SF_PENDULUM_AUTO_RETURN))
 		{
 			float	delta;
 
@@ -884,7 +884,7 @@ void CPendulum::Touch(CBaseEntity* pOther)
 
 	pOther->TakeDamage(pev, pev, damage, DMG_CRUSH);
 
-	pevOther->velocity = (pevOther->origin - VecBModelOrigin(pev)).Normalize() * damage;
+	pevOther->velocity = (pevOther->origin - GetBrushModelOrigin(pev)).Normalize() * damage;
 }
 
 void CPendulum::RopeTouch(CBaseEntity* pOther)

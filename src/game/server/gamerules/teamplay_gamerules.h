@@ -27,11 +27,11 @@ public:
 	bool ClientCommand(CBasePlayer* pPlayer, const char* pcmd) override;
 	void ClientUserInfoChanged(CBasePlayer* pPlayer, char* infobuffer) override;
 	bool IsTeamplay() override;
-	bool FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker) override;
+	bool PlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker) override;
 	int PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTarget) override;
 	const char* GetTeamID(CBaseEntity* pEntity) override;
 	bool ShouldAutoAim(CBasePlayer* pPlayer, edict_t* target) override;
-	int IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) override;
+	int PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) override;
 	void InitHUD(CBasePlayer* pl) override;
 	void DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pevInflictor) override;
 	const char* GetGameDescription() override { return "HL Teamplay"; } 

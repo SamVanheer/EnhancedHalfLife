@@ -70,15 +70,15 @@ LINK_ENTITY_TO_CLASS(func_recharge, CRecharge);
 
 void CRecharge::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "style") ||
-		FStrEq(pkvd->szKeyName, "height") ||
-		FStrEq(pkvd->szKeyName, "value1") ||
-		FStrEq(pkvd->szKeyName, "value2") ||
-		FStrEq(pkvd->szKeyName, "value3"))
+	if (AreStringsEqual(pkvd->szKeyName, "style") ||
+		AreStringsEqual(pkvd->szKeyName, "height") ||
+		AreStringsEqual(pkvd->szKeyName, "value1") ||
+		AreStringsEqual(pkvd->szKeyName, "value2") ||
+		AreStringsEqual(pkvd->szKeyName, "value3"))
 	{
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "dmdelay"))
+	else if (AreStringsEqual(pkvd->szKeyName, "dmdelay"))
 	{
 		m_iReactivate = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -111,7 +111,7 @@ void CRecharge::Precache()
 void CRecharge::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	// if it's not a player, ignore
-	if (!FClassnameIs(pActivator->pev, "player"))
+	if (!ClassnameIs(pActivator->pev, "player"))
 		return;
 
 	// if there is no juice left, turn it off
@@ -194,7 +194,7 @@ void CRecharge::Off()
 
 	m_iOn = ChargerState::Off;
 
-	if ((!m_iJuice) && ((m_iReactivate = g_pGameRules->FlHEVChargerRechargeTime()) > 0))
+	if ((!m_iJuice) && ((m_iReactivate = g_pGameRules->HEVChargerRechargeTime()) > 0))
 	{
 		pev->nextthink = pev->ltime + m_iReactivate;
 		SetThink(&CRecharge::Recharge);

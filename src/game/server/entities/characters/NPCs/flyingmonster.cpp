@@ -25,7 +25,7 @@ constexpr int FLYING_AE_FLAPSOUND = 9;
 int CFlyingMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist)
 {
 	// UNDONE: need to check more than the endpoint
-	if (FBitSet(pev->flags, FL_SWIM) && (UTIL_PointContents(vecEnd) != CONTENTS_WATER))
+	if (IsBitSet(pev->flags, FL_SWIM) && (UTIL_PointContents(vecEnd) != CONTENTS_WATER))
 	{
 		// ALERT(at_aiconsole, "can't swim out of water\n");
 		return false;
@@ -54,9 +54,9 @@ int CFlyingMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd,
 	return LOCALMOVE_VALID;
 }
 
-bool CFlyingMonster::FTriangulate(const Vector& vecStart, const Vector& vecEnd, float flDist, CBaseEntity* pTargetEnt, Vector* pApex)
+bool CFlyingMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, float flDist, CBaseEntity* pTargetEnt, Vector* pApex)
 {
-	return CBaseMonster::FTriangulate(vecStart, vecEnd, flDist, pTargetEnt, pApex);
+	return CBaseMonster::Triangulate(vecStart, vecEnd, flDist, pTargetEnt, pApex);
 }
 
 Activity CFlyingMonster::GetStoppedActivity()
@@ -84,7 +84,7 @@ float CFlyingMonster::ChangeYaw(int speed)
 {
 	if (pev->movetype == MOVETYPE_FLY)
 	{
-		float diff = FlYawDiff();
+		float diff = YawDiff();
 		float target = 0;
 
 		if (m_IdealActivity != GetStoppedActivity())

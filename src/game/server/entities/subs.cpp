@@ -49,7 +49,7 @@ LINK_ENTITY_TO_CLASS(info_null, CNullEntity);
 
 void CBaseEntity::UpdateOnRemove()
 {
-	if (FBitSet(pev->flags, FL_GRAPHED))
+	if (IsBitSet(pev->flags, FL_GRAPHED))
 	{
 		// this entity was a LinkEnt in the world node graph, so we must remove it from
 		// the graph since we are removing it from the world.
@@ -62,7 +62,7 @@ void CBaseEntity::UpdateOnRemove()
 			}
 		}
 	}
-	if (!FStringNull(pev->globalname))
+	if (!IsStringNull(pev->globalname))
 		gGlobalState.EntitySetState(pev->globalname, GlobalEntState::Dead);
 }
 
@@ -94,12 +94,12 @@ IMPLEMENT_SAVERESTORE(CBaseDelay, CBaseEntity);
 
 void CBaseDelay::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "delay"))
+	if (AreStringsEqual(pkvd->szKeyName, "delay"))
 	{
 		m_flDelay = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "killtarget"))
+	else if (AreStringsEqual(pkvd->szKeyName, "killtarget"))
 	{
 		m_iszKillTarget = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -112,7 +112,7 @@ void CBaseDelay::KeyValue(KeyValueData* pkvd)
 
 void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value)
 {
-	if (!FStringNull(pev->target))
+	if (!IsStringNull(pev->target))
 	{
 		FireTargets(STRING(pev->target), pActivator, this, useType, value);
 	}
@@ -130,7 +130,7 @@ void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* p
 	for (;;)
 	{
 		pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, targetName);
-		if (FNullEnt(pentTarget))
+		if (IsNullEnt(pentTarget))
 			break;
 
 		CBaseEntity* pTarget = CBaseEntity::Instance(pentTarget);
@@ -149,7 +149,7 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float
 	//
 	// exit immediately if we don't have a target or kill target
 	//
-	if (FStringNull(pev->target) && FStringNull(m_iszKillTarget))
+	if (IsStringNull(pev->target) && IsStringNull(m_iszKillTarget))
 		return;
 
 	//
@@ -191,13 +191,13 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float
 	// kill the killtargets
 	//
 
-	if (!FStringNull(m_iszKillTarget))
+	if (!IsStringNull(m_iszKillTarget))
 	{
 		edict_t* pentKillTarget = nullptr;
 
 		ALERT(at_aiconsole, "KillTarget: %s\n", STRING(m_iszKillTarget));
 		pentKillTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_iszKillTarget));
-		while (!FNullEnt(pentKillTarget))
+		while (!IsNullEnt(pentKillTarget))
 		{
 			UTIL_Remove(CBaseEntity::Instance(pentKillTarget));
 
@@ -209,7 +209,7 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float
 	//
 	// fire targets
 	//
-	if (!FStringNull(pev->target))
+	if (!IsStringNull(pev->target))
 	{
 		FireTargets(STRING(pev->target), pActivator, this, useType, value);
 	}
@@ -275,22 +275,22 @@ IMPLEMENT_SAVERESTORE(CBaseToggle, CBaseAnimating);
 
 void CBaseToggle::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "lip"))
+	if (AreStringsEqual(pkvd->szKeyName, "lip"))
 	{
 		m_flLip = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "wait"))
+	else if (AreStringsEqual(pkvd->szKeyName, "wait"))
 	{
 		m_flWait = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "master"))
+	else if (AreStringsEqual(pkvd->szKeyName, "master"))
 	{
 		m_sMaster = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "distance"))
+	else if (AreStringsEqual(pkvd->szKeyName, "distance"))
 	{
 		m_flMoveDistance = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -348,7 +348,7 @@ void CBaseToggle::LinearMoveDone()
 
 bool CBaseToggle::IsLockedByMaster()
 {
-	return !FStringNull(m_sMaster) && !UTIL_IsMasterTriggered(m_sMaster, m_hActivator);
+	return !IsStringNull(m_sMaster) && !UTIL_IsMasterTriggered(m_sMaster, m_hActivator);
 }
 
 void CBaseToggle::AngularMove(Vector vecDestAngle, float flSpeed)
@@ -390,9 +390,9 @@ void CBaseToggle::AngularMoveDone()
 
 float CBaseToggle::AxisValue(int flags, const Vector& angles)
 {
-	if (FBitSet(flags, SF_DOOR_ROTATE_Z))
+	if (IsBitSet(flags, SF_DOOR_ROTATE_Z))
 		return angles.z;
-	if (FBitSet(flags, SF_DOOR_ROTATE_X))
+	if (IsBitSet(flags, SF_DOOR_ROTATE_X))
 		return angles.x;
 
 	return angles.y;
@@ -400,9 +400,9 @@ float CBaseToggle::AxisValue(int flags, const Vector& angles)
 
 void CBaseToggle::AxisDir(entvars_t* pev)
 {
-	if (FBitSet(pev->spawnflags, SF_DOOR_ROTATE_Z))
+	if (IsBitSet(pev->spawnflags, SF_DOOR_ROTATE_Z))
 		pev->movedir = vec3_up;	// around z-axis
-	else if (FBitSet(pev->spawnflags, SF_DOOR_ROTATE_X))
+	else if (IsBitSet(pev->spawnflags, SF_DOOR_ROTATE_X))
 		pev->movedir = vec3_forward;	// around x-axis
 	else
 		pev->movedir = vec3_right;		// around y-axis
@@ -410,10 +410,10 @@ void CBaseToggle::AxisDir(entvars_t* pev)
 
 float CBaseToggle::AxisDelta(int flags, const Vector& angle1, const Vector& angle2)
 {
-	if (FBitSet(flags, SF_DOOR_ROTATE_Z))
+	if (IsBitSet(flags, SF_DOOR_ROTATE_Z))
 		return angle1.z - angle2.z;
 
-	if (FBitSet(flags, SF_DOOR_ROTATE_X))
+	if (IsBitSet(flags, SF_DOOR_ROTATE_X))
 		return angle1.x - angle2.x;
 
 	return angle1.y - angle2.y;

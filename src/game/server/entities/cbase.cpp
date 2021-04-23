@@ -54,12 +54,12 @@ bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	Vector vecTemp;
 	if (pevAttacker == pevInflictor)
 	{
-		vecTemp = pevInflictor->origin - (VecBModelOrigin(pev));
+		vecTemp = pevInflictor->origin - (GetBrushModelOrigin(pev));
 	}
 	else
 		// an actual missile was involved.
 	{
-		vecTemp = pevInflictor->origin - (VecBModelOrigin(pev));
+		vecTemp = pevInflictor->origin - (GetBrushModelOrigin(pev));
 	}
 
 	// this global is still used for glass and other non-monster killables, along with decals.
@@ -68,7 +68,7 @@ bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	// save damage based on the target's armor level
 
 	// figure momentum add (don't let hurt brushes or other triggers move player)
-	if ((!FNullEnt(pevInflictor)) && (pev->movetype == MOVETYPE_WALK || pev->movetype == MOVETYPE_STEP) && (pevAttacker->solid != SOLID_TRIGGER))
+	if ((!IsNullEnt(pevInflictor)) && (pev->movetype == MOVETYPE_WALK || pev->movetype == MOVETYPE_STEP) && (pevAttacker->solid != SOLID_TRIGGER))
 	{
 		Vector vecDir = pev->origin - (pevInflictor->absmin + pevInflictor->absmax) * 0.5;
 		vecDir = vecDir.Normalize();
@@ -100,10 +100,10 @@ void CBaseEntity::Killed(entvars_t* pevAttacker, int iGib)
 
 CBaseEntity* CBaseEntity::GetNextTarget()
 {
-	if (FStringNull(pev->target))
+	if (IsStringNull(pev->target))
 		return nullptr;
 	edict_t* pTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target));
-	if (FNullEnt(pTarget))
+	if (IsNullEnt(pTarget))
 		return nullptr;
 
 	return Instance(pTarget);
@@ -134,7 +134,7 @@ bool CBaseEntity::Restore(CRestore& restore)
 	if (status)
 		status = restore.ReadFields("BASE", this, m_SaveData, ArraySize(m_SaveData));
 
-	if (pev->modelindex != 0 && !FStringNull(pev->model))
+	if (pev->modelindex != 0 && !IsStringNull(pev->model))
 	{
 		Vector mins, maxs;
 		mins = pev->mins;	// Set model is about to destroy these
@@ -184,7 +184,7 @@ void CBaseEntity::MakeDormant()
 
 bool CBaseEntity::IsDormant()
 {
-	return FBitSet(pev->flags, FL_DORMANT);
+	return IsBitSet(pev->flags, FL_DORMANT);
 }
 
 bool CBaseEntity::IsInWorld()
@@ -240,7 +240,7 @@ void CBaseEntity::StopSound(int channel, const char* fileName)
 CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner)
 {
 	edict_t* pent = CREATE_NAMED_ENTITY(MAKE_STRING(szName));
-	if (FNullEnt(pent))
+	if (IsNullEnt(pent))
 	{
 		ALERT(at_console, "NULL Ent in Create!\n");
 		return nullptr;

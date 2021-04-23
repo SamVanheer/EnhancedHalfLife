@@ -435,7 +435,7 @@ void CApache::HuntThink()
 
 	ShowDamage();
 
-	if (m_pGoalEnt == nullptr && !FStringNull(pev->target))// this monster has a target
+	if (m_pGoalEnt == nullptr && !IsStringNull(pev->target))// this monster has a target
 	{
 		m_pGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
 		if (m_pGoalEnt)
@@ -459,7 +459,7 @@ void CApache::HuntThink()
 	if (m_hEnemy != nullptr)
 	{
 		// ALERT( at_console, "%s\n", STRING( m_hEnemy->pev->classname ) );
-		if (FVisible(m_hEnemy))
+		if (IsVisible(m_hEnemy))
 		{
 			if (m_flLastSeen < gpGlobals->time - 5)
 				m_flPrevSeen = gpGlobals->time;

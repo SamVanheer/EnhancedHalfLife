@@ -187,7 +187,7 @@ bool InternalLoadGraphFromDisk(const std::unique_ptr<byte[]>& fileBuffer, std::s
 	return true;
 }
 
-bool CGraph::FLoadGraph(const char* szMapName)
+bool CGraph::LoadGraph(const char* szMapName)
 {
 	InitGraph();
 
@@ -216,7 +216,7 @@ bool CGraph::FLoadGraph(const char* szMapName)
 	}
 }
 
-bool CGraph::FSaveGraph(const char* szMapName)
+bool CGraph::SaveGraph(const char* szMapName)
 {
 	if (!m_fGraphPresent || !m_fGraphPointersSet)
 	{// protect us in the case that the node graph isn't available or built

@@ -33,7 +33,7 @@ constexpr int NUM_LATERAL_LOS_CHECKS = 6;  //!< how many checks are made on each
 // !!!UNDONE - move CBaseMonster functions to monsters.cpp
 //=========================================================
 
-bool FBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetOrigin, float flSize)
+bool IsBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetOrigin, float flSize)
 {
 	// don't look through water
 	if ((pevLooker->waterlevel != WaterLevel::Head && pevTarget->waterlevel == WaterLevel::Head)
@@ -60,7 +60,7 @@ bool FBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetOr
 	return false;// Line of sight is not established
 }
 
-Vector VecCheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flGravityAdj)
+Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flGravityAdj)
 {
 	TraceResult		tr;
 	Vector			vecMidPoint;// halfway point between Spot1 and Spot2
@@ -141,7 +141,7 @@ Vector VecCheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, flo
 	return vecGrenadeVel;
 }
 
-Vector VecCheckThrow(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj)
+Vector CheckThrow(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj)
 {
 	float			flGravity = g_psv_gravity->value * flGravityAdj;
 

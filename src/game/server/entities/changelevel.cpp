@@ -67,26 +67,26 @@ IMPLEMENT_SAVERESTORE(CChangeLevel, CBaseTrigger);
 
 void CChangeLevel::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "map"))
+	if (AreStringsEqual(pkvd->szKeyName, "map"))
 	{
 		if (strlen(pkvd->szValue) >= MAX_MAPNAME_LENGTH)
 			ALERT(at_error, "Map name '%s' too long (32 chars)\n", pkvd->szValue);
 		safe_strcpy(m_szMapName, pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "landmark"))
+	else if (AreStringsEqual(pkvd->szKeyName, "landmark"))
 	{
 		if (strlen(pkvd->szValue) >= MAX_MAPNAME_LENGTH)
 			ALERT(at_error, "Landmark name '%s' too long (32 chars)\n", pkvd->szValue);
 		safe_strcpy(m_szLandmarkName, pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "changetarget"))
+	else if (AreStringsEqual(pkvd->szKeyName, "changetarget"))
 	{
 		m_changeTarget = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "changedelay"))
+	else if (AreStringsEqual(pkvd->szKeyName, "changedelay"))
 	{
 		m_changeTargetDelay = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -97,13 +97,13 @@ void CChangeLevel::KeyValue(KeyValueData* pkvd)
 
 void CChangeLevel::Spawn()
 {
-	if (FStrEq(m_szMapName, ""))
+	if (AreStringsEqual(m_szMapName, ""))
 		ALERT(at_console, "a trigger_changelevel doesn't have a map");
 
-	if (FStrEq(m_szLandmarkName, ""))
+	if (AreStringsEqual(m_szLandmarkName, ""))
 		ALERT(at_console, "trigger_changelevel to %s doesn't have a landmark", m_szMapName);
 
-	if (!FStringNull(pev->targetname))
+	if (!IsStringNull(pev->targetname))
 	{
 		SetUse(&CChangeLevel::UseChangeLevel);
 	}
@@ -121,10 +121,10 @@ edict_t* CChangeLevel::FindLandmark(const char* pLandmarkName)
 	edict_t* pentLandmark;
 
 	pentLandmark = FIND_ENTITY_BY_STRING(nullptr, "targetname", pLandmarkName);
-	while (!FNullEnt(pentLandmark))
+	while (!IsNullEnt(pentLandmark))
 	{
 		// Found the landmark
-		if (FClassnameIs(pentLandmark, "info_landmark"))
+		if (ClassnameIs(pentLandmark, "info_landmark"))
 			return pentLandmark;
 		else
 			pentLandmark = FIND_ENTITY_BY_STRING(pentLandmark, "targetname", pLandmarkName);
@@ -143,7 +143,7 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 	edict_t* pentLandmark;
 	LEVELLIST	levels[16];
 
-	ASSERT(!FStrEq(m_szMapName, ""));
+	ASSERT(!AreStringsEqual(m_szMapName, ""));
 
 	// Don't work in deathmatch
 	if (g_pGameRules->IsDeathmatch())
@@ -163,7 +163,7 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 	}
 
 	// Create an entity to fire the changetarget
-	if (!FStringNull(m_changeTarget))
+	if (!IsStringNull(m_changeTarget))
 	{
 		CFireAndDie* pFireAndDie = GetClassPtr((CFireAndDie*)nullptr);
 		if (pFireAndDie)
@@ -185,7 +185,7 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 
 	// look for a landmark entity		
 	pentLandmark = FindLandmark(m_szLandmarkName);
-	if (!FNullEnt(pentLandmark))
+	if (!IsNullEnt(pentLandmark))
 	{
 		safe_strcpy(st_szNextSpot, m_szLandmarkName);
 		gpGlobals->vecLandmarkOffset = VARS(pentLandmark)->origin;
@@ -197,7 +197,7 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 
 void CChangeLevel::TouchChangeLevel(CBaseEntity* pOther)
 {
-	if (!FClassnameIs(pOther->pev, "player"))
+	if (!ClassnameIs(pOther->pev, "player"))
 		return;
 
 	ChangeLevelNow(pOther);
@@ -240,11 +240,11 @@ bool CChangeLevel::InTransitionVolume(CBaseEntity* pEntity, char* pVolumeName)
 	bool inVolume = true;	// Unless we find a trigger_transition, everything is in the volume
 
 	pentVolume = FIND_ENTITY_BY_TARGETNAME(nullptr, pVolumeName);
-	while (!FNullEnt(pentVolume))
+	while (!IsNullEnt(pentVolume))
 	{
 		CBaseEntity* pVolume = CBaseEntity::Instance(pentVolume);
 
-		if (pVolume && FClassnameIs(pVolume->pev, "trigger_transition"))
+		if (pVolume && ClassnameIs(pVolume->pev, "trigger_transition"))
 		{
 			if (pVolume->Intersects(pEntity))	// It touches one, it's in the volume
 				return true;
@@ -273,9 +273,9 @@ int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 
 	// Find all of the possible level changes on this BSP
 	pentChangelevel = FIND_ENTITY_BY_STRING(nullptr, "classname", "trigger_changelevel");
-	if (FNullEnt(pentChangelevel))
+	if (IsNullEnt(pentChangelevel))
 		return 0;
-	while (!FNullEnt(pentChangelevel))
+	while (!IsNullEnt(pentChangelevel))
 	{
 		CChangeLevel* pTrigger;
 
@@ -312,7 +312,7 @@ int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 			edict_t* pent = UTIL_EntitiesInPVS(pLevelList[i].pentLandmark);
 
 			// Build a list of valid entities in this linked list (we're going to use pent->v.chain again)
-			while (!FNullEnt(pent))
+			while (!IsNullEnt(pent))
 			{
 				CBaseEntity* pEntity = CBaseEntity::Instance(pent);
 				if (pEntity)
@@ -326,7 +326,7 @@ int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 						// If this entity can be moved or is global, mark it
 						if (caps & FCAP_ACROSS_TRANSITION)
 							flags |= FENTTABLE_MOVEABLE;
-						if (!FStringNull(pEntity->pev->globalname) && !pEntity->IsDormant())
+						if (!IsStringNull(pEntity->pev->globalname) && !pEntity->IsDormant())
 							flags |= FENTTABLE_GLOBAL;
 						if (flags)
 						{
@@ -375,7 +375,7 @@ void CTriggerEndSection::EndSectionUse(CBaseEntity* pActivator, CBaseEntity* pCa
 
 	SetUse(nullptr);
 
-	if (!FStringNull(pev->message))
+	if (!IsStringNull(pev->message))
 	{
 		g_engfuncs.pfnEndSection(STRING(pev->message));
 	}
@@ -406,7 +406,7 @@ void CTriggerEndSection::EndSectionTouch(CBaseEntity* pOther)
 
 	SetTouch(nullptr);
 
-	if (!FStringNull(pev->message))
+	if (!IsStringNull(pev->message))
 	{
 		g_engfuncs.pfnEndSection(STRING(pev->message));
 	}
@@ -415,7 +415,7 @@ void CTriggerEndSection::EndSectionTouch(CBaseEntity* pOther)
 
 void CTriggerEndSection::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "section"))
+	if (AreStringsEqual(pkvd->szKeyName, "section"))
 	{
 		//		m_iszSectionName = ALLOC_STRING( pkvd->szValue );
 				// Store this in message so we don't have to write save/restore for this ent
@@ -466,22 +466,22 @@ IMPLEMENT_SAVERESTORE(CRevertSaved, CPointEntity);
 
 void CRevertSaved::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "duration"))
+	if (AreStringsEqual(pkvd->szKeyName, "duration"))
 	{
 		SetDuration(atof(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "holdtime"))
+	else if (AreStringsEqual(pkvd->szKeyName, "holdtime"))
 	{
 		SetHoldTime(atof(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "messagetime"))
+	else if (AreStringsEqual(pkvd->szKeyName, "messagetime"))
 	{
 		SetMessageTime(atof(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "loadtime"))
+	else if (AreStringsEqual(pkvd->szKeyName, "loadtime"))
 	{
 		SetLoadTime(atof(pkvd->szValue));
 		pkvd->fHandled = true;

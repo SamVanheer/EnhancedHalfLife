@@ -282,19 +282,19 @@ public:
 	*	@details if the current level is maps/snar.bsp, maps/graphs/snar.nod will be loaded.
 	*	If file cannot be loaded, the node tree will be created and saved to disk.
 	*/
-	bool FLoadGraph(const char* szMapName);
+	bool LoadGraph(const char* szMapName);
 
 	/**
 	*	@brief It's not rocket science. this WILL overwrite existing files.
 	*/
-	bool FSaveGraph(const char* szMapName);
+	bool SaveGraph(const char* szMapName);
 
 	/**
 	*	@brief Takes the modelnames of  all of the brush ents that block connections in the node graph and resolves them into pointers to those entities.
 	*	this is done after loading the graph from disk, whereupon
 	*	the pointers are not valid.
 	*/
-	bool FSetGraphPointers();
+	bool SetGraphPointers();
 	void	CheckNode(Vector vecOrigin, int iNode);
 
 	void    BuildRegionTables();
@@ -353,7 +353,7 @@ public:
 		return Link(node.m_iFirstLink + iLink);
 	}
 
-	inline  int	INodeLink(int iNode, int iLink)
+	inline  int	DestNodeLink(int iNode, int iLink)
 	{
 		return NodeLink(iNode, iLink).m_iDestNode;
 	}

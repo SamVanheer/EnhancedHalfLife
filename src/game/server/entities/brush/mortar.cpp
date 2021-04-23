@@ -75,28 +75,28 @@ IMPLEMENT_SAVERESTORE(CFuncMortarField, CBaseToggle);
 
 void CFuncMortarField::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "m_iszXController"))
+	if (AreStringsEqual(pkvd->szKeyName, "m_iszXController"))
 	{
 		m_iszXController = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "m_iszYController"))
+	else if (AreStringsEqual(pkvd->szKeyName, "m_iszYController"))
 	{
 		m_iszYController = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "m_flSpread"))
+	else if (AreStringsEqual(pkvd->szKeyName, "m_flSpread"))
 	{
 		m_flSpread = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "m_fControl"))
+	else if (AreStringsEqual(pkvd->szKeyName, "m_fControl"))
 	{
 		//TODO: validate input
 		m_fControl = static_cast<MortarControlType>(atoi(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "m_iCount"))
+	else if (AreStringsEqual(pkvd->szKeyName, "m_iCount"))
 	{
 		m_iCount = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -143,7 +143,7 @@ void CFuncMortarField::FieldUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 	{
 		CBaseEntity* pController;
 
-		if (!FStringNull(m_iszXController))
+		if (!IsStringNull(m_iszXController))
 		{
 			pController = UTIL_FindEntityByTargetname(nullptr, STRING(m_iszXController));
 			if (pController != nullptr)
@@ -151,7 +151,7 @@ void CFuncMortarField::FieldUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 				vecStart.x = pev->mins.x + pController->pev->ideal_yaw * (pev->size.x);
 			}
 		}
-		if (!FStringNull(m_iszYController))
+		if (!IsStringNull(m_iszYController))
 		{
 			pController = UTIL_FindEntityByTargetname(nullptr, STRING(m_iszYController));
 			if (pController != nullptr)

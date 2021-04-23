@@ -29,7 +29,7 @@
 #include "defaultai.h"
 #include "soundent.h"
 
-bool CBaseMonster::FHaveSchedule()
+bool CBaseMonster::HasSchedule()
 {
 	if (m_pSchedule == nullptr)
 	{
@@ -46,7 +46,7 @@ void CBaseMonster::ClearSchedule()
 	m_iScheduleIndex = 0;
 }
 
-bool CBaseMonster::FScheduleDone()
+bool CBaseMonster::IsScheduleDone()
 {
 	ASSERT(m_pSchedule != nullptr);
 
@@ -87,7 +87,7 @@ void CBaseMonster::ChangeSchedule(Schedule_t* pNewSchedule)
 	// this is very useful code if you can isolate a test case in a level with a single monster. It will notify
 	// you of every schedule selection the monster makes.
 #if 0
-	if (FClassnameIs(pev, "monster_human_grunt"))
+	if (ClassnameIs(pev, "monster_human_grunt"))
 	{
 		Task_t* pTask = GetTask();
 
@@ -123,7 +123,7 @@ void CBaseMonster::NextScheduledTask()
 	m_iTaskStatus = TaskStatus::New;
 	m_iScheduleIndex++;
 
-	if (FScheduleDone())
+	if (IsScheduleDone())
 	{
 		// just completed last task in schedule, so make it invalid by clearing it.
 		SetConditions(bits_COND_SCHEDULE_DONE);
@@ -131,7 +131,7 @@ void CBaseMonster::NextScheduledTask()
 	}
 }
 
-int CBaseMonster::IScheduleFlags()
+int CBaseMonster::ScheduleFlags()
 {
 	if (!m_pSchedule)
 	{
@@ -142,7 +142,7 @@ int CBaseMonster::IScheduleFlags()
 	return m_afConditions & m_pSchedule->iInterruptMask;
 }
 
-bool CBaseMonster::FScheduleValid()
+bool CBaseMonster::IsScheduleValid()
 {
 	if (m_pSchedule == nullptr)
 	{
@@ -185,7 +185,7 @@ void CBaseMonster::MaintainSchedule()
 		}
 
 		// validate existing schedule 
-		if (!FScheduleValid() || m_MonsterState != m_IdealMonsterState)
+		if (!IsScheduleValid() || m_MonsterState != m_IdealMonsterState)
 		{
 			// if we come into this block of code, the schedule is going to have to be changed.
 			// if the previous schedule was interrupted by a condition, GetIdealState will be 
@@ -339,7 +339,7 @@ void CBaseMonster::RunTask(Task_t* pTask)
 	}
 	case TASK_WAIT_PVS:
 	{
-		if (!FNullEnt(FIND_CLIENT_IN_PVS(edict())))
+		if (!IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
 		{
 			TaskComplete();
 		}
@@ -384,7 +384,7 @@ void CBaseMonster::RunTask(Task_t* pTask)
 			{
 				m_vecMoveGoal = m_hTargetEnt->pev->origin;
 				distance = (m_vecMoveGoal - pev->origin).Length2D();
-				FRefreshRoute();
+				RefreshRoute();
 			}
 
 			// Set the appropriate activity based on an overlapping range
@@ -509,7 +509,7 @@ void CBaseMonster::RunTask(Task_t* pTask)
 void CBaseMonster::SetTurnActivity()
 {
 	float flYD;
-	flYD = FlYawDiff();
+	flYD = YawDiff();
 
 	if (flYD <= -45 && LookupActivity(ACT_TURN_RIGHT) != ACTIVITY_NOT_AVAILABLE)
 	{// big right turn
@@ -741,7 +741,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	{
 		CSound* pBestSound;
 
-		pBestSound = PBestSound();
+		pBestSound = BestSound();
 
 		ASSERT(pBestSound != nullptr);
 		/*
@@ -800,7 +800,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_FACE_ROUTE:
 	{
-		if (FRouteClear())
+		if (IsRouteClear())
 		{
 			ALERT(at_aiconsole, "No route to face!\n");
 			TaskFail();
@@ -1045,7 +1045,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	{
 		CSound* pSound;
 
-		pSound = PBestSound();
+		pSound = BestSound();
 
 		if (pSound && MoveToLocation(m_movementActivity, 2, pSound->m_vecOrigin))
 		{
@@ -1063,7 +1063,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	{
 		CSound* pScent;
 
-		pScent = PBestScent();
+		pScent = BestScent();
 
 		if (pScent && MoveToLocation(m_movementActivity, 2, pScent->m_vecOrigin))
 		{
@@ -1137,7 +1137,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 
 	case TASK_WAIT_FOR_MOVEMENT:
 	{
-		if (FRouteClear())
+		if (IsRouteClear())
 		{
 			TaskComplete();
 		}
@@ -1203,10 +1203,10 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_WAIT_FOR_SCRIPT:
 	{
-		if (!FStringNull(m_pCine->m_iszIdle))
+		if (!IsStringNull(m_pCine->m_iszIdle))
 		{
 			m_pCine->StartSequence((CBaseMonster*)this, m_pCine->m_iszIdle, false);
-			if (FStrEq(STRING(m_pCine->m_iszIdle), STRING(m_pCine->m_iszPlay)))
+			if (AreStringsEqual(STRING(m_pCine->m_iszIdle), STRING(m_pCine->m_iszPlay)))
 			{
 				pev->framerate = 0;
 			}
@@ -1310,7 +1310,7 @@ Schedule_t* CBaseMonster::GetSchedule()
 		{
 			return GetScheduleOfType(SCHED_ALERT_FACE);
 		}
-		else if (FRouteClear())
+		else if (IsRouteClear())
 		{
 			// no valid route!
 			return GetScheduleOfType(SCHED_IDLE_STAND);
@@ -1331,7 +1331,7 @@ Schedule_t* CBaseMonster::GetSchedule()
 
 		if (HasConditions(bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE))
 		{
-			if (fabs(FlYawDiff()) < (1.0 - m_flFieldOfView) * 60) // roughly in the correct direction
+			if (fabs(YawDiff()) < (1.0 - m_flFieldOfView) * 60) // roughly in the correct direction
 			{
 				return GetScheduleOfType(SCHED_TAKE_COVER_FROM_ORIGIN);
 			}

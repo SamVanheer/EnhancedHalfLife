@@ -251,7 +251,7 @@ int CSquadMonster::SquadRecruit(int searchRadius, int maxMembers)
 
 	CBaseEntity* pEntity = nullptr;
 
-	if (!FStringNull(pev->netname))
+	if (!IsStringNull(pev->netname))
 	{
 		// I have a netname, so unconditionally recruit everyone else with that name.
 		pEntity = UTIL_FindEntityByString(pEntity, "netname", STRING(pev->netname));
@@ -283,8 +283,8 @@ int CSquadMonster::SquadRecruit(int searchRadius, int maxMembers)
 			{
 				// Can we recruit this guy?
 				if (!pRecruit->InSquad() && pRecruit->Classify() == iMyClass &&
-					((iMyClass != CLASS_ALIEN_MONSTER) || FStrEq(STRING(pev->classname), STRING(pRecruit->pev->classname))) &&
-					FStringNull(pRecruit->pev->netname))
+					((iMyClass != CLASS_ALIEN_MONSTER) || AreStringsEqual(STRING(pev->classname), STRING(pRecruit->pev->classname))) &&
+					IsStringNull(pRecruit->pev->netname))
 				{
 					TraceResult tr;
 					UTIL_TraceLine(pev->origin + pev->view_ofs, pRecruit->pev->origin + pev->view_ofs, ignore_monsters, pRecruit->edict(), &tr);// try to hit recruit with a traceline.
@@ -337,7 +337,7 @@ void CSquadMonster::StartMonster()
 
 	if ((m_afCapability & bits_CAP_SQUAD) && !InSquad())
 	{
-		if (!FStringNull(pev->netname))
+		if (!IsStringNull(pev->netname))
 		{
 			// if I have a groupname, I can only recruit if I'm flagged as leader
 			if (!(pev->spawnflags & SF_SQUADMONSTER_LEADER))
@@ -354,7 +354,7 @@ void CSquadMonster::StartMonster()
 			ALERT(at_aiconsole, "Squad of %d %s formed\n", iSquadSize, STRING(pev->classname));
 		}
 
-		if (IsLeader() && FClassnameIs(pev, "monster_human_grunt"))
+		if (IsLeader() && ClassnameIs(pev, "monster_human_grunt"))
 		{
 			SetBodygroup(1, 1); // UNDONE: truly ugly hack
 			pev->skin = 0;
@@ -430,7 +430,7 @@ NPCState CSquadMonster::GetIdealState()
 {
 	int	iConditions;
 
-	iConditions = IScheduleFlags();
+	iConditions = ScheduleFlags();
 
 	// If no schedule conditions, the new ideal state is probably the reason we're in here.
 	switch (m_MonsterState)
@@ -447,7 +447,7 @@ NPCState CSquadMonster::GetIdealState()
 	return CBaseMonster::GetIdealState();
 }
 
-bool CSquadMonster::FValidateCover(const Vector& vecCoverLocation)
+bool CSquadMonster::ValidateCover(const Vector& vecCoverLocation)
 {
 	if (!InSquad())
 	{

@@ -597,7 +597,7 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 	// Don't go firing anything if we have died or are spectating
 	// Or if we don't have a weapon model deployed
 	if ((player.pev->deadflag != (DEAD_DISCARDBODY + 1)) &&
-		!CL_IsDead() && !FStringNull(player.pev->viewmodel) && !g_iUser1)
+		!CL_IsDead() && !IsStringNull(player.pev->viewmodel) && !g_iUser1)
 	{
 		if (player.m_flNextAttack <= 0)
 		{

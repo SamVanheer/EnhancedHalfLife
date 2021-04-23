@@ -311,12 +311,12 @@ CTentacle::CTentacle()
 
 void CTentacle::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "sweeparc"))
+	if (AreStringsEqual(pkvd->szKeyName, "sweeparc"))
 	{
 		m_flMaxYaw = atof(pkvd->szValue) / 2.0;
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "sound"))
+	else if (AreStringsEqual(pkvd->szKeyName, "sound"))
 	{
 		m_iTapSound = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -455,7 +455,7 @@ void CTentacle::Cycle()
 
 	// Listen will set this if there's something in my sound list
 	if (HasConditions(bits_COND_HEAR_SOUND))
-		pSound = PBestSound();
+		pSound = BestSound();
 	else
 		pSound = nullptr;
 

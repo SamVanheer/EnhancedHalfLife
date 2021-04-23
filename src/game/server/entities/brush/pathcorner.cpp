@@ -46,7 +46,7 @@ IMPLEMENT_SAVERESTORE(CPathCorner, CPointEntity);
 
 void CPathCorner::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "wait"))
+	if (AreStringsEqual(pkvd->szKeyName, "wait"))
 	{
 		m_flWait = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -57,7 +57,7 @@ void CPathCorner::KeyValue(KeyValueData* pkvd)
 
 void CPathCorner::Spawn()
 {
-	ASSERTSZ(!FStringNull(pev->targetname), "path_corner without a targetname");
+	ASSERTSZ(!IsStringNull(pev->targetname), "path_corner without a targetname");
 }
 
 #if 0
@@ -65,7 +65,7 @@ void CPathCorner::Touch(CBaseEntity* pOther)
 {
 	entvars_t* pevToucher = pOther->pev;
 
-	if (FBitSet(pevToucher->flags, FL_MONSTER))
+	if (IsBitSet(pevToucher->flags, FL_MONSTER))
 	{// monsters don't navigate path corners based on touch anymore
 		return;
 	}
@@ -77,7 +77,7 @@ void CPathCorner::Touch(CBaseEntity* pOther)
 	}
 
 	// If OTHER has an enemy, this touch is incidental, ignore
-	if (!FNullEnt(pevToucher->enemy))
+	if (!IsNullEnt(pevToucher->enemy))
 	{
 		return;		// fighting, not following a path
 	}
@@ -89,7 +89,7 @@ void CPathCorner::Touch(CBaseEntity* pOther)
 	*/
 
 	// Find the next "stop" on the path, make it the goal of the "toucher".
-	if (FStringNull(pev->target))
+	if (IsStringNull(pev->target))
 	{
 		ALERT(at_warning, "PathCornerTouch: no next stop specified");
 	}
@@ -122,7 +122,7 @@ LINK_ENTITY_TO_CLASS(path_track, CPathTrack);
 
 void CPathTrack::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "altpath"))
+	if (AreStringsEqual(pkvd->szKeyName, "altpath"))
 	{
 		m_altName = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -138,7 +138,7 @@ void CPathTrack::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 	// Use toggles between two paths
 	if (m_paltpath)
 	{
-		on = !FBitSet(pev->spawnflags, SF_PATH_ALTERNATE);
+		on = !IsBitSet(pev->spawnflags, SF_PATH_ALTERNATE);
 		if (ShouldToggle(useType, on))
 		{
 			if (on)
@@ -149,7 +149,7 @@ void CPathTrack::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 	}
 	else	// Use toggles between enabled/disabled
 	{
-		on = !FBitSet(pev->spawnflags, SF_PATH_DISABLED);
+		on = !IsBitSet(pev->spawnflags, SF_PATH_DISABLED);
 
 		if (ShouldToggle(useType, on))
 		{
@@ -165,10 +165,10 @@ void CPathTrack::Link()
 {
 	edict_t* pentTarget;
 
-	if (!FStringNull(pev->target))
+	if (!IsStringNull(pev->target))
 	{
 		pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target));
-		if (!FNullEnt(pentTarget))
+		if (!IsNullEnt(pentTarget))
 		{
 			m_pnext = CPathTrack::Instance(pentTarget);
 
@@ -182,10 +182,10 @@ void CPathTrack::Link()
 	}
 
 	// Find "alternate" path
-	if (!FStringNull(m_altName))
+	if (!IsStringNull(m_altName))
 	{
 		pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_altName));
-		if (!FNullEnt(pentTarget))
+		if (!IsNullEnt(pentTarget))
 		{
 			m_paltpath = CPathTrack::Instance(pentTarget);
 
@@ -213,7 +213,7 @@ void CPathTrack::Spawn()
 
 void CPathTrack::Activate()
 {
-	if (!FStringNull(pev->targetname))		// Link to next, and back-link
+	if (!IsStringNull(pev->targetname))		// Link to next, and back-link
 		Link();
 }
 
@@ -222,7 +222,7 @@ CPathTrack* CPathTrack::ValidPath(CPathTrack* ppath, int testFlag)
 	if (!ppath)
 		return nullptr;
 
-	if (testFlag && FBitSet(ppath->pev->spawnflags, SF_PATH_DISABLED))
+	if (testFlag && IsBitSet(ppath->pev->spawnflags, SF_PATH_DISABLED))
 		return nullptr;
 
 	return ppath;
@@ -240,7 +240,7 @@ void CPathTrack::Project(CPathTrack* pstart, CPathTrack* pend, Vector* origin, f
 
 CPathTrack* CPathTrack::GetNext()
 {
-	if (m_paltpath && FBitSet(pev->spawnflags, SF_PATH_ALTERNATE) && !FBitSet(pev->spawnflags, SF_PATH_ALTREVERSE))
+	if (m_paltpath && IsBitSet(pev->spawnflags, SF_PATH_ALTERNATE) && !IsBitSet(pev->spawnflags, SF_PATH_ALTREVERSE))
 		return m_paltpath;
 
 	return m_pnext;
@@ -248,7 +248,7 @@ CPathTrack* CPathTrack::GetNext()
 
 CPathTrack* CPathTrack::GetPrevious()
 {
-	if (m_paltpath && FBitSet(pev->spawnflags, SF_PATH_ALTERNATE) && FBitSet(pev->spawnflags, SF_PATH_ALTREVERSE))
+	if (m_paltpath && IsBitSet(pev->spawnflags, SF_PATH_ALTERNATE) && IsBitSet(pev->spawnflags, SF_PATH_ALTREVERSE))
 		return m_paltpath;
 
 	return m_pprevious;
@@ -257,7 +257,7 @@ CPathTrack* CPathTrack::GetPrevious()
 void CPathTrack::SetPrevious(CPathTrack* pprev)
 {
 	// Only set previous if this isn't my alternate path
-	if (pprev && !FStrEq(STRING(pprev->pev->targetname), STRING(m_altName)))
+	if (pprev && !AreStringsEqual(STRING(pprev->pev->targetname), STRING(m_altName)))
 		m_pprevious = pprev;
 }
 
@@ -383,7 +383,7 @@ CPathTrack* CPathTrack::Nearest(Vector origin)
 
 CPathTrack* CPathTrack::Instance(edict_t* pent)
 {
-	if (FClassnameIs(pent, "path_track"))
+	if (ClassnameIs(pent, "path_track"))
 		return (CPathTrack*)GET_PRIVATE(pent);
 	return nullptr;
 }
@@ -394,7 +394,7 @@ void CPathTrack::Sparkle()
 {
 
 	pev->nextthink = gpGlobals->time + 0.2;
-	if (FBitSet(pev->spawnflags, SF_PATH_DISABLED))
+	if (IsBitSet(pev->spawnflags, SF_PATH_DISABLED))
 		UTIL_ParticleEffect(pev->origin, Vector(0, 0, 100), 210, 10);
 	else
 		UTIL_ParticleEffect(pev->origin, Vector(0, 0, 100), 84, 10);

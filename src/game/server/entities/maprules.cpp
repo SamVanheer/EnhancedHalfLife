@@ -56,7 +56,7 @@ void CRuleEntity::Spawn()
 
 void CRuleEntity::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "master"))
+	if (AreStringsEqual(pkvd->szKeyName, "master"))
 	{
 		SetMaster(ALLOC_STRING(pkvd->szValue));
 		pkvd->fHandled = true;
@@ -67,7 +67,7 @@ void CRuleEntity::KeyValue(KeyValueData* pkvd)
 
 bool CRuleEntity::CanFireForActivator(CBaseEntity* pActivator)
 {
-	if (!FStringNull(m_iszMaster))
+	if (!IsStringNull(m_iszMaster))
 	{
 		if (UTIL_IsMasterTriggered(m_iszMaster, pActivator))
 			return true;
@@ -148,7 +148,7 @@ void CGameScore::Spawn()
 
 void CGameScore::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "points"))
+	if (AreStringsEqual(pkvd->szKeyName, "points"))
 	{
 		SetPoints(atoi(pkvd->szValue));
 		pkvd->fHandled = true;
@@ -241,27 +241,27 @@ IMPLEMENT_SAVERESTORE(CGameText, CRulePointEntity);
 
 void CGameText::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "channel"))
+	if (AreStringsEqual(pkvd->szKeyName, "channel"))
 	{
 		m_textParms.channel = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "x"))
+	else if (AreStringsEqual(pkvd->szKeyName, "x"))
 	{
 		m_textParms.x = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "y"))
+	else if (AreStringsEqual(pkvd->szKeyName, "y"))
 	{
 		m_textParms.y = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "effect"))
+	else if (AreStringsEqual(pkvd->szKeyName, "effect"))
 	{
 		m_textParms.effect = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "color"))
+	else if (AreStringsEqual(pkvd->szKeyName, "color"))
 	{
 		const auto color = UTIL_StringToIntArray<4>(pkvd->szValue);
 		m_textParms.r1 = color[0];
@@ -270,7 +270,7 @@ void CGameText::KeyValue(KeyValueData* pkvd)
 		m_textParms.a1 = color[3];
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "color2"))
+	else if (AreStringsEqual(pkvd->szKeyName, "color2"))
 	{
 		const auto color = UTIL_StringToIntArray<4>(pkvd->szValue);
 		m_textParms.r2 = color[0];
@@ -279,22 +279,22 @@ void CGameText::KeyValue(KeyValueData* pkvd)
 		m_textParms.a2 = color[3];
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "fadein"))
+	else if (AreStringsEqual(pkvd->szKeyName, "fadein"))
 	{
 		m_textParms.fadeinTime = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "fadeout"))
+	else if (AreStringsEqual(pkvd->szKeyName, "fadeout"))
 	{
 		m_textParms.fadeoutTime = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "holdtime"))
+	else if (AreStringsEqual(pkvd->szKeyName, "holdtime"))
 	{
 		m_textParms.holdTime = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "fxtime"))
+	else if (AreStringsEqual(pkvd->szKeyName, "fxtime"))
 	{
 		m_textParms.fxTime = atof(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -308,7 +308,7 @@ void CGameText::Precache()
 	CRulePointEntity::Precache();
 
 	//Re-allocate the message to handle escape characters
-	if (!FStringNull(pev->message))
+	if (!IsStringNull(pev->message))
 	{
 		pev->message = ALLOC_ESCAPED_STRING(STRING(pev->message));
 	}
@@ -372,12 +372,12 @@ LINK_ENTITY_TO_CLASS(game_team_master, CGameTeamMaster);
 
 void CGameTeamMaster::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "teamindex"))
+	if (AreStringsEqual(pkvd->szKeyName, "teamindex"))
 	{
 		m_teamIndex = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "triggerstate"))
+	else if (AreStringsEqual(pkvd->szKeyName, "triggerstate"))
 	{
 		triggerType = UTIL_TriggerStateToTriggerType(static_cast<TriggerState>(atoi(pkvd->szValue)));
 		pkvd->fHandled = true;
@@ -515,22 +515,22 @@ IMPLEMENT_SAVERESTORE(CGamePlayerZone, CRuleBrushEntity);
 
 void CGamePlayerZone::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "intarget"))
+	if (AreStringsEqual(pkvd->szKeyName, "intarget"))
 	{
 		m_iszInTarget = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "outtarget"))
+	else if (AreStringsEqual(pkvd->szKeyName, "outtarget"))
 	{
 		m_iszOutTarget = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "incount"))
+	else if (AreStringsEqual(pkvd->szKeyName, "incount"))
 	{
 		m_iszInCount = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "outcount"))
+	else if (AreStringsEqual(pkvd->szKeyName, "outcount"))
 	{
 		m_iszOutCount = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -568,7 +568,7 @@ void CGamePlayerZone::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYP
 			if (trace.fStartSolid)
 			{
 				playersInCount++;
-				if (!FStringNull(m_iszInTarget))
+				if (!IsStringNull(m_iszInTarget))
 				{
 					FireTargets(STRING(m_iszInTarget), pPlayer, pActivator, useType, value);
 				}
@@ -576,7 +576,7 @@ void CGamePlayerZone::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYP
 			else
 			{
 				playersOutCount++;
-				if (!FStringNull(m_iszOutTarget))
+				if (!IsStringNull(m_iszOutTarget))
 				{
 					FireTargets(STRING(m_iszOutTarget), pPlayer, pActivator, useType, value);
 				}
@@ -584,12 +584,12 @@ void CGamePlayerZone::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYP
 		}
 	}
 
-	if (!FStringNull(m_iszInCount))
+	if (!IsStringNull(m_iszInCount))
 	{
 		FireTargets(STRING(m_iszInCount), pActivator, this, USE_SET, playersInCount);
 	}
 
-	if (!FStringNull(m_iszOutCount))
+	if (!IsStringNull(m_iszOutCount))
 	{
 		FireTargets(STRING(m_iszOutCount), pActivator, this, USE_SET, playersOutCount);
 	}
@@ -777,7 +777,7 @@ void CGamePlayerEquip::KeyValue(KeyValueData* pkvd)
 	{
 		for (int i = 0; i < MAX_EQUIP; i++)
 		{
-			if (FStringNull(m_weaponNames[i]))
+			if (IsStringNull(m_weaponNames[i]))
 			{
 				char tmp[128];
 
@@ -819,7 +819,7 @@ void CGamePlayerEquip::EquipPlayer(CBaseEntity* pEntity)
 
 	for (int i = 0; i < MAX_EQUIP; i++)
 	{
-		if (FStringNull(m_weaponNames[i]))
+		if (IsStringNull(m_weaponNames[i]))
 			break;
 		for (int j = 0; j < m_weaponCount[i]; j++)
 		{
@@ -867,7 +867,7 @@ const char* CGamePlayerTeam::TargetTeamName(const char* pszTargetName)
 
 	while ((pTeamEntity = UTIL_FindEntityByTargetname(pTeamEntity, pszTargetName)) != nullptr)
 	{
-		if (FClassnameIs(pTeamEntity->pev, "game_team_master"))
+		if (ClassnameIs(pTeamEntity->pev, "game_team_master"))
 			return pTeamEntity->TeamID();
 	}
 

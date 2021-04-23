@@ -87,7 +87,7 @@ public:
 	Vector DoProbe(const Vector& Probe);
 
 	float VectorToPitch(const Vector& vec);
-	float FlPitchDiff();
+	float PitchDiff();
 	float ChangePitch(int speed);
 
 	Vector m_SaveVelocity;
@@ -387,7 +387,7 @@ void CIchthyosaur::HandleAnimEvent(AnimationEvent& event)
 	case ICHTHYOSAUR_AE_SHAKE_RIGHT:
 	case ICHTHYOSAUR_AE_SHAKE_LEFT:
 	{
-		if (m_hEnemy != nullptr && FVisible(m_hEnemy))
+		if (m_hEnemy != nullptr && IsVisible(m_hEnemy))
 		{
 			CBaseEntity* pHurt = m_hEnemy;
 
@@ -579,7 +579,7 @@ void CIchthyosaur::RunTask(Task_t* pTask)
 		{
 			TaskComplete();
 		}
-		else if (FVisible(m_hEnemy))
+		else if (IsVisible(m_hEnemy))
 		{
 			Vector vecFrom = m_hEnemy->EyePosition();
 
@@ -604,7 +604,7 @@ void CIchthyosaur::RunTask(Task_t* pTask)
 
 			// ALERT( at_console, "m_SaveVelocity %.2f %.2f %.2f\n", m_SaveVelocity.x, m_SaveVelocity.y, m_SaveVelocity.z );
 
-			if (HasConditions(bits_COND_ENEMY_FACING_ME) && m_hEnemy->FVisible(this))
+			if (HasConditions(bits_COND_ENEMY_FACING_ME) && m_hEnemy->IsVisible(this))
 			{
 				m_flNextAlert -= 0.1;
 
@@ -707,7 +707,7 @@ void CIchthyosaur::Move(float flInterval)
 	CFlyingMonster::Move(flInterval);
 }
 
-float CIchthyosaur::FlPitchDiff()
+float CIchthyosaur::PitchDiff()
 {
 	float	flPitchDiff;
 	float	flCurrentPitch;
@@ -738,7 +738,7 @@ float CIchthyosaur::ChangePitch(int speed)
 {
 	if (pev->movetype == MOVETYPE_FLY)
 	{
-		float diff = FlPitchDiff();
+		float diff = PitchDiff();
 		float target = 0;
 		if (m_IdealActivity != GetStoppedActivity())
 		{
@@ -771,7 +771,7 @@ float CIchthyosaur::ChangeYaw(int speed)
 {
 	if (pev->movetype == MOVETYPE_FLY)
 	{
-		float diff = FlYawDiff();
+		float diff = YawDiff();
 		float target = 0;
 
 		if (m_IdealActivity != GetStoppedActivity())
@@ -855,7 +855,7 @@ void CIchthyosaur::Swim()
 	Vector Angles;
 	Vector Forward, Right, Up;
 
-	if (FBitSet(pev->flags, FL_ONGROUND))
+	if (IsBitSet(pev->flags, FL_ONGROUND))
 	{
 		pev->angles.x = 0;
 		pev->angles.y += RANDOM_FLOAT(-45, 45);

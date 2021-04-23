@@ -88,7 +88,7 @@ void CHornet::Spawn()
 	if (!pSoundEnt)
 		pSoundEnt = edict();
 
-	if (!FNullEnt(pev->owner) && (pev->owner->v.flags & FL_CLIENT))
+	if (!IsNullEnt(pev->owner) && (pev->owner->v.flags & FL_CLIENT))
 	{
 		pev->dmg = gSkillData.plrDmgHornet;
 	}
@@ -122,14 +122,14 @@ void CHornet::Precache()
 	iHornetTrail = PRECACHE_MODEL("sprites/laserbeam.spr");
 }
 
-int CHornet::IRelationship(CBaseEntity* pTarget)
+int CHornet::GetRelationship(CBaseEntity* pTarget)
 {
 	if (pTarget->pev->modelindex == pev->modelindex)
 	{
 		return R_NO;
 	}
 
-	return CBaseMonster::IRelationship(pTarget);
+	return CBaseMonster::GetRelationship(pTarget);
 }
 
 int CHornet::Classify()
@@ -241,7 +241,7 @@ void CHornet::TrackTarget()
 		m_hEnemy = BestVisibleEnemy();
 	}
 
-	if (m_hEnemy != nullptr && FVisible(m_hEnemy))
+	if (m_hEnemy != nullptr && IsVisible(m_hEnemy))
 	{
 		m_vecEnemyLKP = m_hEnemy->BodyTarget(pev->origin);
 	}
@@ -341,7 +341,7 @@ void CHornet::TrackTouch(CBaseEntity* pOther)
 		return;
 	}
 
-	if (IRelationship(pOther) <= R_NO)
+	if (GetRelationship(pOther) <= R_NO)
 	{
 		// hit something we don't want to hurt, so turn around.
 

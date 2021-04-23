@@ -76,13 +76,13 @@ void UTIL_MoveToOrigin(edict_t* pent, const Vector& vecGoal, float flDist, int i
 *	@brief returns the velocity at which an object should be lobbed from vecspot1 to land near vecspot2.
 *	@return vec3_origin if toss is not feasible.
 */
-Vector VecCheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flGravityAdj = 1.0);
+Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flGravityAdj = 1.0);
 
 /**
 *	@brief returns the velocity vector at which an object should be thrown from vecspot1 to hit vecspot2.
 *	@return vec3_origin if throw is not feasible.
 */
-Vector VecCheckThrow(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj = 1.0);
+Vector CheckThrow(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj = 1.0);
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 
 /**
@@ -92,10 +92,10 @@ void EjectBrass(const Vector& vecOrigin, const Vector& vecVelocity, float rotati
 void ExplodeModel(const Vector& vecOrigin, float speed, int model, int count);
 
 /**
-*	@brief a more accurate ( and slower ) version of FVisible.
+*	@brief a more accurate ( and slower ) version of IsVisible.
 *	!!!UNDONE - make this CBaseMonster?
 */
-bool FBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetOrigin, float flSize = 0.0);
+bool IsBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetOrigin, float flSize = 0.0);
 
 // monster to monster relationship types
 constexpr int R_AL = -2;	// (ALLY) pals. Good alternative to R_NO when applicable.

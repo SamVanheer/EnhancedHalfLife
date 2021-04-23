@@ -224,34 +224,34 @@ LINK_ENTITY_TO_CLASS(monster_miniturret, CMiniTurret);
 
 void CBaseTurret::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "maxsleep"))
+	if (AreStringsEqual(pkvd->szKeyName, "maxsleep"))
 	{
 		m_flMaxWait = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "orientation"))
+	else if (AreStringsEqual(pkvd->szKeyName, "orientation"))
 	{
 		//TODO: validate input
 		m_iOrientation = static_cast<TurretOrientation>(atoi(pkvd->szValue));
 		pkvd->fHandled = true;
 
 	}
-	else if (FStrEq(pkvd->szKeyName, "searchspeed"))
+	else if (AreStringsEqual(pkvd->szKeyName, "searchspeed"))
 	{
 		m_iSearchSpeed = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 
 	}
-	else if (FStrEq(pkvd->szKeyName, "turnrate"))
+	else if (AreStringsEqual(pkvd->szKeyName, "turnrate"))
 	{
 		m_iBaseTurnRate = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "style") ||
-		FStrEq(pkvd->szKeyName, "height") ||
-		FStrEq(pkvd->szKeyName, "value1") ||
-		FStrEq(pkvd->szKeyName, "value2") ||
-		FStrEq(pkvd->szKeyName, "value3"))
+	else if (AreStringsEqual(pkvd->szKeyName, "style") ||
+		AreStringsEqual(pkvd->szKeyName, "height") ||
+		AreStringsEqual(pkvd->szKeyName, "value1") ||
+		AreStringsEqual(pkvd->szKeyName, "value2") ||
+		AreStringsEqual(pkvd->szKeyName, "value3"))
 		pkvd->fHandled = true;
 	else
 		CBaseMonster::KeyValue(pkvd);
@@ -504,7 +504,7 @@ void CBaseTurret::ActiveThink()
 	Vector vecMidEnemy = m_hEnemy->BodyTarget(vecMid);
 
 	// Look for our current enemy
-	int fEnemyVisible = FBoxVisible(pev, m_hEnemy->pev, vecMidEnemy);
+	int fEnemyVisible = IsBoxVisible(pev, m_hEnemy->pev, vecMidEnemy);
 
 	vecDirToEnemy = vecMidEnemy - vecMid;	// calculate dir and dist to enemy
 	float flDistToEnemy = vecDirToEnemy.Length();

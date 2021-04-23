@@ -57,7 +57,7 @@ void ClientDisconnect(edict_t* pEntity)
 		return;
 
 	char text[256] = "";
-	if (!FStringNull(pEntity->v.netname))
+	if (!IsStringNull(pEntity->v.netname))
 		snprintf(text, sizeof(text), "- %s has left the game\n", STRING(pEntity->v.netname));
 	MESSAGE_BEGIN(MSG_ALL, gmsgSayText, nullptr);
 	WRITE_BYTE(ENTINDEX(pEntity));
@@ -243,7 +243,7 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 	// so check it, or it will infinite loop
 
 	client = nullptr;
-	while (((client = (CBasePlayer*)UTIL_FindEntityByClassname(client, "player")) != nullptr) && (!FNullEnt(client->edict())))
+	while (((client = (CBasePlayer*)UTIL_FindEntityByClassname(client, "player")) != nullptr) && (!IsNullEnt(client->edict())))
 	{
 		if (!client->pev)
 			continue;
@@ -325,19 +325,19 @@ void ClientCommand(edict_t* pEntity)
 
 	auto player = GetClassPtr<CBasePlayer>(reinterpret_cast<CBasePlayer*>(&pEntity->v));
 
-	if (FStrEq(pcmd, "say"))
+	if (AreStringsEqual(pcmd, "say"))
 	{
 		Host_Say(pEntity, false);
 	}
-	else if (FStrEq(pcmd, "say_team"))
+	else if (AreStringsEqual(pcmd, "say_team"))
 	{
 		Host_Say(pEntity, true);
 	}
-	else if (FStrEq(pcmd, "fullupdate"))
+	else if (AreStringsEqual(pcmd, "fullupdate"))
 	{
 		player->ForceClientDllUpdate();
 	}
-	else if (FStrEq(pcmd, "give"))
+	else if (AreStringsEqual(pcmd, "give"))
 	{
 		if (g_psv_cheats->value)
 		{
@@ -345,12 +345,12 @@ void ClientCommand(edict_t* pEntity)
 			player->GiveNamedItem(STRING(iszItem));
 		}
 	}
-	else if (FStrEq(pcmd, "drop"))
+	else if (AreStringsEqual(pcmd, "drop"))
 	{
 		// player is dropping an item. 
 		player->DropPlayerItem(CMD_ARGV(1));
 	}
-	else if (FStrEq(pcmd, "fov"))
+	else if (AreStringsEqual(pcmd, "fov"))
 	{
 		if (g_psv_cheats->value && CMD_ARGC() > 1)
 		{
@@ -361,7 +361,7 @@ void ClientCommand(edict_t* pEntity)
 			CLIENT_PRINTF(pEntity, print_console, UTIL_VarArgs("\"fov\" is \"%d\"\n", (int)player->m_iFOV));
 		}
 	}
-	else if (FStrEq(pcmd, "use"))
+	else if (AreStringsEqual(pcmd, "use"))
 	{
 		player->SelectItem(CMD_ARGV(1));
 	}
@@ -369,11 +369,11 @@ void ClientCommand(edict_t* pEntity)
 	{
 		player->SelectItem(pcmd);
 	}
-	else if (FStrEq(pcmd, "lastinv"))
+	else if (AreStringsEqual(pcmd, "lastinv"))
 	{
 		player->SelectLastItem();
 	}
-	else if (FStrEq(pcmd, "spectate"))	// clients wants to become a spectator
+	else if (AreStringsEqual(pcmd, "spectate"))	// clients wants to become a spectator
 	{
 		// always allow proxies to become a spectator
 		if ((pev->flags & FL_PROXY) || allow_spectators.value)
@@ -383,22 +383,22 @@ void ClientCommand(edict_t* pEntity)
 
 			// notify other clients of player switching to spectator mode
 			UTIL_ClientPrintAll(HUD_PRINTNOTIFY, UTIL_VarArgs("%s switched to spectator mode\n",
-				(!FStringNull(pev->netname) && STRING(pev->netname)[0] != 0) ? STRING(pev->netname) : "unconnected"));
+				(!IsStringNull(pev->netname) && STRING(pev->netname)[0] != 0) ? STRING(pev->netname) : "unconnected"));
 		}
 		else
 			ClientPrint(pev, HUD_PRINTCONSOLE, "Spectator mode is disabled.\n");
 
 	}
-	else if (FStrEq(pcmd, "specmode"))	// new spectator mode
+	else if (AreStringsEqual(pcmd, "specmode"))	// new spectator mode
 	{
 		if (player->IsObserver())
 			player->Observer_SetMode(atoi(CMD_ARGV(1)));
 	}
-	else if (FStrEq(pcmd, "closemenus"))
+	else if (AreStringsEqual(pcmd, "closemenus"))
 	{
 		// just ignore it
 	}
-	else if (FStrEq(pcmd, "follownext"))	// follow next player
+	else if (AreStringsEqual(pcmd, "follownext"))	// follow next player
 	{
 		if (player->IsObserver())
 			player->Observer_FindNextPlayer(atoi(CMD_ARGV(1)) ? true : false);
@@ -428,7 +428,7 @@ void ClientUserInfoChanged(edict_t* pEntity, char* infobuffer)
 		return;
 
 	// msg everyone if someone changes their name,  and it isn't the first time (changing no name to current name)
-	if (!FStringNull(pEntity->v.netname) && STRING(pEntity->v.netname)[0] != 0 && !FStrEq(STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue(infobuffer, "name")))
+	if (!IsStringNull(pEntity->v.netname) && STRING(pEntity->v.netname)[0] != 0 && !AreStringsEqual(STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue(infobuffer, "name")))
 	{
 		char sName[256];
 		char* pName = g_engfuncs.pfnInfoKeyValue(infobuffer, "name");

@@ -97,7 +97,7 @@ CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe)
 
 	UTIL_MakeVectors(pMe->pev->v_angle);
 	UTIL_TraceLine(pMe->pev->origin + pMe->pev->view_ofs, pMe->pev->origin + pMe->pev->view_ofs + gpGlobals->v_forward * WORLD_SIZE, dont_ignore_monsters, pMe->edict(), &tr);
-	if (tr.flFraction != 1.0 && !FNullEnt(tr.pHit))
+	if (tr.flFraction != 1.0 && !IsNullEnt(tr.pHit))
 	{
 		CBaseEntity* pHit = CBaseEntity::Instance(tr.pHit);
 		return pHit;
@@ -422,7 +422,7 @@ CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& ve
 
 	pentEntity = FIND_ENTITY_IN_SPHERE(pentEntity, vecCenter, flRadius);
 
-	if (!FNullEnt(pentEntity))
+	if (!IsNullEnt(pentEntity))
 		return CBaseEntity::Instance(pentEntity);
 	return nullptr;
 }
@@ -439,7 +439,7 @@ CBaseEntity* UTIL_FindEntityByString(CBaseEntity* pStartEntity, const char* szKe
 
 	pentEntity = FIND_ENTITY_BY_STRING(pentEntity, szKeyword, szValue);
 
-	if (!FNullEnt(pentEntity))
+	if (!IsNullEnt(pentEntity))
 		return CBaseEntity::Instance(pentEntity);
 	return nullptr;
 }
@@ -938,11 +938,11 @@ Vector UTIL_GetAimVector(edict_t* pent, float flSpeed)
 
 bool UTIL_IsMasterTriggered(string_t sMaster, CBaseEntity* pActivator)
 {
-	if (!FStringNull(sMaster))
+	if (!IsStringNull(sMaster))
 	{
 		edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(sMaster));
 
-		if (!FNullEnt(pentTarget))
+		if (!IsNullEnt(pentTarget))
 		{
 			CBaseEntity* pMaster = CBaseEntity::Instance(pentTarget);
 			if (pMaster && (pMaster->ObjectCaps() & FCAP_MASTER))
@@ -1318,7 +1318,7 @@ void UTIL_PrecacheOther(const char* szClassname)
 	edict_t* pent;
 
 	pent = CREATE_NAMED_ENTITY(MAKE_STRING(szClassname));
-	if (FNullEnt(pent))
+	if (IsNullEnt(pent))
 	{
 		ALERT(at_console, "NULL Ent in UTIL_PrecacheOther\n");
 		return;

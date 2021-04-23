@@ -57,17 +57,17 @@ IMPLEMENT_SAVERESTORE(CLight, CPointEntity);
 
 void CLight::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "style"))
+	if (AreStringsEqual(pkvd->szKeyName, "style"))
 	{
 		m_iStyle = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "pitch"))
+	else if (AreStringsEqual(pkvd->szKeyName, "pitch"))
 	{
 		pev->angles.x = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "pattern"))
+	else if (AreStringsEqual(pkvd->szKeyName, "pattern"))
 	{
 		m_iszPattern = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -80,7 +80,7 @@ void CLight::KeyValue(KeyValueData* pkvd)
 
 void CLight::Spawn()
 {
-	if (FStringNull(pev->targetname))
+	if (IsStringNull(pev->targetname))
 	{       // inert light
 		REMOVE_ENTITY(ENT(pev));
 		return;
@@ -89,9 +89,9 @@ void CLight::Spawn()
 	if (m_iStyle >= 32)
 	{
 		//		CHANGE_METHOD(ENT(pev), em_use, light_use);
-		if (FBitSet(pev->spawnflags, SF_LIGHT_START_OFF))
+		if (IsBitSet(pev->spawnflags, SF_LIGHT_START_OFF))
 			LIGHT_STYLE(m_iStyle, "a");
-		else if (!FStringNull(m_iszPattern))
+		else if (!IsStringNull(m_iszPattern))
 			LIGHT_STYLE(m_iStyle, STRING(m_iszPattern));
 		else
 			LIGHT_STYLE(m_iStyle, "m");
@@ -102,12 +102,12 @@ void CLight::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType
 {
 	if (m_iStyle >= 32)
 	{
-		if (!ShouldToggle(useType, !FBitSet(pev->spawnflags, SF_LIGHT_START_OFF)))
+		if (!ShouldToggle(useType, !IsBitSet(pev->spawnflags, SF_LIGHT_START_OFF)))
 			return;
 
-		if (FBitSet(pev->spawnflags, SF_LIGHT_START_OFF))
+		if (IsBitSet(pev->spawnflags, SF_LIGHT_START_OFF))
 		{
-			if (!FStringNull(m_iszPattern))
+			if (!IsStringNull(m_iszPattern))
 				LIGHT_STYLE(m_iStyle, STRING(m_iszPattern));
 			else
 				LIGHT_STYLE(m_iStyle, "m");
@@ -135,7 +135,7 @@ LINK_ENTITY_TO_CLASS(light_environment, CEnvLight);
 
 void CEnvLight::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "_light"))
+	if (AreStringsEqual(pkvd->szKeyName, "_light"))
 	{
 		int r, g, b, v, j;
 		char szColor[64];

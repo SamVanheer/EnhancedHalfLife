@@ -76,6 +76,7 @@ inline edict_t* FIND_ENTITY_BY_TARGET(edict_t* entStart, const char* pszName)
 	return FIND_ENTITY_BY_STRING(entStart, "target", pszName);
 }
 
+//TODO: check if this is being used with non-integer types
 // Keeps clutter down a bit, when using a float as a bit-vector
 template<typename T>
 constexpr T& SetBits(T& flBitVector, int bits)
@@ -92,7 +93,7 @@ constexpr T& ClearBits(T& flBitVector, int bits)
 }
 
 template<typename T>
-constexpr bool FBitSet(const T& flBitVector, int bit)
+constexpr bool IsBitSet(const T& flBitVector, int bit)
 {
 	return (((int)flBitVector) & bit) != 0;
 }
@@ -140,12 +141,12 @@ inline void MESSAGE_BEGIN(int msg_dest, int msg_type, const float* pOrigin, entv
 inline entvars_t* INDEXVARS(int iEdictNum) { return VARS(INDEXENT(iEdictNum)); }
 
 // Testing the two types of "entity" for nullity
-inline bool FNullEnt(const edict_t* pent) { return pent == nullptr || ENTINDEX(pent) == 0; }
-inline bool FNullEnt(entvars_t* pev) { return pev == nullptr || ENTINDEX(pev) == 0; }
+inline bool IsNullEnt(const edict_t* pent) { return pent == nullptr || ENTINDEX(pent) == 0; }
+inline bool IsNullEnt(entvars_t* pev) { return pev == nullptr || ENTINDEX(pev) == 0; }
 
 // Testing strings for nullity
 constexpr string_t iStringNull = 0;
-inline bool FStringNull(string_t iString) { return iString == iStringNull; }
+inline bool IsStringNull(string_t iString) { return iString == iStringNull; }
 
 // Dot products for view cone checking
 constexpr float VIEW_FIELD_FULL = -1.0;			//!< +-180 degrees
@@ -187,17 +188,17 @@ enum class ToggleState
 };
 
 // Misc useful
-inline bool FStrEq(const char* sz1, const char* sz2)
+inline bool AreStringsEqual(const char* sz1, const char* sz2)
 {
 	return (strcmp(sz1, sz2) == 0);
 }
-inline bool FClassnameIs(edict_t* pent, const char* szClassname)
+inline bool ClassnameIs(edict_t* pent, const char* szClassname)
 {
-	return FStrEq(STRING(VARS(pent)->classname), szClassname);
+	return AreStringsEqual(STRING(VARS(pent)->classname), szClassname);
 }
-inline bool FClassnameIs(entvars_t* pev, const char* szClassname)
+inline bool ClassnameIs(entvars_t* pev, const char* szClassname)
 {
-	return FStrEq(STRING(pev->classname), szClassname);
+	return AreStringsEqual(STRING(pev->classname), szClassname);
 }
 
 // Misc. Prototypes
@@ -367,7 +368,7 @@ void			UTIL_LogPrintf(const char* fmt, ...);
 
 /**
 *	@brief returns the dot product of a line from src to check and vecdir.
-*	@details Sorta like FInViewCone, but for nonmonsters.
+*	@details Sorta like IsInViewCone, but for nonmonsters.
 */
 float UTIL_DotPoints(const Vector& vecSrc, const Vector& vecCheck, const Vector& vecDir);
 
@@ -385,7 +386,7 @@ void SetMovedir(entvars_t* pev);
 /**
 *	@brief calculates origin of a bmodel from absmin/size because all bmodel origins are 0 0 0
 */
-Vector VecBModelOrigin(entvars_t* pevBModel);
+Vector GetBrushModelOrigin(entvars_t* pevBModel);
 
 //
 // How did I ever live without ASSERT?

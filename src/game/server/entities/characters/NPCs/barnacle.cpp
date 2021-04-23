@@ -231,7 +231,7 @@ void CBarnacle::BarnacleThink()
 		// barnacle has no prey right now, so just idle and check to see if anything is touching the tongue.
 
 				// If idle and no nearby client, don't think so often
-		if (FNullEnt(FIND_CLIENT_IN_PVS(edict())))
+		if (IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
 			pev->nextthink = gpGlobals->time + RANDOM_FLOAT(1, 1.5);	// Stagger a bit to keep barnacles from thinking on the same frame
 
 		if (m_fSequenceFinished)
@@ -259,7 +259,7 @@ void CBarnacle::BarnacleThink()
 		if (pTouchEnt != nullptr && m_fTongueExtended)
 		{
 			// tongue is fully extended, and is touching someone.
-			if (pTouchEnt->FBecomeProne())
+			if (pTouchEnt->BecomeProne())
 			{
 				EmitSound(CHAN_WEAPON, "barnacle/bcl_alert2.wav");
 
@@ -393,7 +393,7 @@ CBaseEntity* CBarnacle::TongueTouchEnt(float* pflLength)
 		for (int i = 0; i < count; i++)
 		{
 			// only clients and monsters
-			if (pList[i] != this && IRelationship(pList[i]) > R_NO && pList[i]->pev->deadflag == DEAD_NO)	// this ent is one of our enemies. Barnacle tries to eat it.
+			if (pList[i] != this && GetRelationship(pList[i]) > R_NO && pList[i]->pev->deadflag == DEAD_NO)	// this ent is one of our enemies. Barnacle tries to eat it.
 			{
 				return pList[i];
 			}

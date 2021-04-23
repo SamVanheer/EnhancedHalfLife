@@ -141,7 +141,7 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 		SetThink(&CCrossbowBolt::SUB_Remove);
 		pev->nextthink = gpGlobals->time;// this will get changed below if the bolt is allowed to stick in what it hit.
 
-		if (FClassnameIs(pOther->pev, "worldspawn"))
+		if (ClassnameIs(pOther->pev, "worldspawn"))
 		{
 			// if what we hit is static architecture, can stay around for a while.
 			Vector vecDir = pev->velocity.Normalize();

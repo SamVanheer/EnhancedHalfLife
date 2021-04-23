@@ -49,7 +49,7 @@ bool CHalfLifeRules::IsCoOp()
 	return false;
 }
 
-bool CHalfLifeRules::FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
+bool CHalfLifeRules::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
 {
 	if (!pPlayer->m_pActiveItem)
 	{
@@ -83,7 +83,7 @@ void CHalfLifeRules::ClientDisconnected(edict_t* pClient)
 {
 }
 
-float CHalfLifeRules::FlPlayerFallDamage(CBasePlayer* pPlayer)
+float CHalfLifeRules::PlayerFallDamage(CBasePlayer* pPlayer)
 {
 	// subtract off the speed at which a player is allowed to fall without being hurt,
 	// so damage will be based on speed beyond that, not the entire fall
@@ -104,17 +104,17 @@ void CHalfLifeRules::PlayerThink(CBasePlayer* pPlayer)
 {
 }
 
-bool CHalfLifeRules::FPlayerCanRespawn(CBasePlayer* pPlayer)
+bool CHalfLifeRules::PlayerCanRespawn(CBasePlayer* pPlayer)
 {
 	return true;
 }
 
-float CHalfLifeRules::FlPlayerSpawnTime(CBasePlayer* pPlayer)
+float CHalfLifeRules::PlayerSpawnTime(CBasePlayer* pPlayer)
 {
 	return gpGlobals->time;//now!
 }
 
-int CHalfLifeRules::IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled)
+int CHalfLifeRules::PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled)
 {
 	return 1;
 }
@@ -131,17 +131,17 @@ void CHalfLifeRules::PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWea
 {
 }
 
-float CHalfLifeRules::FlWeaponRespawnTime(CBasePlayerItem* pWeapon)
+float CHalfLifeRules::WeaponRespawnTime(CBasePlayerItem* pWeapon)
 {
 	return -1;
 }
 
-float CHalfLifeRules::FlWeaponTryRespawn(CBasePlayerItem* pWeapon)
+float CHalfLifeRules::WeaponTryRespawn(CBasePlayerItem* pWeapon)
 {
 	return 0;
 }
 
-Vector CHalfLifeRules::VecWeaponRespawnSpot(CBasePlayerItem* pWeapon)
+Vector CHalfLifeRules::WeaponRespawnSpot(CBasePlayerItem* pWeapon)
 {
 	return pWeapon->pev->origin;
 }
@@ -165,12 +165,12 @@ int CHalfLifeRules::ItemShouldRespawn(CItem* pItem)
 	return GR_ITEM_RESPAWN_NO;
 }
 
-float CHalfLifeRules::FlItemRespawnTime(CItem* pItem)
+float CHalfLifeRules::ItemRespawnTime(CItem* pItem)
 {
 	return -1;
 }
 
-Vector CHalfLifeRules::VecItemRespawnSpot(CItem* pItem)
+Vector CHalfLifeRules::ItemRespawnSpot(CItem* pItem)
 {
 	return pItem->pev->origin;
 }
@@ -189,17 +189,17 @@ int CHalfLifeRules::AmmoShouldRespawn(CBasePlayerAmmo* pAmmo)
 	return GR_AMMO_RESPAWN_NO;
 }
 
-float CHalfLifeRules::FlAmmoRespawnTime(CBasePlayerAmmo* pAmmo)
+float CHalfLifeRules::AmmoRespawnTime(CBasePlayerAmmo* pAmmo)
 {
 	return -1;
 }
 
-Vector CHalfLifeRules::VecAmmoRespawnSpot(CBasePlayerAmmo* pAmmo)
+Vector CHalfLifeRules::AmmoRespawnSpot(CBasePlayerAmmo* pAmmo)
 {
 	return pAmmo->pev->origin;
 }
 
-float CHalfLifeRules::FlHealthChargerRechargeTime()
+float CHalfLifeRules::HealthChargerRechargeTime()
 {
 	return 0;// don't recharge
 }
@@ -220,7 +220,7 @@ int CHalfLifeRules::PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTarge
 	return GR_NOTTEAMMATE;
 }
 
-bool CHalfLifeRules::FAllowMonsters()
+bool CHalfLifeRules::AllowMonsters()
 {
 	return true;
 }

@@ -1055,7 +1055,7 @@ Schedule_t* CBaseMonster::GetScheduleOfType(int Type)
 	}
 	case SCHED_IDLE_STAND:
 	{
-		if (RANDOM_LONG(0, 14) == 0 && FCanActiveIdle())
+		if (RANDOM_LONG(0, 14) == 0 && CanActiveIdle())
 		{
 			return &slActiveIdle[0];
 		}

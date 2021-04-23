@@ -107,7 +107,7 @@ public:
 	void Activate() override;
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	int	Classify() override { return CLASS_INSECT; }
-	int IRelationship(CBaseEntity* pTarget) override;
+	int GetRelationship(CBaseEntity* pTarget) override;
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -252,11 +252,11 @@ void CLeech::SwitchLeechState()
 	}
 }
 
-int CLeech::IRelationship(CBaseEntity* pTarget)
+int CLeech::GetRelationship(CBaseEntity* pTarget)
 {
 	if (pTarget->IsPlayer())
 		return R_DL;
-	return CBaseMonster::IRelationship(pTarget);
+	return CBaseMonster::GetRelationship(pTarget);
 }
 
 void CLeech::AttackSound()
@@ -531,7 +531,7 @@ void CLeech::SwimThink()
 	float			targetYaw = 0;
 	CBaseEntity* pTarget;
 
-	if (FNullEnt(FIND_CLIENT_IN_PVS(edict())))
+	if (IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
 	{
 		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(1, 1.5);
 		pev->velocity = vec3_origin;

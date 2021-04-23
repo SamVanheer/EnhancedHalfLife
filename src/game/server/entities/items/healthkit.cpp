@@ -122,15 +122,15 @@ LINK_ENTITY_TO_CLASS(func_healthcharger, CWallHealth);
 
 void CWallHealth::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "style") ||
-		FStrEq(pkvd->szKeyName, "height") ||
-		FStrEq(pkvd->szKeyName, "value1") ||
-		FStrEq(pkvd->szKeyName, "value2") ||
-		FStrEq(pkvd->szKeyName, "value3"))
+	if (AreStringsEqual(pkvd->szKeyName, "style") ||
+		AreStringsEqual(pkvd->szKeyName, "height") ||
+		AreStringsEqual(pkvd->szKeyName, "value1") ||
+		AreStringsEqual(pkvd->szKeyName, "value2") ||
+		AreStringsEqual(pkvd->szKeyName, "value3"))
 	{
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "dmdelay"))
+	else if (AreStringsEqual(pkvd->szKeyName, "dmdelay"))
 	{
 		m_iReactivate = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -236,7 +236,7 @@ void CWallHealth::Off()
 
 	m_iOn = ChargerState::Off;
 
-	if ((!m_iJuice) && ((m_iReactivate = g_pGameRules->FlHealthChargerRechargeTime()) > 0))
+	if ((!m_iJuice) && ((m_iReactivate = g_pGameRules->HealthChargerRechargeTime()) > 0))
 	{
 		pev->nextthink = pev->ltime + m_iReactivate;
 		SetThink(&CWallHealth::Recharge);

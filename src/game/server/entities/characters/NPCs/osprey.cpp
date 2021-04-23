@@ -366,7 +366,7 @@ void COsprey::FlyThink()
 	StudioFrameAdvance();
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	if (m_pGoalEnt == nullptr && !FStringNull(pev->target))// this monster has a target
+	if (m_pGoalEnt == nullptr && !IsStringNull(pev->target))// this monster has a target
 	{
 		m_pGoalEnt = CBaseEntity::Instance(FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target)));
 		UpdateGoal();

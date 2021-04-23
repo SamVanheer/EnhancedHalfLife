@@ -91,7 +91,7 @@ entvars_t* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 
 	pentSearch = nullptr;// start search at the top of the ent list.
 
-	if (FClassnameIs(pevLinkEnt, "func_door") || FClassnameIs(pevLinkEnt, "func_door_rotating"))
+	if (ClassnameIs(pevLinkEnt, "func_door") || ClassnameIs(pevLinkEnt, "func_door_rotating"))
 	{
 
 		///!!!UNDONE - check for TOGGLE or STAY open doors here. If a door is in the way, and is 
@@ -106,7 +106,7 @@ entvars_t* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 		{
 			pentTrigger = FIND_ENTITY_BY_TARGET(pentSearch, STRING(pevLinkEnt->targetname));// find the button or trigger
 
-			if (FNullEnt(pentTrigger))
+			if (IsNullEnt(pentTrigger))
 			{// no trigger found
 
 				// right now this is a problem among auto-open doors, or any door that opens through the use 
@@ -118,12 +118,12 @@ entvars_t* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 			pentSearch = pentTrigger;
 			pevTrigger = VARS(pentTrigger);
 
-			if (FClassnameIs(pevTrigger, "func_button") || FClassnameIs(pevTrigger, "func_rot_button"))
+			if (ClassnameIs(pevTrigger, "func_button") || ClassnameIs(pevTrigger, "func_rot_button"))
 			{// only buttons are handled right now. 
 
 				// trace from the node to the trigger, make sure it's one we can see from the node.
 				// !!!HACKHACK Use bodyqueue here cause there are no ents we really wish to ignore!
-				UTIL_TraceLine(pNode->m_vecOrigin, VecBModelOrigin(pevTrigger), ignore_monsters, g_pBodyQueueHead, &tr);
+				UTIL_TraceLine(pNode->m_vecOrigin, GetBrushModelOrigin(pevTrigger), ignore_monsters, g_pBodyQueueHead, &tr);
 
 
 				if (VARS(tr.pHit) == pevTrigger)
@@ -152,7 +152,7 @@ bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODE
 		return false;
 	}
 
-	if (FNullEnt(pevLinkEnt))
+	if (IsNullEnt(pevLinkEnt))
 	{
 		ALERT(at_aiconsole, "dead path ent!\n");
 		return true;
@@ -160,7 +160,7 @@ bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODE
 	pentWorld = nullptr;
 
 	// func_door
-	if (FClassnameIs(pevLinkEnt, "func_door") || FClassnameIs(pevLinkEnt, "func_door_rotating"))
+	if (ClassnameIs(pevLinkEnt, "func_door") || ClassnameIs(pevLinkEnt, "func_door_rotating"))
 	{// ent is a door.
 
 		pDoor = (CBaseEntity::Instance(pevLinkEnt));
@@ -201,7 +201,7 @@ bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODE
 		}
 	}
 	// func_breakable	
-	else if (FClassnameIs(pevLinkEnt, "func_breakable") && queryType == NODEGRAPH_STATIC)
+	else if (ClassnameIs(pevLinkEnt, "func_breakable") && queryType == NODEGRAPH_STATIC)
 	{
 		return true;
 	}
@@ -257,7 +257,7 @@ int	CGraph::FindNearestLink(const Vector& vecTestPoint, int* piNearestLink, bool
 		{
 			/*
 			!!!This optimization only works when the node graph consists of properly linked pairs.
-			if ( INodeLink ( i, j ) <= i )
+			if ( DestNodeLink ( i, j ) <= i )
 			{
 				// since we're going through the nodes in order, don't check
 				// any connections whose second node is lower in the list
@@ -596,7 +596,7 @@ int CGraph::FindShortestPath(int* piPath, int iStart, int iDest, int iHull, int 
 			for (i = 0; i < pCurrentNode->m_cNumLinks; i++)
 			{// run through all of this node's neighbors
 
-				iVisitNode = INodeLink(iCurrentNode, i);
+				iVisitNode = DestNodeLink(iCurrentNode, i);
 				if ((m_pLinkPool[m_pNodes[iCurrentNode].m_iFirstLink + i].m_afLinkInfo & iHullMask) != iHullMask)
 				{// monster is too large to walk this connection
 					//ALERT ( at_aiconsole, "fat ass %d/%d\n",m_pLinkPool[ m_pNodes[ iCurrentNode ].m_iFirstLink + i ].m_afLinkInfo, iMonsterHull );
@@ -1138,7 +1138,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 				// track of it in the pathfinding code, as well as through save and restore of the node graph. ANY data that is manipulated 
 				// as part of the process of adding a LINKENT to a connection here must also be done in CGraph::SetGraphPointers, where reloaded
 				// graphs are prepared for use.
-				if (tr.pHit == pTraceEnt && !FClassnameIs(tr.pHit, "worldspawn"))
+				if (tr.pHit == pTraceEnt && !ClassnameIs(tr.pHit, "worldspawn"))
 				{
 					// get a pointer
 					pLinkPool[cTotalLinks].m_pLinkEnt = VARS(tr.pHit);
@@ -1149,7 +1149,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 					// set the flag for this ent that indicates that it is attached to the world graph
 					// if this ent is removed from the world, it must also be removed from the connections
 					// that it formerly blocked.
-					if (!FBitSet(VARS(tr.pHit)->flags, FL_GRAPHED))
+					if (!IsBitSet(VARS(tr.pHit)->flags, FL_GRAPHED))
 					{
 						VARS(tr.pHit)->flags += FL_GRAPHED;
 					}
@@ -1164,7 +1164,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 			{
 				file.Printf("%4d", j);
 
-				if (!FNullEnt(pLinkPool[cTotalLinks].m_pLinkEnt))
+				if (!IsNullEnt(pLinkPool[cTotalLinks].m_pLinkEnt))
 				{// record info about the ent in the way, if any.
 					file.Printf("  Entity on connection: %s, name: %s  Model: %s", STRING(VARS(pTraceEnt)->classname), STRING(VARS(pTraceEnt)->targetname), STRING(VARS(tr.pHit)->model));
 				}
@@ -1392,13 +1392,13 @@ void CTestHull::DropDelay()
 
 void CNodeEnt::KeyValue(KeyValueData* pkvd)
 {
-	if (FStrEq(pkvd->szKeyName, "hinttype"))
+	if (AreStringsEqual(pkvd->szKeyName, "hinttype"))
 	{
 		m_sHintType = (short)atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 
-	if (FStrEq(pkvd->szKeyName, "activity"))
+	if (AreStringsEqual(pkvd->szKeyName, "activity"))
 	{
 		m_sHintActivity = (short)atoi(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -1436,7 +1436,7 @@ void CNodeEnt::Spawn()
 	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_sHintType = m_sHintType;
 	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_sHintActivity = m_sHintActivity;
 
-	if (FClassnameIs(pev, "info_node_air"))
+	if (ClassnameIs(pev, "info_node_air"))
 		WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_afNodeInfo = bits_NODE_AIR;
 	else
 		WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_afNodeInfo = 0;
@@ -1669,7 +1669,7 @@ void CTestHull::BuildNodeGraph()
 
 				UTIL_SetOrigin(pev, pSrcNode->m_vecOrigin);// place the hull on the node
 
-				if (!FBitSet(pev->flags, FL_ONGROUND))
+				if (!IsBitSet(pev->flags, FL_ONGROUND))
 				{
 					ALERT(at_aiconsole, "OFFGROUND!\n");
 				}
@@ -1835,11 +1835,11 @@ void CTestHull::BuildNodeGraph()
 		for (j = 0; j < WorldGraph.m_pNodes[i].m_cNumLinks; j++)
 		{
 			int iLink;
-			WorldGraph.HashSearch(WorldGraph.INodeLink(i, j), i, iLink);
+			WorldGraph.HashSearch(WorldGraph.DestNodeLink(i, j), i, iLink);
 			if (iLink < 0)
 			{
 				fPairsValid = false;// unmatched link pair.
-				file.Printf("WARNING: Node %3d does not connect back to Node %3d\n", WorldGraph.INodeLink(i, j), i);
+				file.Printf("WARNING: Node %3d does not connect back to Node %3d\n", WorldGraph.DestNodeLink(i, j), i);
 			}
 		}
 	}
@@ -1887,7 +1887,7 @@ void CTestHull::BuildNodeGraph()
 	WorldGraph.ComputeStaticRoutingTables();
 
 	// save the node graph for this level	
-	WorldGraph.FSaveGraph(STRING(gpGlobals->mapname));
+	WorldGraph.SaveGraph(STRING(gpGlobals->mapname));
 	ALERT(at_console, "Done.\n");
 }
 
@@ -2031,7 +2031,7 @@ void CQueuePriority::Heap_SiftUp()
 	}
 }
 
-bool CGraph::FSetGraphPointers()
+bool CGraph::SetGraphPointers()
 {
 	int	i;
 	edict_t* pentLinkEnt;
@@ -2051,7 +2051,7 @@ bool CGraph::FSetGraphPointers()
 			name[4] = 0;
 			pentLinkEnt = FIND_ENTITY_BY_STRING(nullptr, "model", name);
 
-			if (FNullEnt(pentLinkEnt))
+			if (IsNullEnt(pentLinkEnt))
 			{
 				// the ent isn't around anymore? Either there is a major problem, or it was removed from the world
 				// ( like a func_breakable that's been destroyed or something ). Make sure that LinkEnt is null.
@@ -2062,7 +2062,7 @@ bool CGraph::FSetGraphPointers()
 			{
 				m_pLinkPool[i].m_pLinkEnt = VARS(pentLinkEnt);
 
-				if (!FBitSet(m_pLinkPool[i].m_pLinkEnt->flags, FL_GRAPHED))
+				if (!IsBitSet(m_pLinkPool[i].m_pLinkEnt->flags, FL_GRAPHED))
 				{
 					m_pLinkPool[i].m_pLinkEnt->flags += FL_GRAPHED;
 				}
@@ -2231,7 +2231,7 @@ void CGraph::SortNodes()
 		//
 		for (int j = 0; j < m_pNodes[i].m_cNumLinks; j++)
 		{
-			int iDestNode = INodeLink(i, j);
+			int iDestNode = DestNodeLink(i, j);
 			if (m_pNodes[iDestNode].m_iPreviousNode == UNNUMBERED_NODE)
 			{
 				m_pNodes[iDestNode].m_iPreviousNode = iNodeCnt++;
@@ -2818,7 +2818,7 @@ void CGraph::TestRoutingTables()
 								bool bFound = false;
 								for (int iLink = 0; iLink < m_pNodes[myPath[i]].m_cNumLinks; iLink++)
 								{
-									iVisitNode = INodeLink(myPath[i], iLink);
+									iVisitNode = DestNodeLink(myPath[i], iLink);
 									if (iVisitNode == myPath[i + 1])
 									{
 										flDistance1 += m_pLinkPool[m_pNodes[myPath[i]].m_iFirstLink + iLink].m_flWeight;
@@ -2842,7 +2842,7 @@ void CGraph::TestRoutingTables()
 								bool bFound = false;
 								for (int iLink = 0; iLink < m_pNodes[myPath2[i]].m_cNumLinks; iLink++)
 								{
-									iVisitNode = INodeLink(myPath2[i], iLink);
+									iVisitNode = DestNodeLink(myPath2[i], iLink);
 									if (iVisitNode == myPath2[i + 1])
 									{
 										flDistance2 += m_pLinkPool[m_pNodes[myPath2[i]].m_iFirstLink + iLink].m_flWeight;
@@ -2928,13 +2928,13 @@ void CNodeViewer::Spawn()
 	}
 
 
-	if (FClassnameIs(pev, "node_viewer_fly"))
+	if (ClassnameIs(pev, "node_viewer_fly"))
 	{
 		m_iHull = NODE_FLY_HULL;
 		m_afNodeType = bits_NODE_AIR;
 		m_vecColor = Vector(160, 100, 255);
 	}
-	else if (FClassnameIs(pev, "node_viewer_large"))
+	else if (ClassnameIs(pev, "node_viewer_large"))
 	{
 		m_iHull = NODE_LARGE_HULL;
 		m_afNodeType = bits_NODE_LAND | bits_NODE_WATER;

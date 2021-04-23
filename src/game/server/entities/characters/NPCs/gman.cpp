@@ -32,7 +32,7 @@ public:
 	void SetYawSpeed() override;
 	int  Classify() override;
 	void HandleAnimEvent(AnimationEvent& event) override;
-	int ISoundMask() override;
+	int SoundMask() override;
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -93,7 +93,7 @@ void CGMan::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-int CGMan::ISoundMask()
+int CGMan::SoundMask()
 {
 	return	bits_SOUND_NONE;
 }

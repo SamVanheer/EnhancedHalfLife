@@ -263,7 +263,7 @@ class CWeaponCycler : public CBasePlayerWeapon
 {
 public:
 	void Spawn() override;
-	int iItemSlot() override { return 1; }
+	int ItemSlot() override { return 1; }
 	bool GetItemInfo(ItemInfo* p) override { return false; }
 
 	void PrimaryAttack() override;
@@ -369,7 +369,7 @@ void CWreckage::Spawn()
 	pev->frame = 0;
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	if (!FStringNull(pev->model))
+	if (!IsStringNull(pev->model))
 	{
 		PRECACHE_MODEL(STRING(pev->model));
 		SET_MODEL(ENT(pev), STRING(pev->model));
@@ -381,7 +381,7 @@ void CWreckage::Spawn()
 
 void CWreckage::Precache()
 {
-	if (!FStringNull(pev->model))
+	if (!IsStringNull(pev->model))
 		PRECACHE_MODEL(STRING(pev->model));
 }
 

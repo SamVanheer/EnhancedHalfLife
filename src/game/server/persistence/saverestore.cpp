@@ -710,7 +710,7 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 
 							*((string_t*)pOutputData) = string;
 
-							if (!FStringNull(string) && m_precache)
+							if (!IsStringNull(string) && m_precache)
 							{
 								if (pTest->fieldType == FIELD_MODELNAME)
 									PRECACHE_MODEL(STRING(string));

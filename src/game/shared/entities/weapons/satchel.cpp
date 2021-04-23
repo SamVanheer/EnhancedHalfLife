@@ -335,7 +335,7 @@ void CSatchel::PrimaryAttack()
 
 		while ((pSatchel = UTIL_FindEntityInSphere(pSatchel, m_pPlayer->pev->origin, WORLD_BOUNDARY)) != nullptr)
 		{
-			if (FClassnameIs(pSatchel->pev, "monster_satchel"))
+			if (ClassnameIs(pSatchel->pev, "monster_satchel"))
 			{
 				if (pSatchel->pev->owner == pPlayer)
 				{
@@ -471,7 +471,7 @@ void DeactivateSatchels(CBasePlayer* pOwner)
 
 	pFind = FIND_ENTITY_BY_CLASSNAME(nullptr, "monster_satchel");
 
-	while (!FNullEnt(pFind))
+	while (!IsNullEnt(pFind))
 	{
 		CBaseEntity* pEnt = CBaseEntity::Instance(pFind);
 		CSatchelCharge* pSatchel = (CSatchelCharge*)pEnt;

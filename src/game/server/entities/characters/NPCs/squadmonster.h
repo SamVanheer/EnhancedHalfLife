@@ -156,7 +156,7 @@ public:
 	*	@brief determines whether or not the chosen cover location is a good one to move to.
 	*	(currently based on proximity to others in the squad)
 	*/
-	bool FValidateCover(const Vector& vecCoverLocation) override;
+	bool ValidateCover(const Vector& vecCoverLocation) override;
 
 	NPCState GetIdealState() override;
 	Schedule_t* GetScheduleOfType(int iType) override;

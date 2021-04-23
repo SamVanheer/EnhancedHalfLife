@@ -91,17 +91,17 @@ IMPLEMENT_SAVERESTORE(CMonsterMaker, CBaseMonster);
 void CMonsterMaker::KeyValue(KeyValueData* pkvd)
 {
 
-	if (FStrEq(pkvd->szKeyName, "monstercount"))
+	if (AreStringsEqual(pkvd->szKeyName, "monstercount"))
 	{
 		m_cNumMonsters = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "m_imaxlivechildren"))
+	else if (AreStringsEqual(pkvd->szKeyName, "m_imaxlivechildren"))
 	{
 		m_iMaxLiveChildren = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (FStrEq(pkvd->szKeyName, "monstertype"))
+	else if (AreStringsEqual(pkvd->szKeyName, "monstertype"))
 	{
 		m_iszMonsterClassname = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
@@ -116,7 +116,7 @@ void CMonsterMaker::Spawn()
 
 	m_cLiveChildren = 0;
 	Precache();
-	if (!FStringNull(pev->targetname))
+	if (!IsStringNull(pev->targetname))
 	{
 		if (pev->spawnflags & SF_MONSTERMAKER_CYCLIC)
 		{
@@ -127,7 +127,7 @@ void CMonsterMaker::Spawn()
 			SetUse(&CMonsterMaker::ToggleUse);// so can be turned on/off
 		}
 
-		if (FBitSet(pev->spawnflags, SF_MONSTERMAKER_START_ON))
+		if (IsBitSet(pev->spawnflags, SF_MONSTERMAKER_START_ON))
 		{// start making monsters as soon as monstermaker spawns
 			m_fActive = true;
 			SetThink(&CMonsterMaker::MakerThink);
@@ -198,14 +198,14 @@ void CMonsterMaker::MakeMonster()
 
 	pent = CREATE_NAMED_ENTITY(m_iszMonsterClassname);
 
-	if (FNullEnt(pent))
+	if (IsNullEnt(pent))
 	{
 		ALERT(at_console, "NULL Ent in MonsterMaker!\n");
 		return;
 	}
 
 	// If I have a target, fire!
-	if (!FStringNull(pev->target))
+	if (!IsStringNull(pev->target))
 	{
 		// delay already overloaded for this entity, so can't call SUB_UseTargets()
 		FireTargets(STRING(pev->target), this, this, USE_TOGGLE, 0);
@@ -223,7 +223,7 @@ void CMonsterMaker::MakeMonster()
 	DispatchSpawn(ENT(pevCreate));
 	pevCreate->owner = edict();
 
-	if (!FStringNull(pev->netname))
+	if (!IsStringNull(pev->netname))
 	{
 		// if I have a netname (overloaded), give the child monster that name as a targetname
 		pevCreate->targetname = pev->netname;

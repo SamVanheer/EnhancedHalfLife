@@ -58,8 +58,8 @@ public:
 	int		m_iNext;		//!< index of next sound in this list ( Active or Free )
 	int		m_iNextAudible;	//!< temporary link that monsters use to build a list of audible sounds
 
-	bool	FIsSound();
-	bool	FIsScent();
+	bool	IsSound();
+	bool	IsScent();
 };
 
 /**
@@ -110,12 +110,12 @@ public:
 	/**
 	*	@brief returns the number of sounds in the desired sound list.
 	*/
-	int		ISoundsInList(int iListType);
+	int		SoundsInList(int iListType);
 
 	/**
 	*	@brief moves a sound from the Free list to the Active list returns the index of the alloc'd sound
 	*/
-	int		IAllocSound();
+	int		AllocSound();
 	int		ObjectCaps() override { return FCAP_DONT_SAVE; }
 
 	int		m_iFreeSound;	//!< index of the first sound in the free sound list

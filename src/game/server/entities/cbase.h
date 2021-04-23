@@ -203,7 +203,7 @@ public:
 	virtual bool	IsAlive() { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
 	virtual bool	IsBSPModel() { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
 	virtual bool	ReflectGauss() { return (IsBSPModel() && !pev->takedamage); }
-	virtual bool	HasTarget(string_t targetname) { return FStrEq(STRING(targetname), STRING(pev->targetname)); }
+	virtual bool	HasTarget(string_t targetname) { return AreStringsEqual(STRING(targetname), STRING(pev->targetname)); }
 	virtual bool    IsInWorld();
 	virtual	bool	IsPlayer() { return false; }
 	virtual bool	IsNetClient() { return false; }
@@ -360,7 +360,7 @@ public:
 	*/
 	static CBaseEntity* Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner = nullptr);
 
-	virtual bool FBecomeProne() { return false; }
+	virtual bool BecomeProne() { return false; }
 	edict_t* edict() { return ENT(pev); }
 	int	  entindex() { return ENTINDEX(edict()); }
 
@@ -374,12 +374,12 @@ public:
 	/**
 	*	@brief returns true if a line can be traced from the caller's eyes to the target
 	*/
-	virtual	bool FVisible(CBaseEntity* pEntity);
+	virtual	bool IsVisible(CBaseEntity* pEntity);
 
 	/**
 	*	@brief returns true if a line can be traced from the caller's eyes to the target vector
 	*/
-	virtual	bool FVisible(const Vector& vecOrigin);
+	virtual	bool IsVisible(const Vector& vecOrigin);
 
 	void EmitSound(int channel, const char* fileName, float volume = VOL_NORM, float attenuation = ATTN_NORM, int pitch = PITCH_NORM, int flags = 0);
 
@@ -392,7 +392,7 @@ public:
 	}
 };
 
-inline bool FNullEnt(CBaseEntity* ent) { return (ent == nullptr) || FNullEnt(ent->edict()); }
+inline bool IsNullEnt(CBaseEntity* ent) { return (ent == nullptr) || IsNullEnt(ent->edict()); }
 
 
 // Ugly technique to override base member functions

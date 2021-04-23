@@ -261,7 +261,7 @@ void CSqueakGrenade::HuntThink()
 
 	if (m_hEnemy != nullptr)
 	{
-		if (FVisible(m_hEnemy))
+		if (IsVisible(m_hEnemy))
 		{
 			vecDir = m_hEnemy->EyePosition() - pev->origin;
 			m_vecTarget = vecDir.Normalize();

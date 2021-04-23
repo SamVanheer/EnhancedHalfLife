@@ -332,7 +332,7 @@ void CHeadCrab::LeapTouch(CBaseEntity* pOther)
 	}
 
 	// Don't hit if back on ground
-	if (!FBitSet(pev->flags, FL_ONGROUND))
+	if (!IsBitSet(pev->flags, FL_ONGROUND))
 	{
 		EmitSound(CHAN_WEAPON, RANDOM_SOUND_ARRAY(pBiteSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
 
@@ -373,7 +373,7 @@ void CHeadCrab::StartTask(Task_t* pTask)
 
 bool CHeadCrab::CheckRangeAttack1(float flDot, float flDist)
 {
-	if (FBitSet(pev->flags, FL_ONGROUND) && flDist <= 256 && flDot >= 0.65)
+	if (IsBitSet(pev->flags, FL_ONGROUND) && flDist <= 256 && flDot >= 0.65)
 	{
 		return true;
 	}
@@ -385,7 +385,7 @@ bool CHeadCrab::CheckRangeAttack2(float flDot, float flDist)
 	return false;
 	// BUGBUG: Why is this code here?  There is no ACT_RANGE_ATTACK2 animation.  I've disabled it for now.
 #if 0
-	if (FBitSet(pev->flags, FL_ONGROUND) && flDist > 64 && flDist <= 256 && flDot >= 0.5)
+	if (IsBitSet(pev->flags, FL_ONGROUND) && flDist > 64 && flDist <= 256 && flDot >= 0.5)
 	{
 		return true;
 	}
