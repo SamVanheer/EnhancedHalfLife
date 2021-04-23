@@ -1977,7 +1977,7 @@ bool CBaseMonster::TaskIsRunning()
 
 int CBaseMonster::GetRelationship(CBaseEntity* pTarget)
 {
-	static constexpr int iEnemy[14][14] =
+	static constexpr int iEnemy[CLASS_COUNT][CLASS_COUNT] =
 	{			 //   NONE	 MACH	 PLYR	 HPASS	 HMIL	 AMIL	 APASS	 AMONST	APREY	 APRED	 INSECT	PLRALY	PBWPN	ABWPN
 		/*NONE*/		{ R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO,	R_NO,	R_NO	},
 		/*MACHINE*/		{ R_NO	,R_NO	,R_DL	,R_DL	,R_NO	,R_DL	,R_DL	,R_DL	,R_DL	,R_DL	,R_NO	,R_DL,	R_DL,	R_DL	},
@@ -1995,9 +1995,16 @@ int CBaseMonster::GetRelationship(CBaseEntity* pTarget)
 		/*ABIOWEAPON*/	{ R_NO	,R_NO	,R_DL	,R_DL	,R_DL	,R_AL	,R_NO	,R_DL	,R_DL	,R_NO	,R_NO	,R_DL,	R_DL,	R_NO	}
 	};
 
-	//TODO: ensure that Classify() values are valid values
+	const int myClass = Classify();
+	const int targetClass = pTarget->Classify();
 
-	return iEnemy[Classify()][pTarget->Classify()];
+	if (myClass < 0 || myClass >= CLASS_COUNT
+		|| targetClass < 0 || targetClass >= CLASS_COUNT)
+	{
+		return R_NO;
+	}
+
+	return iEnemy[myClass][targetClass];
 }
 
 bool CBaseMonster::FindCover(Vector vecThreat, Vector vecViewOffset, float flMinDist, float flMaxDist)

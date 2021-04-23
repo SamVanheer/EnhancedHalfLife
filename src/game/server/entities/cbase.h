@@ -98,6 +98,8 @@ constexpr int CLASS_PLAYER_BIOWEAPON = 12;	//!< hornets and snarks.launched by p
 constexpr int CLASS_ALIEN_BIOWEAPON = 13;	//!< hornets and snarks.launched by the alien menace
 constexpr int CLASS_BARNACLE = 99;			//!< special because no one pays attention to it, and it eats a wide cross-section of creatures.
 
+constexpr int CLASS_COUNT = CLASS_ALIEN_BIOWEAPON + 1;
+
 class CBaseEntity;
 class CBaseMonster;
 class CBasePlayerItem;
