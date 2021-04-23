@@ -77,8 +77,6 @@ inline edict_t* FIND_ENTITY_BY_TARGET(edict_t* entStart, const char* pszName)
 	return FIND_ENTITY_BY_STRING(entStart, "target", pszName);
 }
 
-//TODO: check if this is being used with non-integer types
-// Keeps clutter down a bit, when using a float as a bit-vector
 template<typename T>
 constexpr T& SetBits(T& flBitVector, int bits)
 {
