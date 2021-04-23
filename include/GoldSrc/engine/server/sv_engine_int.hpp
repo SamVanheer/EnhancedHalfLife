@@ -15,22 +15,18 @@
 
 #pragma once
 
-//TODO: include progdefs.h
 /**
 *	@file
 * 
 *	Defines entity interface between engine and DLLs.
 *	This header file included by engine files and DLL files.
-*	
-*	Before including this header, DLLs must:
-*		include progdefs.h
-*	This is conveniently done for them in extdll.h
 */
 
 #include "steam/steamtypes.h"
 #include "cvardef.h"
 #include "Sequence.h"
 #include "crc.h"
+#include "progdefs.h"
 
 struct cvar_t;
 struct delta_t;
