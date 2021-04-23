@@ -457,10 +457,8 @@ void CBaseDoor::Precache()
 
 void CBaseDoor::DoorTouch(CBaseEntity* pOther)
 {
-	entvars_t* pevToucher = pOther->pev;
-
 	// Ignore touches by anything but players
-	if (!ClassnameIs(pevToucher, "player"))
+	if (!pOther->IsPlayer())
 		return;
 
 	// If door has master, and it's not ready to trigger, 

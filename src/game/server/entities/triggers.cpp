@@ -866,7 +866,7 @@ void CTriggerCounter::CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, 
 
 	bool fTellActivator =
 		(m_hActivator != nullptr) &&
-		ClassnameIs(m_hActivator->pev, "player") &&
+		m_hActivator->IsPlayer() &&
 		!IsBitSet(pev->spawnflags, SPAWNFLAG_NOMESSAGE);
 	if (m_cTriggersLeft != 0)
 	{

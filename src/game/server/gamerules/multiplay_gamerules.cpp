@@ -578,7 +578,7 @@ void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, 
 	FireTargets("game_playerdie", pVictim, pVictim, USE_TOGGLE, 0);
 	CBasePlayer* peKiller = nullptr;
 	CBaseEntity* ktmp = CBaseEntity::Instance(pKiller);
-	if (ktmp && (ktmp->Classify() == CLASS_PLAYER))
+	if (ktmp && ktmp->IsPlayer())
 		peKiller = (CBasePlayer*)ktmp;
 
 	if (pVictim->pev == pKiller)
@@ -609,7 +609,7 @@ void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, 
 
 	// killers score, if it's a player
 	CBaseEntity* ep = CBaseEntity::Instance(pKiller);
-	if (ep && ep->Classify() == CLASS_PLAYER)
+	if (ep && ep->IsPlayer())
 	{
 		CBasePlayer* PK = (CBasePlayer*)ep;
 

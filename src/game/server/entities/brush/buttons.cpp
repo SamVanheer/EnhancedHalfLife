@@ -580,7 +580,7 @@ CBaseButton::ButtonCode CBaseButton::ButtonResponseToTouch()
 void CBaseButton::ButtonTouch(CBaseEntity* pOther)
 {
 	// Ignore touches by anything but players
-	if (!ClassnameIs(pOther->pev, "player"))
+	if (!pOther->IsPlayer())
 		return;
 
 	m_hActivator = pOther;
