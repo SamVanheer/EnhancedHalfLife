@@ -212,7 +212,6 @@ public:
 	*	@brief Take some damage.
 	*	NOTE: each call to TakeDamage with bitsDamageType set to a time-based damage will cause the damage time countdown to be reset.
 	*	Thus the ongoing effects of poison, radiation etc are implemented with subsequent calls to TakeDamage using DMG_GENERIC.
-	*	TODO: verify that this is actually the case
 	*/
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	void	Killed(entvars_t* pevAttacker, int iGib) override;
