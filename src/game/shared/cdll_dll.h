@@ -150,7 +150,7 @@ constexpr int DMG_WALLPIERCING = 1 << 29;		//!< Blast Damages ents through walls
 constexpr int DMG_CALTROP = 1 << 30;
 constexpr int DMG_HALLUC = 1 << 31;
 
-// TF Healing Additions for TakeHealth
+// TF Healing Additions for GiveHealth
 constexpr int DMG_IGNORE_MAXHEALTH = DMG_IGNITE;
 // TF Redefines since we never use the originals
 constexpr int DMG_NAIL = DMG_SLASH;

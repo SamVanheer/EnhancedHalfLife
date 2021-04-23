@@ -187,7 +187,7 @@ public:
 	*	@brief inflict damage on this entity. bitsDamageType indicates type of damage inflicted, ie: DMG_CRUSH
 	*/
 	virtual bool	TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
-	virtual bool	TakeHealth(float flHealth, int bitsDamageType);
+	virtual bool	GiveHealth(float flHealth, int bitsDamageType);
 	virtual void	Killed(entvars_t* pevAttacker, int iGib);
 	virtual int		BloodColor() { return DONT_BLEED; }
 	virtual void	TraceBleed(float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType);
