@@ -53,7 +53,7 @@ int WeaponsResource::CountAmmo(int iId)
 	return riAmmo[iId];
 }
 
-int WeaponsResource::HasAmmo(WEAPON* p)
+bool WeaponsResource::HasAmmo(WEAPON* p)
 {
 	if (!p)
 		return false;

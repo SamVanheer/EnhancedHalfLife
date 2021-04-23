@@ -91,7 +91,7 @@ public:
 
 	WEAPON* GetNextActivePos(int iSlot, int iSlotPos);
 
-	int HasAmmo(WEAPON* p);
+	bool HasAmmo(WEAPON* p);
 
 	AMMO GetAmmo(int iId) { return iId; }
 
