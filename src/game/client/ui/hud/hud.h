@@ -317,10 +317,18 @@ public:
 
 	void SelectMenuItem(int menu_item);
 
+	bool IsMenuDisplayed() const { return m_fMenuDisplayed; }
+
+private:
+	static constexpr int MAX_MENU_STRING = 512;
+
 	bool m_fMenuDisplayed = false;
 	int m_bitsValidSlots = 0;
 	float m_flShutoffTime = 0;
 	bool m_fWaitingForMore = false;
+
+	char m_szMenuString[MAX_MENU_STRING]{};
+	char m_szPrelocalisedMenuString[MAX_MENU_STRING]{};
 };
 
 class CHudSayText : public CHudBase
@@ -336,8 +344,23 @@ public:
 	friend class CHudSpectator;
 
 private:
+	int ScrollTextUp();
+
+private:
+	static constexpr int MAX_LINES = 5;
+	static constexpr int MAX_CHARS_PER_LINE = 256;  /* it can be less than this, depending on char size */
+	static constexpr int LINE_START = 10;
+
 	cvar_t* m_HUD_saytext = nullptr;
 	cvar_t* m_HUD_saytext_time = nullptr;
+
+	char m_szLineBuffer[MAX_LINES + 1][MAX_CHARS_PER_LINE]{};
+	const Vector* m_pflNameColors[MAX_LINES + 1]{};
+	int m_iNameLengths[MAX_LINES + 1]{};
+	float m_flScrollTime = 0;  // the time at which the lines next scroll up
+
+	int m_Y_START = 0;
+	int m_line_height = 0;
 };
 
 class CHudBattery : public CHudBase

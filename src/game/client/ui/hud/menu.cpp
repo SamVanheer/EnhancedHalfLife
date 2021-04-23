@@ -19,11 +19,6 @@
 
 #include "vgui_TeamFortressViewport.h"
 
-//TODO: move into menu class
-constexpr int MAX_MENU_STRING = 512;
-char g_szMenuString[MAX_MENU_STRING];
-char g_szPrelocalisedMenuString[MAX_MENU_STRING];
-
 bool KB_ConvertString(char* in, char** ppout);
 
 DECLARE_MESSAGE(m_Menu, ShowMenu);
@@ -48,7 +43,7 @@ void CHudMenu::InitHUDData()
 
 void CHudMenu::Reset()
 {
-	g_szPrelocalisedMenuString[0] = 0;
+	m_szPrelocalisedMenuString[0] = 0;
 	m_fWaitingForMore = false;
 }
 
@@ -56,9 +51,6 @@ bool CHudMenu::VidInit()
 {
 	return true;
 }
-
-//TODO: get rid of these globals
-static int menu_r, menu_g, menu_b, menu_x, menu_ralign;
 
 /**
 *	@brief Interprets the given escape token (backslash followed by a letter).
@@ -70,7 +62,7 @@ static int menu_r, menu_g, menu_b, menu_x, menu_ralign;
 *		\r : Red text
 *		\R : Right-align (just for the remainder of the current line)
 */
-static inline const char* ParseEscapeToken(const char* token)
+static inline const char* ParseEscapeToken(const char* token, int& menuR, int& menuG, int& menuB, int& menuX, bool& menuRAlign)
 {
 	if (*token != '\\')
 		return token;
@@ -83,32 +75,32 @@ static inline const char* ParseEscapeToken(const char* token)
 		return token;
 
 	case 'w':
-		menu_r = 255;
-		menu_g = 255;
-		menu_b = 255;
+		menuR = 255;
+		menuG = 255;
+		menuB = 255;
 		break;
 
 	case 'd':
-		menu_r = 100;
-		menu_g = 100;
-		menu_b = 100;
+		menuR = 100;
+		menuG = 100;
+		menuB = 100;
 		break;
 
 	case 'y':
-		menu_r = 255;
-		menu_g = 210;
-		menu_b = 64;
+		menuR = 255;
+		menuG = 210;
+		menuB = 64;
 		break;
 
 	case 'r':
-		menu_r = 210;
-		menu_g = 24;
-		menu_b = 0;
+		menuR = 210;
+		menuG = 24;
+		menuB = 0;
 		break;
 
 	case 'R':
-		menu_x = ScreenWidth / 2;
-		menu_ralign = true;
+		menuX = ScreenWidth / 2;
+		menuRAlign = true;
 		break;
 	}
 
@@ -137,28 +129,28 @@ bool CHudMenu::Draw(float flTime)
 	// count the number of newlines
 	int nlc = 0;
 	int i;
-	for (i = 0; i < MAX_MENU_STRING && g_szMenuString[i] != '\0'; i++)
+	for (i = 0; i < MAX_MENU_STRING && m_szMenuString[i] != '\0'; i++)
 	{
-		if (g_szMenuString[i] == '\n')
+		if (m_szMenuString[i] == '\n')
 			nlc++;
 	}
 
 	// center it
 	int y = (ScreenHeight / 2) - ((nlc / 2) * 12) - 40; // make sure it is above the say text
 
-	menu_r = 255;
-	menu_g = 255;
-	menu_b = 255;
-	menu_x = 20;
-	menu_ralign = false;
+	int menu_r = 255;
+	int menu_g = 255;
+	int menu_b = 255;
+	int menu_x = 20;
+	bool menu_ralign = false;
 
-	const char* sptr = g_szMenuString;
+	const char* sptr = m_szMenuString;
 
 	while (*sptr != '\0')
 	{
 		if (*sptr == '\\')
 		{
-			sptr = ParseEscapeToken(sptr);
+			sptr = ParseEscapeToken(sptr, menu_r, menu_g, menu_b, menu_x, menu_ralign);
 		}
 		else if (*sptr == '\n')
 		{
@@ -226,22 +218,22 @@ bool CHudMenu::MsgFunc_ShowMenu(const char* pszName, int iSize, void* pbuf)
 	{
 		if (!m_fWaitingForMore) // this is the start of a new menu
 		{
-			safe_strcpy(g_szPrelocalisedMenuString, reader.ReadString());
+			safe_strcpy(m_szPrelocalisedMenuString, reader.ReadString());
 		}
 		else
 		{  // append to the current menu string
-			safe_strcat(g_szPrelocalisedMenuString, reader.ReadString());
+			safe_strcat(m_szPrelocalisedMenuString, reader.ReadString());
 		}
 
 		if (!NeedMore)
 		{  // we have the whole string, so we can localise it now
-			safe_strcpy(g_szMenuString, gHUD.m_TextMessage.BufferedLocaliseTextString(g_szPrelocalisedMenuString));
+			safe_strcpy(m_szMenuString, gHUD.m_TextMessage.BufferedLocaliseTextString(m_szPrelocalisedMenuString));
 
 			// Swap in characters
 			char* temp = nullptr;
-			if (KB_ConvertString(g_szMenuString, &temp))
+			if (KB_ConvertString(m_szMenuString, &temp))
 			{
-				safe_strcpy(g_szMenuString, temp);
+				safe_strcpy(m_szMenuString, temp);
 				free(temp);
 			}
 		}
