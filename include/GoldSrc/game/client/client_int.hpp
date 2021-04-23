@@ -30,13 +30,13 @@ struct cldll_func_t
 	int (*pInitFunc)(cl_enginefunc_t*, int);
 
 	/**
-	*	@brief Called whenever the client connects to a server.
-	*	Reinitializes all the hud variables.
+	*	@brief Called when the game initializes and whenever the vid_mode is changed so the HUD can reinitialize itself.
 	*/
 	void (*pHudInitFunc)();
 
 	/**
-	*	@brief Called when the game initializes and whenever the vid_mode is changed so the HUD can reinitialize itself.
+	*	@brief Called whenever the client connects to a server.
+	*	Reinitializes all the hud variables.
 	*/
 	int (*pHudVidInitFunc)();
 
