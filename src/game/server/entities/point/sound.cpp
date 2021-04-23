@@ -873,6 +873,9 @@ bool FEnvSoundInRange(entvars_t* pev, entvars_t* pevTarget, float* pflRange)
 
 void CEnvSound::Think()
 {
+	const float SlowThinkInterval = 0.75f;
+	const float FastThinkInterval = 0.25f;
+
 	// get pointer to client if visible; FIND_CLIENT_IN_PVS will
 	// cycle through visible clients on consecutive calls.
 
@@ -880,7 +883,11 @@ void CEnvSound::Think()
 	CBasePlayer* pPlayer = nullptr;
 
 	if (FNullEnt(pentPlayer))
-		goto env_sound_Think_slow; // no player in pvs of sound entity, slow it down
+	{
+		// no player in pvs of sound entity, slow it down
+		pev->nextthink = gpGlobals->time + SlowThinkInterval;
+		return;
+	}
 
 	pPlayer = GetClassPtr((CBasePlayer*)VARS(pentPlayer));
 	float flRange;
@@ -900,7 +907,8 @@ void CEnvSound::Think()
 
 			if (FEnvSoundInRange(pev, VARS(pentPlayer), &flRange)) {
 				pPlayer->m_flSndRange = flRange;
-				goto env_sound_Think_fast;
+				pev->nextthink = gpGlobals->time + FastThinkInterval;
+				return;
 			}
 			else {
 
@@ -911,14 +919,15 @@ void CEnvSound::Think()
 
 				pPlayer->m_flSndRange = 0;
 				pPlayer->m_flSndRoomtype = 0;
-				goto env_sound_Think_slow;
 			}
 		}
 		else {
 			// entity is affecting player but is out of range,
 			// wait passively for another entity to usurp it...
-			goto env_sound_Think_slow;
 		}
+
+		pev->nextthink = gpGlobals->time + SlowThinkInterval;
+		return;
 	}
 
 	// if we got this far, we're looking at an entity that is contending
@@ -954,13 +963,7 @@ void CEnvSound::Think()
 	// player is in pvs of sound entity, but either not visible or
 	// not in range. do nothing, fall through to think_fast...
 
-env_sound_Think_fast:
-	pev->nextthink = gpGlobals->time + 0.25;
-	return;
-
-env_sound_Think_slow:
-	pev->nextthink = gpGlobals->time + 0.75;
-	return;
+	pev->nextthink = gpGlobals->time + FastThinkInterval;
 }
 
 void CEnvSound::Spawn()

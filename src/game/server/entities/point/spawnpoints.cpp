@@ -62,26 +62,28 @@ bool IsSpawnPointValid(CBaseEntity* pPlayer, CBaseEntity* pSpot)
 	return true;
 }
 
-edict_t* EntSelectSpawnPoint(CBaseEntity* pPlayer)
+/**
+*	@brief Find a spawn point for the player
+*/
+static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 {
 	CBaseEntity* pSpot;
-	edict_t* player;
+	edict_t* player = pPlayer->edict();
 
-	player = pPlayer->edict();
-
+	//TODO: maybe delegate parts of this to gamerules instead of checking manually
 	// choose a info_player_deathmatch point
 	if (g_pGameRules->IsCoOp())
 	{
-		pSpot = UTIL_FindEntityByClassname(g_pLastSpawn, "info_player_coop");
+		pSpot = UTIL_FindEntityByClassname(lastSpawn, "info_player_coop");
 		if (!FNullEnt(pSpot))
-			goto ReturnSpot;
-		pSpot = UTIL_FindEntityByClassname(g_pLastSpawn, "info_player_start");
+			return pSpot;
+		pSpot = UTIL_FindEntityByClassname(lastSpawn, "info_player_start");
 		if (!FNullEnt(pSpot))
-			goto ReturnSpot;
+			return pSpot;
 	}
 	else if (g_pGameRules->IsDeathmatch())
 	{
-		pSpot = g_pLastSpawn;
+		pSpot = lastSpawn;
 		// Randomize the start spot
 		for (int i = RANDOM_LONG(1, 5); i > 0; i--)
 			pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_deathmatch");
@@ -104,7 +106,7 @@ edict_t* EntSelectSpawnPoint(CBaseEntity* pPlayer)
 					}
 
 					// if so, go to pSpot
-					goto ReturnSpot;
+					return pSpot;
 				}
 			}
 			// increment pSpot
@@ -122,7 +124,7 @@ edict_t* EntSelectSpawnPoint(CBaseEntity* pPlayer)
 				if (ent->IsPlayer() && !(ent->edict() == player))
 					ent->TakeDamage(VARS(INDEXENT(0)), VARS(INDEXENT(0)), 300, DMG_GENERIC);
 			}
-			goto ReturnSpot;
+			return pSpot;
 		}
 	}
 
@@ -131,16 +133,22 @@ edict_t* EntSelectSpawnPoint(CBaseEntity* pPlayer)
 	{
 		pSpot = UTIL_FindEntityByClassname(nullptr, "info_player_start");
 		if (!FNullEnt(pSpot))
-			goto ReturnSpot;
+			return pSpot;
 	}
 	else
 	{
 		pSpot = UTIL_FindEntityByTargetname(nullptr, STRING(gpGlobals->startspot));
 		if (!FNullEnt(pSpot))
-			goto ReturnSpot;
+			return pSpot;
 	}
 
-ReturnSpot:
+	return nullptr;
+}
+
+edict_t* EntSelectSpawnPoint(CBaseEntity* pPlayer)
+{
+	CBaseEntity* pSpot = FindSpawnPoint(pPlayer, g_pLastSpawn);
+
 	if (FNullEnt(pSpot))
 	{
 		ALERT(at_error, "PutClientInServer: no info_player_start on level");

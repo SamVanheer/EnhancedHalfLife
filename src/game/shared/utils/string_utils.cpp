@@ -30,7 +30,6 @@ bool Q_IsValidUChar32(char32_t uVal)
 	return (uVal < 0x110000u) && ((uVal - 0x00D800u) > 0x7FFu) && ((uVal & 0xFFFFu) < 0xFFFEu) && ((uVal - 0x00FDD0u) > 0x1Fu);
 }
 
-//TODO: refactor this so that it doesn't use goto
 int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut)
 {
 	const std::uint8_t* pUTF8 = (const std::uint8_t*)pUTF8_;
@@ -39,67 +38,74 @@ int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut)
 	char32_t uValue = pUTF8[0];
 	char32_t uMinValue = 0;
 
+	const auto decodeError = [&]()
+	{
+		uValueOut = '?';
+		bErrorOut = true;
+		return nBytes;
+	};
+
 	// 0....... single byte
 	if (uValue < 0x80)
-		goto decodeFinishedNoCheck;
+	{
+		uValueOut = uValue;
+		bErrorOut = false;
+		return nBytes;
+	}
 
 	// Expecting at least a two-byte sequence with 0xC0 <= first <= 0xF7 (110...... and 11110...)
 	if ((uValue - 0xC0u) > 0x37u || (pUTF8[1] & 0xC0) != 0x80)
-		goto decodeError;
+		return decodeError();
 
 	uValue = (uValue << 6) - (0xC0 << 6) + pUTF8[1] - 0x80;
 	nBytes = 2;
 	uMinValue = 0x80;
 
 	// 110..... two-byte lead byte
-	if (!(uValue & (0x20 << 6)))
-		goto decodeFinished;
+	if (uValue & (0x20 << 6))
+	{
+		// Expecting at least a three-byte sequence
+		if ((pUTF8[2] & 0xC0) != 0x80)
+			return decodeError();
 
-	// Expecting at least a three-byte sequence
-	if ((pUTF8[2] & 0xC0) != 0x80)
-		goto decodeError;
+		uValue = (uValue << 6) - (0x20 << 12) + pUTF8[2] - 0x80;
+		nBytes = 3;
+		uMinValue = 0x800;
 
-	uValue = (uValue << 6) - (0x20 << 12) + pUTF8[2] - 0x80;
-	nBytes = 3;
-	uMinValue = 0x800;
+		// 1110.... three-byte lead byte
+		if (!(uValue & (0x10 << 12)))
+		{
+			// Do we have a full UTF-16 surrogate pair that's been UTF-8 encoded afterwards?
+			// That is, do we have 0xD800-0xDBFF followed by 0xDC00-0xDFFF? If so, decode it all.
+			if ((uValue - 0xD800u) < 0x400u && pUTF8[3] == 0xED && (std::uint8_t)(pUTF8[4] - 0xB0) < 0x10 && (pUTF8[5] & 0xC0) == 0x80)
+			{
+				uValue = 0x10000 + ((uValue - 0xD800u) << 10) + ((std::uint8_t)(pUTF8[4] - 0xB0) << 6) + pUTF8[5] - 0x80;
+				nBytes = 6;
+				uMinValue = 0x10000;
+			}
+		}
+		else
+		{
+			// Expecting a four-byte sequence, longest permissible in UTF-8
+			if ((pUTF8[3] & 0xC0) != 0x80)
+				return decodeError();
 
-	// 1110.... three-byte lead byte
-	if (!(uValue & (0x10 << 12)))
-		goto decodeFinishedMaybeCESU8;
+			uValue = (uValue << 6) - (0x10 << 18) + pUTF8[3] - 0x80;
+			nBytes = 4;
+			uMinValue = 0x10000;
 
-	// Expecting a four-byte sequence, longest permissible in UTF-8
-	if ((pUTF8[3] & 0xC0) != 0x80)
-		goto decodeError;
+			// 11110... four-byte lead byte. fall through to finished.
+		}
+	}
 
-	uValue = (uValue << 6) - (0x10 << 18) + pUTF8[3] - 0x80;
-	nBytes = 4;
-	uMinValue = 0x10000;
-
-	// 11110... four-byte lead byte. fall through to finished.
-
-decodeFinished:
 	if (uValue >= uMinValue && Q_IsValidUChar32(uValue))
 	{
-	decodeFinishedNoCheck:
 		uValueOut = uValue;
 		bErrorOut = false;
 		return nBytes;
 	}
-decodeError:
-	uValueOut = '?';
-	bErrorOut = true;
-	return nBytes;
 
-decodeFinishedMaybeCESU8:
-	// Do we have a full UTF-16 surrogate pair that's been UTF-8 encoded afterwards?
-	// That is, do we have 0xD800-0xDBFF followed by 0xDC00-0xDFFF? If so, decode it all.
-	if ((uValue - 0xD800u) < 0x400u && pUTF8[3] == 0xED && (std::uint8_t)(pUTF8[4] - 0xB0) < 0x10 && (pUTF8[5] & 0xC0) == 0x80)
-	{
-		uValue = 0x10000 + ((uValue - 0xD800u) << 10) + ((std::uint8_t)(pUTF8[4] - 0xB0) << 6) + pUTF8[5] - 0x80;
-		nBytes = 6;
-		uMinValue = 0x10000;
-	}
-	goto decodeFinished;
+	return decodeError();
 }
 
 bool V_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut)
