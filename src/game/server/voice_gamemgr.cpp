@@ -12,9 +12,7 @@
 #include "player.h"
 #include "voice_gamemgr.h"
 
-
 constexpr float UPDATE_INTERVAL = 0.3;
-
 
 // These are stored off as CVoiceGameMgr is created and deleted.
 
@@ -65,11 +63,9 @@ CVoiceGameMgr::CVoiceGameMgr()
 	m_nMaxPlayers = 0;
 }
 
-
 CVoiceGameMgr::~CVoiceGameMgr()
 {
 }
-
 
 bool CVoiceGameMgr::Init(
 	IVoiceGameMgrHelper* pHelper,
@@ -92,12 +88,10 @@ bool CVoiceGameMgr::Init(
 	return true;
 }
 
-
 void CVoiceGameMgr::SetHelper(IVoiceGameMgrHelper* pHelper)
 {
 	m_pHelper = pHelper;
 }
-
 
 void CVoiceGameMgr::Update(double frametime)
 {
@@ -108,7 +102,6 @@ void CVoiceGameMgr::Update(double frametime)
 
 	UpdateMasks();
 }
-
 
 void CVoiceGameMgr::ClientConnected(edict_t* pEdict)
 {
@@ -180,7 +173,6 @@ bool CVoiceGameMgr::ClientCommand(CBasePlayer* pPlayer, const char* cmd)
 		return false;
 	}
 }
-
 
 void CVoiceGameMgr::UpdateMasks()
 {

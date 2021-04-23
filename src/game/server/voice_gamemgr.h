@@ -9,7 +9,6 @@
 
 #include "voice_common.h"
 
-
 class CGameRules;
 class CBasePlayer;
 struct edict_t;
@@ -25,7 +24,6 @@ public:
 	*/
 	virtual bool		CanPlayerHearPlayer(CBasePlayer* pListener, CBasePlayer* pTalker) = 0;
 };
-
 
 /**
 *	@brief manages which clients can hear which other clients.
@@ -69,14 +67,12 @@ public:
 	*/
 	bool				PlayerHasBlockedPlayer(CBasePlayer* pReceiver, CBasePlayer* pSender);
 
-
 private:
 
 	/**
 	*	@brief Force it to update the client masks.
 	*/
 	void				UpdateMasks();
-
 
 private:
 	int					m_msgPlayerVoiceMask;
