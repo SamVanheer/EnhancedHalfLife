@@ -1232,12 +1232,6 @@ void SENTENCEG_Stop(CBaseEntity* entity, int isentenceg, int ipick)
 
 void SENTENCEG_Init()
 {
-	//TODO: clean this up
-	char buffer[512];
-	char szgroup[64];
-	int i, j;
-	int isentencegs;
-
 	if (fSentencesInit)
 		return;
 
@@ -1245,10 +1239,7 @@ void SENTENCEG_Init()
 	gcallsentences = 0;
 
 	memset(rgsentenceg, 0, CSENTENCEG_MAX * sizeof(SENTENCEG));
-	memset(buffer, 0, 512);
-	memset(szgroup, 0, 64);
-	isentencegs = -1;
-
+	
 	auto [fileBuffer, size] = FileSystem_LoadFileIntoBuffer("sound/sentences.txt");
 
 	byte* pMemFile = fileBuffer.get();
@@ -1258,11 +1249,15 @@ void SENTENCEG_Init()
 
 	std::size_t filePos = 0;
 
+	char buffer[512]{};
+	char szgroup[64]{};
+	int isentencegs = -1;
+
 	// for each line in the file...
 	while (memfgets(pMemFile, size, filePos, buffer, sizeof(buffer) - 1) != nullptr)
 	{
 		// skip whitespace
-		i = 0;
+		std::size_t i = 0;
 		while (buffer[i] && buffer[i] == ' ')
 			i++;
 
@@ -1273,7 +1268,7 @@ void SENTENCEG_Init()
 			continue;
 
 		// get sentence name
-		j = i;
+		std::size_t j = i;
 		while (buffer[j] && buffer[j] != ' ')
 			j++;
 
@@ -1344,15 +1339,10 @@ void SENTENCEG_Init()
 	fSentencesInit = true;
 
 	// init lru lists
-
-	i = 0;
-
-	while (rgsentenceg[i].count && i < CSENTENCEG_MAX)
+	for (std::size_t i = 0; rgsentenceg[i].count && i < CSENTENCEG_MAX; ++i)
 	{
 		USENTENCEG_InitLRU(&(rgsentenceg[i].rgblru[0]), rgsentenceg[i].count);
-		i++;
 	}
-
 }
 
 int SENTENCEG_Lookup(const char* sample, char* sentencenum, std::size_t sentencenumSize)
