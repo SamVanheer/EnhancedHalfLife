@@ -568,8 +568,6 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 	player.pev->weaponanim = from->client.weaponanim;
 	player.pev->viewmodel = from->client.viewmodel;
 	player.m_flNextAttack = from->client.m_flNextAttack;
-	player.m_flNextAmmoBurn = from->client.fuser2;
-	player.m_flAmmoStartCharge = from->client.fuser3;
 
 	//Stores all our ammo info, so the client side weapons can use them.
 	player.SetAmmoCount("9mm", (int)from->client.vuser1[0]);
@@ -641,8 +639,6 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 	to->client.fov = player.m_iFOV;
 	to->client.weaponanim = player.pev->weaponanim;
 	to->client.m_flNextAttack = player.m_flNextAttack;
-	to->client.fuser2 = player.m_flNextAmmoBurn;
-	to->client.fuser3 = player.m_flAmmoStartCharge;
 	to->client.maxspeed = player.pev->maxspeed;
 
 	//HL Weapons

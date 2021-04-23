@@ -2400,6 +2400,7 @@ void CBasePlayer::PostThink()
 				//		gun->m_flPumpTime	= std::max( gun->m_flPumpTime - gpGlobals->frametime, -0.001f );
 				//	}
 
+					gun->DecrementTimers();
 				}
 
 				pPlayerItem = pPlayerItem->m_pNext;
@@ -2410,22 +2411,6 @@ void CBasePlayer::PostThink()
 	m_flNextAttack -= gpGlobals->frametime;
 	if (m_flNextAttack < -0.001)
 		m_flNextAttack = -0.001;
-
-	if (m_flNextAmmoBurn != 1000)
-	{
-		m_flNextAmmoBurn -= gpGlobals->frametime;
-
-		if (m_flNextAmmoBurn < -0.001)
-			m_flNextAmmoBurn = -0.001;
-	}
-
-	if (m_flAmmoStartCharge != 1000)
-	{
-		m_flAmmoStartCharge -= gpGlobals->frametime;
-
-		if (m_flAmmoStartCharge < -0.001)
-			m_flAmmoStartCharge = -0.001;
-	}
 #endif
 
 	// Track button info so we can detect 'pressed' and 'released' buttons next frame

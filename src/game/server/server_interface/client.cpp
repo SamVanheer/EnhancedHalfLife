@@ -1354,8 +1354,6 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 		if (pl)
 		{
 			cd->m_flNextAttack = pl->m_flNextAttack;
-			cd->fuser2 = pl->m_flNextAmmoBurn;
-			cd->fuser3 = pl->m_flAmmoStartCharge;
 			cd->vuser1.x = pl->GetAmmoCount("9mm");
 			cd->vuser1.y = pl->GetAmmoCount("357");
 			cd->vuser1.z = pl->GetAmmoCount("ARgrenades");

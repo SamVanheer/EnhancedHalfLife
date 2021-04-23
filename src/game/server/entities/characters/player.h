@@ -421,12 +421,6 @@ public:
 	*/
 	int GetCustomDecalFrames();
 
-	//TODO: move these Gauss-specific variables to the CGauss class
-	float m_flStartCharge;
-	float m_flAmmoStartCharge;
-	float m_flPlayAftershock;
-	float m_flNextAmmoBurn;//!< while charging, when to absorb another unit of player's ammo?
-
 	/**
 	*	@brief Player ID
 	*/

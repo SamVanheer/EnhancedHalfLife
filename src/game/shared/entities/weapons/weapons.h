@@ -341,6 +341,7 @@ public:
 
 	virtual void GetWeaponData(weapon_data_t& data) {}
 	virtual void SetWeaponData(const weapon_data_t& data) {}
+	virtual void DecrementTimers() {}
 
 	static ItemInfo ItemInfoArray[MAX_WEAPONS];
 	static AmmoInfo AmmoInfoArray[MAX_AMMO_TYPES];
@@ -1062,6 +1063,12 @@ public:
 
 	void GetWeaponData(weapon_data_t& data) override;
 	void SetWeaponData(const weapon_data_t& data) override;
+	void DecrementTimers() override;
+
+	float m_flStartCharge;
+	float m_flAmmoStartCharge;
+	float m_flPlayAftershock;
+	float m_flNextAmmoBurn;//!< while charging, when to absorb another unit of player's ammo?
 
 private:
 	unsigned short m_usGaussFire;
