@@ -134,8 +134,20 @@ public:
 	void UserCmd_PrevWeapon();
 
 private:
+	/**
+	*	@brief Menu selection code
+	*/
+	void SelectSlot(int iSlot, bool fAdvance, int iDirection);
+
+private:
 	float m_fFade = 0;
 	RGBA  m_rgba{};
+	/**
+	*	@brief nullptr means off, 1 means just the menu bar, otherwise this points to the active weapon menu item
+	*/
+	//TODO: rework this
+	WEAPON* m_pActiveSel = nullptr;
+	WEAPON* m_pLastSel = nullptr;		//!< Last weapon menu selection
 	WEAPON* m_pWeapon = nullptr;
 	int	m_HUD_bucket0 = 0;
 	int m_HUD_selection = 0;

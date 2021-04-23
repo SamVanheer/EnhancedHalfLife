@@ -89,10 +89,6 @@ public:
 	*/
 	WEAPON* GetFirstPos(int iSlot);
 
-	/**
-	*	@brief Menu selection code
-	*/
-	void SelectSlot(int iSlot, bool fAdvance, int iDirection);
 	WEAPON* GetNextActivePos(int iSlot, int iSlotPos);
 
 	int HasAmmo(WEAPON* p);
