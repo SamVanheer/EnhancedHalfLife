@@ -18,3 +18,6 @@
 #include <cstddef>
 
 char* memfgets(byte* pMemFile, std::size_t fileSize, std::size_t& filePos, char* pBuffer, std::size_t bufferSize);
+
+int UTIL_SharedRandomLong(unsigned int seed, int low, int high);
+float UTIL_SharedRandomFloat(unsigned int seed, float low, float high);

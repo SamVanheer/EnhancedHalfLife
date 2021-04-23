@@ -22,6 +22,7 @@
 //
 #include "activity.h"
 #include "enginecallback.h"
+#include "shared_utils.hpp"
 #include "materials.hpp"
 #include "filesystem_shared.hpp"
 #include "string_utils.hpp"
@@ -631,9 +632,6 @@ private:
 
 void UTIL_SetGroupTrace(int groupmask, int op);
 void UTIL_UnsetGroupTrace();
-
-int UTIL_SharedRandomLong(unsigned int seed, int low, int high);
-float UTIL_SharedRandomFloat(unsigned int seed, float low, float high);
 
 /**
 *	@brief Always 0.0 on client, even if not predicting weapons ( won't get called in that case )

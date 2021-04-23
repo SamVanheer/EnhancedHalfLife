@@ -20,9 +20,6 @@ struct local_state_t;
 
 bool CL_IsDead();
 
-float			UTIL_SharedRandomFloat(unsigned int seed, float low, float high);
-int				UTIL_SharedRandomLong(unsigned int seed, int low, int high);
-
 /**
 *	@brief Retrieve current predicted weapon animation
 */
