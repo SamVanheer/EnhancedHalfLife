@@ -38,7 +38,7 @@ DLL_FUNCTIONS gEntityInterface =
 	DispatchKeyValue,			//pfnKeyValue
 	DispatchSave,				//pfnSave
 	DispatchRestore,			//pfnRestore
-	DispatchObjectCollsionBox,	//pfnAbsBox TODO typo
+	DispatchObjectCollisionBox,	//pfnAbsBox
 
 	SaveWriteFields,			//pfnSaveWriteFields
 	SaveReadFields,				//pfnSaveReadFields
@@ -374,7 +374,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 	return 0;
 }
 
-void DispatchObjectCollsionBox(edict_t* pent)
+void DispatchObjectCollisionBox(edict_t* pent)
 {
 	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pent);
 	if (pEntity)

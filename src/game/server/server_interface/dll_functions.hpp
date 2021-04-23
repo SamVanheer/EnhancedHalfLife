@@ -30,7 +30,7 @@ void DispatchBlocked(edict_t* pentBlocked, edict_t* pentOther);
 void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd);
 void DispatchSave(edict_t* pent, SAVERESTOREDATA* pSaveData);
 int  DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity);
-void DispatchObjectCollsionBox(edict_t* pent);
+void DispatchObjectCollisionBox(edict_t* pent);
 
 void SaveWriteFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount);
 void SaveReadFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount);
