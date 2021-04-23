@@ -193,7 +193,6 @@ class CFuncIllusionary : public CBaseToggle
 {
 public:
 	void Spawn() override;
-	void EXPORT SloshTouch(CBaseEntity* pOther); //TODO: no implementation
 	void KeyValue(KeyValueData* pkvd) override;
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 };
