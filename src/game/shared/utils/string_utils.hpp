@@ -98,24 +98,6 @@ inline char* safe_strcat(char(&dst)[Size], const char* src)
 	return safe_strcat(dst, src, Size);
 }
 
-inline int safe_snprintf(char* dst, int len_dst, const char* format, ...)
-{
-	if (len_dst <= 0)
-	{
-		return -1; // this is bad
-	}
-
-	va_list v;
-
-	va_start(v, format);
-
-	const int result = vsnprintf(dst, len_dst, format, v);
-
-	va_end(v);
-
-	return result;
-}
-
 /**
 *	@brief determine if a uchar32 represents a valid Unicode code point
 */
