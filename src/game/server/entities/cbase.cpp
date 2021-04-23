@@ -24,7 +24,6 @@
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 
 // give health
-//TODO: rename this to be accurate (give instead of take)
 bool CBaseEntity::GiveHealth(float flHealth, int bitsDamageType)
 {
 	if (!pev->takedamage)
