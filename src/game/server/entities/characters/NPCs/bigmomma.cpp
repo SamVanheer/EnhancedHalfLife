@@ -592,7 +592,7 @@ void CBigMomma::LayHeadcrab()
 	}
 
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 100), ignore_monsters, edict(), &tr);
+	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 100), IgnoreMonsters::Yes, edict(), &tr);
 	UTIL_DecalTrace(&tr, DECAL_MOMMABIRTH);
 
 	EmitSound(CHAN_WEAPON, RANDOM_SOUND_ARRAY(pBirthSounds), VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
@@ -1036,10 +1036,10 @@ Vector CheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, f
 
 	// calculate the midpoint and apex of the 'triangle'
 	vecMidPoint = vecSpot1 + (vecSpot2 - vecSpot1) * 0.5;
-	UTIL_TraceLine(vecMidPoint, vecMidPoint + Vector(0, 0, maxHeight), ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecMidPoint, vecMidPoint + Vector(0, 0, maxHeight), IgnoreMonsters::Yes, ENT(pev), &tr);
 	vecApex = tr.vecEndPos;
 
-	UTIL_TraceLine(vecSpot1, vecApex, dont_ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, ENT(pev), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
@@ -1161,7 +1161,7 @@ void CBMortar::Touch(CBaseEntity* pOther)
 	{
 
 		// make a splat on the wall
-		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 10, dont_ignore_monsters, ENT(pev), &tr);
+		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 10, IgnoreMonsters::No, ENT(pev), &tr);
 		UTIL_DecalTrace(&tr, DECAL_MOMMASPLAT);
 	}
 	else

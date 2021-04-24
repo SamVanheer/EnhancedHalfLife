@@ -1308,7 +1308,7 @@ void CBaseMonster::AdvanceRoute(float distance)
 				if (iLink >= 0 && WorldGraph.m_pLinkPool[iLink].m_pLinkEnt != nullptr)
 				{
 					//ALERT(at_aiconsole, "A link. ");
-					if (WorldGraph.HandleLinkEnt(iSrcNode, WorldGraph.m_pLinkPool[iLink].m_pLinkEnt, m_afCapability, CGraph::NODEGRAPH_DYNAMIC))
+					if (WorldGraph.HandleLinkEnt(iSrcNode, WorldGraph.m_pLinkPool[iLink].m_pLinkEnt, m_afCapability, CGraph::NodeQuery::Dynamic))
 					{
 						//ALERT(at_aiconsole, "usable.");
 						entvars_t* pevDoor = WorldGraph.m_pLinkPool[iLink].m_pLinkEnt;
@@ -2070,7 +2070,7 @@ bool CBaseMonster::FindCover(Vector vecThreat, Vector vecViewOffset, float flMin
 		// provide cover! Also make sure the node is within the mins/maxs of the search.
 		if (flDist >= flMinDist && flDist < flMaxDist)
 		{
-			UTIL_TraceLine(node.m_vecOrigin + vecViewOffset, vecLookersOffset, ignore_monsters, ignore_glass, ENT(pev), &tr);
+			UTIL_TraceLine(node.m_vecOrigin + vecViewOffset, vecLookersOffset, IgnoreMonsters::Yes, IgnoreGlass::Yes, ENT(pev), &tr);
 
 			// if this node will block the threat's line of sight to me...
 			if (tr.flFraction != 1.0)
@@ -2160,7 +2160,7 @@ bool CBaseMonster::BuildNearestRoute(Vector vecThreat, Vector vecViewOffset, flo
 			if (flDist > flMinDist && flDist < flMaxDist)
 			{
 				// can I see where I want to be from there?
-				UTIL_TraceLine(node.m_vecOrigin + pev->view_ofs, vecLookersOffset, ignore_monsters, edict(), &tr);
+				UTIL_TraceLine(node.m_vecOrigin + pev->view_ofs, vecLookersOffset, IgnoreMonsters::Yes, edict(), &tr);
 
 				if (tr.flFraction == 1.0)
 				{
@@ -2587,7 +2587,7 @@ int CBaseMonster::FindHintNode()
 			{
 				if (!node.m_sHintActivity || LookupActivity(node.m_sHintActivity) != ACTIVITY_NOT_AVAILABLE)
 				{
-					UTIL_TraceLine(pev->origin + pev->view_ofs, node.m_vecOrigin + pev->view_ofs, ignore_monsters, ENT(pev), &tr);
+					UTIL_TraceLine(pev->origin + pev->view_ofs, node.m_vecOrigin + pev->view_ofs, IgnoreMonsters::Yes, ENT(pev), &tr);
 
 					if (tr.flFraction == 1.0)
 					{
@@ -2847,7 +2847,7 @@ bool CBaseMonster::FindLateralCover(const Vector& vecThreat, const Vector& vecVi
 		vecRightTest = vecRightTest + vecStepRight;
 
 		// it's faster to check the SightEnt's visibility to the potential spot than to check the local move, so we do that first.
-		UTIL_TraceLine(vecThreat + vecViewOffset, vecLeftTest + pev->view_ofs, ignore_monsters, ignore_glass, ENT(pev)/*pentIgnore*/, &tr);
+		UTIL_TraceLine(vecThreat + vecViewOffset, vecLeftTest + pev->view_ofs, IgnoreMonsters::Yes, IgnoreGlass::Yes, ENT(pev)/*pentIgnore*/, &tr);
 
 		if (tr.flFraction != 1.0)
 		{
@@ -2861,7 +2861,7 @@ bool CBaseMonster::FindLateralCover(const Vector& vecThreat, const Vector& vecVi
 		}
 
 		// it's faster to check the SightEnt's visibility to the potential spot than to check the local move, so we do that first.
-		UTIL_TraceLine(vecThreat + vecViewOffset, vecRightTest + pev->view_ofs, ignore_monsters, ignore_glass, ENT(pev)/*pentIgnore*/, &tr);
+		UTIL_TraceLine(vecThreat + vecViewOffset, vecRightTest + pev->view_ofs, IgnoreMonsters::Yes, IgnoreGlass::Yes, ENT(pev)/*pentIgnore*/, &tr);
 
 		if (tr.flFraction != 1.0)
 		{
@@ -2984,13 +2984,13 @@ bool CBaseMonster::BBoxFlat()
 	vecPoint.y = pev->origin.y + flYSize;
 	vecPoint.z = pev->origin.z;
 
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, ENT(pev), &tr);
 	flLength = (vecPoint - tr.vecEndPos).Length();
 
 	vecPoint.x = pev->origin.x - flXSize;
 	vecPoint.y = pev->origin.y - flYSize;
 
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, ENT(pev), &tr);
 	flLength2 = (vecPoint - tr.vecEndPos).Length();
 	if (flLength2 > flLength)
 	{
@@ -3000,7 +3000,7 @@ bool CBaseMonster::BBoxFlat()
 
 	vecPoint.x = pev->origin.x - flXSize;
 	vecPoint.y = pev->origin.y + flYSize;
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, ENT(pev), &tr);
 	flLength2 = (vecPoint - tr.vecEndPos).Length();
 	if (flLength2 > flLength)
 	{
@@ -3010,7 +3010,7 @@ bool CBaseMonster::BBoxFlat()
 
 	vecPoint.x = pev->origin.x + flXSize;
 	vecPoint.y = pev->origin.y - flYSize;
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, ENT(pev), &tr);
 	flLength2 = (vecPoint - tr.vecEndPos).Length();
 	if (flLength2 > flLength)
 	{

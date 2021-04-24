@@ -212,7 +212,7 @@ void CLeech::RecalculateWaterlevel()
 
 	TraceResult tr;
 
-	UTIL_TraceLine(pev->origin, vecTest, missile, edict(), &tr);
+	UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, edict(), &tr);
 	if (tr.flFraction != 1.0)
 		m_bottom = tr.vecEndPos.z + 1;
 	else
@@ -350,7 +350,7 @@ float CLeech::ObstacleDistance(CBaseEntity* pTarget)
 
 	// check for obstacle ahead
 	vecTest = pev->origin + gpGlobals->v_forward * LEECH_CHECK_DIST;
-	UTIL_TraceLine(pev->origin, vecTest, missile, edict(), &tr);
+	UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, edict(), &tr);
 
 	if (tr.fStartSolid)
 	{
@@ -376,12 +376,12 @@ float CLeech::ObstacleDistance(CBaseEntity* pTarget)
 	{
 		// extra wide checks
 		vecTest = pev->origin + gpGlobals->v_right * LEECH_SIZEX * 2 + gpGlobals->v_forward * LEECH_CHECK_DIST;
-		UTIL_TraceLine(pev->origin, vecTest, missile, edict(), &tr);
+		UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, edict(), &tr);
 		if (tr.flFraction != 1.0)
 			return tr.flFraction;
 
 		vecTest = pev->origin - gpGlobals->v_right * LEECH_SIZEX * 2 + gpGlobals->v_forward * LEECH_CHECK_DIST;
-		UTIL_TraceLine(pev->origin, vecTest, missile, edict(), &tr);
+		UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, edict(), &tr);
 		if (tr.flFraction != 1.0)
 			return tr.flFraction;
 
@@ -416,7 +416,7 @@ void CLeech::DeadThink()
 		TraceResult tr;
 
 		// Look 0.5 seconds ahead
-		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 0.5, missile, edict(), &tr);
+		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 0.5, IgnoreMonsters::No, edict(), &tr);
 		if (tr.flFraction != 1.0)
 		{
 			pev->velocity.x = 0;
@@ -633,11 +633,11 @@ void CLeech::SwimThink()
 			Vector vecTest;
 			// measure clearance on left and right to pick the best dir to turn
 			vecTest = pev->origin + (gpGlobals->v_right * LEECH_SIZEX) + (gpGlobals->v_forward * LEECH_CHECK_DIST);
-			UTIL_TraceLine(pev->origin, vecTest, missile, edict(), &tr);
+			UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, edict(), &tr);
 			flRightSide = tr.flFraction;
 
 			vecTest = pev->origin + (gpGlobals->v_right * -LEECH_SIZEX) + (gpGlobals->v_forward * LEECH_CHECK_DIST);
-			UTIL_TraceLine(pev->origin, vecTest, missile, edict(), &tr);
+			UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, edict(), &tr);
 			flLeftSide = tr.flFraction;
 
 			// turn left, right or random depending on clearance ratio

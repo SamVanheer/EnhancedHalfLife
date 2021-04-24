@@ -143,7 +143,7 @@ void CStomp::Think()
 	vecStart.z += 30;
 	Vector vecEnd = vecStart + (pev->movedir * pev->speed * deltaTime);
 
-	UTIL_TraceHull(vecStart, vecEnd, dont_ignore_monsters, head_hull, ENT(pev), &tr);
+	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, ENT(pev), &tr);
 
 	if (tr.pHit && tr.pHit != pev->owner)
 	{
@@ -169,7 +169,7 @@ void CStomp::Think()
 			CSprite* pSprite = CSprite::SpriteCreate(GARG_STOMP_SPRITE_NAME.data(), pev->origin, true);
 			if (pSprite)
 			{
-				UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 500), ignore_monsters, edict(), &tr);
+				UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 500), IgnoreMonsters::Yes, edict(), &tr);
 				pSprite->pev->origin = tr.vecEndPos;
 				pSprite->pev->velocity = Vector(RANDOM_FLOAT(-200, 200), RANDOM_FLOAT(-200, 200), 175);
 				// pSprite->AnimateAndDie( RANDOM_FLOAT( 8.0, 12.0 ) );
@@ -486,12 +486,12 @@ void CGargantua::StompAttack()
 	Vector vecAim = ShootAtEnemy(vecStart);
 	Vector vecEnd = (vecAim * 1024) + vecStart;
 
-	UTIL_TraceLine(vecStart, vecEnd, ignore_monsters, edict(), &trace);
+	UTIL_TraceLine(vecStart, vecEnd, IgnoreMonsters::Yes, edict(), &trace);
 	CStomp::StompCreate(vecStart, trace.vecEndPos, 0);
 	UTIL_ScreenShake(pev->origin, 12.0, 100.0, 2.0, 1000);
 	EmitSound(CHAN_WEAPON, pStompSounds[RANDOM_LONG(0, ArraySize(pStompSounds) - 1)], VOL_NORM, ATTN_GARG, PITCH_NORM + RANDOM_LONG(-10, 10));
 
-	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 20), ignore_monsters, edict(), &trace);
+	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 20), IgnoreMonsters::Yes, edict(), &trace);
 	if (trace.flFraction < 1.0)
 		UTIL_DecalTrace(&trace, DECAL_GARGSTOMP1);
 }
@@ -517,7 +517,7 @@ void CGargantua::FlameCreate()
 			GetAttachment(attach + 1, posGun, angleGun);
 
 			Vector vecEnd = (gpGlobals->v_forward * GARG_FLAME_LENGTH) + posGun;
-			UTIL_TraceLine(posGun, vecEnd, dont_ignore_monsters, edict(), &trace);
+			UTIL_TraceLine(posGun, vecEnd, IgnoreMonsters::No, edict(), &trace);
 
 			m_pFlame[i]->PointEntInit(trace.vecEndPos, entindex());
 			if (i < 2)
@@ -575,7 +575,7 @@ void CGargantua::FlameUpdate()
 			GetAttachment(i + 1, vecStart, angleGun);
 			Vector vecEnd = vecStart + (gpGlobals->v_forward * GARG_FLAME_LENGTH); //  - offset[i] * gpGlobals->v_right;
 
-			UTIL_TraceLine(vecStart, vecEnd, dont_ignore_monsters, edict(), &trace);
+			UTIL_TraceLine(vecStart, vecEnd, IgnoreMonsters::No, edict(), &trace);
 
 			m_pFlame[i]->SetStartPos(trace.vecEndPos);
 			m_pFlame[i + 2]->SetStartPos((vecStart * 0.6) + (trace.vecEndPos * 0.4));
@@ -642,7 +642,7 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInfli
 
 			Vector vecSrc = vecMid + dist * vecAim;
 
-			UTIL_TraceLine(vecSrc, vecSpot, dont_ignore_monsters, ENT(pev), &tr);
+			UTIL_TraceLine(vecSrc, vecSpot, IgnoreMonsters::No, ENT(pev), &tr);
 
 			if (tr.flFraction == 1.0 || tr.pHit == pEntity->edict())
 			{// the explosion can 'see' this entity, so hurt them!
@@ -965,7 +965,7 @@ CBaseEntity* CGargantua::GargantuaCheckTraceHullAttack(float flDist, int iDamage
 	vecStart.z += 64;
 	Vector vecEnd = vecStart + (gpGlobals->v_forward * flDist) - (gpGlobals->v_up * flDist * 0.3);
 
-	UTIL_TraceHull(vecStart, vecEnd, dont_ignore_monsters, head_hull, ENT(pev), &tr);
+	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, ENT(pev), &tr);
 
 	if (tr.pHit)
 	{

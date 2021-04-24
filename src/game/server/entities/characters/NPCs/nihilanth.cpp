@@ -499,7 +499,7 @@ void CNihilanth::DyingThink()
 
 	TraceResult tr;
 
-	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_BOUNDARY, ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_BOUNDARY, IgnoreMonsters::Yes, ENT(pev), &tr);
 
 	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMENTPOINT);
@@ -629,7 +629,7 @@ void CNihilanth::MakeFriend(Vector vecStart)
 				{
 					CNode& node = WorldGraph.Node(iNode);
 					TraceResult tr;
-					UTIL_TraceHull(node.m_vecOrigin + Vector(0, 0, 32), node.m_vecOrigin + Vector(0, 0, 32), dont_ignore_monsters, large_hull, nullptr, &tr);
+					UTIL_TraceHull(node.m_vecOrigin + Vector(0, 0, 32), node.m_vecOrigin + Vector(0, 0, 32), IgnoreMonsters::No, Hull::Large, nullptr, &tr);
 					if (tr.fStartSolid == 0)
 						m_hFriend[i] = Create("monster_alien_controller", node.m_vecOrigin, pev->angles);
 				}
@@ -641,7 +641,7 @@ void CNihilanth::MakeFriend(Vector vecStart)
 				{
 					CNode& node = WorldGraph.Node(iNode);
 					TraceResult tr;
-					UTIL_TraceHull(node.m_vecOrigin + Vector(0, 0, 36), node.m_vecOrigin + Vector(0, 0, 36), dont_ignore_monsters, human_hull, nullptr, &tr);
+					UTIL_TraceHull(node.m_vecOrigin + Vector(0, 0, 36), node.m_vecOrigin + Vector(0, 0, 36), IgnoreMonsters::No, Hull::Human, nullptr, &tr);
 					if (tr.fStartSolid == 0)
 						m_hFriend[i] = Create("monster_alien_slave", node.m_vecOrigin, pev->angles);
 				}
@@ -1427,7 +1427,7 @@ void CNihilanthHVR::ZapThink()
 	{
 		TraceResult tr;
 
-		UTIL_TraceLine(pev->origin, m_hEnemy->Center(), dont_ignore_monsters, edict(), &tr);
+		UTIL_TraceLine(pev->origin, m_hEnemy->Center(), IgnoreMonsters::No, edict(), &tr);
 
 		CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit);
 		if (pEntity != nullptr && pEntity->pev->takedamage)

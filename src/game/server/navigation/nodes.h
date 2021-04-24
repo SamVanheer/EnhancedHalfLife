@@ -228,17 +228,17 @@ public:
 	*/
 	int		NextNodeInRoute(int iCurrentNode, int iDest, int iHull, int iCap);
 
-	enum NODEQUERY
+	enum class NodeQuery
 	{
-		NODEGRAPH_DYNAMIC,	//!< A static query means we're asking about the possiblity of handling this entity at ANY time
-		NODEGRAPH_STATIC	//!< A dynamic query means we're asking about it RIGHT NOW.  So we should query the current state
+		Dynamic,	//!< A static query means we're asking about the possiblity of handling this entity at ANY time
+		Static		//!< A dynamic query means we're asking about it RIGHT NOW.  So we should query the current state
 	};
 
 	/**
 	*	@brief a brush ent is between two nodes that would otherwise be able to see each other.
 	*	Given the monster's capability, determine whether or not the monster can go this way.
 	*/
-	bool HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODEQUERY queryType);
+	bool HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NodeQuery queryType);
 
 	/**
 	*	@brief sometimes the ent that blocks a path is a usable door,

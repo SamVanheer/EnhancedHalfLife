@@ -254,7 +254,7 @@ void CBasePlayer::Spawn()
 	g_irunninggausspred = false;
 }
 
-void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, edict_t* pentIgnore, TraceResult* ptr)
+void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, edict_t* pentIgnore, TraceResult* ptr)
 {
 	//Don't actually trace, but act like the trace didn't hit anything.
 	memset(ptr, 0, sizeof(*ptr));

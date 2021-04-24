@@ -28,14 +28,14 @@ constexpr int TURRET_MAXWAIT = 15;				// seconds turret will stay active w/o a t
 constexpr int TURRET_MAXSPIN = 5;				// seconds turret barrel will spin w/o a target
 constexpr float TURRET_MACHINE_VOLUME = 0.5;
 
-enum TURRET_ANIM
+enum class TurretAnim
 {
-	TURRET_ANIM_NONE = 0,
-	TURRET_ANIM_FIRE,
-	TURRET_ANIM_SPIN,
-	TURRET_ANIM_DEPLOY,
-	TURRET_ANIM_RETIRE,
-	TURRET_ANIM_DIE,
+	None = 0,
+	Fire,
+	Spin,
+	Deploy,
+	Retire,
+	Die,
 };
 
 enum class TurretOrientation
@@ -104,7 +104,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	// other functions
-	void SetTurretAnim(TURRET_ANIM anim);
+	void SetTurretAnim(TurretAnim anim);
 	bool MoveTurret();
 	virtual void Shoot(Vector& vecSrc, Vector& vecDirToEnemy) {}
 
@@ -550,12 +550,12 @@ void CBaseTurret::ActiveThink()
 	{
 		Vector vecSrc, vecAng;
 		GetAttachment(0, vecSrc, vecAng);
-		SetTurretAnim(TURRET_ANIM_FIRE);
+		SetTurretAnim(TurretAnim::Fire);
 		Shoot(vecSrc, gpGlobals->v_forward);
 	}
 	else
 	{
-		SetTurretAnim(TURRET_ANIM_SPIN);
+		SetTurretAnim(TurretAnim::Spin);
 	}
 
 	//move the gun
@@ -639,10 +639,10 @@ void CBaseTurret::Deploy()
 	pev->nextthink = gpGlobals->time + 0.1;
 	StudioFrameAdvance();
 
-	if (pev->sequence != TURRET_ANIM_DEPLOY)
+	if (pev->sequence != static_cast<int>(TurretAnim::Deploy))
 	{
 		m_iOn = true;
-		SetTurretAnim(TURRET_ANIM_DEPLOY);
+		SetTurretAnim(TurretAnim::Deploy);
 		EmitSound(CHAN_BODY, "turret/tu_deploy.wav", TURRET_MACHINE_VOLUME);
 		SUB_UseTargets(this, USE_ON, 0);
 	}
@@ -664,7 +664,7 @@ void CBaseTurret::Deploy()
 			m_vecCurAngles.y = UTIL_AngleMod(pev->angles.y);
 		}
 
-		SetTurretAnim(TURRET_ANIM_SPIN);
+		SetTurretAnim(TurretAnim::Spin);
 		pev->framerate = 0;
 		SetThink(&CBaseTurret::SearchThink);
 	}
@@ -690,9 +690,9 @@ void CBaseTurret::Retire()
 		{
 			SpinDownCall();
 		}
-		else if (pev->sequence != TURRET_ANIM_RETIRE)
+		else if (pev->sequence != static_cast<int>(TurretAnim::Retire))
 		{
-			SetTurretAnim(TURRET_ANIM_RETIRE);
+			SetTurretAnim(TurretAnim::Retire);
 			EmitSound(CHAN_BODY, "turret/tu_deploy.wav", TURRET_MACHINE_VOLUME, ATTN_NORM, 120);
 			SUB_UseTargets(this, USE_OFF, 0);
 		}
@@ -700,7 +700,7 @@ void CBaseTurret::Retire()
 		{
 			m_iOn = false;
 			m_flLastSight = 0;
-			SetTurretAnim(TURRET_ANIM_NONE);
+			SetTurretAnim(TurretAnim::None);
 			pev->maxs.z = m_iRetractHeight;
 			pev->mins.z = -m_iRetractHeight;
 			UTIL_SetSize(pev, pev->mins, pev->maxs);
@@ -715,7 +715,7 @@ void CBaseTurret::Retire()
 	}
 	else
 	{
-		SetTurretAnim(TURRET_ANIM_SPIN);
+		SetTurretAnim(TurretAnim::Spin);
 	}
 }
 
@@ -727,7 +727,7 @@ void CTurret::SpinUpCall()
 	// Are we already spun up? If not start the two stage process.
 	if (!m_iSpin)
 	{
-		SetTurretAnim(TURRET_ANIM_SPIN);
+		SetTurretAnim(TurretAnim::Spin);
 		// for the first pass, spin up the the barrel
 		if (!m_iStartSpin)
 		{
@@ -761,7 +761,7 @@ void CTurret::SpinDownCall()
 {
 	if (m_iSpin)
 	{
-		SetTurretAnim(TURRET_ANIM_SPIN);
+		SetTurretAnim(TurretAnim::Spin);
 		if (pev->framerate == 1.0)
 		{
 			StopSound(CHAN_STATIC, "turret/tu_active2.wav");
@@ -776,15 +776,17 @@ void CTurret::SpinDownCall()
 	}
 }
 
-void CBaseTurret::SetTurretAnim(TURRET_ANIM anim)
+void CBaseTurret::SetTurretAnim(TurretAnim anim)
 {
-	if (pev->sequence != anim)
+	const TurretAnim currentSequence = static_cast<TurretAnim>(pev->sequence);
+
+	if (currentSequence != anim)
 	{
 		switch (anim)
 		{
-		case TURRET_ANIM_FIRE:
-		case TURRET_ANIM_SPIN:
-			if (pev->sequence != TURRET_ANIM_FIRE && pev->sequence != TURRET_ANIM_SPIN)
+		case TurretAnim::Fire:
+		case TurretAnim::Spin:
+			if (currentSequence != TurretAnim::Fire && currentSequence != TurretAnim::Spin)
 			{
 				pev->frame = 0;
 			}
@@ -794,16 +796,16 @@ void CBaseTurret::SetTurretAnim(TURRET_ANIM anim)
 			break;
 		}
 
-		pev->sequence = anim;
+		pev->sequence = static_cast<int>(anim);
 		ResetSequenceInfo();
 
 		switch (anim)
 		{
-		case TURRET_ANIM_RETIRE:
+		case TurretAnim::Retire:
 			pev->frame = 255;
 			pev->framerate = -1.0;
 			break;
-		case TURRET_ANIM_DIE:
+		case TurretAnim::Die:
 			pev->framerate = 1.0;
 			break;
 		}
@@ -814,7 +816,7 @@ void CBaseTurret::SetTurretAnim(TURRET_ANIM anim)
 void CBaseTurret::SearchThink()
 {
 	// ensure rethink
-	SetTurretAnim(TURRET_ANIM_SPIN);
+	SetTurretAnim(TurretAnim::Spin);
 	StudioFrameAdvance();
 	pev->nextthink = gpGlobals->time + 0.1;
 
@@ -925,7 +927,7 @@ void CBaseTurret::TurretDeath()
 		else
 			m_vecGoalAngles.x = -90;
 
-		SetTurretAnim(TURRET_ANIM_DIE);
+		SetTurretAnim(TurretAnim::Die);
 
 		EyeOn();
 	}
@@ -1233,7 +1235,7 @@ void CSentry::SentryDeath()
 		SetBoneController(0, 0);
 		SetBoneController(1, 0);
 
-		SetTurretAnim(TURRET_ANIM_DIE);
+		SetTurretAnim(TurretAnim::Die);
 
 		pev->solid = SOLID_NOT;
 		pev->angles.y = UTIL_AngleMod(pev->angles.y + RANDOM_LONG(0, 2) * 120);

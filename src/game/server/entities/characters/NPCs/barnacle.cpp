@@ -373,7 +373,7 @@ CBaseEntity* CBarnacle::TongueTouchEnt(float* pflLength)
 	float		length;
 
 	// trace once to hit architecture and see if the tongue needs to change position.
-	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 2048), ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 2048), IgnoreMonsters::Yes, ENT(pev), &tr);
 	length = fabs(pev->origin.z - tr.vecEndPos.z);
 	if (pflLength)
 	{

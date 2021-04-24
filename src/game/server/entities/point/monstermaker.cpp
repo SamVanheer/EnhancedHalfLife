@@ -179,7 +179,7 @@ void CMonsterMaker::MakeMonster()
 		// set altitude. Now that I'm activated, any breakables, etc should be out from under me. 
 		TraceResult tr;
 
-		UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 2048), ignore_monsters, ENT(pev), &tr);
+		UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 2048), IgnoreMonsters::Yes, ENT(pev), &tr);
 		m_flGround = tr.vecEndPos.z;
 	}
 

@@ -29,7 +29,7 @@ constexpr int SF_DETONATE = 0x0001;
 void CGrenade::Explode(Vector vecSrc, Vector vecAim)
 {
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -32), ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -32), IgnoreMonsters::Yes, ENT(pev), &tr);
 
 	Explode(&tr, DMG_BLAST);
 }
@@ -158,7 +158,7 @@ void CGrenade::Detonate()
 	Vector		vecSpot;// trace starts here!
 
 	vecSpot = pev->origin + Vector(0, 0, 8);
-	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -40), ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -40), IgnoreMonsters::Yes, ENT(pev), &tr);
 
 	Explode(&tr, DMG_BLAST);
 }
@@ -171,7 +171,7 @@ void CGrenade::ExplodeTouch(CBaseEntity* pOther)
 	pev->enemy = pOther->edict();
 
 	vecSpot = pev->origin - pev->velocity.Normalize() * 32;
-	UTIL_TraceLine(vecSpot, vecSpot + pev->velocity.Normalize() * 64, ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot, vecSpot + pev->velocity.Normalize() * 64, IgnoreMonsters::Yes, ENT(pev), &tr);
 
 	Explode(&tr, DMG_BLAST);
 }

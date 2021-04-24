@@ -390,7 +390,7 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 		nMaxHits--;
 
 		// ALERT( at_console, "." );
-		UTIL_TraceLine(vecSrc, vecDest, dont_ignore_monsters, pentIgnore, &tr);
+		UTIL_TraceLine(vecSrc, vecDest, IgnoreMonsters::No, pentIgnore, &tr);
 
 		if (tr.fAllSolid)
 			break;
@@ -456,11 +456,11 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 				// try punching through wall if secondary attack (primary is incapable of breaking through)
 				if (!m_fPrimaryFire)
 				{
-					UTIL_TraceLine(tr.vecEndPos + vecDir * 8, vecDest, dont_ignore_monsters, pentIgnore, &beam_tr);
+					UTIL_TraceLine(tr.vecEndPos + vecDir * 8, vecDest, IgnoreMonsters::No, pentIgnore, &beam_tr);
 					if (!beam_tr.fAllSolid)
 					{
 						// trace backwards to find exit point
-						UTIL_TraceLine(beam_tr.vecEndPos, tr.vecEndPos, dont_ignore_monsters, pentIgnore, &beam_tr);
+						UTIL_TraceLine(beam_tr.vecEndPos, tr.vecEndPos, IgnoreMonsters::No, pentIgnore, &beam_tr);
 
 						float n = (beam_tr.vecEndPos - tr.vecEndPos).Length();
 

@@ -393,7 +393,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 		{
 			Vector vecDest = m_hDead->pev->origin + Vector(0, 0, 38);
 			TraceResult trace;
-			UTIL_TraceHull(vecDest, vecDest, dont_ignore_monsters, human_hull, m_hDead->edict(), &trace);
+			UTIL_TraceHull(vecDest, vecDest, IgnoreMonsters::No, Hull::Human, m_hDead->edict(), &trace);
 
 			if (!trace.fStartSolid)
 			{
@@ -466,7 +466,7 @@ bool CISlave::CheckRangeAttack2(float flDot, float flDist)
 	{
 		TraceResult tr;
 
-		UTIL_TraceLine(EyePosition(), pEntity->EyePosition(), ignore_monsters, ENT(pev), &tr);
+		UTIL_TraceLine(EyePosition(), pEntity->EyePosition(), IgnoreMonsters::Yes, ENT(pev), &tr);
 		if (tr.flFraction == 1.0 || tr.pHit == pEntity->edict())
 		{
 			if (pEntity->pev->deadflag == DEAD_DEAD)
@@ -681,7 +681,7 @@ void CISlave::ArmBeam(int side)
 	{
 		Vector vecAim = gpGlobals->v_right * side * RANDOM_FLOAT(0, 1) + gpGlobals->v_up * RANDOM_FLOAT(-1, 1);
 		TraceResult tr1;
-		UTIL_TraceLine(vecSrc, vecSrc + vecAim * 512, dont_ignore_monsters, ENT(pev), &tr1);
+		UTIL_TraceLine(vecSrc, vecSrc + vecAim * 512, IgnoreMonsters::No, ENT(pev), &tr1);
 		if (flDist > tr1.flFraction)
 		{
 			tr = tr1;
@@ -759,7 +759,7 @@ void CISlave::ZapBeam(int side)
 	vecAim = ShootAtEnemy(vecSrc);
 	float deflection = 0.01;
 	vecAim = vecAim + side * gpGlobals->v_right * RANDOM_FLOAT(0, deflection) + gpGlobals->v_up * RANDOM_FLOAT(-deflection, deflection);
-	UTIL_TraceLine(vecSrc, vecSrc + vecAim * 1024, dont_ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecSrc, vecSrc + vecAim * 1024, IgnoreMonsters::No, ENT(pev), &tr);
 
 	m_pBeam[m_iBeams] = CBeam::BeamCreate("sprites/lgtning.spr", 50);
 	if (!m_pBeam[m_iBeams])

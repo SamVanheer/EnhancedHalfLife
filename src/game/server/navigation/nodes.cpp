@@ -124,7 +124,7 @@ entvars_t* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 
 				// trace from the node to the trigger, make sure it's one we can see from the node.
 				// !!!HACKHACK Use bodyqueue here cause there are no ents we really wish to ignore!
-				UTIL_TraceLine(pNode->m_vecOrigin, GetBrushModelOrigin(pevTrigger), ignore_monsters, g_pBodyQueueHead, &tr);
+				UTIL_TraceLine(pNode->m_vecOrigin, GetBrushModelOrigin(pevTrigger), IgnoreMonsters::Yes, g_pBodyQueueHead, &tr);
 
 
 				if (VARS(tr.pHit) == pevTrigger)
@@ -141,7 +141,7 @@ entvars_t* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 	}
 }
 
-bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODEQUERY queryType)
+bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NodeQuery queryType)
 {
 	edict_t* pentWorld;
 	CBaseEntity* pDoor;
@@ -194,7 +194,7 @@ bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODE
 			}
 			if ((afCapMask & bits_CAP_OPEN_DOORS))
 			{
-				if (!(pevLinkEnt->spawnflags & SF_DOOR_NOMONSTERS) || queryType == NODEGRAPH_STATIC)
+				if (!(pevLinkEnt->spawnflags & SF_DOOR_NOMONSTERS) || queryType == NodeQuery::Static)
 					return true;
 			}
 
@@ -202,7 +202,7 @@ bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NODE
 		}
 	}
 	// func_breakable	
-	else if (ClassnameIs(pevLinkEnt, "func_breakable") && queryType == NODEGRAPH_STATIC)
+	else if (ClassnameIs(pevLinkEnt, "func_breakable") && queryType == NodeQuery::Static)
 	{
 		return true;
 	}
@@ -624,7 +624,7 @@ int CGraph::FindShortestPath(int* piPath, int iStart, int iDest, int iHull, int 
 				if (m_pLinkPool[m_pNodes[iCurrentNode].m_iFirstLink + i].m_pLinkEnt != nullptr)
 				{// there's a brush ent in the way! Don't mark this node or put it into the queue unless the monster can negotiate it
 
-					if (!HandleLinkEnt(iCurrentNode, m_pLinkPool[m_pNodes[iCurrentNode].m_iFirstLink + i].m_pLinkEnt, afCapMask, NODEGRAPH_STATIC))
+					if (!HandleLinkEnt(iCurrentNode, m_pLinkPool[m_pNodes[iCurrentNode].m_iFirstLink + i].m_pLinkEnt, afCapMask, NodeQuery::Static))
 					{// monster should not try to go this way.
 						continue;
 					}
@@ -759,7 +759,7 @@ void CGraph::CheckNode(Vector vecOrigin, int iNode)
 		TraceResult tr;
 
 		// make sure that vecOrigin can trace to this node!
-		UTIL_TraceLine(vecOrigin, m_pNodes[iNode].m_vecOriginPeek, ignore_monsters, nullptr, &tr);
+		UTIL_TraceLine(vecOrigin, m_pNodes[iNode].m_vecOriginPeek, IgnoreMonsters::Yes, nullptr, &tr);
 
 		if (tr.flFraction == 1.0)
 		{
@@ -1133,7 +1133,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 
 			UTIL_TraceLine(m_pNodes[i].m_vecOrigin,
 				m_pNodes[j].m_vecOrigin,
-				ignore_monsters,
+				IgnoreMonsters::Yes,
 				g_pBodyQueueHead,//!!!HACKHACK no real ent to supply here, using a global we don't care about
 				&tr);
 
@@ -1148,7 +1148,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 
 				UTIL_TraceLine(m_pNodes[j].m_vecOrigin,
 					m_pNodes[i].m_vecOrigin,
-					ignore_monsters,
+					IgnoreMonsters::Yes,
 					g_pBodyQueueHead,//!!!HACKHACK no real ent to supply here, using a global we don't care about
 					&tr);
 
@@ -1603,7 +1603,7 @@ void CTestHull::BuildNodeGraph()
 
 			UTIL_TraceLine(WorldGraph.m_pNodes[i].m_vecOrigin,
 				WorldGraph.m_pNodes[i].m_vecOrigin - Vector(0, 0, 384),
-				ignore_monsters,
+				IgnoreMonsters::Yes,
 				g_pBodyQueueHead,//!!!HACKHACK no real ent to supply here, using a global we don't care about
 				&tr);
 
@@ -1611,7 +1611,7 @@ void CTestHull::BuildNodeGraph()
 			TraceResult	trEnt;
 			UTIL_TraceLine(WorldGraph.m_pNodes[i].m_vecOrigin,
 				WorldGraph.m_pNodes[i].m_vecOrigin - Vector(0, 0, 384),
-				dont_ignore_monsters,
+				IgnoreMonsters::No,
 				g_pBodyQueueHead,//!!!HACKHACK no real ent to supply here, using a global we don't care about
 				&trEnt);
 
@@ -1775,7 +1775,7 @@ void CTestHull::BuildNodeGraph()
 				{
 					TraceResult tr;
 
-					UTIL_TraceHull(pSrcNode->m_vecOrigin + Vector(0, 0, 32), pDestNode->m_vecOriginPeek + Vector(0, 0, 32), ignore_monsters, large_hull, ENT(pev), &tr);
+					UTIL_TraceHull(pSrcNode->m_vecOrigin + Vector(0, 0, 32), pDestNode->m_vecOriginPeek + Vector(0, 0, 32), IgnoreMonsters::Yes, Hull::Large, ENT(pev), &tr);
 					if (tr.fStartSolid || tr.flFraction < 1.0)
 					{
 						pTempPool[pSrcNode->m_iFirstLink + j].m_afLinkInfo &= ~bits_LINK_FLY_HULL;

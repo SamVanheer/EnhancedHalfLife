@@ -256,14 +256,35 @@ void			UTIL_ShowMessageAll(const char* pString);
 void			UTIL_ScreenFadeAll(const Vector& color, float fadeTime, float holdTime, int alpha, int flags);
 void			UTIL_ScreenFade(CBaseEntity* pEntity, const Vector& color, float fadeTime, float fadeHold, int alpha, int flags);
 
-enum IGNORE_MONSTERS { ignore_monsters = 1, dont_ignore_monsters = 0, missile = 2 };
-enum IGNORE_GLASS { ignore_glass = 1, dont_ignore_glass = 0 };
-void			UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, edict_t* pentIgnore, TraceResult* ptr);
-void			UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, IGNORE_GLASS ignoreGlass, edict_t* pentIgnore, TraceResult* ptr);
-enum { point_hull = 0, human_hull = 1, large_hull = 2, head_hull = 3 };
-void			UTIL_TraceHull(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, int hullNumber, edict_t* pentIgnore, TraceResult* ptr);
+enum class IgnoreMonsters
+{
+	No = 0,
+	Yes = 1
+};
+
+enum class IgnoreGlass
+{
+	No = 0,
+	Yes = 1
+};
+
+void			UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, edict_t* pentIgnore, TraceResult* ptr);
+void			UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, IgnoreGlass ignoreGlass, edict_t* pentIgnore, TraceResult* ptr);
+
+//TODO: find other uses of these constants and use these constants for them
+enum class Hull
+{
+	Point = 0,
+	Human = 1,
+	Large = 2,
+	Head = 3
+};
+
+void			UTIL_TraceHull(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, Hull hullNumber, edict_t* pentIgnore, TraceResult* ptr);
 TraceResult	UTIL_GetGlobalTrace();
-void			UTIL_TraceModel(const Vector& vecStart, const Vector& vecEnd, int hullNumber, edict_t* pentModel, TraceResult* ptr);
+void			UTIL_TraceModel(const Vector& vecStart, const Vector& vecEnd, Hull hullNumber, edict_t* pentModel, TraceResult* ptr);
+void UTIL_TraceMonsterHull(edict_t* pEdict, const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, edict_t* pentIgnore, TraceResult* ptr);
+
 Vector		UTIL_GetAimVector(edict_t* pent, float flSpeed);
 int			UTIL_PointContents(const Vector& vec);
 

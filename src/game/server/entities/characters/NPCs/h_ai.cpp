@@ -49,7 +49,7 @@ bool IsBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetO
 		vecTarget.y += RANDOM_FLOAT(pevTarget->mins.y + flSize, pevTarget->maxs.y - flSize);
 		vecTarget.z += RANDOM_FLOAT(pevTarget->mins.z + flSize, pevTarget->maxs.z - flSize);
 
-		UTIL_TraceLine(vecLookerOrigin, vecTarget, ignore_monsters, ignore_glass, ENT(pevLooker)/*pentIgnore*/, &tr);
+		UTIL_TraceLine(vecLookerOrigin, vecTarget, IgnoreMonsters::Yes, IgnoreGlass::Yes, ENT(pevLooker)/*pentIgnore*/, &tr);
 
 		if (tr.flFraction == 1.0)
 		{
@@ -89,7 +89,7 @@ Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float 
 
 	// get a rough idea of how high it can be thrown
 	vecMidPoint = vecSpot1 + (vecSpot2 - vecSpot1) * 0.5;
-	UTIL_TraceLine(vecMidPoint, vecMidPoint + Vector(0, 0, 500), ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecMidPoint, vecMidPoint + Vector(0, 0, 500), IgnoreMonsters::Yes, ENT(pev), &tr);
 	vecMidPoint = tr.vecEndPos;
 	// (subtract 15 so the grenade doesn't hit the ceiling)
 	vecMidPoint.z -= 15;
@@ -123,7 +123,7 @@ Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float 
 	vecApex = vecSpot1 + vecGrenadeVel * time1;
 	vecApex.z = vecMidPoint.z;
 
-	UTIL_TraceLine(vecSpot1, vecApex, dont_ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, ENT(pev), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
@@ -131,7 +131,7 @@ Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float 
 	}
 
 	// UNDONE: either ignore monsters or change it to not care if we hit our enemy
-	UTIL_TraceLine(vecSpot2, vecApex, ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot2, vecApex, IgnoreMonsters::Yes, ENT(pev), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
@@ -158,14 +158,14 @@ Vector CheckThrow(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float
 	vecApex.z += 0.5 * flGravity * (time * 0.5) * (time * 0.5);
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSpot1, vecApex, dont_ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, ENT(pev), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
 		return vec3_origin;
 	}
 
-	UTIL_TraceLine(vecSpot2, vecApex, ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot2, vecApex, IgnoreMonsters::Yes, ENT(pev), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!

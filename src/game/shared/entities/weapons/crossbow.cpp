@@ -349,7 +349,7 @@ void CCrossbow::FireSniperBolt()
 	Vector vecSrc = m_pPlayer->GetGunPosition() - gpGlobals->v_up * 2;
 	Vector vecDir = gpGlobals->v_forward;
 
-	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_SIZE, dont_ignore_monsters, m_pPlayer->edict(), &tr);
+	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_SIZE, IgnoreMonsters::No, m_pPlayer->edict(), &tr);
 
 #ifndef CLIENT_DLL
 	if (tr.pHit->v.takedamage)

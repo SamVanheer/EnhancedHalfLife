@@ -234,7 +234,7 @@ void CEgon::Fire(const Vector& vecOrigSrc, const Vector& vecDir)
 
 	// ALERT( at_console, "." );
 
-	UTIL_TraceLine(vecOrigSrc, vecDest, dont_ignore_monsters, pentIgnore, &tr);
+	UTIL_TraceLine(vecOrigSrc, vecDest, IgnoreMonsters::No, pentIgnore, &tr);
 
 	if (tr.fAllSolid)
 		return;

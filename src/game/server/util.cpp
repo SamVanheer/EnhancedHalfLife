@@ -96,7 +96,7 @@ CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe)
 	TraceResult tr;
 
 	UTIL_MakeVectors(pMe->pev->v_angle);
-	UTIL_TraceLine(pMe->pev->origin + pMe->pev->view_ofs, pMe->pev->origin + pMe->pev->view_ofs + gpGlobals->v_forward * WORLD_SIZE, dont_ignore_monsters, pMe->edict(), &tr);
+	UTIL_TraceLine(pMe->pev->origin + pMe->pev->view_ofs, pMe->pev->origin + pMe->pev->view_ofs + gpGlobals->v_forward * WORLD_SIZE, IgnoreMonsters::No, pMe->edict(), &tr);
 	if (tr.flFraction != 1.0 && !IsNullEnt(tr.pHit))
 	{
 		CBaseEntity* pHit = CBaseEntity::Instance(tr.pHit);
@@ -111,7 +111,7 @@ void UTIL_ParametricRocket(entvars_t* pev, Vector vecOrigin, Vector vecAngles, e
 	// Trace out line to end pos
 	TraceResult tr;
 	UTIL_MakeVectors(vecAngles);
-	UTIL_TraceLine(pev->startpos, pev->startpos + gpGlobals->v_forward * WORLD_SIZE, ignore_monsters, owner, &tr);
+	UTIL_TraceLine(pev->startpos, pev->startpos + gpGlobals->v_forward * WORLD_SIZE, IgnoreMonsters::Yes, owner, &tr);
 	pev->endpos = tr.vecEndPos;
 
 	// Now compute how long it will take based on current velocity
@@ -756,34 +756,39 @@ void UTIL_ShowMessageAll(const char* pString)
 }
 
 // Overloaded to add IGNORE_GLASS
-void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, IGNORE_GLASS ignoreGlass, edict_t* pentIgnore, TraceResult* ptr)
+void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, IgnoreGlass ignoreGlass, edict_t* pentIgnore, TraceResult* ptr)
 {
 	TRACE_LINE(vecStart, vecEnd,
-		(igmon == ignore_monsters ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING) | (ignoreGlass ? TRACE_IGNORE_GLASS : TRACE_IGNORE_NOTHING),
+		(igmon == IgnoreMonsters::Yes ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING)
+		| (ignoreGlass == IgnoreGlass::Yes ? TRACE_IGNORE_GLASS : TRACE_IGNORE_NOTHING),
 		pentIgnore, ptr);
 }
 
 
-void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, edict_t* pentIgnore, TraceResult* ptr)
+void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, edict_t* pentIgnore, TraceResult* ptr)
 {
 	TRACE_LINE(vecStart, vecEnd,
-		(igmon == ignore_monsters ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING),
+		(igmon == IgnoreMonsters::Yes ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING),
 		pentIgnore, ptr);
 }
 
 
-void UTIL_TraceHull(const Vector& vecStart, const Vector& vecEnd, IGNORE_MONSTERS igmon, int hullNumber, edict_t* pentIgnore, TraceResult* ptr)
+void UTIL_TraceHull(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, Hull hullNumber, edict_t* pentIgnore, TraceResult* ptr)
 {
 	TRACE_HULL(vecStart, vecEnd,
-		(igmon == ignore_monsters ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING),
-		hullNumber, pentIgnore, ptr);
+		(igmon == IgnoreMonsters::Yes ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING),
+		static_cast<int>(hullNumber), pentIgnore, ptr);
 }
 
-void UTIL_TraceModel(const Vector& vecStart, const Vector& vecEnd, int hullNumber, edict_t* pentModel, TraceResult* ptr)
+void UTIL_TraceModel(const Vector& vecStart, const Vector& vecEnd, Hull hullNumber, edict_t* pentModel, TraceResult* ptr)
 {
-	g_engfuncs.pfnTraceModel(vecStart, vecEnd, hullNumber, pentModel, ptr);
+	g_engfuncs.pfnTraceModel(vecStart, vecEnd, static_cast<int>(hullNumber), pentModel, ptr);
 }
 
+void UTIL_TraceMonsterHull(edict_t* pEdict, const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, edict_t* pentIgnore, TraceResult* ptr)
+{
+	TRACE_MONSTER_HULL(pEdict, vecStart, vecEnd, igmon == IgnoreMonsters::Yes ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING, pentIgnore, ptr);
+}
 
 TraceResult UTIL_GetGlobalTrace()
 {

@@ -33,7 +33,7 @@ int CFlyingMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd,
 
 	TraceResult tr;
 
-	UTIL_TraceHull(vecStart + Vector(0, 0, 32), vecEnd + Vector(0, 0, 32), dont_ignore_monsters, large_hull, edict(), &tr);
+	UTIL_TraceHull(vecStart + Vector(0, 0, 32), vecEnd + Vector(0, 0, 32), IgnoreMonsters::No, Hull::Large, edict(), &tr);
 
 	// ALERT( at_console, "%.0f %.0f %.0f : ", vecStart.x, vecStart.y, vecStart.z );
 	// ALERT( at_console, "%.0f %.0f %.0f\n", vecEnd.x, vecEnd.y, vecEnd.z );
@@ -209,7 +209,7 @@ float CFlyingMonster::CeilingZ(const Vector& position)
 	Vector maxUp = position;
 	maxUp.z += WORLD_BOUNDARY;
 
-	UTIL_TraceLine(position, maxUp, ignore_monsters, nullptr, &tr);
+	UTIL_TraceLine(position, maxUp, IgnoreMonsters::Yes, nullptr, &tr);
 	if (tr.flFraction != 1.0)
 		maxUp.z = tr.vecEndPos.z;
 
@@ -273,7 +273,7 @@ float CFlyingMonster::FloorZ(const Vector& position)
 	Vector down = position;
 	down.z -= 2048;
 
-	UTIL_TraceLine(position, down, ignore_monsters, nullptr, &tr);
+	UTIL_TraceLine(position, down, IgnoreMonsters::Yes, nullptr, &tr);
 
 	if (tr.flFraction != 1.0)
 		return tr.vecEndPos.z;

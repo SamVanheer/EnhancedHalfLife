@@ -848,7 +848,7 @@ bool IsEnvSoundInRange(entvars_t* pev, entvars_t* pevTarget, float* pflRange)
 	float flRange;
 	TraceResult tr;
 
-	UTIL_TraceLine(vecSpot1, vecSpot2, ignore_monsters, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot1, vecSpot2, IgnoreMonsters::Yes, ENT(pev), &tr);
 
 	// check if line of sight crosses water boundary, or is blocked
 

@@ -649,7 +649,7 @@ CBaseEntity* CTalkMonster::EnumFriends(CBaseEntity* pPrevious, int listNumber, b
 			vecCheck = pFriend->pev->origin;
 			vecCheck.z = pFriend->pev->absmax.z;
 
-			UTIL_TraceLine(pev->origin, vecCheck, ignore_monsters, ENT(pev), &tr);
+			UTIL_TraceLine(pev->origin, vecCheck, IgnoreMonsters::Yes, ENT(pev), &tr);
 		}
 		else
 			tr.flFraction = 1.0;
@@ -819,7 +819,7 @@ CBaseEntity* CTalkMonster::FindNearestFriend(bool fPlayer)
 
 			if (range > (vecStart - vecCheck).Length())
 			{
-				UTIL_TraceLine(vecStart, vecCheck, ignore_monsters, ENT(pev), &tr);
+				UTIL_TraceLine(vecStart, vecCheck, IgnoreMonsters::Yes, ENT(pev), &tr);
 
 				if (tr.flFraction == 1.0)
 				{
