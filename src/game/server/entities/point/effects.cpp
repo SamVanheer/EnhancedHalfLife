@@ -12,6 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
+
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -23,11 +24,13 @@
 #include "func_break.h"
 #include "shake.h"
 
-constexpr int SF_GIBSHOOTER_REPEATABLE = 1; // allows a gibshooter to be refired
+constexpr int SF_GIBSHOOTER_REPEATABLE = 1; //!< allows a gibshooter to be refired
 
-constexpr int SF_FUNNEL_REVERSE = 1; // funnel effect repels particles instead of attracting them.
+constexpr int SF_FUNNEL_REVERSE = 1; //!< funnel effect repels particles instead of attracting them.
 
-// Lightning target, just alias landmark
+/**
+*	@brief Lightning target, just alias landmark
+*/
 LINK_ENTITY_TO_CLASS(info_target, CPointEntity);
 
 class CBubbling : public CBaseEntity
@@ -149,12 +152,6 @@ void CBubbling::FizzThink()
 		pev->nextthink = gpGlobals->time + 2.5 - (0.1 * m_frequency);
 }
 
-// --------------------------------------------------
-// 
-// Beams
-//
-// --------------------------------------------------
-
 LINK_ENTITY_TO_CLASS(beam, CBeam);
 
 void CBeam::Spawn()
@@ -183,7 +180,6 @@ void CBeam::SetEndEntity(int entityIndex)
 	pev->aiment = g_engfuncs.pfnPEntityOfEntIndex(entityIndex);
 }
 
-// These don't take attachments into account
 const Vector& CBeam::GetStartPos()
 {
 	if (GetType() == BEAM_ENTS)
@@ -1625,7 +1621,9 @@ void CTestEffect::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE us
 	m_flStartTime = gpGlobals->time;
 }
 
-// Blood effects
+/**
+*	@brief Blood effects
+*/
 class CBlood : public CPointEntity
 {
 public:
@@ -1733,7 +1731,15 @@ void CBlood::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType
 	}
 }
 
-// Screen shake
+/**
+*	@brief Screen shake
+*	@details pev->scale is amplitude
+*	pev->dmg_save is frequency
+*	pev->dmg_take is duration
+*	pev->dmg is radius
+*	radius of 0 means all players
+*	NOTE: UTIL_ScreenShake() will only shake players who are on the ground
+*/
 class CShake : public CPointEntity
 {
 public:
@@ -1755,17 +1761,10 @@ private:
 
 LINK_ENTITY_TO_CLASS(env_shake, CShake);
 
-// pev->scale is amplitude
-// pev->dmg_save is frequency
-// pev->dmg_take is duration
-// pev->dmg is radius
-// radius of 0 means all players
-// NOTE: UTIL_ScreenShake() will only shake players who are on the ground
-
-constexpr int SF_SHAKE_EVERYONE = 0x0001;	// Don't check radius
+constexpr int SF_SHAKE_EVERYONE = 0x0001;	//!< Don't check radius
 // UNDONE: These don't work yet
-constexpr int SF_SHAKE_DISRUPT = 0x0002;	// Disrupt controls
-constexpr int SF_SHAKE_INAIR = 0x0004;		// Shake players in air
+constexpr int SF_SHAKE_DISRUPT = 0x0002;	//!< Disrupt controls
+constexpr int SF_SHAKE_INAIR = 0x0004;		//!< Shake players in air
 
 void CShake::Spawn()
 {
@@ -1809,6 +1808,10 @@ void CShake::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType
 	UTIL_ScreenShake(pev->origin, Amplitude(), Frequency(), Duration(), Radius());
 }
 
+/**
+*	@details pev->dmg_take is duration
+*	pev->dmg_save is hold duration
+*/
 class CFade : public CPointEntity
 {
 public:
@@ -1826,10 +1829,8 @@ private:
 
 LINK_ENTITY_TO_CLASS(env_fade, CFade);
 
-// pev->dmg_take is duration
-// pev->dmg_save is hold duration
-constexpr int SF_FADE_IN = 0x0001;			// Fade in, not out
-constexpr int SF_FADE_MODULATE = 0x0002;	// Modulate, don't blend
+constexpr int SF_FADE_IN = 0x0001;			//!< Fade in, not out
+constexpr int SF_FADE_MODULATE = 0x0002;	//!< Modulate, don't blend
 constexpr int SF_FADE_ONLYONE = 0x0004;
 
 void CFade::Spawn()
@@ -1979,9 +1980,9 @@ void CMessage::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useTy
 	SUB_UseTargets(this, USE_TOGGLE, 0);
 }
 
-//=========================================================
-// FunnelEffect
-//=========================================================
+/**
+*	@brief Funnel Effect
+*/
 class CEnvFunnel : public CBaseDelay
 {
 public:
@@ -2031,11 +2032,11 @@ void CEnvFunnel::Spawn()
 	pev->effects = EF_NODRAW;
 }
 
-//=========================================================
-// Beverage Dispenser
-// overloaded pev->frags, is now a flag for whether or not a can is stuck in the dispenser. 
-// overloaded pev->health, is now how many cans remain in the machine.
-//=========================================================
+/**
+*	@brief Beverage Dispenser
+*	@details overloaded pev->frags, is now a flag for whether or not a can is stuck in the dispenser. 
+*	overloaded pev->health, is now how many cans remain in the machine.
+*/
 class CEnvBeverage : public CBaseDelay
 {
 public:
@@ -2092,9 +2093,9 @@ void CEnvBeverage::Spawn()
 	}
 }
 
-//=========================================================
-// Soda can
-//=========================================================
+/**
+*	@brief Soda can
+*/
 class CItemSoda : public CBaseEntity
 {
 public:

@@ -138,10 +138,17 @@ public:
 	inline int	GetStartEntity() { return pev->sequence & 0xFFF; }
 	inline int	GetEndEntity() { return pev->skin & 0xFFF; }
 
+	/**
+	*	@brief Doesn't take attachments into account
+	*/
 	const Vector& GetStartPos();
+
+	/**
+	*	@copydoc GetStartPos
+	*/
 	const Vector& GetEndPos();
 
-	Vector Center() override { return (GetStartPos() + GetEndPos()) * 0.5; } // center point of beam
+	Vector Center() override { return (GetStartPos() + GetEndPos()) * 0.5; } //!< center point of beam
 
 	inline int  GetTexture() { return pev->modelindex; }
 	inline int  GetWidth() { return pev->scale; }
@@ -151,7 +158,9 @@ public:
 	inline int  GetFrame() { return pev->frame; }
 	inline int  GetScrollRate() { return pev->animtime; }
 
-	// Call after you change start/end positions
+	/**
+	*	@brief Call after you change start/end positions
+	*/
 	void		RelinkBeam();
 	//	void		SetObjectCollisionBox();
 
@@ -176,8 +185,8 @@ public:
 	}
 };
 
-constexpr int SF_MESSAGE_ONCE = 0x0001;	// Fade in, not out
-constexpr int SF_MESSAGE_ALL = 0x0002;	// Send to all clients
+constexpr int SF_MESSAGE_ONCE = 0x0001;	//!< Fade in, not out
+constexpr int SF_MESSAGE_ALL = 0x0002;	//!< Send to all clients
 
 class CLaser : public CBeam
 {
