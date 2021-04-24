@@ -20,13 +20,11 @@
 
 edict_t* EHANDLE::Get()
 {
-	if (m_pent)
+	if (m_pent && m_pent->serialnumber == m_serialnumber)
 	{
-		if (m_pent->serialnumber == m_serialnumber)
-			return m_pent;
-		else
-			return nullptr;
+		return m_pent;
 	}
+
 	return nullptr;
 }
 

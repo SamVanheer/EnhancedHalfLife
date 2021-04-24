@@ -221,10 +221,8 @@ void CAmbientGeneric::Spawn()
 
 	m_fActive = false;
 
-	if (IsBitSet(pev->spawnflags, AMBIENT_SOUND_NOT_LOOPING))
-		m_fLooping = false;
-	else
-		m_fLooping = true;
+	m_fLooping = !IsBitSet(pev->spawnflags, AMBIENT_SOUND_NOT_LOOPING);
+
 	Precache();
 }
 
@@ -261,8 +259,7 @@ void CAmbientGeneric::RampThink()
 	int pitch = m_dpv.pitch;
 	int vol = m_dpv.vol;
 	int flags = 0;
-	int fChanged = 0;		// FALSE if pitch and vol remain unchanged this round
-	int	prev;
+	bool fChanged = false; // FALSE if pitch and vol remain unchanged this round
 
 	if (!m_dpv.spinup && !m_dpv.spindown && !m_dpv.fadein && !m_dpv.fadeout && !m_dpv.lfotype)
 		return;						// no ramps or lfo, stop thinking
@@ -272,7 +269,7 @@ void CAmbientGeneric::RampThink()
 	// ==============
 	if (m_dpv.spinup || m_dpv.spindown)
 	{
-		prev = m_dpv.pitchfrac >> 8;
+		const int prev = m_dpv.pitchfrac >> 8;
 
 		if (m_dpv.spinup > 0)
 			m_dpv.pitchfrac += m_dpv.spinup;
@@ -314,7 +311,7 @@ void CAmbientGeneric::RampThink()
 	// ==================
 	if (m_dpv.fadein || m_dpv.fadeout)
 	{
-		prev = m_dpv.volfrac >> 8;
+		const int prev = m_dpv.volfrac >> 8;
 
 		if (m_dpv.fadein > 0)
 			m_dpv.volfrac += m_dpv.fadein;
@@ -399,7 +396,7 @@ void CAmbientGeneric::RampThink()
 
 		if (m_dpv.lfomodpitch)
 		{
-			prev = pitch;
+			const int prev = pitch;
 
 			// pitch 0-255
 			pitch += ((m_dpv.lfomult - 128) * m_dpv.lfomodpitch) / 100;
@@ -415,7 +412,7 @@ void CAmbientGeneric::RampThink()
 		if (m_dpv.lfomodvol)
 		{
 			// vol 0-100
-			prev = vol;
+			const int prev = vol;
 
 			vol += ((m_dpv.lfomult - 128) * m_dpv.lfomodvol) / 100;
 
@@ -442,13 +439,10 @@ void CAmbientGeneric::RampThink()
 
 	// update ramps at 5hz
 	pev->nextthink = gpGlobals->time + 0.2;
-	return;
 }
 
 void CAmbientGeneric::InitModulationParms()
 {
-	int pitchinc;
-
 	m_dpv.volrun = pev->health * 10;	// 0 - 100
 	if (m_dpv.volrun > 100) m_dpv.volrun = 100;
 	if (m_dpv.volrun < 0) m_dpv.volrun = 0;
@@ -511,7 +505,7 @@ void CAmbientGeneric::InitModulationParms()
 
 	if (m_dpv.cspinup)
 	{
-		pitchinc = (255 - m_dpv.pitchstart) / m_dpv.cspinup;
+		const int pitchinc = (255 - m_dpv.pitchstart) / m_dpv.cspinup;
 
 		m_dpv.pitchrun = m_dpv.pitchstart + pitchinc;
 		if (m_dpv.pitchrun > 255) m_dpv.pitchrun = 255;
@@ -526,7 +520,6 @@ void CAmbientGeneric::InitModulationParms()
 void CAmbientGeneric::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	const char* szSoundFile = STRING(pev->message);
-	float fraction;
 
 	if (useType != USE_TOGGLE)
 	{
@@ -537,8 +530,7 @@ void CAmbientGeneric::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 
 	if (useType == USE_SET && m_fActive)		// Momentary buttons will pass down a float in here
 	{
-
-		fraction = value;
+		float fraction = value;
 
 		if (fraction > 1.0)
 			fraction = 1.0;
@@ -567,12 +559,10 @@ void CAmbientGeneric::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 
 			if (m_dpv.cspincount <= m_dpv.cspinup)
 			{
-				int pitchinc;
-
 				// start a new spinup
 				m_dpv.cspincount++;
 
-				pitchinc = (255 - m_dpv.pitchstart) / m_dpv.cspinup;
+				const int pitchinc = (255 - m_dpv.pitchstart) / m_dpv.cspinup;
 
 				m_dpv.spinup = m_dpv.spinupsav;
 				m_dpv.spindown = 0;
@@ -629,7 +619,6 @@ void CAmbientGeneric::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 			(m_dpv.vol * 0.01), m_flAttenuation, 0, m_dpv.pitch);
 
 		pev->nextthink = gpGlobals->time + 0.1;
-
 	}
 }
 
@@ -823,7 +812,6 @@ IMPLEMENT_SAVERESTORE(CEnvSound, CBaseEntity);
 
 void CEnvSound::KeyValue(KeyValueData* pkvd)
 {
-
 	if (AreStringsEqual(pkvd->szKeyName, "radius"))
 	{
 		m_flRadius = atof(pkvd->szValue);
@@ -842,10 +830,8 @@ void CEnvSound::KeyValue(KeyValueData* pkvd)
 bool IsEnvSoundInRange(entvars_t* pev, entvars_t* pevTarget, float* pflRange)
 {
 	CEnvSound* pSound = GetClassPtr((CEnvSound*)pev);
-	Vector vecSpot1 = pev->origin + pev->view_ofs;
-	Vector vecSpot2 = pevTarget->origin + pevTarget->view_ofs;
-	Vector vecRange;
-	float flRange;
+	const Vector vecSpot1 = pev->origin + pev->view_ofs;
+	const Vector vecSpot2 = pevTarget->origin + pevTarget->view_ofs;
 	TraceResult tr;
 
 	UTIL_TraceLine(vecSpot1, vecSpot2, IgnoreMonsters::Yes, ENT(pev), &tr);
@@ -857,8 +843,8 @@ bool IsEnvSoundInRange(entvars_t* pev, entvars_t* pevTarget, float* pflRange)
 
 	// calc range from sound entity to player
 
-	vecRange = tr.vecEndPos - vecSpot1;
-	flRange = vecRange.Length();
+	const Vector vecRange = tr.vecEndPos - vecSpot1;
+	const float flRange = vecRange.Length();
 
 	if (pSound->m_flRadius < flRange)
 		return false;
@@ -880,7 +866,6 @@ void CEnvSound::Think()
 	// cycle through visible clients on consecutive calls.
 
 	edict_t* pentPlayer = FIND_CLIENT_IN_PVS(edict());
-	CBasePlayer* pPlayer = nullptr;
 
 	if (IsNullEnt(pentPlayer))
 	{
@@ -889,7 +874,7 @@ void CEnvSound::Think()
 		return;
 	}
 
-	pPlayer = GetClassPtr((CBasePlayer*)VARS(pentPlayer));
+	CBasePlayer* pPlayer = GetClassPtr((CBasePlayer*)VARS(pentPlayer));
 	float flRange;
 
 	// check to see if this is the sound entity that is 
@@ -998,43 +983,33 @@ int gcallsentences = 0;
 
 void USENTENCEG_InitLRU(unsigned char* plru, int count)
 {
-	int i, j, k;
-	unsigned char temp;
-
 	if (!fSentencesInit)
 		return;
 
 	if (count > CSENTENCE_LRU_MAX)
 		count = CSENTENCE_LRU_MAX;
 
-	for (i = 0; i < count; i++)
+	for (int i = 0; i < count; i++)
 		plru[i] = (unsigned char)i;
 
 	// randomize array
-	for (i = 0; i < (count * 4); i++)
+	for (int i = 0; i < (count * 4); i++)
 	{
-		j = RANDOM_LONG(0, count - 1);
-		k = RANDOM_LONG(0, count - 1);
-		temp = plru[j];
-		plru[j] = plru[k];
-		plru[k] = temp;
+		const int j = RANDOM_LONG(0, count - 1);
+		const int k = RANDOM_LONG(0, count - 1);
+		std::swap(plru[j], plru[k]);
 	}
 }
 
 int USENTENCEG_PickSequential(int isentenceg, char* szfound, std::size_t foundSize, int ipick, int freset)
 {
-	char* szgroupname;
-	unsigned char count;
-	char sznum[8];
-
 	if (!fSentencesInit)
 		return -1;
 
 	if (isentenceg < 0)
 		return -1;
 
-	szgroupname = rgsentenceg[isentenceg].szgroupname;
-	count = rgsentenceg[isentenceg].count;
+	const unsigned char count = rgsentenceg[isentenceg].count;
 
 	if (count == 0)
 		return -1;
@@ -1042,8 +1017,11 @@ int USENTENCEG_PickSequential(int isentenceg, char* szfound, std::size_t foundSi
 	if (ipick >= count)
 		ipick = count - 1;
 
+	//TODO: can just use snprintf here
 	safe_strcpy(szfound, "!", foundSize);
-	safe_strcat(szfound, szgroupname, foundSize);
+	safe_strcat(szfound, rgsentenceg[isentenceg].szgroupname, foundSize);
+
+	char sznum[8];
 	snprintf(sznum, sizeof(sznum), "%d", ipick);
 	safe_strcat(szfound, sznum, foundSize);
 
@@ -1061,46 +1039,41 @@ int USENTENCEG_PickSequential(int isentenceg, char* szfound, std::size_t foundSi
 
 int USENTENCEG_Pick(int isentenceg, char* szfound, std::size_t foundSize)
 {
-	char* szgroupname;
-	unsigned char* plru;
-	unsigned char i;
-	unsigned char count;
-	char sznum[8];
-	unsigned char ipick;
-	bool ffound = false;
-
 	if (!fSentencesInit)
 		return -1;
 
 	if (isentenceg < 0)
 		return -1;
 
-	szgroupname = rgsentenceg[isentenceg].szgroupname;
-	count = rgsentenceg[isentenceg].count;
-	plru = rgsentenceg[isentenceg].rgblru;
+	const unsigned char count = rgsentenceg[isentenceg].count;
+	unsigned char* plru = rgsentenceg[isentenceg].rgblru;
 
-	while (!ffound)
+	//Try twice; once with current cache and once with a cleared cache
+	for (int j = 0; j < 2; ++j)
 	{
-		for (i = 0; i < count; i++)
+		for (int i = 0; i < count; i++)
+		{
 			if (plru[i] != 0xFF)
 			{
-				ipick = plru[i];
+				const unsigned char ipick = plru[i];
 				plru[i] = 0xFF;
-				ffound = true;
-				break;
-			}
 
-		if (!ffound)
-			USENTENCEG_InitLRU(plru, count);
-		else
-		{
-			safe_strcpy(szfound, "!", foundSize);
-			safe_strcat(szfound, szgroupname, foundSize);
-			snprintf(sznum, sizeof(sznum), "%d", ipick);
-			safe_strcat(szfound, sznum, foundSize);
-			return ipick;
+				//TODO: can just use snprintf here
+				safe_strcpy(szfound, "!", foundSize);
+				safe_strcat(szfound, rgsentenceg[isentenceg].szgroupname, foundSize);
+
+				char sznum[8];
+				snprintf(sznum, sizeof(sznum), "%d", ipick);
+				safe_strcat(szfound, sznum, foundSize);
+
+				return ipick;
+			}
 		}
+
+		//Reinitialize cache and try again
+		USENTENCEG_InitLRU(plru, count);
 	}
+
 	return -1;
 }
 
@@ -1108,19 +1081,14 @@ int USENTENCEG_Pick(int isentenceg, char* szfound, std::size_t foundSize)
 
 int SENTENCEG_GetIndex(const char* szgroupname)
 {
-	int i;
-
 	if (!fSentencesInit || !szgroupname)
 		return -1;
 
 	// search rgsentenceg for match on szgroupname
-
-	i = 0;
-	while (rgsentenceg[i].count)
+	for (int i = 0; rgsentenceg[i].count; ++i)
 	{
 		if (!strcmp(szgroupname, rgsentenceg[i].szgroupname))
 			return i;
-		i++;
 	}
 
 	return -1;
@@ -1134,15 +1102,11 @@ int SENTENCEG_PlayRndI(CBaseEntity* entity, int isentenceg,
 		return -1;
 	}
 
-	char name[64];
-	int ipick;
-
 	if (!fSentencesInit)
 		return -1;
 
-	name[0] = 0;
-
-	ipick = USENTENCEG_Pick(isentenceg, name, sizeof(name));
+	char name[64]{};
+	const int ipick = USENTENCEG_Pick(isentenceg, name, sizeof(name));
 	if (ipick > 0 && name)
 		entity->EmitSound(CHAN_VOICE, name, volume, attenuation, pitch, flags);
 	return ipick;
@@ -1156,23 +1120,18 @@ int SENTENCEG_PlayRndSz(CBaseEntity* entity, const char* szgroupname,
 		return -1;
 	}
 
-	char name[64];
-	int ipick;
-	int isentenceg;
-
 	if (!fSentencesInit)
 		return -1;
 
-	name[0] = 0;
-
-	isentenceg = SENTENCEG_GetIndex(szgroupname);
+	const int isentenceg = SENTENCEG_GetIndex(szgroupname);
 	if (isentenceg < 0)
 	{
 		ALERT(at_console, "No such sentence group %s\n", szgroupname);
 		return -1;
 	}
 
-	ipick = USENTENCEG_Pick(isentenceg, name, sizeof(name));
+	char name[64]{};
+	const int ipick = USENTENCEG_Pick(isentenceg, name, sizeof(name));
 	if (ipick >= 0 && name[0])
 		entity->EmitSound(CHAN_VOICE, name, volume, attenuation, pitch, flags);
 
@@ -1187,20 +1146,15 @@ int SENTENCEG_PlaySequentialSz(CBaseEntity* entity, const char* szgroupname,
 		return -1;
 	}
 
-	char name[64];
-	int ipicknext;
-	int isentenceg;
-
 	if (!fSentencesInit)
 		return -1;
 
-	name[0] = 0;
-
-	isentenceg = SENTENCEG_GetIndex(szgroupname);
+	const int isentenceg = SENTENCEG_GetIndex(szgroupname);
 	if (isentenceg < 0)
 		return -1;
 
-	ipicknext = USENTENCEG_PickSequential(isentenceg, name, sizeof(name), ipick, freset);
+	char name[64]{};
+	const int ipicknext = USENTENCEG_PickSequential(isentenceg, name, sizeof(name), ipick, freset);
 	if (ipicknext >= 0 && name[0])
 		entity->EmitSound(CHAN_VOICE, name, volume, attenuation, pitch, flags);
 	return ipicknext;
@@ -1213,17 +1167,18 @@ void SENTENCEG_Stop(CBaseEntity* entity, int isentenceg, int ipick)
 		return;
 	}
 
-	char buffer[64];
-	char sznum[8];
-
 	if (!fSentencesInit)
 		return;
 
 	if (isentenceg < 0 || ipick < 0)
 		return;
 
+	//TODO: can just use snprintf here
+	char buffer[64];
 	safe_strcpy(buffer, "!");
 	safe_strcat(buffer, rgsentenceg[isentenceg].szgroupname);
+
+	char sznum[8];
 	snprintf(sznum, sizeof(sznum), "%d", ipick);
 	safe_strcat(buffer, sznum);
 
@@ -1347,22 +1302,24 @@ void SENTENCEG_Init()
 
 int SENTENCEG_Lookup(const char* sample, char* sentencenum, std::size_t sentencenumSize)
 {
-	char sznum[32];
-
-	int i;
 	// this is a sentence name; lookup sentence number
 	// and give to engine as string.
-	for (i = 0; i < gcallsentences; i++)
+	for (int i = 0; i < gcallsentences; i++)
+	{
 		if (!stricmp(gszallsentencenames[i], sample + 1))
 		{
 			if (sentencenum)
 			{
+				//TODO: can just use snprintf here
 				safe_strcpy(sentencenum, "!", sentencenumSize);
+
+				char sznum[32];
 				snprintf(sznum, sizeof(sznum), "%d", i);
 				safe_strcat(sentencenum, sznum, sentencenumSize);
 			}
 			return i;
 		}
+	}
 	// sentence name not found!
 	return -1;
 }
@@ -1384,10 +1341,9 @@ void EMIT_SOUND_DYN(edict_t* entity, int channel, const char* sample, float volu
 
 void EMIT_SOUND_SUIT(CBaseEntity* entity, const char* sample)
 {
-	float fvol;
 	int pitch = PITCH_NORM;
 
-	fvol = CVAR_GET_FLOAT("suitvolume");
+	const float fvol = CVAR_GET_FLOAT("suitvolume");
 	if (RANDOM_LONG(0, 1))
 		pitch = RANDOM_LONG(0, 6) + 98;
 
@@ -1397,10 +1353,9 @@ void EMIT_SOUND_SUIT(CBaseEntity* entity, const char* sample)
 
 void EMIT_GROUPID_SUIT(CBaseEntity* entity, int isentenceg)
 {
-	float fvol;
 	int pitch = PITCH_NORM;
 
-	fvol = CVAR_GET_FLOAT("suitvolume");
+	const float fvol = CVAR_GET_FLOAT("suitvolume");
 	if (RANDOM_LONG(0, 1))
 		pitch = RANDOM_LONG(0, 6) + 98;
 
@@ -1410,10 +1365,9 @@ void EMIT_GROUPID_SUIT(CBaseEntity* entity, int isentenceg)
 
 void EMIT_GROUPNAME_SUIT(CBaseEntity* entity, const char* groupname)
 {
-	float fvol;
 	int pitch = PITCH_NORM;
 
-	fvol = CVAR_GET_FLOAT("suitvolume");
+	const float fvol = CVAR_GET_FLOAT("suitvolume");
 	if (RANDOM_LONG(0, 1))
 		pitch = RANDOM_LONG(0, 6) + 98;
 
@@ -1424,22 +1378,12 @@ void EMIT_GROUPNAME_SUIT(CBaseEntity* entity, const char* groupname)
 float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int iBulletType)
 {
 	// hit the world, try to play sound based on texture material type
-
-	char chTextureType;
-	float fvol;
-	float fvolbar;
-	char szbuffer[64];
-	const char* pTextureName;
-	const char* rgsz[4];
-	int cnt;
-	float fattn = ATTN_NORM;
-
 	if (!g_pGameRules->PlayTextureSounds())
 		return 0.0;
 
 	CBaseEntity* pEntity = CBaseEntity::Instance(ptr->pHit);
 
-	chTextureType = 0;
+	char chTextureType = 0;
 
 	if (pEntity && pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE)
 		// hit body
@@ -1451,6 +1395,7 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 		// find texture under strike, get material type
 
 		// get texture from entity or world (world is ent(0))
+		const char* pTextureName;
 		if (pEntity)
 			pTextureName = TRACE_TEXTURE(ENT(pEntity->pev), vecSrc, vecEnd);
 		else
@@ -1465,8 +1410,9 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 			if (*pTextureName == '{' || *pTextureName == '!' || *pTextureName == '~' || *pTextureName == ' ')
 				pTextureName++;
 			// '}}'
+
+			char szbuffer[64];
 			safe_strcpy(szbuffer, pTextureName);
-			szbuffer[CBTEXTURENAMEMAX - 1] = 0;
 
 			// ALERT ( at_console, "texture hit: %s\n", szbuffer);
 
@@ -1474,6 +1420,12 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 			chTextureType = TEXTURETYPE_Find(szbuffer);
 		}
 	}
+
+	float fvol;
+	float fvolbar;
+	const char* rgsz[4]{};
+	int cnt;
+	float fattn = ATTN_NORM;
 
 	switch (chTextureType)
 	{
@@ -1554,7 +1506,6 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 	else if (chTextureType == CHAR_TEX_COMPUTER)
 	{
 		// play random spark if computer
-
 		if (ptr->flFraction != 1.0 && RANDOM_LONG(0, 1))
 		{
 			UTIL_Sparks(ptr->vecEndPos);
@@ -1648,19 +1599,14 @@ void CSpeaker::Precache()
 
 void CSpeaker::SpeakerThink()
 {
-	const char* szSoundFile;
-	float flvolume = pev->health * 0.1;
-	float flattenuation = 0.3;
-	int flags = 0;
-	int pitch = 100;
-
-
 	// Wait for the talkmonster to finish first.
 	if (gpGlobals->time <= CTalkMonster::g_talkWaitTime)
 	{
 		pev->nextthink = CTalkMonster::g_talkWaitTime + RANDOM_FLOAT(5, 10);
 		return;
 	}
+
+	const char* szSoundFile;
 
 	if (m_preset)
 	{
@@ -1684,6 +1630,11 @@ void CSpeaker::SpeakerThink()
 	else
 		szSoundFile = STRING(pev->message);
 
+	const float flvolume = pev->health * 0.1;
+	const float flattenuation = 0.3;
+	const int flags = 0;
+	const int pitch = PITCH_NORM;
+
 	if (szSoundFile[0] == '!')
 	{
 		// play single sentence, one shot
@@ -1706,13 +1657,11 @@ void CSpeaker::SpeakerThink()
 
 		CTalkMonster::g_talkWaitTime = gpGlobals->time + 5;		// time delay until it's ok to speak: used so that two NPCs don't talk at once
 	}
-
-	return;
 }
 
 void CSpeaker::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
-	int fActive = (pev->nextthink > 0.0);
+	const bool fActive = (pev->nextthink > 0.0);
 
 	// fActive is true only if an announcement is pending
 
@@ -1740,8 +1689,6 @@ void CSpeaker::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	}
 
 	// Toggle announcements
-
-
 	if (fActive)
 	{
 		// turn off announcements
@@ -1756,7 +1703,6 @@ void CSpeaker::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 
 void CSpeaker::KeyValue(KeyValueData* pkvd)
 {
-
 	// preset
 	if (AreStringsEqual(pkvd->szKeyName, "preset"))
 	{

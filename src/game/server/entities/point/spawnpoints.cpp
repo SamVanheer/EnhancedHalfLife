@@ -45,12 +45,12 @@ bool CBaseDMStart::IsTriggered(CBaseEntity* pEntity)
 */
 bool IsSpawnPointValid(CBaseEntity* pPlayer, CBaseEntity* pSpot)
 {
-	CBaseEntity* ent = nullptr;
-
 	if (!pSpot->IsTriggered(pPlayer))
 	{
 		return false;
 	}
+
+	CBaseEntity* ent = nullptr;
 
 	while ((ent = UTIL_FindEntityInSphere(ent, pSpot->pev->origin, 128)) != nullptr)
 	{
@@ -68,7 +68,6 @@ bool IsSpawnPointValid(CBaseEntity* pPlayer, CBaseEntity* pSpot)
 static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 {
 	CBaseEntity* pSpot;
-	edict_t* player = pPlayer->edict();
 
 	//TODO: maybe delegate parts of this to gamerules instead of checking manually
 	// choose a info_player_deathmatch point
@@ -117,6 +116,8 @@ static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 	 // we haven't found a place to spawn yet,  so kill any guy at the first spawn point and spawn there
 		if (!IsNullEnt(pSpot))
 		{
+			edict_t* player = pPlayer->edict();
+
 			CBaseEntity* ent = nullptr;
 			while ((ent = UTIL_FindEntityInSphere(ent, pSpot->pev->origin, 128)) != nullptr)
 			{

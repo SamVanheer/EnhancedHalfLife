@@ -118,9 +118,7 @@ static char st_szNextSpot[MAX_MAPNAME_LENGTH];
 
 edict_t* CChangeLevel::FindLandmark(const char* pLandmarkName)
 {
-	edict_t* pentLandmark;
-
-	pentLandmark = FIND_ENTITY_BY_STRING(nullptr, "targetname", pLandmarkName);
+	edict_t* pentLandmark = FIND_ENTITY_BY_STRING(nullptr, "targetname", pLandmarkName);
 	while (!IsNullEnt(pentLandmark))
 	{
 		// Found the landmark
@@ -140,9 +138,6 @@ void CChangeLevel::UseChangeLevel(CBaseEntity* pActivator, CBaseEntity* pCaller,
 
 void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 {
-	edict_t* pentLandmark;
-	LEVELLIST	levels[16];
-
 	ASSERT(!AreStringsEqual(m_szMapName, ""));
 
 	if (!g_pGameRules->AreChangeLevelsAllowed())
@@ -183,12 +178,13 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 	st_szNextSpot[0] = 0;	// Init landmark to NULL
 
 	// look for a landmark entity		
-	pentLandmark = FindLandmark(m_szLandmarkName);
+	edict_t* pentLandmark = FindLandmark(m_szLandmarkName);
 	if (!IsNullEnt(pentLandmark))
 	{
 		safe_strcpy(st_szNextSpot, m_szLandmarkName);
 		gpGlobals->vecLandmarkOffset = VARS(pentLandmark)->origin;
 	}
+	//LEVELLIST	levels[16];
 	//	ALERT( at_console, "Level touches %d levels\n", ChangeList( levels, 16 ) );
 	ALERT(at_console, "CHANGE LEVEL: %s %s\n", st_szNextMap, st_szNextSpot);
 	CHANGE_LEVEL(st_szNextMap, st_szNextSpot);
@@ -204,12 +200,10 @@ void CChangeLevel::TouchChangeLevel(CBaseEntity* pOther)
 
 bool CChangeLevel::AddTransitionToList(LEVELLIST* pLevelList, int listCount, const char* pMapName, const char* pLandmarkName, edict_t* pentLandmark)
 {
-	int i;
-
 	if (!pLevelList || !pMapName || !pLandmarkName || !pentLandmark)
 		return false;
 
-	for (i = 0; i < listCount; i++)
+	for (int i = 0; i < listCount; i++)
 	{
 		if (pLevelList[i].pentLandmark == pentLandmark && strcmp(pLevelList[i].mapName, pMapName) == 0)
 			return false;
@@ -224,8 +218,6 @@ bool CChangeLevel::AddTransitionToList(LEVELLIST* pLevelList, int listCount, con
 
 bool CChangeLevel::InTransitionVolume(CBaseEntity* pEntity, char* pVolumeName)
 {
-	edict_t* pentVolume;
-
 	if (pEntity->ObjectCaps() & FCAP_FORCE_TRANSITION)
 		return true;
 
@@ -238,7 +230,7 @@ bool CChangeLevel::InTransitionVolume(CBaseEntity* pEntity, char* pVolumeName)
 
 	bool inVolume = true;	// Unless we find a trigger_transition, everything is in the volume
 
-	pentVolume = FIND_ENTITY_BY_TARGETNAME(nullptr, pVolumeName);
+	edict_t* pentVolume = FIND_ENTITY_BY_TARGETNAME(nullptr, pVolumeName);
 	while (!IsNullEnt(pentVolume))
 	{
 		CBaseEntity* pVolume = CBaseEntity::Instance(pentVolume);
@@ -265,15 +257,13 @@ constexpr int MAX_ENTITY = 512;
 // Can we make this more elegant?
 int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 {
-	edict_t* pentChangelevel, * pentLandmark;
-	int			i, count;
-
-	count = 0;
-
 	// Find all of the possible level changes on this BSP
-	pentChangelevel = FIND_ENTITY_BY_STRING(nullptr, "classname", "trigger_changelevel");
+	edict_t* pentChangelevel = FIND_ENTITY_BY_STRING(nullptr, "classname", "trigger_changelevel");
 	if (IsNullEnt(pentChangelevel))
 		return 0;
+
+	int count = 0;
+
 	while (!IsNullEnt(pentChangelevel))
 	{
 		CChangeLevel* pTrigger;
@@ -282,7 +272,7 @@ int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 		if (pTrigger)
 		{
 			// Find the corresponding landmark
-			pentLandmark = FindLandmark(pTrigger->m_szLandmarkName);
+			edict_t*  pentLandmark = FindLandmark(pTrigger->m_szLandmarkName);
 			if (pentLandmark)
 			{
 				// Build a list of unique transitions
@@ -301,11 +291,11 @@ int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 	{
 		CSave saveHelper((SAVERESTOREDATA*)gpGlobals->pSaveData);
 
-		for (i = 0; i < count; i++)
+		for (int i = 0; i < count; i++)
 		{
-			int j, entityCount = 0;
-			CBaseEntity* pEntList[MAX_ENTITY];
-			int			 entityFlags[MAX_ENTITY];
+			int entityCount = 0;
+			CBaseEntity* pEntList[MAX_ENTITY]{};
+			int entityFlags[MAX_ENTITY]{};
 
 			// Follow the linked list of entities in the PVS of the transition landmark
 			edict_t* pent = UTIL_EntitiesInPVS(pLevelList[i].pentLandmark);
@@ -344,7 +334,7 @@ int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 				pent = pent->v.chain;
 			}
 
-			for (j = 0; j < entityCount; j++)
+			for (int j = 0; j < entityCount; j++)
 			{
 				// Check to make sure the entity isn't screened out by a trigger_transition
 				if (entityFlags[j] && InTransitionVolume(pEntList[j], pLevelList[i].landmarkName))
@@ -499,7 +489,7 @@ void CRevertSaved::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE u
 void CRevertSaved::MessageThink()
 {
 	UTIL_ShowMessageAll(STRING(pev->message));
-	float nextThink = LoadTime() - MessageTime();
+	const float nextThink = LoadTime() - MessageTime();
 	if (nextThink > 0)
 	{
 		pev->nextthink = gpGlobals->time + nextThink;

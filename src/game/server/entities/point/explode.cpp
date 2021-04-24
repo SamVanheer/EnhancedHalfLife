@@ -123,8 +123,7 @@ void CEnvExplosion::Spawn()
 	}
 	*/
 
-	float flSpriteScale;
-	flSpriteScale = (m_iMagnitude - 50) * 0.6;
+	float flSpriteScale = (m_iMagnitude - 50) * 0.6;
 
 	/*
 	if ( flSpriteScale > 50 )
@@ -142,15 +141,11 @@ void CEnvExplosion::Spawn()
 
 void CEnvExplosion::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
-	TraceResult tr;
-
 	pev->model = iStringNull;//invisible
 	pev->solid = SOLID_NOT;// intangible
 
-	Vector		vecSpot;// trace starts here!
-
-	vecSpot = pev->origin + Vector(0, 0, 8);
-
+	const Vector vecSpot = pev->origin + Vector(0, 0, 8); // trace starts here!
+	TraceResult tr;
 	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -40), IgnoreMonsters::Yes, ENT(pev), &tr);
 
 	// Pull out of the wall a bit
@@ -216,7 +211,7 @@ void CEnvExplosion::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE 
 	// draw sparks
 	if (!(pev->spawnflags & SF_ENVEXPLOSION_NOSPARKS))
 	{
-		int sparkCount = RANDOM_LONG(0, 3);
+		const int sparkCount = RANDOM_LONG(0, 3);
 
 		for (int i = 0; i < sparkCount; i++)
 		{

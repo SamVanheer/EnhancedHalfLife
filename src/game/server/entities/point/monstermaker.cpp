@@ -90,7 +90,6 @@ IMPLEMENT_SAVERESTORE(CMonsterMaker, CBaseMonster);
 
 void CMonsterMaker::KeyValue(KeyValueData* pkvd)
 {
-
 	if (AreStringsEqual(pkvd->szKeyName, "monstercount"))
 	{
 		m_cNumMonsters = atoi(pkvd->szValue);
@@ -145,15 +144,7 @@ void CMonsterMaker::Spawn()
 		SetThink(&CMonsterMaker::MakerThink);
 	}
 
-	if (m_cNumMonsters == 1)
-	{
-		m_fFadeChildren = false;
-	}
-	else
-	{
-		m_fFadeChildren = true;
-	}
-
+	m_fFadeChildren = m_cNumMonsters != 1;
 	m_flGround = 0;
 }
 
@@ -166,9 +157,6 @@ void CMonsterMaker::Precache()
 
 void CMonsterMaker::MakeMonster()
 {
-	edict_t* pent;
-	entvars_t* pevCreate;
-
 	if (m_iMaxLiveChildren > 0 && m_cLiveChildren >= m_iMaxLiveChildren)
 	{// not allowed to make a new one yet. Too many live ones out right now.
 		return;
@@ -196,7 +184,7 @@ void CMonsterMaker::MakeMonster()
 		return;
 	}
 
-	pent = CREATE_NAMED_ENTITY(m_iszMonsterClassname);
+	edict_t* pent = CREATE_NAMED_ENTITY(m_iszMonsterClassname);
 
 	if (IsNullEnt(pent))
 	{
@@ -211,7 +199,7 @@ void CMonsterMaker::MakeMonster()
 		FireTargets(STRING(pev->target), this, this, USE_TOGGLE, 0);
 	}
 
-	pevCreate = VARS(pent);
+	entvars_t* pevCreate = VARS(pent);
 	pevCreate->origin = pev->origin;
 	pevCreate->angles = pev->angles;
 	SetBits(pevCreate->spawnflags, SF_MONSTER_FALL_TO_GROUND);

@@ -251,4 +251,3 @@ void CBaseAnimating::SetSequenceBox()
 		UTIL_SetSize(pev, rmin, rmax);
 	}
 }
-

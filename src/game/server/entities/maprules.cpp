@@ -45,14 +45,12 @@ TYPEDESCRIPTION	CRuleEntity::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CRuleEntity, CBaseEntity);
 
-
 void CRuleEntity::Spawn()
 {
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_NONE;
 	pev->effects = EF_NODRAW;
 }
-
 
 void CRuleEntity::KeyValue(KeyValueData* pkvd)
 {
@@ -69,10 +67,7 @@ bool CRuleEntity::CanFireForActivator(CBaseEntity* pActivator)
 {
 	if (!IsStringNull(m_iszMaster))
 	{
-		if (UTIL_IsMasterTriggered(m_iszMaster, pActivator))
-			return true;
-		else
-			return false;
+		return UTIL_IsMasterTriggered(m_iszMaster, pActivator);
 	}
 
 	return true;
@@ -102,8 +97,6 @@ class CRuleBrushEntity : public CRuleEntity
 {
 public:
 	void		Spawn() override;
-
-private:
 };
 
 void CRuleBrushEntity::Spawn()
@@ -139,12 +132,10 @@ private:
 
 LINK_ENTITY_TO_CLASS(game_score, CGameScore);
 
-
 void CGameScore::Spawn()
 {
 	CRulePointEntity::Spawn();
 }
-
 
 void CGameScore::KeyValue(KeyValueData* pkvd)
 {
@@ -156,8 +147,6 @@ void CGameScore::KeyValue(KeyValueData* pkvd)
 	else
 		CRulePointEntity::KeyValue(pkvd);
 }
-
-
 
 void CGameScore::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
@@ -186,11 +175,9 @@ class CGameEnd : public CRulePointEntity
 {
 public:
 	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
-private:
 };
 
 LINK_ENTITY_TO_CLASS(game_end, CGameEnd);
-
 
 void CGameEnd::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
@@ -386,7 +373,6 @@ void CGameTeamMaster::KeyValue(KeyValueData* pkvd)
 		CRulePointEntity::KeyValue(pkvd);
 }
 
-
 void CGameTeamMaster::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	if (!CanFireForActivator(pActivator))
@@ -413,12 +399,10 @@ void CGameTeamMaster::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYP
 	}
 }
 
-
 bool CGameTeamMaster::IsTriggered(CBaseEntity* pActivator)
 {
 	return TeamMatch(pActivator);
 }
-
 
 const char* CGameTeamMaster::TeamID()
 {
@@ -427,7 +411,6 @@ const char* CGameTeamMaster::TeamID()
 
 	return g_pGameRules->GetIndexedTeamName(m_teamIndex);		// UNDONE: Fill this in with the team from the "teamlist"
 }
-
 
 bool CGameTeamMaster::TeamMatch(CBaseEntity* pActivator)
 {
@@ -454,8 +437,6 @@ public:
 	void		Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
 	inline bool RemoveOnFire() { return (pev->spawnflags & SF_TEAMSET_FIREONCE) != 0; }
 	inline bool ShouldClearTeam() { return (pev->spawnflags & SF_TEAMSET_CLEARTEAM) != 0; }
-
-private:
 };
 
 LINK_ENTITY_TO_CLASS(game_team_set, CGameTeamSet);
@@ -541,17 +522,15 @@ void CGamePlayerZone::KeyValue(KeyValueData* pkvd)
 
 void CGamePlayerZone::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
-	int playersInCount = 0;
-	int playersOutCount = 0;
-
 	if (!CanFireForActivator(pActivator))
 		return;
 
-	CBasePlayer* pPlayer = nullptr;
+	int playersInCount = 0;
+	int playersOutCount = 0;
 
 	for (int i = 1; i <= gpGlobals->maxClients; i++)
 	{
-		pPlayer = UTIL_PlayerByIndex(i);
+		auto pPlayer = UTIL_PlayerByIndex(i);
 		if (pPlayer)
 		{
 			TraceResult trace;
@@ -606,8 +585,6 @@ class CGamePlayerHurt : public CRulePointEntity
 public:
 	void		Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
 	inline bool RemoveOnFire() { return (pev->spawnflags & SF_PKILL_FIREONCE) != 0; }
-
-private:
 };
 
 LINK_ENTITY_TO_CLASS(game_player_hurt, CGamePlayerHurt);
@@ -673,7 +650,6 @@ void CGameCounter::Spawn()
 	CRulePointEntity::Spawn();
 }
 
-
 void CGameCounter::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	if (!CanFireForActivator(pActivator))
@@ -721,12 +697,9 @@ class CGameCounterSet : public CRulePointEntity
 public:
 	void		Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
 	inline bool RemoveOnFire() { return (pev->spawnflags & SF_GAMECOUNTSET_FIREONCE) != 0; }
-
-private:
 };
 
 LINK_ENTITY_TO_CLASS(game_counter_set, CGameCounterSet);
-
 
 void CGameCounterSet::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
@@ -768,7 +741,6 @@ private:
 
 LINK_ENTITY_TO_CLASS(game_player_equip, CGamePlayerEquip);
 
-
 void CGamePlayerEquip::KeyValue(KeyValueData* pkvd)
 {
 	CRulePointEntity::KeyValue(pkvd);
@@ -792,7 +764,6 @@ void CGamePlayerEquip::KeyValue(KeyValueData* pkvd)
 		}
 	}
 }
-
 
 void CGamePlayerEquip::Touch(CBaseEntity* pOther)
 {
@@ -828,7 +799,6 @@ void CGamePlayerEquip::EquipPlayer(CBaseEntity* pEntity)
 	}
 }
 
-
 void CGamePlayerEquip::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	EquipPlayer(pActivator);
@@ -860,7 +830,6 @@ private:
 
 LINK_ENTITY_TO_CLASS(game_player_team, CGamePlayerTeam);
 
-
 const char* CGamePlayerTeam::TargetTeamName(const char* pszTargetName)
 {
 	CBaseEntity* pTeamEntity = nullptr;
@@ -873,7 +842,6 @@ const char* CGamePlayerTeam::TargetTeamName(const char* pszTargetName)
 
 	return nullptr;
 }
-
 
 void CGamePlayerTeam::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
@@ -895,5 +863,3 @@ void CGamePlayerTeam::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYP
 		UTIL_Remove(this);
 	}
 }
-
-

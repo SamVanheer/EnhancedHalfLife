@@ -220,9 +220,7 @@ bool CMultiManager::HasTarget(string_t targetname)
 // so I changed it to use the standard target fire code, made it a little simpler.
 void CMultiManager::ManagerThink()
 {
-	float	time;
-
-	time = gpGlobals->time - m_startTime;
+	const float time = gpGlobals->time - m_startTime;
 	while (m_index < m_cTargets && m_flTargetDelay[m_index] <= time)
 	{
 		FireTargets(STRING(m_iTargetName[m_index]), m_hActivator, this, USE_TOGGLE, 0);
@@ -284,9 +282,7 @@ void CMultiManager::ManagerUse(CBaseEntity* pActivator, CBaseEntity* pCaller, US
 #if _DEBUG
 void CMultiManager::ManagerReport()
 {
-	int	cIndex;
-
-	for (cIndex = 0; cIndex < m_cTargets; cIndex++)
+	for (int cIndex = 0; cIndex < m_cTargets; cIndex++)
 	{
 		ALERT(at_console, "%s %f\n", STRING(m_iTargetName[cIndex]), m_flTargetDelay[cIndex]);
 	}
@@ -440,8 +436,6 @@ void CTriggerHurt::Spawn()
 
 void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
 {
-	float fldmg;
-
 	if (!pOther->pev->takedamage)
 		return;
 
@@ -465,7 +459,7 @@ void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
 			{// too early to hurt again, and not same frame with a different entity
 				if (pOther->IsPlayer())
 				{
-					int playerMask = 1 << (pOther->entindex() - 1);
+					const int playerMask = 1 << (pOther->entindex() - 1);
 
 					// If I've already touched this player (this time), then bail out
 					if (pev->impulse & playerMask)
@@ -487,7 +481,7 @@ void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
 			pev->impulse = 0;
 			if (pOther->IsPlayer())
 			{
-				int playerMask = 1 << (pOther->entindex() - 1);
+				const int playerMask = 1 << (pOther->entindex() - 1);
 
 				// Mark this player as touched
 				// BUGBUG - There can be only 32 players!
@@ -503,15 +497,12 @@ void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
 		}
 	}
 
-
-
 	// If this is time_based damage (poison, radiation), override the pev->dmg with a 
 	// default for the given damage type.  Monsters only take time-based damage
 	// while touching the trigger.  Player continues taking damage for a while after
 	// leaving the trigger
 
-	fldmg = pev->dmg * 0.5;	// 0.5 seconds worth of damage, pev->dmg is damage/second
-
+	const float fldmg = pev->dmg * 0.5; // 0.5 seconds worth of damage, pev->dmg is damage/second
 
 	// JAY: Cut this because it wasn't fully realized.  Damage is simpler now.
 #if 0
@@ -559,28 +550,17 @@ void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
 
 void CTriggerHurt::RadiationThink()
 {
-
-	edict_t* pentPlayer;
-	CBasePlayer* pPlayer = nullptr;
-	float flRange;
-	entvars_t* pevTarget;
-	Vector vecSpot1;
-	Vector vecSpot2;
-	Vector vecRange;
-	Vector origin;
-	Vector view_ofs;
-
 	// check to see if a player is in pvs
 	// if not, continue	
 
 	// set origin to center of trigger so that this check works
-	origin = pev->origin;
-	view_ofs = pev->view_ofs;
+	const Vector origin = pev->origin;
+	const Vector view_ofs = pev->view_ofs;
 
 	pev->origin = (pev->absmin + pev->absmax) * 0.5;
 	pev->view_ofs = pev->view_ofs * 0.0;
 
-	pentPlayer = FIND_CLIENT_IN_PVS(edict());
+	edict_t* pentPlayer = FIND_CLIENT_IN_PVS(edict());
 
 	pev->origin = origin;
 	pev->view_ofs = view_ofs;
@@ -589,18 +569,17 @@ void CTriggerHurt::RadiationThink()
 
 	if (!IsNullEnt(pentPlayer))
 	{
+		CBasePlayer* pPlayer = GetClassPtr((CBasePlayer*)VARS(pentPlayer));
 
-		pPlayer = GetClassPtr((CBasePlayer*)VARS(pentPlayer));
-
-		pevTarget = VARS(pentPlayer);
+		entvars_t* pevTarget = VARS(pentPlayer);
 
 		// get range to player;
 
-		vecSpot1 = (pev->absmin + pev->absmax) * 0.5;
-		vecSpot2 = (pevTarget->absmin + pevTarget->absmax) * 0.5;
+		const Vector vecSpot1 = (pev->absmin + pev->absmax) * 0.5;
+		const Vector vecSpot2 = (pevTarget->absmin + pevTarget->absmax) * 0.5;
 
-		vecRange = vecSpot1 - vecSpot2;
-		flRange = vecRange.Length();
+		const Vector vecRange = vecSpot1 - vecSpot2;
+		const float flRange = vecRange.Length();
 
 		// if player's current geiger counter range is larger
 		// than range to this trigger hurt, reset player's
@@ -687,11 +666,9 @@ void CTriggerCDAudio::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYP
 
 void PlayCDTrack(int iTrack)
 {
-	edict_t* pClient;
-
 	// manually find the single player. 
 	//TODO: make this work for all players
-	pClient = g_engfuncs.pfnPEntityOfEntIndex(1);
+	edict_t* pClient = g_engfuncs.pfnPEntityOfEntIndex(1);
 
 	// Can't play if the client is not connected!
 	if (!pClient)
@@ -755,10 +732,8 @@ void CTargetCDAudio::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 // only plays for ONE client, so only use in single play!
 void CTargetCDAudio::Think()
 {
-	edict_t* pClient;
-
 	// manually find the single player. 
-	pClient = g_engfuncs.pfnPEntityOfEntIndex(1);
+	edict_t* pClient = g_engfuncs.pfnPEntityOfEntIndex(1);
 
 	// Can't play if the client is not connected!
 	if (!pClient)
@@ -768,7 +743,6 @@ void CTargetCDAudio::Think()
 
 	if ((pClient->v.origin - pev->origin).Length() <= pev->scale)
 		Play();
-
 }
 
 void CTargetCDAudio::Play()
@@ -792,9 +766,7 @@ void CTriggerMultiple::Spawn()
 
 void CTriggerMultiple::MultiTouch(CBaseEntity* pOther)
 {
-	entvars_t* pevToucher;
-
-	pevToucher = pOther->pev;
+	entvars_t* pevToucher = pOther->pev;
 
 	// Only touch clients, monsters, or pushables (depending on flags)
 	if (((pevToucher->flags & FL_CLIENT) && !(pev->spawnflags & SF_TRIGGER_NOCLIENTS)) ||
@@ -864,7 +836,7 @@ void CTriggerCounter::CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, 
 	if (m_cTriggersLeft < 0)
 		return;
 
-	bool fTellActivator =
+	const bool fTellActivator =
 		(m_hActivator != nullptr) &&
 		m_hActivator->IsPlayer() &&
 		!IsBitSet(pev->spawnflags, SPAWNFLAG_NOMESSAGE);
@@ -994,7 +966,6 @@ void CTriggerTeleport::Spawn()
 void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 {
 	entvars_t* pevToucher = pOther->pev;
-	edict_t* pentTarget = nullptr;
 
 	// Only teleport monsters or clients
 	if (!IsBitSet(pevToucher->flags, FL_CLIENT | FL_MONSTER))
@@ -1019,7 +990,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 		}
 	}
 
-	pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
+	edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
 	if (IsNullEnt(pentTarget))
 		return;
 
@@ -1205,7 +1176,6 @@ void CTriggerCamera::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 		return;
 	}
 
-
 	if (IsBitSet(pev->spawnflags, SF_CAMERA_PLAYER_TAKECONTROL))
 	{
 		player->EnableControl(false);
@@ -1306,7 +1276,6 @@ void CTriggerCamera::FollowTarget()
 	pev->avelocity.x = dx * 40 * 0.01;
 	pev->avelocity.y = dy * 40 * 0.01;
 
-
 	if (!(IsBitSet(pev->spawnflags, SF_CAMERA_PLAYER_TAKECONTROL)))
 	{
 		pev->velocity = pev->velocity * 0.8;
@@ -1351,7 +1320,7 @@ void CTriggerCamera::Move()
 			if (m_pentPath->pev->speed != 0)
 				m_targetSpeed = m_pentPath->pev->speed;
 
-			Vector delta = m_pentPath->pev->origin - pev->origin;
+			const Vector delta = m_pentPath->pev->origin - pev->origin;
 			m_moveDistance = delta.Length();
 			pev->movedir = delta.Normalize();
 			m_flStopTime = gpGlobals->time + m_pentPath->GetDelay();
@@ -1363,6 +1332,6 @@ void CTriggerCamera::Move()
 	else
 		pev->speed = UTIL_Approach(m_targetSpeed, pev->speed, m_acceleration * gpGlobals->frametime);
 
-	float fraction = 2 * gpGlobals->frametime;
+	const float fraction = 2 * gpGlobals->frametime;
 	pev->velocity = ((pev->movedir * pev->speed) * fraction) + (pev->velocity * (1 - fraction));
 }

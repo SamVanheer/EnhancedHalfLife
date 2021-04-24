@@ -403,11 +403,12 @@ void CWreckage::Think()
 		}
 	}
 
-	Vector VecSrc;
-
-	VecSrc.x = RANDOM_FLOAT(pev->absmin.x, pev->absmax.x);
-	VecSrc.y = RANDOM_FLOAT(pev->absmin.y, pev->absmax.y);
-	VecSrc.z = RANDOM_FLOAT(pev->absmin.z, pev->absmax.z);
+	const Vector VecSrc
+	{
+		RANDOM_FLOAT(pev->absmin.x, pev->absmax.x),
+		RANDOM_FLOAT(pev->absmin.y, pev->absmax.y),
+		RANDOM_FLOAT(pev->absmin.z, pev->absmax.z)
+	};
 
 	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, VecSrc);
 	WRITE_BYTE(TE_SMOKE);

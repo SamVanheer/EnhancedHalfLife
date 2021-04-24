@@ -137,9 +137,9 @@ void CEnvLight::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "_light"))
 	{
-		int r, g, b, v, j;
+		int r, g, b, v;
 		char szColor[64];
-		j = sscanf(pkvd->szValue, "%d %d %d %d\n", &r, &g, &b, &v);
+		const int j = sscanf(pkvd->szValue, "%d %d %d %d\n", &r, &g, &b, &v);
 		if (j == 1)
 		{
 			g = b = r;
@@ -150,6 +150,7 @@ void CEnvLight::KeyValue(KeyValueData* pkvd)
 			g = g * (v / 255.0);
 			b = b * (v / 255.0);
 		}
+		//TODO: if j is neither 1 nor 4 these values could be wrong
 
 		// simulate qrad direct, ambient,and gamma adjustments, as well as engine scaling
 		r = pow(r / 114.0, 0.6) * 264;

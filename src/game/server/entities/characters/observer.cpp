@@ -28,14 +28,14 @@ void CBasePlayer::Observer_FindNextPlayer(bool bReverse)
 	// MOD AUTHORS: Modify the logic of this function if you want to restrict the observer to watching
 	//				only a subset of the players. e.g. Make it check the target's team.
 
-	int		iStart;
+	int iStart;
 	if (m_hObserverTarget)
 		iStart = ENTINDEX(m_hObserverTarget->edict());
 	else
 		iStart = ENTINDEX(edict());
-	int	    iCurrent = iStart;
+	int iCurrent = iStart;
 	m_hObserverTarget = nullptr;
-	int iDir = bReverse ? -1 : 1;
+	const int iDir = bReverse ? -1 : 1;
 
 	do
 	{
@@ -75,9 +75,6 @@ void CBasePlayer::Observer_FindNextPlayer(bool bReverse)
 		// Store the target in pev so the physics DLL can get to it
 		if (pev->iuser1 != OBS_ROAMING)
 			pev->iuser2 = ENTINDEX(m_hObserverTarget->edict());
-
-
-
 	}
 }
 

@@ -37,8 +37,6 @@ void CGrenade::Explode(Vector vecSrc, Vector vecAim)
 // UNDONE: temporary scorching for PreAlpha - find a less sleazy permenant solution.
 void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 {
-	float		flRndSound;// sound randomizer
-
 	pev->model = iStringNull;//invisible
 	pev->solid = SOLID_NOT;// intangible
 
@@ -50,7 +48,7 @@ void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 		pev->origin = pTrace->vecEndPos + (pTrace->vecPlaneNormal * (pev->dmg - 24) * 0.6);
 	}
 
-	int iContents = UTIL_PointContents(pev->origin);
+	const int iContents = UTIL_PointContents(pev->origin);
 
 	MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
 	WRITE_BYTE(TE_EXPLOSION);		// This makes a dynamic light and the explosion sprites/sound
@@ -90,7 +88,7 @@ void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 		UTIL_DecalTrace(pTrace, DECAL_SCORCH2);
 	}
 
-	flRndSound = RANDOM_FLOAT(0, 1);
+	const float flRndSound = RANDOM_FLOAT(0, 1); // sound randomizer
 
 	switch (RANDOM_LONG(0, 2))
 	{
@@ -106,7 +104,7 @@ void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 
 	if (iContents != CONTENTS_WATER)
 	{
-		int sparkCount = RANDOM_LONG(0, 3);
+		const int sparkCount = RANDOM_LONG(0, 3);
 		for (int i = 0; i < sparkCount; i++)
 			Create("spark_shower", pev->origin, pTrace->vecPlaneNormal, nullptr);
 	}
@@ -154,10 +152,8 @@ void CGrenade::PreDetonate()
 
 void CGrenade::Detonate()
 {
+	const Vector vecSpot = pev->origin + Vector(0, 0, 8); // trace starts here!
 	TraceResult tr;
-	Vector		vecSpot;// trace starts here!
-
-	vecSpot = pev->origin + Vector(0, 0, 8);
 	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -40), IgnoreMonsters::Yes, ENT(pev), &tr);
 
 	Explode(&tr, DMG_BLAST);
@@ -165,12 +161,10 @@ void CGrenade::Detonate()
 
 void CGrenade::ExplodeTouch(CBaseEntity* pOther)
 {
-	TraceResult tr;
-	Vector		vecSpot;// trace starts here!
-
 	pev->enemy = pOther->edict();
 
-	vecSpot = pev->origin - pev->velocity.Normalize() * 32;
+	const Vector vecSpot = pev->origin - pev->velocity.Normalize() * 32; // trace starts here!
+	TraceResult tr;
 	UTIL_TraceLine(vecSpot, vecSpot + pev->velocity.Normalize() * 64, IgnoreMonsters::Yes, ENT(pev), &tr);
 
 	Explode(&tr, DMG_BLAST);
@@ -202,8 +196,7 @@ void CGrenade::BounceTouch(CBaseEntity* pOther)
 	// only do damage if we're moving fairly fast
 	if (m_flNextAttack < gpGlobals->time && pev->velocity.Length() > 100)
 	{
-		entvars_t* pevOwner = VARS(pev->owner);
-		if (pevOwner)
+		if (entvars_t* pevOwner = VARS(pev->owner); pevOwner)
 		{
 			TraceResult tr = UTIL_GetGlobalTrace();
 			ClearMultiDamage();
@@ -213,13 +206,12 @@ void CGrenade::BounceTouch(CBaseEntity* pOther)
 		m_flNextAttack = gpGlobals->time + 1.0; // debounce
 	}
 
-	Vector vecTestVelocity;
 	// pev->avelocity = Vector (300, 300, 300);
 
 	// this is my heuristic for modulating the grenade velocity because grenades dropped purely vertical
 	// or thrown very far tend to slow down too quickly for me to always catch just by testing velocity. 
 	// trimming the Z velocity a bit seems to help quite a bit.
-	vecTestVelocity = pev->velocity;
+	Vector vecTestVelocity = pev->velocity;
 	vecTestVelocity.z *= 0.45;
 
 	if (!m_fRegisteredSound && vecTestVelocity.Length() <= 60)
@@ -251,7 +243,6 @@ void CGrenade::BounceTouch(CBaseEntity* pOther)
 		pev->framerate = 1;
 	else if (pev->framerate < 0.5)
 		pev->framerate = 0;
-
 }
 
 void CGrenade::SlideTouch(CBaseEntity* pOther)
@@ -425,23 +416,18 @@ CGrenade* CGrenade::ShootSatchelCharge(entvars_t* pevOwner, Vector vecStart, Vec
 
 void CGrenade::UseSatchelCharges(entvars_t* pevOwner, SATCHELCODE code)
 {
-	edict_t* pentFind;
-	edict_t* pentOwner;
-
 	if (!pevOwner)
 		return;
 
 	CBaseEntity* pOwner = CBaseEntity::Instance(pevOwner);
 
-	pentOwner = pOwner->edict();
-
-	pentFind = FIND_ENTITY_BY_CLASSNAME(nullptr, "grenade");
+	edict_t* pentFind = FIND_ENTITY_BY_CLASSNAME(nullptr, "grenade");
 	while (!IsNullEnt(pentFind))
 	{
 		CBaseEntity* pEnt = Instance(pentFind);
 		if (pEnt)
 		{
-			if (IsBitSet(pEnt->pev->spawnflags, SF_DETONATE) && pEnt->pev->owner == pentOwner)
+			if (IsBitSet(pEnt->pev->spawnflags, SF_DETONATE) && pEnt->pev->owner == pOwner->edict())
 			{
 				if (code == SATCHEL_DETONATE)
 					pEnt->Use(pOwner, pOwner, USE_ON, 0);

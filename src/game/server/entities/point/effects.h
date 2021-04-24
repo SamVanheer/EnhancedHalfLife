@@ -98,7 +98,6 @@ private:
 	float		m_maxFrame;
 };
 
-
 class CBeam : public CBaseEntity
 {
 public:
@@ -177,10 +176,8 @@ public:
 	}
 };
 
-
 constexpr int SF_MESSAGE_ONCE = 0x0001;	// Fade in, not out
 constexpr int SF_MESSAGE_ALL = 0x0002;	// Send to all clients
-
 
 class CLaser : public CBeam
 {

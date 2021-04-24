@@ -282,7 +282,7 @@ void CWorld::KeyValue(KeyValueData* pkvd)
 	{
 		// UNDONE: This is a gross hack!!! The CVAR is NOT sent over the client/server link
 		// but it will work for single player
-		int flag = atoi(pkvd->szValue);
+		const int flag = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 		if (flag)
 			pev->spawnflags |= SF_WORLD_DARK;

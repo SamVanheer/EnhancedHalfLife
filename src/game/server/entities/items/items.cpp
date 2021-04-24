@@ -159,9 +159,6 @@ class CItemBattery : public CItem
 		if ((pPlayer->pev->armorvalue < MAX_NORMAL_BATTERY) &&
 			(pPlayer->pev->weapons & (1 << WEAPON_SUIT)))
 		{
-			int pct;
-			char szcharge[64];
-
 			pPlayer->pev->armorvalue += gSkillData.batteryCapacity;
 			pPlayer->pev->armorvalue = std::min(pPlayer->pev->armorvalue, static_cast<float>(MAX_NORMAL_BATTERY));
 
@@ -174,11 +171,12 @@ class CItemBattery : public CItem
 
 			// Suit reports new power level
 			// For some reason this wasn't working in release build -- round it.
-			pct = (int)((float)(pPlayer->pev->armorvalue * 100.0) * (1.0 / MAX_NORMAL_BATTERY) + 0.5);
+			int pct = (int)((float)(pPlayer->pev->armorvalue * 100.0) * (1.0 / MAX_NORMAL_BATTERY) + 0.5);
 			pct = (pct / 5);
 			if (pct > 0)
 				pct--;
 
+			char szcharge[64];
 			snprintf(szcharge, sizeof(szcharge), "!HEV_%1dP", pct);
 
 			//EMIT_SOUND_SUIT(ENT(pev), szcharge);
