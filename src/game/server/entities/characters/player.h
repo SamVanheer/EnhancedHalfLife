@@ -324,7 +324,6 @@ public:
 	void GiveNamedItem(const char* szName);
 	void EnableControl(bool fControl);
 
-	//TODO: this API is misused by treating the result as a bool when it can return a non-zero value for invalid input
 	/**
 	*	@brief Returns the unique ID for the ammo, or -1 if error
 	*/
