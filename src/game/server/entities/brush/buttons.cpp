@@ -177,6 +177,12 @@ void CMultiSource::Spawn()
 
 void CMultiSource::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
+	//No known sources so do nothing. Prevents out of bounds access.
+	if (m_iTotal <= 0)
+	{
+		return;
+	}
+
 	int i = 0;
 
 	// Find the entity in our list
