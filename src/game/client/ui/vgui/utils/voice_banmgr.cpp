@@ -135,17 +135,6 @@ void CVoiceBanMgr::SetPlayerBan(char const playerID[16], bool bSquelch)
 	}
 }
 
-void CVoiceBanMgr::ForEachBannedPlayer(void (*callback)(char id[16]))
-{
-	for (int i = 0; i < 256; i++)
-	{
-		for (BannedPlayer* pCur = m_PlayerHash[i].m_pNext; pCur != &m_PlayerHash[i]; pCur = pCur->m_pNext)
-		{
-			callback(pCur->m_PlayerID);
-		}
-	}
-}
-
 void CVoiceBanMgr::Clear()
 {
 	// Tie off the hash table entries.

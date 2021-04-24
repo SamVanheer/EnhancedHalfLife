@@ -59,31 +59,31 @@ int __MsgFunc_ReqState(const char* pszName, int iSize, void* pbuf)
 	return true;
 }
 
-int g_BannedPlayerPrintCount;
-void ForEachBannedPlayer(char id[16])
-{
-	char str[256];
-	snprintf(str, sizeof(str), "Ban %d: %2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x\n",
-		g_BannedPlayerPrintCount++,
-		id[0], id[1], id[2], id[3],
-		id[4], id[5], id[6], id[7],
-		id[8], id[9], id[10], id[11],
-		id[12], id[13], id[14], id[15]
-	);
-#ifdef _WIN32
-	strupr(str);
-#endif
-	gEngfuncs.pfnConsolePrint(str);
-}
-
 void ShowBannedCallback()
 {
 	if (g_pInternalVoiceStatus)
 	{
-		g_BannedPlayerPrintCount = 0;
 		gEngfuncs.pfnConsolePrint("------- BANNED PLAYERS -------\n");
-		//TODO: rework ban manager to allow stateful callbacks so it doesn't use a global
-		g_pInternalVoiceStatus->m_BanMgr.ForEachBannedPlayer(ForEachBannedPlayer);
+
+		int bannedPlayerPrintCount = 0;
+
+		g_pInternalVoiceStatus->m_BanMgr.ForEachBannedPlayer([&](char id[16])
+			{
+				char str[256];
+				snprintf(str, sizeof(str), "Ban %d: %2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x\n",
+					bannedPlayerPrintCount++,
+					id[0], id[1], id[2], id[3],
+					id[4], id[5], id[6], id[7],
+					id[8], id[9], id[10], id[11],
+					id[12], id[13], id[14], id[15]
+				);
+#ifdef _WIN32
+				strupr(str);
+#endif
+				gEngfuncs.pfnConsolePrint(str);
+			}
+		);
+
 		gEngfuncs.pfnConsolePrint("------------------------------\n");
 	}
 }

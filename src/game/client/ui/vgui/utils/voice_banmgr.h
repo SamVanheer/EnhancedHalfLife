@@ -34,7 +34,17 @@ public:
 	/**
 	*	@brief Call your callback for each banned player.
 	*/
-	void		ForEachBannedPlayer(void (*callback)(char id[16]));
+	template<typename Callback>
+	void ForEachBannedPlayer(Callback callback)
+	{
+		for (int i = 0; i < 256; i++)
+		{
+			for (BannedPlayer* pCur = m_PlayerHash[i].m_pNext; pCur != &m_PlayerHash[i]; pCur = pCur->m_pNext)
+			{
+				callback(pCur->m_PlayerID);
+			}
+		}
+	}
 
 protected:
 
