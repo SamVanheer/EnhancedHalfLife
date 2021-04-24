@@ -394,34 +394,6 @@ class CNodeEnt : public CBaseEntity
 };
 
 /**
-*	@brief Priority queue (smallest item out first).
-*	TODO: can probably be replaced by std::priority_queue
-*/
-class CQueuePriority
-{
-public:
-
-	CQueuePriority();// constructor
-	inline int Full() { return (m_cSize == MAX_STACK_NODES); }
-	inline int Empty() { return (m_cSize == 0); }
-	//inline int Tail ( float & ) { return ( m_queue[ m_tail ].Id ); }
-	inline int Size() { return (m_cSize); }
-	void Insert(int, float);
-	int Remove(float&);
-
-private:
-	int	m_cSize;
-	struct tag_HEAP_NODE
-	{
-		int   Id;
-		float Priority;
-	} m_heap[MAX_STACK_NODES];
-	void Heap_SiftDown(int);
-	void Heap_SiftUp();
-
-};
-
-/**
 *	@brief these MUST coincide with the HINTS listed under info_node in the FGD file!
 */
 enum

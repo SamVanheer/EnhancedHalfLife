@@ -16,6 +16,7 @@
 #include <filesystem>
 #include <limits>
 #include <new>
+#include <queue>
 
 #include "extdll.h"
 #include "util.h"
@@ -550,7 +551,20 @@ int CGraph::FindShortestPath(int* piPath, int iStart, int iDest, int iHull, int 
 	}
 	else
 	{
-		CQueuePriority	queue;
+		struct NodeProximity
+		{
+			int NodeIndex;
+			float Distance;
+
+			bool operator<(const NodeProximity& other) const
+			{
+				//Sorted in reverse order, so use this operator
+				//The original queue used >= but this isn't allowed by priority_queue
+				return Distance > other.Distance;
+			}
+		};
+
+		std::priority_queue<NodeProximity> queue;
 
 		switch (iHull)
 		{
@@ -578,13 +592,17 @@ int CGraph::FindShortestPath(int* piPath, int iStart, int iDest, int iHull, int 
 
 		m_pNodes[iStart].m_flClosestSoFar = 0.0;
 		m_pNodes[iStart].m_iPreviousNode = iStart;// tag this as the origin node
-		queue.Insert(iStart, 0.0);// insert start node 
+		queue.emplace(iStart, 0.0f);// insert start node 
 
-		while (!queue.Empty())
+		while (!queue.empty())
 		{
 			// now pull a node out of the queue
-			float flCurrentDistance;
-			iCurrentNode = queue.Remove(flCurrentDistance);
+			const NodeProximity node = queue.top();
+
+			iCurrentNode = node.NodeIndex;
+			float flCurrentDistance = node.Distance;
+
+			queue.pop();
 
 			// For straight-line weights, the following Shortcut works. For arbitrary weights,
 			// it doesn't.
@@ -618,10 +636,11 @@ int CGraph::FindShortestPath(int* piPath, int iStart, int iDest, int iHull, int 
 					m_pNodes[iVisitNode].m_flClosestSoFar = flOurDistance;
 					m_pNodes[iVisitNode].m_iPreviousNode = iCurrentNode;
 
-					queue.Insert(iVisitNode, flOurDistance);
+					queue.emplace(iVisitNode, flOurDistance);
 				}
 			}
 		}
+
 		if (m_pNodes[iDest].m_flClosestSoFar < -0.5)
 		{// Destination is unreachable, no path found.
 			return 0;
@@ -1936,99 +1955,6 @@ void CTestHull::PathFind()
 		pNode = pNextNode;
 	}
 
-}
-
-CQueuePriority::CQueuePriority()
-{
-	m_cSize = 0;
-}
-
-void CQueuePriority::Insert(int iValue, float fPriority)
-{
-
-	if (Full())
-	{
-		printf("Queue is full!\n");
-		return;
-	}
-
-	m_heap[m_cSize].Priority = fPriority;
-	m_heap[m_cSize].Id = iValue;
-	m_cSize++;
-	Heap_SiftUp();
-}
-
-int CQueuePriority::Remove(float& fPriority)
-{
-	int iReturn = m_heap[0].Id;
-	fPriority = m_heap[0].Priority;
-
-	m_cSize--;
-
-	m_heap[0] = m_heap[m_cSize];
-
-	Heap_SiftDown(0);
-	return iReturn;
-}
-
-constexpr int HeapLeftChild(int x)
-{
-	return (2 * x) + 1;
-}
-
-constexpr int HeapRightChild(int x)
-{
-	return (2 * x) + 2;
-}
-
-constexpr int HeapParent(int x)
-{
-	return (x - 1) / 2;
-}
-
-void CQueuePriority::Heap_SiftDown(int iSubRoot)
-{
-	int parent = iSubRoot;
-	int child = HeapLeftChild(parent);
-
-	struct tag_HEAP_NODE Ref = m_heap[parent];
-
-	while (child < m_cSize)
-	{
-		int rightchild = HeapRightChild(parent);
-		if (rightchild < m_cSize)
-		{
-			if (m_heap[rightchild].Priority < m_heap[child].Priority)
-			{
-				child = rightchild;
-			}
-		}
-		if (Ref.Priority <= m_heap[child].Priority)
-			break;
-
-		m_heap[parent] = m_heap[child];
-		parent = child;
-		child = HeapLeftChild(parent);
-	}
-	m_heap[parent] = Ref;
-}
-
-void CQueuePriority::Heap_SiftUp()
-{
-	int child = m_cSize - 1;
-	while (child)
-	{
-		int parent = HeapParent(child);
-		if (m_heap[parent].Priority <= m_heap[child].Priority)
-			break;
-
-		struct tag_HEAP_NODE Tmp;
-		Tmp = m_heap[child];
-		m_heap[child] = m_heap[parent];
-		m_heap[parent] = Tmp;
-
-		child = parent;
-	}
 }
 
 bool CGraph::SetGraphPointers()
