@@ -33,6 +33,9 @@ constexpr int bits_NODE_AIR = 1 << 1;		//!< Air node, don't nudge.
 constexpr int bits_NODE_WATER = 1 << 2;		//!< Water node, don't nudge.
 constexpr int bits_NODE_GROUP_REALM = bits_NODE_LAND | bits_NODE_AIR | bits_NODE_WATER;
 
+constexpr int NODE_RANGE_MIN = 0;
+constexpr int NODE_RANGE_MAX = 255;
+
 /**
 *	@brief Instance of a node.
 */

@@ -87,9 +87,8 @@ bool InternalLoadGraphFromDisk(const std::unique_ptr<byte[]>& fileBuffer, std::s
 	{
 		for (std::size_t j = 0; j < 3; ++j)
 		{
-			//TODO: define constants for this range
-			if (diskGraph.RangeStart[j][i] < 0 || diskGraph.RangeStart[j][i] > 255
-				|| diskGraph.RangeEnd[j][i] < 0 || diskGraph.RangeEnd[j][i] > 255)
+			if (diskGraph.RangeStart[j][i] < NODE_RANGE_MIN || diskGraph.RangeStart[j][i] > NODE_RANGE_MAX
+				|| diskGraph.RangeEnd[j][i] < NODE_RANGE_MIN || diskGraph.RangeEnd[j][i] > NODE_RANGE_MAX)
 			{
 				return false;
 			}

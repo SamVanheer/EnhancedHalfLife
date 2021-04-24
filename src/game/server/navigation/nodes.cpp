@@ -719,12 +719,12 @@ void inline CalcBounds(int& Lower, int& Upper, int Goal, int Best)
 	int Temp = 2 * Goal - Best;
 	if (Best > Goal)
 	{
-		Lower = std::max(0, Temp);
+		Lower = std::max(NODE_RANGE_MIN, Temp);
 		Upper = Best;
 	}
 	else
 	{
-		Upper = std::min(255, Temp);
+		Upper = std::min(NODE_RANGE_MAX, Temp);
 		Lower = Best;
 	}
 }
@@ -831,12 +831,12 @@ int	CGraph::FindNearestNode(const Vector& vecOrigin, int afNodeTypes)
 	// we have no visible point at all to start with, then don't restrict the limits.
 	//
 #if 1
-	m_minX = 0; m_maxX = 255;
-	m_minY = 0; m_maxY = 255;
-	m_minZ = 0; m_maxZ = 255;
-	m_minBoxX = 0; m_maxBoxX = 255;
-	m_minBoxY = 0; m_maxBoxY = 255;
-	m_minBoxZ = 0; m_maxBoxZ = 255;
+	m_minX = NODE_RANGE_MIN; m_maxX = NODE_RANGE_MAX;
+	m_minY = NODE_RANGE_MIN; m_maxY = NODE_RANGE_MAX;
+	m_minZ = NODE_RANGE_MIN; m_maxZ = NODE_RANGE_MAX;
+	m_minBoxX = NODE_RANGE_MIN; m_maxBoxX = NODE_RANGE_MAX;
+	m_minBoxY = NODE_RANGE_MIN; m_maxBoxY = NODE_RANGE_MAX;
+	m_minBoxZ = NODE_RANGE_MIN; m_maxBoxZ = NODE_RANGE_MAX;
 #else
 	m_minBoxX = CALC_RANGE(vecOrigin.x - flDist, m_RegionMin[0], m_RegionMax[0]);
 	m_maxBoxX = CALC_RANGE(vecOrigin.x + flDist, m_RegionMin[0], m_RegionMax[0]);
@@ -2293,8 +2293,8 @@ void CGraph::BuildRegionTables()
 		int j;
 		for (j = 0; j < NUM_RANGES; j++)
 		{
-			m_RangeStart[i][j] = 255;
-			m_RangeEnd[i][j] = 0;
+			m_RangeStart[i][j] = NODE_RANGE_MAX;
+			m_RangeEnd[i][j] = NODE_RANGE_MIN;
 		}
 		for (j = 0; j < m_cNodes; j++)
 		{
