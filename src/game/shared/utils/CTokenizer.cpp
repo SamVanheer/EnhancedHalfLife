@@ -90,13 +90,12 @@ bool CTokenizer::SkipWhitespace()
 			return false; // end of file;
 		}
 
-		if (V_UTF8ToUChar32(_data.substr(_offset).data(), wchar) || wchar > ' ')
+		if (V_UTF8ToUChar32(_data.substr(_offset), wchar) || wchar > ' ')
 		{
 			break;
 		}
 
-		//TODO: ensure this function can work with non-null terminated strings
-		_offset += Q_UnicodeAdvance(_data.substr(_offset).data(), 1);
+		_offset += Q_UnicodeAdvance(_data.substr(_offset), 1);
 	}
 
 	return true;

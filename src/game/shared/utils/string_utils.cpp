@@ -30,11 +30,19 @@ bool Q_IsValidUChar32(char32_t uVal)
 	return (uVal < 0x110000u) && ((uVal - 0x00D800u) > 0x7FFu) && ((uVal & 0xFFFFu) < 0xFFFEu) && ((uVal - 0x00FDD0u) > 0x1Fu);
 }
 
-int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut)
+std::size_t Q_UTF8ToUChar32(std::string_view str, char32_t& uValueOut, bool& bErrorOut)
 {
-	const std::uint8_t* pUTF8 = (const std::uint8_t*)pUTF8_;
+	const std::uint8_t* pUTF8 = (const std::uint8_t*)str.data();
 
-	int nBytes = 1;
+	//Empty string, nothing to read
+	if (str.empty())
+	{
+		uValueOut = '\0';
+		bErrorOut = false;
+		return 0;
+	}
+
+	std::size_t nBytes = 1;
 	char32_t uValue = pUTF8[0];
 	char32_t uMinValue = 0;
 
@@ -54,7 +62,7 @@ int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut)
 	}
 
 	// Expecting at least a two-byte sequence with 0xC0 <= first <= 0xF7 (110...... and 11110...)
-	if ((uValue - 0xC0u) > 0x37u || (pUTF8[1] & 0xC0) != 0x80)
+	if ((str.size() < 2) || (uValue - 0xC0u) > 0x37u || (pUTF8[1] & 0xC0) != 0x80)
 		return decodeError();
 
 	uValue = (uValue << 6) - (0xC0 << 6) + pUTF8[1] - 0x80;
@@ -65,7 +73,7 @@ int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut)
 	if (uValue & (0x20 << 6))
 	{
 		// Expecting at least a three-byte sequence
-		if ((pUTF8[2] & 0xC0) != 0x80)
+		if ((str.size() < 3) || (pUTF8[2] & 0xC0) != 0x80)
 			return decodeError();
 
 		uValue = (uValue << 6) - (0x20 << 12) + pUTF8[2] - 0x80;
@@ -77,7 +85,7 @@ int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut)
 		{
 			// Do we have a full UTF-16 surrogate pair that's been UTF-8 encoded afterwards?
 			// That is, do we have 0xD800-0xDBFF followed by 0xDC00-0xDFFF? If so, decode it all.
-			if ((uValue - 0xD800u) < 0x400u && pUTF8[3] == 0xED && (std::uint8_t)(pUTF8[4] - 0xB0) < 0x10 && (pUTF8[5] & 0xC0) == 0x80)
+			if ((str.size() >= 6) && (uValue - 0xD800u) < 0x400u && pUTF8[3] == 0xED && (std::uint8_t)(pUTF8[4] - 0xB0) < 0x10 && (pUTF8[5] & 0xC0) == 0x80)
 			{
 				uValue = 0x10000 + ((uValue - 0xD800u) << 10) + ((std::uint8_t)(pUTF8[4] - 0xB0) << 6) + pUTF8[5] - 0x80;
 				nBytes = 6;
@@ -87,7 +95,7 @@ int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut)
 		else
 		{
 			// Expecting a four-byte sequence, longest permissible in UTF-8
-			if ((pUTF8[3] & 0xC0) != 0x80)
+			if ((str.size() < 4) || (pUTF8[3] & 0xC0) != 0x80)
 				return decodeError();
 
 			uValue = (uValue << 6) - (0x10 << 18) + pUTF8[3] - 0x80;
@@ -108,41 +116,41 @@ int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut)
 	return decodeError();
 }
 
-bool V_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut)
+bool V_UTF8ToUChar32(std::string_view str, char32_t& uValueOut)
 {
 	bool bError;
 
-	Q_UTF8ToUChar32(pUTF8_, uValueOut, bError);
+	Q_UTF8ToUChar32(str, uValueOut, bError);
 	return bError;
 }
 
-std::size_t Q_UnicodeAdvance(const char* pUTF8, int nChars)
+std::size_t Q_UnicodeAdvance(std::string_view str, int nChars)
 {
 	char32_t uVal;
 	bool bError;
 
-	auto next = pUTF8;
+	std::size_t index;
 
-	for (; nChars > 0 && *pUTF8; --nChars)
+	for (index = 0; nChars > 0 && index < str.size(); --nChars)
 	{
-		next += Q_UTF8ToUChar32(next, uVal, bError);
+		index += Q_UTF8ToUChar32(str.substr(index), uVal, bError);
 	}
 
-	return next - pUTF8;
+	return index;
 }
 
-bool Q_UnicodeValidate(const char* pUTF8)
+bool Q_UnicodeValidate(std::string_view str)
 {
 	bool bError = false;
-	while (*pUTF8)
+	for (std::size_t index = 0; index < str.size();)
 	{
 		char32_t uVal;
 		// Our UTF-8 decoder silently fixes up 6-byte CESU-8 (improperly re-encoded UTF-16) sequences.
 		// However, these are technically not valid UTF-8. So if we eat 6 bytes at once, it's an error.
-		int nCharSize = Q_UTF8ToUChar32(pUTF8, uVal, bError);
+		std::size_t nCharSize = Q_UTF8ToUChar32(str.substr(index), uVal, bError);
 		if (bError || nCharSize == 6)
 			return false;
-		pUTF8 += nCharSize;
+		index += nCharSize;
 	}
 	return true;
 }

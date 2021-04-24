@@ -108,16 +108,16 @@ bool Q_IsValidUChar32(char32_t uVal);
 *
 *	Treats 6-byte CESU-8 sequences as a single character, as if they were a correctly-encoded 4-byte UTF-8 sequence.
 */
-int Q_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut, bool& bErrorOut);
+std::size_t Q_UTF8ToUChar32(std::string_view str, char32_t& uValueOut, bool& bErrorOut);
 
-bool V_UTF8ToUChar32(const char* pUTF8_, char32_t& uValueOut);
+bool V_UTF8ToUChar32(std::string_view str, char32_t& uValueOut);
 
-std::size_t Q_UnicodeAdvance(const char* pUTF8, int nChars);
+std::size_t Q_UnicodeAdvance(std::string_view str, int nChars);
 
 /**
 *	@brief Returns true if UTF-8 string contains invalid sequences.
 */
-bool Q_UnicodeValidate(const char* pUTF8);
+bool Q_UnicodeValidate(std::string_view str);
 
 Vector UTIL_StringToVector(std::string_view str);
 
