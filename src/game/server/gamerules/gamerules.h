@@ -99,6 +99,16 @@ public:
 	virtual bool IsCoOp() = 0;					//!< is this a coop game?
 
 	/**
+	*	@brief Are save games supported in this game mode?
+	*/
+	virtual bool AreSaveGamesSupported() const = 0;
+
+	/**
+	*	@brief Can mapper-placed changelevels change the map?
+	*/
+	virtual bool AreChangeLevelsAllowed() const = 0;
+
+	/**
 	*	@brief this is the game name that gets seen in the server browser
 	*/
 	virtual const char* GetGameDescription() { return "Half-Life"; }
@@ -359,6 +369,9 @@ public:
 	bool IsDeathmatch() override;
 	bool IsCoOp() override;
 
+	bool AreSaveGamesSupported() const override { return true; }
+	bool AreChangeLevelsAllowed() const override { return true; }
+
 	bool ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]) override;
 	void InitHUD(CBasePlayer* pl) override;
 	void ClientDisconnected(edict_t* pClient) override;
@@ -427,6 +440,9 @@ public:
 	bool IsMultiplayer() override;
 	bool IsDeathmatch() override;
 	bool IsCoOp() override;
+
+	bool AreSaveGamesSupported() const override { return false; }
+	bool AreChangeLevelsAllowed() const override { return false; }
 
 	bool ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]) override;
 	void InitHUD(CBasePlayer* pl) override;

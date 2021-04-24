@@ -145,8 +145,7 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 
 	ASSERT(!AreStringsEqual(m_szMapName, ""));
 
-	// Don't work in deathmatch
-	if (g_pGameRules->IsDeathmatch())
+	if (!g_pGameRules->AreChangeLevelsAllowed())
 		return;
 
 	// Some people are firing these multiple times in a frame, disable
@@ -384,7 +383,7 @@ void CTriggerEndSection::EndSectionUse(CBaseEntity* pActivator, CBaseEntity* pCa
 
 void CTriggerEndSection::Spawn()
 {
-	if (g_pGameRules->IsDeathmatch())
+	if (g_pGameRules->IsMultiplayer())
 	{
 		REMOVE_ENTITY(ENT(pev));
 		return;
@@ -430,7 +429,7 @@ LINK_ENTITY_TO_CLASS(trigger_autosave, CTriggerSave);
 
 void CTriggerSave::Spawn()
 {
-	if (g_pGameRules->IsDeathmatch())
+	if (!g_pGameRules->AreSaveGamesSupported())
 	{
 		REMOVE_ENTITY(ENT(pev));
 		return;
@@ -512,8 +511,7 @@ void CRevertSaved::MessageThink()
 
 void CRevertSaved::LoadThink()
 {
-	//TODO: use gamerules instead
-	if (!gpGlobals->deathmatch)
+	if (g_pGameRules->AreSaveGamesSupported())
 	{
 		SERVER_COMMAND("reload\n");
 	}
