@@ -1606,7 +1606,7 @@ void CSpeaker::SpeakerThink()
 		return;
 	}
 
-	const char* szSoundFile;
+	const char* szSoundFile = nullptr;
 
 	if (m_preset)
 	{
@@ -1629,6 +1629,12 @@ void CSpeaker::SpeakerThink()
 	}
 	else
 		szSoundFile = STRING(pev->message);
+
+	//No sound to play
+	if (!szSoundFile)
+	{
+		return;
+	}
 
 	const float flvolume = pev->health * 0.1;
 	const float flattenuation = 0.3;
