@@ -225,15 +225,11 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/../../.. FILES ${SERVER_SOURCES})
 if (MSVC)
 	set(HLDS_EXECUTABLE "hlds.exe")
 
-	# Set debugging settings to work on the mod directory
-	# It is assumed that the install path points to the mod directory
-	get_filename_component(MOD_NAME ${CMAKE_INSTALL_PREFIX} NAME_WE)
-
-	# If HLDS_DIRECTORY is not specified it will leave a non-functional "default" setting
+	# If HalfLife_HLDS_DIRECTORY is not specified it will leave a non-functional "default" setting
 	set_target_properties(hl PROPERTIES
-		VS_DEBUGGER_COMMAND "${HLDS_DIRECTORY}/${HLDS_EXECUTABLE}"
-		VS_DEBUGGER_COMMAND_ARGUMENTS "-game ${MOD_NAME}"
-		VS_DEBUGGER_WORKING_DIRECTORY "${HLDS_DIRECTORY}")
+		VS_DEBUGGER_COMMAND "${HalfLife_HLDS_DIRECTORY}/${HLDS_EXECUTABLE}"
+		VS_DEBUGGER_COMMAND_ARGUMENTS ${COMMAND_ARGUMENTS}
+		VS_DEBUGGER_WORKING_DIRECTORY "${HalfLife_HLDS_DIRECTORY}")
 endif()
 
 # Set install paths to the user-defined mod directory

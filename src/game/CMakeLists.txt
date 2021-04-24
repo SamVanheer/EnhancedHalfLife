@@ -14,16 +14,37 @@ if (WIN32)
 endif()
 
 # Used to locate binaries so dependencies are fixed up correctly (e.g. vgui.so)
-set(HALFLIFE_DIRECTORY "${STEAM_HALFLIFE_DIRECTORY}" CACHE PATH "Path to the Half-Life directory")
+set(HalfLife_GAME_DIRECTORY "${STEAM_HALFLIFE_DIRECTORY}" CACHE PATH "Path to the Half-Life directory")
 
 if (MSVC)
-	set(HLDS_DIRECTORY "" CACHE PATH "Path to the Half-Life Dedicated Server directory. Must be specified to automatically set up dedicated server debugging settings")
+	# These options are prefixed with HalfLife so the CMake GUI can group them
+	set(HalfLife_HLDS_DIRECTORY "" CACHE PATH "Path to the Half-Life Dedicated Server directory. Must be specified to automatically set up dedicated server debugging settings")
+	
+	set(HalfLife_DEVELOPER_LEVEL "1" CACHE STRING "When launching from Visual Studio, set the developer level to this")
+	set_property(CACHE HalfLife_DEVELOPER_LEVEL PROPERTY STRINGS 0 1 2 3)
+	
+	option(HalfLife_ENABLE_CHEATS "When launching from Visual Studio, enable cheats as well" OFF)
+	option(HalfLife_ENABLE_CONSOLE "When launching from Visual Studio, enable the console on startup" OFF)
+	
+	# Set debugging settings to work on the mod directory
+	# It is assumed that the install path points to the mod directory
+	get_filename_component(MOD_NAME ${CMAKE_INSTALL_PREFIX} NAME_WE)
+	
+	set(COMMAND_ARGUMENTS "-game ${MOD_NAME} +developer ${HalfLife_DEVELOPER_LEVEL}")
+	
+	if (HalfLife_ENABLE_CHEATS)
+		set(COMMAND_ARGUMENTS "${COMMAND_ARGUMENTS} +sv_cheats 1")
+	endif()
+	
+	if (HalfLife_ENABLE_CONSOLE)
+		set(COMMAND_ARGUMENTS "${COMMAND_ARGUMENTS} -console")
+	endif()
 endif()
 
-if ("${HALFLIFE_DIRECTORY}" STREQUAL "")
+if ("${HalfLife_GAME_DIRECTORY}" STREQUAL "")
 	message(FATAL_ERROR "You must specify the path to the Half-Life directory")
-elseif (NOT EXISTS ${HALFLIFE_DIRECTORY})
-	message(FATAL_ERROR "The given Half-Life directory path ${HALFLIFE_DIRECTORY} is not valid")
+elseif (NOT EXISTS ${HalfLife_GAME_DIRECTORY})
+	message(FATAL_ERROR "The given Half-Life directory path ${HalfLife_GAME_DIRECTORY} is not valid")
 endif()
 
 set(INCLUDE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../include)
