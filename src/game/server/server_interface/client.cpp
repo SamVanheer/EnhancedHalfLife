@@ -94,9 +94,10 @@ void ClientDisconnect(edict_t* pEntity)
 }
 
 // called by ClientKill and DeadThink
+//TODO: this should really just be merged into PlayerDeathThink because on its own it makes little sense
 void respawn(entvars_t* pev, bool fCopyCorpse)
 {
-	if (gpGlobals->coop || gpGlobals->deathmatch)
+	if (g_pGameRules->IsCoOp() || g_pGameRules->IsDeathmatch())
 	{
 		if (fCopyCorpse)
 		{

@@ -17,6 +17,7 @@
 #include "util.h"
 #include "cbase.h"
 #include "decals.hpp"
+#include "gamerules.h"
 
 //
 // This must match the list in decals.hpp
@@ -88,7 +89,7 @@ LINK_ENTITY_TO_CLASS(infodecal, CDecal);
 // UNDONE:  These won't get sent to joining players in multi-player
 void CDecal::Spawn()
 {
-	if (pev->skin < 0 || (gpGlobals->deathmatch && IsBitSet(pev->spawnflags, SF_DECAL_NOTINDEATHMATCH)))
+	if (pev->skin < 0 || (g_pGameRules->IsDeathmatch() && IsBitSet(pev->spawnflags, SF_DECAL_NOTINDEATHMATCH)))
 	{
 		REMOVE_ENTITY(ENT(pev));
 		return;
@@ -133,7 +134,6 @@ void CDecal::TriggerDecal(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYP
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
-
 void CDecal::StaticDecal()
 {
 	TraceResult trace;
@@ -151,7 +151,6 @@ void CDecal::StaticDecal()
 
 	SUB_Remove();
 }
-
 
 void CDecal::KeyValue(KeyValueData* pkvd)
 {
