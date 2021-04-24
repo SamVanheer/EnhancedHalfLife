@@ -22,8 +22,8 @@
 */
 
 
-constexpr int MAXSTUDIOTRIANGLES = 20000;	// TODO: tune this
-constexpr int MAXSTUDIOVERTS = 2048;		// TODO: tune this
+constexpr int MAXSTUDIOTRIANGLES = 20000;
+constexpr int MAXSTUDIOVERTS = 2048;
 constexpr int MAXSTUDIOSEQUENCES = 2048;	// total animation sequences -- KSH incremented
 constexpr int MAXSTUDIOSKINS = 100;			// total textures
 constexpr int MAXSTUDIOSRCBONES = 512;		// bones allowed at source movement

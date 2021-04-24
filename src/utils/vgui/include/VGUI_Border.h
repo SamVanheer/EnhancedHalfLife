@@ -10,8 +10,6 @@
 #include<VGUI.h>
 #include<VGUI_Image.h>
 
-//TODO: all borders should be titled
-
 namespace vgui
 {
 

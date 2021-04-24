@@ -14,7 +14,6 @@ namespace vgui
 
 class BaseFontPlat;
 
-//TODO: cursors and fonts should work like gl binds
 class VGUIAPI Font
  {
  public:

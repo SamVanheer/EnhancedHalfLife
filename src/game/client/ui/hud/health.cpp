@@ -87,7 +87,6 @@ bool CHudHealth::VidInit()
 
 bool CHudHealth::MsgFunc_Health(const char* pszName, int iSize, void* pbuf)
 {
-	// TODO: update local health data
 	BufferReader reader{pbuf, iSize};
 	int x = reader.ReadShort();
 
@@ -285,7 +284,6 @@ bool CHudHealth::DrawPain(float flTime)
 	int r, g, b;
 	int x, y, a, shade;
 
-	// TODO:  get the shift value of the health
 	a = 255;	// max brightness until then
 
 	float fFade = gHUD.m_flTimeDelta * 2;

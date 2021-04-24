@@ -7,21 +7,6 @@
 
 #pragma once
 
-/*
-
-TODO:
-
-Maybe have the border know who they are added to.
-A border can only be added to 1 thing, and will be
-removed from the other. That way they can actually
-be memory managed. Also do Layout's this way too.
-
-TODO:
-	outlinedRect should have a thickness arg
-
-*/
-
-					 
 #include<VGUI.h>
 #include<VGUI_Dar.h>
 #include<VGUI_Scheme.h>

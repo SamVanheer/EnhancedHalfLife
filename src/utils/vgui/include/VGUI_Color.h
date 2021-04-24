@@ -10,11 +10,6 @@
 #include<VGUI.h>
 #include<VGUI_Scheme.h>
 
-//TODO: rename getColor(r,g,b,a) to getRGBA(r,g,b,a)
-//TODO: rename setColor(r,g,b,a) to setRGBA(r,g,b,a)
-//TODO: rename getColor(sc) to getSchemeColor(sc)
-//TODO: rename setColor(sc) to setSchemeColor(sc)
-
 namespace vgui
 {
 

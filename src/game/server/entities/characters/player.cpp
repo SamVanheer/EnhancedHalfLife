@@ -1261,7 +1261,6 @@ void CBasePlayer::PlayerUse()
 		if (m_pTank != nullptr)
 		{
 			// Stop controlling the tank
-			// TODO: Send HUD Update
 			m_pTank->Use(this, this, USE_OFF, 0);
 			m_pTank = nullptr;
 			return;

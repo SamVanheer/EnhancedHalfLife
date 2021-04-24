@@ -233,7 +233,7 @@ void ScorePanel::Initialize()
 
 bool HACK_GetPlayerUniqueID(int iPlayer, char playerID[16])
 {
-	return !!gEngfuncs.GetPlayerUniqueID(iPlayer, playerID); // TODO remove after testing
+	return !!gEngfuncs.GetPlayerUniqueID(iPlayer, playerID);
 }
 
 void ScorePanel::Update()

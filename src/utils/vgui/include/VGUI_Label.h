@@ -12,8 +12,6 @@
 #include<VGUI_Scheme.h>
 #include<VGUI_Image.h>
 
-//TODO: this should use a TextImage for the text
-
 namespace vgui
 {
 

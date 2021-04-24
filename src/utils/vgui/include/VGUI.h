@@ -40,44 +40,6 @@
 //
 //Panel is getting pretty plump, try and avoid adding junk to it if you can
 
-//TODO: Look and Feel support
-//		add Panel::setPaintProxy, if _paintProxy exists, it calls _paintProxy->paint 
-//		instead of Panel::paint. Components should implement their painting in a seperate
-//      plugin class. Perhaps to encourage this, Panel::paint should just go away completely
-//      The other option is to have Panel have the interface Paintable
-//      class Paintable
-//      {
-//      public:
-//			virtual void paint()=0;
-//      };
-//      Then a component can implement its paint in the class itself and then call 
-//		setPaintProxy(this). If this is the case _paintProxy->paint should always be called
-//      and never Panel::paint from within paintTraverse
-//TODO: Figure out the 'Valve' Look and Feel and implement that instead of a the Java one
-//TODO: Determine ownership policy for Borders, Layouts, etc..
-//TODO: tooltips support
-//TODO: ComboKey (hot key support)
-//TODO: add Background.cpp, remove paintBackground from all components
-//		Panel implements setBackground, Panel::paintBackground calls _background->paintBackground
-//		similiar to the way Border works. 
-//TODO: Builtin components should never overide paintBackground, only paint
-//TODO: All protected members should be converted to private
-//TODO: All member variables should be moved to the top of the class prototype
-//TODO: All private methods should be prepended with private
-//TODO: Use of word internal in method names is not consistent and confusing
-//TODO: Cleanup so bullshit publics are properly named, maybe even figure out
-//      a naming convention for them
-//TODO: Breakup InputSignal into logical pieces
-//TODO: Button is in a state of disarray, it should have ButtonModel support
-//TODO: get rid of all the stupid strdup laziness, convert to vgui_strdup
-//TODO: actually figure out policy on String and implement it consistently
-//TODO: implement createLayoutInfo for other Layouts than need it
-//TODO: BorderLayout should have option for a null LayoutInfo defaulting to center
-//TODO: SurfaceBase should go away, put it in Surface
-//TODO: ActionSignals and other Signals should just set a flag when they fire.
-//		then App can come along later and fire all the signals
-//TODO: Change all method naming to starting with a capital letter.
-
 #ifdef _WIN32
 # define VGUIAPI __declspec( dllexport )
 #else

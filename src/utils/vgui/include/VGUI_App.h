@@ -29,8 +29,6 @@ public:
 	App(bool externalMain);
 public:
 	static App* getInstance();
-	//TODO: the public and public bullshit are all messed up, need to organize
-	//TODO: actually all of the access needs to be properly thought out while you are at it
 public:
 	virtual void    start();
 	virtual void    stop();

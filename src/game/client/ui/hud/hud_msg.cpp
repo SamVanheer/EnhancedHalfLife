@@ -98,7 +98,5 @@ bool CHud::MsgFunc_Damage(const char* pszName, int iSize, void* pbuf)
 	if (count < 10)
 		count = 10;
 
-	// TODO: kick viewangles,  show damage visually
-
 	return true;
 }

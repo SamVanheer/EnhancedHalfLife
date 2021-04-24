@@ -19,7 +19,6 @@ class ButtonController;
 class ButtonGroup;
 class ActionSignal;
 
-//TODO: Button should be derived from an AbstractButton
 class VGUIAPI Button : public Label
 {
 public:

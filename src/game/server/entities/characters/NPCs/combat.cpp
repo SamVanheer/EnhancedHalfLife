@@ -803,7 +803,6 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 
 	// add to the damage total for clients, which will be sent as a single
 	// message at the end of the frame
-	// todo: remove after combining shotgun blasts?
 	if (IsPlayer())
 	{
 		if (pevInflictor)

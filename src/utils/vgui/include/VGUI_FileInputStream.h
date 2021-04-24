@@ -7,8 +7,6 @@
 
 #pragma once
 
-//TODO : figure out how to get stdio out of here, I think std namespace is broken for FILE for forward declaring does not work in vc6
-
 #include<cstdio> 
 #include<VGUI_InputStream.h>
 
