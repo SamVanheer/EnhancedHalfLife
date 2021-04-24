@@ -26,6 +26,10 @@
 class CBasePlayer;
 struct weapon_data_t;
 
+/**
+*	@brief removes all satchels owned by the provided player. Should only be used upon death.
+*	Made this global on purpose.
+*/
 void DeactivateSatchels(CBasePlayer* pOwner);
 
 /**
@@ -902,7 +906,14 @@ class CLaserSpot : public CBaseEntity
 	int	ObjectCaps() override { return FCAP_DONT_SAVE; }
 
 public:
+	/**
+	*	@brief make the laser sight invisible.
+	*/
 	void Suspend(float flSuspendTime);
+
+	/**
+	*	@brief bring a suspended laser sight back.
+	*/
 	void EXPORT Revive();
 
 	static CLaserSpot* CreateSpot();
@@ -1032,6 +1043,11 @@ public:
 	void SecondaryAttack() override;
 	void WeaponIdle() override;
 
+	/**
+	*	@details since all of this code has to run and then call Fire(),
+	*	it was easier at this point to rip it out of weaponidle() and make its own function then to try to merge this into Fire(),
+	*	which has some identical variable names 
+	*/
 	void StartFire();
 	void Fire(Vector vecOrigSrc, Vector vecDirShooting, float flDamage);
 	float GetFullChargeTime();

@@ -75,7 +75,6 @@ void CCrossbowBolt::Spawn()
 	pev->nextthink = gpGlobals->time + 0.2;
 }
 
-
 void CCrossbowBolt::Precache()
 {
 	PRECACHE_MODEL("models/crossbow_bolt.mdl");
@@ -86,7 +85,6 @@ void CCrossbowBolt::Precache()
 	PRECACHE_SOUND("fvox/beep.wav");
 	m_iTrail = PRECACHE_MODEL("sprites/streak.spr");
 }
-
 
 int	CCrossbowBolt::Classify()
 {
@@ -101,11 +99,8 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 	if (pOther->pev->takedamage)
 	{
 		TraceResult tr = UTIL_GetGlobalTrace();
-		entvars_t* pevOwner;
+		entvars_t* pevOwner = VARS(pev->owner);
 
-		pevOwner = VARS(pev->owner);
-
-		// UNDONE: this needs to call TraceAttack instead
 		ClearMultiDamage();
 
 		if (pOther->IsPlayer())
@@ -180,11 +175,9 @@ void CCrossbowBolt::BubbleThink()
 
 void CCrossbowBolt::ExplodeThink()
 {
-	int iContents = UTIL_PointContents(pev->origin);
-	int iScale;
+	const int iContents = UTIL_PointContents(pev->origin);
 
 	pev->dmg = 40;
-	iScale = 10;
 
 	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, pev->origin);
 	WRITE_BYTE(TE_EXPLOSION);
@@ -199,17 +192,12 @@ void CCrossbowBolt::ExplodeThink()
 	{
 		WRITE_SHORT(g_sModelIndexWExplosion);
 	}
-	WRITE_BYTE(iScale); // scale * 10
+	WRITE_BYTE(10); // scale * 10
 	WRITE_BYTE(15); // framerate
 	WRITE_BYTE(TE_EXPLFLAG_NONE);
 	MESSAGE_END();
 
-	entvars_t* pevOwner;
-
-	if (pev->owner)
-		pevOwner = VARS(pev->owner);
-	else
-		pevOwner = nullptr;
+	entvars_t* pevOwner = pev->owner ? VARS(pev->owner) : nullptr;
 
 	pev->owner = nullptr; // can't traceline attack owner if this is set
 
@@ -259,7 +247,6 @@ void CCrossbow::Precache()
 	m_usCrossbow2 = PRECACHE_EVENT(1, "events/crossbow2.sc");
 }
 
-
 bool CCrossbow::GetItemInfo(ItemInfo* p)
 {
 	p->pszName = STRING(pev->classname);
@@ -275,7 +262,6 @@ bool CCrossbow::GetItemInfo(ItemInfo* p)
 	p->iWeight = CROSSBOW_WEIGHT;
 	return true;
 }
-
 
 bool CCrossbow::Deploy()
 {
@@ -302,7 +288,6 @@ void CCrossbow::Holster()
 
 void CCrossbow::PrimaryAttack()
 {
-
 #ifdef CLIENT_DLL
 	if (m_pPlayer->m_iFOV != 0 && bIsMultiplayer())
 #else
@@ -327,8 +312,7 @@ void CCrossbow::FireSniperBolt()
 		return;
 	}
 
-	TraceResult tr;
-
+	
 	m_pPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
 	m_iClip--;
 
@@ -344,11 +328,12 @@ void CCrossbow::FireSniperBolt()
 	// player "shoot" animation
 	m_pPlayer->SetAnimation(PlayerAnim::Attack1);
 
-	Vector anglesAim = m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle;
+	const Vector anglesAim = m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle;
 	UTIL_MakeVectors(anglesAim);
-	Vector vecSrc = m_pPlayer->GetGunPosition() - gpGlobals->v_up * 2;
-	Vector vecDir = gpGlobals->v_forward;
+	const Vector vecSrc = m_pPlayer->GetGunPosition() - gpGlobals->v_up * 2;
+	const Vector vecDir = gpGlobals->v_forward;
 
+	TraceResult tr;
 	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_SIZE, IgnoreMonsters::No, m_pPlayer->edict(), &tr);
 
 #ifndef CLIENT_DLL
@@ -363,8 +348,6 @@ void CCrossbow::FireSniperBolt()
 
 void CCrossbow::FireBolt()
 {
-	TraceResult tr;
-
 	if (m_iClip == 0)
 	{
 		PlayEmptySound();
@@ -391,8 +374,8 @@ void CCrossbow::FireBolt()
 	UTIL_MakeVectors(anglesAim);
 
 	anglesAim.x = -anglesAim.x;
-	Vector vecSrc = m_pPlayer->GetGunPosition() - gpGlobals->v_up * 2;
-	Vector vecDir = gpGlobals->v_forward;
+	const Vector vecSrc = m_pPlayer->GetGunPosition() - gpGlobals->v_up * 2;
+	const Vector vecDir = gpGlobals->v_forward;
 
 #ifndef CLIENT_DLL
 	CCrossbowBolt* pBolt = CCrossbowBolt::BoltCreate();
@@ -427,7 +410,6 @@ void CCrossbow::FireBolt()
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.75;
 }
 
-
 void CCrossbow::SecondaryAttack()
 {
 	if (m_pPlayer->m_iFOV != 0)
@@ -443,7 +425,6 @@ void CCrossbow::SecondaryAttack()
 	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.0;
 }
 
-
 void CCrossbow::Reload()
 {
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
@@ -454,12 +435,11 @@ void CCrossbow::Reload()
 		SecondaryAttack();
 	}
 
-	if (DefaultReload(5, CROSSBOW_RELOAD, 4.5))
+	if (DefaultReload(CROSSBOW_MAX_CLIP, CROSSBOW_RELOAD, 4.5))
 	{
 		m_pPlayer->EmitSound(CHAN_ITEM, "weapons/xbow_reload1.wav", RANDOM_FLOAT(0.95, 1.0), ATTN_NORM, 93 + RANDOM_LONG(0, 0xF));
 	}
 }
-
 
 void CCrossbow::WeaponIdle()
 {
@@ -497,8 +477,6 @@ void CCrossbow::WeaponIdle()
 		}
 	}
 }
-
-
 
 class CCrossbowAmmo : public CBasePlayerAmmo
 {

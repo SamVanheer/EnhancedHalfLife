@@ -32,20 +32,18 @@ class CSatchelCharge : public CGrenade
 	void EXPORT SatchelThink();
 
 public:
+	/**
+	*	@brief do whatever it is we do to an orphaned satchel when we don't want it in the world anymore.
+	*/
 	void Deactivate();
 };
 LINK_ENTITY_TO_CLASS(monster_satchel, CSatchelCharge);
 
-//=========================================================
-// Deactivate - do whatever it is we do to an orphaned 
-// satchel when we don't want it in the world anymore.
-//=========================================================
 void CSatchelCharge::Deactivate()
 {
 	pev->solid = SOLID_NOT;
 	UTIL_Remove(this);
 }
-
 
 void CSatchelCharge::Spawn()
 {
@@ -72,11 +70,8 @@ void CSatchelCharge::Spawn()
 	pev->sequence = 1;
 }
 
-
 void CSatchelCharge::SatchelSlide(CBaseEntity* pOther)
 {
-	entvars_t* pevOther = pOther->pev;
-
 	// don't hit the guy that launched this grenade
 	if (pOther->edict() == pev->owner)
 		return;
@@ -101,7 +96,6 @@ void CSatchelCharge::SatchelSlide(CBaseEntity* pOther)
 	}
 	StudioFrameAdvance();
 }
-
 
 void CSatchelCharge::SatchelThink()
 {
@@ -149,24 +143,17 @@ void CSatchelCharge::BounceSound()
 	}
 }
 
-
 LINK_ENTITY_TO_CLASS(weapon_satchel, CSatchel);
 
-
-//=========================================================
-// CALLED THROUGH the newly-touched weapon's instance. The existing player weapon is pOriginal
-//=========================================================
 bool CSatchel::AddDuplicate(CBasePlayerItem* pOriginal)
 {
-	CSatchel* pSatchel;
-
 #ifdef CLIENT_DLL
 	if (bIsMultiplayer())
 #else
 	if (g_pGameRules->IsMultiplayer())
 #endif
 	{
-		pSatchel = (CSatchel*)pOriginal;
+		CSatchel* pSatchel = (CSatchel*)pOriginal;
 
 		if (pSatchel->m_chargeReady != ChargeState::NoSatchelsDeployed)
 		{
@@ -178,11 +165,9 @@ bool CSatchel::AddDuplicate(CBasePlayerItem* pOriginal)
 	return CBasePlayerWeapon::AddDuplicate(pOriginal);
 }
 
-//=========================================================
-//=========================================================
 bool CSatchel::AddToPlayer(CBasePlayer* pPlayer)
 {
-	int bResult = CBasePlayerItem::AddToPlayer(pPlayer);
+	const bool bResult = CBasePlayerItem::AddToPlayer(pPlayer);
 
 	pPlayer->pev->weapons |= (1 << m_iId);
 	m_chargeReady = ChargeState::NoSatchelsDeployed;// this satchel charge weapon now forgets that any satchels are deployed by it.
@@ -205,7 +190,6 @@ void CSatchel::Spawn()
 	FallInit();// get ready to fall down.
 }
 
-
 void CSatchel::Precache()
 {
 	PRECACHE_MODEL("models/v_satchel.mdl");
@@ -216,7 +200,6 @@ void CSatchel::Precache()
 
 	UTIL_PrecacheOther("monster_satchel");
 }
-
 
 bool CSatchel::GetItemInfo(ItemInfo* p)
 {
@@ -235,8 +218,6 @@ bool CSatchel::GetItemInfo(ItemInfo* p)
 	return true;
 }
 
-//=========================================================
-//=========================================================
 bool CSatchel::IsUseable()
 {
 	if (m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] > 0)
@@ -291,7 +272,6 @@ bool CSatchel::Deploy()
 	return result;
 }
 
-
 void CSatchel::Holster()
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
@@ -313,8 +293,6 @@ void CSatchel::Holster()
 		pev->nextthink = gpGlobals->time + 0.1;
 	}
 }
-
-
 
 void CSatchel::PrimaryAttack()
 {
@@ -360,7 +338,6 @@ void CSatchel::PrimaryAttack()
 	}
 }
 
-
 void CSatchel::SecondaryAttack()
 {
 	if (m_chargeReady != ChargeState::Reloading)
@@ -369,14 +346,13 @@ void CSatchel::SecondaryAttack()
 	}
 }
 
-
 void CSatchel::Throw()
 {
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 	{
-		Vector vecSrc = m_pPlayer->pev->origin;
+		const Vector vecSrc = m_pPlayer->pev->origin;
 
-		Vector vecThrow = gpGlobals->v_forward * 274 + m_pPlayer->pev->velocity;
+		const Vector vecThrow = gpGlobals->v_forward * 274 + m_pPlayer->pev->velocity;
 
 #ifndef CLIENT_DLL
 		CBaseEntity* pSatchel = Create("monster_satchel", vecSrc, vec3_origin, m_pPlayer->edict());
@@ -402,7 +378,6 @@ void CSatchel::Throw()
 		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;
 	}
 }
-
 
 void CSatchel::WeaponIdle()
 {
@@ -459,24 +434,13 @@ void CSatchel::SetWeaponData(const weapon_data_t& data)
 	m_chargeReady = static_cast<ChargeState>(data.iuser1);
 }
 
-//=========================================================
-// DeactivateSatchels - removes all satchels owned by
-// the provided player. Should only be used upon death.
-//
-// Made this global on purpose.
-//=========================================================
 void DeactivateSatchels(CBasePlayer* pOwner)
 {
-	edict_t* pFind;
-
-	pFind = FIND_ENTITY_BY_CLASSNAME(nullptr, "monster_satchel");
+	edict_t* pFind = FIND_ENTITY_BY_CLASSNAME(nullptr, "monster_satchel");
 
 	while (!IsNullEnt(pFind))
 	{
-		CBaseEntity* pEnt = CBaseEntity::Instance(pFind);
-		CSatchelCharge* pSatchel = (CSatchelCharge*)pEnt;
-
-		if (pSatchel)
+		if (CSatchelCharge* pSatchel = (CSatchelCharge*)CBaseEntity::Instance(pFind); pSatchel)
 		{
 			if (pSatchel->pev->owner == pOwner->edict())
 			{

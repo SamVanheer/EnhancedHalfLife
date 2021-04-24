@@ -24,7 +24,6 @@ constexpr int HANDGRENADE_PRIMARY_VOLUME = 450;
 
 LINK_ENTITY_TO_CLASS(weapon_handgrenade, CHandGrenade);
 
-
 void CHandGrenade::Spawn()
 {
 	Precache();
@@ -39,7 +38,6 @@ void CHandGrenade::Spawn()
 
 	FallInit();// get ready to fall down.
 }
-
 
 void CHandGrenade::Precache()
 {
@@ -65,7 +63,6 @@ bool CHandGrenade::GetItemInfo(ItemInfo* p)
 	return true;
 }
 
-
 bool CHandGrenade::Deploy()
 {
 	m_flReleaseThrow = -1;
@@ -75,7 +72,7 @@ bool CHandGrenade::Deploy()
 bool CHandGrenade::CanHolster()
 {
 	// can only holster hand grenades when not primed!
-	return (m_flStartThrow == 0);
+	return m_flStartThrow == 0;
 }
 
 void CHandGrenade::Holster()
@@ -109,7 +106,6 @@ void CHandGrenade::PrimaryAttack()
 	}
 }
 
-
 void CHandGrenade::WeaponIdle()
 {
 	if (m_flReleaseThrow == 0 && m_flStartThrow)
@@ -127,9 +123,7 @@ void CHandGrenade::WeaponIdle()
 		else
 			angThrow.x = -10 + angThrow.x * ((90 + 10) / 90.0);
 
-		float flVel = (90 - angThrow.x) * 4;
-		if (flVel > 500)
-			flVel = 500;
+		const float flVel = std::min(500.0f, (90 - angThrow.x) * 4);
 
 		UTIL_MakeVectors(angThrow);
 
@@ -138,9 +132,7 @@ void CHandGrenade::WeaponIdle()
 		Vector vecThrow = gpGlobals->v_forward * flVel + m_pPlayer->pev->velocity;
 
 		// alway explode 3 seconds after the pin was pulled
-		float time = m_flStartThrow - gpGlobals->time + 3.0;
-		if (time < 0)
-			time = 0;
+		const float time = std::max(0.0f, m_flStartThrow - gpGlobals->time + 3.0f);
 
 		CGrenade::ShootTimed(m_pPlayer->pev, vecSrc, vecThrow, time);
 
@@ -199,7 +191,7 @@ void CHandGrenade::WeaponIdle()
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 	{
 		int iAnim;
-		float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
+		const float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
 		if (flRand <= 0.75)
 		{
 			iAnim = HANDGRENADE_IDLE;

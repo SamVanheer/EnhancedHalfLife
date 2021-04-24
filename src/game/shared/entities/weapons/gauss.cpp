@@ -56,7 +56,6 @@ void CGauss::Spawn()
 	FallInit();// get ready to fall down.
 }
 
-
 void CGauss::Precache()
 {
 	PRECACHE_MODEL("models/w_gauss.mdl");
@@ -123,7 +122,6 @@ void CGauss::Holster()
 	SendWeaponAnim(GAUSS_HOLSTER);
 	m_fInAttack = AttackState::NotAttacking;
 }
-
 
 void CGauss::PrimaryAttack()
 {
@@ -245,9 +243,7 @@ void CGauss::SecondaryAttack()
 			m_flNextAmmoBurn = 1000;
 		}
 
-		int pitch = (gpGlobals->time - m_flStartCharge) * (150 / GetFullChargeTime()) + 100;
-		if (pitch > 250)
-			pitch = 250;
+		const int pitch = std::min(250, static_cast<int>((gpGlobals->time - m_flStartCharge) * (150 / GetFullChargeTime()) + 100));
 
 		// ALERT( at_console, "%d %d %d\n", m_fInAttack, m_iSoundState, pitch );
 
@@ -283,20 +279,13 @@ void CGauss::SecondaryAttack()
 	}
 }
 
-//=========================================================
-// StartFire- since all of this code has to run and then 
-// call Fire(), it was easier at this point to rip it out 
-// of weaponidle() and make its own function then to try to
-// merge this into Fire(), which has some identical variable names 
-//=========================================================
 void CGauss::StartFire()
 {
-	float flDamage;
-
 	UTIL_MakeVectors(m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle);
-	Vector vecAiming = gpGlobals->v_forward;
-	Vector vecSrc = m_pPlayer->GetGunPosition(); // + gpGlobals->v_up * -8 + gpGlobals->v_right * 8;
+	const Vector vecAiming = gpGlobals->v_forward;
+	const Vector vecSrc = m_pPlayer->GetGunPosition(); // + gpGlobals->v_up * -8 + gpGlobals->v_right * 8;
 
+	float flDamage;
 	if (gpGlobals->time - m_flStartCharge > GetFullChargeTime())
 	{
 		flDamage = 200;
@@ -322,7 +311,7 @@ void CGauss::StartFire()
 		//ALERT ( at_console, "Time:%f Damage:%f\n", gpGlobals->time - m_pPlayer->m_flStartCharge, flDamage );
 
 #ifndef CLIENT_DLL
-		float flZVel = m_pPlayer->pev->velocity.z;
+		const float flZVel = m_pPlayer->pev->velocity.z;
 
 		if (!m_fPrimaryFire)
 		{
@@ -350,20 +339,8 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 {
 	m_pPlayer->m_iWeaponVolume = GAUSS_PRIMARY_FIRE_VOLUME;
 
-	Vector vecSrc = vecOrigSrc;
-	Vector vecDest = vecSrc + vecDir * WORLD_SIZE;
-	edict_t* pentIgnore;
-	TraceResult tr, beam_tr;
-	float flMaxFrac = 1.0;
-	int	nTotal = 0;
-	bool fHasPunched = false;
-	bool fFirstBeam = true;
-	int	nMaxHits = 10;
-
-	pentIgnore = ENT(m_pPlayer->pev);
-
 #ifdef CLIENT_DLL
-	if (m_fPrimaryFire == false)
+	if (!m_fPrimaryFire)
 		g_irunninggausspred = true;
 #endif
 
@@ -385,6 +362,17 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 		//	ALERT( at_console, "%f %f\n", tr.flFraction, flMaxFrac );
 
 #ifndef CLIENT_DLL
+	Vector vecSrc = vecOrigSrc;
+	Vector vecDest = vecSrc + vecDir * WORLD_SIZE;
+	TraceResult tr, beam_tr;
+	float flMaxFrac = 1.0;
+	int	nTotal = 0;
+	bool fHasPunched = false;
+	bool fFirstBeam = true;
+	int	nMaxHits = 10;
+
+	edict_t* pentIgnore = ENT(m_pPlayer->pev);
+
 	while (flDamage > 10 && nMaxHits > 0)
 	{
 		nMaxHits--;
@@ -417,19 +405,15 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 
 		if (pEntity->ReflectGauss())
 		{
-			float n;
-
 			pentIgnore = nullptr;
 
-			n = -DotProduct(tr.vecPlaneNormal, vecDir);
+			float n = -DotProduct(tr.vecPlaneNormal, vecDir);
 
 			if (n < 0.5) // 60 degrees
 			{
 				// ALERT( at_console, "reflect %f\n", n );
 				// reflect
-				Vector r;
-
-				r = 2.0 * tr.vecPlaneNormal * n + vecDir;
+				const Vector r = 2.0 * tr.vecPlaneNormal * n + vecDir;
 				flMaxFrac = flMaxFrac - tr.flFraction;
 				vecDir = r;
 				vecSrc = tr.vecEndPos + vecDir * 8;
@@ -476,7 +460,6 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 							//m_pPlayer->RadiusDamage( beam_tr.vecEndPos + vecDir * 8, pev, m_pPlayer->pev, flDamage, CLASS_NONE, DMG_BLAST );
 							float damage_radius;
 
-
 							if (g_pGameRules->IsMultiplayer())
 							{
 								damage_radius = flDamage * 1.75;  // Old code == 2.5
@@ -507,7 +490,6 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 
 					flDamage = 0;
 				}
-
 			}
 		}
 		else
@@ -519,9 +501,6 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 #endif
 	// ALERT( at_console, "%d bytes\n", nTotal );
 }
-
-
-
 
 void CGauss::WeaponIdle()
 {
@@ -552,7 +531,7 @@ void CGauss::WeaponIdle()
 	else
 	{
 		int iAnim;
-		float flRand = RANDOM_FLOAT(0, 1);
+		const float flRand = RANDOM_FLOAT(0, 1);
 		if (flRand <= 0.5)
 		{
 			iAnim = GAUSS_IDLE;
@@ -571,7 +550,6 @@ void CGauss::WeaponIdle()
 
 		return;
 		SendWeaponAnim(iAnim);
-
 	}
 }
 

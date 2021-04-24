@@ -39,7 +39,6 @@ void CShotgun::Spawn()
 	FallInit();// get ready to fall
 }
 
-
 void CShotgun::Precache()
 {
 	PRECACHE_MODEL("models/v_shotgun.mdl");
@@ -78,7 +77,6 @@ bool CShotgun::AddToPlayer(CBasePlayer* pPlayer)
 	return false;
 }
 
-
 bool CShotgun::GetItemInfo(ItemInfo* p)
 {
 	p->pszName = STRING(pev->classname);
@@ -95,8 +93,6 @@ bool CShotgun::GetItemInfo(ItemInfo* p)
 
 	return true;
 }
-
-
 
 bool CShotgun::Deploy()
 {
@@ -133,11 +129,10 @@ void CShotgun::PrimaryAttack()
 	flags = 0;
 #endif
 
-
 	m_pPlayer->pev->effects = (int)(m_pPlayer->pev->effects) | EF_MUZZLEFLASH;
 
-	Vector vecSrc = m_pPlayer->GetGunPosition();
-	Vector vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
+	const Vector vecSrc = m_pPlayer->GetGunPosition();
+	const Vector vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
 
 	Vector vecDir;
 
@@ -157,7 +152,6 @@ void CShotgun::PrimaryAttack()
 
 	PLAYBACK_EVENT_FULL(flags, m_pPlayer->edict(), m_usSingleFire, 0.0, vec3_origin, vec3_origin, vecDir.x, vecDir.y, 0, 0, 0, 0);
 
-
 	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", SuitSoundType::Sentence, 0);
@@ -173,7 +167,6 @@ void CShotgun::PrimaryAttack()
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.75;
 	m_fInSpecialReload = 0;
 }
-
 
 void CShotgun::SecondaryAttack()
 {
@@ -197,7 +190,6 @@ void CShotgun::SecondaryAttack()
 
 	m_iClip -= 2;
 
-
 	int flags;
 #if defined( CLIENT_WEAPONS )
 	flags = FEV_NOTHOST;
@@ -210,8 +202,8 @@ void CShotgun::SecondaryAttack()
 	// player "shoot" animation
 	m_pPlayer->SetAnimation(PlayerAnim::Attack1);
 
-	Vector vecSrc = m_pPlayer->GetGunPosition();
-	Vector vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
+	const Vector vecSrc = m_pPlayer->GetGunPosition();
+	const Vector vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
 
 	Vector vecDir;
 
@@ -247,9 +239,7 @@ void CShotgun::SecondaryAttack()
 		m_flTimeWeaponIdle = 1.5;
 
 	m_fInSpecialReload = 0;
-
 }
-
 
 void CShotgun::Reload()
 {
@@ -276,7 +266,7 @@ void CShotgun::Reload()
 		if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 			return;
 		// was waiting for gun to move to side
-		m_fInSpecialReload = 2;
+		m_fInSpecialReload = 2; //TODO: define constants
 
 		if (RANDOM_LONG(0, 1))
 			m_pPlayer->EmitSound(CHAN_ITEM, "weapons/reload1.wav", VOL_NORM, ATTN_NORM, 85 + RANDOM_LONG(0, 0x1f));
@@ -296,7 +286,6 @@ void CShotgun::Reload()
 		m_fInSpecialReload = 1;
 	}
 }
-
 
 void CShotgun::WeaponIdle()
 {
@@ -322,7 +311,7 @@ void CShotgun::WeaponIdle()
 		}
 		else if (m_fInSpecialReload != 0)
 		{
-			if (m_iClip != 8 && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+			if (m_iClip != SHOTGUN_MAX_CLIP && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 			{
 				Reload();
 			}
@@ -340,7 +329,7 @@ void CShotgun::WeaponIdle()
 		else
 		{
 			int iAnim;
-			float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
+			const float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
 			if (flRand <= 0.8)
 			{
 				iAnim = SHOTGUN_IDLE_DEEP;
@@ -373,7 +362,6 @@ void CShotgun::ItemPostFrame()
 	CBasePlayerWeapon::ItemPostFrame();
 }
 
-
 class CShotgunAmmo : public CBasePlayerAmmo
 {
 	void Spawn() override
@@ -398,5 +386,3 @@ class CShotgunAmmo : public CBasePlayerAmmo
 	}
 };
 LINK_ENTITY_TO_CLASS(ammo_buckshot, CShotgunAmmo);
-
-

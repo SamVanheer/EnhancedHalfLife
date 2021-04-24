@@ -34,7 +34,6 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname)
 			return; // ammo already in registry, just quite
 	}
 
-
 	giAmmoIndex++;
 	ASSERT(giAmmoIndex < MAX_AMMO_TYPES);
 	if (giAmmoIndex >= MAX_AMMO_TYPES)
@@ -79,7 +78,7 @@ bool CBasePlayerWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay, in
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return false;
 
-	int j = std::min(iClipSize - m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]);
+	const int j = std::min(iClipSize - m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]);
 
 	if (j == 0)
 		return false;
@@ -121,7 +120,7 @@ void CBasePlayerWeapon::ItemPostFrame()
 	if ((m_fInReload) && (m_pPlayer->m_flNextAttack <= UTIL_WeaponTimeBase()))
 	{
 		// complete the reload. 
-		int j = std::min(MaxClip() - m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]);
+		const int j = std::min(MaxClip() - m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]);
 
 		// Add them to the clip
 		m_iClip += j;

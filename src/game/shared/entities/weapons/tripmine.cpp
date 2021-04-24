@@ -77,7 +77,6 @@ TYPEDESCRIPTION	CTripmineGrenade::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CTripmineGrenade, CGrenade);
 
-
 void CTripmineGrenade::Spawn()
 {
 	Precache();
@@ -128,7 +127,6 @@ void CTripmineGrenade::Spawn()
 	m_vecEnd = pev->origin + m_vecDir * 2048;
 }
 
-
 void CTripmineGrenade::Precache()
 {
 	PRECACHE_MODEL("models/v_tripmine.mdl");
@@ -136,7 +134,6 @@ void CTripmineGrenade::Precache()
 	PRECACHE_SOUND("weapons/mine_activate.wav");
 	PRECACHE_SOUND("weapons/mine_charge.wav");
 }
-
 
 void CTripmineGrenade::WarningThink()
 {
@@ -148,16 +145,14 @@ void CTripmineGrenade::WarningThink()
 	pev->nextthink = gpGlobals->time + 1.0;
 }
 
-
 void CTripmineGrenade::PowerupThink()
 {
-	TraceResult tr;
-
 	if (m_hOwner == nullptr)
 	{
 		// find an owner
 		edict_t* oldowner = pev->owner;
 		pev->owner = nullptr;
+		TraceResult tr;
 		UTIL_TraceLine(pev->origin + m_vecDir * 8, pev->origin - m_vecDir * 32, IgnoreMonsters::No, ENT(pev), &tr);
 		if (tr.fStartSolid || (oldowner && tr.pHit == oldowner))
 		{
@@ -213,7 +208,6 @@ void CTripmineGrenade::PowerupThink()
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
-
 void CTripmineGrenade::KillBeam()
 {
 	if (m_pBeam)
@@ -223,13 +217,10 @@ void CTripmineGrenade::KillBeam()
 	}
 }
 
-
 void CTripmineGrenade::MakeBeam()
 {
-	TraceResult tr;
-
 	// ALERT( at_console, "serverflags %f\n", gpGlobals->serverflags );
-
+	TraceResult tr;
 	UTIL_TraceLine(pev->origin, m_vecEnd, IgnoreMonsters::No, ENT(pev), &tr);
 
 	m_flBeamLength = tr.flFraction;
@@ -238,7 +229,7 @@ void CTripmineGrenade::MakeBeam()
 	SetThink(&CTripmineGrenade::BeamBreakThink);
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	Vector vecTmpEnd = pev->origin + m_vecDir * 2048 * m_flBeamLength;
+	const Vector vecTmpEnd = pev->origin + m_vecDir * 2048 * m_flBeamLength;
 
 	m_pBeam = CBeam::BeamCreate(g_pModelNameLaser, 10);
 	m_pBeam->PointEntInit(vecTmpEnd, entindex());
@@ -247,15 +238,11 @@ void CTripmineGrenade::MakeBeam()
 	m_pBeam->SetBrightness(64);
 }
 
-
 void CTripmineGrenade::BeamBreakThink()
 {
-	bool bBlowup = false;
-
-	TraceResult tr;
-
 	// HACKHACK Set simple box using this really nice global!
 	gpGlobals->trace_flags = FTRACE_SIMPLEBOX;
+	TraceResult tr;
 	UTIL_TraceLine(pev->origin, m_vecEnd, IgnoreMonsters::No, ENT(pev), &tr);
 
 	// ALERT( at_console, "%f : %f\n", tr.flFraction, m_flBeamLength );
@@ -267,6 +254,8 @@ void CTripmineGrenade::BeamBreakThink()
 		if (tr.pHit)
 			m_hOwner = CBaseEntity::Instance(tr.pHit);	// reset owner too
 	}
+
+	bool bBlowup = false;
 
 	if (fabs(m_flBeamLength - tr.flFraction) > 0.001)
 	{
@@ -326,7 +315,6 @@ void CTripmineGrenade::Killed(entvars_t* pevAttacker, int iGib)
 
 	EmitSound(CHAN_BODY, "common/null.wav", 0.5); // shut off chargeup
 }
-
 
 void CTripmineGrenade::DelayDeathThink()
 {
@@ -397,7 +385,6 @@ bool CTripmine::Deploy()
 	return DefaultDeploy("models/v_tripmine.mdl", "models/p_tripmine.mdl", TRIPMINE_DRAW, "trip");
 }
 
-
 void CTripmine::Holster()
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
@@ -420,11 +407,10 @@ void CTripmine::PrimaryAttack()
 		return;
 
 	UTIL_MakeVectors(m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle);
-	Vector vecSrc = m_pPlayer->GetGunPosition();
-	Vector vecAiming = gpGlobals->v_forward;
+	const Vector vecSrc = m_pPlayer->GetGunPosition();
+	const Vector vecAiming = gpGlobals->v_forward;
 
 	TraceResult tr;
-
 	UTIL_TraceLine(vecSrc, vecSrc + vecAiming * 128, IgnoreMonsters::No, ENT(m_pPlayer->pev), &tr);
 
 	int flags;
@@ -441,7 +427,7 @@ void CTripmine::PrimaryAttack()
 		CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit);
 		if (pEntity && !(pEntity->pev->flags & FL_CONVEYOR))
 		{
-			Vector angles = VectorAngles(tr.vecPlaneNormal);
+			const Vector angles = VectorAngles(tr.vecPlaneNormal);
 
 			CBaseEntity* pEnt = CBaseEntity::Create("monster_tripmine", tr.vecEndPos + tr.vecPlaneNormal * 8, angles, m_pPlayer->edict());
 
@@ -464,7 +450,6 @@ void CTripmine::PrimaryAttack()
 	}
 	else
 	{
-
 	}
 
 	m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
@@ -490,7 +475,7 @@ void CTripmine::WeaponIdle()
 	}
 
 	int iAnim;
-	float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
+	const float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
 	if (flRand <= 0.25)
 	{
 		iAnim = TRIPMINE_IDLE1;
@@ -509,7 +494,3 @@ void CTripmine::WeaponIdle()
 
 	SendWeaponAnim(iAnim);
 }
-
-
-
-

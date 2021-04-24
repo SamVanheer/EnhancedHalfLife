@@ -41,7 +41,6 @@ void CEgon::Spawn()
 	FallInit();// get ready to fall down.
 }
 
-
 void CEgon::Precache()
 {
 	PRECACHE_MODEL("models/w_egon.mdl");
@@ -64,7 +63,6 @@ void CEgon::Precache()
 	m_usEgonStop = PRECACHE_EVENT(1, "events/egon_stop.sc");
 }
 
-
 bool CEgon::Deploy()
 {
 	m_deployed = false;
@@ -83,8 +81,6 @@ bool CEgon::AddToPlayer(CBasePlayer* pPlayer)
 	}
 	return false;
 }
-
-
 
 void CEgon::Holster()
 {
@@ -158,8 +154,8 @@ void CEgon::Attack()
 	}
 
 	UTIL_MakeVectors(m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle);
-	Vector vecAiming = gpGlobals->v_forward;
-	Vector vecSrc = m_pPlayer->GetGunPosition();
+	const Vector vecAiming = gpGlobals->v_forward;
+	const Vector vecSrc = m_pPlayer->GetGunPosition();
 
 	int flags;
 #if defined( CLIENT_WEAPONS )
@@ -220,21 +216,15 @@ void CEgon::PrimaryAttack()
 {
 	m_fireMode = FIRE_WIDE;
 	Attack();
-
 }
 
 void CEgon::Fire(const Vector& vecOrigSrc, const Vector& vecDir)
 {
-	Vector vecDest = vecOrigSrc + vecDir * 2048;
-	edict_t* pentIgnore;
-	TraceResult tr;
-
-	pentIgnore = m_pPlayer->edict();
-	Vector tmpSrc = vecOrigSrc + gpGlobals->v_up * -8 + gpGlobals->v_right * 3;
+	const Vector tmpSrc = vecOrigSrc + gpGlobals->v_up * -8 + gpGlobals->v_right * 3;
 
 	// ALERT( at_console, "." );
-
-	UTIL_TraceLine(vecOrigSrc, vecDest, IgnoreMonsters::No, pentIgnore, &tr);
+	TraceResult tr;
+	UTIL_TraceLine(vecOrigSrc, vecOrigSrc + vecDir * 2048, IgnoreMonsters::No, m_pPlayer->edict(), &tr);
 
 	if (tr.fAllSolid)
 		return;
@@ -256,8 +246,6 @@ void CEgon::Fire(const Vector& vecOrigSrc, const Vector& vecDir)
 			m_pSprite->pev->effects |= EF_NODRAW;
 		}
 	}
-
-
 #endif
 
 	float timedist;
@@ -353,15 +341,10 @@ void CEgon::Fire(const Vector& vecOrigSrc, const Vector& vecDir)
 		break;
 	}
 
-	if (timedist < 0)
-		timedist = 0;
-	else if (timedist > 1)
-		timedist = 1;
-	timedist = 1 - timedist;
+	timedist = 1 - std::clamp(timedist, 0.0f, 1.0f);
 
 	UpdateEffect(tmpSrc, tr.vecEndPos, timedist);
 }
-
 
 void CEgon::UpdateEffect(const Vector& startPoint, const Vector& endPoint, float timeBlend)
 {
@@ -380,21 +363,17 @@ void CEgon::UpdateEffect(const Vector& startPoint, const Vector& endPoint, float
 	else
 		m_pBeam->SetColor(60 + (25 * timeBlend), 120 + (30 * timeBlend), 64 + 80 * fabs(sin(gpGlobals->time * 10)));
 
-
 	UTIL_SetOrigin(m_pSprite->pev, endPoint);
 	m_pSprite->pev->frame += 8 * gpGlobals->frametime;
 	if (m_pSprite->pev->frame > m_pSprite->Frames())
 		m_pSprite->pev->frame = 0;
 
 	m_pNoise->SetStartPos(endPoint);
-
 #endif
-
 }
 
 void CEgon::CreateEffect()
 {
-
 #ifndef CLIENT_DLL
 	DestroyEffect();
 
@@ -437,13 +416,10 @@ void CEgon::CreateEffect()
 		m_pNoise->SetNoise(2);
 	}
 #endif
-
 }
-
 
 void CEgon::DestroyEffect()
 {
-
 #ifndef CLIENT_DLL
 	if (m_pBeam)
 	{
@@ -464,10 +440,7 @@ void CEgon::DestroyEffect()
 		m_pSprite = nullptr;
 	}
 #endif
-
 }
-
-
 
 void CEgon::WeaponIdle()
 {
@@ -486,7 +459,7 @@ void CEgon::WeaponIdle()
 
 	int iAnim;
 
-	float flRand = RANDOM_FLOAT(0, 1);
+	const float flRand = RANDOM_FLOAT(0, 1);
 
 	if (flRand <= 0.5)
 	{
@@ -503,14 +476,9 @@ void CEgon::WeaponIdle()
 	m_deployed = true;
 }
 
-
-
 void CEgon::EndAttack()
 {
-	bool bMakeNoise = false;
-
-	if (m_fireState != FIRE_OFF) //Checking the button just in case!.
-		bMakeNoise = true;
+	const bool bMakeNoise = m_fireState != FIRE_OFF; //Checking the button just in case!.
 
 	PLAYBACK_EVENT_FULL(FEV_GLOBAL | FEV_RELIABLE, m_pPlayer->edict(), m_usEgonStop, 0, m_pPlayer->pev->origin, m_pPlayer->pev->angles, 0.0, 0.0, bMakeNoise, 0, 0, 0);
 
@@ -531,7 +499,6 @@ void CEgon::SetWeaponData(const weapon_data_t& data)
 {
 	m_fireState = data.iuser3;
 }
-
 
 class CEgonAmmo : public CBasePlayerAmmo
 {

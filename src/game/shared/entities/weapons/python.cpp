@@ -66,7 +66,6 @@ void CPython::Spawn()
 	FallInit();// get ready to fall down.
 }
 
-
 void CPython::Precache()
 {
 	PRECACHE_MODEL("models/v_357.mdl");
@@ -102,7 +101,6 @@ bool CPython::Deploy()
 
 	return DefaultDeploy("models/v_357.mdl", "models/p_357.mdl", PYTHON_DRAW, "python", pev->body);
 }
-
 
 void CPython::Holster()
 {
@@ -175,11 +173,10 @@ void CPython::PrimaryAttack()
 
 	UTIL_MakeVectors(m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle);
 
-	Vector vecSrc = m_pPlayer->GetGunPosition();
-	Vector vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
+	const Vector vecSrc = m_pPlayer->GetGunPosition();
+	const Vector vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
 
-	Vector vecDir;
-	vecDir = m_pPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, VECTOR_CONE_1DEGREES, WORLD_SIZE, BULLET_PLAYER_357, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed);
+	const Vector vecDir = m_pPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, VECTOR_CONE_1DEGREES, WORLD_SIZE, BULLET_PLAYER_357, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed);
 
 	int flags;
 #if defined( CLIENT_WEAPONS )
@@ -198,7 +195,6 @@ void CPython::PrimaryAttack()
 	m_flTimeWeaponIdle = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15);
 }
 
-
 void CPython::Reload()
 {
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
@@ -216,9 +212,8 @@ void CPython::Reload()
 	bUseScope = g_pGameRules->IsMultiplayer();
 #endif
 
-	DefaultReload(6, PYTHON_RELOAD, 2.0, bUseScope);
+	DefaultReload(PYTHON_MAX_CLIP, PYTHON_RELOAD, 2.0, bUseScope);
 }
-
 
 void CPython::WeaponIdle()
 {
@@ -230,7 +225,7 @@ void CPython::WeaponIdle()
 		return;
 
 	int iAnim;
-	float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
+	const float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
 	if (flRand <= 0.5)
 	{
 		iAnim = PYTHON_IDLE1;
@@ -261,7 +256,6 @@ void CPython::WeaponIdle()
 
 	SendWeaponAnim(iAnim, bUseScope);
 }
-
 
 class CPythonAmmo : public CBasePlayerAmmo
 {

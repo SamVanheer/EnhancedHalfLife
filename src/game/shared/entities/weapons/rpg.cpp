@@ -28,8 +28,6 @@ LINK_ENTITY_TO_CLASS(weapon_rpg, CRpg);
 
 LINK_ENTITY_TO_CLASS(laser_spot, CLaserSpot);
 
-//=========================================================
-//=========================================================
 CLaserSpot* CLaserSpot::CreateSpot()
 {
 	CLaserSpot* pSpot = GetClassPtr((CLaserSpot*)nullptr);
@@ -40,8 +38,6 @@ CLaserSpot* CLaserSpot::CreateSpot()
 	return pSpot;
 }
 
-//=========================================================
-//=========================================================
 void CLaserSpot::Spawn()
 {
 	Precache();
@@ -54,11 +50,8 @@ void CLaserSpot::Spawn()
 
 	SET_MODEL(ENT(pev), "sprites/laserdot.spr");
 	UTIL_SetOrigin(pev, pev->origin);
-};
+}
 
-//=========================================================
-// Suspend- make the laser sight invisible. 
-//=========================================================
 void CLaserSpot::Suspend(float flSuspendTime)
 {
 	pev->effects |= EF_NODRAW;
@@ -67,9 +60,6 @@ void CLaserSpot::Suspend(float flSuspendTime)
 	pev->nextthink = gpGlobals->time + flSuspendTime;
 }
 
-//=========================================================
-// Revive - bring a suspended laser sight back.
-//=========================================================
 void CLaserSpot::Revive()
 {
 	pev->effects &= ~EF_NODRAW;
@@ -80,12 +70,10 @@ void CLaserSpot::Revive()
 void CLaserSpot::Precache()
 {
 	PRECACHE_MODEL("sprites/laserdot.spr");
-};
+}
 
 LINK_ENTITY_TO_CLASS(rpg_rocket, CRpgRocket);
 
-//=========================================================
-//=========================================================
 CRpgRocket* CRpgRocket::CreateRpgRocket(Vector vecOrigin, Vector vecAngles, CBaseEntity* pOwner, CRpg* pLauncher)
 {
 	CRpgRocket* pRocket = GetClassPtr((CRpgRocket*)nullptr);
@@ -101,8 +89,6 @@ CRpgRocket* CRpgRocket::CreateRpgRocket(Vector vecOrigin, Vector vecAngles, CBas
 	return pRocket;
 }
 
-//=========================================================
-//=========================================================
 void CRpgRocket::Spawn()
 {
 	Precache();
@@ -131,8 +117,6 @@ void CRpgRocket::Spawn()
 	pev->dmg = gSkillData.plrDmgRPG;
 }
 
-//=========================================================
-//=========================================================
 void CRpgRocket::RocketTouch(CBaseEntity* pOther)
 {
 	if (m_pLauncher)
@@ -145,15 +129,12 @@ void CRpgRocket::RocketTouch(CBaseEntity* pOther)
 	ExplodeTouch(pOther);
 }
 
-//=========================================================
-//=========================================================
 void CRpgRocket::Precache()
 {
 	PRECACHE_MODEL("models/rpgrocket.mdl");
 	m_iTrail = PRECACHE_MODEL("sprites/smoke.spr");
 	PRECACHE_SOUND("weapons/rocket1.wav");
 }
-
 
 void CRpgRocket::IgniteThink()
 {
@@ -187,31 +168,26 @@ void CRpgRocket::IgniteThink()
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
-
 void CRpgRocket::FollowThink()
 {
-	CBaseEntity* pOther = nullptr;
-	Vector vecTarget;
-	Vector vecDir;
-	float flDist, flMax, flDot;
-	TraceResult tr;
-
 	UTIL_MakeAimVectors(pev->angles);
 
-	vecTarget = gpGlobals->v_forward;
-	flMax = WORLD_BOUNDARY;
-
 	// Examine all entities within a reasonable radius
+	CBaseEntity* pOther = nullptr;
+	Vector vecTarget = gpGlobals->v_forward;
+	float flMax = WORLD_BOUNDARY;
+	TraceResult tr;
+
 	while ((pOther = UTIL_FindEntityByClassname(pOther, "laser_spot")) != nullptr)
 	{
 		UTIL_TraceLine(pev->origin, pOther->pev->origin, IgnoreMonsters::No, ENT(pev), &tr);
 		// ALERT( at_console, "%f\n", tr.flFraction );
 		if (tr.flFraction >= 0.90)
 		{
-			vecDir = pOther->pev->origin - pev->origin;
-			flDist = vecDir.Length();
+			Vector vecDir = pOther->pev->origin - pev->origin;
+			const float flDist = vecDir.Length();
 			vecDir = vecDir.Normalize();
-			flDot = DotProduct(gpGlobals->v_forward, vecDir);
+			const float flDot = DotProduct(gpGlobals->v_forward, vecDir);
 			if ((flDot > 0) && (flDist * (1 - flDot) < flMax))
 			{
 				flMax = flDist * (1 - flDot);
@@ -223,7 +199,7 @@ void CRpgRocket::FollowThink()
 	pev->angles = VectorAngles(vecTarget);
 
 	// this acceleration and turning math is totally wrong, but it seems to respond well so don't change it.
-	float flSpeed = pev->velocity.Length();
+	const float flSpeed = pev->velocity.Length();
 	if (gpGlobals->time - m_flIgniteTime < 1.0)
 	{
 		pev->velocity = pev->velocity * 0.2 + vecTarget * (flSpeed * 0.8 + 400);
@@ -263,12 +239,8 @@ void CRpgRocket::FollowThink()
 }
 #endif
 
-
-
 void CRpg::Reload()
 {
-	int iResult;
-
 	if (m_iClip == 1)
 	{
 		// don't bother with any of this if don't need to reload.
@@ -305,12 +277,13 @@ void CRpg::Reload()
 	}
 #endif
 
+	bool iResult;
+
 	if (m_iClip == 0)
 		iResult = DefaultReload(RPG_MAX_CLIP, RPG_RELOAD, 2);
 
 	if (iResult)
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15);
-
 }
 
 void CRpg::Spawn()
@@ -338,7 +311,6 @@ void CRpg::Spawn()
 	FallInit();// get ready to fall down.
 }
 
-
 void CRpg::Precache()
 {
 	PRECACHE_MODEL("models/w_rpg.mdl");
@@ -355,7 +327,6 @@ void CRpg::Precache()
 
 	m_usRpg = PRECACHE_EVENT(1, "events/rpg.sc");
 }
-
 
 bool CRpg::GetItemInfo(ItemInfo* p)
 {
@@ -396,7 +367,6 @@ bool CRpg::Deploy()
 	return DefaultDeploy("models/v_rpg.mdl", "models/p_rpg.mdl", RPG_DRAW1, "rpg");
 }
 
-
 bool CRpg::CanHolster()
 {
 	if (m_fSpotActive && m_cActiveRockets)
@@ -423,10 +393,7 @@ void CRpg::Holster()
 		m_pSpot = nullptr;
 	}
 #endif
-
 }
-
-
 
 void CRpg::PrimaryAttack()
 {
@@ -472,7 +439,6 @@ void CRpg::PrimaryAttack()
 	UpdateSpot();
 }
 
-
 void CRpg::SecondaryAttack()
 {
 	m_fSpotActive = !m_fSpotActive;
@@ -488,7 +454,6 @@ void CRpg::SecondaryAttack()
 	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.2;
 }
 
-
 void CRpg::WeaponIdle()
 {
 	UpdateSpot();
@@ -499,7 +464,7 @@ void CRpg::WeaponIdle()
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 	{
 		int iAnim;
-		float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
+		const float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
 		if (flRand <= 0.75 || m_fSpotActive)
 		{
 			if (m_iClip == 0)
@@ -528,8 +493,6 @@ void CRpg::WeaponIdle()
 	}
 }
 
-
-
 void CRpg::UpdateSpot()
 {
 
@@ -542,8 +505,8 @@ void CRpg::UpdateSpot()
 		}
 
 		UTIL_MakeVectors(m_pPlayer->pev->v_angle);
-		Vector vecSrc = m_pPlayer->GetGunPosition();
-		Vector vecAiming = gpGlobals->v_forward;
+		const Vector vecSrc = m_pPlayer->GetGunPosition();
+		const Vector vecAiming = gpGlobals->v_forward;
 
 		TraceResult tr;
 		UTIL_TraceLine(vecSrc, vecSrc + vecAiming * WORLD_SIZE, IgnoreMonsters::No, ENT(m_pPlayer->pev), &tr);
@@ -551,9 +514,7 @@ void CRpg::UpdateSpot()
 		UTIL_SetOrigin(m_pSpot->pev, tr.vecEndPos);
 	}
 #endif
-
 }
-
 
 class CRpgAmmo : public CBasePlayerAmmo
 {

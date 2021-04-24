@@ -21,7 +21,6 @@
 #include "player.h"
 #include "gamerules.h"
 
-
 constexpr int CROWBAR_BODYHIT_VOLUME = 128;
 constexpr int CROWBAR_WALLHIT_VOLUME = 512;
 
@@ -36,7 +35,6 @@ void CCrowbar::Spawn()
 
 	FallInit();// get ready to fall down.
 }
-
 
 void CCrowbar::Precache()
 {
@@ -68,8 +66,6 @@ bool CCrowbar::GetItemInfo(ItemInfo* p)
 	return true;
 }
 
-
-
 bool CCrowbar::Deploy()
 {
 	return DefaultDeploy("models/v_crowbar.mdl", "models/p_crowbar.mdl", CROWBAR_DRAW, "crowbar");
@@ -81,35 +77,35 @@ void CCrowbar::Holster()
 	SendWeaponAnim(CROWBAR_HOLSTER);
 }
 
-
 void FindHullIntersection(const Vector& vecSrc, TraceResult& tr, const Vector& mins, const Vector& maxs, edict_t* pEntity)
 {
-	int			i, j, k;
-	float		distance;
-	const Vector* minmaxs[2] = {&mins, &maxs};
+	const Vector vecHullEnd = vecSrc + ((tr.vecEndPos - vecSrc) * 2);
+
 	TraceResult tmpTrace;
-	Vector		vecHullEnd = tr.vecEndPos;
-	Vector		vecEnd;
-
-	distance = 1e6f;
-
-	vecHullEnd = vecSrc + ((vecHullEnd - vecSrc) * 2);
 	UTIL_TraceLine(vecSrc, vecHullEnd, IgnoreMonsters::No, pEntity, &tmpTrace);
+
 	if (tmpTrace.flFraction < 1.0)
 	{
 		tr = tmpTrace;
 		return;
 	}
 
-	for (i = 0; i < 2; i++)
+	const Vector* const minmaxs[2] = {&mins, &maxs};
+
+	float distance = 1e6f;
+
+	for (int i = 0; i < 2; i++)
 	{
-		for (j = 0; j < 2; j++)
+		for (int j = 0; j < 2; j++)
 		{
-			for (k = 0; k < 2; k++)
+			for (int k = 0; k < 2; k++)
 			{
-				vecEnd.x = vecHullEnd.x + minmaxs[i]->x;
-				vecEnd.y = vecHullEnd.y + minmaxs[j]->y;
-				vecEnd.z = vecHullEnd.z + minmaxs[k]->z;
+				const Vector vecEnd
+				{
+					vecHullEnd.x + minmaxs[i]->x,
+					vecHullEnd.y + minmaxs[j]->y,
+					vecHullEnd.z + minmaxs[k]->z
+				};
 
 				UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, pEntity, &tmpTrace);
 				if (tmpTrace.flFraction < 1.0)
@@ -126,7 +122,6 @@ void FindHullIntersection(const Vector& vecSrc, TraceResult& tr, const Vector& m
 	}
 }
 
-
 void CCrowbar::PrimaryAttack()
 {
 	if (!Swing(true))
@@ -136,12 +131,10 @@ void CCrowbar::PrimaryAttack()
 	}
 }
 
-
 void CCrowbar::Smack()
 {
 	DecalGunshot(&m_trHit, BULLET_PLAYER_CROWBAR);
 }
-
 
 void CCrowbar::SwingAgain()
 {
@@ -150,14 +143,11 @@ void CCrowbar::SwingAgain()
 
 bool CCrowbar::Swing(bool fFirst)
 {
-	bool fDidHit = false;
-
-	TraceResult tr;
-
 	UTIL_MakeVectors(m_pPlayer->pev->v_angle);
-	Vector vecSrc = m_pPlayer->GetGunPosition();
+	const Vector vecSrc = m_pPlayer->GetGunPosition();
 	Vector vecEnd = vecSrc + gpGlobals->v_forward * 32;
 
+	TraceResult tr;
 	UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, ENT(m_pPlayer->pev), &tr);
 
 #ifndef CLIENT_DLL
@@ -168,8 +158,7 @@ bool CCrowbar::Swing(bool fFirst)
 		{
 			// Calculate the point of intersection of the line (or hull) and the object we hit
 			// This is and approximation of the "best" intersection
-			CBaseEntity* pHit = CBaseEntity::Instance(tr.pHit);
-			if (!pHit || pHit->IsBSPModel())
+			if (CBaseEntity* pHit = CBaseEntity::Instance(tr.pHit); !pHit || pHit->IsBSPModel())
 				FindHullIntersection(vecSrc, tr, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX, m_pPlayer->edict());
 			vecEnd = tr.vecEndPos;	// This is the point on the actual surface (the hull could have hit space)
 		}
@@ -177,9 +166,9 @@ bool CCrowbar::Swing(bool fFirst)
 #endif
 
 	PLAYBACK_EVENT_FULL(FEV_NOTHOST, m_pPlayer->edict(), m_usCrowbar,
-		0.0, vec3_origin, vec3_origin, 0, 0, 0,
-		0.0, 0, 0.0);
+		0.0, vec3_origin, vec3_origin, 0, 0, 0, 0.0, 0, 0.0);
 
+	bool fDidHit = false;
 
 	if (tr.flFraction >= 1.0)
 	{
@@ -294,11 +283,6 @@ bool CCrowbar::Swing(bool fFirst)
 #endif
 		SetThink(&CCrowbar::Smack);
 		pev->nextthink = gpGlobals->time + 0.2;
-
-
 	}
 	return fDidHit;
 }
-
-
-

@@ -26,9 +26,6 @@
 LINK_ENTITY_TO_CLASS(weapon_mp5, CMP5);
 LINK_ENTITY_TO_CLASS(weapon_9mmAR, CMP5);
 
-
-//=========================================================
-//=========================================================
 void CMP5::Spawn()
 {
 	pev->classname = MAKE_STRING("weapon_9mmAR"); // hack to allow for old names
@@ -40,7 +37,6 @@ void CMP5::Spawn()
 
 	FallInit();// get ready to fall down.
 }
-
 
 void CMP5::Precache()
 {
@@ -105,7 +101,6 @@ bool CMP5::Deploy()
 	return DefaultDeploy("models/v_9mmAR.mdl", "models/p_9mmAR.mdl", MP5_DEPLOY, "mp5");
 }
 
-
 void CMP5::PrimaryAttack()
 {
 	// don't fire underwater
@@ -128,14 +123,13 @@ void CMP5::PrimaryAttack()
 
 	m_iClip--;
 
-
 	m_pPlayer->pev->effects = (int)(m_pPlayer->pev->effects) | EF_MUZZLEFLASH;
 
 	// player "shoot" animation
 	m_pPlayer->SetAnimation(PlayerAnim::Attack1);
 
-	Vector vecSrc = m_pPlayer->GetGunPosition();
-	Vector vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
+	const Vector vecSrc = m_pPlayer->GetGunPosition();
+	const Vector vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
 	Vector vecDir;
 
 #ifdef CLIENT_DLL
@@ -173,8 +167,6 @@ void CMP5::PrimaryAttack()
 
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15);
 }
-
-
 
 void CMP5::SecondaryAttack()
 {
@@ -236,7 +228,6 @@ void CMP5::Reload()
 	DefaultReload(MP5_MAX_CLIP, MP5_RELOAD, 1.5);
 }
 
-
 void CMP5::WeaponIdle()
 {
 	ResetEmptySound();
@@ -264,8 +255,6 @@ void CMP5::WeaponIdle()
 	m_flTimeWeaponIdle = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15); // how long till we do this again.
 }
 
-
-
 class CMP5AmmoClip : public CBasePlayerAmmo
 {
 	void Spawn() override
@@ -292,8 +281,6 @@ class CMP5AmmoClip : public CBasePlayerAmmo
 LINK_ENTITY_TO_CLASS(ammo_mp5clip, CMP5AmmoClip);
 LINK_ENTITY_TO_CLASS(ammo_9mmAR, CMP5AmmoClip);
 
-
-
 class CMP5Chainammo : public CBasePlayerAmmo
 {
 	void Spawn() override
@@ -318,7 +305,6 @@ class CMP5Chainammo : public CBasePlayerAmmo
 	}
 };
 LINK_ENTITY_TO_CLASS(ammo_9mmbox, CMP5Chainammo);
-
 
 class CMP5AmmoGrenade : public CBasePlayerAmmo
 {
@@ -346,21 +332,3 @@ class CMP5AmmoGrenade : public CBasePlayerAmmo
 };
 LINK_ENTITY_TO_CLASS(ammo_mp5grenades, CMP5AmmoGrenade);
 LINK_ENTITY_TO_CLASS(ammo_ARgrenades, CMP5AmmoGrenade);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
