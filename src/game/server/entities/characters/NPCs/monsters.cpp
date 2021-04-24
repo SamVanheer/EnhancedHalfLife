@@ -703,7 +703,7 @@ void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, in
 }
 #endif
 
-int ShouldSimplify(int routeType)
+bool ShouldSimplify(int routeType)
 {
 	routeType &= ~bits_MF_IS_GOAL;
 

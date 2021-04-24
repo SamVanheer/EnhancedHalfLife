@@ -67,7 +67,7 @@ public:
 
 	NPCState GetIdealState() override { return NPCState::Idle; }
 	//TODO: should override base, but has different signature
-	int CanPlaySequence(bool fDisregardState) { return true; }
+	bool CanPlaySequence(bool fDisregardState) { return true; }
 
 	int Classify() override;
 
