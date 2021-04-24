@@ -1088,9 +1088,8 @@ CMenuPanel* TeamFortressViewport::CreateTextWindow(int iTextToShow)
 
 	if (iTextToShow == SHOW_MOTD)
 	{
-		//TODO: define this as a constant somewhere
 		if (!m_szServerName || !m_szServerName[0])
-			safe_strcpy(cTitle, "Half-Life");
+			safe_strcpy(cTitle, GAME_NAME);
 		else
 			safe_strcpy(cTitle, m_szServerName, sizeof(cTitle));
 		cTitle[sizeof(cTitle) - 1] = 0;

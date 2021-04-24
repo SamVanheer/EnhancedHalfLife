@@ -23,6 +23,8 @@
 *	this file is included by both the game-dll and the client-dll
 */
 
+constexpr std::string_view GAME_NAME{"Half-Life"};
+
 constexpr int MAX_CLIENTS = 32;
 
 constexpr int MAX_WEAPONS = 32;	// ???

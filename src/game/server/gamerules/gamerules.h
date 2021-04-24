@@ -111,7 +111,7 @@ public:
 	/**
 	*	@brief this is the game name that gets seen in the server browser
 	*/
-	virtual const char* GetGameDescription() { return "Half-Life"; }
+	virtual const char* GetGameDescription() { return GAME_NAME.data(); }
 
 // Client connection/disconnection
 	/**
