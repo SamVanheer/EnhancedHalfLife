@@ -287,7 +287,7 @@ void W_Precache()
 	// hornetgun
 	UTIL_PrecacheOtherWeapon("weapon_hornetgun");
 
-	if (g_pGameRules->IsDeathmatch())
+	if (g_pGameRules->IsMultiplayer())
 	{
 		UTIL_PrecacheOther("weaponbox");// container for dropped deathmatch weapons
 	}

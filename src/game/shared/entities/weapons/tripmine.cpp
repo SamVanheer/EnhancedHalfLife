@@ -358,7 +358,7 @@ void CTripmine::Spawn()
 #ifdef CLIENT_DLL
 	if (!bIsMultiplayer())
 #else
-	if (!g_pGameRules->IsDeathmatch())
+	if (!g_pGameRules->IsMultiplayer())
 #endif
 	{
 		UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 28));
