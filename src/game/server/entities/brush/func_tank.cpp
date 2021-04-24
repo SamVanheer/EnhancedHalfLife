@@ -72,8 +72,21 @@ public:
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 	inline bool IsActive() { return (pev->spawnflags & SF_TANK_ACTIVE) != 0; }
-	inline void TankActivate() { pev->spawnflags |= SF_TANK_ACTIVE; pev->nextthink = pev->ltime + 0.1; m_fireLast = 0; }
-	inline void TankDeactivate() { pev->spawnflags &= ~SF_TANK_ACTIVE; m_fireLast = 0; StopRotSound(); }
+
+	inline void TankActivate()
+	{
+		pev->spawnflags |= SF_TANK_ACTIVE;
+		pev->nextthink = pev->ltime + 0.1;
+		m_fireLast = 0;
+	}
+
+	inline void TankDeactivate()
+	{
+		pev->spawnflags &= ~SF_TANK_ACTIVE;
+		m_fireLast = 0;
+		StopRotSound();
+	}
+
 	inline bool CanFire() { return (gpGlobals->time - m_lastSightTime) < m_persist; }
 	bool		InRange(float range);
 
@@ -342,8 +355,6 @@ bool CFuncTank::OnControls(entvars_t* pevTest)
 	if (!(pev->spawnflags & SF_TANK_CANCONTROL))
 		return false;
 
-	Vector offset = pevTest->origin - pev->origin;
-
 	if ((m_vecControllerUsePos - pevTest->origin).Length() < 30)
 		return true;
 
@@ -486,10 +497,10 @@ void CFuncTank::Think()
 
 void CFuncTank::TrackTarget()
 {
+	//TODO: clean this up so that it's easier to follow for the two main cases
 	TraceResult tr;
-	edict_t* pPlayer = FIND_CLIENT_IN_PVS(edict());
-	bool updateTime = false, lineOfSight;
-	Vector angles, direction, targetPosition, barrelEnd;
+	bool updateTime = false;
+	Vector angles, direction, barrelEnd;
 	edict_t* pTarget;
 
 	// Get a position to aim for
@@ -507,6 +518,7 @@ void CFuncTank::TrackTarget()
 		else
 			return;
 
+		edict_t* pPlayer = FIND_CLIENT_IN_PVS(edict());
 		if (IsNullEnt(pPlayer))
 		{
 			if (IsActive())
@@ -519,15 +531,15 @@ void CFuncTank::TrackTarget()
 
 		// Calculate angle needed to aim at target
 		barrelEnd = BarrelPosition();
-		targetPosition = pTarget->v.origin + pTarget->v.view_ofs;
-		float range = (targetPosition - barrelEnd).Length();
+		const Vector targetPosition = pTarget->v.origin + pTarget->v.view_ofs;
+		const float range = (targetPosition - barrelEnd).Length();
 
 		if (!InRange(range))
 			return;
 
 		UTIL_TraceLine(barrelEnd, targetPosition, IgnoreMonsters::No, edict(), &tr);
 
-		lineOfSight = false;
+		bool lineOfSight = false;
 		// No line of sight, don't track
 		if (tr.flFraction == 1.0 || tr.pHit == pTarget)
 		{
@@ -574,7 +586,7 @@ void CFuncTank::TrackTarget()
 		m_lastSightTime = gpGlobals->time;
 
 	// Move toward target at rate or less
-	float distY = UTIL_AngleDistance(angles.y, pev->angles.y);
+	const float distY = UTIL_AngleDistance(angles.y, pev->angles.y);
 	pev->avelocity.y = distY * 10;
 	if (pev->avelocity.y > m_yawRate)
 		pev->avelocity.y = m_yawRate;
@@ -588,7 +600,7 @@ void CFuncTank::TrackTarget()
 		angles.x = m_pitchCenter - m_pitchRange;
 
 	// Move toward target at rate or less
-	float distX = UTIL_AngleDistance(angles.x, pev->angles.x);
+	const float distX = UTIL_AngleDistance(angles.x, pev->angles.x);
 	pev->avelocity.x = distX * 10;
 
 	if (pev->avelocity.x > m_pitchRate)
@@ -628,21 +640,18 @@ void CFuncTank::TrackTarget()
 
 void CFuncTank::AdjustAnglesForBarrel(Vector& angles, float distance)
 {
-	float r2, d2;
-
-
 	if (m_barrelPos.y != 0 || m_barrelPos.z != 0)
 	{
 		distance -= m_barrelPos.z;
-		d2 = distance * distance;
+		const float d2 = distance * distance;
 		if (m_barrelPos.y)
 		{
-			r2 = m_barrelPos.y * m_barrelPos.y;
+			const float r2 = m_barrelPos.y * m_barrelPos.y;
 			angles.y += (180.0 / M_PI) * atan2(m_barrelPos.y, sqrt(d2 - r2));
 		}
 		if (m_barrelPos.z)
 		{
-			r2 = m_barrelPos.z * m_barrelPos.z;
+			const float r2 = m_barrelPos.z * m_barrelPos.z;
 			angles.x += (180.0 / M_PI) * atan2(-m_barrelPos.z, sqrt(d2 - r2));
 		}
 	}
@@ -685,12 +694,11 @@ void CFuncTank::TankTrace(const Vector& vecStart, const Vector& vecForward, cons
 		z = x * x + y * y;
 	}
 	while (z > 1);
-	Vector vecDir = vecForward +
+	const Vector vecDir = vecForward +
 		x * vecSpread.x * gpGlobals->v_right +
 		y * vecSpread.y * gpGlobals->v_up;
-	Vector vecEnd;
 
-	vecEnd = vecStart + vecDir * WORLD_BOUNDARY;
+	const Vector vecEnd = vecStart + vecDir * WORLD_BOUNDARY;
 	UTIL_TraceLine(vecStart, vecEnd, IgnoreMonsters::No, edict(), &tr);
 }
 
@@ -719,17 +727,15 @@ LINK_ENTITY_TO_CLASS(func_tank, CFuncTankGun);
 
 void CFuncTankGun::Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker)
 {
-	int i;
-
 	if (m_fireLast != 0)
 	{
 		// FireBullets needs gpGlobals->v_up, etc.
 		UTIL_MakeAimVectors(pev->angles);
 
-		int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
+		const int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
 		if (bulletCount > 0)
 		{
-			for (i = 0; i < bulletCount; i++)
+			for (int i = 0; i < bulletCount; i++)
 			{
 				switch (m_bulletType)
 				{
@@ -814,9 +820,7 @@ CLaser* CFuncTankLaser::GetLaser()
 	if (m_pLaser)
 		return m_pLaser;
 
-	edict_t* pentLaser;
-
-	pentLaser = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->message));
+	edict_t* pentLaser = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->message));
 	while (!IsNullEnt(pentLaser))
 	{
 		// Found the landmark
@@ -842,18 +846,16 @@ void CFuncTankLaser::Think()
 
 void CFuncTankLaser::Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker)
 {
-	int i;
-	TraceResult tr;
-
 	if (m_fireLast != 0 && GetLaser())
 	{
 		// TankTrace needs gpGlobals->v_up, etc.
 		UTIL_MakeAimVectors(pev->angles);
 
-		int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
+		const int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
 		if (bulletCount)
 		{
-			for (i = 0; i < bulletCount; i++)
+			TraceResult tr;
+			for (int i = 0; i < bulletCount; i++)
 			{
 				m_pLaser->pev->origin = barrelEnd;
 				TankTrace(barrelEnd, forward, gTankSpread[m_spread], tr);
@@ -890,14 +892,12 @@ void CFuncTankRocket::Precache()
 
 void CFuncTankRocket::Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker)
 {
-	int i;
-
 	if (m_fireLast != 0)
 	{
-		int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
+		const int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
 		if (bulletCount > 0)
 		{
-			for (i = 0; i < bulletCount; i++)
+			for (int i = 0; i < bulletCount; i++)
 			{
 				CBaseEntity* pRocket = CBaseEntity::Create("rpg_rocket", barrelEnd, pev->angles, edict());
 			}
@@ -932,7 +932,7 @@ void CFuncTankMortar::Fire(const Vector& barrelEnd, const Vector& forward, entva
 {
 	if (m_fireLast != 0)
 	{
-		int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
+		const int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
 		// Only create 1 explosion
 		if (bulletCount > 0)
 		{

@@ -133,12 +133,10 @@ void CPathTrack::KeyValue(KeyValueData* pkvd)
 
 void CPathTrack::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
-	int on;
-
 	// Use toggles between two paths
 	if (m_paltpath)
 	{
-		on = !IsBitSet(pev->spawnflags, SF_PATH_ALTERNATE);
+		const bool on = !IsBitSet(pev->spawnflags, SF_PATH_ALTERNATE);
 		if (ShouldToggle(useType, on))
 		{
 			if (on)
@@ -149,8 +147,7 @@ void CPathTrack::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 	}
 	else	// Use toggles between enabled/disabled
 	{
-		on = !IsBitSet(pev->spawnflags, SF_PATH_DISABLED);
-
+		const bool on = !IsBitSet(pev->spawnflags, SF_PATH_DISABLED);
 		if (ShouldToggle(useType, on))
 		{
 			if (on)
@@ -163,11 +160,9 @@ void CPathTrack::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 
 void CPathTrack::Link()
 {
-	edict_t* pentTarget;
-
 	if (!IsStringNull(pev->target))
 	{
-		pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target));
+		edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target));
 		if (!IsNullEnt(pentTarget))
 		{
 			m_pnext = CPathTrack::Instance(pentTarget);
@@ -184,7 +179,7 @@ void CPathTrack::Link()
 	// Find "alternate" path
 	if (!IsStringNull(m_altName))
 	{
-		pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_altName));
+		edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_altName));
 		if (!IsNullEnt(pentTarget))
 		{
 			m_paltpath = CPathTrack::Instance(pentTarget);
@@ -232,8 +227,7 @@ void CPathTrack::Project(CPathTrack* pstart, CPathTrack* pend, Vector* origin, f
 {
 	if (pstart && pend)
 	{
-		Vector dir = (pend->pev->origin - pstart->pev->origin);
-		dir = dir.Normalize();
+		const Vector dir = (pend->pev->origin - pstart->pev->origin).Normalize();
 		*origin = pend->pev->origin + dir * dist;
 	}
 }
@@ -264,10 +258,9 @@ void CPathTrack::SetPrevious(CPathTrack* pprev)
 // Assumes this is ALWAYS enabled
 CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 {
-	CPathTrack* pcurrent;
-	float originalDist = dist;
+	const float originalDist = dist;
 
-	pcurrent = this;
+	CPathTrack* pcurrent = this;
 	Vector currentPos = *origin;
 
 	if (dist < 0)		// Travelling backwards through path
@@ -275,8 +268,8 @@ CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 		dist = -dist;
 		while (dist > 0)
 		{
-			Vector dir = pcurrent->pev->origin - currentPos;
-			float length = dir.Length();
+			const Vector dir = pcurrent->pev->origin - currentPos;
+			const float length = dir.Length();
 			if (!length)
 			{
 				if (!ValidPath(pcurrent->GetPrevious(), move)) 	// If there is no previous node, or it's disabled, return now.
@@ -316,8 +309,8 @@ CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 					Project(pcurrent->GetPrevious(), pcurrent, origin, dist);
 				return nullptr;
 			}
-			Vector dir = pcurrent->GetNext()->pev->origin - currentPos;
-			float length = dir.Length();
+			const Vector dir = pcurrent->GetNext()->pev->origin - currentPos;
+			const float length = dir.Length();
 			if (!length && !ValidPath(pcurrent->GetNext()->GetNext(), move))
 			{
 				if (dist == originalDist) // HACK -- up against a dead end
@@ -346,20 +339,14 @@ CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 // Assumes this is ALWAYS enabled
 CPathTrack* CPathTrack::Nearest(Vector origin)
 {
-	int			deadCount;
-	float		minDist, dist;
-	Vector		delta;
-	CPathTrack* ppath, * pnearest;
-
-
-	delta = origin - pev->origin;
+	Vector delta = origin - pev->origin;
 	delta.z = 0;
-	minDist = delta.Length();
-	pnearest = this;
-	ppath = GetNext();
+	float minDist = delta.Length();
+	CPathTrack*  pnearest = this;
+	CPathTrack* ppath = GetNext();
 
 	// Hey, I could use the old 2 racing pointers solution to this, but I'm lazy :)
-	deadCount = 0;
+	int deadCount = 0;
 	while (ppath && ppath != this)
 	{
 		deadCount++;
@@ -370,7 +357,7 @@ CPathTrack* CPathTrack::Nearest(Vector origin)
 		}
 		delta = origin - ppath->pev->origin;
 		delta.z = 0;
-		dist = delta.Length();
+		const float dist = delta.Length();
 		if (dist < minDist)
 		{
 			minDist = dist;

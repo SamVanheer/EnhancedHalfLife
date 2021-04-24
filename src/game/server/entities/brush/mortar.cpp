@@ -122,11 +122,12 @@ void CFuncMortarField::Precache()
 
 void CFuncMortarField::FieldUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
-	Vector vecStart;
-
-	vecStart.x = RANDOM_FLOAT(pev->mins.x, pev->maxs.x);
-	vecStart.y = RANDOM_FLOAT(pev->mins.y, pev->maxs.y);
-	vecStart.z = pev->maxs.z;
+	Vector vecStart
+	{
+		RANDOM_FLOAT(pev->mins.x, pev->maxs.x),
+		RANDOM_FLOAT(pev->mins.y, pev->maxs.y),
+		pev->maxs.z
+	};
 
 	switch (m_fControl)
 	{
@@ -141,11 +142,9 @@ void CFuncMortarField::FieldUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 		break;
 	case MortarControlType::Table: // table
 	{
-		CBaseEntity* pController;
-
 		if (!IsStringNull(m_iszXController))
 		{
-			pController = UTIL_FindEntityByTargetname(nullptr, STRING(m_iszXController));
+			CBaseEntity* pController = UTIL_FindEntityByTargetname(nullptr, STRING(m_iszXController));
 			if (pController != nullptr)
 			{
 				vecStart.x = pev->mins.x + pController->pev->ideal_yaw * (pev->size.x);
@@ -153,7 +152,7 @@ void CFuncMortarField::FieldUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 		}
 		if (!IsStringNull(m_iszYController))
 		{
-			pController = UTIL_FindEntityByTargetname(nullptr, STRING(m_iszYController));
+			CBaseEntity* pController = UTIL_FindEntityByTargetname(nullptr, STRING(m_iszYController));
 			if (pController != nullptr)
 			{
 				vecStart.y = pev->mins.y + pController->pev->ideal_yaw * (pev->size.y);
@@ -163,7 +162,7 @@ void CFuncMortarField::FieldUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 	break;
 	}
 
-	int pitch = RANDOM_LONG(95, 124);
+	const int pitch = RANDOM_LONG(95, 124);
 
 	EmitSound(CHAN_VOICE, "weapons/mortar.wav", VOL_NORM, ATTN_NONE, pitch);
 
@@ -277,7 +276,7 @@ void CMortar::MortarExplode()
 	UTIL_ScreenShake(tr.vecEndPos, 25.0, 150.0, 1.0, 750);
 
 #if 0
-	int pitch = RANDOM_LONG(95, 124);
+	const int pitch = RANDOM_LONG(95, 124);
 	EmitSound(CHAN_VOICE, "weapons/mortarhit.wav", VOL_NORM, 0.55, pitch);
 
 	// ForceSound( SNDRADIUS_MP5, bits_SOUND_COMBAT );

@@ -108,14 +108,12 @@ void CFuncWallToggle::TurnOn()
 
 bool CFuncWallToggle::IsOn()
 {
-	if (pev->solid == SOLID_NOT)
-		return false;
-	return true;
+	return pev->solid != SOLID_NOT;
 }
 
 void CFuncWallToggle::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
-	int status = IsOn();
+	const bool status = IsOn();
 
 	if (ShouldToggle(useType, status))
 	{
@@ -164,7 +162,7 @@ void CFuncConveyor::Spawn()
 void CFuncConveyor::UpdateSpeed(float speed)
 {
 	// Encode it as an integer with 4 fractional bits
-	int speedCode = (int)(fabs(speed) * 16.0);
+	const int speedCode = (int)(fabs(speed) * 16.0);
 
 	if (speed < 0)
 		pev->rendercolor.x = 1;
@@ -515,36 +513,29 @@ constexpr int FANPITCHMAX = 100;
 
 void CFuncRotating::RampPitchVol(int fUp)
 {
-
-	Vector vecAVel = pev->avelocity;
-	vec_t vecCur;
-	vec_t vecFinal;
-	float fpct;
-	float fvol;
-	float fpitch;
-	int pitch;
+	const Vector vecAVel = pev->avelocity;
 
 	// get current angular velocity
 
-	vecCur = fabs(vecAVel.x != 0 ? vecAVel.x : (vecAVel.y != 0 ? vecAVel.y : vecAVel.z));
+	const vec_t vecCur = fabs(vecAVel.x != 0 ? vecAVel.x : (vecAVel.y != 0 ? vecAVel.y : vecAVel.z));
 
 	// get target angular velocity
 
-	vecFinal = (pev->movedir.x != 0 ? pev->movedir.x : (pev->movedir.y != 0 ? pev->movedir.y : pev->movedir.z));
+	vec_t vecFinal = (pev->movedir.x != 0 ? pev->movedir.x : (pev->movedir.y != 0 ? pev->movedir.y : pev->movedir.z));
 	vecFinal *= pev->speed;
 	vecFinal = fabs(vecFinal);
 
 	// calc volume and pitch as % of final vol and pitch
 
-	fpct = vecCur / vecFinal;
+	const float fpct = vecCur / vecFinal;
 	//	if (fUp)
 	//		fvol = m_flVolume * (0.5 + fpct/2.0); // spinup volume ramps up from 50% max vol
 	//	else
-	fvol = m_flVolume * fpct;			  // slowdown volume ramps down to 0
+	const float fvol = m_flVolume * fpct;			  // slowdown volume ramps down to 0
 
-	fpitch = FANPITCHMIN + (FANPITCHMAX - FANPITCHMIN) * fpct;
+	const float fpitch = FANPITCHMIN + (FANPITCHMAX - FANPITCHMIN) * fpct;
 
-	pitch = (int)fpitch;
+	int pitch = (int)fpitch;
 	if (pitch == PITCH_NORM)
 		pitch = PITCH_NORM - 1;
 
@@ -552,17 +543,14 @@ void CFuncRotating::RampPitchVol(int fUp)
 
 	EmitSound(CHAN_STATIC, STRING(pev->noiseRunning),
 		fvol, m_flAttenuation, pitch, SND_CHANGE_PITCH | SND_CHANGE_VOL);
-
 }
 
 void CFuncRotating::SpinUp()
 {
-	Vector	vecAVel;//rotational velocity
-
 	pev->nextthink = pev->ltime + 0.1;
 	pev->avelocity = pev->avelocity + (pev->movedir * (pev->speed * m_flFanFriction));
 
-	vecAVel = pev->avelocity;// cache entity's rotational velocity
+	const Vector vecAVel = pev->avelocity;// cache entity's rotational velocity
 
 	// if we've met or exceeded target speed, set target speed and stop thinking
 	if (fabs(vecAVel.x) >= fabs(pev->movedir.x * pev->speed) &&
@@ -584,15 +572,13 @@ void CFuncRotating::SpinUp()
 
 void CFuncRotating::SpinDown()
 {
-	Vector	vecAVel;//rotational velocity
-	vec_t vecdir;
-
 	pev->nextthink = pev->ltime + 0.1;
 
 	pev->avelocity = pev->avelocity - (pev->movedir * (pev->speed * m_flFanFriction));//spin down slower than spinup
 
-	vecAVel = pev->avelocity;// cache entity's rotational velocity
+	const Vector vecAVel = pev->avelocity;// cache entity's rotational velocity
 
+	vec_t vecdir;
 	if (pev->movedir.x != 0)
 		vecdir = pev->movedir.x;
 	else if (pev->movedir.y != 0)
@@ -673,7 +659,6 @@ void CFuncRotating::RotatingUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 }
 
 void CFuncRotating::Blocked(CBaseEntity* pOther)
-
 {
 	pOther->TakeDamage(pev, pev, pev->dmg, DMG_CRUSH);
 }
@@ -781,9 +766,7 @@ void CPendulum::PendulumUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 	{
 		if (IsBitSet(pev->spawnflags, SF_PENDULUM_AUTO_RETURN))
 		{
-			float	delta;
-
-			delta = CBaseToggle::AxisDelta(pev->spawnflags, pev->angles, m_start);
+			const float delta = CBaseToggle::AxisDelta(pev->spawnflags, pev->angles, m_start);
 
 			pev->avelocity = m_maxSpeed * pev->movedir;
 			pev->nextthink = pev->ltime + (delta / m_maxSpeed);
@@ -820,10 +803,8 @@ void CPendulum::Blocked(CBaseEntity* pOther)
 
 void CPendulum::Swing()
 {
-	float delta, dt;
-
-	delta = CBaseToggle::AxisDelta(pev->spawnflags, pev->angles, m_center);
-	dt = gpGlobals->time - m_time;	// How much time has passed?
+	const float delta = CBaseToggle::AxisDelta(pev->spawnflags, pev->angles, m_center);
+	const float dt = gpGlobals->time - m_time;	// How much time has passed?
 	m_time = gpGlobals->time;		// Remember the last time called
 
 	if (delta > 0 && m_accel > 0)
@@ -855,7 +836,6 @@ void CPendulum::Swing()
 			pev->speed = m_dampSpeed;
 		else if (pev->speed < -m_dampSpeed)
 			pev->speed = -m_dampSpeed;
-
 	}
 }
 

@@ -155,7 +155,7 @@ void PlayLockSounds(CBaseEntity* entity, locksound_t* pls, int flocked, int fbut
 		if (fplaysentence)
 		{
 			// play next 'door locked' sentence in group
-			int iprev = pls->iLockedSentence;
+			const int iprev = pls->iLockedSentence;
 
 			pls->iLockedSentence = SENTENCEG_PlaySequentialSz(entity, STRING(pls->sLockedSentence),
 				0.85, ATTN_NORM, PITCH_NORM, pls->iLockedSentence, false);
@@ -191,7 +191,7 @@ void PlayLockSounds(CBaseEntity* entity, locksound_t* pls, int flocked, int fbut
 		// play next 'door unlocked' sentence in group
 		if (fplaysentence)
 		{
-			int iprev = pls->iUnlockedSentence;
+			const int iprev = pls->iUnlockedSentence;
 
 			pls->iUnlockedSentence = SENTENCEG_PlaySequentialSz(entity, STRING(pls->sUnlockedSentence),
 				0.85, ATTN_NORM, PITCH_NORM, pls->iUnlockedSentence, false);
@@ -311,8 +311,6 @@ void CBaseDoor::Spawn()
 
 void CBaseDoor::Precache()
 {
-	const char* pszSound;
-
 	// set the door's "in-motion" sound
 	switch (m_bMoveSnd)
 	{
@@ -411,14 +409,14 @@ void CBaseDoor::Precache()
 
 	if (m_bLockedSound)
 	{
-		pszSound = ButtonSound((int)m_bLockedSound);
+		const char* pszSound = ButtonSound((int)m_bLockedSound);
 		PRECACHE_SOUND(pszSound);
 		m_ls.sLockedSound = ALLOC_STRING(pszSound);
 	}
 
 	if (m_bUnlockedSound)
 	{
-		pszSound = ButtonSound((int)m_bUnlockedSound);
+		const char* pszSound = ButtonSound((int)m_bUnlockedSound);
 		PRECACHE_SOUND(pszSound);
 		m_ls.sUnlockedSound = ALLOC_STRING(pszSound);
 	}
@@ -522,8 +520,6 @@ bool CBaseDoor::DoorActivate()
 
 void CBaseDoor::DoorGoUp()
 {
-	entvars_t* pevActivator;
-
 	// It could be going-down, if blocked.
 	ASSERT(m_toggle_state == ToggleState::AtBottom || m_toggle_state == ToggleState::GoingDown);
 
@@ -540,22 +536,20 @@ void CBaseDoor::DoorGoUp()
 	SetMoveDone(&CBaseDoor::DoorHitTop);
 	if (ClassnameIs(pev, "func_door_rotating"))		// !!! BUGBUG Triggered doors don't work with this yet
 	{
-		float	sign = 1.0;
+		float sign = 1.0;
 
 		if (m_hActivator != nullptr)
 		{
-			pevActivator = m_hActivator->pev;
+			entvars_t* pevActivator = m_hActivator->pev;
 
 			if (!IsBitSet(pev->spawnflags, SF_DOOR_ONEWAY) && pev->movedir.y) 		// Y axis rotation, move away from the player
 			{
-				Vector vec = pevActivator->origin - pev->origin;
-				Vector angles = pevActivator->angles;
-				angles.x = 0;
-				angles.z = 0;
+				const Vector vec = pevActivator->origin - pev->origin;
+				const Vector angles{0, pevActivator->angles.y, 0};
 				UTIL_MakeVectors(angles);
 				//			Vector vnext = (pevToucher->origin + (pevToucher->velocity * 10)) - pev->origin;
 				UTIL_MakeVectors(pevActivator->angles);
-				Vector vnext = (pevActivator->origin + (gpGlobals->v_forward * 10)) - pev->origin;
+				const Vector vnext = (pevActivator->origin + (gpGlobals->v_forward * 10)) - pev->origin;
 				if ((vec.x * vnext.y - vec.y * vnext.x) < 0)
 					sign = -1.0;
 			}
@@ -651,10 +645,6 @@ void CBaseDoor::DoorHitBottom()
 
 void CBaseDoor::Blocked(CBaseEntity* pOther)
 {
-	edict_t* pentTarget = nullptr;
-	CBaseDoor* pDoor = nullptr;
-
-
 	// Hurt the blocker a little.
 	if (pev->dmg)
 		pOther->TakeDamage(pev, pev, pev->dmg, DMG_CRUSH);
@@ -677,6 +667,7 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 	// Block all door pieces with the same targetname here.
 	if (!IsStringNull(pev->targetname))
 	{
+		edict_t* pentTarget = nullptr;
 		for (;;)
 		{
 			pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->targetname));
@@ -688,8 +679,7 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 
 				if (ClassnameIs(pentTarget, "func_door") || ClassnameIs(pentTarget, "func_door_rotating"))
 				{
-
-					pDoor = GetClassPtr((CBaseDoor*)VARS(pentTarget));
+					CBaseDoor* pDoor = GetClassPtr((CBaseDoor*)VARS(pentTarget));
 
 					if (pDoor->m_flWait >= 0)
 					{
@@ -780,8 +770,9 @@ void CRotDoor::Spawn()
 	// but spawn in the open position
 	if (IsBitSet(pev->spawnflags, SF_DOOR_START_OPEN))
 	{	// swap pos1 and pos2, put door at pos2, invert movement direction
+		//TODO: swapping incorrectly?
 		pev->angles = m_vecAngle2;
-		Vector vecSav = m_vecAngle1;
+		const Vector vecSav = m_vecAngle1;
 		m_vecAngle2 = m_vecAngle1;
 		m_vecAngle1 = vecSav;
 		pev->movedir = pev->movedir * -1;
@@ -861,7 +852,6 @@ void CMomentaryDoor::Spawn()
 
 void CMomentaryDoor::Precache()
 {
-
 	// set the door's "in-motion" sound
 	switch (m_bMoveSnd)
 	{
@@ -908,7 +898,6 @@ void CMomentaryDoor::Precache()
 
 void CMomentaryDoor::KeyValue(KeyValueData* pkvd)
 {
-
 	if (AreStringsEqual(pkvd->szKeyName, "movesnd"))
 	{
 		m_bMoveSnd = atof(pkvd->szValue);
@@ -938,11 +927,11 @@ void CMomentaryDoor::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	if (value < 0.0)
 		value = 0.0;
 
-	Vector move = m_vecPosition1 + (value * (m_vecPosition2 - m_vecPosition1));
+	const Vector move = m_vecPosition1 + (value * (m_vecPosition2 - m_vecPosition1));
 
-	Vector delta = move - pev->origin;
+	const Vector delta = move - pev->origin;
 	//float speed = delta.Length() * 10;
-	float speed = delta.Length() / 0.1; // move there in 0.1 sec
+	const float speed = delta.Length() / 0.1; // move there in 0.1 sec
 	if (speed == 0)
 		return;
 
