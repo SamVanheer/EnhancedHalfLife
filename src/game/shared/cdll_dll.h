@@ -33,7 +33,7 @@ constexpr int MAX_WEAPONS = 32;	// ???
 constexpr int MAX_WEAPON_SLOTS = 5;	// hud item selection slots
 constexpr int MAX_ITEM_TYPES = 6;	// hud item selection slots
 
-constexpr int MAX_ITEMS = 5;	// hard coded item types
+constexpr int MAX_ITEMS = 1;	// hard coded item types
 
 constexpr int HIDEHUD_WEAPONS = 1 << 0;
 constexpr int HIDEHUD_FLASHLIGHT = 1 << 1;

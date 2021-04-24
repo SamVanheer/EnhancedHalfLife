@@ -23,61 +23,6 @@
 #include "gamerules.h"
 #include "UserMessages.h"
 
-class CWorldItem : public CBaseEntity
-{
-public:
-	void	KeyValue(KeyValueData* pkvd) override;
-	void	Spawn() override;
-	int		m_iType;
-};
-
-LINK_ENTITY_TO_CLASS(world_items, CWorldItem);
-
-void CWorldItem::KeyValue(KeyValueData* pkvd)
-{
-	if (AreStringsEqual(pkvd->szKeyName, "type"))
-	{
-		m_iType = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
-	}
-	else
-		CBaseEntity::KeyValue(pkvd);
-}
-
-void CWorldItem::Spawn()
-{
-	CBaseEntity* pEntity = nullptr;
-
-	switch (m_iType)
-	{
-	case 44: // ITEM_BATTERY:
-		pEntity = CBaseEntity::Create("item_battery", pev->origin, pev->angles);
-		break;
-	case 42: // ITEM_ANTIDOTE:
-		pEntity = CBaseEntity::Create("item_antidote", pev->origin, pev->angles);
-		break;
-	case 43: // ITEM_SECURITY:
-		pEntity = CBaseEntity::Create("item_security", pev->origin, pev->angles);
-		break;
-	case 45: // ITEM_SUIT:
-		pEntity = CBaseEntity::Create("item_suit", pev->origin, pev->angles);
-		break;
-	}
-
-	if (!pEntity)
-	{
-		ALERT(at_console, "unable to create world_item %d\n", m_iType);
-	}
-	else
-	{
-		pEntity->pev->target = pev->target;
-		pEntity->pev->targetname = pev->targetname;
-		pEntity->pev->spawnflags = pev->spawnflags;
-	}
-
-	REMOVE_ENTITY(edict());
-}
-
 void CItem::Spawn()
 {
 	pev->movetype = MOVETYPE_TOSS;
@@ -268,27 +213,6 @@ class CItemAntidote : public CItem
 };
 
 LINK_ENTITY_TO_CLASS(item_antidote, CItemAntidote);
-
-class CItemSecurity : public CItem
-{
-	void Spawn() override
-	{
-		Precache();
-		SET_MODEL(ENT(pev), "models/w_security.mdl");
-		CItem::Spawn();
-	}
-	void Precache() override
-	{
-		PRECACHE_MODEL("models/w_security.mdl");
-	}
-	bool MyTouch(CBasePlayer* pPlayer) override
-	{
-		pPlayer->m_rgItems[ITEM_SECURITY] += 1;
-		return true;
-	}
-};
-
-LINK_ENTITY_TO_CLASS(item_security, CItemSecurity);
 
 class CItemLongJump : public CItem
 {

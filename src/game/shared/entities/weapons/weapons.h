@@ -77,10 +77,7 @@ public:
 };
 
 // constant items
-constexpr int ITEM_HEALTHKIT = 1;
-constexpr int ITEM_ANTIDOTE = 2;
-constexpr int ITEM_SECURITY = 3;
-constexpr int ITEM_BATTERY = 4;
+constexpr int ITEM_ANTIDOTE = 0;
 
 constexpr int WEAPON_NONE = 0;
 constexpr int WEAPON_CROWBAR = 1;
