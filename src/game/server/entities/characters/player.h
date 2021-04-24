@@ -379,8 +379,129 @@ public:
 
 	/**
 	*	@brief if in range of radiation source, ping geiger counter
+	*	@details
+	*	THE HEV SUIT
+	*	
+	*	The Suit provides 3 main functions: Protection, Notification and Augmentation.
+	*	Some functions are automatic, some require power.
+	*	The player gets the suit shortly after getting off the train in C1A0 and it stays
+	*	with him for the entire game.
+	*	
+	*	Protection
+	*	
+	*		Heat/Cold
+	*			When the player enters a hot/cold area, the heating/cooling indicator on the suit
+	*			will come on and the battery will drain while the player stays in the area.
+	*			After the battery is dead, the player starts to take damage.
+	*			This feature is built into the suit and is automatically engaged.
+	*		Anti-Toxin Syringe
+	*			This will cure the player from being poisoned. Single use item.
+	*		Health
+	*			Small (1st aid kits, food, etc.)
+	*			Large (boxes on walls)
+	*		Armor
+	*			The armor works using energy to create a protective field that deflects a
+	*			percentage of damage projectile and explosive attacks.
+	*	
+	*	Notification (via the HUD)
+	*	
+	*	x	Health
+	*	x	Ammo
+	*	x	Automatic Health Care
+	*			Notifies the player when automatic healing has been engaged.
+	*	x	Geiger counter
+	*			Classic Geiger counter sound and status bar at top of HUD
+	*			alerts player to dangerous levels of radiation. This is not visible when radiation levels are normal.
+	*	x	Poison
+	*		Armor
+	*			Displays the current level of armor.
+	*	
+	*	Augmentation
+	*		Long Jump
+	*			Used by ducking and then jumping. Causes the player to further than normal.
+	*	
+	*	Things powered by the battery
+	*	
+	*		Armor
+	*			Uses N power for every M units of damage.
+	*		Heat/Cool
+	*			Uses N power for every second in hot/cold area.
 	*/
 	void UpdateGeigerCounter();
+
+	/*
+	*	@details Time based Damage works as follows:
+	*	1) There are several types of timebased damage:
+	*
+	*		::DMG_PARALYZE
+	*		::DMG_NERVEGAS
+	*		::DMG_POISON
+	*		::DMG_RADIATION
+	*		::DMG_DROWNRECOVER
+	*		::DMG_ACID
+	*		::DMG_SLOWBURN
+	*		::DMG_SLOWFREEZE
+	*
+	*	2) A new hit inflicting tbd restarts the tbd counter - each monster has an 8bit counter, per damage type.
+	*		The counter is decremented every second, so the maximum time an effect will last is 255/60 = 4.25 minutes.
+	*		Of course, staying within the radius of a damaging effect like fire, nervegas, radiation will continually reset the counter to max.
+	*
+	*	3) Every second that a tbd counter is running, the player takes damage.
+	*		The damage is determined by the type of tdb.
+	*			Paralyze		- 1/2 movement rate, 30 second duration.
+	*			Nervegas		- 5 points per second, 16 second duration = 80 points max dose.
+	*			Poison			- 2 points per second, 25 second duration = 50 points max dose.
+	*			Radiation		- 1 point per second, 50 second duration = 50 points max dose.
+	*			Drown			- 5 points per second, 2 second duration.
+	*			Acid/Chemical	- 5 points per second, 10 second duration = 50 points max.
+	*			Burn			- 10 points per second, 2 second duration.
+	*			Freeze			- 3 points per second, 10 second duration = 30 points max.
+	*
+	*	4) Certain actions or countermeasures counteract the damaging effects of tbds:
+	*
+	*		Armor/Heater/Cooler - Chemical(acid),burn, freeze all do damage to armor power, then to body
+	*							- recharged by suit recharger
+	*		Air In Lungs		- drowning damage is done to air in lungs first, then to body
+	*							- recharged by poking head out of water
+	*							- 10 seconds if swiming fast
+	*		Air In SCUBA		- drowning damage is done to air in tanks first, then to body
+	*							- 2 minutes in tanks. Need new tank once empty.
+	*		Radiation Syringe	- Each syringe full provides protection vs one radiation dosage
+	*		Antitoxin Syringe	- Each syringe full provides protection vs one poisoning (nervegas or poison).
+	*		Health kit			- Immediate stop to acid/chemical, fire or freeze damage.
+	*		Radiation Shower	- Immediate stop to radiation damage, acid/chemical or fire damage.
+	*
+	*
+	*	If player is taking time based damage, continue doing damage to player -
+	*	this simulates the effect of being poisoned, gassed, dosed with radiation etc -
+	*	anything that continues to do damage even after the initial contact stops.
+	*	Update all time based damage counters, and shut off any that are done.
+	*
+	*	The m_bitsDamageType bit MUST be set if any damage is to be taken.
+	*	This routine will detect the initial on value of the m_bitsDamageType and init the appropriate counter.
+	*	Only processes damage every second.
+	*
+	*	::PARALYZE_DURATION
+	*	::PARALYZE_DAMAGE
+	*
+	*	::NERVEGAS_DURATION
+	*	::NERVEGAS_DAMAGE
+	*
+	*	::POISON_DURATION
+	*	::POISON_DAMAGE
+	*
+	*	::RADIATION_DURATION
+	*	::RADIATION_DAMAGE
+	*
+	*	::ACID_DURATION
+	*	::ACID_DAMAGE
+	*
+	*	::SLOWBURN_DURATION
+	*	::SLOWBURN_DAMAGE
+	*
+	*	::SLOWFREEZE_DURATION
+	*	::SLOWFREEZE_DAMAGE
+	*/
 	void CheckTimeBasedDamage();
 
 	bool BecomeProne() override;
