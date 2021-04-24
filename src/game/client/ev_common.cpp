@@ -66,7 +66,7 @@ bool EV_IsLocal(int idx)
 	if (IsFirstPersonSpectator())
 		return (g_iUser2 == idx);
 	else
-		return gEngfuncs.pEventAPI->EV_IsLocal(idx - 1) ? true : false;
+		return gEngfuncs.pEventAPI->EV_IsLocal(idx - 1) != 0;
 }
 
 void EV_GetGunPosition(event_args_t* args, Vector& pos, const Vector& origin)

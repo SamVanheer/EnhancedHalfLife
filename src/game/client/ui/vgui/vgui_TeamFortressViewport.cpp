@@ -262,7 +262,7 @@ bool CCommandMenu::RecalculateVisibles(int iYOffset, bool bHideAll)
 		}
 	}
 
-	return iVisibleButtons ? true : false;
+	return iVisibleButtons != 0;
 }
 
 void CCommandMenu::RecalculatePositions(int iYOffset)

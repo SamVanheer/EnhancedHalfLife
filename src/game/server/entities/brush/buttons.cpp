@@ -454,7 +454,7 @@ void CBaseButton::Spawn()
 	if (((m_vecPosition2 - m_vecPosition1).Length() < 1) || (pev->spawnflags & SF_BUTTON_DONTMOVE))
 		m_vecPosition2 = m_vecPosition1;
 
-	m_fStayPushed = (m_flWait == -1 ? true : false);
+	m_fStayPushed = m_flWait == -1;
 	m_fRotating = false;
 
 	// if the button is flagged for USE button activation only, take away it's touch function and add a use function
@@ -786,7 +786,7 @@ void CRotButton::Spawn()
 	m_vecAngle2 = pev->angles + pev->movedir * m_flMoveDistance;
 	ASSERTSZ(m_vecAngle1 != m_vecAngle2, "rotating button start/end positions are equal");
 
-	m_fStayPushed = (m_flWait == -1 ? true : false);
+	m_fStayPushed = m_flWait == -1;
 	m_fRotating = true;
 
 	// if the button is flagged for USE button activation only, take away it's touch function and add a use function

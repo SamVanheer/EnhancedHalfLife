@@ -682,7 +682,7 @@ bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxC
 		}
 	}
 
-	return iIdAmmo > 0 ? true : false;
+	return iIdAmmo > 0;
 }
 
 bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName, int iMax)
@@ -698,7 +698,7 @@ bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName, int iMa
 		m_iSecondaryAmmoType = iIdAmmo;
 		EmitSound(CHAN_ITEM, "items/9mmclip1.wav");
 	}
-	return iIdAmmo > 0 ? true : false;
+	return iIdAmmo > 0;
 }
 
 bool CBasePlayerWeapon::IsUseable()

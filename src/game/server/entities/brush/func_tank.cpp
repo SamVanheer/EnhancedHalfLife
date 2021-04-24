@@ -71,7 +71,7 @@ public:
 	*/
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	inline bool IsActive() { return (pev->spawnflags & SF_TANK_ACTIVE) ? true : false; }
+	inline bool IsActive() { return (pev->spawnflags & SF_TANK_ACTIVE) != 0; }
 	inline void TankActivate() { pev->spawnflags |= SF_TANK_ACTIVE; pev->nextthink = pev->ltime + 0.1; m_fireLast = 0; }
 	inline void TankDeactivate() { pev->spawnflags &= ~SF_TANK_ACTIVE; m_fireLast = 0; StopRotSound(); }
 	inline bool CanFire() { return (gpGlobals->time - m_lastSightTime) < m_persist; }

@@ -402,7 +402,7 @@ void ClientCommand(edict_t* pEntity)
 	else if (AreStringsEqual(pcmd, "follownext"))	// follow next player
 	{
 		if (player->IsObserver())
-			player->Observer_FindNextPlayer(atoi(CMD_ARGV(1)) ? true : false);
+			player->Observer_FindNextPlayer(atoi(CMD_ARGV(1)) != 0);
 	}
 	else if (g_pGameRules->ClientCommand(player, pcmd))
 	{

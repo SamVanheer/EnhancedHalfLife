@@ -1009,7 +1009,7 @@ void CHudSpectator::HandleButtonsDown(int ButtonPressed)
 		// Attack moves to the next player
 		if (ButtonPressed & (IN_ATTACK | IN_ATTACK2))
 		{
-			FindNextPlayer((ButtonPressed & IN_ATTACK2) ? true : false);
+			FindNextPlayer((ButtonPressed & IN_ATTACK2) != 0);
 
 			if (g_iUser1 == OBS_ROAMING)
 			{
@@ -1350,7 +1350,7 @@ void CHudSpectator::DrawOverviewLayer()
 	float screenaspect, xs, ys, xStep, yStep, x, y, z;
 	int ix, iy, i, xTiles, yTiles, frame;
 
-	bool	hasMapImage = m_MapSprite ? true : false;
+	bool	hasMapImage = m_MapSprite != nullptr;
 	model_t* dummySprite = (model_t*)gEngfuncs.GetSpritePointer(m_hsprUnkownMap);
 
 	if (hasMapImage)

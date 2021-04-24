@@ -468,7 +468,7 @@ bool CHalfLifeTeamplay::IsValidTeam(const char* pTeamName)
 	if (!m_teamLimit)	// Any team is valid if the teamlist isn't set
 		return true;
 
-	return (GetTeamIndex(pTeamName) != -1) ? true : false;
+	return GetTeamIndex(pTeamName) != -1;
 }
 
 const char* CHalfLifeTeamplay::TeamWithFewestPlayers()

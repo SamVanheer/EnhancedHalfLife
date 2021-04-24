@@ -108,11 +108,11 @@ bool CanAttack(float attack_time, float curtime, bool isPredicted)
 	if (1)
 #endif
 	{
-		return (attack_time <= curtime) ? true : false;
+		return attack_time <= curtime;
 	}
 	else
 	{
-		return ((static_cast<int>(std::floor(attack_time * 1000.0)) * 1000.0) <= 0.0) ? true : false;
+		return (static_cast<int>(std::floor(attack_time * 1000.0)) * 1000.0) <= 0.0;
 	}
 }
 

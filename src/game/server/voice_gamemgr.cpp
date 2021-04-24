@@ -126,7 +126,7 @@ bool CVoiceGameMgr::PlayerHasBlockedPlayer(CBasePlayer* pReceiver, CBasePlayer* 
 	if (iReceiverIndex < 0 || iReceiverIndex >= m_nMaxPlayers || iSenderIndex < 0 || iSenderIndex >= m_nMaxPlayers)
 		return false;
 
-	return (g_BanMasks[iReceiverIndex][iSenderIndex] ? true : false);
+	return g_BanMasks[iReceiverIndex][iSenderIndex] != 0;
 }
 
 bool CVoiceGameMgr::ClientCommand(CBasePlayer* pPlayer, const char* cmd)
