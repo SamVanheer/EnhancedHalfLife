@@ -14,8 +14,8 @@
 ****/
 
 #include "Platform.h"
-#include "const.h"
 #include "mathlib.h"
+#include "const.h"
 #include "cdll_dll.h"
 
 bool Shared_GetHullBounds(int hullnumber, Vector& mins, Vector& maxs)
