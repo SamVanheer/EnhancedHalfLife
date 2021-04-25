@@ -213,11 +213,10 @@ public:
 
 	/**
 	*	@brief finds the connection (line) nearest the given point.
-	*
-	*	Returns false if fails, or true if it has stuffed the index into the nearest link pool connection into the passed int pointer,
-	*	and a bool telling whether or  not the point is along the line into the passed bool pointer.
+	*	@param iNearestLink index into the link pool, this is the nearest node at any time. 
+	*	@param fAlongLine whether or not the point is along the line
 	*/
-	//int		FindNearestLink ( const Vector &vecTestPoint, int *piNearestLink, bool *pfAlongLine );
+	//int FindNearestLink(const Vector &vecTestPoint, int& iNearestLink, bool& fAlongLine);
 
 	/**
 	*	@brief Sum up graph weights on the path from iStart to iDest to determine path length
