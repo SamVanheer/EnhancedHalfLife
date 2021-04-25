@@ -109,17 +109,7 @@ int	CZombie::Classify()
 
 void CZombie::SetYawSpeed()
 {
-	int ys;
-
-	ys = 120;
-
-#if 0
-	switch (m_Activity)
-	{
-	}
-#endif
-
-	pev->yaw_speed = ys;
+	pev->yaw_speed = 120;
 }
 
 bool CZombie::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
@@ -127,9 +117,8 @@ bool CZombie::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float 
 	// Take 30% damage from bullets
 	if (bitsDamageType == DMG_BULLET)
 	{
-		Vector vecDir = pev->origin - (pevInflictor->absmin + pevInflictor->absmax) * 0.5;
-		vecDir = vecDir.Normalize();
-		float flForce = DamageForce(flDamage);
+		const Vector vecDir = (pev->origin - (pevInflictor->absmin + pevInflictor->absmax) * 0.5).Normalize();
+		const float flForce = DamageForce(flDamage);
 		pev->velocity = pev->velocity + vecDir * flForce;
 		flDamage *= 0.3;
 	}
@@ -142,7 +131,7 @@ bool CZombie::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float 
 
 void CZombie::PainSound()
 {
-	int pitch = 95 + RANDOM_LONG(0, 9);
+	const int pitch = 95 + RANDOM_LONG(0, 9);
 
 	if (RANDOM_LONG(0, 5) < 2)
 		EmitSound(CHAN_VOICE, pPainSounds[RANDOM_LONG(0, ArraySize(pPainSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
@@ -150,14 +139,14 @@ void CZombie::PainSound()
 
 void CZombie::AlertSound()
 {
-	int pitch = 95 + RANDOM_LONG(0, 9);
+	const int pitch = 95 + RANDOM_LONG(0, 9);
 
 	EmitSound(CHAN_VOICE, pAlertSounds[RANDOM_LONG(0, ArraySize(pAlertSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
 }
 
 void CZombie::IdleSound()
 {
-	int pitch = 100 + RANDOM_LONG(-5, 5);
+	const int pitch = 100 + RANDOM_LONG(-5, 5);
 
 	// Play a random idle sound
 	EmitSound(CHAN_VOICE, pIdleSounds[RANDOM_LONG(0, ArraySize(pIdleSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
@@ -165,7 +154,7 @@ void CZombie::IdleSound()
 
 void CZombie::AttackSound()
 {
-	int pitch = 100 + RANDOM_LONG(-5, 5);
+	const int pitch = 100 + RANDOM_LONG(-5, 5);
 
 	// Play a random attack sound
 	EmitSound(CHAN_VOICE, pAttackSounds[RANDOM_LONG(0, ArraySize(pAttackSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
@@ -179,8 +168,7 @@ void CZombie::HandleAnimEvent(AnimationEvent& event)
 	{
 		// do stuff for this event.
 //		ALERT( at_console, "Slash right!\n" );
-		CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.zombieDmgOneSlash, DMG_SLASH);
-		if (pHurt)
+		if (CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.zombieDmgOneSlash, DMG_SLASH); pHurt)
 		{
 			if (pHurt->pev->flags & (FL_MONSTER | FL_CLIENT))
 			{
@@ -203,8 +191,7 @@ void CZombie::HandleAnimEvent(AnimationEvent& event)
 	{
 		// do stuff for this event.
 //		ALERT( at_console, "Slash left!\n" );
-		CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.zombieDmgOneSlash, DMG_SLASH);
-		if (pHurt)
+		if (CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.zombieDmgOneSlash, DMG_SLASH); pHurt)
 		{
 			if (pHurt->pev->flags & (FL_MONSTER | FL_CLIENT))
 			{
@@ -225,8 +212,7 @@ void CZombie::HandleAnimEvent(AnimationEvent& event)
 	case ZOMBIE_AE_ATTACK_BOTH:
 	{
 		// do stuff for this event.
-		CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.zombieDmgBothSlash, DMG_SLASH);
-		if (pHurt)
+		if (CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.zombieDmgBothSlash, DMG_SLASH); pHurt)
 		{
 			if (pHurt->pev->flags & (FL_MONSTER | FL_CLIENT))
 			{

@@ -191,7 +191,7 @@ void CISlave::CallForHelp(const char* szClassname, float flDist, EHANDLE hEnemy,
 
 	while ((pEntity = UTIL_FindEntityByString(pEntity, "netname", STRING(pev->netname))) != nullptr)
 	{
-		float d = (pev->origin - pEntity->pev->origin).Length();
+		const float d = (pev->origin - pEntity->pev->origin).Length();
 		if (d < flDist)
 		{
 			CBaseMonster* pMonster = pEntity->MyMonsterPointer();
@@ -261,7 +261,7 @@ void CISlave::DeathSound()
 
 int CISlave::SoundMask()
 {
-	return	bits_SOUND_WORLD |
+	return bits_SOUND_WORLD |
 		bits_SOUND_COMBAT |
 		bits_SOUND_DANGER |
 		bits_SOUND_PLAYER;
@@ -305,8 +305,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 	case ISLAVE_AE_CLAW:
 	{
 		// SOUND HERE!
-		CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.slaveDmgClaw, DMG_SLASH);
-		if (pHurt)
+		if (CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.slaveDmgClaw, DMG_SLASH); pHurt)
 		{
 			if (pHurt->pev->flags & (FL_MONSTER | FL_CLIENT))
 			{
@@ -326,8 +325,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 
 	case ISLAVE_AE_CLAWRAKE:
 	{
-		CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.slaveDmgClawrake, DMG_SLASH);
-		if (pHurt)
+		if (CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.slaveDmgClawrake, DMG_SLASH); pHurt)
 		{
 			if (pHurt->pev->flags & (FL_MONSTER | FL_CLIENT))
 			{
@@ -353,7 +351,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 
 		if (m_iBeams == 0)
 		{
-			Vector vecSrc = pev->origin + gpGlobals->v_forward * 2;
+			const Vector vecSrc = pev->origin + gpGlobals->v_forward * 2;
 			MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSrc);
 			WRITE_BYTE(TE_DLIGHT);
 			WRITE_COORD(vecSrc.x);	// X
@@ -366,8 +364,8 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 			WRITE_BYTE(20 / pev->framerate);		// time * 10
 			WRITE_BYTE(0);		// decay * 0.1
 			MESSAGE_END();
-
 		}
+
 		if (m_hDead != nullptr)
 		{
 			WackBeam(-1, m_hDead);
@@ -391,7 +389,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 
 		if (m_hDead != nullptr)
 		{
-			Vector vecDest = m_hDead->pev->origin + Vector(0, 0, 38);
+			const Vector vecDest = m_hDead->pev->origin + Vector(0, 0, 38);
 			TraceResult trace;
 			UTIL_TraceHull(vecDest, vecDest, IgnoreMonsters::No, Hull::Human, m_hDead->edict(), &trace);
 
@@ -471,7 +469,7 @@ bool CISlave::CheckRangeAttack2(float flDot, float flDist)
 		{
 			if (pEntity->pev->deadflag == DEAD_DEAD)
 			{
-				float d = (pev->origin - pEntity->pev->origin).Length();
+				const float d = (pev->origin - pEntity->pev->origin).Length();
 				if (d < flDist)
 				{
 					m_hDead = pEntity;
@@ -485,10 +483,8 @@ bool CISlave::CheckRangeAttack2(float flDot, float flDist)
 			}
 		}
 	}
-	if (m_hDead != nullptr)
-		return true;
-	else
-		return false;
+
+	return m_hDead != nullptr;
 }
 
 void CISlave::StartTask(Task_t* pTask)
@@ -606,8 +602,7 @@ Schedule_t* CISlave::GetSchedule()
 
 	if (HasConditions(bits_COND_HEAR_SOUND))
 	{
-		CSound* pSound;
-		pSound = BestSound();
+		CSound* pSound = BestSound();
 
 		ASSERT(pSound != nullptr);
 
@@ -675,11 +670,11 @@ void CISlave::ArmBeam(int side)
 		return;
 
 	UTIL_MakeAimVectors(pev->angles);
-	Vector vecSrc = pev->origin + gpGlobals->v_up * 36 + gpGlobals->v_right * side * 16 + gpGlobals->v_forward * 32;
+	const Vector vecSrc = pev->origin + gpGlobals->v_up * 36 + gpGlobals->v_right * side * 16 + gpGlobals->v_forward * 32;
 
 	for (int i = 0; i < 3; i++)
 	{
-		Vector vecAim = gpGlobals->v_right * side * RANDOM_FLOAT(0, 1) + gpGlobals->v_up * RANDOM_FLOAT(-1, 1);
+		const Vector vecAim = gpGlobals->v_right * side * RANDOM_FLOAT(0, 1) + gpGlobals->v_up * RANDOM_FLOAT(-1, 1);
 		TraceResult tr1;
 		UTIL_TraceLine(vecSrc, vecSrc + vecAim * 512, IgnoreMonsters::No, ENT(pev), &tr1);
 		if (flDist > tr1.flFraction)
@@ -710,9 +705,7 @@ void CISlave::ArmBeam(int side)
 
 void CISlave::BeamGlow()
 {
-	int b = m_iBeams * 32;
-	if (b > 255)
-		b = 255;
+	const int b = std::min(255, m_iBeams * 32);
 
 	for (int i = 0; i < m_iBeams; i++)
 	{
@@ -725,9 +718,6 @@ void CISlave::BeamGlow()
 
 void CISlave::WackBeam(int side, CBaseEntity* pEntity)
 {
-	Vector vecDest;
-	float flDist = 1.0;
-
 	if (m_iBeams >= ISLAVE_MAX_BEAMS)
 		return;
 
@@ -748,17 +738,15 @@ void CISlave::WackBeam(int side, CBaseEntity* pEntity)
 
 void CISlave::ZapBeam(int side)
 {
-	Vector vecSrc, vecAim;
-	TraceResult tr;
-	CBaseEntity* pEntity;
-
 	if (m_iBeams >= ISLAVE_MAX_BEAMS)
 		return;
 
-	vecSrc = pev->origin + gpGlobals->v_up * 36;
-	vecAim = ShootAtEnemy(vecSrc);
+	const Vector vecSrc = pev->origin + gpGlobals->v_up * 36;
+	Vector vecAim = ShootAtEnemy(vecSrc);
 	float deflection = 0.01;
 	vecAim = vecAim + side * gpGlobals->v_right * RANDOM_FLOAT(0, deflection) + gpGlobals->v_up * RANDOM_FLOAT(-deflection, deflection);
+
+	TraceResult tr;
 	UTIL_TraceLine(vecSrc, vecSrc + vecAim * 1024, IgnoreMonsters::No, ENT(pev), &tr);
 
 	m_pBeam[m_iBeams] = CBeam::BeamCreate("sprites/lgtning.spr", 50);
@@ -772,8 +760,7 @@ void CISlave::ZapBeam(int side)
 	m_pBeam[m_iBeams]->SetNoise(20);
 	m_iBeams++;
 
-	pEntity = CBaseEntity::Instance(tr.pHit);
-	if (pEntity != nullptr && pEntity->pev->takedamage)
+	if (CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit); pEntity != nullptr && pEntity->pev->takedamage)
 	{
 		pEntity->TraceAttack(pev, gSkillData.slaveDmgZap, vecAim, &tr, DMG_SHOCK);
 	}

@@ -208,7 +208,7 @@ void CLeech::Activate()
 void CLeech::RecalculateWaterlevel()
 {
 	// Calculate boundaries
-	Vector vecTest = pev->origin - Vector(0, 0, 400);
+	const Vector vecTest = pev->origin - Vector(0, 0, 400);
 
 	TraceResult tr;
 
@@ -221,7 +221,7 @@ void CLeech::RecalculateWaterlevel()
 	m_top = UTIL_WaterLevel(pev->origin, pev->origin.z, pev->origin.z + 400) - 1;
 
 	// Chop off 20% of the outside range
-	float newBottom = m_bottom * 0.8 + m_top * 0.2;
+	const float newBottom = m_bottom * 0.8 + m_top * 0.2;
 	m_top = m_bottom * 0.2 + m_top * 0.8;
 	m_bottom = newBottom;
 	m_height = RANDOM_FLOAT(m_bottom, m_top);
@@ -241,8 +241,8 @@ void CLeech::SwitchLeechState()
 	else
 	{
 		Look(m_flDistLook);
-		CBaseEntity* pEnemy = BestVisibleEnemy();
-		if (pEnemy && pEnemy->pev->waterlevel != WaterLevel::Dry)
+		
+		if (CBaseEntity* pEnemy = BestVisibleEnemy(); pEnemy && pEnemy->pev->waterlevel != WaterLevel::Dry)
 		{
 			m_hEnemy = pEnemy;
 			SetState(NPCState::Combat);
@@ -301,20 +301,17 @@ void CLeech::HandleAnimEvent(AnimationEvent& event)
 	{
 	case LEECH_AE_ATTACK:
 		AttackSound();
-		CBaseEntity* pEnemy;
-
-		pEnemy = m_hEnemy;
-		if (pEnemy != nullptr)
+		
+		if (CBaseEntity* pEnemy = m_hEnemy; pEnemy != nullptr)
 		{
-			Vector dir, face;
-
+			Vector face;
 			AngleVectors(pev->angles, &face, nullptr, nullptr);
 			face.z = 0;
-			dir = (pEnemy->pev->origin - pev->origin);
+
+			Vector dir = pEnemy->pev->origin - pev->origin;
 			dir.z = 0;
 			dir = dir.Normalize();
 			face = face.Normalize();
-
 
 			if (DotProduct(dir, face) > 0.9)		// Only take damage if the leech is facing the prey
 				pEnemy->TakeDamage(pev, pev, gSkillData.leechDmgBite, DMG_SLASH);
@@ -341,15 +338,13 @@ void CLeech::MakeVectors()
 
 float CLeech::ObstacleDistance(CBaseEntity* pTarget)
 {
-	TraceResult		tr;
-	Vector			vecTest;
-
 	// use VELOCITY, not angles, not all boids point the direction they are flying
 	//Vector vecDir = VectorAngles( pev->velocity );
 	MakeVectors();
 
 	// check for obstacle ahead
-	vecTest = pev->origin + gpGlobals->v_forward * LEECH_CHECK_DIST;
+	Vector vecTest = pev->origin + gpGlobals->v_forward * LEECH_CHECK_DIST;
+	TraceResult tr;
 	UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, edict(), &tr);
 
 	if (tr.fStartSolid)
@@ -427,16 +422,9 @@ void CLeech::DeadThink()
 
 void CLeech::UpdateMotion()
 {
-	float flapspeed = (pev->speed - m_flAccelerate) / LEECH_ACCELERATE;
 	m_flAccelerate = m_flAccelerate * 0.8 + pev->speed * 0.2;
 
-	if (flapspeed < 0)
-		flapspeed = -flapspeed;
-	flapspeed += 1.0;
-	if (flapspeed < 0.5)
-		flapspeed = 0.5;
-	if (flapspeed > 1.9)
-		flapspeed = 1.9;
+	const float flapspeed = std::clamp(std::abs((pev->speed - m_flAccelerate) / LEECH_ACCELERATE) + 1, 0.5f, 1.9f);
 
 	pev->framerate = flapspeed;
 
@@ -453,9 +441,9 @@ void CLeech::UpdateMotion()
 		m_IdealActivity = ACT_SWIM;
 
 	// lean
-	float targetPitch, delta;
-	delta = m_height - pev->origin.z;
+	const float delta = m_height - pev->origin.z;
 
+	float targetPitch;
 	if (delta < -10)
 		targetPitch = -30;
 	else if (delta > 10)
@@ -497,7 +485,7 @@ void CLeech::UpdateMotion()
 	{
 		SetActivity(m_IdealActivity);
 	}
-	float flInterval = StudioFrameAdvance();
+	const float flInterval = StudioFrameAdvance();
 	DispatchAnimEvents(flInterval);
 
 #if DEBUG_BEAMS
@@ -512,8 +500,7 @@ void CLeech::UpdateMotion()
 		float color = m_obstacle * 30;
 		if (m_obstacle == 1.0)
 			color = 0;
-		if (color > 255)
-			color = 255;
+		color = std::min(255.0f, color);
 		m_pb->SetColor(255, (int)color, (int)color);
 	}
 	else
@@ -524,13 +511,6 @@ void CLeech::UpdateMotion()
 
 void CLeech::SwimThink()
 {
-	TraceResult		tr;
-	float			flLeftSide;
-	float			flRightSide;
-	float			targetSpeed;
-	float			targetYaw = 0;
-	CBaseEntity* pTarget;
-
 	if (IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
 	{
 		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(1, 1.5);
@@ -540,7 +520,7 @@ void CLeech::SwimThink()
 	else
 		pev->nextthink = gpGlobals->time + 0.1;
 
-	targetSpeed = LEECH_SWIM_SPEED;
+	float targetSpeed = LEECH_SWIM_SPEED;
 
 	if (m_waterTime < gpGlobals->time)
 		RecalculateWaterlevel();
@@ -549,6 +529,11 @@ void CLeech::SwimThink()
 		SwitchLeechState();
 
 	ClearConditions(bits_COND_CAN_MELEE_ATTACK1);
+
+	TraceResult tr;
+	float targetYaw = 0;
+	CBaseEntity* pTarget;
+
 	switch (m_MonsterState)
 	{
 	case NPCState::Combat:
@@ -620,7 +605,6 @@ void CLeech::SwimThink()
 		m_fPathBlocked = false;
 		pev->speed = UTIL_Approach(targetSpeed, pev->speed, LEECH_SWIM_ACCEL * LEECH_FRAMETIME);
 		pev->velocity = gpGlobals->v_forward * pev->speed;
-
 	}
 	else
 	{
@@ -630,18 +614,17 @@ void CLeech::SwimThink()
 
 		if (m_flTurning == 0)// something in the way and leech is not already turning to avoid
 		{
-			Vector vecTest;
 			// measure clearance on left and right to pick the best dir to turn
-			vecTest = pev->origin + (gpGlobals->v_right * LEECH_SIZEX) + (gpGlobals->v_forward * LEECH_CHECK_DIST);
+			Vector vecTest = pev->origin + (gpGlobals->v_right * LEECH_SIZEX) + (gpGlobals->v_forward * LEECH_CHECK_DIST);
 			UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, edict(), &tr);
-			flRightSide = tr.flFraction;
+			const float flRightSide = tr.flFraction;
 
 			vecTest = pev->origin + (gpGlobals->v_right * -LEECH_SIZEX) + (gpGlobals->v_forward * LEECH_CHECK_DIST);
 			UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, edict(), &tr);
-			flLeftSide = tr.flFraction;
+			const float flLeftSide = tr.flFraction;
 
 			// turn left, right or random depending on clearance ratio
-			float delta = (flRightSide - flLeftSide);
+			const float delta = flRightSide - flLeftSide;
 			if (delta > 0.1 || (delta > -0.1 && RANDOM_LONG(0, 100) < 50))
 				m_flTurning = -LEECH_TURN_RATE;
 			else
@@ -656,13 +639,9 @@ void CLeech::SwimThink()
 
 void CLeech::Killed(entvars_t* pevAttacker, int iGib)
 {
-	Vector			vecSplatDir;
-	TraceResult		tr;
-
 	//ALERT(at_aiconsole, "Leech: killed\n");
 	// tell owner ( if any ) that we're dead.This is mostly for MonsterMaker functionality.
-	CBaseEntity* pOwner = CBaseEntity::Instance(pev->owner);
-	if (pOwner)
+	if (CBaseEntity* pOwner = CBaseEntity::Instance(pev->owner); pOwner)
 		pOwner->DeathNotice(pev);
 
 	// When we hit the ground, play the "death_end" activity

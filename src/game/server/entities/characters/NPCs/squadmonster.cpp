@@ -37,10 +37,6 @@ IMPLEMENT_SAVERESTORE(CSquadMonster, CBaseMonster);
 
 bool CSquadMonster::OccupySlot(int iDesiredSlots)
 {
-	int i;
-	int iMask;
-	int iSquadSlots;
-
 	if (!InSquad())
 	{
 		return true;
@@ -63,11 +59,11 @@ bool CSquadMonster::OccupySlot(int iDesiredSlots)
 		return false;
 	}
 
-	iSquadSlots = pSquadLeader->m_afSquadSlots;
+	const int iSquadSlots = pSquadLeader->m_afSquadSlots;
 
-	for (i = 0; i < NUM_SLOTS; i++)
+	for (int i = 0; i < NUM_SLOTS; i++)
 	{
-		iMask = 1 << i;
+		const int iMask = 1 << i;
 		if (iDesiredSlots & iMask) // am I looking for this bit?
 		{
 			if (!(iSquadSlots & iMask))	// Is it already taken?
@@ -132,8 +128,7 @@ void CSquadMonster::SquadRemove(CSquadMonster* pRemove)
 	}
 	else
 	{
-		CSquadMonster* pSquadLeader = MySquadLeader();
-		if (pSquadLeader)
+		if (CSquadMonster* pSquadLeader = MySquadLeader(); pSquadLeader)
 		{
 			for (int i = 0; i < MAX_SQUAD_MEMBERS - 1; i++)
 			{
@@ -170,15 +165,13 @@ bool CSquadMonster::SquadAdd(CSquadMonster* pAdd)
 
 void CSquadMonster::SquadPasteEnemyInfo()
 {
-	CSquadMonster* pSquadLeader = MySquadLeader();
-	if (pSquadLeader)
+	if (CSquadMonster* pSquadLeader = MySquadLeader(); pSquadLeader)
 		pSquadLeader->m_vecEnemyLKP = m_vecEnemyLKP;
 }
 
 void CSquadMonster::SquadCopyEnemyInfo()
 {
-	CSquadMonster* pSquadLeader = MySquadLeader();
-	if (pSquadLeader)
+	if (CSquadMonster* pSquadLeader = MySquadLeader(); pSquadLeader)
 		m_vecEnemyLKP = pSquadLeader->m_vecEnemyLKP;
 }
 
@@ -196,8 +189,7 @@ void CSquadMonster::SquadMakeEnemy(CBaseEntity* pEnemy)
 	CSquadMonster* pSquadLeader = MySquadLeader();
 	for (int i = 0; i < MAX_SQUAD_MEMBERS; i++)
 	{
-		CSquadMonster* pMember = pSquadLeader->MySquadMember(i);
-		if (pMember)
+		if (CSquadMonster* pMember = pSquadLeader->MySquadMember(i); pMember)
 		{
 			// reset members who aren't activly engaged in fighting
 			if (pMember->m_hEnemy != pEnemy && !pMember->HasConditions(bits_COND_SEE_ENEMY))
@@ -234,10 +226,6 @@ int CSquadMonster::SquadCount()
 
 int CSquadMonster::SquadRecruit(int searchRadius, int maxMembers)
 {
-	int squadCount;
-	int iMyClass = Classify();// cache this monster's class
-
-
 	// Don't recruit if I'm already in a group
 	if (InSquad())
 		return 0;
@@ -245,9 +233,11 @@ int CSquadMonster::SquadRecruit(int searchRadius, int maxMembers)
 	if (maxMembers < 2)
 		return 0;
 
+	const int iMyClass = Classify();// cache this monster's class
+
 	// I am my own leader
 	m_hSquadLeader = this;
-	squadCount = 1;
+	int squadCount = 1;
 
 	CBaseEntity* pEntity = nullptr;
 
@@ -277,9 +267,8 @@ int CSquadMonster::SquadRecruit(int searchRadius, int maxMembers)
 	{
 		while ((pEntity = UTIL_FindEntityInSphere(pEntity, pev->origin, searchRadius)) != nullptr)
 		{
-			CSquadMonster* pRecruit = pEntity->MySquadMonsterPointer();
-
-			if (pRecruit && pRecruit != this && pRecruit->IsAlive() && !pRecruit->m_pCine)
+			if (CSquadMonster* pRecruit = pEntity->MySquadMonsterPointer();
+				pRecruit && pRecruit != this && pRecruit->IsAlive() && !pRecruit->m_pCine)
 			{
 				// Can we recruit this guy?
 				if (!pRecruit->InSquad() && pRecruit->Classify() == iMyClass &&
@@ -347,7 +336,7 @@ void CSquadMonster::StartMonster()
 		}
 
 		// try to form squads now.
-		int iSquadSize = SquadRecruit(1024, 4);
+		const int iSquadSize = SquadRecruit(1024, 4);
 
 		if (iSquadSize)
 		{
@@ -370,35 +359,25 @@ bool CSquadMonster::NoFriendlyFire()
 		return true;
 	}
 
-	CPlane	backPlane;
-	CPlane  leftPlane;
-	CPlane	rightPlane;
-
-	Vector	vecLeftSide;
-	Vector	vecRightSide;
-	Vector	v_left;
-
 	//!!!BUGBUG - to fix this, the planes must be aligned to where the monster will be firing its gun, not the direction it is facing!!!
 
-	if (m_hEnemy != nullptr)
-	{
-		UTIL_MakeVectors(VectorAngles(m_hEnemy->Center() - pev->origin));
-	}
-	else
+	if (m_hEnemy == nullptr)
 	{
 		// if there's no enemy, pretend there's a friendly in the way, so the grunt won't shoot.
 		return false;
 	}
 
+	UTIL_MakeVectors(VectorAngles(m_hEnemy->Center() - pev->origin));
+
 	//UTIL_MakeVectors ( pev->angles );
 
-	vecLeftSide = pev->origin - (gpGlobals->v_right * (pev->size.x * 1.5));
-	vecRightSide = pev->origin + (gpGlobals->v_right * (pev->size.x * 1.5));
-	v_left = gpGlobals->v_right * -1;
+	const Vector vecLeftSide = pev->origin - (gpGlobals->v_right * (pev->size.x * 1.5));
+	const Vector vecRightSide = pev->origin + (gpGlobals->v_right * (pev->size.x * 1.5));
+	const Vector v_left = gpGlobals->v_right * -1;
 
-	leftPlane.InitializePlane(gpGlobals->v_right, vecLeftSide);
-	rightPlane.InitializePlane(v_left, vecRightSide);
-	backPlane.InitializePlane(gpGlobals->v_forward, pev->origin);
+	CPlane leftPlane(gpGlobals->v_right, vecLeftSide);
+	CPlane rightPlane(v_left, vecRightSide);
+	CPlane backPlane(gpGlobals->v_forward, pev->origin);
 
 	/*
 		ALERT ( at_console, "LeftPlane: %f %f %f : %f\n", leftPlane.m_vecNormal.x, leftPlane.m_vecNormal.y, leftPlane.m_vecNormal.z, leftPlane.m_flDist );
@@ -409,8 +388,8 @@ bool CSquadMonster::NoFriendlyFire()
 	CSquadMonster* pSquadLeader = MySquadLeader();
 	for (int i = 0; i < MAX_SQUAD_MEMBERS; i++)
 	{
-		CSquadMonster* pMember = pSquadLeader->MySquadMember(i);
-		if (pMember && pMember != this)
+		if (CSquadMonster* pMember = pSquadLeader->MySquadMember(i);
+			pMember && pMember != this)
 		{
 
 			if (backPlane.PointInFront(pMember->pev->origin) &&
@@ -428,9 +407,7 @@ bool CSquadMonster::NoFriendlyFire()
 
 NPCState CSquadMonster::GetIdealState()
 {
-	int	iConditions;
-
-	iConditions = ScheduleFlags();
+	const int iConditions = ScheduleFlags();
 
 	// If no schedule conditions, the new ideal state is probably the reason we're in here.
 	switch (m_MonsterState)
@@ -473,8 +450,8 @@ bool CSquadMonster::SquadEnemySplit()
 
 	for (int i = 0; i < MAX_SQUAD_MEMBERS; i++)
 	{
-		CSquadMonster* pMember = pSquadLeader->MySquadMember(i);
-		if (pMember != nullptr && pMember->m_hEnemy != nullptr && pMember->m_hEnemy != pEnemy)
+		if (CSquadMonster* pMember = pSquadLeader->MySquadMember(i);
+			pMember != nullptr && pMember->m_hEnemy != nullptr && pMember->m_hEnemy != pEnemy)
 		{
 			return true;
 		}
@@ -491,8 +468,8 @@ bool CSquadMonster::SquadMemberInRange(const Vector& vecLocation, float flDist)
 
 	for (int i = 0; i < MAX_SQUAD_MEMBERS; i++)
 	{
-		CSquadMonster* pSquadMember = pSquadLeader->MySquadMember(i);
-		if (pSquadMember && (vecLocation - pSquadMember->pev->origin).Length2D() <= flDist)
+		if (CSquadMonster* pSquadMember = pSquadLeader->MySquadMember(i);
+			pSquadMember && (vecLocation - pSquadMember->pev->origin).Length2D() <= flDist)
 			return true;
 	}
 	return false;
@@ -504,7 +481,6 @@ Schedule_t* CSquadMonster::GetScheduleOfType(int iType)
 {
 	switch (iType)
 	{
-
 	case SCHED_CHASE_ENEMY_FAILED:
 	{
 		return &slChaseEnemyFailed[0];

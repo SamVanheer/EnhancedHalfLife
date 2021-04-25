@@ -26,8 +26,6 @@
 #include "soundent.h"
 #include "animation.h"
 
-float	CTalkMonster::g_talkWaitTime = 0;		// time delay until it's ok to speak: used so that two NPCs don't talk at once
-
 // NOTE: m_voicePitch & m_szGrp should be fixed up by precache each save/restore
 
 TYPEDESCRIPTION	CTalkMonster::m_SaveData[] =
@@ -384,7 +382,6 @@ void CTalkMonster::StartTask(Task_t* pTask)
 		TaskComplete();
 		break;
 
-
 	case TASK_TLK_STARE:
 		// let the player know I know he's staring at me.
 		IdleStare();
@@ -495,7 +492,7 @@ void CTalkMonster::RunTask(Task_t* pTask)
 			!IsTalking())
 		{
 			// Get edict for one player
-			pPlayer = g_engfuncs.pfnPEntityOfEntIndex(1);
+			edict_t* pPlayer = g_engfuncs.pfnPEntityOfEntIndex(1);
 
 			if (pPlayer)
 			{
@@ -535,9 +532,7 @@ void CTalkMonster::RunTask(Task_t* pTask)
 	case TASK_FACE_PLAYER:
 	{
 		// Get edict for one player
-		edict_t* pPlayer = g_engfuncs.pfnPEntityOfEntIndex(1);
-
-		if (pPlayer)
+		if (edict_t* pPlayer = g_engfuncs.pfnPEntityOfEntIndex(1); pPlayer)
 		{
 			MakeIdealYaw(pPlayer->v.origin);
 			ChangeYaw(pev->yaw_speed);
@@ -568,9 +563,7 @@ void CTalkMonster::RunTask(Task_t* pTask)
 
 	case TASK_WALK_PATH_FOR_UNITS:
 	{
-		float distance;
-
-		distance = (m_vecLastPosition - pev->origin).Length2D();
+		const float distance = (m_vecLastPosition - pev->origin).Length2D();
 
 		// Walk path until far enough away
 		if (distance > pTask->flData || MovementIsComplete())
@@ -634,11 +627,9 @@ void CTalkMonster::Killed(entvars_t* pevAttacker, int iGib)
 CBaseEntity* CTalkMonster::EnumFriends(CBaseEntity* pPrevious, int listNumber, bool bTrace)
 {
 	CBaseEntity* pFriend = pPrevious;
-	const char* pszFriend;
 	TraceResult tr;
-	Vector vecCheck;
 
-	pszFriend = m_szFriends[FriendNumber(listNumber)];
+	const char* pszFriend = m_szFriends[FriendNumber(listNumber)];
 	while (pFriend = UTIL_FindEntityByClassname(pFriend, pszFriend))
 	{
 		if (pFriend == this || !pFriend->IsAlive())
@@ -646,7 +637,7 @@ CBaseEntity* CTalkMonster::EnumFriends(CBaseEntity* pPrevious, int listNumber, b
 			continue;
 		if (bTrace)
 		{
-			vecCheck = pFriend->pev->origin;
+			Vector vecCheck = pFriend->pev->origin;
 			vecCheck.z = pFriend->pev->absmax.z;
 
 			UTIL_TraceLine(pev->origin, vecCheck, IgnoreMonsters::Yes, ENT(pev), &tr);
@@ -666,15 +657,13 @@ CBaseEntity* CTalkMonster::EnumFriends(CBaseEntity* pPrevious, int listNumber, b
 void CTalkMonster::AlertFriends()
 {
 	CBaseEntity* pFriend = nullptr;
-	int i;
 
 	// for each friend in this bsp...
-	for (i = 0; i < TLK_CFRIENDS; i++)
+	for (int i = 0; i < TLK_CFRIENDS; i++)
 	{
 		while (pFriend = EnumFriends(pFriend, i, true))
 		{
-			CBaseMonster* pMonster = pFriend->MyMonsterPointer();
-			if (pMonster->IsAlive())
+			if (CBaseMonster* pMonster = pFriend->MyMonsterPointer(); pMonster->IsAlive())
 			{
 				// don't provoke a friend that's playing a death animation. They're a goner
 				pMonster->m_afMemory |= bits_MEMORY_PROVOKED;
@@ -686,15 +675,13 @@ void CTalkMonster::AlertFriends()
 void CTalkMonster::ShutUpFriends()
 {
 	CBaseEntity* pFriend = nullptr;
-	int i;
 
 	// for each friend in this bsp...
-	for (i = 0; i < TLK_CFRIENDS; i++)
+	for (int i = 0; i < TLK_CFRIENDS; i++)
 	{
 		while (pFriend = EnumFriends(pFriend, i, true))
 		{
-			CBaseMonster* pMonster = pFriend->MyMonsterPointer();
-			if (pMonster)
+			if (CBaseMonster* pMonster = pFriend->MyMonsterPointer(); pMonster)
 			{
 				pMonster->SentenceStop();
 			}
@@ -705,16 +692,14 @@ void CTalkMonster::ShutUpFriends()
 void CTalkMonster::LimitFollowers(CBaseEntity* pPlayer, int maxFollowers)
 {
 	CBaseEntity* pFriend = nullptr;
-	int i, count;
 
-	count = 0;
+	int count = 0;
 	// for each friend in this bsp...
-	for (i = 0; i < TLK_CFRIENDS; i++)
+	for (int i = 0; i < TLK_CFRIENDS; i++)
 	{
 		while (pFriend = EnumFriends(pFriend, i, false))
 		{
-			CBaseMonster* pMonster = pFriend->MyMonsterPointer();
-			if (pMonster)
+			if (CBaseMonster* pMonster = pFriend->MyMonsterPointer(); pMonster)
 			{
 				if (pMonster->m_hTargetEnt == pPlayer)
 				{
@@ -731,7 +716,7 @@ float CTalkMonster::TargetDistance()
 {
 	// If we lose the player, or he dies, return a really large distance
 	if (m_hTargetEnt == nullptr || !m_hTargetEnt->IsAlive())
-		return 1e6;
+		return std::numeric_limits<float>::max();
 
 	return (m_hTargetEnt->pev->origin - pev->origin).Length();
 }
@@ -765,7 +750,7 @@ void CTalkMonster::TalkInit()
 
 	CTalkMonster::g_talkWaitTime = 0;
 
-	m_voicePitch = 100;
+	m_voicePitch = PITCH_NORM;
 }
 
 CBaseEntity* CTalkMonster::FindNearestFriend(bool fPlayer)
@@ -774,27 +759,17 @@ CBaseEntity* CTalkMonster::FindNearestFriend(bool fPlayer)
 	CBaseEntity* pNearest = nullptr;
 	float range = std::numeric_limits<float>::max();
 	TraceResult tr;
-	Vector vecStart = pev->origin;
-	Vector vecCheck;
-	int i;
-	const char* pszFriend;
-	int cfriends;
 
+	Vector vecStart = pev->origin;
 	vecStart.z = pev->absmax.z;
 
-	if (fPlayer)
-		cfriends = 1;
-	else
-		cfriends = TLK_CFRIENDS;
+	const int cfriends = fPlayer ? 1 : TLK_CFRIENDS;
 
 	// for each type of friend...
 
-	for (i = cfriends - 1; i > -1; i--)
+	for (int i = cfriends - 1; i > -1; i--)
 	{
-		if (fPlayer)
-			pszFriend = "player";
-		else
-			pszFriend = m_szFriends[FriendNumber(i)];
+		const char* pszFriend = fPlayer ? "player" : m_szFriends[FriendNumber(i)];
 
 		if (!pszFriend)
 			continue;
@@ -812,7 +787,7 @@ CBaseEntity* CTalkMonster::FindNearestFriend(bool fPlayer)
 			if (!pMonster || pMonster->m_MonsterState == NPCState::Script || pMonster->m_MonsterState == NPCState::Prone)
 				continue;
 
-			vecCheck = pFriend->pev->origin;
+			Vector vecCheck = pFriend->pev->origin;
 			vecCheck.z = pFriend->pev->absmax.z;
 
 			// if closer than previous friend, and in range, see if he's visible
@@ -855,7 +830,7 @@ void CTalkMonster::Touch(CBaseEntity* pOther)
 			return;
 
 		// Heuristic for determining if the player is pushing me away
-		float speed = fabs(pOther->pev->velocity.x) + fabs(pOther->pev->velocity.y);
+		const float speed = fabs(pOther->pev->velocity.x) + fabs(pOther->pev->velocity.y);
 		if (speed > 50)
 		{
 			SetConditions(bits_COND_CLIENT_PUSH);
@@ -866,8 +841,6 @@ void CTalkMonster::Touch(CBaseEntity* pOther)
 
 void CTalkMonster::IdleRespond()
 {
-	int pitch = GetVoicePitch();
-
 	// play response
 	PlaySentence(m_szGrp[TLK_ANSWER], RANDOM_FLOAT(2.8, 3.2), VOL_NORM, ATTN_IDLE);
 }
@@ -934,9 +907,7 @@ bool CTalkMonster::IdleHello()
 	if (!IsBitSet(m_bitsSaid, bit_saidHelloPlayer))
 	{
 		// get a player
-		CBaseEntity* pPlayer = FindNearestFriend(true);
-
-		if (pPlayer)
+		if (CBaseEntity* pPlayer = FindNearestFriend(true); pPlayer)
 		{
 			if (IsInViewCone(pPlayer) && IsVisible(pPlayer))
 			{
@@ -973,15 +944,13 @@ void CTalkMonster::IdleHeadTurn(Vector& vecFriend)
 
 bool CTalkMonster::IdleSpeak()
 {
-	// try to start a conversation, or make statement
-	int pitch;
-	const char* szIdleGroup;
-	const char* szQuestionGroup;
-	float duration;
-
 	if (!OkToSpeak())
 		return false;
 
+	// try to start a conversation, or make statement
+	const char* szIdleGroup;
+	const char* szQuestionGroup;
+	float duration;
 	// set idle groups based on pre/post disaster
 	if (IsBitSet(pev->spawnflags, SF_MONSTER_PREDISASTER))
 	{
@@ -999,12 +968,8 @@ bool CTalkMonster::IdleSpeak()
 
 	}
 
-	pitch = GetVoicePitch();
-
 	// player using this entity is alive and wounded?
-	CBaseEntity* pTarget = m_hTargetEnt;
-
-	if (pTarget != nullptr)
+	if (CBaseEntity* pTarget = m_hTargetEnt; pTarget != nullptr)
 	{
 		if (pTarget->IsPlayer())
 		{
@@ -1046,9 +1011,7 @@ bool CTalkMonster::IdleSpeak()
 	}
 
 	// if there is a friend nearby to speak to, play sentence, set friend's response time, return
-	CBaseEntity* pFriend = FindNearestFriend(false);
-
-	if (pFriend && !(pFriend->IsMoving()) && (RANDOM_LONG(0, 99) < 75))
+	if (CBaseEntity* pFriend = FindNearestFriend(false); pFriend && !(pFriend->IsMoving()) && (RANDOM_LONG(0, 99) < 75))
 	{
 		PlaySentence(szQuestionGroup, duration, VOL_NORM, ATTN_IDLE);
 		//SENTENCEG_PlayRndSz( ENT(pev), szQuestionGroup, 1.0, ATTN_IDLE, 0, pitch );
@@ -1067,9 +1030,7 @@ bool CTalkMonster::IdleSpeak()
 	if (RANDOM_LONG(0, 1))
 	{
 		//SENTENCEG_PlayRndSz( ENT(pev), szIdleGroup, 1.0, ATTN_IDLE, 0, pitch );
-		CBaseEntity* pFriend = FindNearestFriend(true);
-
-		if (pFriend)
+		if (CBaseEntity* pFriend = FindNearestFriend(true); pFriend)
 		{
 			m_hTalkTarget = pFriend;
 			PlaySentence(szIdleGroup, duration, VOL_NORM, ATTN_IDLE);
@@ -1140,9 +1101,7 @@ bool CTalkMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 		// if player damaged this entity, have other friends talk about it
 		if (pevAttacker && m_MonsterState != NPCState::Prone && IsBitSet(pevAttacker->flags, FL_CLIENT))
 		{
-			CBaseEntity* pFriend = FindNearestFriend(false);
-
-			if (pFriend && pFriend->IsAlive())
+			if (CBaseEntity* pFriend = FindNearestFriend(false); pFriend && pFriend->IsAlive())
 			{
 				// only if not dead or dying!
 				CTalkMonster* pTalkMonster = (CTalkMonster*)pFriend;
@@ -1210,9 +1169,7 @@ Schedule_t* CTalkMonster::GetScheduleOfType(int Type)
 
 		if (!IsTalking() && HasConditions(bits_COND_SEE_CLIENT) && RANDOM_LONG(0, 6) == 0)
 		{
-			edict_t* pPlayer = g_engfuncs.pfnPEntityOfEntIndex(1);
-
-			if (pPlayer)
+			if (edict_t* pPlayer = g_engfuncs.pfnPEntityOfEntIndex(1); pPlayer)
 			{
 				// watch the client.
 				UTIL_MakeVectors(pPlayer->v.angles);
@@ -1236,7 +1193,6 @@ Schedule_t* CTalkMonster::GetScheduleOfType(int Type)
 				return slIdleStand;
 		}
 
-
 		// NOTE - caller must first CTalkMonster::GetScheduleOfType, 
 		// then check result and decide what to return ie: if sci gets back
 		// slIdleStand, return slIdleSciStand
@@ -1249,12 +1205,7 @@ Schedule_t* CTalkMonster::GetScheduleOfType(int Type)
 
 bool CTalkMonster::IsTalking()
 {
-	if (m_flStopTalkTime > gpGlobals->time)
-	{
-		return true;
-	}
-
-	return false;
+	return m_flStopTalkTime > gpGlobals->time;
 }
 
 void CTalkMonster::PrescheduleThink()

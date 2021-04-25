@@ -688,7 +688,7 @@ void CBreakable::Die()
 
 	// BUGBUG -- can only find 256 entities on a breakable -- should be enough
 	CBaseEntity* pList[256];
-	int count = UTIL_EntitiesInBox(pList, 256, mins, maxs, FL_ONGROUND);
+	int count = UTIL_EntitiesInBox(pList, ArraySize(pList), mins, maxs, FL_ONGROUND);
 	if (count)
 	{
 		for (int i = 0; i < count; i++)

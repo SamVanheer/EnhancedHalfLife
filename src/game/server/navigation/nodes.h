@@ -77,6 +77,7 @@ constexpr int bits_LINK_LARGE_HULL = 1 << 2;	//!< big box can fit through this c
 constexpr int bits_LINK_FLY_HULL = 1 << 3;		//!< a flying big box can fit through this connection
 constexpr int bits_LINK_DISABLED = 1 << 4;		//!< link is not valid when the set
 
+//TODO: same as Hull enum
 constexpr int NODE_SMALL_HULL = 0;
 constexpr int NODE_HUMAN_HULL = 1;
 constexpr int NODE_LARGE_HULL = 2;

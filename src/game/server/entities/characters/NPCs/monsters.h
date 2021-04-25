@@ -25,6 +25,7 @@
 #include "skill.h"
 
 // CHECKLOCALMOVE result types 
+//TODO: make enum class
 constexpr int LOCALMOVE_INVALID = 0; // move is not possible
 constexpr int LOCALMOVE_INVALID_DONT_TRIANGULATE = 1; // move is not possible, don't try to triangulate
 constexpr int LOCALMOVE_VALID = 2; // move is possible
@@ -66,6 +67,7 @@ constexpr int MOVE_STUCK_DIST = 32;			//!< if a monster can't step this far, it 
 
 
 // MoveToOrigin stuff
+//TODO: make enum class
 constexpr int MOVE_NORMAL = 0;				//!< normal move in the direction monster is facing
 constexpr int MOVE_STRAFE = 1;				//!< moves in direction specified, no matter which way monster is facing
 
@@ -100,6 +102,7 @@ bool IsBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetO
 void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, int g, int b);
 
 // monster to monster relationship types
+//TODO: convert to enum class
 constexpr int R_AL = -2;	// (ALLY) pals. Good alternative to R_NO when applicable.
 constexpr int R_FR = -1;	// (FEAR)will run
 constexpr int R_NO = 0;		// (NO RELATIONSHIP) disregard
@@ -125,6 +128,7 @@ constexpr int bits_MEMORY_CUSTOM1 = 1 << 31; 		// Monster-specific memory
 
 // trigger conditions for scripted AI
 // these MUST match the CHOICES interface in halflife.fgd for the base monster
+//TODO: make enum class
 enum
 {
 	AITRIGGER_NONE = 0,

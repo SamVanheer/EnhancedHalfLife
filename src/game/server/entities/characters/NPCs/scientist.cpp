@@ -391,17 +391,17 @@ Schedule_t	slFear[] =
 DEFINE_CUSTOM_SCHEDULES(CScientist)
 {
 	slFollow,
-		slFaceTarget,
-		slIdleSciStand,
-		slFear,
-		slScientistCover,
-		slScientistHide,
-		slScientistStartle,
-		slHeal,
-		slStopFollowing,
-		slSciPanic,
-		slFollowScared,
-		slFaceTargetScared,
+	slFaceTarget,
+	slIdleSciStand,
+	slFear,
+	slScientistCover,
+	slScientistHide,
+	slScientistStartle,
+	slHeal,
+	slStopFollowing,
+	slSciPanic,
+	slFollowScared,
+	slFaceTargetScared,
 };
 
 IMPLEMENT_CUSTOM_SCHEDULES(CScientist, CTalkMonster);
@@ -516,9 +516,7 @@ void CScientist::RunTask(Task_t* pTask)
 		}
 		else
 		{
-			float distance;
-
-			distance = (m_vecMoveGoal - pev->origin).Length2D();
+			float distance = (m_vecMoveGoal - pev->origin).Length2D();
 			// Re-evaluate when you think your finished, or the target has moved too far
 			if ((distance < pTask->flData) || (m_vecMoveGoal - m_hTargetEnt->pev->origin).Length() > pTask->flData * 0.5)
 			{
@@ -563,14 +561,12 @@ void CScientist::RunTask(Task_t* pTask)
 
 int	CScientist::Classify()
 {
-	return	CLASS_HUMAN_PASSIVE;
+	return CLASS_HUMAN_PASSIVE;
 }
 
 void CScientist::SetYawSpeed()
 {
-	int ys;
-
-	ys = 90;
+	int ys = 90;
 
 	switch (m_Activity)
 	{
@@ -601,13 +597,13 @@ void CScientist::HandleAnimEvent(AnimationEvent& event)
 		break;
 	case SCIENTIST_AE_NEEDLEON:
 	{
-		int oldBody = pev->body;
+		const int oldBody = pev->body;
 		pev->body = (oldBody % NUM_SCIENTIST_HEADS) + NUM_SCIENTIST_HEADS * 1;
 	}
 	break;
 	case SCIENTIST_AE_NEEDLEOFF:
 	{
-		int oldBody = pev->body;
+		const int oldBody = pev->body;
 		pev->body = (oldBody % NUM_SCIENTIST_HEADS) + NUM_SCIENTIST_HEADS * 0;
 	}
 	break;
@@ -670,7 +666,6 @@ void CScientist::Precache()
 
 void CScientist::TalkInit()
 {
-
 	CTalkMonster::TalkInit();
 
 	// scientist will try to talk to friends in this order:
@@ -716,7 +711,6 @@ void CScientist::TalkInit()
 
 bool CScientist::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
-
 	if (pevInflictor && pevInflictor->flags & FL_CLIENT)
 	{
 		Remember(bits_MEMORY_PROVOKED);
@@ -729,7 +723,7 @@ bool CScientist::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 
 int CScientist::SoundMask()
 {
-	return	bits_SOUND_WORLD |
+	return bits_SOUND_WORLD |
 		bits_SOUND_COMBAT |
 		bits_SOUND_CARCASS |
 		bits_SOUND_MEAT |
@@ -768,9 +762,7 @@ void CScientist::Killed(entvars_t* pevAttacker, int iGib)
 
 void CScientist::SetActivity(Activity newActivity)
 {
-	int	iSequence;
-
-	iSequence = LookupActivity(newActivity);
+	const int iSequence = LookupActivity(newActivity);
 
 	// Set to the desired anim, or default anim if the desired is not present
 	if (iSequence == ACTIVITY_NOT_AVAILABLE)
@@ -835,13 +827,9 @@ Schedule_t* CScientist::GetScheduleOfType(int Type)
 
 Schedule_t* CScientist::GetSchedule()
 {
-	// so we don't keep calling through the EHANDLE stuff
-	CBaseEntity* pEnemy = m_hEnemy;
-
 	if (HasConditions(bits_COND_HEAR_SOUND))
 	{
-		CSound* pSound;
-		pSound = BestSound();
+		CSound* pSound = BestSound();
 
 		ASSERT(pSound != nullptr);
 		if (pSound && (pSound->m_iType & bits_SOUND_DANGER))
@@ -852,7 +840,7 @@ Schedule_t* CScientist::GetSchedule()
 	{
 	case NPCState::Alert:
 	case NPCState::Idle:
-		if (pEnemy)
+		if (CBaseEntity* pEnemy = m_hEnemy; pEnemy)
 		{
 			if (HasConditions(bits_COND_SEE_ENEMY))
 				m_fearTime = gpGlobals->time;
@@ -872,8 +860,7 @@ Schedule_t* CScientist::GetSchedule()
 		// Cower when you hear something scary
 		if (HasConditions(bits_COND_HEAR_SOUND))
 		{
-			CSound* pSound;
-			pSound = BestSound();
+			CSound* pSound = BestSound();
 
 			ASSERT(pSound != nullptr);
 			if (pSound)
@@ -902,7 +889,7 @@ Schedule_t* CScientist::GetSchedule()
 			int relationship = R_NO;
 
 			// Nothing scary, just me and the player
-			if (pEnemy != nullptr)
+			if (CBaseEntity* pEnemy = m_hEnemy; pEnemy != nullptr)
 				relationship = GetRelationship(pEnemy);
 
 			// UNDONE: Model fear properly, fix R_FR and add multiple levels of fear
@@ -958,7 +945,7 @@ NPCState CScientist::GetIdealState()
 		{
 			if (IsFollowing())
 			{
-				int relationship = GetRelationship(m_hEnemy);
+				const int relationship = GetRelationship(m_hEnemy);
 				if (relationship != R_FR || relationship != R_HT && !HasConditions(bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE))
 				{
 					// Don't go to combat if you're following the player
@@ -978,8 +965,7 @@ NPCState CScientist::GetIdealState()
 
 	case NPCState::Combat:
 	{
-		CBaseEntity* pEnemy = m_hEnemy;
-		if (pEnemy != nullptr)
+		if (CBaseEntity* pEnemy = m_hEnemy; pEnemy != nullptr)
 		{
 			if (DisregardEnemy(pEnemy))		// After 15 seconds of being hidden, return to alert
 			{
@@ -1001,7 +987,6 @@ NPCState CScientist::GetIdealState()
 				m_IdealMonsterState = NPCState::Combat;
 				return m_IdealMonsterState;
 			}
-
 		}
 	}
 	break;
@@ -1023,7 +1008,7 @@ void CScientist::Heal()
 	if (!CanHeal())
 		return;
 
-	Vector target = m_hTargetEnt->pev->origin - pev->origin;
+	const Vector target = m_hTargetEnt->pev->origin - pev->origin;
 	if (target.Length() > 100)
 		return;
 
@@ -1202,7 +1187,7 @@ void CSittingScientist::Precache()
 
 int	CSittingScientist::Classify()
 {
-	return	CLASS_HUMAN_PASSIVE;
+	return CLASS_HUMAN_PASSIVE;
 }
 
 int CSittingScientist::FriendNumber(int arrayNumber)
@@ -1215,14 +1200,12 @@ int CSittingScientist::FriendNumber(int arrayNumber)
 
 void CSittingScientist::SittingThink()
 {
-	CBaseEntity* pent;
-
 	StudioFrameAdvance();
 
 	// try to greet player
 	if (IdleHello())
 	{
-		pent = FindNearestFriend(true);
+		CBaseEntity* pent = FindNearestFriend(true);
 		if (pent)
 		{
 			float yaw = VecToYaw(pent->pev->origin - pev->origin) - pev->angles.y;
@@ -1258,6 +1241,7 @@ void CSittingScientist::SittingThink()
 
 			// turn towards player or nearest friend and speak
 
+			CBaseEntity* pent;
 			if (!IsBitSet(m_bitsSaid, bit_saidHelloPlayer))
 				pent = FindNearestFriend(true);
 			else
@@ -1273,6 +1257,7 @@ void CSittingScientist::SittingThink()
 				// only turn head if we spoke
 				float yaw = VecToYaw(pent->pev->origin - pev->origin) - pev->angles.y;
 
+				//TODO: this keeps showing up everywhere
 				if (yaw > 180) yaw -= 360;
 				if (yaw < -180) yaw += 360;
 
@@ -1319,22 +1304,18 @@ void CSittingScientist::SetAnswerQuestion(CTalkMonster* pSpeaker)
 int CSittingScientist::IdleSpeak()
 {
 	// try to start a conversation, or make statement
-	int pitch;
-
 	if (!OkToSpeak())
 		return false;
 
 	// set global min delay for next conversation
 	CTalkMonster::g_talkWaitTime = gpGlobals->time + RANDOM_FLOAT(4.8, 5.2);
 
-	pitch = GetVoicePitch();
+	const int pitch = GetVoicePitch();
 
 	// if there is a friend nearby to speak to, play sentence, set friend's response time, return
 
 	// try to talk to any standing or sitting scientists nearby
-	CBaseEntity* pentFriend = FindNearestFriend(false);
-
-	if (pentFriend && RANDOM_LONG(0, 1))
+	if (CBaseEntity* pentFriend = FindNearestFriend(false); pentFriend && RANDOM_LONG(0, 1))
 	{
 		CTalkMonster* pTalkMonster = GetClassPtr((CTalkMonster*)pentFriend->pev);
 		pTalkMonster->SetAnswerQuestion(this);

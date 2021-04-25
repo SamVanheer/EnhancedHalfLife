@@ -123,11 +123,8 @@ void CSquidSpit::Shoot(entvars_t* pevOwner, Vector vecStart, Vector vecVelocity)
 
 void CSquidSpit::Touch(CBaseEntity* pOther)
 {
-	TraceResult tr;
-	int		iPitch;
-
 	// splat sound
-	iPitch = RANDOM_FLOAT(90, 110);
+	const int iPitch = RANDOM_FLOAT(90, 110);
 
 	EmitSound(CHAN_VOICE, "bullchicken/bc_acid1.wav", VOL_NORM, ATTN_NORM, iPitch);
 
@@ -143,7 +140,7 @@ void CSquidSpit::Touch(CBaseEntity* pOther)
 
 	if (!pOther->pev->takedamage)
 	{
-
+		TraceResult tr;
 		// make a splat on the wall
 		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 10, IgnoreMonsters::No, ENT(pev), &tr);
 		UTIL_DecalTrace(&tr, DECAL_SPIT1 + RANDOM_LONG(0, 1));
@@ -287,7 +284,6 @@ int CBullsquid::IgnoreConditions()
 		}
 	}
 
-
 	return iIgnore;
 }
 
@@ -305,19 +301,17 @@ int CBullsquid::GetRelationship(CBaseEntity* pTarget)
 
 bool CBullsquid::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
-	float flDist;
-	Vector vecApex;
-
 	// if the squid is running, has an enemy, was hurt by the enemy, hasn't been hurt in the last 3 seconds, and isn't too close to the enemy,
 	// it will swerve. (whew).
 	if (m_hEnemy != nullptr && IsMoving() && pevAttacker == m_hEnemy->pev && gpGlobals->time - m_flLastHurtTime > 3)
 	{
-		flDist = (pev->origin - m_hEnemy->pev->origin).Length2D();
+		float flDist = (pev->origin - m_hEnemy->pev->origin).Length2D();
 
 		if (flDist > SQUID_SPRINT_DIST)
 		{
 			flDist = (pev->origin - m_Route[m_iRouteIndex].vecLocation).Length2D();// reusing flDist. 
 
+			Vector vecApex;
 			if (Triangulate(pev->origin, m_Route[m_iRouteIndex].vecLocation, flDist * 0.5, m_hEnemy, &vecApex))
 			{
 				InsertWaypoint(vecApex, bits_MF_TO_DETOUR | bits_MF_DONT_SIMPLIFY);
@@ -409,7 +403,7 @@ bool CBullsquid::ValidateHintType(short sHint)
 
 int CBullsquid::SoundMask()
 {
-	return	bits_SOUND_WORLD |
+	return bits_SOUND_WORLD |
 		bits_SOUND_COMBAT |
 		bits_SOUND_CARCASS |
 		bits_SOUND_MEAT |
@@ -419,7 +413,7 @@ int CBullsquid::SoundMask()
 
 int	CBullsquid::Classify()
 {
-	return	CLASS_ALIEN_PREDATOR;
+	return CLASS_ALIEN_PREDATOR;
 }
 
 constexpr float SQUID_ATTN_IDLE = 1.5;
@@ -447,7 +441,7 @@ void CBullsquid::IdleSound()
 
 void CBullsquid::PainSound()
 {
-	int iPitch = RANDOM_LONG(85, 120);
+	const int iPitch = RANDOM_LONG(85, 120);
 
 	switch (RANDOM_LONG(0, 3))
 	{
@@ -468,7 +462,7 @@ void CBullsquid::PainSound()
 
 void CBullsquid::AlertSound()
 {
-	int iPitch = RANDOM_LONG(140, 160);
+	const int iPitch = RANDOM_LONG(140, 160);
 
 	switch (RANDOM_LONG(0, 1))
 	{
@@ -483,9 +477,7 @@ void CBullsquid::AlertSound()
 
 void CBullsquid::SetYawSpeed()
 {
-	int ys;
-
-	ys = 0;
+	int ys = 0;
 
 	switch (m_Activity)
 	{
@@ -509,16 +501,13 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 	{
 		if (m_hEnemy)
 		{
-			Vector	vecSpitOffset;
-			Vector	vecSpitDir;
-
 			UTIL_MakeVectors(pev->angles);
 
 			// !!!HACKHACK - the spot at which the spit originates (in front of the mouth) was measured in 3ds and hardcoded here.
 			// we should be able to read the position of bones at runtime for this info.
-			vecSpitOffset = (gpGlobals->v_right * 8 + gpGlobals->v_forward * 37 + gpGlobals->v_up * 23);
+			Vector vecSpitOffset = (gpGlobals->v_right * 8 + gpGlobals->v_forward * 37 + gpGlobals->v_up * 23);
 			vecSpitOffset = (pev->origin + vecSpitOffset);
-			vecSpitDir = ((m_hEnemy->pev->origin + m_hEnemy->pev->view_ofs) - vecSpitOffset).Normalize();
+			Vector vecSpitDir = ((m_hEnemy->pev->origin + m_hEnemy->pev->view_ofs) - vecSpitOffset).Normalize();
 
 			vecSpitDir.x += RANDOM_FLOAT(-0.05, 0.05);
 			vecSpitDir.y += RANDOM_FLOAT(-0.05, 0.05);
@@ -551,9 +540,7 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 	case BSQUID_AE_BITE:
 	{
 		// SOUND HERE!
-		CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.bullsquidDmgBite, DMG_SLASH);
-
-		if (pHurt)
+		if (CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.bullsquidDmgBite, DMG_SLASH); pHurt)
 		{
 			//pHurt->pev->punchangle.z = -15;
 			//pHurt->pev->punchangle.x = -45;
@@ -565,8 +552,7 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 
 	case BSQUID_AE_TAILWHIP:
 	{
-		CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.bullsquidDmgWhip, DMG_CLUB | DMG_ALWAYSGIB);
-		if (pHurt)
+		if (CBaseEntity* pHurt = CheckTraceHullAttack(70, gSkillData.bullsquidDmgWhip, DMG_CLUB | DMG_ALWAYSGIB); pHurt)
 		{
 			pHurt->pev->punchangle.z = -20;
 			pHurt->pev->punchangle.x = 20;
@@ -585,7 +571,7 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 
 	case BSQUID_AE_HOP:
 	{
-		float flGravity = g_psv_gravity->value;
+		const float flGravity = g_psv_gravity->value;
 
 		// throw the squid up into the air on this frame.
 		if (IsBitSet(pev->flags, FL_ONGROUND))
@@ -601,16 +587,11 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 
 	case BSQUID_AE_THROW:
 	{
-		int iPitch;
-
 		// squid throws its prey IF the prey is a client. 
-		CBaseEntity* pHurt = CheckTraceHullAttack(70, 0, 0);
-
-
-		if (pHurt)
+		if (CBaseEntity* pHurt = CheckTraceHullAttack(70, 0, 0); pHurt)
 		{
 			// croonchy bite sound
-			iPitch = RANDOM_FLOAT(90, 110);
+			const int iPitch = RANDOM_FLOAT(90, 110);
 			switch (RANDOM_LONG(0, 1))
 			{
 			case 0:
@@ -703,7 +684,6 @@ void CBullsquid::Precache()
 
 	PRECACHE_SOUND("bullchicken/bc_spithit1.wav");
 	PRECACHE_SOUND("bullchicken/bc_spithit2.wav");
-
 }
 
 void CBullsquid::DeathSound()
@@ -759,7 +739,6 @@ void CBullsquid::RunAI()
 			pev->framerate = 1.25;
 		}
 	}
-
 }
 
 //========================================================
@@ -1002,11 +981,7 @@ Schedule_t* CBullsquid::GetSchedule()
 
 		if (HasConditions(bits_COND_SMELL_FOOD))
 		{
-			CSound* pSound;
-
-			pSound = BestScent();
-
-			if (pSound && (!IsInViewCone(&pSound->m_vecOrigin) || !IsVisible(pSound->m_vecOrigin)))
+			if (CSound* pSound = BestScent(); pSound && (!IsInViewCone(pSound->m_vecOrigin) || !IsVisible(pSound->m_vecOrigin)))
 			{
 				// scent is behind or occluded
 				return GetScheduleOfType(SCHED_SQUID_SNIFF_AND_EAT);
@@ -1019,10 +994,7 @@ Schedule_t* CBullsquid::GetSchedule()
 		if (HasConditions(bits_COND_SMELL))
 		{
 			// there's something stinky. 
-			CSound* pSound;
-
-			pSound = BestScent();
-			if (pSound)
+			if (CSound* pSound = BestScent(); pSound)
 				return GetScheduleOfType(SCHED_SQUID_WALLOW);
 		}
 
@@ -1053,11 +1025,7 @@ Schedule_t* CBullsquid::GetSchedule()
 
 		if (HasConditions(bits_COND_SMELL_FOOD))
 		{
-			CSound* pSound;
-
-			pSound = BestScent();
-
-			if (pSound && (!IsInViewCone(&pSound->m_vecOrigin) || !IsVisible(pSound->m_vecOrigin)))
+			if (CSound* pSound = BestScent(); pSound && (!IsInViewCone(pSound->m_vecOrigin) || !IsVisible(pSound->m_vecOrigin)))
 			{
 				// scent is behind or occluded
 				return GetScheduleOfType(SCHED_SQUID_SNIFF_AND_EAT);
@@ -1083,8 +1051,6 @@ Schedule_t* CBullsquid::GetSchedule()
 		}
 
 		return GetScheduleOfType(SCHED_CHASE_ENEMY);
-
-		break;
 	}
 	}
 
@@ -1197,9 +1163,7 @@ void CBullsquid::RunTask(Task_t* pTask)
 
 NPCState CBullsquid::GetIdealState()
 {
-	int	iConditions;
-
-	iConditions = ScheduleFlags();
+	const int iConditions = ScheduleFlags();
 
 	// If no schedule conditions, the new ideal state is probably the reason we're in here.
 	switch (m_MonsterState)

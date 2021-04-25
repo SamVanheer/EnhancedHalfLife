@@ -31,12 +31,7 @@
 
 bool CBaseMonster::HasSchedule()
 {
-	if (m_pSchedule == nullptr)
-	{
-		return false;
-	}
-
-	return true;
+	return m_pSchedule != nullptr;
 }
 
 void CBaseMonster::ClearSchedule()
@@ -50,12 +45,7 @@ bool CBaseMonster::IsScheduleDone()
 {
 	ASSERT(m_pSchedule != nullptr);
 
-	if (m_iScheduleIndex == m_pSchedule->cTasks)
-	{
-		return true;
-	}
-
-	return false;
+	return m_iScheduleIndex == m_pSchedule->cTasks;
 }
 
 void CBaseMonster::ChangeSchedule(Schedule_t* pNewSchedule)
@@ -89,20 +79,9 @@ void CBaseMonster::ChangeSchedule(Schedule_t* pNewSchedule)
 #if 0
 	if (ClassnameIs(pev, "monster_human_grunt"))
 	{
-		Task_t* pTask = GetTask();
-
-		if (pTask)
+		if (Task_t* pTask = GetTask(); pTask)
 		{
-			const char* pName = nullptr;
-
-			if (m_pSchedule)
-			{
-				pName = m_pSchedule->pName;
-			}
-			else
-			{
-				pName = "No Schedule";
-			}
+			const char* pName = m_pSchedule ? m_pSchedule->pName : "No Schedule";
 
 			if (!pName)
 			{
@@ -173,11 +152,8 @@ bool CBaseMonster::IsScheduleValid()
 
 void CBaseMonster::MaintainSchedule()
 {
-	Schedule_t* pNewSchedule;
-	int			i;
-
 	// UNDONE: Tune/fix this 10... This is just here so infinite loops are impossible
-	for (i = 0; i < 10; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		if (m_pSchedule != nullptr && TaskIsComplete())
 		{
@@ -212,6 +188,7 @@ void CBaseMonster::MaintainSchedule()
 			}
 			if (HasConditions(bits_COND_TASK_FAILED) && m_MonsterState == m_IdealMonsterState)
 			{
+				Schedule_t* pNewSchedule;
 				if (m_failSchedule != SCHED_NONE)
 					pNewSchedule = GetScheduleOfType(m_failSchedule);
 				else
@@ -223,6 +200,8 @@ void CBaseMonster::MaintainSchedule()
 			else
 			{
 				SetState(m_IdealMonsterState);
+
+				Schedule_t* pNewSchedule;
 				if (m_MonsterState == NPCState::Script || m_MonsterState == NPCState::Dead)
 					pNewSchedule = CBaseMonster::GetSchedule();
 				else
@@ -310,7 +289,6 @@ void CBaseMonster::RunTask(Task_t* pTask)
 		break;
 	}
 
-
 	case TASK_FACE_ENEMY:
 	{
 		MakeIdealYaw(m_vecEnemyLKP);
@@ -372,13 +350,11 @@ void CBaseMonster::RunTask(Task_t* pTask)
 	}
 	case TASK_MOVE_TO_TARGET_RANGE:
 	{
-		float distance;
-
 		if (m_hTargetEnt == nullptr)
 			TaskFail();
 		else
 		{
-			distance = (m_vecMoveGoal - pev->origin).Length2D();
+			float distance = (m_vecMoveGoal - pev->origin).Length2D();
 			// Re-evaluate when you think your finished, or the target has moved too far
 			if ((distance < pTask->flData) || (m_vecMoveGoal - m_hTargetEnt->pev->origin).Length() > pTask->flData * 0.5)
 			{
@@ -487,7 +463,7 @@ void CBaseMonster::RunTask(Task_t* pTask)
 		if (m_pCine->m_iDelay <= 0 && gpGlobals->time >= m_pCine->m_startTime)
 		{
 			TaskComplete();
-			m_pCine->StartSequence((CBaseMonster*)this, m_pCine->m_iszPlay, true);
+			m_pCine->StartSequence(this, m_pCine->m_iszPlay, true);
 			if (m_fSequenceFinished)
 				ClearSchedule();
 			pev->framerate = 1.0;
@@ -508,8 +484,7 @@ void CBaseMonster::RunTask(Task_t* pTask)
 
 void CBaseMonster::SetTurnActivity()
 {
-	float flYD;
-	flYD = YawDiff();
+	const float flYD = YawDiff();
 
 	if (flYD <= -45 && LookupActivity(ACT_TURN_RIGHT) != ACTIVITY_NOT_AVAILABLE)
 	{// big right turn
@@ -527,18 +502,14 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	{
 	case TASK_TURN_RIGHT:
 	{
-		float flCurrentYaw;
-
-		flCurrentYaw = UTIL_AngleMod(pev->angles.y);
+		const float flCurrentYaw = UTIL_AngleMod(pev->angles.y);
 		pev->ideal_yaw = UTIL_AngleMod(flCurrentYaw - pTask->flData);
 		SetTurnActivity();
 		break;
 	}
 	case TASK_TURN_LEFT:
 	{
-		float flCurrentYaw;
-
-		flCurrentYaw = UTIL_AngleMod(pev->angles.y);
+		const float flCurrentYaw = UTIL_AngleMod(pev->angles.y);
 		pev->ideal_yaw = UTIL_AngleMod(flCurrentYaw + pTask->flData);
 		SetTurnActivity();
 		break;
@@ -614,11 +585,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_SET_SCHEDULE:
 	{
-		Schedule_t* pNewSchedule;
-
-		pNewSchedule = GetScheduleOfType((int)pTask->flData);
-
-		if (pNewSchedule)
+		if (Schedule_t* pNewSchedule = GetScheduleOfType((int)pTask->flData); pNewSchedule)
 		{
 			ChangeSchedule(pNewSchedule);
 		}
@@ -739,9 +706,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	break;
 	case TASK_FIND_COVER_FROM_BEST_SOUND:
 	{
-		CSound* pBestSound;
-
-		pBestSound = BestSound();
+		CSound* pBestSound = BestSound();
 
 		ASSERT(pBestSound != nullptr);
 		/*
@@ -844,12 +809,12 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	case TASK_RUN_TO_TARGET:
 	case TASK_WALK_TO_TARGET:
 	{
-		Activity newActivity;
-
 		if ((m_hTargetEnt->pev->origin - pev->origin).Length() < 1)
 			TaskComplete();
 		else
 		{
+			Activity newActivity;
+
 			if (pTask->iTask == TASK_WALK_TO_TARGET)
 				newActivity = ACT_WALK;
 			else
@@ -1043,11 +1008,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_GET_PATH_TO_BESTSOUND:
 	{
-		CSound* pSound;
-
-		pSound = BestSound();
-
-		if (pSound && MoveToLocation(m_movementActivity, 2, pSound->m_vecOrigin))
+		if (CSound* pSound = BestSound(); pSound && MoveToLocation(m_movementActivity, 2, pSound->m_vecOrigin))
 		{
 			TaskComplete();
 		}
@@ -1061,11 +1022,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_GET_PATH_TO_BESTSCENT:
 	{
-		CSound* pScent;
-
-		pScent = BestScent();
-
-		if (pScent && MoveToLocation(m_movementActivity, 2, pScent->m_vecOrigin))
+		if (CSound* pScent = BestScent(); pScent && MoveToLocation(m_movementActivity, 2, pScent->m_vecOrigin))
 		{
 			TaskComplete();
 		}
@@ -1111,14 +1068,11 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_STRAFE_PATH:
 	{
-		Vector2D	vec2DirToPoint;
-		Vector2D	vec2RightSide;
-
 		// to start strafing, we have to first figure out if the target is on the left side or right side
 		UTIL_MakeVectors(pev->angles);
 
-		vec2DirToPoint = (m_Route[0].vecLocation - pev->origin).Make2D().Normalize();
-		vec2RightSide = gpGlobals->v_right.Make2D().Normalize();
+		const Vector2D vec2DirToPoint = (m_Route[0].vecLocation - pev->origin).Make2D().Normalize();
+		const Vector2D vec2RightSide = gpGlobals->v_right.Make2D().Normalize();
 
 		if (DotProduct(vec2DirToPoint, vec2RightSide) > 0)
 		{
@@ -1133,7 +1087,6 @@ void CBaseMonster::StartTask(Task_t* pTask)
 		TaskComplete();
 		break;
 	}
-
 
 	case TASK_WAIT_FOR_MOVEMENT:
 	{
@@ -1205,7 +1158,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	{
 		if (!IsStringNull(m_pCine->m_iszIdle))
 		{
-			m_pCine->StartSequence((CBaseMonster*)this, m_pCine->m_iszIdle, false);
+			m_pCine->StartSequence(this, m_pCine->m_iszIdle, false);
 			if (AreStringsEqual(STRING(m_pCine->m_iszIdle), STRING(m_pCine->m_iszPlay)))
 			{
 				pev->framerate = 0;

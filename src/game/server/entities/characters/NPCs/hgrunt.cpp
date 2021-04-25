@@ -307,11 +307,9 @@ int CHGrunt::GetRelationship(CBaseEntity* pTarget)
 
 void CHGrunt::GibMonster()
 {
-	Vector	vecGunPos;
-	Vector	vecGunAngles;
-
 	if (GetBodygroup(2) != 2)
 	{// throw a gun if the grunt has one
+		Vector vecGunPos, vecGunAngles;
 		GetAttachment(0, vecGunPos, vecGunAngles);
 
 		CBaseEntity* pGun;
@@ -345,7 +343,7 @@ void CHGrunt::GibMonster()
 
 int CHGrunt::SoundMask()
 {
-	return	bits_SOUND_WORLD |
+	return bits_SOUND_WORLD |
 		bits_SOUND_COMBAT |
 		bits_SOUND_PLAYER |
 		bits_SOUND_DANGER;
@@ -446,7 +444,7 @@ bool CHGrunt::CheckRangeAttack1(float flDot, float flDist)
 			return false;
 		}
 
-		Vector vecSrc = GetGunPosition();
+		const Vector vecSrc = GetGunPosition();
 
 		// verify that a bullet fired from the gun will hit the enemy before the world.
 		UTIL_TraceLine(vecSrc, m_hEnemy->BodyTarget(vecSrc), IgnoreMonsters::Yes, IgnoreGlass::Yes, ENT(pev), &tr);
@@ -537,10 +535,9 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 		return m_fThrowGrenade;
 	}
 
-
 	if (IsBitSet(pev->weapons, HGRUNT_HANDGRENADE))
 	{
-		Vector vecToss = CheckToss(pev, GetGunPosition(), vecTarget, 0.5);
+		const Vector vecToss = CheckToss(pev, GetGunPosition(), vecTarget, 0.5);
 
 		if (vecToss != vec3_origin)
 		{
@@ -561,7 +558,7 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 	}
 	else
 	{
-		Vector vecToss = CheckThrow(pev, GetGunPosition(), vecTarget, gSkillData.hgruntGrenadeSpeed, 0.5);
+		const Vector vecToss = CheckThrow(pev, GetGunPosition(), vecTarget, gSkillData.hgruntGrenadeSpeed, 0.5);
 
 		if (vecToss != vec3_origin)
 		{
@@ -580,8 +577,6 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 			m_flNextGrenadeCheck = gpGlobals->time + 1; // one full second.
 		}
 	}
-
-
 
 	return m_fThrowGrenade;
 }
@@ -707,7 +702,7 @@ void CHGrunt::CheckAmmo()
 
 int	CHGrunt::Classify()
 {
-	return	CLASS_HUMAN_MILITARY;
+	return CLASS_HUMAN_MILITARY;
 }
 
 CBaseEntity* CHGrunt::Kick()
@@ -717,7 +712,7 @@ CBaseEntity* CHGrunt::Kick()
 	UTIL_MakeVectors(pev->angles);
 	Vector vecStart = pev->origin;
 	vecStart.z += pev->size.z * 0.5;
-	Vector vecEnd = vecStart + (gpGlobals->v_forward * 70);
+	const Vector vecEnd = vecStart + (gpGlobals->v_forward * 70);
 
 	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, ENT(pev), &tr);
 
@@ -749,12 +744,12 @@ void CHGrunt::Shoot()
 		return;
 	}
 
-	Vector vecShootOrigin = GetGunPosition();
-	Vector vecShootDir = ShootAtEnemy(vecShootOrigin);
+	const Vector vecShootOrigin = GetGunPosition();
+	const Vector vecShootDir = ShootAtEnemy(vecShootOrigin);
 
 	UTIL_MakeVectors(pev->angles);
 
-	Vector	vecShellVelocity = gpGlobals->v_right * RANDOM_FLOAT(40, 90) + gpGlobals->v_up * RANDOM_FLOAT(75, 200) + gpGlobals->v_forward * RANDOM_FLOAT(-40, 40);
+	const Vector vecShellVelocity = gpGlobals->v_right * RANDOM_FLOAT(40, 90) + gpGlobals->v_up * RANDOM_FLOAT(75, 200) + gpGlobals->v_forward * RANDOM_FLOAT(-40, 40);
 	EjectBrass(vecShootOrigin - vecShootDir * 24, vecShellVelocity, pev->angles.y, m_iBrassShell, TE_BOUNCE_SHELL);
 	FireBullets(1, vecShootOrigin, vecShootDir, VECTOR_CONE_10DEGREES, 2048, BULLET_MONSTER_MP5); // shoot +-5 degrees
 
@@ -762,7 +757,7 @@ void CHGrunt::Shoot()
 
 	m_cAmmoLoaded--;// take away a bullet!
 
-	Vector angDir = VectorAngles(vecShootDir);
+	const Vector angDir = VectorAngles(vecShootDir);
 	SetBlending(0, angDir.x);
 }
 
@@ -773,12 +768,12 @@ void CHGrunt::Shotgun()
 		return;
 	}
 
-	Vector vecShootOrigin = GetGunPosition();
-	Vector vecShootDir = ShootAtEnemy(vecShootOrigin);
+	const Vector vecShootOrigin = GetGunPosition();
+	const Vector vecShootDir = ShootAtEnemy(vecShootOrigin);
 
 	UTIL_MakeVectors(pev->angles);
 
-	Vector	vecShellVelocity = gpGlobals->v_right * RANDOM_FLOAT(40, 90) + gpGlobals->v_up * RANDOM_FLOAT(75, 200) + gpGlobals->v_forward * RANDOM_FLOAT(-40, 40);
+	const Vector vecShellVelocity = gpGlobals->v_right * RANDOM_FLOAT(40, 90) + gpGlobals->v_up * RANDOM_FLOAT(75, 200) + gpGlobals->v_forward * RANDOM_FLOAT(-40, 40);
 	EjectBrass(vecShootOrigin - vecShootDir * 24, vecShellVelocity, pev->angles.y, m_iShotgunShell, TE_BOUNCE_SHOTSHELL);
 	FireBullets(gSkillData.hgruntShotgunPellets, vecShootOrigin, vecShootDir, VECTOR_CONE_15DEGREES, 2048, BULLET_PLAYER_BUCKSHOT, 0); // shoot +-7.5 degrees
 
@@ -786,22 +781,17 @@ void CHGrunt::Shotgun()
 
 	m_cAmmoLoaded--;// take away a bullet!
 
-	Vector angDir = VectorAngles(vecShootDir);
+	const Vector angDir = VectorAngles(vecShootDir);
 	SetBlending(0, angDir.x);
 }
 
 void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 {
-	Vector	vecShootDir;
-	Vector	vecShootOrigin;
-
 	switch (event.event)
 	{
 	case HGRUNT_AE_DROP_GUN:
 	{
-		Vector	vecGunPos;
-		Vector	vecGunAngles;
-
+		Vector vecGunPos, vecGunAngles;
 		GetAttachment(0, vecGunPos, vecGunAngles);
 
 		// switch to body group with no gun.
@@ -820,7 +810,6 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 		{
 			DropItem("ammo_ARgrenades", BodyTarget(pev->origin), vecGunAngles);
 		}
-
 	}
 	break;
 
@@ -895,9 +884,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 
 	case HGRUNT_AE_KICK:
 	{
-		CBaseEntity* pHurt = Kick();
-
-		if (pHurt)
+		if (CBaseEntity* pHurt = Kick(); pHurt)
 		{
 			// SOUND HERE!
 			UTIL_MakeVectors(pev->angles);
@@ -915,7 +902,6 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 			SENTENCEG_PlayRndSz(this, "HG_ALERT", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, m_voicePitch);
 			JustSpoke();
 		}
-
 	}
 
 	default:
@@ -1890,8 +1876,7 @@ Schedule_t* CHGrunt::GetSchedule()
 	// grunts place HIGH priority on running away from danger sounds.
 	if (HasConditions(bits_COND_HEAR_SOUND))
 	{
-		CSound* pSound;
-		pSound = BestSound();
+		CSound* pSound = BestSound();
 
 		ASSERT(pSound != nullptr);
 		if (pSound)
@@ -1994,7 +1979,7 @@ Schedule_t* CHGrunt::GetSchedule()
 			// if hurt:
 			// 90% chance of taking cover
 			// 10% chance of flinch.
-			int iPercent = RANDOM_LONG(0, 99);
+			const int iPercent = RANDOM_LONG(0, 99);
 
 			if (iPercent <= 90 && m_hEnemy != nullptr)
 			{

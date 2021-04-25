@@ -32,7 +32,6 @@ int CFlyingMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd,
 	}
 
 	TraceResult tr;
-
 	UTIL_TraceHull(vecStart + Vector(0, 0, 32), vecEnd + Vector(0, 0, 32), IgnoreMonsters::No, Hull::Large, edict(), &tr);
 
 	// ALERT( at_console, "%.0f %.0f %.0f : ", vecStart.x, vecStart.y, vecStart.z );
@@ -69,7 +68,7 @@ Activity CFlyingMonster::GetStoppedActivity()
 
 void CFlyingMonster::Stop()
 {
-	Activity stopped = GetStoppedActivity();
+	const Activity stopped = GetStoppedActivity();
 	if (m_IdealActivity != stopped)
 	{
 		m_flightSpeed = 0;
@@ -84,7 +83,7 @@ float CFlyingMonster::ChangeYaw(int speed)
 {
 	if (pev->movetype == MOVETYPE_FLY)
 	{
-		float diff = YawDiff();
+		const float diff = YawDiff();
 		float target = 0;
 
 		if (m_IdealActivity != GetStoppedActivity())
@@ -100,14 +99,9 @@ float CFlyingMonster::ChangeYaw(int speed)
 			m_flLastZYawTime = gpGlobals->time - gpGlobals->frametime;
 		}
 
-		float delta = gpGlobals->time - m_flLastZYawTime;
+		const float delta = std::min(0.25f, gpGlobals->time - m_flLastZYawTime);
 
 		m_flLastZYawTime = gpGlobals->time;
-
-		if (delta > 0.25)
-		{
-			delta = 0.25;
-		}
 
 		pev->angles.z = UTIL_Approach(target, pev->angles.z, 220.0 * delta);
 	}
@@ -173,7 +167,7 @@ void CFlyingMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, 
 				m_flGroundSpeed = m_flightSpeed = 200;
 			}
 		}
-		Vector vecMove = pev->origin + ((vecDir + (m_vecTravel * m_momentum)).Normalize() * (m_flGroundSpeed * flInterval));
+		const Vector vecMove = pev->origin + ((vecDir + (m_vecTravel * m_momentum)).Normalize() * (m_flGroundSpeed * flInterval));
 
 		if (m_IdealActivity != m_movementActivity)
 		{
@@ -186,8 +180,7 @@ void CFlyingMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, 
 
 		if (CheckLocalMove(pev->origin, vecMove, pTargetEnt, nullptr))
 		{
-			m_vecTravel = (vecMove - pev->origin);
-			m_vecTravel = m_vecTravel.Normalize();
+			m_vecTravel = (vecMove - pev->origin).Normalize();
 			UTIL_MoveToOrigin(ENT(pev), vecMove, (m_flGroundSpeed * flInterval), MOVE_STRAFE);
 		}
 		else
@@ -203,12 +196,11 @@ void CFlyingMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, 
 
 float CFlyingMonster::CeilingZ(const Vector& position)
 {
-	TraceResult tr;
-
-	Vector minUp = position;
+	const Vector minUp = position;
 	Vector maxUp = position;
 	maxUp.z += WORLD_BOUNDARY;
 
+	TraceResult tr;
 	UTIL_TraceLine(position, maxUp, IgnoreMonsters::Yes, nullptr, &tr);
 	if (tr.flFraction != 1.0)
 		maxUp.z = tr.vecEndPos.z;
@@ -222,7 +214,7 @@ float CFlyingMonster::CeilingZ(const Vector& position)
 
 bool CFlyingMonster::ProbeZ(const Vector& position, const Vector& probe, float* pFraction)
 {
-	int conPosition = UTIL_PointContents(position);
+	const int conPosition = UTIL_PointContents(position);
 	if ((((pev->flags) & FL_SWIM) == FL_SWIM) ^ (conPosition == CONTENTS_WATER))
 	{
 		//    SWIMING & !WATER
@@ -231,7 +223,7 @@ bool CFlyingMonster::ProbeZ(const Vector& position, const Vector& probe, float* 
 		*pFraction = 0.0;
 		return true; // We hit a water boundary because we are where we don't belong.
 	}
-	int conProbe = UTIL_PointContents(probe);
+	const int conProbe = UTIL_PointContents(probe);
 	if (conProbe == conPosition)
 	{
 		// The probe is either entirely inside the water (for fish) or entirely
@@ -241,16 +233,16 @@ bool CFlyingMonster::ProbeZ(const Vector& position, const Vector& probe, float* 
 		return false;
 	}
 
-	Vector ProbeUnit = (probe - position).Normalize();
-	float ProbeLength = (probe - position).Length();
+	const Vector ProbeUnit = (probe - position).Normalize();
+	const float ProbeLength = (probe - position).Length();
 	float maxProbeLength = ProbeLength;
 	float minProbeLength = 0;
 
 	float diff = maxProbeLength - minProbeLength;
 	while (diff > 1.0)
 	{
-		float midProbeLength = minProbeLength + diff / 2.0;
-		Vector midProbeVec = midProbeLength * ProbeUnit;
+		const float midProbeLength = minProbeLength + diff / 2.0;
+		const Vector midProbeVec = midProbeLength * ProbeUnit;
 		if (UTIL_PointContents(position + midProbeVec) == conPosition)
 		{
 			minProbeLength = midProbeLength;
@@ -268,11 +260,10 @@ bool CFlyingMonster::ProbeZ(const Vector& position, const Vector& probe, float* 
 
 float CFlyingMonster::FloorZ(const Vector& position)
 {
-	TraceResult tr;
-
 	Vector down = position;
 	down.z -= 2048;
 
+	TraceResult tr;
 	UTIL_TraceLine(position, down, IgnoreMonsters::Yes, nullptr, &tr);
 
 	if (tr.flFraction != 1.0)

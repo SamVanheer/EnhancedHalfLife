@@ -44,7 +44,7 @@ LINK_ENTITY_TO_CLASS(monster_generic, CGenericMonster);
 
 int	CGenericMonster::Classify()
 {
-	return	CLASS_PLAYER_ALLY;
+	return CLASS_PLAYER_ALLY;
 }
 
 void CGenericMonster::SetYawSpeed()
@@ -74,7 +74,7 @@ void CGenericMonster::HandleAnimEvent(AnimationEvent& event)
 
 int CGenericMonster::SoundMask()
 {
-	return	bits_SOUND_NONE;
+	return bits_SOUND_NONE;
 }
 
 void CGenericMonster::Spawn()

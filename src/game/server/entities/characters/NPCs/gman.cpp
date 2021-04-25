@@ -65,7 +65,7 @@ IMPLEMENT_SAVERESTORE(CGMan, CBaseMonster);
 
 int	CGMan::Classify()
 {
-	return	CLASS_NONE;
+	return CLASS_NONE;
 }
 
 void CGMan::SetYawSpeed()
@@ -95,7 +95,7 @@ void CGMan::HandleAnimEvent(AnimationEvent& event)
 
 int CGMan::SoundMask()
 {
-	return	bits_SOUND_NONE;
+	return bits_SOUND_NONE;
 }
 
 void CGMan::Spawn()

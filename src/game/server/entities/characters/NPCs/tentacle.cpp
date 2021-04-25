@@ -449,22 +449,15 @@ void CTentacle::Cycle()
 
 	ChangeYaw(pev->yaw_speed);
 
-	CSound* pSound;
-
 	Listen();
 
 	// Listen will set this if there's something in my sound list
-	if (HasConditions(bits_COND_HEAR_SOUND))
-		pSound = BestSound();
-	else
-		pSound = nullptr;
-
-	if (pSound)
+	if (CSound* pSound = HasConditions(bits_COND_HEAR_SOUND) ? BestSound() : nullptr; pSound)
 	{
 		Vector vecDir;
 		if (gpGlobals->time - m_flPrevSoundTime < 0.5)
 		{
-			float dt = gpGlobals->time - m_flPrevSoundTime;
+			const float dt = gpGlobals->time - m_flPrevSoundTime;
 			vecDir = pSound->m_vecOrigin + (pSound->m_vecOrigin - m_vecPrevSound) / dt - pev->origin;
 		}
 		else
@@ -640,12 +633,11 @@ void CTentacle::Cycle()
 		case TENTACLE_ANIM_Lev2_Tap:
 		case TENTACLE_ANIM_Lev3_Tap:
 		{
-			Vector vecSrc;
 			UTIL_MakeVectors(pev->angles);
 
 			TraceResult tr1, tr2;
 
-			vecSrc = pev->origin + Vector(0, 0, MyHeight() - 4);
+			Vector vecSrc = pev->origin + Vector(0, 0, MyHeight() - 4);
 			UTIL_TraceLine(vecSrc, vecSrc + gpGlobals->v_forward * 512, IgnoreMonsters::Yes, ENT(pev), &tr1);
 
 			vecSrc = pev->origin + Vector(0, 0, MyHeight() + 8);
@@ -701,7 +693,6 @@ void CTentacle::CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TY
 		m_iGoalAnim = TENTACLE_ANIM_Engine_Idle;
 		break;
 	}
-
 }
 
 void CTentacle::DieThink()
@@ -830,7 +821,7 @@ void CTentacle::HandleAnimEvent(AnimationEvent& event)
 
 		vecSrc.z += MyHeight();
 
-		float flVol = RANDOM_FLOAT(0.3, 0.5);
+		const float flVol = RANDOM_FLOAT(0.3, 0.5);
 
 		switch (m_iTapSound)
 		{
@@ -906,7 +897,7 @@ void CTentacle::Start()
 
 void CTentacle::HitTouch(CBaseEntity* pOther)
 {
-	TraceResult tr = UTIL_GetGlobalTrace();
+	const TraceResult tr = UTIL_GetGlobalTrace();
 
 	if (pOther->pev->modelindex == pev->modelindex)
 		return;
@@ -968,9 +959,6 @@ public:
 
 LINK_ENTITY_TO_CLASS(monster_tentaclemaw, CTentacleMaw);
 
-//
-// Tentacle Spawn
-//
 void CTentacleMaw::Spawn()
 {
 	Precache();

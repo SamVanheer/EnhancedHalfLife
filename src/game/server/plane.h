@@ -18,19 +18,16 @@
 class CPlane
 {
 public:
-	CPlane();
-
 	/**
 	*	@brief Takes a normal for the plane and a point on the plane
 	*/
-	void InitializePlane(const Vector& vecNormal, const Vector& vecPoint);
+	CPlane(const Vector& vecNormal, const Vector& vecPoint);
 
 	/**
 	*	@brief determines whether the given vector is in front of the plane. 
 	*/
-	bool PointInFront(const Vector& vecPoint);
+	bool PointInFront(const Vector& vecPoint) const;
 
 	Vector	m_vecNormal;
 	float	m_flDist;
-	bool	m_fInitialized;
 };

@@ -84,10 +84,6 @@ void CHornet::Spawn()
 	SetTouch(&CHornet::DieTouch);
 	SetThink(&CHornet::StartTrack);
 
-	edict_t* pSoundEnt = pev->owner;
-	if (!pSoundEnt)
-		pSoundEnt = edict();
-
 	if (!IsNullEnt(pev->owner) && (pev->owner->v.flags & FL_CLIENT))
 	{
 		pev->dmg = gSkillData.plrDmgHornet;
@@ -134,7 +130,6 @@ int CHornet::GetRelationship(CBaseEntity* pTarget)
 
 int CHornet::Classify()
 {
-
 	if (pev->owner && pev->owner->v.flags & FL_CLIENT)
 	{
 		return CLASS_PLAYER_BIOWEAPON;
@@ -220,10 +215,6 @@ void CHornet::IgniteTrail()
 
 void CHornet::TrackTarget()
 {
-	Vector	vecFlightDir;
-	Vector	vecDirToEnemy;
-	float	flDelta;
-
 	StudioFrameAdvance();
 
 	if (gpGlobals->time > m_flStopAttack)
@@ -250,15 +241,16 @@ void CHornet::TrackTarget()
 		m_vecEnemyLKP = m_vecEnemyLKP + pev->velocity * m_flFlySpeed * 0.1;
 	}
 
-	vecDirToEnemy = (m_vecEnemyLKP - pev->origin).Normalize();
+	const Vector vecDirToEnemy = (m_vecEnemyLKP - pev->origin).Normalize();
 
+	Vector vecFlightDir;
 	if (pev->velocity.Length() < 0.1)
 		vecFlightDir = vecDirToEnemy;
 	else
 		vecFlightDir = pev->velocity.Normalize();
 
 	// measure how far the turn is, the wider the turn, the slow we'll go this time.
-	flDelta = DotProduct(vecFlightDir, vecDirToEnemy);
+	float flDelta = DotProduct(vecFlightDir, vecDirToEnemy);
 
 	if (flDelta < 0.5)
 	{// hafta turn wide again. play sound

@@ -346,7 +346,7 @@ void CXenTree::HandleAnimEvent(AnimationEvent& event)
 	{
 		CBaseEntity* pList[8];
 		bool sound = false;
-		int count = UTIL_EntitiesInBox(pList, 8, m_pTrigger->pev->absmin, m_pTrigger->pev->absmax, FL_MONSTER | FL_CLIENT);
+		int count = UTIL_EntitiesInBox(pList, ArraySize(pList), m_pTrigger->pev->absmin, m_pTrigger->pev->absmax, FL_MONSTER | FL_CLIENT);
 		Vector forward;
 
 		AngleVectors(pev->angles, &forward, nullptr, nullptr);

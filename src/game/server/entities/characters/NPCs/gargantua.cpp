@@ -98,7 +98,7 @@ CStomp* CStomp::StompCreate(const Vector& origin, const Vector& end, float speed
 	CStomp* pStomp = GetClassPtr((CStomp*)nullptr);
 
 	pStomp->pev->origin = origin;
-	Vector dir = (end - origin);
+	const Vector dir = (end - origin);
 	pStomp->pev->scale = dir.Length();
 	pStomp->pev->movedir = dir.Normalize();
 	pStomp->pev->speed = speed;
@@ -141,7 +141,7 @@ void CStomp::Think()
 	// Do damage for this frame
 	Vector vecStart = pev->origin;
 	vecStart.z += 30;
-	Vector vecEnd = vecStart + (pev->movedir * pev->speed * deltaTime);
+	const Vector vecEnd = vecStart + (pev->movedir * pev->speed * deltaTime);
 
 	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, ENT(pev), &tr);
 
@@ -166,8 +166,7 @@ void CStomp::Think()
 		pev->origin = pev->origin + pev->movedir * pev->speed * STOMP_INTERVAL;
 		for (int i = 0; i < 2; i++)
 		{
-			CSprite* pSprite = CSprite::SpriteCreate(GARG_STOMP_SPRITE_NAME.data(), pev->origin, true);
-			if (pSprite)
+			if (CSprite* pSprite = CSprite::SpriteCreate(GARG_STOMP_SPRITE_NAME.data(), pev->origin, true); pSprite)
 			{
 				UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 500), IgnoreMonsters::Yes, edict(), &tr);
 				pSprite->pev->origin = tr.vecEndPos;
@@ -187,7 +186,6 @@ void CStomp::Think()
 			UTIL_Remove(this);
 			StopSound(CHAN_BODY, GARG_STOMP_BUZZ_SOUND.data());
 		}
-
 	}
 }
 
@@ -449,7 +447,7 @@ Schedule_t	slGargSwipe[] =
 DEFINE_CUSTOM_SCHEDULES(CGargantua)
 {
 	slGargFlame,
-		slGargSwipe,
+	slGargSwipe,
 };
 
 IMPLEMENT_CUSTOM_SCHEDULES(CGargantua, CBaseMonster);
@@ -479,13 +477,12 @@ void CGargantua::EyeUpdate()
 
 void CGargantua::StompAttack()
 {
-	TraceResult trace;
-
 	UTIL_MakeVectors(pev->angles);
-	Vector vecStart = pev->origin + Vector(0, 0, 60) + 35 * gpGlobals->v_forward;
-	Vector vecAim = ShootAtEnemy(vecStart);
-	Vector vecEnd = (vecAim * 1024) + vecStart;
+	const Vector vecStart = pev->origin + Vector(0, 0, 60) + 35 * gpGlobals->v_forward;
+	const Vector vecAim = ShootAtEnemy(vecStart);
+	const Vector vecEnd = (vecAim * 1024) + vecStart;
 
+	TraceResult trace;
 	UTIL_TraceLine(vecStart, vecEnd, IgnoreMonsters::Yes, edict(), &trace);
 	CStomp::StompCreate(vecStart, trace.vecEndPos, 0);
 	UTIL_ScreenShake(pev->origin, 12.0, 100.0, 2.0, 1000);
@@ -498,13 +495,12 @@ void CGargantua::StompAttack()
 
 void CGargantua::FlameCreate()
 {
-	int			i;
-	Vector		posGun, angleGun;
+	Vector posGun, angleGun;
 	TraceResult trace;
 
 	UTIL_MakeVectors(pev->angles);
 
-	for (i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		if (i < 2)
 			m_pFlame[i] = CBeam::BeamCreate(GARG_BEAM_SPRITE_NAME.data(), 240);
@@ -556,13 +552,12 @@ void CGargantua::FlameControls(float angleX, float angleY)
 
 void CGargantua::FlameUpdate()
 {
-	int				i;
 	static constexpr float	offset[2] = {60, -60};
-	TraceResult		trace;
-	Vector			vecStart, angleGun;
-	bool			streaks = false;
+	TraceResult trace;
+	Vector vecStart, angleGun;
+	bool streaks = false;
 
-	for (i = 0; i < 2; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		if (m_pFlame[i])
 		{
@@ -612,14 +607,12 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInfli
 {
 	CBaseEntity* pEntity = nullptr;
 	TraceResult	tr;
-	float		flAdjustedDamage;
-	Vector		vecSpot;
 
-	Vector vecMid = (vecStart + vecEnd) * 0.5;
+	const Vector vecMid = (vecStart + vecEnd) * 0.5;
 
-	float searchRadius = (vecStart - vecMid).Length();
+	const float searchRadius = (vecStart - vecMid).Length();
 
-	Vector vecAim = (vecEnd - vecStart).Normalize();
+	const Vector vecAim = (vecEnd - vecStart).Normalize();
 
 	// iterate on all entities in the vicinity.
 	while ((pEntity = UTIL_FindEntityInSphere(pEntity, vecMid, searchRadius)) != nullptr)
@@ -632,7 +625,7 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInfli
 				continue;
 			}
 
-			vecSpot = pEntity->BodyTarget(vecMid);
+			const Vector vecSpot = pEntity->BodyTarget(vecMid);
 
 			float dist = DotProduct(vecAim, vecSpot - vecMid);
 			if (dist > searchRadius)
@@ -640,7 +633,7 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInfli
 			else if (dist < -searchRadius)
 				dist = searchRadius;
 
-			Vector vecSrc = vecMid + dist * vecAim;
+			const Vector vecSrc = vecMid + dist * vecAim;
 
 			UTIL_TraceLine(vecSrc, vecSpot, IgnoreMonsters::No, ENT(pev), &tr);
 
@@ -649,6 +642,7 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInfli
 				// decrease damage for an ent that's farther from the flame.
 				dist = (vecSrc - tr.vecEndPos).Length();
 
+				float flAdjustedDamage;
 				if (dist > 64)
 				{
 					flAdjustedDamage = flDamage - (dist - 64) * 0.4;
@@ -678,10 +672,8 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInfli
 
 void CGargantua::FlameDestroy()
 {
-	int i;
-
 	EmitSound(CHAN_WEAPON, pBeamAttackSounds[0]);
-	for (i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		if (m_pFlame[i])
 		{
@@ -706,7 +698,7 @@ void CGargantua::PrescheduleThink()
 
 int	CGargantua::Classify()
 {
-	return	CLASS_ALIEN_MONSTER;
+	return CLASS_ALIEN_MONSTER;
 }
 
 void CGargantua::SetYawSpeed()
@@ -838,16 +830,15 @@ bool CGargantua::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 
 void CGargantua::DeathEffect()
 {
-	int i;
 	UTIL_MakeVectors(pev->angles);
-	Vector deathPos = pev->origin + gpGlobals->v_forward * 100;
+	const Vector deathPos = pev->origin + gpGlobals->v_forward * 100;
 
 	// Create a spiral of streaks
 	CSpiral::Create(deathPos, (pev->absmax.z - pev->absmin.z) * 0.6, 125, 1.5);
 
 	Vector position = pev->origin;
 	position.z += 32;
-	for (i = 0; i < 7; i += 2)
+	for (int i = 0; i < 7; i += 2)
 	{
 		UTIL_CreateExplosion(position, vec3_origin, nullptr, 60 + (i * 20), false, 70, (i * 0.3));
 		position.z += 15;
@@ -914,8 +905,7 @@ void CGargantua::HandleAnimEvent(AnimationEvent& event)
 	case GARG_AE_SLASH_LEFT:
 	{
 		// HACKHACK!!!
-		CBaseEntity* pHurt = GargantuaCheckTraceHullAttack(GARG_ATTACKDIST + 10.0, gSkillData.gargantuaDmgSlash, DMG_SLASH);
-		if (pHurt)
+		if (CBaseEntity* pHurt = GargantuaCheckTraceHullAttack(GARG_ATTACKDIST + 10.0, gSkillData.gargantuaDmgSlash, DMG_SLASH); pHurt)
 		{
 			if (pHurt->pev->flags & (FL_MONSTER | FL_CLIENT))
 			{
@@ -963,7 +953,7 @@ CBaseEntity* CGargantua::GargantuaCheckTraceHullAttack(float flDist, int iDamage
 	UTIL_MakeVectors(pev->angles);
 	Vector vecStart = pev->origin;
 	vecStart.z += 64;
-	Vector vecEnd = vecStart + (gpGlobals->v_forward * flDist) - (gpGlobals->v_up * flDist * 0.3);
+	const Vector vecEnd = vecStart + (gpGlobals->v_forward * flDist) - (gpGlobals->v_up * flDist * 0.3);
 
 	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, ENT(pev), &tr);
 
@@ -1044,17 +1034,14 @@ void CGargantua::RunTask(Task_t* pTask)
 			StopAnimation();
 			pev->nextthink = gpGlobals->time + 0.15;
 			SetThink(&CGargantua::SUB_Remove);
-			int i;
-			int parts = MODEL_FRAMES(gGargGibModel);
-			for (i = 0; i < 10; i++)
+			const int parts = MODEL_FRAMES(gGargGibModel);
+			for (int i = 0; i < 10; i++)
 			{
 				CGib* pGib = GetClassPtr((CGib*)nullptr);
 
 				pGib->Spawn(GARG_GIB_MODEL.data());
 
-				int bodyPart = 0;
-				if (parts > 1)
-					bodyPart = RANDOM_LONG(0, pev->body - 1);
+				const int bodyPart = parts > 1 ? RANDOM_LONG(0, pev->body - 1) : 0;
 
 				pGib->pev->body = bodyPart;
 				pGib->m_bloodColor = BLOOD_COLOR_YELLOW;
@@ -1121,8 +1108,8 @@ void CGargantua::RunTask(Task_t* pTask)
 			Vector angles = vec3_origin;
 
 			FlameUpdate();
-			CBaseEntity* pEnemy = m_hEnemy;
-			if (pEnemy)
+			
+			if (CBaseEntity* pEnemy = m_hEnemy; pEnemy)
 			{
 				Vector org = pev->origin;
 				org.z += 64;
@@ -1228,17 +1215,16 @@ void CSpiral::Think()
 	while (time > SPIRAL_INTERVAL)
 	{
 		Vector position = pev->origin;
-		Vector direction = vec3_up;
 
-		float fraction = 1.0 / pev->speed;
+		const float fraction = 1.0 / pev->speed;
 
-		float radius = (pev->scale * pev->health) * fraction;
+		const float radius = (pev->scale * pev->health) * fraction;
 
 		position.z += (pev->health * pev->dmg) * fraction;
 		pev->angles.y = (pev->health * 360 * 8) * fraction;
 		UTIL_MakeVectors(pev->angles);
 		position = position + gpGlobals->v_forward * radius;
-		direction = (direction + gpGlobals->v_forward).Normalize();
+		const Vector direction = (vec3_up + gpGlobals->v_forward).Normalize();
 
 		StreakSplash(position, vec3_up, RANDOM_LONG(8, 11), 20, RANDOM_LONG(50, 150), 400);
 

@@ -39,7 +39,6 @@ public:
 	float		FloorZ(const Vector& position);
 	bool		ProbeZ(const Vector& position, const Vector& probe, float* pFraction);
 
-
 	// UNDONE:  Save/restore this stuff!!!
 protected:
 	Vector		m_vecTravel;		// Current direction

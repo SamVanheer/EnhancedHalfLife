@@ -311,9 +311,9 @@ Schedule_t slTwitchDie[] =
 DEFINE_CUSTOM_SCHEDULES(CIchthyosaur)
 {
 	slSwimAround,
-		slSwimAgitated,
-		slCircleEnemy,
-		slTwitchDie,
+	slSwimAgitated,
+	slCircleEnemy,
+	slTwitchDie,
 };
 IMPLEMENT_CUSTOM_SCHEDULES(CIchthyosaur, CFlyingMonster);
 
@@ -394,7 +394,7 @@ void CIchthyosaur::HandleAnimEvent(AnimationEvent& event)
 			if (m_flEnemyTouched < gpGlobals->time - 0.2 && (m_hEnemy->BodyTarget(pev->origin) - pev->origin).Length() >(32 + 16 + 32))
 				break;
 
-			Vector vecShootDir = ShootAtEnemy(pev->origin);
+			const Vector vecShootDir = ShootAtEnemy(pev->origin);
 			UTIL_MakeAimVectors(pev->angles);
 
 			if (DotProduct(vecShootDir, gpGlobals->v_forward) > 0.707)
@@ -425,7 +425,7 @@ void CIchthyosaur::HandleAnimEvent(AnimationEvent& event)
 
 	if (bDidAttack)
 	{
-		Vector vecSrc = pev->origin + gpGlobals->v_forward * 32;
+		const Vector vecSrc = pev->origin + gpGlobals->v_forward * 32;
 		UTIL_Bubbles(vecSrc - Vector(8, 8, 8), vecSrc + Vector(8, 8, 8), 16);
 	}
 }
@@ -581,9 +581,9 @@ void CIchthyosaur::RunTask(Task_t* pTask)
 		}
 		else if (IsVisible(m_hEnemy))
 		{
-			Vector vecFrom = m_hEnemy->EyePosition();
+			const Vector vecFrom = m_hEnemy->EyePosition();
 
-			Vector vecDelta = (pev->origin - vecFrom).Normalize();
+			const Vector vecDelta = (pev->origin - vecFrom).Normalize();
 			Vector vecSwim = CrossProduct(vecDelta, vec3_up).Normalize();
 
 			if (DotProduct(vecSwim, m_SaveVelocity) < 0)
@@ -690,6 +690,7 @@ void CIchthyosaur::RunTask(Task_t* pTask)
 
 float CIchthyosaur::VectorToPitch(const Vector& vec)
 {
+	//TODO: should be a helper function like for yaw
 	float pitch;
 	if (vec.z == 0 && vec.x == 0)
 		pitch = 0;
@@ -709,17 +710,14 @@ void CIchthyosaur::Move(float flInterval)
 
 float CIchthyosaur::PitchDiff()
 {
-	float	flPitchDiff;
-	float	flCurrentPitch;
-
-	flCurrentPitch = UTIL_AngleMod(pev->angles.z);
+	const float flCurrentPitch = UTIL_AngleMod(pev->angles.z);
 
 	if (flCurrentPitch == pev->idealpitch)
 	{
 		return 0;
 	}
 
-	flPitchDiff = pev->idealpitch - flCurrentPitch;
+	float flPitchDiff = pev->idealpitch - flCurrentPitch;
 
 	if (pev->idealpitch > flCurrentPitch)
 	{
@@ -738,7 +736,7 @@ float CIchthyosaur::ChangePitch(int speed)
 {
 	if (pev->movetype == MOVETYPE_FLY)
 	{
-		float diff = PitchDiff();
+		const float diff = PitchDiff();
 		float target = 0;
 		if (m_IdealActivity != GetStoppedActivity())
 		{
@@ -753,14 +751,9 @@ float CIchthyosaur::ChangePitch(int speed)
 			m_flLastPitchTime = gpGlobals->time - gpGlobals->frametime;
 		}
 
-		float delta = gpGlobals->time - m_flLastPitchTime;
+		const float delta = std::min(0.25f, gpGlobals->time - m_flLastPitchTime);
 
 		m_flLastPitchTime = gpGlobals->time;
-
-		if (delta > 0.25)
-		{
-			delta = 0.25;
-		}
 
 		pev->angles.x = UTIL_Approach(target, pev->angles.x, 220.0 * delta);
 	}
@@ -771,7 +764,7 @@ float CIchthyosaur::ChangeYaw(int speed)
 {
 	if (pev->movetype == MOVETYPE_FLY)
 	{
-		float diff = YawDiff();
+		const float diff = YawDiff();
 		float target = 0;
 
 		if (m_IdealActivity != GetStoppedActivity())
@@ -787,14 +780,9 @@ float CIchthyosaur::ChangeYaw(int speed)
 			m_flLastZYawTime = gpGlobals->time - gpGlobals->frametime;
 		}
 
-		float delta = gpGlobals->time - m_flLastZYawTime;
+		const float delta = std::min(0.25f, gpGlobals->time - m_flLastZYawTime);
 
 		m_flLastZYawTime = gpGlobals->time;
-
-		if (delta > 0.25)
-		{
-			delta = 0.25;
-		}
 
 		pev->angles.z = UTIL_Approach(target, pev->angles.z, 220.0 * delta);
 	}
@@ -848,12 +836,7 @@ void CIchthyosaur::Stop()
 
 void CIchthyosaur::Swim()
 {
-	int retValue = 0;
-
-	Vector start = pev->origin;
-
-	Vector Angles;
-	Vector Forward, Right, Up;
+	const Vector start = pev->origin;
 
 	if (IsBitSet(pev->flags, FL_ONGROUND))
 	{
@@ -861,11 +844,12 @@ void CIchthyosaur::Swim()
 		pev->angles.y += RANDOM_FLOAT(-45, 45);
 		ClearBits(pev->flags, FL_ONGROUND);
 
-		Angles = Vector(-pev->angles.x, pev->angles.y, pev->angles.z);
-		AngleVectors(Angles, Forward, Right, Up);
+		const Vector Angles = Vector(-pev->angles.x, pev->angles.y, pev->angles.z);
+
+		Vector Forward, Up;
+		AngleVectors(Angles, &Forward, nullptr, &Up);
 
 		pev->velocity = Forward * 200 + Up * 200;
-
 		return;
 	}
 
@@ -901,25 +885,25 @@ void CIchthyosaur::Swim()
 		}
 	*/
 	constexpr int PROBE_LENGTH = 150;
-	Angles = VectorAngles(m_SaveVelocity);
+	Vector Angles = VectorAngles(m_SaveVelocity);
 	Angles.x = -Angles.x;
+	Vector Forward, Right, Up;
 	AngleVectors(Angles, Forward, Right, Up);
 
-	Vector f, u, l, r, d;
-	f = DoProbe(start + PROBE_LENGTH * Forward);
-	r = DoProbe(start + PROBE_LENGTH / 3 * Forward + Right);
-	l = DoProbe(start + PROBE_LENGTH / 3 * Forward - Right);
-	u = DoProbe(start + PROBE_LENGTH / 3 * Forward + Up);
-	d = DoProbe(start + PROBE_LENGTH / 3 * Forward - Up);
+	const Vector f = DoProbe(start + PROBE_LENGTH * Forward);
+	const Vector r = DoProbe(start + PROBE_LENGTH / 3 * Forward + Right);
+	const Vector l = DoProbe(start + PROBE_LENGTH / 3 * Forward - Right);
+	const Vector u = DoProbe(start + PROBE_LENGTH / 3 * Forward + Up);
+	const Vector d = DoProbe(start + PROBE_LENGTH / 3 * Forward - Up);
 
-	Vector SteeringVector = f + r + l + u + d;
+	const Vector SteeringVector = f + r + l + u + d;
 	m_SaveVelocity = (m_SaveVelocity + SteeringVector / 2).Normalize();
 
 	Angles = Vector(-pev->angles.x, pev->angles.y, pev->angles.z);
-	AngleVectors(Angles, Forward, Right, Up);
+	AngleVectors(Angles, &Forward, nullptr, nullptr);
 	// ALERT( at_console, "%f : %f\n", Angles.x, Forward.z );
 
-	float flDot = DotProduct(Forward, m_SaveVelocity);
+	const float flDot = DotProduct(Forward, m_SaveVelocity);
 	if (flDot > 0.5)
 		pev->velocity = m_SaveVelocity = m_SaveVelocity * m_flightSpeed;
 	else if (flDot > 0)
@@ -985,6 +969,7 @@ void CIchthyosaur::Swim()
 	pev->angles.z -= turn;
 	pev->angles.y = fmod((pev->angles.y + 360.0), 360.0);
 
+	//TODO: could break if multiple ichtys exist
 	static float yaw_adj;
 
 	yaw_adj = yaw_adj * 0.8 + turn;
@@ -1027,7 +1012,7 @@ void CIchthyosaur::Swim()
 	if (pev->angles.z < -20) pev->angles.z = -20;
 	if (pev->angles.z > 20) pev->angles.z = 20;
 
-	AngleVectors(Vector(-Angles.x, Angles.y, Angles.z), Forward, Right, Up);
+	//AngleVectors(Vector(-Angles.x, Angles.y, Angles.z), &Forward, nullptr, nullptr);
 
 	// UTIL_MoveToOrigin ( ENT(pev), pev->origin + Forward * speed, speed, MOVE_STRAFE );
 }
@@ -1054,19 +1039,17 @@ Vector CIchthyosaur::DoProbe(const Vector& Probe)
 
 	if (bBumpedSomething && (m_hEnemy == nullptr || tr.pHit != m_hEnemy->edict()))
 	{
-		Vector ProbeDir = Probe - pev->origin;
+		const Vector ProbeDir = Probe - pev->origin;
 
-		Vector NormalToProbeAndWallNormal = CrossProduct(ProbeDir, WallNormal);
+		const Vector NormalToProbeAndWallNormal = CrossProduct(ProbeDir, WallNormal);
 		Vector SteeringVector = CrossProduct(NormalToProbeAndWallNormal, ProbeDir);
 
-		float SteeringForce = m_flightSpeed * (1 - frac) * (DotProduct(WallNormal.Normalize(), m_SaveVelocity.Normalize()));
-		if (SteeringForce < 0.0)
-		{
-			SteeringForce = -SteeringForce;
-		}
+		const float SteeringForce = std::abs(m_flightSpeed * (1 - frac) * DotProduct(WallNormal.Normalize(), m_SaveVelocity.Normalize()));
+
 		SteeringVector = SteeringForce * SteeringVector.Normalize();
 
 		return SteeringVector;
 	}
+
 	return vec3_origin;
 }

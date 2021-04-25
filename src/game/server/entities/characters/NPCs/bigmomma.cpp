@@ -255,7 +255,7 @@ public:
 			Vector maxs = pev->origin + Vector(32, 32, 0);
 
 			CBaseEntity* pList[2];
-			int count = UTIL_EntitiesInBox(pList, 2, mins, maxs, FL_MONSTER);
+			int count = UTIL_EntitiesInBox(pList, ArraySize(pList), mins, maxs, FL_MONSTER);
 			for (int i = 0; i < count; i++)
 			{
 				if (pList[i] != this)	// Don't hurt yourself!
@@ -418,15 +418,14 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 	case BIG_AE_MELEE_ATTACK1:
 	{
 		Vector forward, right;
-
 		AngleVectors(pev->angles, &forward, &right, nullptr);
 
-		Vector center = pev->origin + forward * 128;
-		Vector mins = center - Vector(64, 64, 0);
-		Vector maxs = center + Vector(64, 64, 64);
+		const Vector center = pev->origin + forward * 128;
+		const Vector mins = center - Vector(64, 64, 0);
+		const Vector maxs = center + Vector(64, 64, 64);
 
 		CBaseEntity* pList[8];
-		int count = UTIL_EntitiesInBox(pList, 8, mins, maxs, FL_MONSTER | FL_CLIENT);
+		int count = UTIL_EntitiesInBox(pList, ArraySize(pList), mins, maxs, FL_MONSTER | FL_CLIENT);
 		CBaseEntity* pHurt = nullptr;
 
 		for (int i = 0; i < count && !pHurt; i++)
@@ -517,8 +516,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 
 	case BIG_AE_EARLY_TARGET:
 	{
-		CBaseEntity* pTarget = m_hTargetEnt;
-		if (pTarget && !IsStringNull(pTarget->pev->message))
+		if (CBaseEntity* pTarget = m_hTargetEnt; pTarget && !IsStringNull(pTarget->pev->message))
 			FireTargets(STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0);
 		Remember(bits_MEMORY_FIRED_NODE);
 	}
@@ -549,7 +547,6 @@ void CBigMomma::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDi
 		m_painSoundTime = gpGlobals->time + RANDOM_LONG(1, 3);
 		EMIT_SOUND_ARRAY_DYN(CHAN_VOICE, pPainSounds);
 	}
-
 
 	CBaseMonster::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
 }
@@ -681,12 +678,9 @@ void CBigMomma::NodeStart(string_t iszNextNode)
 
 	if (!IsStringNull(pev->netname))
 	{
-		edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->netname));
-
-		if (!IsNullEnt(pentTarget))
+		if (edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->netname)); !IsNullEnt(pentTarget))
 			pTarget = Instance(pentTarget);
 	}
-
 
 	if (!pTarget)
 	{
@@ -741,9 +735,7 @@ bool CBigMomma::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (flDist <= BIG_MORTARDIST && m_mortarTime < gpGlobals->time)
 	{
-		CBaseEntity* pEnemy = m_hEnemy;
-
-		if (pEnemy)
+		if (CBaseEntity* pEnemy = m_hEnemy; pEnemy)
 		{
 			Vector startPos = pev->origin;
 			startPos.z += 180;
@@ -871,10 +863,9 @@ void CBigMomma::StartTask(Task_t* pTask)
 	{
 	case TASK_FIND_NODE:
 	{
-		CBaseEntity* pTarget = m_hTargetEnt;
 		if (!HasMemory(bits_MEMORY_ADVANCE_NODE))
 		{
-			if (pTarget)
+			if (CBaseEntity* pTarget = m_hTargetEnt; pTarget)
 				pev->netname = m_hTargetEnt->pev->target;
 		}
 		NodeStart(pev->netname);
@@ -980,13 +971,11 @@ void CBigMomma::RunTask(Task_t* pTask)
 	{
 	case TASK_MOVE_TO_NODE_RANGE:
 	{
-		float distance;
-
 		if (m_hTargetEnt == nullptr)
 			TaskFail();
 		else
 		{
-			distance = (m_vecMoveGoal - pev->origin).Length2D();
+			const float distance = (m_vecMoveGoal - pev->origin).Length2D();
 			// Set the appropriate activity based on an overlapping range
 			// overlap the range to prevent oscillation
 			if ((distance < GetNodeRange()) || MovementIsComplete())
@@ -1027,17 +1016,12 @@ void CBigMomma::RunTask(Task_t* pTask)
 Vector CheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float maxHeight)
 {
 	TraceResult		tr;
-	Vector			vecMidPoint;// halfway point between Spot1 and Spot2
-	Vector			vecApex;// highest point 
-	Vector			vecScale;
-	Vector			vecGrenadeVel;
-	Vector			vecTemp;
-	float			flGravity = g_psv_gravity->value;
+	const float flGravity = g_psv_gravity->value;
 
 	// calculate the midpoint and apex of the 'triangle'
-	vecMidPoint = vecSpot1 + (vecSpot2 - vecSpot1) * 0.5;
+	const Vector vecMidPoint = vecSpot1 + (vecSpot2 - vecSpot1) * 0.5; // halfway point between Spot1 and Spot2
 	UTIL_TraceLine(vecMidPoint, vecMidPoint + Vector(0, 0, maxHeight), IgnoreMonsters::Yes, ENT(pev), &tr);
-	vecApex = tr.vecEndPos;
+	const Vector vecApex = tr.vecEndPos; // highest point 
 
 	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, ENT(pev), &tr);
 	if (tr.flFraction != 1.0)
@@ -1049,15 +1033,15 @@ Vector CheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, f
 	// Don't worry about actually hitting the target, this won't hurt us!
 
 	// How high should the grenade travel (subtract 15 so the grenade doesn't hit the ceiling)?
-	float height = (vecApex.z - vecSpot1.z) - 15;
+	const float height = (vecApex.z - vecSpot1.z) - 15;
 	// How fast does the grenade need to travel to reach that height given gravity?
-	float speed = sqrt(2 * flGravity * height);
+	const float speed = sqrt(2 * flGravity * height);
 
 	// How much time does it take to get there?
-	float time = speed / flGravity;
-	vecGrenadeVel = (vecSpot2 - vecSpot1);
+	const float time = speed / flGravity;
+	Vector vecGrenadeVel = vecSpot2 - vecSpot1;
 	vecGrenadeVel.z = 0;
-	float distance = vecGrenadeVel.Length();
+	const float distance = vecGrenadeVel.Length();
 
 	// Travel half the distance to the target in that time (apex is at the midpoint)
 	vecGrenadeVel = vecGrenadeVel * (0.5 / time);
@@ -1139,11 +1123,8 @@ CBMortar* CBMortar::Shoot(edict_t* pOwner, Vector vecStart, Vector vecVelocity)
 
 void CBMortar::Touch(CBaseEntity* pOther)
 {
-	TraceResult tr;
-	int		iPitch;
-
 	// splat sound
-	iPitch = RANDOM_FLOAT(90, 110);
+	const int iPitch = RANDOM_FLOAT(90, 110);
 
 	EmitSound(CHAN_VOICE, "bullchicken/bc_acid1.wav", VOL_NORM, ATTN_NORM, iPitch);
 
@@ -1157,9 +1138,9 @@ void CBMortar::Touch(CBaseEntity* pOther)
 		break;
 	}
 
+	TraceResult tr;
 	if (pOther->IsBSPModel())
 	{
-
 		// make a splat on the wall
 		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 10, IgnoreMonsters::No, ENT(pev), &tr);
 		UTIL_DecalTrace(&tr, DECAL_MOMMASPLAT);
@@ -1172,9 +1153,7 @@ void CBMortar::Touch(CBaseEntity* pOther)
 	// make some flecks
 	MortarSpray(tr.vecEndPos, tr.vecPlaneNormal, gSpitSprite, 24);
 
-	entvars_t* pevOwner = nullptr;
-	if (pev->owner)
-		pevOwner = VARS(pev->owner);
+	entvars_t* pevOwner = pev->owner ? VARS(pev->owner) : nullptr;
 
 	RadiusDamage(pev->origin, pev, pevOwner, gSkillData.bigmommaDmgBlast, gSkillData.bigmommaRadiusBlast, CLASS_NONE, DMG_ACID);
 	UTIL_Remove(this);

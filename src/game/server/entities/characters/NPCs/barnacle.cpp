@@ -133,10 +133,6 @@ bool CBarnacle::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 
 void CBarnacle::BarnacleThink()
 {
-	CBaseEntity* pTouchEnt;
-	CBaseMonster* pVictim;
-	float flLength;
-
 	pev->nextthink = gpGlobals->time + 0.1;
 
 	if (m_hEnemy != nullptr)
@@ -180,11 +176,9 @@ void CBarnacle::BarnacleThink()
 
 				EmitSound(CHAN_WEAPON, "barnacle/bcl_bite3.wav");
 
-				pVictim = m_hEnemy->MyMonsterPointer();
-
 				m_flKillVictimTime = gpGlobals->time + 10;// now that the victim is in place, the killing bite will be administered in 10 seconds.
 
-				if (pVictim)
+				if (CBaseMonster* pVictim = m_hEnemy->MyMonsterPointer(); pVictim)
 				{
 					pVictim->BarnacleVictimBitten(pev);
 					SetActivity(ACT_EAT);
@@ -197,7 +191,7 @@ void CBarnacle::BarnacleThink()
 		{
 			// prey is lifted fully into feeding position and is dangling there.
 
-			pVictim = m_hEnemy->MyMonsterPointer();
+			CBaseMonster* pVictim = m_hEnemy->MyMonsterPointer();
 
 			if (m_flKillVictimTime != -1 && gpGlobals->time > m_flKillVictimTime)
 			{
@@ -223,14 +217,13 @@ void CBarnacle::BarnacleThink()
 
 				pVictim->BarnacleVictimBitten(pev);
 			}
-
 		}
 	}
 	else
 	{
 		// barnacle has no prey right now, so just idle and check to see if anything is touching the tongue.
 
-				// If idle and no nearby client, don't think so often
+		// If idle and no nearby client, don't think so often
 		if (IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
 			pev->nextthink = gpGlobals->time + RANDOM_FLOAT(1, 1.5);	// Stagger a bit to keep barnacles from thinking on the same frame
 
@@ -254,7 +247,8 @@ void CBarnacle::BarnacleThink()
 			}
 		}
 
-		pTouchEnt = TongueTouchEnt(&flLength);
+		float flLength;
+		CBaseEntity* pTouchEnt = TongueTouchEnt(&flLength);
 
 		if (pTouchEnt != nullptr && m_fTongueExtended)
 		{
@@ -277,7 +271,7 @@ void CBarnacle::BarnacleThink()
 				m_fLiftingPrey = true;// indicate that we should be lifting prey.
 				m_flKillVictimTime = -1;// set this to a bogus time while the victim is lifted.
 
-				m_flAltitude = (pev->origin.z - pTouchEnt->EyePosition().z);
+				m_flAltitude = pev->origin.z - pTouchEnt->EyePosition().z;
 			}
 		}
 		else
@@ -294,9 +288,7 @@ void CBarnacle::BarnacleThink()
 				m_flAltitude = flLength;
 				m_fTongueExtended = true;
 			}
-
 		}
-
 	}
 
 	// ALERT( at_console, "tounge %f\n", m_flAltitude + m_flTongueAdj );
@@ -306,16 +298,12 @@ void CBarnacle::BarnacleThink()
 
 void CBarnacle::Killed(entvars_t* pevAttacker, int iGib)
 {
-	CBaseMonster* pVictim;
-
 	pev->solid = SOLID_NOT;
 	pev->takedamage = DAMAGE_NO;
 
 	if (m_hEnemy != nullptr)
 	{
-		pVictim = m_hEnemy->MyMonsterPointer();
-
-		if (pVictim)
+		if (CBaseMonster* pVictim = m_hEnemy->MyMonsterPointer(); pVictim)
 		{
 			pVictim->BarnacleVictimReleased();
 		}
@@ -370,24 +358,23 @@ constexpr int BARNACLE_CHECK_SPACING = 8;
 CBaseEntity* CBarnacle::TongueTouchEnt(float* pflLength)
 {
 	TraceResult	tr;
-	float		length;
 
 	// trace once to hit architecture and see if the tongue needs to change position.
 	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 2048), IgnoreMonsters::Yes, ENT(pev), &tr);
-	length = fabs(pev->origin.z - tr.vecEndPos.z);
+	const float length = fabs(pev->origin.z - tr.vecEndPos.z);
 	if (pflLength)
 	{
 		*pflLength = length;
 	}
 
-	Vector delta = Vector(BARNACLE_CHECK_SPACING, BARNACLE_CHECK_SPACING, 0);
+	const Vector delta = Vector(BARNACLE_CHECK_SPACING, BARNACLE_CHECK_SPACING, 0);
 	Vector mins = pev->origin - delta;
 	Vector maxs = pev->origin + delta;
 	maxs.z = pev->origin.z;
 	mins.z -= length;
 
 	CBaseEntity* pList[10];
-	int count = UTIL_EntitiesInBox(pList, 10, mins, maxs, (FL_CLIENT | FL_MONSTER));
+	const int count = UTIL_EntitiesInBox(pList, ArraySize(pList), mins, maxs, (FL_CLIENT | FL_MONSTER));
 	if (count)
 	{
 		for (int i = 0; i < count; i++)

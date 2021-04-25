@@ -228,7 +228,7 @@ public:
 	*	@brief returns true is the passed vector is in the caller's forward view cone.
 	*	The dot product is performed in 2d, making the view cone infinitely tall. 
 	*/
-	virtual bool IsInViewCone(Vector* pOrigin);
+	virtual bool IsInViewCone(const Vector& origin);
 	void HandleAnimEvent(AnimationEvent& event) override;
 
 	/**

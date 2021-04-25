@@ -43,14 +43,12 @@ enum
 	TASK_ASSASSIN_FALL_TO_GROUND = LAST_COMMON_TASK + 1, // falling and waiting to hit ground
 };
 
-
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
 constexpr int ASSASSIN_AE_SHOOT1 = 1;
 constexpr int ASSASSIN_AE_TOSS1 = 2;
 constexpr int ASSASSIN_AE_JUMP = 3;
-
 
 constexpr int bits_MEMORY_BADJUMP = bits_MEMORY_CUSTOM1;
 
@@ -138,7 +136,7 @@ int CHAssassin::SoundMask()
 
 int	CHAssassin::Classify()
 {
-	return	CLASS_HUMAN_MILITARY;
+	return CLASS_HUMAN_MILITARY;
 }
 
 void CHAssassin::SetYawSpeed()
@@ -166,8 +164,8 @@ void CHAssassin::Shoot()
 		return;
 	}
 
-	Vector vecShootOrigin = GetGunPosition();
-	Vector vecShootDir = ShootAtEnemy(vecShootOrigin);
+	const Vector vecShootOrigin = GetGunPosition();
+	const Vector vecShootDir = ShootAtEnemy(vecShootOrigin);
 
 	if (m_flLastShot + 2 < gpGlobals->time)
 	{
@@ -183,7 +181,7 @@ void CHAssassin::Shoot()
 
 	UTIL_MakeVectors(pev->angles);
 
-	Vector	vecShellVelocity = gpGlobals->v_right * RANDOM_FLOAT(40, 90) + gpGlobals->v_up * RANDOM_FLOAT(75, 200) + gpGlobals->v_forward * RANDOM_FLOAT(-40, 40);
+	const Vector vecShellVelocity = gpGlobals->v_right * RANDOM_FLOAT(40, 90) + gpGlobals->v_up * RANDOM_FLOAT(75, 200) + gpGlobals->v_forward * RANDOM_FLOAT(-40, 40);
 	EjectBrass(pev->origin + gpGlobals->v_up * 32 + gpGlobals->v_forward * 12, vecShellVelocity, pev->angles.y, m_iShell, TE_BOUNCE_SHELL);
 	FireBullets(1, vecShootOrigin, vecShootDir, Vector(m_flDiviation, m_flDiviation, m_flDiviation), 2048, BULLET_MONSTER_9MM); // shoot +-8 degrees
 
@@ -199,7 +197,7 @@ void CHAssassin::Shoot()
 
 	pev->effects |= EF_MUZZLEFLASH;
 
-	Vector angDir = VectorAngles(vecShootDir);
+	const Vector angDir = VectorAngles(vecShootDir);
 	SetBlending(0, angDir.x);
 
 	m_cAmmoLoaded--;
@@ -543,7 +541,7 @@ bool CHAssassin::CheckMeleeAttack1(float flDot, float flDist)
 	{
 		TraceResult	tr;
 
-		Vector vecDest = pev->origin + Vector(RANDOM_FLOAT(-64, 64), RANDOM_FLOAT(-64, 64), 160);
+		const Vector vecDest = pev->origin + Vector(RANDOM_FLOAT(-64, 64), RANDOM_FLOAT(-64, 64), 160);
 
 		UTIL_TraceHull(pev->origin + Vector(0, 0, 36), vecDest + Vector(0, 0, 36), IgnoreMonsters::No, Hull::Human, ENT(pev), &tr);
 
@@ -552,10 +550,10 @@ bool CHAssassin::CheckMeleeAttack1(float flDot, float flDist)
 			return false;
 		}
 
-		float flGravity = g_psv_gravity->value;
+		const float flGravity = g_psv_gravity->value;
 
-		float time = sqrt(160 / (0.5 * flGravity));
-		float speed = flGravity * time / 160;
+		const float time = sqrt(160 / (0.5 * flGravity));
+		const float speed = flGravity * time / 160;
 		m_vecJumpVelocity = (vecDest - pev->origin) * speed;
 
 		return true;
@@ -569,7 +567,7 @@ bool CHAssassin::CheckRangeAttack1(float flDot, float flDist)
 	{
 		TraceResult	tr;
 
-		Vector vecSrc = GetGunPosition();
+		const Vector vecSrc = GetGunPosition();
 
 		// verify that a bullet fired from the gun will hit the enemy before the world.
 		UTIL_TraceLine(vecSrc, m_hEnemy->BodyTarget(vecSrc), IgnoreMonsters::No, ENT(pev), &tr);
@@ -597,7 +595,7 @@ bool CHAssassin::CheckRangeAttack2(float flDot, float flDist)
 
 	if (m_flNextGrenadeCheck < gpGlobals->time && !HasConditions(bits_COND_ENEMY_OCCLUDED) && flDist <= 512 /* && flDot >= 0.5 */ /* && NoFriendlyFire() */)
 	{
-		Vector vecToss = CheckThrow(pev, GetGunPosition(), m_hEnemy->Center(), flDist, 0.5); // use dist as speed to get there in 1 second
+		const Vector vecToss = CheckThrow(pev, GetGunPosition(), m_hEnemy->Center(), flDist, 0.5); // use dist as speed to get there in 1 second
 
 		if (vecToss != vec3_origin)
 		{
@@ -643,6 +641,7 @@ void CHAssassin::RunAI()
 
 	if (m_Activity == ACT_RUN || m_Activity == ACT_WALK)
 	{
+		//TODO: doesn't make sense
 		static int iStep = 0;
 		iStep = !iStep;
 		if (iStep)
@@ -729,8 +728,7 @@ Schedule_t* CHAssassin::GetSchedule()
 	{
 		if (HasConditions(bits_COND_HEAR_SOUND))
 		{
-			CSound* pSound;
-			pSound = BestSound();
+			CSound* pSound = BestSound();
 
 			ASSERT(pSound != nullptr);
 			if (pSound && (pSound->m_iType & bits_SOUND_DANGER))
@@ -777,8 +775,7 @@ Schedule_t* CHAssassin::GetSchedule()
 
 		if (HasConditions(bits_COND_HEAR_SOUND))
 		{
-			CSound* pSound;
-			pSound = BestSound();
+			CSound* pSound = BestSound();
 
 			ASSERT(pSound != nullptr);
 			if (pSound && (pSound->m_iType & bits_SOUND_DANGER))

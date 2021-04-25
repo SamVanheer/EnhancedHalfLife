@@ -202,7 +202,7 @@ public:
 	*	@brief array of friend names
 	*/
 	static const char* m_szFriends[TLK_CFRIENDS];
-	static float g_talkWaitTime;
+	static inline float g_talkWaitTime = 0; //!< time delay until it's ok to speak: used so that two NPCs don't talk at once
 
 	int			m_bitsSaid;						//!< set bits for sentences we don't want repeated
 	int			m_nSpeak;						//!< number of times initiated talking
@@ -218,7 +218,6 @@ public:
 	EHANDLE		m_hTalkTarget;	//!< who to look at while talking
 	CUSTOM_SCHEDULES;
 };
-
 
 // Clients can push talkmonsters out of their way
 constexpr int bits_COND_CLIENT_PUSH = bits_COND_SPECIAL1;

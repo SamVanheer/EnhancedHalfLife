@@ -163,7 +163,7 @@ bool CBaseMonster::FindCover(Vector vecThreat, Vector vecViewOffset, float flMin
 bool CBaseMonster::BuildNearestRoute(Vector vecThreat, Vector vecViewOffset, float flMinDist, float flMaxDist) { return false; }
 CBaseEntity* CBaseMonster::BestVisibleEnemy() { return nullptr; }
 bool CBaseMonster::IsInViewCone(CBaseEntity* pEntity) { return false; }
-bool CBaseMonster::IsInViewCone(Vector* pOrigin) { return false; }
+bool CBaseMonster::IsInViewCone(const Vector& origin) { return false; }
 bool CBaseEntity::IsVisible(CBaseEntity* pEntity) { return false; }
 bool CBaseEntity::IsVisible(const Vector& vecOrigin) { return false; }
 void CBaseMonster::MakeIdealYaw(Vector vecTarget) { }

@@ -170,7 +170,6 @@ Vector CHeadCrab::Center()
 	return Vector(pev->origin.x, pev->origin.y, pev->origin.z + 6);
 }
 
-
 Vector CHeadCrab::BodyTarget(const Vector& posSrc)
 {
 	return Center();
@@ -218,16 +217,12 @@ void CHeadCrab::HandleAnimEvent(AnimationEvent& event)
 		Vector vecJumpDir;
 		if (m_hEnemy != nullptr)
 		{
-			float gravity = g_psv_gravity->value;
-			if (gravity <= 1)
-				gravity = 1;
+			const float gravity = std::max(1.0f, g_psv_gravity->value);
 
 			// How fast does the headcrab need to travel to reach that height given gravity?
-			float height = (m_hEnemy->pev->origin.z + m_hEnemy->pev->view_ofs.z - pev->origin.z);
-			if (height < 16)
-				height = 16;
-			float speed = sqrt(2 * gravity * height);
-			float time = speed / gravity;
+			const float height = std::max(16.0f, (m_hEnemy->pev->origin.z + m_hEnemy->pev->view_ofs.z - pev->origin.z));
+			const float speed = sqrt(2 * gravity * height);
+			const float time = speed / gravity;
 
 			// Scale the sideways velocity to get there at the right time
 			vecJumpDir = (m_hEnemy->pev->origin + m_hEnemy->pev->view_ofs - pev->origin);
@@ -237,7 +232,7 @@ void CHeadCrab::HandleAnimEvent(AnimationEvent& event)
 			vecJumpDir.z = speed;
 
 			// Don't jump too far/fast
-			float distance = vecJumpDir.Length();
+			const float distance = vecJumpDir.Length();
 
 			if (distance > 650)
 			{
@@ -250,7 +245,7 @@ void CHeadCrab::HandleAnimEvent(AnimationEvent& event)
 			vecJumpDir = Vector(gpGlobals->v_forward.x, gpGlobals->v_forward.y, gpGlobals->v_up.z) * 350;
 		}
 
-		int iSound = RANDOM_LONG(0, 2);
+		const int iSound = RANDOM_LONG(0, 2);
 		if (iSound != 0)
 			EmitSound(CHAN_VOICE, pAttackSounds[iSound], GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
 

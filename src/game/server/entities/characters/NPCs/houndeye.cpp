@@ -165,9 +165,8 @@ bool CHoundeye::CanActiveIdle()
 
 		for (int i = 0; i < MAX_SQUAD_MEMBERS; i++)
 		{
-			CSquadMonster* pMember = pSquadLeader->MySquadMember(i);
-
-			if (pMember != nullptr && pMember != this && pMember->m_iHintNode != NO_NODE)
+			if (CSquadMonster* pMember = pSquadLeader->MySquadMember(i);
+				pMember != nullptr && pMember != this && pMember->m_iHintNode != NO_NODE)
 			{
 				// someone else in the group is active idling right now!
 				return false;
@@ -191,9 +190,7 @@ bool CHoundeye::CheckRangeAttack1(float flDot, float flDist)
 
 void CHoundeye::SetYawSpeed()
 {
-	int ys;
-
-	ys = 90;
+	int ys = 90;
 
 	switch (m_Activity)
 	{
@@ -220,15 +217,13 @@ void CHoundeye::SetYawSpeed()
 
 void CHoundeye::SetActivity(Activity NewActivity)
 {
-	int	iSequence;
-
 	if (NewActivity == m_Activity)
 		return;
 
 	if (m_MonsterState == NPCState::Combat && NewActivity == ACT_IDLE && RANDOM_LONG(0, 1))
 	{
 		// play pissed idle.
-		iSequence = LookupSequence("madidle");
+		const int iSequence = LookupSequence("madidle");
 
 		m_Activity = NewActivity; // Go ahead and set this so it doesn't keep trying when the anim is not present
 
@@ -265,7 +260,7 @@ void CHoundeye::HandleAnimEvent(AnimationEvent& event)
 
 	case HOUND_AE_HOPBACK:
 	{
-		float flGravity = g_psv_gravity->value;
+		const float flGravity = g_psv_gravity->value;
 
 		pev->flags &= ~FL_ONGROUND;
 
@@ -459,7 +454,7 @@ void CHoundeye::PainSound()
 
 void CHoundeye::WriteBeamColor()
 {
-	byte	bRed, bGreen, bBlue;
+	byte bRed, bGreen, bBlue;
 
 	if (InSquad())
 	{
@@ -504,9 +499,6 @@ void CHoundeye::WriteBeamColor()
 
 void CHoundeye::SonicAttack()
 {
-	float		flAdjustedDamage;
-	float		flDist;
-
 	switch (RANDOM_LONG(0, 2))
 	{
 	case 0:	EmitSound(CHAN_WEAPON, "houndeye/he_blast1.wav"); break;
@@ -557,7 +549,6 @@ void CHoundeye::SonicAttack()
 	WRITE_BYTE(0);		// speed
 	MESSAGE_END();
 
-
 	CBaseEntity* pEntity = nullptr;
 	// iterate on all entities in the vicinity.
 	while ((pEntity = UTIL_FindEntityInSphere(pEntity, pev->origin, HOUNDEYE_MAX_ATTACK_RADIUS)) != nullptr)
@@ -571,6 +562,7 @@ void CHoundeye::SonicAttack()
 				// This means that you must get out of the houndeye's attack range entirely to avoid damage.
 				// Calculate full damage first
 
+				float flAdjustedDamage;
 				if (SquadCount() > 1)
 				{
 					// squad gets attack bonus.
@@ -582,7 +574,7 @@ void CHoundeye::SonicAttack()
 					flAdjustedDamage = gSkillData.houndeyeDmgBlast;
 				}
 
-				flDist = (pEntity->Center() - pev->origin).Length();
+				const float flDist = (pEntity->Center() - pev->origin).Length();
 
 				flAdjustedDamage -= (flDist / HOUNDEYE_MAX_ATTACK_RADIUS) * flAdjustedDamage;
 
@@ -751,9 +743,7 @@ void CHoundeye::RunTask(Task_t* pTask)
 		MakeIdealYaw(m_vecEnemyLKP);
 		ChangeYaw(pev->yaw_speed);
 
-		float life;
-		life = ((255 - pev->frame) / (pev->framerate * m_flFrameRate));
-		if (life < 0.1) life = 0.1;
+		const float life = std::max(0.1f, ((255 - pev->frame) / (pev->framerate * m_flFrameRate)));
 
 		MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
 		WRITE_BYTE(TE_IMPLOSION);
@@ -803,16 +793,14 @@ void CHoundeye::PrescheduleThink()
 	}
 
 	// if you are the leader, average the origins of each pack member to get an approximate center.
+	//TODO: pack center vector needs to be zeroed first or this will drift over time
 	if (IsLeader())
 	{
-		CSquadMonster* pSquadMember;
 		int iSquadCount = 0;
 
 		for (int i = 0; i < MAX_SQUAD_MEMBERS; i++)
 		{
-			pSquadMember = MySquadMember(i);
-
-			if (pSquadMember)
+			if (CSquadMonster* pSquadMember = MySquadMember(i); pSquadMember)
 			{
 				iSquadCount++;
 				m_vecPackCenter = m_vecPackCenter + pSquadMember->pev->origin;
@@ -1100,9 +1088,7 @@ Schedule_t* CHoundeye::GetScheduleOfType(int Type)
 		// if the hound is sleeping, must wake and stand!
 		if (HasConditions(bits_COND_HEAR_SOUND))
 		{
-			CSound* pWakeSound;
-
-			pWakeSound = BestSound();
+			CSound* pWakeSound = BestSound();
 			ASSERT(pWakeSound != nullptr);
 			if (pWakeSound)
 			{

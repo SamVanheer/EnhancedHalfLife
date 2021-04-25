@@ -176,7 +176,6 @@ Schedule_t	slBaFaceTarget[] =
 	},
 };
 
-
 Task_t	tlIdleBaStand[] =
 {
 	{ TASK_STOP_MOVING,			0				},
@@ -266,14 +265,11 @@ void CBarney::AlertSound()
 			PlaySentence("BA_ATTACK", RANDOM_FLOAT(2.8, 3.2), VOL_NORM, ATTN_IDLE);
 		}
 	}
-
 }
 
 void CBarney::SetYawSpeed()
 {
-	int ys;
-
-	ys = 0;
+	int ys = 0;
 
 	switch (m_Activity)
 	{
@@ -302,15 +298,14 @@ bool CBarney::CheckRangeAttack1(float flDot, float flDist)
 		{
 			TraceResult tr;
 
-			Vector shootOrigin = pev->origin + Vector(0, 0, 55);
+			const Vector shootOrigin = pev->origin + Vector(0, 0, 55);
 			CBaseEntity* pEnemy = m_hEnemy;
-			Vector shootTarget = ((pEnemy->BodyTarget(shootOrigin) - pEnemy->pev->origin) + m_vecEnemyLKP);
+			const Vector shootTarget = ((pEnemy->BodyTarget(shootOrigin) - pEnemy->pev->origin) + m_vecEnemyLKP);
 			UTIL_TraceLine(shootOrigin, shootTarget, IgnoreMonsters::No, ENT(pev), &tr);
-			m_checkAttackTime = gpGlobals->time + 1;
-			if (tr.flFraction == 1.0 || (tr.pHit != nullptr && CBaseEntity::Instance(tr.pHit) == pEnemy))
-				m_lastAttackCheck = true;
-			else
-				m_lastAttackCheck = false;
+			m_checkAttackTime = gpGlobals->time + 1; //TODO: done twice
+
+			m_lastAttackCheck = tr.flFraction == 1.0 || (tr.pHit != nullptr && CBaseEntity::Instance(tr.pHit) == pEnemy);
+
 			m_checkAttackTime = gpGlobals->time + 1.5;
 		}
 		return m_lastAttackCheck;
@@ -320,13 +315,11 @@ bool CBarney::CheckRangeAttack1(float flDot, float flDist)
 
 void CBarney::BarneyFirePistol()
 {
-	Vector vecShootOrigin;
-
 	UTIL_MakeVectors(pev->angles);
-	vecShootOrigin = pev->origin + Vector(0, 0, 55);
-	Vector vecShootDir = ShootAtEnemy(vecShootOrigin);
+	const Vector vecShootOrigin = pev->origin + Vector(0, 0, 55);
+	const Vector vecShootDir = ShootAtEnemy(vecShootOrigin);
 
-	Vector angDir = VectorAngles(vecShootDir);
+	const Vector angDir = VectorAngles(vecShootDir);
 	SetBlending(0, angDir.x);
 	pev->effects = EF_MUZZLEFLASH;
 
@@ -419,7 +412,6 @@ void CBarney::Precache()
 
 void CBarney::TalkInit()
 {
-
 	CTalkMonster::TalkInit();
 
 	// scientists speach group names (group names are in sentences.txt)
@@ -454,19 +446,15 @@ void CBarney::TalkInit()
 
 bool IsFacing(entvars_t* pevTest, const Vector& reference)
 {
-	Vector vecDir = (reference - pevTest->origin);
+	Vector vecDir = reference - pevTest->origin;
 	vecDir.z = 0;
 	vecDir = vecDir.Normalize();
-	Vector forward, angle;
-	angle = pevTest->v_angle;
+	Vector angle = pevTest->v_angle;
 	angle.x = 0;
+	Vector forward;
 	AngleVectors(angle, &forward, nullptr, nullptr);
 	// He's facing me, he meant it
-	if (DotProduct(forward, vecDir) > 0.96)	// +/- 15 degrees or so
-	{
-		return true;
-	}
-	return false;
+	return DotProduct(forward, vecDir) > 0.96; // +/- 15 degrees or so
 }
 
 bool CBarney::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
@@ -567,11 +555,9 @@ void CBarney::Killed(entvars_t* pevAttacker, int iGib)
 {
 	if (pev->body < BARNEY_BODY_GUNGONE)
 	{// drop the gun!
-		Vector vecGunPos;
-		Vector vecGunAngles;
-
 		pev->body = BARNEY_BODY_GUNGONE;
 
+		Vector vecGunPos, vecGunAngles;
 		GetAttachment(0, vecGunPos, vecGunAngles);
 
 		CBaseEntity* pGun = DropItem("weapon_9mmhandgun", vecGunPos, vecGunAngles);
@@ -630,8 +616,7 @@ Schedule_t* CBarney::GetSchedule()
 {
 	if (HasConditions(bits_COND_HEAR_SOUND))
 	{
-		CSound* pSound;
-		pSound = BestSound();
+		CSound* pSound = BestSound();
 
 		ASSERT(pSound != nullptr);
 		if (pSound && (pSound->m_iType & bits_SOUND_DANGER))

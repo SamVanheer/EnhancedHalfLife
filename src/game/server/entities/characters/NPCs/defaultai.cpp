@@ -1007,7 +1007,6 @@ Schedule_t* CBaseMonster::ScheduleInList(const char* pName, Schedule_t** pList, 
 		return nullptr;
 	}
 
-
 	for (int i = 0; i < listCount; i++)
 	{
 		if (!pList[i]->pName)
@@ -1018,6 +1017,7 @@ Schedule_t* CBaseMonster::ScheduleInList(const char* pName, Schedule_t** pList, 
 		if (stricmp(pName, pList[i]->pName) == 0)
 			return pList[i];
 	}
+
 	return nullptr;
 }
 

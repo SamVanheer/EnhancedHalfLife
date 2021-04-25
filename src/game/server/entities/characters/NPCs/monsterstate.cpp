@@ -37,7 +37,6 @@ void CBaseMonster::SetState(NPCState State)
 
 	switch (State)
 	{
-
 		// Drop enemy pointers when going to idle
 	case NPCState::Idle:
 
@@ -108,15 +107,12 @@ void CBaseMonster::RunAI()
 
 NPCState CBaseMonster::GetIdealState()
 {
-	int	iConditions;
-
-	iConditions = ScheduleFlags();
+	const int iConditions = ScheduleFlags();
 
 	// If no schedule conditions, the new ideal state is probably the reason we're in here.
 	switch (m_MonsterState)
 	{
 	case NPCState::Idle:
-
 		/*
 		IDLE goes to ALERT upon hearing a sound
 		-IDLE goes to ALERT upon being injured
@@ -143,9 +139,7 @@ NPCState CBaseMonster::GetIdealState()
 		}
 		else if (iConditions & bits_COND_HEAR_SOUND)
 		{
-			CSound* pSound;
-
-			pSound = BestSound();
+			CSound* pSound = BestSound();
 			ASSERT(pSound != nullptr);
 			if (pSound)
 			{

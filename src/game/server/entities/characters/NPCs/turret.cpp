@@ -83,12 +83,6 @@ public:
 	virtual void EXPORT SpinDownCall() { m_iSpin = false; }
 	virtual void EXPORT SpinUpCall() { m_iSpin = true; }
 
-	// void SpinDown();
-	// float EXPORT SpinDownCall() { return SpinDown(); }
-
-	// virtual float SpinDown() { return 0;}
-	// virtual float Retire() { return 0;}
-
 	void EXPORT Deploy();
 	void EXPORT Retire();
 
@@ -136,7 +130,6 @@ public:
 	Vector	m_vecCurAngles;
 	Vector	m_vecGoalAngles;
 
-
 	float	m_flPingTime;	// Time until the next ping, used when searching
 	float	m_flSpinUpTime;	// Amount of time until the barrel should spin down when searching
 };
@@ -158,7 +151,6 @@ TYPEDESCRIPTION	CBaseTurret::m_SaveData[] =
 	DEFINE_FIELD(CBaseTurret, m_iOn, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseTurret, m_fBeserk, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseTurret, m_iAutoStart, FIELD_BOOLEAN),
-
 
 	DEFINE_FIELD(CBaseTurret, m_vecLastSight, FIELD_POSITION_VECTOR),
 	DEFINE_FIELD(CBaseTurret, m_flLastSight, FIELD_TIME),
@@ -461,9 +453,6 @@ void CBaseTurret::EyeOff()
 
 void CBaseTurret::ActiveThink()
 {
-	int fAttack = 0;
-	Vector vecDirToEnemy;
-
 	pev->nextthink = gpGlobals->time + 0.1;
 	StudioFrameAdvance();
 
@@ -494,13 +483,13 @@ void CBaseTurret::ActiveThink()
 		}
 	}
 
-	Vector vecMid = pev->origin + pev->view_ofs;
+	const Vector vecMid = pev->origin + pev->view_ofs;
 	Vector vecMidEnemy = m_hEnemy->BodyTarget(vecMid);
 
 	// Look for our current enemy
-	int fEnemyVisible = IsBoxVisible(pev, m_hEnemy->pev, vecMidEnemy);
+	bool fEnemyVisible = IsBoxVisible(pev, m_hEnemy->pev, vecMidEnemy);
 
-	vecDirToEnemy = vecMidEnemy - vecMid;	// calculate dir and dist to enemy
+	const Vector vecDirToEnemy = vecMidEnemy - vecMid;	// calculate dir and dist to enemy
 	float flDistToEnemy = vecDirToEnemy.Length();
 
 	Vector vec = VectorAngles(vecMidEnemy - vecMid);
@@ -521,7 +510,7 @@ void CBaseTurret::ActiveThink()
 				return;
 			}
 		}
-		fEnemyVisible = 0;
+		fEnemyVisible = false;
 	}
 	else
 	{
@@ -536,14 +525,10 @@ void CBaseTurret::ActiveThink()
 		gpGlobals->v_forward.x, gpGlobals->v_forward.y, gpGlobals->v_forward.z );
 	*/
 
-	Vector vecLOS = vecDirToEnemy; //vecMid - m_vecLastSight;
-	vecLOS = vecLOS.Normalize();
+	const Vector vecLOS = vecDirToEnemy.Normalize(); //vecMid - m_vecLastSight;
 
 	// Is the Gun looking at the target
-	if (DotProduct(vecLOS, gpGlobals->v_forward) <= 0.866) // 30 degree slop
-		fAttack = false;
-	else
-		fAttack = true;
+	const bool fAttack = DotProduct(vecLOS, gpGlobals->v_forward) > 0.866; // 30 degree slop
 
 	// fire the gun
 	if (m_iSpin && ((fAttack) || (m_fBeserk)))
@@ -911,7 +896,7 @@ void CBaseTurret::TurretDeath()
 	{
 		pev->deadflag = DEAD_DEAD;
 
-		float flRndSound = RANDOM_FLOAT(0, 1);
+		const float flRndSound = RANDOM_FLOAT(0, 1);
 
 		if (flRndSound <= 0.33)
 			EmitSound(CHAN_BODY, "turret/tu_die.wav");
@@ -1030,7 +1015,7 @@ bool CBaseTurret::MoveTurret()
 
 	if (m_vecCurAngles.x != m_vecGoalAngles.x)
 	{
-		float flDir = m_vecGoalAngles.x > m_vecCurAngles.x ? 1 : -1;
+		const float flDir = m_vecGoalAngles.x > m_vecCurAngles.x ? 1 : -1;
 
 		m_vecCurAngles.x += 0.1 * m_fTurnRate * flDir;
 
@@ -1125,7 +1110,6 @@ public:
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	void EXPORT SentryTouch(CBaseEntity* pOther);
 	void EXPORT SentryDeath();
-
 };
 
 LINK_ENTITY_TO_CLASS(monster_sentry, CSentry);
@@ -1221,7 +1205,7 @@ void CSentry::SentryDeath()
 	{
 		pev->deadflag = DEAD_DEAD;
 
-		float flRndSound = RANDOM_FLOAT(0, 1);
+		const float flRndSound = RANDOM_FLOAT(0, 1);
 
 		if (flRndSound <= 0.33)
 			EmitSound(CHAN_BODY, "turret/tu_die.wav");

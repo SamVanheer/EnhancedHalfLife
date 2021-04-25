@@ -15,34 +15,14 @@
 #include "extdll.h"
 #include "plane.h"
 
-CPlane::CPlane()
+CPlane::CPlane(const Vector& vecNormal, const Vector& vecPoint)
+	: m_vecNormal(vecNormal)
+	, m_flDist(DotProduct(vecNormal, vecPoint))
 {
-	m_fInitialized = false;
 }
 
-void CPlane::InitializePlane(const Vector& vecNormal, const Vector& vecPoint)
+bool CPlane::PointInFront(const Vector& vecPoint) const
 {
-	m_vecNormal = vecNormal;
-	m_flDist = DotProduct(m_vecNormal, vecPoint);
-	m_fInitialized = true;
+	const float flFace = DotProduct(m_vecNormal, vecPoint) - m_flDist;
+	return flFace >= 0;
 }
-
-bool CPlane::PointInFront(const Vector& vecPoint)
-{
-	float flFace;
-
-	if (!m_fInitialized)
-	{
-		return false;
-	}
-
-	flFace = DotProduct(m_vecNormal, vecPoint) - m_flDist;
-
-	if (flFace >= 0)
-	{
-		return true;
-	}
-
-	return false;
-}
-

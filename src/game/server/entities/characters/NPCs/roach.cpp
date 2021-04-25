@@ -77,15 +77,13 @@ int	CRoach::Classify()
 
 void CRoach::Touch(CBaseEntity* pOther)
 {
-	Vector		vecSpot;
-	TraceResult	tr;
-
 	if (pOther->pev->velocity == vec3_origin || !pOther->IsPlayer())
 	{
 		return;
 	}
 
-	vecSpot = pev->origin + Vector(0, 0, 8);//move up a bit, and trace down.
+	const Vector vecSpot = pev->origin + Vector(0, 0, 8);//move up a bit, and trace down.
+	TraceResult	tr;
 	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -24), IgnoreMonsters::Yes, ENT(pev), &tr);
 
 	// This isn't really blood.  So you don't have to screen it out based on violence levels (UTIL_ShouldShowBlood())
@@ -96,11 +94,7 @@ void CRoach::Touch(CBaseEntity* pOther)
 
 void CRoach::SetYawSpeed()
 {
-	int ys;
-
-	ys = 120;
-
-	pev->yaw_speed = ys;
+	pev->yaw_speed = 120;
 }
 
 void CRoach::Spawn()
@@ -154,8 +148,7 @@ void CRoach::Killed(entvars_t* pevAttacker, int iGib)
 
 	CSoundEnt::InsertSound(bits_SOUND_WORLD, pev->origin, 128, 1);
 
-	CBaseEntity* pOwner = CBaseEntity::Instance(pev->owner);
-	if (pOwner)
+	if (CBaseEntity* pOwner = CBaseEntity::Instance(pev->owner); pOwner)
 	{
 		pOwner->DeathNotice(pev);
 	}
@@ -169,7 +162,7 @@ void CRoach::MonsterThink()
 	else
 		pev->nextthink = gpGlobals->time + 0.1;// keep monster thinking
 
-	float flInterval = StudioFrameAdvance(); // animate
+	const float flInterval = StudioFrameAdvance(); // animate
 
 	if (!m_fLightHacked)
 	{
@@ -234,12 +227,9 @@ void CRoach::MonsterThink()
 			}
 			else if (HasConditions(bits_COND_SMELL_FOOD))
 			{
-				CSound* pSound;
-
-				pSound = CSoundEnt::SoundPointerForIndex(m_iAudibleList);
-
 				// roach smells food and is just standing around. Go to food unless food isn't on same z-plane.
-				if (pSound && fabs(pSound->m_vecOrigin.z - pev->origin.z) <= 3)
+				if (CSound* pSound = CSoundEnt::SoundPointerForIndex(m_iAudibleList);
+					pSound && fabs(pSound->m_vecOrigin.z - pev->origin.z) <= 3)
 				{
 					PickNewDest(ROACH_SMELL_FOOD);
 					SetActivity(ACT_WALK);
@@ -269,20 +259,12 @@ void CRoach::MonsterThink()
 
 void CRoach::PickNewDest(int iCondition)
 {
-	Vector	vecNewDir;
-	Vector	vecDest;
-	float	flDist;
-
 	m_iMode = iCondition;
 
 	if (m_iMode == ROACH_SMELL_FOOD)
 	{
 		// find the food and go there.
-		CSound* pSound;
-
-		pSound = CSoundEnt::SoundPointerForIndex(m_iAudibleList);
-
-		if (pSound)
+		if (CSound* pSound = CSoundEnt::SoundPointerForIndex(m_iAudibleList); pSound)
 		{
 			m_Route[0].vecLocation.x = pSound->m_vecOrigin.x + (3 - RANDOM_LONG(0, 5));
 			m_Route[0].vecLocation.y = pSound->m_vecOrigin.y + (3 - RANDOM_LONG(0, 5));
@@ -293,6 +275,9 @@ void CRoach::PickNewDest(int iCondition)
 		}
 	}
 
+	Vector vecNewDir{vec3_origin};
+	Vector vecDest;
+
 	do
 	{
 		// picks a random spot, requiring that it be at least 128 units away
@@ -300,7 +285,7 @@ void CRoach::PickNewDest(int iCondition)
 		// circles. this is a hack but buys me time to work on the real monsters.
 		vecNewDir.x = RANDOM_FLOAT(-1, 1);
 		vecNewDir.y = RANDOM_FLOAT(-1, 1);
-		flDist = 256 + (RANDOM_LONG(0, 255));
+		const float flDist = 256 + (RANDOM_LONG(0, 255));
 		vecDest = pev->origin + vecNewDir * flDist;
 
 	}
@@ -321,11 +306,8 @@ void CRoach::PickNewDest(int iCondition)
 
 void CRoach::Move(float flInterval)
 {
-	float		flWaypointDist;
-	Vector		vecApex;
-
 	// local move to waypoint.
-	flWaypointDist = (m_Route[m_iRouteIndex].vecLocation - pev->origin).Length2D();
+	const float flWaypointDist = (m_Route[m_iRouteIndex].vecLocation - pev->origin).Length2D();
 	MakeIdealYaw(m_Route[m_iRouteIndex].vecLocation);
 
 	ChangeYaw(pev->yaw_speed);
@@ -370,10 +352,6 @@ void CRoach::Move(float flInterval)
 
 void CRoach::Look(int iDistance)
 {
-	CBaseEntity* pSightEnt = nullptr;// the current visible entity that we're dealing with
-	CBaseEntity* pPreviousEnt;// the last entity added to the link list 
-	int			iSighted = 0;
-
 	// DON'T let visibility information from last frame sit around!
 	ClearConditions(bits_COND_SEE_HATE | bits_COND_SEE_DISLIKE | bits_COND_SEE_ENEMY | bits_COND_SEE_FEAR);
 
@@ -385,7 +363,9 @@ void CRoach::Look(int iDistance)
 	}
 
 	m_pLink = nullptr;
-	pPreviousEnt = this;
+	CBaseEntity* pPreviousEnt = this; // the last entity added to the link list
+	CBaseEntity* pSightEnt = nullptr;// the current visible entity that we're dealing with
+	int iSighted = 0;
 
 	// Does sphere also limit itself to PVS?
 	// Examine all entities within a reasonable radius

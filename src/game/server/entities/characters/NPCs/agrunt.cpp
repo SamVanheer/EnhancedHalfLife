@@ -405,7 +405,6 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 	case AGRUNT_AE_HORNET5:
 	{
 		// m_vecEnemyLKP should be center of enemy body
-		Vector vecArmPos, vecArmDir;
 		Vector vecDirToEnemy;
 		Vector angDir;
 
@@ -431,6 +430,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 		}
 
 		SetBlending(0, angDir.x);
+		Vector vecArmPos, vecArmDir;
 		GetAttachment(0, vecArmPos, vecArmDir);
 
 		vecArmPos = vecArmPos + vecDirToEnemy * 32;
@@ -448,8 +448,6 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 		UTIL_MakeVectors(pHornet->pev->angles);
 		pHornet->pev->velocity = gpGlobals->v_forward * 300;
 
-
-
 		switch (RANDOM_LONG(0, 2))
 		{
 		case 0:	EmitSound(CHAN_WEAPON, "agrunt/ag_fire1.wav"); break;
@@ -457,9 +455,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 		case 2:	EmitSound(CHAN_WEAPON, "agrunt/ag_fire3.wav"); break;
 		}
 
-		CBaseMonster* pHornetMonster = pHornet->MyMonsterPointer();
-
-		if (pHornetMonster)
+		if (CBaseMonster* pHornetMonster = pHornet->MyMonsterPointer(); pHornetMonster)
 		{
 			pHornetMonster->m_hEnemy = m_hEnemy;
 		}
@@ -485,9 +481,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 
 	case AGRUNT_AE_LEFT_PUNCH:
 	{
-		CBaseEntity* pHurt = CheckTraceHullAttack(AGRUNT_MELEE_DIST, gSkillData.agruntDmgPunch, DMG_CLUB);
-
-		if (pHurt)
+		if (CBaseEntity* pHurt = CheckTraceHullAttack(AGRUNT_MELEE_DIST, gSkillData.agruntDmgPunch, DMG_CLUB); pHurt)
 		{
 			pHurt->pev->punchangle.y = -25;
 			pHurt->pev->punchangle.x = 8;
@@ -515,9 +509,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 
 	case AGRUNT_AE_RIGHT_PUNCH:
 	{
-		CBaseEntity* pHurt = CheckTraceHullAttack(AGRUNT_MELEE_DIST, gSkillData.agruntDmgPunch, DMG_CLUB);
-
-		if (pHurt)
+		if (CBaseEntity* pHurt = CheckTraceHullAttack(AGRUNT_MELEE_DIST, gSkillData.agruntDmgPunch, DMG_CLUB); pHurt)
 		{
 			pHurt->pev->punchangle.y = 25;
 			pHurt->pev->punchangle.x = 8;
@@ -569,7 +561,6 @@ void CAGrunt::Spawn()
 	m_HackedGunPos = Vector(24, 64, 48);
 
 	m_flNextSpeakTime = m_flNextWordTime = gpGlobals->time + 10 + RANDOM_LONG(0, 10);
-
 
 	MonsterInit();
 }
@@ -901,18 +892,12 @@ void CAGrunt::StartTask(Task_t* pTask)
 		// try to find a spot to throw that gives the smart weapon a good chance of finding the enemy.
 		// ideally, this spot is along a line that is perpendicular to a line drawn from the agrunt to the enemy.
 
-		CBaseMonster* pEnemyMonsterPtr;
-
-		pEnemyMonsterPtr = m_hEnemy->MyMonsterPointer();
-
-		if (pEnemyMonsterPtr)
+		if (CBaseMonster* pEnemyMonsterPtr = m_hEnemy->MyMonsterPointer(); pEnemyMonsterPtr)
 		{
-			Vector		vecCenter;
 			TraceResult	tr;
-			bool		fSkip;
 
-			fSkip = false;
-			vecCenter = Center();
+			bool fSkip = false;
+			const Vector vecCenter = Center();
 
 			VectorAngles(m_vecEnemyLKP - pev->origin);
 
@@ -979,8 +964,7 @@ Schedule_t* CAGrunt::GetSchedule()
 {
 	if (HasConditions(bits_COND_HEAR_SOUND))
 	{
-		CSound* pSound;
-		pSound = BestSound();
+		CSound* pSound = BestSound();
 
 		ASSERT(pSound != nullptr);
 		if (pSound && (pSound->m_iType & bits_SOUND_DANGER))
@@ -1089,7 +1073,6 @@ Schedule_t* CAGrunt::GetScheduleOfType(int Type)
 		return &slAGruntFail[0];
 	}
 	break;
-
 	}
 
 	return CSquadMonster::GetScheduleOfType(Type);
