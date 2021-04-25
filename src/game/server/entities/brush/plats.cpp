@@ -1203,9 +1203,8 @@ void CFuncTrackTrain::DeadEnd()
 	CPathTrack* pTrack = m_ppath;
 
 	ALERT(at_aiconsole, "TRAIN(%s): Dead end ", STRING(pev->targetname));
-	//TODO: typo
 	// Find the dead end path node
-	// HACKHACK -- This is bugly, but the train can actually stop moving at a different node depending on it's speed
+	// HACKHACK -- This is bugly, but the train can actually stop moving at a different node depending on its speed
 	// so we have to traverse the list to it's end.
 	if (pTrack)
 	{
