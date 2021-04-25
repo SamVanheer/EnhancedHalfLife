@@ -143,7 +143,12 @@ void CBaseMonster::PushEnemy(CBaseEntity* pEnemy, Vector& vecLastKnownPos) { }
 bool CBaseMonster::PopEnemy() { return false; }
 void CBaseMonster::SetActivity(Activity NewActivity) { }
 void CBaseMonster::SetSequenceByName(const char* szSequence) { }
-int CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist) { return 0; }
+
+LocalMoveResult CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist)
+{
+	return LocalMoveResult::Invalid;
+}
+
 float CBaseMonster::OpenDoorAndWait(entvars_t* pevDoor) { return 0.0; }
 void CBaseMonster::AdvanceRoute(float distance) { }
 int CBaseMonster::RouteClassify(int iMoveFlag) { return 0; }
@@ -158,7 +163,7 @@ void CBaseMonster::MonsterInitThink() { }
 void CBaseMonster::StartMonster() { }
 void CBaseMonster::MovementComplete() { }
 bool CBaseMonster::TaskIsRunning() { return false; }
-int CBaseMonster::GetRelationship(CBaseEntity* pTarget) { return 0; }
+Relationship CBaseMonster::GetRelationship(CBaseEntity* pTarget) { return Relationship::None; }
 bool CBaseMonster::FindCover(Vector vecThreat, Vector vecViewOffset, float flMinDist, float flMaxDist) { return false; }
 bool CBaseMonster::BuildNearestRoute(Vector vecThreat, Vector vecViewOffset, float flMinDist, float flMaxDist) { return false; }
 CBaseEntity* CBaseMonster::BestVisibleEnemy() { return nullptr; }

@@ -47,7 +47,7 @@ public:
 	void SetYawSpeed() override;
 	int	 SoundMask() override;
 	int  Classify() override;
-	int  GetRelationship(CBaseEntity* pTarget) override;
+	Relationship GetRelationship(CBaseEntity* pTarget) override;
 	void HandleAnimEvent(AnimationEvent& event) override;
 
 	/**
@@ -171,11 +171,11 @@ int	CISlave::Classify()
 	return	CLASS_ALIEN_MILITARY;
 }
 
-int CISlave::GetRelationship(CBaseEntity* pTarget)
+Relationship CISlave::GetRelationship(CBaseEntity* pTarget)
 {
 	if ((pTarget->IsPlayer()))
 		if ((pev->spawnflags & SF_MONSTER_WAIT_UNTIL_PROVOKED) && !(m_afMemory & bits_MEMORY_PROVOKED))
-			return R_NO;
+			return Relationship::None;
 	return CBaseMonster::GetRelationship(pTarget);
 }
 
@@ -539,7 +539,7 @@ void CISlave::Precache()
 bool CISlave::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	// don't slash one of your own
-	if ((bitsDamageType & DMG_SLASH) && pevAttacker && GetRelationship(Instance(pevAttacker)) < R_DL)
+	if ((bitsDamageType & DMG_SLASH) && pevAttacker && GetRelationship(Instance(pevAttacker)) < Relationship::Dislike)
 		return false;
 
 	m_afMemory |= bits_MEMORY_PROVOKED;

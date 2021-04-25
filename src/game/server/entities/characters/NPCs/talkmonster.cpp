@@ -1236,11 +1236,11 @@ void CTalkMonster::TrySmellTalk()
 	}
 }
 
-int CTalkMonster::GetRelationship(CBaseEntity* pTarget)
+Relationship CTalkMonster::GetRelationship(CBaseEntity* pTarget)
 {
 	if (pTarget->IsPlayer())
 		if (m_afMemory & bits_MEMORY_PROVOKED)
-			return R_HT;
+			return Relationship::Hate;
 	return CBaseMonster::GetRelationship(pTarget);
 }
 

@@ -118,11 +118,11 @@ void CHornet::Precache()
 	iHornetTrail = PRECACHE_MODEL("sprites/laserbeam.spr");
 }
 
-int CHornet::GetRelationship(CBaseEntity* pTarget)
+Relationship CHornet::GetRelationship(CBaseEntity* pTarget)
 {
 	if (pTarget->pev->modelindex == pev->modelindex)
 	{
-		return R_NO;
+		return Relationship::None;
 	}
 
 	return CBaseMonster::GetRelationship(pTarget);
@@ -333,7 +333,7 @@ void CHornet::TrackTouch(CBaseEntity* pOther)
 		return;
 	}
 
-	if (GetRelationship(pOther) <= R_NO)
+	if (GetRelationship(pOther) <= Relationship::None)
 	{
 		// hit something we don't want to hurt, so turn around.
 

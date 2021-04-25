@@ -16,6 +16,57 @@
 #pragma once
 
 /**
+*	@brief monster to monster relationship types
+*/
+enum class Relationship
+{
+	Ally = -2,		//!< pals. Good alternative to R_NO when applicable.
+	Fear = -1,		//!< will run
+	None = 0,		//!< disregard
+	Dislike = 1,	//!< will attack
+	Hate = 2,		//!< will attack this character instead of any visible DISLIKEd characters
+	Nemesis = 3		//!< A monster Will ALWAYS attack its nemsis, no matter what
+};
+
+
+enum class LocalMoveResult
+{
+	Invalid = 0,
+	InvalidDontTriangulate,
+	Valid
+};
+
+/**
+*	@brief trigger conditions for scripted AI
+*	@details these MUST match the CHOICES interface in halflife.fgd for the base monster
+*	0 : "No Trigger"
+*	1 : "See Player"
+*	2 : "Take Damage"
+*	3 : "50% Health Remaining"
+*	4 : "Death"
+*	5 : "Squad Member Dead"
+*	6 : "Squad Leader Dead"
+*	7 : "Hear World"
+*	8 : "Hear Player"
+*	9 : "Hear Combat"
+*/
+enum class AITrigger
+{
+	None = 0,
+	SeePlayerAngryAtPlayer,
+	TakeDamage,
+	HalfHealth,
+	Death,
+	SquadMemberDie,
+	SquadLeaderDie,
+	HearWorld,
+	HearPlayer,
+	HearCombat,
+	SeePlayerUnconditional,
+	SeePlayerNotInCombat,
+};
+
+/**
 *	@brief generic Monster
 */
 class CBaseMonster : public CBaseToggle
@@ -96,7 +147,7 @@ public:
 	float				m_flDistTooFar;	//!< if enemy farther away than this, bits_COND_ENEMY_TOOFAR set in CheckEnemy
 	float				m_flDistLook;	//!< distance monster sees (Default 2048)
 
-	int					m_iTriggerCondition;//!< for scripted AI, this is the condition that will cause the activation of the monster's TriggerTarget
+	AITrigger			m_iTriggerCondition;//!< for scripted AI, this is the condition that will cause the activation of the monster's TriggerTarget
 	string_t			m_iszTriggerTarget;//!< name of target that should be fired. 
 
 	Vector				m_HackedGunPos;	//!< HACK until we can query end of gun
@@ -181,7 +232,7 @@ public:
 	/**
 	*	@brief returns an integer that describes the relationship between two types of monster.
 	*/
-	virtual int GetRelationship(CBaseEntity* pTarget);
+	virtual Relationship GetRelationship(CBaseEntity* pTarget);
 
 	/**
 	*	@brief after a monster is spawned, it needs to be dropped into the world,
@@ -242,7 +293,7 @@ public:
 	*	!!!PERFORMANCE - should we try to load balance this?
 	*	DON"T USE SETORIGIN! 
 	*/
-	virtual int CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist);
+	virtual LocalMoveResult CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist);
 
 	/**
 	*	@brief take a single step towards the next ROUTE location

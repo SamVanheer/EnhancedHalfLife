@@ -203,7 +203,7 @@ public:
 	/**
 	*	@brief overridden because Alien Grunts are Human Grunt's nemesis.
 	*/
-	int GetRelationship(CBaseEntity* pTarget) override;
+	Relationship GetRelationship(CBaseEntity* pTarget) override;
 
 	/**
 	*	@brief someone else is talking - don't speak
@@ -295,11 +295,11 @@ void CHGrunt::SpeakSentence()
 	}
 }
 
-int CHGrunt::GetRelationship(CBaseEntity* pTarget)
+Relationship CHGrunt::GetRelationship(CBaseEntity* pTarget)
 {
 	if (ClassnameIs(pTarget->pev, "monster_alien_grunt") || (ClassnameIs(pTarget->pev, "monster_gargantua")))
 	{
-		return R_NM;
+		return Relationship::Nemesis;
 	}
 
 	return CSquadMonster::GetRelationship(pTarget);

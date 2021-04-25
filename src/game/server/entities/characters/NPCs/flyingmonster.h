@@ -21,7 +21,7 @@
 class CFlyingMonster : public CBaseMonster
 {
 public:
-	int 		CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist) override;
+	LocalMoveResult CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist) override;
 	bool		Triangulate(const Vector& vecStart, const Vector& vecEnd, float flDist, CBaseEntity* pTargetEnt, Vector* pApex) override;
 	Activity	GetStoppedActivity() override;
 	void		Killed(entvars_t* pevAttacker, int iGib) override;

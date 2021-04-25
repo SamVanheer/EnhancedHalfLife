@@ -886,14 +886,14 @@ Schedule_t* CScientist::GetSchedule()
 				break;
 			}
 
-			int relationship = R_NO;
+			Relationship relationship = Relationship::None;
 
 			// Nothing scary, just me and the player
 			if (CBaseEntity* pEnemy = m_hEnemy; pEnemy != nullptr)
 				relationship = GetRelationship(pEnemy);
 
 			// UNDONE: Model fear properly, fix R_FR and add multiple levels of fear
-			if (relationship != R_DL && relationship != R_HT)
+			if (relationship != Relationship::Dislike && relationship != Relationship::Hate)
 			{
 				// If I'm already close enough to my target
 				if (TargetDistance() <= 128)
@@ -945,8 +945,8 @@ NPCState CScientist::GetIdealState()
 		{
 			if (IsFollowing())
 			{
-				const int relationship = GetRelationship(m_hEnemy);
-				if (relationship != R_FR || relationship != R_HT && !HasConditions(bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE))
+				const Relationship relationship = GetRelationship(m_hEnemy);
+				if (relationship != Relationship::Fear || relationship != Relationship::Hate && !HasConditions(bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE))
 				{
 					// Don't go to combat if you're following the player
 					m_IdealMonsterState = NPCState::Alert;

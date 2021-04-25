@@ -234,7 +234,7 @@ public:
 	/**
 	*	@brief overridden for bullsquid so that it can be made to ignore its love of headcrabs for a while.
 	*/
-	int GetRelationship(CBaseEntity* pTarget) override;
+	Relationship GetRelationship(CBaseEntity* pTarget) override;
 	int IgnoreConditions() override;
 
 	/**
@@ -287,13 +287,13 @@ int CBullsquid::IgnoreConditions()
 	return iIgnore;
 }
 
-int CBullsquid::GetRelationship(CBaseEntity* pTarget)
+Relationship CBullsquid::GetRelationship(CBaseEntity* pTarget)
 {
 	if (gpGlobals->time - m_flLastHurtTime < 5 && ClassnameIs(pTarget->pev, "monster_headcrab"))
 	{
 		// if squid has been hurt in the last 5 seconds, and is getting relationship for a headcrab, 
 		// tell squid to disregard crab. 
-		return R_NO;
+		return Relationship::None;
 	}
 
 	return CBaseMonster::GetRelationship(pTarget);
@@ -1011,7 +1011,7 @@ Schedule_t* CBullsquid::GetSchedule()
 
 		if (HasConditions(bits_COND_NEW_ENEMY))
 		{
-			if (m_fCanThreatDisplay && GetRelationship(m_hEnemy) == R_HT)
+			if (m_fCanThreatDisplay && GetRelationship(m_hEnemy) == Relationship::Hate)
 			{
 				// this means squid sees a headcrab!
 				m_fCanThreatDisplay = false;// only do the headcrab dance once per lifetime.

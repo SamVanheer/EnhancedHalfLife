@@ -59,7 +59,7 @@ public:
 
 	void Stop() override;
 	void Move(float flInterval) override;
-	int  CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist) override;
+	LocalMoveResult CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist) override;
 	void MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, float flInterval) override;
 	void SetActivity(Activity NewActivity) override;
 	bool ShouldAdvanceRoute(float flWaypointDist) override;
@@ -870,7 +870,7 @@ void CController::Move(float flInterval)
 		// If this fails, it should be because of some dynamic entity blocking this guy.
 		// We've already checked this path, so we should wait and time out if the entity doesn't move
 		float flDist = 0; // how far the lookahead check got before hitting an object.
-		if (CheckLocalMove(pev->origin, pev->origin + vecDir * flCheckDist, pTargetEnt, &flDist) != LOCALMOVE_VALID)
+		if (CheckLocalMove(pev->origin, pev->origin + vecDir * flCheckDist, pTargetEnt, &flDist) != LocalMoveResult::Valid)
 		{
 			// Can't move, stop
 			Stop();
@@ -977,7 +977,7 @@ bool CController::ShouldAdvanceRoute(float flWaypointDist)
 	return false;
 }
 
-int CController::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist)
+LocalMoveResult CController::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist)
 {
 	TraceResult tr;
 
@@ -995,11 +995,11 @@ int CController::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CB
 	if (tr.fStartSolid || tr.flFraction < 1.0)
 	{
 		if (pTarget && pTarget->edict() == gpGlobals->trace_ent)
-			return LOCALMOVE_VALID;
-		return LOCALMOVE_INVALID;
+			return LocalMoveResult::Valid;
+		return LocalMoveResult::Invalid;
 	}
 
-	return LOCALMOVE_VALID;
+	return LocalMoveResult::Valid;
 }
 
 void CController::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, float flInterval)
@@ -1010,11 +1010,11 @@ void CController::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, flo
 	// ALERT( at_console, "move %.4f %.4f %.4f : %f\n", vecDir.x, vecDir.y, vecDir.z, flInterval );
 
 	// float flTotal = m_flGroundSpeed * pev->framerate * flInterval;
-	// UTIL_MoveToOrigin ( ENT(pev), m_Route[ m_iRouteIndex ].vecLocation, flTotal, MOVE_STRAFE );
+	// UTIL_MoveToOrigin ( ENT(pev), m_Route[ m_iRouteIndex ].vecLocation, flTotal, MoveToOriginType::Strafe );
 
 	m_velocity = m_velocity * 0.8 + m_flGroundSpeed * vecDir * 0.2;
 
-	UTIL_MoveToOrigin(ENT(pev), pev->origin + m_velocity, m_velocity.Length() * flInterval, MOVE_STRAFE);
+	UTIL_MoveToOrigin(ENT(pev), pev->origin + m_velocity, m_velocity.Length() * flInterval, MoveToOriginType::Strafe);
 }
 
 /**

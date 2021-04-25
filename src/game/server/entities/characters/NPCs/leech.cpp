@@ -107,7 +107,7 @@ public:
 	void Activate() override;
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	int	Classify() override { return CLASS_INSECT; }
-	int GetRelationship(CBaseEntity* pTarget) override;
+	Relationship GetRelationship(CBaseEntity* pTarget) override;
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -252,10 +252,10 @@ void CLeech::SwitchLeechState()
 	}
 }
 
-int CLeech::GetRelationship(CBaseEntity* pTarget)
+Relationship CLeech::GetRelationship(CBaseEntity* pTarget)
 {
 	if (pTarget->IsPlayer())
-		return R_DL;
+		return Relationship::Dislike;
 	return CBaseMonster::GetRelationship(pTarget);
 }
 

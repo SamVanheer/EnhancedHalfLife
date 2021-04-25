@@ -1014,7 +1014,7 @@ void CIchthyosaur::Swim()
 
 	//AngleVectors(Vector(-Angles.x, Angles.y, Angles.z), &Forward, nullptr, nullptr);
 
-	// UTIL_MoveToOrigin ( ENT(pev), pev->origin + Forward * speed, speed, MOVE_STRAFE );
+	// UTIL_MoveToOrigin ( ENT(pev), pev->origin + Forward * speed, speed, MoveToOriginType::Strafe );
 }
 
 Vector CIchthyosaur::DoProbe(const Vector& Probe)

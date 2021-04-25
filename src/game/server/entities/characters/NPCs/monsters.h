@@ -24,12 +24,6 @@
 #include "brush/func_break.h"
 #include "skill.h"
 
-// CHECKLOCALMOVE result types 
-//TODO: make enum class
-constexpr int LOCALMOVE_INVALID = 0; // move is not possible
-constexpr int LOCALMOVE_INVALID_DONT_TRIANGULATE = 1; // move is not possible, don't try to triangulate
-constexpr int LOCALMOVE_VALID = 2; // move is possible
-
 // Hit Group standards
 constexpr int HITGROUP_GENERIC = 0;
 constexpr int HITGROUP_HEAD = 1;
@@ -39,7 +33,6 @@ constexpr int HITGROUP_LEFTARM = 4;
 constexpr int HITGROUP_RIGHTARM = 5;
 constexpr int HITGROUP_LEFTLEG = 6;
 constexpr int HITGROUP_RIGHTLEG = 7;
-
 
 // Monster Spawnflags
 constexpr int SF_MONSTER_WAIT_TILL_SEEN = 1;	//!< spawnflag that makes monsters wait until player can see them before attacking.
@@ -59,20 +52,18 @@ constexpr int SF_MONSTER_TURRET_AUTOACTIVATE = 32;
 constexpr int SF_MONSTER_TURRET_STARTINACTIVE = 64;
 constexpr int SF_MONSTER_WAIT_UNTIL_PROVOKED = 64; //!< don't attack the player unless provoked
 
-
-
 // MoveToOrigin stuff
 constexpr int MOVE_START_TURN_DIST = 64;	//!< when this far away from moveGoal, start turning to face next goal
 constexpr int MOVE_STUCK_DIST = 32;			//!< if a monster can't step this far, it is stuck.
 
-
-// MoveToOrigin stuff
-//TODO: make enum class
-constexpr int MOVE_NORMAL = 0;				//!< normal move in the direction monster is facing
-constexpr int MOVE_STRAFE = 1;				//!< moves in direction specified, no matter which way monster is facing
+enum class MoveToOriginType
+{
+	Normal = 0,	//!< normal move in the direction monster is facing
+	Strafe = 1,	//!< moves in direction specified, no matter which way monster is facing
+};
 
 // spawn flags 256 and above are already taken by the engine
-void UTIL_MoveToOrigin(edict_t* pent, const Vector& vecGoal, float flDist, int iMoveType);
+void UTIL_MoveToOrigin(edict_t* pent, const Vector& vecGoal, float flDist, MoveToOriginType iMoveType);
 
 /**
 *	@brief returns the velocity at which an object should be lobbed from vecspot1 to land near vecspot2.
@@ -101,16 +92,6 @@ bool IsBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetO
 
 void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, int g, int b);
 
-// monster to monster relationship types
-//TODO: convert to enum class
-constexpr int R_AL = -2;	// (ALLY) pals. Good alternative to R_NO when applicable.
-constexpr int R_FR = -1;	// (FEAR)will run
-constexpr int R_NO = 0;		// (NO RELATIONSHIP) disregard
-constexpr int R_DL = 1;		// (DISLIKE) will attack
-constexpr int R_HT = 2;		// (HATE)will attack this character instead of any visible DISLIKEd characters
-constexpr int R_NM = 3;		// (NEMESIS)  A monster Will ALWAYS attack its nemsis, no matter what
-
-
 // these bits represent the monster's memory
 constexpr int MEMORY_CLEAR = 0;
 constexpr int bits_MEMORY_PROVOKED = 1 << 0;		// right now only used for houndeyes.
@@ -125,37 +106,6 @@ constexpr int bits_MEMORY_CUSTOM4 = 1 << 28; 		// Monster-specific memory
 constexpr int bits_MEMORY_CUSTOM3 = 1 << 29; 		// Monster-specific memory
 constexpr int bits_MEMORY_CUSTOM2 = 1 << 30; 		// Monster-specific memory
 constexpr int bits_MEMORY_CUSTOM1 = 1 << 31; 		// Monster-specific memory
-
-// trigger conditions for scripted AI
-// these MUST match the CHOICES interface in halflife.fgd for the base monster
-//TODO: make enum class
-enum
-{
-	AITRIGGER_NONE = 0,
-	AITRIGGER_SEEPLAYER_ANGRY_AT_PLAYER,
-	AITRIGGER_TAKEDAMAGE,
-	AITRIGGER_HALFHEALTH,
-	AITRIGGER_DEATH,
-	AITRIGGER_SQUADMEMBERDIE,
-	AITRIGGER_SQUADLEADERDIE,
-	AITRIGGER_HEARWORLD,
-	AITRIGGER_HEARPLAYER,
-	AITRIGGER_HEARCOMBAT,
-	AITRIGGER_SEEPLAYER_UNCONDITIONAL,
-	AITRIGGER_SEEPLAYER_NOT_IN_COMBAT,
-};
-/*
-		0 : "No Trigger"
-		1 : "See Player"
-		2 : "Take Damage"
-		3 : "50% Health Remaining"
-		4 : "Death"
-		5 : "Squad Member Dead"
-		6 : "Squad Leader Dead"
-		7 : "Hear World"
-		8 : "Hear Player"
-		9 : "Hear Combat"
-*/
 
 //
 // A gib is a chunk of a body, or a piece of wood/metal/rocks/etc.
@@ -195,7 +145,6 @@ public:
 	Materials m_material;
 	float	m_lifeTime;
 };
-
 
 #define CUSTOM_SCHEDULES\
 		virtual Schedule_t *ScheduleFromName( const char *pName );\

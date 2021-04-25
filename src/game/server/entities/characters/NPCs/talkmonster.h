@@ -112,7 +112,7 @@ public:
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	void			Touch(CBaseEntity* pOther) override;
 	void			Killed(entvars_t* pevAttacker, int iGib) override;
-	int				GetRelationship(CBaseEntity* pTarget) override;
+	Relationship GetRelationship(CBaseEntity* pTarget) override;
 	bool CanPlaySentence(bool fDisregardState) override;
 	void	PlaySentence(const char* pszSentence, float duration, float volume, float attenuation) override;
 	void			PlayScriptedSentence(const char* pszSentence, float duration, float volume, float attenuation, bool bConcurrent, CBaseEntity* pListener) override;

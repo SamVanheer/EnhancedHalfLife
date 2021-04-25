@@ -204,12 +204,6 @@ bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapo
 	return g_pGameRules->GetNextBestWeapon(pPlayer, pCurrentWeapon);
 }
 
-void UTIL_MoveToOrigin(edict_t* pent, const Vector& vecGoal, float flDist, int iMoveType)
-{
-	MOVE_TO_ORIGIN(pent, vecGoal, flDist, iMoveType);
-}
-
-
 int UTIL_EntitiesInBox(CBaseEntity** pList, int listMax, const Vector& mins, const Vector& maxs, int flagMask)
 {
 	edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex(1);

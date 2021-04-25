@@ -111,7 +111,7 @@ public:
 	/**
 	*	@brief overridden because Human Grunts are Alien Grunt's nemesis.
 	*/
-	int GetRelationship(CBaseEntity* pTarget) override;
+	Relationship GetRelationship(CBaseEntity* pTarget) override;
 
 	/**
 	*	@brief won't speak again for 10-20 seconds.
@@ -212,11 +212,11 @@ const char* CAGrunt::pAlertSounds[] =
 	"agrunt/ag_alert5.wav",
 };
 
-int CAGrunt::GetRelationship(CBaseEntity* pTarget)
+Relationship CAGrunt::GetRelationship(CBaseEntity* pTarget)
 {
 	if (ClassnameIs(pTarget->pev, "monster_human_grunt"))
 	{
-		return R_NM;
+		return Relationship::Nemesis;
 	}
 
 	return CSquadMonster::GetRelationship(pTarget);

@@ -22,13 +22,13 @@
 constexpr int FLYING_AE_FLAP = 8;
 constexpr int FLYING_AE_FLAPSOUND = 9;
 
-int CFlyingMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist)
+LocalMoveResult CFlyingMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist)
 {
 	// UNDONE: need to check more than the endpoint
 	if (IsBitSet(pev->flags, FL_SWIM) && (UTIL_PointContents(vecEnd) != CONTENTS_WATER))
 	{
 		// ALERT(at_aiconsole, "can't swim out of water\n");
-		return false;
+		return LocalMoveResult::Invalid;
 	}
 
 	TraceResult tr;
@@ -46,11 +46,11 @@ int CFlyingMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd,
 	if (tr.fStartSolid || tr.flFraction < 1.0)
 	{
 		if (pTarget && pTarget->edict() == gpGlobals->trace_ent)
-			return LOCALMOVE_VALID;
-		return LOCALMOVE_INVALID;
+			return LocalMoveResult::Valid;
+		return LocalMoveResult::Invalid;
 	}
 
-	return LOCALMOVE_VALID;
+	return LocalMoveResult::Valid;
 }
 
 bool CFlyingMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, float flDist, CBaseEntity* pTargetEnt, Vector* pApex)
@@ -178,10 +178,10 @@ void CFlyingMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, 
 		else
 			m_flightSpeed = UTIL_Approach(20, m_flightSpeed, 300 * gpGlobals->frametime);
 
-		if (CheckLocalMove(pev->origin, vecMove, pTargetEnt, nullptr))
+		if (CheckLocalMove(pev->origin, vecMove, pTargetEnt, nullptr) != LocalMoveResult::Invalid)
 		{
 			m_vecTravel = (vecMove - pev->origin).Normalize();
-			UTIL_MoveToOrigin(ENT(pev), vecMove, (m_flGroundSpeed * flInterval), MOVE_STRAFE);
+			UTIL_MoveToOrigin(ENT(pev), vecMove, (m_flGroundSpeed * flInterval), MoveToOriginType::Strafe);
 		}
 		else
 		{

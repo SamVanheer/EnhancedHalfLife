@@ -263,7 +263,7 @@ void CBaseMonster::Look(int iDistance)
 			{
 				// the looker will want to consider this entity
 				// don't check anything else about an entity that can't be seen, or an entity that you don't care about.
-				if (GetRelationship(pSightEnt) != R_NO && IsInViewCone(pSightEnt) && !IsBitSet(pSightEnt->pev->flags, FL_NOTARGET) && IsVisible(pSightEnt))
+				if (GetRelationship(pSightEnt) != Relationship::None && IsInViewCone(pSightEnt) && !IsBitSet(pSightEnt->pev->flags, FL_NOTARGET) && IsVisible(pSightEnt))
 				{
 					if (pSightEnt->IsPlayer())
 					{
@@ -300,19 +300,19 @@ void CBaseMonster::Look(int iDistance)
 					// we see monsters other than the Enemy.
 					switch (GetRelationship(pSightEnt))
 					{
-					case	R_NM:
+					case	Relationship::Nemesis:
 						iSighted |= bits_COND_SEE_NEMESIS;
 						break;
-					case	R_HT:
+					case	Relationship::Hate:
 						iSighted |= bits_COND_SEE_HATE;
 						break;
-					case	R_DL:
+					case	Relationship::Dislike:
 						iSighted |= bits_COND_SEE_DISLIKE;
 						break;
-					case	R_FR:
+					case	Relationship::Fear:
 						iSighted |= bits_COND_SEE_FEAR;
 						break;
-					case    R_AL:
+					case    Relationship::Ally:
 						break;
 					default:
 						ALERT(at_aiconsole, "%s can't assess %s\n", STRING(pev->classname), STRING(pSightEnt->pev->classname));
@@ -602,6 +602,11 @@ bool CBaseMonster::MoveToNode(Activity movementAct, float waitTime, const Vector
 	return RefreshRoute();
 }
 
+void UTIL_MoveToOrigin(edict_t* pent, const Vector& vecGoal, float flDist, MoveToOriginType iMoveType)
+{
+	MOVE_TO_ORIGIN(pent, vecGoal, flDist, static_cast<int>(iMoveType));
+}
+
 #ifdef _DEBUG
 void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, int g, int b)
 {
@@ -709,7 +714,7 @@ void CBaseMonster::RouteSimplify(CBaseEntity* pTargetEnt)
 			outRoute[outCount] = m_Route[m_iRouteIndex + i];
 			outCount++;
 		}
-		else if (CheckLocalMove(vecStart, m_Route[m_iRouteIndex + i + 1].vecLocation, pTargetEnt, nullptr) == LOCALMOVE_VALID)
+		else if (CheckLocalMove(vecStart, m_Route[m_iRouteIndex + i + 1].vecLocation, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 		{
 			// Skip vert
 			continue;
@@ -723,12 +728,12 @@ void CBaseMonster::RouteSimplify(CBaseEntity* pTargetEnt)
 			const Vector vecSplit = (m_Route[m_iRouteIndex + i].vecLocation + vecStart) * 0.5;
 
 			const int iType = (m_Route[m_iRouteIndex + i].iType | bits_MF_TO_DETOUR) & ~bits_MF_NOT_TO_MASK;
-			if (CheckLocalMove(vecStart, vecTest, pTargetEnt, nullptr) == LOCALMOVE_VALID)
+			if (CheckLocalMove(vecStart, vecTest, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 			{
 				outRoute[outCount].iType = iType;
 				outRoute[outCount].vecLocation = vecTest;
 			}
-			else if (CheckLocalMove(vecSplit, vecTest, pTargetEnt, nullptr) == LOCALMOVE_VALID)
+			else if (CheckLocalMove(vecSplit, vecTest, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 			{
 				outRoute[outCount].iType = iType;
 				outRoute[outCount].vecLocation = vecSplit;
@@ -1074,13 +1079,13 @@ void CBaseMonster::SetSequenceByName(const char* szSequence)
 }
 
 constexpr int	LOCAL_STEP_SIZE = 16;
-int CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist)
+LocalMoveResult CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist)
 {
 	const Vector vecStartPos = pev->origin; // record monster's position before trying the move
 
 	const float flYaw = UTIL_VecToYaw(vecEnd - vecStart);// build a yaw that points to the goal.
 	const float flDist = (vecEnd - vecStart).Length2D();// get the distance.
-	int iReturn = LOCALMOVE_VALID;// assume everything will be ok.
+	LocalMoveResult iReturn = LocalMoveResult::Valid;// assume everything will be ok.
 
 	// move the monster to the start of the local move that's to be checked.
 	UTIL_SetOrigin(pev, vecStart);// !!!BUGBUG - won't this fire triggers? - nope, SetOrigin doesn't fire
@@ -1126,7 +1131,7 @@ int CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, C
 			if (pTarget && pTarget->edict() == gpGlobals->trace_ent)
 			{
 				// if this step hits target ent, the move is legal.
-				iReturn = LOCALMOVE_VALID;
+				iReturn = LocalMoveResult::Valid;
 				break;
 			}
 			else
@@ -1135,19 +1140,19 @@ int CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, C
 //				if ( pTarget && fabs( flDist - iStep ) < LOCAL_STEP_SIZE )
 //					fReturn = true;
 //				else
-				iReturn = LOCALMOVE_INVALID;
+				iReturn = LocalMoveResult::Invalid;
 				break;
 			}
 		}
 	}
 
-	if (iReturn == LOCALMOVE_VALID && !(pev->flags & (FL_FLY | FL_SWIM)) && (!pTarget || (pTarget->pev->flags & FL_ONGROUND)))
+	if (iReturn == LocalMoveResult::Valid && !(pev->flags & (FL_FLY | FL_SWIM)) && (!pTarget || (pTarget->pev->flags & FL_ONGROUND)))
 	{
 		// The monster can move to a spot UNDER the target, but not to it. Don't try to triangulate, go directly to the node graph.
 		// UNDONE: Magic # 64 -- this used to be pev->size.z but that won't work for small creatures like the headcrab
 		if (fabs(vecEnd.z - pev->origin.z) > 64)
 		{
-			iReturn = LOCALMOVE_INVALID_DONT_TRIANGULATE;
+			iReturn = LocalMoveResult::InvalidDontTriangulate;
 		}
 	}
 	/*
@@ -1297,17 +1302,17 @@ bool CBaseMonster::BuildRoute(const Vector& vecGoal, int iMoveFlag, CBaseEntity*
 
 	// check simple local move
 	float flDist;
-	const int iLocalMove = CheckLocalMove(pev->origin, vecGoal, pTarget, &flDist);
+	const LocalMoveResult iLocalMove = CheckLocalMove(pev->origin, vecGoal, pTarget, &flDist);
 
 	Vector vecApex;
 
-	if (iLocalMove == LOCALMOVE_VALID)
+	if (iLocalMove == LocalMoveResult::Valid)
 	{
 		// monster can walk straight there!
 		return true;
 	}
 	// try to triangulate around any obstacles.
-	else if (iLocalMove != LOCALMOVE_INVALID_DONT_TRIANGULATE && Triangulate(pev->origin, vecGoal, flDist, pTarget, &vecApex))
+	else if (iLocalMove != LocalMoveResult::InvalidDontTriangulate && Triangulate(pev->origin, vecGoal, flDist, pTarget, &vecApex))
 	{
 		// there is a slightly more complicated path that allows the monster to reach vecGoal
 		m_Route[0].vecLocation = vecApex;
@@ -1451,9 +1456,9 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 		}
 #endif
 
-		if (CheckLocalMove(pev->origin, vecRight, pTargetEnt, nullptr) == LOCALMOVE_VALID)
+		if (CheckLocalMove(pev->origin, vecRight, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 		{
-			if (CheckLocalMove(vecRight, vecFarSide, pTargetEnt, nullptr) == LOCALMOVE_VALID)
+			if (CheckLocalMove(vecRight, vecFarSide, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 			{
 				if (pApex)
 				{
@@ -1463,9 +1468,9 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 				return true;
 			}
 		}
-		if (CheckLocalMove(pev->origin, vecLeft, pTargetEnt, nullptr) == LOCALMOVE_VALID)
+		if (CheckLocalMove(pev->origin, vecLeft, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 		{
-			if (CheckLocalMove(vecLeft, vecFarSide, pTargetEnt, nullptr) == LOCALMOVE_VALID)
+			if (CheckLocalMove(vecLeft, vecFarSide, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 			{
 				if (pApex)
 				{
@@ -1478,9 +1483,9 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 
 		if (pev->movetype == MOVETYPE_FLY)
 		{
-			if (CheckLocalMove(pev->origin, vecTop, pTargetEnt, nullptr) == LOCALMOVE_VALID)
+			if (CheckLocalMove(pev->origin, vecTop, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 			{
-				if (CheckLocalMove(vecTop, vecFarSide, pTargetEnt, nullptr) == LOCALMOVE_VALID)
+				if (CheckLocalMove(vecTop, vecFarSide, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 				{
 					if (pApex)
 					{
@@ -1492,9 +1497,9 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 				}
 			}
 #if 1
-			if (CheckLocalMove(pev->origin, vecBottom, pTargetEnt, nullptr) == LOCALMOVE_VALID)
+			if (CheckLocalMove(pev->origin, vecBottom, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 			{
-				if (CheckLocalMove(vecBottom, vecFarSide, pTargetEnt, nullptr) == LOCALMOVE_VALID)
+				if (CheckLocalMove(vecBottom, vecFarSide, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 				{
 					if (pApex)
 					{
@@ -1586,7 +1591,7 @@ void CBaseMonster::Move(float flInterval)
 	float flDist = 0; // how far the lookahead check got before hitting an object.
 	Vector vecApex;
 
-	if (CheckLocalMove(pev->origin, pev->origin + vecDir * flCheckDist, pTargetEnt, &flDist) != LOCALMOVE_VALID)
+	if (CheckLocalMove(pev->origin, pev->origin + vecDir * flCheckDist, pTargetEnt, &flDist) != LocalMoveResult::Valid)
 	{
 		// Can't move, stop
 		Stop();
@@ -1700,7 +1705,7 @@ void CBaseMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, fl
 	{
 		// don't walk more than 16 units or stairs stop working
 		const float flStep = std::min(16.0f, flTotal);
-		UTIL_MoveToOrigin(ENT(pev), m_Route[m_iRouteIndex].vecLocation, flStep, MOVE_NORMAL);
+		UTIL_MoveToOrigin(ENT(pev), m_Route[m_iRouteIndex].vecLocation, flStep, MoveToOriginType::Normal);
 		flTotal -= flStep;
 	}
 	// ALERT( at_console, "dist %f\n", m_flGroundSpeed * pev->framerate * flInterval );
@@ -1883,9 +1888,18 @@ bool CBaseMonster::TaskIsRunning()
 	return false;
 }
 
-int CBaseMonster::GetRelationship(CBaseEntity* pTarget)
+Relationship CBaseMonster::GetRelationship(CBaseEntity* pTarget)
 {
-	static constexpr int iEnemy[CLASS_COUNT][CLASS_COUNT] =
+	//Define these as aliases to avoid cluttering this up
+	//TODO: rework this
+	const Relationship R_AL = Relationship::Ally;
+	const Relationship R_FR = Relationship::Fear;
+	const Relationship R_NO = Relationship::None;
+	const Relationship R_DL = Relationship::Dislike;
+	const Relationship R_HT = Relationship::Hate;
+	const Relationship R_NM = Relationship::Nemesis;
+
+	static constexpr Relationship iEnemy[CLASS_COUNT][CLASS_COUNT] =
 	{			 //   NONE	 MACH	 PLYR	 HPASS	 HMIL	 AMIL	 APASS	 AMONST	APREY	 APRED	 INSECT	PLRALY	PBWPN	ABWPN
 		/*NONE*/		{ R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO	,R_NO,	R_NO,	R_NO	},
 		/*MACHINE*/		{ R_NO	,R_NO	,R_DL	,R_DL	,R_NO	,R_DL	,R_DL	,R_DL	,R_DL	,R_DL	,R_NO	,R_DL,	R_DL,	R_DL	},
@@ -2079,7 +2093,7 @@ CBaseEntity* CBaseMonster::BestVisibleEnemy()
 	int iNearest = WORLD_SIZE;// so first visible entity will become the closest.
 	CBaseEntity* pNextEnt = m_pLink;
 	CBaseEntity* pReturn = nullptr;
-	int iBestRelationship = R_NO;
+	Relationship iBestRelationship = Relationship::None;
 
 	while (pNextEnt != nullptr)
 	{
@@ -2550,7 +2564,8 @@ void CBaseMonster::KeyValue(KeyValueData* pkvd)
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "TriggerCondition"))
 	{
-		m_iTriggerCondition = atoi(pkvd->szValue);
+		//TODO: validate input
+		m_iTriggerCondition = static_cast<AITrigger>(atoi(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
 	else
@@ -2561,7 +2576,7 @@ void CBaseMonster::KeyValue(KeyValueData* pkvd)
 
 bool CBaseMonster::CheckAITrigger()
 {
-	if (m_iTriggerCondition == AITRIGGER_NONE)
+	if (m_iTriggerCondition == AITrigger::None)
 	{
 		// no conditions, so this trigger is never fired.
 		return false;
@@ -2571,19 +2586,19 @@ bool CBaseMonster::CheckAITrigger()
 
 	switch (m_iTriggerCondition)
 	{
-	case AITRIGGER_SEEPLAYER_ANGRY_AT_PLAYER:
+	case AITrigger::SeePlayerAngryAtPlayer:
 		if (m_hEnemy != nullptr && m_hEnemy->IsPlayer() && HasConditions(bits_COND_SEE_ENEMY))
 		{
 			fFireTarget = true;
 		}
 		break;
-	case AITRIGGER_SEEPLAYER_UNCONDITIONAL:
+	case AITrigger::SeePlayerUnconditional:
 		if (HasConditions(bits_COND_SEE_CLIENT))
 		{
 			fFireTarget = true;
 		}
 		break;
-	case AITRIGGER_SEEPLAYER_NOT_IN_COMBAT:
+	case AITrigger::SeePlayerNotInCombat:
 		if (HasConditions(bits_COND_SEE_CLIENT) &&
 			m_MonsterState != NPCState::Combat &&
 			m_MonsterState != NPCState::Prone &&
@@ -2592,19 +2607,19 @@ bool CBaseMonster::CheckAITrigger()
 			fFireTarget = true;
 		}
 		break;
-	case AITRIGGER_TAKEDAMAGE:
+	case AITrigger::TakeDamage:
 		if (m_afConditions & (bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE))
 		{
 			fFireTarget = true;
 		}
 		break;
-	case AITRIGGER_DEATH:
+	case AITrigger::Death:
 		if (pev->deadflag != DEAD_NO)
 		{
 			fFireTarget = true;
 		}
 		break;
-	case AITRIGGER_HALFHEALTH:
+	case AITrigger::HalfHealth:
 		if (IsAlive() && pev->health <= (pev->max_health / 2))
 		{
 			fFireTarget = true;
@@ -2619,19 +2634,19 @@ bool CBaseMonster::CheckAITrigger()
 			case AITRIGGER_SQUADLEADERDIE:
 				break;
 		*/
-	case AITRIGGER_HEARWORLD:
+	case AITrigger::HearWorld:
 		if (m_afConditions & bits_COND_HEAR_SOUND && m_afSoundTypes & bits_SOUND_WORLD)
 		{
 			fFireTarget = true;
 		}
 		break;
-	case AITRIGGER_HEARPLAYER:
+	case AITrigger::HearPlayer:
 		if (m_afConditions & bits_COND_HEAR_SOUND && m_afSoundTypes & bits_SOUND_PLAYER)
 		{
 			fFireTarget = true;
 		}
 		break;
-	case AITRIGGER_HEARCOMBAT:
+	case AITrigger::HearCombat:
 		if (m_afConditions & bits_COND_HEAR_SOUND && m_afSoundTypes & bits_SOUND_COMBAT)
 		{
 			fFireTarget = true;
@@ -2644,7 +2659,7 @@ bool CBaseMonster::CheckAITrigger()
 		// fire the target, then set the trigger conditions to NONE so we don't fire again
 		ALERT(at_aiconsole, "AI Trigger Fire Target\n");
 		FireTargets(STRING(m_iszTriggerTarget), this, this, USE_TOGGLE, 0);
-		m_iTriggerCondition = AITRIGGER_NONE;
+		m_iTriggerCondition = AITrigger::None;
 		return true;
 	}
 
@@ -2702,7 +2717,7 @@ bool CBaseMonster::FindLateralCover(const Vector& vecThreat, const Vector& vecVi
 
 		if (tr.flFraction != 1.0)
 		{
-			if (ValidateCover(vecLeftTest) && CheckLocalMove(pev->origin, vecLeftTest, nullptr, nullptr) == LOCALMOVE_VALID)
+			if (ValidateCover(vecLeftTest) && CheckLocalMove(pev->origin, vecLeftTest, nullptr, nullptr) == LocalMoveResult::Valid)
 			{
 				if (MoveToLocation(ACT_RUN, 0, vecLeftTest))
 				{
@@ -2716,7 +2731,7 @@ bool CBaseMonster::FindLateralCover(const Vector& vecThreat, const Vector& vecVi
 
 		if (tr.flFraction != 1.0)
 		{
-			if (ValidateCover(vecRightTest) && CheckLocalMove(pev->origin, vecRightTest, nullptr, nullptr) == LOCALMOVE_VALID)
+			if (ValidateCover(vecRightTest) && CheckLocalMove(pev->origin, vecRightTest, nullptr, nullptr) == LocalMoveResult::Valid)
 			{
 				if (MoveToLocation(ACT_RUN, 0, vecRightTest))
 				{
@@ -2891,7 +2906,7 @@ bool CBaseMonster::GetEnemy()
 				if (pNewEnemy->pev->owner != nullptr)
 				{
 					if (CBaseEntity* pOwner = GetMonsterPointer(pNewEnemy->pev->owner);
-						pOwner && (pOwner->pev->flags & FL_MONSTER) && GetRelationship(pOwner) != R_NO)
+						pOwner && (pOwner->pev->flags & FL_MONSTER) && GetRelationship(pOwner) != Relationship::None)
 					{
 						PushEnemy(pOwner, m_vecEnemyLKP);
 					}

@@ -387,10 +387,10 @@ void CRoach::Look(int iDistance)
 				// we see monsters other than the Enemy.
 				switch (GetRelationship(pSightEnt))
 				{
-				case	R_FR:
+				case	Relationship::Fear:
 					iSighted |= bits_COND_SEE_FEAR;
 					break;
-				case	R_NO:
+				case	Relationship::None:
 					break;
 				default:
 					ALERT(at_console, "%s can't asses %s\n", STRING(pev->classname), STRING(pSightEnt->pev->classname));
