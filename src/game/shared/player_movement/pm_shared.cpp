@@ -1581,7 +1581,7 @@ void PM_UnDuck()
 
 	if (!trace.startsolid)
 	{
-		pmove->usehull = 0;
+		pmove->usehull = static_cast<int>(PlayerHull::Standing);
 
 		// Oh, no, changing hulls stuck us into something, try unsticking downward first.
 		trace = pmove->PM_PlayerTrace(newOrigin, newOrigin, PM_NORMAL, -1);
@@ -1589,7 +1589,7 @@ void PM_UnDuck()
 		{
 			// See if we are stuck?  If so, stay ducked with the duck hull until we have a clear spot
 			//Con_Printf( "unstick got stuck\n" );
-			pmove->usehull = 1;
+			pmove->usehull = static_cast<int>(PlayerHull::Crouched);
 			return;
 		}
 
@@ -1659,7 +1659,7 @@ void PM_Duck()
 				if (((float)pmove->flDuckTime / 1000.0 <= (1.0 - TIME_TO_DUCK)) ||
 					(pmove->onground == -1))
 				{
-					pmove->usehull = 1;
+					pmove->usehull = static_cast<int>(PlayerHull::Crouched);
 					pmove->view_ofs = VEC_DUCK_VIEW;
 					pmove->flags |= FL_DUCKING;
 					pmove->bInDuck = false;
@@ -2211,7 +2211,7 @@ void PM_CheckWaterJump()
 
 	// Trace, this trace should use the point sized collision hull
 	const int savehull = pmove->usehull;
-	pmove->usehull = 2;
+	pmove->usehull = static_cast<int>(PlayerHull::Point);
 	pmtrace_t tr = pmove->PM_PlayerTrace(vecStart, vecEnd, PM_NORMAL, -1);
 	if (tr.fraction < 1.0 && fabs(tr.plane.normal[2]) < 0.1f)  // Facing a near vertical wall?
 	{

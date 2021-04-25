@@ -271,15 +271,6 @@ enum class IgnoreGlass
 void			UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, edict_t* pentIgnore, TraceResult* ptr);
 void			UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, IgnoreGlass ignoreGlass, edict_t* pentIgnore, TraceResult* ptr);
 
-//TODO: find other uses of these constants and use these constants for them
-enum class Hull
-{
-	Point = 0,
-	Human = 1,
-	Large = 2,
-	Head = 3
-};
-
 void			UTIL_TraceHull(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, Hull hullNumber, edict_t* pentIgnore, TraceResult* ptr);
 TraceResult	UTIL_GetGlobalTrace();
 void			UTIL_TraceModel(const Vector& vecStart, const Vector& vecEnd, Hull hullNumber, edict_t* pentModel, TraceResult* ptr);

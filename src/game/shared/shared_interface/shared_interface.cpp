@@ -14,24 +14,25 @@
 ****/
 
 #include "Platform.h"
+#include "const.h"
 #include "mathlib.h"
 #include "cdll_dll.h"
 
 bool Shared_GetHullBounds(int hullnumber, Vector& mins, Vector& maxs)
 {
-	switch (hullnumber)
+	switch (static_cast<PlayerHull>(hullnumber))
 	{
-	case 0:	// Normal player
+	case PlayerHull::Standing:
 		mins = VEC_HULL_MIN;
 		maxs = VEC_HULL_MAX;
 		return true;
 
-	case 1:	// Crouched player
+	case PlayerHull::Crouched:
 		mins = VEC_DUCK_HULL_MIN;
 		maxs = VEC_DUCK_HULL_MAX;
 		return true;
 
-	case 2:	// Point based hull
+	case PlayerHull::Point:
 		mins = vec3_origin;
 		maxs = vec3_origin;
 		return true;

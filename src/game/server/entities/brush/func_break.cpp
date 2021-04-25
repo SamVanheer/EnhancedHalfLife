@@ -816,30 +816,28 @@ void CPushable::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "size"))
 	{
-		const int bbox = atoi(pkvd->szValue);
+		const Hull bbox = static_cast<Hull>(atoi(pkvd->szValue));
 		pkvd->fHandled = true;
 
-		//TODO: use Hull enum
 		switch (bbox)
 		{
-		case 0:	// Point
+		case Hull::Point:
 			UTIL_SetSize(pev, Vector(-8, -8, -8), Vector(8, 8, 8));
 			break;
 
-		case 2: // Big Hull!?!?	!!!BUGBUG Figure out what this hull really is
+		case Hull::Large:
 			UTIL_SetSize(pev, VEC_DUCK_HULL_MIN * 2, VEC_DUCK_HULL_MAX * 2);
 			break;
 
-		case 3: // Player duck
+		case Hull::Head:
 			UTIL_SetSize(pev, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX);
 			break;
 
 		default:
-		case 1: // Player
+		case Hull::Human:
 			UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
 			break;
 		}
-
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "buoyancy"))
 	{

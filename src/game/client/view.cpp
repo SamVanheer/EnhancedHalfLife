@@ -1046,7 +1046,7 @@ void V_GetInEyePos(int target, Vector& origin, Vector& angles)
 		angles[ROLL] = 80;	// dead view angle
 		origin = origin + VEC_DEAD_VIEW;
 	}
-	else if (ent->curstate.usehull == 1)
+	else if (ent->curstate.usehull == static_cast<int>(PlayerHull::Crouched))
 	{
 		origin = origin + VEC_DUCK_VIEW;
 	}

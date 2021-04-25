@@ -936,7 +936,7 @@ int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int
 		state->gravity = ent->v.gravity;
 		//		state->team			= ent->v.team;
 		//		
-		state->usehull = (ent->v.flags & FL_DUCKING) ? 1 : 0;
+		state->usehull = static_cast<int>((ent->v.flags & FL_DUCKING) ? PlayerHull::Crouched : PlayerHull::Standing);
 		state->health = ent->v.health;
 	}
 

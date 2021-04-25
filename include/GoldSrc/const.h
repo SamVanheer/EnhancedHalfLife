@@ -140,6 +140,24 @@ enum class WaterLevel
 	Head		//!< head in water
 };
 
+enum class Hull
+{
+	Point = 0,
+	Human = 1,
+	Large = 2,
+	Head = 3
+};
+
+/**
+*	@brief Differs from ::Hull, used in physics code
+*/
+enum class PlayerHull
+{
+	Standing = 0,
+	Crouched = 1,
+	Point = 2
+};
+
 //
 // temp entity events
 //

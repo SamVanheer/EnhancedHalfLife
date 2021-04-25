@@ -416,7 +416,7 @@ bool CHudSpectator::GetDirectorCamera(Vector& position, Vector& angle)
 				{
 					vt = vt + VEC_DEAD_VIEW;
 				}
-				else if (ent->curstate.usehull == 1)
+				else if (ent->curstate.usehull == static_cast<int>(PlayerHull::Crouched))
 				{
 					vt = vt + VEC_DUCK_VIEW;
 				}
