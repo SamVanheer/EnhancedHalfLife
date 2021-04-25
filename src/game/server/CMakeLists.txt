@@ -1,5 +1,7 @@
 # Add server library
 # Add the def file as well
+# This file is necessary because GiveFnptrsToDll uses the __stdcall calling convention on Windows,
+# and the def file exports the function with no decoration so that a GetProcAddress lookup will find it
 add_library(hl SHARED hl.def)
 
 set_common_properties(hl)
