@@ -109,3 +109,5 @@ add_subdirectory(server)
 
 # Set Visual Studio starting project
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT client)
+
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../network/delta.lst DESTINATION .)
