@@ -23,34 +23,27 @@ globalentity_t* CGlobalState::Find(string_t globalname)
 	if (IsStringNull(globalname))
 		return nullptr;
 
-	globalentity_t* pTest;
 	const char* pEntityName = STRING(globalname);
 
-
-	pTest = m_pList;
-	while (pTest)
+	for (globalentity_t* pTest = m_pList; pTest; pTest = pTest->pNext)
 	{
 		if (AreStringsEqual(pEntityName, pTest->name))
-			break;
-
-		pTest = pTest->pNext;
+			return pTest;
 	}
 
-	return pTest;
+	return nullptr;
 }
 
 //#ifdef _DEBUG
 void CGlobalState::DumpGlobals()
 {
 	static constexpr const char* estates[] = {"Off", "On", "Dead"};
-	globalentity_t* pTest;
 
 	ALERT(at_console, "-- Globals --\n");
-	pTest = m_pList;
-	while (pTest)
+	
+	for (globalentity_t* pTest = m_pList; pTest; pTest = pTest->pNext)
 	{
 		ALERT(at_console, "%s: %s (%s)\n", pTest->name, pTest->levelName, estates[static_cast<std::size_t>(pTest->state)]);
-		pTest = pTest->pNext;
 	}
 }
 //#endif
@@ -71,23 +64,19 @@ void CGlobalState::EntityAdd(string_t globalname, string_t mapName, GlobalEntSta
 
 void CGlobalState::EntitySetState(string_t globalname, GlobalEntState state)
 {
-	globalentity_t* pEnt = Find(globalname);
-
-	if (pEnt)
+	if (globalentity_t* pEnt = Find(globalname); pEnt)
 		pEnt->state = state;
 }
 
 const globalentity_t* CGlobalState::EntityFromTable(string_t globalname)
 {
 	globalentity_t* pEnt = Find(globalname);
-
 	return pEnt;
 }
 
 GlobalEntState CGlobalState::EntityGetState(string_t globalname)
 {
-	globalentity_t* pEnt = Find(globalname);
-	if (pEnt)
+	if (globalentity_t* pEnt = Find(globalname); pEnt)
 		return pEnt->state;
 
 	return GlobalEntState::Off;
@@ -109,14 +98,11 @@ TYPEDESCRIPTION	gGlobalEntitySaveData[] =
 
 bool CGlobalState::Save(CSave& save)
 {
-	int i;
-	globalentity_t* pEntity;
-
 	if (!save.WriteFields("GLOBAL", this, m_SaveData, ArraySize(m_SaveData)))
 		return false;
 
-	pEntity = m_pList;
-	for (i = 0; i < m_listCount && pEntity; i++)
+	globalentity_t* pEntity = m_pList;
+	for (int i = 0; i < m_listCount && pEntity; ++i)
 	{
 		if (!save.WriteFields("GENT", pEntity, gGlobalEntitySaveData, ArraySize(gGlobalEntitySaveData)))
 			return false;
@@ -129,18 +115,16 @@ bool CGlobalState::Save(CSave& save)
 
 bool CGlobalState::Restore(CRestore& restore)
 {
-	int i, listCount;
-	globalentity_t tmpEntity;
-
-
 	ClearStates();
 	if (!restore.ReadFields("GLOBAL", this, m_SaveData, ArraySize(m_SaveData)))
 		return false;
 
-	listCount = m_listCount;	// Get new list count
-	m_listCount = 0;				// Clear loaded data
+	const int listCount = m_listCount; // Get new list count
+	m_listCount = 0; // Clear loaded data
 
-	for (i = 0; i < listCount; i++)
+	globalentity_t tmpEntity;
+
+	for (int i = 0; i < listCount; i++)
 	{
 		if (!restore.ReadFields("GENT", &tmpEntity, gGlobalEntitySaveData, ArraySize(gGlobalEntitySaveData)))
 			return false;
@@ -151,20 +135,16 @@ bool CGlobalState::Restore(CRestore& restore)
 
 void CGlobalState::EntityUpdate(string_t globalname, string_t mapname)
 {
-	globalentity_t* pEnt = Find(globalname);
-
-	if (pEnt)
+	if (globalentity_t* pEnt = Find(globalname); pEnt)
 		safe_strcpy(pEnt->levelName, STRING(mapname));
 }
 
 void CGlobalState::ClearStates()
 {
-	globalentity_t* pFree = m_pList;
-	while (pFree)
+	for (globalentity_t* pNext = nullptr, * pFree = m_pList; pFree; pFree = pNext)
 	{
-		globalentity_t* pNext = pFree->pNext;
+		pNext = pFree->pNext;
 		free(pFree);
-		pFree = pNext;
 	}
 	Reset();
 }

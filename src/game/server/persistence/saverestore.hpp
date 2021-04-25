@@ -23,9 +23,9 @@ class CBaseEntity;
 class CSaveRestoreBuffer
 {
 public:
-	CSaveRestoreBuffer();
+	CSaveRestoreBuffer() = default;
 	CSaveRestoreBuffer(SAVERESTOREDATA* pdata);
-	~CSaveRestoreBuffer();
+	~CSaveRestoreBuffer() = default;
 
 	int			EntityIndex(entvars_t* pevLookup);
 	int			EntityIndex(edict_t* pentLookup);
@@ -39,7 +39,7 @@ public:
 	unsigned short	TokenHash(const char* pszToken);
 
 protected:
-	SAVERESTOREDATA* m_pdata;
+	SAVERESTOREDATA* m_pdata = nullptr;
 	void		BufferRewind(int size);
 	unsigned int	HashString(const char* pszToken);
 };
