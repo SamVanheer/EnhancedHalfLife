@@ -4,8 +4,6 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/cdll_dll.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/filesystem_shared.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/filesystem_shared.hpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/materials.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/materials.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crossbow.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/crowbar.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/weapons/egon.cpp
@@ -28,6 +26,8 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shared_interface/shared_interface.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shared_interface/shared_interface.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/sound/materials.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/sound/materials.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/BinaryReader.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/bitvec.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CStringPool.cpp

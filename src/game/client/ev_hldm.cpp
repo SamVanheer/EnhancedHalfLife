@@ -26,7 +26,7 @@
 #include "entity_types.h"
 #include "usercmd.h"
 #include "pm_defs.h"
-#include "materials.hpp"
+#include "sound/materials.hpp"
 
 #include "eventscripts.h"
 #include "ev_hldm.h"

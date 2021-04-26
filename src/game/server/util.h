@@ -23,7 +23,7 @@
 #include "activity.h"
 #include "enginecallback.h"
 #include "shared_utils.hpp"
-#include "materials.hpp"
+#include "sound/materials.hpp"
 #include "filesystem_shared.hpp"
 #include "string_utils.hpp"
 

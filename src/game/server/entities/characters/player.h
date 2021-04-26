@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "materials.hpp"
+#include "sound/materials.hpp"
 
 //
 // Player PHYSICS FLAGS bits

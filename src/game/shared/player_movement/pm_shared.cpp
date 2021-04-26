@@ -25,7 +25,7 @@
 #include "pm_shared.h"
 #include "pm_movevars.h"
 #include "pm_debug.h"
-#include "materials.hpp"
+#include "sound/materials.hpp"
 #include "com_model.h"
 #include "string_utils.hpp"
 #include "view_utils.hpp"

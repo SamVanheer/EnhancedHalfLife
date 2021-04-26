@@ -24,7 +24,7 @@
 #include "client_int.hpp"
 #include "netadr.h"
 #include "interface.h"
-#include "materials.hpp"
+#include "sound/materials.hpp"
 //#include "vgui_schememanager.h"
 
 #include "pm_shared.h"
