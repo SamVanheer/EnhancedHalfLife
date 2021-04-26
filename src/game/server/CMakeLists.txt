@@ -201,6 +201,9 @@ target_sources(hl PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/entity_state.h
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_args.h
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_flags.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_defs.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_info.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_movevars.h
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/pmtrace.h
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/progdefs.h
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/progs.h
