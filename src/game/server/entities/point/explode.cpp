@@ -174,7 +174,7 @@ void CEnvExplosion::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE 
 	// draw fireball
 	if (!(pev->spawnflags & SF_ENVEXPLOSION_NOFIREBALL))
 	{
-		MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
 		WRITE_BYTE(TE_EXPLOSION);
 		WRITE_COORD(pev->origin.x);
 		WRITE_COORD(pev->origin.y);
@@ -187,7 +187,7 @@ void CEnvExplosion::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE 
 	}
 	else
 	{
-		MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
 		WRITE_BYTE(TE_EXPLOSION);
 		WRITE_COORD(pev->origin.x);
 		WRITE_COORD(pev->origin.y);
@@ -224,7 +224,7 @@ void CEnvExplosion::Smoke()
 {
 	if (!(pev->spawnflags & SF_ENVEXPLOSION_NOSMOKE))
 	{
-		MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
 		WRITE_BYTE(TE_SMOKE);
 		WRITE_COORD(pev->origin.x);
 		WRITE_COORD(pev->origin.y);

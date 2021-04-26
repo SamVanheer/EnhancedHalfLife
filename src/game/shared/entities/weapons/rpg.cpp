@@ -147,7 +147,7 @@ void CRpgRocket::IgniteThink()
 	EmitSound(SoundChannel::Voice, "weapons/rocket1.wav", VOL_NORM, 0.5);
 
 	// rocket trail
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 
 	WRITE_BYTE(TE_BEAMFOLLOW);
 	WRITE_SHORT(entindex());	// entity
@@ -349,7 +349,7 @@ bool CRpg::AddToPlayer(CBasePlayer* pPlayer)
 {
 	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
 	{
-		MESSAGE_BEGIN(MSG_ONE, gmsgWeapPickup, nullptr, pPlayer->pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgWeapPickup, nullptr, pPlayer->pev);
 		WRITE_BYTE(m_iId);
 		MESSAGE_END();
 		return true;

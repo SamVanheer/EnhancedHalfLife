@@ -139,7 +139,7 @@ void CBubbling::KeyValue(KeyValueData* pkvd)
 
 void CBubbling::FizzThink()
 {
-	MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, GetBrushModelOrigin(pev));
+	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, GetBrushModelOrigin(pev));
 	WRITE_BYTE(TE_FIZZ);
 	WRITE_SHORT((short)ENTINDEX(edict()));
 	WRITE_SHORT((short)m_bubbleModel);
@@ -643,7 +643,7 @@ void CLightning::StrikeThink()
 			}
 		}
 
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		if (IsPointEntity(pStart) || IsPointEntity(pEnd))
 		{
 			if (!IsPointEntity(pEnd))	// One point entity must be in pEnd
@@ -736,7 +736,7 @@ void CLightning::DamageThink()
 void CLightning::Zap(const Vector& vecSrc, const Vector& vecDest)
 {
 #if 1
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMPOINTS);
 	WRITE_COORD(vecSrc.x);
 	WRITE_COORD(vecSrc.y);
@@ -757,7 +757,7 @@ void CLightning::Zap(const Vector& vecSrc, const Vector& vecDest)
 	WRITE_BYTE(m_speed);		// speed
 	MESSAGE_END();
 #else
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_LIGHTNING);
 	WRITE_COORD(vecSrc.x);
 	WRITE_COORD(vecSrc.y);
@@ -1574,7 +1574,7 @@ void CTestEffect::TestThink()
 
 #if 0
 		Vector vecMid = (vecSrc + tr.vecEndPos) * 0.5;
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_DLIGHT);
 		WRITE_COORD(vecMid.x);	// X
 		WRITE_COORD(vecMid.y);	// Y
@@ -2002,7 +2002,7 @@ LINK_ENTITY_TO_CLASS(env_funnel, CEnvFunnel);
 
 void CEnvFunnel::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_LARGEFUNNEL);
 	WRITE_COORD(pev->origin.x);
 	WRITE_COORD(pev->origin.y);

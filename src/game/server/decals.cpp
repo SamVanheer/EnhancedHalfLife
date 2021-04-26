@@ -118,7 +118,7 @@ void CDecal::TriggerDecal(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYP
 
 	UTIL_TraceLine(pev->origin - Vector(5, 5, 5), pev->origin + Vector(5, 5, 5), IgnoreMonsters::Yes, ENT(pev), &trace);
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BSPDECAL);
 	WRITE_COORD(pev->origin.x);
 	WRITE_COORD(pev->origin.y);

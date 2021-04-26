@@ -500,7 +500,7 @@ void CNihilanth::DyingThink()
 	TraceResult tr;
 	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_BOUNDARY, IgnoreMonsters::Yes, ENT(pev), &tr);
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMENTPOINT);
 	WRITE_SHORT(entindex() + 0x1000 * iAttachment);
 	WRITE_COORD(tr.vecEndPos.x);
@@ -669,7 +669,7 @@ void CNihilanth::NextActivity()
 
 		if (m_pBall)
 		{
-			MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+			MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 			WRITE_BYTE(TE_ELIGHT);
 			WRITE_SHORT(entindex() + 0x1000);		// entity, attachment
 			WRITE_COORD(pev->origin.x);		// origin
@@ -1025,7 +1025,7 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 
 			EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pBallSounds), VOL_NORM, 0.2);
 
-			MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+			MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 			WRITE_BYTE(TE_ELIGHT);
 			WRITE_SHORT(entindex() + 0x3000);		// entity, attachment
 			WRITE_COORD(pev->origin.x);		// origin
@@ -1039,7 +1039,7 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 			WRITE_COORD(128); // decay
 			MESSAGE_END();
 
-			MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+			MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 			WRITE_BYTE(TE_ELIGHT);
 			WRITE_SHORT(entindex() + 0x4000);		// entity, attachment
 			WRITE_COORD(pev->origin.x);		// origin
@@ -1086,7 +1086,7 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 
 				ALERT(at_aiconsole, "nihilanth can't target %s\n", szText);
 
-				MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+				MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 				WRITE_BYTE(TE_ELIGHT);
 				WRITE_SHORT(entindex() + 0x3000);		// entity, attachment
 				WRITE_COORD(pev->origin.x);		// origin
@@ -1100,7 +1100,7 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 				WRITE_COORD(128); // decay
 				MESSAGE_END();
 
-				MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+				MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 				WRITE_BYTE(TE_ELIGHT);
 				WRITE_SHORT(entindex() + 0x4000);		// entity, attachment
 				WRITE_COORD(pev->origin.x);		// origin
@@ -1329,7 +1329,7 @@ void CNihilanthHVR::HoverThink()
 
 				if (pOther && pOther != this)
 				{
-					MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
+					MESSAGE_BEGIN( MessageDest::Broadcast, SVC_TEMPENTITY );
 						WRITE_BYTE( TE_BEAMENTS );
 						WRITE_SHORT( this->entindex() );
 						WRITE_SHORT( pOther->entindex() );
@@ -1348,7 +1348,7 @@ void CNihilanthHVR::HoverThink()
 				}
 		*/
 		/*
-				MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
+				MESSAGE_BEGIN( MessageDest::Broadcast, SVC_TEMPENTITY );
 					WRITE_BYTE( TE_BEAMENTS );
 					WRITE_SHORT( this->entindex() );
 					WRITE_SHORT( m_hTargetEnt->entindex() + 0x1000 );
@@ -1424,7 +1424,7 @@ void CNihilanthHVR::ZapThink()
 			ApplyMultiDamage(pev, pev);
 		}
 
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_BEAMENTPOINT);
 		WRITE_SHORT(entindex());
 		WRITE_COORD(tr.vecEndPos.x);
@@ -1453,7 +1453,7 @@ void CNihilanthHVR::ZapThink()
 
 	pev->frame = (int)(pev->frame + 1) % 11;
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_ELIGHT);
 	WRITE_SHORT(entindex());		// entity, attachment
 	WRITE_COORD(pev->origin.x);		// origin
@@ -1556,7 +1556,7 @@ void CNihilanthHVR::TeleportThink()
 		MovetoTarget(m_hEnemy->Center());
 	}
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_ELIGHT);
 	WRITE_SHORT(entindex());		// entity, attachment
 	WRITE_COORD(pev->origin.x);		// origin
@@ -1578,7 +1578,7 @@ void CNihilanthHVR::AbsorbInit()
 	SetThink(&CNihilanthHVR::DissipateThink);
 	pev->renderamt = 255;
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMENTS);
 	WRITE_SHORT(this->entindex());
 	WRITE_SHORT(m_hTargetEnt->entindex() + 0x1000);
@@ -1637,7 +1637,7 @@ void CNihilanthHVR::DissipateThink()
 		UTIL_Remove(this);
 	}
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_ELIGHT);
 	WRITE_SHORT(entindex());		// entity, attachment
 	WRITE_COORD(pev->origin.x);		// origin
@@ -1728,7 +1728,7 @@ void CNihilanthHVR::Crawl()
 	const Vector vecAim = Vector(RANDOM_FLOAT(-1, 1), RANDOM_FLOAT(-1, 1), RANDOM_FLOAT(-1, 1)).Normalize();
 	const Vector vecPnt = pev->origin + pev->velocity * 0.2 + vecAim * 128;
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMENTPOINT);
 	WRITE_SHORT(entindex());
 	WRITE_COORD(vecPnt.x);

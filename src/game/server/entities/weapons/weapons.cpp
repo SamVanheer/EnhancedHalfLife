@@ -147,7 +147,7 @@ void EjectBrass(const Vector& vecOrigin, const Vector& vecVelocity, float rotati
 {
 	// FIX: when the player shoots, their gun isn't in the same position as it is on the model other players see.
 
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecOrigin);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecOrigin);
 	WRITE_BYTE(TE_MODEL);
 	WRITE_COORD(vecOrigin.x);
 	WRITE_COORD(vecOrigin.y);
@@ -167,7 +167,7 @@ void EjectBrass(const Vector& vecOrigin, const Vector& vecVelocity, float rotati
 // UNDONE: This is no longer used?
 void ExplodeModel(const Vector& vecOrigin, float speed, int model, int count)
 {
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecOrigin);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecOrigin);
 	WRITE_BYTE(TE_EXPLODEMODEL);
 	WRITE_COORD(vecOrigin.x);
 	WRITE_COORD(vecOrigin.y);
@@ -614,7 +614,7 @@ bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer)
 
 	if (bSend)
 	{
-		MESSAGE_BEGIN(MSG_ONE, gmsgCurWeapon, nullptr, pPlayer->pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgCurWeapon, nullptr, pPlayer->pev);
 		WRITE_BYTE(static_cast<int>(state));
 		WRITE_BYTE(m_iId);
 		WRITE_BYTE(m_iClip);
@@ -642,7 +642,7 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 		return;
 #endif
 
-	MESSAGE_BEGIN(MSG_ONE, SVC_WEAPONANIM, nullptr, m_pPlayer->pev);
+	MESSAGE_BEGIN(MessageDest::One, SVC_WEAPONANIM, nullptr, m_pPlayer->pev);
 	WRITE_BYTE(iAnim);						// sequence number
 	WRITE_BYTE(pev->body);					// weaponmodel bodygroup.
 	MESSAGE_END();

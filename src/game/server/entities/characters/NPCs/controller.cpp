@@ -232,7 +232,7 @@ void CController::HandleAnimEvent(AnimationEvent& event)
 		Vector vecStart, angleGun;
 		GetAttachment(0, vecStart, angleGun);
 
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_ELIGHT);
 		WRITE_SHORT(entindex() + 0x1000);		// entity, attachment
 		WRITE_COORD(vecStart.x);		// origin
@@ -258,7 +258,7 @@ void CController::HandleAnimEvent(AnimationEvent& event)
 		Vector vecStart, angleGun;
 		GetAttachment(0, vecStart, angleGun);
 
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_ELIGHT);
 		WRITE_SHORT(entindex() + 0x1000);		// entity, attachment
 		WRITE_COORD(0);		// origin
@@ -770,7 +770,7 @@ void CController::RunAI()
 		GetAttachment(i + 2, vecStart, angleGun);
 		UTIL_SetOrigin(m_pBall[i]->pev, vecStart);
 
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_ELIGHT);
 		WRITE_SHORT(entindex() + 0x1000 * (i + 3));		// entity, attachment
 		WRITE_COORD(vecStart.x);		// origin
@@ -1079,7 +1079,7 @@ void CControllerHeadBall::HuntThink()
 
 	pev->renderamt -= 5;
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_ELIGHT);
 	WRITE_SHORT(entindex());		// entity, attachment
 	WRITE_COORD(pev->origin.x);		// origin
@@ -1115,7 +1115,7 @@ void CControllerHeadBall::HuntThink()
 			ApplyMultiDamage(pev, m_hOwner->pev);
 		}
 
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_BEAMENTPOINT);
 		WRITE_SHORT(entindex());
 		WRITE_COORD(tr.vecEndPos.x);
@@ -1173,7 +1173,7 @@ void CControllerHeadBall::Crawl()
 	const Vector vecAim = Vector(RANDOM_FLOAT(-1, 1), RANDOM_FLOAT(-1, 1), RANDOM_FLOAT(-1, 1)).Normalize();
 	const Vector vecPnt = pev->origin + pev->velocity * 0.3 + vecAim * 64;
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMENTPOINT);
 	WRITE_SHORT(entindex());
 	WRITE_COORD(vecPnt.x);

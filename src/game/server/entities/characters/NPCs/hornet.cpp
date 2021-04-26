@@ -187,7 +187,7 @@ void CHornet::IgniteTrail()
 	*/
 
 	// trail
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMFOLLOW);
 	WRITE_SHORT(entindex());	// entity
 	WRITE_SHORT(iHornetTrail);	// model
@@ -300,7 +300,7 @@ void CHornet::TrackTarget()
 	{
 		if (flDelta >= 0.4 && (pev->origin - m_vecEnemyLKP).Length() <= 300)
 		{
-			MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, pev->origin);
+			MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
 			WRITE_BYTE(TE_SPRITE);
 			WRITE_COORD(pev->origin.x);	// pos
 			WRITE_COORD(pev->origin.y);

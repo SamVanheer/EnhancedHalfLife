@@ -146,7 +146,7 @@ void CSquidSpit::Touch(CBaseEntity* pOther)
 		UTIL_DecalTrace(&tr, DECAL_SPIT1 + RANDOM_LONG(0, 1));
 
 		// make some flecks
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, tr.vecEndPos);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, tr.vecEndPos);
 		WRITE_BYTE(TE_SPRITE_SPRAY);
 		WRITE_COORD(tr.vecEndPos.x);	// pos
 		WRITE_COORD(tr.vecEndPos.y);
@@ -518,7 +518,7 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 			AttackSound();
 
 			// spew the spittle temporary ents.
-			MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSpitOffset);
+			MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpitOffset);
 			WRITE_BYTE(TE_SPRITE_SPRAY);
 			WRITE_COORD(vecSpitOffset.x);	// pos
 			WRITE_COORD(vecSpitOffset.y);

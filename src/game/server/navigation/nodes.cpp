@@ -315,16 +315,16 @@ int	CGraph::FindNearestLink(const Vector& vecTestPoint, int& iNearestLink, bool&
 	/*
 		if ( fSuccess )
 		{
-			WRITE_BYTE(MSG_BROADCAST, SVC_TEMPENTITY);
-			WRITE_BYTE(MSG_BROADCAST, TE_SHOWLINE);
+			WRITE_BYTE(MessageDest::Broadcast, SVC_TEMPENTITY);
+			WRITE_BYTE(MessageDest::Broadcast, TE_SHOWLINE);
 
-			WRITE_COORD(MSG_BROADCAST, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iSrcNode ].m_vecOrigin.x );
-			WRITE_COORD(MSG_BROADCAST, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iSrcNode ].m_vecOrigin.y );
-			WRITE_COORD(MSG_BROADCAST, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iSrcNode ].m_vecOrigin.z + NODE_HEIGHT);
+			WRITE_COORD(MessageDest::Broadcast, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iSrcNode ].m_vecOrigin.x );
+			WRITE_COORD(MessageDest::Broadcast, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iSrcNode ].m_vecOrigin.y );
+			WRITE_COORD(MessageDest::Broadcast, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iSrcNode ].m_vecOrigin.z + NODE_HEIGHT);
 
-			WRITE_COORD(MSG_BROADCAST, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iDestNode ].m_vecOrigin.x );
-			WRITE_COORD(MSG_BROADCAST, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iDestNode ].m_vecOrigin.y );
-			WRITE_COORD(MSG_BROADCAST, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iDestNode ].m_vecOrigin.z + NODE_HEIGHT);
+			WRITE_COORD(MessageDest::Broadcast, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iDestNode ].m_vecOrigin.x );
+			WRITE_COORD(MessageDest::Broadcast, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iDestNode ].m_vecOrigin.y );
+			WRITE_COORD(MessageDest::Broadcast, m_pNodes[ m_pLinkPool[ iNearestLink ].m_iDestNode ].m_vecOrigin.z + NODE_HEIGHT);
 		}
 	*/
 
@@ -642,7 +642,7 @@ int CGraph::FindShortestPath(int* piPath, int iStart, int iDest, int iHull, int 
 
 		for (int i = 0; i < iNumPathNodes - 1; i++)
 		{
-			MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+			MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 			WRITE_BYTE(TE_SHOWLINE);
 
 			WRITE_COORD(m_pNodes[piPath[i]].m_vecOrigin.x);
@@ -658,7 +658,7 @@ int CGraph::FindShortestPath(int* piPath, int iStart, int iDest, int iHull, int 
 
 #endif
 #if 0 // MAZE map
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_SHOWLINE);
 
 	WRITE_COORD(m_pNodes[4].m_vecOrigin.x);
@@ -989,7 +989,7 @@ void CGraph::ShowNodeConnections(int iNode)
 		const CNode& linkNode = Node(NodeLink(iNode, i).m_iDestNode);
 		const Vector& vecSpot = linkNode.m_vecOrigin;
 
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_SHOWLINE);
 
 		WRITE_COORD(m_pNodes[iNode].m_vecOrigin.x);
@@ -1836,7 +1836,7 @@ void CTestHull::PathFind()
 	{
 		CNode* pNextNode = &WorldGraph.m_pNodes[iPath[i + 1]];
 
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_SHOWLINE);
 
 		WRITE_COORD(pNode->m_vecOrigin.x);
@@ -2836,7 +2836,7 @@ void CNodeViewer::DrawThink()
 		}
 
 		extern short g_sModelIndexLaser;
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_BEAMPOINTS);
 		WRITE_COORD(WorldGraph.m_pNodes[m_aFrom[m_iDraw]].m_vecOrigin.x);
 		WRITE_COORD(WorldGraph.m_pNodes[m_aFrom[m_iDraw]].m_vecOrigin.y);

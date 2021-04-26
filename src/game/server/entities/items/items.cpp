@@ -164,7 +164,7 @@ class CItemBattery : public CItem
 
 			pPlayer->EmitSound(SoundChannel::Item, "items/gunpickup2.wav");
 
-			MESSAGE_BEGIN(MSG_ONE, gmsgItemPickup, nullptr, pPlayer->pev);
+			MESSAGE_BEGIN(MessageDest::One, gmsgItemPickup, nullptr, pPlayer->pev);
 			WRITE_STRING(STRING(pev->classname));
 			MESSAGE_END();
 
@@ -237,7 +237,7 @@ class CItemLongJump : public CItem
 
 			g_engfuncs.pfnSetPhysicsKeyValue(pPlayer->edict(), "slj", "1");
 
-			MESSAGE_BEGIN(MSG_ONE, gmsgItemPickup, nullptr, pPlayer->pev);
+			MESSAGE_BEGIN(MessageDest::One, gmsgItemPickup, nullptr, pPlayer->pev);
 			WRITE_STRING(STRING(pev->classname));
 			MESSAGE_END();
 

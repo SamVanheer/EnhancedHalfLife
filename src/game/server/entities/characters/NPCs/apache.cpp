@@ -220,7 +220,7 @@ void CApache::DyingThink()
 	if (m_flNextRocket > gpGlobals->time)
 	{
 		// random explosions
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
 		WRITE_BYTE(TE_EXPLOSION);		// This just makes a dynamic light now
 		WRITE_COORD(pev->origin.x + RANDOM_FLOAT(-150, 150));
 		WRITE_COORD(pev->origin.y + RANDOM_FLOAT(-150, 150));
@@ -232,7 +232,7 @@ void CApache::DyingThink()
 		MESSAGE_END();
 
 		// lots of smoke
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
 		WRITE_BYTE(TE_SMOKE);
 		WRITE_COORD(pev->origin.x + RANDOM_FLOAT(-150, 150));
 		WRITE_COORD(pev->origin.y + RANDOM_FLOAT(-150, 150));
@@ -243,7 +243,7 @@ void CApache::DyingThink()
 		MESSAGE_END();
 
 		Vector vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSpot);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 		WRITE_BYTE(TE_BREAKMODEL);
 
 		// position
@@ -288,7 +288,7 @@ void CApache::DyingThink()
 		Vector vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
 
 		/*
-		MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
+		MESSAGE_BEGIN( MessageDest::Broadcast, SVC_TEMPENTITY );
 			WRITE_BYTE( TE_EXPLOSION);		// This just makes a dynamic light now
 			WRITE_COORD( vecSpot.x );
 			WRITE_COORD( vecSpot.y );
@@ -300,7 +300,7 @@ void CApache::DyingThink()
 		*/
 
 		// fireball
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSpot);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 		WRITE_BYTE(TE_SPRITE);
 		WRITE_COORD(vecSpot.x);
 		WRITE_COORD(vecSpot.y);
@@ -311,7 +311,7 @@ void CApache::DyingThink()
 		MESSAGE_END();
 
 		// big smoke
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSpot);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 		WRITE_BYTE(TE_SMOKE);
 		WRITE_COORD(vecSpot.x);
 		WRITE_COORD(vecSpot.y);
@@ -322,7 +322,7 @@ void CApache::DyingThink()
 		MESSAGE_END();
 
 		// blast circle
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
 		WRITE_BYTE(TE_BEAMCYLINDER);
 		WRITE_COORD(pev->origin.x);
 		WRITE_COORD(pev->origin.y);
@@ -360,7 +360,7 @@ void CApache::DyingThink()
 
 		// gibs
 		vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSpot);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 		WRITE_BYTE(TE_BREAKMODEL);
 
 		// position
@@ -740,7 +740,7 @@ void CApache::FireRocket()
 	case 4: break;
 	}
 
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSrc);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSrc);
 	WRITE_BYTE(TE_SMOKE);
 	WRITE_COORD(vecSrc.x);
 	WRITE_COORD(vecSrc.y);
@@ -844,7 +844,7 @@ void CApache::ShowDamage()
 {
 	if (m_iDoSmokePuff > 0 || RANDOM_LONG(0, 99) > pev->health)
 	{
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
 		WRITE_BYTE(TE_SMOKE);
 		WRITE_COORD(pev->origin.x);
 		WRITE_COORD(pev->origin.y);
@@ -969,7 +969,7 @@ void CApacheHVR::IgniteThink()
 	EmitSound(SoundChannel::Voice, "weapons/rocket1.wav", VOL_NORM, 0.5);
 
 	// rocket trail
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 
 	WRITE_BYTE(TE_BEAMFOLLOW);
 	WRITE_SHORT(entindex());	// entity

@@ -314,7 +314,7 @@ bool CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	}
 
 	// tell director about it
-	MESSAGE_BEGIN(MSG_SPEC, SVC_DIRECTOR);
+	MESSAGE_BEGIN(MessageDest::Spectator, SVC_DIRECTOR);
 	WRITE_BYTE(9);	// command length in bytes
 	WRITE_BYTE(DRC_CMD_EVENT);	// take damage event
 	WRITE_SHORT(ENTINDEX(this->edict()));	// index number of primary entity
@@ -681,12 +681,12 @@ void CBasePlayer::Killed(entvars_t* pevAttacker, int iGib)
 
 	// send "health" update message to zero
 	m_iClientHealth = 0;
-	MESSAGE_BEGIN(MSG_ONE, gmsgHealth, nullptr, pev);
+	MESSAGE_BEGIN(MessageDest::One, gmsgHealth, nullptr, pev);
 	WRITE_SHORT(m_iClientHealth);
 	MESSAGE_END();
 
 	// Tell Ammo Hud that the player is dead
-	MESSAGE_BEGIN(MSG_ONE, gmsgCurWeapon, nullptr, pev);
+	MESSAGE_BEGIN(MessageDest::One, gmsgCurWeapon, nullptr, pev);
 	WRITE_BYTE(static_cast<int>(WeaponState::NotActive));
 	WRITE_BYTE(0XFF);
 	WRITE_BYTE(0xFF);
@@ -695,7 +695,7 @@ void CBasePlayer::Killed(entvars_t* pevAttacker, int iGib)
 	// reset FOV
 	m_iFOV = m_iClientFOV = 0;
 
-	MESSAGE_BEGIN(MSG_ONE, gmsgSetFOV, nullptr, pev);
+	MESSAGE_BEGIN(MessageDest::One, gmsgSetFOV, nullptr, pev);
 	WRITE_BYTE(0);
 	MESSAGE_END();
 
@@ -1142,7 +1142,7 @@ void CBasePlayer::StartDeathCam()
 void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 {
 	// clear any clientside entities attached to this player
-	MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
+	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
 	WRITE_BYTE(TE_KILLPLAYERATTACHMENTS);
 	WRITE_BYTE((byte)entindex());
 	MESSAGE_END();
@@ -1161,7 +1161,7 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 	SetSuitUpdate(nullptr, SuitSoundType::Sentence, 0);
 
 	// Tell Ammo Hud that the player is dead
-	MESSAGE_BEGIN(MSG_ONE, gmsgCurWeapon, nullptr, pev);
+	MESSAGE_BEGIN(MessageDest::One, gmsgCurWeapon, nullptr, pev);
 	WRITE_BYTE(static_cast<int>(WeaponState::NotActive));
 	WRITE_BYTE(0XFF);
 	WRITE_BYTE(0xFF);
@@ -1169,7 +1169,7 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 
 	// reset FOV
 	m_iFOV = m_iClientFOV = 0;
-	MESSAGE_BEGIN(MSG_ONE, gmsgSetFOV, nullptr, pev);
+	MESSAGE_BEGIN(MessageDest::One, gmsgSetFOV, nullptr, pev);
 	WRITE_BYTE(0);
 	MESSAGE_END();
 
@@ -1192,7 +1192,7 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 	m_fInitHUD = true;
 
 	pev->team = 0;
-	MESSAGE_BEGIN(MSG_ALL, gmsgTeamInfo);
+	MESSAGE_BEGIN(MessageDest::All, gmsgTeamInfo);
 	WRITE_BYTE(ENTINDEX(edict()));
 	WRITE_STRING("");
 	MESSAGE_END();
@@ -1413,7 +1413,7 @@ void CBasePlayer::AddPoints(int score, bool bAllowNegativeScore)
 
 	pev->frags += score;
 
-	MESSAGE_BEGIN(MSG_ALL, gmsgScoreInfo);
+	MESSAGE_BEGIN(MessageDest::All, gmsgScoreInfo);
 	WRITE_BYTE(ENTINDEX(edict()));
 	WRITE_SHORT(pev->frags);
 	WRITE_SHORT(m_iDeaths);
@@ -1496,7 +1496,7 @@ void CBasePlayer::UpdateStatusBar()
 
 	if (strcmp(sbuf0, m_SbarString0))
 	{
-		MESSAGE_BEGIN(MSG_ONE, gmsgStatusText, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgStatusText, nullptr, pev);
 		WRITE_BYTE(0);
 		WRITE_STRING(sbuf0);
 		MESSAGE_END();
@@ -1509,7 +1509,7 @@ void CBasePlayer::UpdateStatusBar()
 
 	if (strcmp(sbuf1, m_SbarString1))
 	{
-		MESSAGE_BEGIN(MSG_ONE, gmsgStatusText, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgStatusText, nullptr, pev);
 		WRITE_BYTE(1);
 		WRITE_STRING(sbuf1);
 		MESSAGE_END();
@@ -1525,7 +1525,7 @@ void CBasePlayer::UpdateStatusBar()
 	{
 		if (newSBarState[i] != m_izSBarState[i] || bForceResend)
 		{
-			MESSAGE_BEGIN(MSG_ONE, gmsgStatusValue, nullptr, pev);
+			MESSAGE_BEGIN(MessageDest::One, gmsgStatusValue, nullptr, pev);
 			WRITE_BYTE(i);
 			WRITE_SHORT(newSBarState[i]);
 			MESSAGE_END();
@@ -1794,7 +1794,7 @@ void CBasePlayer::UpdateGeigerCounter()
 	{
 		m_igeigerRangePrev = range;
 
-		MESSAGE_BEGIN(MSG_ONE, gmsgGeigerRange, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgGeigerRange, nullptr, pev);
 		WRITE_BYTE(range);
 		MESSAGE_END();
 	}
@@ -2658,7 +2658,7 @@ void CBasePlayer::FlashlightTurnOn()
 	{
 		EmitSound(SoundChannel::Weapon, SOUND_FLASHLIGHT_ON.data());
 		SetBits(pev->effects, EF_DIMLIGHT);
-		MESSAGE_BEGIN(MSG_ONE, gmsgFlashlight, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgFlashlight, nullptr, pev);
 		WRITE_BYTE(1);
 		WRITE_BYTE(m_iFlashBattery);
 		MESSAGE_END();
@@ -2671,7 +2671,7 @@ void CBasePlayer::FlashlightTurnOff()
 {
 	EmitSound(SoundChannel::Weapon, SOUND_FLASHLIGHT_OFF.data());
 	ClearBits(pev->effects, EF_DIMLIGHT);
-	MESSAGE_BEGIN(MSG_ONE, gmsgFlashlight, nullptr, pev);
+	MESSAGE_BEGIN(MessageDest::One, gmsgFlashlight, nullptr, pev);
 	WRITE_BYTE(0);
 	WRITE_BYTE(m_iFlashBattery);
 	MESSAGE_END();
@@ -2717,7 +2717,7 @@ void CBasePlayer::ImpulseCommands()
 
 		ASSERT(gmsgLogo > 0);
 		// send "health" update message
-		MESSAGE_BEGIN(MSG_ONE, gmsgLogo, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgLogo, nullptr, pev);
 		WRITE_BYTE(iOn);
 		MESSAGE_END();
 
@@ -3072,7 +3072,7 @@ int CBasePlayer::GiveAmmo(int iCount, const char* szName, int iMax)
 	if (gmsgAmmoPickup)  // make sure the ammo messages have been linked first
 	{
 		// Send the message that ammo has been picked up
-		MESSAGE_BEGIN(MSG_ONE, gmsgAmmoPickup, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgAmmoPickup, nullptr, pev);
 		WRITE_BYTE(GetAmmoIndex(szName));		// ammo ID
 		WRITE_BYTE(iAdd);		// amount
 		MESSAGE_END();
@@ -3160,7 +3160,7 @@ void CBasePlayer::SendAmmoUpdate()
 			ASSERT(m_rgAmmo[i] < 255);
 
 			// send "Ammo" update message
-			MESSAGE_BEGIN(MSG_ONE, gmsgAmmoX, nullptr, pev);
+			MESSAGE_BEGIN(MessageDest::One, gmsgAmmoX, nullptr, pev);
 			WRITE_BYTE(i);
 			WRITE_BYTE(std::max(std::min(m_rgAmmo[i], 254), 0));  // clamp the value to one byte
 			MESSAGE_END();
@@ -3177,13 +3177,13 @@ void CBasePlayer::UpdateClientData()
 		m_fInitHUD = false;
 		gInitHUD = false;
 
-		MESSAGE_BEGIN(MSG_ONE, gmsgResetHUD, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgResetHUD, nullptr, pev);
 		WRITE_BYTE(0);
 		MESSAGE_END();
 
 		if (!m_fGameHUDInitialized)
 		{
-			MESSAGE_BEGIN(MSG_ONE, gmsgInitHUD, nullptr, pev);
+			MESSAGE_BEGIN(MessageDest::One, gmsgInitHUD, nullptr, pev);
 			MESSAGE_END();
 
 			g_pGameRules->InitHUD(this);
@@ -3204,7 +3204,7 @@ void CBasePlayer::UpdateClientData()
 
 	if (m_iHideHUD != m_iClientHideHUD)
 	{
-		MESSAGE_BEGIN(MSG_ONE, gmsgHideWeapon, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgHideWeapon, nullptr, pev);
 		WRITE_BYTE(m_iHideHUD);
 		MESSAGE_END();
 
@@ -3213,7 +3213,7 @@ void CBasePlayer::UpdateClientData()
 
 	if (m_iFOV != m_iClientFOV)
 	{
-		MESSAGE_BEGIN(MSG_ONE, gmsgSetFOV, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgSetFOV, nullptr, pev);
 		WRITE_BYTE(m_iFOV);
 		MESSAGE_END();
 
@@ -3223,7 +3223,7 @@ void CBasePlayer::UpdateClientData()
 	// HACKHACK -- send the message to display the game title
 	if (gDisplayTitle)
 	{
-		MESSAGE_BEGIN(MSG_ONE, gmsgShowGameTitle, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgShowGameTitle, nullptr, pev);
 		WRITE_BYTE(0);
 		MESSAGE_END();
 		gDisplayTitle = 0;
@@ -3237,7 +3237,7 @@ void CBasePlayer::UpdateClientData()
 			iHealth = 1;
 
 		// send "health" update message
-		MESSAGE_BEGIN(MSG_ONE, gmsgHealth, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgHealth, nullptr, pev);
 		WRITE_SHORT(iHealth);
 		MESSAGE_END();
 
@@ -3250,7 +3250,7 @@ void CBasePlayer::UpdateClientData()
 
 		ASSERT(gmsgBattery > 0);
 		// send "health" update message
-		MESSAGE_BEGIN(MSG_ONE, gmsgBattery, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgBattery, nullptr, pev);
 		WRITE_SHORT((int)pev->armorvalue);
 		MESSAGE_END();
 	}
@@ -3271,7 +3271,7 @@ void CBasePlayer::UpdateClientData()
 		// only send down damage type that have hud art
 		const int visibleDamageBits = m_bitsDamageType & DMG_SHOWNHUD;
 
-		MESSAGE_BEGIN(MSG_ONE, gmsgDamage, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgDamage, nullptr, pev);
 		WRITE_BYTE(pev->dmg_save);
 		WRITE_BYTE(pev->dmg_take);
 		WRITE_LONG(visibleDamageBits);
@@ -3291,14 +3291,14 @@ void CBasePlayer::UpdateClientData()
 	if (m_bRestored)
 	{
 		//Always tell client about battery state
-		MESSAGE_BEGIN(MSG_ONE, gmsgFlashBattery, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgFlashBattery, nullptr, pev);
 		WRITE_BYTE(m_iFlashBattery);
 		MESSAGE_END();
 
 		//Tell client the flashlight is on
 		if (FlashlightIsOn())
 		{
-			MESSAGE_BEGIN(MSG_ONE, gmsgFlashlight, nullptr, pev);
+			MESSAGE_BEGIN(MessageDest::One, gmsgFlashlight, nullptr, pev);
 			WRITE_BYTE(1);
 			WRITE_BYTE(m_iFlashBattery);
 			MESSAGE_END();
@@ -3330,7 +3330,7 @@ void CBasePlayer::UpdateClientData()
 				m_flFlashLightTime = 0;
 		}
 
-		MESSAGE_BEGIN(MSG_ONE, gmsgFlashBattery, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgFlashBattery, nullptr, pev);
 		WRITE_BYTE(m_iFlashBattery);
 		MESSAGE_END();
 	}
@@ -3339,7 +3339,7 @@ void CBasePlayer::UpdateClientData()
 	{
 		ASSERT(gmsgTrain > 0);
 		// send "health" update message
-		MESSAGE_BEGIN(MSG_ONE, gmsgTrain, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgTrain, nullptr, pev);
 		WRITE_BYTE(m_iTrain & 0xF);
 		MESSAGE_END();
 
@@ -3380,7 +3380,7 @@ void CBasePlayer::UpdateClientData()
 			else
 				pszName = II.pszName;
 
-			MESSAGE_BEGIN(MSG_ONE, gmsgWeaponList, nullptr, pev);
+			MESSAGE_BEGIN(MessageDest::One, gmsgWeaponList, nullptr, pev);
 			WRITE_STRING(pszName);			// string	weapon name
 			WRITE_BYTE(GetAmmoIndex(II.pszAmmo1));	// byte		Ammo Type
 			WRITE_BYTE(II.iMaxAmmo1);				// byte     Max Ammo 1
@@ -3408,7 +3408,7 @@ void CBasePlayer::UpdateClientData()
 	if (pev->iuser1 == OBS_NONE && !m_pActiveItem && ((m_pClientActiveItem != m_pActiveItem) || fullHUDInitRequired))
 	{
 		//Tell ammo hud that we have no weapon selected
-		MESSAGE_BEGIN(MSG_ONE, gmsgCurWeapon, nullptr, pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgCurWeapon, nullptr, pev);
 		WRITE_BYTE(static_cast<int>(WeaponState::NotActive));
 		WRITE_BYTE(0);
 		WRITE_BYTE(0);

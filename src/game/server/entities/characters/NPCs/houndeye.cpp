@@ -507,7 +507,7 @@ void CHoundeye::SonicAttack()
 	}
 
 	// blast circles
-	MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
+	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
 	WRITE_BYTE(TE_BEAMCYLINDER);
 	WRITE_COORD(pev->origin.x);
 	WRITE_COORD(pev->origin.y);
@@ -528,7 +528,7 @@ void CHoundeye::SonicAttack()
 	WRITE_BYTE(0);		// speed
 	MESSAGE_END();
 
-	MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
+	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
 	WRITE_BYTE(TE_BEAMCYLINDER);
 	WRITE_COORD(pev->origin.x);
 	WRITE_COORD(pev->origin.y);
@@ -660,7 +660,7 @@ void CHoundeye::StartTask(Task_t* pTask)
 							if ( pSquad->m_iMySlot == bits_SLOT_HOUND_BATTERY )
 							{
 								// draw a beam.
-								MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
+								MESSAGE_BEGIN( MessageDest::Broadcast, SVC_TEMPENTITY );
 									WRITE_BYTE( TE_BEAMENTS );
 									WRITE_SHORT( ENTINDEX( this->edict() ) );
 									WRITE_SHORT( ENTINDEX( pSquad->edict() ) );
@@ -745,7 +745,7 @@ void CHoundeye::RunTask(Task_t* pTask)
 
 		const float life = std::max(0.1f, ((255 - pev->frame) / (pev->framerate * m_flFrameRate)));
 
-		MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
 		WRITE_BYTE(TE_IMPLOSION);
 		WRITE_COORD(pev->origin.x);
 		WRITE_COORD(pev->origin.y);

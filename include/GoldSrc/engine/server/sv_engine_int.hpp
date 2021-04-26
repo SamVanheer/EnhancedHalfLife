@@ -161,7 +161,7 @@ struct enginefuncs_t
 	void		(*pfnLightStyle)			(int style, const char* val);
 	int			(*pfnDecalIndex)			(const char* name);
 	Contents (*pfnPointContents)			(const float* rgflVector);
-	void		(*pfnMessageBegin)			(int msg_dest, int msg_type, const float* pOrigin, edict_t* ed);
+	void		(*pfnMessageBegin)			(MessageDest msg_dest, int msg_type, const float* pOrigin, edict_t* ed);
 	void		(*pfnMessageEnd)			();
 	void		(*pfnWriteByte)				(int iValue);
 	void		(*pfnWriteChar)				(int iValue);

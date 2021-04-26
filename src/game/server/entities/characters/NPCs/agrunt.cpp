@@ -251,7 +251,7 @@ void CAGrunt::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir,
 
 			vecTracerDir = vecTracerDir * -512;
 
-			MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, ptr->vecEndPos);
+			MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, ptr->vecEndPos);
 			WRITE_BYTE(TE_TRACER);
 			WRITE_COORD(ptr->vecEndPos.x);
 			WRITE_COORD(ptr->vecEndPos.y);
@@ -434,7 +434,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 		GetAttachment(0, vecArmPos, vecArmDir);
 
 		vecArmPos = vecArmPos + vecDirToEnemy * 32;
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecArmPos);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecArmPos);
 		WRITE_BYTE(TE_SPRITE);
 		WRITE_COORD(vecArmPos.x);	// pos
 		WRITE_COORD(vecArmPos.y);

@@ -223,7 +223,7 @@ void CMortar::MortarExplode()
 {
 #if 1
 	// mortar beam
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMPOINTS);
 	WRITE_COORD(pev->origin.x);
 	WRITE_COORD(pev->origin.y);
@@ -247,7 +247,7 @@ void CMortar::MortarExplode()
 
 #if 0
 	// blast circle
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMTORUS);
 	WRITE_COORD(pev->origin.x);
 	WRITE_COORD(pev->origin.y);

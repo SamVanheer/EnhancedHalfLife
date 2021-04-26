@@ -410,7 +410,7 @@ void CWreckage::Think()
 		RANDOM_FLOAT(pev->absmin.z, pev->absmax.z)
 	};
 
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, VecSrc);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, VecSrc);
 	WRITE_BYTE(TE_SMOKE);
 	WRITE_COORD(VecSrc.x);
 	WRITE_COORD(VecSrc.y);

@@ -59,7 +59,7 @@ void ClientDisconnect(edict_t* pEntity)
 	char text[256] = "";
 	if (!IsStringNull(pEntity->v.netname))
 		snprintf(text, sizeof(text), "- %s has left the game\n", STRING(pEntity->v.netname));
-	MESSAGE_BEGIN(MSG_ALL, gmsgSayText, nullptr);
+	MESSAGE_BEGIN(MessageDest::All, gmsgSayText, nullptr);
 	WRITE_BYTE(ENTINDEX(pEntity));
 	WRITE_STRING(text);
 	MESSAGE_END();
@@ -267,7 +267,7 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 			if (!client->IsObserver())
 				continue;
 
-		MESSAGE_BEGIN(MSG_ONE, gmsgSayText, nullptr, client->pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgSayText, nullptr, client->pev);
 		WRITE_BYTE(ENTINDEX(pEntity));
 		WRITE_STRING(text);
 		MESSAGE_END();
@@ -275,7 +275,7 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 	}
 
 	// print to the sending client
-	MESSAGE_BEGIN(MSG_ONE, gmsgSayText, nullptr, &pEntity->v);
+	MESSAGE_BEGIN(MessageDest::One, gmsgSayText, nullptr, &pEntity->v);
 	WRITE_BYTE(ENTINDEX(pEntity));
 	WRITE_STRING(text);
 	MESSAGE_END();
@@ -450,7 +450,7 @@ void ClientUserInfoChanged(edict_t* pEntity, char* infobuffer)
 		{
 			char text[256];
 			snprintf(text, sizeof(text), "* %s changed name to %s\n", STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue(infobuffer, "name"));
-			MESSAGE_BEGIN(MSG_ALL, gmsgSayText, nullptr);
+			MESSAGE_BEGIN(MessageDest::All, gmsgSayText, nullptr);
 			WRITE_BYTE(ENTINDEX(pEntity));
 			WRITE_STRING(text);
 			MESSAGE_END();

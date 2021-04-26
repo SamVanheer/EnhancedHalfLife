@@ -639,7 +639,7 @@ void CBreakable::Die()
 
 	// shard origin
 	const Vector vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSpot);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 	WRITE_BYTE(TE_BREAKMODEL);
 
 	// position

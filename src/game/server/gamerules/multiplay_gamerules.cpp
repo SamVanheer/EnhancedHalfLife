@@ -381,7 +381,7 @@ bool CHalfLifeMultiplay::ClientConnected(edict_t* pEntity, const char* pszName, 
 
 void CHalfLifeMultiplay::UpdateGameMode(CBasePlayer* pPlayer)
 {
-	MESSAGE_BEGIN(MSG_ONE, gmsgGameMode, nullptr, pPlayer->edict());
+	MESSAGE_BEGIN(MessageDest::One, gmsgGameMode, nullptr, pPlayer->edict());
 	WRITE_BYTE(0);  // game mode none
 	MESSAGE_END();
 }
@@ -414,7 +414,7 @@ void CHalfLifeMultiplay::InitHUD(CBasePlayer* pl)
 
 	// sending just one score makes the hud scoreboard active;  otherwise
 	// it is just disabled for single play
-	MESSAGE_BEGIN(MSG_ONE, gmsgScoreInfo, nullptr, pl->edict());
+	MESSAGE_BEGIN(MessageDest::One, gmsgScoreInfo, nullptr, pl->edict());
 	WRITE_BYTE(ENTINDEX(pl->edict()));
 	WRITE_SHORT(0);
 	WRITE_SHORT(0);
@@ -432,7 +432,7 @@ void CHalfLifeMultiplay::InitHUD(CBasePlayer* pl)
 
 		if (plr)
 		{
-			MESSAGE_BEGIN(MSG_ONE, gmsgScoreInfo, nullptr, pl->edict());
+			MESSAGE_BEGIN(MessageDest::One, gmsgScoreInfo, nullptr, pl->edict());
 			WRITE_BYTE(i);	// client number
 			WRITE_SHORT(plr->pev->frags);
 			WRITE_SHORT(plr->m_iDeaths);
@@ -444,7 +444,7 @@ void CHalfLifeMultiplay::InitHUD(CBasePlayer* pl)
 
 	if (g_fGameOver)
 	{
-		MESSAGE_BEGIN(MSG_ONE, SVC_INTERMISSION, nullptr, pl->edict());
+		MESSAGE_BEGIN(MessageDest::One, SVC_INTERMISSION, nullptr, pl->edict());
 		MESSAGE_END();
 	}
 }
@@ -599,7 +599,7 @@ void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, 
 
 	// update the scores
 	// killed scores
-	MESSAGE_BEGIN(MSG_ALL, gmsgScoreInfo);
+	MESSAGE_BEGIN(MessageDest::All, gmsgScoreInfo);
 	WRITE_BYTE(ENTINDEX(pVictim->edict()));
 	WRITE_SHORT(pVictim->pev->frags);
 	WRITE_SHORT(pVictim->m_iDeaths);
@@ -613,7 +613,7 @@ void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, 
 	{
 		CBasePlayer* PK = (CBasePlayer*)ep;
 
-		MESSAGE_BEGIN(MSG_ALL, gmsgScoreInfo);
+		MESSAGE_BEGIN(MessageDest::All, gmsgScoreInfo);
 		WRITE_BYTE(ENTINDEX(PK->edict()));
 		WRITE_SHORT(PK->pev->frags);
 		WRITE_SHORT(PK->m_iDeaths);
@@ -678,7 +678,7 @@ void CHalfLifeMultiplay::DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, e
 	else if (strncmp(killer_weapon_name, "func_", 5) == 0)
 		killer_weapon_name += 5;
 
-	MESSAGE_BEGIN(MSG_ALL, gmsgDeathMsg);
+	MESSAGE_BEGIN(MessageDest::All, gmsgDeathMsg);
 	WRITE_BYTE(killer_index);						// the killer
 	WRITE_BYTE(ENTINDEX(pVictim->edict()));		// the victim
 	WRITE_STRING(killer_weapon_name);		// what they were killed by (should this be a string?)
@@ -769,7 +769,7 @@ void CHalfLifeMultiplay::DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, e
 		}
 	}
 
-	MESSAGE_BEGIN(MSG_SPEC, SVC_DIRECTOR);
+	MESSAGE_BEGIN(MessageDest::Spectator, SVC_DIRECTOR);
 	WRITE_BYTE(9);	// command length in bytes
 	WRITE_BYTE(DRC_CMD_EVENT);	// player killed
 	WRITE_SHORT(ENTINDEX(pVictim->edict()));	// index number of primary entity
@@ -1035,7 +1035,7 @@ void CHalfLifeMultiplay::GoToIntermission()
 	if (g_fGameOver)
 		return;  // intermission has already been triggered, so ignore.
 
-	MESSAGE_BEGIN(MSG_ALL, SVC_INTERMISSION);
+	MESSAGE_BEGIN(MessageDest::All, SVC_INTERMISSION);
 	MESSAGE_END();
 
 	// bounds check
@@ -1193,7 +1193,7 @@ void CHalfLifeMultiplay::SendMOTDToClient(edict_t* client)
 	char* pFileList = aFileList;
 
 	// send the server name
-	MESSAGE_BEGIN(MSG_ONE, gmsgServerName, nullptr, client);
+	MESSAGE_BEGIN(MessageDest::One, gmsgServerName, nullptr, client);
 	WRITE_STRING(CVAR_GET_STRING("hostname"));
 	MESSAGE_END();
 
@@ -1219,7 +1219,7 @@ void CHalfLifeMultiplay::SendMOTDToClient(edict_t* client)
 		else
 			*pFileList = 0;
 
-		MESSAGE_BEGIN(MSG_ONE, gmsgMOTD, nullptr, client);
+		MESSAGE_BEGIN(MessageDest::One, gmsgMOTD, nullptr, client);
 		WRITE_BYTE(*pFileList ? false : true);	// false means there is still more message to come
 		WRITE_STRING(chunk);
 		MESSAGE_END();

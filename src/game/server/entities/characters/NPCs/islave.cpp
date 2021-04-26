@@ -229,7 +229,7 @@ void CISlave::IdleSound()
 
 	UTIL_MakeAimVectors(pev->angles);
 	Vector vecSrc = pev->origin + gpGlobals->v_right * 2 * side;
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSrc);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSrc);
 	WRITE_BYTE(TE_DLIGHT);
 	WRITE_COORD(vecSrc.x);	// X
 	WRITE_COORD(vecSrc.y);	// Y
@@ -352,7 +352,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 		if (m_iBeams == 0)
 		{
 			const Vector vecSrc = pev->origin + gpGlobals->v_forward * 2;
-			MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSrc);
+			MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSrc);
 			WRITE_BYTE(TE_DLIGHT);
 			WRITE_COORD(vecSrc.x);	// X
 			WRITE_COORD(vecSrc.y);	// Y

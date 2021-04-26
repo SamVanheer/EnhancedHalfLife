@@ -627,16 +627,19 @@ constexpr int TE_USERTRACER = 127; // larger message than the standard tracer, b
 // byte ( color ) this is an index into an array of color vectors in the engine. (0 - )
 // byte ( length * 10 )
 
-constexpr int MSG_BROADCAST = 0;		//!< unreliable to all
-constexpr int MSG_ONE = 1;				//!< reliable to one (msg_entity)
-constexpr int MSG_ALL = 2;				//!< reliable to all
-constexpr int MSG_INIT = 3;				//!< write to the init string
-constexpr int MSG_PVS = 4;				//!< Ents in PVS of org
-constexpr int MSG_PAS = 5;				//!< Ents in PAS of org
-constexpr int MSG_PVS_R = 6;			//!< Reliable to PVS
-constexpr int MSG_PAS_R = 7;			//!< Reliable to PAS
-constexpr int MSG_ONE_UNRELIABLE = 8;	//!< Send to one client, but don't put in reliable stream, put in unreliable datagram ( could be dropped )
-constexpr int MSG_SPEC = 9;				//!< Sends to all spectator proxies
+enum class MessageDest
+{
+	Broadcast = 0,			//!< unreliable to all
+	One = 1,				//!< reliable to one (msg_entity)
+	All = 2,				//!< reliable to all
+	Init = 3,				//!< write to the init string
+	PVS = 4,				//!< Ents in PVS of org
+	PAS = 5,				//!< Ents in PAS of org
+	PVSReliable = 6,		//!< Reliable to PVS
+	PASReliable = 7,		//!< Reliable to PAS
+	OneUnreliable = 8,		//!< Send to one client, but don't put in reliable stream, put in unreliable datagram ( could be dropped )
+	Spectator = 9,			//!< Sends to all spectator proxies
+};
 
 /**
 *	@brief contents of a spot in the world

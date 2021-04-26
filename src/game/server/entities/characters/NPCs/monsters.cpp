@@ -618,7 +618,7 @@ void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, in
 
 	//	UTIL_ParticleEffect ( m_Route[ m_iRouteIndex ].vecLocation, vec3_origin, 255, 25 );
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMPOINTS);
 	WRITE_COORD(pev->origin.x);
 	WRITE_COORD(pev->origin.y);
@@ -645,7 +645,7 @@ void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, in
 		if ((m_Route[i].iType & bits_MF_IS_GOAL) || (m_Route[i + 1].iType == 0))
 			break;
 
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_BEAMPOINTS);
 		WRITE_COORD(m_Route[i].vecLocation.x);
 		WRITE_COORD(m_Route[i].vecLocation.y);
@@ -1157,14 +1157,14 @@ LocalMoveResult CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vecto
 	}
 	/*
 	// uncommenting this block will draw a line representing the nearest legal move.
-	WRITE_BYTE(MSG_BROADCAST, SVC_TEMPENTITY);
-	WRITE_BYTE(MSG_BROADCAST, TE_SHOWLINE);
-	WRITE_COORD(MSG_BROADCAST, pev->origin.x);
-	WRITE_COORD(MSG_BROADCAST, pev->origin.y);
-	WRITE_COORD(MSG_BROADCAST, pev->origin.z);
-	WRITE_COORD(MSG_BROADCAST, vecStart.x);
-	WRITE_COORD(MSG_BROADCAST, vecStart.y);
-	WRITE_COORD(MSG_BROADCAST, vecStart.z);
+	WRITE_BYTE(MessageDest::Broadcast, SVC_TEMPENTITY);
+	WRITE_BYTE(MessageDest::Broadcast, TE_SHOWLINE);
+	WRITE_COORD(MessageDest::Broadcast, pev->origin.x);
+	WRITE_COORD(MessageDest::Broadcast, pev->origin.y);
+	WRITE_COORD(MessageDest::Broadcast, pev->origin.z);
+	WRITE_COORD(MessageDest::Broadcast, vecStart.x);
+	WRITE_COORD(MessageDest::Broadcast, vecStart.y);
+	WRITE_COORD(MessageDest::Broadcast, vecStart.z);
 	*/
 
 	// since we've actually moved the monster during the check, undo the move.
@@ -1322,14 +1322,14 @@ bool CBaseMonster::BuildRoute(const Vector& vecGoal, int iMoveFlag, CBaseEntity*
 		m_Route[1].iType = iMoveFlag | bits_MF_IS_GOAL;
 
 		/*
-		WRITE_BYTE(MSG_BROADCAST, SVC_TEMPENTITY);
-		WRITE_BYTE(MSG_BROADCAST, TE_SHOWLINE);
-		WRITE_COORD(MSG_BROADCAST, vecApex.x );
-		WRITE_COORD(MSG_BROADCAST, vecApex.y );
-		WRITE_COORD(MSG_BROADCAST, vecApex.z );
-		WRITE_COORD(MSG_BROADCAST, vecApex.x );
-		WRITE_COORD(MSG_BROADCAST, vecApex.y );
-		WRITE_COORD(MSG_BROADCAST, vecApex.z + 128 );
+		WRITE_BYTE(MessageDest::Broadcast, SVC_TEMPENTITY);
+		WRITE_BYTE(MessageDest::Broadcast, TE_SHOWLINE);
+		WRITE_COORD(MessageDest::Broadcast, vecApex.x );
+		WRITE_COORD(MessageDest::Broadcast, vecApex.y );
+		WRITE_COORD(MessageDest::Broadcast, vecApex.z );
+		WRITE_COORD(MessageDest::Broadcast, vecApex.x );
+		WRITE_COORD(MessageDest::Broadcast, vecApex.y );
+		WRITE_COORD(MessageDest::Broadcast, vecApex.z + 128 );
 		*/
 
 		RouteSimplify(pTarget);
@@ -1410,7 +1410,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 	{
 		// Debug, Draw the triangulation
 #if 0
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_SHOWLINE);
 		WRITE_COORD(pev->origin.x);
 		WRITE_COORD(pev->origin.y);
@@ -1420,7 +1420,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 		WRITE_COORD(vecRight.z);
 		MESSAGE_END();
 
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_SHOWLINE);
 		WRITE_COORD(pev->origin.x);
 		WRITE_COORD(pev->origin.y);
@@ -1434,7 +1434,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 #if 0
 		if (pev->movetype == Movetype::Fly)
 		{
-			MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+			MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 			WRITE_BYTE(TE_SHOWLINE);
 			WRITE_COORD(pev->origin.x);
 			WRITE_COORD(pev->origin.y);
@@ -1444,7 +1444,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 			WRITE_COORD(vecTop.z);
 			MESSAGE_END();
 
-			MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+			MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 			WRITE_BYTE(TE_SHOWLINE);
 			WRITE_COORD(pev->origin.x);
 			WRITE_COORD(pev->origin.y);
@@ -1996,7 +1996,7 @@ bool CBaseMonster::FindCover(Vector vecThreat, Vector vecViewOffset, float flMin
 					if (ValidateCover(node.m_vecOrigin) && MoveToLocation(ACT_RUN, 0, node.m_vecOrigin))
 					{
 						/*
-						MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
+						MESSAGE_BEGIN( MessageDest::Broadcast, SVC_TEMPENTITY );
 							WRITE_BYTE( TE_SHOWLINE);
 
 							WRITE_COORD( node.m_vecOrigin.x );

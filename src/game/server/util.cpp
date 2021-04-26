@@ -509,7 +509,7 @@ void UTIL_ScreenShake(const Vector& center, float amplitude, float frequency, fl
 		{
 			shake.amplitude = FixedUnsigned16(localAmplitude, 1 << 12);		// 4.12 fixed
 
-			MESSAGE_BEGIN(MSG_ONE, gmsgShake, nullptr, pPlayer->edict());		// use the magic #1 for "one client"
+			MESSAGE_BEGIN(MessageDest::One, gmsgShake, nullptr, pPlayer->edict());		// use the magic #1 for "one client"
 
 			WRITE_SHORT(shake.amplitude);				// shake amount
 			WRITE_SHORT(shake.duration);				// shake lasts this long
@@ -545,7 +545,7 @@ void UTIL_ScreenFadeWrite(const ScreenFade& fade, CBaseEntity* pEntity)
 	if (!pEntity || !pEntity->IsNetClient())
 		return;
 
-	MESSAGE_BEGIN(MSG_ONE, gmsgFade, nullptr, pEntity->edict());		// use the magic #1 for "one client"
+	MESSAGE_BEGIN(MessageDest::One, gmsgFade, nullptr, pEntity->edict());		// use the magic #1 for "one client"
 
 	WRITE_SHORT(fade.duration);		// fade lasts this long
 	WRITE_SHORT(fade.holdTime);		// fade lasts this long
@@ -590,7 +590,7 @@ void UTIL_HudMessage(CBaseEntity* pEntity, const hudtextparms_t& textparms, cons
 	if (!pEntity || !pEntity->IsNetClient())
 		return;
 
-	MESSAGE_BEGIN(MSG_ONE, SVC_TEMPENTITY, nullptr, pEntity->edict());
+	MESSAGE_BEGIN(MessageDest::One, SVC_TEMPENTITY, nullptr, pEntity->edict());
 	WRITE_BYTE(TE_TEXTMESSAGE);
 	WRITE_BYTE(textparms.channel & 0xFF);
 
@@ -642,7 +642,7 @@ void UTIL_HudMessageAll(const hudtextparms_t& textparms, const char* pMessage)
 
 void UTIL_ClientPrintAll(int msg_dest, const char* msg_name, const char* param1, const char* param2, const char* param3, const char* param4)
 {
-	MESSAGE_BEGIN(MSG_ALL, gmsgTextMsg);
+	MESSAGE_BEGIN(MessageDest::All, gmsgTextMsg);
 	WRITE_BYTE(msg_dest);
 	WRITE_STRING(msg_name);
 
@@ -660,7 +660,7 @@ void UTIL_ClientPrintAll(int msg_dest, const char* msg_name, const char* param1,
 
 void ClientPrint(entvars_t* client, int msg_dest, const char* msg_name, const char* param1, const char* param2, const char* param3, const char* param4)
 {
-	MESSAGE_BEGIN(MSG_ONE, gmsgTextMsg, nullptr, client);
+	MESSAGE_BEGIN(MessageDest::One, gmsgTextMsg, nullptr, client);
 	WRITE_BYTE(msg_dest);
 	WRITE_STRING(msg_name);
 
@@ -681,7 +681,7 @@ void UTIL_SayText(const char* pText, CBaseEntity* pEntity)
 	if (!pEntity->IsNetClient())
 		return;
 
-	MESSAGE_BEGIN(MSG_ONE, gmsgSayText, nullptr, pEntity->edict());
+	MESSAGE_BEGIN(MessageDest::One, gmsgSayText, nullptr, pEntity->edict());
 	WRITE_BYTE(pEntity->entindex());
 	WRITE_STRING(pText);
 	MESSAGE_END();
@@ -689,7 +689,7 @@ void UTIL_SayText(const char* pText, CBaseEntity* pEntity)
 
 void UTIL_SayTextAll(const char* pText, CBaseEntity* pEntity)
 {
-	MESSAGE_BEGIN(MSG_ALL, gmsgSayText, nullptr);
+	MESSAGE_BEGIN(MessageDest::All, gmsgSayText, nullptr);
 	WRITE_BYTE(pEntity->entindex());
 	WRITE_STRING(pText);
 	MESSAGE_END();
@@ -729,7 +729,7 @@ void UTIL_ShowMessage(const char* pString, CBaseEntity* pEntity)
 	if (!pEntity || !pEntity->IsNetClient())
 		return;
 
-	MESSAGE_BEGIN(MSG_ONE, gmsgHudText, nullptr, pEntity->edict());
+	MESSAGE_BEGIN(MessageDest::One, gmsgHudText, nullptr, pEntity->edict());
 	WRITE_STRING(pString);
 	MESSAGE_END();
 }
@@ -890,7 +890,7 @@ void UTIL_BloodStream(const Vector& origin, const Vector& direction, int color, 
 		color = 0;
 
 
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, origin);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, origin);
 	WRITE_BYTE(TE_BLOODSTREAM);
 	WRITE_COORD(origin.x);
 	WRITE_COORD(origin.y);
@@ -923,7 +923,7 @@ void UTIL_BloodDrips(const Vector& origin, const Vector& direction, int color, i
 	if (amount > 255)
 		amount = 255;
 
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, origin);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, origin);
 	WRITE_BYTE(TE_BLOODSPRITE);
 	WRITE_COORD(origin.x);								// pos
 	WRITE_COORD(origin.y);
@@ -1006,7 +1006,7 @@ void UTIL_DecalTrace(TraceResult* pTrace, int decalNumber)
 		}
 	}
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(message);
 	WRITE_COORD(pTrace->vecEndPos.x);
 	WRITE_COORD(pTrace->vecEndPos.y);
@@ -1036,7 +1036,7 @@ void UTIL_PlayerDecalTrace(TraceResult* pTrace, int playernum, int decalNumber, 
 	if (pTrace->flFraction == 1.0)
 		return;
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_PLAYERDECAL);
 	WRITE_BYTE(playernum);
 	WRITE_COORD(pTrace->vecEndPos.x);
@@ -1059,7 +1059,7 @@ void UTIL_GunshotDecalTrace(TraceResult* pTrace, int decalNumber)
 	if (pTrace->flFraction == 1.0)
 		return;
 
-	MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pTrace->vecEndPos);
+	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pTrace->vecEndPos);
 	WRITE_BYTE(TE_GUNSHOTDECAL);
 	WRITE_COORD(pTrace->vecEndPos.x);
 	WRITE_COORD(pTrace->vecEndPos.y);
@@ -1072,7 +1072,7 @@ void UTIL_GunshotDecalTrace(TraceResult* pTrace, int decalNumber)
 
 void UTIL_Sparks(const Vector& position)
 {
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, position);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, position);
 	WRITE_BYTE(TE_SPARKS);
 	WRITE_COORD(position.x);
 	WRITE_COORD(position.y);
@@ -1083,7 +1083,7 @@ void UTIL_Sparks(const Vector& position)
 
 void UTIL_Ricochet(const Vector& position, float scale)
 {
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, position);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, position);
 	WRITE_BYTE(TE_ARMOR_RICOCHET);
 	WRITE_COORD(position.x);
 	WRITE_COORD(position.y);
@@ -1146,7 +1146,7 @@ void UTIL_Bubbles(Vector mins, Vector maxs, int count)
 	float flHeight = UTIL_WaterLevel(mid, mid.z, mid.z + 1024);
 	flHeight = flHeight - mins.z;
 
-	MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, mid);
+	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, mid);
 	WRITE_BYTE(TE_BUBBLES);
 	WRITE_COORD(mins.x);	// mins
 	WRITE_COORD(mins.y);
@@ -1180,7 +1180,7 @@ void UTIL_BubbleTrail(Vector from, Vector to, int count)
 	if (count > 255)
 		count = 255;
 
-	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BUBBLETRAIL);
 	WRITE_COORD(from.x);	// mins
 	WRITE_COORD(from.y);

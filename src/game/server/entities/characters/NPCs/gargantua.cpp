@@ -191,7 +191,7 @@ void CStomp::Think()
 
 void StreakSplash(const Vector& origin, const Vector& direction, int color, int count, int speed, int velocityRange)
 {
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, origin);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, origin);
 	WRITE_BYTE(TE_STREAK_SPLASH);
 	WRITE_COORD(origin.x);		// origin
 	WRITE_COORD(origin.y);
@@ -584,7 +584,7 @@ void CGargantua::FlameUpdate()
 			// RadiusDamage( trace.vecEndPos, pev, pev, gSkillData.gargantuaDmgFire, CLASS_ALIEN_MONSTER, DMG_BURN );
 			FlameDamage(vecStart, trace.vecEndPos, pev, pev, gSkillData.gargantuaDmgFire, CLASS_ALIEN_MONSTER, DMG_BURN);
 
-			MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
+			MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 			WRITE_BYTE(TE_ELIGHT);
 			WRITE_SHORT(entindex() + 0x1000 * (i + 2));		// entity, attachment
 			WRITE_COORD(vecStart.x);		// origin
@@ -1051,7 +1051,7 @@ void CGargantua::RunTask(Task_t* pTask)
 				pGib->pev->nextthink = gpGlobals->time + 1.25;
 				pGib->SetThink(&CGib::SUB_FadeOut);
 			}
-			MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, pev->origin);
+			MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
 			WRITE_BYTE(TE_BREAKMODEL);
 
 			// position
@@ -1161,7 +1161,7 @@ void CSmoker::Spawn()
 void CSmoker::Think()
 {
 	// lots of smoke
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, pev->origin);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
 	WRITE_BYTE(TE_SMOKE);
 	WRITE_COORD(pev->origin.x + RANDOM_FLOAT(-pev->dmg, pev->dmg));
 	WRITE_COORD(pev->origin.y + RANDOM_FLOAT(-pev->dmg, pev->dmg));

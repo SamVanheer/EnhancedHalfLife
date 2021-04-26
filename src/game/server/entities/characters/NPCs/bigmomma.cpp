@@ -1053,7 +1053,7 @@ Vector CheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, f
 
 void MortarSpray(const Vector& position, const Vector& direction, int spriteModel, int count)
 {
-	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, position);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, position);
 	WRITE_BYTE(TE_SPRITE_SPRAY);
 	WRITE_COORD(position.x);	// pos
 	WRITE_COORD(position.y);

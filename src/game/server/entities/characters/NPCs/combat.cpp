@@ -1189,7 +1189,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 			case BULLET_MONSTER_9MM:
 			case BULLET_MONSTER_12MM:
 			default:
-				MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, vecTracerSrc);
+				MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, vecTracerSrc);
 				WRITE_BYTE(TE_TRACER);
 				WRITE_COORD(vecTracerSrc.x);
 				WRITE_COORD(vecTracerSrc.y);
@@ -1443,7 +1443,7 @@ void CBaseMonster::MakeDamageBloodDecal(int cCount, float flNoise, TraceResult* 
 		UTIL_TraceLine(ptr->vecEndPos, ptr->vecEndPos + vecTraceDir * 172, IgnoreMonsters::Yes, ENT(pev), &Bloodtr);
 
 		/*
-				MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
+				MESSAGE_BEGIN( MessageDest::Broadcast, SVC_TEMPENTITY );
 					WRITE_BYTE( TE_SHOWLINE);
 					WRITE_COORD( ptr->vecEndPos.x );
 					WRITE_COORD( ptr->vecEndPos.y );

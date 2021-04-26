@@ -519,7 +519,7 @@ void COsprey::DyingThink()
 		Vector vecSpot = pev->origin + pev->velocity * 0.2;
 
 		// random explosions
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSpot);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 		WRITE_BYTE(TE_EXPLOSION);		// This just makes a dynamic light now
 		WRITE_COORD(vecSpot.x + RANDOM_FLOAT(-150, 150));
 		WRITE_COORD(vecSpot.y + RANDOM_FLOAT(-150, 150));
@@ -531,7 +531,7 @@ void COsprey::DyingThink()
 		MESSAGE_END();
 
 		// lots of smoke
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSpot);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 		WRITE_BYTE(TE_SMOKE);
 		WRITE_COORD(vecSpot.x + RANDOM_FLOAT(-150, 150));
 		WRITE_COORD(vecSpot.y + RANDOM_FLOAT(-150, 150));
@@ -542,7 +542,7 @@ void COsprey::DyingThink()
 		MESSAGE_END();
 
 		vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSpot);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 		WRITE_BYTE(TE_BREAKMODEL);
 
 		// position
@@ -587,7 +587,7 @@ void COsprey::DyingThink()
 		Vector vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
 
 		/*
-		MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
+		MESSAGE_BEGIN( MessageDest::Broadcast, SVC_TEMPENTITY );
 			WRITE_BYTE( TE_EXPLOSION);		// This just makes a dynamic light now
 			WRITE_COORD( vecSpot.x );
 			WRITE_COORD( vecSpot.y );
@@ -599,7 +599,7 @@ void COsprey::DyingThink()
 		*/
 
 		// gibs
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSpot);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 		WRITE_BYTE(TE_SPRITE);
 		WRITE_COORD(vecSpot.x);
 		WRITE_COORD(vecSpot.y);
@@ -610,7 +610,7 @@ void COsprey::DyingThink()
 		MESSAGE_END();
 
 		/*
-		MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
+		MESSAGE_BEGIN( MessageDest::Broadcast, SVC_TEMPENTITY );
 			WRITE_BYTE( TE_SMOKE );
 			WRITE_COORD( vecSpot.x );
 			WRITE_COORD( vecSpot.y );
@@ -622,7 +622,7 @@ void COsprey::DyingThink()
 		*/
 
 		// blast circle
-		MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
 		WRITE_BYTE(TE_BEAMCYLINDER);
 		WRITE_COORD(pev->origin.x);
 		WRITE_COORD(pev->origin.y);
@@ -649,7 +649,7 @@ void COsprey::DyingThink()
 
 		// gibs
 		vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
-		MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, vecSpot);
+		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, vecSpot);
 		WRITE_BYTE(TE_BREAKMODEL);
 
 		// position
@@ -693,7 +693,7 @@ void COsprey::ShowDamage()
 	if (m_iDoLeftSmokePuff > 0 || RANDOM_LONG(0, 99) > m_flLeftHealth)
 	{
 		const Vector vecSrc = pev->origin + gpGlobals->v_right * -340;
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSrc);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSrc);
 		WRITE_BYTE(TE_SMOKE);
 		WRITE_COORD(vecSrc.x);
 		WRITE_COORD(vecSrc.y);
@@ -709,7 +709,7 @@ void COsprey::ShowDamage()
 	if (m_iDoRightSmokePuff > 0 || RANDOM_LONG(0, 99) > m_flRightHealth)
 	{
 		const Vector vecSrc = pev->origin + gpGlobals->v_right * 340;
-		MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSrc);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSrc);
 		WRITE_BYTE(TE_SMOKE);
 		WRITE_COORD(vecSrc.x);
 		WRITE_COORD(vecSrc.y);
