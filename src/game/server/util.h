@@ -24,6 +24,7 @@
 #include "enginecallback.h"
 #include "shared_utils.hpp"
 #include "sound/materials.hpp"
+#include "sound/sentences.hpp"
 #include "filesystem_shared.hpp"
 #include "string_utils.hpp"
 
@@ -431,45 +432,6 @@ constexpr int SVC_DIRECTOR = 51;
 
 // Sound Utilities
 
-// sentence groups
-constexpr int CBSENTENCENAME_MAX = 16;
-/**
-*	@brief max number of sentences in game. NOTE: this must match CVOXFILESENTENCEMAX in engine\sound.h!!!
-*/
-constexpr int CVOXFILESENTENCEMAX = 1536;
-
-extern char gszallsentencenames[CVOXFILESENTENCEMAX][CBSENTENCENAME_MAX];
-extern int gcallsentences;
-
-/**
-*	@brief pick a random sentence from rootname0 to rootnameX.
-*	picks from the rgsentenceg[isentenceg] least recently used, modifies lru array. returns the sentencename.
-*	@details note, lru must be seeded with 0-n randomized sentence numbers, with the rest of the lru filled with -1.
-*	The first integer in the lru is actually the size of the list.
-*	@return ipick, the ordinal of the picked sentence within the group.
-*/
-int USENTENCEG_Pick(int isentenceg, char* szfound, std::size_t foundSize);
-
-/**
-*	@brief ignore lru. pick next sentence from sentence group.
-*	Go in order until we hit the last sentence, then repeat list if freset is true.
-*	@param freset if false, then repeat last sentence.
-*	@param ipick requested sentence ordinal.  
-*	@return ipick 'next' is returned. -1 indicates an error.
-*/
-int USENTENCEG_PickSequential(int isentenceg, char* szfound, std::size_t foundSize, int ipick, int freset);
-
-/**
-*	@brief randomize list of sentence name indices
-*/
-void USENTENCEG_InitLRU(unsigned char* plru, int count);
-
-/**
-*	@brief open sentences.txt, scan for groups, build rgsentenceg
-*	Should be called from world spawn, only works on the first call and is ignored subsequently.
-*/
-void SENTENCEG_Init();
-
 /**
 *	@brief for this entity, for the given sentence within the sentence group, stop the sentence.
 */
@@ -491,18 +453,6 @@ int SENTENCEG_PlayRndSz(CBaseEntity* entity, const char* szrootname, float volum
 *	@brief play sentences in sequential order from sentence group. Reset after last sentence.
 */
 int SENTENCEG_PlaySequentialSz(CBaseEntity* entity, const char* szrootname, float volume, float attenuation, int pitch, int ipick, int freset, int flags = 0);
-
-/**
-*	@brief Given sentence group rootname (name without number suffix), get sentence group index (isentenceg).
-*	@return -1 if no such name.
-*/
-int SENTENCEG_GetIndex(const char* szrootname);
-
-/**
-*	@brief convert sentence (sample) name to !sentencenum
-*	@return !sentencenum
-*/
-int SENTENCEG_Lookup(const char* sample, char* sentencenum, std::size_t sentencenumSize);
 
 /**
 *	@brief play a strike sound based on the texture that was hit by the attack traceline.

@@ -28,6 +28,8 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shared_interface/shared_interface.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/sound/materials.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/sound/materials.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/sound/sentences.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/sound/sentences.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/BinaryReader.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/bitvec.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CStringPool.cpp
