@@ -176,6 +176,8 @@ target_sources(hl PRIVATE
 	server_interface/game.h
 	server_interface/server_interface.cpp
 	server_interface/server_interface.hpp
+	sound/sound_playback.cpp
+	sound/sound_playback.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/const.h
 	${INCLUDE_DIRECTORY}/GoldSrc/crc.h
 	${INCLUDE_DIRECTORY}/GoldSrc/cvardef.h
