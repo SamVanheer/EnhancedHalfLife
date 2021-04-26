@@ -1269,7 +1269,6 @@ int GetWeaponData(edict_t* player, weapon_data_t* info)
 						item->m_flNextPrimaryAttack = std::max(gun->m_flNextPrimaryAttack, -0.001f);
 						item->m_flNextSecondaryAttack = std::max(gun->m_flNextSecondaryAttack, -0.001f);
 						item->m_fInReload = gun->m_fInReload;
-						item->m_fInSpecialReload = gun->m_fInSpecialReload;
 						item->fuser1 = std::max(gun->pev->fuser1, -0.001f);
 
 						gun->GetWeaponData(*item);

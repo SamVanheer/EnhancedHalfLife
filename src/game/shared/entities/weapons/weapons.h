@@ -462,7 +462,6 @@ public:
 	float GetNextAttackDelay(float delay);
 
 	float m_flPumpTime;
-	int		m_fInSpecialReload;									//!< Are we in the middle of a reload for the shotguns
 	float	m_flNextPrimaryAttack;								//!< soonest time ItemPostFrame will call PrimaryAttack
 	float	m_flNextSecondaryAttack;							//!< soonest time ItemPostFrame will call SecondaryAttack
 	float	m_flTimeWeaponIdle;									//!< soonest time ItemPostFrame will call WeaponIdle
@@ -861,13 +860,18 @@ enum shotgun_e
 class CShotgun : public CBasePlayerWeapon
 {
 public:
+	enum class ReloadState
+	{
+		NotReloading = 0,
+		PlayAnimation = 1,	//!< Play the shell load animation
+		AddToClip = 2		//!< Update the clip value (and Hud as a result)
+	};
 
 #ifndef CLIENT_DLL
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 #endif
-
 
 	void Spawn() override;
 	void Precache() override;
@@ -892,6 +896,11 @@ public:
 		return false;
 #endif
 	}
+
+	void GetWeaponData(weapon_data_t& data) override;
+	void SetWeaponData(const weapon_data_t& data) override;
+
+	ReloadState m_fInSpecialReload; //!< Are we in the middle of a reload
 
 private:
 	unsigned short m_usDoubleFire;

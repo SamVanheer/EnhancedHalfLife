@@ -21,6 +21,7 @@
 #include "player.h"
 #include "gamerules.h"
 #include "UserMessages.h"
+#include "weaponinfo.h"
 
 // special deathmatch shotgun spreads
 constexpr Vector VECTOR_CONE_DM_SHOTGUN(0.08716, 0.04362, 0.00);		// 10 degrees by 5 degrees
@@ -165,7 +166,7 @@ void CShotgun::PrimaryAttack()
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 5.0;
 	else
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.75;
-	m_fInSpecialReload = 0;
+	m_fInSpecialReload = ReloadState::NotReloading;
 }
 
 void CShotgun::SecondaryAttack()
@@ -238,7 +239,7 @@ void CShotgun::SecondaryAttack()
 	else
 		m_flTimeWeaponIdle = 1.5;
 
-	m_fInSpecialReload = 0;
+	m_fInSpecialReload = ReloadState::NotReloading;
 }
 
 void CShotgun::Reload()
@@ -251,22 +252,22 @@ void CShotgun::Reload()
 		return;
 
 	// check to see if we're ready to reload
-	if (m_fInSpecialReload == 0)
+	if (m_fInSpecialReload == ReloadState::NotReloading)
 	{
 		SendWeaponAnim(SHOTGUN_START_RELOAD);
-		m_fInSpecialReload = 1;
+		m_fInSpecialReload = ReloadState::PlayAnimation;
 		m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.6;
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.6;
 		m_flNextPrimaryAttack = GetNextAttackDelay(1.0);
 		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.0;
 		return;
 	}
-	else if (m_fInSpecialReload == 1)
+	else if (m_fInSpecialReload == ReloadState::PlayAnimation)
 	{
 		if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 			return;
 		// was waiting for gun to move to side
-		m_fInSpecialReload = 2; //TODO: define constants
+		m_fInSpecialReload = ReloadState::AddToClip;
 
 		if (RANDOM_LONG(0, 1))
 			m_pPlayer->EmitSound(SoundChannel::Item, "weapons/reload1.wav", VOL_NORM, ATTN_NORM, 85 + RANDOM_LONG(0, 0x1f));
@@ -283,7 +284,7 @@ void CShotgun::Reload()
 		// Add them to the clip
 		m_iClip += 1;
 		m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] -= 1;
-		m_fInSpecialReload = 1;
+		m_fInSpecialReload = ReloadState::PlayAnimation;
 	}
 }
 
@@ -305,11 +306,11 @@ void CShotgun::WeaponIdle()
 
 	if (m_flTimeWeaponIdle < UTIL_WeaponTimeBase())
 	{
-		if (m_iClip == 0 && m_fInSpecialReload == 0 && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+		if (m_iClip == 0 && m_fInSpecialReload == ReloadState::NotReloading && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 		{
 			Reload();
 		}
-		else if (m_fInSpecialReload != 0)
+		else if (m_fInSpecialReload != ReloadState::NotReloading)
 		{
 			if (m_iClip != SHOTGUN_MAX_CLIP && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 			{
@@ -322,7 +323,7 @@ void CShotgun::WeaponIdle()
 
 				// play cocking sound
 				m_pPlayer->EmitSound(SoundChannel::Item, "weapons/scock1.wav", VOL_NORM, ATTN_NORM, 95 + RANDOM_LONG(0, 0x1f));
-				m_fInSpecialReload = 0;
+				m_fInSpecialReload = ReloadState::NotReloading;
 				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.5;
 			}
 		}
@@ -360,6 +361,20 @@ void CShotgun::ItemPostFrame()
 	}
 
 	CBasePlayerWeapon::ItemPostFrame();
+}
+
+void CShotgun::GetWeaponData(weapon_data_t& data)
+{
+	CBasePlayerWeapon::GetWeaponData(data);
+
+	data.m_fInSpecialReload = static_cast<int>(m_fInSpecialReload);
+}
+
+void CShotgun::SetWeaponData(const weapon_data_t& data)
+{
+	CBasePlayerWeapon::SetWeaponData(data);
+
+	m_fInSpecialReload = static_cast<ReloadState>(data.m_fInSpecialReload);
 }
 
 class CShotgunAmmo : public CBasePlayerAmmo
