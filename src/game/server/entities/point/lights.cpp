@@ -23,6 +23,8 @@
 #include "util.h"
 #include "cbase.h"
 
+constexpr int SF_LIGHT_START_OFF = 1;
+
 /**
 *	@brief Non-displayed light.
 *	Default style is 0

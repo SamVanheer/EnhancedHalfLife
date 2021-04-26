@@ -38,6 +38,11 @@ enum class Materials
 
 constexpr int NUM_SHARDS = 6; //!< this many shards spawned when breakable objects break
 
+constexpr int SF_BREAK_TRIGGER_ONLY = 1;	//!< may only be broken by trigger
+constexpr int SF_BREAK_TOUCH = 2;			//!< can be 'crashed through' by running player (plate glass)
+constexpr int SF_BREAK_PRESSURE = 4;		//!< can be broken by a player standing on it
+constexpr int SF_BREAK_CROWBAR = 256;		//!< instant break if hit with crowbar
+
 /**
 *	@brief bmodel that breaks into pieces after taking damage
 */

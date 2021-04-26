@@ -106,6 +106,18 @@ constexpr dynpitchvol_t rgdpvpreset[CDPVPRESETMAX] =
 	{27,128,	 90,	10,		10,		10,		1,		20,		40,		1,		5,		10,		20,		0,		0,0,0,0,0,0,0,0,0,0}
 };
 
+constexpr int AMBIENT_SOUND_STATIC = 0;	//!< medium radius attenuation
+constexpr int AMBIENT_SOUND_EVERYWHERE = 1;
+constexpr int AMBIENT_SOUND_SMALLRADIUS = 2;
+constexpr int AMBIENT_SOUND_MEDIUMRADIUS = 4;
+constexpr int AMBIENT_SOUND_LARGERADIUS = 8;
+constexpr int AMBIENT_SOUND_START_SILENT = 16;
+constexpr int AMBIENT_SOUND_NOT_LOOPING = 32;
+
+constexpr int LFO_SQUARE = 1;
+constexpr int LFO_TRIANGLE = 2;
+constexpr int LFO_RANDOM = 3;
+
 /**
 *	@brief Generic ambient sound
 *	general-purpose user-defined static sound
@@ -1527,6 +1539,8 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 
 	return fvolbar;
 }
+
+constexpr int SPEAKER_START_SILENT = 1;	//!< wait for trigger 'on' to start announcements
 
 /**
 *	@brief Used for announcements per level, for door lock/unlock spoken voice. 

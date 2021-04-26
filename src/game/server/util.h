@@ -33,7 +33,7 @@ class CBasePlayerItem;
 
 constexpr int TEAM_NAME_LENGTH = 16;
 
-inline void MESSAGE_BEGIN(int msg_dest, int msg_type, const float* pOrigin, entvars_t* ent);
+inline void MESSAGE_BEGIN(MessageDest msg_dest, int msg_type, const float* pOrigin, entvars_t* ent);
 
 extern globalvars_t* gpGlobals;
 
@@ -109,7 +109,6 @@ constexpr bool IsBitSet(const T& flBitVector, int bit)
 	extern "C" DLLEXPORT void mapClassName( entvars_t *pev ); \
 	void mapClassName( entvars_t *pev ) { GetClassPtr( (DLLClassName *)pev ); }
 
-
 //
 // Conversion among the two types of "entity", including identity-conversions.
 //
@@ -173,7 +172,6 @@ enum class NPCState
 };
 
 constexpr std::size_t NPCStatesCount = static_cast<std::size_t>(NPCState::Dead) + 1;
-
 
 /**
 *	@brief Things that toggle (buttons/triggers/doors) need this
@@ -342,7 +340,6 @@ void			UTIL_SayText(const char* pText, CBaseEntity* pEntity);
 */
 void			UTIL_SayTextAll(const char* pText, CBaseEntity* pEntity);
 
-
 struct hudtextparms_t
 {
 	float		x;
@@ -416,45 +413,14 @@ void DBG_AssertFunction(bool fExpr, const char* szExpr, const char* szFile, int 
 //
 // Un-comment only as needed
 //
-constexpr int LANGUAGE_ENGLISH = 0;
 constexpr int LANGUAGE_GERMAN = 1;
-constexpr int LANGUAGE_FRENCH = 2;
-constexpr int LANGUAGE_BRITISH = 3;
 
 extern DLL_GLOBAL int			g_Language;
-
-constexpr int AMBIENT_SOUND_STATIC = 0;	//!< medium radius attenuation
-constexpr int AMBIENT_SOUND_EVERYWHERE = 1;
-constexpr int AMBIENT_SOUND_SMALLRADIUS = 2;
-constexpr int AMBIENT_SOUND_MEDIUMRADIUS = 4;
-constexpr int AMBIENT_SOUND_LARGERADIUS = 8;
-constexpr int AMBIENT_SOUND_START_SILENT = 16;
-constexpr int AMBIENT_SOUND_NOT_LOOPING = 32;
-
-constexpr int SPEAKER_START_SILENT = 1;	//!< wait for trigger 'on' to start announcements
 
 constexpr int SND_SPAWNING = 1 << 8;		//!< duplicated in protocol.h we're spawing, used in some cases for ambients 
 constexpr int SND_STOP = 1 << 5;			//!< duplicated in protocol.h stop sound
 constexpr int SND_CHANGE_VOL = 1 << 6;		//!< duplicated in protocol.h change sound vol
 constexpr int SND_CHANGE_PITCH = 1 << 7;	//!< duplicated in protocol.h change sound pitch
-
-constexpr int LFO_SQUARE = 1;
-constexpr int LFO_TRIANGLE = 2;
-constexpr int LFO_RANDOM = 3;
-
-// func_rotating
-constexpr int SF_BRUSH_ROTATE_Y_AXIS = 0;
-constexpr int SF_BRUSH_ROTATE_INSTANT = 1;
-constexpr int SF_BRUSH_ROTATE_BACKWARDS = 2;
-constexpr int SF_BRUSH_ROTATE_Z_AXIS = 4;
-constexpr int SF_BRUSH_ROTATE_X_AXIS = 8;
-constexpr int SF_PENDULUM_AUTO_RETURN = 16;
-constexpr int SF_PENDULUM_PASSABLE = 32;
-
-
-constexpr int SF_BRUSH_ROTATE_SMALLRADIUS = 128;
-constexpr int SF_BRUSH_ROTATE_MEDIUMRADIUS = 256;
-constexpr int SF_BRUSH_ROTATE_LARGERADIUS = 512;
 
 constexpr int SVC_TEMPENTITY = 23;
 constexpr int SVC_INTERMISSION = 30;
@@ -462,30 +428,6 @@ constexpr int SVC_CDTRACK = 32;
 constexpr int SVC_WEAPONANIM = 35;
 constexpr int SVC_ROOMTYPE = 37;
 constexpr int SVC_DIRECTOR = 51;
-
-
-
-// triggers
-constexpr int SF_TRIGGER_ALLOWMONSTERS = 1;	//!< monsters allowed to fire this trigger
-constexpr int SF_TRIGGER_NOCLIENTS = 2;		//!< players not allowed to fire this trigger
-constexpr int SF_TRIGGER_PUSHABLES = 4;		//!< only pushables can fire this trigger
-
-// func breakable
-constexpr int SF_BREAK_TRIGGER_ONLY = 1;	//!< may only be broken by trigger
-constexpr int SF_BREAK_TOUCH = 2;			//!< can be 'crashed through' by running player (plate glass)
-constexpr int SF_BREAK_PRESSURE = 4;		//!< can be broken by a player standing on it
-constexpr int SF_BREAK_CROWBAR = 256;		//!< instant break if hit with crowbar
-
-// func_pushable (it's also func_breakable, so don't collide with those flags)
-constexpr int SF_PUSH_BREAKABLE = 128;
-
-constexpr int SF_LIGHT_START_OFF = 1;
-
-constexpr int SPAWNFLAG_NOMESSAGE = 1;
-constexpr int SPAWNFLAG_NOTOUCH = 1;
-
-constexpr int SF_TRIG_PUSH_ONCE = 1;
-
 
 // Sound Utilities
 

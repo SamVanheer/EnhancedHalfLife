@@ -15,6 +15,10 @@
 
 #pragma once
 
+constexpr int SF_TRIGGER_ALLOWMONSTERS = 1;	//!< monsters allowed to fire this trigger
+constexpr int SF_TRIGGER_NOCLIENTS = 2;		//!< players not allowed to fire this trigger
+constexpr int SF_TRIGGER_PUSHABLES = 4;		//!< only pushables can fire this trigger
+
 /**
 *	@brief Modify an entity's friction
 *	@details Sets toucher's friction to m_frictionFraction (1.0 = normal friction)
@@ -245,6 +249,8 @@ public:
 	void Spawn() override;
 };
 
+constexpr int SF_COUNTER_NOMESSAGE = 1;
+
 /**
 *	@brief Acts as an intermediary for an action that takes multiple inputs.
 *	@details If nomessage is not set, it will print "1 more.. " etc when triggered and "sequence complete" when finished.
@@ -277,6 +283,7 @@ public:
 	void Precache() override;
 };
 
+constexpr int SF_TRIGGER_PUSH_ONCE = 1;
 constexpr int SF_TRIGGER_PUSH_START_OFF = 2;		//!< spawnflag that makes trigger_push spawn turned OFF
 
 /**

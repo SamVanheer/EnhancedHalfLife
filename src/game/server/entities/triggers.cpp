@@ -839,7 +839,7 @@ void CTriggerCounter::CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, 
 	const bool fTellActivator =
 		(m_hActivator != nullptr) &&
 		m_hActivator->IsPlayer() &&
-		!IsBitSet(pev->spawnflags, SPAWNFLAG_NOMESSAGE);
+		!IsBitSet(pev->spawnflags, SF_COUNTER_NOMESSAGE);
 	if (m_cTriggersLeft != 0)
 	{
 		if (fTellActivator)
@@ -932,7 +932,7 @@ void CTriggerPush::Touch(CBaseEntity* pOther)
 	if (pevToucher->solid != Solid::Not && pevToucher->solid != Solid::BSP)
 	{
 		// Instant trigger, just transfer velocity and remove
-		if (IsBitSet(pev->spawnflags, SF_TRIG_PUSH_ONCE))
+		if (IsBitSet(pev->spawnflags, SF_TRIGGER_PUSH_ONCE))
 		{
 			pevToucher->velocity = pevToucher->velocity + (pev->speed * pev->movedir);
 			if (pevToucher->velocity.z > 0)

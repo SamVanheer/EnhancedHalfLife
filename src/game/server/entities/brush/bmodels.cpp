@@ -239,6 +239,15 @@ void CFuncMonsterClip::Spawn()
 	pev->flags |= FL_MONSTERCLIP;
 }
 
+constexpr int SF_BRUSH_ROTATE_Y_AXIS = 0;
+constexpr int SF_BRUSH_ROTATE_INSTANT = 1;
+constexpr int SF_BRUSH_ROTATE_BACKWARDS = 2;
+constexpr int SF_BRUSH_ROTATE_Z_AXIS = 4;
+constexpr int SF_BRUSH_ROTATE_X_AXIS = 8;
+constexpr int SF_BRUSH_ROTATE_SMALLRADIUS = 128;
+constexpr int SF_BRUSH_ROTATE_MEDIUMRADIUS = 256;
+constexpr int SF_BRUSH_ROTATE_LARGERADIUS = 512;
+
 /**
 *	@details You need to have an origin brush as part of this entity.
 *	The center of that brush will be the point around which it is rotated.
@@ -662,6 +671,9 @@ void CFuncRotating::Blocked(CBaseEntity* pOther)
 {
 	pOther->TakeDamage(pev, pev, pev->dmg, DMG_CRUSH);
 }
+
+constexpr int SF_PENDULUM_AUTO_RETURN = 16;
+constexpr int SF_PENDULUM_PASSABLE = 32;
 
 class CPendulum : public CBaseEntity
 {

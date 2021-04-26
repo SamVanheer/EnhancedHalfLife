@@ -15,6 +15,11 @@
 
 #pragma once
 
+// Trains
+constexpr int SF_TRAIN_WAIT_RETRIGGER = 1;
+constexpr int SF_TRAIN_START_ON = 4;		//!< Train is initially moving
+constexpr int SF_TRAIN_PASSABLE = 8;		//!< Train is not solid -- used to make water trains
+
 // Tracktrain spawn flags
 constexpr int SF_TRACKTRAIN_NOPITCH = 0x0001;
 constexpr int SF_TRACKTRAIN_NOCONTROL = 0x0002;

@@ -698,14 +698,6 @@ constexpr int PITCH_HIGH = 120;
 // volume values
 constexpr float VOL_NORM = 1.0;
 
-// plats
-constexpr int PLAT_LOW_TRIGGER = 1;
-
-// Trains
-constexpr int SF_TRAIN_WAIT_RETRIGGER = 1;
-constexpr int SF_TRAIN_START_ON = 4;		//!< Train is initially moving
-constexpr int SF_TRAIN_PASSABLE = 8;		//!< Train is not solid -- used to make water trains
-
 /**
 *	@brief view angle update types for fixangle
 */

@@ -732,6 +732,9 @@ int	CBreakable::DamageDecal(int bitsDamageType)
 	return CBaseEntity::DamageDecal(bitsDamageType);
 }
 
+// func_pushable (it's also func_breakable, so don't collide with those flags)
+constexpr int SF_PUSH_BREAKABLE = 128;
+
 class CPushable : public CBreakable
 {
 public:
