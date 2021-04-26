@@ -25,8 +25,8 @@
 
 void CItem::Spawn()
 {
-	pev->movetype = MOVETYPE_TOSS;
-	pev->solid = SOLID_TRIGGER;
+	pev->movetype = Movetype::Toss;
+	pev->solid = Solid::Trigger;
 	UTIL_SetOrigin(pev, pev->origin);
 	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 16));
 	SetTouch(&CItem::ItemTouch);
@@ -97,7 +97,7 @@ void CItem::Materialize()
 	if (pev->effects & EF_NODRAW)
 	{
 		// changing from invisible state to visible.
-		EmitSound(CHAN_WEAPON, "items/suitchargeok1.wav", VOL_NORM, ATTN_NORM, 150);
+		EmitSound(SoundChannel::Weapon, "items/suitchargeok1.wav", VOL_NORM, ATTN_NORM, 150);
 		pev->effects &= ~EF_NODRAW;
 		pev->effects |= EF_MUZZLEFLASH;
 	}
@@ -151,7 +151,7 @@ class CItemBattery : public CItem
 	}
 	bool MyTouch(CBasePlayer* pPlayer) override
 	{
-		if (pPlayer->pev->deadflag != DEAD_NO)
+		if (pPlayer->pev->deadflag != DeadFlag::No)
 		{
 			return false;
 		}
@@ -162,7 +162,7 @@ class CItemBattery : public CItem
 			pPlayer->pev->armorvalue += gSkillData.batteryCapacity;
 			pPlayer->pev->armorvalue = std::min(pPlayer->pev->armorvalue, static_cast<float>(MAX_NORMAL_BATTERY));
 
-			pPlayer->EmitSound(CHAN_ITEM, "items/gunpickup2.wav");
+			pPlayer->EmitSound(SoundChannel::Item, "items/gunpickup2.wav");
 
 			MESSAGE_BEGIN(MSG_ONE, gmsgItemPickup, nullptr, pPlayer->pev);
 			WRITE_STRING(STRING(pev->classname));

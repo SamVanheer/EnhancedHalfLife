@@ -142,9 +142,9 @@ struct enginefuncs_t
 	void		(*pfnMakeStatic)			(edict_t* ent);
 	int			(*pfnEntIsOnFloor)			(edict_t* e);
 	int			(*pfnDropToFloor)			(edict_t* e);
-	int			(*pfnWalkMove)				(edict_t* ent, float yaw, float dist, int iMode);
+	int			(*pfnWalkMove)				(edict_t* ent, float yaw, float dist, WalkMoveMode iMode);
 	void		(*pfnSetOrigin)				(edict_t* e, const float* rgflOrigin);
-	void		(*pfnEmitSound)				(edict_t* entity, int channel, const char* sample, /*int*/float volume, float attenuation, int fFlags, int pitch);
+	void		(*pfnEmitSound)				(edict_t* entity, SoundChannel channel, const char* sample, /*int*/float volume, float attenuation, int fFlags, int pitch);
 	void		(*pfnEmitAmbientSound)		(edict_t* entity, const float* pos, const char* samp, float vol, float attenuation, int fFlags, int pitch);
 	void		(*pfnTraceLine)				(const float* v1, const float* v2, int fNoMonsters, edict_t* pentToSkip, TraceResult* ptr);
 	void		(*pfnTraceToss)				(edict_t* pent, edict_t* pentToIgnore, TraceResult* ptr);
@@ -160,7 +160,7 @@ struct enginefuncs_t
 	void		(*pfnParticleEffect)		(const float* org, const float* dir, float color, float count);
 	void		(*pfnLightStyle)			(int style, const char* val);
 	int			(*pfnDecalIndex)			(const char* name);
-	int			(*pfnPointContents)			(const float* rgflVector);
+	Contents (*pfnPointContents)			(const float* rgflVector);
 	void		(*pfnMessageBegin)			(int msg_dest, int msg_type, const float* pOrigin, edict_t* ed);
 	void		(*pfnMessageEnd)			();
 	void		(*pfnWriteByte)				(int iValue);

@@ -876,7 +876,7 @@ bool UTIL_ShouldShowBlood(int color)
 	return false;
 }
 
-int UTIL_PointContents(const Vector& vec)
+Contents UTIL_PointContents(const Vector& vec)
 {
 	return POINT_CONTENTS(vec);
 }
@@ -1114,18 +1114,18 @@ float UTIL_WaterLevel(const Vector& position, float minz, float maxz)
 	Vector midUp = position;
 	midUp.z = minz;
 
-	if (UTIL_PointContents(midUp) != CONTENTS_WATER)
+	if (UTIL_PointContents(midUp) != Contents::Water)
 		return minz;
 
 	midUp.z = maxz;
-	if (UTIL_PointContents(midUp) == CONTENTS_WATER)
+	if (UTIL_PointContents(midUp) == Contents::Water)
 		return maxz;
 
 	float diff = maxz - minz;
 	while (diff > 1.0)
 	{
 		midUp.z = minz + diff / 2.0;
-		if (UTIL_PointContents(midUp) == CONTENTS_WATER)
+		if (UTIL_PointContents(midUp) == Contents::Water)
 		{
 			minz = midUp.z;
 		}
@@ -1310,7 +1310,7 @@ int UTIL_CountPlayers()
 
 void SetObjectCollisionBox(entvars_t* pev)
 {
-	if ((pev->solid == SOLID_BSP) &&
+	if ((pev->solid == Solid::BSP) &&
 		(pev->angles.x || pev->angles.y || pev->angles.z))
 	{
 		// expand for rotation

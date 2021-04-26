@@ -93,9 +93,9 @@ LINK_ENTITY_TO_CLASS(aiscripted_sequence, CCineAI);
 
 void CCineMonster::Spawn()
 {
-	// pev->solid = SOLID_TRIGGER;
+	// pev->solid = Solid::Trigger;
 	// UTIL_SetSize(pev, Vector(-8, -8, -8), Vector(8, 8, 8));
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 
 	// REMOVE: The old side-effect
 #if 0
@@ -186,7 +186,7 @@ void CCineMonster::Touch(CBaseEntity* pOther)
 	pevOther->velocity.z += m_flHeight;
 
 
-	pev->solid = SOLID_NOT;// kill the trigger for now !!!UNDONE
+	pev->solid = Solid::Not;// kill the trigger for now !!!UNDONE
 }
 */
 
@@ -501,7 +501,7 @@ void CCineAI::FixScriptMonsterSchedule(CBaseMonster* pMonster)
 
 bool CBaseMonster::ExitScriptedSequence()
 {
-	if (pev->deadflag == DEAD_DYING)
+	if (pev->deadflag == DeadFlag::Dying)
 	{
 		// is this legal?
 		// BUGBUG -- This doesn't call Killed()
@@ -531,7 +531,7 @@ bool CCineMonster::CanInterrupt()
 
 	CBaseEntity* pTarget = m_hTargetEnt;
 
-	return pTarget != nullptr && pTarget->pev->deadflag == DEAD_NO;
+	return pTarget != nullptr && pTarget->pev->deadflag == DeadFlag::No;
 }
 
 int	CCineMonster::IgnoreConditions()
@@ -663,20 +663,20 @@ bool CBaseMonster::CineCleanup()
 	else
 	{
 		// arg, punt
-		pev->movetype = MOVETYPE_STEP;// this is evil
-		pev->solid = SOLID_SLIDEBOX;
+		pev->movetype = Movetype::Step;// this is evil
+		pev->solid = Solid::SlideBox;
 	}
 	m_pCine = nullptr;
 	m_hTargetEnt = nullptr;
 	m_pGoalEnt = nullptr;
-	if (pev->deadflag == DEAD_DYING)
+	if (pev->deadflag == DeadFlag::Dying)
 	{
 		// last frame of death animation?
 		pev->health = 0;
 		pev->framerate = 0.0;
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 		SetState(NPCState::Dead);
-		pev->deadflag = DEAD_DEAD;
+		pev->deadflag = DeadFlag::Dead;
 		UTIL_SetSize(pev, pev->mins, Vector(pev->maxs.x, pev->maxs.y, pev->mins.z + 2));
 
 		if (pOldCine && IsBitSet(pOldCine->pev->spawnflags, SF_SCRIPT_LEAVECORPSE))
@@ -689,7 +689,7 @@ bool CBaseMonster::CineCleanup()
 			SUB_StartFadeOut(); // SetThink( SUB_DoNothing );
 		// This turns off animation & physics in case their origin ends up stuck in the world or something
 		StopAnimation();
-		pev->movetype = MOVETYPE_NONE;
+		pev->movetype = Movetype::None;
 		pev->effects |= EF_NOINTERP;	// Don't interpolate either, assume the corpse is positioned in its final resting place
 		return false;
 	}
@@ -758,9 +758,9 @@ bool CBaseMonster::CineCleanup()
 		// Can't call killed() no attacker and weirdness (late gibbing) may result
 		m_IdealMonsterState = NPCState::Dead;
 		SetConditions(bits_COND_LIGHT_DAMAGE);
-		pev->deadflag = DEAD_DYING;
+		pev->deadflag = DeadFlag::Dying;
 		CheckAITrigger();
-		pev->deadflag = DEAD_NO;
+		pev->deadflag = DeadFlag::No;
 	}
 
 	//	SetAnimation( m_MonsterState );
@@ -888,7 +888,7 @@ void CScriptedSentence::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 
 void CScriptedSentence::Spawn()
 {
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 
 	m_active = true;
 	// if no targetname, start now
@@ -1054,10 +1054,10 @@ void CFurniture::Spawn()
 	PRECACHE_MODEL(STRING(pev->model));
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
-	pev->movetype = MOVETYPE_NONE;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::None;
+	pev->solid = Solid::BBox;
 	pev->health = 80000;
-	pev->takedamage = DAMAGE_AIM;
+	SetDamageMode(DamageMode::Aim);
 	pev->effects = 0;
 	pev->yaw_speed = 0;
 	pev->sequence = 0;

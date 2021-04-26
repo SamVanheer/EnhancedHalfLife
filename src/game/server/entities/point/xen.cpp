@@ -90,8 +90,8 @@ void CXenPLight::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/light.mdl");
-	pev->movetype = MOVETYPE_NONE;
-	pev->solid = SOLID_TRIGGER;
+	pev->movetype = Movetype::None;
+	pev->solid = Solid::Trigger;
 
 	UTIL_SetSize(pev, Vector(-80, -80, 0), Vector(80, 80, 32));
 	SetActivity(ACT_IDLE);
@@ -99,7 +99,7 @@ void CXenPLight::Spawn()
 	pev->frame = RANDOM_FLOAT(0, 255);
 
 	m_pGlow = CSprite::SpriteCreate(XEN_PLANT_GLOW_SPRITE.data(), pev->origin + Vector(0, 0, (pev->mins.z + pev->maxs.z) * 0.5), false);
-	m_pGlow->SetTransparency(kRenderGlow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
+	m_pGlow->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
 	m_pGlow->SetAttachment(edict(), 1);
 }
 
@@ -195,8 +195,8 @@ void CXenHair::Spawn()
 	}
 	ResetSequenceInfo();
 
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 	pev->nextthink = gpGlobals->time + RANDOM_FLOAT(0.1, 0.4);	// Load balance these a bit
 }
 
@@ -225,8 +225,8 @@ CXenTreeTrigger* CXenTreeTrigger::TriggerCreate(edict_t* pOwner, const Vector& p
 	CXenTreeTrigger* pTrigger = GetClassPtr((CXenTreeTrigger*)nullptr);
 	pTrigger->pev->origin = position;
 	pTrigger->pev->classname = MAKE_STRING("xen_ttrigger");
-	pTrigger->pev->solid = SOLID_TRIGGER;
-	pTrigger->pev->movetype = MOVETYPE_NONE;
+	pTrigger->pev->solid = Solid::Trigger;
+	pTrigger->pev->movetype = Movetype::None;
 	pTrigger->pev->owner = pOwner;
 
 	return pTrigger;
@@ -280,10 +280,10 @@ void CXenTree::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/tree.mdl");
-	pev->movetype = MOVETYPE_NONE;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::None;
+	pev->solid = Solid::BBox;
 
-	pev->takedamage = DAMAGE_YES;
+	SetDamageMode(DamageMode::Yes);
 
 	UTIL_SetSize(pev, Vector(-30, -30, 0), Vector(30, 30, 188));
 	SetActivity(ACT_IDLE);
@@ -334,7 +334,7 @@ void CXenTree::Attack()
 	{
 		SetActivity(ACT_MELEE_ATTACK1);
 		pev->framerate = RANDOM_FLOAT(1.0, 1.4);
-		EMIT_SOUND_ARRAY_DYN(CHAN_WEAPON, pAttackMissSounds);
+		EMIT_SOUND_ARRAY_DYN(SoundChannel::Weapon, pAttackMissSounds);
 	}
 }
 
@@ -367,7 +367,7 @@ void CXenTree::HandleAnimEvent(AnimationEvent& event)
 
 		if (sound)
 		{
-			EMIT_SOUND_ARRAY_DYN(CHAN_WEAPON, pAttackHitSounds);
+			EMIT_SOUND_ARRAY_DYN(SoundChannel::Weapon, pAttackHitSounds);
 		}
 	}
 	return;
@@ -449,13 +449,13 @@ CXenHull* CXenHull::CreateHull(CBaseEntity* source, const Vector& mins, const Ve
 
 	UTIL_SetOrigin(pHull->pev, source->pev->origin + offset);
 	SET_MODEL(pHull->edict(), STRING(source->pev->model));
-	pHull->pev->solid = SOLID_BBOX;
+	pHull->pev->solid = Solid::BBox;
 	pHull->pev->classname = MAKE_STRING("xen_hull");
-	pHull->pev->movetype = MOVETYPE_NONE;
+	pHull->pev->movetype = Movetype::None;
 	pHull->pev->owner = source->edict();
 	UTIL_SetSize(pHull->pev, mins, maxs);
 	pHull->pev->renderamt = 0;
-	pHull->pev->rendermode = kRenderTransTexture;
+	pHull->pev->rendermode = RenderMode::TransTexture;
 	//	pHull->pev->effects = EF_NODRAW;
 
 	return pHull;
@@ -512,9 +512,9 @@ void CXenSpore::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), pModelNames[pev->skin]);
-	pev->movetype = MOVETYPE_NONE;
-	pev->solid = SOLID_BBOX;
-	pev->takedamage = DAMAGE_YES;
+	pev->movetype = Movetype::None;
+	pev->solid = Solid::BBox;
+	SetDamageMode(DamageMode::Yes);
 
 	//	SetActivity( ACT_IDLE );
 	pev->sequence = 0;

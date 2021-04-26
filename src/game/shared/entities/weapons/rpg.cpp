@@ -41,11 +41,11 @@ CLaserSpot* CLaserSpot::CreateSpot()
 void CLaserSpot::Spawn()
 {
 	Precache();
-	pev->movetype = MOVETYPE_NONE;
-	pev->solid = SOLID_NOT;
+	pev->movetype = Movetype::None;
+	pev->solid = Solid::Not;
 
-	pev->rendermode = kRenderGlow;
-	pev->renderfx = kRenderFxNoDissipation;
+	pev->rendermode = RenderMode::Glow;
+	pev->renderfx = RenderFX::NoDissipation;
 	pev->renderamt = 255;
 
 	SET_MODEL(ENT(pev), "sprites/laserdot.spr");
@@ -93,8 +93,8 @@ void CRpgRocket::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = MOVETYPE_BOUNCE;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Bounce;
+	pev->solid = Solid::BBox;
 
 	SET_MODEL(ENT(pev), "models/rpgrocket.mdl");
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);
@@ -125,7 +125,7 @@ void CRpgRocket::RocketTouch(CBaseEntity* pOther)
 		static_cast<CRpg*>(static_cast<CBaseEntity*>(m_pLauncher))->m_cActiveRockets--;
 	}
 
-	StopSound(CHAN_VOICE, "weapons/rocket1.wav");
+	StopSound(SoundChannel::Voice, "weapons/rocket1.wav");
 	ExplodeTouch(pOther);
 }
 
@@ -138,13 +138,13 @@ void CRpgRocket::Precache()
 
 void CRpgRocket::IgniteThink()
 {
-	// pev->movetype = MOVETYPE_TOSS;
+	// pev->movetype = Movetype::Toss;
 
-	pev->movetype = MOVETYPE_FLY;
+	pev->movetype = Movetype::Fly;
 	pev->effects |= EF_LIGHT;
 
 	// make rocket sound
-	EmitSound(CHAN_VOICE, "weapons/rocket1.wav", VOL_NORM, 0.5);
+	EmitSound(SoundChannel::Voice, "weapons/rocket1.wav", VOL_NORM, 0.5);
 
 	// rocket trail
 	MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
@@ -225,7 +225,7 @@ void CRpgRocket::FollowThink()
 		if (pev->effects & EF_LIGHT)
 		{
 			pev->effects = 0;
-			StopSound(CHAN_VOICE, "weapons/rocket1.wav");
+			StopSound(SoundChannel::Voice, "weapons/rocket1.wav");
 		}
 		pev->velocity = pev->velocity * 0.2 + vecTarget * flSpeed * 0.798;
 		if (pev->waterlevel == WaterLevel::Dry && pev->velocity.Length() < 1500)
@@ -549,7 +549,7 @@ class CRpgAmmo : public CBasePlayerAmmo
 
 		if (pOther->GiveAmmo(iGive, "rockets", ROCKET_MAX_CARRY) != -1)
 		{
-			EmitSound(CHAN_ITEM, "items/9mmclip1.wav");
+			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
 			return true;
 		}
 		return false;

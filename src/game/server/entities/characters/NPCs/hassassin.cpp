@@ -188,10 +188,10 @@ void CHAssassin::Shoot()
 	switch (RANDOM_LONG(0, 1))
 	{
 	case 0:
-		EmitSound(CHAN_WEAPON, "weapons/pl_gun1.wav", RANDOM_FLOAT(0.6, 0.8));
+		EmitSound(SoundChannel::Weapon, "weapons/pl_gun1.wav", RANDOM_FLOAT(0.6, 0.8));
 		break;
 	case 1:
-		EmitSound(CHAN_WEAPON, "weapons/pl_gun2.wav", RANDOM_FLOAT(0.6, 0.8));
+		EmitSound(SoundChannel::Weapon, "weapons/pl_gun2.wav", RANDOM_FLOAT(0.6, 0.8));
 		break;
 	}
 
@@ -224,7 +224,7 @@ void CHAssassin::HandleAnimEvent(AnimationEvent& event)
 	{
 		// ALERT( at_console, "jumping");
 		UTIL_MakeAimVectors(pev->angles);
-		pev->movetype = MOVETYPE_TOSS;
+		pev->movetype = Movetype::Toss;
 		pev->flags &= ~FL_ONGROUND;
 		pev->velocity = m_vecJumpVelocity;
 		m_flNextJump = gpGlobals->time + 3.0;
@@ -243,8 +243,8 @@ void CHAssassin::Spawn()
 	SET_MODEL(ENT(pev), "models/hassassin.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->effects = 0;
 	pev->health = gSkillData.hassassinHealth;
@@ -257,7 +257,7 @@ void CHAssassin::Spawn()
 
 	m_iTargetRanderamt = 20;
 	pev->renderamt = 20;
-	pev->rendermode = kRenderTransTexture;
+	pev->rendermode = RenderMode::TransTexture;
 
 	MonsterInit();
 }
@@ -617,7 +617,7 @@ void CHAssassin::RunAI()
 
 	// always visible if moving
 	// always visible is not on hard
-	if (g_SkillLevel != SkillLevel::Hard || m_hEnemy == nullptr || pev->deadflag != DEAD_NO || m_Activity == ACT_RUN || m_Activity == ACT_WALK || !(pev->flags & FL_ONGROUND))
+	if (g_SkillLevel != SkillLevel::Hard || m_hEnemy == nullptr || pev->deadflag != DeadFlag::No || m_Activity == ACT_RUN || m_Activity == ACT_WALK || !(pev->flags & FL_ONGROUND))
 		m_iTargetRanderamt = 255;
 	else
 		m_iTargetRanderamt = 20;
@@ -626,17 +626,17 @@ void CHAssassin::RunAI()
 	{
 		if (pev->renderamt == 255)
 		{
-			EmitSound(CHAN_BODY, "debris/beamstart1.wav", 0.2);
+			EmitSound(SoundChannel::Body, "debris/beamstart1.wav", 0.2);
 		}
 
 		pev->renderamt = std::max(pev->renderamt - 50, static_cast<float>(m_iTargetRanderamt));
-		pev->rendermode = kRenderTransTexture;
+		pev->rendermode = RenderMode::TransTexture;
 	}
 	else if (pev->renderamt < m_iTargetRanderamt)
 	{
 		pev->renderamt = std::min(pev->renderamt + 50, static_cast<float>(m_iTargetRanderamt));
 		if (pev->renderamt == 255)
-			pev->rendermode = kRenderNormal;
+			pev->rendermode = RenderMode::Normal;
 	}
 
 	if (m_Activity == ACT_RUN || m_Activity == ACT_WALK)
@@ -648,10 +648,10 @@ void CHAssassin::RunAI()
 		{
 			switch (RANDOM_LONG(0, 3))
 			{
-			case 0:	EmitSound(CHAN_BODY, "player/pl_step1.wav", 0.5); break;
-			case 1:	EmitSound(CHAN_BODY, "player/pl_step3.wav", 0.5); break;
-			case 2:	EmitSound(CHAN_BODY, "player/pl_step2.wav", 0.5); break;
-			case 3:	EmitSound(CHAN_BODY, "player/pl_step4.wav", 0.5); break;
+			case 0:	EmitSound(SoundChannel::Body, "player/pl_step1.wav", 0.5); break;
+			case 1:	EmitSound(SoundChannel::Body, "player/pl_step3.wav", 0.5); break;
+			case 2:	EmitSound(SoundChannel::Body, "player/pl_step2.wav", 0.5); break;
+			case 3:	EmitSound(SoundChannel::Body, "player/pl_step4.wav", 0.5); break;
 			}
 		}
 	}
@@ -753,13 +753,13 @@ Schedule_t* CHAssassin::GetSchedule()
 		}
 
 		// flying?
-		if (pev->movetype == MOVETYPE_TOSS)
+		if (pev->movetype == Movetype::Toss)
 		{
 			if (pev->flags & FL_ONGROUND)
 			{
 				// ALERT( at_console, "landed\n");
 				// just landed
-				pev->movetype = MOVETYPE_STEP;
+				pev->movetype = Movetype::Step;
 				return GetScheduleOfType(SCHED_ASSASSIN_JUMP_LAND);
 			}
 			else

@@ -814,7 +814,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 	break;
 
 	case HGRUNT_AE_RELOAD:
-		EmitSound(CHAN_WEAPON, "hgrunt/gr_reload1.wav");
+		EmitSound(SoundChannel::Weapon, "hgrunt/gr_reload1.wav");
 		m_cAmmoLoaded = m_cClipSize;
 		ClearConditions(bits_COND_NO_AMMO_LOADED);
 		break;
@@ -833,7 +833,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 
 	case HGRUNT_AE_GREN_LAUNCH:
 	{
-		EmitSound(CHAN_WEAPON, "weapons/glauncher.wav", 0.8);
+		EmitSound(SoundChannel::Weapon, "weapons/glauncher.wav", 0.8);
 		CGrenade::ShootContact(pev, GetGunPosition(), m_vecTossVelocity);
 		m_fThrowGrenade = false;
 		if (g_SkillLevel == SkillLevel::Hard)
@@ -859,18 +859,18 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 			// the first round of the three round burst plays the sound and puts a sound in the world sound list.
 			if (RANDOM_LONG(0, 1))
 			{
-				EmitSound(CHAN_WEAPON, "hgrunt/gr_mgun1.wav");
+				EmitSound(SoundChannel::Weapon, "hgrunt/gr_mgun1.wav");
 			}
 			else
 			{
-				EmitSound(CHAN_WEAPON, "hgrunt/gr_mgun2.wav");
+				EmitSound(SoundChannel::Weapon, "hgrunt/gr_mgun2.wav");
 			}
 		}
 		else
 		{
 			Shotgun();
 
-			EmitSound(CHAN_WEAPON, "weapons/sbarrel1.wav");
+			EmitSound(SoundChannel::Weapon, "weapons/sbarrel1.wav");
 		}
 
 		CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, 384, 0.3);
@@ -917,8 +917,8 @@ void CHGrunt::Spawn()
 	SET_MODEL(ENT(pev), "models/hgrunt.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->effects = 0;
 	pev->health = gSkillData.hgruntHealth;
@@ -1045,7 +1045,7 @@ void CHGrunt::StartTask(Task_t* pTask)
 	case TASK_FACE_IDEAL:
 	case TASK_FACE_ENEMY:
 		CSquadMonster::StartTask(pTask);
-		if (pev->movetype == MOVETYPE_FLY)
+		if (pev->movetype == Movetype::Fly)
 		{
 			m_IdealActivity = ACT_GLIDE;
 		}
@@ -1100,19 +1100,19 @@ void CHGrunt::PainSound()
 		switch (RANDOM_LONG(0, 6))
 		{
 		case 0:
-			EmitSound(CHAN_VOICE, "hgrunt/gr_pain3.wav");
+			EmitSound(SoundChannel::Voice, "hgrunt/gr_pain3.wav");
 			break;
 		case 1:
-			EmitSound(CHAN_VOICE, "hgrunt/gr_pain4.wav");
+			EmitSound(SoundChannel::Voice, "hgrunt/gr_pain4.wav");
 			break;
 		case 2:
-			EmitSound(CHAN_VOICE, "hgrunt/gr_pain5.wav");
+			EmitSound(SoundChannel::Voice, "hgrunt/gr_pain5.wav");
 			break;
 		case 3:
-			EmitSound(CHAN_VOICE, "hgrunt/gr_pain1.wav");
+			EmitSound(SoundChannel::Voice, "hgrunt/gr_pain1.wav");
 			break;
 		case 4:
-			EmitSound(CHAN_VOICE, "hgrunt/gr_pain2.wav");
+			EmitSound(SoundChannel::Voice, "hgrunt/gr_pain2.wav");
 			break;
 		}
 
@@ -1125,13 +1125,13 @@ void CHGrunt::DeathSound()
 	switch (RANDOM_LONG(0, 2))
 	{
 	case 0:
-		EmitSound(CHAN_VOICE, "hgrunt/gr_die1.wav", VOL_NORM, ATTN_IDLE);
+		EmitSound(SoundChannel::Voice, "hgrunt/gr_die1.wav", VOL_NORM, ATTN_IDLE);
 		break;
 	case 1:
-		EmitSound(CHAN_VOICE, "hgrunt/gr_die2.wav", VOL_NORM, ATTN_IDLE);
+		EmitSound(SoundChannel::Voice, "hgrunt/gr_die2.wav", VOL_NORM, ATTN_IDLE);
 		break;
 	case 2:
-		EmitSound(CHAN_VOICE, "hgrunt/gr_die3.wav", VOL_NORM, ATTN_IDLE);
+		EmitSound(SoundChannel::Voice, "hgrunt/gr_die3.wav", VOL_NORM, ATTN_IDLE);
 		break;
 	}
 }
@@ -1855,12 +1855,12 @@ Schedule_t* CHGrunt::GetSchedule()
 	m_iSentence = HGRUNT_SENT_NONE;
 
 	// flying? If PRONE, barnacle has me. IF not, it's assumed I am rapelling. 
-	if (pev->movetype == MOVETYPE_FLY && m_MonsterState != NPCState::Prone)
+	if (pev->movetype == Movetype::Fly && m_MonsterState != NPCState::Prone)
 	{
 		if (pev->flags & FL_ONGROUND)
 		{
 			// just landed
-			pev->movetype = MOVETYPE_STEP;
+			pev->movetype = Movetype::Step;
 			return GetScheduleOfType(SCHED_GRUNT_REPEL_LAND);
 		}
 		else
@@ -2261,7 +2261,7 @@ LINK_ENTITY_TO_CLASS(monster_grunt_repel, CHGruntRepel);
 void CHGruntRepel::Spawn()
 {
 	Precache();
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 
 	SetUse(&CHGruntRepel::RepelUse);
 }
@@ -2277,13 +2277,13 @@ void CHGruntRepel::RepelUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 	TraceResult tr;
 	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, ENT(pev), &tr);
 	/*
-	if ( tr.pHit && Instance( tr.pHit )->pev->solid != SOLID_BSP)
+	if ( tr.pHit && Instance( tr.pHit )->pev->solid != Solid::BSP)
 		return;
 	*/
 
 	CBaseEntity* pEntity = Create("monster_human_grunt", pev->origin, pev->angles);
 	CBaseMonster* pGrunt = pEntity->MyMonsterPointer();
-	pGrunt->pev->movetype = MOVETYPE_FLY;
+	pGrunt->pev->movetype = Movetype::Fly;
 	pGrunt->pev->velocity = Vector(0, 0, RANDOM_FLOAT(-196, -128));
 	pGrunt->SetActivity(ACT_GLIDE);
 	// UNDONE: position?

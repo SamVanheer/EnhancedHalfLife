@@ -815,7 +815,7 @@ void CHalfLifeMultiplay::DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, e
 		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
 		safe_strcat ( szText, " fell or drowned or something.\n" );
 	}
-	else if ( pKiller->solid == SOLID_BSP )
+	else if ( pKiller->solid == Solid::BSP )
 	{
 		safe_strcpy ( szText, STRING( pVictim->pev->netname ) );
 		safe_strcat ( szText, " was mooshed.\n" );

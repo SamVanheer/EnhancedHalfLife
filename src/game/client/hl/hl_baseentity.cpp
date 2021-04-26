@@ -52,7 +52,7 @@ bool CBaseEntity::ShouldToggle(USE_TYPE useType, bool currentState) { return fal
 int	CBaseEntity::DamageDecal(int bitsDamageType) { return -1; }
 CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner) { return nullptr; }
 void CBaseEntity::SUB_Remove() { }
-void CBaseEntity::EmitSound(int channel, const char* fileName, float volume, float attenuation, int pitch, int flags) {}
+void CBaseEntity::EmitSound(SoundChannel channel, const char* fileName, float volume, float attenuation, int pitch, int flags) {}
 
 // CBaseDelay Stubs
 void CBaseDelay::KeyValue(KeyValueData*) { }

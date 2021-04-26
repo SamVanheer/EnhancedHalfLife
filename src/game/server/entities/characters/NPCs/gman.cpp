@@ -105,8 +105,8 @@ void CGMan::Spawn()
 	SET_MODEL(ENT(pev), "models/gman.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = DONT_BLEED;
 	pev->health = 100;
 	m_flFieldOfView = 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )

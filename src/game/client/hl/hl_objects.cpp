@@ -90,7 +90,7 @@ void UpdateBeams()
 				physent_t* pEntity = gEngfuncs.pEventAPI->EV_GetPhysent(tr.ent);
 
 				// Not the world, let's assume that we hit something organic ( dog, cat, uncle joe, etc )
-				if (pEntity && !(pEntity->solid == SOLID_BSP || pEntity->movetype == MOVETYPE_PUSHSTEP))
+				if (pEntity && !(pEntity->solid == Solid::BSP || pEntity->movetype == Movetype::PushStep))
 				{
 					pFlare->flags &= ~FTENT_NOMODEL;
 				}

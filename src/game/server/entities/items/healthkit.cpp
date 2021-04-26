@@ -47,7 +47,7 @@ void CHealthKit::Precache()
 
 bool CHealthKit::MyTouch(CBasePlayer* pPlayer)
 {
-	if (pPlayer->pev->deadflag != DEAD_NO)
+	if (pPlayer->pev->deadflag != DeadFlag::No)
 	{
 		return false;
 	}
@@ -58,7 +58,7 @@ bool CHealthKit::MyTouch(CBasePlayer* pPlayer)
 		WRITE_STRING(STRING(pev->classname));
 		MESSAGE_END();
 
-		pPlayer->EmitSound(CHAN_ITEM, "items/smallmedkit1.wav");
+		pPlayer->EmitSound(SoundChannel::Item, "items/smallmedkit1.wav");
 
 		if (g_pGameRules->ItemShouldRespawn(this))
 		{
@@ -143,8 +143,8 @@ void CWallHealth::Spawn()
 {
 	Precache();
 
-	pev->solid = SOLID_BSP;
-	pev->movetype = MOVETYPE_PUSH;
+	pev->solid = Solid::BSP;
+	pev->movetype = Movetype::Push;
 
 	UTIL_SetOrigin(pev, pev->origin);		// set size and link into world
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
@@ -183,7 +183,7 @@ void CWallHealth::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE us
 		if (m_flSoundTime <= gpGlobals->time)
 		{
 			m_flSoundTime = gpGlobals->time + 0.62;
-			EmitSound(CHAN_ITEM, "items/medshotno1.wav");
+			EmitSound(SoundChannel::Item, "items/medshotno1.wav");
 		}
 		return;
 	}
@@ -200,13 +200,13 @@ void CWallHealth::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE us
 	if (m_iOn == ChargerState::Off)
 	{
 		m_iOn = ChargerState::Starting;
-		EmitSound(CHAN_ITEM, "items/medshot4.wav");
+		EmitSound(SoundChannel::Item, "items/medshot4.wav");
 		m_flSoundTime = 0.56 + gpGlobals->time;
 	}
 	if ((m_iOn == ChargerState::Starting) && (m_flSoundTime <= gpGlobals->time))
 	{
 		m_iOn = ChargerState::Charging;
-		EmitSound(CHAN_STATIC, "items/medcharge4.wav");
+		EmitSound(SoundChannel::Static, "items/medcharge4.wav");
 	}
 
 
@@ -222,7 +222,7 @@ void CWallHealth::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE us
 
 void CWallHealth::Recharge()
 {
-	EmitSound(CHAN_ITEM, "items/medshot4.wav");
+	EmitSound(SoundChannel::Item, "items/medshot4.wav");
 	m_iJuice = gSkillData.healthchargerCapacity;
 	pev->frame = 0;
 	SetThink(&CWallHealth::SUB_DoNothing);
@@ -232,7 +232,7 @@ void CWallHealth::Off()
 {
 	// Stop looping sound.
 	if (m_iOn == ChargerState::Charging)
-		StopSound(CHAN_STATIC, "items/medcharge4.wav");
+		StopSound(SoundChannel::Static, "items/medcharge4.wav");
 
 	m_iOn = ChargerState::Off;
 

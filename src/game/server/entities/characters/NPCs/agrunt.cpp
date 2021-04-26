@@ -322,7 +322,7 @@ void CAGrunt::PrescheduleThink()
 			m_iLastWord = num;
 
 			// play a new sound
-			EmitSound(CHAN_VOICE, pIdleSounds[num]);
+			EmitSound(SoundChannel::Voice, pIdleSounds[num]);
 
 			// is this word our last?
 			if (RANDOM_LONG(1, 10) <= 1)
@@ -342,21 +342,21 @@ void CAGrunt::DeathSound()
 {
 	StopTalking();
 
-	EmitSound(CHAN_VOICE, pDieSounds[RANDOM_LONG(0, ArraySize(pDieSounds) - 1)]);
+	EmitSound(SoundChannel::Voice, pDieSounds[RANDOM_LONG(0, ArraySize(pDieSounds) - 1)]);
 }
 
 void CAGrunt::AlertSound()
 {
 	StopTalking();
 
-	EmitSound(CHAN_VOICE, pAlertSounds[RANDOM_LONG(0, ArraySize(pAlertSounds) - 1)]);
+	EmitSound(SoundChannel::Voice, pAlertSounds[RANDOM_LONG(0, ArraySize(pAlertSounds) - 1)]);
 }
 
 void CAGrunt::AttackSound()
 {
 	StopTalking();
 
-	EmitSound(CHAN_VOICE, pAttackSounds[RANDOM_LONG(0, ArraySize(pAttackSounds) - 1)]);
+	EmitSound(SoundChannel::Voice, pAttackSounds[RANDOM_LONG(0, ArraySize(pAttackSounds) - 1)]);
 }
 
 void CAGrunt::PainSound()
@@ -370,7 +370,7 @@ void CAGrunt::PainSound()
 
 	StopTalking();
 
-	EmitSound(CHAN_VOICE, pPainSounds[RANDOM_LONG(0, ArraySize(pPainSounds) - 1)]);
+	EmitSound(SoundChannel::Voice, pPainSounds[RANDOM_LONG(0, ArraySize(pPainSounds) - 1)]);
 }
 
 int	CAGrunt::Classify()
@@ -450,9 +450,9 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 
 		switch (RANDOM_LONG(0, 2))
 		{
-		case 0:	EmitSound(CHAN_WEAPON, "agrunt/ag_fire1.wav"); break;
-		case 1:	EmitSound(CHAN_WEAPON, "agrunt/ag_fire2.wav"); break;
-		case 2:	EmitSound(CHAN_WEAPON, "agrunt/ag_fire3.wav"); break;
+		case 0:	EmitSound(SoundChannel::Weapon, "agrunt/ag_fire1.wav"); break;
+		case 1:	EmitSound(SoundChannel::Weapon, "agrunt/ag_fire2.wav"); break;
+		case 2:	EmitSound(SoundChannel::Weapon, "agrunt/ag_fire3.wav"); break;
 		}
 
 		if (CBaseMonster* pHornetMonster = pHornet->MyMonsterPointer(); pHornetMonster)
@@ -466,16 +466,16 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 		switch (RANDOM_LONG(0, 1))
 		{
 			// left foot
-		case 0:	EmitSound(CHAN_BODY, "player/pl_ladder2.wav", VOL_NORM, ATTN_NORM, 70); break;
-		case 1:	EmitSound(CHAN_BODY, "player/pl_ladder4.wav", VOL_NORM, ATTN_NORM, 70); break;
+		case 0:	EmitSound(SoundChannel::Body, "player/pl_ladder2.wav", VOL_NORM, ATTN_NORM, 70); break;
+		case 1:	EmitSound(SoundChannel::Body, "player/pl_ladder4.wav", VOL_NORM, ATTN_NORM, 70); break;
 		}
 		break;
 	case AGRUNT_AE_RIGHT_FOOT:
 		// right foot
 		switch (RANDOM_LONG(0, 1))
 		{
-		case 0:	EmitSound(CHAN_BODY, "player/pl_ladder1.wav", VOL_NORM, ATTN_NORM, 70); break;
-		case 1:	EmitSound(CHAN_BODY, "player/pl_ladder3.wav", VOL_NORM, ATTN_NORM, 70); break;
+		case 0:	EmitSound(SoundChannel::Body, "player/pl_ladder1.wav", VOL_NORM, ATTN_NORM, 70); break;
+		case 1:	EmitSound(SoundChannel::Body, "player/pl_ladder3.wav", VOL_NORM, ATTN_NORM, 70); break;
 		}
 		break;
 
@@ -493,7 +493,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * 250;
 			}
 
-			EmitSound(CHAN_WEAPON, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 
 			Vector vecArmPos, vecArmAng;
 			GetAttachment(0, vecArmPos, vecArmAng);
@@ -502,7 +502,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 		else
 		{
 			// Play a random attack miss sound
-			EmitSound(CHAN_WEAPON, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+			EmitSound(SoundChannel::Weapon, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 		}
 	}
 	break;
@@ -521,7 +521,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * -250;
 			}
 
-			EmitSound(CHAN_WEAPON, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 
 			Vector vecArmPos, vecArmAng;
 			GetAttachment(0, vecArmPos, vecArmAng);
@@ -530,7 +530,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 		else
 		{
 			// Play a random attack miss sound
-			EmitSound(CHAN_WEAPON, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+			EmitSound(SoundChannel::Weapon, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 		}
 	}
 	break;
@@ -548,8 +548,8 @@ void CAGrunt::Spawn()
 	SET_MODEL(ENT(pev), "models/agrunt.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->effects = 0;
 	pev->health = gSkillData.agruntHealth;

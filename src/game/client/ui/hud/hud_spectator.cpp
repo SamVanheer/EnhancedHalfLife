@@ -412,7 +412,7 @@ bool CHudSpectator::GetDirectorCamera(Vector& position, Vector& angle)
 
 			if (m_ChaseEntity <= gEngfuncs.GetMaxClients())
 			{
-				if (ent->curstate.solid == SOLID_NOT)
+				if (ent->curstate.GetSolid() == Solid::Not)
 				{
 					vt = vt + VEC_DEAD_VIEW;
 				}
@@ -720,7 +720,7 @@ void CHudSpectator::DirectorMessage(int iSize, void* pbuf)
 		f1 = reader.ReadFloat();
 
 		// gEngfuncs.Con_Printf("DRC_CMD_FX_SOUND: %s %.2f\n", string, value );
-		gEngfuncs.pEventAPI->EV_PlaySound(0, v_origin, CHAN_BODY, string, f1, ATTN_NORM, 0, PITCH_NORM);
+		gEngfuncs.pEventAPI->EV_PlaySound(0, v_origin, SoundChannel::Body, string, f1, ATTN_NORM, 0, PITCH_NORM);
 
 		break;
 
@@ -1166,7 +1166,7 @@ bool CHudSpectator::IsActivePlayer(cl_entity_t* ent)
 {
 	return (ent &&
 		ent->player &&
-		ent->curstate.solid != SOLID_NOT &&
+		ent->curstate.GetSolid() != Solid::Not &&
 		ent != gEngfuncs.GetLocalPlayer() &&
 		g_PlayerInfoList[ent->index].name != nullptr
 		);
@@ -1377,7 +1377,7 @@ void CHudSpectator::DrawOverviewLayer()
 
 	// i = r_overviewTexture + ( layer*OVERVIEW_X_TILES*OVERVIEW_Y_TILES );
 
-	gEngfuncs.pTriAPI->RenderMode(kRenderTransTexture);
+	gEngfuncs.pTriAPI->RenderMode(RenderMode::TransTexture);
 	gEngfuncs.pTriAPI->CullFace(TRI_NONE);
 	gEngfuncs.pTriAPI->Color4f(1.0, 1.0, 1.0, 1.0);
 
@@ -1505,7 +1505,7 @@ void CHudSpectator::DrawOverviewEntities()
 		ent = m_OverviewEntities[i].entity;
 
 		gEngfuncs.pTriAPI->SpriteTexture(hSpriteModel, 0);
-		gEngfuncs.pTriAPI->RenderMode(kRenderTransTexture);
+		gEngfuncs.pTriAPI->RenderMode(RenderMode::TransTexture);
 
 		// see R_DrawSpriteModel
 		// draws players sprite
@@ -1547,7 +1547,7 @@ void CHudSpectator::DrawOverviewEntities()
 		// draw line under player icons
 		origin[2] *= zScale;
 
-		gEngfuncs.pTriAPI->RenderMode(kRenderTransAdd);
+		gEngfuncs.pTriAPI->RenderMode(RenderMode::TransAdd);
 
 		hSpriteModel = (model_t*)gEngfuncs.GetSpritePointer(m_hsprBeam);
 		gEngfuncs.pTriAPI->SpriteTexture(hSpriteModel, 0);
@@ -1634,7 +1634,7 @@ void CHudSpectator::DrawOverviewEntities()
 	angles[0] = 0; // always show horizontal camera sprite
 
 	hSpriteModel = (model_t*)gEngfuncs.GetSpritePointer(m_hsprCamera);
-	gEngfuncs.pTriAPI->RenderMode(kRenderTransAdd);
+	gEngfuncs.pTriAPI->RenderMode(RenderMode::TransAdd);
 	gEngfuncs.pTriAPI->SpriteTexture(hSpriteModel, 0);
 
 
@@ -1710,7 +1710,7 @@ bool CHudSpectator::AddOverviewEntity(int type, cl_entity_t* ent, const char* mo
 
 	if (type == ET_PLAYER)
 	{
-		if (ent->curstate.solid != SOLID_NOT)
+		if (ent->curstate.GetSolid() != Solid::Not)
 		{
 			switch (g_PlayerExtraInfo[ent->index].teamnumber)
 			{

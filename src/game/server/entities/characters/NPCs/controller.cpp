@@ -200,27 +200,27 @@ void CController::GibMonster()
 void CController::PainSound()
 {
 	if (RANDOM_LONG(0, 5) < 2)
-		EMIT_SOUND_ARRAY_DYN(CHAN_VOICE, pPainSounds);
+		EMIT_SOUND_ARRAY_DYN(SoundChannel::Voice, pPainSounds);
 }
 
 void CController::AlertSound()
 {
-	EMIT_SOUND_ARRAY_DYN(CHAN_VOICE, pAlertSounds);
+	EMIT_SOUND_ARRAY_DYN(SoundChannel::Voice, pAlertSounds);
 }
 
 void CController::IdleSound()
 {
-	EMIT_SOUND_ARRAY_DYN(CHAN_VOICE, pIdleSounds);
+	EMIT_SOUND_ARRAY_DYN(SoundChannel::Voice, pIdleSounds);
 }
 
 void CController::AttackSound()
 {
-	EMIT_SOUND_ARRAY_DYN(CHAN_VOICE, pAttackSounds);
+	EMIT_SOUND_ARRAY_DYN(SoundChannel::Voice, pAttackSounds);
 }
 
 void CController::DeathSound()
 {
-	EMIT_SOUND_ARRAY_DYN(CHAN_VOICE, pDeathSounds);
+	EMIT_SOUND_ARRAY_DYN(SoundChannel::Voice, pDeathSounds);
 }
 
 void CController::HandleAnimEvent(AnimationEvent& event)
@@ -318,8 +318,8 @@ void CController::Spawn()
 	SET_MODEL(ENT(pev), "models/controller.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_FLY;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Fly;
 	pev->flags |= FL_FLY;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->health = gSkillData.controllerHealth;
@@ -751,7 +751,7 @@ void CController::RunAI()
 		if (m_pBall[i] == nullptr)
 		{
 			m_pBall[i] = CSprite::SpriteCreate("sprites/xspark4.spr", pev->origin, true);
-			m_pBall[i]->SetTransparency(kRenderGlow, 255, 255, 255, 255, kRenderFxNoDissipation);
+			m_pBall[i]->SetTransparency(RenderMode::Glow, 255, 255, 255, 255, RenderFX::NoDissipation);
 			m_pBall[i]->SetAttachment(edict(), (i + 3));
 			m_pBall[i]->SetScale(1.0);
 		}
@@ -1041,11 +1041,11 @@ void CControllerHeadBall::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = MOVETYPE_FLY;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Fly;
+	pev->solid = Solid::BBox;
 
 	SET_MODEL(ENT(pev), "sprites/xspark4.spr");
-	pev->rendermode = kRenderTransAdd;
+	pev->rendermode = RenderMode::TransAdd;
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;
 	pev->rendercolor.z = 255;
@@ -1222,11 +1222,11 @@ void CControllerZapBall::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = MOVETYPE_FLY;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Fly;
+	pev->solid = Solid::BBox;
 
 	SET_MODEL(ENT(pev), "sprites/xspark4.spr");
-	pev->rendermode = kRenderTransAdd;
+	pev->rendermode = RenderMode::TransAdd;
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;
 	pev->rendercolor.z = 255;

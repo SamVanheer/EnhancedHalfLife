@@ -144,11 +144,11 @@ void CBasePlayer::Pain()
 	const float flRndSound = RANDOM_FLOAT(0, 1); //sound randomizer
 
 	if (flRndSound <= 0.33)
-		EmitSound(CHAN_VOICE, "player/pl_pain5.wav");
+		EmitSound(SoundChannel::Voice, "player/pl_pain5.wav");
 	else if (flRndSound <= 0.66)
-		EmitSound(CHAN_VOICE, "player/pl_pain6.wav");
+		EmitSound(SoundChannel::Voice, "player/pl_pain6.wav");
 	else
-		EmitSound(CHAN_VOICE, "player/pl_pain7.wav");
+		EmitSound(SoundChannel::Voice, "player/pl_pain7.wav");
 }
 
 int TrainSpeed(int iSpeed, int iMax)
@@ -177,7 +177,7 @@ void CBasePlayer::DeathSound()
 	/*
 	if (pev->waterlevel == WaterLevel::Head)
 	{
-		EmitSound(CHAN_VOICE, "player/h2odeath.wav", VOL_NORM, ATTN_NONE);
+		EmitSound(SoundChannel::Voice, "player/h2odeath.wav", VOL_NORM, ATTN_NONE);
 		return;
 	}
 	*/
@@ -186,13 +186,13 @@ void CBasePlayer::DeathSound()
 	switch (RANDOM_LONG(1, 5))
 	{
 	case 1:
-		EmitSound(CHAN_VOICE, "player/pl_pain5.wav");
+		EmitSound(SoundChannel::Voice, "player/pl_pain5.wav");
 		break;
 	case 2:
-		EmitSound(CHAN_VOICE, "player/pl_pain6.wav");
+		EmitSound(SoundChannel::Voice, "player/pl_pain6.wav");
 		break;
 	case 3:
-		EmitSound(CHAN_VOICE, "player/pl_pain7.wav");
+		EmitSound(SoundChannel::Voice, "player/pl_pain7.wav");
 		break;
 	}
 
@@ -670,8 +670,8 @@ void CBasePlayer::Killed(entvars_t* pevAttacker, int iGib)
 
 	pev->modelindex = g_ulModelIndexPlayer;    // don't use eyes
 
-	pev->deadflag = DEAD_DYING;
-	pev->movetype = MOVETYPE_TOSS;
+	pev->deadflag = DeadFlag::Dying;
+	pev->movetype = Movetype::Toss;
 	ClearBits(pev->flags, FL_ONGROUND);
 	if (pev->velocity.z < 10)
 		pev->velocity.z += RANDOM_FLOAT(0, 300);
@@ -704,7 +704,7 @@ void CBasePlayer::Killed(entvars_t* pevAttacker, int iGib)
 
 	if ((pev->health < -40 && iGib != GIB_NEVER) || iGib == GIB_ALWAYS)
 	{
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 		GibMonster();	// This clears pev->model
 		pev->effects |= EF_NODRAW;
 		return;
@@ -890,7 +890,7 @@ void CBasePlayer::SetAnimation(PlayerAnim playerAnim)
 
 void CBasePlayer::WaterMove()
 {
-	if (pev->movetype == MOVETYPE_NOCLIP)
+	if (pev->movetype == Movetype::Noclip)
 		return;
 
 	if (pev->health < 0)
@@ -902,9 +902,9 @@ void CBasePlayer::WaterMove()
 
 		// play 'up for air' sound
 		if (pev->air_finished < gpGlobals->time)
-			EmitSound(CHAN_VOICE, "player/pl_wade1.wav");
+			EmitSound(SoundChannel::Voice, "player/pl_wade1.wav");
 		else if (pev->air_finished < gpGlobals->time + 9)
-			EmitSound(CHAN_VOICE, "player/pl_wade2.wav");
+			EmitSound(SoundChannel::Voice, "player/pl_wade2.wav");
 
 		pev->air_finished = gpGlobals->time + PLAYER_AIRTIME;
 		pev->dmg = 2;
@@ -970,19 +970,19 @@ void CBasePlayer::WaterMove()
 	{
 		switch (RANDOM_LONG(0, 3))
 		{
-		case 0:	EmitSound(CHAN_BODY, "player/pl_swim1.wav", 0.8); break;
-		case 1:	EmitSound(CHAN_BODY, "player/pl_swim2.wav", 0.8); break;
-		case 2:	EmitSound(CHAN_BODY, "player/pl_swim3.wav", 0.8); break;
-		case 3:	EmitSound(CHAN_BODY, "player/pl_swim4.wav", 0.8); break;
+		case 0:	EmitSound(SoundChannel::Body, "player/pl_swim1.wav", 0.8); break;
+		case 1:	EmitSound(SoundChannel::Body, "player/pl_swim2.wav", 0.8); break;
+		case 2:	EmitSound(SoundChannel::Body, "player/pl_swim3.wav", 0.8); break;
+		case 3:	EmitSound(SoundChannel::Body, "player/pl_swim4.wav", 0.8); break;
 		}
 	}
 
-	if (pev->watertype == CONTENTS_LAVA)		// do damage
+	if (pev->watertype == Contents::Lava)		// do damage
 	{
 		if (pev->dmgtime < gpGlobals->time)
 			TakeDamage(INDEXVARS(0), INDEXVARS(0), 10 * static_cast<int>(pev->waterlevel), DMG_BURN);
 	}
-	else if (pev->watertype == CONTENTS_SLIME)		// do damage
+	else if (pev->watertype == Contents::Slime)		// do damage
 	{
 		pev->dmgtime = gpGlobals->time + 1;
 		TakeDamage(INDEXVARS(0), INDEXVARS(0), 4 * static_cast<int>(pev->waterlevel), DMG_ACID);
@@ -997,7 +997,7 @@ void CBasePlayer::WaterMove()
 
 bool CBasePlayer::IsOnLadder()
 {
-	return pev->movetype == MOVETYPE_FLY;
+	return pev->movetype == Movetype::Fly;
 }
 
 void CBasePlayer::PlayerDeathThink()
@@ -1020,7 +1020,7 @@ void CBasePlayer::PlayerDeathThink()
 		PackDeadPlayerItems();
 	}
 
-	if (pev->modelindex && (!m_fSequenceFinished) && (pev->deadflag == DEAD_DYING))
+	if (pev->modelindex && (!m_fSequenceFinished) && (pev->deadflag == DeadFlag::Dying))
 	{
 		StudioFrameAdvance();
 
@@ -1031,11 +1031,11 @@ void CBasePlayer::PlayerDeathThink()
 
 	// once we're done animating our death and we're on the ground, we want to set movetype to None so our dead body won't do collisions and stuff anymore
 	// this prevents a bug where the dead body would go to a player's head if he walked over it while the dead player was clicking their button to respawn
-	if (pev->movetype != MOVETYPE_NONE && IsBitSet(pev->flags, FL_ONGROUND))
-		pev->movetype = MOVETYPE_NONE;
+	if (pev->movetype != Movetype::None && IsBitSet(pev->flags, FL_ONGROUND))
+		pev->movetype = Movetype::None;
 
-	if (pev->deadflag == DEAD_DYING)
-		pev->deadflag = DEAD_DEAD;
+	if (pev->deadflag == DeadFlag::Dying)
+		pev->deadflag = DeadFlag::Dead;
 
 	StopAnimation();
 
@@ -1045,7 +1045,7 @@ void CBasePlayer::PlayerDeathThink()
 	const bool fAnyButtonDown = (pev->button & ~IN_SCORE);
 
 	// wait for all buttons released
-	if (pev->deadflag == DEAD_DEAD)
+	if (pev->deadflag == DeadFlag::Dead)
 	{
 		if (fAnyButtonDown)
 			return;
@@ -1053,7 +1053,7 @@ void CBasePlayer::PlayerDeathThink()
 		if (g_pGameRules->PlayerCanRespawn(this))
 		{
 			m_fDeadTime = gpGlobals->time;
-			pev->deadflag = DEAD_RESPAWNABLE;
+			pev->deadflag = DeadFlag::Respawnable;
 		}
 
 		return;
@@ -1132,10 +1132,10 @@ void CBasePlayer::StartDeathCam()
 
 	m_afPhysicsFlags |= PFLAG_OBSERVER;
 	pev->view_ofs = vec3_origin;
-	pev->fixangle = FIXANGLE_ABSOLUTE;
-	pev->solid = SOLID_NOT;
-	pev->takedamage = DAMAGE_NO;
-	pev->movetype = MOVETYPE_NONE;
+	pev->fixangle = FixAngleMode::Absolute;
+	pev->solid = Solid::Not;
+	SetDamageMode(DamageMode::No);
+	pev->movetype = Movetype::None;
 	pev->modelindex = 0;
 }
 
@@ -1179,13 +1179,13 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 	pev->effects = EF_NODRAW;
 	pev->view_ofs = vec3_origin;
 	pev->angles = pev->v_angle = vecViewAngle;
-	pev->fixangle = FIXANGLE_ABSOLUTE;
-	pev->solid = SOLID_NOT;
-	pev->takedamage = DAMAGE_NO;
-	pev->movetype = MOVETYPE_NONE;
+	pev->fixangle = FixAngleMode::Absolute;
+	pev->solid = Solid::Not;
+	SetDamageMode(DamageMode::No);
+	pev->movetype = Movetype::None;
 	ClearBits(m_afPhysicsFlags, PFLAG_DUCKING);
 	ClearBits(pev->flags, FL_DUCKING);
-	pev->deadflag = DEAD_RESPAWNABLE;
+	pev->deadflag = DeadFlag::Respawnable;
 	pev->health = 1;
 
 	// Clear out the status bar
@@ -1244,7 +1244,7 @@ void CBasePlayer::PlayerUse()
 					m_afPhysicsFlags |= PFLAG_ONTRAIN;
 					m_iTrain = TrainSpeed(pTrain->pev->speed, pTrain->pev->impulse);
 					m_iTrain |= TRAIN_NEW;
-					EmitSound(CHAN_ITEM, "plats/train_use1.wav", 0.8);
+					EmitSound(SoundChannel::Item, "plats/train_use1.wav", 0.8);
 					return;
 				}
 			}
@@ -1292,7 +1292,7 @@ void CBasePlayer::PlayerUse()
 		int caps = pObject->ObjectCaps();
 
 		if (m_afButtonPressed & IN_USE)
-			EmitSound(CHAN_ITEM, "common/wpn_select.wav", 0.4);
+			EmitSound(SoundChannel::Item, "common/wpn_select.wav", 0.4);
 
 		if (((pev->button & IN_USE) && (caps & FCAP_CONTINUOUS_USE)) ||
 			((m_afButtonPressed & IN_USE) && (caps & (FCAP_IMPULSE_USE | FCAP_ONOFF_USE))))
@@ -1311,7 +1311,7 @@ void CBasePlayer::PlayerUse()
 	else
 	{
 		if (m_afButtonPressed & IN_USE)
-			EmitSound(CHAN_ITEM, "common/wpn_denyselect.wav", 0.4);
+			EmitSound(SoundChannel::Item, "common/wpn_denyselect.wav", 0.4);
 	}
 }
 
@@ -1588,7 +1588,7 @@ void CBasePlayer::PreThink()
 		return;
 	}
 
-	if (pev->deadflag >= DEAD_DYING)
+	if (pev->deadflag >= DeadFlag::Dying)
 	{
 		PlayerDeathThink();
 		return;
@@ -2102,13 +2102,13 @@ void CBasePlayer::PostThink()
 		{
 			// ALERT ( at_console, "%f\n", m_flFallVelocity );
 
-			if (pev->watertype == CONTENTS_WATER)
+			if (pev->watertype == Contents::Water)
 			{
 				// Did he hit the world or a non-moving entity?
 				// BUG - this happens all the time in water, especially when 
 				// BUG - water has current force
 				// if ( !pev->groundentity || VARS(pev->groundentity)->velocity.z == 0 )
-					// EmitSound(CHAN_BODY, "player/pl_wade1.wav");
+					// EmitSound(SoundChannel::Body, "player/pl_wade1.wav");
 			}
 			else if (m_flFallVelocity > PLAYER_MAX_SAFE_FALL_SPEED)
 			{// after this point, we start doing damage
@@ -2118,7 +2118,7 @@ void CBasePlayer::PostThink()
 				if (flFallDamage > pev->health)
 				{//splat
 					// note: play on item channel because we play footstep landing on body channel
-					EmitSound(CHAN_ITEM, "common/bodysplat.wav");
+					EmitSound(SoundChannel::Item, "common/bodysplat.wav");
 				}
 
 				if (flFallDamage > 0)
@@ -2219,16 +2219,16 @@ void CBasePlayer::Spawn()
 	pev->classname = MAKE_STRING("player");
 	pev->health = 100;
 	pev->armorvalue = 0;
-	pev->takedamage = DAMAGE_AIM;
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_WALK;
+	SetDamageMode(DamageMode::Aim);
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Walk;
 	pev->max_health = pev->health;
 	pev->flags &= FL_PROXY;	// keep proxy flag sey by engine
 	pev->flags |= FL_CLIENT;
 	pev->air_finished = gpGlobals->time + PLAYER_AIRTIME;
 	pev->dmg = 2;				// initial water damage
 	pev->effects = 0;
-	pev->deadflag = DEAD_NO;
+	pev->deadflag = DeadFlag::No;
 	pev->dmg_take = 0;
 	pev->dmg_save = 0;
 	pev->friction = 1.0;
@@ -2376,7 +2376,7 @@ bool CBasePlayer::Restore(CRestore& restore)
 	pev->v_angle.z = 0;	// Clear out roll
 	pev->angles = pev->v_angle;
 
-	pev->fixangle = FIXANGLE_ABSOLUTE;           // turn this way immediately
+	pev->fixangle = FixAngleMode::Absolute;           // turn this way immediately
 
 // Copied from spawn() for now
 	m_bloodColor = BLOOD_COLOR_RED;
@@ -2560,7 +2560,7 @@ void CSprayCan::Spawn(entvars_t* pevOwner)
 	pev->frame = 0;
 
 	pev->nextthink = gpGlobals->time + 0.1;
-	EmitSound(CHAN_VOICE, "player/sprayer.wav");
+	EmitSound(SoundChannel::Voice, "player/sprayer.wav");
 }
 
 void CSprayCan::Think()
@@ -2656,7 +2656,7 @@ void CBasePlayer::FlashlightTurnOn()
 
 	if ((pev->weapons & (1 << WEAPON_SUIT)))
 	{
-		EmitSound(CHAN_WEAPON, SOUND_FLASHLIGHT_ON.data());
+		EmitSound(SoundChannel::Weapon, SOUND_FLASHLIGHT_ON.data());
 		SetBits(pev->effects, EF_DIMLIGHT);
 		MESSAGE_BEGIN(MSG_ONE, gmsgFlashlight, nullptr, pev);
 		WRITE_BYTE(1);
@@ -2669,7 +2669,7 @@ void CBasePlayer::FlashlightTurnOn()
 
 void CBasePlayer::FlashlightTurnOff()
 {
-	EmitSound(CHAN_WEAPON, SOUND_FLASHLIGHT_OFF.data());
+	EmitSound(SoundChannel::Weapon, SOUND_FLASHLIGHT_OFF.data());
 	ClearBits(pev->effects, EF_DIMLIGHT);
 	MESSAGE_BEGIN(MSG_ONE, gmsgFlashlight, nullptr, pev);
 	WRITE_BYTE(0);
@@ -3566,13 +3566,13 @@ Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelt
 	TraceResult tr;
 	UTIL_TraceLine(vecSrc, vecSrc + bestdir * flDist, IgnoreMonsters::No, edict(), &tr);
 
-	if (tr.pHit && tr.pHit->v.takedamage != DAMAGE_NO)
+	if (tr.pHit && tr.pHit->v.takedamage != static_cast<int>(DamageMode::No))
 	{
 		// don't look through water
 		if (!((pev->waterlevel != WaterLevel::Head && tr.pHit->v.waterlevel == WaterLevel::Head)
 			|| (pev->waterlevel == WaterLevel::Head && tr.pHit->v.waterlevel == WaterLevel::Dry)))
 		{
-			if (tr.pHit->v.takedamage == DAMAGE_AIM)
+			if (tr.pHit->v.takedamage == static_cast<int>(DamageMode::Aim))
 				m_fOnTarget = true;
 
 			return m_vecAutoAim;
@@ -3589,7 +3589,7 @@ Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelt
 		if (pEdict->free)	// Not in use
 			continue;
 
-		if (pEdict->v.takedamage != DAMAGE_AIM)
+		if (pEdict->v.takedamage != static_cast<int>(DamageMode::Aim))
 			continue;
 		if (pEdict == edict())
 			continue;
@@ -3654,7 +3654,7 @@ Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelt
 		bestdir.x = -bestdir.x;
 		bestdir = bestdir - pev->v_angle - pev->punchangle;
 
-		if (bestent->v.takedamage == DAMAGE_AIM)
+		if (bestent->v.takedamage == static_cast<int>(DamageMode::Aim))
 			m_fOnTarget = true;
 
 		return bestdir;
@@ -3884,7 +3884,7 @@ class CInfoIntermission :public CPointEntity
 void CInfoIntermission::Spawn()
 {
 	UTIL_SetOrigin(pev, pev->origin);
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 	pev->effects = EF_NODRAW;
 	pev->v_angle = vec3_origin;
 

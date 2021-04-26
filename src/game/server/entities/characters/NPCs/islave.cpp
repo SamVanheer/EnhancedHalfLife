@@ -242,7 +242,7 @@ void CISlave::IdleSound()
 	WRITE_BYTE(0);		// decay * 0.1
 	MESSAGE_END();
 
-	EmitSound(CHAN_WEAPON, "debris/zap1.wav");
+	EmitSound(SoundChannel::Weapon, "debris/zap1.wav");
 #endif
 }
 
@@ -250,13 +250,13 @@ void CISlave::PainSound()
 {
 	if (RANDOM_LONG(0, 2) == 0)
 	{
-		EmitSound(CHAN_WEAPON, pPainSounds[RANDOM_LONG(0, ArraySize(pPainSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
+		EmitSound(SoundChannel::Weapon, pPainSounds[RANDOM_LONG(0, ArraySize(pPainSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
 	}
 }
 
 void CISlave::DeathSound()
 {
-	EmitSound(CHAN_WEAPON, pDeathSounds[RANDOM_LONG(0, ArraySize(pDeathSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
+	EmitSound(SoundChannel::Weapon, pDeathSounds[RANDOM_LONG(0, ArraySize(pDeathSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
 }
 
 int CISlave::SoundMask()
@@ -313,12 +313,12 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 				pHurt->pev->punchangle.x = 5;
 			}
 			// Play a random attack hit sound
-			EmitSound(CHAN_WEAPON, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
+			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
 		}
 		else
 		{
 			// Play a random attack miss sound
-			EmitSound(CHAN_WEAPON, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
+			EmitSound(SoundChannel::Weapon, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
 		}
 	}
 	break;
@@ -332,11 +332,11 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 				pHurt->pev->punchangle.z = -18;
 				pHurt->pev->punchangle.x = 5;
 			}
-			EmitSound(CHAN_WEAPON, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
+			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
 		}
 		else
 		{
-			EmitSound(CHAN_WEAPON, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
+			EmitSound(SoundChannel::Weapon, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, m_voicePitch);
 		}
 	}
 	break;
@@ -378,7 +378,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 			BeamGlow();
 		}
 
-		EmitSound(CHAN_WEAPON, "debris/zap4.wav", VOL_NORM, ATTN_NORM, PITCH_NORM + m_iBeams * 10);
+		EmitSound(SoundChannel::Weapon, "debris/zap4.wav", VOL_NORM, ATTN_NORM, PITCH_NORM + m_iBeams * 10);
 		pev->skin = m_iBeams / 2;
 	}
 	break;
@@ -401,7 +401,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 				WackBeam(-1, pNew);
 				WackBeam(1, pNew);
 				UTIL_Remove(m_hDead);
-				EmitSound(CHAN_WEAPON, "hassault/hw_shoot1.wav", VOL_NORM, ATTN_NORM, RANDOM_LONG(130, 160));
+				EmitSound(SoundChannel::Weapon, "hassault/hw_shoot1.wav", VOL_NORM, ATTN_NORM, RANDOM_LONG(130, 160));
 
 				/*
 				CBaseEntity *pEffect = Create( "test_effect", pNew->Center(), pev->angles );
@@ -417,8 +417,8 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 		ZapBeam(-1);
 		ZapBeam(1);
 
-		EmitSound(CHAN_WEAPON, "hassault/hw_shoot1.wav", VOL_NORM, ATTN_NORM, RANDOM_LONG(130, 160));
-		// StopSound(CHAN_WEAPON, "debris/zap4.wav" );
+		EmitSound(SoundChannel::Weapon, "hassault/hw_shoot1.wav", VOL_NORM, ATTN_NORM, RANDOM_LONG(130, 160));
+		// StopSound(SoundChannel::Weapon, "debris/zap4.wav" );
 		ApplyMultiDamage(pev, pev);
 
 		m_flNextAttack = gpGlobals->time + RANDOM_FLOAT(0.5, 4.0);
@@ -467,7 +467,7 @@ bool CISlave::CheckRangeAttack2(float flDot, float flDist)
 		UTIL_TraceLine(EyePosition(), pEntity->EyePosition(), IgnoreMonsters::Yes, ENT(pev), &tr);
 		if (tr.flFraction == 1.0 || tr.pHit == pEntity->edict())
 		{
-			if (pEntity->pev->deadflag == DEAD_DEAD)
+			if (pEntity->pev->deadflag == DeadFlag::Dead)
 			{
 				const float d = (pev->origin - pEntity->pev->origin).Length();
 				if (d < flDist)
@@ -501,8 +501,8 @@ void CISlave::Spawn()
 	SET_MODEL(ENT(pev), "models/islave.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->effects = 0;
 	pev->health = gSkillData.slaveHealth;
@@ -780,5 +780,5 @@ void CISlave::ClearBeams()
 	m_iBeams = 0;
 	pev->skin = 0;
 
-	StopSound(CHAN_WEAPON, "debris/zap4.wav");
+	StopSound(SoundChannel::Weapon, "debris/zap4.wav");
 }

@@ -70,10 +70,10 @@ void CBloater::PainSound()
 	switch (RANDOM_LONG(0, 5))
 	{
 	case 0:
-		EmitSound(CHAN_VOICE, "zombie/zo_pain1.wav", VOL_NORM, ATTN_NORM, pitch);
+		EmitSound(SoundChannel::Voice, "zombie/zo_pain1.wav", VOL_NORM, ATTN_NORM, pitch);
 		break;
 	case 1:
-		EmitSound(CHAN_VOICE, "zombie/zo_pain2.wav", VOL_NORM, ATTN_NORM, pitch);
+		EmitSound(SoundChannel::Voice, "zombie/zo_pain2.wav", VOL_NORM, ATTN_NORM, pitch);
 		break;
 	default:
 		break;
@@ -89,13 +89,13 @@ void CBloater::AlertSound()
 	switch (RANDOM_LONG(0, 2))
 	{
 	case 0:
-		EmitSound(CHAN_VOICE, "zombie/zo_alert10.wav", VOL_NORM, ATTN_NORM, pitch);
+		EmitSound(SoundChannel::Voice, "zombie/zo_alert10.wav", VOL_NORM, ATTN_NORM, pitch);
 		break;
 	case 1:
-		EmitSound(CHAN_VOICE, "zombie/zo_alert20.wav", VOL_NORM, ATTN_NORM, pitch);
+		EmitSound(SoundChannel::Voice, "zombie/zo_alert20.wav", VOL_NORM, ATTN_NORM, pitch);
 		break;
 	case 2:
-		EmitSound(CHAN_VOICE, "zombie/zo_alert30.wav", VOL_NORM, ATTN_NORM, pitch);
+		EmitSound(SoundChannel::Voice, "zombie/zo_alert30.wav", VOL_NORM, ATTN_NORM, pitch);
 		break;
 	}
 #endif
@@ -109,13 +109,13 @@ void CBloater::IdleSound()
 	switch (RANDOM_LONG(0, 2))
 	{
 	case 0:
-		EmitSound(CHAN_VOICE, "zombie/zo_idle1.wav", VOL_NORM, ATTN_NORM, pitch);
+		EmitSound(SoundChannel::Voice, "zombie/zo_idle1.wav", VOL_NORM, ATTN_NORM, pitch);
 		break;
 	case 1:
-		EmitSound(CHAN_VOICE, "zombie/zo_idle2.wav", VOL_NORM, ATTN_NORM, pitch);
+		EmitSound(SoundChannel::Voice, "zombie/zo_idle2.wav", VOL_NORM, ATTN_NORM, pitch);
 		break;
 	case 2:
-		EmitSound(CHAN_VOICE, "zombie/zo_idle3.wav", VOL_NORM, ATTN_NORM, pitch);
+		EmitSound(SoundChannel::Voice, "zombie/zo_idle3.wav", VOL_NORM, ATTN_NORM, pitch);
 		break;
 	}
 #endif
@@ -129,10 +129,10 @@ void CBloater::AttackSnd()
 	switch (RANDOM_LONG(0, 1))
 	{
 	case 0:
-		EmitSound(CHAN_VOICE, "zombie/zo_attack1.wav", VOL_NORM, ATTN_NORM, pitch);
+		EmitSound(SoundChannel::Voice, "zombie/zo_attack1.wav", VOL_NORM, ATTN_NORM, pitch);
 		break;
 	case 1:
-		EmitSound(CHAN_VOICE, "zombie/zo_attack2.wav", VOL_NORM, ATTN_NORM, pitch);
+		EmitSound(SoundChannel::Voice, "zombie/zo_attack2.wav", VOL_NORM, ATTN_NORM, pitch);
 		break;
 	}
 #endif
@@ -162,8 +162,8 @@ void CBloater::Spawn()
 	SET_MODEL(ENT(pev), "models/floater.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_FLY;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Fly;
 	pev->spawnflags |= FL_FLY;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->health = 40;

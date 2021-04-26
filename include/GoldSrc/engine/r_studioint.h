@@ -184,7 +184,7 @@ struct engine_studio_api_t
 	/**
 	*	@brief Final state setup and restore for rendering
 	*/
-	void			(*SetupRenderer)				(int rendermode);
+	void			(*SetupRenderer)				(RenderMode rendermode);
 	void			(*RestoreRenderer)			();
 
 	/**
@@ -201,7 +201,7 @@ struct engine_studio_api_t
 	*	@brief Only called by hardware interface
 	*/
 	void			(*GL_StudioDrawShadow)		();
-	void			(*GL_SetRenderMode)			(int mode);
+	void			(*GL_SetRenderMode)			(RenderMode mode);
 
 	void			(*StudioSetRenderamt)			(int iRenderamt); 	//!< !!!CZERO added for rendering glass on viewmodels
 	void			(*StudioSetCullState)			(int iCull);

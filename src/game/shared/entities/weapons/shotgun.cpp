@@ -269,9 +269,9 @@ void CShotgun::Reload()
 		m_fInSpecialReload = 2; //TODO: define constants
 
 		if (RANDOM_LONG(0, 1))
-			m_pPlayer->EmitSound(CHAN_ITEM, "weapons/reload1.wav", VOL_NORM, ATTN_NORM, 85 + RANDOM_LONG(0, 0x1f));
+			m_pPlayer->EmitSound(SoundChannel::Item, "weapons/reload1.wav", VOL_NORM, ATTN_NORM, 85 + RANDOM_LONG(0, 0x1f));
 		else
-			m_pPlayer->EmitSound(CHAN_ITEM, "weapons/reload3.wav", VOL_NORM, ATTN_NORM, 85 + RANDOM_LONG(0, 0x1f));
+			m_pPlayer->EmitSound(SoundChannel::Item, "weapons/reload3.wav", VOL_NORM, ATTN_NORM, 85 + RANDOM_LONG(0, 0x1f));
 
 		SendWeaponAnim(SHOTGUN_RELOAD);
 
@@ -298,7 +298,7 @@ void CShotgun::WeaponIdle()
 	if ( m_flPumpTime && m_flPumpTime < gpGlobals->time )
 	{
 		// play pumping sound
-		m_pPlayer->EmitSound(CHAN_ITEM, "weapons/scock1.wav", VOL_NORM, ATTN_NORM, 95 + RANDOM_LONG(0,0x1f));
+		m_pPlayer->EmitSound(SoundChannel::Item, "weapons/scock1.wav", VOL_NORM, ATTN_NORM, 95 + RANDOM_LONG(0,0x1f));
 		m_flPumpTime = 0;
 	}
 	*/
@@ -321,7 +321,7 @@ void CShotgun::WeaponIdle()
 				SendWeaponAnim(SHOTGUN_PUMP);
 
 				// play cocking sound
-				m_pPlayer->EmitSound(CHAN_ITEM, "weapons/scock1.wav", VOL_NORM, ATTN_NORM, 95 + RANDOM_LONG(0, 0x1f));
+				m_pPlayer->EmitSound(SoundChannel::Item, "weapons/scock1.wav", VOL_NORM, ATTN_NORM, 95 + RANDOM_LONG(0, 0x1f));
 				m_fInSpecialReload = 0;
 				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.5;
 			}
@@ -355,7 +355,7 @@ void CShotgun::ItemPostFrame()
 	if (m_flPumpTime && m_flPumpTime < gpGlobals->time)
 	{
 		// play pumping sound
-		m_pPlayer->EmitSound(CHAN_ITEM, "weapons/scock1.wav", VOL_NORM, ATTN_NORM, 95 + RANDOM_LONG(0, 0x1f));
+		m_pPlayer->EmitSound(SoundChannel::Item, "weapons/scock1.wav", VOL_NORM, ATTN_NORM, 95 + RANDOM_LONG(0, 0x1f));
 		m_flPumpTime = 0;
 	}
 
@@ -379,7 +379,7 @@ class CShotgunAmmo : public CBasePlayerAmmo
 	{
 		if (pOther->GiveAmmo(AMMO_BUCKSHOTBOX_GIVE, "buckshot", BUCKSHOT_MAX_CARRY) != -1)
 		{
-			EmitSound(CHAN_ITEM, "items/9mmclip1.wav");
+			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
 			return true;
 		}
 		return false;

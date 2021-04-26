@@ -854,7 +854,7 @@ bool CTalkMonster::OkToSpeak()
 	}
 
 	// if not alive, certainly don't speak
-	if (pev->deadflag != DEAD_NO)
+	if (pev->deadflag != DeadFlag::No)
 	{
 		return false;
 	}
@@ -979,7 +979,7 @@ bool CTalkMonster::IdleSpeak()
 				if (!IsBitSet(m_bitsSaid, bit_saidDamageHeavy) &&
 					(m_hTargetEnt->pev->health <= m_hTargetEnt->pev->max_health / 8))
 				{
-					//EmitSound(CHAN_VOICE, m_szGrp[TLK_PLHURT3], VOL_NORM, ATTN_IDLE, pitch);
+					//EmitSound(SoundChannel::Voice, m_szGrp[TLK_PLHURT3], VOL_NORM, ATTN_IDLE, pitch);
 					PlaySentence(m_szGrp[TLK_PLHURT3], duration, VOL_NORM, ATTN_IDLE);
 					SetBits(m_bitsSaid, bit_saidDamageHeavy);
 					return true;
@@ -987,7 +987,7 @@ bool CTalkMonster::IdleSpeak()
 				else if (!IsBitSet(m_bitsSaid, bit_saidDamageMedium) &&
 					(m_hTargetEnt->pev->health <= m_hTargetEnt->pev->max_health / 4))
 				{
-					//EmitSound(CHAN_VOICE, m_szGrp[TLK_PLHURT2], VOL_NORM, ATTN_IDLE, pitch);
+					//EmitSound(SoundChannel::Voice, m_szGrp[TLK_PLHURT2], VOL_NORM, ATTN_IDLE, pitch);
 					PlaySentence(m_szGrp[TLK_PLHURT2], duration, VOL_NORM, ATTN_IDLE);
 					SetBits(m_bitsSaid, bit_saidDamageMedium);
 					return true;
@@ -995,7 +995,7 @@ bool CTalkMonster::IdleSpeak()
 				else if (!IsBitSet(m_bitsSaid, bit_saidDamageLight) &&
 					(m_hTargetEnt->pev->health <= m_hTargetEnt->pev->max_health / 2))
 				{
-					//EmitSound(CHAN_VOICE, m_szGrp[TLK_PLHURT1], VOL_NORM, ATTN_IDLE, pitch);
+					//EmitSound(SoundChannel::Voice, m_szGrp[TLK_PLHURT1], VOL_NORM, ATTN_IDLE, pitch);
 					PlaySentence(m_szGrp[TLK_PLHURT1], duration, VOL_NORM, ATTN_IDLE);
 					SetBits(m_bitsSaid, bit_saidDamageLight);
 					return true;
@@ -1066,7 +1066,7 @@ void CTalkMonster::PlaySentence(const char* pszSentence, float duration, float v
 
 	CTalkMonster::g_talkWaitTime = gpGlobals->time + duration + 2.0;
 	if (pszSentence[0] == '!')
-		EmitSound(CHAN_VOICE, pszSentence, volume, attenuation, GetVoicePitch());
+		EmitSound(SoundChannel::Voice, pszSentence, volume, attenuation, GetVoicePitch());
 	else
 		SENTENCEG_PlayRndSz(this, pszSentence, volume, attenuation, GetVoicePitch());
 

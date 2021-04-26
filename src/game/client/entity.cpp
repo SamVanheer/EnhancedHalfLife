@@ -149,7 +149,7 @@ void DLLEXPORT HUD_TxferPredictionData(entity_state_t* ps, const entity_state_t*
 	pcd->deadflag = ppcd->deadflag;
 
 	// Spectating or not dead == get control over view angles.
-	g_iAlive = (ppcd->iuser1 || (pcd->deadflag == DEAD_NO)) ? 1 : 0;
+	g_iAlive = (ppcd->iuser1 || (pcd->deadflag == DeadFlag::No)) ? 1 : 0;
 
 	// Spectator
 	pcd->iuser1 = ppcd->iuser1;
@@ -370,8 +370,8 @@ void DLLEXPORT HUD_TempEntUpdate(
 			{
 				if (pTemp->flags & FTENT_FADEOUT)
 				{
-					if (pTemp->entity.curstate.rendermode == kRenderNormal)
-						pTemp->entity.curstate.rendermode = kRenderTransTexture;
+					if (pTemp->entity.curstate.rendermode == RenderMode::Normal)
+						pTemp->entity.curstate.rendermode = RenderMode::TransTexture;
 					pTemp->entity.curstate.renderamt = pTemp->entity.baseline.renderamt * (1 + life * pTemp->fadeSpeed);
 					if (pTemp->entity.curstate.renderamt <= 0)
 						active = false;

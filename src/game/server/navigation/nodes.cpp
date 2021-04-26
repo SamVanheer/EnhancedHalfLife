@@ -335,7 +335,7 @@ int	CGraph::FindNearestLink(const Vector& vecTestPoint, int& iNearestLink, bool&
 
 int	CGraph::HullIndex(const CBaseEntity* pEntity)
 {
-	if (pEntity->pev->movetype == MOVETYPE_FLY)
+	if (pEntity->pev->movetype == Movetype::Fly)
 		return NODE_FLY_HULL;
 
 	if (pEntity->pev->mins == Vector(-12, -12, 0))
@@ -351,7 +351,7 @@ int	CGraph::HullIndex(const CBaseEntity* pEntity)
 
 int	CGraph::NodeType(const CBaseEntity* pEntity)
 {
-	if (pEntity->pev->movetype == MOVETYPE_FLY)
+	if (pEntity->pev->movetype == Movetype::Fly)
 	{
 		if (pEntity->pev->waterlevel != WaterLevel::Dry)
 		{
@@ -1311,8 +1311,8 @@ void CTestHull::Spawn(entvars_t* pevMasterNode)
 	SET_MODEL(ENT(pev), "models/player.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	pev->effects = 0;
 	pev->health = 50;
 	pev->yaw_speed = 8;
@@ -1330,7 +1330,7 @@ void CTestHull::Spawn(entvars_t* pevMasterNode)
 
 	// Make this invisible
 	// UNDONE: Shouldn't we just use EF_NODRAW?  This doesn't need to go to the client.
-	pev->rendermode = kRenderTransTexture;
+	pev->rendermode = RenderMode::TransTexture;
 	pev->renderamt = 0;
 }
 
@@ -1364,8 +1364,8 @@ void CNodeEnt::KeyValue(KeyValueData* pkvd)
 
 void CNodeEnt::Spawn()
 {
-	pev->movetype = MOVETYPE_NONE;
-	pev->solid = SOLID_NOT;// always solid_not 
+	pev->movetype = Movetype::None;
+	pev->solid = Solid::Not;// always solid_not 
 
 	if (WorldGraph.m_fGraphPresent)
 	{// graph loaded from disk, so discard all these node ents as soon as they spawn
@@ -1403,7 +1403,7 @@ void CNodeEnt::Spawn()
 
 void CTestHull::ShowBadNode()
 {
-	pev->movetype = MOVETYPE_FLY;
+	pev->movetype = Movetype::Fly;
 	pev->angles.y = pev->angles.y + 4;
 
 	UTIL_MakeVectors(pev->angles);
@@ -1488,7 +1488,7 @@ void CTestHull::BuildNodeGraph()
 		{
 			// do nothing
 		}
-		else if (UTIL_PointContents(WorldGraph.m_pNodes[i].m_vecOrigin) == CONTENTS_WATER)
+		else if (UTIL_PointContents(WorldGraph.m_pNodes[i].m_vecOrigin) == Contents::Water)
 		{
 			WorldGraph.m_pNodes[i].m_afNodeInfo |= bits_NODE_WATER;
 		}
@@ -1538,7 +1538,7 @@ void CTestHull::BuildNodeGraph()
 		ALERT(at_aiconsole, "**ConnectVisibleNodes FAILED!\n");
 
 		SetThink(&CTestHull::ShowBadNode);// send the hull off to show the offending node.
-		//pev->solid = SOLID_NOT;
+		//pev->solid = Solid::Not;
 		pev->origin = WorldGraph.m_pNodes[iBadNode].m_vecOrigin;
 		return;
 	}
@@ -1609,11 +1609,11 @@ void CTestHull::BuildNodeGraph()
 				if (hull < NODE_FLY_HULL)
 				{
 					int SaveFlags = pev->flags;
-					int MoveMode = WALKMOVE_WORLDONLY;
+					WalkMoveMode MoveMode = WalkMoveMode::WorldOnly;
 					if (pSrcNode->m_afNodeInfo & bits_NODE_WATER)
 					{
 						pev->flags |= FL_SWIM;
-						MoveMode = WALKMOVE_NORMAL;
+						MoveMode = WalkMoveMode::Normal;
 					}
 
 					const float flYaw = UTIL_VecToYaw(pDestNode->m_vecOrigin - pev->origin);

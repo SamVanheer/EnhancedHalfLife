@@ -202,8 +202,8 @@ public:
 	virtual void	OverrideReset() {}
 	virtual int		DamageDecal(int bitsDamageType);
 	virtual bool	OnControls(entvars_t* pev) { return false; }
-	virtual bool	IsAlive() { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
-	virtual bool	IsBSPModel() { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
+	virtual bool	IsAlive() { return (pev->deadflag == DeadFlag::No) && pev->health > 0; }
+	virtual bool	IsBSPModel() { return pev->solid == Solid::BSP || pev->movetype == Movetype::PushStep; }
 	virtual bool	ReflectGauss() { return (IsBSPModel() && !pev->takedamage); }
 	virtual bool	HasTarget(string_t targetname) { return AreStringsEqual(STRING(targetname), STRING(pev->targetname)); }
 	virtual bool    IsInWorld();
@@ -255,6 +255,13 @@ public:
 	void EXPORT SUB_FadeOut();
 	void EXPORT SUB_CallUseToggle() { this->Use(this, this, USE_TOGGLE, 0); }
 	bool		ShouldToggle(USE_TYPE useType, bool currentState);
+
+	DamageMode GetDamageMode() const { return static_cast<DamageMode>(pev->takedamage); }
+
+	void SetDamageMode(DamageMode mode)
+	{
+		pev->takedamage = static_cast<int>(mode);
+	}
 
 	/**
 	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
@@ -383,12 +390,12 @@ public:
 	*/
 	virtual	bool IsVisible(const Vector& vecOrigin);
 
-	void EmitSound(int channel, const char* fileName, float volume = VOL_NORM, float attenuation = ATTN_NORM, int pitch = PITCH_NORM, int flags = 0);
+	void EmitSound(SoundChannel channel, const char* fileName, float volume = VOL_NORM, float attenuation = ATTN_NORM, int pitch = PITCH_NORM, int flags = 0);
 
-	void StopSound(int channel, const char* fileName);
+	void StopSound(SoundChannel channel, const char* fileName);
 
 	template<std::size_t Size>
-	void EMIT_SOUND_ARRAY_DYN(int chan, const char* (&array)[Size])
+	void EMIT_SOUND_ARRAY_DYN(SoundChannel chan, const char* (&array)[Size])
 	{
 		EmitSound(chan, RANDOM_SOUND_ARRAY(array), VOL_NORM, ATTN_NORM, RANDOM_LONG(95, 105));
 	}

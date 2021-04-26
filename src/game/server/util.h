@@ -277,7 +277,7 @@ void			UTIL_TraceModel(const Vector& vecStart, const Vector& vecEnd, Hull hullNu
 void UTIL_TraceMonsterHull(edict_t* pEdict, const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, edict_t* pentIgnore, TraceResult* ptr);
 
 Vector		UTIL_GetAimVector(edict_t* pent, float flSpeed);
-int			UTIL_PointContents(const Vector& vec);
+Contents UTIL_PointContents(const Vector& vec);
 
 bool UTIL_IsMasterTriggered(string_t sMaster, CBaseEntity* pActivator);
 void			UTIL_BloodStream(const Vector& origin, const Vector& direction, int color, int amount);
@@ -578,7 +578,7 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 *	EMIT_SOUND_DYN with pitch != 100 should be used sparingly,
 *	as it's not quite as fast as EMIT_SOUND (the pitchshift mixer is not native coded).
 */
-void EMIT_SOUND_DYN(edict_t* entity, int channel, const char* sample, float volume, float attenuation,
+void EMIT_SOUND_DYN(edict_t* entity, SoundChannel channel, const char* sample, float volume, float attenuation,
 	int flags, int pitch);
 
 /**

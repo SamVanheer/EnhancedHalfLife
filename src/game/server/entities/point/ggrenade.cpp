@@ -38,9 +38,9 @@ void CGrenade::Explode(Vector vecSrc, Vector vecAim)
 void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 {
 	pev->model = iStringNull;//invisible
-	pev->solid = SOLID_NOT;// intangible
+	pev->solid = Solid::Not;// intangible
 
-	pev->takedamage = DAMAGE_NO;
+	SetDamageMode(DamageMode::No);
 
 	// Pull out of the wall a bit
 	if (pTrace->flFraction != 1.0)
@@ -48,14 +48,14 @@ void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 		pev->origin = pTrace->vecEndPos + (pTrace->vecPlaneNormal * (pev->dmg - 24) * 0.6);
 	}
 
-	const int iContents = UTIL_PointContents(pev->origin);
+	const Contents iContents = UTIL_PointContents(pev->origin);
 
 	MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
 	WRITE_BYTE(TE_EXPLOSION);		// This makes a dynamic light and the explosion sprites/sound
 	WRITE_COORD(pev->origin.x);	// Send to PAS because of the sound
 	WRITE_COORD(pev->origin.y);
 	WRITE_COORD(pev->origin.z);
-	if (iContents != CONTENTS_WATER)
+	if (iContents != Contents::Water)
 	{
 		WRITE_SHORT(g_sModelIndexFireball);
 	}
@@ -92,9 +92,9 @@ void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 
 	switch (RANDOM_LONG(0, 2))
 	{
-	case 0:	EmitSound(CHAN_VOICE, "weapons/debris1.wav", 0.55);	break;
-	case 1:	EmitSound(CHAN_VOICE, "weapons/debris2.wav", 0.55);	break;
-	case 2:	EmitSound(CHAN_VOICE, "weapons/debris3.wav", 0.55);	break;
+	case 0:	EmitSound(SoundChannel::Voice, "weapons/debris1.wav", 0.55);	break;
+	case 1:	EmitSound(SoundChannel::Voice, "weapons/debris2.wav", 0.55);	break;
+	case 2:	EmitSound(SoundChannel::Voice, "weapons/debris3.wav", 0.55);	break;
 	}
 
 	pev->effects |= EF_NODRAW;
@@ -102,7 +102,7 @@ void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 	pev->velocity = vec3_origin;
 	pev->nextthink = gpGlobals->time + 0.3;
 
-	if (iContents != CONTENTS_WATER)
+	if (iContents != Contents::Water)
 	{
 		const int sparkCount = RANDOM_LONG(0, 3);
 		for (int i = 0; i < sparkCount; i++)
@@ -112,7 +112,7 @@ void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 
 void CGrenade::Smoke()
 {
-	if (UTIL_PointContents(pev->origin) == CONTENTS_WATER)
+	if (UTIL_PointContents(pev->origin) == Contents::Water)
 	{
 		UTIL_Bubbles(pev->origin - Vector(64, 64, 64), pev->origin + Vector(64, 64, 64), 100);
 	}
@@ -273,9 +273,9 @@ void CGrenade::BounceSound()
 {
 	switch (RANDOM_LONG(0, 2))
 	{
-	case 0:	EmitSound(CHAN_VOICE, "weapons/grenade_hit1.wav", 0.25); break;
-	case 1:	EmitSound(CHAN_VOICE, "weapons/grenade_hit2.wav", 0.25); break;
-	case 2:	EmitSound(CHAN_VOICE, "weapons/grenade_hit3.wav", 0.25); break;
+	case 0:	EmitSound(SoundChannel::Voice, "weapons/grenade_hit1.wav", 0.25); break;
+	case 1:	EmitSound(SoundChannel::Voice, "weapons/grenade_hit2.wav", 0.25); break;
+	case 2:	EmitSound(SoundChannel::Voice, "weapons/grenade_hit3.wav", 0.25); break;
 	}
 }
 
@@ -308,10 +308,10 @@ void CGrenade::TumbleThink()
 
 void CGrenade::Spawn()
 {
-	pev->movetype = MOVETYPE_BOUNCE;
+	pev->movetype = Movetype::Bounce;
 	pev->classname = MAKE_STRING("grenade");
 
-	pev->solid = SOLID_BBOX;
+	pev->solid = Solid::BBox;
 
 	SET_MODEL(ENT(pev), "models/grenade.mdl");
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);

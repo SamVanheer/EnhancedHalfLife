@@ -158,7 +158,7 @@ void CBasePlayer::Observer_CheckTarget()
 	}
 
 	// check taget
-	if (target->pev->deadflag == DEAD_DEAD)
+	if (target->pev->deadflag == DeadFlag::Dead)
 	{
 		if ((target->m_fDeadTime + 2.0f) < gpGlobals->time)
 		{

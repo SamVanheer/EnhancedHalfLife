@@ -74,9 +74,9 @@ void CBubbling::Spawn()
 	Precache();
 	SET_MODEL(ENT(pev), STRING(pev->model));		// Set size
 
-	pev->solid = SOLID_NOT;							// Remove model & collisions
+	pev->solid = Solid::Not;							// Remove model & collisions
 	pev->renderamt = 0;								// The engine won't draw this model if this is set to 0 and blending is on
-	pev->rendermode = kRenderTransTexture;
+	pev->rendermode = RenderMode::TransTexture;
 	const int speed = pev->speed > 0 ? pev->speed : -pev->speed;
 
 	// HACKHACK!!! - Speed in rendercolor
@@ -156,7 +156,7 @@ LINK_ENTITY_TO_CLASS(beam, CBeam);
 
 void CBeam::Spawn()
 {
-	pev->solid = SOLID_NOT;							// Remove model & collisions
+	pev->solid = Solid::Not;							// Remove model & collisions
 	Precache();
 }
 
@@ -227,7 +227,7 @@ void CBeam::BeamInit(const char* pSpriteName, int width)
 	SetWidth(width);
 	pev->skin = 0;
 	pev->sequence = 0;
-	pev->rendermode = 0;
+	pev->rendermode = RenderMode::Normal;
 }
 
 void CBeam::PointsInit(const Vector& start, const Vector& end)
@@ -402,7 +402,7 @@ void CTripBeam::Spawn()
 {
 	CLightning::Spawn();
 	SetTouch(&CTripBeam::TriggerTouch);
-	pev->solid = SOLID_TRIGGER;
+	pev->solid = Solid::Trigger;
 	RelinkBeam();
 }
 #endif
@@ -433,7 +433,7 @@ void CLightning::Spawn()
 		SetThink(&CLightning::SUB_Remove);
 		return;
 	}
-	pev->solid = SOLID_NOT;							// Remove model & collisions
+	pev->solid = Solid::Not;							// Remove model & collisions
 	Precache();
 
 	pev->dmgtime = gpGlobals->time;
@@ -843,7 +843,7 @@ void CLightning::BeamUpdateVars()
 
 	pev->skin = 0;
 	pev->sequence = 0;
-	pev->rendermode = 0;
+	pev->rendermode = RenderMode::Normal;
 	pev->flags |= FL_CUSTOMENTITY;
 	pev->model = m_iszSpriteName;
 	SetTexture(m_spriteTexture);
@@ -911,7 +911,7 @@ void CLaser::Spawn()
 		SetThink(&CLaser::SUB_Remove);
 		return;
 	}
-	pev->solid = SOLID_NOT;							// Remove model & collisions
+	pev->solid = Solid::Not;							// Remove model & collisions
 	Precache();
 
 	SetThink(&CLaser::StrikeThink);
@@ -925,7 +925,7 @@ void CLaser::Spawn()
 		m_pSprite = nullptr;
 
 	if (m_pSprite)
-		m_pSprite->SetTransparency(kRenderGlow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
+		m_pSprite->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
 
 	if (!IsStringNull(pev->targetname) && !(pev->spawnflags & SF_BEAM_STARTON))
 		TurnOff();
@@ -1074,8 +1074,8 @@ IMPLEMENT_SAVERESTORE(CGlow, CPointEntity);
 
 void CGlow::Spawn()
 {
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 	pev->effects = 0;
 	pev->frame = 0;
 
@@ -1115,8 +1115,8 @@ IMPLEMENT_SAVERESTORE(CSprite, CPointEntity);
 
 void CSprite::Spawn()
 {
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 	pev->effects = 0;
 	pev->frame = 0;
 
@@ -1164,8 +1164,8 @@ CSprite* CSprite::SpriteCreate(const char* pSpriteName, const Vector& origin, bo
 	CSprite* pSprite = GetClassPtr((CSprite*)nullptr);
 	pSprite->SpriteInit(pSpriteName, origin);
 	pSprite->pev->classname = MAKE_STRING("env_sprite");
-	pSprite->pev->solid = SOLID_NOT;
-	pSprite->pev->movetype = MOVETYPE_NOCLIP;
+	pSprite->pev->solid = Solid::Not;
+	pSprite->pev->movetype = Movetype::Noclip;
 	if (animate)
 		pSprite->TurnOn();
 
@@ -1357,7 +1357,7 @@ void CGibShooter::Spawn()
 {
 	Precache();
 
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 	pev->effects = EF_NODRAW;
 
 	if (m_flDelay == 0)
@@ -1652,8 +1652,8 @@ constexpr int SF_BLOOD_DECAL = 0x0008;
 
 void CBlood::Spawn()
 {
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 	pev->effects = 0;
 	pev->frame = 0;
 	SetMovedir(pev);
@@ -1768,8 +1768,8 @@ constexpr int SF_SHAKE_INAIR = 0x0004;		//!< Shake players in air
 
 void CShake::Spawn()
 {
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 	pev->effects = 0;
 	pev->frame = 0;
 
@@ -1835,8 +1835,8 @@ constexpr int SF_FADE_ONLYONE = 0x0004;
 
 void CFade::Spawn()
 {
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 	pev->effects = 0;
 	pev->frame = 0;
 }
@@ -1897,8 +1897,8 @@ void CMessage::Spawn()
 {
 	Precache();
 
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 
 	switch (pev->impulse)
 	{
@@ -1972,7 +1972,7 @@ void CMessage::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useTy
 	}
 	if (!IsStringNull(pev->noise))
 	{
-		EmitSound(CHAN_BODY, STRING(pev->noise), pev->scale, pev->speed);
+		EmitSound(SoundChannel::Body, STRING(pev->noise), pev->scale, pev->speed);
 	}
 	if (pev->spawnflags & SF_MESSAGE_ONCE)
 		UTIL_Remove(this);
@@ -2028,7 +2028,7 @@ void CEnvFunnel::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 void CEnvFunnel::Spawn()
 {
 	Precache();
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 	pev->effects = EF_NODRAW;
 }
 
@@ -2083,7 +2083,7 @@ void CEnvBeverage::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE u
 void CEnvBeverage::Spawn()
 {
 	Precache();
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 	pev->effects = EF_NODRAW;
 	pev->frags = 0;
 
@@ -2114,8 +2114,8 @@ LINK_ENTITY_TO_CLASS(item_sodacan, CItemSoda);
 void CItemSoda::Spawn()
 {
 	Precache();
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_TOSS;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::Toss;
 
 	SET_MODEL(ENT(pev), "models/can.mdl");
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);
@@ -2126,9 +2126,9 @@ void CItemSoda::Spawn()
 
 void CItemSoda::CanThink()
 {
-	EmitSound(CHAN_WEAPON, "weapons/g_bounce3.wav");
+	EmitSound(SoundChannel::Weapon, "weapons/g_bounce3.wav");
 
-	pev->solid = SOLID_TRIGGER;
+	pev->solid = Solid::Trigger;
 	UTIL_SetSize(pev, Vector(-8, -8, 0), Vector(8, 8, 8));
 	SetThink(nullptr);
 	SetTouch(&CItemSoda::CanTouch);
@@ -2151,8 +2151,8 @@ void CItemSoda::CanTouch(CBaseEntity* pOther)
 		pev->owner->v.frags = 0;
 	}
 
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 	pev->effects = EF_NODRAW;
 	SetTouch(nullptr);
 	SetThink(&CItemSoda::SUB_Remove);

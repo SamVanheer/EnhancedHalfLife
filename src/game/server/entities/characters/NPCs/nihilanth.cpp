@@ -277,8 +277,8 @@ void CNihilanth::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = MOVETYPE_FLY;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Fly;
+	pev->solid = Solid::BBox;
 
 	SET_MODEL(edict(), "models/nihilanth.mdl");
 	// UTIL_SetSize(pev, Vector( -300, -300, 0), Vector(300, 300, 512));
@@ -286,7 +286,7 @@ void CNihilanth::Spawn()
 	UTIL_SetOrigin(pev, pev->origin);
 
 	pev->flags |= FL_MONSTER;
-	pev->takedamage = DAMAGE_AIM;
+	SetDamageMode(DamageMode::Aim);
 	pev->health = gSkillData.nihilanthHealth;
 	pev->view_ofs = Vector(0, 0, 300);
 
@@ -349,17 +349,17 @@ void CNihilanth::PainSound()
 
 	if (pev->health > gSkillData.nihilanthHealth / 2)
 	{
-		EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pLaughSounds), VOL_NORM, 0.2);
+		EmitSound(SoundChannel::Voice, RANDOM_SOUND_ARRAY(pLaughSounds), VOL_NORM, 0.2);
 	}
 	else if (m_irritation >= 2)
 	{
-		EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pPainSounds), VOL_NORM, 0.2);
+		EmitSound(SoundChannel::Voice, RANDOM_SOUND_ARRAY(pPainSounds), VOL_NORM, 0.2);
 	}
 }
 
 void CNihilanth::DeathSound()
 {
-	EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pDeathSounds), VOL_NORM, 0.1);
+	EmitSound(SoundChannel::Voice, RANDOM_SOUND_ARRAY(pDeathSounds), VOL_NORM, 0.1);
 }
 
 void CNihilanth::NullThink()
@@ -415,15 +415,15 @@ void CNihilanth::DyingThink()
 	DispatchAnimEvents();
 	StudioFrameAdvance();
 
-	if (pev->deadflag == DEAD_NO)
+	if (pev->deadflag == DeadFlag::No)
 	{
 		DeathSound();
-		pev->deadflag = DEAD_DYING;
+		pev->deadflag = DeadFlag::Dying;
 
 		m_posDesired.z = m_flMaxZ;
 	}
 
-	if (pev->deadflag == DEAD_DYING)
+	if (pev->deadflag == DeadFlag::Dying)
 	{
 		Flight();
 
@@ -431,7 +431,7 @@ void CNihilanth::DyingThink()
 		{
 			pev->velocity = vec3_origin;
 			FireTargets(m_szDeadUse, this, this, USE_ON, 1.0);
-			pev->deadflag = DEAD_DEAD;
+			pev->deadflag = DeadFlag::Dead;
 		}
 	}
 
@@ -528,7 +528,7 @@ void CNihilanth::DyingThink()
 void CNihilanth::CrashTouch(CBaseEntity* pOther)
 {
 	// only crash if we hit something solid
-	if (pOther->pev->solid == SOLID_BSP)
+	if (pOther->pev->solid == Solid::BSP)
 	{
 		SetTouch(nullptr);
 		pev->nextthink = gpGlobals->time;
@@ -537,7 +537,7 @@ void CNihilanth::CrashTouch(CBaseEntity* pOther)
 
 void CNihilanth::GibMonster()
 {
-	// EmitSound(CHAN_VOICE, "common/bodysplat.wav", 0.75, ATTN_NORM, 200);		
+	// EmitSound(SoundChannel::Voice, "common/bodysplat.wav", 0.75, ATTN_NORM, 200);		
 }
 
 void CNihilanth::FloatSequence()
@@ -607,7 +607,7 @@ void CNihilanth::MakeFriend(Vector vecStart)
 	{
 		if (m_hFriend[i] != nullptr && !m_hFriend[i]->IsAlive())
 		{
-			if (pev->rendermode == kRenderNormal) // don't do it if they are already fading
+			if (pev->rendermode == RenderMode::Normal) // don't do it if they are already fading
 				m_hFriend[i]->MyMonsterPointer()->FadeMonster();
 			m_hFriend[i] = nullptr;
 		}
@@ -640,7 +640,7 @@ void CNihilanth::MakeFriend(Vector vecStart)
 			}
 			if (m_hFriend[i] != nullptr)
 			{
-				m_hFriend[i]->EmitSound(CHAN_WEAPON, "debris/beamstart7.wav");
+				m_hFriend[i]->EmitSound(SoundChannel::Weapon, "debris/beamstart7.wav");
 			}
 
 			return;
@@ -659,7 +659,7 @@ void CNihilanth::NextActivity()
 			m_pBall = CSprite::SpriteCreate("sprites/tele1.spr", pev->origin, true);
 			if (m_pBall)
 			{
-				m_pBall->SetTransparency(kRenderTransAdd, 255, 255, 255, 255, kRenderFxNoDissipation);
+				m_pBall->SetTransparency(RenderMode::TransAdd, 255, 255, 255, 255, RenderFX::NoDissipation);
 				m_pBall->SetAttachment(edict(), 1);
 				m_pBall->SetScale(4.0);
 				m_pBall->pev->framerate = 10.0;
@@ -1021,9 +1021,9 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 		if (m_hEnemy != nullptr)
 		{
 			if (RANDOM_LONG(0, 4) == 0)
-				EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pAttackSounds), VOL_NORM, 0.2);
+				EmitSound(SoundChannel::Voice, RANDOM_SOUND_ARRAY(pAttackSounds), VOL_NORM, 0.2);
 
-			EmitSound(CHAN_WEAPON, RANDOM_SOUND_ARRAY(pBallSounds), VOL_NORM, 0.2);
+			EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pBallSounds), VOL_NORM, 0.2);
 
 			MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
 			WRITE_BYTE(TE_ELIGHT);
@@ -1070,7 +1070,7 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 
 			if (pTrigger != nullptr || pTouch != nullptr)
 			{
-				EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pAttackSounds), VOL_NORM, 0.2);
+				EmitSound(SoundChannel::Voice, RANDOM_SOUND_ARRAY(pAttackSounds), VOL_NORM, 0.2);
 
 				Vector vecSrc, vecAngles;
 				GetAttachment(2, vecSrc, vecAngles);
@@ -1082,7 +1082,7 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 			{
 				m_iTeleport++; // unexpected failure
 
-				EmitSound(CHAN_WEAPON, RANDOM_SOUND_ARRAY(pBallSounds), VOL_NORM, 0.2);
+				EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pBallSounds), VOL_NORM, 0.2);
 
 				ALERT(at_aiconsole, "nihilanth can't target %s\n", szText);
 
@@ -1132,7 +1132,7 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 	break;
 	case 5:	// start up sphere machine
 	{
-		EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pRechargeSounds), VOL_NORM, 0.2);
+		EmitSound(SoundChannel::Voice, RANDOM_SOUND_ARRAY(pRechargeSounds), VOL_NORM, 0.2);
 	}
 	break;
 	case 6:
@@ -1249,7 +1249,7 @@ void CNihilanthHVR::Spawn()
 {
 	Precache();
 
-	pev->rendermode = kRenderTransAdd;
+	pev->rendermode = RenderMode::TransAdd;
 	pev->renderamt = 255;
 	pev->scale = 3.0;
 }
@@ -1270,8 +1270,8 @@ void CNihilanthHVR::Precache()
 
 void CNihilanthHVR::CircleInit(CBaseEntity* pTarget)
 {
-	pev->movetype = MOVETYPE_NOCLIP;
-	pev->solid = SOLID_NOT;
+	pev->movetype = Movetype::Noclip;
+	pev->solid = Solid::Not;
 
 	// SET_MODEL(edict(), "sprites/flare6.spr");
 	// pev->scale = 3.0;
@@ -1372,8 +1372,8 @@ void CNihilanthHVR::HoverThink()
 
 void CNihilanthHVR::ZapInit(CBaseEntity* pEnemy)
 {
-	pev->movetype = MOVETYPE_FLY;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Fly;
+	pev->solid = Solid::BBox;
 
 	SET_MODEL(edict(), "sprites/nhth1.spr");
 
@@ -1389,7 +1389,7 @@ void CNihilanthHVR::ZapInit(CBaseEntity* pEnemy)
 	SetTouch(&CNihilanthHVR::ZapTouch);
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	EmitSound(CHAN_WEAPON, "debris/zap4.wav");
+	EmitSound(SoundChannel::Weapon, "debris/zap4.wav");
 }
 
 void CNihilanthHVR::ZapThink()
@@ -1491,8 +1491,8 @@ void CNihilanthHVR::ZapTouch(CBaseEntity* pOther)
 
 void CNihilanthHVR::TeleportInit(CNihilanth* pOwner, CBaseEntity* pEnemy, CBaseEntity* pTarget, CBaseEntity* pTouch)
 {
-	pev->movetype = MOVETYPE_FLY;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Fly;
+	pev->solid = Solid::BBox;
 
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;
@@ -1510,13 +1510,13 @@ void CNihilanthHVR::TeleportInit(CNihilanth* pOwner, CBaseEntity* pEnemy, CBaseE
 	SetTouch(&CNihilanthHVR::TeleportTouch);
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	EmitSound(CHAN_WEAPON, "x/x_teleattack1.wav", VOL_NORM, 0.2);
+	EmitSound(SoundChannel::Weapon, "x/x_teleattack1.wav", VOL_NORM, 0.2);
 }
 
 void CNihilanthHVR::GreenBallInit()
 {
-	pev->movetype = MOVETYPE_FLY;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Fly;
+	pev->solid = Solid::BBox;
 
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;
@@ -1535,14 +1535,14 @@ void CNihilanthHVR::TeleportThink()
 	// check world boundaries
 	if (m_hEnemy == nullptr || !m_hEnemy->IsAlive() || !UTIL_IsInWorld(pev->origin))
 	{
-		StopSound(CHAN_WEAPON, "x/x_teleattack1.wav");
+		StopSound(SoundChannel::Weapon, "x/x_teleattack1.wav");
 		UTIL_Remove(this);
 		return;
 	}
 
 	if ((m_hEnemy->Center() - pev->origin).Length() < 128)
 	{
-		StopSound(CHAN_WEAPON, "x/x_teleattack1.wav");
+		StopSound(SoundChannel::Weapon, "x/x_teleattack1.wav");
 		UTIL_Remove(this);
 
 		if (m_hTargetEnt != nullptr)
@@ -1614,7 +1614,7 @@ void CNihilanthHVR::TeleportTouch(CBaseEntity* pOther)
 	}
 
 	SetTouch(nullptr);
-	StopSound(CHAN_WEAPON, "x/x_teleattack1.wav");
+	StopSound(SoundChannel::Weapon, "x/x_teleattack1.wav");
 	UTIL_Remove(this);
 }
 
@@ -1750,7 +1750,7 @@ void CNihilanthHVR::Crawl()
 
 void CNihilanthHVR::RemoveTouch(CBaseEntity* pOther)
 {
-	StopSound(CHAN_WEAPON, "x/x_teleattack1.wav");
+	StopSound(SoundChannel::Weapon, "x/x_teleattack1.wav");
 	UTIL_Remove(this);
 }
 

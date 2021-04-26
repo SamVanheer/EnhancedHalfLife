@@ -457,44 +457,44 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 			}
 
 			pHurt->pev->flags &= ~FL_ONGROUND;
-			EmitSound(CHAN_WEAPON, RANDOM_SOUND_ARRAY(pAttackHitSounds), VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+			EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pAttackHitSounds), VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 		}
 	}
 	break;
 
 	case BIG_AE_SCREAM:
-		EMIT_SOUND_ARRAY_DYN(CHAN_VOICE, pAlertSounds);
+		EMIT_SOUND_ARRAY_DYN(SoundChannel::Voice, pAlertSounds);
 		break;
 
 	case BIG_AE_PAIN_SOUND:
-		EMIT_SOUND_ARRAY_DYN(CHAN_VOICE, pPainSounds);
+		EMIT_SOUND_ARRAY_DYN(SoundChannel::Voice, pPainSounds);
 		break;
 
 	case BIG_AE_ATTACK_SOUND:
-		EMIT_SOUND_ARRAY_DYN(CHAN_WEAPON, pAttackSounds);
+		EMIT_SOUND_ARRAY_DYN(SoundChannel::Weapon, pAttackSounds);
 		break;
 
 	case BIG_AE_BIRTH_SOUND:
-		EMIT_SOUND_ARRAY_DYN(CHAN_BODY, pBirthSounds);
+		EMIT_SOUND_ARRAY_DYN(SoundChannel::Body, pBirthSounds);
 		break;
 
 	case BIG_AE_SACK:
 		if (RANDOM_LONG(0, 100) < 30)
-			EMIT_SOUND_ARRAY_DYN(CHAN_BODY, pSackSounds);
+			EMIT_SOUND_ARRAY_DYN(SoundChannel::Body, pSackSounds);
 		break;
 
 	case BIG_AE_DEATHSOUND:
-		EMIT_SOUND_ARRAY_DYN(CHAN_VOICE, pDeathSounds);
+		EMIT_SOUND_ARRAY_DYN(SoundChannel::Voice, pDeathSounds);
 		break;
 
 	case BIG_AE_STEP1:		// Footstep left
 	case BIG_AE_STEP3:		// Footstep back left
-		EMIT_SOUND_ARRAY_DYN(CHAN_ITEM, pFootSounds);
+		EMIT_SOUND_ARRAY_DYN(SoundChannel::Item, pFootSounds);
 		break;
 
 	case BIG_AE_STEP4:		// Footstep back right
 	case BIG_AE_STEP2:		// Footstep right
-		EMIT_SOUND_ARRAY_DYN(CHAN_BODY, pFootSounds);
+		EMIT_SOUND_ARRAY_DYN(SoundChannel::Body, pFootSounds);
 		break;
 
 	case BIG_AE_MORTAR_ATTACK1:
@@ -545,7 +545,7 @@ void CBigMomma::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDi
 	else if (gpGlobals->time > m_painSoundTime)
 	{
 		m_painSoundTime = gpGlobals->time + RANDOM_LONG(1, 3);
-		EMIT_SOUND_ARRAY_DYN(CHAN_VOICE, pPainSounds);
+		EMIT_SOUND_ARRAY_DYN(SoundChannel::Voice, pPainSounds);
 	}
 
 	CBaseMonster::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
@@ -592,7 +592,7 @@ void CBigMomma::LayHeadcrab()
 	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 100), IgnoreMonsters::Yes, edict(), &tr);
 	UTIL_DecalTrace(&tr, DECAL_MOMMABIRTH);
 
-	EmitSound(CHAN_WEAPON, RANDOM_SOUND_ARRAY(pBirthSounds), VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+	EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pBirthSounds), VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 	m_crabCount++;
 }
 
@@ -603,7 +603,7 @@ void CBigMomma::DeathNotice(entvars_t* pevChild)
 	if (IsAlive())
 	{
 		// Make the "my baby's dead" noise!
-		EMIT_SOUND_ARRAY_DYN(CHAN_WEAPON, pChildDieSounds);
+		EMIT_SOUND_ARRAY_DYN(SoundChannel::Weapon, pChildDieSounds);
 	}
 }
 
@@ -614,7 +614,7 @@ void CBigMomma::LaunchMortar()
 	Vector startPos = pev->origin;
 	startPos.z += 180;
 
-	EmitSound(CHAN_WEAPON, RANDOM_SOUND_ARRAY(pSackSounds), VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+	EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pSackSounds), VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 	CBMortar* pBomb = CBMortar::Shoot(edict(), startPos, pev->movedir);
 	pBomb->pev->gravity = 1.0;
 	MortarSpray(startPos, vec3_up, gSpitSprite, 24);
@@ -627,8 +627,8 @@ void CBigMomma::Spawn()
 	SET_MODEL(ENT(pev), "models/big_mom.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->health = 150 * gSkillData.bigmommaHealthFactor;
 	pev->view_ofs = Vector(0, 0, 128);// position of the eyes relative to monster's origin.
@@ -955,7 +955,7 @@ void CBigMomma::StartTask(Task_t* pTask)
 
 	case TASK_MELEE_ATTACK1:
 		// Play an attack sound here
-		EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pAttackSounds));
+		EmitSound(SoundChannel::Voice, RANDOM_SOUND_ARRAY(pAttackSounds));
 		CBaseMonster::StartTask(pTask);
 		break;
 
@@ -1071,11 +1071,11 @@ void MortarSpray(const Vector& position, const Vector& direction, int spriteMode
 // UNDONE: right now this is pretty much a copy of the squid spit with minor changes to the way it does damage
 void CBMortar::Spawn()
 {
-	pev->movetype = MOVETYPE_TOSS;
+	pev->movetype = Movetype::Toss;
 	pev->classname = MAKE_STRING("bmortar");
 
-	pev->solid = SOLID_BBOX;
-	pev->rendermode = kRenderTransAlpha;
+	pev->solid = Solid::BBox;
+	pev->rendermode = RenderMode::TransAlpha;
 	pev->renderamt = 255;
 
 	SET_MODEL(ENT(pev), "sprites/mommaspit.spr");
@@ -1126,15 +1126,15 @@ void CBMortar::Touch(CBaseEntity* pOther)
 	// splat sound
 	const int iPitch = RANDOM_FLOAT(90, 110);
 
-	EmitSound(CHAN_VOICE, "bullchicken/bc_acid1.wav", VOL_NORM, ATTN_NORM, iPitch);
+	EmitSound(SoundChannel::Voice, "bullchicken/bc_acid1.wav", VOL_NORM, ATTN_NORM, iPitch);
 
 	switch (RANDOM_LONG(0, 1))
 	{
 	case 0:
-		EmitSound(CHAN_WEAPON, "bullchicken/bc_spithit1.wav", VOL_NORM, ATTN_NORM, iPitch);
+		EmitSound(SoundChannel::Weapon, "bullchicken/bc_spithit1.wav", VOL_NORM, ATTN_NORM, iPitch);
 		break;
 	case 1:
-		EmitSound(CHAN_WEAPON, "bullchicken/bc_spithit2.wav", VOL_NORM, ATTN_NORM, iPitch);
+		EmitSound(SoundChannel::Weapon, "bullchicken/bc_spithit2.wav", VOL_NORM, ATTN_NORM, iPitch);
 		break;
 	}
 

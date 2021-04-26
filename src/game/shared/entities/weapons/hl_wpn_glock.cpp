@@ -222,7 +222,7 @@ class CGlockAmmo : public CBasePlayerAmmo
 	{
 		if (pOther->GiveAmmo(AMMO_GLOCKCLIP_GIVE, "9mm", _9MM_MAX_CARRY) != -1)
 		{
-			EmitSound(CHAN_ITEM, "items/9mmclip1.wav");
+			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
 			return true;
 		}
 		return false;

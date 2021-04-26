@@ -50,14 +50,14 @@ struct physent_t
 	int				player;
 	Vector			origin;               // Model's origin in world coordinates.
 	model_t* model;		          // only for bsp models
-	model_t* studiomodel;         // SOLID_BBOX, but studio clip intersections.
+	model_t* studiomodel;         // Solid::BBox, but studio clip intersections.
 	Vector			mins, maxs;	          // only for non-bsp models
 	int				info;		          // For client or server to use to identify (index into edicts or cl_entities)
 	Vector			angles;               // rotated entities need this info for hull testing to work.
 
-	int				solid;				  // Triggers and func_door type WATER brushes are SOLID_NOT
+	Solid solid;				  // Triggers and func_door type WATER brushes are Solid::Not
 	int				skin;                 // BSP Contents for such things like fun_door water brushes.
-	int				rendermode;			  // So we can ignore glass
+	RenderMode rendermode;			  // So we can ignore glass
 
 	// Complex collision detection.
 	float			frame;
@@ -65,7 +65,7 @@ struct physent_t
 	byte			controller[4];
 	byte			blending[2];
 
-	int				movetype;
+	Movetype movetype;
 	int				takedamage;
 	int				blooddecal;
 	int				team;
@@ -132,11 +132,11 @@ struct playermove_t
 	qboolean		dead;          // Are we a dead player?
 	int				deadflag;
 	int				spectator;     // Should we use spectator physics model?
-	int				movetype;      // Our movement type, NOCLIP, WALK, FLY
+	Movetype movetype;      // Our movement type, NOCLIP, WALK, FLY
 
 	int				onground;
 	WaterLevel		waterlevel;
-	int				watertype;
+	Contents watertype;
 	WaterLevel		oldwaterlevel;
 
 	char			sztexturename[256];
@@ -193,9 +193,9 @@ struct playermove_t
 	void			(*Con_Printf)(const char* fmt, ...);
 	double			(*Sys_FloatTime)();
 	void			(*PM_StuckTouch)(int hitent, pmtrace_t* ptraceresult);
-	int				(*PM_PointContents) (const float* p, int* truecontents /*filled in if this is non-null*/);
-	int				(*PM_TruePointContents) (const float* p);
-	int				(*PM_HullPointContents) (hull_t* hull, int num, const float* p);
+	Contents (*PM_PointContents) (const float* p, Contents* truecontents /*filled in if this is non-null*/);
+	Contents (*PM_TruePointContents) (const float* p);
+	Contents (*PM_HullPointContents) (hull_t* hull, int num, const float* p);
 	pmtrace_t(*PM_PlayerTrace) (const float* start, const float* end, int traceFlags, int ignore_pe);
 	pmtrace_t* (*PM_TraceLine)(const float* start, const float* end, int flags, int usehulll, int ignore_pe);
 	int32(*RandomLong)(int32 lLow, int32 lHigh);
@@ -212,7 +212,7 @@ struct playermove_t
 	// Functions
 	// Run functions for this frame?
 	qboolean		runfuncs;
-	void			(*PM_PlaySound) (int channel, const char* sample, float volume, float attenuation, int fFlags, int pitch);
+	void			(*PM_PlaySound) (SoundChannel channel, const char* sample, float volume, float attenuation, int fFlags, int pitch);
 	const char* (*PM_TraceTexture) (int ground, const float* vstart, const float* vend);
 	void			(*PM_PlaybackEventFull) (int flags, int clientindex, unsigned short eventindex, float delay, const float* origin, const float* angles,
 		float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2);

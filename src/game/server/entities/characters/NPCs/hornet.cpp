@@ -49,9 +49,9 @@ void CHornet::Spawn()
 {
 	Precache();
 
-	pev->movetype = MOVETYPE_FLY;
-	pev->solid = SOLID_BBOX;
-	pev->takedamage = DAMAGE_YES;
+	pev->movetype = Movetype::Fly;
+	pev->solid = Solid::BBox;
+	SetDamageMode(DamageMode::Yes);
 	pev->flags |= FL_MONSTER;
 	pev->health = 1;// weak!
 
@@ -256,9 +256,9 @@ void CHornet::TrackTarget()
 	{// hafta turn wide again. play sound
 		switch (RANDOM_LONG(0, 2))
 		{
-		case 0:	EmitSound(CHAN_VOICE, "hornet/ag_buzz1.wav", HORNET_BUZZ_VOLUME); break;
-		case 1:	EmitSound(CHAN_VOICE, "hornet/ag_buzz2.wav", HORNET_BUZZ_VOLUME); break;
-		case 2:	EmitSound(CHAN_VOICE, "hornet/ag_buzz3.wav", HORNET_BUZZ_VOLUME); break;
+		case 0:	EmitSound(SoundChannel::Voice, "hornet/ag_buzz1.wav", HORNET_BUZZ_VOLUME); break;
+		case 1:	EmitSound(SoundChannel::Voice, "hornet/ag_buzz2.wav", HORNET_BUZZ_VOLUME); break;
+		case 2:	EmitSound(SoundChannel::Voice, "hornet/ag_buzz3.wav", HORNET_BUZZ_VOLUME); break;
 		}
 	}
 
@@ -292,7 +292,7 @@ void CHornet::TrackTarget()
 
 	pev->angles = VectorAngles(pev->velocity);
 
-	pev->solid = SOLID_BBOX;
+	pev->solid = Solid::BBox;
 
 	// if hornet is close to the enemy, jet in a straight line for a half second.
 	// (only in the single player game)
@@ -313,9 +313,9 @@ void CHornet::TrackTarget()
 
 			switch (RANDOM_LONG(0, 2))
 			{
-			case 0:	EmitSound(CHAN_VOICE, "hornet/ag_buzz1.wav", HORNET_BUZZ_VOLUME); break;
-			case 1:	EmitSound(CHAN_VOICE, "hornet/ag_buzz2.wav", HORNET_BUZZ_VOLUME); break;
-			case 2:	EmitSound(CHAN_VOICE, "hornet/ag_buzz3.wav", HORNET_BUZZ_VOLUME); break;
+			case 0:	EmitSound(SoundChannel::Voice, "hornet/ag_buzz1.wav", HORNET_BUZZ_VOLUME); break;
+			case 1:	EmitSound(SoundChannel::Voice, "hornet/ag_buzz2.wav", HORNET_BUZZ_VOLUME); break;
+			case 2:	EmitSound(SoundChannel::Voice, "hornet/ag_buzz3.wav", HORNET_BUZZ_VOLUME); break;
 			}
 			pev->velocity = pev->velocity * 2;
 			pev->nextthink = gpGlobals->time + 1.0;
@@ -329,7 +329,7 @@ void CHornet::TrackTouch(CBaseEntity* pOther)
 {
 	if (pOther->edict() == pev->owner || pOther->pev->modelindex == pev->modelindex)
 	{// bumped into the guy that shot it.
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 		return;
 	}
 
@@ -363,16 +363,16 @@ void CHornet::DieTouch(CBaseEntity* pOther)
 
 		switch (RANDOM_LONG(0, 2))
 		{// buzz when you plug someone
-		case 0:	EmitSound(CHAN_VOICE, "hornet/ag_hornethit1.wav"); break;
-		case 1:	EmitSound(CHAN_VOICE, "hornet/ag_hornethit2.wav"); break;
-		case 2:	EmitSound(CHAN_VOICE, "hornet/ag_hornethit3.wav"); break;
+		case 0:	EmitSound(SoundChannel::Voice, "hornet/ag_hornethit1.wav"); break;
+		case 1:	EmitSound(SoundChannel::Voice, "hornet/ag_hornethit2.wav"); break;
+		case 2:	EmitSound(SoundChannel::Voice, "hornet/ag_hornethit3.wav"); break;
 		}
 
 		pOther->TakeDamage(pev, VARS(pev->owner), pev->dmg, DMG_BULLET);
 	}
 
 	pev->modelindex = 0;// so will disappear for the 0.1 secs we wait until NEXTTHINK gets rid
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 
 	SetThink(&CHornet::SUB_Remove);
 	pev->nextthink = gpGlobals->time + 1;// stick around long enough for the sound to finish!

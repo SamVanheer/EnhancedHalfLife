@@ -103,8 +103,8 @@ void CGib::SpawnStickyGibs(entvars_t* pevVictim, Vector vecOrigin, int cGibs)
 			}
 
 
-			pGib->pev->movetype = MOVETYPE_TOSS;
-			pGib->pev->solid = SOLID_BBOX;
+			pGib->pev->movetype = Movetype::Toss;
+			pGib->pev->solid = Solid::BBox;
 			UTIL_SetSize(pGib->pev, vec3_origin, vec3_origin);
 			pGib->SetTouch(&CGib::StickyGibTouch);
 			pGib->SetThink(nullptr);
@@ -231,7 +231,7 @@ void CGib::SpawnRandomGibs(entvars_t* pevVictim, int cGibs, int human)
 				pGib->pev->velocity = pGib->pev->velocity * 4;
 			}
 
-			pGib->pev->solid = SOLID_BBOX;
+			pGib->pev->solid = Solid::BBox;
 			UTIL_SetSize(pGib->pev, vec3_origin, vec3_origin);
 		}
 		pGib->LimitVelocity();
@@ -272,7 +272,7 @@ void CBaseMonster::FadeMonster()
 {
 	StopAnimation();
 	pev->velocity = vec3_origin;
-	pev->movetype = MOVETYPE_NONE;
+	pev->movetype = Movetype::None;
 	pev->avelocity = vec3_origin;
 	pev->animtime = gpGlobals->time;
 	pev->effects |= EF_NOINTERP;
@@ -283,7 +283,7 @@ void CBaseMonster::GibMonster()
 {
 	bool gibbed = false;
 
-	EmitSound(CHAN_WEAPON, "common/bodysplat.wav");
+	EmitSound(SoundChannel::Weapon, "common/bodysplat.wav");
 
 	// only humans throw skulls !!!UNDONE - eventually monsters will have their own sets of gibs
 	if (HasHumanGibs())
@@ -321,7 +321,7 @@ void CBaseMonster::GibMonster()
 
 Activity CBaseMonster::GetDeathActivity()
 {
-	if (pev->deadflag != DEAD_NO)
+	if (pev->deadflag != DeadFlag::No)
 	{
 		// don't run this while dying.
 		return m_IdealActivity;
@@ -478,14 +478,14 @@ Activity CBaseMonster::GetSmallFlinchActivity()
 
 void CBaseMonster::BecomeDead()
 {
-	pev->takedamage = DAMAGE_YES;// don't let autoaim aim at corpses.
+	SetDamageMode(DamageMode::Yes);// don't let autoaim aim at corpses.
 
 	// give the corpse half of the monster's original maximum health. 
 	pev->health = pev->max_health / 2;
 	pev->max_health = 5; // max_health now becomes a counter for how many blood decals the corpse can place.
 
 	// make the corpse fly away from the attack vector
-	pev->movetype = MOVETYPE_TOSS;
+	pev->movetype = Movetype::Toss;
 	//pev->flags &= ~FL_ONGROUND;
 	//pev->origin.z += 2;
 	//pev->velocity = g_vecAttackDir * -1;
@@ -515,8 +515,8 @@ void CBaseMonster::CallGibMonster()
 			fade = true;
 	}
 
-	pev->takedamage = DAMAGE_NO;
-	pev->solid = SOLID_NOT;// do something with the body. while monster blows up
+	SetDamageMode(DamageMode::No);
+	pev->solid = Solid::Not;// do something with the body. while monster blows up
 
 	if (fade)
 	{
@@ -528,7 +528,7 @@ void CBaseMonster::CallGibMonster()
 		GibMonster();
 	}
 
-	pev->deadflag = DEAD_DEAD;
+	pev->deadflag = DeadFlag::Dead;
 	CheckAITrigger();
 
 	// don't let the status bar glitch for players.with <0 health.
@@ -553,7 +553,7 @@ void CBaseMonster::Killed(entvars_t* pevAttacker, int iGib)
 	Remember(bits_MEMORY_KILLED);
 
 	// clear the deceased's sound channels.(may have been firing or reloading when killed)
-	EmitSound(CHAN_WEAPON, "common/null.wav");
+	EmitSound(SoundChannel::Weapon, "common/null.wav");
 	m_IdealMonsterState = NPCState::Dead;
 	// Make sure this condition is fired too (TakeDamage breaks out before this happens on death)
 	SetConditions(bits_COND_LIGHT_DAMAGE);
@@ -588,13 +588,13 @@ void CBaseMonster::Killed(entvars_t* pevAttacker, int iGib)
 
 void CBaseEntity::SUB_StartFadeOut()
 {
-	if (pev->rendermode == kRenderNormal)
+	if (pev->rendermode == RenderMode::Normal)
 	{
 		pev->renderamt = 255;
-		pev->rendermode = kRenderTransTexture;
+		pev->rendermode = RenderMode::TransTexture;
 	}
 
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 	pev->avelocity = vec3_origin;
 
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -701,20 +701,20 @@ void CGib::StickyGibTouch(CBaseEntity* pOther)
 	pev->angles = VectorAngles(pev->velocity);
 	pev->velocity = vec3_origin;
 	pev->avelocity = vec3_origin;
-	pev->movetype = MOVETYPE_NONE;
+	pev->movetype = Movetype::None;
 }
 
 void CGib::Spawn(const char* szGibModel)
 {
-	pev->movetype = MOVETYPE_BOUNCE;
+	pev->movetype = Movetype::Bounce;
 	pev->friction = 0.55; // deading the bounce a bit
 
 	// sometimes an entity inherits the edict from a former piece of glass,
 	// and will spawn using the same render FX or rendermode! bad!
 	pev->renderamt = 255;
-	pev->rendermode = kRenderNormal;
-	pev->renderfx = kRenderFxNone;
-	pev->solid = SOLID_SLIDEBOX;/// hopefully this will fix the VELOCITY TOO LOW crap
+	pev->rendermode = RenderMode::Normal;
+	pev->renderfx = RenderFX::None;
+	pev->solid = Solid::SlideBox;/// hopefully this will fix the VELOCITY TOO LOW crap
 	pev->classname = MAKE_STRING("gib");
 
 	SET_MODEL(ENT(pev), szGibModel);
@@ -753,7 +753,7 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 		return DeadTakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
 	}
 
-	if (pev->deadflag == DEAD_NO)
+	if (pev->deadflag == DeadFlag::No)
 	{
 		// no pain sound during death animation.
 		PainSound();// "Ouch!"
@@ -793,7 +793,7 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	}
 
 	// if this is a player, move him around!
-	if ((!IsNullEnt(pevInflictor)) && (pev->movetype == MOVETYPE_WALK) && (!pevAttacker || pevAttacker->solid != SOLID_TRIGGER))
+	if ((!IsNullEnt(pevInflictor)) && (pev->movetype == Movetype::Walk) && (!pevAttacker || pevAttacker->solid != Solid::Trigger))
 	{
 		pev->velocity = pev->velocity + vecDir * -DamageForce(flDamage);
 	}
@@ -886,7 +886,7 @@ bool CBaseMonster::DeadTakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacke
 	pev->origin.z += 1;
 
 	// let the damage scoot the corpse around a bit.
-	if (!IsNullEnt(pevInflictor) && (pevAttacker->solid != SOLID_TRIGGER))
+	if (!IsNullEnt(pevInflictor) && (pevAttacker->solid != Solid::Trigger))
 	{
 		pev->velocity = pev->velocity + vecDir * -DamageForce(flDamage);
 	}
@@ -919,7 +919,7 @@ void RadiusDamage(Vector vecSrc, entvars_t* pevInflictor, entvars_t* pevAttacker
 {
 	const float falloff = flRadius ? flDamage / flRadius : 1.0;
 
-	const bool bInWater = UTIL_PointContents(vecSrc) == CONTENTS_WATER;
+	const bool bInWater = UTIL_PointContents(vecSrc) == Contents::Water;
 
 	vecSrc.z += 1;// in case grenade is lying on the ground
 
@@ -931,7 +931,7 @@ void RadiusDamage(Vector vecSrc, entvars_t* pevInflictor, entvars_t* pevAttacker
 	// iterate on all entities in the vicinity.
 	while ((pEntity = UTIL_FindEntityInSphere(pEntity, vecSrc, flRadius)) != nullptr)
 	{
-		if (pEntity->pev->takedamage != DAMAGE_NO)
+		if (pEntity->GetDamageMode() != DamageMode::No)
 		{
 			// UNDONE: this should check a damage mask, not an ignore
 			if (iClassIgnore != CLASS_NONE && pEntity->Classify() == iClassIgnore)
@@ -1253,7 +1253,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 				pEntity->TraceAttack(pevAttacker, 50, vecDir, &tr, DMG_CLUB);
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				// only decal glass
-				if (!IsNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != 0)
+				if (!IsNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != RenderMode::Normal)
 				{
 					UTIL_DecalTrace(&tr, DECAL_GLASSBREAK1 + RANDOM_LONG(0, 2));
 				}
@@ -1332,7 +1332,7 @@ Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDi
 				pEntity->TraceAttack(pevAttacker, 50, vecDir, &tr, DMG_CLUB);
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				// only decal glass
-				if (!IsNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != 0)
+				if (!IsNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != RenderMode::Normal)
 				{
 					UTIL_DecalTrace(&tr, DECAL_GLASSBREAK1 + RANDOM_LONG(0, 2));
 				}

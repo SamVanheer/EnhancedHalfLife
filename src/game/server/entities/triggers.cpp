@@ -39,15 +39,15 @@ IMPLEMENT_SAVERESTORE(CFrictionModifier, CBaseEntity);
 
 void CFrictionModifier::Spawn()
 {
-	pev->solid = SOLID_TRIGGER;
+	pev->solid = Solid::Trigger;
 	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
-	pev->movetype = MOVETYPE_NONE;
+	pev->movetype = Movetype::None;
 	SetTouch(&CFrictionModifier::ChangeFriction);
 }
 
 void CFrictionModifier::ChangeFriction(CBaseEntity* pOther)
 {
-	if (pOther->pev->movetype != MOVETYPE_BOUNCEMISSILE && pOther->pev->movetype != MOVETYPE_BOUNCE)
+	if (pOther->pev->movetype != Movetype::BounceMissile && pOther->pev->movetype != Movetype::Bounce)
 		pOther->pev->friction = m_frictionFraction;
 }
 
@@ -183,7 +183,7 @@ void CMultiManager::KeyValue(KeyValueData* pkvd)
 
 void CMultiManager::Spawn()
 {
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 	SetUse(&CMultiManager::ManagerUse);
 	SetThink(&CMultiManager::ManagerThink);
 
@@ -293,7 +293,7 @@ LINK_ENTITY_TO_CLASS(env_render, CRenderFxManager);
 
 void CRenderFxManager::Spawn()
 {
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 }
 
 void CRenderFxManager::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
@@ -344,8 +344,8 @@ void CBaseTrigger::InitTrigger()
 	// to mean no restrictions, so use a yaw of 360 instead.
 	if (pev->angles != vec3_origin)
 		SetMovedir(pev);
-	pev->solid = SOLID_TRIGGER;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Trigger;
+	pev->movetype = Movetype::None;
 	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
 	if (CVAR_GET_FLOAT("showtriggers") == 0)
 		SetBits(pev->effects, EF_NODRAW);
@@ -360,7 +360,7 @@ void CBaseTrigger::ActivateMultiTrigger(CBaseEntity* pActivator)
 		return;
 
 	if (!IsStringNull(pev->noise))
-		EmitSound(CHAN_VOICE, STRING(pev->noise));
+		EmitSound(SoundChannel::Voice, STRING(pev->noise));
 
 	m_hActivator = pActivator;
 	SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
@@ -392,16 +392,16 @@ void CBaseTrigger::MultiWaitOver()
 
 void CBaseTrigger::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
-	if (pev->solid == SOLID_NOT)
+	if (pev->solid == Solid::Not)
 	{// if the trigger is off, turn it on
-		pev->solid = SOLID_TRIGGER;
+		pev->solid = Solid::Trigger;
 
 		// Force retouch
 		gpGlobals->force_retouch++;
 	}
 	else
 	{// turn the trigger off
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 	}
 	UTIL_SetOrigin(pev, pev->origin);
 }
@@ -429,7 +429,7 @@ void CTriggerHurt::Spawn()
 	}
 
 	if (IsBitSet(pev->spawnflags, SF_TRIGGER_HURT_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 
 	UTIL_SetOrigin(pev, pev->origin);		// Link into the list
 }
@@ -606,7 +606,7 @@ void CTriggerMonsterJump::Spawn()
 
 	if (!IsStringNull(pev->targetname))
 	{// if targetted, spawn turned off
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 		UTIL_SetOrigin(pev, pev->origin); // Unlink from trigger list
 		SetUse(&CTriggerMonsterJump::ToggleUse);
 	}
@@ -614,7 +614,7 @@ void CTriggerMonsterJump::Spawn()
 
 void CTriggerMonsterJump::Think()
 {
-	pev->solid = SOLID_NOT;// kill the trigger for now !!!UNDONE
+	pev->solid = Solid::Not;// kill the trigger for now !!!UNDONE
 	UTIL_SetOrigin(pev, pev->origin); // Unlink from trigger list
 	SetThink(nullptr);
 }
@@ -717,8 +717,8 @@ void CTargetCDAudio::KeyValue(KeyValueData* pkvd)
 
 void CTargetCDAudio::Spawn()
 {
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 
 	if (pev->scale > 0)
 		pev->nextthink = gpGlobals->time + 1.0;
@@ -873,11 +873,11 @@ void CLadder::KeyValue(KeyValueData* pkvd)
 void CLadder::Precache()
 {
 	// Do all of this in here because we need to 'convert' old saved games
-	pev->solid = SOLID_NOT;
-	pev->skin = CONTENTS_LADDER;
+	pev->solid = Solid::Not;
+	pev->skin = static_cast<int>(Contents::Ladder);
 	if (CVAR_GET_FLOAT("showtriggers") == 0)
 	{
-		pev->rendermode = kRenderTransTexture;
+		pev->rendermode = RenderMode::TransTexture;
 		pev->renderamt = 0;
 	}
 	pev->effects &= ~EF_NODRAW;
@@ -888,7 +888,7 @@ void CLadder::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
-	pev->movetype = MOVETYPE_PUSH;
+	pev->movetype = Movetype::Push;
 }
 
 LINK_ENTITY_TO_CLASS(trigger_push, CTriggerPush);
@@ -908,7 +908,7 @@ void CTriggerPush::Spawn()
 		pev->speed = 100;
 
 	if (IsBitSet(pev->spawnflags, SF_TRIGGER_PUSH_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 
 	SetUse(&CTriggerPush::ToggleUse);
 
@@ -922,14 +922,14 @@ void CTriggerPush::Touch(CBaseEntity* pOther)
 	// UNDONE: Is there a better way than health to detect things that have physics? (clients/monsters)
 	switch (pevToucher->movetype)
 	{
-	case MOVETYPE_NONE:
-	case MOVETYPE_PUSH:
-	case MOVETYPE_NOCLIP:
-	case MOVETYPE_FOLLOW:
+	case Movetype::None:
+	case Movetype::Push:
+	case Movetype::Noclip:
+	case Movetype::Follow:
 		return;
 	}
 
-	if (pevToucher->solid != SOLID_NOT && pevToucher->solid != SOLID_BSP)
+	if (pevToucher->solid != Solid::Not && pevToucher->solid != Solid::BSP)
 	{
 		// Instant trigger, just transfer velocity and remove
 		if (IsBitSet(pev->spawnflags, SF_TRIG_PUSH_ONCE))
@@ -1014,7 +1014,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 		pevToucher->v_angle = pentTarget->v.angles;
 	}
 
-	pevToucher->fixangle = FIXANGLE_ABSOLUTE;
+	pevToucher->fixangle = FixAngleMode::Absolute;
 	pevToucher->velocity = pevToucher->basevelocity = vec3_origin;
 }
 
@@ -1098,10 +1098,10 @@ IMPLEMENT_SAVERESTORE(CTriggerCamera, CBaseDelay);
 
 void CTriggerCamera::Spawn()
 {
-	pev->movetype = MOVETYPE_NOCLIP;
-	pev->solid = SOLID_NOT;							// Remove model & collisions
+	pev->movetype = Movetype::Noclip;
+	pev->solid = Solid::Not;							// Remove model & collisions
 	pev->renderamt = 0;								// The engine won't draw this model if this is set to 0 and blending is on
-	pev->rendermode = kRenderTransTexture;
+	pev->rendermode = RenderMode::TransTexture;
 
 	m_initialSpeed = pev->speed;
 	if (m_acceleration == 0)

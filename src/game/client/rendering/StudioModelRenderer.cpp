@@ -347,7 +347,7 @@ void CStudioModelRenderer::StudioSetUpTransform(int trivial_accept)
 
 	//Con_DPrintf("Angles %4.2f prev %4.2f for %i\n", angles[PITCH], m_pCurrentEntity->index);
 	//Con_DPrintf("movetype %d %d\n", m_pCurrentEntity->movetype, m_pCurrentEntity->aiment );
-	if (m_pCurrentEntity->curstate.movetype == MOVETYPE_STEP)
+	if (m_pCurrentEntity->curstate.movetype == Movetype::Step)
 	{
 		float			f = 0;
 		float			d;
@@ -402,7 +402,7 @@ void CStudioModelRenderer::StudioSetUpTransform(int trivial_accept)
 		}
 		//Con_DPrintf("%.3f \n", f );
 	}
-	else if (m_pCurrentEntity->curstate.movetype != MOVETYPE_NONE)
+	else if (m_pCurrentEntity->curstate.movetype != Movetype::None)
 	{
 		angles = m_pCurrentEntity->angles;
 	}
@@ -548,8 +548,8 @@ void CStudioModelRenderer::StudioFxTransform(cl_entity_t* ent, float transform[3
 {
 	switch (ent->curstate.renderfx)
 	{
-	case kRenderFxDistort:
-	case kRenderFxHologram:
+	case RenderFX::Distort:
+	case RenderFX::Hologram:
 		if (gEngfuncs.pfnRandomLong(0, 49) == 0)
 		{
 			int axis = gEngfuncs.pfnRandomLong(0, 1);
@@ -567,7 +567,7 @@ void CStudioModelRenderer::StudioFxTransform(cl_entity_t* ent, float transform[3
 			transform[gEngfuncs.pfnRandomLong(0, 2)][3] += offset;
 		}
 		break;
-	case kRenderFxExplode:
+	case RenderFX::Explode:
 	{
 		float scale;
 
@@ -963,7 +963,7 @@ bool CStudioModelRenderer::StudioDrawModel(int flags)
 	IEngineStudio.GetViewInfo(m_vRenderOrigin, m_vUp, m_vRight, m_vNormal);
 	IEngineStudio.GetAliasScale(&m_fSoftwareXScale, &m_fSoftwareYScale);
 
-	if (m_pCurrentEntity->curstate.renderfx == kRenderFxDeadPlayer)
+	if (m_pCurrentEntity->curstate.renderfx == RenderFX::DeadPlayer)
 	{
 		entity_state_t deadplayer;
 
@@ -978,7 +978,7 @@ bool CStudioModelRenderer::StudioDrawModel(int flags)
 		deadplayer.weaponmodel = 0;
 		deadplayer.gaitsequence = 0;
 
-		deadplayer.movetype = MOVETYPE_NONE;
+		deadplayer.movetype = Movetype::None;
 		deadplayer.angles = m_pCurrentEntity->curstate.angles;
 		deadplayer.origin = m_pCurrentEntity->curstate.origin;
 
@@ -1012,7 +1012,7 @@ bool CStudioModelRenderer::StudioDrawModel(int flags)
 			return true;
 	}
 
-	if (m_pCurrentEntity->curstate.movetype == MOVETYPE_FOLLOW)
+	if (m_pCurrentEntity->curstate.movetype == Movetype::Follow)
 	{
 		StudioMergeBones(m_pRenderModel);
 	}
@@ -1392,25 +1392,25 @@ void CStudioModelRenderer::StudioRenderModel()
 	IEngineStudio.SetChromeOrigin();
 	IEngineStudio.SetForceFaceFlags(0);
 
-	if (m_pCurrentEntity->curstate.renderfx == kRenderFxGlowShell)
+	if (m_pCurrentEntity->curstate.renderfx == RenderFX::GlowShell)
 	{
-		m_pCurrentEntity->curstate.renderfx = kRenderFxNone;
+		m_pCurrentEntity->curstate.renderfx = RenderFX::None;
 		StudioRenderFinal();
 
 		if (!IEngineStudio.IsHardware())
 		{
-			gEngfuncs.pTriAPI->RenderMode(kRenderTransAdd);
+			gEngfuncs.pTriAPI->RenderMode(RenderMode::TransAdd);
 		}
 
 		IEngineStudio.SetForceFaceFlags(STUDIO_NF_CHROME);
 
 		gEngfuncs.pTriAPI->SpriteTexture(m_pChromeSprite, 0);
-		m_pCurrentEntity->curstate.renderfx = kRenderFxGlowShell;
+		m_pCurrentEntity->curstate.renderfx = RenderFX::GlowShell;
 
 		StudioRenderFinal();
 		if (!IEngineStudio.IsHardware())
 		{
-			gEngfuncs.pTriAPI->RenderMode(kRenderNormal);
+			gEngfuncs.pTriAPI->RenderMode(RenderMode::Normal);
 		}
 	}
 	else
@@ -1424,7 +1424,7 @@ void CStudioModelRenderer::StudioRenderFinal_Software()
 	int i;
 
 	// Note, rendermode set here has effect in SW
-	IEngineStudio.SetupRenderer(0);
+	IEngineStudio.SetupRenderer(RenderMode::Normal);
 
 	if (m_pCvarDrawEntities->value == 2)
 	{
@@ -1445,9 +1445,9 @@ void CStudioModelRenderer::StudioRenderFinal_Software()
 
 	if (m_pCvarDrawEntities->value == 4)
 	{
-		gEngfuncs.pTriAPI->RenderMode(kRenderTransAdd);
+		gEngfuncs.pTriAPI->RenderMode(RenderMode::TransAdd);
 		IEngineStudio.StudioDrawHulls();
-		gEngfuncs.pTriAPI->RenderMode(kRenderNormal);
+		gEngfuncs.pTriAPI->RenderMode(RenderMode::Normal);
 	}
 
 	if (m_pCvarDrawEntities->value == 5)
@@ -1461,9 +1461,7 @@ void CStudioModelRenderer::StudioRenderFinal_Software()
 void CStudioModelRenderer::StudioRenderFinal_Hardware()
 {
 	int i;
-	int rendermode;
-
-	rendermode = IEngineStudio.GetForceFaceFlags() ? kRenderTransAdd : m_pCurrentEntity->curstate.rendermode;
+	const RenderMode rendermode = IEngineStudio.GetForceFaceFlags() ? RenderMode::TransAdd : m_pCurrentEntity->curstate.rendermode;
 	IEngineStudio.SetupRenderer(rendermode);
 
 	if (m_pCvarDrawEntities->value == 2)
@@ -1494,9 +1492,9 @@ void CStudioModelRenderer::StudioRenderFinal_Hardware()
 
 	if (m_pCvarDrawEntities->value == 4)
 	{
-		gEngfuncs.pTriAPI->RenderMode(kRenderTransAdd);
+		gEngfuncs.pTriAPI->RenderMode(RenderMode::TransAdd);
 		IEngineStudio.StudioDrawHulls();
-		gEngfuncs.pTriAPI->RenderMode(kRenderNormal);
+		gEngfuncs.pTriAPI->RenderMode(RenderMode::Normal);
 	}
 
 	IEngineStudio.RestoreRenderer();

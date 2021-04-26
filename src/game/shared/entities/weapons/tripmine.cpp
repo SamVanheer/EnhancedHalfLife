@@ -81,8 +81,8 @@ void CTripmineGrenade::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = MOVETYPE_FLY;
-	pev->solid = SOLID_NOT;
+	pev->movetype = Movetype::Fly;
+	pev->solid = Solid::Not;
 
 	SET_MODEL(ENT(pev), "models/v_tripmine.mdl");
 	pev->frame = 0;
@@ -108,15 +108,15 @@ void CTripmineGrenade::Spawn()
 	SetThink(&CTripmineGrenade::PowerupThink);
 	pev->nextthink = gpGlobals->time + 0.2;
 
-	pev->takedamage = DAMAGE_YES;
+	SetDamageMode(DamageMode::Yes);
 	pev->dmg = gSkillData.plrDmgTripmine;
 	pev->health = 1; // don't let die normally
 
 	if (pev->owner != nullptr)
 	{
 		// play deploy sound
-		EmitSound(CHAN_VOICE, "weapons/mine_deploy.wav");
-		EmitSound(CHAN_BODY, "weapons/mine_charge.wav", 0.2); // chargeup
+		EmitSound(SoundChannel::Voice, "weapons/mine_deploy.wav");
+		EmitSound(SoundChannel::Body, "weapons/mine_charge.wav", 0.2); // chargeup
 
 		m_pRealOwner = pev->owner;// see CTripmineGrenade for why.
 	}
@@ -138,7 +138,7 @@ void CTripmineGrenade::Precache()
 void CTripmineGrenade::WarningThink()
 {
 	// play warning sound
-	// EmitSound(CHAN_VOICE, "buttons/Blip2.wav");
+	// EmitSound(SoundChannel::Voice, "buttons/Blip2.wav");
 
 	// set to power up
 	SetThink(&CTripmineGrenade::PowerupThink);
@@ -170,8 +170,8 @@ void CTripmineGrenade::PowerupThink()
 		}
 		else
 		{
-			StopSound(CHAN_VOICE, "weapons/mine_deploy.wav");
-			StopSound(CHAN_BODY, "weapons/mine_charge.wav");
+			StopSound(SoundChannel::Voice, "weapons/mine_deploy.wav");
+			StopSound(SoundChannel::Body, "weapons/mine_charge.wav");
 			SetThink(&CTripmineGrenade::SUB_Remove);
 			pev->nextthink = gpGlobals->time + 0.1;
 			ALERT(at_console, "WARNING:Tripmine at %.0f, %.0f, %.0f removed\n", pev->origin.x, pev->origin.y, pev->origin.z);
@@ -182,8 +182,8 @@ void CTripmineGrenade::PowerupThink()
 	else if (m_posOwner != m_hOwner->pev->origin || m_angleOwner != m_hOwner->pev->angles)
 	{
 		// disable
-		StopSound(CHAN_VOICE, "weapons/mine_deploy.wav");
-		StopSound(CHAN_BODY, "weapons/mine_charge.wav");
+		StopSound(SoundChannel::Voice, "weapons/mine_deploy.wav");
+		StopSound(SoundChannel::Body, "weapons/mine_charge.wav");
 		CBaseEntity* pMine = Create("weapon_tripmine", pev->origin + m_vecDir * 24, pev->angles);
 		pMine->pev->spawnflags |= SF_NORESPAWN;
 
@@ -197,13 +197,13 @@ void CTripmineGrenade::PowerupThink()
 	if (gpGlobals->time > m_flPowerUp)
 	{
 		// make solid
-		pev->solid = SOLID_BBOX;
+		pev->solid = Solid::BBox;
 		UTIL_SetOrigin(pev, pev->origin);
 
 		MakeBeam();
 
 		// play enabled sound
-		EmitSound(CHAN_VOICE, "weapons/mine_activate.wav", 0.5, ATTN_NORM, 75);
+		EmitSound(SoundChannel::Voice, "weapons/mine_activate.wav", 0.5, ATTN_NORM, 75);
 	}
 	pev->nextthink = gpGlobals->time + 0.1;
 }
@@ -302,7 +302,7 @@ bool CTripmineGrenade::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacke
 
 void CTripmineGrenade::Killed(entvars_t* pevAttacker, int iGib)
 {
-	pev->takedamage = DAMAGE_NO;
+	SetDamageMode(DamageMode::No);
 
 	if (pevAttacker && (pevAttacker->flags & FL_CLIENT))
 	{
@@ -313,7 +313,7 @@ void CTripmineGrenade::Killed(entvars_t* pevAttacker, int iGib)
 	SetThink(&CTripmineGrenade::DelayDeathThink);
 	pev->nextthink = gpGlobals->time + RANDOM_FLOAT(0.1, 0.3);
 
-	EmitSound(CHAN_BODY, "common/null.wav", 0.5); // shut off chargeup
+	EmitSound(SoundChannel::Body, "common/null.wav", 0.5); // shut off chargeup
 }
 
 void CTripmineGrenade::DelayDeathThink()
@@ -398,7 +398,7 @@ void CTripmine::Holster()
 	}
 
 	SendWeaponAnim(TRIPMINE_HOLSTER);
-	m_pPlayer->EmitSound(CHAN_WEAPON, "common/null.wav");
+	m_pPlayer->EmitSound(SoundChannel::Weapon, "common/null.wav");
 }
 
 void CTripmine::PrimaryAttack()

@@ -152,7 +152,7 @@ void CBaseMonster::BarnacleVictimReleased()
 	m_IdealMonsterState = NPCState::Idle;
 
 	pev->velocity = vec3_origin;
-	pev->movetype = MOVETYPE_STEP;
+	pev->movetype = Movetype::Step;
 }
 
 void CBaseMonster::Listen()
@@ -1121,7 +1121,7 @@ LocalMoveResult CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vecto
 
 		//		UTIL_ParticleEffect ( pev->origin, vec3_origin, 255, 25 );
 
-		if (!WALK_MOVE(ENT(pev), flYaw, stepSize, WALKMOVE_CHECKONLY))
+		if (!WALK_MOVE(ENT(pev), flYaw, stepSize, WalkMoveMode::CheckOnly))
 		{// can't take the next step, fail!
 
 			if (pflDist != nullptr)
@@ -1393,7 +1393,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 	Vector vecTop;// the spot we'll try to triangulate to on the top
 	Vector vecBottom;// the spot we'll try to triangulate to on the bottom
 
-	if (pev->movetype == MOVETYPE_FLY)
+	if (pev->movetype == Movetype::Fly)
 	{
 		vecTop = pev->origin + (vecForward * flDist) + (vecDirUp * sizeZ * 3);
 		vecBottom = pev->origin + (vecForward * flDist) - (vecDirUp * sizeZ * 3);
@@ -1403,7 +1403,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 	const Vector vecFarSide = m_Route[m_iRouteIndex].vecLocation;
 
 	vecDir = vecDir * sizeX * 2;
-	if (pev->movetype == MOVETYPE_FLY)
+	if (pev->movetype == Movetype::Fly)
 		vecDirUp = vecDirUp * sizeZ * 2;
 
 	for (int i = 0; i < 8; i++)
@@ -1432,7 +1432,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 #endif
 
 #if 0
-		if (pev->movetype == MOVETYPE_FLY)
+		if (pev->movetype == Movetype::Fly)
 		{
 			MESSAGE_BEGIN(MSG_BROADCAST, SVC_TEMPENTITY);
 			WRITE_BYTE(TE_SHOWLINE);
@@ -1481,7 +1481,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 			}
 		}
 
-		if (pev->movetype == MOVETYPE_FLY)
+		if (pev->movetype == Movetype::Fly)
 		{
 			if (CheckLocalMove(pev->origin, vecTop, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 			{
@@ -1515,7 +1515,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 
 		vecRight = vecRight + vecDir;
 		vecLeft = vecLeft - vecDir;
-		if (pev->movetype == MOVETYPE_FLY)
+		if (pev->movetype == Movetype::Fly)
 		{
 			vecTop = vecTop + vecDirUp;
 			vecBottom = vecBottom - vecDirUp;
@@ -1722,10 +1722,10 @@ void CBaseMonster::MonsterInit()
 
 	// Set fields common to all monsters
 	pev->effects = 0;
-	pev->takedamage = DAMAGE_AIM;
+	SetDamageMode(DamageMode::Aim);
 	pev->ideal_yaw = pev->angles.y;
 	pev->max_health = pev->health;
-	pev->deadflag = DEAD_NO;
+	pev->deadflag = DeadFlag::No;
 	m_IdealMonsterState = NPCState::Idle;// Assume monster will be idle, until proven otherwise
 
 	m_IdealActivity = ACT_IDLE;
@@ -1781,12 +1781,12 @@ void CBaseMonster::StartMonster()
 	}
 
 	// Raise monster off the floor one unit, then drop to floor
-	if (pev->movetype != MOVETYPE_FLY && !IsBitSet(pev->spawnflags, SF_MONSTER_FALL_TO_GROUND))
+	if (pev->movetype != Movetype::Fly && !IsBitSet(pev->spawnflags, SF_MONSTER_FALL_TO_GROUND))
 	{
 		pev->origin.z += 1;
 		DROP_TO_FLOOR(ENT(pev));
 		// Try to move the monster to make sure it's not stuck in a brush.
-		if (!WALK_MOVE(ENT(pev), 0, 0, WALKMOVE_NORMAL))
+		if (!WALK_MOVE(ENT(pev), 0, 0, WalkMoveMode::Normal))
 		{
 			ALERT(at_error, "Monster %s stuck in wall--level design error", STRING(pev->classname));
 			pev->effects = EF_BRIGHTFIELD;
@@ -1825,7 +1825,7 @@ void CBaseMonster::StartMonster()
 			// JAYJAY
 			m_movementGoal = MOVEGOAL_PATHCORNER;
 
-			if (pev->movetype == MOVETYPE_FLY)
+			if (pev->movetype == Movetype::Fly)
 				m_movementActivity = ACT_FLY;
 			else
 				m_movementActivity = ACT_WALK;
@@ -2250,7 +2250,7 @@ void CBaseMonster::HandleAnimEvent(AnimationEvent& event)
 	case SCRIPT_EVENT_DEAD:
 		if (m_MonsterState == NPCState::Script)
 		{
-			pev->deadflag = DEAD_DYING;
+			pev->deadflag = DeadFlag::Dying;
 			// Kill me now! (and fade out when CineCleanup() is called)
 #if _DEBUG
 			ALERT(at_aiconsole, "Death event: %s\n", STRING(pev->classname));
@@ -2265,18 +2265,18 @@ void CBaseMonster::HandleAnimEvent(AnimationEvent& event)
 	case SCRIPT_EVENT_NOT_DEAD:
 		if (m_MonsterState == NPCState::Script)
 		{
-			pev->deadflag = DEAD_NO;
+			pev->deadflag = DeadFlag::No;
 			// This is for life/death sequences where the player can determine whether a character is dead or alive after the script 
 			pev->health = pev->max_health;
 		}
 		break;
 
 	case SCRIPT_EVENT_SOUND:			// Play a named wave file
-		EmitSound(CHAN_BODY, event.options, VOL_NORM, ATTN_IDLE);
+		EmitSound(SoundChannel::Body, event.options, VOL_NORM, ATTN_IDLE);
 		break;
 
 	case SCRIPT_EVENT_SOUND_VOICE:
-		EmitSound(CHAN_VOICE, event.options, VOL_NORM, ATTN_IDLE);
+		EmitSound(SoundChannel::Voice, event.options, VOL_NORM, ATTN_IDLE);
 		break;
 
 	case SCRIPT_EVENT_SENTENCE_RND1:		// Play a named sentence group 33% of the time
@@ -2314,11 +2314,11 @@ void CBaseMonster::HandleAnimEvent(AnimationEvent& event)
 		{
 			if (RANDOM_LONG(0, 1) == 0)
 			{
-				EmitSound(CHAN_BODY, "common/bodydrop3.wav", VOL_NORM, ATTN_NORM, 90);
+				EmitSound(SoundChannel::Body, "common/bodydrop3.wav", VOL_NORM, ATTN_NORM, 90);
 			}
 			else
 			{
-				EmitSound(CHAN_BODY, "common/bodydrop4.wav", VOL_NORM, ATTN_NORM, 90);
+				EmitSound(SoundChannel::Body, "common/bodydrop4.wav", VOL_NORM, ATTN_NORM, 90);
 			}
 		}
 		break;
@@ -2328,11 +2328,11 @@ void CBaseMonster::HandleAnimEvent(AnimationEvent& event)
 		{
 			if (RANDOM_LONG(0, 1) == 0)
 			{
-				EmitSound(CHAN_BODY, "common/bodydrop3.wav");
+				EmitSound(SoundChannel::Body, "common/bodydrop3.wav");
 			}
 			else
 			{
-				EmitSound(CHAN_BODY, "common/bodydrop4.wav");
+				EmitSound(SoundChannel::Body, "common/bodydrop4.wav");
 			}
 		}
 		break;
@@ -2340,7 +2340,7 @@ void CBaseMonster::HandleAnimEvent(AnimationEvent& event)
 	case MONSTER_EVENT_SWISHSOUND:
 	{
 		// NO MONSTER may use this anim event unless that monster's precache precaches this sound!!!
-		EmitSound(CHAN_BODY, "zombie/claw_miss2.wav");
+		EmitSound(SoundChannel::Body, "zombie/claw_miss2.wav");
 		break;
 	}
 
@@ -2614,7 +2614,7 @@ bool CBaseMonster::CheckAITrigger()
 		}
 		break;
 	case AITrigger::Death:
-		if (pev->deadflag != DEAD_NO)
+		if (pev->deadflag != DeadFlag::No)
 		{
 			fFireTarget = true;
 		}
@@ -2780,7 +2780,7 @@ void CBaseMonster::PlaySentence(const char* pszSentence, float duration, float v
 	if (pszSentence && IsAlive())
 	{
 		if (pszSentence[0] == '!')
-			EmitSound(CHAN_VOICE, pszSentence, volume, attenuation);
+			EmitSound(SoundChannel::Voice, pszSentence, volume, attenuation);
 		else
 			SENTENCEG_PlayRndSz(this, pszSentence, volume, attenuation, PITCH_NORM);
 	}
@@ -2793,7 +2793,7 @@ void CBaseMonster::PlayScriptedSentence(const char* pszSentence, float duration,
 
 void CBaseMonster::SentenceStop()
 {
-	EmitSound(CHAN_VOICE, "common/null.wav", VOL_NORM, ATTN_IDLE);
+	EmitSound(SoundChannel::Voice, "common/null.wav", VOL_NORM, ATTN_IDLE);
 }
 
 void CBaseMonster::CorpseFallThink()
@@ -2813,8 +2813,8 @@ void CBaseMonster::MonsterInitDead()
 {
 	InitBoneControllers();
 
-	pev->solid = SOLID_BBOX;
-	pev->movetype = MOVETYPE_TOSS;// so he'll fall to ground
+	pev->solid = Solid::BBox;
+	pev->movetype = Movetype::Toss;// so he'll fall to ground
 
 	pev->frame = 0;
 	ResetSequenceInfo();
@@ -2822,7 +2822,7 @@ void CBaseMonster::MonsterInitDead()
 
 	// Copy health
 	pev->max_health = pev->health;
-	pev->deadflag = DEAD_DEAD;
+	pev->deadflag = DeadFlag::Dead;
 
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 	UTIL_SetOrigin(pev, pev->origin);

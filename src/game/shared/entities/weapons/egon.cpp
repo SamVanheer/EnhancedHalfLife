@@ -396,7 +396,7 @@ void CEgon::CreateEffect()
 
 	m_pSprite = CSprite::SpriteCreate(EGON_FLARE_SPRITE.data(), pev->origin, false);
 	m_pSprite->pev->scale = 1.0;
-	m_pSprite->SetTransparency(kRenderGlow, 255, 255, 255, 255, kRenderFxNoDissipation);
+	m_pSprite->SetTransparency(RenderMode::Glow, 255, 255, 255, 255, RenderFX::NoDissipation);
 	m_pSprite->pev->spawnflags |= SF_SPRITE_TEMPORARY;
 	m_pSprite->pev->flags |= FL_SKIPLOCALHOST;
 	m_pSprite->pev->owner = m_pPlayer->edict();
@@ -517,7 +517,7 @@ class CEgonAmmo : public CBasePlayerAmmo
 	{
 		if (pOther->GiveAmmo(AMMO_URANIUMBOX_GIVE, "uranium", URANIUM_MAX_CARRY) != -1)
 		{
-			EmitSound(CHAN_ITEM, "items/9mmclip1.wav");
+			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
 			return true;
 		}
 		return false;

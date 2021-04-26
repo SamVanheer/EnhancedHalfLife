@@ -104,7 +104,7 @@ struct cl_enginefunc_t
 	float (*GetClientTime)();
 	void (*V_CalcShake)();
 	void (*V_ApplyShake)(float* origin, float* angles, float factor);
-	int (*PM_PointContents)(float* point, int* truecontents);
+	Contents (*PM_PointContents)(float* point, Contents* truecontents);
 	int (*PM_WaterEntity)(float* p);
 	pmtrace_t* (*PM_TraceLine)(float* start, float* end, int flags, int usehull, int ignore_pe);
 	model_t* (*CL_LoadModel)(const char* modelname, int* index);

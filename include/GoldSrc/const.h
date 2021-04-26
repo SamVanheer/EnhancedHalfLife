@@ -70,51 +70,73 @@ constexpr int FL_CUSTOMENTITY = 1 << 29;	//!< This is a custom entity
 constexpr int FL_KILLME = 1 << 30;			//!< This entity is marked for death -- This allows the engine to kill ents at the appropriate time
 constexpr int FL_DORMANT = 1 << 31;			//!< Entity is dormant, no updates to client
 
-
 // Goes into globalvars_t.trace_flags
 constexpr int FTRACE_SIMPLEBOX = 1 << 0;	//!< Traceline with a simple box
 
+/**
+*	@brief walkmove modes
+*/
+enum class WalkMoveMode
+{
+	Normal = 0,		//!< normal walkmove
+	WorldOnly = 1,	//!< doesn't hit ANY entities, no matter what the solid type
+	CheckOnly = 2	//!< move, but don't touch triggers
+};
 
-// walkmove modes
-constexpr int WALKMOVE_NORMAL = 0;			//!< normal walkmove
-constexpr int WALKMOVE_WORLDONLY = 1;		//!< doesn't hit ANY entities, no matter what the solid type
-constexpr int WALKMOVE_CHECKONLY = 2;		//!< move, but don't touch triggers
+/**
+*	@brief edict->movetype values
+*/
+enum class Movetype
+{
+	None = 0,				//!< never moves
+	//AngleNoclip = 1,
+	//AngleClip = 2,
+	Walk = 3,				//!< Player only - moving on the ground
+	Step = 4,				//!< gravity, special edge handling -- monsters use this
+	Fly = 5,				//!< No gravity, but still collides with stuff
+	Toss = 6,				//!< gravity/collisions
+	Push = 7,				//!< no clip to world, push and crush
+	Noclip = 8,				//!< No gravity, no collisions, still do velocity/avelocity
+	FlyMissile = 9,			//!< extra size to monsters
+	Bounce = 10,			//!< Just like Toss, but reflect velocity when contacting surfaces
+	BounceMissile = 11,		//!< bounce w/o gravity
+	Follow = 12,			//!< track movement of aiment
+	PushStep = 13,			//!< BSP model that needs physics/world collisions (uses nearest hull for world collision)
+};
 
-// edict->movetype values
-constexpr int MOVETYPE_NONE = 0;			//!< never moves
-//constexpr int MOVETYPE_ANGLENOCLIP = 1;
-//constexpr int MOVETYPE_ANGLECLIP = 2;
-constexpr int MOVETYPE_WALK = 3;			//!< Player only - moving on the ground
-constexpr int MOVETYPE_STEP = 4;			//!< gravity, special edge handling -- monsters use this
-constexpr int MOVETYPE_FLY = 5;				//!< No gravity, but still collides with stuff
-constexpr int MOVETYPE_TOSS = 6;			//!< gravity/collisions
-constexpr int MOVETYPE_PUSH = 7;			//!< no clip to world, push and crush
-constexpr int MOVETYPE_NOCLIP = 8;			//!< No gravity, no collisions, still do velocity/avelocity
-constexpr int MOVETYPE_FLYMISSILE = 9;		//!< extra size to monsters
-constexpr int MOVETYPE_BOUNCE = 10;			//!< Just like Toss, but reflect velocity when contacting surfaces
-constexpr int MOVETYPE_BOUNCEMISSILE = 11;	//!< bounce w/o gravity
-constexpr int MOVETYPE_FOLLOW = 12;			//!< track movement of aiment
-constexpr int MOVETYPE_PUSHSTEP = 13;		//!< BSP model that needs physics/world collisions (uses nearest hull for world collision)
+/**
+*	@brief edict->solid values
+*	NOTE: Some movetypes will cause collisions independent of Solid::Not/Solid::Trigger when the entity moves
+*	SOLID only effects OTHER entities colliding with this one when they move - UGH!
+*/
+enum class Solid
+{
+	Not = 0	,		//!< no interaction with other objects
+	Trigger = 1,	//!< touch on edge, but not blocking
+	BBox = 2,		//!< touch on edge, block
+	SlideBox = 3,	//!< touch on edge, but not an onground
+	BSP = 4,		//!< bsp clip, touch on edge, block
+};
 
-// edict->solid values
-// NOTE: Some movetypes will cause collisions independent of SOLID_NOT/SOLID_TRIGGER when the entity moves
-// SOLID only effects OTHER entities colliding with this one when they move - UGH!
-constexpr int SOLID_NOT = 0;				//!< no interaction with other objects
-constexpr int SOLID_TRIGGER = 1;			//!< touch on edge, but not blocking
-constexpr int SOLID_BBOX = 2;				//!< touch on edge, block
-constexpr int SOLID_SLIDEBOX = 3;			//!< touch on edge, but not an onground
-constexpr int SOLID_BSP = 4;				//!< bsp clip, touch on edge, block
+/**
+*	@brief edict->deadflag values
+*/
+enum class DeadFlag
+{
+	No = 0,				//!< alive
+	Dying = 1,			//!< playing death animation or still falling off of a ledge waiting to hit ground
+	Dead = 2,			//!< dead. lying still.
+	Respawnable = 3,
+	DiscardBody = 4,
+	DeaderThanDead = 5,	//!< Used by client weapons code. Never set
+};
 
-// edict->deadflag values
-constexpr int DEAD_NO = 0;					//!< alive
-constexpr int DEAD_DYING = 1;				//!< playing death animation or still falling off of a ledge waiting to hit ground
-constexpr int DEAD_DEAD = 2;				//!< dead. lying still.
-constexpr int DEAD_RESPAWNABLE = 3;
-constexpr int DEAD_DISCARDBODY = 4;
-
-constexpr int DAMAGE_NO = 0;
-constexpr int DAMAGE_YES = 1;
-constexpr int DAMAGE_AIM = 2;
+enum class DamageMode
+{
+	No = 0,
+	Yes,
+	Aim
+};
 
 // entity effects
 constexpr int EF_BRIGHTFIELD = 1;			//!< swirling cloud of particles
@@ -616,41 +638,48 @@ constexpr int MSG_PAS_R = 7;			//!< Reliable to PAS
 constexpr int MSG_ONE_UNRELIABLE = 8;	//!< Send to one client, but don't put in reliable stream, put in unreliable datagram ( could be dropped )
 constexpr int MSG_SPEC = 9;				//!< Sends to all spectator proxies
 
-// contents of a spot in the world
-constexpr int CONTENTS_EMPTY = -1;
-constexpr int CONTENTS_SOLID = -2;
-constexpr int CONTENTS_WATER = -3;
-constexpr int CONTENTS_SLIME = -4;
-constexpr int CONTENTS_LAVA = -5;
-constexpr int CONTENTS_SKY = -6;
-//These additional contents constants are defined in bspfile.h
-constexpr int CONTENTS_ORIGIN = -7;			//!< removed at csg time
-constexpr int CONTENTS_CLIP = -8;			//!< changed to contents_solid
-constexpr int CONTENTS_CURRENT_0 = -9;
-constexpr int CONTENTS_CURRENT_90 = -10;
-constexpr int CONTENTS_CURRENT_180 = -11;
-constexpr int CONTENTS_CURRENT_270 = -12;
-constexpr int CONTENTS_CURRENT_UP = -13;
-constexpr int CONTENTS_CURRENT_DOWN = -14;
+/**
+*	@brief contents of a spot in the world
+*/
+enum class Contents
+{
+	Empty = -1,
+	Solid = -2,
+	Water = -3,
+	Slime = -4,
+	Lava = -5,
+	Sky = -6,
+	//These additional contents constants are defined in bspfile.h
+	Origin = -7,		//!< removed at csg time
+	Clip = -8,			//!< changed to contents_solid
+	Current0 = -9,
+	Current90 = -10,
+	Current180 = -11,
+	Current270 = -12,
+	CurrentUp = -13,
+	CurrentDown = -14,
 
-constexpr int CONTENTS_TRANSLUCENT = -15;
-constexpr int CONTENTS_LADDER = -16;
+	Translucent = -15,
+	Ladder = -16,
 
-constexpr int CONTENTS_FLYFIELD = -17;
-constexpr int CONTENTS_GRAVITY_FLYFIELD = -18;
-constexpr int CONTENTS_FOG = -19;
+	FlyField = -17,
+	GravityFlyField = -18,
+	Fog = -19,
+};
 
-// channels
-constexpr int CHAN_AUTO = 0;
-constexpr int CHAN_WEAPON = 1;
-constexpr int CHAN_VOICE = 2;
-constexpr int CHAN_ITEM = 3;
-constexpr int CHAN_BODY = 4;
-constexpr int CHAN_STREAM = 5;				//!< allocate stream channel from the static or dynamic area
-constexpr int CHAN_STATIC = 6;				//!< allocate channel from the static area 
-constexpr int CHAN_NETWORKVOICE_BASE = 7;	//!< voice data coming across the network
-constexpr int CHAN_NETWORKVOICE_END = 500;	//!< network voice data reserves slots (CHAN_NETWORKVOICE_BASE through CHAN_NETWORKVOICE_END).
-constexpr int CHAN_BOT = 501;				//!< channel used for bot chatter.
+enum class SoundChannel
+{
+	Auto = 0,
+	Weapon = 1,
+	Voice = 2,
+	Item = 3,
+	Body = 4,
+	Stream = 5,				//!< allocate stream channel from the static or dynamic area
+	Static = 6,				//!< allocate channel from the static area 
+	NetworkVoiceBase = 7,	//!< voice data coming across the network
+	NetworkVoiceEnd = 500,	//!< network voice data reserves slots (NetworkVoiceBase through NetworkVoiceEnd).
+	Bot = 501,				//!< channel used for bot chatter.
+};
 
 // attenuation values
 constexpr float ATTN_NONE = 0;
@@ -674,10 +703,15 @@ constexpr int SF_TRAIN_WAIT_RETRIGGER = 1;
 constexpr int SF_TRAIN_START_ON = 4;		//!< Train is initially moving
 constexpr int SF_TRAIN_PASSABLE = 8;		//!< Train is not solid -- used to make water trains
 
-// view angle update types for fixangle
-constexpr int FIXANGLE_NONE = 0;
-constexpr int FIXANGLE_ABSOLUTE = 1;
-constexpr int FIXANGLE_RELATIVE = 2;
+/**
+*	@brief view angle update types for fixangle
+*/
+enum class FixAngleMode
+{
+	None = 0,	//!< nothing
+	Absolute,	//!< force view angles
+	Relative	//!< add avelocity
+};
 
 // buttons
 #include "in_buttons.h"
@@ -712,40 +746,40 @@ constexpr int TE_BOUNCE_SHELL = 1;
 constexpr int TE_BOUNCE_SHOTSHELL = 2;
 
 // Rendering constants
-enum
+enum class RenderMode
 {
-	kRenderNormal,			// src
-	kRenderTransColor,		// c*a+dest*(1-a)
-	kRenderTransTexture,	// src*a+dest*(1-a)
-	kRenderGlow,			// src*a+dest -- No Z buffer checks
-	kRenderTransAlpha,		// src*srca+dest*(1-srca)
-	kRenderTransAdd,		// src*a+dest
+	Normal,			//!< src
+	TransColor,		//!< c*a+dest*(1-a)
+	TransTexture,	//!< src*a+dest*(1-a)
+	Glow,			//!< src*a+dest -- No Z buffer checks
+	TransAlpha,		//!< src*srca+dest*(1-srca)
+	TransAdd,		//!< src*a+dest
 };
 
-enum
+enum class RenderFX
 {
-	kRenderFxNone = 0,
-	kRenderFxPulseSlow,
-	kRenderFxPulseFast,
-	kRenderFxPulseSlowWide,
-	kRenderFxPulseFastWide,
-	kRenderFxFadeSlow,
-	kRenderFxFadeFast,
-	kRenderFxSolidSlow,
-	kRenderFxSolidFast,
-	kRenderFxStrobeSlow,
-	kRenderFxStrobeFast,
-	kRenderFxStrobeFaster,
-	kRenderFxFlickerSlow,
-	kRenderFxFlickerFast,
-	kRenderFxNoDissipation,
-	kRenderFxDistort,			// Distort/scale/translate flicker
-	kRenderFxHologram,			// kRenderFxDistort + distance fade
-	kRenderFxDeadPlayer,		// kRenderAmt is the player index
-	kRenderFxExplode,			// Scale up really big!
-	kRenderFxGlowShell,			// Glowing Shell
-	kRenderFxClampMinScale,		// Keep this sprite from getting very small (SPRITES only!)
-	kRenderFxLightMultiplier,   //CTM !!!CZERO added to tell the studiorender that the value in iuser2 is a lightmultiplier
+	None = 0,
+	PulseSlow,
+	PulseFast,
+	PulseSlowWide,
+	PulseFastWide,
+	FadeSlow,
+	FadeFast,
+	SolidSlow,
+	SolidFast,
+	StrobeSlow,
+	StrobeFast,
+	StrobeFaster,
+	FlickerSlow,
+	FlickerFast,
+	NoDissipation,
+	Distort,			//!< Distort/scale/translate flicker
+	Hologram,			//!< kRenderFxDistort + distance fade
+	DeadPlayer,			//!< kRenderAmt is the player index
+	Explode,			//!< Scale up really big!
+	GlowShell,			//!< Glowing Shell
+	ClampMinScale,		//!< Keep this sprite from getting very small (SPRITES only!)
+	LightMultiplier,	//!< CTM !!!CZERO added to tell the studiorender that the value in iuser2 is a lightmultiplier
 };
 
 struct color24

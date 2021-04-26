@@ -112,7 +112,7 @@ void DecalGunshot(TraceResult* pTrace, int iBulletType)
 	if (!UTIL_IsValidEntity(pTrace->pHit))
 		return;
 
-	if (VARS(pTrace->pHit)->solid == SOLID_BSP || VARS(pTrace->pHit)->movetype == MOVETYPE_PUSHSTEP)
+	if (VARS(pTrace->pHit)->solid == Solid::BSP || VARS(pTrace->pHit)->movetype == Movetype::PushStep)
 	{
 		CBaseEntity* pEntity = nullptr;
 		// Decal the wall with a gunshot
@@ -363,8 +363,8 @@ void CBasePlayerItem::SetObjectCollisionBox()
 
 void CBasePlayerItem::FallInit()
 {
-	pev->movetype = MOVETYPE_TOSS;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Toss;
+	pev->solid = Solid::BBox;
 
 	UTIL_SetOrigin(pev, pev->origin);
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);//pointsize until it lands on the ground.
@@ -386,7 +386,7 @@ void CBasePlayerItem::FallThink()
 		if (!IsNullEnt(pev->owner))
 		{
 			int pitch = 95 + RANDOM_LONG(0, 29);
-			EmitSound(CHAN_VOICE, "items/weapondrop1.wav", VOL_NORM, ATTN_NORM, pitch);
+			EmitSound(SoundChannel::Voice, "items/weapondrop1.wav", VOL_NORM, ATTN_NORM, pitch);
 		}
 
 		// lie flat
@@ -402,12 +402,12 @@ void CBasePlayerItem::Materialize()
 	if (pev->effects & EF_NODRAW)
 	{
 		// changing from invisible state to visible.
-		EmitSound(CHAN_WEAPON, "items/suitchargeok1.wav", VOL_NORM, ATTN_NORM, 150);
+		EmitSound(SoundChannel::Weapon, "items/suitchargeok1.wav", VOL_NORM, ATTN_NORM, 150);
 		pev->effects &= ~EF_NODRAW;
 		pev->effects |= EF_MUZZLEFLASH;
 	}
 
-	pev->solid = SOLID_TRIGGER;
+	pev->solid = Solid::Trigger;
 
 	UTIL_SetOrigin(pev, pev->origin);// link into world.
 	SetTouch(&CBasePlayerItem::DefaultTouch);
@@ -488,7 +488,7 @@ void CBasePlayerItem::DefaultTouch(CBaseEntity* pOther)
 	if (pPlayer->AddPlayerItem(this))
 	{
 		AttachToPlayer(pPlayer);
-		pPlayer->EmitSound(CHAN_ITEM, "items/gunpickup2.wav");
+		pPlayer->EmitSound(SoundChannel::Item, "items/gunpickup2.wav");
 	}
 
 	SUB_UseTargets(pOther, USE_TOGGLE, 0); // UNDONE: when should this happen?
@@ -534,8 +534,8 @@ void CBasePlayerItem::Holster()
 
 void CBasePlayerItem::AttachToPlayer(CBasePlayer* pPlayer)
 {
-	pev->movetype = MOVETYPE_FOLLOW;
-	pev->solid = SOLID_NOT;
+	pev->movetype = Movetype::Follow;
+	pev->solid = Solid::Not;
 	pev->aiment = pPlayer->edict();
 	pev->effects = EF_NODRAW; // ??
 	pev->modelindex = 0;// server won't send down to clients if modelindex == 0
@@ -678,7 +678,7 @@ bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxC
 		{
 			// play the "got ammo" sound only if we gave some ammo to a player that already had this gun.
 			// if the player is just getting this gun for the first time, DefaultTouch will play the "picked up gun" sound for us.
-			EmitSound(CHAN_ITEM, "items/9mmclip1.wav");
+			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
 		}
 	}
 
@@ -696,7 +696,7 @@ bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName, int iMa
 	if (iIdAmmo > 0)
 	{
 		m_iSecondaryAmmoType = iIdAmmo;
-		EmitSound(CHAN_ITEM, "items/9mmclip1.wav");
+		EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
 	}
 	return iIdAmmo > 0;
 }
@@ -758,7 +758,7 @@ bool CBasePlayerWeapon::PlayEmptySound()
 {
 	if (m_iPlayEmptySound)
 	{
-		m_pPlayer->EmitSound(CHAN_WEAPON, "weapons/357_cock1.wav", 0.8);
+		m_pPlayer->EmitSound(SoundChannel::Weapon, "weapons/357_cock1.wav", 0.8);
 		m_iPlayEmptySound = false;
 		return false;
 	}
@@ -784,8 +784,8 @@ void CBasePlayerWeapon::Holster()
 
 void CBasePlayerAmmo::Spawn()
 {
-	pev->movetype = MOVETYPE_TOSS;
-	pev->solid = SOLID_TRIGGER;
+	pev->movetype = Movetype::Toss;
+	pev->solid = Solid::Trigger;
 	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 16));
 	UTIL_SetOrigin(pev, pev->origin);
 
@@ -810,7 +810,7 @@ void CBasePlayerAmmo::Materialize()
 	if (pev->effects & EF_NODRAW)
 	{
 		// changing from invisible state to visible.
-		EmitSound(CHAN_WEAPON, "items/suitchargeok1.wav", VOL_NORM, ATTN_NORM, 150);
+		EmitSound(SoundChannel::Weapon, "items/suitchargeok1.wav", VOL_NORM, ATTN_NORM, 150);
 		pev->effects &= ~EF_NODRAW;
 		pev->effects |= EF_MUZZLEFLASH;
 	}
@@ -965,8 +965,8 @@ void CWeaponBox::Spawn()
 {
 	Precache();
 
-	pev->movetype = MOVETYPE_TOSS;
-	pev->solid = SOLID_TRIGGER;
+	pev->movetype = Movetype::Toss;
+	pev->solid = Solid::Trigger;
 
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 
@@ -1058,7 +1058,7 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 		}
 	}
 
-	pOther->EmitSound(CHAN_ITEM, "items/gunpickup2.wav");
+	pOther->EmitSound(SoundChannel::Item, "items/gunpickup2.wav");
 	SetTouch(nullptr);
 	UTIL_Remove(this);
 }
@@ -1096,8 +1096,8 @@ bool CWeaponBox::PackWeapon(CBasePlayerItem* pWeapon)
 	}
 
 	pWeapon->pev->spawnflags |= SF_NORESPAWN;// never respawn
-	pWeapon->pev->movetype = MOVETYPE_NONE;
-	pWeapon->pev->solid = SOLID_NOT;
+	pWeapon->pev->movetype = Movetype::None;
+	pWeapon->pev->solid = Solid::Not;
 	pWeapon->pev->effects = EF_NODRAW;
 	pWeapon->pev->modelindex = 0;
 	pWeapon->pev->model = iStringNull;

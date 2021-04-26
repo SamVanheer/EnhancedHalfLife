@@ -41,7 +41,7 @@ LINK_ENTITY_TO_CLASS(monster_satchel, CSatchelCharge);
 
 void CSatchelCharge::Deactivate()
 {
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 	UTIL_Remove(this);
 }
 
@@ -49,8 +49,8 @@ void CSatchelCharge::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = MOVETYPE_BOUNCE;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Bounce;
+	pev->solid = Solid::BBox;
 
 	SET_MODEL(ENT(pev), "models/w_satchel.mdl");
 	//UTIL_SetSize(pev, Vector( -16, -16, -4), Vector(16, 16, 32));	// Old box -- size of headcrab monsters/players get blocked by this
@@ -110,14 +110,14 @@ void CSatchelCharge::SatchelThink()
 
 	if (pev->waterlevel == WaterLevel::Head)
 	{
-		pev->movetype = MOVETYPE_FLY;
+		pev->movetype = Movetype::Fly;
 		pev->velocity = pev->velocity * 0.8;
 		pev->avelocity = pev->avelocity * 0.9;
 		pev->velocity.z += 8;
 	}
 	else if (pev->waterlevel == WaterLevel::Dry)
 	{
-		pev->movetype = MOVETYPE_BOUNCE;
+		pev->movetype = Movetype::Bounce;
 	}
 	else
 	{
@@ -137,9 +137,9 @@ void CSatchelCharge::BounceSound()
 {
 	switch (RANDOM_LONG(0, 2))
 	{
-	case 0:	EmitSound(CHAN_VOICE, "weapons/g_bounce1.wav"); break;
-	case 1:	EmitSound(CHAN_VOICE, "weapons/g_bounce2.wav"); break;
-	case 2:	EmitSound(CHAN_VOICE, "weapons/g_bounce3.wav"); break;
+	case 0:	EmitSound(SoundChannel::Voice, "weapons/g_bounce1.wav"); break;
+	case 1:	EmitSound(SoundChannel::Voice, "weapons/g_bounce2.wav"); break;
+	case 2:	EmitSound(SoundChannel::Voice, "weapons/g_bounce3.wav"); break;
 	}
 }
 
@@ -284,7 +284,7 @@ void CSatchel::Holster()
 	{
 		SendWeaponAnim(SATCHEL_DROP);
 	}
-	m_pPlayer->EmitSound(CHAN_WEAPON, "common/null.wav");
+	m_pPlayer->EmitSound(SoundChannel::Weapon, "common/null.wav");
 
 	if (!m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] && m_chargeReady == ChargeState::NoSatchelsDeployed)
 	{

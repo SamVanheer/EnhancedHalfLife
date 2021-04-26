@@ -233,7 +233,7 @@ void CFlockingFlyerFlock::SpawnFlock()
 		const Vector vecSpot{pev->origin + Vector{RANDOM_FLOAT(-R, R), RANDOM_FLOAT(-R, R), RANDOM_FLOAT(0, 16)}};
 
 		UTIL_SetOrigin(pBoid->pev, vecSpot);
-		pBoid->pev->movetype = MOVETYPE_FLY;
+		pBoid->pev->movetype = Movetype::Fly;
 		pBoid->SpawnCommonCode();
 		pBoid->pev->flags &= ~FL_ONGROUND;
 		pBoid->pev->velocity = vec3_origin;
@@ -274,8 +274,8 @@ void CFlockingFlyer::MakeSound()
 		// make agitated sounds
 		switch (RANDOM_LONG(0, 1))
 		{
-		case 0:	EmitSound(CHAN_WEAPON, "boid/boid_alert1.wav"); break;
-		case 1:	EmitSound(CHAN_WEAPON, "boid/boid_alert2.wav"); break;
+		case 0:	EmitSound(SoundChannel::Weapon, "boid/boid_alert1.wav"); break;
+		case 1:	EmitSound(SoundChannel::Weapon, "boid/boid_alert2.wav"); break;
 		}
 
 		return;
@@ -284,8 +284,8 @@ void CFlockingFlyer::MakeSound()
 	// make normal sound
 	switch (RANDOM_LONG(0, 1))
 	{
-	case 0:	EmitSound(CHAN_WEAPON, "boid/boid_idle1.wav"); break;
-	case 1:	EmitSound(CHAN_WEAPON, "boid/boid_idle2.wav"); break;
+	case 0:	EmitSound(SoundChannel::Weapon, "boid/boid_idle1.wav"); break;
+	case 1:	EmitSound(SoundChannel::Weapon, "boid/boid_idle2.wav"); break;
 	}
 }
 
@@ -301,13 +301,13 @@ void CFlockingFlyer::Killed(entvars_t* pevAttacker, int iGib)
 		m_pSquadLeader->SquadRemove(this);
 	}
 
-	pev->deadflag = DEAD_DEAD;
+	pev->deadflag = DeadFlag::Dead;
 
 	pev->framerate = 0;
 	pev->effects = EF_NOINTERP;
 
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);
-	pev->movetype = MOVETYPE_TOSS;
+	pev->movetype = Movetype::Toss;
 
 	SetThink(&CFlockingFlyer::FallHack);
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -332,11 +332,11 @@ void CFlockingFlyer::FallHack()
 
 void CFlockingFlyer::SpawnCommonCode()
 {
-	pev->deadflag = DEAD_NO;
+	pev->deadflag = DeadFlag::No;
 	pev->classname = MAKE_STRING("monster_flyer");
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_FLY;
-	pev->takedamage = DAMAGE_NO;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Fly;
+	SetDamageMode(DamageMode::No);
 	pev->health = 1;
 
 	m_fPathBlocked = false;// obstacles will be detected

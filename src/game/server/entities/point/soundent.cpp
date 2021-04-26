@@ -61,7 +61,7 @@ bool CSound::IsScent()
 
 void CSoundEnt::Spawn()
 {
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 	Initialize();
 
 	pev->nextthink = gpGlobals->time + 1;

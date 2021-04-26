@@ -91,8 +91,8 @@ void CRecharge::Spawn()
 {
 	Precache();
 
-	pev->solid = SOLID_BSP;
-	pev->movetype = MOVETYPE_PUSH;
+	pev->solid = Solid::BSP;
+	pev->movetype = Movetype::Push;
 
 	UTIL_SetOrigin(pev, pev->origin);		// set size and link into world
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
@@ -127,7 +127,7 @@ void CRecharge::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useT
 		if (m_flSoundTime <= gpGlobals->time)
 		{
 			m_flSoundTime = gpGlobals->time + 0.62;
-			EmitSound(CHAN_ITEM, "items/suitchargeno1.wav", 0.85);
+			EmitSound(SoundChannel::Item, "items/suitchargeno1.wav", 0.85);
 		}
 		return;
 	}
@@ -155,13 +155,13 @@ void CRecharge::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useT
 	if (m_iOn == ChargerState::Off)
 	{
 		m_iOn = ChargerState::Starting;
-		EmitSound(CHAN_ITEM, "items/suitchargeok1.wav", 0.85);
+		EmitSound(SoundChannel::Item, "items/suitchargeok1.wav", 0.85);
 		m_flSoundTime = 0.56 + gpGlobals->time;
 	}
 	if ((m_iOn == ChargerState::Starting) && (m_flSoundTime <= gpGlobals->time))
 	{
 		m_iOn = ChargerState::Charging;
-		EmitSound(CHAN_STATIC, "items/suitcharge1.wav", 0.85);
+		EmitSound(SoundChannel::Static, "items/suitcharge1.wav", 0.85);
 	}
 
 
@@ -190,7 +190,7 @@ void CRecharge::Off()
 {
 	// Stop looping sound.
 	if (m_iOn == ChargerState::Charging)
-		StopSound(CHAN_STATIC, "items/suitcharge1.wav");
+		StopSound(SoundChannel::Static, "items/suitcharge1.wav");
 
 	m_iOn = ChargerState::Off;
 

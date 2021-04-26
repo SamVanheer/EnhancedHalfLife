@@ -25,7 +25,7 @@ constexpr int FLYING_AE_FLAPSOUND = 9;
 LocalMoveResult CFlyingMonster::CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist)
 {
 	// UNDONE: need to check more than the endpoint
-	if (IsBitSet(pev->flags, FL_SWIM) && (UTIL_PointContents(vecEnd) != CONTENTS_WATER))
+	if (IsBitSet(pev->flags, FL_SWIM) && (UTIL_PointContents(vecEnd) != Contents::Water))
 	{
 		// ALERT(at_aiconsole, "can't swim out of water\n");
 		return LocalMoveResult::Invalid;
@@ -60,7 +60,7 @@ bool CFlyingMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, f
 
 Activity CFlyingMonster::GetStoppedActivity()
 {
-	if (pev->movetype != MOVETYPE_FLY)		// UNDONE: Ground idle here, IDLE may be something else
+	if (pev->movetype != Movetype::Fly)		// UNDONE: Ground idle here, IDLE may be something else
 		return ACT_IDLE;
 
 	return ACT_HOVER;
@@ -81,7 +81,7 @@ void CFlyingMonster::Stop()
 
 float CFlyingMonster::ChangeYaw(int speed)
 {
-	if (pev->movetype == MOVETYPE_FLY)
+	if (pev->movetype == Movetype::Fly)
 	{
 		const float diff = YawDiff();
 		float target = 0;
@@ -110,7 +110,7 @@ float CFlyingMonster::ChangeYaw(int speed)
 
 void CFlyingMonster::Killed(entvars_t* pevAttacker, int iGib)
 {
-	pev->movetype = MOVETYPE_STEP;
+	pev->movetype = Movetype::Step;
 	ClearBits(pev->flags, FL_ONGROUND);
 	pev->angles.z = 0;
 	pev->angles.x = 0;
@@ -127,7 +127,7 @@ void CFlyingMonster::HandleAnimEvent(AnimationEvent& event)
 
 	case FLYING_AE_FLAPSOUND:
 		if (m_pFlapSound)
-			EmitSound(CHAN_BODY, m_pFlapSound);
+			EmitSound(SoundChannel::Body, m_pFlapSound);
 		break;
 
 	default:
@@ -138,7 +138,7 @@ void CFlyingMonster::HandleAnimEvent(AnimationEvent& event)
 
 void CFlyingMonster::Move(float flInterval)
 {
-	if (pev->movetype == MOVETYPE_FLY)
+	if (pev->movetype == Movetype::Fly)
 		m_flGroundSpeed = m_flightSpeed;
 	CBaseMonster::Move(flInterval);
 }
@@ -157,7 +157,7 @@ bool CFlyingMonster::ShouldAdvanceRoute(float flWaypointDist)
 
 void CFlyingMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, float flInterval)
 {
-	if (pev->movetype == MOVETYPE_FLY)
+	if (pev->movetype == Movetype::Fly)
 	{
 		if (gpGlobals->time - m_stopTime > 1.0)
 		{
@@ -214,8 +214,8 @@ float CFlyingMonster::CeilingZ(const Vector& position)
 
 bool CFlyingMonster::ProbeZ(const Vector& position, const Vector& probe, float* pFraction)
 {
-	const int conPosition = UTIL_PointContents(position);
-	if ((((pev->flags) & FL_SWIM) == FL_SWIM) ^ (conPosition == CONTENTS_WATER))
+	const Contents conPosition = UTIL_PointContents(position);
+	if ((((pev->flags) & FL_SWIM) == FL_SWIM) ^ (conPosition == Contents::Water))
 	{
 		//    SWIMING & !WATER
 		// or FLYING  & WATER
@@ -223,7 +223,7 @@ bool CFlyingMonster::ProbeZ(const Vector& position, const Vector& probe, float* 
 		*pFraction = 0.0;
 		return true; // We hit a water boundary because we are where we don't belong.
 	}
-	const int conProbe = UTIL_PointContents(probe);
+	const Contents conProbe = UTIL_PointContents(probe);
 	if (conProbe == conPosition)
 	{
 		// The probe is either entirely inside the water (for fish) or entirely

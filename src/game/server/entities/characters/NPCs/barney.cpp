@@ -332,7 +332,7 @@ void CBarney::BarneyFirePistol()
 		pitchShift = 0;
 	else
 		pitchShift -= 5;
-	EmitSound(CHAN_WEAPON, "barney/ba_attack2.wav", VOL_NORM, ATTN_NORM, PITCH_NORM + pitchShift);
+	EmitSound(SoundChannel::Weapon, "barney/ba_attack2.wav", VOL_NORM, ATTN_NORM, PITCH_NORM + pitchShift);
 
 	CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, 384, 0.3);
 
@@ -372,8 +372,8 @@ void CBarney::Spawn()
 	SET_MODEL(ENT(pev), "models/barney.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->health = gSkillData.barneyHealth;
 	pev->view_ofs = Vector(0, 0, 50);// position of the eyes relative to monster's origin.
@@ -461,7 +461,7 @@ bool CBarney::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float 
 {
 	// make sure friends talk about it if player hurts talkmonsters...
 	const bool ret = CTalkMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
-	if (!IsAlive() || pev->deadflag == DEAD_DYING)
+	if (!IsAlive() || pev->deadflag == DeadFlag::Dying)
 		return ret;
 
 	if (m_MonsterState != NPCState::Prone && (pevAttacker->flags & FL_CLIENT))
@@ -488,7 +488,7 @@ bool CBarney::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float 
 				Remember(bits_MEMORY_SUSPICIOUS);
 			}
 		}
-		else if (!(m_hEnemy->IsPlayer()) && pev->deadflag == DEAD_NO)
+		else if (!(m_hEnemy->IsPlayer()) && pev->deadflag == DeadFlag::No)
 		{
 			PlaySentence("BA_SHOT", 4, VOL_NORM, ATTN_NORM);
 		}
@@ -506,9 +506,9 @@ void CBarney::PainSound()
 
 	switch (RANDOM_LONG(0, 2))
 	{
-	case 0: EmitSound(CHAN_VOICE, "barney/ba_pain1.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
-	case 1: EmitSound(CHAN_VOICE, "barney/ba_pain2.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
-	case 2: EmitSound(CHAN_VOICE, "barney/ba_pain3.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 0: EmitSound(SoundChannel::Voice, "barney/ba_pain1.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 1: EmitSound(SoundChannel::Voice, "barney/ba_pain2.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 2: EmitSound(SoundChannel::Voice, "barney/ba_pain3.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
 	}
 }
 
@@ -516,9 +516,9 @@ void CBarney::DeathSound()
 {
 	switch (RANDOM_LONG(0, 2))
 	{
-	case 0: EmitSound(CHAN_VOICE, "barney/ba_die1.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
-	case 1: EmitSound(CHAN_VOICE, "barney/ba_die2.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
-	case 2: EmitSound(CHAN_VOICE, "barney/ba_die3.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 0: EmitSound(SoundChannel::Voice, "barney/ba_die1.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 1: EmitSound(SoundChannel::Voice, "barney/ba_die2.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 2: EmitSound(SoundChannel::Voice, "barney/ba_die3.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
 	}
 }
 

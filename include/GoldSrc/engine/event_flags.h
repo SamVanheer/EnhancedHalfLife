@@ -30,7 +30,7 @@ constexpr int FEV_RELIABLE = 1 << 1;
 
 /**
 *	@brief Don't restrict to PAS/PVS, send this event to _everybody_ on the server
-*	( useful for stopping CHAN_STATIC sounds started by client event when client is not in PVS anymore ( hwguy in TFC e.g. ).
+*	( useful for stopping SoundChannel::Static sounds started by client event when client is not in PVS anymore ( hwguy in TFC e.g. ).
 */
 constexpr int FEV_GLOBAL = 1 << 2;
 

@@ -168,8 +168,8 @@ void CMultiSource::Spawn()
 {
 	// set up think for later registration
 
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 	pev->nextthink = gpGlobals->time + 0.1;
 	pev->spawnflags |= SF_MULTI_INIT;	// Until it's initialized
 	SetThink(&CMultiSource::Register);
@@ -391,7 +391,7 @@ bool CBaseButton::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 
 	if (code == ButtonCode::Return)
 	{
-		EmitSound(CHAN_VOICE, STRING(pev->noise));
+		EmitSound(SoundChannel::Voice, STRING(pev->noise));
 
 		// Toggle buttons fire when they get back to their "home" position
 		if (!(pev->spawnflags & SF_BUTTON_TOGGLE))
@@ -426,8 +426,8 @@ void CBaseButton::Spawn()
 
 	SetMovedir(pev);
 
-	pev->movetype = MOVETYPE_PUSH;
-	pev->solid = SOLID_BSP;
+	pev->movetype = Movetype::Push;
+	pev->solid = Solid::BSP;
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	if (pev->speed == 0)
@@ -435,7 +435,7 @@ void CBaseButton::Spawn()
 
 	if (pev->health > 0)
 	{
-		pev->takedamage = DAMAGE_YES;
+		SetDamageMode(DamageMode::Yes);
 	}
 
 	if (m_flWait == 0)
@@ -512,12 +512,12 @@ void DoSpark(CBaseEntity* entity, const Vector& location)
 	const float flVolume = RANDOM_FLOAT(0.25, 0.75) * 0.4;//random volume range
 	switch ((int)(RANDOM_FLOAT(0, 1) * 6))
 	{
-	case 0: entity->EmitSound(CHAN_VOICE, "buttons/spark1.wav", flVolume); break;
-	case 1: entity->EmitSound(CHAN_VOICE, "buttons/spark2.wav", flVolume); break;
-	case 2: entity->EmitSound(CHAN_VOICE, "buttons/spark3.wav", flVolume); break;
-	case 3: entity->EmitSound(CHAN_VOICE, "buttons/spark4.wav", flVolume); break;
-	case 4: entity->EmitSound(CHAN_VOICE, "buttons/spark5.wav", flVolume); break;
-	case 5: entity->EmitSound(CHAN_VOICE, "buttons/spark6.wav", flVolume); break;
+	case 0: entity->EmitSound(SoundChannel::Voice, "buttons/spark1.wav", flVolume); break;
+	case 1: entity->EmitSound(SoundChannel::Voice, "buttons/spark2.wav", flVolume); break;
+	case 2: entity->EmitSound(SoundChannel::Voice, "buttons/spark3.wav", flVolume); break;
+	case 3: entity->EmitSound(SoundChannel::Voice, "buttons/spark4.wav", flVolume); break;
+	case 4: entity->EmitSound(SoundChannel::Voice, "buttons/spark5.wav", flVolume); break;
+	case 5: entity->EmitSound(SoundChannel::Voice, "buttons/spark6.wav", flVolume); break;
 	}
 }
 
@@ -541,7 +541,7 @@ void CBaseButton::ButtonUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 	{
 		if (!m_fStayPushed && IsBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
 		{
-			EmitSound(CHAN_VOICE, STRING(pev->noise));
+			EmitSound(SoundChannel::Voice, STRING(pev->noise));
 
 			//SUB_UseTargets( m_eoActivator );
 			ButtonReturn();
@@ -597,7 +597,7 @@ void CBaseButton::ButtonTouch(CBaseEntity* pOther)
 
 	if (code == ButtonCode::Return)
 	{
-		EmitSound(CHAN_VOICE, STRING(pev->noise));
+		EmitSound(SoundChannel::Voice, STRING(pev->noise));
 		SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
 		ButtonReturn();
 	}
@@ -607,7 +607,7 @@ void CBaseButton::ButtonTouch(CBaseEntity* pOther)
 
 void CBaseButton::ButtonActivate()
 {
-	EmitSound(CHAN_VOICE, STRING(pev->noise));
+	EmitSound(SoundChannel::Voice, STRING(pev->noise));
 
 	if (!UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
 	{
@@ -685,7 +685,7 @@ void CBaseButton::ButtonBackHome()
 
 	if (IsBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
 	{
-		//EmitSound(CHAN_VOICE, STRING(pev->noise));
+		//EmitSound(SoundChannel::Voice, STRING(pev->noise));
 
 		SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
 	}
@@ -755,12 +755,12 @@ void CRotButton::Spawn()
 	if (IsBitSet(pev->spawnflags, SF_DOOR_ROTATE_BACKWARDS))
 		pev->movedir = pev->movedir * -1;
 
-	pev->movetype = MOVETYPE_PUSH;
+	pev->movetype = Movetype::Push;
 
 	if (pev->spawnflags & SF_ROTBUTTON_NOTSOLID)
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 	else
-		pev->solid = SOLID_BSP;
+		pev->solid = Solid::BSP;
 
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
@@ -772,7 +772,7 @@ void CRotButton::Spawn()
 
 	if (pev->health > 0)
 	{
-		pev->takedamage = DAMAGE_YES;
+		SetDamageMode(DamageMode::Yes);
 	}
 
 	m_toggle_state = ToggleState::AtBottom;
@@ -798,7 +798,7 @@ void CRotButton::Spawn()
 /**
 *	@brief Make this button behave like a door (HACKHACK)
 *	@details This will disable use and make the button solid
-*	rotating buttons were made SOLID_NOT by default since their were some collision problems with them...
+*	rotating buttons were made Solid::Not by default since their were some collision problems with them...
 */
 constexpr int SF_MOMENTARY_DOOR = 0x0001;
 
@@ -874,11 +874,11 @@ void CMomentaryRotButton::Spawn()
 	}
 
 	if (pev->spawnflags & SF_MOMENTARY_DOOR)
-		pev->solid = SOLID_BSP;
+		pev->solid = Solid::BSP;
 	else
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 
-	pev->movetype = MOVETYPE_PUSH;
+	pev->movetype = Movetype::Push;
 	UTIL_SetOrigin(pev, pev->origin);
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
@@ -906,7 +906,7 @@ void CMomentaryRotButton::KeyValue(KeyValueData* pkvd)
 
 void CMomentaryRotButton::PlaySound()
 {
-	EmitSound(CHAN_VOICE, STRING(pev->noise));
+	EmitSound(SoundChannel::Voice, STRING(pev->noise));
 }
 
 // BUGBUG: This design causes a latency.  When the button is retriggered, the first impulse
@@ -1165,10 +1165,10 @@ LINK_ENTITY_TO_CLASS(button_target, CButtonTarget);
 
 void CButtonTarget::Spawn()
 {
-	pev->movetype = MOVETYPE_PUSH;
-	pev->solid = SOLID_BSP;
+	pev->movetype = Movetype::Push;
+	pev->solid = Solid::BSP;
 	SET_MODEL(ENT(pev), STRING(pev->model));
-	pev->takedamage = DAMAGE_YES;
+	SetDamageMode(DamageMode::Yes);
 
 	if (IsBitSet(pev->spawnflags, SF_BTARGET_ON))
 		pev->frame = 1;

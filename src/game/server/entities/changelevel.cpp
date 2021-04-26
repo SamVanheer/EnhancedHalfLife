@@ -25,8 +25,8 @@ LINK_ENTITY_TO_CLASS(trigger_transition, CTriggerVolume);
 
 void CTriggerVolume::Spawn()
 {
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
 	pev->model = iStringNull;
 	pev->modelindex = 0;
@@ -222,7 +222,7 @@ bool CChangeLevel::InTransitionVolume(CBaseEntity* pEntity, char* pVolumeName)
 		return true;
 
 	// If you're following another entity, follow it through the transition (weapons follow the player)
-	if (pEntity->pev->movetype == MOVETYPE_FOLLOW)
+	if (pEntity->pev->movetype == Movetype::Follow)
 	{
 		if (pEntity->pev->aiment != nullptr)
 			pEntity = CBaseEntity::Instance(pEntity->pev->aiment);

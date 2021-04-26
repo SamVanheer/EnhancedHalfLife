@@ -69,7 +69,7 @@ public:
 	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
 
 	/**
-	*	@brief This doesn't really make sense since only MOVETYPE_PUSH get 'Blocked' events
+	*	@brief This doesn't really make sense since only Movetype::Push get 'Blocked' events
 	*/
 	void Blocked(CBaseEntity* pOther) override;
 	void Touch(CBaseEntity* pOther) override;
@@ -146,8 +146,8 @@ public:
 	int m_iDelay;
 	float m_startTime;
 
-	int	m_saved_movetype;
-	int	m_saved_solid;
+	Movetype m_saved_movetype;
+	Solid m_saved_solid;
 	int m_saved_effects;
 	//	Vector m_vecOrigOrigin;
 	bool m_interruptable;

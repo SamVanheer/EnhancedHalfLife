@@ -104,8 +104,8 @@ void CRoach::Spawn()
 	SET_MODEL(ENT(pev), "models/roach.mdl");
 	UTIL_SetSize(pev, Vector(-1, -1, 0), Vector(1, 1, 2));
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_YELLOW;
 	pev->effects = 0;
 	pev->health = 1;
@@ -116,7 +116,7 @@ void CRoach::Spawn()
 	SetActivity(ACT_IDLE);
 
 	pev->view_ofs = Vector(0, 0, 1);// position of the eyes relative to monster's origin.
-	pev->takedamage = DAMAGE_YES;
+	SetDamageMode(DamageMode::Yes);
 	m_fLightHacked = false;
 	m_flLastLightLevel = -1;
 	m_iMode = ROACH_IDLE;
@@ -134,16 +134,16 @@ void CRoach::Precache()
 
 void CRoach::Killed(entvars_t* pevAttacker, int iGib)
 {
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 
 	//random sound
 	if (RANDOM_LONG(0, 4) == 1)
 	{
-		EmitSound(CHAN_VOICE, "roach/rch_die.wav", 0.8, ATTN_NORM, 80 + RANDOM_LONG(0, 39));
+		EmitSound(SoundChannel::Voice, "roach/rch_die.wav", 0.8, ATTN_NORM, 80 + RANDOM_LONG(0, 39));
 	}
 	else
 	{
-		EmitSound(CHAN_BODY, "roach/rch_smash.wav", 0.7, ATTN_NORM, 80 + RANDOM_LONG(0, 39));
+		EmitSound(SoundChannel::Body, "roach/rch_smash.wav", 0.7, ATTN_NORM, 80 + RANDOM_LONG(0, 39));
 	}
 
 	CSoundEnt::InsertSound(bits_SOUND_WORLD, pev->origin, 128, 1);
@@ -300,7 +300,7 @@ void CRoach::PickNewDest(int iCondition)
 	if (RANDOM_LONG(0, 9) == 1)
 	{
 		// every once in a while, a roach will play a skitter sound when they decide to run
-		EmitSound(CHAN_BODY, "roach/rch_walk.wav", VOL_NORM, ATTN_NORM, 80 + RANDOM_LONG(0, 39));
+		EmitSound(SoundChannel::Body, "roach/rch_walk.wav", VOL_NORM, ATTN_NORM, 80 + RANDOM_LONG(0, 39));
 	}
 }
 
@@ -316,14 +316,14 @@ void CRoach::Move(float flInterval)
 	if (RANDOM_LONG(0, 7) == 1)
 	{
 		// randomly check for blocked path.(more random load balancing)
-		if (!WALK_MOVE(ENT(pev), pev->ideal_yaw, 4, WALKMOVE_NORMAL))
+		if (!WALK_MOVE(ENT(pev), pev->ideal_yaw, 4, WalkMoveMode::Normal))
 		{
 			// stuck, so just pick a new spot to run off to
 			PickNewDest(m_iMode);
 		}
 	}
 
-	WALK_MOVE(ENT(pev), pev->ideal_yaw, m_flGroundSpeed * flInterval, WALKMOVE_NORMAL);
+	WALK_MOVE(ENT(pev), pev->ideal_yaw, m_flGroundSpeed * flInterval, WalkMoveMode::Normal);
 
 	// if the waypoint is closer than step size, then stop after next step (ok for roach to overshoot)
 	if (flWaypointDist <= m_flGroundSpeed * flInterval)

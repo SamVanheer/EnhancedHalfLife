@@ -244,7 +244,7 @@ void DispatchSave(edict_t* pent, SAVERESTOREDATA* pSaveData)
 			return;
 
 		// These don't use ltime & nextthink as times really, but we'll fudge around it.
-		if (pEntity->pev->movetype == MOVETYPE_PUSH)
+		if (pEntity->pev->movetype == Movetype::Push)
 		{
 			float delta = pEntity->pev->nextthink - pEntity->pev->ltime;
 			pEntity->pev->ltime = gpGlobals->time;

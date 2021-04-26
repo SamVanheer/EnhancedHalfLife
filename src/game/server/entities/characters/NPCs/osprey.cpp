@@ -134,15 +134,15 @@ void COsprey::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = MOVETYPE_FLY;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Fly;
+	pev->solid = Solid::BBox;
 
 	SET_MODEL(ENT(pev), "models/osprey.mdl");
 	UTIL_SetSize(pev, Vector(-400, -400, -100), Vector(400, 400, 32));
 	UTIL_SetOrigin(pev, pev->origin);
 
 	pev->flags |= FL_MONSTER;
-	pev->takedamage = DAMAGE_YES;
+	SetDamageMode(DamageMode::Yes);
 	m_flRightHealth = 200;
 	m_flLeftHealth = 200;
 	pev->health = 400;
@@ -265,20 +265,20 @@ CBaseMonster* COsprey::MakeGrunt(Vector vecSrc)
 {
 	TraceResult tr;
 	UTIL_TraceLine(vecSrc, vecSrc + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, ENT(pev), &tr);
-	if (tr.pHit && Instance(tr.pHit)->pev->solid != SOLID_BSP)
+	if (tr.pHit && Instance(tr.pHit)->pev->solid != Solid::BSP)
 		return nullptr;
 
 	for (int i = 0; i < m_iUnits; i++)
 	{
 		if (m_hGrunt[i] == nullptr || !m_hGrunt[i]->IsAlive())
 		{
-			if (m_hGrunt[i] != nullptr && m_hGrunt[i]->pev->rendermode == kRenderNormal)
+			if (m_hGrunt[i] != nullptr && m_hGrunt[i]->pev->rendermode == RenderMode::Normal)
 			{
 				m_hGrunt[i]->SUB_StartFadeOut();
 			}
 			CBaseEntity* pEntity = Create("monster_human_grunt", vecSrc, pev->angles);
 			CBaseMonster* pGrunt = pEntity->MyMonsterPointer();
-			pGrunt->pev->movetype = MOVETYPE_FLY;
+			pGrunt->pev->movetype = Movetype::Fly;
 			pGrunt->pev->velocity = Vector(0, 0, RANDOM_FLOAT(-196, -128));
 			pGrunt->SetActivity(ACT_GLIDE);
 
@@ -422,8 +422,8 @@ void COsprey::Flight()
 
 	if (m_iSoundState == 0)
 	{
-		EmitSound(CHAN_STATIC, "apache/ap_rotor4.wav", VOL_NORM, 0.15, 110);
-		// EmitSound(CHAN_STATIC, "apache/ap_whine1.wav", 0.5, 0.2, 110);
+		EmitSound(SoundChannel::Static, "apache/ap_rotor4.wav", VOL_NORM, 0.15, 110);
+		// EmitSound(SoundChannel::Static, "apache/ap_whine1.wav", 0.5, 0.2, 110);
 
 		m_iSoundState = SND_CHANGE_PITCH; // hack for going through level transitions
 	}
@@ -444,11 +444,11 @@ void COsprey::Flight()
 			if (pitch != m_iPitch)
 			{
 				m_iPitch = pitch;
-				EmitSound(CHAN_STATIC, "apache/ap_rotor4.wav", VOL_NORM, 0.15, pitch, SND_CHANGE_PITCH | SND_CHANGE_VOL);
+				EmitSound(SoundChannel::Static, "apache/ap_rotor4.wav", VOL_NORM, 0.15, pitch, SND_CHANGE_PITCH | SND_CHANGE_VOL);
 				// ALERT( at_console, "%.0f\n", pitch );
 			}
 		}
-		// EmitSound(CHAN_STATIC, "apache/ap_whine1.wav", flVol, 0.2, pitch, SND_CHANGE_PITCH | SND_CHANGE_VOL);
+		// EmitSound(SoundChannel::Static, "apache/ap_whine1.wav", flVol, 0.2, pitch, SND_CHANGE_PITCH | SND_CHANGE_VOL);
 	}
 }
 
@@ -475,18 +475,18 @@ bool COsprey::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float
 
 void COsprey::Killed(entvars_t* pevAttacker, int iGib)
 {
-	pev->movetype = MOVETYPE_TOSS;
+	pev->movetype = Movetype::Toss;
 	pev->gravity = 0.3;
 	pev->velocity = m_velocity;
 	pev->avelocity = Vector(RANDOM_FLOAT(-20, 20), 0, RANDOM_FLOAT(-50, 50));
-	StopSound(CHAN_STATIC, "apache/ap_rotor4.wav");
+	StopSound(SoundChannel::Static, "apache/ap_rotor4.wav");
 
 	UTIL_SetSize(pev, Vector(-32, -32, -64), Vector(32, 32, 0));
 	SetThink(&COsprey::DyingThink);
 	SetTouch(&COsprey::CrashTouch);
 	pev->nextthink = gpGlobals->time + 0.1;
 	pev->health = 0;
-	pev->takedamage = DAMAGE_NO;
+	SetDamageMode(DamageMode::No);
 
 	m_startTime = gpGlobals->time + 4.0;
 }
@@ -494,7 +494,7 @@ void COsprey::Killed(entvars_t* pevAttacker, int iGib)
 void COsprey::CrashTouch(CBaseEntity* pOther)
 {
 	// only crash if we hit something solid
-	if (pOther->pev->solid == SOLID_BSP)
+	if (pOther->pev->solid == Solid::BSP)
 	{
 		SetTouch(nullptr);
 		m_startTime = gpGlobals->time;
@@ -643,7 +643,7 @@ void COsprey::DyingThink()
 		WRITE_BYTE(0);		// speed
 		MESSAGE_END();
 
-		EmitSound(CHAN_STATIC, "weapons/mortarhit.wav", VOL_NORM, 0.3);
+		EmitSound(SoundChannel::Static, "weapons/mortarhit.wav", VOL_NORM, 0.3);
 
 		RadiusDamage(pev->origin, pev, pev, 300, CLASS_NONE, DMG_BLAST);
 

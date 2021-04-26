@@ -19,7 +19,7 @@
 // DONE:Attack animation control / damage
 // DONE:Establish range of up/down motion and steer around vertical obstacles
 // DONE:Re-evaluate height periodically
-// DONE:Fall (MOVETYPE_TOSS) and play different anim if out of water
+// DONE:Fall (Movetype::Toss) and play different anim if out of water
 // Test in complex room (c2a3?)
 // DONE:Sounds? - Kelly will fix
 // Blood cloud? Hurt effect?
@@ -180,8 +180,8 @@ void CLeech::Spawn()
 //	UTIL_SetSize( pev, vec3_origin, vec3_origin );
 	UTIL_SetSize(pev, Vector(-1, -1, 0), Vector(1, 1, 2));
 	// Don't push the minz down too much or the water check will fail because this entity is really point-sized
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_FLY;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Fly;
 	SetBits(pev->flags, FL_SWIM);
 	pev->health = gSkillData.leechHealth;
 
@@ -263,14 +263,14 @@ void CLeech::AttackSound()
 {
 	if (gpGlobals->time > m_attackSoundTime)
 	{
-		EmitSound(CHAN_VOICE, pAttackSounds[RANDOM_LONG(0, ArraySize(pAttackSounds) - 1)]);
+		EmitSound(SoundChannel::Voice, pAttackSounds[RANDOM_LONG(0, ArraySize(pAttackSounds) - 1)]);
 		m_attackSoundTime = gpGlobals->time + 0.5;
 	}
 }
 
 void CLeech::AlertSound()
 {
-	EmitSound(CHAN_VOICE, pAlertSounds[RANDOM_LONG(0, ArraySize(pAlertSounds) - 1)], VOL_NORM, ATTN_NORM * 0.5);
+	EmitSound(SoundChannel::Voice, pAlertSounds[RANDOM_LONG(0, ArraySize(pAlertSounds) - 1)], VOL_NORM, ATTN_NORM * 0.5);
 }
 
 void CLeech::Precache()
@@ -398,7 +398,7 @@ void CLeech::DeadThink()
 		}
 		else if (pev->flags & FL_ONGROUND)
 		{
-			pev->solid = SOLID_NOT;
+			pev->solid = Solid::Not;
 			SetActivity(ACT_DIEFORWARD);
 		}
 	}
@@ -462,7 +462,7 @@ void CLeech::UpdateMotion()
 	// Out of water check
 	if (pev->waterlevel == WaterLevel::Dry)
 	{
-		pev->movetype = MOVETYPE_TOSS;
+		pev->movetype = Movetype::Toss;
 		m_IdealActivity = ACT_TWITCH;
 		pev->velocity = vec3_origin;
 
@@ -473,9 +473,9 @@ void CLeech::UpdateMotion()
 		if (pev->framerate < 1.0)
 			pev->framerate = 1.0;
 	}
-	else if (pev->movetype == MOVETYPE_TOSS)
+	else if (pev->movetype == Movetype::Toss)
 	{
-		pev->movetype = MOVETYPE_FLY;
+		pev->movetype = Movetype::Fly;
 		pev->flags &= ~FL_ONGROUND;
 		RecalculateWaterlevel();
 		m_waterTime = gpGlobals->time + 2;	// Recalc again soon, water may be rising
@@ -661,7 +661,7 @@ void CLeech::Killed(entvars_t* pevAttacker, int iGib)
 	else
 		SetActivity(ACT_DIEFORWARD);
 
-	pev->movetype = MOVETYPE_TOSS;
-	pev->takedamage = DAMAGE_NO;
+	pev->movetype = Movetype::Toss;
+	SetDamageMode(DamageMode::No);
 	SetThink(&CLeech::DeadThink);
 }

@@ -95,9 +95,9 @@ void CCycler::GenericCyclerSpawn(const char* szModel, Vector vecMin, Vector vecM
 void CCycler::Spawn()
 {
 	InitBoneControllers();
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_NONE;
-	pev->takedamage = DAMAGE_YES;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::None;
+	SetDamageMode(DamageMode::Yes);
 	pev->effects = 0;
 	pev->health = 80000;// no cycler should die
 	pev->yaw_speed = 5;
@@ -212,9 +212,9 @@ IMPLEMENT_SAVERESTORE(CCyclerSprite, CBaseEntity);
 
 void CCyclerSprite::Spawn()
 {
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_NONE;
-	pev->takedamage = DAMAGE_YES;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::None;
+	SetDamageMode(DamageMode::Yes);
 	pev->effects = 0;
 
 	pev->frame = 0;
@@ -278,8 +278,8 @@ LINK_ENTITY_TO_CLASS(cycler_weapon, CWeaponCycler);
 
 void CWeaponCycler::Spawn()
 {
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::None;
 
 	PRECACHE_MODEL(STRING(pev->model));
 	SET_MODEL(ENT(pev), STRING(pev->model));
@@ -361,8 +361,8 @@ LINK_ENTITY_TO_CLASS(cycler_wreckage, CWreckage);
 
 void CWreckage::Spawn()
 {
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 	pev->takedamage = 0;
 	pev->effects = 0;
 

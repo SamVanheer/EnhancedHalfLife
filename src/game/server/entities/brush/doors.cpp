@@ -147,7 +147,7 @@ void PlayLockSounds(CBaseEntity* entity, locksound_t* pls, int flocked, int fbut
 		if (fplaysound)
 		{
 			// play 'door locked' sound
-			entity->EmitSound(CHAN_ITEM, STRING(pls->sLockedSound), fvol);
+			entity->EmitSound(SoundChannel::Item, STRING(pls->sLockedSound), fvol);
 			pls->flwaitSound = gpGlobals->time + flsoundwait;
 		}
 
@@ -184,7 +184,7 @@ void PlayLockSounds(CBaseEntity* entity, locksound_t* pls, int flocked, int fbut
 		// play 'door unlocked' sound if set
 		if (fplaysound)
 		{
-			entity->EmitSound(CHAN_ITEM, STRING(pls->sUnlockedSound), fvol);
+			entity->EmitSound(SoundChannel::Item, STRING(pls->sUnlockedSound), fvol);
 			pls->flwaitSound = gpGlobals->time + flsoundwait;
 		}
 
@@ -270,17 +270,17 @@ void CBaseDoor::Spawn()
 	if (pev->skin == 0)
 	{//normal door
 		if (IsBitSet(pev->spawnflags, SF_DOOR_PASSABLE))
-			pev->solid = SOLID_NOT;
+			pev->solid = Solid::Not;
 		else
-			pev->solid = SOLID_BSP;
+			pev->solid = Solid::BSP;
 	}
 	else
 	{// special contents
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 		SetBits(pev->spawnflags, SF_DOOR_SILENT);	// water is silent for now
 	}
 
-	pev->movetype = MOVETYPE_PUSH;
+	pev->movetype = Movetype::Push;
 	UTIL_SetOrigin(pev, pev->origin);
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
@@ -523,12 +523,12 @@ void CBaseDoor::DoorGoUp()
 	// It could be going-down, if blocked.
 	ASSERT(m_toggle_state == ToggleState::AtBottom || m_toggle_state == ToggleState::GoingDown);
 
-	// emit door moving and stop sounds on CHAN_STATIC so that the multicast doesn't
+	// emit door moving and stop sounds on SoundChannel::Static so that the multicast doesn't
 	// filter them out and leave a client stuck with looping door sounds!
 	if (!IsBitSet(pev->spawnflags, SF_DOOR_SILENT))
 	{
 		if (m_toggle_state != ToggleState::GoingUp && m_toggle_state != ToggleState::GoingDown)
-			EmitSound(CHAN_STATIC, STRING(pev->noiseMoving));
+			EmitSound(SoundChannel::Static, STRING(pev->noiseMoving));
 	}
 
 	m_toggle_state = ToggleState::GoingUp;
@@ -564,8 +564,8 @@ void CBaseDoor::DoorHitTop()
 {
 	if (!IsBitSet(pev->spawnflags, SF_DOOR_SILENT))
 	{
-		StopSound(CHAN_STATIC, STRING(pev->noiseMoving));
-		EmitSound(CHAN_STATIC, STRING(pev->noiseArrived));
+		StopSound(SoundChannel::Static, STRING(pev->noiseMoving));
+		EmitSound(SoundChannel::Static, STRING(pev->noiseArrived));
 	}
 
 	ASSERT(m_toggle_state == ToggleState::GoingUp);
@@ -602,7 +602,7 @@ void CBaseDoor::DoorGoDown()
 	if (!IsBitSet(pev->spawnflags, SF_DOOR_SILENT))
 	{
 		if (m_toggle_state != ToggleState::GoingUp && m_toggle_state != ToggleState::GoingDown)
-			EmitSound(CHAN_STATIC, STRING(pev->noiseMoving));
+			EmitSound(SoundChannel::Static, STRING(pev->noiseMoving));
 	}
 
 #ifdef DOOR_ASSERT
@@ -621,8 +621,8 @@ void CBaseDoor::DoorHitBottom()
 {
 	if (!IsBitSet(pev->spawnflags, SF_DOOR_SILENT))
 	{
-		StopSound(CHAN_STATIC, STRING(pev->noiseMoving));
-		EmitSound(CHAN_STATIC, STRING(pev->noiseArrived));
+		StopSound(SoundChannel::Static, STRING(pev->noiseMoving));
+		EmitSound(SoundChannel::Static, STRING(pev->noiseArrived));
 	}
 
 	ASSERT(m_toggle_state == ToggleState::GoingDown);
@@ -699,7 +699,7 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 						}
 
 						if (!IsBitSet(pev->spawnflags, SF_DOOR_SILENT))
-							StopSound(CHAN_STATIC, STRING(pev->noiseMoving));
+							StopSound(SoundChannel::Static, STRING(pev->noiseMoving));
 
 						if (pDoor->m_toggle_state == ToggleState::GoingDown)
 							pDoor->DoorGoUp();
@@ -755,11 +755,11 @@ void CRotDoor::Spawn()
 	ASSERTSZ(m_vecAngle1 != m_vecAngle2, "rotating door start/end positions are equal");
 
 	if (IsBitSet(pev->spawnflags, SF_DOOR_PASSABLE))
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 	else
-		pev->solid = SOLID_BSP;
+		pev->solid = Solid::BSP;
 
-	pev->movetype = MOVETYPE_PUSH;
+	pev->movetype = Movetype::Push;
 	UTIL_SetOrigin(pev, pev->origin);
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
@@ -823,8 +823,8 @@ void CMomentaryDoor::Spawn()
 {
 	SetMovedir(pev);
 
-	pev->solid = SOLID_BSP;
-	pev->movetype = MOVETYPE_PUSH;
+	pev->solid = Solid::BSP;
+	pev->movetype = Movetype::Push;
 
 	UTIL_SetOrigin(pev, pev->origin);
 	SET_MODEL(ENT(pev), STRING(pev->model));
@@ -938,7 +938,7 @@ void CMomentaryDoor::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	// This entity only thinks when it moves, so if it's thinking, it's in the process of moving
 	// play the sound when it starts moving (not yet thinking)
 	if (pev->nextthink < pev->ltime || pev->nextthink == 0)
-		EmitSound(CHAN_STATIC, STRING(pev->noiseMoving));
+		EmitSound(SoundChannel::Static, STRING(pev->noiseMoving));
 	// If we already moving to designated point, return
 	else if (move == m_vecFinalDest)
 		return;
@@ -949,6 +949,6 @@ void CMomentaryDoor::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 
 void CMomentaryDoor::DoorMoveDone()
 {
-	StopSound(CHAN_STATIC, STRING(pev->noiseMoving));
-	EmitSound(CHAN_STATIC, STRING(pev->noiseArrived));
+	StopSound(SoundChannel::Static, STRING(pev->noiseMoving));
+	EmitSound(SoundChannel::Static, STRING(pev->noiseArrived));
 }

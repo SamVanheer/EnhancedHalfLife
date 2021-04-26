@@ -233,8 +233,8 @@ void CTentacle::Spawn()
 {
 	Precache();
 
-	pev->solid = SOLID_BBOX;
-	pev->movetype = MOVETYPE_FLY;
+	pev->solid = Solid::BBox;
+	pev->movetype = Movetype::Fly;
 	pev->effects = 0;
 	pev->health = 75;
 	pev->sequence = 0;
@@ -242,7 +242,7 @@ void CTentacle::Spawn()
 	SET_MODEL(ENT(pev), "models/tentacle2.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
 
-	pev->takedamage = DAMAGE_AIM;
+	SetDamageMode(DamageMode::Aim);
 	pev->flags |= FL_MONSTER;
 
 	m_bloodColor = BLOOD_COLOR_GREEN;
@@ -583,7 +583,7 @@ void CTentacle::Cycle()
 					case 1: sound = "tentacle/te_sing2.wav"; break;
 					}
 
-					EmitSound(CHAN_VOICE, sound);
+					EmitSound(SoundChannel::Voice, sound);
 
 					m_flNextSong = gpGlobals->time + RANDOM_FLOAT(10, 20);
 				}
@@ -674,7 +674,7 @@ void CTentacle::CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TY
 	switch (useType)
 	{
 	case USE_OFF:
-		pev->takedamage = DAMAGE_NO;
+		SetDamageMode(DamageMode::No);
 		SetThink(&CTentacle::DieThink);
 		m_iGoalAnim = TENTACLE_ANIM_Engine_Death1;
 		break;
@@ -688,7 +688,7 @@ void CTentacle::CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TY
 	case USE_SET:
 		break;
 	case USE_TOGGLE:
-		pev->takedamage = DAMAGE_NO;
+		SetDamageMode(DamageMode::No);
 		SetThink(&CTentacle::DieThink);
 		m_iGoalAnim = TENTACLE_ANIM_Engine_Idle;
 		break;
@@ -882,13 +882,13 @@ void CTentacle::Start()
 
 	if (!g_fFlySound)
 	{
-		EmitSound(CHAN_BODY, "ambience/flies.wav");
+		EmitSound(SoundChannel::Body, "ambience/flies.wav");
 		g_fFlySound = true;
 		//		pev->nextthink = gpGlobals-> time + 0.1;
 	}
 	else if (!g_fSquirmSound)
 	{
-		EmitSound(CHAN_BODY, "ambience/squirm2.wav");
+		EmitSound(SoundChannel::Body, "ambience/squirm2.wav");
 		g_fSquirmSound = true;
 	}
 
@@ -965,8 +965,8 @@ void CTentacleMaw::Spawn()
 	SET_MODEL(ENT(pev), "models/maw.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
 
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::Step;
 	pev->effects = 0;
 	pev->health = 75;
 	pev->yaw_speed = 8;

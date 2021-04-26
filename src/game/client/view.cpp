@@ -413,8 +413,8 @@ void V_CalcNormalRefdef(ref_params_t* pparams)
 			point[2] -= waterDist;
 			for (int i = 0; i < waterDist; i++)
 			{
-				const int contents = gEngfuncs.PM_PointContents(point, nullptr);
-				if (contents > CONTENTS_WATER)
+				const Contents contents = gEngfuncs.PM_PointContents(point, nullptr);
+				if (contents > Contents::Water)
 					break;
 				point[2] += 1;
 			}
@@ -427,8 +427,8 @@ void V_CalcNormalRefdef(ref_params_t* pparams)
 
 			for (int i = 0; i < waterDist; i++)
 			{
-				const int contents = gEngfuncs.PM_PointContents(point, nullptr);
-				if (contents <= CONTENTS_WATER)
+				const Contents contents = gEngfuncs.PM_PointContents(point, nullptr);
+				if (contents <= Contents::Water)
 					break;
 				point[2] -= 1;
 			}
@@ -702,7 +702,7 @@ void V_GetChaseOrigin(Vector& angles, Vector& origin, float distance, Vector& re
 			break;
 
 		// hit non-player solid BSP , stop here
-		if (ent->curstate.solid == SOLID_BSP && !ent->player)
+		if (ent->curstate.GetSolid() == Solid::BSP && !ent->player)
 			break;
 
 		// if close enought to end pos, stop, otherwise continue trace
@@ -775,7 +775,7 @@ void V_GetSingleTargetCam(cl_entity_t* ent1, Vector& angle, Vector& origin)
 	int flags = gHUD.m_Spectator.m_iObserverFlags;
 
 	// see is target is a dead player
-	bool deadPlayer = ent1->player && (ent1->curstate.solid == SOLID_NOT);
+	bool deadPlayer = ent1->player && (ent1->curstate.GetSolid() == Solid::Not);
 
 	float dfactor = (flags & DRC_FLAG_DRAMATIC) ? -1.0f : 1.0f;
 
@@ -924,7 +924,7 @@ void V_GetDirectedChasePosition(cl_entity_t* ent1, cl_entity_t* ent2, Vector& an
 		// v_cameraMode = CAM_MODE_FOCUS;
 	}
 
-	if ((ent2 == (cl_entity_t*)0xFFFFFFFF) || (ent1->player && (ent1->curstate.solid == SOLID_NOT)))
+	if ((ent2 == (cl_entity_t*)0xFFFFFFFF) || (ent1->player && (ent1->curstate.GetSolid() == Solid::Not)))
 	{
 		// we have no second target or player just died
 		V_GetSingleTargetCam(ent1, angle, origin);
@@ -1041,7 +1041,7 @@ void V_GetInEyePos(int target, Vector& origin, Vector& angles)
 
 	angles[PITCH] *= -3.0f;	// see CL_ProcessEntityUpdate()
 
-	if (ent->curstate.solid == SOLID_NOT)
+	if (ent->curstate.GetSolid() == Solid::Not)
 	{
 		angles[ROLL] = 80;	// dead view angle
 		origin = origin + VEC_DEAD_VIEW;

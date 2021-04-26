@@ -208,8 +208,8 @@ void CFuncTank::Spawn()
 {
 	Precache();
 
-	pev->movetype = MOVETYPE_PUSH;  // so it doesn't get pushed by anything
-	pev->solid = SOLID_BSP;
+	pev->movetype = Movetype::Push;  // so it doesn't get pushed by anything
+	pev->solid = Solid::BSP;
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	m_yawCenter = pev->angles.y;
@@ -665,7 +665,7 @@ void CFuncTank::Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* 
 		{
 			CSprite* pSprite = CSprite::SpriteCreate(STRING(m_iszSpriteSmoke), barrelEnd, true);
 			pSprite->AnimateAndDie(RANDOM_FLOAT(15.0, 20.0));
-			pSprite->SetTransparency(kRenderTransAlpha, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, 255, kRenderFxNone);
+			pSprite->SetTransparency(RenderMode::TransAlpha, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, 255, RenderFX::None);
 			pSprite->pev->velocity.z = RANDOM_FLOAT(40, 80);
 			pSprite->SetScale(m_spriteScale);
 		}
@@ -673,7 +673,7 @@ void CFuncTank::Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* 
 		{
 			CSprite* pSprite = CSprite::SpriteCreate(STRING(m_iszSpriteFlash), barrelEnd, true);
 			pSprite->AnimateAndDie(60);
-			pSprite->SetTransparency(kRenderTransAdd, 255, 255, 255, 255, kRenderFxNoDissipation);
+			pSprite->SetTransparency(RenderMode::TransAdd, 255, 255, 255, 255, RenderFX::NoDissipation);
 			pSprite->SetScale(m_spriteScale);
 
 			// Hack Hack, make it stick around for at least 100 ms.
@@ -707,13 +707,13 @@ void CFuncTank::StartRotSound()
 	if (IsStringNull(pev->noise) || (pev->spawnflags & SF_TANK_SOUNDON))
 		return;
 	pev->spawnflags |= SF_TANK_SOUNDON;
-	EmitSound(CHAN_STATIC, STRING(pev->noise), 0.85);
+	EmitSound(SoundChannel::Static, STRING(pev->noise), 0.85);
 }
 
 void CFuncTank::StopRotSound()
 {
 	if (pev->spawnflags & SF_TANK_SOUNDON)
-		StopSound(CHAN_STATIC, STRING(pev->noise));
+		StopSound(SoundChannel::Static, STRING(pev->noise));
 	pev->spawnflags &= ~SF_TANK_SOUNDON;
 }
 
@@ -1013,8 +1013,8 @@ void CFuncTankControls::Think()
 
 void CFuncTankControls::Spawn()
 {
-	pev->solid = SOLID_TRIGGER;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Trigger;
+	pev->movetype = Movetype::None;
 	pev->effects |= EF_NODRAW;
 	SET_MODEL(ENT(pev), STRING(pev->model));
 

@@ -233,11 +233,11 @@ bool CCrowbar::Swing(bool fFirst)
 				switch (RANDOM_LONG(0, 2))
 				{
 				case 0:
-					m_pPlayer->EmitSound(CHAN_ITEM, "weapons/cbar_hitbod1.wav"); break;
+					m_pPlayer->EmitSound(SoundChannel::Item, "weapons/cbar_hitbod1.wav"); break;
 				case 1:
-					m_pPlayer->EmitSound(CHAN_ITEM, "weapons/cbar_hitbod2.wav"); break;
+					m_pPlayer->EmitSound(SoundChannel::Item, "weapons/cbar_hitbod2.wav"); break;
 				case 2:
-					m_pPlayer->EmitSound(CHAN_ITEM, "weapons/cbar_hitbod3.wav"); break;
+					m_pPlayer->EmitSound(SoundChannel::Item, "weapons/cbar_hitbod3.wav"); break;
 				}
 				m_pPlayer->m_iWeaponVolume = CROWBAR_BODYHIT_VOLUME;
 				if (!pEntity->IsAlive())
@@ -268,10 +268,10 @@ bool CCrowbar::Swing(bool fFirst)
 			switch (RANDOM_LONG(0, 1))
 			{
 			case 0:
-				m_pPlayer->EmitSound(CHAN_ITEM, "weapons/cbar_hit1.wav", fvolbar, ATTN_NORM, 98 + RANDOM_LONG(0, 3));
+				m_pPlayer->EmitSound(SoundChannel::Item, "weapons/cbar_hit1.wav", fvolbar, ATTN_NORM, 98 + RANDOM_LONG(0, 3));
 				break;
 			case 1:
-				m_pPlayer->EmitSound(CHAN_ITEM, "weapons/cbar_hit2.wav", fvolbar, ATTN_NORM, 98 + RANDOM_LONG(0, 3));
+				m_pPlayer->EmitSound(SoundChannel::Item, "weapons/cbar_hit2.wav", fvolbar, ATTN_NORM, 98 + RANDOM_LONG(0, 3));
 				break;
 			}
 

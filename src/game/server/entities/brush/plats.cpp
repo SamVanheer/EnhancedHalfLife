@@ -292,8 +292,8 @@ void CFuncPlat::Setup()
 
 	pev->angles = vec3_origin;
 
-	pev->solid = SOLID_BSP;
-	pev->movetype = MOVETYPE_PUSH;
+	pev->solid = Solid::BSP;
+	pev->movetype = Movetype::Push;
 
 	UTIL_SetOrigin(pev, pev->origin);		// set size and link into world
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
@@ -352,8 +352,8 @@ void CPlatTrigger::SpawnInsideTrigger(CFuncPlat* pPlatform)
 {
 	m_hPlatform = pPlatform;
 	// Create trigger entity, "point" it at the owning platform, give it a touch method
-	pev->solid = SOLID_TRIGGER;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Trigger;
+	pev->movetype = Movetype::None;
 	pev->origin = pPlatform->pev->origin;
 
 	// Establish the trigger field's size
@@ -426,7 +426,7 @@ void CFuncPlat::PlatUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE 
 void CFuncPlat::GoDown()
 {
 	if (!IsStringNull(pev->noiseMovement))
-		EmitSound(CHAN_STATIC, STRING(pev->noiseMovement), m_volume);
+		EmitSound(SoundChannel::Static, STRING(pev->noiseMovement), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::AtTop || m_toggle_state == ToggleState::GoingUp);
 	m_toggle_state = ToggleState::GoingDown;
@@ -437,10 +437,10 @@ void CFuncPlat::GoDown()
 void CFuncPlat::HitBottom()
 {
 	if (!IsStringNull(pev->noiseMovement))
-		StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
+		StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
 
 	if (!IsStringNull(pev->noiseStopMoving))
-		EmitSound(CHAN_WEAPON, STRING(pev->noiseStopMoving), m_volume);
+		EmitSound(SoundChannel::Weapon, STRING(pev->noiseStopMoving), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::GoingDown);
 	m_toggle_state = ToggleState::AtBottom;
@@ -449,7 +449,7 @@ void CFuncPlat::HitBottom()
 void CFuncPlat::GoUp()
 {
 	if (!IsStringNull(pev->noiseMovement))
-		EmitSound(CHAN_STATIC, STRING(pev->noiseMovement), m_volume);
+		EmitSound(SoundChannel::Static, STRING(pev->noiseMovement), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::AtBottom || m_toggle_state == ToggleState::GoingDown);
 	m_toggle_state = ToggleState::GoingUp;
@@ -460,10 +460,10 @@ void CFuncPlat::GoUp()
 void CFuncPlat::HitTop()
 {
 	if (!IsStringNull(pev->noiseMovement))
-		StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
+		StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
 
 	if (!IsStringNull(pev->noiseStopMoving))
-		EmitSound(CHAN_WEAPON, STRING(pev->noiseStopMoving), m_volume);
+		EmitSound(SoundChannel::Weapon, STRING(pev->noiseStopMoving), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::GoingUp);
 	m_toggle_state = ToggleState::AtTop;
@@ -483,7 +483,7 @@ void CFuncPlat::Blocked(CBaseEntity* pOther)
 	pOther->TakeDamage(pev, pev, 1, DMG_CRUSH);
 
 	if (!IsStringNull(pev->noiseMovement))
-		StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
+		StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
 
 	// Send the platform back where it came from
 	ASSERT(m_toggle_state == ToggleState::GoingUp || m_toggle_state == ToggleState::GoingDown);
@@ -673,7 +673,7 @@ void CFuncTrain::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 		pev->nextthink = 0;
 		pev->velocity = vec3_origin;
 		if (!IsStringNull(pev->noiseStopMoving))
-			EmitSound(CHAN_VOICE, STRING(pev->noiseStopMoving), m_volume);
+			EmitSound(SoundChannel::Voice, STRING(pev->noiseStopMoving), m_volume);
 	}
 }
 
@@ -693,9 +693,9 @@ void CFuncTrain::Wait()
 		pev->spawnflags |= SF_TRAIN_WAIT_RETRIGGER;
 		// clear the sound channel.
 		if (!IsStringNull(pev->noiseMovement))
-			StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
+			StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
 		if (!IsStringNull(pev->noiseStopMoving))
-			EmitSound(CHAN_VOICE, STRING(pev->noiseStopMoving), m_volume);
+			EmitSound(SoundChannel::Voice, STRING(pev->noiseStopMoving), m_volume);
 		pev->nextthink = 0;
 		return;
 	}
@@ -706,9 +706,9 @@ void CFuncTrain::Wait()
 	{// -1 wait will wait forever!		
 		pev->nextthink = pev->ltime + m_flWait;
 		if (!IsStringNull(pev->noiseMovement))
-			StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
+			StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
 		if (!IsStringNull(pev->noiseStopMoving))
-			EmitSound(CHAN_VOICE, STRING(pev->noiseStopMoving), m_volume);
+			EmitSound(SoundChannel::Voice, STRING(pev->noiseStopMoving), m_volume);
 		SetThink(&CFuncTrain::Next);
 	}
 	else
@@ -725,10 +725,10 @@ void CFuncTrain::Next()
 	if (!pTarg)
 	{
 		if (!IsStringNull(pev->noiseMovement))
-			StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
+			StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
 		// Play stop sound
 		if (!IsStringNull(pev->noiseStopMoving))
-			EmitSound(CHAN_VOICE, STRING(pev->noiseStopMoving), m_volume);
+			EmitSound(SoundChannel::Voice, STRING(pev->noiseStopMoving), m_volume);
 		return;
 	}
 
@@ -758,13 +758,13 @@ void CFuncTrain::Next()
 	{
 		// Normal linear move.
 
-		// CHANGED this from CHAN_VOICE to CHAN_STATIC around OEM beta time because trains should
-		// use CHAN_STATIC for their movement sounds to prevent sound field problems.
+		// CHANGED this from SoundChannel::Voice to SoundChannel::Static around OEM beta time because trains should
+		// use SoundChannel::Static for their movement sounds to prevent sound field problems.
 		// this is not a hack or temporary fix, this is how things should be. (sjb).
 		if (!IsStringNull(pev->noiseMovement))
-			StopSound(CHAN_STATIC, STRING(pev->noiseMovement));
+			StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
 		if (!IsStringNull(pev->noiseMovement))
-			EmitSound(CHAN_STATIC, STRING(pev->noiseMovement), m_volume);
+			EmitSound(SoundChannel::Static, STRING(pev->noiseMovement), m_volume);
 		ClearBits(pev->effects, EF_NOINTERP);
 		SetMoveDone(&CFuncTrain::Wait);
 		LinearMove(pTarg->pev->origin - (pev->mins + pev->maxs) * 0.5, pev->speed);
@@ -806,12 +806,12 @@ void CFuncTrain::Spawn()
 	if (pev->dmg == 0)
 		pev->dmg = 2;
 
-	pev->movetype = MOVETYPE_PUSH;
+	pev->movetype = Movetype::Push;
 
 	if (IsBitSet(pev->spawnflags, SF_TRACKTRAIN_PASSABLE))
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 	else
-		pev->solid = SOLID_BSP;
+		pev->solid = Solid::BSP;
 
 	SET_MODEL(ENT(pev), STRING(pev->model));
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
@@ -1021,9 +1021,9 @@ void CFuncTrackTrain::StopSound()
 			vec3_origin, vec3_origin, 0.0, 0.0, us_encode, 0, 1, 0);
 
 		/*
-		StopSound(CHAN_STATIC, STRING(pev->noise));
+		StopSound(SoundChannel::Static, STRING(pev->noise));
 		*/
-		EmitSound(CHAN_ITEM, "plats/ttrain_brake1.wav", m_flVolume);
+		EmitSound(SoundChannel::Item, "plats/ttrain_brake1.wav", m_flVolume);
 	}
 
 	m_soundPlaying = false;
@@ -1039,15 +1039,15 @@ void CFuncTrackTrain::UpdateSound()
 	if (!m_soundPlaying)
 	{
 		// play startup sound for train
-		EmitSound(CHAN_ITEM, "plats/ttrain_start1.wav", m_flVolume);
-		EmitSound(CHAN_STATIC, STRING(pev->noise), m_flVolume, ATTN_NORM, (int)flpitch);
+		EmitSound(SoundChannel::Item, "plats/ttrain_start1.wav", m_flVolume);
+		EmitSound(SoundChannel::Static, STRING(pev->noise), m_flVolume, ATTN_NORM, (int)flpitch);
 		m_soundPlaying = true;
 	}
 	else
 	{
 		/*
 				// update pitch
-				EmitSound(CHAN_STATIC, STRING(pev->noise), m_flVolume, ATTN_NORM, (int) flpitch, SND_CHANGE_PITCH);
+				EmitSound(SoundChannel::Static, STRING(pev->noise), m_flVolume, ATTN_NORM, (int) flpitch, SND_CHANGE_PITCH);
 		*/
 		// volume 0.0 - 1.0 - 6 bits
 		// m_sounds 3 bits
@@ -1387,10 +1387,10 @@ void CFuncTrackTrain::Spawn()
 		ALERT(at_console, "FuncTrain with no target");
 
 	if (pev->spawnflags & SF_TRACKTRAIN_PASSABLE)
-		pev->solid = SOLID_NOT;
+		pev->solid = Solid::Not;
 	else
-		pev->solid = SOLID_BSP;
-	pev->movetype = MOVETYPE_PUSH;
+		pev->solid = Solid::BSP;
+	pev->movetype = Movetype::Push;
 
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
@@ -1471,8 +1471,8 @@ void CFuncTrainControls::Find()
 
 void CFuncTrainControls::Spawn()
 {
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
@@ -1830,7 +1830,7 @@ void CFuncTrackChange::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TY
 	if (m_code == TrainCode::Blocking)
 	{
 		// Play alarm and return
-		EmitSound(CHAN_VOICE, "buttons/button11.wav");
+		EmitSound(SoundChannel::Voice, "buttons/button11.wav");
 		return;
 	}
 
@@ -2002,8 +2002,8 @@ IMPLEMENT_SAVERESTORE(CGunTarget, CBaseMonster);
 
 void CGunTarget::Spawn()
 {
-	pev->solid = SOLID_BSP;
-	pev->movetype = MOVETYPE_PUSH;
+	pev->solid = Solid::BSP;
+	pev->movetype = Movetype::Push;
 
 	UTIL_SetOrigin(pev, pev->origin);
 	SET_MODEL(ENT(pev), STRING(pev->model));
@@ -2012,7 +2012,7 @@ void CGunTarget::Spawn()
 		pev->speed = 100;
 
 	// Don't take damage until "on"
-	pev->takedamage = DAMAGE_NO;
+	SetDamageMode(DamageMode::No);
 	pev->flags |= FL_MONSTER;
 
 	m_on = false;
@@ -2092,7 +2092,7 @@ void CGunTarget::Stop()
 {
 	pev->velocity = vec3_origin;
 	pev->nextthink = 0;
-	pev->takedamage = DAMAGE_NO;
+	SetDamageMode(DamageMode::No);
 }
 
 bool	CGunTarget::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
@@ -2122,7 +2122,7 @@ void CGunTarget::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 	}
 	else
 	{
-		pev->takedamage = DAMAGE_AIM;
+		SetDamageMode(DamageMode::Aim);
 		m_hTargetEnt = GetNextTarget();
 		if (m_hTargetEnt == nullptr)
 			return;

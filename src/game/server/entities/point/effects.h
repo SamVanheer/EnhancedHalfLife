@@ -57,13 +57,13 @@ public:
 			pev->skin = ENTINDEX(pEntity);
 			pev->body = attachment;
 			pev->aiment = pEntity;
-			pev->movetype = MOVETYPE_FOLLOW;
+			pev->movetype = Movetype::Follow;
 		}
 	}
 	void TurnOff();
 	void TurnOn();
 	inline float Frames() { return m_maxFrame; }
-	inline void SetTransparency(int rendermode, int r, int g, int b, int a, int fx)
+	inline void SetTransparency(RenderMode rendermode, int r, int g, int b, int a, RenderFX fx)
 	{
 		pev->rendermode = rendermode;
 		pev->rendercolor.x = r;
@@ -115,8 +115,8 @@ public:
 
 	// These functions are here to show the way beams are encoded as entities.
 	// Encoding beams as entities simplifies their management in the client/server architecture
-	inline void	SetType(int type) { pev->rendermode = (pev->rendermode & 0xF0) | (type & 0x0F); }
-	inline void	SetFlags(int flags) { pev->rendermode = (pev->rendermode & 0x0F) | (flags & 0xF0); }
+	inline void	SetType(int type) { pev->rendermode = static_cast<RenderMode>((static_cast<int>(pev->rendermode) & 0xF0) | (type & 0x0F)); }
+	inline void	SetFlags(int flags) { pev->rendermode = static_cast<RenderMode>((static_cast<int>(pev->rendermode) & 0x0F) | (flags & 0xF0)); }
 	inline void SetStartPos(const Vector& pos) { pev->origin = pos; }
 	inline void SetEndPos(const Vector& pos) { pev->angles = pos; }
 	void SetStartEntity(int entityIndex);
@@ -133,8 +133,8 @@ public:
 	inline void SetFrame(float frame) { pev->frame = frame; }
 	inline void SetScrollRate(int speed) { pev->animtime = speed; }
 
-	inline int	GetType() { return pev->rendermode & 0x0F; }
-	inline int	GetFlags() { return pev->rendermode & 0xF0; }
+	inline int	GetType() { return static_cast<int>(pev->rendermode) & 0x0F; }
+	inline int	GetFlags() { return static_cast<int>(pev->rendermode) & 0xF0; }
 	inline int	GetStartEntity() { return pev->sequence & 0xFFF; }
 	inline int	GetEndEntity() { return pev->skin & 0xFFF; }
 

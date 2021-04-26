@@ -67,7 +67,7 @@ bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	// save damage based on the target's armor level
 
 	// figure momentum add (don't let hurt brushes or other triggers move player)
-	if ((!IsNullEnt(pevInflictor)) && (pev->movetype == MOVETYPE_WALK || pev->movetype == MOVETYPE_STEP) && (pevAttacker->solid != SOLID_TRIGGER))
+	if ((!IsNullEnt(pevInflictor)) && (pev->movetype == Movetype::Walk || pev->movetype == Movetype::Step) && (pevAttacker->solid != Solid::Trigger))
 	{
 		Vector vecDir = pev->origin - (pevInflictor->absmin + pevInflictor->absmax) * 0.5;
 		vecDir = vecDir.Normalize();
@@ -92,8 +92,8 @@ bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 
 void CBaseEntity::Killed(entvars_t* pevAttacker, int iGib)
 {
-	pev->takedamage = DAMAGE_NO;
-	pev->deadflag = DEAD_DEAD;
+	SetDamageMode(DamageMode::No);
+	pev->deadflag = DeadFlag::Dead;
 	UTIL_Remove(this);
 }
 
@@ -170,9 +170,9 @@ void CBaseEntity::MakeDormant()
 	SetBits(pev->flags, FL_DORMANT);
 
 	// Don't touch
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 	// Don't move
-	pev->movetype = MOVETYPE_NONE;
+	pev->movetype = Movetype::None;
 	// Don't draw
 	SetBits(pev->effects, EF_NODRAW);
 	// Don't think
@@ -217,21 +217,21 @@ bool CBaseEntity::ShouldToggle(USE_TYPE useType, bool currentState)
 
 int	CBaseEntity::DamageDecal(int bitsDamageType)
 {
-	if (pev->rendermode == kRenderTransAlpha)
+	if (pev->rendermode == RenderMode::TransAlpha)
 		return -1;
 
-	if (pev->rendermode != kRenderNormal)
+	if (pev->rendermode != RenderMode::Normal)
 		return DECAL_BPROOF1;
 
 	return DECAL_GUNSHOT1 + RANDOM_LONG(0, 4);
 }
 
-void CBaseEntity::EmitSound(int channel, const char* fileName, float volume, float attenuation, int pitch, int flags)
+void CBaseEntity::EmitSound(SoundChannel channel, const char* fileName, float volume, float attenuation, int pitch, int flags)
 {
 	EMIT_SOUND_DYN(edict(), channel, fileName, volume, attenuation, flags, pitch);
 }
 
-void CBaseEntity::StopSound(int channel, const char* fileName)
+void CBaseEntity::StopSound(SoundChannel channel, const char* fileName)
 {
 	EMIT_SOUND_DYN(edict(), channel, fileName, 0, 0, SND_STOP, PITCH_NORM);
 }

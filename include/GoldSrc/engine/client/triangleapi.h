@@ -37,7 +37,7 @@ struct triangleapi_t
 {
 	int			version;
 
-	void		(*RenderMode)(int mode);
+	void		(*RenderMode)(RenderMode mode);
 	void		(*Begin)(int primitiveCode);
 	void		(*End) ();
 

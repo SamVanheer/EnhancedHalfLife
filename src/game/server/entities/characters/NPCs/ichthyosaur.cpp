@@ -123,7 +123,7 @@ public:
 	void PainSound() override;
 
 	template<std::size_t Size>
-	void EMIT_ICKY_SOUND(int chan, const char* (&array)[Size])
+	void EMIT_ICKY_SOUND(SoundChannel chan, const char* (&array)[Size])
 	{
 		EmitSound(chan, array[RANDOM_LONG(0, ArraySize(array) - 1)], VOL_NORM, 0.6, RANDOM_LONG(95, 105));
 	}
@@ -187,32 +187,32 @@ const char* CIchthyosaur::pDieSounds[] =
 
 void CIchthyosaur::IdleSound()
 {
-	EMIT_ICKY_SOUND(CHAN_VOICE, pIdleSounds);
+	EMIT_ICKY_SOUND(SoundChannel::Voice, pIdleSounds);
 }
 
 void CIchthyosaur::AlertSound()
 {
-	EMIT_ICKY_SOUND(CHAN_VOICE, pAlertSounds);
+	EMIT_ICKY_SOUND(SoundChannel::Voice, pAlertSounds);
 }
 
 void CIchthyosaur::AttackSound()
 {
-	EMIT_ICKY_SOUND(CHAN_VOICE, pAttackSounds);
+	EMIT_ICKY_SOUND(SoundChannel::Voice, pAttackSounds);
 }
 
 void CIchthyosaur::BiteSound()
 {
-	EMIT_ICKY_SOUND(CHAN_WEAPON, pBiteSounds);
+	EMIT_ICKY_SOUND(SoundChannel::Weapon, pBiteSounds);
 }
 
 void CIchthyosaur::DeathSound()
 {
-	EMIT_ICKY_SOUND(CHAN_VOICE, pDieSounds);
+	EMIT_ICKY_SOUND(SoundChannel::Voice, pDieSounds);
 }
 
 void CIchthyosaur::PainSound()
 {
-	EMIT_ICKY_SOUND(CHAN_VOICE, pPainSounds);
+	EMIT_ICKY_SOUND(SoundChannel::Voice, pPainSounds);
 }
 
 //=========================================================
@@ -372,7 +372,7 @@ void CIchthyosaur::Killed(entvars_t* pevAttacker, int iGib)
 
 void CIchthyosaur::BecomeDead()
 {
-	pev->takedamage = DAMAGE_YES;// don't let autoaim aim at corpses.
+	SetDamageMode(DamageMode::Yes);// don't let autoaim aim at corpses.
 
 	// give the corpse half of the monster's original maximum health. 
 	pev->health = pev->max_health / 2;
@@ -408,7 +408,7 @@ void CIchthyosaur::HandleAnimEvent(AnimationEvent& event)
 					pHurt->pev->angles.x += RANDOM_FLOAT(-35, 35);
 					pHurt->pev->angles.y += RANDOM_FLOAT(-90, 90);
 					pHurt->pev->angles.z = 0;
-					pHurt->pev->fixangle = FIXANGLE_ABSOLUTE;
+					pHurt->pev->fixangle = FixAngleMode::Absolute;
 				}
 				pHurt->TakeDamage(pev, pev, gSkillData.ichthyosaurDmgShake, DMG_SLASH);
 			}
@@ -437,8 +437,8 @@ void CIchthyosaur::Spawn()
 	SET_MODEL(ENT(pev), "models/icky.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, -32), Vector(32, 32, 32));
 
-	pev->solid = SOLID_BBOX;
-	pev->movetype = MOVETYPE_FLY;
+	pev->solid = Solid::BBox;
+	pev->movetype = Movetype::Fly;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->health = gSkillData.ichthyosaurHealth;
 	pev->view_ofs = Vector(0, 0, 16);
@@ -662,7 +662,7 @@ void CIchthyosaur::RunTask(Task_t* pTask)
 	case TASK_DIE:
 		if (m_fSequenceFinished)
 		{
-			pev->deadflag = DEAD_DEAD;
+			pev->deadflag = DeadFlag::Dead;
 
 			TaskComplete();
 		}
@@ -734,7 +734,7 @@ float CIchthyosaur::PitchDiff()
 
 float CIchthyosaur::ChangePitch(int speed)
 {
-	if (pev->movetype == MOVETYPE_FLY)
+	if (pev->movetype == Movetype::Fly)
 	{
 		const float diff = PitchDiff();
 		float target = 0;
@@ -762,7 +762,7 @@ float CIchthyosaur::ChangePitch(int speed)
 
 float CIchthyosaur::ChangeYaw(int speed)
 {
-	if (pev->movetype == MOVETYPE_FLY)
+	if (pev->movetype == Movetype::Fly)
 	{
 		const float diff = YawDiff();
 		float target = 0;
@@ -791,7 +791,7 @@ float CIchthyosaur::ChangeYaw(int speed)
 
 Activity CIchthyosaur::GetStoppedActivity()
 {
-	if (pev->movetype != MOVETYPE_FLY)		// UNDONE: Ground idle here, IDLE may be something else
+	if (pev->movetype != Movetype::Fly)		// UNDONE: Ground idle here, IDLE may be something else
 		return ACT_IDLE;
 	return ACT_WALK;
 }
@@ -805,7 +805,7 @@ void CIchthyosaur::MonsterThink()
 {
 	CFlyingMonster::MonsterThink();
 
-	if (pev->deadflag == DEAD_NO)
+	if (pev->deadflag == DeadFlag::No)
 	{
 		if (m_MonsterState != NPCState::Script)
 		{

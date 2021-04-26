@@ -620,8 +620,8 @@ void CScientist::Spawn()
 	SET_MODEL(ENT(pev), "models/scientist.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->health = gSkillData.scientistHealth;
 	pev->view_ofs = Vector(0, 0, 50);// position of the eyes relative to monster's origin.
@@ -741,11 +741,11 @@ void CScientist::PainSound()
 
 	switch (RANDOM_LONG(0, 4))
 	{
-	case 0: EmitSound(CHAN_VOICE, "scientist/sci_pain1.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
-	case 1: EmitSound(CHAN_VOICE, "scientist/sci_pain2.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
-	case 2: EmitSound(CHAN_VOICE, "scientist/sci_pain3.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
-	case 3: EmitSound(CHAN_VOICE, "scientist/sci_pain4.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
-	case 4: EmitSound(CHAN_VOICE, "scientist/sci_pain5.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 0: EmitSound(SoundChannel::Voice, "scientist/sci_pain1.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 1: EmitSound(SoundChannel::Voice, "scientist/sci_pain2.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 2: EmitSound(SoundChannel::Voice, "scientist/sci_pain3.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 3: EmitSound(SoundChannel::Voice, "scientist/sci_pain4.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
+	case 4: EmitSound(SoundChannel::Voice, "scientist/sci_pain5.wav", VOL_NORM, ATTN_NORM, GetVoicePitch()); break;
 	}
 }
 
@@ -1149,8 +1149,8 @@ void CSittingScientist::Spawn()
 
 	UTIL_SetSize(pev, Vector(-14, -14, 0), Vector(14, 14, 36));
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	pev->effects = 0;
 	pev->health = 50;
 

@@ -100,8 +100,8 @@ void CSqueakGrenade::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = MOVETYPE_BOUNCE;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Bounce;
+	pev->solid = Solid::BBox;
 
 	SET_MODEL(ENT(pev), "models/w_squeak.mdl");
 	UTIL_SetSize(pev, Vector(-4, -4, 0), Vector(4, 4, 8));
@@ -113,7 +113,7 @@ void CSqueakGrenade::Spawn()
 	m_flNextHunt = gpGlobals->time + 1E6;
 
 	pev->flags |= FL_MONSTER;
-	pev->takedamage = DAMAGE_AIM;
+	SetDamageMode(DamageMode::Aim);
 	pev->health = gSkillData.snarkHealth;
 	pev->gravity = 0.5;
 	pev->friction = 0.5;
@@ -155,10 +155,10 @@ void CSqueakGrenade::Killed(entvars_t* pevAttacker, int iGib)
 	// since squeak grenades never leave a body behind, clear out their takedamage now.
 	// Squeaks do a bit of radius damage when they pop, and that radius damage will
 	// continue to call this function unless we acknowledge the Squeak's death now. (sjb)
-	pev->takedamage = DAMAGE_NO;
+	SetDamageMode(DamageMode::No);
 
 	// play squeek blast
-	EmitSound(CHAN_ITEM, "squeek/sqk_blast1.wav", VOL_NORM, 0.5, PITCH_NORM);
+	EmitSound(SoundChannel::Item, "squeek/sqk_blast1.wav", VOL_NORM, 0.5, PITCH_NORM);
 
 	CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, SMALL_EXPLOSION_VOLUME, 3.0);
 
@@ -178,7 +178,7 @@ void CSqueakGrenade::Killed(entvars_t* pevAttacker, int iGib)
 
 void CSqueakGrenade::GibMonster()
 {
-	EmitSound(CHAN_VOICE, "common/bodysplat.wav", 0.75, ATTN_NORM, 200);
+	EmitSound(SoundChannel::Voice, "common/bodysplat.wav", 0.75, ATTN_NORM, 200);
 }
 
 void CSqueakGrenade::HuntThink()
@@ -207,16 +207,16 @@ void CSqueakGrenade::HuntThink()
 	// float
 	if (pev->waterlevel != WaterLevel::Dry)
 	{
-		if (pev->movetype == MOVETYPE_BOUNCE)
+		if (pev->movetype == Movetype::Bounce)
 		{
-			pev->movetype = MOVETYPE_FLY;
+			pev->movetype = Movetype::Fly;
 		}
 		pev->velocity = pev->velocity * 0.9;
 		pev->velocity.z += 8.0;
 	}
-	else if (pev->movetype = MOVETYPE_FLY)
+	else //if (pev->movetype = Movetype::Fly)
 	{
-		pev->movetype = MOVETYPE_BOUNCE;
+		pev->movetype = Movetype::Bounce;
 	}
 
 	// return if not time to hunt
@@ -241,7 +241,7 @@ void CSqueakGrenade::HuntThink()
 	// squeek if it's about time blow up
 	if ((m_flDie - gpGlobals->time <= 0.5) && (m_flDie - gpGlobals->time >= 0.3))
 	{
-		EmitSound(CHAN_VOICE, "squeek/sqk_die1.wav", VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(0, 0x3F));
+		EmitSound(SoundChannel::Voice, "squeek/sqk_die1.wav", VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(0, 0x3F));
 		CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, 256, 0.25);
 	}
 
@@ -331,7 +331,7 @@ void CSqueakGrenade::SuperBounceTouch(CBaseEntity* pOther)
 				// m_flDie += 2.0; // add more life
 
 				// make bite sound
-				EmitSound(CHAN_WEAPON, "squeek/sqk_deploy1.wav", VOL_NORM, ATTN_NORM, (int)flpitch);
+				EmitSound(SoundChannel::Weapon, "squeek/sqk_deploy1.wav", VOL_NORM, ATTN_NORM, (int)flpitch);
 				m_flNextAttack = gpGlobals->time + 0.5;
 			}
 		}
@@ -360,11 +360,11 @@ void CSqueakGrenade::SuperBounceTouch(CBaseEntity* pOther)
 		const float flRndSound = RANDOM_FLOAT(0, 1);
 
 		if (flRndSound <= 0.33)
-			EmitSound(CHAN_VOICE, "squeek/sqk_hunt1.wav", VOL_NORM, ATTN_NORM, (int)flpitch);
+			EmitSound(SoundChannel::Voice, "squeek/sqk_hunt1.wav", VOL_NORM, ATTN_NORM, (int)flpitch);
 		else if (flRndSound <= 0.66)
-			EmitSound(CHAN_VOICE, "squeek/sqk_hunt2.wav", VOL_NORM, ATTN_NORM, (int)flpitch);
+			EmitSound(SoundChannel::Voice, "squeek/sqk_hunt2.wav", VOL_NORM, ATTN_NORM, (int)flpitch);
 		else
-			EmitSound(CHAN_VOICE, "squeek/sqk_hunt3.wav", VOL_NORM, ATTN_NORM, (int)flpitch);
+			EmitSound(SoundChannel::Voice, "squeek/sqk_hunt3.wav", VOL_NORM, ATTN_NORM, (int)flpitch);
 		CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, 256, 0.25);
 	}
 	else
@@ -429,9 +429,9 @@ bool CSqueak::Deploy()
 	const float flRndSound = RANDOM_FLOAT(0, 1);
 
 	if (flRndSound <= 0.5)
-		EmitSound(CHAN_VOICE, "squeek/sqk_hunt2.wav");
+		EmitSound(SoundChannel::Voice, "squeek/sqk_hunt2.wav");
 	else
-		EmitSound(CHAN_VOICE, "squeek/sqk_hunt3.wav");
+		EmitSound(SoundChannel::Voice, "squeek/sqk_hunt3.wav");
 
 	m_pPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
 
@@ -458,7 +458,7 @@ void CSqueak::Holster()
 	}
 
 	SendWeaponAnim(SQUEAK_DOWN);
-	m_pPlayer->EmitSound(CHAN_WEAPON, "common/null.wav");
+	m_pPlayer->EmitSound(SoundChannel::Weapon, "common/null.wav");
 }
 
 void CSqueak::PrimaryAttack()
@@ -502,9 +502,9 @@ void CSqueak::PrimaryAttack()
 			const float flRndSound = RANDOM_FLOAT(0, 1);
 
 			if (flRndSound <= 0.5)
-				EmitSound(CHAN_VOICE, "squeek/sqk_hunt2.wav", VOL_NORM, ATTN_NORM, 105);
+				EmitSound(SoundChannel::Voice, "squeek/sqk_hunt2.wav", VOL_NORM, ATTN_NORM, 105);
 			else
-				EmitSound(CHAN_VOICE, "squeek/sqk_hunt3.wav", VOL_NORM, ATTN_NORM, 105);
+				EmitSound(SoundChannel::Voice, "squeek/sqk_hunt3.wav", VOL_NORM, ATTN_NORM, 105);
 
 			m_pPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
 

@@ -64,8 +64,8 @@ void CRat::Spawn()
 	SET_MODEL(ENT(pev), "models/bigrat.mdl");
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->health = 8;
 	pev->view_ofs = Vector(0, 0, 6);// position of the eyes relative to monster's origin.

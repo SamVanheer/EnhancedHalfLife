@@ -391,7 +391,7 @@ void CBaseMonster::RunTask(Task_t* pTask)
 	{
 		if (m_fSequenceFinished && pev->frame >= 255)
 		{
-			pev->deadflag = DEAD_DEAD;
+			pev->deadflag = DeadFlag::Dead;
 
 			SetThink(nullptr);
 			StopAnimation();
@@ -400,7 +400,7 @@ void CBaseMonster::RunTask(Task_t* pTask)
 			{
 				// a bit of a hack. If a corpses' bbox is positioned such that being left solid so that it can be attacked will
 				// block the player on a slope or stairs, the corpse is made nonsolid. 
-//					pev->solid = SOLID_NOT;
+//					pev->solid = Solid::Not;
 				UTIL_SetSize(pev, Vector(-4, -4, 0), Vector(4, 4, 1));
 			}
 			else // !!!HACKHACK - put monster in a thin, wide bounding box until we fix the solid type/bounding volume problem
@@ -1051,7 +1051,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_WALK_PATH:
 	{
-		if (pev->movetype == MOVETYPE_FLY)
+		if (pev->movetype == Movetype::Fly)
 		{
 			m_movementActivity = ACT_FLY;
 		}
@@ -1114,7 +1114,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 
 		m_IdealActivity = GetDeathActivity();
 
-		pev->deadflag = DEAD_DYING;
+		pev->deadflag = DeadFlag::Dying;
 		break;
 	}
 	case TASK_SOUND_WAKE:
@@ -1171,7 +1171,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_PLAY_SCRIPT:
 	{
-		pev->movetype = MOVETYPE_FLY;
+		pev->movetype = Movetype::Fly;
 		ClearBits(pev->flags, FL_ONGROUND);
 		m_scriptState = ScriptState::Playing;
 		break;

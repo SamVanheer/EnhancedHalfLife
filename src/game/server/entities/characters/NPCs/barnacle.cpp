@@ -98,9 +98,9 @@ void CBarnacle::Spawn()
 	SET_MODEL(ENT(pev), "models/barnacle.mdl");
 	UTIL_SetSize(pev, Vector(-16, -16, -32), Vector(16, 16, 0));
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_NONE;
-	pev->takedamage = DAMAGE_AIM;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::None;
+	SetDamageMode(DamageMode::Aim);
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->effects = EF_INVLIGHT; // take light from the ceiling 
 	pev->health = 25;
@@ -149,7 +149,7 @@ void CBarnacle::BarnacleThink()
 
 		if (m_fLiftingPrey)
 		{
-			if (m_hEnemy != nullptr && m_hEnemy->pev->deadflag != DEAD_NO)
+			if (m_hEnemy != nullptr && m_hEnemy->pev->deadflag != DeadFlag::No)
 			{
 				// crap, someone killed the prey on the way up.
 				m_hEnemy = nullptr;
@@ -174,7 +174,7 @@ void CBarnacle::BarnacleThink()
 				// prey has just been lifted into position ( if the victim origin + eye height + 8 is higher than the bottom of the barnacle, it is assumed that the head is within barnacle's body )
 				m_fLiftingPrey = false;
 
-				EmitSound(CHAN_WEAPON, "barnacle/bcl_bite3.wav");
+				EmitSound(SoundChannel::Weapon, "barnacle/bcl_bite3.wav");
 
 				m_flKillVictimTime = gpGlobals->time + 10;// now that the victim is in place, the killing bite will be administered in 10 seconds.
 
@@ -210,9 +210,9 @@ void CBarnacle::BarnacleThink()
 			{
 				switch (RANDOM_LONG(0, 2))
 				{
-				case 0:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew1.wav");	break;
-				case 1:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew2.wav");	break;
-				case 2:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew3.wav");	break;
+				case 0:	EmitSound(SoundChannel::Weapon, "barnacle/bcl_chew1.wav");	break;
+				case 1:	EmitSound(SoundChannel::Weapon, "barnacle/bcl_chew2.wav");	break;
+				case 2:	EmitSound(SoundChannel::Weapon, "barnacle/bcl_chew3.wav");	break;
 				}
 
 				pVictim->BarnacleVictimBitten(pev);
@@ -241,9 +241,9 @@ void CBarnacle::BarnacleThink()
 
 			switch (RANDOM_LONG(0, 2))
 			{
-			case 0:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew1.wav");	break;
-			case 1:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew2.wav");	break;
-			case 2:	EmitSound(CHAN_WEAPON, "barnacle/bcl_chew3.wav");	break;
+			case 0:	EmitSound(SoundChannel::Weapon, "barnacle/bcl_chew1.wav");	break;
+			case 1:	EmitSound(SoundChannel::Weapon, "barnacle/bcl_chew2.wav");	break;
+			case 2:	EmitSound(SoundChannel::Weapon, "barnacle/bcl_chew3.wav");	break;
 			}
 		}
 
@@ -255,14 +255,14 @@ void CBarnacle::BarnacleThink()
 			// tongue is fully extended, and is touching someone.
 			if (pTouchEnt->BecomeProne())
 			{
-				EmitSound(CHAN_WEAPON, "barnacle/bcl_alert2.wav");
+				EmitSound(SoundChannel::Weapon, "barnacle/bcl_alert2.wav");
 
 				SetSequenceByName("attack1");
 				m_flTongueAdj = -20;
 
 				m_hEnemy = pTouchEnt;
 
-				pTouchEnt->pev->movetype = MOVETYPE_FLY;
+				pTouchEnt->pev->movetype = Movetype::Fly;
 				pTouchEnt->pev->velocity = vec3_origin;
 				pTouchEnt->pev->basevelocity = vec3_origin;
 				pTouchEnt->pev->origin.x = pev->origin.x;
@@ -298,8 +298,8 @@ void CBarnacle::BarnacleThink()
 
 void CBarnacle::Killed(entvars_t* pevAttacker, int iGib)
 {
-	pev->solid = SOLID_NOT;
-	pev->takedamage = DAMAGE_NO;
+	pev->solid = Solid::Not;
+	SetDamageMode(DamageMode::No);
 
 	if (m_hEnemy != nullptr)
 	{
@@ -313,8 +313,8 @@ void CBarnacle::Killed(entvars_t* pevAttacker, int iGib)
 
 	switch (RANDOM_LONG(0, 1))
 	{
-	case 0:	EmitSound(CHAN_WEAPON, "barnacle/bcl_die1.wav");	break;
-	case 1:	EmitSound(CHAN_WEAPON, "barnacle/bcl_die3.wav");	break;
+	case 0:	EmitSound(SoundChannel::Weapon, "barnacle/bcl_die1.wav");	break;
+	case 1:	EmitSound(SoundChannel::Weapon, "barnacle/bcl_die3.wav");	break;
 	}
 
 	SetActivity(ACT_DIESIMPLE);
@@ -380,7 +380,7 @@ CBaseEntity* CBarnacle::TongueTouchEnt(float* pflLength)
 		for (int i = 0; i < count; i++)
 		{
 			// only clients and monsters
-			if (pList[i] != this && GetRelationship(pList[i]) > Relationship::None && pList[i]->pev->deadflag == DEAD_NO)	// this ent is one of our enemies. Barnacle tries to eat it.
+			if (pList[i] != this && GetRelationship(pList[i]) > Relationship::None && pList[i]->pev->deadflag == DeadFlag::No)	// this ent is one of our enemies. Barnacle tries to eat it.
 			{
 				return pList[i];
 			}

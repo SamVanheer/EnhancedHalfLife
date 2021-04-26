@@ -60,8 +60,8 @@ CCrossbowBolt* CCrossbowBolt::BoltCreate()
 void CCrossbowBolt::Spawn()
 {
 	Precache();
-	pev->movetype = MOVETYPE_FLY;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Fly;
+	pev->solid = Solid::BBox;
 
 	pev->gravity = 0.5;
 
@@ -119,9 +119,9 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 		switch (RANDOM_LONG(0, 1))
 		{
 		case 0:
-			EmitSound(CHAN_BODY, "weapons/xbow_hitbod1.wav"); break;
+			EmitSound(SoundChannel::Body, "weapons/xbow_hitbod1.wav"); break;
 		case 1:
-			EmitSound(CHAN_BODY, "weapons/xbow_hitbod2.wav"); break;
+			EmitSound(SoundChannel::Body, "weapons/xbow_hitbod2.wav"); break;
 		}
 
 		if (!g_pGameRules->IsMultiplayer())
@@ -131,7 +131,7 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 	}
 	else
 	{
-		EmitSound(CHAN_BODY, "weapons/xbow_hit1.wav", RANDOM_FLOAT(0.95, 1.0), ATTN_NORM, 98 + RANDOM_LONG(0, 7));
+		EmitSound(SoundChannel::Body, "weapons/xbow_hit1.wav", RANDOM_FLOAT(0.95, 1.0), ATTN_NORM, 98 + RANDOM_LONG(0, 7));
 
 		SetThink(&CCrossbowBolt::SUB_Remove);
 		pev->nextthink = gpGlobals->time;// this will get changed below if the bolt is allowed to stick in what it hit.
@@ -142,15 +142,15 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 			Vector vecDir = pev->velocity.Normalize();
 			UTIL_SetOrigin(pev, pev->origin - vecDir * 12);
 			pev->angles = VectorAngles(vecDir);
-			pev->solid = SOLID_NOT;
-			pev->movetype = MOVETYPE_FLY;
+			pev->solid = Solid::Not;
+			pev->movetype = Movetype::Fly;
 			pev->velocity = vec3_origin;
 			pev->avelocity.z = 0;
 			pev->angles.z = RANDOM_LONG(0, 360);
 			pev->nextthink = gpGlobals->time + 10.0;
 		}
 
-		if (UTIL_PointContents(pev->origin) != CONTENTS_WATER)
+		if (UTIL_PointContents(pev->origin) != Contents::Water)
 		{
 			UTIL_Sparks(pev->origin);
 		}
@@ -175,7 +175,7 @@ void CCrossbowBolt::BubbleThink()
 
 void CCrossbowBolt::ExplodeThink()
 {
-	const int iContents = UTIL_PointContents(pev->origin);
+	const Contents iContents = UTIL_PointContents(pev->origin);
 
 	pev->dmg = 40;
 
@@ -184,7 +184,7 @@ void CCrossbowBolt::ExplodeThink()
 	WRITE_COORD(pev->origin.x);
 	WRITE_COORD(pev->origin.y);
 	WRITE_COORD(pev->origin.z);
-	if (iContents != CONTENTS_WATER)
+	if (iContents != Contents::Water)
 	{
 		WRITE_SHORT(g_sModelIndexFireball);
 	}
@@ -437,7 +437,7 @@ void CCrossbow::Reload()
 
 	if (DefaultReload(CROSSBOW_MAX_CLIP, CROSSBOW_RELOAD, 4.5))
 	{
-		m_pPlayer->EmitSound(CHAN_ITEM, "weapons/xbow_reload1.wav", RANDOM_FLOAT(0.95, 1.0), ATTN_NORM, 93 + RANDOM_LONG(0, 0xF));
+		m_pPlayer->EmitSound(SoundChannel::Item, "weapons/xbow_reload1.wav", RANDOM_FLOAT(0.95, 1.0), ATTN_NORM, 93 + RANDOM_LONG(0, 0xF));
 	}
 }
 
@@ -495,7 +495,7 @@ class CCrossbowAmmo : public CBasePlayerAmmo
 	{
 		if (pOther->GiveAmmo(AMMO_CROSSBOWCLIP_GIVE, "bolts", BOLT_MAX_CARRY) != -1)
 		{
-			EmitSound(CHAN_ITEM, "items/9mmclip1.wav");
+			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
 			return true;
 		}
 		return false;

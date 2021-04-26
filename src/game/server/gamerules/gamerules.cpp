@@ -57,7 +57,7 @@ edict_t* CGameRules::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
 	pPlayer->pev->velocity = vec3_origin;
 	pPlayer->pev->angles = VARS(pentSpawnSpot)->angles;
 	pPlayer->pev->punchangle = vec3_origin;
-	pPlayer->pev->fixangle = FIXANGLE_ABSOLUTE;
+	pPlayer->pev->fixangle = FixAngleMode::Absolute;
 
 	return pentSpawnSpot;
 }
@@ -65,7 +65,7 @@ edict_t* CGameRules::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
 bool CGameRules::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
 {
 	// only living players can have items
-	if (pPlayer->pev->deadflag != DEAD_NO)
+	if (pPlayer->pev->deadflag != DeadFlag::No)
 		return false;
 
 	if (pWeapon->Ammo1Name())

@@ -75,8 +75,8 @@ void ClientDisconnect(edict_t* pEntity)
 	}
 
 	// since the edict doesn't get deleted, fix it so it doesn't interfere.
-	pEntity->v.takedamage = DAMAGE_NO;// don't attract autoaim
-	pEntity->v.solid = SOLID_NOT;// nonsolid
+	pEntity->v.takedamage = static_cast<int>(DamageMode::No);// don't attract autoaim
+	pEntity->v.solid = Solid::Not;// nonsolid
 	UTIL_SetOrigin(&pEntity->v, pEntity->v.origin);
 
 	auto pPlayer = reinterpret_cast<CBasePlayer*>(GET_PRIVATE(pEntity));
@@ -873,7 +873,7 @@ int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int
 	}
 
 	state->scale = ent->v.scale;
-	state->solid = ent->v.solid;
+	state->solid = static_cast<short>(ent->v.solid);
 	state->colormap = ent->v.colormap;
 
 	state->movetype = ent->v.movetype;
@@ -951,12 +951,12 @@ void CreateBaseline(int player, int eindex, entity_state_t* baseline, edict_t* e
 	baseline->skin = (short)entity->v.skin;
 
 	// render information
-	baseline->rendermode = (byte)entity->v.rendermode;
+	baseline->rendermode = entity->v.rendermode;
 	baseline->renderamt = (byte)entity->v.renderamt;
 	baseline->rendercolor.r = (byte)entity->v.rendercolor.x;
 	baseline->rendercolor.g = (byte)entity->v.rendercolor.y;
 	baseline->rendercolor.b = (byte)entity->v.rendercolor.z;
-	baseline->renderfx = (byte)entity->v.renderfx;
+	baseline->renderfx = entity->v.renderfx;
 
 	if (player)
 	{
@@ -966,10 +966,10 @@ void CreateBaseline(int player, int eindex, entity_state_t* baseline, edict_t* e
 		baseline->colormap = eindex;
 		baseline->modelindex = playermodelindex;
 		baseline->friction = 1.0;
-		baseline->movetype = MOVETYPE_WALK;
+		baseline->movetype = Movetype::Walk;
 
 		baseline->scale = entity->v.scale;
-		baseline->solid = SOLID_SLIDEBOX;
+		baseline->solid = static_cast<short>(Solid::SlideBox);
 		baseline->framerate = 1.0;
 		baseline->gravity = 1.0;
 
@@ -984,7 +984,7 @@ void CreateBaseline(int player, int eindex, entity_state_t* baseline, edict_t* e
 		baseline->movetype = entity->v.movetype;
 
 		baseline->scale = entity->v.scale;
-		baseline->solid = entity->v.solid;
+		baseline->solid = static_cast<short>(entity->v.solid);
 		baseline->framerate = entity->v.framerate;
 		baseline->gravity = entity->v.gravity;
 	}
@@ -1062,7 +1062,7 @@ void Entity_Encode(delta_t* pFields, const unsigned char* from, const unsigned c
 		DELTA_UNSETBYINDEX(pFields, entity_field_alias[FIELD_ANGLES2].field);
 	}
 
-	if ((t->movetype == MOVETYPE_FOLLOW) &&
+	if ((t->movetype == Movetype::Follow) &&
 		(t->aiment != 0))
 	{
 		DELTA_UNSETBYINDEX(pFields, entity_field_alias[FIELD_ORIGIN0].field);
@@ -1118,7 +1118,7 @@ void Player_Encode(delta_t* pFields, const unsigned char* from, const unsigned c
 		DELTA_UNSETBYINDEX(pFields, entity_field_alias[FIELD_ORIGIN2].field);
 	}
 
-	if ((t->movetype == MOVETYPE_FOLLOW) &&
+	if ((t->movetype == Movetype::Follow) &&
 		(t->aiment != 0))
 	{
 		DELTA_UNSETBYINDEX(pFields, entity_field_alias[FIELD_ORIGIN0].field);
@@ -1188,7 +1188,7 @@ void Custom_Encode(delta_t* pFields, const unsigned char* from, const unsigned c
 	f = (entity_state_t*)from;
 	t = (entity_state_t*)to;
 
-	beamType = t->rendermode & 0x0f;
+	beamType = static_cast<int>(t->rendermode) & 0x0f;
 
 	if (beamType != BEAM_POINTS && beamType != BEAM_ENTPOINT)
 	{
@@ -1312,7 +1312,7 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 
 	cd->viewmodel = MODEL_INDEX(STRING(pev->viewmodel));
 
-	cd->waterlevel = static_cast<int>(pev->waterlevel);
+	cd->waterlevel = pev->waterlevel;
 	cd->watertype = pev->watertype;
 	cd->weapons = pev->weapons;
 

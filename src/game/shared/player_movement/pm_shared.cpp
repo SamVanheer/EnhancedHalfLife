@@ -98,55 +98,55 @@ void PM_PlayStepSound(StepType step, float fvol)
 		switch (irand)
 		{
 			// right foot
-		case 0:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_step1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 1:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_step3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 0:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_step1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 1:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_step3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 			// left foot
-		case 2:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_step2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 3:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_step4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 2:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_step2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 3:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_step4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 		}
 		break;
 	case StepType::Metal:
 		switch (irand)
 		{
 			// right foot
-		case 0:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_metal1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 1:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_metal3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 0:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_metal1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 1:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_metal3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 			// left foot
-		case 2:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_metal2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 3:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_metal4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 2:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_metal2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 3:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_metal4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 		}
 		break;
 	case StepType::Dirt:
 		switch (irand)
 		{
 			// right foot
-		case 0:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_dirt1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 1:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_dirt3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 0:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_dirt1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 1:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_dirt3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 			// left foot
-		case 2:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_dirt2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 3:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_dirt4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 2:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_dirt2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 3:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_dirt4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 		}
 		break;
 	case StepType::Vent:
 		switch (irand)
 		{
 			// right foot
-		case 0:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_duct1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 1:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_duct3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 0:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_duct1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 1:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_duct3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 			// left foot
-		case 2:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_duct2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 3:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_duct4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 2:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_duct2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 3:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_duct4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 		}
 		break;
 	case StepType::Grate:
 		switch (irand)
 		{
 			// right foot
-		case 0:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_grate1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 1:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_grate3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 0:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_grate1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 1:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_grate3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 			// left foot
-		case 2:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_grate2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 3:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_grate4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 2:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_grate2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 3:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_grate4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 		}
 		break;
 	case StepType::Tile:
@@ -155,23 +155,23 @@ void PM_PlayStepSound(StepType step, float fvol)
 		switch (irand)
 		{
 			// right foot
-		case 0:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_tile1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 1:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_tile3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 0:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_tile1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 1:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_tile3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 			// left foot
-		case 2:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_tile2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 3:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_tile4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 4: pmove->PM_PlaySound(CHAN_BODY, "player/pl_tile5.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 2:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_tile2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 3:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_tile4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 4: pmove->PM_PlaySound(SoundChannel::Body, "player/pl_tile5.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 		}
 		break;
 	case StepType::Slosh:
 		switch (irand)
 		{
 			// right foot
-		case 0:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_slosh1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 1:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_slosh3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 0:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_slosh1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 1:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_slosh3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 			// left foot
-		case 2:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_slosh2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 3:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_slosh4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 2:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_slosh2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 3:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_slosh4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 		}
 		break;
 	case StepType::Wade:
@@ -191,11 +191,11 @@ void PM_PlayStepSound(StepType step, float fvol)
 		switch (irand)
 		{
 			// right foot
-		case 0:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 1:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 0:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 1:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 			// left foot
-		case 2:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 3:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 2:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 3:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 		}
 		break;
 	}
@@ -203,11 +203,11 @@ void PM_PlayStepSound(StepType step, float fvol)
 		switch (irand)
 		{
 			// right foot
-		case 0:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 1:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 0:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_ladder1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 1:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_ladder3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 			// left foot
-		case 2:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
-		case 3:	pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 2:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_ladder2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
+		case 3:	pmove->PM_PlaySound(SoundChannel::Body, "player/pl_ladder4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);	break;
 		}
 		break;
 	}
@@ -279,7 +279,7 @@ void PM_UpdateStepSound()
 	const float speed = pmove->velocity.Length();
 
 	// determine if we are on a ladder
-	const bool fLadder = (pmove->movetype == MOVETYPE_FLY);// IsOnLadder();
+	const bool fLadder = (pmove->movetype == Movetype::Fly);// IsOnLadder();
 
 	// UNDONE: need defined numbers for run, walk, crouch, crouch run velocities!!!!	
 	float velrun;
@@ -327,13 +327,13 @@ void PM_UpdateStepSound()
 			fvol = 0.35;
 			pmove->flTimeStepSound = 350;
 		}
-		else if (pmove->PM_PointContents(knee, nullptr) == CONTENTS_WATER)
+		else if (pmove->PM_PointContents(knee, nullptr) == Contents::Water)
 		{
 			step = StepType::Wade;
 			fvol = 0.65;
 			pmove->flTimeStepSound = 600;
 		}
-		else if (pmove->PM_PointContents(feet, nullptr) == CONTENTS_WATER)
+		else if (pmove->PM_PointContents(feet, nullptr) == Contents::Water)
 		{
 			step = StepType::Slosh;
 			fvol = fWalking ? 0.2 : 0.5;
@@ -636,7 +636,7 @@ int PM_FlyMove()
 
 		// modify original_velocity so it parallels all of the clip planes
 		//
-		if (pmove->movetype == MOVETYPE_WALK &&
+		if (pmove->movetype == Movetype::Walk &&
 			((pmove->onground == -1) || (pmove->friction != 1)))	// relfect player velocity
 		{
 			Vector new_velocity;
@@ -1185,13 +1185,13 @@ bool PM_CheckWater()
 
 	// Assume that we are not in water at all.
 	pmove->waterlevel = WaterLevel::Dry;
-	pmove->watertype = CONTENTS_EMPTY;
+	pmove->watertype = Contents::Empty;
 
 	// Grab point contents.
-	int truecont;
-	int cont = pmove->PM_PointContents(point, &truecont);
+	Contents truecont;
+	Contents cont = pmove->PM_PointContents(point, &truecont);
 	// Are we under water? (not solid and not empty?)
-	if (cont <= CONTENTS_WATER && cont > CONTENTS_TRANSLUCENT)
+	if (cont <= Contents::Water && cont > Contents::Translucent)
 	{
 		// Set water type
 		pmove->watertype = cont;
@@ -1206,7 +1206,7 @@ bool PM_CheckWater()
 		point[2] = pmove->origin[2] + heightover2;
 		cont = pmove->PM_PointContents(point, nullptr);
 		// If that point is also under water...
-		if (cont <= CONTENTS_WATER && cont > CONTENTS_TRANSLUCENT)
+		if (cont <= Contents::Water && cont > Contents::Translucent)
 		{
 			// Set a higher water level.
 			pmove->waterlevel = WaterLevel::Waist;
@@ -1215,16 +1215,17 @@ bool PM_CheckWater()
 			point[2] = pmove->origin[2] + pmove->view_ofs[2];
 
 			cont = pmove->PM_PointContents(point, nullptr);
-			if (cont <= CONTENTS_WATER && cont > CONTENTS_TRANSLUCENT)
+			if (cont <= Contents::Water && cont > Contents::Translucent)
 				pmove->waterlevel = WaterLevel::Head;  // In over our eyes
 		}
 
 		// Adjust velocity based on water current, if any.
-		if ((truecont <= CONTENTS_CURRENT_0) &&
-			(truecont >= CONTENTS_CURRENT_DOWN))
+		if ((truecont <= Contents::Current0) &&
+			(truecont >= Contents::CurrentDown))
 		{
 			// The deeper we are, the stronger the current.
-			pmove->basevelocity = pmove->basevelocity + (50.0 * static_cast<int>(pmove->waterlevel)) * current_table[CONTENTS_CURRENT_0 - truecont];
+			pmove->basevelocity = pmove->basevelocity
+				+ (50.0 * static_cast<int>(pmove->waterlevel)) * current_table[static_cast<int>(Contents::Current0) - static_cast<int>(truecont)];
 		}
 	}
 
@@ -1695,7 +1696,7 @@ void PM_Duck()
 
 void PM_LadderMove(physent_t* pLadder)
 {
-	if (pmove->movetype == MOVETYPE_NOCLIP)
+	if (pmove->movetype == Movetype::Noclip)
 		return;
 
 	Vector modelmins, modelmaxs;
@@ -1703,14 +1704,14 @@ void PM_LadderMove(physent_t* pLadder)
 
 	const Vector ladderCenter = (modelmins + modelmaxs) * 0.5;
 
-	pmove->movetype = MOVETYPE_FLY;
+	pmove->movetype = Movetype::Fly;
 
 	// On ladder, convert movement to be relative to the ladder
 
 	Vector floor = pmove->origin;
 	floor[2] += pmove->player_mins[pmove->usehull][2] - 1;
 
-	const bool onFloor = pmove->PM_PointContents(floor, nullptr) == CONTENTS_SOLID;
+	const bool onFloor = pmove->PM_PointContents(floor, nullptr) == Contents::Solid;
 
 	pmove->gravity = 0;
 	trace_t trace;
@@ -1755,7 +1756,7 @@ void PM_LadderMove(physent_t* pLadder)
 
 		if (pmove->cmd.buttons & IN_JUMP)
 		{
-			pmove->movetype = MOVETYPE_WALK;
+			pmove->movetype = Movetype::Walk;
 			pmove->velocity = trace.plane.normal * 270;
 		}
 		else
@@ -1806,7 +1807,7 @@ physent_t* PM_Ladder()
 	{
 		physent_t* pe = &pmove->moveents[i];
 
-		if (pe->model && (modtype_t)pmove->PM_GetModelType(pe->model) == mod_brush && pe->skin == CONTENTS_LADDER)
+		if (pe->model && (modtype_t)pmove->PM_GetModelType(pe->model) == mod_brush && pe->skin == static_cast<int>(Contents::Ladder))
 		{
 			Vector test;
 			hull_t* hull = pmove->PM_HullForBsp(pe, test);
@@ -1816,7 +1817,7 @@ physent_t* PM_Ladder()
 			test = pmove->origin - test;
 
 			// Test the player's hull for intersection with this model
-			if (pmove->PM_HullPointContents(hull, num, test) == CONTENTS_EMPTY)
+			if (pmove->PM_HullPointContents(hull, num, test) == Contents::Empty)
 				continue;
 
 			return pe;
@@ -1916,9 +1917,9 @@ void PM_Physics_Toss()
 	PM_CheckVelocity();
 
 	// add gravity
-	if (pmove->movetype != MOVETYPE_FLY &&
-		pmove->movetype != MOVETYPE_BOUNCEMISSILE &&
-		pmove->movetype != MOVETYPE_FLYMISSILE)
+	if (pmove->movetype != Movetype::Fly &&
+		pmove->movetype != Movetype::BounceMissile &&
+		pmove->movetype != Movetype::FlyMissile)
 		PM_AddGravity();
 
 	// move origin
@@ -1949,9 +1950,9 @@ void PM_Physics_Toss()
 	}
 
 	float backoff;
-	if (pmove->movetype == MOVETYPE_BOUNCE)
+	if (pmove->movetype == Movetype::Bounce)
 		backoff = 2.0 - pmove->friction;
-	else if (pmove->movetype == MOVETYPE_BOUNCEMISSILE)
+	else if (pmove->movetype == Movetype::BounceMissile)
 		backoff = 2.0;
 	else
 		backoff = 1;
@@ -1973,7 +1974,7 @@ void PM_Physics_Toss()
 
 		// Con_DPrintf("%f %f: %.0f %.0f %.0f\n", vel, trace.fraction, ent->velocity[0], ent->velocity[1], ent->velocity[2] );
 
-		if (vel < (30 * 30) || (pmove->movetype != MOVETYPE_BOUNCE && pmove->movetype != MOVETYPE_BOUNCEMISSILE))
+		if (vel < (30 * 30) || (pmove->movetype != Movetype::Bounce && pmove->movetype != Movetype::BounceMissile))
 		{
 			pmove->onground = trace.ent;
 			pmove->velocity = vec3_origin;
@@ -2073,9 +2074,9 @@ void PM_Jump()
 	{	// swimming, not jumping
 		pmove->onground = -1;
 
-		if (pmove->watertype == CONTENTS_WATER)    // We move up a certain amount
+		if (pmove->watertype == Contents::Water)    // We move up a certain amount
 			pmove->velocity[2] = 100;
-		else if (pmove->watertype == CONTENTS_SLIME)
+		else if (pmove->watertype == Contents::Slime)
 			pmove->velocity[2] = 80;
 		else  // LAVA
 			pmove->velocity[2] = 50;
@@ -2088,16 +2089,16 @@ void PM_Jump()
 			switch (pmove->RandomLong(0, 3))
 			{
 			case 0:
-				pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade1.wav", 1, ATTN_NORM, 0, PITCH_NORM);
+				pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade1.wav", 1, ATTN_NORM, 0, PITCH_NORM);
 				break;
 			case 1:
-				pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade2.wav", 1, ATTN_NORM, 0, PITCH_NORM);
+				pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade2.wav", 1, ATTN_NORM, 0, PITCH_NORM);
 				break;
 			case 2:
-				pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade3.wav", 1, ATTN_NORM, 0, PITCH_NORM);
+				pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade3.wav", 1, ATTN_NORM, 0, PITCH_NORM);
 				break;
 			case 3:
-				pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade4.wav", 1, ATTN_NORM, 0, PITCH_NORM);
+				pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade4.wav", 1, ATTN_NORM, 0, PITCH_NORM);
 				break;
 			}
 		}
@@ -2251,10 +2252,10 @@ void PM_CheckFalling()
 			//switch ( RandomLong(0,1) )
 			//{
 			//case 0:
-				//pmove->PM_PlaySound( CHAN_VOICE, "player/pl_fallpain2.wav", 1, ATTN_NORM, 0, PITCH_NORM );
+				//pmove->PM_PlaySound( SoundChannel::Voice, "player/pl_fallpain2.wav", 1, ATTN_NORM, 0, PITCH_NORM );
 				//break;
 			//case 1:
-			pmove->PM_PlaySound(CHAN_VOICE, "player/pl_fallpain3.wav", 1, ATTN_NORM, 0, PITCH_NORM);
+			pmove->PM_PlaySound(SoundChannel::Voice, "player/pl_fallpain3.wav", 1, ATTN_NORM, 0, PITCH_NORM);
 			//	break;
 			//}
 			fvol = 1.0;
@@ -2309,16 +2310,16 @@ void PM_PlayWaterSounds()
 		switch (pmove->RandomLong(0, 3))
 		{
 		case 0:
-			pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade1.wav", 1, ATTN_NORM, 0, PITCH_NORM);
+			pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade1.wav", 1, ATTN_NORM, 0, PITCH_NORM);
 			break;
 		case 1:
-			pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade2.wav", 1, ATTN_NORM, 0, PITCH_NORM);
+			pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade2.wav", 1, ATTN_NORM, 0, PITCH_NORM);
 			break;
 		case 2:
-			pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade3.wav", 1, ATTN_NORM, 0, PITCH_NORM);
+			pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade3.wav", 1, ATTN_NORM, 0, PITCH_NORM);
 			break;
 		case 3:
-			pmove->PM_PlaySound(CHAN_BODY, "player/pl_wade4.wav", 1, ATTN_NORM, 0, PITCH_NORM);
+			pmove->PM_PlaySound(SoundChannel::Body, "player/pl_wade4.wav", 1, ATTN_NORM, 0, PITCH_NORM);
 			break;
 		}
 	}
@@ -2457,7 +2458,7 @@ void PM_PlayerMove(bool server)
 	}
 
 	// Always try and unstick us unless we are in NOCLIP mode
-	if (pmove->movetype != MOVETYPE_NOCLIP && pmove->movetype != MOVETYPE_NONE)
+	if (pmove->movetype != Movetype::Noclip && pmove->movetype != Movetype::None)
 	{
 		if (PM_CheckStuck())
 		{
@@ -2500,12 +2501,12 @@ void PM_PlayerMove(bool server)
 		{
 			PM_LadderMove(pLadder);
 		}
-		else if (pmove->movetype != MOVETYPE_WALK &&
-			pmove->movetype != MOVETYPE_NOCLIP)
+		else if (pmove->movetype != Movetype::Walk &&
+			pmove->movetype != Movetype::Noclip)
 		{
 			// Clear ladder stuff unless player is noclipping
 			//  it will be set immediately again next frame if necessary
-			pmove->movetype = MOVETYPE_WALK;
+			pmove->movetype = Movetype::Walk;
 		}
 	}
 
@@ -2522,19 +2523,19 @@ void PM_PlayerMove(bool server)
 		pmove->Con_DPrintf("Bogus pmove player movetype %i on (%i) 0=cl 1=sv\n", pmove->movetype, pmove->server);
 		break;
 
-	case MOVETYPE_NONE:
+	case Movetype::None:
 		break;
 
-	case MOVETYPE_NOCLIP:
+	case Movetype::Noclip:
 		PM_NoClip();
 		break;
 
-	case MOVETYPE_TOSS:
-	case MOVETYPE_BOUNCE:
+	case Movetype::Toss:
+	case Movetype::Bounce:
 		PM_Physics_Toss();
 		break;
 
-	case MOVETYPE_FLY:
+	case Movetype::Fly:
 
 		PM_CheckWater();
 
@@ -2559,7 +2560,7 @@ void PM_PlayerMove(bool server)
 		pmove->velocity = pmove->velocity - pmove->basevelocity;
 		break;
 
-	case MOVETYPE_WALK:
+	case Movetype::Walk:
 		if (!PM_InWater())
 		{
 			PM_AddCorrectGravity();
@@ -2812,7 +2813,7 @@ void PM_Move(playermove_t* ppmove, int server)
 	}
 
 	// In single player, reset friction after each movement to FrictionModifier Triggers work still.
-	if (!pmove->multiplayer && (pmove->movetype == MOVETYPE_WALK))
+	if (!pmove->multiplayer && (pmove->movetype == Movetype::Walk))
 	{
 		pmove->friction = 1.0f;
 	}

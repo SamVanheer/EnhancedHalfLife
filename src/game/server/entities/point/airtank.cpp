@@ -49,8 +49,8 @@ void CAirtank::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = MOVETYPE_FLY;
-	pev->solid = SOLID_BBOX;
+	pev->movetype = Movetype::Fly;
+	pev->solid = Solid::BBox;
 
 	SET_MODEL(ENT(pev), "models/w_oxygen.mdl");
 	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 36));
@@ -60,7 +60,7 @@ void CAirtank::Spawn()
 	SetThink(&CAirtank::TankThink);
 
 	pev->flags |= FL_MONSTER;
-	pev->takedamage = DAMAGE_YES;
+	SetDamageMode(DamageMode::Yes);
 	pev->health = 20;
 	pev->dmg = 50;
 	m_state = true;
@@ -96,7 +96,7 @@ void CAirtank::TankTouch(CBaseEntity* pOther)
 	if (!m_state)
 	{
 		// "no oxygen" sound
-		EmitSound(CHAN_BODY, "player/pl_swim2.wav");
+		EmitSound(SoundChannel::Body, "player/pl_swim2.wav");
 		return;
 	}
 
@@ -104,7 +104,7 @@ void CAirtank::TankTouch(CBaseEntity* pOther)
 	pOther->pev->air_finished = gpGlobals->time + PLAYER_AIRTIME;
 
 	// suit recharge sound
-	EmitSound(CHAN_VOICE, "doors/aliendoor3.wav");
+	EmitSound(SoundChannel::Voice, "doors/aliendoor3.wav");
 
 	// recharge airtank in 30 seconds
 	pev->nextthink = gpGlobals->time + 30;

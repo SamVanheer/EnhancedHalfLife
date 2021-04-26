@@ -75,7 +75,7 @@ struct entvars_t
 	float		impacttime;
 	float		starttime;
 
-	int			fixangle;		// FIXANGLE_NONE:nothing, FIXANGLE_ABSOLUTE:force view angles, FIXANGLE_RELATIVE:add avelocity
+	FixAngleMode fixangle;
 	float		idealpitch;
 	float		pitch_speed;
 	float		ideal_yaw;
@@ -96,15 +96,15 @@ struct entvars_t
 	float		ltime;
 	float		nextthink;
 
-	int			movetype;
-	int			solid;
+	Movetype movetype;
+	Solid solid;
 
 	int			skin;
 	int			body;			// sub-model selection for studiomodels
 	int 		effects;
 
 	float		gravity;		// % of "normal" gravity
-	float		friction;		// inverse elasticity of MOVETYPE_BOUNCE
+	float		friction;		// inverse elasticity of Movetype::Bounce
 
 	int			light_level;
 
@@ -118,17 +118,17 @@ struct entvars_t
 
 	float		scale;			// sprite rendering scale (0..255)
 
-	int			rendermode;
+	RenderMode rendermode;
 	float		renderamt;
 	Vector		rendercolor;
-	int			renderfx;
+	RenderFX renderfx;
 
 	float		health;
 	float		frags;
 	int			weapons;  // bit mask for available weapons
 	float		takedamage;
 
-	int			deadflag;
+	DeadFlag deadflag;
 	Vector		view_ofs;	// eye position
 
 	int			button;
@@ -152,7 +152,7 @@ struct entvars_t
 	float		armortype;
 	float		armorvalue;
 	WaterLevel waterlevel;
-	int			watertype;
+	Contents watertype;
 
 	string_t	target;
 	string_t	targetname;

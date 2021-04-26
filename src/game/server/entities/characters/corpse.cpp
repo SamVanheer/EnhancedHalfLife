@@ -49,11 +49,11 @@ void CopyToBodyQue(entvars_t* pev)
 	pevHead->modelindex = pev->modelindex;
 	pevHead->frame = pev->frame;
 	pevHead->colormap = pev->colormap;
-	pevHead->movetype = MOVETYPE_TOSS;
+	pevHead->movetype = Movetype::Toss;
 	pevHead->velocity = pev->velocity;
 	pevHead->flags = 0;
 	pevHead->deadflag = pev->deadflag;
-	pevHead->renderfx = kRenderFxDeadPlayer;
+	pevHead->renderfx = RenderFX::DeadPlayer;
 	pevHead->renderamt = ENTINDEX(ENT(pev));
 
 	pevHead->effects = pev->effects | EF_NOINTERP;

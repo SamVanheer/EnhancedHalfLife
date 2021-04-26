@@ -46,18 +46,21 @@ struct entity_state_t
 	int			colormap;
 	short		skin;
 	short		solid;
+
+	Solid GetSolid() const { return static_cast<Solid>(solid); }
+
 	int			effects;
 	float		scale;
 
 	byte		eflags;
 
 	// Render information
-	int			rendermode;
+	RenderMode rendermode;
 	int			renderamt;
 	color24		rendercolor;
-	int			renderfx;
+	RenderFX renderfx;
 
-	int			movetype;
+	Movetype movetype;
 	float		animtime;
 	float		framerate;
 	int			body;
@@ -129,8 +132,8 @@ struct clientdata_t
 	string_t			viewmodel;
 	Vector				punchangle;
 	int					flags;
-	int					waterlevel;
-	int					watertype;
+	WaterLevel waterlevel;
+	Contents watertype;
 	Vector				view_ofs;
 	float				health;
 
@@ -159,7 +162,7 @@ struct clientdata_t
 
 	int					pushmsec;
 
-	int					deadflag;
+	DeadFlag deadflag;
 
 	char				physinfo[MAX_PHYSINFO_STRING];
 

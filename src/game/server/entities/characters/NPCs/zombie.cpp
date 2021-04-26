@@ -134,14 +134,14 @@ void CZombie::PainSound()
 	const int pitch = 95 + RANDOM_LONG(0, 9);
 
 	if (RANDOM_LONG(0, 5) < 2)
-		EmitSound(CHAN_VOICE, pPainSounds[RANDOM_LONG(0, ArraySize(pPainSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
+		EmitSound(SoundChannel::Voice, pPainSounds[RANDOM_LONG(0, ArraySize(pPainSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
 }
 
 void CZombie::AlertSound()
 {
 	const int pitch = 95 + RANDOM_LONG(0, 9);
 
-	EmitSound(CHAN_VOICE, pAlertSounds[RANDOM_LONG(0, ArraySize(pAlertSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
+	EmitSound(SoundChannel::Voice, pAlertSounds[RANDOM_LONG(0, ArraySize(pAlertSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
 }
 
 void CZombie::IdleSound()
@@ -149,7 +149,7 @@ void CZombie::IdleSound()
 	const int pitch = 100 + RANDOM_LONG(-5, 5);
 
 	// Play a random idle sound
-	EmitSound(CHAN_VOICE, pIdleSounds[RANDOM_LONG(0, ArraySize(pIdleSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
+	EmitSound(SoundChannel::Voice, pIdleSounds[RANDOM_LONG(0, ArraySize(pIdleSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
 }
 
 void CZombie::AttackSound()
@@ -157,7 +157,7 @@ void CZombie::AttackSound()
 	const int pitch = 100 + RANDOM_LONG(-5, 5);
 
 	// Play a random attack sound
-	EmitSound(CHAN_VOICE, pAttackSounds[RANDOM_LONG(0, ArraySize(pAttackSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
+	EmitSound(SoundChannel::Voice, pAttackSounds[RANDOM_LONG(0, ArraySize(pAttackSounds) - 1)], VOL_NORM, ATTN_NORM, pitch);
 }
 
 void CZombie::HandleAnimEvent(AnimationEvent& event)
@@ -177,10 +177,10 @@ void CZombie::HandleAnimEvent(AnimationEvent& event)
 				pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_right * 100;
 			}
 			// Play a random attack hit sound
-			EmitSound(CHAN_WEAPON, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 		}
 		else // Play a random attack miss sound
-			EmitSound(CHAN_WEAPON, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+			EmitSound(SoundChannel::Weapon, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 
 		if (RANDOM_LONG(0, 1))
 			AttackSound();
@@ -199,10 +199,10 @@ void CZombie::HandleAnimEvent(AnimationEvent& event)
 				pHurt->pev->punchangle.x = 5;
 				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * 100;
 			}
-			EmitSound(CHAN_WEAPON, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 		}
 		else
-			EmitSound(CHAN_WEAPON, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+			EmitSound(SoundChannel::Weapon, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 
 		if (RANDOM_LONG(0, 1))
 			AttackSound();
@@ -219,10 +219,10 @@ void CZombie::HandleAnimEvent(AnimationEvent& event)
 				pHurt->pev->punchangle.x = 5;
 				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_forward * -100;
 			}
-			EmitSound(CHAN_WEAPON, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 		}
 		else
-			EmitSound(CHAN_WEAPON, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
+			EmitSound(SoundChannel::Weapon, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 
 		if (RANDOM_LONG(0, 1))
 			AttackSound();
@@ -242,8 +242,8 @@ void CZombie::Spawn()
 	SET_MODEL(ENT(pev), "models/zombie.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->health = gSkillData.zombieHealth;
 	pev->view_ofs = VEC_VIEW;// position of the eyes relative to monster's origin.

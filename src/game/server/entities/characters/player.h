@@ -216,7 +216,7 @@ public:
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	void	Killed(entvars_t* pevAttacker, int iGib) override;
 	Vector BodyTarget(const Vector& posSrc) override { return Center() + pev->view_ofs * RANDOM_FLOAT(0.5, 1.1); }
-	bool IsAlive() override { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
+	bool IsAlive() override { return (pev->deadflag == DeadFlag::No) && pev->health > 0; }
 	bool ShouldFadeOnDeath() override { return false; }
 	bool IsPlayer() override { return true; }	//!< Spectators should return false for this, they aren't "players" as far as game logic is concerned
 

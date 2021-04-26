@@ -296,10 +296,10 @@ void CVoiceStatus::CreateEntities()
 
 		memset(pEnt, 0, sizeof(*pEnt));
 
-		pEnt->curstate.rendermode = kRenderTransAdd;
+		pEnt->curstate.rendermode = RenderMode::TransAdd;
 		pEnt->curstate.renderamt = 255;
 		pEnt->baseline.renderamt = 255;
-		pEnt->curstate.renderfx = kRenderFxNoDissipation;
+		pEnt->curstate.renderfx = RenderFX::NoDissipation;
 		pEnt->curstate.framerate = 1;
 		pEnt->curstate.frame = 0;
 		pEnt->model = (model_t*)gEngfuncs.GetSpritePointer(m_VoiceHeadModel);

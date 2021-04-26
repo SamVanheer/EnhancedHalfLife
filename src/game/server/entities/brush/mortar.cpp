@@ -105,9 +105,9 @@ void CFuncMortarField::KeyValue(KeyValueData* pkvd)
 
 void CFuncMortarField::Spawn()
 {
-	pev->solid = SOLID_NOT;
+	pev->solid = Solid::Not;
 	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
-	pev->movetype = MOVETYPE_NONE;
+	pev->movetype = Movetype::None;
 	SetBits(pev->effects, EF_NODRAW);
 	SetUse(&CFuncMortarField::FieldUse);
 	Precache();
@@ -164,7 +164,7 @@ void CFuncMortarField::FieldUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 
 	const int pitch = RANDOM_LONG(95, 124);
 
-	EmitSound(CHAN_VOICE, "weapons/mortar.wav", VOL_NORM, ATTN_NONE, pitch);
+	EmitSound(SoundChannel::Voice, "weapons/mortar.wav", VOL_NORM, ATTN_NONE, pitch);
 
 	float t = 2.5;
 	for (int i = 0; i < m_iCount; i++)
@@ -203,8 +203,8 @@ LINK_ENTITY_TO_CLASS(monster_mortar, CMortar);
 
 void CMortar::Spawn()
 {
-	pev->movetype = MOVETYPE_NONE;
-	pev->solid = SOLID_NOT;
+	pev->movetype = Movetype::None;
+	pev->solid = Solid::Not;
 
 	pev->dmg = 200;
 
@@ -277,7 +277,7 @@ void CMortar::MortarExplode()
 
 #if 0
 	const int pitch = RANDOM_LONG(95, 124);
-	EmitSound(CHAN_VOICE, "weapons/mortarhit.wav", VOL_NORM, 0.55, pitch);
+	EmitSound(SoundChannel::Voice, "weapons/mortarhit.wav", VOL_NORM, 0.55, pitch);
 
 	// ForceSound( SNDRADIUS_MP5, bits_SOUND_COMBAT );
 

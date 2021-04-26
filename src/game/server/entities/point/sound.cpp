@@ -205,8 +205,8 @@ void CAmbientGeneric::Spawn()
 		SetThink(&CAmbientGeneric::SUB_Remove);
 		return;
 	}
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 
 	// Set up think function for dynamic modification 
 	// of ambient sound's pitch or volume. Don't
@@ -1108,7 +1108,7 @@ int SENTENCEG_PlayRndI(CBaseEntity* entity, int isentenceg,
 	char name[64]{};
 	const int ipick = USENTENCEG_Pick(isentenceg, name, sizeof(name));
 	if (ipick > 0 && name)
-		entity->EmitSound(CHAN_VOICE, name, volume, attenuation, pitch, flags);
+		entity->EmitSound(SoundChannel::Voice, name, volume, attenuation, pitch, flags);
 	return ipick;
 }
 
@@ -1133,7 +1133,7 @@ int SENTENCEG_PlayRndSz(CBaseEntity* entity, const char* szgroupname,
 	char name[64]{};
 	const int ipick = USENTENCEG_Pick(isentenceg, name, sizeof(name));
 	if (ipick >= 0 && name[0])
-		entity->EmitSound(CHAN_VOICE, name, volume, attenuation, pitch, flags);
+		entity->EmitSound(SoundChannel::Voice, name, volume, attenuation, pitch, flags);
 
 	return ipick;
 }
@@ -1156,7 +1156,7 @@ int SENTENCEG_PlaySequentialSz(CBaseEntity* entity, const char* szgroupname,
 	char name[64]{};
 	const int ipicknext = USENTENCEG_PickSequential(isentenceg, name, sizeof(name), ipick, freset);
 	if (ipicknext >= 0 && name[0])
-		entity->EmitSound(CHAN_VOICE, name, volume, attenuation, pitch, flags);
+		entity->EmitSound(SoundChannel::Voice, name, volume, attenuation, pitch, flags);
 	return ipicknext;
 }
 
@@ -1182,7 +1182,7 @@ void SENTENCEG_Stop(CBaseEntity* entity, int isentenceg, int ipick)
 	snprintf(sznum, sizeof(sznum), "%d", ipick);
 	safe_strcat(buffer, sznum);
 
-	entity->StopSound(CHAN_VOICE, buffer);
+	entity->StopSound(SoundChannel::Voice, buffer);
 }
 
 void SENTENCEG_Init()
@@ -1324,7 +1324,7 @@ int SENTENCEG_Lookup(const char* sample, char* sentencenum, std::size_t sentence
 	return -1;
 }
 
-void EMIT_SOUND_DYN(edict_t* entity, int channel, const char* sample, float volume, float attenuation,
+void EMIT_SOUND_DYN(edict_t* entity, SoundChannel channel, const char* sample, float volume, float attenuation,
 	int flags, int pitch)
 {
 	if (sample && *sample == '!')
@@ -1348,7 +1348,7 @@ void EMIT_SOUND_SUIT(CBaseEntity* entity, const char* sample)
 		pitch = RANDOM_LONG(0, 6) + 98;
 
 	if (fvol > 0.05)
-		entity->EmitSound(CHAN_STATIC, sample, fvol, ATTN_NORM, pitch);
+		entity->EmitSound(SoundChannel::Static, sample, fvol, ATTN_NORM, pitch);
 }
 
 void EMIT_GROUPID_SUIT(CBaseEntity* entity, int isentenceg)
@@ -1515,15 +1515,15 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 			{
 			case 0: UTIL_EmitAmbientSound(INDEXENT(0), ptr->vecEndPos, "buttons/spark5.wav", flVolume, ATTN_NORM, 0, 100); break;
 			case 1: UTIL_EmitAmbientSound(INDEXENT(0), ptr->vecEndPos, "buttons/spark6.wav", flVolume, ATTN_NORM, 0, 100); break;
-				// case 0: EmitSound(CHAN_VOICE, "buttons/spark5.wav", flVolume); break;
-				// case 1: EmitSound(CHAN_VOICE, "buttons/spark6.wav", flVolume); break;
+				// case 0: EmitSound(SoundChannel::Voice, "buttons/spark5.wav", flVolume); break;
+				// case 1: EmitSound(SoundChannel::Voice, "buttons/spark6.wav", flVolume); break;
 			}
 		}
 	}
 
 	// play material hit sound
 	UTIL_EmitAmbientSound(INDEXENT(0), ptr->vecEndPos, rgsz[RANDOM_LONG(0, cnt - 1)], fvol, fattn, 0, 96 + RANDOM_LONG(0, 0xf));
-	//m_pPlayer->EmitSound(CHAN_WEAPON, rgsz[RANDOM_LONG(0,cnt-1)], fvol, ATTN_NORM, 96 + RANDOM_LONG(0,0xf));
+	//m_pPlayer->EmitSound(SoundChannel::Weapon, rgsz[RANDOM_LONG(0,cnt-1)], fvol, ATTN_NORM, 96 + RANDOM_LONG(0,0xf));
 
 	return fvolbar;
 }
@@ -1573,9 +1573,8 @@ void CSpeaker::Spawn()
 		SetThink(&CSpeaker::SUB_Remove);
 		return;
 	}
-	pev->solid = SOLID_NOT;
-	pev->movetype = MOVETYPE_NONE;
-
+	pev->solid = Solid::Not;
+	pev->movetype = Movetype::None;
 
 	SetThink(&CSpeaker::SpeakerThink);
 	pev->nextthink = 0.0;

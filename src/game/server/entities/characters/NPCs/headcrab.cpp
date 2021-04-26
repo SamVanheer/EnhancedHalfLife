@@ -247,7 +247,7 @@ void CHeadCrab::HandleAnimEvent(AnimationEvent& event)
 
 		const int iSound = RANDOM_LONG(0, 2);
 		if (iSound != 0)
-			EmitSound(CHAN_VOICE, pAttackSounds[iSound], GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
+			EmitSound(SoundChannel::Voice, pAttackSounds[iSound], GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
 
 		pev->velocity = vecJumpDir;
 		m_flNextAttack = gpGlobals->time + 2;
@@ -267,8 +267,8 @@ void CHeadCrab::Spawn()
 	SET_MODEL(ENT(pev), "models/headcrab.mdl");
 	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 24));
 
-	pev->solid = SOLID_SLIDEBOX;
-	pev->movetype = MOVETYPE_STEP;
+	pev->solid = Solid::SlideBox;
+	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->effects = 0;
 	pev->health = gSkillData.headcrabHealth;
@@ -329,7 +329,7 @@ void CHeadCrab::LeapTouch(CBaseEntity* pOther)
 	// Don't hit if back on ground
 	if (!IsBitSet(pev->flags, FL_ONGROUND))
 	{
-		EmitSound(CHAN_WEAPON, RANDOM_SOUND_ARRAY(pBiteSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
+		EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pBiteSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
 
 		pOther->TakeDamage(pev, pev, GetDamageAmount(), DMG_SLASH);
 	}
@@ -354,7 +354,7 @@ void CHeadCrab::StartTask(Task_t* pTask)
 	{
 	case TASK_RANGE_ATTACK1:
 	{
-		EmitSound(CHAN_WEAPON, pAttackSounds[0], GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
+		EmitSound(SoundChannel::Weapon, pAttackSounds[0], GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
 		m_IdealActivity = ACT_RANGE_ATTACK1;
 		SetTouch(&CHeadCrab::LeapTouch);
 		break;
@@ -399,22 +399,22 @@ bool CHeadCrab::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 
 void CHeadCrab::IdleSound()
 {
-	EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pIdleSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
+	EmitSound(SoundChannel::Voice, RANDOM_SOUND_ARRAY(pIdleSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
 }
 
 void CHeadCrab::AlertSound()
 {
-	EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pAlertSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
+	EmitSound(SoundChannel::Voice, RANDOM_SOUND_ARRAY(pAlertSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
 }
 
 void CHeadCrab::PainSound()
 {
-	EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pPainSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
+	EmitSound(SoundChannel::Voice, RANDOM_SOUND_ARRAY(pPainSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
 }
 
 void CHeadCrab::DeathSound()
 {
-	EmitSound(CHAN_VOICE, RANDOM_SOUND_ARRAY(pDeathSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
+	EmitSound(SoundChannel::Voice, RANDOM_SOUND_ARRAY(pDeathSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
 }
 
 Schedule_t* CHeadCrab::GetScheduleOfType(int Type)
@@ -450,7 +450,7 @@ void CBabyCrab::Spawn()
 {
 	CHeadCrab::Spawn();
 	SET_MODEL(ENT(pev), "models/baby_headcrab.mdl");
-	pev->rendermode = kRenderTransTexture;
+	pev->rendermode = RenderMode::TransTexture;
 	pev->renderamt = 192;
 	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 24));
 
