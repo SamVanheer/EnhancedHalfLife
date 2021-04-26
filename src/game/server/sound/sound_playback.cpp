@@ -99,14 +99,8 @@ void SENTENCEG_Stop(CBaseEntity* entity, int isentenceg, int ipick)
 	if (isentenceg < 0 || ipick < 0)
 		return;
 
-	//TODO: can just use snprintf here
 	char buffer[64];
-	safe_strcpy(buffer, "!");
-	safe_strcat(buffer, rgsentenceg[isentenceg].szgroupname);
-
-	char sznum[8];
-	snprintf(sznum, sizeof(sznum), "%d", ipick);
-	safe_strcat(buffer, sznum);
+	snprintf(buffer, sizeof(buffer), "!%s%d", rgsentenceg[isentenceg].szgroupname, ipick);
 
 	entity->StopSound(SoundChannel::Voice, buffer);
 }
