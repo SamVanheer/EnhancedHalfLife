@@ -31,7 +31,6 @@ constexpr int PM_WORLD_ONLY = 0x00000008;		//!< Only trace against the world
 constexpr int PM_TRACELINE_PHYSENTSONLY = 0;
 constexpr int PM_TRACELINE_ANYVISIBLE = 1;
 
-
 #include "pm_info.h"
 
 // PM_PlayerTrace results.
@@ -85,7 +84,6 @@ struct physent_t
 	Vector			vuser3;
 	Vector			vuser4;
 };
-
 
 struct playermove_t
 {

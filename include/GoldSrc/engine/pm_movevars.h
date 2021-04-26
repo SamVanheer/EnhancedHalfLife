@@ -38,5 +38,3 @@ struct movevars_t
 	float	skyvec_y;			// 
 	float	skyvec_z;			// 
 };
-
-extern movevars_t movevars;
