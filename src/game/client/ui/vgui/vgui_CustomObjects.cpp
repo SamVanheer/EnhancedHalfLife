@@ -321,12 +321,7 @@ void CImageLabel::LoadImage(const char* pImageName)
 	{
 		// we didn't find a matching image file for this resolution
 		// try to load file resolution independent
-
-		char sz[256];
-		snprintf(sz, sizeof(sz), "%s/%s", gEngfuncs.pfnGetGameDirectory(), pImageName);
-		FileInputStream* fis = new FileInputStream(sz, false);
-		m_pTGA = new BitmapTGA(fis, true);
-		fis->close();
+		m_pTGA = vgui_LoadTGA(pImageName);
 	}
 
 	if (m_pTGA == nullptr)
