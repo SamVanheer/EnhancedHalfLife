@@ -175,7 +175,7 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 {
 	m_pPlayer->pev->weaponanim = iAnim;
 
-	HUD_SendWeaponAnim(iAnim, body, 0);
+	HUD_SendWeaponAnim(iAnim, body, false);
 }
 
 /**
@@ -665,7 +665,7 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 		g_Python.pev->body = bIsMultiplayer() ? 1 : 0;
 
 		// Force a fixed anim down to viewmodel
-		HUD_SendWeaponAnim(to->client.weaponanim, pWeapon->pev->body, 1);
+		HUD_SendWeaponAnim(to->client.weaponanim, pWeapon->pev->body, true);
 	}
 
 	for (i = 0; i < MAX_WEAPONS; i++)

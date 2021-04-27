@@ -28,7 +28,7 @@ int				HUD_GetWeaponAnim();
 /**
 *	@brief Change weapon model animation
 */
-void			HUD_SendWeaponAnim(int iAnim, int body, int force);
+void			HUD_SendWeaponAnim(int iAnim, int body, bool force);
 
 /**
 *	@brief Play a sound, if we are seeing this command for the first time

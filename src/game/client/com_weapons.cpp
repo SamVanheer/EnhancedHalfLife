@@ -39,7 +39,7 @@ local_state_t* g_finalstate = nullptr;
 */
 static int g_currentanim;
 
-void HUD_SendWeaponAnim(int iAnim, int body, int force)
+void HUD_SendWeaponAnim(int iAnim, int body, bool force)
 {
 	// Don't actually change it.
 	if (!g_runfuncs && !force)
