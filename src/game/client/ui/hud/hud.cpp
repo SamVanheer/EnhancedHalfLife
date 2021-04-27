@@ -421,18 +421,6 @@ bool CHud::MsgFunc_Logo(const char* pszName, int iSize, void* pbuf)
 
 float g_lastFOV = 0.0;
 
-bool HUD_IsGame(std::string_view game)
-{
-	std::string_view gamedir = gEngfuncs.pfnGetGameDirectory();
-	if (gamedir[0])
-	{
-		auto gd = COM_FileBase(gamedir);
-
-		return UTIL_IEquals(gd, game);
-	}
-	return false;
-}
-
 /**
 *	@brief Returns last FOV
 */
