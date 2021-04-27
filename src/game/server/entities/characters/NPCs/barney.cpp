@@ -34,6 +34,8 @@ constexpr int BARNEY_AE_DRAW = 2;
 constexpr int BARNEY_AE_SHOOT = 3;
 constexpr int BARNEY_AE_HOLSTER = 4;
 
+constexpr int BARNEY_BODYGROUP_GUN = 1;
+
 constexpr int BARNEY_BODY_GUNHOLSTERED = 0;
 constexpr int BARNEY_BODY_GUNDRAWN = 1;
 constexpr int BARNEY_BODY_GUNGONE = 2;
@@ -350,13 +352,13 @@ void CBarney::HandleAnimEvent(AnimationEvent& event)
 
 	case BARNEY_AE_DRAW:
 		// barney's bodygroup switches here so he can pull gun from holster
-		pev->body = BARNEY_BODY_GUNDRAWN;
+		SetBodygroup(BARNEY_BODYGROUP_GUN, BARNEY_BODY_GUNDRAWN);
 		m_fGunDrawn = true;
 		break;
 
 	case BARNEY_AE_HOLSTER:
 		// change bodygroup to replace gun in holster
-		pev->body = BARNEY_BODY_GUNHOLSTERED;
+		SetBodygroup(BARNEY_BODYGROUP_GUN, BARNEY_BODY_GUNHOLSTERED);
 		m_fGunDrawn = false;
 		break;
 
@@ -380,7 +382,7 @@ void CBarney::Spawn()
 	m_flFieldOfView = VIEW_FIELD_WIDE; // NOTE: we need a wide field of view so npc will notice player and say hello
 	m_MonsterState = NPCState::None;
 
-	pev->body = 0; // gun in holster
+	SetBodygroup(BARNEY_BODYGROUP_GUN, BARNEY_BODY_GUNHOLSTERED);
 	m_fGunDrawn = false;
 
 	m_afCapability = bits_CAP_HEAR | bits_CAP_TURN_HEAD | bits_CAP_DOORS_GROUP;
@@ -553,9 +555,9 @@ void CBarney::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir,
 
 void CBarney::Killed(entvars_t* pevAttacker, int iGib)
 {
-	if (pev->body < BARNEY_BODY_GUNGONE)
+	if (GetBodygroup(BARNEY_BODYGROUP_GUN) != BARNEY_BODY_GUNGONE)
 	{// drop the gun!
-		pev->body = BARNEY_BODY_GUNGONE;
+		SetBodygroup(BARNEY_BODYGROUP_GUN, BARNEY_BODY_GUNGONE);
 
 		Vector vecGunPos, vecGunAngles;
 		GetAttachment(0, vecGunPos, vecGunAngles);

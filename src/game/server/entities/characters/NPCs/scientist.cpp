@@ -24,8 +24,18 @@
 #include "animation.h"
 #include "soundent.h"
 
+constexpr int SCIENTIST_BODYGROUP_HEAD = 1;
+constexpr int SCIENTIST_BODYGROUP_NEEDLE = 2;
+
+constexpr int SCIENTIST_HEAD_GLASSES = 0;
+constexpr int SCIENTIST_HEAD_EINSTEIN = 1;
+constexpr int SCIENTIST_HEAD_LUTHER = 2;
+constexpr int SCIENTIST_HEAD_SLICK = 3;
+
+constexpr int SCIENTIST_NEEDLE_OFF = 0;
+constexpr int SCIENTIST_NEEDLE_ON = 1;
+
 constexpr int NUM_SCIENTIST_HEADS = 4; // four heads available for scientist model
-enum { HEAD_GLASSES = 0, HEAD_EINSTEIN = 1, HEAD_LUTHER = 2, HEAD_SLICK = 3 };
 
 enum
 {
@@ -597,14 +607,12 @@ void CScientist::HandleAnimEvent(AnimationEvent& event)
 		break;
 	case SCIENTIST_AE_NEEDLEON:
 	{
-		const int oldBody = pev->body;
-		pev->body = (oldBody % NUM_SCIENTIST_HEADS) + NUM_SCIENTIST_HEADS * 1;
+		SetBodygroup(SCIENTIST_BODYGROUP_NEEDLE, SCIENTIST_NEEDLE_ON);
 	}
 	break;
 	case SCIENTIST_AE_NEEDLEOFF:
 	{
-		const int oldBody = pev->body;
-		pev->body = (oldBody % NUM_SCIENTIST_HEADS) + NUM_SCIENTIST_HEADS * 0;
+		SetBodygroup(SCIENTIST_BODYGROUP_NEEDLE, SCIENTIST_NEEDLE_OFF);
 	}
 	break;
 
@@ -640,8 +648,11 @@ void CScientist::Spawn()
 		pev->body = RANDOM_LONG(0, NUM_SCIENTIST_HEADS - 1);// pick a head, any head
 	}
 
+	//Remap old bodies to new ones
+	SetBodygroup(SCIENTIST_BODYGROUP_HEAD, pev->body);
+
 	// Luther is black, make his hands black
-	if (pev->body == HEAD_LUTHER)
+	if (GetBodygroup(SCIENTIST_BODYGROUP_HEAD) == SCIENTIST_HEAD_LUTHER)
 		pev->skin = 1;
 
 	MonsterInit();
@@ -699,13 +710,13 @@ void CScientist::TalkInit()
 	m_szGrp[TLK_MORTAL] = "SC_MORTAL";
 
 	// get voice for head
-	switch (pev->body % 3)
+	switch (GetBodygroup(SCIENTIST_BODYGROUP_HEAD) % 3)
 	{
 	default:
-	case HEAD_GLASSES:	m_voicePitch = 105; break;	//glasses
-	case HEAD_EINSTEIN: m_voicePitch = 100; break;	//einstein
-	case HEAD_LUTHER:	m_voicePitch = 95;  break;	//luther
-	case HEAD_SLICK:	m_voicePitch = 100;  break;//slick
+	case SCIENTIST_HEAD_GLASSES:	m_voicePitch = 105; break;
+	case SCIENTIST_HEAD_EINSTEIN:	m_voicePitch = 100; break;
+	case SCIENTIST_HEAD_LUTHER:		m_voicePitch = 95; break;
+	case SCIENTIST_HEAD_SLICK:		m_voicePitch = 100; break;
 	}
 }
 
@@ -1067,8 +1078,12 @@ void CDeadScientist::Spawn()
 	{// -1 chooses a random head
 		pev->body = RANDOM_LONG(0, NUM_SCIENTIST_HEADS - 1);// pick a head, any head
 	}
+
+	//Remap old bodies to new ones
+	SetBodygroup(SCIENTIST_BODYGROUP_HEAD, pev->body);
+
 	// Luther is black, make his hands black
-	if (pev->body == HEAD_LUTHER)
+	if (GetBodygroup(SCIENTIST_BODYGROUP_HEAD) == SCIENTIST_HEAD_LUTHER)
 		pev->skin = 1;
 	else
 		pev->skin = 0;
@@ -1165,8 +1180,12 @@ void CSittingScientist::Spawn()
 	{// -1 chooses a random head
 		pev->body = RANDOM_LONG(0, NUM_SCIENTIST_HEADS - 1);// pick a head, any head
 	}
+
+	//Remap old bodies to new ones
+	SetBodygroup(SCIENTIST_BODYGROUP_HEAD, pev->body);
+
 	// Luther is black, make his hands black
-	if (pev->body == HEAD_LUTHER)
+	if (GetBodygroup(SCIENTIST_BODYGROUP_HEAD) == SCIENTIST_HEAD_LUTHER)
 		pev->skin = 1;
 
 	m_baseSequence = LookupSequence("sitlookleft");

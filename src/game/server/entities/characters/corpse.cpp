@@ -69,6 +69,9 @@ void CopyToBodyQue(entvars_t* pev)
 	g_pBodyQueueHead = pevHead->owner;
 }
 
+constexpr int DEADHEV_BODYGROUP_HEAD = 1;
+constexpr int DEADHEV_HEAD_HELMETED = 1;
+
 /**
 *	@brief Dead HEV suit prop
 */
@@ -105,7 +108,7 @@ void CDeadHEV::Spawn()
 	pev->effects = 0;
 	pev->yaw_speed = 8;
 	pev->sequence = 0;
-	pev->body = 1;
+	SetBodygroup(DEADHEV_BODYGROUP_HEAD, DEADHEV_HEAD_HELMETED);
 	m_bloodColor = BLOOD_COLOR_RED;
 
 	pev->sequence = LookupSequence(m_szPoses[m_iPose]);
