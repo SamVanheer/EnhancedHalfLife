@@ -41,6 +41,8 @@ public:
 
 	void Close();
 
+	void Seek(int pos, FileSystemSeek_t seekType);
+
 	int Read(void* dest, int size);
 
 	int Write(const void* input, int size);
@@ -73,6 +75,14 @@ inline void FSFile::Close()
 	{
 		g_pFileSystem->Close(_handle);
 		_handle = FILESYSTEM_INVALID_HANDLE;
+	}
+}
+
+inline void FSFile::Seek(int pos, FileSystemSeek_t seekType)
+{
+	if (IsOpen())
+	{
+		g_pFileSystem->Seek(_handle, pos, seekType);
 	}
 }
 
