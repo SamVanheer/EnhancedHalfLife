@@ -990,7 +990,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 		}
 	}
 
-	edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
+	edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target));
 	if (IsNullEnt(pentTarget))
 		return;
 

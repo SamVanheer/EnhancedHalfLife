@@ -492,7 +492,7 @@ void CTalkMonster::RunTask(Task_t* pTask)
 			!IsTalking())
 		{
 			// Get edict for one player
-			edict_t* pPlayer = g_engfuncs.pfnPEntityOfEntIndex(1);
+			pPlayer = g_engfuncs.pfnPEntityOfEntIndex(1);
 
 			if (pPlayer)
 			{
