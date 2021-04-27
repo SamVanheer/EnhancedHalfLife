@@ -82,9 +82,6 @@ void TEXTURETYPE_Init()
 		while (buffer[j] && !isspace(buffer[j]))
 			j++;
 
-		if (!buffer[j])
-			continue;
-
 		// null-terminate name and save in sentences array
 		j = std::min(j, CBTEXTURENAMEMAX - 1 + i);
 		buffer[j] = '\0';
