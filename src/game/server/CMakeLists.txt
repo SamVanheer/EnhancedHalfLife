@@ -68,6 +68,8 @@ target_sources(hl PRIVATE
 	entities/world.cpp
 	entities/brush/bmodels.cpp
 	entities/brush/buttons.cpp
+	entities/brush/CBaseCharger.cpp
+	entities/brush/CBaseCharger.hpp
 	entities/brush/doors.cpp
 	entities/brush/doors.h
 	entities/brush/func_break.cpp

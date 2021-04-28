@@ -201,7 +201,7 @@ Vector CHalfLifeRules::AmmoRespawnSpot(CBasePlayerAmmo* pAmmo)
 
 float CHalfLifeRules::HealthChargerRechargeTime()
 {
-	return 0;// don't recharge
+	return -1;// don't recharge
 }
 
 int CHalfLifeRules::DeadPlayerWeapons(CBasePlayer* pPlayer)

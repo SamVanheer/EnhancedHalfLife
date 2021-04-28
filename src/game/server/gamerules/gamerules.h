@@ -301,7 +301,7 @@ public:
 	/**
 	*	@brief how long until a depleted HealthCharger recharges itself?
 	*/
-	virtual float HEVChargerRechargeTime() { return 0; }
+	virtual float HEVChargerRechargeTime() { return -1; }
 
 	/**
 	*	@brief What happens to a dead player's weapons. what do I do with a player's weapons when he's killed?
