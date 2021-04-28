@@ -32,6 +32,8 @@ TYPEDESCRIPTION CBaseCharger::m_SaveData[] =
 	DEFINE_FIELD(CBaseCharger, m_iszChargeLoopSound, FIELD_STRING),
 	DEFINE_FIELD(CBaseCharger, m_iszRefuseChargeSound, FIELD_STRING),
 	DEFINE_FIELD(CBaseCharger, m_iszRechargeSound, FIELD_STRING),
+	DEFINE_FIELD(CBaseCharger, m_iszFireOnRecharge, FIELD_STRING),
+	DEFINE_FIELD(CBaseCharger, m_iszFireOnEmpty, FIELD_STRING),
 };
 
 //TODO: was CBaseEntity before, needs investigating
@@ -101,6 +103,16 @@ void CBaseCharger::KeyValue(KeyValueData* pkvd)
 		m_iszRechargeSound = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
+	else if (AreStringsEqual(pkvd->szKeyName, "fire_on_recharge"))
+	{
+		m_iszFireOnRecharge = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "fire_on_empty"))
+	{
+		m_iszFireOnEmpty = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
 	else
 		CBaseToggle::KeyValue(pkvd);
 }
@@ -128,7 +140,8 @@ void CBaseCharger::Spawn()
 	//Allow at most continuous charging
 	m_flChargeInterval = std::max(0.0f, m_flChargeInterval);
 
-	CheckIfOutOfCharge();
+	//Will be initialized to the correct value in Activate()
+	pev->frame = 0;
 }
 
 void CBaseCharger::Precache()
@@ -154,6 +167,25 @@ void CBaseCharger::Precache()
 	}
 }
 
+void CBaseCharger::Activate()
+{
+	const bool fireTargets = IsBitSet(pev->spawnflags, SF_CHARGER_FIRE_ON_ACTIVATE);
+
+	if (fireTargets)
+	{
+		//Clear this so loading save games doesn't trigger it again
+		ClearBits(pev->spawnflags, SF_CHARGER_FIRE_ON_ACTIVATE);
+
+		if (m_iCurrentCapacity != 0 && !IsStringNull(m_iszFireOnRecharge))
+		{
+			FireTargets(STRING(m_iszFireOnRecharge), this, this, USE_ON, 0);
+		}
+	}
+
+	//Always call this
+	CheckIfOutOfCharge(fireTargets);
+}
+
 void CBaseCharger::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	// Make sure that we have a caller
@@ -161,7 +193,7 @@ void CBaseCharger::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE u
 	if (!pActivator || !pActivator->IsPlayer())
 		return;
 
-	CheckIfOutOfCharge();
+	CheckIfOutOfCharge(true);
 
 	// if the player doesn't have the suit, or there is no juice left, make the deny noise
 	if ((m_iCurrentCapacity == 0) || (!(pActivator->pev->weapons & (1 << WEAPON_SUIT))))
@@ -253,6 +285,11 @@ void CBaseCharger::Recharge()
 	{
 		EmitSound(SoundChannel::Item, STRING(m_iszRechargeSound), 0.85, ATTN_NORM, m_iPitch);
 	}
+
+	if (m_iCurrentCapacity > 0 && !IsStringNull(m_iszFireOnRecharge))
+	{
+		FireTargets(STRING(m_iszFireOnRecharge), this, this, USE_ON, 0);
+	}
 }
 
 void CBaseCharger::Off()
@@ -287,11 +324,16 @@ void CBaseCharger::Off()
 		SetThink(&CBaseCharger::SUB_DoNothing);
 }
 
-void CBaseCharger::CheckIfOutOfCharge()
+void CBaseCharger::CheckIfOutOfCharge(bool fireTargets)
 {
 	// if there is no juice left, turn it off
 	if (m_iCurrentCapacity == 0)
 	{
+		if (fireTargets && !IsStringNull(m_iszFireOnEmpty))
+		{
+			FireTargets(STRING(m_iszFireOnEmpty), this, this, USE_OFF, 0);
+		}
+
 		pev->frame = 1;
 		Off();
 	}

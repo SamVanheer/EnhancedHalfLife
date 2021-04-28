@@ -25,11 +25,17 @@ enum class ChargerState
 constexpr int CHARGER_INFINITE_CAPACITY = -1;
 constexpr int CHARGER_NOT_INITIALIZED = -2;
 
+/**
+*	@brief If set, either the "fire on recharge" or "fire on empty" target will be triggered depending on charger state
+*/
+constexpr int SF_CHARGER_FIRE_ON_ACTIVATE = 1 << 0;
+
 class CBaseCharger : public CBaseToggle
 {
 public:
 	void Spawn() override;
 	void Precache() override;
+	void Activate() override;
 	void EXPORT Off();
 	void EXPORT Recharge();
 	void KeyValue(KeyValueData* pkvd) override;
@@ -38,7 +44,7 @@ public:
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 
-	void CheckIfOutOfCharge();
+	void CheckIfOutOfCharge(bool fireTargets);
 
 protected:
 	virtual [[nodiscard]] float GetCurrentValue(CBaseEntity* target) = 0;
@@ -91,4 +97,7 @@ public:
 	string_t m_iszChargeLoopSound = iStringNull;
 	string_t m_iszRefuseChargeSound = iStringNull;
 	string_t m_iszRechargeSound = iStringNull;
+
+	string_t m_iszFireOnRecharge = iStringNull;
+	string_t m_iszFireOnEmpty = iStringNull;
 };
