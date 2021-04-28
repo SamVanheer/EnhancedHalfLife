@@ -234,7 +234,6 @@ void W_Precache()
 	UTIL_PrecacheOther("item_suit");
 	UTIL_PrecacheOther("item_battery");
 	UTIL_PrecacheOther("item_antidote");
-	UTIL_PrecacheOther("item_security");
 	UTIL_PrecacheOther("item_longjump");
 
 	// shotgun
