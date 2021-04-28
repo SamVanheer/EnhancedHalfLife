@@ -52,7 +52,7 @@ public:
 	void			EntityUpdate(string_t globalname, string_t mapname);
 	const globalentity_t* EntityFromTable(string_t globalname);
 	GlobalEntState	EntityGetState(string_t globalname);
-	int				EntityInTable(string_t globalname) { return (Find(globalname) != nullptr) ? 1 : 0; }
+	bool			EntityInTable(string_t globalname) { return Find(globalname) != nullptr; }
 	bool Save(CSave& save);
 	bool Restore(CRestore& restore);
 	static TYPEDESCRIPTION m_SaveData[];
