@@ -93,8 +93,11 @@ DLL_FUNCTIONS gEntityInterface =
 
 NEW_DLL_FUNCTIONS gNewDLLFunctions =
 {
-	OnFreeEntPrivateData,		//pfnOnFreeEntPrivateData
+	OnFreeEntPrivateData,
 	GameDLLShutdown,
+	ShouldCollide,
+	CvarValue,
+	CvarValue2
 };
 
 int DispatchSpawn(edict_t* pent)
@@ -407,4 +410,19 @@ void OnFreeEntPrivateData(edict_t* pEdict)
 
 		pEdict->pvPrivateData = nullptr;
 	}
+}
+
+int ShouldCollide(edict_t* pentTouched, edict_t* pentOther)
+{
+	return true;
+}
+
+void CvarValue(const edict_t* pEnt, const char* value)
+{
+	//Nothing
+}
+
+void CvarValue2(const edict_t* pEnt, int requestID, const char* cvarName, const char* value)
+{
+	//Nothing
 }
