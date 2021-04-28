@@ -169,12 +169,12 @@ void CBaseCharger::Precache()
 
 void CBaseCharger::Activate()
 {
-	const bool fireTargets = IsBitSet(pev->spawnflags, SF_CHARGER_FIRE_ON_ACTIVATE);
+	const bool fireTargets = IsBitSet(pev->spawnflags, SF_CHARGER_FIRE_ON_SPAWN);
 
 	if (fireTargets)
 	{
 		//Clear this so loading save games doesn't trigger it again
-		ClearBits(pev->spawnflags, SF_CHARGER_FIRE_ON_ACTIVATE);
+		ClearBits(pev->spawnflags, SF_CHARGER_FIRE_ON_SPAWN);
 
 		if (m_iCurrentCapacity != 0 && !IsStringNull(m_iszFireOnRecharge))
 		{

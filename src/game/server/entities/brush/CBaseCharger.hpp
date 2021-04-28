@@ -26,9 +26,9 @@ constexpr int CHARGER_INFINITE_CAPACITY = -1;
 constexpr int CHARGER_NOT_INITIALIZED = -2;
 
 /**
-*	@brief If set, either the "fire on recharge" or "fire on empty" target will be triggered depending on charger state
+*	@brief If set, fire_on_recharge or fire_on_empty will be triggered on map spawn depending on initial capacity
 */
-constexpr int SF_CHARGER_FIRE_ON_ACTIVATE = 1 << 0;
+constexpr int SF_CHARGER_FIRE_ON_SPAWN = 1 << 0;
 
 class CBaseCharger : public CBaseToggle
 {
