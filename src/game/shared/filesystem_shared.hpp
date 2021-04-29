@@ -34,11 +34,13 @@ std::tuple<std::unique_ptr<byte[]>, std::size_t> FileSystem_LoadFileIntoBuffer(c
 class FSFile
 {
 public:
+	FSFile() = default;
 	FSFile(const char* filename, const char* options, const char* pathID = nullptr);
 	~FSFile();
 
 	constexpr bool IsOpen() const { return _handle != FILESYSTEM_INVALID_HANDLE; }
 
+	bool Open(const char* filename, const char* options, const char* pathID = nullptr);
 	void Close();
 
 	void Seek(int pos, FileSystemSeek_t seekType);
@@ -56,17 +58,26 @@ public:
 	constexpr operator bool() const { return IsOpen(); }
 
 private:
-	FileHandle_t _handle;
+	FileHandle_t _handle = FILESYSTEM_INVALID_HANDLE;
 };
 
 inline FSFile::FSFile(const char* filename, const char* options, const char* pathID)
-	: _handle(g_pFileSystem->Open(filename, options, pathID))
 {
+	Open(filename, options, pathID);
 }
 
 inline FSFile::~FSFile()
 {
 	Close();
+}
+
+inline bool FSFile::Open(const char* filename, const char* options, const char* pathID)
+{
+	Close();
+
+	_handle = g_pFileSystem->Open(filename, options, pathID);
+
+	return IsOpen();
 }
 
 inline void FSFile::Close()

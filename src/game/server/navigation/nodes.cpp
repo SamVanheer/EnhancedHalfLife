@@ -27,6 +27,7 @@
 #include "doors.h"
 #include "dll_functions.hpp"
 #include "corpse.hpp"
+#include "game.h"
 
 constexpr int HULL_STEP_SIZE = 16; // how far the test hull moves on each step
 constexpr int NODE_HEIGHT = 8;	// how high to lift nodes off the ground after we drop them all (make stair/ramp mapping easier)
@@ -1017,13 +1018,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 		return 0;
 	}
 
-	// if the file pointer is bad, don't blow up, just don't write the
-	// file.
-	if (!file)
-	{
-		ALERT(at_aiconsole, "**LinkVisibleNodes:\ncan't write to file.");
-	}
-	else
+	if (file)
 	{
 		file.Printf("----------------------------------------------------------------------------\n");
 		file.Printf("LinkVisibleNodes - Initial Connections\n");
@@ -1150,7 +1145,11 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 			if (cLinksThisNode == MAX_NODE_INITIAL_LINKS)
 			{
 				ALERT(at_aiconsole, "**LinkVisibleNodes:\nNode %d has NodeLinks > MAX_NODE_INITIAL_LINKS", i);
-				file.Printf("** NODE %d HAS NodeLinks > MAX_NODE_INITIAL_LINKS **\n", i);
+
+				if (file)
+				{
+					file.Printf("** NODE %d HAS NodeLinks > MAX_NODE_INITIAL_LINKS **\n", i);
+				}
 				*piBadNode = i;
 				return 0;
 			}
@@ -1163,7 +1162,10 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 
 			if (cLinksThisNode == 0)
 			{
-				file.Printf("**NO INITIAL LINKS**\n");
+				if (file)
+				{
+					file.Printf("**NO INITIAL LINKS**\n");
+				}
 			}
 
 			// record the connection info in the link pool
@@ -1183,8 +1185,11 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 		}
 	}
 
-	file.Printf("\n%4d Total Initial Connections - %4d Maximum connections for a single node.\n", cTotalLinks, cMaxInitialLinks);
-	file.Printf("----------------------------------------------------------------------------\n\n\n");
+	if (file)
+	{
+		file.Printf("\n%4d Total Initial Connections - %4d Maximum connections for a single node.\n", cTotalLinks, cMaxInitialLinks);
+		file.Printf("----------------------------------------------------------------------------\n\n\n");
+	}
 
 	return cTotalLinks;
 }
@@ -1454,16 +1459,21 @@ void CTestHull::BuildNodeGraph()
 
 	const auto nrpFilenameString = nrpFilename.string();
 
-	FSFile file{nrpFilenameString.c_str(), "w+", "GAMECONFIG"};
+	FSFile file;
 
-	if (!file)
-	{// file error
-		ALERT(at_aiconsole, "Couldn't create %s!\n", nrpFilenameString.c_str());
-		return;
+	if (sv_generatenodereportfile.value)
+	{
+		if (!file.Open(nrpFilenameString.c_str(), "w+", "GAMECONFIG"))
+		{
+			ALERT(at_aiconsole, "Couldn't create %s!\n", nrpFilenameString.c_str());
+		}
 	}
 
-	file.Printf("Node Graph Report for map:  %s.bsp\n", STRING(gpGlobals->mapname));
-	file.Printf("%d Total Nodes\n\n", WorldGraph.m_cNodes);
+	if (file)
+	{
+		file.Printf("Node Graph Report for map:  %s.bsp\n", STRING(gpGlobals->mapname));
+		file.Printf("%d Total Nodes\n\n", WorldGraph.m_cNodes);
+	}
 
 	for (int i = 0; i < WorldGraph.m_cNodes; i++)
 	{// print all node numbers and their locations to the file.
@@ -1471,14 +1481,21 @@ void CTestHull::BuildNodeGraph()
 		WorldGraph.m_pNodes[i].m_iFirstLink = 0;
 		memset(WorldGraph.m_pNodes[i].m_pNextBestNode, 0, sizeof(WorldGraph.m_pNodes[i].m_pNextBestNode));
 
-		file.Printf("Node#         %4d\n", i);
-		file.Printf("Location      %4d,%4d,%4d\n", (int)WorldGraph.m_pNodes[i].m_vecOrigin.x, (int)WorldGraph.m_pNodes[i].m_vecOrigin.y, (int)WorldGraph.m_pNodes[i].m_vecOrigin.z);
-		file.Printf("HintType:     %4d\n", WorldGraph.m_pNodes[i].m_sHintType);
-		file.Printf("HintActivity: %4d\n", WorldGraph.m_pNodes[i].m_sHintActivity);
-		file.Printf("HintYaw:      %4f\n", WorldGraph.m_pNodes[i].m_flHintYaw);
-		file.Printf("-------------------------------------------------------------------------------\n");
+		if (file)
+		{
+			file.Printf("Node#         %4d\n", i);
+			file.Printf("Location      %4d,%4d,%4d\n", (int)WorldGraph.m_pNodes[i].m_vecOrigin.x, (int)WorldGraph.m_pNodes[i].m_vecOrigin.y, (int)WorldGraph.m_pNodes[i].m_vecOrigin.z);
+			file.Printf("HintType:     %4d\n", WorldGraph.m_pNodes[i].m_sHintType);
+			file.Printf("HintActivity: %4d\n", WorldGraph.m_pNodes[i].m_sHintActivity);
+			file.Printf("HintYaw:      %4f\n", WorldGraph.m_pNodes[i].m_flHintYaw);
+			file.Printf("-------------------------------------------------------------------------------\n");
+		}
 	}
-	file.Printf("\n\n");
+
+	if (file)
+	{
+		file.Printf("\n\n");
+	}
 
 	// Automatically recognize WATER nodes and drop the LAND nodes to the floor.
 	//
@@ -1545,15 +1562,21 @@ void CTestHull::BuildNodeGraph()
 
 	// send the walkhull to all of this node's connections now. We'll do this here since
 	// so much of it relies on being able to control the test hull.
-	file.Printf("----------------------------------------------------------------------------\n");
-	file.Printf("Walk Rejection:\n");
+	if (file)
+	{
+		file.Printf("----------------------------------------------------------------------------\n");
+		file.Printf("Walk Rejection:\n");
+	}
 
 	for (int i = 0; i < WorldGraph.m_cNodes; i++)
 	{
 		CNode* pSrcNode = &WorldGraph.m_pNodes[i];
 
-		file.Printf("-------------------------------------------------------------------------------\n");
-		file.Printf("Node %4d:\n\n", i);
+		if (file)
+		{
+			file.Printf("-------------------------------------------------------------------------------\n");
+			file.Printf("Node %4d:\n\n", i);
+		}
 
 		for (int j = 0; j < pSrcNode->m_cNumLinks; j++)
 		{
@@ -1655,17 +1678,26 @@ void CTestHull::BuildNodeGraph()
 						switch (hull)
 						{
 						case NODE_SMALL_HULL:	// if this hull can't fit, nothing can, so drop the connection
-							file.Printf("NODE_SMALL_HULL step %d\n", step);
+							if (file)
+							{
+								file.Printf("NODE_SMALL_HULL step %d\n", step);
+							}
 							pTempPool[pSrcNode->m_iFirstLink + j].m_afLinkInfo &= ~(bits_LINK_SMALL_HULL | bits_LINK_HUMAN_HULL | bits_LINK_LARGE_HULL);
 							fSkipRemainingHulls = true;// don't bother checking larger hulls
 							break;
 						case NODE_HUMAN_HULL:
-							file.Printf("NODE_HUMAN_HULL step %d\n", step);
+							if (file)
+							{
+								file.Printf("NODE_HUMAN_HULL step %d\n", step);
+							}
 							pTempPool[pSrcNode->m_iFirstLink + j].m_afLinkInfo &= ~(bits_LINK_HUMAN_HULL | bits_LINK_LARGE_HULL);
 							fSkipRemainingHulls = true;// don't bother checking larger hulls
 							break;
 						case NODE_LARGE_HULL:
-							file.Printf("NODE_LARGE_HULL step %d\n", step);
+							if (file)
+							{
+								file.Printf("NODE_LARGE_HULL step %d\n", step);
+							}
 							pTempPool[pSrcNode->m_iFirstLink + j].m_afLinkInfo &= ~bits_LINK_LARGE_HULL;
 							break;
 						}
@@ -1686,9 +1718,17 @@ void CTestHull::BuildNodeGraph()
 
 			if (pTempPool[pSrcNode->m_iFirstLink + j].m_afLinkInfo == 0)
 			{
-				file.Printf("Rejected Node %3d - Unreachable by ", pTempPool[pSrcNode->m_iFirstLink + j].m_iDestNode);
+				if (file)
+				{
+					file.Printf("Rejected Node %3d - Unreachable by ", pTempPool[pSrcNode->m_iFirstLink + j].m_iDestNode);
+				}
+
 				pTempPool[pSrcNode->m_iFirstLink + j] = pTempPool[pSrcNode->m_iFirstLink + (pSrcNode->m_cNumLinks - 1)];
-				file.Printf("Any Hull\n");
+
+				if (file)
+				{
+					file.Printf("Any Hull\n");
+				}
 
 				pSrcNode->m_cNumLinks--;
 				cPoolLinks--;// we just removed a link, so decrement the total number of links in the pool.
@@ -1697,7 +1737,11 @@ void CTestHull::BuildNodeGraph()
 
 		}
 	}
-	file.Printf("-------------------------------------------------------------------------------\n\n\n");
+
+	if (file)
+	{
+		file.Printf("-------------------------------------------------------------------------------\n\n\n");
+	}
 
 	cPoolLinks -= WorldGraph.RejectInlineLinks(pTempPool.get(), file);
 
@@ -1745,8 +1789,11 @@ void CTestHull::BuildNodeGraph()
 	// are all links in the graph evenly paired?
 	bool fPairsValid = true; // assume that the connection pairs are all valid to start
 
-	file.Printf("\n\n-------------------------------------------------------------------------------\n");
-	file.Printf("Link Pairings:\n");
+	if (file)
+	{
+		file.Printf("\n\n-------------------------------------------------------------------------------\n");
+		file.Printf("Link Pairings:\n");
+	}
 
 	// link integrity check. The idea here is that if Node A links to Node B, node B should
 	// link to node A. If not, we have a situation that prevents us from using a basic 
@@ -1760,7 +1807,11 @@ void CTestHull::BuildNodeGraph()
 			if (iLink < 0)
 			{
 				fPairsValid = false;// unmatched link pair.
-				file.Printf("WARNING: Node %3d does not connect back to Node %3d\n", WorldGraph.DestNodeLink(i, j), i);
+
+				if (file)
+				{
+					file.Printf("WARNING: Node %3d does not connect back to Node %3d\n", WorldGraph.DestNodeLink(i, j), i);
+				}
 			}
 		}
 	}
@@ -1769,15 +1820,21 @@ void CTestHull::BuildNodeGraph()
 	// (in the find nearest line function)
 	if (fPairsValid)
 	{
-		file.Printf("\nAll Connections are Paired!\n");
+		if (file)
+		{
+			file.Printf("\nAll Connections are Paired!\n");
+		}
 	}
 
-	file.Printf("-------------------------------------------------------------------------------\n");
-	file.Printf("\n\n-------------------------------------------------------------------------------\n");
-	file.Printf("Total Number of Connections in Pool: %d\n", cPoolLinks);
-	file.Printf("-------------------------------------------------------------------------------\n");
-	file.Printf("Connection Pool: %d bytes\n", sizeof(CLink) * cPoolLinks);
-	file.Printf("-------------------------------------------------------------------------------\n");
+	if (file)
+	{
+		file.Printf("-------------------------------------------------------------------------------\n");
+		file.Printf("\n\n-------------------------------------------------------------------------------\n");
+		file.Printf("Total Number of Connections in Pool: %d\n", cPoolLinks);
+		file.Printf("-------------------------------------------------------------------------------\n");
+		file.Printf("Connection Pool: %d bytes\n", sizeof(CLink) * cPoolLinks);
+		file.Printf("-------------------------------------------------------------------------------\n");
+	}
 
 	ALERT(at_aiconsole, "%d Nodes, %d Connections\n", WorldGraph.m_cNodes, cPoolLinks);
 

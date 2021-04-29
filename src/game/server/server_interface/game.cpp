@@ -18,6 +18,8 @@
 
 cvar_t	displaysoundlist = {"displaysoundlist","0"};
 
+cvar_t sv_generatenodereportfile = {"sv_generatenodereportfile", "0"};
+
 // multiplayer server rules
 cvar_t	fragsleft = {"mp_fragsleft","0", FCVAR_SERVER | FCVAR_UNLOGGED};	  // Don't spam console/log files/users with this changing
 cvar_t	timeleft = {"mp_timeleft","0" , FCVAR_SERVER | FCVAR_UNLOGGED};	  // "      "
@@ -439,9 +441,17 @@ void GameDLLInit()
 	g_psv_aim = CVAR_GET_POINTER("sv_aim");
 	g_footsteps = CVAR_GET_POINTER("mp_footsteps");
 	g_psv_cheats = CVAR_GET_POINTER("sv_cheats");
+	g_pdeveloper = CVAR_GET_POINTER("developer");
 
 	CVAR_REGISTER(&displaysoundlist);
 	CVAR_REGISTER(&allow_spectators);
+
+	CVAR_REGISTER(&sv_generatenodereportfile);
+
+	if (g_pdeveloper->value > 0)
+	{
+		g_engfuncs.pfnCvar_DirectSet(&sv_generatenodereportfile, "1");
+	}
 
 	CVAR_REGISTER(&teamplay);
 	CVAR_REGISTER(&fraglimit);

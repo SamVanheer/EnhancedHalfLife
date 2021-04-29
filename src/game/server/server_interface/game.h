@@ -19,6 +19,7 @@ void GameDLLInit();
 void GameDLLShutdown();
 
 extern cvar_t displaysoundlist;
+extern cvar_t sv_generatenodereportfile;
 
 // multiplayer server rules
 extern cvar_t timeleft;
@@ -45,3 +46,4 @@ inline cvar_t* g_psv_gravity = nullptr;
 inline cvar_t* g_psv_aim = nullptr;
 inline cvar_t* g_footsteps = nullptr;
 inline cvar_t* g_psv_cheats = nullptr;
+inline cvar_t* g_pdeveloper = nullptr;
