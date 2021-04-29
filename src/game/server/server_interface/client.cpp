@@ -127,7 +127,7 @@ void ClientKill(edict_t* pEntity)
 
 	// have the player kill themself
 	pev->health = 0;
-	pl->Killed({pev, GIB_NEVER});
+	pl->Killed({pev, GibType::Never});
 
 	//	pev->modelindex = g_ulModelIndexPlayer;
 	//	pev->frags -= 2;		// extra penalty

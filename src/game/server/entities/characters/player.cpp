@@ -702,7 +702,7 @@ void CBasePlayer::Killed(const KilledInfo& info)
 	// UNDONE: Put this in, but add FFADE_PERMANENT and make fade time 8.8 instead of 4.12
 	// UTIL_ScreenFade( edict(), Vector(128,0,0), 6, 15, 255, FFADE_OUT | FFADE_MODULATE );
 
-	if ((pev->health < -40 && info.GetGibType() != GIB_NEVER) || info.GetGibType() == GIB_ALWAYS)
+	if ((pev->health < -40 && info.GetGibType() != GibType::Never) || info.GetGibType() == GibType::Always)
 	{
 		pev->solid = Solid::Not;
 		GibMonster();	// This clears pev->model

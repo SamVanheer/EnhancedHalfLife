@@ -106,12 +106,15 @@ class CSquadMonster;
 
 constexpr int SF_NORESPAWN = 1 << 30; // !!!set this bit on guns and stuff that should never respawn.
 
-// when calling KILLED(), a value that governs gib behavior is expected to be 
-// one of these three values
-//TODO: make this an enum
-constexpr int GIB_NORMAL = 0;	//!< gib if entity was overkilled
-constexpr int GIB_NEVER = 1;	//!< never gib, no matter how much death damage is done ( freezing, etc )
-constexpr int GIB_ALWAYS = 2;	//!< always gib ( Houndeye Shock, Barnacle Bite )
+/**
+*	@brief when calling Killed(), a value that governs gib behavior is expected to be one of these three values
+*/
+enum class GibType
+{
+	Normal = 0,	//!< gib if entity was overkilled
+	Never,		//!< never gib, no matter how much death damage is done ( freezing, etc )
+	Always		//!< always gib ( Houndeye Shock, Barnacle Bite )
+};
 
 /**
 *	@brief Contains information about an entity's death
@@ -119,9 +122,9 @@ constexpr int GIB_ALWAYS = 2;	//!< always gib ( Houndeye Shock, Barnacle Bite )
 class KilledInfo
 {
 public:
-	KilledInfo(entvars_t* pevAttacker, int iGib)
+	KilledInfo(entvars_t* pevAttacker, GibType gibType)
 		: _attacker(pevAttacker)
-		, _gibType(iGib)
+		, _gibType(gibType)
 	{
 	}
 
@@ -129,11 +132,11 @@ public:
 
 	entvars_t* GetAttacker() const { return _attacker; }
 
-	int GetGibType() const { return _gibType; }
+	GibType GetGibType() const { return _gibType; }
 
 private:
 	entvars_t* const _attacker;
-	const int _gibType;
+	const GibType _gibType;
 };
 
 /**

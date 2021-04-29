@@ -492,9 +492,9 @@ void CBaseMonster::BecomeDead()
 	//pev->velocity = pev->velocity * RANDOM_FLOAT( 300, 400 );
 }
 
-bool CBaseMonster::ShouldGibMonster(int iGib)
+bool CBaseMonster::ShouldGibMonster(GibType gibType)
 {
-	if ((iGib == GIB_NORMAL && pev->health < GIB_HEALTH_VALUE) || (iGib == GIB_ALWAYS))
+	if ((gibType == GibType::Normal && pev->health < GIB_HEALTH_VALUE) || (gibType == GibType::Always))
 		return true;
 
 	return false;
@@ -814,15 +814,15 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 
 		if (bitsDamageType & DMG_ALWAYSGIB)
 		{
-			Killed({pevAttacker, GIB_ALWAYS});
+			Killed({pevAttacker, GibType::Always});
 		}
 		else if (bitsDamageType & DMG_NEVERGIB)
 		{
-			Killed({pevAttacker, GIB_NEVER});
+			Killed({pevAttacker, GibType::Never});
 		}
 		else
 		{
-			Killed({pevAttacker, GIB_NORMAL});
+			Killed({pevAttacker, GibType::Normal});
 		}
 
 		g_pevLastInflictor = nullptr;
@@ -898,7 +898,7 @@ bool CBaseMonster::DeadTakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacke
 		if (pev->health <= flDamage)
 		{
 			pev->health = -50;
-			Killed({pevAttacker, GIB_ALWAYS});
+			Killed({pevAttacker, GibType::Always});
 			return false;
 		}
 		// Accumulate corpse gibbing damage, so you can gib with multiple hits

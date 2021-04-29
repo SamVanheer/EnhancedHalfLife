@@ -678,7 +678,7 @@ public:
 	*	@brief create some gore and get rid of a monster's model.
 	*/
 	virtual void GibMonster();
-	bool		 ShouldGibMonster(int iGib);
+	bool		 ShouldGibMonster(GibType gibType);
 	void		 CallGibMonster();
 	virtual bool	HasHumanGibs();
 	virtual bool	HasAlienGibs();

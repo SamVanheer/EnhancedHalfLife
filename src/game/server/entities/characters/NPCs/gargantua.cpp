@@ -856,7 +856,7 @@ void CGargantua::Killed(const KilledInfo& info)
 	EyeOff();
 	UTIL_Remove(m_pEyeGlow);
 	m_pEyeGlow = nullptr;
-	CBaseMonster::Killed({info.GetAttacker(), GIB_NEVER});
+	CBaseMonster::Killed({info.GetAttacker(), GibType::Never});
 }
 
 bool CGargantua::CheckMeleeAttack1(float flDot, float flDist)

@@ -83,7 +83,7 @@ bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	pev->health -= flDamage;
 	if (pev->health <= 0)
 	{
-		Killed({pevAttacker, GIB_NORMAL});
+		Killed({pevAttacker, GibType::Normal});
 		return false;
 	}
 

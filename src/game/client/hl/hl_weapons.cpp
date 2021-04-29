@@ -499,7 +499,7 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 	{
 		if (to->client.health <= 0 && lasthealth > 0)
 		{
-			player.Killed({nullptr, 0});
+			player.Killed({nullptr, GibType::Normal});
 
 		}
 		else if (to->client.health > 0 && lasthealth <= 0)
