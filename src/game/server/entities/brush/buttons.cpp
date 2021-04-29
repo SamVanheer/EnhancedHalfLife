@@ -376,7 +376,7 @@ void CBaseButton::KeyValue(KeyValueData* pkvd)
 		CBaseToggle::KeyValue(pkvd);
 }
 
-bool CBaseButton::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBaseButton::TakeDamage(const TakeDamageInfo& info)
 {
 	const ButtonCode code = ButtonResponseToTouch();
 
@@ -385,7 +385,7 @@ bool CBaseButton::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	// Temporarily disable the touch function, until movement is finished.
 	SetTouch(nullptr);
 
-	m_hActivator = CBaseEntity::Instance(pevAttacker);
+	m_hActivator = CBaseEntity::Instance(info.GetAttacker());
 	if (m_hActivator == nullptr)
 		return false;
 
@@ -1158,7 +1158,7 @@ class CButtonTarget : public CBaseEntity
 public:
 	void Spawn() override;
 	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	int	ObjectCaps() override;
 };
 
@@ -1196,9 +1196,9 @@ int	CButtonTarget::ObjectCaps()
 		return caps;
 }
 
-bool CButtonTarget::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CButtonTarget::TakeDamage(const TakeDamageInfo& info)
 {
-	Use(Instance(pevAttacker), this, USE_TOGGLE, 0);
+	Use(Instance(info.GetAttacker()), this, USE_TOGGLE, 0);
 
 	return true;
 }

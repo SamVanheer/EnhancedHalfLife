@@ -99,7 +99,7 @@ public:
 	void HandleAnimEvent(AnimationEvent& event) override;
 	bool CheckRangeAttack1(float flDot, float flDist) override;
 	bool CheckRangeAttack2(float flDot, float flDist) override;
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 
 	virtual float GetDamageAmount() { return gSkillData.headcrabDmgBite; }
 	virtual int GetVoicePitch() { return 100; }
@@ -331,7 +331,7 @@ void CHeadCrab::LeapTouch(CBaseEntity* pOther)
 	{
 		EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pBiteSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
 
-		pOther->TakeDamage(pev, pev, GetDamageAmount(), DMG_SLASH);
+		pOther->TakeDamage({pev, pev, GetDamageAmount(), DMG_SLASH});
 	}
 
 	SetTouch(nullptr);
@@ -388,13 +388,14 @@ bool CHeadCrab::CheckRangeAttack2(float flDot, float flDist)
 #endif
 }
 
-bool CHeadCrab::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CHeadCrab::TakeDamage(const TakeDamageInfo& info)
 {
+	TakeDamageInfo adjustedInfo = info;
 	// Don't take any acid damage -- BigMomma's mortar is acid
-	if (bitsDamageType & DMG_ACID)
-		flDamage = 0;
+	if (adjustedInfo.GetDamageTypes() & DMG_ACID)
+		adjustedInfo.SetDamage(0);
 
-	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CBaseMonster::TakeDamage(adjustedInfo);
 }
 
 void CHeadCrab::IdleSound()

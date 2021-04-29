@@ -123,7 +123,7 @@ static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 			{
 				// if ent is a client, kill em (unless they are ourselves)
 				if (ent->IsPlayer() && !(ent->edict() == player))
-					ent->TakeDamage(VARS(INDEXENT(0)), VARS(INDEXENT(0)), 300, DMG_GENERIC);
+					ent->TakeDamage({VARS(INDEXENT(0)), VARS(INDEXENT(0)), 300, DMG_GENERIC});
 			}
 			return pSpot;
 		}

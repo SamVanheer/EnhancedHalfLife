@@ -57,7 +57,7 @@ public:
 	// No range attacks
 	bool CheckRangeAttack1(float flDot, float flDist) override { return false; }
 	bool CheckRangeAttack2(float flDot, float flDist) override { return false; }
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 };
 
 LINK_ENTITY_TO_CLASS(monster_zombie, CZombie);
@@ -112,21 +112,23 @@ void CZombie::SetYawSpeed()
 	pev->yaw_speed = 120;
 }
 
-bool CZombie::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CZombie::TakeDamage(const TakeDamageInfo& info)
 {
+	TakeDamageInfo adjustedInfo = info;
+
 	// Take 30% damage from bullets
-	if (bitsDamageType == DMG_BULLET)
+	if (adjustedInfo.GetDamageTypes() == DMG_BULLET)
 	{
-		const Vector vecDir = (pev->origin - (pevInflictor->absmin + pevInflictor->absmax) * 0.5).Normalize();
-		const float flForce = DamageForce(flDamage);
+		const Vector vecDir = (pev->origin - (adjustedInfo.GetInflictor()->absmin + adjustedInfo.GetInflictor()->absmax) * 0.5).Normalize();
+		const float flForce = DamageForce(adjustedInfo.GetDamage());
 		pev->velocity = pev->velocity + vecDir * flForce;
-		flDamage *= 0.3;
+		adjustedInfo.SetDamage(adjustedInfo .GetDamage() * 0.3);
 	}
 
 	// HACK HACK -- until we fix this.
 	if (IsAlive())
 		PainSound();
-	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CBaseMonster::TakeDamage(adjustedInfo);
 }
 
 void CZombie::PainSound()

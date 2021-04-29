@@ -69,7 +69,7 @@ public:
 	void ShootBalls();
 	void MakeFriend(Vector vecPos);
 
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
 
 	void PainSound() override;
@@ -1193,12 +1193,12 @@ void CNihilanth::CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_T
 	}
 }
 
-bool CNihilanth::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CNihilanth::TakeDamage(const TakeDamageInfo& info)
 {
-	if (pevInflictor->owner == edict())
+	if (info.GetInflictor()->owner == edict())
 		return false;
 
-	if (flDamage >= pev->health)
+	if (info.GetDamage() >= pev->health)
 	{
 		pev->health = 1;
 		if (m_irritation != 3)
@@ -1207,7 +1207,7 @@ bool CNihilanth::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 
 	PainSound();
 
-	pev->health -= flDamage;
+	pev->health -= info.GetDamage();
 	return false;
 }
 

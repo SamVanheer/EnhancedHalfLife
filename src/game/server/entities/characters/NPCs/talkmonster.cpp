@@ -1094,12 +1094,12 @@ void CTalkMonster::SetAnswerQuestion(CTalkMonster* pSpeaker)
 	m_hTalkTarget = (CBaseMonster*)pSpeaker;
 }
 
-bool CTalkMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CTalkMonster::TakeDamage(const TakeDamageInfo& info)
 {
 	if (IsAlive())
 	{
 		// if player damaged this entity, have other friends talk about it
-		if (pevAttacker && m_MonsterState != NPCState::Prone && IsBitSet(pevAttacker->flags, FL_CLIENT))
+		if (info.GetAttacker() && m_MonsterState != NPCState::Prone && IsBitSet(info.GetAttacker()->flags, FL_CLIENT))
 		{
 			if (CBaseEntity* pFriend = FindNearestFriend(false); pFriend && pFriend->IsAlive())
 			{
@@ -1109,7 +1109,7 @@ bool CTalkMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 			}
 		}
 	}
-	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CBaseMonster::TakeDamage(info);
 }
 
 Schedule_t* CTalkMonster::GetScheduleOfType(int Type)

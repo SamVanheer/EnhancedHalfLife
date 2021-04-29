@@ -428,10 +428,10 @@ void CBreakable::BreakTouch(CBaseEntity* pOther)
 		if (flDamage >= pev->health)
 		{
 			SetTouch(nullptr);
-			TakeDamage(pevToucher, pevToucher, flDamage, DMG_CRUSH);
+			TakeDamage({pevToucher, pevToucher, flDamage, DMG_CRUSH});
 
 			// do a little damage to player if we broke glass or computer
-			pOther->TakeDamage(pev, pev, flDamage / 4, DMG_SLASH);
+			pOther->TakeDamage({pev, pev, flDamage / 4, DMG_SLASH});
 		}
 	}
 
@@ -494,46 +494,48 @@ void CBreakable::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecD
 	CBaseDelay::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
 }
 
-bool CBreakable::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBreakable::TakeDamage(const TakeDamageInfo& info)
 {
 	if (!IsBreakable())
 		return false;
+
+	TakeDamageInfo adjustedInfo = info;
 
 	Vector vecTemp;
 
 	// if Attacker == Inflictor, the attack was a melee or other instant-hit attack.
 	// (that is, no actual entity projectile was involved in the attack so use the shooter's origin). 
-	if (pevAttacker == pevInflictor)
+	if (adjustedInfo.GetAttacker() == adjustedInfo.GetInflictor())
 	{
-		vecTemp = pevInflictor->origin - (pev->absmin + (pev->size * 0.5));
+		vecTemp = adjustedInfo.GetInflictor()->origin - (pev->absmin + (pev->size * 0.5));
 
 		// if a client hit the breakable with a crowbar, and breakable is crowbar-sensitive, break it now.
-		if (IsBitSet(pevAttacker->flags, FL_CLIENT) &&
-			IsBitSet(pev->spawnflags, SF_BREAK_CROWBAR) && (bitsDamageType & DMG_CLUB))
-			flDamage = pev->health;
+		if (IsBitSet(adjustedInfo.GetAttacker()->flags, FL_CLIENT) &&
+			IsBitSet(pev->spawnflags, SF_BREAK_CROWBAR) && (adjustedInfo.GetDamageTypes() & DMG_CLUB))
+			adjustedInfo.SetDamage(pev->health);
 	}
 	else
 		// an actual missile was involved.
 	{
-		vecTemp = pevInflictor->origin - (pev->absmin + (pev->size * 0.5));
+		vecTemp = adjustedInfo.GetInflictor()->origin - (pev->absmin + (pev->size * 0.5));
 	}
 
 	// Breakables take double damage from the crowbar
-	if (bitsDamageType & DMG_CLUB)
-		flDamage *= 2;
+	if (adjustedInfo.GetDamageTypes() & DMG_CLUB)
+		adjustedInfo.SetDamage(adjustedInfo.GetDamage() * 2);
 
 	// Boxes / glass / etc. don't take much poison damage, just the impact of the dart - consider that 10%
-	if (bitsDamageType & DMG_POISON)
-		flDamage *= 0.1;
+	if (adjustedInfo.GetDamageTypes() & DMG_POISON)
+		adjustedInfo.SetDamage(adjustedInfo.GetDamage() * 0.1);
 
 	// this global is still used for glass and other non-monster killables, along with decals.
 	g_vecAttackDir = vecTemp.Normalize();
 
 	// do the damage
-	pev->health -= flDamage;
+	pev->health -= adjustedInfo.GetDamage();
 	if (pev->health <= 0)
 	{
-		Killed({pevAttacker, GibType::Normal});
+		Killed({adjustedInfo.GetAttacker(), GibType::Normal});
 		Die();
 		return false;
 	}
@@ -758,7 +760,7 @@ public:
 	inline float MaxSpeed() { return m_maxSpeed; }
 
 	// breakables use an overridden takedamage
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)  override;
+	bool TakeDamage(const TakeDamageInfo& info)  override;
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -949,10 +951,10 @@ void CPushable::StopMovementSound()
 }
 #endif
 
-bool CPushable::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CPushable::TakeDamage(const TakeDamageInfo& info)
 {
 	if (pev->spawnflags & SF_PUSH_BREAKABLE)
-		return CBreakable::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+		return CBreakable::TakeDamage(info);
 
 	return true;
 }

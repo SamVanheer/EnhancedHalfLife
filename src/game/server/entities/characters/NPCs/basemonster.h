@@ -707,12 +707,12 @@ public:
 	*	Time-based damage: only occurs while the monster is within the trigger_hurt.
 	*	When a monster is poisoned via an arrow etc it takes all the poison damage at once.
 	*/
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 
 	/**
 	*	@brief takedamage function called when a monster's corpse is damaged.
 	*/
-	bool DeadTakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
+	bool DeadTakeDamage(const TakeDamageInfo& info);
 
 	void RadiusDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
 	void RadiusDamage(Vector vecSrc, entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType);

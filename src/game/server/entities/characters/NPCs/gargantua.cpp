@@ -153,7 +153,7 @@ void CStomp::Think()
 			pevOwner = VARS(pev->owner);
 
 		if (pEntity)
-			pEntity->TakeDamage(pev, pevOwner, gSkillData.gargantuaDmgStomp, DMG_SONIC);
+			pEntity->TakeDamage({pev, pevOwner, gSkillData.gargantuaDmgStomp, DMG_SONIC});
 	}
 
 	// Accelerate the effect
@@ -213,7 +213,7 @@ public:
 	void Precache() override;
 	void SetYawSpeed() override;
 	int  Classify() override;
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
 	void HandleAnimEvent(AnimationEvent& event) override;
 
@@ -663,7 +663,7 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInfli
 				}
 				else
 				{
-					pEntity->TakeDamage(pevInflictor, pevAttacker, flAdjustedDamage, bitsDamageType);
+					pEntity->TakeDamage({pevInflictor, pevAttacker, flAdjustedDamage, bitsDamageType});
 				}
 			}
 		}
@@ -813,19 +813,21 @@ void CGargantua::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecD
 
 }
 
-bool CGargantua::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CGargantua::TakeDamage(const TakeDamageInfo& info)
 {
 	ALERT(at_aiconsole, "CGargantua::TakeDamage\n");
 
+	TakeDamageInfo adjustedInfo = info;
+
 	if (IsAlive())
 	{
-		if (!(bitsDamageType & GARG_DAMAGE))
-			flDamage *= 0.01;
-		if (bitsDamageType & DMG_BLAST)
+		if (!(adjustedInfo.GetDamageTypes() & GARG_DAMAGE))
+			adjustedInfo.SetDamage(adjustedInfo.GetDamage() * 0.01);
+		if (adjustedInfo.GetDamageTypes() & DMG_BLAST)
 			SetConditions(bits_COND_LIGHT_DAMAGE);
 	}
 
-	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CBaseMonster::TakeDamage(adjustedInfo);
 }
 
 void CGargantua::DeathEffect()
@@ -963,7 +965,7 @@ CBaseEntity* CGargantua::GargantuaCheckTraceHullAttack(float flDist, int iDamage
 
 		if (iDamage > 0)
 		{
-			pEntity->TakeDamage(pev, pev, iDamage, iDmgType);
+			pEntity->TakeDamage({pev, pev, static_cast<float>(iDamage), iDmgType});
 		}
 
 		return pEntity;

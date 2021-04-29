@@ -213,7 +213,7 @@ public:
 	*	NOTE: each call to TakeDamage with bitsDamageType set to a time-based damage will cause the damage time countdown to be reset.
 	*	Thus the ongoing effects of poison, radiation etc are implemented with subsequent calls to TakeDamage using DMG_GENERIC.
 	*/
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	void Killed(const KilledInfo& info) override;
 	Vector BodyTarget(const Vector& posSrc) override { return Center() + pev->view_ofs * RANDOM_FLOAT(0.5, 1.1); }
 	bool IsAlive() override { return (pev->deadflag == DeadFlag::No) && pev->health > 0; }

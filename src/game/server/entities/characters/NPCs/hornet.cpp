@@ -36,13 +36,14 @@ TYPEDESCRIPTION	CHornet::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CHornet, CBaseMonster);
 
-bool CHornet::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CHornet::TakeDamage(const TakeDamageInfo& info)
 {
+	int damageTypes = info.GetDamageTypes();
 	// filter these bits a little.
-	bitsDamageType &= ~(DMG_ALWAYSGIB);
-	bitsDamageType |= DMG_NEVERGIB;
+	damageTypes &= ~(DMG_ALWAYSGIB);
+	damageTypes |= DMG_NEVERGIB;
 
-	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CBaseMonster::TakeDamage({info.GetInflictor(), info.GetAttacker() , info.GetDamage(), damageTypes});
 }
 
 void CHornet::Spawn()
@@ -368,7 +369,7 @@ void CHornet::DieTouch(CBaseEntity* pOther)
 		case 2:	EmitSound(SoundChannel::Voice, "hornet/ag_hornethit3.wav"); break;
 		}
 
-		pOther->TakeDamage(pev, VARS(pev->owner), pev->dmg, DMG_BULLET);
+		pOther->TakeDamage({pev, VARS(pev->owner), pev->dmg, DMG_BULLET});
 	}
 
 	pev->modelindex = 0;// so will disappear for the 0.1 secs we wait until NEXTTHINK gets rid

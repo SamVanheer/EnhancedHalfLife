@@ -512,7 +512,7 @@ void CFuncRotating::HurtTouch(CBaseEntity* pOther)
 	// calculate damage based on rotation speed
 	pev->dmg = pev->avelocity.Length() / 10;
 
-	pOther->TakeDamage(pev, pev, pev->dmg, DMG_CRUSH);
+	pOther->TakeDamage({pev, pev, pev->dmg, DMG_CRUSH});
 
 	pevOther->velocity = (pevOther->origin - GetBrushModelOrigin(pev)).Normalize() * pev->dmg;
 }
@@ -669,7 +669,7 @@ void CFuncRotating::RotatingUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 
 void CFuncRotating::Blocked(CBaseEntity* pOther)
 {
-	pOther->TakeDamage(pev, pev, pev->dmg, DMG_CRUSH);
+	pOther->TakeDamage({pev, pev, pev->dmg, DMG_CRUSH});
 }
 
 constexpr int SF_PENDULUM_AUTO_RETURN = 16;
@@ -868,7 +868,7 @@ void CPendulum::Touch(CBaseEntity* pOther)
 	if (damage < 0)
 		damage = -damage;
 
-	pOther->TakeDamage(pev, pev, damage, DMG_CRUSH);
+	pOther->TakeDamage({pev, pev, damage, DMG_CRUSH});
 
 	pevOther->velocity = (pevOther->origin - GetBrushModelOrigin(pev)).Normalize() * damage;
 }

@@ -170,7 +170,7 @@ public:
 	void Precache() override;
 	void KeyValue(KeyValueData* pkvd) override;
 	void Activate() override;
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 
 	void		RunTask(Task_t* pTask) override;
 	void		StartTask(Task_t* pTask) override;
@@ -439,7 +439,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 
 		if (pHurt)
 		{
-			pHurt->TakeDamage(pev, pev, gSkillData.bigmommaDmgSlash, DMG_CRUSH | DMG_SLASH);
+			pHurt->TakeDamage({pev, pev, gSkillData.bigmommaDmgSlash, DMG_CRUSH | DMG_SLASH});
 			pHurt->pev->punchangle.x = 15;
 			switch (event.event)
 			{
@@ -551,23 +551,25 @@ void CBigMomma::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDi
 	CBaseMonster::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
 }
 
-bool CBigMomma::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBigMomma::TakeDamage(const TakeDamageInfo& info)
 {
+	TakeDamageInfo adjustedInfo = info;
+
 	// Don't take any acid damage -- BigMomma's mortar is acid
-	if (bitsDamageType & DMG_ACID)
-		flDamage = 0;
+	if (adjustedInfo.GetDamageTypes() & DMG_ACID)
+		adjustedInfo.SetDamage(0);
 
 	if (!HasMemory(bits_MEMORY_PATH_FINISHED))
 	{
-		if (pev->health <= flDamage)
+		if (pev->health <= adjustedInfo.GetDamage())
 		{
-			pev->health = flDamage + 1;
+			pev->health = adjustedInfo.GetDamage() + 1;
 			Remember(bits_MEMORY_ADVANCE_NODE | bits_MEMORY_COMPLETED_NODE);
 			ALERT(at_aiconsole, "BM: Finished node health!!!\n");
 		}
 	}
 
-	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CBaseMonster::TakeDamage(adjustedInfo);
 }
 
 void CBigMomma::LayHeadcrab()

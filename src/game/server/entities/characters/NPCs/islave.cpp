@@ -65,7 +65,7 @@ public:
 	/**
 	*	@brief get provoked when injured
 	*/
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 
 	void DeathSound() override;
 	void PainSound() override;
@@ -536,14 +536,14 @@ void CISlave::Precache()
 	UTIL_PrecacheOther("test_effect");
 }
 
-bool CISlave::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CISlave::TakeDamage(const TakeDamageInfo& info)
 {
 	// don't slash one of your own
-	if ((bitsDamageType & DMG_SLASH) && pevAttacker && GetRelationship(Instance(pevAttacker)) < Relationship::Dislike)
+	if ((info.GetDamageTypes() & DMG_SLASH) && info.GetAttacker() && GetRelationship(Instance(info.GetAttacker())) < Relationship::Dislike)
 		return false;
 
 	m_afMemory |= bits_MEMORY_PROVOKED;
-	return CSquadMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CSquadMonster::TakeDamage(info);
 }
 
 void CISlave::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)

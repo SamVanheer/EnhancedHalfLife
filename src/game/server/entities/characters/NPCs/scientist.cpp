@@ -80,7 +80,7 @@ public:
 	void RunTask(Task_t* pTask) override;
 	void StartTask(Task_t* pTask) override;
 	int	ObjectCaps() override { return CTalkMonster::ObjectCaps() | FCAP_IMPULSE_USE; }
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	int FriendNumber(int arrayNumber) override;
 	void SetActivity(Activity newActivity) override;
 	Activity GetStoppedActivity() override;
@@ -720,16 +720,16 @@ void CScientist::TalkInit()
 	}
 }
 
-bool CScientist::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CScientist::TakeDamage(const TakeDamageInfo& info)
 {
-	if (pevInflictor && pevInflictor->flags & FL_CLIENT)
+	if (info.GetInflictor() && info.GetInflictor()->flags & FL_CLIENT)
 	{
 		Remember(bits_MEMORY_PROVOKED);
 		StopFollowing(true);
 	}
 
 	// make sure friends talk about it if player hurts scientist...
-	return CTalkMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CTalkMonster::TakeDamage(info);
 }
 
 int CScientist::SoundMask()

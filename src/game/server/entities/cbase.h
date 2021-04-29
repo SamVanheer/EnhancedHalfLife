@@ -107,6 +107,60 @@ class CSquadMonster;
 constexpr int SF_NORESPAWN = 1 << 30; // !!!set this bit on guns and stuff that should never respawn.
 
 /**
+*	@brief Contains information about an entity damage event
+*/
+class TakeDamageInfo
+{
+public:
+	TakeDamageInfo(entvars_t* inflictor, entvars_t* attacker, float damage, int damageTypes)
+		: _inflictor(inflictor)
+		, _attacker(attacker)
+		, _damage(damage)
+		, _damageTypes(damageTypes)
+	{
+	}
+
+	TakeDamageInfo(const TakeDamageInfo&) = default;
+	TakeDamageInfo& operator=(const TakeDamageInfo&) = default;
+
+	~TakeDamageInfo() = default;
+
+	entvars_t* GetInflictor() const { return _inflictor; }
+
+	void SetInflictor(entvars_t* inflictor)
+	{
+		_inflictor = inflictor;
+	}
+
+	entvars_t* GetAttacker() const { return _attacker; }
+
+	void SetAttacker(entvars_t* attacker)
+	{
+		_attacker = attacker;
+	}
+
+	float GetDamage() const { return _damage; }
+
+	void SetDamage(float damage)
+	{
+		_damage = damage;
+	}
+
+	int GetDamageTypes() const { return _damageTypes; }
+
+	void SetDamageTypes(int damageTypes)
+	{
+		_damageTypes = damageTypes;
+	}
+
+private:
+	entvars_t* _inflictor;
+	entvars_t* _attacker;
+	float _damage;
+	int _damageTypes;
+};
+
+/**
 *	@brief when calling Killed(), a value that governs gib behavior is expected to be one of these three values
 */
 enum class GibType
@@ -217,7 +271,7 @@ public:
 	/**
 	*	@brief inflict damage on this entity. bitsDamageType indicates type of damage inflicted, ie: DMG_CRUSH
 	*/
-	virtual bool	TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
+	virtual bool	TakeDamage(const TakeDamageInfo& info);
 	virtual bool	GiveHealth(float flHealth, int bitsDamageType);
 	virtual void	Killed(const KilledInfo& info);
 	virtual int		BloodColor() { return DONT_BLEED; }
@@ -750,7 +804,7 @@ public:
 	*/
 	void EXPORT ButtonBackHome();
 	void EXPORT ButtonUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 

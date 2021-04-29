@@ -70,7 +70,7 @@ public:
 	*	@brief Special takedamage for func_breakable.
 	*	Allows us to make exceptions that are breakable-specific
 	*/
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	/**
 	*	@brief To spark when hit
 	*/

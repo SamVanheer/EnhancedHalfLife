@@ -162,7 +162,7 @@ void CSquidSpit::Touch(CBaseEntity* pOther)
 	}
 	else
 	{
-		pOther->TakeDamage(pev, pev, gSkillData.bullsquidDmgSpit, DMG_GENERIC);
+		pOther->TakeDamage({pev, pev, gSkillData.bullsquidDmgSpit, DMG_GENERIC});
 	}
 
 	SetThink(&CSquidSpit::SUB_Remove);
@@ -229,7 +229,7 @@ public:
 	/**
 	*	@brief overridden for bullsquid so we can keep track of how much time has passed since it was last injured
 	*/
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 
 	/**
 	*	@brief overridden for bullsquid so that it can be made to ignore its love of headcrabs for a while.
@@ -299,11 +299,11 @@ Relationship CBullsquid::GetRelationship(CBaseEntity* pTarget)
 	return CBaseMonster::GetRelationship(pTarget);
 }
 
-bool CBullsquid::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBullsquid::TakeDamage(const TakeDamageInfo& info)
 {
 	// if the squid is running, has an enemy, was hurt by the enemy, hasn't been hurt in the last 3 seconds, and isn't too close to the enemy,
 	// it will swerve. (whew).
-	if (m_hEnemy != nullptr && IsMoving() && pevAttacker == m_hEnemy->pev && gpGlobals->time - m_flLastHurtTime > 3)
+	if (m_hEnemy != nullptr && IsMoving() && info.GetAttacker() == m_hEnemy->pev && gpGlobals->time - m_flLastHurtTime > 3)
 	{
 		float flDist = (pev->origin - m_hEnemy->pev->origin).Length2D();
 
@@ -319,13 +319,13 @@ bool CBullsquid::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 		}
 	}
 
-	if (!ClassnameIs(pevAttacker, "monster_headcrab"))
+	if (!ClassnameIs(info.GetAttacker(), "monster_headcrab"))
 	{
 		// don't forget about headcrabs if it was a headcrab that hurt the squid.
 		m_flLastHurtTime = gpGlobals->time;
 	}
 
-	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CBaseMonster::TakeDamage(info);
 }
 
 bool CBullsquid::CheckRangeAttack1(float flDot, float flDist)

@@ -47,7 +47,7 @@ public:
 	void EXPORT BarnacleThink();
 	void EXPORT WaitTillDead();
 	void Killed(const KilledInfo& info) override;
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
@@ -121,14 +121,16 @@ void CBarnacle::Spawn()
 	UTIL_SetOrigin(pev, pev->origin);
 }
 
-bool CBarnacle::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBarnacle::TakeDamage(const TakeDamageInfo& info)
 {
-	if (bitsDamageType & DMG_CLUB)
+	TakeDamageInfo adjustedInfo = info;
+
+	if (adjustedInfo.GetDamageTypes() & DMG_CLUB)
 	{
-		flDamage = pev->health;
+		adjustedInfo.SetDamage(pev->health);
 	}
 
-	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CBaseMonster::TakeDamage(adjustedInfo);
 }
 
 void CBarnacle::BarnacleThink()
@@ -198,7 +200,7 @@ void CBarnacle::BarnacleThink()
 				// kill!
 				if (pVictim)
 				{
-					pVictim->TakeDamage(pev, pev, pVictim->pev->health, DMG_SLASH | DMG_ALWAYSGIB);
+					pVictim->TakeDamage({pev, pev, pVictim->pev->health, DMG_SLASH | DMG_ALWAYSGIB});
 					m_cGibs = 3;
 				}
 

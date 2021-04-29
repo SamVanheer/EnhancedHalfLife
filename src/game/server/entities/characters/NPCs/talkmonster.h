@@ -109,7 +109,7 @@ public:
 
 	// Base Monster functions
 	void			Precache() override;
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	void			Touch(CBaseEntity* pOther) override;
 	void			Killed(const KilledInfo& info) override;
 	Relationship GetRelationship(CBaseEntity* pTarget) override;

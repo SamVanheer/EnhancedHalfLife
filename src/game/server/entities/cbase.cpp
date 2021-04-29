@@ -41,7 +41,7 @@ bool CBaseEntity::GiveHealth(float flHealth, int bitsDamageType)
 	return true;
 }
 
-bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBaseEntity::TakeDamage(const TakeDamageInfo& info)
 {
 	if (!pev->takedamage)
 		return false;
@@ -51,14 +51,14 @@ bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	// if Attacker == Inflictor, the attack was a melee or other instant-hit attack.
 	// (that is, no actual entity projectile was involved in the attack so use the shooter's origin). 
 	Vector vecTemp;
-	if (pevAttacker == pevInflictor)
+	if (info.GetAttacker() == info.GetInflictor())
 	{
-		vecTemp = pevInflictor->origin - (GetBrushModelOrigin(pev));
+		vecTemp = info.GetInflictor()->origin - (GetBrushModelOrigin(pev));
 	}
 	else
 		// an actual missile was involved.
 	{
-		vecTemp = pevInflictor->origin - (GetBrushModelOrigin(pev));
+		vecTemp = info.GetInflictor()->origin - (GetBrushModelOrigin(pev));
 	}
 
 	// this global is still used for glass and other non-monster killables, along with decals.
@@ -67,12 +67,12 @@ bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	// save damage based on the target's armor level
 
 	// figure momentum add (don't let hurt brushes or other triggers move player)
-	if ((!IsNullEnt(pevInflictor)) && (pev->movetype == Movetype::Walk || pev->movetype == Movetype::Step) && (pevAttacker->solid != Solid::Trigger))
+	if ((!IsNullEnt(info.GetInflictor())) && (pev->movetype == Movetype::Walk || pev->movetype == Movetype::Step) && (info.GetAttacker()->solid != Solid::Trigger))
 	{
-		Vector vecDir = pev->origin - (pevInflictor->absmin + pevInflictor->absmax) * 0.5;
+		Vector vecDir = pev->origin - (info.GetInflictor()->absmin + info.GetInflictor()->absmax) * 0.5;
 		vecDir = vecDir.Normalize();
 
-		float flForce = flDamage * ((32 * 32 * 72.0) / (pev->size.x * pev->size.y * pev->size.z)) * 5;
+		float flForce = info.GetDamage() * ((32 * 32 * 72.0) / (pev->size.x * pev->size.y * pev->size.z)) * 5;
 
 		if (flForce > 1000.0)
 			flForce = 1000.0;
@@ -80,10 +80,10 @@ bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	}
 
 	// do the damage
-	pev->health -= flDamage;
+	pev->health -= info.GetDamage();
 	if (pev->health <= 0)
 	{
-		Killed({pevAttacker, GibType::Normal});
+		Killed({info.GetAttacker(), GibType::Normal});
 		return false;
 	}
 

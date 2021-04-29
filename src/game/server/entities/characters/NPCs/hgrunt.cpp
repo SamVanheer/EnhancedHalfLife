@@ -198,7 +198,7 @@ public:
 	*	@brief overridden for the grunt because the grunt needs to forget that he is in cover if he's hurt.
 	*	(Obviously not in a safe place anymore).
 	*/
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 
 	/**
 	*	@brief overridden because Alien Grunts are Human Grunt's nemesis.
@@ -603,11 +603,11 @@ void CHGrunt::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir,
 	CSquadMonster::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
 }
 
-bool CHGrunt::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CHGrunt::TakeDamage(const TakeDamageInfo& info)
 {
 	Forget(bits_MEMORY_INCOVER);
 
-	return CSquadMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CSquadMonster::TakeDamage(info);
 }
 
 void CHGrunt::SetYawSpeed()
@@ -890,7 +890,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 			UTIL_MakeVectors(pev->angles);
 			pHurt->pev->punchangle.x = 15;
 			pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_forward * 100 + gpGlobals->v_up * 50;
-			pHurt->TakeDamage(pev, pev, gSkillData.hgruntDmgKick, DMG_CLUB);
+			pHurt->TakeDamage({pev, pev, gSkillData.hgruntDmgKick, DMG_CLUB});
 		}
 	}
 	break;

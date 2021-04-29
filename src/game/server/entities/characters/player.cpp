@@ -251,13 +251,15 @@ void CBasePlayer::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vec
 	}
 }
 
-bool CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBasePlayer::TakeDamage(const TakeDamageInfo& info)
 {
 	const float flHealthPrev = pev->health;
 	const float flRatio = PLAYER_ARMOR_RATIO;
 	float flBonus = PLAYER_ARMOR_BONUS;
 
-	if ((bitsDamageType & DMG_BLAST) && g_pGameRules->IsMultiplayer())
+	TakeDamageInfo adjustedInfo = info;
+
+	if ((adjustedInfo.GetDamageTypes() & DMG_BLAST) && g_pGameRules->IsMultiplayer())
 	{
 		// blasts damage armor more.
 		flBonus *= 2;
@@ -269,7 +271,7 @@ bool CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	// go take the damage first
 
 
-	CBaseEntity* pAttacker = CBaseEntity::Instance(pevAttacker);
+	CBaseEntity* pAttacker = CBaseEntity::Instance(adjustedInfo.GetAttacker());
 
 	if (!g_pGameRules->PlayerCanTakeDamage(this, pAttacker))
 	{
@@ -278,38 +280,39 @@ bool CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	}
 
 	// keep track of amount of damage last sustained
-	m_lastDamageAmount = flDamage;
+	m_lastDamageAmount = adjustedInfo.GetDamage();
 
 	// Armor. 
-	if (pev->armorvalue && !(bitsDamageType & (DMG_FALL | DMG_DROWN)))// armor doesn't protect against fall or drown damage!
+	if (pev->armorvalue && !(adjustedInfo.GetDamageTypes() & (DMG_FALL | DMG_DROWN)))// armor doesn't protect against fall or drown damage!
 	{
-		float flNew = flDamage * flRatio;
+		float flNew = adjustedInfo.GetDamage() * flRatio;
 
-		float flArmor = (flDamage - flNew) * flBonus;
+		float flArmor = (adjustedInfo.GetDamage() - flNew) * flBonus;
 
 		// Does this use more armor than we have?
 		if (flArmor > pev->armorvalue)
 		{
 			flArmor = pev->armorvalue;
 			flArmor *= (1 / flBonus);
-			flNew = flDamage - flArmor;
+			flNew = adjustedInfo.GetDamage() - flArmor;
 			pev->armorvalue = 0;
 		}
 		else
 			pev->armorvalue -= flArmor;
 
-		flDamage = flNew;
+		adjustedInfo.SetDamage(flNew);
 	}
 
-	// this cast to INT is critical!!! If a player ends up with 0.5 health, the engine will get that
+	// this rounding down is critical!!! If a player ends up with 0.5 health, the engine will get that
 	// as an int (zero) and think the player is dead! (this will incite a clientside screentilt, etc)
-	const bool fTookDamage = CBaseMonster::TakeDamage(pevInflictor, pevAttacker, (int)flDamage, bitsDamageType);
+	const bool fTookDamage = CBaseMonster::TakeDamage(
+		{adjustedInfo.GetInflictor(), adjustedInfo.GetAttacker(), std::floor(adjustedInfo.GetDamage()), adjustedInfo.GetDamageTypes()});
 
 	// reset damage time countdown for each type of time based damage player just sustained
 
 	for (int i = 0; i < CDMG_TIMEBASED; i++)
 	{
-		if (bitsDamageType & (DMG_PARALYZE << i))
+		if (adjustedInfo.GetDamageTypes() & (DMG_PARALYZE << i))
 			m_rgbTimeBasedDamage[i] = 0;
 	}
 
@@ -318,7 +321,7 @@ bool CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	WRITE_BYTE(9);	// command length in bytes
 	WRITE_BYTE(DRC_CMD_EVENT);	// take damage event
 	WRITE_SHORT(ENTINDEX(this->edict()));	// index number of primary entity
-	WRITE_SHORT(ENTINDEX(ENT(pevInflictor)));	// index number of secondary entity
+	WRITE_SHORT(ENTINDEX(ENT(adjustedInfo.GetInflictor())));	// index number of secondary entity
 	WRITE_LONG(5);   // eventflags (priority and flags)
 	MESSAGE_END();
 
@@ -341,7 +344,7 @@ bool CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 		// DMG_SHOCK
 
 	// have suit diagnose the problem - ie: report damage type
-	int bitsDamage = bitsDamageType;
+	int bitsDamage = adjustedInfo.GetDamageTypes();
 	m_bitsDamageType |= bitsDamage; // Save this so we can report it to the client
 	m_bitsHUDDamage = -1;  // make sure the damage bits get resent
 
@@ -459,7 +462,7 @@ bool CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	}
 
 	// if we're taking time based damage, warn about its continuing effects
-	if (fTookDamage && (bitsDamageType & DMG_TIMEBASED) && flHealthPrev < 75)
+	if (fTookDamage && (adjustedInfo.GetDamageTypes() & DMG_TIMEBASED) && flHealthPrev < 75)
 	{
 		if (flHealthPrev < 50)
 		{
@@ -939,7 +942,7 @@ void CBasePlayer::WaterMove()
 				pev->dmg += 1;
 				if (pev->dmg > 5)
 					pev->dmg = 5;
-				TakeDamage(INDEXVARS(0), INDEXVARS(0), pev->dmg, DMG_DROWN);
+				TakeDamage({INDEXVARS(0), INDEXVARS(0), pev->dmg, DMG_DROWN});
 				pev->pain_finished = gpGlobals->time + 1;
 
 				// track drowning damage, give it back when
@@ -980,12 +983,12 @@ void CBasePlayer::WaterMove()
 	if (pev->watertype == Contents::Lava)		// do damage
 	{
 		if (pev->dmgtime < gpGlobals->time)
-			TakeDamage(INDEXVARS(0), INDEXVARS(0), 10 * static_cast<int>(pev->waterlevel), DMG_BURN);
+			TakeDamage({INDEXVARS(0), INDEXVARS(0), 10.0f * static_cast<int>(pev->waterlevel), DMG_BURN});
 	}
 	else if (pev->watertype == Contents::Slime)		// do damage
 	{
 		pev->dmgtime = gpGlobals->time + 1;
-		TakeDamage(INDEXVARS(0), INDEXVARS(0), 4 * static_cast<int>(pev->waterlevel), DMG_ACID);
+		TakeDamage({INDEXVARS(0), INDEXVARS(0), 4.0f * static_cast<int>(pev->waterlevel), DMG_ACID});
 	}
 
 	if (!IsBitSet(pev->flags, FL_INWATER))
@@ -1713,7 +1716,7 @@ void CBasePlayer::CheckTimeBasedDamage()
 				bDuration = NERVEGAS_DURATION;
 				break;
 			case itbd_Poison:
-				TakeDamage(pev, pev, POISON_DAMAGE, DMG_GENERIC);
+				TakeDamage({pev, pev, POISON_DAMAGE, DMG_GENERIC});
 				bDuration = POISON_DURATION;
 				break;
 			case itbd_Radiation:
@@ -2123,7 +2126,7 @@ void CBasePlayer::PostThink()
 
 				if (flFallDamage > 0)
 				{
-					TakeDamage(INDEXVARS(0), INDEXVARS(0), flFallDamage, DMG_FALL);
+					TakeDamage({INDEXVARS(0), INDEXVARS(0), flFallDamage, DMG_FALL});
 					pev->punchangle.x = 0;
 				}
 			}
@@ -3438,7 +3441,7 @@ bool CBasePlayer::BecomeProne()
 
 void CBasePlayer::BarnacleVictimBitten(entvars_t* pevBarnacle)
 {
-	TakeDamage(pevBarnacle, pevBarnacle, pev->health + pev->armorvalue, DMG_SLASH | DMG_ALWAYSGIB);
+	TakeDamage({pevBarnacle, pevBarnacle, pev->health + pev->armorvalue, DMG_SLASH | DMG_ALWAYSGIB});
 }
 
 void CBasePlayer::BarnacleVictimReleased()

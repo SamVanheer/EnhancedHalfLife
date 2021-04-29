@@ -44,7 +44,7 @@ public:
 	/**
 	*	@brief Override all damage
 	*/
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
 
 	void PlayScriptedSentence(const char* pszSentence, float duration, float volume, float attenuation, bool bConcurrent, CBaseEntity* pListener) override;
@@ -174,16 +174,16 @@ void CGMan::RunTask(Task_t* pTask)
 	}
 }
 
-bool CGMan::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CGMan::TakeDamage(const TakeDamageInfo& info)
 {
 	pev->health = pev->max_health / 2; // always trigger the 50% damage aitrigger
 
-	if (flDamage > 0)
+	if (info.GetDamage() > 0)
 	{
 		SetConditions(bits_COND_LIGHT_DAMAGE);
 	}
 
-	if (flDamage >= 20)
+	if (info.GetDamage() >= 20)
 	{
 		SetConditions(bits_COND_HEAVY_DAMAGE);
 	}

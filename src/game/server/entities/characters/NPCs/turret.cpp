@@ -53,7 +53,7 @@ public:
 	void EXPORT TurretUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
 
 	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 
 	/**
 	*	@brief ID as a machine
@@ -550,7 +550,7 @@ void CBaseTurret::ActiveThink()
 		{
 			m_vecGoalAngles.y = RANDOM_FLOAT(0, 360);
 			m_vecGoalAngles.x = RANDOM_FLOAT(0, 90) - 90 * static_cast<int>(m_iOrientation);
-			TakeDamage(pev, pev, 1, DMG_GENERIC); // don't beserk forever
+			TakeDamage({pev, pev, 1, DMG_GENERIC}); // don't beserk forever
 			return;
 		}
 	}
@@ -971,15 +971,17 @@ void CBaseTurret::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vec
 	AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
 }
 
-bool CBaseTurret::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBaseTurret::TakeDamage(const TakeDamageInfo& info)
 {
 	if (!pev->takedamage)
 		return false;
 
-	if (!m_iOn)
-		flDamage /= 10.0;
+	TakeDamageInfo adjustedInfo = info;
 
-	pev->health -= flDamage;
+	if (!m_iOn)
+		adjustedInfo.SetDamage(adjustedInfo.GetDamage() / 10.0f);
+
+	pev->health -= adjustedInfo.GetDamage();
 	if (pev->health <= 0)
 	{
 		pev->health = 0;
@@ -1107,7 +1109,7 @@ public:
 	void Precache() override;
 	// other functions
 	void Shoot(Vector& vecSrc, Vector& vecDirToEnemy) override;
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	void EXPORT SentryTouch(CBaseEntity* pOther);
 	void EXPORT SentryDeath();
 };
@@ -1154,7 +1156,7 @@ void CSentry::Shoot(Vector& vecSrc, Vector& vecDirToEnemy)
 	pev->effects = pev->effects | EF_MUZZLEFLASH;
 }
 
-bool CSentry::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CSentry::TakeDamage(const TakeDamageInfo& info)
 {
 	if (!pev->takedamage)
 		return false;
@@ -1166,7 +1168,7 @@ bool CSentry::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float 
 		pev->nextthink = gpGlobals->time + 0.1;
 	}
 
-	pev->health -= flDamage;
+	pev->health -= info.GetDamage();
 	if (pev->health <= 0)
 	{
 		pev->health = 0;
@@ -1190,7 +1192,7 @@ void CSentry::SentryTouch(CBaseEntity* pOther)
 {
 	if (pOther && (pOther->IsPlayer() || (pOther->pev->flags & FL_MONSTER)))
 	{
-		TakeDamage(pOther->pev, pOther->pev, 0, 0);
+		TakeDamage({pOther->pev, pOther->pev, 0, 0});
 	}
 }
 

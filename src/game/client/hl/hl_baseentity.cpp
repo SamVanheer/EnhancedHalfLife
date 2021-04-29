@@ -39,7 +39,7 @@ AmmoInfo CBasePlayerItem::AmmoInfoArray[MAX_AMMO_TYPES];
 
 // CBaseEntity Stubs
 bool CBaseEntity::GiveHealth(float flHealth, int bitsDamageType) { return true; }
-bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) { return true; }
+bool CBaseEntity::TakeDamage(const TakeDamageInfo& info) { return true; }
 CBaseEntity* CBaseEntity::GetNextTarget() { return nullptr; }
 bool CBaseEntity::Save(CSave& save) { return true; }
 bool CBaseEntity::Restore(CRestore& restore) { return true; }
@@ -233,7 +233,7 @@ void CBaseMonster::BecomeDead() {}
 void CBaseMonster::RunAI() {}
 void CBaseMonster::Killed(const KilledInfo& info) {}
 bool CBaseMonster::GiveHealth(float flHealth, int bitsDamageType) { return false; }
-bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) { return false; }
+bool CBaseMonster::TakeDamage(const TakeDamageInfo& info) { return false; }
 bool CBaseMonster::Restore(class CRestore&) { return true; }
 bool CBaseMonster::Save(class CSave&) { return true; }
 
@@ -241,7 +241,7 @@ int TrainSpeed(int iSpeed, int iMax) { return 0; }
 void CBasePlayer::DeathSound() { }
 bool CBasePlayer::GiveHealth(float flHealth, int bitsDamageType) { return false; }
 void CBasePlayer::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) { }
-bool CBasePlayer::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) { return false; }
+bool CBasePlayer::TakeDamage(const TakeDamageInfo& info) { return false; }
 void CBasePlayer::PackDeadPlayerItems() { }
 void CBasePlayer::RemoveAllItems(bool removeSuit) { }
 void CBasePlayer::SetAnimation(PlayerAnim playerAnim) { }

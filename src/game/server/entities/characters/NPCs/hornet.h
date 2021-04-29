@@ -70,7 +70,7 @@ public:
 	/**
 	*	@brief don't let hornets gib, ever.
 	*/
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 
 	float			m_flStopAttack;
 	int				m_iHornetType;

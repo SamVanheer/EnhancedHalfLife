@@ -743,14 +743,14 @@ bool CBaseMonster::GiveHealth(float flHealth, int bitsDamageType)
 	return CBaseEntity::GiveHealth(flHealth, bitsDamageType);
 }
 
-bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBaseMonster::TakeDamage(const TakeDamageInfo& info)
 {
 	if (!pev->takedamage)
 		return false;
 
 	if (!IsAlive())
 	{
-		return DeadTakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+		return DeadTakeDamage(info);
 	}
 
 	if (pev->deadflag == DeadFlag::No)
@@ -760,16 +760,16 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	}
 
 	//!!!LATER - make armor consideration here!
-	const float flTake = flDamage;
+	const float flTake = info.GetDamage();
 
 	// set damage type sustained
-	m_bitsDamageType |= bitsDamageType;
+	m_bitsDamageType |= info.GetDamageTypes();
 
 	// grab the vector of the incoming attack. ( pretend that the inflictor is a little lower than it really is, so the body will tend to fly upward a bit).
 	Vector vecDir = vec3_origin;
-	if (!IsNullEnt(pevInflictor))
+	if (!IsNullEnt(info.GetInflictor()))
 	{
-		if (CBaseEntity* pInflictor = CBaseEntity::Instance(pevInflictor); pInflictor)
+		if (CBaseEntity* pInflictor = CBaseEntity::Instance(info.GetInflictor()); pInflictor)
 		{
 			vecDir = (pInflictor->Center() - Vector(0, 0, 10) - Center()).Normalize();
 			vecDir = g_vecAttackDir = vecDir.Normalize();
@@ -780,8 +780,8 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	// message at the end of the frame
 	if (IsPlayer())
 	{
-		if (pevInflictor)
-			pev->dmg_inflictor = ENT(pevInflictor);
+		if (info.GetInflictor())
+			pev->dmg_inflictor = ENT(info.GetInflictor());
 
 		pev->dmg_take += flTake;
 
@@ -793,9 +793,9 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	}
 
 	// if this is a player, move him around!
-	if ((!IsNullEnt(pevInflictor)) && (pev->movetype == Movetype::Walk) && (!pevAttacker || pevAttacker->solid != Solid::Trigger))
+	if ((!IsNullEnt(info.GetInflictor())) && (pev->movetype == Movetype::Walk) && (!info.GetAttacker() || info.GetAttacker()->solid != Solid::Trigger))
 	{
-		pev->velocity = pev->velocity + vecDir * -DamageForce(flDamage);
+		pev->velocity = pev->velocity + vecDir * -DamageForce(info.GetDamage());
 	}
 
 	// do the damage
@@ -810,19 +810,19 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 
 	if (pev->health <= 0)
 	{
-		g_pevLastInflictor = pevInflictor;
+		g_pevLastInflictor = info.GetInflictor();
 
-		if (bitsDamageType & DMG_ALWAYSGIB)
+		if (info.GetDamageTypes() & DMG_ALWAYSGIB)
 		{
-			Killed({pevAttacker, GibType::Always});
+			Killed({info.GetAttacker(), GibType::Always});
 		}
-		else if (bitsDamageType & DMG_NEVERGIB)
+		else if (info.GetDamageTypes() & DMG_NEVERGIB)
 		{
-			Killed({pevAttacker, GibType::Never});
+			Killed({info.GetAttacker(), GibType::Never});
 		}
 		else
 		{
-			Killed({pevAttacker, GibType::Normal});
+			Killed({info.GetAttacker(), GibType::Normal});
 		}
 
 		g_pevLastInflictor = nullptr;
@@ -831,16 +831,16 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	}
 
 	// react to the damage (get mad)
-	if ((pev->flags & FL_MONSTER) && !IsNullEnt(pevAttacker))
+	if ((pev->flags & FL_MONSTER) && !IsNullEnt(info.GetAttacker()))
 	{
-		if (pevAttacker->flags & (FL_MONSTER | FL_CLIENT))
+		if (info.GetAttacker()->flags & (FL_MONSTER | FL_CLIENT))
 		{// only if the attack was a monster or client!
 			// enemy's last known position is somewhere down the vector that the attack came from.
-			if (pevInflictor)
+			if (info.GetInflictor())
 			{
-				if (m_hEnemy == nullptr || pevInflictor == m_hEnemy->pev || !HasConditions(bits_COND_SEE_ENEMY))
+				if (m_hEnemy == nullptr || info.GetInflictor() == m_hEnemy->pev || !HasConditions(bits_COND_SEE_ENEMY))
 				{
-					m_vecEnemyLKP = pevInflictor->origin;
+					m_vecEnemyLKP = info.GetInflictor()->origin;
 				}
 			}
 			else
@@ -853,12 +853,12 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 			// add pain to the conditions 
 			// !!!HACKHACK - fudged for now. Do we want to have a virtual function to determine what is light and 
 			// heavy damage per monster class?
-			if (flDamage > 0)
+			if (info.GetDamage() > 0)
 			{
 				SetConditions(bits_COND_LIGHT_DAMAGE);
 			}
 
-			if (flDamage >= 20)
+			if (info.GetDamage() >= 20)
 			{
 				SetConditions(bits_COND_HEAVY_DAMAGE);
 			}
@@ -868,13 +868,13 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 	return true;
 }
 
-bool CBaseMonster::DeadTakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBaseMonster::DeadTakeDamage(const TakeDamageInfo& info)
 {
 	// grab the vector of the incoming attack. ( pretend that the inflictor is a little lower than it really is, so the body will tend to fly upward a bit).
 	Vector vecDir = vec3_origin;
-	if (!IsNullEnt(pevInflictor))
+	if (!IsNullEnt(info.GetInflictor()))
 	{
-		if (CBaseEntity* pInflictor = CBaseEntity::Instance(pevInflictor); pInflictor)
+		if (CBaseEntity* pInflictor = CBaseEntity::Instance(info.GetInflictor()); pInflictor)
 		{
 			vecDir = (pInflictor->Center() - Vector(0, 0, 10) - Center()).Normalize();
 			vecDir = g_vecAttackDir = vecDir.Normalize();
@@ -893,16 +893,16 @@ bool CBaseMonster::DeadTakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacke
 #endif
 
 	// kill the corpse if enough damage was done to destroy the corpse and the damage is of a type that is allowed to destroy the corpse.
-	if (bitsDamageType & DMG_GIB_CORPSE)
+	if (info.GetDamageTypes() & DMG_GIB_CORPSE)
 	{
-		if (pev->health <= flDamage)
+		if (pev->health <= info.GetDamage())
 		{
 			pev->health = -50;
-			Killed({pevAttacker, GibType::Always});
+			Killed({info.GetAttacker(), GibType::Always});
 			return false;
 		}
 		// Accumulate corpse gibbing damage, so you can gib with multiple hits
-		pev->health -= flDamage * 0.1;
+		pev->health -= info.GetDamage() * 0.1;
 	}
 
 	return true;
@@ -976,7 +976,7 @@ void RadiusDamage(Vector vecSrc, entvars_t* pevInflictor, entvars_t* pevAttacker
 				}
 				else
 				{
-					pEntity->TakeDamage(pevInflictor, pevAttacker, flAdjustedDamage, bitsDamageType);
+					pEntity->TakeDamage({pevInflictor, pevAttacker, flAdjustedDamage, bitsDamageType});
 				}
 			}
 		}
@@ -1013,7 +1013,7 @@ CBaseEntity* CBaseMonster::CheckTraceHullAttack(float flDist, int iDamage, int i
 
 		if (iDamage > 0)
 		{
-			pEntity->TakeDamage(pev, pev, iDamage, iDmgType);
+			pEntity->TakeDamage({pev, pev, static_cast<float>(iDamage), iDmgType});
 		}
 
 		return pEntity;

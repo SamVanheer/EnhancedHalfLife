@@ -82,7 +82,7 @@ public:
 	static const char* pPainSounds[];
 	static const char* pDeathSounds[];
 
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	void Killed(const KilledInfo& info) override;
 	void GibMonster() override;
 
@@ -156,12 +156,12 @@ void CController::SetYawSpeed()
 	pev->yaw_speed = 120;
 }
 
-bool CController::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CController::TakeDamage(const TakeDamageInfo& info)
 {
 	// HACK HACK -- until we fix this.
 	if (IsAlive())
 		PainSound();
-	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CBaseMonster::TakeDamage(info);
 }
 
 void CController::Killed(const KilledInfo& info)

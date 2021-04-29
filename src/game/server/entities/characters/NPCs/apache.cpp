@@ -54,7 +54,7 @@ class CApache : public CBaseMonster
 	void FireRocket();
 	bool FireGun();
 
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
 
 	int m_iRockets;
@@ -858,14 +858,16 @@ void CApache::ShowDamage()
 		m_iDoSmokePuff--;
 }
 
-bool CApache::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CApache::TakeDamage(const TakeDamageInfo& info)
 {
-	if (pevInflictor->owner == edict())
+	if (info.GetInflictor()->owner == edict())
 		return false;
 
-	if (bitsDamageType & DMG_BLAST)
+	TakeDamageInfo adjustedInfo = info;
+
+	if (adjustedInfo.GetDamageTypes() & DMG_BLAST)
 	{
-		flDamage *= 2;
+		adjustedInfo.SetDamage(adjustedInfo.GetDamage() * 2);
 	}
 
 	/*
@@ -877,7 +879,7 @@ bool CApache::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float 
 	*/
 
 	// ALERT( at_console, "%.0f\n", flDamage );
-	return CBaseEntity::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CBaseEntity::TakeDamage(adjustedInfo);
 }
 
 void CApache::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)

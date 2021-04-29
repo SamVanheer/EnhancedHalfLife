@@ -37,7 +37,7 @@ class CTripmineGrenade : public CGrenade
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 
 	void EXPORT WarningThink();
 	void EXPORT PowerupThink();
@@ -286,9 +286,9 @@ void CTripmineGrenade::BeamBreakThink()
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
-bool CTripmineGrenade::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CTripmineGrenade::TakeDamage(const TakeDamageInfo& info)
 {
-	if (gpGlobals->time < m_flPowerUp && flDamage < pev->health)
+	if (gpGlobals->time < m_flPowerUp && info.GetDamage() < pev->health)
 	{
 		// disable
 		// Create( "weapon_tripmine", pev->origin + m_vecDir * 24, pev->angles );
@@ -297,7 +297,7 @@ bool CTripmineGrenade::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacke
 		KillBeam();
 		return false;
 	}
-	return CGrenade::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CGrenade::TakeDamage(info);
 }
 
 void CTripmineGrenade::Killed(const KilledInfo& info)

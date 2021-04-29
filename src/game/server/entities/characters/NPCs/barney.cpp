@@ -63,7 +63,7 @@ public:
 	void RunTask(Task_t* pTask) override;
 	void StartTask(Task_t* pTask) override;
 	int	ObjectCaps() override { return CTalkMonster::ObjectCaps() | FCAP_IMPULSE_USE; }
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	bool CheckRangeAttack1(float flDot, float flDist) override;
 
 	void DeclineFollowing() override;
@@ -459,23 +459,23 @@ bool IsFacing(entvars_t* pevTest, const Vector& reference)
 	return DotProduct(forward, vecDir) > 0.96; // +/- 15 degrees or so
 }
 
-bool CBarney::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBarney::TakeDamage(const TakeDamageInfo& info)
 {
 	// make sure friends talk about it if player hurts talkmonsters...
-	const bool ret = CTalkMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	const bool ret = CTalkMonster::TakeDamage(info);
 	if (!IsAlive() || pev->deadflag == DeadFlag::Dying)
 		return ret;
 
-	if (m_MonsterState != NPCState::Prone && (pevAttacker->flags & FL_CLIENT))
+	if (m_MonsterState != NPCState::Prone && (info.GetAttacker()->flags & FL_CLIENT))
 	{
-		m_flPlayerDamage += flDamage;
+		m_flPlayerDamage += info.GetDamage();
 
 		// This is a heurstic to determine if the player intended to harm me
 		// If I have an enemy, we can't establish intent (may just be crossfire)
 		if (m_hEnemy == nullptr)
 		{
 			// If the player was facing directly at me, or I'm already suspicious, get mad
-			if ((m_afMemory & bits_MEMORY_SUSPICIOUS) || IsFacing(pevAttacker, pev->origin))
+			if ((m_afMemory & bits_MEMORY_SUSPICIOUS) || IsFacing(info.GetAttacker(), pev->origin))
 			{
 				// Alright, now I'm pissed!
 				PlaySentence("BA_MAD", 4, VOL_NORM, ATTN_NORM);

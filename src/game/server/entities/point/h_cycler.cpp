@@ -36,7 +36,7 @@ public:
 	/**
 	*	@brief changes sequences when shot
 	*/
-	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool TakeDamage(const TakeDamageInfo& info) override;
 	void Spawn() override;
 	void Think() override;
 	//void Pain( float flDamage );
@@ -153,7 +153,7 @@ void CCycler::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useTyp
 		pev->framerate = 0.0;
 }
 
-bool CCycler::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CCycler::TakeDamage(const TakeDamageInfo& info)
 {
 	if (m_animate)
 	{
@@ -186,7 +186,7 @@ public:
 	void Think() override;
 	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() | FCAP_DONT_SAVE | FCAP_IMPULSE_USE); }
-	bool	TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
+	bool	TakeDamage(const TakeDamageInfo& info) override;
 	void	Animate(float frames);
 
 	bool Save(CSave& save) override;
@@ -243,7 +243,7 @@ void CCyclerSprite::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE 
 	ALERT(at_console, "Sprite: %s\n", STRING(pev->model));
 }
 
-bool	CCyclerSprite::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool	CCyclerSprite::TakeDamage(const TakeDamageInfo& info)
 {
 	if (m_maxFrame > 1.0)
 	{
