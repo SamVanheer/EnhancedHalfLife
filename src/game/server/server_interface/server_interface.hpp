@@ -29,4 +29,9 @@ extern "C"
 	DLLEXPORT int GetEntityAPI(DLL_FUNCTIONS* pFunctionTable, int interfaceVersion);
 	DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion);
 	DLLEXPORT int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion);
+
+	/**
+	*	@brief Called by the engine to get a save game comment, used in the save/load game "Saved Game" column
+	*/
+	DLLEXPORT void SV_SaveGameComment(char* pszBuffer, int iSizeBuffer);
 }
