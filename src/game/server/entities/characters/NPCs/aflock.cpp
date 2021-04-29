@@ -96,7 +96,7 @@ public:
 	*	This function should **ONLY** be called when Caller's velocity is normalized!!
 	*/
 	void SpreadFlock2();
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 
 	/**
 	*	@brief returns true if there is an obstacle ahead
@@ -289,7 +289,7 @@ void CFlockingFlyer::MakeSound()
 	}
 }
 
-void CFlockingFlyer::Killed(entvars_t* pevAttacker, int iGib)
+void CFlockingFlyer::Killed(const KilledInfo& info)
 {
 	for (CFlockingFlyer* pSquad = m_pSquadLeader; pSquad; pSquad = pSquad->m_pSquadNext)
 	{

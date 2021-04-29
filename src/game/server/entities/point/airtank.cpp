@@ -26,7 +26,7 @@ class CAirtank : public CGrenade
 	void EXPORT TankThink();
 	void EXPORT TankTouch(CBaseEntity* pOther);
 	int	 BloodColor() override { return DONT_BLEED; }
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -72,9 +72,9 @@ void CAirtank::Precache()
 	PRECACHE_SOUND("doors/aliendoor3.wav");
 }
 
-void CAirtank::Killed(entvars_t* pevAttacker, int iGib)
+void CAirtank::Killed(const KilledInfo& info)
 {
-	pev->owner = ENT(pevAttacker);
+	pev->owner = ENT(info.GetAttacker());
 
 	// UNDONE: this should make a big bubble cloud, not an explosion
 

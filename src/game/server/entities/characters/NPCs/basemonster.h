@@ -672,7 +672,7 @@ public:
 	*	@brief determines the best type of flinch anim to play.
 	*/
 	Activity GetSmallFlinchActivity();
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 
 	/**
 	*	@brief create some gore and get rid of a monster's model.

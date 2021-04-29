@@ -232,7 +232,7 @@ public:
 
 	void PrescheduleThink() override;
 
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 	void DeathEffect();
 
 	void EyeOff();
@@ -851,12 +851,12 @@ void CGargantua::DeathEffect()
 	pSmoker->pev->nextthink = gpGlobals->time + 2.5;	// Start in 2.5 seconds
 }
 
-void CGargantua::Killed(entvars_t* pevAttacker, int iGib)
+void CGargantua::Killed(const KilledInfo& info)
 {
 	EyeOff();
 	UTIL_Remove(m_pEyeGlow);
 	m_pEyeGlow = nullptr;
-	CBaseMonster::Killed(pevAttacker, GIB_NEVER);
+	CBaseMonster::Killed({info.GetAttacker(), GIB_NEVER});
 }
 
 bool CGargantua::CheckMeleeAttack1(float flDot, float flDist)

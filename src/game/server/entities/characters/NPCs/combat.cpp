@@ -541,11 +541,11 @@ void CBaseMonster::CallGibMonster()
 		UTIL_Remove(this);
 }
 
-void CBaseMonster::Killed(entvars_t* pevAttacker, int iGib)
+void CBaseMonster::Killed(const KilledInfo& info)
 {
 	if (HasMemory(bits_MEMORY_KILLED))
 	{
-		if (ShouldGibMonster(iGib))
+		if (ShouldGibMonster(info.GetGibType()))
 			CallGibMonster();
 		return;
 	}
@@ -564,7 +564,7 @@ void CBaseMonster::Killed(entvars_t* pevAttacker, int iGib)
 		pOwner->DeathNotice(pev);
 	}
 
-	if (ShouldGibMonster(iGib))
+	if (ShouldGibMonster(info.GetGibType()))
 	{
 		CallGibMonster();
 		return;
@@ -814,15 +814,15 @@ bool CBaseMonster::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, f
 
 		if (bitsDamageType & DMG_ALWAYSGIB)
 		{
-			Killed(pevAttacker, GIB_ALWAYS);
+			Killed({pevAttacker, GIB_ALWAYS});
 		}
 		else if (bitsDamageType & DMG_NEVERGIB)
 		{
-			Killed(pevAttacker, GIB_NEVER);
+			Killed({pevAttacker, GIB_NEVER});
 		}
 		else
 		{
-			Killed(pevAttacker, GIB_NORMAL);
+			Killed({pevAttacker, GIB_NORMAL});
 		}
 
 		g_pevLastInflictor = nullptr;
@@ -898,7 +898,7 @@ bool CBaseMonster::DeadTakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacke
 		if (pev->health <= flDamage)
 		{
 			pev->health = -50;
-			Killed(pevAttacker, GIB_ALWAYS);
+			Killed({pevAttacker, GIB_ALWAYS});
 			return false;
 		}
 		// Accumulate corpse gibbing damage, so you can gib with multiple hits

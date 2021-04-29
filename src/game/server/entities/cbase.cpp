@@ -83,14 +83,14 @@ bool CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, fl
 	pev->health -= flDamage;
 	if (pev->health <= 0)
 	{
-		Killed(pevAttacker, GIB_NORMAL);
+		Killed({pevAttacker, GIB_NORMAL});
 		return false;
 	}
 
 	return true;
 }
 
-void CBaseEntity::Killed(entvars_t* pevAttacker, int iGib)
+void CBaseEntity::Killed(const KilledInfo& info)
 {
 	SetDamageMode(DamageMode::No);
 	pev->deadflag = DeadFlag::Dead;

@@ -24,7 +24,7 @@ public:
 	LocalMoveResult CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist) override;
 	bool		Triangulate(const Vector& vecStart, const Vector& vecEnd, float flDist, CBaseEntity* pTargetEnt, Vector* pApex) override;
 	Activity	GetStoppedActivity() override;
-	void		Killed(entvars_t* pevAttacker, int iGib) override;
+	void		Killed(const KilledInfo& info) override;
 	void		Stop() override;
 	float		ChangeYaw(int speed) override;
 	void		HandleAnimEvent(AnimationEvent& event) override;

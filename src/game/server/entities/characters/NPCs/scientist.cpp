@@ -104,7 +104,7 @@ public:
 
 	void TalkInit();
 
-	void			Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -765,10 +765,10 @@ void CScientist::DeathSound()
 	PainSound();
 }
 
-void CScientist::Killed(entvars_t* pevAttacker, int iGib)
+void CScientist::Killed(const KilledInfo& info)
 {
 	SetUse(nullptr);
-	CTalkMonster::Killed(pevAttacker, iGib);
+	CTalkMonster::Killed(info);
 }
 
 void CScientist::SetActivity(Activity newActivity)

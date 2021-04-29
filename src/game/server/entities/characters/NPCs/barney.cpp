@@ -79,7 +79,7 @@ public:
 	void TalkInit();
 
 	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -553,7 +553,7 @@ void CBarney::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir,
 	CTalkMonster::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
 }
 
-void CBarney::Killed(entvars_t* pevAttacker, int iGib)
+void CBarney::Killed(const KilledInfo& info)
 {
 	if (GetBodygroup(BARNEY_BODYGROUP_GUN) != BARNEY_BODY_GUNGONE)
 	{// drop the gun!
@@ -566,7 +566,7 @@ void CBarney::Killed(entvars_t* pevAttacker, int iGib)
 	}
 
 	SetUse(nullptr);
-	CTalkMonster::Killed(pevAttacker, iGib);
+	CTalkMonster::Killed(info);
 }
 
 Schedule_t* CBarney::GetScheduleOfType(int Type)

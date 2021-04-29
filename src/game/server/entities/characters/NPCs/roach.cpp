@@ -45,7 +45,7 @@ public:
 	*/
 	void PickNewDest(int iCondition);
 	void EXPORT Touch(CBaseEntity* pOther) override;
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 
 	float	m_flLastLightLevel;
 	float	m_flNextSmellTime;
@@ -132,7 +132,7 @@ void CRoach::Precache()
 	PRECACHE_SOUND("roach/rch_smash.wav");
 }
 
-void CRoach::Killed(entvars_t* pevAttacker, int iGib)
+void CRoach::Killed(const KilledInfo& info)
 {
 	pev->solid = Solid::Not;
 

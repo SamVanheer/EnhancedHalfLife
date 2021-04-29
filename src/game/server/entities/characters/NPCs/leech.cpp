@@ -103,7 +103,7 @@ public:
 	// Base entity functions
 	void HandleAnimEvent(AnimationEvent& event) override;
 	int	BloodColor() override { return DONT_BLEED; }
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 	void Activate() override;
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	int	Classify() override { return CLASS_INSECT; }
@@ -637,7 +637,7 @@ void CLeech::SwimThink()
 	UpdateMotion();
 }
 
-void CLeech::Killed(entvars_t* pevAttacker, int iGib)
+void CLeech::Killed(const KilledInfo& info)
 {
 	//ALERT(at_aiconsole, "Leech: killed\n");
 	// tell owner ( if any ) that we're dead.This is mostly for MonsterMaker functionality.

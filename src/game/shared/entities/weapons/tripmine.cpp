@@ -43,7 +43,7 @@ class CTripmineGrenade : public CGrenade
 	void EXPORT PowerupThink();
 	void EXPORT BeamBreakThink();
 	void EXPORT DelayDeathThink();
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 
 	void MakeBeam();
 	void KillBeam();
@@ -279,7 +279,7 @@ void CTripmineGrenade::BeamBreakThink()
 		// CGrenade code knows who the explosive really belongs to.
 		pev->owner = m_pRealOwner;
 		pev->health = 0;
-		Killed(VARS(pev->owner), GIB_NORMAL);
+		Killed({VARS(pev->owner), GIB_NORMAL});
 		return;
 	}
 
@@ -300,11 +300,11 @@ bool CTripmineGrenade::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacke
 	return CGrenade::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
 }
 
-void CTripmineGrenade::Killed(entvars_t* pevAttacker, int iGib)
+void CTripmineGrenade::Killed(const KilledInfo& info)
 {
 	SetDamageMode(DamageMode::No);
 
-	if (pevAttacker && (pevAttacker->flags & FL_CLIENT))
+	if (auto pevAttacker = info.GetAttacker(); pevAttacker && (pevAttacker->flags & FL_CLIENT))
 	{
 		// some client has destroyed this mine, he'll get credit for any kills
 		pev->owner = ENT(pevAttacker);

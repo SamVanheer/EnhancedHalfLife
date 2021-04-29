@@ -95,7 +95,7 @@ void CSquadMonster::ScheduleChange()
 	VacateSlot();
 }
 
-void CSquadMonster::Killed(entvars_t* pevAttacker, int iGib)
+void CSquadMonster::Killed(const KilledInfo& info)
 {
 	VacateSlot();
 
@@ -104,7 +104,7 @@ void CSquadMonster::Killed(entvars_t* pevAttacker, int iGib)
 		MySquadLeader()->SquadRemove(this);
 	}
 
-	CBaseMonster::Killed(pevAttacker, iGib);
+	CBaseMonster::Killed(info);
 }
 
 void CSquadMonster::SquadRemove(CSquadMonster* pRemove)

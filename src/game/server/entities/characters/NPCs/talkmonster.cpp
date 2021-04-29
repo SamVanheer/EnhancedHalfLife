@@ -608,20 +608,20 @@ void CTalkMonster::RunTask(Task_t* pTask)
 	}
 }
 
-void CTalkMonster::Killed(entvars_t* pevAttacker, int iGib)
+void CTalkMonster::Killed(const KilledInfo& info)
 {
 	// If a client killed me (unless I was already Barnacle'd), make everyone else mad/afraid of him
-	if ((pevAttacker->flags & FL_CLIENT) && m_MonsterState != NPCState::Prone)
+	if ((info.GetAttacker()->flags & FL_CLIENT) && m_MonsterState != NPCState::Prone)
 	{
 		AlertFriends();
-		LimitFollowers(CBaseEntity::Instance(pevAttacker), 0);
+		LimitFollowers(CBaseEntity::Instance(info.GetAttacker()), 0);
 	}
 
 	m_hTargetEnt = nullptr;
 	// Don't finish that sentence
 	StopTalking();
 	SetUse(nullptr);
-	CBaseMonster::Killed(pevAttacker, iGib);
+	CBaseMonster::Killed(info);
 }
 
 CBaseEntity* CTalkMonster::EnumFriends(CBaseEntity* pPrevious, int listNumber, bool bTrace)

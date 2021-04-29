@@ -38,7 +38,7 @@ public:
 	void Precache() override;
 	int  Classify() override { return CLASS_ALIEN_MILITARY; }
 	int  BloodColor() override { return BLOOD_COLOR_YELLOW; }
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 	void GibMonster() override;
 
 	void SetObjectCollisionBox() override
@@ -404,9 +404,9 @@ void CNihilanth::StartupThink()
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
-void CNihilanth::Killed(entvars_t* pevAttacker, int iGib)
+void CNihilanth::Killed(const KilledInfo& info)
 {
-	CBaseMonster::Killed(pevAttacker, iGib);
+	CBaseMonster::Killed(info);
 }
 
 void CNihilanth::DyingThink()

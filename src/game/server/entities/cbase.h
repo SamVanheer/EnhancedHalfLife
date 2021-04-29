@@ -45,14 +45,13 @@ constexpr int FCAP_MASTER = 0x00000080;				//!< Can be used to "master" other en
 // UNDONE: This will ignore transition volumes (trigger_transition), but not the PVS!!!
 constexpr int FCAP_FORCE_TRANSITION = 0x00000080;	//!< ALWAYS goes across transitions
 
+#include "Platform.h"
 #include "steam/steamtypes.h"
 #include "saverestore.hpp"
 #include "globalstate.hpp"
 #include "schedule.h"
-
 #include "animationevent.hpp"
-
-#include "Platform.h"
+#include "ehandle.hpp"
 
 #define EXPORT DLLEXPORT
 
@@ -105,10 +104,37 @@ class CBaseMonster;
 class CBasePlayerItem;
 class CSquadMonster;
 
-
 constexpr int SF_NORESPAWN = 1 << 30; // !!!set this bit on guns and stuff that should never respawn.
 
-#include "ehandle.hpp"
+// when calling KILLED(), a value that governs gib behavior is expected to be 
+// one of these three values
+//TODO: make this an enum
+constexpr int GIB_NORMAL = 0;	//!< gib if entity was overkilled
+constexpr int GIB_NEVER = 1;	//!< never gib, no matter how much death damage is done ( freezing, etc )
+constexpr int GIB_ALWAYS = 2;	//!< always gib ( Houndeye Shock, Barnacle Bite )
+
+/**
+*	@brief Contains information about an entity's death
+*/
+class KilledInfo
+{
+public:
+	KilledInfo(entvars_t* pevAttacker, int iGib)
+		: _attacker(pevAttacker)
+		, _gibType(iGib)
+	{
+	}
+
+	~KilledInfo() = default;
+
+	entvars_t* GetAttacker() const { return _attacker; }
+
+	int GetGibType() const { return _gibType; }
+
+private:
+	entvars_t* const _attacker;
+	const int _gibType;
+};
 
 /**
 *	@brief Base Entity.  All entity types derive from this
@@ -190,7 +216,7 @@ public:
 	*/
 	virtual bool	TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
 	virtual bool	GiveHealth(float flHealth, int bitsDamageType);
-	virtual void	Killed(entvars_t* pevAttacker, int iGib);
+	virtual void	Killed(const KilledInfo& info);
 	virtual int		BloodColor() { return DONT_BLEED; }
 	virtual void	TraceBleed(float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType);
 	virtual bool    IsTriggered(CBaseEntity* pActivator) { return true; }
@@ -424,7 +450,6 @@ inline bool IsNullEnt(CBaseEntity* ent) { return (ent == nullptr) || IsNullEnt(e
 
 #endif
 
-
 class CPointEntity : public CBaseEntity
 {
 public:
@@ -484,7 +509,6 @@ public:
 	string_t	m_globalstate;
 };
 
-
 /**
 *	@brief generic Delay entity.
 */
@@ -504,7 +528,6 @@ public:
 	void SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value);
 	void EXPORT DelayThink();
 };
-
 
 class CBaseAnimating : public CBaseDelay
 {
@@ -560,7 +583,6 @@ public:
 	bool				m_fSequenceFinished;//!< flag set when StudioAdvanceFrame moves across a frame boundry
 	bool				m_fSequenceLoops;	//!< true if the sequence loops
 };
-
 
 constexpr int SF_ITEM_USE_ONLY = 256; //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR_USE_ONLY!!! 
 
@@ -638,8 +660,8 @@ public:
 	*/
 	string_t m_sMaster;
 };
-#define SetMoveDone( a ) m_pfnCallWhenMoveDone = static_cast <void (CBaseToggle::*)()> (a)
 
+#define SetMoveDone( a ) m_pfnCallWhenMoveDone = static_cast <void (CBaseToggle::*)()> (a)
 
 // people gib if their health is <= this at the time of death
 constexpr int GIB_HEALTH_VALUE = -30;
@@ -667,13 +689,6 @@ constexpr int bits_CAP_MELEE_ATTACK2 = 1 << 14;	//!< can do a melee attack 2
 constexpr int bits_CAP_FLY = 1 << 15;			//!< can fly, move all around
 
 constexpr int bits_CAP_DOORS_GROUP = bits_CAP_USE | bits_CAP_AUTO_DOORS | bits_CAP_OPEN_DOORS;
-
-// when calling KILLED(), a value that governs gib behavior is expected to be 
-// one of these three values
-//TODO: make this an enum
-constexpr int GIB_NORMAL = 0;	//!< gib if entity was overkilled
-constexpr int GIB_NEVER = 1;	//!< never gib, no matter how much death damage is done ( freezing, etc )
-constexpr int GIB_ALWAYS = 2;	//!< always gib ( Houndeye Shock, Barnacle Bite )
 
 class CBaseMonster;
 class CCineMonster;

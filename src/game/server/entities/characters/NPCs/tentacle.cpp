@@ -63,7 +63,7 @@ public:
 
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	void HandleAnimEvent(AnimationEvent& event) override;
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 
 	NPCState GetIdealState() override { return NPCState::Idle; }
 	//TODO: should override base, but has different signature
@@ -944,7 +944,7 @@ bool CTentacle::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 	return true;
 }
 
-void CTentacle::Killed(entvars_t* pevAttacker, int iGib)
+void CTentacle::Killed(const KilledInfo& info)
 {
 	m_iGoalAnim = TENTACLE_ANIM_Pit_Idle;
 	return;

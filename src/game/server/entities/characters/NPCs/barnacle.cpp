@@ -46,7 +46,7 @@ public:
 	void HandleAnimEvent(AnimationEvent& event) override;
 	void EXPORT BarnacleThink();
 	void EXPORT WaitTillDead();
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -296,7 +296,7 @@ void CBarnacle::BarnacleThink()
 	StudioFrameAdvance(0.1);
 }
 
-void CBarnacle::Killed(entvars_t* pevAttacker, int iGib)
+void CBarnacle::Killed(const KilledInfo& info)
 {
 	pev->solid = Solid::Not;
 	SetDamageMode(DamageMode::No);

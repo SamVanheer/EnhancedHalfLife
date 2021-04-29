@@ -68,7 +68,7 @@ public:
 	void StartMonster() override;
 	void VacateSlot();
 	void ScheduleChange() override;
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 
 	/**
 	*	@brief if any slots of the passed slots are available, the monster will be assigned to one.

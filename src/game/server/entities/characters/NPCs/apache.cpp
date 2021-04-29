@@ -33,7 +33,7 @@ class CApache : public CBaseMonster
 	void Precache() override;
 	int  Classify() override { return CLASS_HUMAN_MILITARY; }
 	int  BloodColor() override { return DONT_BLEED; }
-	void Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 	void GibMonster() override;
 
 	void SetObjectCollisionBox() override
@@ -185,7 +185,7 @@ void CApache::StartupUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	SetUse(nullptr);
 }
 
-void CApache::Killed(entvars_t* pevAttacker, int iGib)
+void CApache::Killed(const KilledInfo& info)
 {
 	pev->movetype = Movetype::Toss;
 	pev->gravity = 0.3;

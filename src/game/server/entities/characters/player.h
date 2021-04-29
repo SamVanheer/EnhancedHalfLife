@@ -214,7 +214,7 @@ public:
 	*	Thus the ongoing effects of poison, radiation etc are implemented with subsequent calls to TakeDamage using DMG_GENERIC.
 	*/
 	bool TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
-	void	Killed(entvars_t* pevAttacker, int iGib) override;
+	void Killed(const KilledInfo& info) override;
 	Vector BodyTarget(const Vector& posSrc) override { return Center() + pev->view_ofs * RANDOM_FLOAT(0.5, 1.1); }
 	bool IsAlive() override { return (pev->deadflag == DeadFlag::No) && pev->health > 0; }
 	bool ShouldFadeOnDeath() override { return false; }
