@@ -619,7 +619,7 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	entvars_t* m_pevCurrentTarget;
+	EHANDLE m_hCurrentTarget;
 	int			m_sounds;
 	bool		m_activated;
 };
@@ -629,7 +629,7 @@ LINK_ENTITY_TO_CLASS(func_train, CFuncTrain);
 TYPEDESCRIPTION	CFuncTrain::m_SaveData[] =
 {
 	DEFINE_FIELD(CFuncTrain, m_sounds, FIELD_INTEGER),
-	DEFINE_FIELD(CFuncTrain, m_pevCurrentTarget, FIELD_EVARS),
+	DEFINE_FIELD(CFuncTrain, m_hCurrentTarget, FIELD_EHANDLE),
 	DEFINE_FIELD(CFuncTrain, m_activated, FIELD_BOOLEAN),
 };
 
@@ -668,8 +668,8 @@ void CFuncTrain::Use(const UseInfo& info)
 	{
 		pev->spawnflags |= SF_TRAIN_WAIT_RETRIGGER;
 		// Pop back to last target if it's available
-		if (pev->enemy)
-			pev->target = pev->enemy->v.targetname;
+		if (CBaseEntity* last = m_hCurrentTarget; last)
+			pev->target = last->pev->targetname;
 		pev->nextthink = 0;
 		pev->velocity = vec3_origin;
 		if (!IsStringNull(pev->noiseStopMoving))
@@ -679,16 +679,19 @@ void CFuncTrain::Use(const UseInfo& info)
 
 void CFuncTrain::Wait()
 {
+	//TODO: can be null if killtargeted
+	CBaseEntity* pTarget = m_hCurrentTarget;
+
 	// Fire the pass target if there is one
-	if (!IsStringNull(m_pevCurrentTarget->message))
+	if (!IsStringNull(pTarget->pev->message))
 	{
-		FireTargets(STRING(m_pevCurrentTarget->message), this, this, USE_TOGGLE, 0);
-		if (IsBitSet(m_pevCurrentTarget->spawnflags, SF_CORNER_FIREONCE))
-			m_pevCurrentTarget->message = iStringNull;
+		FireTargets(STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0);
+		if (IsBitSet(pTarget->pev->spawnflags, SF_CORNER_FIREONCE))
+			pTarget->pev->message = iStringNull;
 	}
 
 	// need pointer to LAST target.
-	if (IsBitSet(m_pevCurrentTarget->spawnflags, SF_TRAIN_WAIT_RETRIGGER) || (pev->spawnflags & SF_TRAIN_WAIT_RETRIGGER))
+	if (IsBitSet(pTarget->pev->spawnflags, SF_TRAIN_WAIT_RETRIGGER) || (pev->spawnflags & SF_TRAIN_WAIT_RETRIGGER))
 	{
 		pev->spawnflags |= SF_TRAIN_WAIT_RETRIGGER;
 		// clear the sound channel.
@@ -738,16 +741,14 @@ void CFuncTrain::Next()
 	pev->target = pTarg->pev->target;
 	m_flWait = pTarg->GetDelay();
 
-	if (m_pevCurrentTarget && m_pevCurrentTarget->speed != 0)
+	if (CBaseEntity* pCurrentTarget = m_hCurrentTarget; pCurrentTarget && pCurrentTarget->pev->speed != 0)
 	{// don't copy speed from target if it is 0 (uninitialized)
-		pev->speed = m_pevCurrentTarget->speed;
+		pev->speed = pCurrentTarget->pev->speed;
 		ALERT(at_aiconsole, "Train %s speed to %4.2f\n", STRING(pev->targetname), pev->speed);
 	}
-	m_pevCurrentTarget = pTarg->pev;// keep track of this since path corners change our target for us.
+	m_hCurrentTarget = pTarg;// keep track of this since path corners change our target for us.
 
-	pev->enemy = pTarg->edict();//hack
-
-	if (IsBitSet(m_pevCurrentTarget->spawnflags, SF_CORNER_TELEPORT))
+	if (IsBitSet(pTarg->pev->spawnflags, SF_CORNER_TELEPORT))
 	{
 		// Path corner has indicated a teleport to the next corner.
 		SetBits(pev->effects, EF_NOINTERP);
@@ -786,7 +787,7 @@ void CFuncTrain::Activate()
 		}
 
 		pev->target = pTarget->pev->target;
-		m_pevCurrentTarget = pTarget->pev;// keep track of this since path corners change our target for us.
+		m_hCurrentTarget = pTarget;// keep track of this since path corners change our target for us.
 
 		UTIL_SetOrigin(pev, pTarget->pev->origin - (pev->mins + pev->maxs) * 0.5);
 
