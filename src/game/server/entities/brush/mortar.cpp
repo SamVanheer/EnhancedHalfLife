@@ -49,7 +49,7 @@ public:
 	/**
 	*	@brief If connected to a table, then use the table controllers, else hit where the trigger is.
 	*/
-	void EXPORT FieldUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT FieldUse(const UseInfo& info);
 
 	string_t m_iszXController;
 	string_t m_iszYController;
@@ -120,7 +120,7 @@ void CFuncMortarField::Precache()
 	PRECACHE_MODEL("sprites/lgtning.spr");
 }
 
-void CFuncMortarField::FieldUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncMortarField::FieldUse(const UseInfo& info)
 {
 	Vector vecStart
 	{
@@ -134,7 +134,7 @@ void CFuncMortarField::FieldUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 	case MortarControlType::Random:	// random
 		break;
 	case MortarControlType::Activator: // Trigger Activator
-		if (pActivator != nullptr)
+		if (auto pActivator = info.GetActivator(); pActivator != nullptr)
 		{
 			vecStart.x = pActivator->pev->origin.x;
 			vecStart.y = pActivator->pev->origin.y;
@@ -177,7 +177,7 @@ void CFuncMortarField::FieldUse(CBaseEntity* pActivator, CBaseEntity* pCaller, U
 		UTIL_TraceLine(vecSpot, vecSpot + vec3_down * WORLD_BOUNDARY, IgnoreMonsters::Yes, ENT(pev), &tr);
 
 		edict_t* pentOwner = nullptr;
-		if (pActivator)	pentOwner = pActivator->edict();
+		if (info.GetActivator()) pentOwner = info.GetActivator()->edict();
 
 		CBaseEntity* pMortar = Create("monster_mortar", tr.vecEndPos, vec3_origin, pentOwner);
 		pMortar->pev->nextthink = gpGlobals->time + t;

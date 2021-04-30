@@ -66,7 +66,7 @@ class CCineMonster : public CBaseMonster
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 
 	/**
 	*	@brief This doesn't really make sense since only Movetype::Push get 'Blocked' events

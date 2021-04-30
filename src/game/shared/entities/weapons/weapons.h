@@ -66,7 +66,7 @@ public:
 	*/
 	void EXPORT PreDetonate();
 	void EXPORT Detonate();
-	void EXPORT DetonateUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT DetonateUse(const UseInfo& info);
 	void EXPORT TumbleThink();
 
 	virtual void BounceSound();

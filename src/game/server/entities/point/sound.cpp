@@ -131,7 +131,7 @@ public:
 	*	If the ambient is a looping sound, mark sound as active (m_fActive) if it's playing, innactive if not.
 	*	If the sound is not a looping sound, never mark it as active.
 	*/
-	void EXPORT ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT ToggleUse(const UseInfo& info);
 
 	/**
 	*	@brief Think at 5hz if we are dynamically modifying pitch or volume of the playing sound.
@@ -526,20 +526,20 @@ void CAmbientGeneric::InitModulationParms()
 									  // if we intend to pitch shift later!
 }
 
-void CAmbientGeneric::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CAmbientGeneric::ToggleUse(const UseInfo& info)
 {
 	const char* szSoundFile = STRING(pev->message);
 
-	if (useType != USE_TOGGLE)
+	if (info.GetUseType() != USE_TOGGLE)
 	{
-		if ((m_fActive && useType == USE_ON) || (!m_fActive && useType == USE_OFF))
+		if ((m_fActive && info.GetUseType() == USE_ON) || (!m_fActive && info.GetUseType() == USE_OFF))
 			return;
 	}
 	// Directly change pitch if arg passed. Only works if sound is already playing.
 
-	if (useType == USE_SET && m_fActive)		// Momentary buttons will pass down a float in here
+	if (info.GetUseType() == USE_SET && m_fActive)		// Momentary buttons will pass down a float in here
 	{
-		float fraction = value;
+		float fraction = info.GetValue();
 
 		if (fraction > 1.0)
 			fraction = 1.0;
@@ -981,7 +981,7 @@ public:
 	/**
 	*	@brief if an announcement is pending, cancel it.  If no announcement is pending, start one.
 	*/
-	void EXPORT ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT ToggleUse(const UseInfo& info);
 	void EXPORT SpeakerThink();
 
 	bool Save(CSave& save) override;
@@ -1104,28 +1104,28 @@ void CSpeaker::SpeakerThink()
 	}
 }
 
-void CSpeaker::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CSpeaker::ToggleUse(const UseInfo& info)
 {
 	const bool fActive = (pev->nextthink > 0.0);
 
 	// fActive is true only if an announcement is pending
 
-	if (useType != USE_TOGGLE)
+	if (info.GetUseType() != USE_TOGGLE)
 	{
 		// ignore if we're just turning something on that's already on, or
 		// turning something off that's already off.
-		if ((fActive && useType == USE_ON) || (!fActive && useType == USE_OFF))
+		if ((fActive && info.GetUseType() == USE_ON) || (!fActive && info.GetUseType() == USE_OFF))
 			return;
 	}
 
-	if (useType == USE_ON)
+	if (info.GetUseType() == USE_ON)
 	{
 		// turn on announcements
 		pev->nextthink = gpGlobals->time + 0.1;
 		return;
 	}
 
-	if (useType == USE_OFF)
+	if (info.GetUseType() == USE_OFF)
 	{
 		// turn off announcements
 		pev->nextthink = 0.0;

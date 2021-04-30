@@ -2254,7 +2254,7 @@ class CHGruntRepel : public CBaseMonster
 public:
 	void Spawn() override;
 	void Precache() override;
-	void EXPORT RepelUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT RepelUse(const UseInfo& info);
 	int m_iSpriteTexture;	// Don't save, precache
 };
 
@@ -2274,7 +2274,7 @@ void CHGruntRepel::Precache()
 	m_iSpriteTexture = PRECACHE_MODEL("sprites/rope.spr");
 }
 
-void CHGruntRepel::RepelUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CHGruntRepel::RepelUse(const UseInfo& info)
 {
 	TraceResult tr;
 	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, ENT(pev), &tr);

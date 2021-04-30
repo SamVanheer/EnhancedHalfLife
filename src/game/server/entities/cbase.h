@@ -76,10 +76,6 @@ constexpr USE_TYPE UTIL_TriggerStateToTriggerType(TriggerState state)
 
 void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
 
-typedef void (CBaseEntity::* BASEPTR)();
-typedef void (CBaseEntity::* ENTITYFUNCPTR)(CBaseEntity* pOther);
-typedef void (CBaseEntity::* USEPTR)(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
-
 // For CLASSIFY
 constexpr int CLASS_NONE = 0;
 constexpr int CLASS_MACHINE = 1;
@@ -256,6 +252,44 @@ private:
 };
 
 /**
+*	@brief Contains information about a use event
+*/
+class UseInfo
+{
+public:
+	UseInfo(CBaseEntity* activator, CBaseEntity* caller, USE_TYPE useType, float value)
+		: _activator(activator)
+		, _caller(caller)
+		, _useType(useType)
+		, _value(value)
+	{
+	}
+
+	UseInfo(CBaseEntity* activator, CBaseEntity* caller, USE_TYPE useType)
+		: UseInfo(activator, caller, useType, 0.0f)
+	{
+	}
+
+	CBaseEntity* GetActivator() const { return _activator; }
+
+	CBaseEntity* GetCaller() const { return _caller; }
+
+	USE_TYPE GetUseType() const { return _useType; }
+
+	float GetValue() const { return _value; }
+
+private:
+	CBaseEntity* _activator;
+	CBaseEntity* _caller;
+	USE_TYPE _useType;
+	float _value = 0.0f;
+};
+
+typedef void (CBaseEntity::* BASEPTR)();
+typedef void (CBaseEntity::* ENTITYFUNCPTR)(CBaseEntity* pOther);
+typedef void (CBaseEntity::* USEPTR)(const UseInfo& info);
+
+/**
 *	@brief Base Entity.  All entity types derive from this
 */
 class CBaseEntity
@@ -363,15 +397,15 @@ public:
 	// fundamental callbacks
 	void (CBaseEntity ::* m_pfnThink)();
 	void (CBaseEntity ::* m_pfnTouch)(CBaseEntity* pOther);
-	void (CBaseEntity ::* m_pfnUse)(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void (CBaseEntity ::* m_pfnUse)(const UseInfo& info);
 	void (CBaseEntity ::* m_pfnBlocked)(CBaseEntity* pOther);
 
 	virtual void Think() { if (m_pfnThink) (this->*m_pfnThink)(); }
 	virtual void Touch(CBaseEntity* pOther) { if (m_pfnTouch) (this->*m_pfnTouch)(pOther); }
-	virtual void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+	virtual void Use(const UseInfo& info)
 	{
 		if (m_pfnUse)
-			(this->*m_pfnUse)(pActivator, pCaller, useType, value);
+			(this->*m_pfnUse)(info);
 	}
 	virtual void Blocked(CBaseEntity* pOther) { if (m_pfnBlocked) (this->*m_pfnBlocked)(pOther); }
 
@@ -398,7 +432,7 @@ public:
 	*/
 	void EXPORT SUB_StartFadeOut();
 	void EXPORT SUB_FadeOut();
-	void EXPORT SUB_CallUseToggle() { this->Use(this, this, USE_TOGGLE, 0); }
+	void EXPORT SUB_CallUseToggle() { this->Use({this, this, USE_TOGGLE}); }
 	bool		ShouldToggle(USE_TYPE useType, bool currentState);
 
 	DamageMode GetDamageMode() const { return static_cast<DamageMode>(pev->takedamage); }
@@ -557,14 +591,14 @@ inline bool IsNullEnt(CBaseEntity* ent) { return (ent == nullptr) || IsNullEnt(e
 
 #define SetThink( a ) ThinkSet( static_cast <void (CBaseEntity::*)()> (a), #a )
 #define SetTouch( a ) TouchSet( static_cast <void (CBaseEntity::*)(CBaseEntity *)> (a), #a )
-#define SetUse( a ) UseSet( static_cast <void (CBaseEntity::*)(	CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )> (a), #a )
+#define SetUse( a ) UseSet( static_cast <void (CBaseEntity::*)(const UseInfo& info)> (a), #a )
 #define SetBlocked( a ) BlockedSet( static_cast <void (CBaseEntity::*)(CBaseEntity *)> (a), #a )
 
 #else
 
 #define SetThink( a ) m_pfnThink = static_cast <void (CBaseEntity::*)()> (a)
 #define SetTouch( a ) m_pfnTouch = static_cast <void (CBaseEntity::*)(CBaseEntity *)> (a)
-#define SetUse( a ) m_pfnUse = static_cast <void (CBaseEntity::*)( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )> (a)
+#define SetUse( a ) m_pfnUse = static_cast <void (CBaseEntity::*)(const UseInfo& info)> (a)
 #define SetBlocked( a ) m_pfnBlocked = static_cast <void (CBaseEntity::*)(CBaseEntity *)> (a)
 
 #endif
@@ -612,7 +646,7 @@ class CMultiSource : public CPointEntity
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 	int	ObjectCaps() override { return (CPointEntity::ObjectCaps() | FCAP_MASTER); }
 	bool IsTriggered(CBaseEntity* pActivator) override;
 	void EXPORT Register();
@@ -865,7 +899,7 @@ public:
 	*	@brief Button has returned to start state. Quiesce it.
 	*/
 	void EXPORT ButtonBackHome();
-	void EXPORT ButtonUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT ButtonUse(const UseInfo& info);
 	bool TakeDamage(const TakeDamageInfo& info) override;
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;

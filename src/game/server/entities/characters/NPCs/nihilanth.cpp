@@ -53,9 +53,9 @@ public:
 	void EXPORT HuntThink();
 	void EXPORT CrashTouch(CBaseEntity* pOther);
 	void EXPORT DyingThink();
-	void EXPORT StartupUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT StartupUse(const UseInfo& info);
 	void EXPORT NullThink();
-	void EXPORT CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT CommandUse(const UseInfo& info);
 
 	void FloatSequence();
 	void NextActivity();
@@ -204,7 +204,7 @@ public:
 
 	CBaseEntity* RandomClassname(const char* szName);
 
-	// void EXPORT SphereUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+	// void EXPORT SphereUse(const UseInfo& info);
 
 	void MovetoTarget(Vector vecTarget);
 	virtual void Crawl();
@@ -368,7 +368,7 @@ void CNihilanth::NullThink()
 	pev->nextthink = gpGlobals->time + 0.5;
 }
 
-void CNihilanth::StartupUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CNihilanth::StartupUse(const UseInfo& info)
 {
 	SetThink(&CNihilanth::HuntThink);
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -1007,7 +1007,7 @@ void CNihilanth::TargetSphere(USE_TYPE useType, float value)
 	Vector vecSrc, vecAngles;
 	GetAttachment(2, vecSrc, vecAngles);
 	UTIL_SetOrigin(pSphere->pev, vecSrc);
-	pSphere->Use(this, this, useType, value);
+	pSphere->Use({this, this, useType, value});
 	pSphere->pev->velocity = m_vecDesired * RANDOM_FLOAT(50, 100) + Vector(RANDOM_FLOAT(-50, 50), RANDOM_FLOAT(-50, 50), RANDOM_FLOAT(-50, 50));
 }
 
@@ -1157,9 +1157,9 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-void CNihilanth::CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CNihilanth::CommandUse(const UseInfo& info)
 {
-	switch (useType)
+	switch (info.GetUseType())
 	{
 	case USE_OFF:
 	{
@@ -1546,7 +1546,7 @@ void CNihilanthHVR::TeleportThink()
 		UTIL_Remove(this);
 
 		if (m_hTargetEnt != nullptr)
-			m_hTargetEnt->Use(m_hEnemy, m_hEnemy, USE_ON, 1.0);
+			m_hTargetEnt->Use({m_hEnemy, m_hEnemy, USE_ON, 1.0});
 
 		if (m_hTouch != nullptr && m_hEnemy != nullptr)
 			m_hTouch->Touch(m_hEnemy);
@@ -1603,7 +1603,7 @@ void CNihilanthHVR::TeleportTouch(CBaseEntity* pOther)
 	if (pOther == pEnemy)
 	{
 		if (m_hTargetEnt != nullptr)
-			m_hTargetEnt->Use(pEnemy, pEnemy, USE_ON, 1.0);
+			m_hTargetEnt->Use({pEnemy, pEnemy, USE_ON, 1.0});
 
 		if (m_hTouch != nullptr && pEnemy != nullptr)
 			m_hTouch->Touch(pEnemy);

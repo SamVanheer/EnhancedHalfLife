@@ -81,7 +81,7 @@ public:
 	void	Spawn() override;
 	void	KeyValue(KeyValueData* pkvd) override;
 	void	EXPORT StaticDecal();
-	void	EXPORT TriggerDecal(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void	EXPORT TriggerDecal(const UseInfo& info);
 };
 
 LINK_ENTITY_TO_CLASS(infodecal, CDecal);
@@ -109,7 +109,7 @@ void CDecal::Spawn()
 	}
 }
 
-void CDecal::TriggerDecal(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CDecal::TriggerDecal(const UseInfo& info)
 {
 	// this is set up as a USE function for infodecals that have targetnames, so that the
 	// decal doesn't get applied until it is fired. (usually by a scripted sequence)

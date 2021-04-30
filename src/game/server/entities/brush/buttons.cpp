@@ -45,7 +45,7 @@ class CEnvGlobal : public CPointEntity
 public:
 	void	Spawn() override;
 	void	KeyValue(KeyValueData* pkvd) override;
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -96,7 +96,7 @@ void CEnvGlobal::Spawn()
 	}
 }
 
-void CEnvGlobal::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CEnvGlobal::Use(const UseInfo& info)
 {
 	const GlobalEntState oldState = gGlobalState.EntityGetState(m_globalstate);
 	GlobalEntState newState;
@@ -175,7 +175,7 @@ void CMultiSource::Spawn()
 	SetThink(&CMultiSource::Register);
 }
 
-void CMultiSource::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CMultiSource::Use(const UseInfo& info)
 {
 	//No known sources so do nothing. Prevents out of bounds access.
 	if (m_iTotal <= 0)
@@ -187,13 +187,13 @@ void CMultiSource::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE u
 
 	// Find the entity in our list
 	while (i < m_iTotal)
-		if (m_rgEntities[i++] == pCaller)
+		if (m_rgEntities[i++] == info.GetCaller())
 			break;
 
 	// if we didn't find it, report error and leave
 	if (i > m_iTotal)
 	{
-		ALERT(at_console, "MultiSrc:Used by non member %s.\n", STRING(pCaller->pev->classname));
+		ALERT(at_console, "MultiSrc:Used by non member %s.\n", STRING(info.GetCaller()->pev->classname));
 		return;
 	}
 
@@ -202,7 +202,7 @@ void CMultiSource::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE u
 	m_rgTriggered[i - 1] = !m_rgTriggered[i - 1];
 
 	// 
-	if (IsTriggered(pActivator))
+	if (IsTriggered(info.GetActivator()))
 	{
 		ALERT(at_aiconsole, "Multisource %s enabled (%d inputs)\n", STRING(pev->targetname), m_iTotal);
 		USE_TYPE useType = USE_TOGGLE;
@@ -529,14 +529,14 @@ void CBaseButton::ButtonSpark()
 	DoSpark(this, pev->mins);
 }
 
-void CBaseButton::ButtonUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CBaseButton::ButtonUse(const UseInfo& info)
 {
 	// Ignore touches if button is moving, or pushed-in and waiting to auto-come-out.
 	// UNDONE: Should this use ButtonResponseToTouch() too?
 	if (m_toggle_state == ToggleState::GoingUp || m_toggle_state == ToggleState::GoingDown)
 		return;
 
-	m_hActivator = pActivator;
+	m_hActivator = info.GetActivator();
 	if (m_toggle_state == ToggleState::AtTop)
 	{
 		if (!m_fStayPushed && IsBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
@@ -706,7 +706,7 @@ void CBaseButton::ButtonBackHome()
 			CBaseEntity* pTarget = CBaseEntity::Instance(pentTarget);
 
 			if (pTarget)
-				pTarget->Use(m_hActivator, this, USE_TOGGLE, 0);
+				pTarget->Use({m_hActivator, this, USE_TOGGLE});
 		}
 	}
 
@@ -815,7 +815,7 @@ public:
 			return flags;
 		return flags | FCAP_CONTINUOUS_USE;
 	}
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 	void	EXPORT Off();
 	void	EXPORT Return();
 	void	UpdateSelf(float value);
@@ -913,7 +913,7 @@ void CMomentaryRotButton::PlaySound()
 // BUGBUG: This design causes a latency.  When the button is retriggered, the first impulse
 // will send the target in the wrong direction because the parameter is calculated based on the
 // current, not future position.
-void CMomentaryRotButton::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CMomentaryRotButton::Use(const UseInfo& info)
 {
 	pev->ideal_yaw = CBaseToggle::AxisDelta(pev->spawnflags, pev->angles, m_start) / m_flMoveDistance;
 
@@ -1001,7 +1001,7 @@ void CMomentaryRotButton::UpdateTarget(float value)
 			CBaseEntity* pEntity = CBaseEntity::Instance(pentTarget);
 			if (pEntity)
 			{
-				pEntity->Use(this, this, USE_SET, value);
+				pEntity->Use({this, this, USE_SET, value});
 			}
 		}
 	}
@@ -1055,8 +1055,8 @@ public:
 	void	Spawn() override;
 	void	Precache() override;
 	void	EXPORT SparkThink();
-	void	EXPORT SparkStart(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
-	void	EXPORT SparkStop(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void	EXPORT SparkStart(const UseInfo& info);
+	void	EXPORT SparkStop(const UseInfo& info);
 	void	KeyValue(KeyValueData* pkvd) override;
 
 	bool Save(CSave& save) override;
@@ -1137,14 +1137,14 @@ void EXPORT CEnvSpark::SparkThink()
 	DoSpark(this, pev->origin);
 }
 
-void EXPORT CEnvSpark::SparkStart(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void EXPORT CEnvSpark::SparkStart(const UseInfo& info)
 {
 	SetUse(&CEnvSpark::SparkStop);
 	SetThink(&CEnvSpark::SparkThink);
 	pev->nextthink = gpGlobals->time + (0.1 + RANDOM_FLOAT(0, m_flDelay));
 }
 
-void EXPORT CEnvSpark::SparkStop(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void EXPORT CEnvSpark::SparkStop(const UseInfo& info)
 {
 	SetUse(&CEnvSpark::SparkStart);
 	SetThink(nullptr);
@@ -1157,7 +1157,7 @@ class CButtonTarget : public CBaseEntity
 {
 public:
 	void Spawn() override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 	bool TakeDamage(const TakeDamageInfo& info) override;
 	int	ObjectCaps() override;
 };
@@ -1175,15 +1175,15 @@ void CButtonTarget::Spawn()
 		pev->frame = 1;
 }
 
-void CButtonTarget::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CButtonTarget::Use(const UseInfo& info)
 {
-	if (!ShouldToggle(useType, (int)pev->frame))
+	if (!ShouldToggle(info.GetUseType(), (int)pev->frame))
 		return;
 	pev->frame = 1 - pev->frame;
 	if (pev->frame)
-		SUB_UseTargets(pActivator, USE_ON, 0);
+		SUB_UseTargets(info.GetActivator(), USE_ON, 0);
 	else
-		SUB_UseTargets(pActivator, USE_OFF, 0);
+		SUB_UseTargets(info.GetActivator(), USE_OFF, 0);
 }
 
 int	CButtonTarget::ObjectCaps()
@@ -1198,7 +1198,7 @@ int	CButtonTarget::ObjectCaps()
 
 bool CButtonTarget::TakeDamage(const TakeDamageInfo& info)
 {
-	Use(Instance(info.GetAttacker()), this, USE_TOGGLE, 0);
+	Use({Instance(info.GetAttacker()), this, USE_TOGGLE});
 
 	return true;
 }

@@ -172,7 +172,7 @@ public:
 	*	@brief monster use function
 	*	will make a monster angry at whomever activated it. (Actually does nothing)
 	*/
-	void EXPORT			MonsterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT			MonsterUse(const UseInfo& info);
 
 	// overrideable Monster member functions
 

@@ -131,9 +131,9 @@ edict_t* CChangeLevel::FindLandmark(const char* pLandmarkName)
 	return nullptr;
 }
 
-void CChangeLevel::UseChangeLevel(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CChangeLevel::UseChangeLevel(const UseInfo& info)
 {
-	ChangeLevelNow(pActivator);
+	ChangeLevelNow(info.GetActivator());
 }
 
 void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
@@ -356,10 +356,10 @@ int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 
 LINK_ENTITY_TO_CLASS(trigger_endsection, CTriggerEndSection);
 
-void CTriggerEndSection::EndSectionUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CTriggerEndSection::EndSectionUse(const UseInfo& info)
 {
 	// Only save on clients
-	if (pActivator && !pActivator->IsNetClient())
+	if (info.GetActivator() && !info.GetActivator()->IsNetClient())
 		return;
 
 	SetUse(nullptr);
@@ -479,7 +479,7 @@ void CRevertSaved::KeyValue(KeyValueData* pkvd)
 		CPointEntity::KeyValue(pkvd);
 }
 
-void CRevertSaved::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CRevertSaved::Use(const UseInfo& info)
 {
 	UTIL_ScreenFadeAll(pev->rendercolor, Duration(), HoldTime(), pev->renderamt, FFADE_OUT);
 	pev->nextthink = gpGlobals->time + MessageTime();

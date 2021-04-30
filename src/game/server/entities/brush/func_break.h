@@ -58,7 +58,7 @@ public:
 	/**
 	*	@brief Break when triggered
 	*/
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 
 	/**
 	*	@brief play shard sound when func_breakable takes damage.

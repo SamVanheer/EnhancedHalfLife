@@ -45,7 +45,7 @@ public:
 	}
 	void EXPORT AnimateThink();
 	void EXPORT ExpandThink();
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 	void Animate(float frames);
 	void Expand(float scaleSpeed, float fadeSpeed);
 	void SpriteInit(const char* pSpriteName, const Vector& origin);
@@ -202,7 +202,7 @@ public:
 	void	FireAtPoint(TraceResult& point);
 
 	void	EXPORT StrikeThink();
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];

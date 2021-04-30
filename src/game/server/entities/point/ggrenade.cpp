@@ -136,7 +136,7 @@ void CGrenade::Killed(const KilledInfo& info)
 	Detonate();
 }
 
-void CGrenade::DetonateUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CGrenade::DetonateUse(const UseInfo& info)
 {
 	SetThink(&CGrenade::Detonate);
 	pev->nextthink = gpGlobals->time;

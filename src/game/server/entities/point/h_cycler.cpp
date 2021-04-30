@@ -44,7 +44,7 @@ public:
 	/**
 	*	@brief starts a rotation trend
 	*/
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 
 	// Don't treat as a live target
 	bool IsAlive() override { return false; }
@@ -144,7 +144,7 @@ void CCycler::Think()
 	}
 }
 
-void CCycler::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CCycler::Use(const UseInfo& info)
 {
 	m_animate = !m_animate;
 	if (m_animate)
@@ -184,7 +184,7 @@ class CCyclerSprite : public CBaseEntity
 public:
 	void Spawn() override;
 	void Think() override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() | FCAP_DONT_SAVE | FCAP_IMPULSE_USE); }
 	bool	TakeDamage(const TakeDamageInfo& info) override;
 	void	Animate(float frames);
@@ -237,7 +237,7 @@ void CCyclerSprite::Think()
 	m_lastTime = gpGlobals->time;
 }
 
-void CCyclerSprite::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CCyclerSprite::Use(const UseInfo& info)
 {
 	m_animate = !m_animate;
 	ALERT(at_console, "Sprite: %s\n", STRING(pev->model));

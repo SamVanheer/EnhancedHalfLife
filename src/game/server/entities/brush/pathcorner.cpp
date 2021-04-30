@@ -131,13 +131,13 @@ void CPathTrack::KeyValue(KeyValueData* pkvd)
 		CPointEntity::KeyValue(pkvd);
 }
 
-void CPathTrack::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CPathTrack::Use(const UseInfo& info)
 {
 	// Use toggles between two paths
 	if (m_paltpath)
 	{
 		const bool on = !IsBitSet(pev->spawnflags, SF_PATH_ALTERNATE);
-		if (ShouldToggle(useType, on))
+		if (ShouldToggle(info.GetUseType(), on))
 		{
 			if (on)
 				SetBits(pev->spawnflags, SF_PATH_ALTERNATE);
@@ -148,7 +148,7 @@ void CPathTrack::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 	else	// Use toggles between enabled/disabled
 	{
 		const bool on = !IsBitSet(pev->spawnflags, SF_PATH_DISABLED);
-		if (ShouldToggle(useType, on))
+		if (ShouldToggle(info.GetUseType(), on))
 		{
 			if (on)
 				SetBits(pev->spawnflags, SF_PATH_DISABLED);

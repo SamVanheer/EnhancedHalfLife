@@ -80,7 +80,7 @@ public:
 	void Spawn() override;
 	void EXPORT Smoke();
 	void KeyValue(KeyValueData* pkvd) override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -139,7 +139,7 @@ void CEnvExplosion::Spawn()
 	m_spriteScale = (int)flSpriteScale;
 }
 
-void CEnvExplosion::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CEnvExplosion::Use(const UseInfo& info)
 {
 	pev->model = iStringNull;//invisible
 	pev->solid = Solid::Not;// intangible
@@ -273,6 +273,6 @@ void UTIL_CreateExplosion(Vector center, const Vector& angles, edict_t* owner, i
 	}
 	else
 	{
-		pExplosion->Use(nullptr, nullptr, USE_TOGGLE, 0);
+		pExplosion->Use({nullptr, nullptr, USE_TOGGLE});
 	}
 }

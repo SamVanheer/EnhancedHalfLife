@@ -71,7 +71,7 @@ class CTriggerRelay : public CBaseDelay
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 
 	int ObjectCaps() override { return CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	bool Save(CSave& save) override;
@@ -98,7 +98,7 @@ public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
 	void EXPORT ManagerThink();
-	void EXPORT ManagerUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT ManagerUse(const UseInfo& info);
 
 #if _DEBUG
 	void EXPORT ManagerReport();
@@ -144,7 +144,7 @@ class CRenderFxManager : public CBaseEntity
 {
 public:
 	void Spawn() override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 };
 
 class CBaseTrigger : public CBaseToggle
@@ -164,7 +164,7 @@ public:
 	/**
 	*	@brief If this is the USE function for a trigger, its state will toggle every time it's fired
 	*/
-	void EXPORT ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT ToggleUse(const UseInfo& info);
 };
 
 constexpr int SF_TRIGGER_HURT_TARGETONCE = 1;		//!< Only fire hurt target once
@@ -206,7 +206,7 @@ class CTriggerCDAudio : public CBaseTrigger
 public:
 	void Spawn() override;
 
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 	void PlayTrack();
 	void Touch(CBaseEntity* pOther) override;
 };
@@ -220,7 +220,7 @@ public:
 	void			Spawn() override;
 	void			KeyValue(KeyValueData* pkvd) override;
 
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 	void			Think() override;
 	void			Play();
 };
@@ -262,7 +262,7 @@ public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
 
-	void EXPORT CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT CounterUse(const UseInfo& info);
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -320,7 +320,7 @@ class CTriggerChangeTarget : public CBaseDelay
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 
 	int ObjectCaps() override { return CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	bool Save(CSave& save) override;
@@ -341,7 +341,7 @@ class CTriggerCamera : public CBaseDelay
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 	void EXPORT FollowTarget();
 	void Move();
 

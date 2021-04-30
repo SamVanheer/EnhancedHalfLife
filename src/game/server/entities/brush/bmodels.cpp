@@ -44,7 +44,7 @@ class CFuncWall : public CBaseEntity
 {
 public:
 	void	Spawn() override;
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 
 	/**
 	*	@brief Bmodels don't go across transitions
@@ -65,9 +65,9 @@ void CFuncWall::Spawn()
 	pev->flags |= FL_WORLDBRUSH;
 }
 
-void CFuncWall::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncWall::Use(const UseInfo& info)
 {
-	if (ShouldToggle(useType, (int)(pev->frame)))
+	if (ShouldToggle(info.GetUseType(), (int)(pev->frame)))
 		pev->frame = 1 - pev->frame;
 }
 
@@ -77,7 +77,7 @@ class CFuncWallToggle : public CFuncWall
 {
 public:
 	void	Spawn() override;
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 	void	TurnOff();
 	void	TurnOn();
 	bool	IsOn();
@@ -111,11 +111,11 @@ bool CFuncWallToggle::IsOn()
 	return pev->solid != Solid::Not;
 }
 
-void CFuncWallToggle::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncWallToggle::Use(const UseInfo& info)
 {
 	const bool status = IsOn();
 
-	if (ShouldToggle(useType, status))
+	if (ShouldToggle(info.GetUseType(), status))
 	{
 		if (status)
 			TurnOff();
@@ -131,7 +131,7 @@ class CFuncConveyor : public CFuncWall
 {
 public:
 	void	Spawn() override;
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 	void	UpdateSpeed(float speed);
 };
 
@@ -173,7 +173,7 @@ void CFuncConveyor::UpdateSpeed(float speed)
 	pev->rendercolor.z = (speedCode & 0xFF);
 }
 
-void CFuncConveyor::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncConveyor::Use(const UseInfo& info)
 {
 	pev->speed = -pev->speed;
 	UpdateSpeed(pev->speed);
@@ -226,7 +226,7 @@ class CFuncMonsterClip : public CFuncWall
 {
 public:
 	void	Spawn() override;
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override {}		//!< Clear out func_wall's use function
+	void	Use(const UseInfo& info) override {}		//!< Clear out func_wall's use function
 };
 
 LINK_ENTITY_TO_CLASS(func_monsterclip, CFuncMonsterClip);
@@ -280,7 +280,7 @@ public:
 	/**
 	*	@brief when a rotating brush is triggered
 	*/
-	void EXPORT RotatingUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT RotatingUse(const UseInfo& info);
 	void EXPORT Rotate();
 
 	/**
@@ -619,7 +619,7 @@ void CFuncRotating::Rotate()
 	pev->nextthink = pev->ltime + 10;
 }
 
-void CFuncRotating::RotatingUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncRotating::RotatingUse(const UseInfo& info)
 {
 	// is this a brush that should accelerate and decelerate when turned on/off (fan)?
 	if (IsBitSet(pev->spawnflags, SF_BRUSH_ACCDCC))
@@ -681,7 +681,7 @@ public:
 	void	Spawn() override;
 	void	KeyValue(KeyValueData* pkvd) override;
 	void	EXPORT Swing();
-	void	EXPORT PendulumUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void	EXPORT PendulumUse(const UseInfo& info);
 	void	EXPORT Stop();
 	void	Touch(CBaseEntity* pOther) override;
 	void	EXPORT RopeTouch(CBaseEntity* pOther);// this touch func makes the pendulum a rope
@@ -772,7 +772,7 @@ void CPendulum::Spawn()
 	}
 }
 
-void CPendulum::PendulumUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CPendulum::PendulumUse(const UseInfo& info)
 {
 	if (pev->speed)		// Pendulum is moving, stop it and auto-return if necessary
 	{

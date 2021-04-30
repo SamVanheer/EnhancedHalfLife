@@ -93,7 +93,7 @@ void CGrenade::Killed(const KilledInfo& info) { }
 void CGrenade::Spawn() { }
 CGrenade* CGrenade::ShootTimed(entvars_t* pevOwner, Vector vecStart, Vector vecVelocity, float time) { return nullptr; }
 CGrenade* CGrenade::ShootContact(entvars_t* pevOwner, Vector vecStart, Vector vecVelocity) { return nullptr; }
-void CGrenade::DetonateUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) { }
+void CGrenade::DetonateUse(const UseInfo& info) { }
 
 void UTIL_Remove(CBaseEntity* pEntity) { }
 void UTIL_SetSize(entvars_t* pev, const Vector& vecMin, const Vector& vecMax) { }
@@ -119,7 +119,7 @@ CSound* CBaseMonster::BestSound() { return nullptr; }
 CSound* CBaseMonster::BestScent() { return nullptr; }
 float CBaseAnimating::StudioFrameAdvance(float flInterval) { return 0.0; }
 void CBaseMonster::MonsterThink() { }
-void CBaseMonster::MonsterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) { }
+void CBaseMonster::MonsterUse(const UseInfo& info) { }
 int CBaseMonster::IgnoreConditions() { return 0; }
 void CBaseMonster::RouteClear() { }
 void CBaseMonster::RouteNew() { }

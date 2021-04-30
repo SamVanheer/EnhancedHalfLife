@@ -50,7 +50,7 @@ public:
 	void	Spawn() override;
 	void	Precache() override;
 	void	KeyValue(KeyValueData* pkvd) override;
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 	void	Think() override;
 	void	TrackTarget();
 
@@ -435,22 +435,22 @@ void CFuncTank::ControllerPostFrame()
 	}
 }
 
-void CFuncTank::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncTank::Use(const UseInfo& info)
 {
 	if (pev->spawnflags & SF_TANK_CANCONTROL)
 	{  // player controlled turret
 
-		if (!pActivator->IsPlayer())
+		if (!info.GetActivator()->IsPlayer())
 			return;
 
-		if (value == 2 && useType == USE_SET)
+		if (info.GetValue() == 2 && info.GetUseType() == USE_SET)
 		{
 			ControllerPostFrame();
 		}
-		else if (!m_pController && useType != USE_OFF)
+		else if (!m_pController && info.GetUseType() != USE_OFF)
 		{
-			((CBasePlayer*)pActivator)->m_pTank = this;
-			StartControl((CBasePlayer*)pActivator);
+			((CBasePlayer*)info.GetActivator())->m_pTank = this;
+			StartControl((CBasePlayer*)info.GetActivator());
 		}
 		else
 		{
@@ -459,7 +459,7 @@ void CFuncTank::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useT
 	}
 	else
 	{
-		if (!ShouldToggle(useType, IsActive()))
+		if (!ShouldToggle(info.GetUseType(), IsActive()))
 			return;
 
 		if (IsActive())
@@ -960,7 +960,7 @@ class CFuncTankControls : public CBaseEntity
 public:
 	int	ObjectCaps() override;
 	void Spawn() override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 	void Think() override;
 
 	bool Save(CSave& save) override;
@@ -984,10 +984,10 @@ int	CFuncTankControls::ObjectCaps()
 	return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_IMPULSE_USE;
 }
 
-void CFuncTankControls::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncTankControls::Use(const UseInfo& info)
 { // pass the Use command onto the controls
 	if (m_pTank)
-		m_pTank->Use(pActivator, pCaller, useType, value);
+		m_pTank->Use(info);
 
 	ASSERT(m_pTank != nullptr);	// if this fails,  most likely means save/restore hasn't worked properly
 }

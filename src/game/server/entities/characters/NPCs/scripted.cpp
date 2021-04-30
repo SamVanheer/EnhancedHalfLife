@@ -126,7 +126,7 @@ bool CCineAI::CanOverrideState()
 	return true;
 }
 
-void CCineMonster::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CCineMonster::Use(const UseInfo& info)
 {
 	// do I already know who I should use
 	CBaseMonster* pTarget = nullptr;
@@ -782,7 +782,7 @@ class CScriptedSentence : public CBaseToggle
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 	void EXPORT FindThink();
 	void EXPORT DelayThink();
 	int	 ObjectCaps() override { return (CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
@@ -877,7 +877,7 @@ void CScriptedSentence::KeyValue(KeyValueData* pkvd)
 		CBaseToggle::KeyValue(pkvd);
 }
 
-void CScriptedSentence::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CScriptedSentence::Use(const UseInfo& info)
 {
 	if (!m_active)
 		return;

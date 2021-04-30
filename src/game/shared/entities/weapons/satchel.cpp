@@ -317,7 +317,7 @@ void CSatchel::PrimaryAttack()
 			{
 				if (pSatchel->pev->owner == pPlayer)
 				{
-					pSatchel->Use(m_pPlayer, m_pPlayer, USE_ON, 0);
+					pSatchel->Use({m_pPlayer, m_pPlayer, USE_ON});
 					m_chargeReady = ChargeState::Reloading;
 				}
 			}

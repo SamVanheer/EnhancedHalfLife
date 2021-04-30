@@ -453,7 +453,7 @@ void CBreakable::BreakTouch(CBaseEntity* pOther)
 	}
 }
 
-void CBreakable::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CBreakable::Use(const UseInfo& info)
 {
 	if (IsBreakable())
 	{
@@ -749,7 +749,7 @@ public:
 	/**
 	*	@brief Pull the func_pushable
 	*/
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 	void	EXPORT StopMovementSound();
 	//	virtual void	SetActivator( CBaseEntity *pActivator ) { m_pPusher = pActivator; }
 
@@ -853,17 +853,17 @@ void CPushable::KeyValue(KeyValueData* pkvd)
 		CBreakable::KeyValue(pkvd);
 }
 
-void CPushable::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CPushable::Use(const UseInfo& info)
 {
-	if (!pActivator || !pActivator->IsPlayer())
+	if (!info.GetActivator() || !info.GetActivator()->IsPlayer())
 	{
 		if (pev->spawnflags & SF_PUSH_BREAKABLE)
-			this->CBreakable::Use(pActivator, pCaller, useType, value);
+			this->CBreakable::Use(info);
 		return;
 	}
 
-	if (pActivator->pev->velocity != vec3_origin)
-		Move(pActivator, false);
+	if (info.GetActivator()->pev->velocity != vec3_origin)
+		Move(info.GetActivator(), false);
 }
 
 void CPushable::Touch(CBaseEntity* pOther)

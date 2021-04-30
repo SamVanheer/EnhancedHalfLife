@@ -35,7 +35,7 @@ class CLight : public CPointEntity
 public:
 	void	KeyValue(KeyValueData* pkvd) override;
 	void	Spawn() override;
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -100,11 +100,11 @@ void CLight::Spawn()
 	}
 }
 
-void CLight::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CLight::Use(const UseInfo& info)
 {
 	if (m_iStyle >= 32)
 	{
-		if (!ShouldToggle(useType, !IsBitSet(pev->spawnflags, SF_LIGHT_START_OFF)))
+		if (!ShouldToggle(info.GetUseType(), !IsBitSet(pev->spawnflags, SF_LIGHT_START_OFF)))
 			return;
 
 		if (IsBitSet(pev->spawnflags, SF_LIGHT_START_OFF))

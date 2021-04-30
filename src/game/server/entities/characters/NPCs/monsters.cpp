@@ -467,7 +467,7 @@ void CBaseMonster::MonsterThink()
 #endif
 }
 
-void CBaseMonster::MonsterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CBaseMonster::MonsterUse(const UseInfo& info)
 {
 	//Don't do this because it can resurrect dying monsters
 	//m_IdealMonsterState = NPCState::Alert;
@@ -1182,7 +1182,7 @@ float CBaseMonster::OpenDoorAndWait(entvars_t* pevDoor)
 	if (pcbeDoor && !pcbeDoor->IsLockedByMaster())
 	{
 		//ALERT(at_aiconsole, "unlocked! ");
-		pcbeDoor->Use(this, this, USE_ON, 0.0);
+		pcbeDoor->Use({this, this, USE_ON});
 		//ALERT(at_aiconsole, "pevDoor->nextthink = %d ms\n", (int)(1000*pevDoor->nextthink));
 		//ALERT(at_aiconsole, "pevDoor->ltime = %d ms\n", (int)(1000*pevDoor->ltime));
 		//ALERT(at_aiconsole, "pev-> nextthink = %d ms\n", (int)(1000*pev->nextthink));
@@ -1204,7 +1204,7 @@ float CBaseMonster::OpenDoorAndWait(entvars_t* pevDoor)
 					if (ClassnameIs(pentTarget, STRING(pcbeDoor->pev->classname)))
 					{
 						if (CBaseEntity* pDoor = Instance(pentTarget); pDoor)
-							pDoor->Use(this, this, USE_ON, 0.0);
+							pDoor->Use({this, this, USE_ON});
 					}
 				}
 			}

@@ -51,7 +51,7 @@ public:
 	}
 
 	void EXPORT Cycle();
-	void EXPORT CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT CommandUse(const UseInfo& info);
 	void EXPORT Start();
 	void EXPORT DieThink();
 
@@ -668,10 +668,10 @@ void CTentacle::Cycle()
 	}
 }
 
-void CTentacle::CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CTentacle::CommandUse(const UseInfo& info)
 {
 	// ALERT( at_console, "%s triggered %d\n", STRING( pev->targetname ), useType ); 
-	switch (useType)
+	switch (info.GetUseType())
 	{
 	case USE_OFF:
 		SetDamageMode(DamageMode::No);
@@ -679,10 +679,10 @@ void CTentacle::CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TY
 		m_iGoalAnim = TENTACLE_ANIM_Engine_Death1;
 		break;
 	case USE_ON:
-		if (pActivator)
+		if (info.GetActivator())
 		{
 			// ALERT( at_console, "insert sound\n");
-			CSoundEnt::InsertSound(bits_SOUND_WORLD, pActivator->pev->origin, 1024, 1.0);
+			CSoundEnt::InsertSound(bits_SOUND_WORLD, info.GetActivator()->pev->origin, 1024, 1.0);
 		}
 		break;
 	case USE_SET:

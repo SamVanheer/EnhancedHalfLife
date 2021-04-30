@@ -50,7 +50,7 @@ public:
 	CBaseMonster* MakeGrunt(Vector vecSrc);
 	void EXPORT CrashTouch(CBaseEntity* pOther);
 	void EXPORT DyingThink();
-	void EXPORT CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT CommandUse(const UseInfo& info);
 
 	// bool TakeDamage(const TakeDamageInfo& info) override;
 	void TraceAttack(const TraceAttackInfo& info) override;
@@ -186,7 +186,7 @@ void COsprey::Precache()
 	m_iEngineGibs = PRECACHE_MODEL("models/osprey_enginegibs.mdl");
 }
 
-void COsprey::CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void COsprey::CommandUse(const UseInfo& info)
 {
 	pev->nextthink = gpGlobals->time + 0.1;
 }

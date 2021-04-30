@@ -46,7 +46,7 @@ class CApache : public CBaseMonster
 	void EXPORT FlyTouch(CBaseEntity* pOther);
 	void EXPORT CrashTouch(CBaseEntity* pOther);
 	void EXPORT DyingThink();
-	void EXPORT StartupUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT StartupUse(const UseInfo& info);
 	void EXPORT NullThink();
 
 	void ShowDamage();
@@ -177,7 +177,7 @@ void CApache::NullThink()
 	pev->nextthink = gpGlobals->time + 0.5;
 }
 
-void CApache::StartupUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CApache::StartupUse(const UseInfo& info)
 {
 	SetThink(&CApache::HuntThink);
 	SetTouch(&CApache::FlyTouch);

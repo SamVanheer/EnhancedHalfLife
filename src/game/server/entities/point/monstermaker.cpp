@@ -36,12 +36,12 @@ public:
 	/**
 	*	@brief activates/deactivates the monster maker
 	*/
-	void EXPORT ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT ToggleUse(const UseInfo& info);
 
 	/**
 	*	@brief drops one monster from the monstermaker each time we call this.
 	*/
-	void EXPORT CyclicUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT CyclicUse(const UseInfo& info);
 
 	/**
 	*	@brief creates a new monster every so often
@@ -228,14 +228,14 @@ void CMonsterMaker::MakeMonster()
 	}
 }
 
-void CMonsterMaker::CyclicUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CMonsterMaker::CyclicUse(const UseInfo& info)
 {
 	MakeMonster();
 }
 
-void CMonsterMaker::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CMonsterMaker::ToggleUse(const UseInfo& info)
 {
-	if (!ShouldToggle(useType, m_fActive))
+	if (!ShouldToggle(info.GetUseType(), m_fActive))
 		return;
 
 	if (m_fActive)

@@ -233,7 +233,7 @@ public:
 	/**
 	*	@brief Start bringing platform down.
 	*/
-	void EXPORT PlatUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT PlatUse(const UseInfo& info);
 
 	void	EXPORT CallGoDown() { GoDown(); }
 	void	EXPORT CallHitTop() { HitTop(); }
@@ -399,14 +399,14 @@ void CPlatTrigger::Touch(CBaseEntity* pOther)
 		platform->pev->nextthink = platform->pev->ltime + 1;// delay going down
 }
 
-void CFuncPlat::PlatUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncPlat::PlatUse(const UseInfo& info)
 {
 	if (IsTogglePlat())
 	{
 		// Top is off, bottom is on
 		const bool on = m_toggle_state == ToggleState::AtBottom;
 
-		if (!ShouldToggle(useType, on))
+		if (!ShouldToggle(info.GetUseType(), on))
 			return;
 
 		if (m_toggle_state == ToggleState::AtTop)
@@ -605,7 +605,7 @@ public:
 	void OverrideReset() override;
 
 	void Blocked(CBaseEntity* pOther) override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 	void KeyValue(KeyValueData* pkvd) override;
 
 
@@ -656,7 +656,7 @@ void CFuncTrain::Blocked(CBaseEntity* pOther)
 	pOther->TakeDamage({pev, pev, pev->dmg, DMG_CRUSH});
 }
 
-void CFuncTrain::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncTrain::Use(const UseInfo& info)
 {
 	if (pev->spawnflags & SF_TRAIN_WAIT_RETRIGGER)
 	{
@@ -962,11 +962,11 @@ void CFuncTrackTrain::Blocked(CBaseEntity* pOther)
 	pOther->TakeDamage({pev, pev, pev->dmg, DMG_CRUSH});
 }
 
-void CFuncTrackTrain::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncTrackTrain::Use(const UseInfo& info)
 {
-	if (useType != USE_SET)
+	if (info.GetUseType() != USE_SET)
 	{
-		if (!ShouldToggle(useType, (pev->speed != 0)))
+		if (!ShouldToggle(info.GetUseType(), (pev->speed != 0)))
 			return;
 
 		if (pev->speed == 0)
@@ -986,7 +986,7 @@ void CFuncTrackTrain::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYP
 	}
 	else
 	{
-		float delta = value;
+		float delta = info.GetValue();
 
 		delta = ((int)(pev->speed * 4) / (int)m_speed) * 0.25 + 0.25 * delta;
 		if (delta > 1)
@@ -1512,7 +1512,7 @@ public:
 	void	EXPORT GoDown() override;
 
 	void			KeyValue(KeyValueData* pkvd) override;
-	void			Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void			Use(const UseInfo& info) override;
 	void			EXPORT Find();
 	TrainCode		EvaluateTrain(CPathTrack* pcurrent);
 	void			UpdateTrain(Vector& dest);
@@ -1815,7 +1815,7 @@ void CFuncTrackChange::UpdateAutoTargets(ToggleState toggleState)
 		SetBits(m_trackBottom->pev->spawnflags, SF_PATH_DISABLED);
 }
 
-void CFuncTrackChange::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncTrackChange::Use(const UseInfo& info)
 {
 	if (m_toggle_state != ToggleState::AtTop && m_toggle_state != ToggleState::AtBottom)
 		return;
@@ -1883,7 +1883,7 @@ void CFuncTrackChange::HitTop()
 class CFuncTrackAuto : public CFuncTrackChange
 {
 public:
-	void			Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void			Use(const UseInfo& info) override;
 	void	UpdateAutoTargets(ToggleState toggleState) override;
 };
 
@@ -1909,14 +1909,14 @@ void CFuncTrackAuto::UpdateAutoTargets(ToggleState toggleState)
 	{
 		ClearBits(pTarget->pev->spawnflags, SF_PATH_DISABLED);
 		if (m_code == TrainCode::Following && m_train && m_train->pev->speed == 0)
-			m_train->Use(this, this, USE_ON, 0);
+			m_train->Use({this, this, USE_ON});
 	}
 
 	if (pNextTarget)
 		SetBits(pNextTarget->pev->spawnflags, SF_PATH_DISABLED);
 }
 
-void CFuncTrackAuto::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CFuncTrackAuto::Use(const UseInfo& info)
 {
 	if (!UseEnabled())
 		return;
@@ -1929,7 +1929,7 @@ void CFuncTrackAuto::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	else
 		pTarget = nullptr;
 
-	if (ClassnameIs(pActivator->pev, "func_tracktrain"))
+	if (ClassnameIs(info.GetActivator()->pev, "func_tracktrain"))
 	{
 		m_code = EvaluateTrain(pTarget);
 		// Safe to fire?
@@ -1946,7 +1946,7 @@ void CFuncTrackAuto::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 	{
 		if (pTarget)
 			pTarget = pTarget->GetNext();
-		if (pTarget && m_train->m_ppath != pTarget && ShouldToggle(useType, m_targetState != ToggleState::AtTop))
+		if (pTarget && m_train->m_ppath != pTarget && ShouldToggle(info.GetUseType(), m_targetState != ToggleState::AtTop))
 		{
 			if (m_targetState == ToggleState::AtTop)
 				m_targetState = ToggleState::AtBottom;
@@ -1978,7 +1978,7 @@ public:
 	int				BloodColor() override { return DONT_BLEED; }
 	int				Classify() override { return CLASS_MACHINE; }
 	bool TakeDamage(const TakeDamageInfo& info) override;
-	void			Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void			Use(const UseInfo& info) override;
 	Vector			BodyTarget(const Vector& posSrc) override { return pev->origin; }
 
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
@@ -2037,7 +2037,7 @@ void CGunTarget::Activate()
 
 void CGunTarget::Start()
 {
-	Use(this, this, USE_ON, 0);
+	Use({this, this, USE_ON});
 }
 
 void CGunTarget::Next()
@@ -2111,9 +2111,9 @@ bool	CGunTarget::TakeDamage(const TakeDamageInfo& info)
 	return false;
 }
 
-void CGunTarget::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CGunTarget::Use(const UseInfo& info)
 {
-	if (!ShouldToggle(useType, m_on))
+	if (!ShouldToggle(info.GetUseType(), m_on))
 		return;
 
 	if (m_on)

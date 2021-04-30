@@ -53,7 +53,7 @@ public:
 	/**
 	*	@brief allows level transitions to be triggered by buttons, etc.
 	*/
-	void EXPORT UseChangeLevel(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT UseChangeLevel(const UseInfo& info);
 	void EXPORT TouchChangeLevel(CBaseEntity* pOther);
 	void ChangeLevelNow(CBaseEntity* pActivator);
 
@@ -89,7 +89,7 @@ public:
 	void Spawn() override;
 	void EXPORT EndSectionTouch(CBaseEntity* pOther);
 	void KeyValue(KeyValueData* pkvd) override;
-	void EXPORT EndSectionUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT EndSectionUse(const UseInfo& info);
 };
 
 class CTriggerSave : public CBaseTrigger
@@ -102,7 +102,7 @@ public:
 class CRevertSaved : public CPointEntity
 {
 public:
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 	void	EXPORT MessageThink();
 	void	EXPORT LoadThink();
 	void	KeyValue(KeyValueData* pkvd) override;

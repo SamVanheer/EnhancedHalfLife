@@ -132,7 +132,7 @@ void CTriggerRelay::Spawn()
 {
 }
 
-void CTriggerRelay::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CTriggerRelay::Use(const UseInfo& info)
 {
 	SUB_UseTargets(this, triggerType, 0);
 	if (pev->spawnflags & SF_RELAY_FIREONCE)
@@ -258,18 +258,18 @@ CMultiManager* CMultiManager::Clone()
 }
 
 // The USE function builds the time table and starts the entity thinking.
-void CMultiManager::ManagerUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CMultiManager::ManagerUse(const UseInfo& info)
 {
 	// In multiplayer games, clone the MM and execute in the clone (like a thread)
 	// to allow multiple players to trigger the same multimanager
 	if (ShouldClone())
 	{
 		CMultiManager* pClone = Clone();
-		pClone->ManagerUse(pActivator, pCaller, useType, value);
+		pClone->ManagerUse(info);
 		return;
 	}
 
-	m_hActivator = pActivator;
+	m_hActivator = info.GetActivator();
 	m_index = 0;
 	m_startTime = gpGlobals->time;
 
@@ -296,7 +296,7 @@ void CRenderFxManager::Spawn()
 	pev->solid = Solid::Not;
 }
 
-void CRenderFxManager::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CRenderFxManager::Use(const UseInfo& info)
 {
 	if (!IsStringNull(pev->target))
 	{
@@ -390,7 +390,7 @@ void CBaseTrigger::MultiWaitOver()
 	SetThink(nullptr);
 }
 
-void CBaseTrigger::ToggleUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CBaseTrigger::ToggleUse(const UseInfo& info)
 {
 	if (pev->solid == Solid::Not)
 	{// if the trigger is off, turn it on
@@ -659,7 +659,7 @@ void CTriggerCDAudio::Spawn()
 	InitTrigger();
 }
 
-void CTriggerCDAudio::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CTriggerCDAudio::Use(const UseInfo& info)
 {
 	PlayTrack();
 }
@@ -724,7 +724,7 @@ void CTargetCDAudio::Spawn()
 		pev->nextthink = gpGlobals->time + 1.0;
 }
 
-void CTargetCDAudio::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CTargetCDAudio::Use(const UseInfo& info)
 {
 	Play();
 }
@@ -828,10 +828,10 @@ void CTriggerCounter::Spawn()
 	SetUse(&CTriggerCounter::CounterUse);
 }
 
-void CTriggerCounter::CounterUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CTriggerCounter::CounterUse(const UseInfo& info)
 {
 	m_cTriggersLeft--;
-	m_hActivator = pActivator;
+	m_hActivator = info.GetActivator();
 
 	if (m_cTriggersLeft < 0)
 		return;
@@ -1059,7 +1059,7 @@ void CTriggerChangeTarget::Spawn()
 {
 }
 
-void CTriggerChangeTarget::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CTriggerChangeTarget::Use(const UseInfo& info)
 {
 	CBaseEntity* pTarget = UTIL_FindEntityByString(nullptr, "targetname", STRING(pev->target));
 
@@ -1136,9 +1136,9 @@ void CTriggerCamera::KeyValue(KeyValueData* pkvd)
 		CBaseDelay::KeyValue(pkvd);
 }
 
-void CTriggerCamera::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CTriggerCamera::Use(const UseInfo& info)
 {
-	if (!ShouldToggle(useType, m_state))
+	if (!ShouldToggle(info.GetUseType(), m_state))
 		return;
 
 	// Toggle state
@@ -1148,6 +1148,9 @@ void CTriggerCamera::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE
 		m_flReturnTime = gpGlobals->time;
 		return;
 	}
+
+	auto pActivator = info.GetActivator();
+
 	if (!pActivator || !pActivator->IsPlayer())
 	{
 		pActivator = CBaseEntity::Instance(g_engfuncs.pfnPEntityOfEntIndex(1));

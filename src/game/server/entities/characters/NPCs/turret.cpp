@@ -50,7 +50,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void KeyValue(KeyValueData* pkvd) override;
-	void EXPORT TurretUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT TurretUse(const UseInfo& info);
 
 	void TraceAttack(const TraceAttackInfo& info) override;
 	bool TakeDamage(const TakeDamageInfo& info) override;
@@ -383,9 +383,9 @@ void CBaseTurret::Initialize()
 		SetThink(&CBaseTurret::SUB_DoNothing);
 }
 
-void CBaseTurret::TurretUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CBaseTurret::TurretUse(const UseInfo& info)
 {
-	if (!ShouldToggle(useType, m_iOn))
+	if (!ShouldToggle(info.GetUseType(), m_iOn))
 		return;
 
 	if (m_iOn)

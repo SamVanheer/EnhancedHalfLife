@@ -63,7 +63,7 @@ public:
 	void Killed(const KilledInfo& info) override;
 	void BecomeDead() override;
 
-	void EXPORT CombatUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void EXPORT CombatUse(const UseInfo& info);
 	void EXPORT BiteTouch(CBaseEntity* pOther);
 
 	void  StartTask(Task_t* pTask) override;
@@ -341,9 +341,9 @@ void CIchthyosaur::BiteTouch(CBaseEntity* pOther)
 	}
 }
 
-void CIchthyosaur::CombatUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CIchthyosaur::CombatUse(const UseInfo& info)
 {
-	if (!ShouldToggle(useType, m_bOnAttack))
+	if (!ShouldToggle(info.GetUseType(), m_bOnAttack))
 		return;
 
 	m_bOnAttack = !m_bOnAttack;

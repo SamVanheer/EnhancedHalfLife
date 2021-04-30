@@ -39,7 +39,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void KeyValue(KeyValueData* pkvd) override;
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void Use(const UseInfo& info) override;
 	void Blocked(CBaseEntity* pOther) override;
 
 
@@ -481,9 +481,9 @@ void CBaseDoor::DoorTouch(CBaseEntity* pOther)
 		SetTouch(nullptr); // Temporarily disable the touch function, until movement is finished.
 }
 
-void CBaseDoor::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CBaseDoor::Use(const UseInfo& info)
 {
-	m_hActivator = pActivator;
+	m_hActivator = info.GetActivator();
 	// if not ready to be used, ignore "use" command.
 	if (m_toggle_state == ToggleState::AtBottom || IsBitSet(pev->spawnflags, SF_DOOR_NO_AUTO_RETURN) && m_toggle_state == ToggleState::AtTop)
 		DoorActivate();
@@ -795,7 +795,7 @@ public:
 	void Precache() override;
 
 	void	KeyValue(KeyValueData* pkvd) override;
-	void	Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) override;
+	void	Use(const UseInfo& info) override;
 	int	ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 	bool Save(CSave& save) override;
@@ -917,15 +917,12 @@ void CMomentaryDoor::KeyValue(KeyValueData* pkvd)
 		CBaseToggle::KeyValue(pkvd);
 }
 
-void CMomentaryDoor::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CMomentaryDoor::Use(const UseInfo& info)
 {
-	if (useType != USE_SET)		// Momentary buttons will pass down a float in here
+	if (info.GetUseType() != USE_SET)		// Momentary buttons will pass down a float in here
 		return;
 
-	if (value > 1.0)
-		value = 1.0;
-	if (value < 0.0)
-		value = 0.0;
+	const float value = std::clamp(info.GetValue(), 0.0f, 1.0f);
 
 	const Vector move = m_vecPosition1 + (value * (m_vecPosition2 - m_vecPosition1));
 

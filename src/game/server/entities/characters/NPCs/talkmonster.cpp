@@ -1293,13 +1293,13 @@ bool CTalkMonster::CanFollow()
 	return !IsFollowing();
 }
 
-void CTalkMonster::FollowerUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CTalkMonster::FollowerUse(const UseInfo& info)
 {
 	// Don't allow use during a scripted_sentence
 	if (m_useTime > gpGlobals->time)
 		return;
 
-	if (pCaller != nullptr && pCaller->IsPlayer())
+	if (auto pCaller = info.GetCaller(); pCaller != nullptr && pCaller->IsPlayer())
 	{
 		// Pre-disaster followers can't be used
 		if (pev->spawnflags & SF_MONSTER_PREDISASTER)

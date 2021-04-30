@@ -137,7 +137,7 @@ void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* p
 		if (pTarget && !(pTarget->pev->flags & FL_KILLME))	// Don't use dying ents
 		{
 			ALERT(at_aiconsole, "Found: %s, firing (%s)\n", STRING(pTarget->pev->classname), targetName);
-			pTarget->Use(pActivator, pCaller, useType, value);
+			pTarget->Use({pActivator, pCaller, useType, value});
 		}
 	}
 }

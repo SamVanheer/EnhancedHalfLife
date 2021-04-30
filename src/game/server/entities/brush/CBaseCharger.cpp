@@ -186,8 +186,9 @@ void CBaseCharger::Activate()
 	CheckIfOutOfCharge(fireTargets);
 }
 
-void CBaseCharger::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CBaseCharger::Use(const UseInfo& info)
 {
+	auto pActivator = info.GetActivator();
 	// Make sure that we have a caller
 	// if it's not a player, ignore
 	if (!pActivator || !pActivator->IsPlayer())
