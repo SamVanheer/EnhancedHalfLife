@@ -1173,31 +1173,30 @@ LocalMoveResult CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vecto
 	return iReturn;
 }
 
-float CBaseMonster::OpenDoorAndWait(entvars_t* pevDoor)
+float CBaseMonster::OpenDoorAndWait(CBaseEntity* pDoor)
 {
 	float flTravelTime = 0;
 
 	//ALERT(at_aiconsole, "A door. ");
-	CBaseEntity* pcbeDoor = CBaseEntity::Instance(pevDoor);
-	if (pcbeDoor && !pcbeDoor->IsLockedByMaster())
+	if (pDoor && !pDoor->IsLockedByMaster())
 	{
 		//ALERT(at_aiconsole, "unlocked! ");
-		pcbeDoor->Use({this, this, USE_ON});
+		pDoor->Use({this, this, USE_ON});
 		//ALERT(at_aiconsole, "pevDoor->nextthink = %d ms\n", (int)(1000*pevDoor->nextthink));
 		//ALERT(at_aiconsole, "pevDoor->ltime = %d ms\n", (int)(1000*pevDoor->ltime));
 		//ALERT(at_aiconsole, "pev-> nextthink = %d ms\n", (int)(1000*pev->nextthink));
 		//ALERT(at_aiconsole, "pev->ltime = %d ms\n", (int)(1000*pev->ltime));
-		flTravelTime = pevDoor->nextthink - pevDoor->ltime;
+		flTravelTime = pDoor->pev->nextthink - pDoor->pev->ltime;
 		//ALERT(at_aiconsole, "Waiting %d ms\n", (int)(1000*flTravelTime));
-		if (!IsStringNull(pcbeDoor->pev->targetname))
+		if (!IsStringNull(pDoor->pev->targetname))
 		{
 			CBaseEntity* pTarget = nullptr;
 
-			while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pcbeDoor->pev->targetname))) != nullptr)
+			while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pDoor->pev->targetname))) != nullptr)
 			{
-				if (pTarget->pev != pcbeDoor->pev)
+				if (pTarget->pev != pDoor->pev)
 				{
-					if (ClassnameIs(pTarget->pev, STRING(pcbeDoor->pev->classname)))
+					if (ClassnameIs(pTarget->pev, STRING(pDoor->pev->classname)))
 					{
 						pTarget->Use({this, this, USE_ON});
 					}
@@ -1241,15 +1240,15 @@ void CBaseMonster::AdvanceRoute(float distance)
 				int iLink;
 				WorldGraph.HashSearch(iSrcNode, iDestNode, iLink);
 
-				if (iLink >= 0 && WorldGraph.m_pLinkPool[iLink].m_pLinkEnt != nullptr)
+				if (iLink >= 0 && WorldGraph.m_pLinkPool[iLink].m_hLinkEnt != nullptr)
 				{
 					//ALERT(at_aiconsole, "A link. ");
-					if (WorldGraph.HandleLinkEnt(iSrcNode, WorldGraph.m_pLinkPool[iLink].m_pLinkEnt, m_afCapability, CGraph::NodeQuery::Dynamic))
+					if (WorldGraph.HandleLinkEnt(iSrcNode, WorldGraph.m_pLinkPool[iLink].m_hLinkEnt, m_afCapability, CGraph::NodeQuery::Dynamic))
 					{
 						//ALERT(at_aiconsole, "usable.");
-						if (entvars_t* pevDoor = WorldGraph.m_pLinkPool[iLink].m_pLinkEnt; pevDoor)
+						if (CBaseEntity* pDoor = WorldGraph.m_pLinkPool[iLink].m_hLinkEnt; pDoor)
 						{
-							m_flMoveWaitFinished = OpenDoorAndWait(pevDoor);
+							m_flMoveWaitFinished = OpenDoorAndWait(pDoor);
 							//							ALERT( at_aiconsole, "Wating for door %.2f\n", m_flMoveWaitFinished-gpGlobals->time );
 						}
 					}

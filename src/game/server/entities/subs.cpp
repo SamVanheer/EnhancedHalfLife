@@ -53,12 +53,13 @@ void CBaseEntity::UpdateOnRemove()
 	{
 		// this entity was a LinkEnt in the world node graph, so we must remove it from
 		// the graph since we are removing it from the world.
+		//TODO: still needed? Using EHANDLE should solve this problem
 		for (int i = 0; i < WorldGraph.m_cLinks; i++)
 		{
-			if (WorldGraph.m_pLinkPool[i].m_pLinkEnt == pev)
+			if (WorldGraph.m_pLinkPool[i].m_hLinkEnt == this)
 			{
 				// if this link has a link ent which is the same ent that is removing itself, remove it!
-				WorldGraph.m_pLinkPool[i].m_pLinkEnt = nullptr;
+				WorldGraph.m_pLinkPool[i].m_hLinkEnt = nullptr;
 			}
 		}
 	}

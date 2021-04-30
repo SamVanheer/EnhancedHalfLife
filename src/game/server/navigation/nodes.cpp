@@ -79,28 +79,28 @@ bool CGraph::AllocNodes()
 	}
 }
 
-entvars_t* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
+CBaseEntity* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 {
-	entvars_t* pevLinkEnt = pLink->m_pLinkEnt;
+	CBaseEntity* pLinkEnt = pLink->m_hLinkEnt;
 
-	if (!pevLinkEnt)
+	if (!pLinkEnt)
 		return nullptr;
 
-	if (ClassnameIs(pevLinkEnt, "func_door") || ClassnameIs(pevLinkEnt, "func_door_rotating"))
+	if (ClassnameIs(pLinkEnt->pev, "func_door") || ClassnameIs(pLinkEnt->pev, "func_door_rotating"))
 	{
 		///!!!UNDONE - check for TOGGLE or STAY open doors here. If a door is in the way, and is 
 		// TOGGLE or STAY OPEN, even monsters that can't open doors can go that way.
 
-		if ((pevLinkEnt->spawnflags & SF_DOOR_USE_ONLY))
+		if ((pLinkEnt->pev->spawnflags & SF_DOOR_USE_ONLY))
 		{// door is use only, so the door is all the monster has to worry about
-			return pevLinkEnt;
+			return pLinkEnt;
 		}
 
 		TraceResult	tr;
 
 		CBaseEntity* pSearch = nullptr;// start search at the top of the ent list.
 
-		while ((pSearch = UTIL_FindEntityByTarget(pSearch, STRING(pevLinkEnt->targetname))) != nullptr) // find the button or trigger
+		while ((pSearch = UTIL_FindEntityByTarget(pSearch, STRING(pLinkEnt->pev->targetname))) != nullptr) // find the button or trigger
 		{
 			if (ClassnameIs(pSearch->pev, "func_button") || ClassnameIs(pSearch->pev, "func_rot_button"))
 			{// only buttons are handled right now. 
@@ -111,7 +111,7 @@ entvars_t* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 
 				if (tr.pHit == pSearch->edict())
 				{// good to go!
-					return VARS(tr.pHit);
+					return pSearch;
 				}
 			}
 		}
@@ -121,16 +121,16 @@ entvars_t* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 		// right now this is a problem among auto-open doors, or any door that opens through the use 
 		// of a trigger brush. Trigger brushes have no models, and don't show up in searches. Just allow
 		// monsters to open these sorts of doors for now. 
-		return pevLinkEnt;
+		return pLinkEnt;
 	}
 	else
 	{
-		ALERT(at_aiconsole, "Unsupported PathEnt:\n'%s'\n", STRING(pevLinkEnt->classname));
+		ALERT(at_aiconsole, "Unsupported PathEnt:\n'%s'\n", STRING(pLinkEnt->pev->classname));
 		return nullptr;
 	}
 }
 
-bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NodeQuery queryType)
+bool CGraph::HandleLinkEnt(int iNode, CBaseEntity* pLinkEnt, int afCapMask, NodeQuery queryType)
 {
 	if (!m_fGraphPresent || !m_fGraphPointersSet)
 	{// protect us in the case that the node graph isn't available
@@ -138,19 +138,17 @@ bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, Node
 		return false;
 	}
 
-	if (IsNullEnt(pevLinkEnt))
+	if (IsNullEnt(pLinkEnt))
 	{
 		ALERT(at_aiconsole, "dead path ent!\n");
 		return true;
 	}
 
 	// func_door
-	if (ClassnameIs(pevLinkEnt, "func_door") || ClassnameIs(pevLinkEnt, "func_door_rotating"))
+	if (ClassnameIs(pLinkEnt->pev, "func_door") || ClassnameIs(pLinkEnt->pev, "func_door_rotating"))
 	{// ent is a door.
 
-		CBaseEntity* pDoor = (CBaseEntity::Instance(pevLinkEnt));
-
-		if ((pevLinkEnt->spawnflags & SF_DOOR_USE_ONLY))
+		if ((pLinkEnt->pev->spawnflags & SF_DOOR_USE_ONLY))
 		{// door is use only.
 
 			if ((afCapMask & bits_CAP_OPEN_DOORS))
@@ -160,7 +158,7 @@ bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, Node
 			else
 			{
 				// monster should try for it if the door is open and looks as if it will stay that way
-				if (pDoor->GetToggleState() == ToggleState::AtTop && (pevLinkEnt->spawnflags & SF_DOOR_NO_AUTO_RETURN))
+				if (pLinkEnt->GetToggleState() == ToggleState::AtTop && (pLinkEnt->pev->spawnflags & SF_DOOR_NO_AUTO_RETURN))
 				{
 					return true;
 				}
@@ -172,13 +170,13 @@ bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, Node
 		{// door must be opened with a button or trigger field.
 
 			// monster should try for it if the door is open and looks as if it will stay that way
-			if (pDoor->GetToggleState() == ToggleState::AtTop && (pevLinkEnt->spawnflags & SF_DOOR_NO_AUTO_RETURN))
+			if (pLinkEnt->GetToggleState() == ToggleState::AtTop && (pLinkEnt->pev->spawnflags & SF_DOOR_NO_AUTO_RETURN))
 			{
 				return true;
 			}
 			if ((afCapMask & bits_CAP_OPEN_DOORS))
 			{
-				if (!(pevLinkEnt->spawnflags & SF_DOOR_NOMONSTERS) || queryType == NodeQuery::Static)
+				if (!(pLinkEnt->pev->spawnflags & SF_DOOR_NOMONSTERS) || queryType == NodeQuery::Static)
 					return true;
 			}
 
@@ -186,13 +184,13 @@ bool CGraph::HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, Node
 		}
 	}
 	// func_breakable	
-	else if (ClassnameIs(pevLinkEnt, "func_breakable") && queryType == NodeQuery::Static)
+	else if (ClassnameIs(pLinkEnt->pev, "func_breakable") && queryType == NodeQuery::Static)
 	{
 		return true;
 	}
 	else
 	{
-		ALERT(at_aiconsole, "Unhandled Ent in Path %s\n", STRING(pevLinkEnt->classname));
+		ALERT(at_aiconsole, "Unhandled Ent in Path %s\n", STRING(pLinkEnt->pev->classname));
 		return false;
 	}
 
@@ -584,10 +582,10 @@ int CGraph::FindShortestPath(int* piPath, int iStart, int iDest, int iHull, int 
 					continue;
 				}
 				// check the connection from the current node to the node we're about to mark visited and push into the queue				
-				if (m_pLinkPool[m_pNodes[iCurrentNode].m_iFirstLink + i].m_pLinkEnt != nullptr)
+				if (m_pLinkPool[m_pNodes[iCurrentNode].m_iFirstLink + i].m_hLinkEnt != nullptr)
 				{// there's a brush ent in the way! Don't mark this node or put it into the queue unless the monster can negotiate it
 
-					if (!HandleLinkEnt(iCurrentNode, m_pLinkPool[m_pNodes[iCurrentNode].m_iFirstLink + i].m_pLinkEnt, afCapMask, NodeQuery::Static))
+					if (!HandleLinkEnt(iCurrentNode, m_pLinkPool[m_pNodes[iCurrentNode].m_iFirstLink + i].m_hLinkEnt, afCapMask, NodeQuery::Static))
 					{// monster should not try to go this way.
 						continue;
 					}
@@ -1041,7 +1039,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 		{// clear out the important fields in the link pool for this node
 			pLinkPool[cTotalLinks + z].m_iSrcNode = i;// so each link knows which node it originates from
 			pLinkPool[cTotalLinks + z].m_iDestNode = 0;
-			pLinkPool[cTotalLinks + z].m_pLinkEnt = nullptr;
+			pLinkPool[cTotalLinks + z].m_hLinkEnt = nullptr;
 		}
 
 		m_pNodes[i].m_iFirstLink = cTotalLinks;
@@ -1099,7 +1097,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 				if (tr.pHit == pTraceEnt && !ClassnameIs(tr.pHit, "worldspawn"))
 				{
 					// get a pointer
-					pLinkPool[cTotalLinks].m_pLinkEnt = VARS(tr.pHit);
+					pLinkPool[cTotalLinks].m_hLinkEnt = CBaseEntity::Instance(tr.pHit);
 
 					// record the modelname, so that we can save/load node trees
 					memcpy(pLinkPool[cTotalLinks].m_szLinkEntModelname, STRING(VARS(tr.pHit)->model), 4);
@@ -1122,7 +1120,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 			{
 				file.Printf("%4d", j);
 
-				if (!IsNullEnt(pLinkPool[cTotalLinks].m_pLinkEnt))
+				if (!IsNullEnt(pLinkPool[cTotalLinks].m_hLinkEnt))
 				{// record info about the ent in the way, if any.
 					file.Printf("  Entity on connection: %s, name: %s  Model: %s", STRING(VARS(pTraceEnt)->classname), STRING(VARS(pTraceEnt)->targetname), STRING(VARS(tr.pHit)->model));
 				}
@@ -1908,7 +1906,7 @@ bool CGraph::SetGraphPointers()
 	for (int i = 0; i < m_cLinks; i++)
 	{// go through all of the links
 
-		if (m_pLinkPool[i].m_pLinkEnt != nullptr)
+		if (m_pLinkPool[i].m_hLinkEnt != nullptr)
 		{
 			char name[5];
 			// when graphs are saved, any valid pointers are will be non-zero, signifying that we should
@@ -1925,15 +1923,16 @@ bool CGraph::SetGraphPointers()
 				// the ent isn't around anymore? Either there is a major problem, or it was removed from the world
 				// ( like a func_breakable that's been destroyed or something ). Make sure that LinkEnt is null.
 				ALERT(at_aiconsole, "**Could not find model %s\n", name);
-				m_pLinkPool[i].m_pLinkEnt = nullptr;
+				m_pLinkPool[i].m_hLinkEnt = nullptr;
 			}
 			else
 			{
-				m_pLinkPool[i].m_pLinkEnt = VARS(pentLinkEnt);
+				auto linkEnt = CBaseEntity::Instance(pentLinkEnt);
+				m_pLinkPool[i].m_hLinkEnt = linkEnt;
 
-				if (!IsBitSet(m_pLinkPool[i].m_pLinkEnt->flags, FL_GRAPHED))
+				if (!IsBitSet(linkEnt->pev->flags, FL_GRAPHED))
 				{
-					m_pLinkPool[i].m_pLinkEnt->flags += FL_GRAPHED;
+					linkEnt->pev->flags += FL_GRAPHED;
 				}
 			}
 		}

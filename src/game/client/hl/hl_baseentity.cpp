@@ -149,7 +149,7 @@ LocalMoveResult CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vecto
 	return LocalMoveResult::Invalid;
 }
 
-float CBaseMonster::OpenDoorAndWait(entvars_t* pevDoor) { return 0.0; }
+float CBaseMonster::OpenDoorAndWait(CBaseEntity* pDoor) { return 0.0; }
 void CBaseMonster::AdvanceRoute(float distance) { }
 int CBaseMonster::RouteClassify(int iMoveFlag) { return 0; }
 bool CBaseMonster::BuildRoute(const Vector& vecGoal, int iMoveFlag, CBaseEntity* pTarget) { return false; }

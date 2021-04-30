@@ -106,7 +106,7 @@ public:
 class CLink  : public CDiskLink
 {
 public:
-	entvars_t* m_pLinkEnt;	//!< the entity that blocks this connection (doors, etc)
+	EHANDLE m_hLinkEnt; //!< the entity that blocks this connection (doors, etc)
 };
 
 struct DiskDistInfo
@@ -238,7 +238,7 @@ public:
 	*	@brief a brush ent is between two nodes that would otherwise be able to see each other.
 	*	Given the monster's capability, determine whether or not the monster can go this way.
 	*/
-	bool HandleLinkEnt(int iNode, entvars_t* pevLinkEnt, int afCapMask, NodeQuery queryType);
+	bool HandleLinkEnt(int iNode, CBaseEntity* pLinkEnt, int afCapMask, NodeQuery queryType);
 
 	/**
 	*	@brief sometimes the ent that blocks a path is a usable door,
@@ -250,7 +250,7 @@ public:
 	* 
 	*	@param pNode is the node the monster will be standing on when it will need to stop and trigger the ent.
 	*/
-	entvars_t* LinkEntForLink(CLink* pLink, CNode* pNode);
+	CBaseEntity* LinkEntForLink(CLink* pLink, CNode* pNode);
 
 	/**
 	*	@brief draws a line from the given node to all connected nodes

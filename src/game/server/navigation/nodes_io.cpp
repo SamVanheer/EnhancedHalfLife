@@ -115,7 +115,7 @@ bool InternalLoadGraphFromDisk(const std::unique_ptr<byte[]>& fileBuffer, std::s
 		std::transform(diskLinks.get(), diskLinks.get() + diskGraph.LinkCount, links.get(), [](const auto& diskLink)
 			{
 				CLink link{diskLink};
-				link.m_pLinkEnt = nullptr;
+				link.m_hLinkEnt = nullptr;
 				return link;
 			});
 	}

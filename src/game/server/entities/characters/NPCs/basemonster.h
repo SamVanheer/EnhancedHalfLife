@@ -574,7 +574,7 @@ public:
 	/**
 	*	@brief Returns the time when the door will be open
 	*/
-	float	OpenDoorAndWait(entvars_t* pevDoor);
+	float	OpenDoorAndWait(CBaseEntity* pDoor);
 
 	/**
 	*	@brief returns a bit mask indicating which types of sounds this monster regards.
