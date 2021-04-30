@@ -94,7 +94,7 @@ void CPathCorner::Touch(CBaseEntity* pOther)
 		ALERT(at_warning, "PathCornerTouch: no next stop specified");
 	}
 
-	pOther->m_pGoalEnt = CBaseEntity::Instance(FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target)));
+	pOther->m_pGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
 
 	// If "next spot" was not found (does not exist - level design error)
 	if (!pOther->m_pGoalEnt)
@@ -162,10 +162,10 @@ void CPathTrack::Link()
 {
 	if (!IsStringNull(pev->target))
 	{
-		edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target));
-		if (!IsNullEnt(pentTarget))
+		CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+		if (!IsNullEnt(pTarget))
 		{
-			m_pnext = CPathTrack::Instance(pentTarget);
+			m_pnext = CPathTrack::Instance(pTarget);
 
 			if (m_pnext)		// If no next pointer, this is the end of a path
 			{
@@ -179,10 +179,10 @@ void CPathTrack::Link()
 	// Find "alternate" path
 	if (!IsStringNull(m_altName))
 	{
-		edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_altName));
-		if (!IsNullEnt(pentTarget))
+		CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(m_altName));
+		if (!IsNullEnt(pTarget))
 		{
-			m_paltpath = CPathTrack::Instance(pentTarget);
+			m_paltpath = CPathTrack::Instance(pTarget);
 
 			if (m_paltpath)		// If no next pointer, this is the end of a path
 			{
@@ -368,10 +368,10 @@ CPathTrack* CPathTrack::Nearest(Vector origin)
 	return pnearest;
 }
 
-CPathTrack* CPathTrack::Instance(edict_t* pent)
+CPathTrack* CPathTrack::Instance(CBaseEntity* pent)
 {
-	if (ClassnameIs(pent, "path_track"))
-		return (CPathTrack*)GET_PRIVATE(pent);
+	if (pent && ClassnameIs(pent->pev, "path_track"))
+		return (CPathTrack*)pent;
 	return nullptr;
 }
 

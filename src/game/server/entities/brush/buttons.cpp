@@ -693,20 +693,14 @@ void CBaseButton::ButtonBackHome()
 
 	if (!IsStringNull(pev->target))
 	{
-		edict_t* pentTarget = nullptr;
-		for (;;)
+		CBaseEntity* pTarget = nullptr;
+
+		while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target))) != nullptr)
 		{
-			pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
-
-			if (IsNullEnt(pentTarget))
-				break;
-
-			if (!ClassnameIs(pentTarget, "multisource"))
+			if (!ClassnameIs(pTarget->pev, "multisource"))
 				continue;
-			CBaseEntity* pTarget = CBaseEntity::Instance(pentTarget);
 
-			if (pTarget)
-				pTarget->Use({m_hActivator, this, USE_TOGGLE});
+			pTarget->Use({m_hActivator, this, USE_TOGGLE});
 		}
 	}
 
@@ -992,17 +986,11 @@ void CMomentaryRotButton::UpdateTarget(float value)
 {
 	if (!IsStringNull(pev->target))
 	{
-		edict_t* pentTarget = nullptr;
-		for (;;)
+		CBaseEntity* pTarget = nullptr;
+
+		while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target))) != nullptr)
 		{
-			pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
-			if (IsNullEnt(pentTarget))
-				break;
-			CBaseEntity* pEntity = CBaseEntity::Instance(pentTarget);
-			if (pEntity)
-			{
-				pEntity->Use({this, this, USE_SET, value});
-			}
+			pTarget->Use({this, this, USE_SET, value});
 		}
 	}
 }

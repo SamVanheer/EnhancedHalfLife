@@ -842,13 +842,10 @@ bool UTIL_IsMasterTriggered(string_t sMaster, CBaseEntity* pActivator)
 {
 	if (!IsStringNull(sMaster))
 	{
-		edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(sMaster));
-
-		if (!IsNullEnt(pentTarget))
+		if (CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(sMaster)); !IsNullEnt(pTarget))
 		{
-			CBaseEntity* pMaster = CBaseEntity::Instance(pentTarget);
-			if (pMaster && (pMaster->ObjectCaps() & FCAP_MASTER))
-				return pMaster->IsTriggered(pActivator);
+			if (pTarget->ObjectCaps() & FCAP_MASTER)
+				return pTarget->IsTriggered(pActivator);
 		}
 
 		ALERT(at_console, "Master was null or not a master!\n");

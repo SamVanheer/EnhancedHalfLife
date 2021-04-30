@@ -101,11 +101,11 @@ CBaseEntity* CBaseEntity::GetNextTarget()
 {
 	if (IsStringNull(pev->target))
 		return nullptr;
-	edict_t* pTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target));
+	CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
 	if (IsNullEnt(pTarget))
 		return nullptr;
 
-	return Instance(pTarget);
+	return pTarget;
 }
 
 // Global Savedata for Delay

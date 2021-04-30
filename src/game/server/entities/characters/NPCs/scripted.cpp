@@ -192,27 +192,31 @@ void CCineMonster::Touch(CBaseEntity* pOther)
 
 bool CCineMonster::FindEntity()
 {
-	edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_iszEntity));
 	m_hTargetEnt = nullptr;
-	CBaseMonster* pTarget = nullptr;
+	CBaseMonster* pTargetMonster = nullptr;
 
-	while (!IsNullEnt(pentTarget))
 	{
-		if (IsBitSet(VARS(pentTarget)->flags, FL_MONSTER))
+		CBaseEntity* pTarget = nullptr;
+
+		while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(m_iszEntity))) != nullptr)
 		{
-			pTarget = GetMonsterPointer(pentTarget);
-			if (pTarget && pTarget->CanPlaySequence(CanOverrideState(), SS_INTERRUPT_BY_NAME))
+			if (IsBitSet(pTarget->pev->flags, FL_MONSTER))
 			{
-				m_hTargetEnt = pTarget;
-				return true;
+				pTargetMonster = pTarget->MyMonsterPointer();
+				if (pTargetMonster && pTargetMonster->CanPlaySequence(CanOverrideState(), SS_INTERRUPT_BY_NAME))
+				{
+					m_hTargetEnt = pTargetMonster;
+					return true;
+				}
+				ALERT(at_console, "Found %s, but can't play!\n", STRING(m_iszEntity));
 			}
-			ALERT(at_console, "Found %s, but can't play!\n", STRING(m_iszEntity));
+
+			pTargetMonster = nullptr;
 		}
-		pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(m_iszEntity));
-		pTarget = nullptr;
 	}
 
-	if (!pTarget)
+	//TODO: at this point this will always be null, so it's pointless to check for that
+	if (!pTargetMonster)
 	{
 		CBaseEntity* pEntity = nullptr;
 		while ((pEntity = UTIL_FindEntityInSphere(pEntity, pev->origin, m_flRadius)) != nullptr)
@@ -221,17 +225,18 @@ bool CCineMonster::FindEntity()
 			{
 				if (IsBitSet(pEntity->pev->flags, FL_MONSTER))
 				{
-					pTarget = pEntity->MyMonsterPointer();
-					if (pTarget && pTarget->CanPlaySequence(CanOverrideState(), SS_INTERRUPT_IDLE))
+					pTargetMonster = pEntity->MyMonsterPointer();
+					if (pTargetMonster && pTargetMonster->CanPlaySequence(CanOverrideState(), SS_INTERRUPT_IDLE))
 					{
-						m_hTargetEnt = pTarget;
+						m_hTargetEnt = pTargetMonster;
 						return true;
 					}
 				}
 			}
 		}
 	}
-	pTarget = nullptr;
+	//TODO: pointlessly assigning null to both of these; already done above and will always be null if we reach this
+	pTargetMonster = nullptr;
 	m_hTargetEnt = nullptr;
 	return false;
 }
@@ -576,24 +581,23 @@ void CCineMonster::CancelScript()
 		return;
 	}
 
-	edict_t* pentCineTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->targetname));
+	CBaseEntity* pCineTarget = nullptr;
 
-	while (!IsNullEnt(pentCineTarget))
+	while ((pCineTarget = UTIL_FindEntityByTargetname(pCineTarget, STRING(pev->targetname))) != nullptr)
 	{
-		ScriptEntityCancel(pentCineTarget);
-		pentCineTarget = FIND_ENTITY_BY_TARGETNAME(pentCineTarget, STRING(pev->targetname));
+		ScriptEntityCancel(pCineTarget->edict());
 	}
 }
 
 void CCineMonster::DelayStart(int state)
 {
-	edict_t* pentCine = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->targetname));
+	CBaseEntity* pCine = nullptr;
 
-	while (!IsNullEnt(pentCine))
+	while ((pCine = UTIL_FindEntityByTargetname(pCine, STRING(pev->targetname))) != nullptr)
 	{
-		if (ClassnameIs(pentCine, "scripted_sequence"))
+		if (ClassnameIs(pCine->pev, "scripted_sequence"))
 		{
-			CCineMonster* pTarget = GetClassPtr((CCineMonster*)VARS(pentCine));
+			CCineMonster* pTarget = (CCineMonster*) pCine;
 			if (state)
 			{
 				pTarget->m_iDelay++;
@@ -605,7 +609,6 @@ void CCineMonster::DelayStart(int state)
 					pTarget->m_startTime = gpGlobals->time + 0.05;
 			}
 		}
-		pentCine = FIND_ENTITY_BY_TARGETNAME(pentCine, STRING(pev->targetname));
 	}
 }
 
@@ -613,25 +616,26 @@ void CCineMonster::Activate()
 {
 	// The entity name could be a target name or a classname
 	// Check the targetname
-	edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_iszEntity));
 	CBaseMonster* pTarget = nullptr;
 
-	while (!pTarget && !IsNullEnt(pentTarget))
+	CBaseEntity* pCandidate = nullptr;
+
+	while (!pTarget && (pCandidate = UTIL_FindEntityByTargetname(pCandidate, STRING(m_iszEntity))) != nullptr)
 	{
-		if (IsBitSet(VARS(pentTarget)->flags, FL_MONSTER))
+		if (IsBitSet(pCandidate->pev->flags, FL_MONSTER))
 		{
-			pTarget = GetMonsterPointer(pentTarget);
+			pTarget = pCandidate->MyMonsterPointer();
 		}
-		pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(m_iszEntity));
 	}
 
 	// If no entity with that targetname, check the classname
 	if (!pTarget)
 	{
-		pentTarget = FIND_ENTITY_BY_CLASSNAME(nullptr, STRING(m_iszEntity));
+		edict_t* pentTarget = FIND_ENTITY_BY_CLASSNAME(nullptr, STRING(m_iszEntity));
 		while (!pTarget && !IsNullEnt(pentTarget))
 		{
 			pTarget = GetMonsterPointer(pentTarget);
+			//TODO: should be using classname lookup here!
 			pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(m_iszEntity));
 		}
 	}
@@ -970,30 +974,26 @@ bool CScriptedSentence::AcceptableSpeaker(CBaseMonster* pMonster)
 
 CBaseMonster* CScriptedSentence::FindEntity()
 {
-	edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_iszEntity));
-	CBaseMonster* pMonster = nullptr;
+	CBaseEntity* pTarget = nullptr;
 
-	while (!IsNullEnt(pentTarget))
+	while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(m_iszEntity))) != nullptr)
 	{
-		pMonster = GetMonsterPointer(pentTarget);
-		if (pMonster != nullptr)
+		if (CBaseMonster* pMonster = pTarget->MyMonsterPointer(); pMonster != nullptr)
 		{
 			if (AcceptableSpeaker(pMonster))
 				return pMonster;
 			//			ALERT( at_console, "%s (%s), not acceptable\n", STRING(pMonster->pev->classname), STRING(pMonster->pev->targetname) );
 		}
-		pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(m_iszEntity));
 	}
 
-	CBaseEntity* pEntity = nullptr;
-	while ((pEntity = UTIL_FindEntityInSphere(pEntity, pev->origin, m_flRadius)) != nullptr)
+	pTarget = nullptr;
+	while ((pTarget = UTIL_FindEntityInSphere(pTarget, pev->origin, m_flRadius)) != nullptr)
 	{
-		if (ClassnameIs(pEntity->pev, STRING(m_iszEntity)))
+		if (ClassnameIs(pTarget->pev, STRING(m_iszEntity)))
 		{
-			if (IsBitSet(pEntity->pev->flags, FL_MONSTER))
+			if (IsBitSet(pTarget->pev->flags, FL_MONSTER))
 			{
-				pMonster = pEntity->MyMonsterPointer();
-				if (AcceptableSpeaker(pMonster))
+				if (CBaseMonster* pMonster = pTarget->MyMonsterPointer(); AcceptableSpeaker(pMonster))
 					return pMonster;
 			}
 		}

@@ -300,22 +300,18 @@ void CRenderFxManager::Use(const UseInfo& info)
 {
 	if (!IsStringNull(pev->target))
 	{
-		edict_t* pentTarget = nullptr;
-		while (true)
-		{
-			pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
-			if (IsNullEnt(pentTarget))
-				break;
+		CBaseEntity* pTarget = nullptr;
 
-			entvars_t* pevTarget = VARS(pentTarget);
+		while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target))) != nullptr)
+		{
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKFX))
-				pevTarget->renderfx = pev->renderfx;
+				pTarget->pev->renderfx = pev->renderfx;
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKAMT))
-				pevTarget->renderamt = pev->renderamt;
+				pTarget->pev->renderamt = pev->renderamt;
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKMODE))
-				pevTarget->rendermode = pev->rendermode;
+				pTarget->pev->rendermode = pev->rendermode;
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKCOLOR))
-				pevTarget->rendercolor = pev->rendercolor;
+				pTarget->pev->rendercolor = pev->rendercolor;
 		}
 	}
 }
@@ -990,11 +986,11 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 		}
 	}
 
-	edict_t* pentTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target));
-	if (IsNullEnt(pentTarget))
+	CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+	if (IsNullEnt(pTarget))
 		return;
 
-	Vector tmp = VARS(pentTarget)->origin;
+	Vector tmp = pTarget->pev->origin;
 
 	if (pOther->IsPlayer())
 	{
@@ -1007,11 +1003,11 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 
 	UTIL_SetOrigin(pevToucher, tmp);
 
-	pevToucher->angles = pentTarget->v.angles;
+	pevToucher->angles = pTarget->pev->angles;
 
 	if (pOther->IsPlayer())
 	{
-		pevToucher->v_angle = pentTarget->v.angles;
+		pevToucher->v_angle = pTarget->pev->angles;
 	}
 
 	pevToucher->fixangle = FixAngleMode::Absolute;
@@ -1186,7 +1182,7 @@ void CTriggerCamera::Use(const UseInfo& info)
 
 	if (!IsStringNull(m_sPath))
 	{
-		m_pentPath = Instance(FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_sPath)));
+		m_pentPath = UTIL_FindEntityByTargetname(nullptr, STRING(m_sPath));
 	}
 	else
 	{

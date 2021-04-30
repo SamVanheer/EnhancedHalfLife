@@ -230,11 +230,9 @@ bool CChangeLevel::InTransitionVolume(CBaseEntity* pEntity, char* pVolumeName)
 
 	bool inVolume = true;	// Unless we find a trigger_transition, everything is in the volume
 
-	edict_t* pentVolume = FIND_ENTITY_BY_TARGETNAME(nullptr, pVolumeName);
-	while (!IsNullEnt(pentVolume))
+	CBaseEntity* pVolume = nullptr;
+	while ((pVolume = UTIL_FindEntityByTargetname(pVolume, pVolumeName)) != nullptr)
 	{
-		CBaseEntity* pVolume = CBaseEntity::Instance(pentVolume);
-
 		if (pVolume && ClassnameIs(pVolume->pev, "trigger_transition"))
 		{
 			if (pVolume->Intersects(pEntity))	// It touches one, it's in the volume
@@ -242,7 +240,6 @@ bool CChangeLevel::InTransitionVolume(CBaseEntity* pEntity, char* pVolumeName)
 			else
 				inVolume = false;	// Found a trigger_transition, but I don't intersect it -- if I don't find another, don't go!
 		}
-		pentVolume = FIND_ENTITY_BY_TARGETNAME(pentVolume, pVolumeName);
 	}
 
 	return inVolume;

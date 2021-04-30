@@ -593,6 +593,11 @@ void CLightning::StrikeUse(const UseInfo& info)
 
 bool IsPointEntity(CBaseEntity* pEnt)
 {
+	if (!pEnt)
+	{
+		return false;
+	}
+
 	if (!pEnt->pev->modelindex)
 		return true;
 	if (ClassnameIs(pEnt->pev, "info_target") || ClassnameIs(pEnt->pev, "info_landmark") || ClassnameIs(pEnt->pev, "path_corner"))
@@ -836,10 +841,11 @@ void CLightning::RandomPoint(Vector& vecSrc)
 
 void CLightning::BeamUpdateVars()
 {
-	edict_t* pStart = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_iszStartEntity));
-	edict_t* pEnd = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_iszEndEntity));
-	int pointStart = IsPointEntity(CBaseEntity::Instance(pStart));
-	int pointEnd = IsPointEntity(CBaseEntity::Instance(pEnd));
+	CBaseEntity* pStart = UTIL_FindEntityByTargetname(nullptr, STRING(m_iszStartEntity));
+	CBaseEntity* pEnd = UTIL_FindEntityByTargetname(nullptr, STRING(m_iszEndEntity));
+	//TODO: bool
+	int pointStart = IsPointEntity(pStart);
+	int pointEnd = IsPointEntity(pEnd);
 
 	pev->skin = 0;
 	pev->sequence = 0;
@@ -853,11 +859,8 @@ void CLightning::BeamUpdateVars()
 	{
 		if (!pointStart)	// One point entity must be in pStart
 		{
-			edict_t* pTemp;
 			// Swap start & end
-			pTemp = pStart;
-			pStart = pEnd;
-			pEnd = pTemp;
+			std::swap(pStart, pEnd);
 			std::swap(pointStart, pointEnd);
 		}
 		if (!pointEnd)
@@ -869,16 +872,16 @@ void CLightning::BeamUpdateVars()
 	SetType(beamType);
 	if (beamType == BEAM_POINTS || beamType == BEAM_ENTPOINT || beamType == BEAM_HOSE)
 	{
-		SetStartPos(pStart->v.origin);
+		SetStartPos(pStart->pev->origin);
 		if (beamType == BEAM_POINTS || beamType == BEAM_HOSE)
-			SetEndPos(pEnd->v.origin);
+			SetEndPos(pEnd->pev->origin);
 		else
-			SetEndEntity(ENTINDEX(pEnd));
+			SetEndEntity(pEnd->entindex());
 	}
 	else
 	{
-		SetStartEntity(ENTINDEX(pStart));
-		SetEndEntity(ENTINDEX(pEnd));
+		SetStartEntity(pStart->entindex());
+		SetEndEntity(pEnd->entindex());
 	}
 
 	RelinkBeam();

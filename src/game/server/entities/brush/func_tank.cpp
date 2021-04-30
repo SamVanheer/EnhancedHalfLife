@@ -820,17 +820,15 @@ CLaser* CFuncTankLaser::GetLaser()
 	if (m_pLaser)
 		return m_pLaser;
 
-	edict_t* pentLaser = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->message));
-	while (!IsNullEnt(pentLaser))
+	CBaseEntity* pLaser = nullptr;
+
+	while ((pLaser = UTIL_FindEntityByTargetname(pLaser, STRING(pev->message))) != nullptr)
 	{
-		// Found the landmark
-		if (ClassnameIs(pentLaser, "env_laser"))
+		if (ClassnameIs(pLaser->pev, "env_laser"))
 		{
-			m_pLaser = (CLaser*)CBaseEntity::Instance(pentLaser);
+			m_pLaser = (CLaser*)pLaser;
 			break;
 		}
-		else
-			pentLaser = FIND_ENTITY_BY_TARGETNAME(pentLaser, STRING(pev->message));
 	}
 
 	return m_pLaser;
@@ -994,13 +992,15 @@ void CFuncTankControls::Use(const UseInfo& info)
 
 void CFuncTankControls::Think()
 {
-	edict_t* pTarget = nullptr;
+	CBaseEntity* pTarget = nullptr;
 
-	do
+	while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target))) != nullptr)
 	{
-		pTarget = FIND_ENTITY_BY_TARGETNAME(pTarget, STRING(pev->target));
+		if (!strncmp(STRING(pTarget->pev->classname), "func_tank", 9))
+		{
+			break;
+		}
 	}
-	while (!IsNullEnt(pTarget) && strncmp(STRING(pTarget->v.classname), "func_tank", 9));
 
 	if (IsNullEnt(pTarget))
 	{
@@ -1008,7 +1008,7 @@ void CFuncTankControls::Think()
 		return;
 	}
 
-	m_pTank = (CFuncTank*)Instance(pTarget);
+	m_pTank = (CFuncTank*)pTarget;
 }
 
 void CFuncTankControls::Spawn()

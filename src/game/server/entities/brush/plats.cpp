@@ -777,12 +777,18 @@ void CFuncTrain::Activate()
 	if (!m_activated)
 	{
 		m_activated = true;
-		entvars_t* pevTarg = VARS(FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target)));
+		CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
 
-		pev->target = pevTarg->target;
-		m_pevCurrentTarget = pevTarg;// keep track of this since path corners change our target for us.
+		//TODO: currently mimics old behavior where it uses the world by default. Needs to handle null targets better
+		if (!pTarget)
+		{
+			pTarget = Instance(INDEXENT(0));
+		}
 
-		UTIL_SetOrigin(pev, pevTarg->origin - (pev->mins + pev->maxs) * 0.5);
+		pev->target = pTarget->pev->target;
+		m_pevCurrentTarget = pTarget->pev;// keep track of this since path corners change our target for us.
+
+		UTIL_SetOrigin(pev, pTarget->pev->origin - (pev->mins + pev->maxs) * 0.5);
 
 		if (IsStringNull(pev->targetname))
 		{	// not triggered, so start immediately
@@ -1074,8 +1080,12 @@ void CFuncTrackTrain::Next()
 		return;
 	}
 
-	//	if ( !m_ppath )
-	//		m_ppath = CPathTrack::Instance(FIND_ENTITY_BY_TARGETNAME( nullptr, STRING(pev->target) ));
+	/*
+	if (!m_ppath)
+	{
+		m_ppath = CPathTrack::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(pev->target)));
+	}
+	*/
 	if (!m_ppath)
 	{
 		ALERT(at_aiconsole, "TRAIN(%s): Lost path\n", STRING(pev->targetname));
@@ -1277,7 +1287,7 @@ bool CFuncTrackTrain::OnControls(entvars_t* pevTest)
 
 void CFuncTrackTrain::Find()
 {
-	m_ppath = CPathTrack::Instance(FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target)));
+	m_ppath = CPathTrack::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(pev->target)));
 	if (!m_ppath)
 		return;
 
@@ -1362,10 +1372,10 @@ void CFuncTrackTrain::OverrideReset()
 	SetThink(&CFuncTrackTrain::NearestPath);
 }
 
-CFuncTrackTrain* CFuncTrackTrain::Instance(edict_t* pent)
+CFuncTrackTrain* CFuncTrackTrain::Instance(CBaseEntity* pent)
 {
-	if (ClassnameIs(pent, "func_tracktrain"))
-		return (CFuncTrackTrain*)GET_PRIVATE(pent);
+	if (pent && ClassnameIs(pent->pev, "func_tracktrain"))
+		return (CFuncTrackTrain*) pent;
 	return nullptr;
 }
 
@@ -1450,13 +1460,13 @@ LINK_ENTITY_TO_CLASS(func_traincontrols, CFuncTrainControls);
 
 void CFuncTrainControls::Find()
 {
-	edict_t* pTarget = nullptr;
+	CBaseEntity* pTarget = nullptr;
 
 	do
 	{
-		pTarget = FIND_ENTITY_BY_TARGETNAME(pTarget, STRING(pev->target));
+		pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target));
 	}
-	while (!IsNullEnt(pTarget) && !ClassnameIs(pTarget, "func_tracktrain"));
+	while (!IsNullEnt(pTarget) && !ClassnameIs(pTarget->pev, "func_tracktrain"));
 
 	if (IsNullEnt(pTarget))
 	{
@@ -1645,18 +1655,19 @@ void CFuncTrackChange::OverrideReset()
 void CFuncTrackChange::Find()
 {
 	// Find track entities
-	edict_t* target = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_trackTopName));
+	CBaseEntity* target = UTIL_FindEntityByTargetname(nullptr, STRING(m_trackTopName));
 	if (!IsNullEnt(target))
 	{
 		m_trackTop = CPathTrack::Instance(target);
-		target = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_trackBottomName));
+		target = UTIL_FindEntityByTargetname(nullptr, STRING(m_trackBottomName));
 		if (!IsNullEnt(target))
 		{
 			m_trackBottom = CPathTrack::Instance(target);
-			target = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_trainName));
+			target = UTIL_FindEntityByTargetname(nullptr, STRING(m_trainName));
 			if (!IsNullEnt(target))
 			{
-				m_train = CFuncTrackTrain::Instance(FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_trainName)));
+				//TODO: redundant lookup
+				m_train = CFuncTrackTrain::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(m_trainName)));
 				if (!m_train)
 				{
 					ALERT(at_error, "Can't find train for track change! %s\n", STRING(m_trainName));
@@ -1672,7 +1683,7 @@ void CFuncTrackChange::Find()
 			else
 			{
 				ALERT(at_error, "Can't find train for track change! %s\n", STRING(m_trainName));
-				target = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(m_trainName));
+				target = UTIL_FindEntityByTargetname(nullptr, STRING(m_trainName)); //TODO: pointless?
 			}
 		}
 		else

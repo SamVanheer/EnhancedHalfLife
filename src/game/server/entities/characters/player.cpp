@@ -3905,11 +3905,11 @@ void CInfoIntermission::Spawn()
 void CInfoIntermission::Think()
 {
 	// find my target
-	edict_t* pTarget = FIND_ENTITY_BY_TARGETNAME(nullptr, STRING(pev->target));
+	CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
 
 	if (!IsNullEnt(pTarget))
 	{
-		pev->v_angle = VectorAngles((pTarget->v.origin - pev->origin).Normalize());
+		pev->v_angle = VectorAngles((pTarget->pev->origin - pev->origin).Normalize());
 		pev->v_angle.x = -pev->v_angle.x;
 	}
 }
