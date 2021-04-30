@@ -19,19 +19,56 @@ class CBaseEntity;
 struct edict_t;
 
 /**
+*	@brief Base class for entity handles
+*/
+class BaseHandle
+{
+public:
+	BaseHandle() = default;
+
+	BaseHandle(CBaseEntity* entity)
+	{
+		Set(entity);
+	}
+
+	CBaseEntity* operator=(CBaseEntity* entity);
+
+	CBaseEntity* Get();
+	void Set(CBaseEntity* entity);
+
+	operator CBaseEntity* () { return Get(); }
+	CBaseEntity* operator->() { return Get(); }
+
+private:
+	edict_t* m_pent = nullptr;
+	int m_serialnumber = 0;
+};
+
+/**
 *	@brief Safe way to point to CBaseEntities who may die between frames
 */
-class EHANDLE
+template<typename TEntity>
+class EHandle : protected BaseHandle
 {
-private:
-	edict_t* m_pent;
-	int		m_serialnumber;
 public:
-	edict_t* Get();
-	edict_t* Set(edict_t* pent);
+	EHandle() = default;
 
-	operator CBaseEntity* ();
+	EHandle(TEntity* entity)
+		: BaseHandle(entity)
+	{
+	}
 
-	CBaseEntity* operator = (CBaseEntity* pEntity);
-	CBaseEntity* operator ->();
+	TEntity* operator=(TEntity* entity)
+	{
+		Set(entity);
+		return entity;
+	}
+
+	TEntity* Get() { return static_cast<TEntity*>(BaseHandle::Get()); }
+	void Set(TEntity* entity) { BaseHandle::Set(entity); }
+
+	operator TEntity* () { return Get(); }
+	TEntity* operator->() { return Get(); }
 };
+
+using EHANDLE = EHandle<CBaseEntity>;

@@ -18,34 +18,27 @@
 #include "cbase.h"
 #include "ehandle.hpp"
 
-edict_t* EHANDLE::Get()
+CBaseEntity* BaseHandle::operator=(CBaseEntity* entity)
 {
-	if (m_pent && m_pent->serialnumber == m_serialnumber)
+	Set(entity);
+	return entity;
+}
+
+CBaseEntity* BaseHandle::Get()
+{
+	if (!m_pent || m_pent->serialnumber != m_serialnumber)
 	{
-		return m_pent;
+		return nullptr;
 	}
 
-	return nullptr;
+	return reinterpret_cast<CBaseEntity*>(GET_PRIVATE(m_pent));
 }
 
-edict_t* EHANDLE::Set(edict_t* pent)
+void BaseHandle::Set(CBaseEntity* entity)
 {
-	m_pent = pent;
-	if (pent)
-		m_serialnumber = m_pent->serialnumber;
-	return pent;
-}
-
-EHANDLE::operator CBaseEntity* ()
-{
-	return (CBaseEntity*)GET_PRIVATE(Get());
-}
-
-CBaseEntity* EHANDLE::operator=(CBaseEntity* pEntity)
-{
-	if (pEntity)
+	if (entity)
 	{
-		m_pent = ENT(pEntity->pev);
+		m_pent = entity->edict();
 		if (m_pent)
 			m_serialnumber = m_pent->serialnumber;
 	}
@@ -54,10 +47,4 @@ CBaseEntity* EHANDLE::operator=(CBaseEntity* pEntity)
 		m_pent = nullptr;
 		m_serialnumber = 0;
 	}
-	return pEntity;
-}
-
-CBaseEntity* EHANDLE::operator->()
-{
-	return (CBaseEntity*)GET_PRIVATE(Get());
 }
