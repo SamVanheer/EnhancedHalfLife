@@ -1104,7 +1104,7 @@ void CBasePlayer::StartDeathCam()
 		return;
 	}
 
-	edict_t* pSpot = FIND_ENTITY_BY_CLASSNAME(nullptr, "info_intermission");
+	CBaseEntity* pSpot = UTIL_FindEntityByClassname(nullptr, "info_intermission");
 
 	if (!IsNullEnt(pSpot))
 	{
@@ -1113,7 +1113,7 @@ void CBasePlayer::StartDeathCam()
 
 		while (iRand > 0)
 		{
-			edict_t* pNewSpot = FIND_ENTITY_BY_CLASSNAME(pSpot, "info_intermission");
+			CBaseEntity* pNewSpot = UTIL_FindEntityByClassname(pSpot, "info_intermission");
 
 			if (pNewSpot)
 			{
@@ -1125,8 +1125,8 @@ void CBasePlayer::StartDeathCam()
 
 		CopyToBodyQue(pev);
 
-		UTIL_SetOrigin(pev, pSpot->v.origin);
-		pev->angles = pev->v_angle = pSpot->v.v_angle;
+		UTIL_SetOrigin(pev, pSpot->pev->origin);
+		pev->angles = pev->v_angle = pSpot->pev->v_angle;
 	}
 	else
 	{

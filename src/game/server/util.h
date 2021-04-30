@@ -61,11 +61,6 @@ string_t ALLOC_ESCAPED_STRING(const char* str);
 
 void ClearStringPool();
 
-inline edict_t* FIND_ENTITY_BY_CLASSNAME(edict_t* entStart, const char* pszName)
-{
-	return FIND_ENTITY_BY_STRING(entStart, "classname", pszName);
-}
-
 template<typename T>
 constexpr T& SetBits(T& flBitVector, int bits)
 {

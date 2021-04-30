@@ -618,24 +618,26 @@ void CCineMonster::Activate()
 	// Check the targetname
 	CBaseMonster* pTarget = nullptr;
 
-	CBaseEntity* pCandidate = nullptr;
-
-	while (!pTarget && (pCandidate = UTIL_FindEntityByTargetname(pCandidate, STRING(m_iszEntity))) != nullptr)
 	{
-		if (IsBitSet(pCandidate->pev->flags, FL_MONSTER))
+		CBaseEntity* pCandidate = nullptr;
+
+		while (!pTarget && (pCandidate = UTIL_FindEntityByTargetname(pCandidate, STRING(m_iszEntity))) != nullptr)
 		{
-			pTarget = pCandidate->MyMonsterPointer();
+			if (IsBitSet(pCandidate->pev->flags, FL_MONSTER))
+			{
+				pTarget = pCandidate->MyMonsterPointer();
+			}
 		}
 	}
 
 	// If no entity with that targetname, check the classname
 	if (!pTarget)
 	{
-		edict_t* pentTarget = FIND_ENTITY_BY_CLASSNAME(nullptr, STRING(m_iszEntity));
-		while (!pTarget && !IsNullEnt(pentTarget))
+		CBaseEntity* pCandidate = nullptr;
+
+		while (!pTarget && (pCandidate = UTIL_FindEntityByClassname(pCandidate, STRING(m_iszEntity))) != nullptr)
 		{
-			pTarget = GetMonsterPointer(pentTarget);
-			pentTarget = FIND_ENTITY_BY_CLASSNAME(pentTarget, STRING(m_iszEntity));
+			pTarget = pCandidate->MyMonsterPointer();
 		}
 	}
 	// Found a compatible entity
