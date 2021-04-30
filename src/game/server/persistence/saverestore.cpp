@@ -521,7 +521,7 @@ bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFi
 					entityArray[j] = EntityIndex(((edict_t**)pOutputData)[j]);
 					break;
 				case FIELD_EHANDLE:
-					entityArray[j] = EntityIndex((CBaseEntity*)(((BaseHandle*)pOutputData)[j]));
+					entityArray[j] = EntityIndex((((BaseHandle*)pOutputData)[j]).Get());
 					break;
 				}
 			}

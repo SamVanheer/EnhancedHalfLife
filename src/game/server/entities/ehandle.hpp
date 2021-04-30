@@ -36,9 +36,6 @@ public:
 	CBaseEntity* Get();
 	void Set(CBaseEntity* entity);
 
-	operator CBaseEntity* () { return Get(); }
-	CBaseEntity* operator->() { return Get(); }
-
 private:
 	edict_t* m_pent = nullptr;
 	int m_serialnumber = 0;
