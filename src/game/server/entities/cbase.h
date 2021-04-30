@@ -285,9 +285,9 @@ private:
 	float _value = 0.0f;
 };
 
-typedef void (CBaseEntity::* BASEPTR)();
-typedef void (CBaseEntity::* ENTITYFUNCPTR)(CBaseEntity* pOther);
-typedef void (CBaseEntity::* USEPTR)(const UseInfo& info);
+using BASEPTR = void (CBaseEntity::*)();
+using ENTITYFUNCPTR = void (CBaseEntity::*)(CBaseEntity* pOther);
+using USEPTR = void (CBaseEntity::*)(const UseInfo& info);
 
 /**
 *	@brief Base Entity.  All entity types derive from this
@@ -395,10 +395,10 @@ public:
 	virtual CBaseEntity* GetNextTarget();
 
 	// fundamental callbacks
-	void (CBaseEntity ::* m_pfnThink)();
-	void (CBaseEntity ::* m_pfnTouch)(CBaseEntity* pOther);
-	void (CBaseEntity ::* m_pfnUse)(const UseInfo& info);
-	void (CBaseEntity ::* m_pfnBlocked)(CBaseEntity* pOther);
+	BASEPTR m_pfnThink;
+	ENTITYFUNCPTR m_pfnTouch;
+	USEPTR m_pfnUse;
+	ENTITYFUNCPTR m_pfnBlocked;
 
 	virtual void Think() { if (m_pfnThink) (this->*m_pfnThink)(); }
 	virtual void Touch(CBaseEntity* pOther) { if (m_pfnTouch) (this->*m_pfnTouch)(pOther); }
@@ -589,17 +589,17 @@ inline bool IsNullEnt(CBaseEntity* ent) { return (ent == nullptr) || IsNullEnt(e
 
 #ifdef _DEBUG
 
-#define SetThink( a ) ThinkSet( static_cast <void (CBaseEntity::*)()> (a), #a )
-#define SetTouch( a ) TouchSet( static_cast <void (CBaseEntity::*)(CBaseEntity *)> (a), #a )
-#define SetUse( a ) UseSet( static_cast <void (CBaseEntity::*)(const UseInfo& info)> (a), #a )
-#define SetBlocked( a ) BlockedSet( static_cast <void (CBaseEntity::*)(CBaseEntity *)> (a), #a )
+#define SetThink(a) ThinkSet(static_cast<BASEPTR>(a), #a)
+#define SetTouch(a) TouchSet(static_cast<ENTITYFUNCPTR>(a), #a)
+#define SetUse(a) UseSet(static_cast<USEPTR>(a), #a)
+#define SetBlocked(a) BlockedSet(static_cast<ENTITYFUNCPTR>(a), #a)
 
 #else
 
-#define SetThink( a ) m_pfnThink = static_cast <void (CBaseEntity::*)()> (a)
-#define SetTouch( a ) m_pfnTouch = static_cast <void (CBaseEntity::*)(CBaseEntity *)> (a)
-#define SetUse( a ) m_pfnUse = static_cast <void (CBaseEntity::*)(const UseInfo& info)> (a)
-#define SetBlocked( a ) m_pfnBlocked = static_cast <void (CBaseEntity::*)(CBaseEntity *)> (a)
+#define SetThink(a) m_pfnThink = static_cast<BASEPTR>(a)
+#define SetTouch(a) m_pfnTouch = static_cast<ENTITYFUNCPTR>(a)
+#define SetUse(a) m_pfnUse = static_cast<USEPTR>(a)
+#define SetBlocked(a) m_pfnBlocked = static_cast<ENTITYFUNCPTR>(a)
 
 #endif
 
@@ -814,7 +814,7 @@ public:
 	string_t m_sMaster;
 };
 
-#define SetMoveDone( a ) m_pfnCallWhenMoveDone = static_cast <void (CBaseToggle::*)()> (a)
+#define SetMoveDone(a) m_pfnCallWhenMoveDone = static_cast<void (CBaseToggle::*)()>(a)
 
 // people gib if their health is <= this at the time of death
 constexpr int GIB_HEALTH_VALUE = -30;
