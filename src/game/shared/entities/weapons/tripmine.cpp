@@ -57,7 +57,7 @@ class CTripmineGrenade : public CGrenade
 	CBeam* m_pBeam;
 	Vector		m_posOwner;
 	Vector		m_angleOwner;
-	edict_t* m_pRealOwner;// tracelines don't hit PEV->OWNER, which means a player couldn't detonate his own trip mine, so we store the owner here.
+	EHANDLE m_hRealOwner;// tracelines don't hit PEV->OWNER, which means a player couldn't detonate his own trip mine, so we store the owner here.
 };
 
 LINK_ENTITY_TO_CLASS(monster_tripmine, CTripmineGrenade);
@@ -72,7 +72,7 @@ TYPEDESCRIPTION	CTripmineGrenade::m_SaveData[] =
 	DEFINE_FIELD(CTripmineGrenade, m_pBeam, FIELD_CLASSPTR),
 	DEFINE_FIELD(CTripmineGrenade, m_posOwner, FIELD_POSITION_VECTOR),
 	DEFINE_FIELD(CTripmineGrenade, m_angleOwner, FIELD_VECTOR),
-	DEFINE_FIELD(CTripmineGrenade, m_pRealOwner, FIELD_EDICT),
+	DEFINE_FIELD(CTripmineGrenade, m_hRealOwner, FIELD_EHANDLE),
 };
 
 IMPLEMENT_SAVERESTORE(CTripmineGrenade, CGrenade);
@@ -118,7 +118,7 @@ void CTripmineGrenade::Spawn()
 		EmitSound(SoundChannel::Voice, "weapons/mine_deploy.wav");
 		EmitSound(SoundChannel::Body, "weapons/mine_charge.wav", 0.2); // chargeup
 
-		m_pRealOwner = pev->owner;// see CTripmineGrenade for why.
+		m_hRealOwner = reinterpret_cast<CBaseEntity*>(GET_PRIVATE(pev->owner));// see CTripmineGrenade for why.
 	}
 
 	UTIL_MakeAimVectors(pev->angles);
@@ -277,7 +277,7 @@ void CTripmineGrenade::BeamBreakThink()
 		// so we have to restore pev->owner from pRealOwner, because an entity's tracelines don't strike it's pev->owner which meant
 		// that a player couldn't trigger his own tripmine. Now that the mine is exploding, it's safe the restore the owner so the 
 		// CGrenade code knows who the explosive really belongs to.
-		pev->owner = m_pRealOwner;
+		pev->owner = m_hRealOwner ? m_hRealOwner->edict() : nullptr;
 		pev->health = 0;
 		Killed({VARS(pev->owner), GibType::Normal});
 		return;
