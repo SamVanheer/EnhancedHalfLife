@@ -96,38 +96,32 @@ entvars_t* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 			return pevLinkEnt;
 		}
 
-		edict_t* pentSearch = nullptr;// start search at the top of the ent list.
 		TraceResult	tr;
 
-		while (true)
+		CBaseEntity* pSearch = nullptr;// start search at the top of the ent list.
+
+		while ((pSearch = UTIL_FindEntityByTarget(pSearch, STRING(pevLinkEnt->targetname))) != nullptr) // find the button or trigger
 		{
-			edict_t* pentTrigger = FIND_ENTITY_BY_TARGET(pentSearch, STRING(pevLinkEnt->targetname));// find the button or trigger
-
-			if (IsNullEnt(pentTrigger))
-			{// no trigger found
-
-				// right now this is a problem among auto-open doors, or any door that opens through the use 
-				// of a trigger brush. Trigger brushes have no models, and don't show up in searches. Just allow
-				// monsters to open these sorts of doors for now. 
-				return pevLinkEnt;
-			}
-
-			pentSearch = pentTrigger;
-			entvars_t* pevTrigger = VARS(pentTrigger);
-
-			if (ClassnameIs(pevTrigger, "func_button") || ClassnameIs(pevTrigger, "func_rot_button"))
+			if (ClassnameIs(pSearch->pev, "func_button") || ClassnameIs(pSearch->pev, "func_rot_button"))
 			{// only buttons are handled right now. 
 
 				// trace from the node to the trigger, make sure it's one we can see from the node.
 				// !!!HACKHACK Use bodyqueue here cause there are no ents we really wish to ignore!
-				UTIL_TraceLine(pNode->m_vecOrigin, GetBrushModelOrigin(pevTrigger), IgnoreMonsters::Yes, g_pBodyQueueHead, &tr);
+				UTIL_TraceLine(pNode->m_vecOrigin, GetBrushModelOrigin(pSearch->pev), IgnoreMonsters::Yes, g_pBodyQueueHead, &tr);
 
-				if (VARS(tr.pHit) == pevTrigger)
+				if (tr.pHit == pSearch->edict())
 				{// good to go!
 					return VARS(tr.pHit);
 				}
 			}
 		}
+
+		// no trigger found
+
+		// right now this is a problem among auto-open doors, or any door that opens through the use 
+		// of a trigger brush. Trigger brushes have no models, and don't show up in searches. Just allow
+		// monsters to open these sorts of doors for now. 
+		return pevLinkEnt;
 	}
 	else
 	{

@@ -351,6 +351,10 @@ CBaseEntity* UTIL_FindEntityByTargetname(CBaseEntity* pStartEntity, const char* 
 	return UTIL_FindEntityByString(pStartEntity, "targetname", szName);
 }
 
+CBaseEntity* UTIL_FindEntityByTarget(CBaseEntity* pStartEntity, const char* szName)
+{
+	return UTIL_FindEntityByString(pStartEntity, "target", szName);
+}
 
 CBaseEntity* UTIL_FindEntityGeneric(const char* szWhatever, Vector& vecSrc, float flRadius)
 {

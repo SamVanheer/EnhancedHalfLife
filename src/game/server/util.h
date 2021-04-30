@@ -66,19 +66,6 @@ inline edict_t* FIND_ENTITY_BY_CLASSNAME(edict_t* entStart, const char* pszName)
 	return FIND_ENTITY_BY_STRING(entStart, "classname", pszName);
 }
 
-inline edict_t* FIND_ENTITY_BY_TARGETNAME(edict_t* entStart, const char* pszName)
-{
-	return FIND_ENTITY_BY_STRING(entStart, "targetname", pszName);
-}
-
-/**
-*	@brief for doing a reverse lookup. Say you have a door, and want to find its button.
-*/
-inline edict_t* FIND_ENTITY_BY_TARGET(edict_t* entStart, const char* pszName)
-{
-	return FIND_ENTITY_BY_STRING(entStart, "target", pszName);
-}
-
 template<typename T>
 constexpr T& SetBits(T& flBitVector, int bits)
 {
@@ -207,6 +194,12 @@ CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& ve
 CBaseEntity* UTIL_FindEntityByString(CBaseEntity* pStartEntity, const char* szKeyword, const char* szValue);
 CBaseEntity* UTIL_FindEntityByClassname(CBaseEntity* pStartEntity, const char* szName);
 CBaseEntity* UTIL_FindEntityByTargetname(CBaseEntity* pStartEntity, const char* szName);
+
+/**
+*	@brief for doing a reverse lookup. Say you have a door, and want to find its button.
+*/
+CBaseEntity* UTIL_FindEntityByTarget(CBaseEntity* pStartEntity, const char* szName);
+
 CBaseEntity* UTIL_FindEntityGeneric(const char* szName, Vector& vecSrc, float flRadius);
 
 /**
