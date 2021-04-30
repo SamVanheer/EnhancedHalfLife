@@ -206,7 +206,7 @@ public:
 	virtual void PostThink();
 	Vector GetGunPosition() override;
 	bool GiveHealth(float flHealth, int bitsDamageType) override;
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 
 	/**
 	*	@brief Take some damage.

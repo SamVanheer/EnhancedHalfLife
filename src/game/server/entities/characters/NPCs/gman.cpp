@@ -45,7 +45,7 @@ public:
 	*	@brief Override all damage
 	*/
 	bool TakeDamage(const TakeDamageInfo& info) override;
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 
 	void PlayScriptedSentence(const char* pszSentence, float duration, float volume, float attenuation, bool bConcurrent, CBaseEntity* pListener) override;
 
@@ -190,10 +190,10 @@ bool CGMan::TakeDamage(const TakeDamageInfo& info)
 	return true;
 }
 
-void CGMan::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CGMan::TraceAttack(const TraceAttackInfo& info)
 {
-	UTIL_Ricochet(ptr->vecEndPos, 1.0);
-	AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
+	UTIL_Ricochet(info.GetTraceResult().vecEndPos, 1.0);
+	AddMultiDamage(info.GetAttacker(), this, info.GetDamage(), info.GetDamageTypes());
 }
 
 void CGMan::PlayScriptedSentence(const char* pszSentence, float duration, float volume, float attenuation, bool bConcurrent, CBaseEntity* pListener)

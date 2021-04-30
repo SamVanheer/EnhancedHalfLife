@@ -465,7 +465,7 @@ void CBreakable::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 	}
 }
 
-void CBreakable::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CBreakable::TraceAttack(const TraceAttackInfo& info)
 {
 	// random spark if this is a 'computer' object
 	if (RANDOM_LONG(0, 1))
@@ -474,7 +474,7 @@ void CBreakable::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecD
 		{
 		case Materials::Computer:
 		{
-			UTIL_Sparks(ptr->vecEndPos);
+			UTIL_Sparks(info.GetTraceResult().vecEndPos);
 
 			const float flVolume = RANDOM_FLOAT(0.7, 1.0);//random volume range
 			switch (RANDOM_LONG(0, 1))
@@ -486,12 +486,12 @@ void CBreakable::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecD
 		break;
 
 		case Materials::UnbreakableGlass:
-			UTIL_Ricochet(ptr->vecEndPos, RANDOM_FLOAT(0.5, 1.5));
+			UTIL_Ricochet(info.GetTraceResult().vecEndPos, RANDOM_FLOAT(0.5, 1.5));
 			break;
 		}
 	}
 
-	CBaseDelay::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
+	CBaseDelay::TraceAttack(info);
 }
 
 bool CBreakable::TakeDamage(const TakeDamageInfo& info)

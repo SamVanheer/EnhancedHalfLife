@@ -176,7 +176,7 @@ public:
 	void		StartTask(Task_t* pTask) override;
 	Schedule_t* GetSchedule() override;
 	Schedule_t* GetScheduleOfType(int Type) override;
-	void		TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void		TraceAttack(const TraceAttackInfo& info) override;
 
 	void NodeStart(string_t iszNextNode);
 	void NodeReach();
@@ -528,19 +528,21 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 	}
 }
 
-void CBigMomma::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CBigMomma::TraceAttack(const TraceAttackInfo& info)
 {
-	if (ptr->iHitgroup != 1)
+	TraceAttackInfo adjustedInfo = info;
+
+	if (adjustedInfo.GetTraceResult().iHitgroup != 1)
 	{
 		// didn't hit the sack?
 
 		if (pev->dmgtime != gpGlobals->time || (RANDOM_LONG(0, 10) < 1))
 		{
-			UTIL_Ricochet(ptr->vecEndPos, RANDOM_FLOAT(1, 2));
+			UTIL_Ricochet(adjustedInfo.GetTraceResult().vecEndPos, RANDOM_FLOAT(1, 2));
 			pev->dmgtime = gpGlobals->time;
 		}
 
-		flDamage = 0.1;// don't hurt the monster much, but allow bits_COND_LIGHT_DAMAGE to be generated
+		adjustedInfo.SetDamage(0.1f);// don't hurt the monster much, but allow bits_COND_LIGHT_DAMAGE to be generated
 	}
 	else if (gpGlobals->time > m_painSoundTime)
 	{
@@ -548,7 +550,7 @@ void CBigMomma::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDi
 		EMIT_SOUND_ARRAY_DYN(SoundChannel::Voice, pPainSounds);
 	}
 
-	CBaseMonster::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
+	CBaseMonster::TraceAttack(adjustedInfo);
 }
 
 bool CBigMomma::TakeDamage(const TakeDamageInfo& info)

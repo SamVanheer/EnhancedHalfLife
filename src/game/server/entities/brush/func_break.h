@@ -74,7 +74,7 @@ public:
 	/**
 	*	@brief To spark when hit
 	*/
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 
 	bool IsBreakable();
 

@@ -52,8 +52,8 @@ public:
 	void EXPORT DyingThink();
 	void EXPORT CommandUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
 
-	// bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType ) override;
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	// bool TakeDamage(const TakeDamageInfo& info) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 	void ShowDamage();
 
 	CBaseEntity* m_pGoalEnt;
@@ -723,37 +723,37 @@ void COsprey::ShowDamage()
 	}
 }
 
-void COsprey::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void COsprey::TraceAttack(const TraceAttackInfo& info)
 {
 	// ALERT( at_console, "%d %.0f\n", ptr->iHitgroup, flDamage );
 
 	// only so much per engine
-	if (ptr->iHitgroup == 3)
+	if (info.GetTraceResult().iHitgroup == 3)
 	{
 		if (m_flRightHealth < 0)
 			return;
 		else
-			m_flRightHealth -= flDamage;
-		m_iDoLeftSmokePuff = 3 + (flDamage / 5.0);
+			m_flRightHealth -= info.GetDamage();
+		m_iDoLeftSmokePuff = 3 + (info.GetDamage() / 5.0);
 	}
 
-	if (ptr->iHitgroup == 2)
+	if (info.GetTraceResult().iHitgroup == 2)
 	{
 		if (m_flLeftHealth < 0)
 			return;
 		else
-			m_flLeftHealth -= flDamage;
-		m_iDoRightSmokePuff = 3 + (flDamage / 5.0);
+			m_flLeftHealth -= info.GetDamage();
+		m_iDoRightSmokePuff = 3 + (info.GetDamage() / 5.0);
 	}
 
 	// hit hard, hits cockpit, hits engines
-	if (flDamage > 50 || ptr->iHitgroup == 1 || ptr->iHitgroup == 2 || ptr->iHitgroup == 3)
+	if (info.GetDamage() > 50 || info.GetTraceResult().iHitgroup == 1 || info.GetTraceResult().iHitgroup == 2 || info.GetTraceResult().iHitgroup == 3)
 	{
 		// ALERT( at_console, "%.0f\n", flDamage );
-		AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
+		AddMultiDamage(info.GetAttacker(), this, info.GetDamage(), info.GetDamageTypes());
 	}
 	else
 	{
-		UTIL_Sparks(ptr->vecEndPos);
+		UTIL_Sparks(info.GetTraceResult().vecEndPos);
 	}
 }

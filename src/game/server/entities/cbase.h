@@ -160,6 +160,68 @@ private:
 	int _damageTypes;
 };
 
+class TraceAttackInfo
+{
+public:
+	TraceAttackInfo(entvars_t* attacker, float damage, const Vector& direction, const TraceResult& trace, int damageTypes)
+		: _attacker(attacker)
+		, _damage(damage)
+		, _direction(direction)
+		, _trace(trace)
+		, _damageTypes(damageTypes)
+	{
+	}
+
+	TraceAttackInfo(const TraceAttackInfo&) = default;
+	TraceAttackInfo& operator=(const TraceAttackInfo&) = default;
+
+	~TraceAttackInfo() = default;
+
+	entvars_t* GetAttacker() const { return _attacker; }
+
+	void SetAttacker(entvars_t* attacker)
+	{
+		_attacker = attacker;
+	}
+
+	float GetDamage() const { return _damage; }
+
+	void SetDamage(float damage)
+	{
+		_damage = damage;
+	}
+
+	const Vector& GetDirection() const { return _direction; }
+
+	void SetDirection(const Vector& direction)
+	{
+		_direction = direction;
+	}
+
+	const TraceResult& GetTraceResult() const { return _trace; }
+
+	TraceResult& GetTraceResult() { return _trace; }
+
+	void SetTraceResult(const TraceResult& trace)
+	{
+		_trace = trace;
+	}
+
+	int GetDamageTypes() const { return _damageTypes; }
+
+	void SetDamageTypes(int damageTypes)
+	{
+		_damageTypes = damageTypes;
+	}
+
+private:
+	entvars_t* _attacker;
+	float _damage;
+	Vector _direction;
+	TraceResult _trace;
+	int _damageTypes;
+};
+
 /**
 *	@brief when calling Killed(), a value that governs gib behavior is expected to be one of these three values
 */
@@ -266,7 +328,7 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	virtual void	TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType);
+	virtual void	TraceAttack(const TraceAttackInfo& info);
 
 	/**
 	*	@brief inflict damage on this entity. bitsDamageType indicates type of damage inflicted, ie: DMG_CRUSH
@@ -275,7 +337,7 @@ public:
 	virtual bool	GiveHealth(float flHealth, int bitsDamageType);
 	virtual void	Killed(const KilledInfo& info);
 	virtual int		BloodColor() { return DONT_BLEED; }
-	virtual void	TraceBleed(float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType);
+	virtual void	TraceBleed(float flDamage, Vector vecDir, const TraceResult& tr, int bitsDamageType);
 	virtual bool    IsTriggered(CBaseEntity* pActivator) { return true; }
 	virtual CBaseMonster* MyMonsterPointer() { return nullptr; }
 	virtual CSquadMonster* MySquadMonsterPointer() { return nullptr; }

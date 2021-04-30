@@ -192,9 +192,9 @@ int CBaseAnimating::FindTransition(int iEndingSequence, int iGoalSequence, int& 
 void CBaseAnimating::SetBodygroup(int iGroup, int iValue) { }
 int CBaseAnimating::GetBodygroup(int iGroup) { return 0; }
 Vector CBaseMonster::GetGunPosition() { return vec3_origin; }
-void CBaseEntity::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) { }
+void CBaseEntity::TraceAttack(const TraceAttackInfo& info) { }
 void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t* pevAttacker) { }
-void CBaseEntity::TraceBleed(float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) { }
+void CBaseEntity::TraceBleed(float flDamage, Vector vecDir, const TraceResult& tr, int bitsDamageType) { }
 void CBaseMonster::MakeDamageBloodDecal(int cCount, float flNoise, TraceResult* ptr, const Vector& vecDir) { }
 bool CBaseMonster::GetNodeRoute(Vector vecDest) { return true; }
 int CBaseMonster::FindHintNode() { return NO_NODE; }
@@ -213,7 +213,7 @@ void CBaseMonster::CorpseFallThink() { }
 void CBaseMonster::MonsterInitDead() { }
 bool CBaseMonster::BBoxFlat() { return true; }
 bool CBaseMonster::GetEnemy() { return false; }
-void CBaseMonster::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) { }
+void CBaseMonster::TraceAttack(const TraceAttackInfo& info) { }
 CBaseEntity* CBaseMonster::DropItem(const char* pszItemName, const Vector& vecPos, const Vector& vecAng) { return nullptr; }
 bool CBaseMonster::ShouldFadeOnDeath() { return false; }
 void CBaseMonster::RadiusDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType) { }
@@ -240,7 +240,7 @@ bool CBaseMonster::Save(class CSave&) { return true; }
 int TrainSpeed(int iSpeed, int iMax) { return 0; }
 void CBasePlayer::DeathSound() { }
 bool CBasePlayer::GiveHealth(float flHealth, int bitsDamageType) { return false; }
-void CBasePlayer::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) { }
+void CBasePlayer::TraceAttack(const TraceAttackInfo& info) { }
 bool CBasePlayer::TakeDamage(const TakeDamageInfo& info) { return false; }
 void CBasePlayer::PackDeadPlayerItems() { }
 void CBasePlayer::RemoveAllItems(bool removeSuit) { }

@@ -971,7 +971,7 @@ void RadiusDamage(Vector vecSrc, entvars_t* pevInflictor, entvars_t* pevAttacker
 				if (tr.flFraction != 1.0)
 				{
 					ClearMultiDamage();
-					pEntity->TraceAttack(pevInflictor, flAdjustedDamage, (tr.vecEndPos - vecSrc).Normalize(), &tr, bitsDamageType);
+					pEntity->TraceAttack({pevInflictor, flAdjustedDamage, (tr.vecEndPos - vecSrc).Normalize(), tr, bitsDamageType});
 					ApplyMultiDamage(pevInflictor, pevAttacker);
 				}
 				else
@@ -1081,58 +1081,66 @@ bool CBaseEntity::IsVisible(const Vector& vecOrigin)
 	}
 }
 
-void CBaseEntity::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CBaseEntity::TraceAttack(const TraceAttackInfo& info)
 {
-	const Vector vecOrigin = ptr->vecEndPos - vecDir * 4;
+	const Vector vecOrigin = info.GetTraceResult().vecEndPos - info.GetDirection() * 4;
 
 	if (pev->takedamage)
 	{
-		AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
+		AddMultiDamage(info.GetAttacker(), this, info.GetDamage(), info.GetDamageTypes());
 
 		const int blood = BloodColor();
 
 		if (blood != DONT_BLEED)
 		{
-			SpawnBlood(vecOrigin, blood, flDamage);// a little surface blood.
-			TraceBleed(flDamage, vecDir, ptr, bitsDamageType);
+			SpawnBlood(vecOrigin, blood, info.GetDamage());// a little surface blood.
+			TraceBleed(info.GetDamage(), info.GetDirection(), info.GetTraceResult(), info.GetDamageTypes());
 		}
 	}
 }
 
-void CBaseMonster::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CBaseMonster::TraceAttack(const TraceAttackInfo& info)
 {
+	TraceAttackInfo adjustedInfo = info;
+
 	if (pev->takedamage)
 	{
-		m_LastHitGroup = ptr->iHitgroup;
+		m_LastHitGroup = adjustedInfo.GetTraceResult().iHitgroup;
 
-		switch (ptr->iHitgroup)
 		{
-		case HITGROUP_GENERIC:
-			break;
-		case HITGROUP_HEAD:
-			flDamage *= gSkillData.monHead;
-			break;
-		case HITGROUP_CHEST:
-			flDamage *= gSkillData.monChest;
-			break;
-		case HITGROUP_STOMACH:
-			flDamage *= gSkillData.monStomach;
-			break;
-		case HITGROUP_LEFTARM:
-		case HITGROUP_RIGHTARM:
-			flDamage *= gSkillData.monArm;
-			break;
-		case HITGROUP_LEFTLEG:
-		case HITGROUP_RIGHTLEG:
-			flDamage *= gSkillData.monLeg;
-			break;
-		default:
-			break;
+			float damage = adjustedInfo.GetDamage();
+
+			switch (adjustedInfo.GetTraceResult().iHitgroup)
+			{
+			case HITGROUP_GENERIC:
+				break;
+			case HITGROUP_HEAD:
+				damage *= gSkillData.monHead;
+				break;
+			case HITGROUP_CHEST:
+				damage *= gSkillData.monChest;
+				break;
+			case HITGROUP_STOMACH:
+				damage *= gSkillData.monStomach;
+				break;
+			case HITGROUP_LEFTARM:
+			case HITGROUP_RIGHTARM:
+				damage *= gSkillData.monArm;
+				break;
+			case HITGROUP_LEFTLEG:
+			case HITGROUP_RIGHTLEG:
+				damage *= gSkillData.monLeg;
+				break;
+			default:
+				break;
+			}
+
+			adjustedInfo.SetDamage(damage);
 		}
 
-		SpawnBlood(ptr->vecEndPos, BloodColor(), flDamage);// a little surface blood.
-		TraceBleed(flDamage, vecDir, ptr, bitsDamageType);
-		AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
+		SpawnBlood(adjustedInfo.GetTraceResult().vecEndPos, BloodColor(), adjustedInfo.GetDamage());// a little surface blood.
+		TraceBleed(adjustedInfo.GetDamage(), adjustedInfo.GetDirection(), adjustedInfo.GetTraceResult(), adjustedInfo.GetDamageTypes());
+		AddMultiDamage(adjustedInfo.GetAttacker(), this, adjustedInfo.GetDamage(), adjustedInfo.GetDamageTypes());
 	}
 }
 
@@ -1208,7 +1216,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 
 			if (iDamage)
 			{
-				pEntity->TraceAttack(pevAttacker, iDamage, vecDir, &tr, DMG_BULLET | ((iDamage > 16) ? DMG_ALWAYSGIB : DMG_NEVERGIB));
+				pEntity->TraceAttack({pevAttacker, static_cast<float>(iDamage), vecDir, tr, DMG_BULLET | ((iDamage > 16) ? DMG_ALWAYSGIB : DMG_NEVERGIB)});
 
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				DecalGunshot(&tr, iBulletType);
@@ -1217,7 +1225,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 			{
 			case BULLET_PLAYER_BUCKSHOT:
 				// make distance based!
-				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmgBuckshot, vecDir, &tr, DMG_BULLET);
+				pEntity->TraceAttack({pevAttacker, gSkillData.plrDmgBuckshot, vecDir, tr, DMG_BULLET});
 
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				DecalGunshot(&tr, iBulletType);
@@ -1225,7 +1233,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 
 			default:
 			case BULLET_MONSTER_9MM:
-				pEntity->TraceAttack(pevAttacker, gSkillData.monDmg9MM, vecDir, &tr, DMG_BULLET);
+				pEntity->TraceAttack({pevAttacker, gSkillData.monDmg9MM, vecDir, tr, DMG_BULLET});
 
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				DecalGunshot(&tr, iBulletType);
@@ -1233,7 +1241,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 				break;
 
 			case BULLET_MONSTER_MP5:
-				pEntity->TraceAttack(pevAttacker, gSkillData.monDmgMP5, vecDir, &tr, DMG_BULLET);
+				pEntity->TraceAttack({pevAttacker, gSkillData.monDmgMP5, vecDir, tr, DMG_BULLET});
 
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				DecalGunshot(&tr, iBulletType);
@@ -1241,7 +1249,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 				break;
 
 			case BULLET_MONSTER_12MM:
-				pEntity->TraceAttack(pevAttacker, gSkillData.monDmg12MM, vecDir, &tr, DMG_BULLET);
+				pEntity->TraceAttack({pevAttacker, gSkillData.monDmg12MM, vecDir, tr, DMG_BULLET});
 				if (!tracer)
 				{
 					TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
@@ -1250,7 +1258,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 				break;
 
 			case BULLET_NONE: // FIX 
-				pEntity->TraceAttack(pevAttacker, 50, vecDir, &tr, DMG_CLUB);
+				pEntity->TraceAttack({pevAttacker, 50, vecDir, tr, DMG_CLUB});
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				// only decal glass
 				if (!IsNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != RenderMode::Normal)
@@ -1303,7 +1311,7 @@ Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDi
 
 			if (iDamage)
 			{
-				pEntity->TraceAttack(pevAttacker, iDamage, vecDir, &tr, DMG_BULLET | ((iDamage > 16) ? DMG_ALWAYSGIB : DMG_NEVERGIB));
+				pEntity->TraceAttack({pevAttacker, static_cast<float>(iDamage), vecDir, tr, DMG_BULLET | ((iDamage > 16) ? DMG_ALWAYSGIB : DMG_NEVERGIB)});
 
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				DecalGunshot(&tr, iBulletType);
@@ -1312,24 +1320,24 @@ Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDi
 			{
 			default:
 			case BULLET_PLAYER_9MM:
-				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmg9MM, vecDir, &tr, DMG_BULLET);
+				pEntity->TraceAttack({pevAttacker, gSkillData.plrDmg9MM, vecDir, tr, DMG_BULLET});
 				break;
 
 			case BULLET_PLAYER_MP5:
-				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmgMP5, vecDir, &tr, DMG_BULLET);
+				pEntity->TraceAttack({pevAttacker, gSkillData.plrDmgMP5, vecDir, tr, DMG_BULLET});
 				break;
 
 			case BULLET_PLAYER_BUCKSHOT:
 				// make distance based!
-				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmgBuckshot, vecDir, &tr, DMG_BULLET);
+				pEntity->TraceAttack({pevAttacker, gSkillData.plrDmgBuckshot, vecDir, tr, DMG_BULLET});
 				break;
 
 			case BULLET_PLAYER_357:
-				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmg357, vecDir, &tr, DMG_BULLET);
+				pEntity->TraceAttack({pevAttacker, gSkillData.plrDmg357, vecDir, tr, DMG_BULLET});
 				break;
 
 			case BULLET_NONE: // FIX 
-				pEntity->TraceAttack(pevAttacker, 50, vecDir, &tr, DMG_CLUB);
+				pEntity->TraceAttack({pevAttacker, 50, vecDir, tr, DMG_CLUB});
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				// only decal glass
 				if (!IsNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != RenderMode::Normal)
@@ -1348,7 +1356,7 @@ Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDi
 	return Vector(x * vecSpread.x, y * vecSpread.y, 0.0);
 }
 
-void CBaseEntity::TraceBleed(float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CBaseEntity::TraceBleed(float flDamage, Vector vecDir, const TraceResult& tr, int bitsDamageType)
 {
 	if (BloodColor() == DONT_BLEED)
 		return;
@@ -1404,7 +1412,7 @@ void CBaseEntity::TraceBleed(float flDamage, Vector vecDir, TraceResult* ptr, in
 		vecTraceDir.y += RANDOM_FLOAT(-flNoise, flNoise);
 		vecTraceDir.z += RANDOM_FLOAT(-flNoise, flNoise);
 
-		UTIL_TraceLine(ptr->vecEndPos, ptr->vecEndPos + vecTraceDir * -172, IgnoreMonsters::Yes, ENT(pev), &Bloodtr);
+		UTIL_TraceLine(tr.vecEndPos, tr.vecEndPos + vecTraceDir * -172, IgnoreMonsters::Yes, ENT(pev), &Bloodtr);
 
 		if (Bloodtr.flFraction != 1.0)
 		{

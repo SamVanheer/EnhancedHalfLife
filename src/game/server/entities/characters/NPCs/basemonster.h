@@ -660,7 +660,7 @@ public:
 	*/
 	bool GetEnemy();
 	void MakeDamageBloodDecal(int cCount, float flNoise, TraceResult* ptr, const Vector& vecDir);
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 
 	// combat functions
 	/**

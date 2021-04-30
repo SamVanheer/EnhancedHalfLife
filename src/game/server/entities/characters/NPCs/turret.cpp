@@ -52,7 +52,7 @@ public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void EXPORT TurretUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
 
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 	bool TakeDamage(const TakeDamageInfo& info) override;
 
 	/**
@@ -951,24 +951,26 @@ void CBaseTurret::TurretDeath()
 	}
 }
 
-void CBaseTurret::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CBaseTurret::TraceAttack(const TraceAttackInfo& info)
 {
-	if (ptr->iHitgroup == 10)
+	TraceAttackInfo adjustedInfo = info;
+
+	if (adjustedInfo.GetTraceResult().iHitgroup == 10)
 	{
 		// hit armor
 		if (pev->dmgtime != gpGlobals->time || (RANDOM_LONG(0, 10) < 1))
 		{
-			UTIL_Ricochet(ptr->vecEndPos, RANDOM_FLOAT(1, 2));
+			UTIL_Ricochet(adjustedInfo.GetTraceResult().vecEndPos, RANDOM_FLOAT(1, 2));
 			pev->dmgtime = gpGlobals->time;
 		}
 
-		flDamage = 0.1;// don't hurt the monster much, but allow bits_COND_LIGHT_DAMAGE to be generated
+		adjustedInfo.SetDamage(0.1f);// don't hurt the monster much, but allow bits_COND_LIGHT_DAMAGE to be generated
 	}
 
 	if (!pev->takedamage)
 		return;
 
-	AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
+	AddMultiDamage(adjustedInfo.GetAttacker(), this, adjustedInfo.GetDamage(), adjustedInfo.GetDamageTypes());
 }
 
 bool CBaseTurret::TakeDamage(const TakeDamageInfo& info)

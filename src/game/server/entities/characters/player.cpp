@@ -214,40 +214,48 @@ Vector CBasePlayer::GetGunPosition()
 	return origin;
 }
 
-void CBasePlayer::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CBasePlayer::TraceAttack(const TraceAttackInfo& info)
 {
+	TraceAttackInfo adjustedInfo = info;
+
 	if (pev->takedamage)
 	{
-		m_LastHitGroup = ptr->iHitgroup;
+		m_LastHitGroup = adjustedInfo.GetTraceResult().iHitgroup;
 
-		switch (ptr->iHitgroup)
 		{
-		case HITGROUP_GENERIC:
-			break;
-		case HITGROUP_HEAD:
-			flDamage *= gSkillData.plrHead;
-			break;
-		case HITGROUP_CHEST:
-			flDamage *= gSkillData.plrChest;
-			break;
-		case HITGROUP_STOMACH:
-			flDamage *= gSkillData.plrStomach;
-			break;
-		case HITGROUP_LEFTARM:
-		case HITGROUP_RIGHTARM:
-			flDamage *= gSkillData.plrArm;
-			break;
-		case HITGROUP_LEFTLEG:
-		case HITGROUP_RIGHTLEG:
-			flDamage *= gSkillData.plrLeg;
-			break;
-		default:
-			break;
+			float damage = adjustedInfo.GetDamage();
+
+			switch (adjustedInfo.GetTraceResult().iHitgroup)
+			{
+			case HITGROUP_GENERIC:
+				break;
+			case HITGROUP_HEAD:
+				damage *= gSkillData.plrHead;
+				break;
+			case HITGROUP_CHEST:
+				damage *= gSkillData.plrChest;
+				break;
+			case HITGROUP_STOMACH:
+				damage *= gSkillData.plrStomach;
+				break;
+			case HITGROUP_LEFTARM:
+			case HITGROUP_RIGHTARM:
+				damage *= gSkillData.plrArm;
+				break;
+			case HITGROUP_LEFTLEG:
+			case HITGROUP_RIGHTLEG:
+				damage *= gSkillData.plrLeg;
+				break;
+			default:
+				break;
+			}
+
+			adjustedInfo.SetDamage(damage);
 		}
 
-		SpawnBlood(ptr->vecEndPos, BloodColor(), flDamage);// a little surface blood.
-		TraceBleed(flDamage, vecDir, ptr, bitsDamageType);
-		AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
+		SpawnBlood(info.GetTraceResult().vecEndPos, BloodColor(), adjustedInfo.GetDamage());// a little surface blood.
+		TraceBleed(adjustedInfo.GetDamage(), adjustedInfo.GetDirection(), adjustedInfo.GetTraceResult(), adjustedInfo.GetDamageTypes());
+		AddMultiDamage(adjustedInfo.GetAttacker(), this, adjustedInfo.GetDamage(), adjustedInfo.GetDamageTypes());
 	}
 }
 

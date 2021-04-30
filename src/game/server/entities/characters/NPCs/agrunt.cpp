@@ -106,7 +106,7 @@ public:
 	void PainSound() override;
 	void AttackSound();
 	void PrescheduleThink() override;
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 
 	/**
 	*	@brief overridden because Human Grunts are Alien Grunt's nemesis.
@@ -230,20 +230,22 @@ int CAGrunt::SoundMask()
 		bits_SOUND_DANGER;
 }
 
-void CAGrunt::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CAGrunt::TraceAttack(const TraceAttackInfo& info)
 {
-	if (ptr->iHitgroup == 10 && (bitsDamageType & (DMG_BULLET | DMG_SLASH | DMG_CLUB)))
+	TraceAttackInfo adjustedInfo = info;
+
+	if (adjustedInfo.GetTraceResult().iHitgroup == 10 && (adjustedInfo.GetDamageTypes() & (DMG_BULLET | DMG_SLASH | DMG_CLUB)))
 	{
 		// hit armor
 		if (pev->dmgtime != gpGlobals->time || (RANDOM_LONG(0, 10) < 1))
 		{
-			UTIL_Ricochet(ptr->vecEndPos, RANDOM_FLOAT(1, 2));
+			UTIL_Ricochet(adjustedInfo.GetTraceResult().vecEndPos, RANDOM_FLOAT(1, 2));
 			pev->dmgtime = gpGlobals->time;
 		}
 
 		if (RANDOM_LONG(0, 1) == 0)
 		{
-			Vector vecTracerDir = vecDir;
+			Vector vecTracerDir = info.GetDirection();
 
 			vecTracerDir.x += RANDOM_FLOAT(-0.3, 0.3);
 			vecTracerDir.y += RANDOM_FLOAT(-0.3, 0.3);
@@ -251,11 +253,11 @@ void CAGrunt::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir,
 
 			vecTracerDir = vecTracerDir * -512;
 
-			MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, ptr->vecEndPos);
+			MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, adjustedInfo.GetTraceResult().vecEndPos);
 			WRITE_BYTE(TE_TRACER);
-			WRITE_COORD(ptr->vecEndPos.x);
-			WRITE_COORD(ptr->vecEndPos.y);
-			WRITE_COORD(ptr->vecEndPos.z);
+			WRITE_COORD(adjustedInfo.GetTraceResult().vecEndPos.x);
+			WRITE_COORD(adjustedInfo.GetTraceResult().vecEndPos.y);
+			WRITE_COORD(adjustedInfo.GetTraceResult().vecEndPos.z);
 
 			WRITE_COORD(vecTracerDir.x);
 			WRITE_COORD(vecTracerDir.y);
@@ -263,17 +265,17 @@ void CAGrunt::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir,
 			MESSAGE_END();
 		}
 
-		flDamage -= 20;
-		if (flDamage <= 0)
-			flDamage = 0.1;// don't hurt the monster much, but allow bits_COND_LIGHT_DAMAGE to be generated
+		adjustedInfo.SetDamage(adjustedInfo.GetDamage() - 20);
+		if (adjustedInfo.GetDamage() <= 0)
+			adjustedInfo.SetDamage(0.1f);// don't hurt the monster much, but allow bits_COND_LIGHT_DAMAGE to be generated
 	}
 	else
 	{
-		SpawnBlood(ptr->vecEndPos, BloodColor(), flDamage);// a little surface blood.
-		TraceBleed(flDamage, vecDir, ptr, bitsDamageType);
+		SpawnBlood(adjustedInfo.GetTraceResult().vecEndPos, BloodColor(), adjustedInfo.GetDamage());// a little surface blood.
+		TraceBleed(adjustedInfo.GetDamage(), adjustedInfo.GetDirection(), adjustedInfo.GetTraceResult(), adjustedInfo.GetDamageTypes());
 	}
 
-	AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
+	AddMultiDamage(adjustedInfo.GetAttacker(), this, adjustedInfo.GetDamage(), adjustedInfo.GetDamageTypes());
 }
 
 void CAGrunt::StopTalking()

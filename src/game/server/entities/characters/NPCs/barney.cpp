@@ -78,7 +78,7 @@ public:
 
 	void TalkInit();
 
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 	void Killed(const KilledInfo& info) override;
 
 	bool Save(CSave& save) override;
@@ -524,33 +524,35 @@ void CBarney::DeathSound()
 	}
 }
 
-void CBarney::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CBarney::TraceAttack(const TraceAttackInfo& info)
 {
-	switch (ptr->iHitgroup)
+	TraceAttackInfo adjustedInfo = info;
+
+	switch (info.GetTraceResult().iHitgroup)
 	{
 	case HITGROUP_CHEST:
 	case HITGROUP_STOMACH:
-		if (bitsDamageType & (DMG_BULLET | DMG_SLASH | DMG_BLAST))
+		if (adjustedInfo.GetDamageTypes() & (DMG_BULLET | DMG_SLASH | DMG_BLAST))
 		{
-			flDamage = flDamage / 2;
+			adjustedInfo.SetDamage(adjustedInfo.GetDamage() / 2);
 		}
 		break;
 	case 10:
-		if (bitsDamageType & (DMG_BULLET | DMG_SLASH | DMG_CLUB))
+		if (adjustedInfo.GetDamageTypes() & (DMG_BULLET | DMG_SLASH | DMG_CLUB))
 		{
-			flDamage -= 20;
-			if (flDamage <= 0)
+			adjustedInfo.SetDamage(adjustedInfo.GetDamage() - 20);
+			if (adjustedInfo.GetDamage() <= 0)
 			{
-				UTIL_Ricochet(ptr->vecEndPos, 1.0);
-				flDamage = 0.01;
+				UTIL_Ricochet(adjustedInfo.GetTraceResult().vecEndPos, 1.0);
+				adjustedInfo.SetDamage( 0.01f);
 			}
 		}
 		// always a head shot
-		ptr->iHitgroup = HITGROUP_HEAD;
+		adjustedInfo.GetTraceResult().iHitgroup = HITGROUP_HEAD;
 		break;
 	}
 
-	CTalkMonster::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
+	CTalkMonster::TraceAttack(adjustedInfo);
 }
 
 void CBarney::Killed(const KilledInfo& info)

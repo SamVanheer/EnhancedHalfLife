@@ -70,7 +70,7 @@ public:
 	void MakeFriend(Vector vecPos);
 
 	bool TakeDamage(const TakeDamageInfo& info) override;
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 
 	void PainSound() override;
 	void DeathSound() override;
@@ -1211,23 +1211,23 @@ bool CNihilanth::TakeDamage(const TakeDamageInfo& info)
 	return false;
 }
 
-void CNihilanth::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CNihilanth::TraceAttack(const TraceAttackInfo& info)
 {
 	if (m_irritation == 3)
 		m_irritation = 2;
 
-	if (m_irritation == 2 && ptr->iHitgroup == 2 && flDamage > 2)
+	if (m_irritation == 2 && info.GetTraceResult().iHitgroup == 2 && info.GetDamage() > 2)
 		m_irritation = 3;
 
 	if (m_irritation != 3)
 	{
-		const Vector vecBlood = (ptr->vecEndPos - pev->origin).Normalize();
+		const Vector vecBlood = (info.GetTraceResult().vecEndPos - pev->origin).Normalize();
 
-		UTIL_BloodStream(ptr->vecEndPos, vecBlood, BloodColor(), flDamage + (100 - 100 * (pev->health / gSkillData.nihilanthHealth)));
+		UTIL_BloodStream(info.GetTraceResult().vecEndPos, vecBlood, BloodColor(), info.GetDamage() + (100 - 100 * (pev->health / gSkillData.nihilanthHealth)));
 	}
 
 	// SpawnBlood(ptr->vecEndPos, BloodColor(), flDamage * 5.0);// a little surface blood.
-	AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
+	AddMultiDamage(info.GetAttacker(), this, info.GetDamage(), info.GetDamageTypes());
 }
 
 CBaseEntity* CNihilanth::RandomTargetname(const char* szName)
@@ -1420,7 +1420,7 @@ void CNihilanthHVR::ZapThink()
 		if (CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit); pEntity != nullptr && pEntity->pev->takedamage)
 		{
 			ClearMultiDamage();
-			pEntity->TraceAttack(pev, gSkillData.nihilanthZap, pev->velocity, &tr, DMG_SHOCK);
+			pEntity->TraceAttack({pev, gSkillData.nihilanthZap, pev->velocity, tr, DMG_SHOCK});
 			ApplyMultiDamage(pev, pev);
 		}
 

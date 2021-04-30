@@ -192,7 +192,7 @@ public:
 	/**
 	*	@brief make sure we're not taking it in the helmet
 	*/
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 
 	/**
 	*	@brief overridden for the grunt because the grunt needs to forget that he is in cover if he's hurt.
@@ -581,26 +581,28 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 	return m_fThrowGrenade;
 }
 
-void CHGrunt::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CHGrunt::TraceAttack(const TraceAttackInfo& info)
 {
+	TraceAttackInfo adjustedInfo = info;
+
 	// check for helmet shot
-	if (ptr->iHitgroup == 11)
+	if (adjustedInfo.GetTraceResult().iHitgroup == 11)
 	{
 		// make sure we're wearing one
-		if (GetBodygroup(1) == HEAD_GRUNT && (bitsDamageType & (DMG_BULLET | DMG_SLASH | DMG_BLAST | DMG_CLUB)))
+		if (GetBodygroup(1) == HEAD_GRUNT && (adjustedInfo.GetDamageTypes() & (DMG_BULLET | DMG_SLASH | DMG_BLAST | DMG_CLUB)))
 		{
 			// absorb damage
-			flDamage -= 20;
-			if (flDamage <= 0)
+			adjustedInfo.SetDamage(adjustedInfo.GetDamage() - 20);
+			if (adjustedInfo.GetDamage() <= 0)
 			{
-				UTIL_Ricochet(ptr->vecEndPos, 1.0);
-				flDamage = 0.01;
+				UTIL_Ricochet(adjustedInfo.GetTraceResult().vecEndPos, 1.0);
+				adjustedInfo.SetDamage(0.01);
 			}
 		}
 		// it's head shot anyways
-		ptr->iHitgroup = HITGROUP_HEAD;
+		adjustedInfo.GetTraceResult().iHitgroup = HITGROUP_HEAD;
 	}
-	CSquadMonster::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
+	CSquadMonster::TraceAttack(adjustedInfo);
 }
 
 bool CHGrunt::TakeDamage(const TakeDamageInfo& info)

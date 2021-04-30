@@ -214,7 +214,7 @@ public:
 	void SetYawSpeed() override;
 	int  Classify() override;
 	bool TakeDamage(const TakeDamageInfo& info) override;
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 	void HandleAnimEvent(AnimationEvent& event) override;
 
 	bool CheckMeleeAttack1(float flDot, float flDist) override;		//!< Swipe
@@ -658,7 +658,7 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInfli
 				if (tr.flFraction != 1.0)
 				{
 					ClearMultiDamage();
-					pEntity->TraceAttack(pevInflictor, flAdjustedDamage, (tr.vecEndPos - vecSrc).Normalize(), &tr, bitsDamageType);
+					pEntity->TraceAttack({pevInflictor, flAdjustedDamage, (tr.vecEndPos - vecSrc).Normalize(), tr, bitsDamageType});
 					ApplyMultiDamage(pevInflictor, pevAttacker);
 				}
 				else
@@ -775,18 +775,20 @@ void CGargantua::Precache()
 	PRECACHE_SOUND_ARRAY(pBreatheSounds);
 }
 
-void CGargantua::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CGargantua::TraceAttack(const TraceAttackInfo& info)
 {
 	ALERT(at_aiconsole, "CGargantua::TraceAttack\n");
 
 	if (!IsAlive())
 	{
-		CBaseMonster::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
+		CBaseMonster::TraceAttack(info);
 		return;
 	}
 
+	TraceAttackInfo adjustedInfo = info;
+
 	// UNDONE: Hit group specific damage?
-	if (bitsDamageType & (GARG_DAMAGE | DMG_BLAST))
+	if (adjustedInfo.GetDamageTypes() & (GARG_DAMAGE | DMG_BLAST))
 	{
 		if (m_painSoundTime < gpGlobals->time)
 		{
@@ -795,21 +797,21 @@ void CGargantua::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecD
 		}
 	}
 
-	bitsDamageType &= GARG_DAMAGE;
+	adjustedInfo.SetDamageTypes(adjustedInfo.GetDamageTypes() & GARG_DAMAGE);
 
-	if (bitsDamageType == 0)
+	if (adjustedInfo.GetDamageTypes() == 0)
 	{
 		if (pev->dmgtime != gpGlobals->time || (RANDOM_LONG(0, 100) < 20))
 		{
-			UTIL_Ricochet(ptr->vecEndPos, RANDOM_FLOAT(0.5, 1.5));
+			UTIL_Ricochet(adjustedInfo.GetTraceResult().vecEndPos, RANDOM_FLOAT(0.5, 1.5));
 			pev->dmgtime = gpGlobals->time;
 			//			if ( RANDOM_LONG(0,100) < 25 )
 			//				EmitSound( SoundChannel::Body, pRicSounds[ RANDOM_LONG(0,ArraySize(pRicSounds)-1) ], VOL_NORM, ATTN_NORM );
 		}
-		flDamage = 0;
+		adjustedInfo.SetDamage(0);
 	}
 
-	CBaseMonster::TraceAttack(pevAttacker, flDamage, vecDir, ptr, bitsDamageType);
+	CBaseMonster::TraceAttack(adjustedInfo);
 
 }
 

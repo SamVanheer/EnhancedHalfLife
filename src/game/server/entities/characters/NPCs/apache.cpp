@@ -55,7 +55,7 @@ class CApache : public CBaseMonster
 	bool FireGun();
 
 	bool TakeDamage(const TakeDamageInfo& info) override;
-	void TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType) override;
+	void TraceAttack(const TraceAttackInfo& info) override;
 
 	int m_iRockets;
 	float m_flForce;
@@ -882,26 +882,26 @@ bool CApache::TakeDamage(const TakeDamageInfo& info)
 	return CBaseEntity::TakeDamage(adjustedInfo);
 }
 
-void CApache::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
+void CApache::TraceAttack(const TraceAttackInfo& info)
 {
 	// ALERT( at_console, "%d %.0f\n", ptr->iHitgroup, flDamage );
 
 	// ignore blades
-	if (ptr->iHitgroup == 6 && (bitsDamageType & (DMG_ENERGYBEAM | DMG_BULLET | DMG_CLUB)))
+	if (info.GetTraceResult().iHitgroup == 6 && (info.GetDamageTypes() & (DMG_ENERGYBEAM | DMG_BULLET | DMG_CLUB)))
 		return;
 
 	// hit hard, hits cockpit, hits engines
-	if (flDamage > 50 || ptr->iHitgroup == 1 || ptr->iHitgroup == 2)
+	if (info.GetDamage() > 50 || info.GetTraceResult().iHitgroup == 1 || info.GetTraceResult().iHitgroup == 2)
 	{
 		// ALERT( at_console, "%.0f\n", flDamage );
-		AddMultiDamage(pevAttacker, this, flDamage, bitsDamageType);
-		m_iDoSmokePuff = 3 + (flDamage / 5.0);
+		AddMultiDamage(info.GetAttacker(), this, info.GetDamage(), info.GetDamageTypes());
+		m_iDoSmokePuff = 3 + (info.GetDamage() / 5.0);
 	}
 	else
 	{
 		// do half damage in the body
 		// AddMultiDamage( pevAttacker, this, flDamage / 2.0, bitsDamageType );
-		UTIL_Ricochet(ptr->vecEndPos, 2.0);
+		UTIL_Ricochet(info.GetTraceResult().vecEndPos, 2.0);
 	}
 }
 
