@@ -27,6 +27,7 @@ target_include_directories(hl PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/game/server
 	${INCLUDE_DIRECTORY}/GoldSrc/math
 	../shared
+	../shared/entities
 	../shared/entities/weapons
 	../shared/player_movement
 	../shared/utils)
@@ -58,8 +59,6 @@ target_sources(hl PRIVATE
 	entities/cbase.h
 	entities/changelevel.cpp
 	entities/changelevel.hpp
-	entities/ehandle.cpp
-	entities/ehandle.hpp
 	entities/maprules.cpp
 	entities/maprules.h
 	entities/subs.cpp
