@@ -34,7 +34,7 @@ extern int g_iUser1;
 
 // Pool of client side entities/entvars_t
 //For weapons + local player
-static entvars_t	ev[MAX_WEAPONS + 1];
+static edict_t	edicts[MAX_WEAPONS + 1];
 static int			num_ents = 0;
 
 // The entity we'll use to represent the local client
@@ -98,8 +98,16 @@ void LoadVModel(const char* szViewModel, CBasePlayer* m_pPlayer)
 */
 void HUD_PrepEntity(CBaseEntity* pEntity, CBasePlayer* pWeaponOwner)
 {
-	memset(&ev[num_ents], 0, sizeof(entvars_t));
-	pEntity->pev = &ev[num_ents++];
+	memset(&edicts[num_ents], 0, sizeof(edict_t));
+
+	auto edict = &edicts[num_ents];
+	auto pev = &edict->v;
+	pev->pContainingEntity = edict;
+
+	++num_ents;
+
+	pEntity->pev = pev;
+	edict->pvPrivateData = pEntity;
 
 	pEntity->Precache();
 	pEntity->Spawn();
