@@ -1916,9 +1916,9 @@ bool CGraph::SetGraphPointers()
 			// m_szLinkEntModelname is not necessarily nullptr terminated (so we can store it in a more alignment-friendly 4 bytes)
 			memcpy(name, m_pLinkPool[i].m_szLinkEntModelname, 4);
 			name[4] = 0;
-			edict_t* pentLinkEnt = FIND_ENTITY_BY_STRING(nullptr, "model", name);
+			CBaseEntity* pLinkEnt = UTIL_FindEntityByString(nullptr, "model", name);
 
-			if (IsNullEnt(pentLinkEnt))
+			if (IsNullEnt(pLinkEnt))
 			{
 				// the ent isn't around anymore? Either there is a major problem, or it was removed from the world
 				// ( like a func_breakable that's been destroyed or something ). Make sure that LinkEnt is null.
@@ -1927,12 +1927,11 @@ bool CGraph::SetGraphPointers()
 			}
 			else
 			{
-				auto linkEnt = CBaseEntity::Instance(pentLinkEnt);
-				m_pLinkPool[i].m_hLinkEnt = linkEnt;
+				m_pLinkPool[i].m_hLinkEnt = pLinkEnt;
 
-				if (!IsBitSet(linkEnt->pev->flags, FL_GRAPHED))
+				if (!IsBitSet(pLinkEnt->pev->flags, FL_GRAPHED))
 				{
-					linkEnt->pev->flags += FL_GRAPHED;
+					pLinkEnt->pev->flags += FL_GRAPHED;
 				}
 			}
 		}

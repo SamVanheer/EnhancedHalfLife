@@ -118,15 +118,15 @@ static char st_szNextSpot[MAX_MAPNAME_LENGTH];
 
 edict_t* CChangeLevel::FindLandmark(const char* pLandmarkName)
 {
-	edict_t* pentLandmark = FIND_ENTITY_BY_STRING(nullptr, "targetname", pLandmarkName);
-	while (!IsNullEnt(pentLandmark))
+	CBaseEntity* pLandmark = nullptr;
+
+	while ((pLandmark = UTIL_FindEntityByTargetname(pLandmark, pLandmarkName)) != nullptr)
 	{
 		// Found the landmark
-		if (ClassnameIs(pentLandmark, "info_landmark"))
-			return pentLandmark;
-		else
-			pentLandmark = FIND_ENTITY_BY_STRING(pentLandmark, "targetname", pLandmarkName);
+		if (ClassnameIs(pLandmark->pev, "info_landmark"))
+			return pLandmark->edict();
 	}
+
 	ALERT(at_error, "Can't find landmark %s\n", pLandmarkName);
 	return nullptr;
 }
@@ -255,21 +255,17 @@ constexpr int MAX_ENTITY = 512;
 int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 {
 	// Find all of the possible level changes on this BSP
-	edict_t* pentChangelevel = FIND_ENTITY_BY_STRING(nullptr, "classname", "trigger_changelevel");
-	if (IsNullEnt(pentChangelevel))
-		return 0;
-
 	int count = 0;
 
-	while (!IsNullEnt(pentChangelevel))
 	{
-		CChangeLevel* pTrigger;
+		CBaseEntity* pChangelevel = nullptr;
 
-		pTrigger = GetClassPtr((CChangeLevel*)VARS(pentChangelevel));
-		if (pTrigger)
+		while ((pChangelevel = UTIL_FindEntityByClassname(pChangelevel, "trigger_changelevel")) != nullptr)
 		{
+			auto pTrigger = static_cast<CChangeLevel*>(pChangelevel);
+
 			// Find the corresponding landmark
-			edict_t*  pentLandmark = FindLandmark(pTrigger->m_szLandmarkName);
+			edict_t* pentLandmark = FindLandmark(pTrigger->m_szLandmarkName);
 			if (pentLandmark)
 			{
 				// Build a list of unique transitions
@@ -281,10 +277,9 @@ int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 				}
 			}
 		}
-		pentChangelevel = FIND_ENTITY_BY_STRING(pentChangelevel, "classname", "trigger_changelevel");
 	}
 
-	if (gpGlobals->pSaveData && ((SAVERESTOREDATA*)gpGlobals->pSaveData)->pTable)
+	if (count > 0 && gpGlobals->pSaveData && ((SAVERESTOREDATA*)gpGlobals->pSaveData)->pTable)
 	{
 		CSave saveHelper((SAVERESTOREDATA*)gpGlobals->pSaveData);
 

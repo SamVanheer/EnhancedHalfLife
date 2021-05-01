@@ -169,8 +169,8 @@ void ResetGlobalState()
 
 CBaseEntity* FindGlobalEntity(string_t classname, string_t globalname)
 {
-	edict_t* pent = FIND_ENTITY_BY_STRING(nullptr, "globalname", STRING(globalname));
-	CBaseEntity* pReturn = CBaseEntity::Instance(pent);
+	CBaseEntity* pReturn = UTIL_FindEntityByString(nullptr, "globalname", STRING(globalname));
+
 	if (pReturn)
 	{
 		if (!ClassnameIs(pReturn->pev, STRING(classname)))

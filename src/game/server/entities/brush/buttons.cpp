@@ -246,25 +246,21 @@ void CMultiSource::Register()
 
 	// search for all entities which target this multisource (pev->targetname)
 
-	edict_t* pentTarget = FIND_ENTITY_BY_STRING(nullptr, "target", STRING(pev->targetname));
+	CBaseEntity* pTarget = nullptr;
 
-	while (!IsNullEnt(pentTarget) && (m_iTotal < MS_MAX_TARGETS))
+	while ((pTarget = UTIL_FindEntityByTarget(pTarget, STRING(pev->targetname))) != nullptr && (m_iTotal < MS_MAX_TARGETS))
 	{
-		CBaseEntity* pTarget = CBaseEntity::Instance(pentTarget);
-		if (pTarget)
-			m_rgEntities[m_iTotal++] = pTarget;
-
-		pentTarget = FIND_ENTITY_BY_STRING(pentTarget, "target", STRING(pev->targetname));
+		m_rgEntities[m_iTotal++] = pTarget;
 	}
 
-	pentTarget = FIND_ENTITY_BY_STRING(nullptr, "classname", "multi_manager");
-	while (!IsNullEnt(pentTarget) && (m_iTotal < MS_MAX_TARGETS))
-	{
-		CBaseEntity* pTarget = CBaseEntity::Instance(pentTarget);
-		if (pTarget && pTarget->HasTarget(pev->targetname))
-			m_rgEntities[m_iTotal++] = pTarget;
+	pTarget = nullptr;
 
-		pentTarget = FIND_ENTITY_BY_STRING(pentTarget, "classname", "multi_manager");
+	while ((pTarget = UTIL_FindEntityByClassname(pTarget, "multi_manager")) != nullptr && (m_iTotal < MS_MAX_TARGETS))
+	{
+		if (pTarget->HasTarget(pev->targetname))
+		{
+			m_rgEntities[m_iTotal++] = pTarget;
+		}
 	}
 
 	pev->spawnflags &= ~SF_MULTI_INIT;
@@ -819,7 +815,6 @@ public:
 	void	PlaySound();
 	void	UpdateTarget(float value);
 
-	static CMomentaryRotButton* Instance(edict_t* pent) { return (CMomentaryRotButton*)GET_PRIVATE(pent); }
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 
@@ -922,24 +917,18 @@ void CMomentaryRotButton::Use(const UseInfo& info)
 void CMomentaryRotButton::UpdateAllButtons(float value, bool start)
 {
 	// Update all rot buttons attached to the same target
-	edict_t* pentTarget = nullptr;
-	for (;;)
+	CBaseEntity* pTarget = nullptr;
+
+	while ((pTarget = UTIL_FindEntityByTarget(pTarget, STRING(pev->target))) != nullptr)
 	{
-
-		pentTarget = FIND_ENTITY_BY_STRING(pentTarget, "target", STRING(pev->target));
-		if (IsNullEnt(pentTarget))
-			break;
-
-		if (ClassnameIs(VARS(pentTarget), "momentary_rot_button"))
+		if (ClassnameIs(pTarget->pev, "momentary_rot_button"))
 		{
-			CMomentaryRotButton* pEntity = CMomentaryRotButton::Instance(pentTarget);
-			if (pEntity)
-			{
-				if (start)
-					pEntity->UpdateSelf(value);
-				else
-					pEntity->UpdateSelfReturn(value);
-			}
+			auto pEntity = static_cast<CMomentaryRotButton*>(pTarget);
+
+			if (start)
+				pEntity->UpdateSelf(value);
+			else
+				pEntity->UpdateSelfReturn(value);
 		}
 	}
 }
