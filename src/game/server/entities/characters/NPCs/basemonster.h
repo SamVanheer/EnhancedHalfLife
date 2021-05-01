@@ -154,7 +154,7 @@ public:
 
 // Scripted sequence Info
 	ScriptState			m_scriptState;		//!< internal cinematic state
-	CCineMonster* m_pCine;
+	EHandle<CCineMonster> m_hCine;
 
 	float m_flLastYawTime;
 
@@ -748,3 +748,6 @@ public:
 	*/
 	CBaseEntity* DropItem(const char* pszItemName, const Vector& vecPos, const Vector& vecAng);// drop an item.
 };
+
+//Required so the handle to CCineMonster works
+#include "scripted.h"

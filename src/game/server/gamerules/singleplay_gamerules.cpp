@@ -51,13 +51,15 @@ bool CHalfLifeRules::IsCoOp()
 
 bool CHalfLifeRules::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
 {
-	if (!pPlayer->m_pActiveItem)
+	auto activeItem = pPlayer->m_hActiveItem.Get();
+
+	if (!activeItem)
 	{
 		// player doesn't have an active item!
 		return true;
 	}
 
-	if (!pPlayer->m_pActiveItem->CanHolster())
+	if (!activeItem->CanHolster())
 	{
 		return false;
 	}

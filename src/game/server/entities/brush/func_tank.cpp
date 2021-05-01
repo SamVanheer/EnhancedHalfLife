@@ -127,7 +127,7 @@ public:
 
 
 protected:
-	CBasePlayer* m_pController;
+	EHandle<CBasePlayer> m_hController;
 	float		m_flNextAttack;
 	Vector		m_vecControllerUsePos;
 
@@ -184,7 +184,7 @@ TYPEDESCRIPTION	CFuncTank::m_SaveData[] =
 	DEFINE_FIELD(CFuncTank, m_bulletType, FIELD_INTEGER),
 	DEFINE_FIELD(CFuncTank, m_sightOrigin, FIELD_VECTOR),
 	DEFINE_FIELD(CFuncTank, m_spread, FIELD_INTEGER),
-	DEFINE_FIELD(CFuncTank, m_pController, FIELD_CLASSPTR),
+	DEFINE_FIELD(CFuncTank, m_hController, FIELD_EHANDLE),
 	DEFINE_FIELD(CFuncTank, m_vecControllerUsePos, FIELD_VECTOR),
 	DEFINE_FIELD(CFuncTank, m_flNextAttack, FIELD_TIME),
 	DEFINE_FIELD(CFuncTank, m_iBulletDamage, FIELD_INTEGER),
@@ -363,7 +363,7 @@ bool CFuncTank::OnControls(entvars_t* pevTest)
 
 bool CFuncTank::StartControl(CBasePlayer* pController)
 {
-	if (m_pController != nullptr)
+	if (m_hController != nullptr)
 		return false;
 
 	// Team only or disabled?
@@ -375,17 +375,18 @@ bool CFuncTank::StartControl(CBasePlayer* pController)
 
 	ALERT(at_console, "using TANK!\n");
 
-	m_pController = pController;
-	if (m_pController->m_pActiveItem)
+	m_hController = pController;
+	//TODO: don't have this code outside CBasePlayer
+	if (auto activeItem = pController->m_hActiveItem.Get(); activeItem)
 	{
-		m_pController->m_pActiveItem->Holster();
-		m_pController->pev->weaponmodel = iStringNull;
-		m_pController->pev->viewmodel = iStringNull;
+		activeItem->Holster();
+		pController->pev->weaponmodel = iStringNull;
+		pController->pev->viewmodel = iStringNull;
 
 	}
 
-	m_pController->m_iHideHUD |= HIDEHUD_WEAPONS;
-	m_vecControllerUsePos = m_pController->pev->origin;
+	pController->m_iHideHUD |= HIDEHUD_WEAPONS;
+	m_vecControllerUsePos = pController->pev->origin;
 
 	pev->nextthink = pev->ltime + 0.1;
 
@@ -394,18 +395,20 @@ bool CFuncTank::StartControl(CBasePlayer* pController)
 
 void CFuncTank::StopControl()
 {
-	if (!m_pController)
+	CBasePlayer* controller = m_hController;
+	if (!controller)
 		return;
 
-	if (m_pController->m_pActiveItem)
-		m_pController->m_pActiveItem->Deploy();
+	//TODO: don't have this code outside CBasePlayer
+	if (auto activeItem = controller->m_hActiveItem.Get(); activeItem)
+		activeItem->Deploy();
 
 	ALERT(at_console, "stopped using TANK\n");
 
-	m_pController->m_iHideHUD &= ~HIDEHUD_WEAPONS;
+	controller->m_iHideHUD &= ~HIDEHUD_WEAPONS;
 
 	pev->nextthink = 0;
-	m_pController = nullptr;
+	m_hController = nullptr;
 
 	if (IsActive())
 		pev->nextthink = pev->ltime + 1.0;
@@ -413,23 +416,23 @@ void CFuncTank::StopControl()
 
 void CFuncTank::ControllerPostFrame()
 {
-	ASSERT(m_pController != nullptr);
+	ASSERT(m_hController != nullptr);
 
 	if (gpGlobals->time < m_flNextAttack)
 		return;
 
-	if (m_pController->pev->button & IN_ATTACK)
+	if (CBasePlayer* controller = m_hController; controller->pev->button & IN_ATTACK)
 	{
 		Vector vecForward;
 		AngleVectors(pev->angles, &vecForward, nullptr, nullptr);
 
 		m_fireLast = gpGlobals->time - (1 / m_fireRate) - 0.01;  // to make sure the gun doesn't fire too many bullets
 
-		Fire(BarrelPosition(), vecForward, m_pController->pev);
+		Fire(BarrelPosition(), vecForward, controller->pev);
 
 		// HACKHACK -- make some noise (that the AI can hear)
-		if (m_pController && m_pController->IsPlayer())
-			((CBasePlayer*)m_pController)->m_iWeaponVolume = LOUD_GUN_VOLUME;
+		if (controller->IsPlayer())
+			controller->m_iWeaponVolume = LOUD_GUN_VOLUME;
 
 		m_flNextAttack = gpGlobals->time + (1 / m_fireRate);
 	}
@@ -447,7 +450,7 @@ void CFuncTank::Use(const UseInfo& info)
 		{
 			ControllerPostFrame();
 		}
-		else if (!m_pController && info.GetUseType() != USE_OFF)
+		else if (!m_hController && info.GetUseType() != USE_OFF)
 		{
 			((CBasePlayer*)info.GetActivator())->m_pTank = this;
 			StartControl((CBasePlayer*)info.GetActivator());
@@ -504,10 +507,10 @@ void CFuncTank::TrackTarget()
 	edict_t* pTarget;
 
 	// Get a position to aim for
-	if (m_pController)
+	if (auto controller = m_hController.Get(); controller)
 	{
 		// Tanks attempt to mirror the player's angles
-		angles = m_pController->pev->v_angle;
+		angles = controller->pev->v_angle;
 		angles[0] = 0 - angles[0];
 		pev->nextthink = pev->ltime + 0.05;
 	}
@@ -608,7 +611,7 @@ void CFuncTank::TrackTarget()
 	else if (pev->avelocity.x < -m_pitchRate)
 		pev->avelocity.x = -m_pitchRate;
 
-	if (m_pController)
+	if (m_hController)
 		return;
 
 	if (CanFire() && ((fabs(distX) < m_pitchTolerance && fabs(distY) < m_yawTolerance) || (pev->spawnflags & SF_TANK_LINEOFSIGHT)))
@@ -777,7 +780,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	CLaser* m_pLaser;
+	EHandle<CLaser> m_hLaser;
 	float	m_laserTime;
 };
 
@@ -785,7 +788,7 @@ LINK_ENTITY_TO_CLASS(func_tanklaser, CFuncTankLaser);
 
 TYPEDESCRIPTION	CFuncTankLaser::m_SaveData[] =
 {
-	DEFINE_FIELD(CFuncTankLaser, m_pLaser, FIELD_CLASSPTR),
+	DEFINE_FIELD(CFuncTankLaser, m_hLaser, FIELD_EHANDLE),
 	DEFINE_FIELD(CFuncTankLaser, m_laserTime, FIELD_TIME),
 };
 
@@ -800,7 +803,7 @@ void CFuncTankLaser::Activate()
 	}
 	else
 	{
-		m_pLaser->TurnOff();
+		m_hLaser->TurnOff();
 	}
 }
 
@@ -817,8 +820,8 @@ void CFuncTankLaser::KeyValue(KeyValueData* pkvd)
 
 CLaser* CFuncTankLaser::GetLaser()
 {
-	if (m_pLaser)
-		return m_pLaser;
+	if (auto laser = m_hLaser.Get(); laser)
+		return laser;
 
 	CBaseEntity* pLaser = nullptr;
 
@@ -826,18 +829,18 @@ CLaser* CFuncTankLaser::GetLaser()
 	{
 		if (ClassnameIs(pLaser->pev, "env_laser"))
 		{
-			m_pLaser = (CLaser*)pLaser;
+			m_hLaser = (CLaser*)pLaser;
 			break;
 		}
 	}
 
-	return m_pLaser;
+	return static_cast<CLaser*>(pLaser);
 }
 
 void CFuncTankLaser::Think()
 {
-	if (m_pLaser && (gpGlobals->time > m_laserTime))
-		m_pLaser->TurnOff();
+	if (auto laser = m_hLaser.Get(); laser && (gpGlobals->time > m_laserTime))
+		laser->TurnOff();
 
 	CFuncTank::Think();
 }
@@ -852,17 +855,19 @@ void CFuncTankLaser::Fire(const Vector& barrelEnd, const Vector& forward, entvar
 		const int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
 		if (bulletCount)
 		{
+			CLaser* laser = m_hLaser;
+
 			TraceResult tr;
 			for (int i = 0; i < bulletCount; i++)
 			{
-				m_pLaser->pev->origin = barrelEnd;
+				laser->pev->origin = barrelEnd;
 				TankTrace(barrelEnd, forward, gTankSpread[m_spread], tr);
 
 				m_laserTime = gpGlobals->time;
-				m_pLaser->TurnOn();
-				m_pLaser->pev->dmgtime = gpGlobals->time - 1.0;
-				m_pLaser->FireAtPoint(tr);
-				m_pLaser->pev->nextthink = 0;
+				laser->TurnOn();
+				laser->pev->dmgtime = gpGlobals->time - 1.0;
+				laser->FireAtPoint(tr);
+				laser->pev->nextthink = 0;
 			}
 			CFuncTank::Fire(barrelEnd, forward, pev);
 		}
@@ -965,14 +970,14 @@ public:
 	bool Restore(CRestore& restore) override;
 	static TYPEDESCRIPTION m_SaveData[];
 
-	CFuncTank* m_pTank;
+	EHandle<CFuncTank> m_hTank;
 };
 
 LINK_ENTITY_TO_CLASS(func_tankcontrols, CFuncTankControls);
 
 TYPEDESCRIPTION	CFuncTankControls::m_SaveData[] =
 {
-	DEFINE_FIELD(CFuncTankControls, m_pTank, FIELD_CLASSPTR),
+	DEFINE_FIELD(CFuncTankControls, m_hTank, FIELD_EHANDLE),
 };
 
 IMPLEMENT_SAVERESTORE(CFuncTankControls, CBaseEntity);
@@ -984,10 +989,10 @@ int	CFuncTankControls::ObjectCaps()
 
 void CFuncTankControls::Use(const UseInfo& info)
 { // pass the Use command onto the controls
-	if (m_pTank)
-		m_pTank->Use(info);
+	if (auto tank = m_hTank.Get(); tank)
+		tank->Use(info);
 
-	ASSERT(m_pTank != nullptr);	// if this fails,  most likely means save/restore hasn't worked properly
+	ASSERT(m_hTank != nullptr);	// if this fails,  most likely means save/restore hasn't worked properly
 }
 
 void CFuncTankControls::Think()
@@ -1008,7 +1013,7 @@ void CFuncTankControls::Think()
 		return;
 	}
 
-	m_pTank = (CFuncTank*)pTarget;
+	m_hTank = (CFuncTank*)pTarget;
 }
 
 void CFuncTankControls::Spawn()

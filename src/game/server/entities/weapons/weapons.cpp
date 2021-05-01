@@ -323,8 +323,8 @@ void W_Precache()
 
 TYPEDESCRIPTION	CBasePlayerItem::m_SaveData[] =
 {
-	DEFINE_FIELD(CBasePlayerItem, m_pPlayer, FIELD_CLASSPTR),
-	DEFINE_FIELD(CBasePlayerItem, m_pNext, FIELD_CLASSPTR),
+	DEFINE_FIELD(CBasePlayerItem, m_hPlayer, FIELD_EHANDLE),
+	DEFINE_FIELD(CBasePlayerItem, m_hNext, FIELD_EHANDLE),
 	//DEFINE_FIELD( CBasePlayerItem, m_fKnown, FIELD_INTEGER ),Reset to zero on load
 	DEFINE_FIELD(CBasePlayerItem, m_iId, FIELD_INTEGER),
 	// DEFINE_FIELD( CBasePlayerItem, m_iIdPrimary, FIELD_INTEGER ),
@@ -495,10 +495,10 @@ void CBasePlayerItem::DefaultTouch(CBaseEntity* pOther)
 
 void CBasePlayerItem::DestroyItem()
 {
-	if (m_pPlayer)
+	if (auto player = m_hPlayer.Get(); player)
 	{
 		// if attached to a player, remove. 
-		m_pPlayer->RemovePlayerItem(this);
+		player->RemovePlayerItem(this);
 	}
 
 	Kill();
@@ -506,7 +506,7 @@ void CBasePlayerItem::DestroyItem()
 
 bool CBasePlayerItem::AddToPlayer(CBasePlayer* pPlayer)
 {
-	m_pPlayer = pPlayer;
+	m_hPlayer = pPlayer;
 
 	return true;
 }
@@ -527,8 +527,9 @@ void CBasePlayerItem::Kill()
 
 void CBasePlayerItem::Holster()
 {
-	m_pPlayer->pev->viewmodel = iStringNull;
-	m_pPlayer->pev->weaponmodel = iStringNull;
+	auto player = m_hPlayer.Get();
+	player->pev->viewmodel = iStringNull;
+	player->pev->weaponmodel = iStringNull;
 }
 
 void CBasePlayerItem::AttachToPlayer(CBasePlayer* pPlayer)
@@ -579,7 +580,7 @@ bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer)
 {
 	bool bSend = false;
 	WeaponState state = WeaponState::NotActive;
-	if (pPlayer->m_pActiveItem == this)
+	if (pPlayer->m_hActiveItem == this)
 	{
 		if (pPlayer->m_fOnTarget)
 			state = WeaponState::OnTarget;
@@ -594,10 +595,10 @@ bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer)
 	}
 
 	// This is the current or last weapon, so the state will need to be updated
-	if (this == pPlayer->m_pActiveItem ||
-		this == pPlayer->m_pClientActiveItem)
+	if (this == pPlayer->m_hActiveItem ||
+		this == pPlayer->m_hClientActiveItem)
 	{
-		if (pPlayer->m_pActiveItem != pPlayer->m_pClientActiveItem)
+		if (pPlayer->m_hActiveItem != pPlayer->m_hClientActiveItem)
 		{
 			bSend = true;
 		}
@@ -624,8 +625,8 @@ bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer)
 		pPlayer->m_fWeapon = true;
 	}
 
-	if (m_pNext)
-		m_pNext->UpdateClientData(pPlayer);
+	if (auto next = m_hNext.Get(); next)
+		next->UpdateClientData(pPlayer);
 
 	return true;
 }
@@ -634,14 +635,16 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 {
 	const bool skiplocal = UseDecrement();
 
-	m_pPlayer->pev->weaponanim = iAnim;
+	auto player = m_hPlayer.Get();
+
+	player->pev->weaponanim = iAnim;
 
 #if defined( CLIENT_WEAPONS )
-	if (skiplocal && ENGINE_CANSKIP(m_pPlayer->edict()))
+	if (skiplocal && ENGINE_CANSKIP(player->edict()))
 		return;
 #endif
 
-	MESSAGE_BEGIN(MessageDest::One, SVC_WEAPONANIM, nullptr, m_pPlayer->pev);
+	MESSAGE_BEGIN(MessageDest::One, SVC_WEAPONANIM, nullptr, player->pev);
 	WRITE_BYTE(iAnim);						// sequence number
 	WRITE_BYTE(pev->body);					// weaponmodel bodygroup.
 	MESSAGE_END();
@@ -649,31 +652,33 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 
 bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip, int iMaxCarry)
 {
+	auto player = m_hPlayer.Get();
+
 	int iIdAmmo;
 
 	if (iMaxClip < 1)
 	{
 		m_iClip = -1;
-		iIdAmmo = m_pPlayer->GiveAmmo(iCount, szName, iMaxCarry);
+		iIdAmmo = player->GiveAmmo(iCount, szName, iMaxCarry);
 	}
 	else if (m_iClip == 0)
 	{
 		int i;
 		i = std::min(m_iClip + iCount, iMaxClip) - m_iClip;
 		m_iClip += i;
-		iIdAmmo = m_pPlayer->GiveAmmo(iCount - i, szName, iMaxCarry);
+		iIdAmmo = player->GiveAmmo(iCount - i, szName, iMaxCarry);
 	}
 	else
 	{
-		iIdAmmo = m_pPlayer->GiveAmmo(iCount, szName, iMaxCarry);
+		iIdAmmo = player->GiveAmmo(iCount, szName, iMaxCarry);
 	}
 
-	// m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] = iMaxCarry; // hack for testing
+	// player->m_rgAmmo[m_iPrimaryAmmoType] = iMaxCarry; // hack for testing
 
 	if (iIdAmmo > 0)
 	{
 		m_iPrimaryAmmoType = iIdAmmo;
-		if (m_pPlayer->HasPlayerItem(this))
+		if (player->HasPlayerItem(this))
 		{
 			// play the "got ammo" sound only if we gave some ammo to a player that already had this gun.
 			// if the player is just getting this gun for the first time, DefaultTouch will play the "picked up gun" sound for us.
@@ -688,9 +693,9 @@ bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName, int iMa
 {
 	int iIdAmmo;
 
-	iIdAmmo = m_pPlayer->GiveAmmo(iCount, szName, iMax);
+	iIdAmmo = m_hPlayer->GiveAmmo(iCount, szName, iMax);
 
-	//m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType] = iMax; // hack for testing
+	//m_hPlayer->m_rgAmmo[m_iSecondaryAmmoType] = iMax; // hack for testing
 
 	if (iIdAmmo > 0)
 	{
@@ -713,7 +718,9 @@ bool CBasePlayerWeapon::IsUseable()
 		return true;
 	}
 
-	if (m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] > 0)
+	auto player = m_hPlayer.Get();
+
+	if (player->m_rgAmmo[PrimaryAmmoIndex()] > 0)
 	{
 		return true;
 	}
@@ -726,7 +733,7 @@ bool CBasePlayerWeapon::IsUseable()
 			return true;
 		}
 
-		if (m_pPlayer->m_rgAmmo[SecondaryAmmoIndex()] > 0)
+		if (player->m_rgAmmo[SecondaryAmmoIndex()] > 0)
 		{
 			return true;
 		}
@@ -741,12 +748,14 @@ bool CBasePlayerWeapon::DefaultDeploy(const char* szViewModel, const char* szWea
 	if (!CanDeploy())
 		return false;
 
-	m_pPlayer->pev->viewmodel = MAKE_STRING(szViewModel);
-	m_pPlayer->pev->weaponmodel = MAKE_STRING(szWeaponModel);
-	safe_strcpy(m_pPlayer->m_szAnimExtension, szAnimExt);
+	auto player = m_hPlayer.Get();
+
+	player->pev->viewmodel = MAKE_STRING(szViewModel);
+	player->pev->weaponmodel = MAKE_STRING(szWeaponModel);
+	safe_strcpy(player->m_szAnimExtension, szAnimExt);
 	SendWeaponAnim(iAnim, body);
 
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
 	m_flLastFireTime = 0.0;
 
@@ -757,7 +766,7 @@ bool CBasePlayerWeapon::PlayEmptySound()
 {
 	if (m_iPlayEmptySound)
 	{
-		m_pPlayer->EmitSound(SoundChannel::Weapon, "weapons/357_cock1.wav", 0.8);
+		m_hPlayer->EmitSound(SoundChannel::Weapon, "weapons/357_cock1.wav", 0.8);
 		m_iPlayEmptySound = false;
 		return false;
 	}
@@ -776,9 +785,11 @@ int CBasePlayerWeapon::SecondaryAmmoIndex()
 
 void CBasePlayerWeapon::Holster()
 {
+	auto player = m_hPlayer.Get();
+
 	m_fInReload = false; // cancel any reload in progress.
-	m_pPlayer->pev->viewmodel = iStringNull;
-	m_pPlayer->pev->weaponmodel = iStringNull;
+	player->pev->viewmodel = iStringNull;
+	player->pev->weaponmodel = iStringNull;
 }
 
 void CBasePlayerAmmo::Spawn()
@@ -881,22 +892,23 @@ int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon)
 		iAmmo = m_iClip;
 	}
 
-	return pWeapon->m_pPlayer->GiveAmmo(iAmmo, Ammo1Name(), MaxAmmo1()); // , &m_iPrimaryAmmoType
+	return pWeapon->m_hPlayer->GiveAmmo(iAmmo, Ammo1Name(), MaxAmmo1()); // , &m_iPrimaryAmmoType
 }
 
 void CBasePlayerWeapon::RetireWeapon()
 {
+	auto player = m_hPlayer.Get();
 	// first, no viewmodel at all.
-	m_pPlayer->pev->viewmodel = iStringNull;
-	m_pPlayer->pev->weaponmodel = iStringNull;
+	player->pev->viewmodel = iStringNull;
+	player->pev->weaponmodel = iStringNull;
 	//m_pPlayer->pev->viewmodelindex = 0;
 
-	g_pGameRules->GetNextBestWeapon(m_pPlayer, this);
+	g_pGameRules->GetNextBestWeapon(player, this);
 
 	//If we're still equipped and we couldn't switch to another weapon, dequip this one
-	if (CanHolster() && m_pPlayer->m_pActiveItem == this)
+	if (CanHolster() && player->m_hActiveItem == this)
 	{
-		m_pPlayer->SwitchWeapon(nullptr);
+		player->SwitchWeapon(nullptr);
 	}
 }
 
@@ -934,7 +946,7 @@ TYPEDESCRIPTION	CWeaponBox::m_SaveData[] =
 {
 	DEFINE_ARRAY(CWeaponBox, m_rgAmmo, FIELD_INTEGER, MAX_AMMO_TYPES),
 	DEFINE_ARRAY(CWeaponBox, m_rgiszAmmo, FIELD_STRING, MAX_AMMO_TYPES),
-	DEFINE_ARRAY(CWeaponBox, m_rgpPlayerItems, FIELD_CLASSPTR, MAX_ITEM_TYPES),
+	DEFINE_ARRAY(CWeaponBox, m_hPlayerItems, FIELD_EHANDLE, MAX_ITEM_TYPES),
 	DEFINE_FIELD(CWeaponBox, m_cAmmoTypes, FIELD_INTEGER),
 };
 
@@ -980,13 +992,13 @@ void CWeaponBox::Kill()
 	// destroy the weapons
 	for (i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		pWeapon = m_rgpPlayerItems[i];
+		pWeapon = m_hPlayerItems[i];
 
 		while (pWeapon)
 		{
 			pWeapon->SetThink(&CBasePlayerItem::SUB_Remove);
 			pWeapon->pev->nextthink = gpGlobals->time + 0.1;
-			pWeapon = pWeapon->m_pNext;
+			pWeapon = pWeapon->m_hNext;
 		}
 	}
 
@@ -1037,17 +1049,14 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 	// to deploy a better weapon that the player may pick up because he has no ammo for it.
 	for (i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		if (m_rgpPlayerItems[i])
+		if (CBasePlayerItem* pItem = m_hPlayerItems[i]; pItem)
 		{
-			CBasePlayerItem* pItem;
-
 			// have at least one weapon in this slot
-			while (m_rgpPlayerItems[i])
+			while (pItem)
 			{
 				//ALERT ( at_console, "trying to give %s\n", STRING( m_rgpPlayerItems[ i ]->pev->classname ) );
 
-				pItem = m_rgpPlayerItems[i];
-				m_rgpPlayerItems[i] = m_rgpPlayerItems[i]->m_pNext;// unlink this weapon from the box
+				pItem = m_hPlayerItems[i] = m_hPlayerItems[i]->m_hNext;// unlink this weapon from the box
 
 				if (pPlayer->AddPlayerItem(pItem))
 				{
@@ -1070,9 +1079,9 @@ bool CWeaponBox::PackWeapon(CBasePlayerItem* pWeapon)
 		return false;// box can only hold one of each weapon type
 	}
 
-	if (pWeapon->m_pPlayer)
+	if (auto player = pWeapon->m_hPlayer.Get(); player)
 	{
-		if (!pWeapon->m_pPlayer->RemovePlayerItem(pWeapon))
+		if (!player->RemovePlayerItem(pWeapon))
 		{
 			// failed to unhook the weapon from the player!
 			return false;
@@ -1081,17 +1090,17 @@ bool CWeaponBox::PackWeapon(CBasePlayerItem* pWeapon)
 
 	int iWeaponSlot = pWeapon->ItemSlot();
 
-	if (m_rgpPlayerItems[iWeaponSlot])
+	if (m_hPlayerItems[iWeaponSlot])
 	{
 		// there's already one weapon in this slot, so link this into the slot's column
-		pWeapon->m_pNext = m_rgpPlayerItems[iWeaponSlot];
-		m_rgpPlayerItems[iWeaponSlot] = pWeapon;
+		pWeapon->m_hNext = m_hPlayerItems[iWeaponSlot];
+		m_hPlayerItems[iWeaponSlot] = pWeapon;
 	}
 	else
 	{
 		// first weapon we have for this slot
-		m_rgpPlayerItems[iWeaponSlot] = pWeapon;
-		pWeapon->m_pNext = nullptr;
+		m_hPlayerItems[iWeaponSlot] = pWeapon;
+		pWeapon->m_hNext = nullptr;
 	}
 
 	pWeapon->pev->spawnflags |= SF_NORESPAWN;// never respawn
@@ -1103,7 +1112,7 @@ bool CWeaponBox::PackWeapon(CBasePlayerItem* pWeapon)
 	pWeapon->pev->owner = edict();
 	pWeapon->SetThink(nullptr);// crowbar may be trying to swing again, etc.
 	pWeapon->SetTouch(nullptr);
-	pWeapon->m_pPlayer = nullptr;
+	pWeapon->m_hPlayer = nullptr;
 
 	//ALERT ( at_console, "packed %s\n", STRING(pWeapon->pev->classname) );
 
@@ -1170,7 +1179,7 @@ int CWeaponBox::GiveAmmo(int iCount, const char* szName, int iMax, int* pIndex)
 
 bool CWeaponBox::HasWeapon(CBasePlayerItem* pCheckItem)
 {
-	CBasePlayerItem* pItem = m_rgpPlayerItems[pCheckItem->ItemSlot()];
+	CBasePlayerItem* pItem = m_hPlayerItems[pCheckItem->ItemSlot()];
 
 	while (pItem)
 	{
@@ -1178,7 +1187,7 @@ bool CWeaponBox::HasWeapon(CBasePlayerItem* pCheckItem)
 		{
 			return true;
 		}
-		pItem = pItem->m_pNext;
+		pItem = pItem->m_hNext;
 	}
 
 	return false;
@@ -1190,7 +1199,7 @@ bool CWeaponBox::IsEmpty()
 
 	for (i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		if (m_rgpPlayerItems[i])
+		if (m_hPlayerItems[i])
 		{
 			return false;
 		}
@@ -1240,7 +1249,7 @@ IMPLEMENT_SAVERESTORE(CRpg, CBasePlayerWeapon);
 TYPEDESCRIPTION	CRpgRocket::m_SaveData[] =
 {
 	DEFINE_FIELD(CRpgRocket, m_flIgniteTime, FIELD_TIME),
-	DEFINE_FIELD(CRpgRocket, m_pLauncher, FIELD_EHANDLE),
+	DEFINE_FIELD(CRpgRocket, m_hLauncher, FIELD_EHANDLE),
 };
 
 IMPLEMENT_SAVERESTORE(CRpgRocket, CGrenade);
@@ -1269,9 +1278,9 @@ IMPLEMENT_SAVERESTORE(CGauss, CBasePlayerWeapon);
 
 TYPEDESCRIPTION	CEgon::m_SaveData[] =
 {
-	//	DEFINE_FIELD( CEgon, m_pBeam, FIELD_CLASSPTR ),
-	//	DEFINE_FIELD( CEgon, m_pNoise, FIELD_CLASSPTR ),
-	//	DEFINE_FIELD( CEgon, m_pSprite, FIELD_CLASSPTR ),
+	//	DEFINE_FIELD( CEgon, m_hBeam, FIELD_EHANDLE ),
+	//	DEFINE_FIELD( CEgon, m_hNoise, FIELD_EHANDLE ),
+	//	DEFINE_FIELD( CEgon, m_hSprite, FIELD_EHANDLE ),
 		DEFINE_FIELD(CEgon, m_shootTime, FIELD_TIME),
 		DEFINE_FIELD(CEgon, m_fireState, FIELD_INTEGER),
 		DEFINE_FIELD(CEgon, m_fireMode, FIELD_INTEGER),

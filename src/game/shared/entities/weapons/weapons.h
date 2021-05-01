@@ -343,8 +343,8 @@ public:
 	static ItemInfo ItemInfoArray[MAX_WEAPONS];
 	static AmmoInfo AmmoInfoArray[MAX_AMMO_TYPES];
 
-	CBasePlayer* m_pPlayer;
-	CBasePlayerItem* m_pNext;
+	EHandle<CBasePlayer> m_hPlayer;
+	EHandle<CBasePlayerItem> m_hNext;
 	int		m_iId;												// WEAPON_???
 
 	/**
@@ -604,7 +604,7 @@ public:
 
 	bool PackAmmo(string_t iszName, int iCount);
 
-	CBasePlayerItem* m_rgpPlayerItems[MAX_ITEM_TYPES];// one slot for each 
+	EHandle<CBasePlayerItem> m_hPlayerItems[MAX_ITEM_TYPES];// one slot for each 
 
 	string_t m_rgiszAmmo[MAX_AMMO_TYPES];// ammo names
 	int	m_rgAmmo[MAX_AMMO_TYPES];// ammo quantities
@@ -1003,7 +1003,7 @@ public:
 
 	int m_iTrail;
 	float m_flIgniteTime;
-	EHANDLE m_pLauncher;// handle back to the launcher that fired me. 
+	EHandle<CRpg> m_hLauncher;// handle back to the launcher that fired me. 
 };
 
 constexpr int GAUSS_PRIMARY_CHARGE_VOLUME = 256;	// how loud gauss is while charging
@@ -1165,9 +1165,9 @@ public:
 
 	void UseAmmo(int count);
 
-	CBeam* m_pBeam;
-	CBeam* m_pNoise;
-	CSprite* m_pSprite;
+	EHandle<CBeam> m_hBeam;
+	EHandle<CBeam> m_hNoise;
+	EHandle<CSprite> m_hSprite;
 	int m_fireState;
 
 	bool UseDecrement() override

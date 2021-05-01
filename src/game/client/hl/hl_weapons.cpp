@@ -110,7 +110,7 @@ void HUD_PrepEntity(CBaseEntity* pEntity, CBasePlayer* pWeaponOwner)
 
 		memset(&info, 0, sizeof(info));
 
-		((CBasePlayerWeapon*)pEntity)->m_pPlayer = pWeaponOwner;
+		((CBasePlayerWeapon*)pEntity)->m_hPlayer = pWeaponOwner;
 
 		((CBasePlayerWeapon*)pEntity)->GetItemInfo(&info);
 
@@ -143,12 +143,12 @@ bool CBasePlayerWeapon::DefaultDeploy(const char* szViewModel, const char* szWea
 	if (!CanDeploy())
 		return false;
 
-	gEngfuncs.CL_LoadModel(szViewModel, reinterpret_cast<int*>(&m_pPlayer->pev->viewmodel));
+	gEngfuncs.CL_LoadModel(szViewModel, reinterpret_cast<int*>(&m_hPlayer->pev->viewmodel));
 
 	SendWeaponAnim(iAnim, body);
 
 	g_irunninggausspred = false;
-	m_pPlayer->m_flNextAttack = 0.5;
+	m_hPlayer->m_flNextAttack = 0.5;
 	m_flTimeWeaponIdle = 1.0;
 	return true;
 }
@@ -168,12 +168,12 @@ void CBasePlayerWeapon::Holster()
 {
 	m_fInReload = false; // cancel any reload in progress.
 	g_irunninggausspred = false;
-	m_pPlayer->pev->viewmodel = iStringNull;
+	m_hPlayer->pev->viewmodel = iStringNull;
 }
 
 void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 {
-	m_pPlayer->pev->weaponanim = iAnim;
+	m_hPlayer->pev->weaponanim = iAnim;
 
 	HUD_SendWeaponAnim(iAnim, body, false);
 }
@@ -213,6 +213,7 @@ Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDi
 
 void CBasePlayer::SelectItem(const char* pstr)
 {
+	//TODO: needs to be merged with server version
 	if (!pstr)
 		return;
 
@@ -222,34 +223,34 @@ void CBasePlayer::SelectItem(const char* pstr)
 		return;
 
 
-	if (pItem == m_pActiveItem)
+	if (pItem == m_hActiveItem)
 		return;
 
-	if (m_pActiveItem)
-		m_pActiveItem->Holster();
+	if (m_hActiveItem)
+		m_hActiveItem->Holster();
 
-	m_pLastItem = m_pActiveItem;
-	m_pActiveItem = pItem;
+	m_hLastItem = m_hActiveItem;
+	m_hActiveItem = pItem;
 
-	if (m_pActiveItem)
+	if (m_hActiveItem)
 	{
-		m_pActiveItem->Deploy();
+		m_hActiveItem->Deploy();
 	}
 }
 
 void CBasePlayer::Killed(const KilledInfo& info)
 {
 	// Holster weapon immediately, to allow it to cleanup
-	if (m_pActiveItem)
-		m_pActiveItem->Holster();
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
+		activeItem->Holster();
 
 	g_irunninggausspred = false;
 }
 
 void CBasePlayer::Spawn()
 {
-	if (m_pActiveItem)
-		m_pActiveItem->Deploy();
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
+		activeItem->Deploy();
 
 	g_irunninggausspred = false;
 }
@@ -582,13 +583,13 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 	// Point to current weapon object
 	if (from->client.m_iId)
 	{
-		player.m_pActiveItem = g_pWpns[from->client.m_iId];
+		player.m_hActiveItem = g_pWpns[from->client.m_iId];
 	}
 
-	if (player.m_pActiveItem->m_iId == WEAPON_RPG)
+	if (player.m_hActiveItem->m_iId == WEAPON_RPG)
 	{
-		((CRpg*)player.m_pActiveItem)->m_fSpotActive = ((int)from->client.vuser2[1]) != 0;
-		((CRpg*)player.m_pActiveItem)->m_cActiveRockets = (int)from->client.vuser2[2];
+		((CRpg*)player.m_hActiveItem.Get())->m_fSpotActive = ((int)from->client.vuser2[1]) != 0;
+		((CRpg*)player.m_hActiveItem.Get())->m_cActiveRockets = (int)from->client.vuser2[2];
 	}
 
 	// Don't go firing anything if we have died or are spectating
@@ -615,16 +616,16 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 			if (pNew && (pNew != pWeapon))
 			{
 				// Put away old weapon
-				if (player.m_pActiveItem)
-					player.m_pActiveItem->Holster();
+				if (auto activeItem = player.m_hActiveItem.Get(); activeItem)
+					activeItem->Holster();
 
-				player.m_pLastItem = player.m_pActiveItem;
-				player.m_pActiveItem = pNew;
+				player.m_hLastItem = player.m_hActiveItem;
+				player.m_hActiveItem = pNew;
 
 				// Deploy new weapon
-				if (player.m_pActiveItem)
+				if (auto activeItem = player.m_hActiveItem.Get(); activeItem)
 				{
-					player.m_pActiveItem->Deploy();
+					activeItem->Deploy();
 				}
 
 				// Update weapon id so we can predict things correctly.
@@ -651,10 +652,10 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 	to->client.vuser2[0] = player.GetAmmoCount("Hornets");
 	to->client.ammo_rockets = player.GetAmmoCount("rockets");
 
-	if (player.m_pActiveItem->m_iId == WEAPON_RPG)
+	if (player.m_hActiveItem->m_iId == WEAPON_RPG)
 	{
-		from->client.vuser2[1] = ((CRpg*)player.m_pActiveItem)->m_fSpotActive;
-		from->client.vuser2[2] = ((CRpg*)player.m_pActiveItem)->m_cActiveRockets;
+		from->client.vuser2[1] = ((CRpg*)player.m_hActiveItem.Get())->m_fSpotActive;
+		from->client.vuser2[2] = ((CRpg*)player.m_hActiveItem.Get())->m_cActiveRockets;
 	}
 
 	// Make sure that weapon animation matches what the game .dll is telling us

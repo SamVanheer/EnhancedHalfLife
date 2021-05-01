@@ -71,9 +71,9 @@ public:
 
 	float		m_length;
 	string_t	m_altName;
-	CPathTrack* m_pnext;
-	CPathTrack* m_pprevious;
-	CPathTrack* m_paltpath;
+	EHandle<CPathTrack> m_hNext;
+	EHandle<CPathTrack> m_hPrevious;
+	EHandle<CPathTrack> m_hAltPath;
 };
 
 class CFuncTrackTrain : public CBaseEntity
@@ -93,7 +93,7 @@ public:
 
 	void		NextThink(float thinkTime, bool alwaysThink);
 
-	void SetTrack(CPathTrack* track) { m_ppath = track->Nearest(pev->origin); }
+	void SetTrack(CPathTrack* track) { m_hPath = track->Nearest(pev->origin); }
 	void SetControls(entvars_t* pevControls);
 	bool OnControls(entvars_t* pev) override;
 
@@ -116,7 +116,7 @@ public:
 
 	void	OverrideReset() override;
 
-	CPathTrack* m_ppath;
+	EHandle<CPathTrack> m_hPath;
 	float		m_length;
 	float		m_height;
 	float		m_speed;

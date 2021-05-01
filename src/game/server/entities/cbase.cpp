@@ -111,7 +111,7 @@ CBaseEntity* CBaseEntity::GetNextTarget()
 // Global Savedata for Delay
 TYPEDESCRIPTION	CBaseEntity::m_SaveData[] =
 {
-	DEFINE_FIELD(CBaseEntity, m_pGoalEnt, FIELD_CLASSPTR),
+	DEFINE_FIELD(CBaseEntity, m_hGoalEnt, FIELD_EHANDLE),
 
 	DEFINE_FIELD(CBaseEntity, m_pfnThink, FIELD_FUNCTION),		// UNDONE: Build table of these!!!
 	DEFINE_FIELD(CBaseEntity, m_pfnTouch, FIELD_FUNCTION),

@@ -85,9 +85,9 @@ TYPEDESCRIPTION	CBasePlayer::m_playerSaveData[] =
 	DEFINE_ARRAY(CBasePlayer, m_rgflSuitNoRepeatTime, FIELD_TIME, CSUITNOREPEAT),
 	DEFINE_FIELD(CBasePlayer, m_lastDamageAmount, FIELD_INTEGER),
 
-	DEFINE_ARRAY(CBasePlayer, m_rgpPlayerItems, FIELD_CLASSPTR, MAX_ITEM_TYPES),
-	DEFINE_FIELD(CBasePlayer, m_pActiveItem, FIELD_CLASSPTR),
-	DEFINE_FIELD(CBasePlayer, m_pLastItem, FIELD_CLASSPTR),
+	DEFINE_ARRAY(CBasePlayer, m_hPlayerItems, FIELD_EHANDLE, MAX_ITEM_TYPES),
+	DEFINE_FIELD(CBasePlayer, m_hActiveItem, FIELD_EHANDLE),
+	DEFINE_FIELD(CBasePlayer, m_hLastItem, FIELD_EHANDLE),
 
 	DEFINE_ARRAY(CBasePlayer, m_rgAmmo, FIELD_INTEGER, MAX_AMMO_TYPES),
 	DEFINE_FIELD(CBasePlayer, m_idrowndmg, FIELD_INTEGER),
@@ -507,17 +507,15 @@ void CBasePlayer::PackDeadPlayerItems()
 	// go through all of the weapons and make a list of the ones to pack
 	for (int i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		if (m_rgpPlayerItems[i])
+		if (CBasePlayerItem * pPlayerItem = m_hPlayerItems[i]; pPlayerItem)
 		{
 			// there's a weapon here. Should I pack it?
-			CBasePlayerItem* pPlayerItem = m_rgpPlayerItems[i];
-
 			while (pPlayerItem)
 			{
 				switch (iWeaponRules)
 				{
 				case GR_PLR_DROP_GUN_ACTIVE:
-					if (m_pActiveItem && pPlayerItem == m_pActiveItem)
+					if (pPlayerItem == m_hActiveItem)
 					{
 						// this is the active item. Pack it.
 						rgpPackWeapons[iPW++] = (CBasePlayerWeapon*)pPlayerItem;
@@ -532,7 +530,7 @@ void CBasePlayer::PackDeadPlayerItems()
 					break;
 				}
 
-				pPlayerItem = pPlayerItem->m_pNext;
+				pPlayerItem = pPlayerItem->m_hNext;
 			}
 		}
 	}
@@ -552,12 +550,12 @@ void CBasePlayer::PackDeadPlayerItems()
 					break;
 
 				case GR_PLR_DROP_AMMO_ACTIVE:
-					if (m_pActiveItem && i == m_pActiveItem->PrimaryAmmoIndex())
+					if (auto activeItem = m_hActiveItem.Get(); activeItem && i == activeItem->PrimaryAmmoIndex())
 					{
 						// this is the primary ammo type for the active weapon
 						iPackAmmo[iPA++] = i;
 					}
-					else if (m_pActiveItem && i == m_pActiveItem->SecondaryAmmoIndex())
+					else if (auto activeItem = m_hActiveItem.Get(); activeItem && i == activeItem->SecondaryAmmoIndex())
 					{
 						// this is the secondary ammo type for the active weapon
 						iPackAmmo[iPA++] = i;
@@ -607,14 +605,14 @@ void CBasePlayer::PackDeadPlayerItems()
 
 void CBasePlayer::RemoveAllItems(bool removeSuit)
 {
-	if (m_pActiveItem)
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
 	{
 		ResetAutoaim();
-		m_pActiveItem->Holster();
-		m_pActiveItem = nullptr;
+		activeItem->Holster();
+		m_hActiveItem = nullptr;
 	}
 
-	m_pLastItem = nullptr;
+	m_hLastItem = nullptr;
 
 	if (m_pTank != nullptr)
 	{
@@ -624,16 +622,16 @@ void CBasePlayer::RemoveAllItems(bool removeSuit)
 
 	for (int i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		m_pActiveItem = m_rgpPlayerItems[i];
-		while (m_pActiveItem)
+		CBasePlayerItem* activeItem = m_hActiveItem = m_hPlayerItems[i];
+		while (activeItem)
 		{
-			auto pPendingItem = m_pActiveItem->m_pNext;
-			m_pActiveItem->Drop();
-			m_pActiveItem = pPendingItem;
+			auto pPendingItem = activeItem->m_hNext;
+			activeItem->Drop();
+			activeItem = m_hActiveItem = pPendingItem;
 		}
-		m_rgpPlayerItems[i] = nullptr;
+		m_hPlayerItems[i] = nullptr;
 	}
-	m_pActiveItem = nullptr;
+	m_hActiveItem = nullptr;
 
 	pev->viewmodel = iStringNull;
 	pev->weaponmodel = iStringNull;
@@ -658,8 +656,8 @@ entvars_t* g_pevLastInflictor;
 void CBasePlayer::Killed(const KilledInfo& info)
 {
 	// Holster weapon immediately, to allow it to cleanup
-	if (m_pActiveItem)
-		m_pActiveItem->Holster();
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
+		activeItem->Holster();
 
 	g_pGameRules->PlayerKilled(this, info.GetAttacker(), g_pevLastInflictor);
 
@@ -1159,8 +1157,8 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 	MESSAGE_END();
 
 	// Holster weapon immediately, to allow it to cleanup
-	if (m_pActiveItem)
-		m_pActiveItem->Holster();
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
+		activeItem->Holster();
 
 	if (m_pTank != nullptr)
 	{
@@ -2177,10 +2175,8 @@ void CBasePlayer::PostThink()
 // go through all of the weapons and make a list of the ones to pack
 	for (int i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		if (m_rgpPlayerItems[i])
+		if (auto pPlayerItem = m_hPlayerItems[i].Get(); pPlayerItem)
 		{
-			CBasePlayerItem* pPlayerItem = m_rgpPlayerItems[i];
-
 			while (pPlayerItem)
 			{
 				CBasePlayerWeapon* gun;
@@ -2211,7 +2207,7 @@ void CBasePlayer::PostThink()
 					gun->DecrementTimers();
 				}
 
-				pPlayerItem = pPlayerItem->m_pNext;
+				pPlayerItem = pPlayerItem->m_hNext;
 			}
 		}
 	}
@@ -2296,11 +2292,11 @@ void CBasePlayer::Spawn()
 
 	m_fNoPlayerSound = false;// normal sound behavior.
 
-	m_pLastItem = nullptr;
+	m_hLastItem = nullptr;
 	m_fInitHUD = true;
 	m_iClientHideHUD = -1;  // force this to be recalculated
 	m_fWeapon = false;
-	m_pClientActiveItem = nullptr;
+	m_hClientActiveItem = nullptr;
 	m_iClientBattery = -1;
 
 	// reset all ammo values to 0
@@ -2434,15 +2430,15 @@ bool CBasePlayer::Restore(CRestore& restore)
 void CBasePlayer::SelectNextItem(int iItem)
 {
 	//TODO: this function is never used (index based switching is pretty useless)
-	CBasePlayerItem* pItem = m_rgpPlayerItems[iItem];
+	CBasePlayerItem* pItem = m_hPlayerItems[iItem];
 
 	if (!pItem)
 		return;
 
-	if (pItem == m_pActiveItem)
+	if (pItem == m_hActiveItem)
 	{
 		// select the next one in the chain
-		pItem = m_pActiveItem->m_pNext;
+		pItem = pItem->m_hNext;
 		if (!pItem)
 		{
 			return;
@@ -2450,29 +2446,29 @@ void CBasePlayer::SelectNextItem(int iItem)
 
 		CBasePlayerItem* pLast;
 		pLast = pItem;
-		while (pLast->m_pNext)
-			pLast = pLast->m_pNext;
+		while (pLast->m_hNext)
+			pLast = pLast->m_hNext;
 
 		// relink chain
-		pLast->m_pNext = m_pActiveItem;
-		m_pActiveItem->m_pNext = nullptr;
-		m_rgpPlayerItems[iItem] = pItem;
+		pLast->m_hNext = m_hActiveItem;
+		m_hActiveItem->m_hNext = nullptr;
+		m_hPlayerItems[iItem] = pItem;
 	}
 
 	ResetAutoaim();
 
 	// FIX, this needs to queue them up and delay
-	if (m_pActiveItem)
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
 	{
-		m_pActiveItem->Holster();
+		activeItem->Holster();
 	}
 
-	m_pActiveItem = pItem;
+	m_hActiveItem = pItem;
 
-	if (m_pActiveItem)
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
 	{
-		m_pActiveItem->Deploy();
-		m_pActiveItem->UpdateItemInfo();
+		activeItem->Deploy();
+		activeItem->UpdateItemInfo();
 	}
 }
 
@@ -2485,16 +2481,13 @@ void CBasePlayer::SelectItem(const char* pstr)
 
 	for (int i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		if (m_rgpPlayerItems[i])
-		{
-			pItem = m_rgpPlayerItems[i];
+		pItem = m_hPlayerItems[i];
 
-			while (pItem)
-			{
-				if (ClassnameIs(pItem->pev, pstr))
-					break;
-				pItem = pItem->m_pNext;
-			}
+		while (pItem)
+		{
+			if (ClassnameIs(pItem->pev, pstr))
+				break;
+			pItem = pItem->m_hNext;
 		}
 
 		if (pItem)
@@ -2505,22 +2498,22 @@ void CBasePlayer::SelectItem(const char* pstr)
 		return;
 
 
-	if (pItem == m_pActiveItem)
+	if (pItem == m_hActiveItem)
 		return;
 
 	ResetAutoaim();
 
 	// FIX, this needs to queue them up and delay
-	if (m_pActiveItem)
-		m_pActiveItem->Holster();
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
+		activeItem->Holster();
 
-	m_pLastItem = m_pActiveItem;
-	m_pActiveItem = pItem;
+	m_hLastItem = m_hActiveItem;
+	m_hActiveItem = pItem;
 
-	if (m_pActiveItem)
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
 	{
-		m_pActiveItem->Deploy();
-		m_pActiveItem->UpdateItemInfo();
+		activeItem->Deploy();
+		activeItem->UpdateItemInfo();
 	}
 }
 
@@ -2528,7 +2521,7 @@ bool CBasePlayer::HasWeapons()
 {
 	for (int i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		if (m_rgpPlayerItems[i])
+		if (m_hPlayerItems[i])
 		{
 			return true;
 		}
@@ -2963,7 +2956,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 
 bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 {
-	CBasePlayerItem* pInsert= m_rgpPlayerItems[pItem->ItemSlot()];
+	CBasePlayerItem* pInsert = m_hPlayerItems[pItem->ItemSlot()];
 
 	while (pInsert)
 	{
@@ -2976,8 +2969,8 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 
 				// ugly hack to update clip w/o an update clip message
 				pInsert->UpdateItemInfo();
-				if (m_pActiveItem)
-					m_pActiveItem->UpdateItemInfo();
+				if (auto activeItem = m_hActiveItem.Get(); activeItem)
+					activeItem->UpdateItemInfo();
 
 				pItem->Kill();
 			}
@@ -2988,7 +2981,7 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 			}
 			return false;
 		}
-		pInsert = pInsert->m_pNext;
+		pInsert = pInsert->m_hNext;
 	}
 
 	if (pItem->AddToPlayer(this))
@@ -2996,8 +2989,8 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 		g_pGameRules->PlayerGotWeapon(this, pItem);
 		pItem->CheckRespawn();
 
-		pItem->m_pNext = m_rgpPlayerItems[pItem->ItemSlot()];
-		m_rgpPlayerItems[pItem->ItemSlot()] = pItem;
+		pItem->m_hNext = m_hPlayerItems[pItem->ItemSlot()];
+		m_hPlayerItems[pItem->ItemSlot()] = pItem;
 
 		// should we switch to this item?
 		if (g_pGameRules->ShouldSwitchWeapon(this, pItem))
@@ -3018,36 +3011,36 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 
 bool CBasePlayer::RemovePlayerItem(CBasePlayerItem* pItem)
 {
-	if (m_pActiveItem == pItem)
+	if (m_hActiveItem == pItem)
 	{
 		ResetAutoaim();
 		pItem->Holster();
 		pItem->pev->nextthink = 0;// crowbar may be trying to swing again, etc.
 		pItem->SetThink(nullptr);
-		m_pActiveItem = nullptr;
+		m_hActiveItem = nullptr;
 		pev->viewmodel = iStringNull;
 		pev->weaponmodel = iStringNull;
 	}
 
-	if (m_pLastItem == pItem)
-		m_pLastItem = nullptr;
+	if (m_hLastItem == pItem)
+		m_hLastItem = nullptr;
 
-	CBasePlayerItem* pPrev = m_rgpPlayerItems[pItem->ItemSlot()];
+	CBasePlayerItem* pPrev = m_hPlayerItems[pItem->ItemSlot()];
 
 	if (pPrev == pItem)
 	{
-		m_rgpPlayerItems[pItem->ItemSlot()] = pItem->m_pNext;
+		m_hPlayerItems[pItem->ItemSlot()] = pItem->m_hNext;
 		return true;
 	}
 	else
 	{
-		while (pPrev && pPrev->m_pNext != pItem)
+		while (pPrev && pPrev->m_hNext != pItem)
 		{
-			pPrev = pPrev->m_pNext;
+			pPrev = pPrev->m_hNext;
 		}
 		if (pPrev)
 		{
-			pPrev->m_pNext = pItem->m_pNext;
+			pPrev->m_hNext = pItem->m_hNext;
 			return true;
 		}
 	}
@@ -3103,10 +3096,10 @@ void CBasePlayer::ItemPreFrame()
 		return;
 	}
 
-	if (!m_pActiveItem)
-		return;
-
-	m_pActiveItem->ItemPreFrame();
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
+	{
+		activeItem->ItemPreFrame();
+	}
 }
 
 void CBasePlayer::ItemPostFrame()
@@ -3126,10 +3119,10 @@ void CBasePlayer::ItemPostFrame()
 
 	ImpulseCommands();
 
-	if (!m_pActiveItem)
-		return;
-
-	m_pActiveItem->ItemPostFrame();
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
+	{
+		activeItem->ItemPostFrame();
+	}
 }
 
 int CBasePlayer::AmmoInventory(int iAmmoIndex)
@@ -3410,13 +3403,13 @@ void CBasePlayer::UpdateClientData()
 	// Update all the items
 	for (int i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		if (m_rgpPlayerItems[i])  // each item updates it's successors
-			m_rgpPlayerItems[i]->UpdateClientData(this);
+		if (auto item = m_hPlayerItems[i].Get(); item)  // each item updates it's successors
+			item->UpdateClientData(this);
 	}
 
 	//Active item is becoming null, or we're sending all HUD state to client
 	//Only if we're not in Observer mode, which uses the target player's weapon
-	if (pev->iuser1 == OBS_NONE && !m_pActiveItem && ((m_pClientActiveItem != m_pActiveItem) || fullHUDInitRequired))
+	if (pev->iuser1 == OBS_NONE && !m_hActiveItem && ((m_hClientActiveItem != m_hActiveItem) || fullHUDInitRequired))
 	{
 		//Tell ammo hud that we have no weapon selected
 		MESSAGE_BEGIN(MessageDest::One, gmsgCurWeapon, nullptr, pev);
@@ -3427,7 +3420,7 @@ void CBasePlayer::UpdateClientData()
 	}
 
 	// Cache and client weapon change
-	m_pClientActiveItem = m_pActiveItem;
+	m_hClientActiveItem = m_hActiveItem;
 	m_iClientFOV = m_iFOV;
 
 	// Update Status Bar
@@ -3502,7 +3495,7 @@ Vector CBasePlayer::GetAutoaimVector(float flDelta)
 		m_fOnTarget = false;
 	else if (m_fOldTargeting != m_fOnTarget)
 	{
-		m_pActiveItem->UpdateItemInfo();
+		m_hActiveItem->UpdateItemInfo();
 	}
 
 	if (angles.x > 180)
@@ -3716,7 +3709,7 @@ void CBasePlayer::DropPlayerItem(const char* pszItemName)
 
 	for (int i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		auto pWeapon = m_rgpPlayerItems[i];
+		auto pWeapon = m_hPlayerItems[i].Get();
 
 		while (pWeapon)
 		{
@@ -3732,14 +3725,14 @@ void CBasePlayer::DropPlayerItem(const char* pszItemName)
 			else
 			{
 				// trying to drop active item
-				if (pWeapon == m_pActiveItem)
+				if (pWeapon == m_hActiveItem)
 				{
 					// active item!
 					break;
 				}
 			}
 
-			pWeapon = pWeapon->m_pNext;
+			pWeapon = pWeapon->m_hNext;
 		}
 
 
@@ -3791,7 +3784,7 @@ void CBasePlayer::DropPlayerItem(const char* pszItemName)
 
 bool CBasePlayer::HasPlayerItem(CBasePlayerItem* pCheckItem)
 {
-	for (CBasePlayerItem* pItem = m_rgpPlayerItems[pCheckItem->ItemSlot()]; pItem; pItem = pItem->m_pNext)
+	for (CBasePlayerItem* pItem = m_hPlayerItems[pCheckItem->ItemSlot()]; pItem; pItem = pItem->m_hNext)
 	{
 		if (ClassnameIs(pItem->pev, STRING(pCheckItem->pev->classname)))
 		{
@@ -3806,7 +3799,7 @@ bool CBasePlayer::HasNamedPlayerItem(const char* pszItemName)
 {
 	for (int i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		for (CBasePlayerItem* pItem = m_rgpPlayerItems[i]; pItem; pItem = pItem->m_pNext)
+		for (CBasePlayerItem* pItem = m_hPlayerItems[i]; pItem; pItem = pItem->m_hNext)
 		{
 			if (!strcmp(pszItemName, STRING(pItem->pev->classname)))
 			{
@@ -3827,12 +3820,12 @@ bool CBasePlayer::SwitchWeapon(CBasePlayerItem* pWeapon)
 
 	ResetAutoaim();
 
-	if (m_pActiveItem)
+	if (auto activeItem = m_hActiveItem.Get(); activeItem)
 	{
-		m_pActiveItem->Holster();
+		activeItem->Holster();
 	}
 
-	m_pActiveItem = pWeapon;
+	m_hActiveItem = pWeapon;
 
 	if (pWeapon)
 	{

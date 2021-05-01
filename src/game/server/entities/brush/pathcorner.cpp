@@ -71,7 +71,7 @@ void CPathCorner::Touch(CBaseEntity* pOther)
 	}
 
 	// If OTHER isn't explicitly looking for this path_corner, bail out
-	if (pOther->m_pGoalEnt != this)
+	if (pOther->m_hGoalEnt != this)
 	{
 		return;
 	}
@@ -94,26 +94,26 @@ void CPathCorner::Touch(CBaseEntity* pOther)
 		ALERT(at_warning, "PathCornerTouch: no next stop specified");
 	}
 
-	pOther->m_pGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+	pOther->m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
 
 	// If "next spot" was not found (does not exist - level design error)
-	if (!pOther->m_pGoalEnt)
+	if (!pOther->m_hGoalEnt)
 	{
 		ALERT(at_console, "PathCornerTouch--%s couldn't find next stop in path: %s", STRING(pev->classname), STRING(pev->target));
 		return;
 	}
 
 	// Turn towards the next stop in the path.
-	pevToucher->ideal_yaw = UTIL_VecToYaw(pOther->m_pGoalEnt->pev->origin - pevToucher->origin);
+	pevToucher->ideal_yaw = UTIL_VecToYaw(pOther->m_hGoalEnt->pev->origin - pevToucher->origin);
 }
 #endif
 
 TYPEDESCRIPTION	CPathTrack::m_SaveData[] =
 {
 	DEFINE_FIELD(CPathTrack, m_length, FIELD_FLOAT),
-	DEFINE_FIELD(CPathTrack, m_pnext, FIELD_CLASSPTR),
-	DEFINE_FIELD(CPathTrack, m_paltpath, FIELD_CLASSPTR),
-	DEFINE_FIELD(CPathTrack, m_pprevious, FIELD_CLASSPTR),
+	DEFINE_FIELD(CPathTrack, m_hNext, FIELD_EHANDLE),
+	DEFINE_FIELD(CPathTrack, m_hAltPath, FIELD_EHANDLE),
+	DEFINE_FIELD(CPathTrack, m_hPrevious, FIELD_EHANDLE),
 	DEFINE_FIELD(CPathTrack, m_altName, FIELD_STRING),
 };
 
@@ -134,7 +134,7 @@ void CPathTrack::KeyValue(KeyValueData* pkvd)
 void CPathTrack::Use(const UseInfo& info)
 {
 	// Use toggles between two paths
-	if (m_paltpath)
+	if (m_hAltPath)
 	{
 		const bool on = !IsBitSet(pev->spawnflags, SF_PATH_ALTERNATE);
 		if (ShouldToggle(info.GetUseType(), on))
@@ -165,11 +165,11 @@ void CPathTrack::Link()
 		CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
 		if (!IsNullEnt(pTarget))
 		{
-			m_pnext = CPathTrack::Instance(pTarget);
+			m_hNext = CPathTrack::Instance(pTarget);
 
-			if (m_pnext)		// If no next pointer, this is the end of a path
+			if (m_hNext)		// If no next pointer, this is the end of a path
 			{
-				m_pnext->SetPrevious(this);
+				m_hNext->SetPrevious(this);
 			}
 		}
 		else
@@ -182,11 +182,11 @@ void CPathTrack::Link()
 		CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(m_altName));
 		if (!IsNullEnt(pTarget))
 		{
-			m_paltpath = CPathTrack::Instance(pTarget);
+			auto path = m_hAltPath = CPathTrack::Instance(pTarget);
 
-			if (m_paltpath)		// If no next pointer, this is the end of a path
+			if (path) // If no next pointer, this is the end of a path
 			{
-				m_paltpath->SetPrevious(this);
+				path->SetPrevious(this);
 			}
 		}
 	}
@@ -197,8 +197,8 @@ void CPathTrack::Spawn()
 	pev->solid = Solid::Trigger;
 	UTIL_SetSize(pev, Vector(-8, -8, -8), Vector(8, 8, 8));
 
-	m_pnext = nullptr;
-	m_pprevious = nullptr;
+	m_hNext = nullptr;
+	m_hPrevious = nullptr;
 	// DEBUGGING CODE
 #if PATH_SPARKLE_DEBUG
 	SetThink(Sparkle);
@@ -234,25 +234,25 @@ void CPathTrack::Project(CPathTrack* pstart, CPathTrack* pend, Vector* origin, f
 
 CPathTrack* CPathTrack::GetNext()
 {
-	if (m_paltpath && IsBitSet(pev->spawnflags, SF_PATH_ALTERNATE) && !IsBitSet(pev->spawnflags, SF_PATH_ALTREVERSE))
-		return m_paltpath;
+	if (auto path = m_hAltPath; path && IsBitSet(pev->spawnflags, SF_PATH_ALTERNATE) && !IsBitSet(pev->spawnflags, SF_PATH_ALTREVERSE))
+		return path;
 
-	return m_pnext;
+	return m_hNext;
 }
 
 CPathTrack* CPathTrack::GetPrevious()
 {
-	if (m_paltpath && IsBitSet(pev->spawnflags, SF_PATH_ALTERNATE) && IsBitSet(pev->spawnflags, SF_PATH_ALTREVERSE))
-		return m_paltpath;
+	if (auto path = m_hAltPath; path && IsBitSet(pev->spawnflags, SF_PATH_ALTERNATE) && IsBitSet(pev->spawnflags, SF_PATH_ALTREVERSE))
+		return path;
 
-	return m_pprevious;
+	return m_hPrevious;
 }
 
 void CPathTrack::SetPrevious(CPathTrack* pprev)
 {
 	// Only set previous if this isn't my alternate path
 	if (pprev && !AreStringsEqual(STRING(pprev->pev->targetname), STRING(m_altName)))
-		m_pprevious = pprev;
+		m_hPrevious = pprev;
 }
 
 // Assumes this is ALWAYS enabled

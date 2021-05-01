@@ -883,7 +883,7 @@ void CFuncTrain::OverrideReset()
 
 TYPEDESCRIPTION	CFuncTrackTrain::m_SaveData[] =
 {
-	DEFINE_FIELD(CFuncTrackTrain, m_ppath, FIELD_CLASSPTR),
+	DEFINE_FIELD(CFuncTrackTrain, m_hPath, FIELD_EHANDLE),
 	DEFINE_FIELD(CFuncTrackTrain, m_length, FIELD_FLOAT),
 	DEFINE_FIELD(CFuncTrackTrain, m_height, FIELD_FLOAT),
 	DEFINE_FIELD(CFuncTrackTrain, m_speed, FIELD_FLOAT),
@@ -1082,12 +1082,12 @@ void CFuncTrackTrain::Next()
 	}
 
 	/*
-	if (!m_ppath)
+	if (!m_hPath)
 	{
-		m_ppath = CPathTrack::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(pev->target)));
+		m_hPath = CPathTrack::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(pev->target)));
 	}
 	*/
-	if (!m_ppath)
+	if (!m_hPath)
 	{
 		ALERT(at_aiconsole, "TRAIN(%s): Lost path\n", STRING(pev->targetname));
 		StopSound();
@@ -1099,7 +1099,7 @@ void CFuncTrackTrain::Next()
 	Vector nextPos = pev->origin;
 
 	nextPos.z -= m_height;
-	CPathTrack* pnext = m_ppath->LookAhead(&nextPos, pev->speed * 0.1, 1);
+	CPathTrack* pnext = m_hPath->LookAhead(&nextPos, pev->speed * 0.1, 1);
 	nextPos.z += m_height;
 
 	pev->velocity = (nextPos - pev->origin) * 10;
@@ -1107,9 +1107,9 @@ void CFuncTrackTrain::Next()
 
 	nextFront.z -= m_height;
 	if (m_length > 0)
-		m_ppath->LookAhead(&nextFront, m_length, 0);
+		m_hPath->LookAhead(&nextFront, m_length, 0);
 	else
-		m_ppath->LookAhead(&nextFront, 100, 0);
+		m_hPath->LookAhead(&nextFront, 100, 0);
 	nextFront.z += m_height;
 
 	const Vector delta = nextFront - pev->origin;
@@ -1146,15 +1146,15 @@ void CFuncTrackTrain::Next()
 
 	if (pnext)
 	{
-		if (pnext != m_ppath)
+		if (pnext != m_hPath)
 		{
 			CPathTrack* pFire;
 			if (pev->speed >= 0)
 				pFire = pnext;
 			else
-				pFire = m_ppath;
+				pFire = m_hPath;
 
-			m_ppath = pnext;
+			m_hPath = pnext;
 			// Fire the pass target if there is one
 			if (!IsStringNull(pFire->pev->message))
 			{
@@ -1211,7 +1211,7 @@ void CFuncTrackTrain::Next()
 void CFuncTrackTrain::DeadEnd()
 {
 	// Fire the dead-end target if there is one
-	CPathTrack* pTrack = m_ppath;
+	CPathTrack* pTrack = m_hPath;
 
 	ALERT(at_aiconsole, "TRAIN(%s): Dead end ", STRING(pev->targetname));
 	// Find the dead end path node
@@ -1288,15 +1288,15 @@ bool CFuncTrackTrain::OnControls(entvars_t* pevTest)
 
 void CFuncTrackTrain::Find()
 {
-	m_ppath = CPathTrack::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(pev->target)));
-	if (!m_ppath)
+	auto path = m_hPath = CPathTrack::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(pev->target)));
+	if (!path)
 		return;
 
-	entvars_t* pevTarget = m_ppath->pev;
+	entvars_t* pevTarget = path->pev;
 	if (!ClassnameIs(pevTarget, "path_track"))
 	{
 		ALERT(at_error, "func_track_train must be on a path of path_track\n");
-		m_ppath = nullptr;
+		m_hPath = nullptr;
 		return;
 	}
 
@@ -1305,7 +1305,7 @@ void CFuncTrackTrain::Find()
 
 	Vector look = nextPos;
 	look.z -= m_height;
-	m_ppath->LookAhead(&look, m_length, 0);
+	path->LookAhead(&look, m_length, 0);
 	look.z += m_height;
 
 	pev->angles = VectorAngles(look - nextPos);
@@ -1358,7 +1358,7 @@ void CFuncTrackTrain::NearestPath()
 			pNearest = pTrack;
 	}
 
-	m_ppath = (CPathTrack*)pNearest;
+	m_hPath = (CPathTrack*)pNearest;
 
 	if (pev->speed != 0)
 	{
@@ -1548,10 +1548,10 @@ public:
 	void	OverrideReset() override;
 
 
-	CPathTrack* m_trackTop;
-	CPathTrack* m_trackBottom;
+	EHandle<CPathTrack> m_hTrackTop;
+	EHandle<CPathTrack> m_hTrackBottom;
 
-	CFuncTrackTrain* m_train;
+	EHandle<CFuncTrackTrain> m_hTrain;
 
 	string_t m_trackTopName;
 	string_t m_trackBottomName;
@@ -1565,9 +1565,9 @@ LINK_ENTITY_TO_CLASS(func_trackchange, CFuncTrackChange);
 
 TYPEDESCRIPTION	CFuncTrackChange::m_SaveData[] =
 {
-	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_trackTop, FIELD_CLASSPTR),
-	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_trackBottom, FIELD_CLASSPTR),
-	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_train, FIELD_CLASSPTR),
+	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_hTrackTop, FIELD_EHANDLE),
+	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_hTrackBottom, FIELD_EHANDLE),
+	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_hTrain, FIELD_EHANDLE),
 	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_trackTopName, FIELD_STRING),
 	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_trackBottomName, FIELD_STRING),
 	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_trainName, FIELD_STRING),
@@ -1659,24 +1659,24 @@ void CFuncTrackChange::Find()
 	CBaseEntity* target = UTIL_FindEntityByTargetname(nullptr, STRING(m_trackTopName));
 	if (!IsNullEnt(target))
 	{
-		m_trackTop = CPathTrack::Instance(target);
+		m_hTrackTop = CPathTrack::Instance(target);
 		target = UTIL_FindEntityByTargetname(nullptr, STRING(m_trackBottomName));
 		if (!IsNullEnt(target))
 		{
-			m_trackBottom = CPathTrack::Instance(target);
+			m_hTrackBottom = CPathTrack::Instance(target);
 			target = UTIL_FindEntityByTargetname(nullptr, STRING(m_trainName));
 			if (!IsNullEnt(target))
 			{
 				//TODO: redundant lookup
-				m_train = CFuncTrackTrain::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(m_trainName)));
-				if (!m_train)
+				m_hTrain = CFuncTrackTrain::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(m_trainName)));
+				if (!m_hTrain)
 				{
 					ALERT(at_error, "Can't find train for track change! %s\n", STRING(m_trainName));
 					return;
 				}
 				const Vector center = (pev->absmin + pev->absmax) * 0.5;
-				m_trackBottom = m_trackBottom->Nearest(center);
-				m_trackTop = m_trackTop->Nearest(center);
+				m_hTrackBottom = m_hTrackBottom->Nearest(center);
+				m_hTrackTop = m_hTrackTop->Nearest(center);
 				UpdateAutoTargets(m_toggle_state);
 				SetThink(nullptr);
 				return;
@@ -1696,21 +1696,23 @@ void CFuncTrackChange::Find()
 
 TrainCode CFuncTrackChange::EvaluateTrain(CPathTrack* pcurrent)
 {
+	auto train = m_hTrain.Get();
+
 	// Go ahead and work, we don't have anything to switch, so just be an elevator
-	if (!pcurrent || !m_train)
+	if (!pcurrent || !train)
 		return TrainCode::Safe;
 
-	if (m_train->m_ppath == pcurrent || (pcurrent->m_pprevious && m_train->m_ppath == pcurrent->m_pprevious) ||
-		(pcurrent->m_pnext && m_train->m_ppath == pcurrent->m_pnext))
+	if (train->m_hPath == pcurrent || (pcurrent->m_hPrevious && train->m_hPath == pcurrent->m_hPrevious) ||
+		(pcurrent->m_hNext && train->m_hPath == pcurrent->m_hNext))
 	{
-		if (m_train->pev->speed != 0)
+		if (train->pev->speed != 0)
 			return TrainCode::Blocking;
 
-		const Vector dist = pev->origin - m_train->pev->origin;
+		const Vector dist = pev->origin - train->pev->origin;
 		const float length = dist.Length2D();
-		if (length < m_train->m_length)		// Empirically determined close distance
+		if (length < train->m_length)		// Empirically determined close distance
 			return TrainCode::Following;
-		else if (length > (150 + m_train->m_length))
+		else if (length > (150 + train->m_length))
 			return TrainCode::Safe;
 
 		return TrainCode::Blocking;
@@ -1721,17 +1723,19 @@ TrainCode CFuncTrackChange::EvaluateTrain(CPathTrack* pcurrent)
 
 void CFuncTrackChange::UpdateTrain(Vector& dest)
 {
+	auto train = m_hTrain.Get();
+
 	const float time = pev->nextthink - pev->ltime;
 
-	m_train->pev->velocity = pev->velocity;
-	m_train->pev->avelocity = pev->avelocity;
-	m_train->NextThink(m_train->pev->ltime + time, false);
+	train->pev->velocity = pev->velocity;
+	train->pev->avelocity = pev->avelocity;
+	train->NextThink(train->pev->ltime + time, false);
 
 	// Attempt at getting the train to rotate properly around the origin of the trackchange
 	if (time <= 0)
 		return;
 
-	const Vector offset = m_train->pev->origin - pev->origin;
+	const Vector offset = train->pev->origin - pev->origin;
 	const Vector delta = dest - pev->angles;
 	// Transform offset into local coordinates
 	UTIL_MakeInvVectors(delta, gpGlobals);
@@ -1743,7 +1747,7 @@ void CFuncTrackChange::UpdateTrain(Vector& dest)
 	};
 
 	local = local - offset;
-	m_train->pev->velocity = pev->velocity + (local * (1.0 / time));
+	train->pev->velocity = pev->velocity + (local * (1.0 / time));
 }
 
 void CFuncTrackChange::GoDown()
@@ -1774,7 +1778,7 @@ void CFuncTrackChange::GoDown()
 	if (m_code == TrainCode::Following)
 	{
 		UpdateTrain(m_start);
-		m_train->m_ppath = nullptr;
+		m_hTrain->m_hPath = nullptr;
 	}
 }
 
@@ -1807,24 +1811,24 @@ void CFuncTrackChange::GoUp()
 	if (m_code == TrainCode::Following)
 	{
 		UpdateTrain(m_end);
-		m_train->m_ppath = nullptr;
+		m_hTrain->m_hPath = nullptr;
 	}
 }
 
 void CFuncTrackChange::UpdateAutoTargets(ToggleState toggleState)
 {
-	if (!m_trackTop || !m_trackBottom)
+	if (!m_hTrackTop || !m_hTrackBottom)
 		return;
 
 	if (toggleState == ToggleState::AtTop)
-		ClearBits(m_trackTop->pev->spawnflags, SF_PATH_DISABLED);
+		ClearBits(m_hTrackTop->pev->spawnflags, SF_PATH_DISABLED);
 	else
-		SetBits(m_trackTop->pev->spawnflags, SF_PATH_DISABLED);
+		SetBits(m_hTrackTop->pev->spawnflags, SF_PATH_DISABLED);
 
 	if (toggleState == ToggleState::AtBottom)
-		ClearBits(m_trackBottom->pev->spawnflags, SF_PATH_DISABLED);
+		ClearBits(m_hTrackBottom->pev->spawnflags, SF_PATH_DISABLED);
 	else
-		SetBits(m_trackBottom->pev->spawnflags, SF_PATH_DISABLED);
+		SetBits(m_hTrackBottom->pev->spawnflags, SF_PATH_DISABLED);
 }
 
 void CFuncTrackChange::Use(const UseInfo& info)
@@ -1834,9 +1838,9 @@ void CFuncTrackChange::Use(const UseInfo& info)
 
 	// If train is in "safe" area, but not on the elevator, play alarm sound
 	if (m_toggle_state == ToggleState::AtTop)
-		m_code = EvaluateTrain(m_trackTop);
+		m_code = EvaluateTrain(m_hTrackTop);
 	else if (m_toggle_state == ToggleState::AtBottom)
-		m_code = EvaluateTrain(m_trackBottom);
+		m_code = EvaluateTrain(m_hTrackBottom);
 	else
 		m_code = TrainCode::Blocking;
 	if (m_code == TrainCode::Blocking)
@@ -1863,7 +1867,7 @@ void CFuncTrackChange::HitBottom()
 	if (m_code == TrainCode::Following)
 	{
 		//		UpdateTrain();
-		m_train->SetTrack(m_trackBottom);
+		m_hTrain->SetTrack(m_hTrackBottom);
 	}
 	SetThink(nullptr);
 	pev->nextthink = -1;
@@ -1879,7 +1883,7 @@ void CFuncTrackChange::HitTop()
 	if (m_code == TrainCode::Following)
 	{
 		//		UpdateTrain();
-		m_train->SetTrack(m_trackTop);
+		m_hTrain->SetTrack(m_hTrackTop);
 	}
 
 	// Don't let the plat go back down
@@ -1903,25 +1907,25 @@ LINK_ENTITY_TO_CLASS(func_trackautochange, CFuncTrackAuto);
 
 void CFuncTrackAuto::UpdateAutoTargets(ToggleState toggleState)
 {
-	if (!m_trackTop || !m_trackBottom)
+	if (!m_hTrackTop || !m_hTrackBottom)
 		return;
 
 	CPathTrack* pTarget, * pNextTarget;
 	if (m_targetState == ToggleState::AtTop)
 	{
-		pTarget = m_trackTop->GetNext();
-		pNextTarget = m_trackBottom->GetNext();
+		pTarget = m_hTrackTop->GetNext();
+		pNextTarget = m_hTrackBottom->GetNext();
 	}
 	else
 	{
-		pTarget = m_trackBottom->GetNext();
-		pNextTarget = m_trackTop->GetNext();
+		pTarget = m_hTrackBottom->GetNext();
+		pNextTarget = m_hTrackTop->GetNext();
 	}
 	if (pTarget)
 	{
 		ClearBits(pTarget->pev->spawnflags, SF_PATH_DISABLED);
-		if (m_code == TrainCode::Following && m_train && m_train->pev->speed == 0)
-			m_train->Use({this, this, USE_ON});
+		if (auto train = m_hTrain.Get(); m_code == TrainCode::Following && train && train->pev->speed == 0)
+			train->Use({this, this, USE_ON});
 	}
 
 	if (pNextTarget)
@@ -1935,9 +1939,9 @@ void CFuncTrackAuto::Use(const UseInfo& info)
 
 	CPathTrack* pTarget;
 	if (m_toggle_state == ToggleState::AtTop)
-		pTarget = m_trackTop;
+		pTarget = m_hTrackTop;
 	else if (m_toggle_state == ToggleState::AtBottom)
-		pTarget = m_trackBottom;
+		pTarget = m_hTrackBottom;
 	else
 		pTarget = nullptr;
 
@@ -1958,7 +1962,7 @@ void CFuncTrackAuto::Use(const UseInfo& info)
 	{
 		if (pTarget)
 			pTarget = pTarget->GetNext();
-		if (pTarget && m_train->m_ppath != pTarget && ShouldToggle(info.GetUseType(), m_targetState != ToggleState::AtTop))
+		if (pTarget && m_hTrain->m_hPath != pTarget && ShouldToggle(info.GetUseType(), m_targetState != ToggleState::AtTop))
 		{
 			if (m_targetState == ToggleState::AtTop)
 				m_targetState = ToggleState::AtBottom;

@@ -259,8 +259,8 @@ void CCineMonster::PossessEntity()
 		}
 #endif
 
-		pTarget->m_pGoalEnt = this;
-		pTarget->m_pCine = this;
+		pTarget->m_hGoalEnt = this;
+		pTarget->m_hCine = this;
 		pTarget->m_hTargetEnt = this;
 
 		m_saved_movetype = pTarget->pev->movetype;
@@ -325,8 +325,8 @@ void CCineAI::PossessEntity()
 			return;
 		}
 
-		pTarget->m_pGoalEnt = this;
-		pTarget->m_pCine = this;
+		pTarget->m_hGoalEnt = this;
+		pTarget->m_hCine = this;
 		pTarget->m_hTargetEnt = this;
 
 		m_saved_movetype = pTarget->pev->movetype;
@@ -514,9 +514,9 @@ bool CBaseMonster::ExitScriptedSequence()
 		return false;
 	}
 
-	if (m_pCine)
+	if (auto cine = m_hCine.Get(); cine)
 	{
-		m_pCine->CancelScript();
+		cine->CancelScript();
 	}
 
 	return true;
@@ -654,16 +654,16 @@ void CCineMonster::Activate()
 
 bool CBaseMonster::CineCleanup()
 {
-	CCineMonster* pOldCine = m_pCine;
+	CCineMonster* pOldCine = m_hCine;
 
 	// am I linked to a cinematic?
-	if (m_pCine)
+	if (auto cine = m_hCine.Get(); cine)
 	{
 		// okay, reset me to what it thought I was before
-		m_pCine->m_hTargetEnt = nullptr;
-		pev->movetype = m_pCine->m_saved_movetype;
-		pev->solid = m_pCine->m_saved_solid;
-		pev->effects = m_pCine->m_saved_effects;
+		cine->m_hTargetEnt = nullptr;
+		pev->movetype = cine->m_saved_movetype;
+		pev->solid = cine->m_saved_solid;
+		pev->effects = cine->m_saved_effects;
 	}
 	else
 	{
@@ -671,9 +671,9 @@ bool CBaseMonster::CineCleanup()
 		pev->movetype = Movetype::Step;// this is evil
 		pev->solid = Solid::SlideBox;
 	}
-	m_pCine = nullptr;
+	m_hCine = nullptr;
 	m_hTargetEnt = nullptr;
-	m_pGoalEnt = nullptr;
+	m_hGoalEnt = nullptr;
 	if (pev->deadflag == DeadFlag::Dying)
 	{
 		// last frame of death animation?

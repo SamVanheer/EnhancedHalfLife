@@ -73,14 +73,14 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	CSprite* m_pGlow;
+	EHandle<CSprite> m_hGlow;
 };
 
 LINK_ENTITY_TO_CLASS(xen_plantlight, CXenPLight);
 
 TYPEDESCRIPTION	CXenPLight::m_SaveData[] =
 {
-	DEFINE_FIELD(CXenPLight, m_pGlow, FIELD_CLASSPTR),
+	DEFINE_FIELD(CXenPLight, m_hGlow, FIELD_EHANDLE),
 };
 
 IMPLEMENT_SAVERESTORE(CXenPLight, CActAnimating);
@@ -98,9 +98,9 @@ void CXenPLight::Spawn()
 	pev->nextthink = gpGlobals->time + 0.1;
 	pev->frame = RANDOM_FLOAT(0, 255);
 
-	m_pGlow = CSprite::SpriteCreate(XEN_PLANT_GLOW_SPRITE.data(), pev->origin + Vector(0, 0, (pev->mins.z + pev->maxs.z) * 0.5), false);
-	m_pGlow->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
-	m_pGlow->SetAttachment(edict(), 1);
+	auto glow = m_hGlow = CSprite::SpriteCreate(XEN_PLANT_GLOW_SPRITE.data(), pev->origin + Vector(0, 0, (pev->mins.z + pev->maxs.z) * 0.5), false);
+	glow->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
+	glow->SetAttachment(edict(), 1);
 }
 
 void CXenPLight::Precache()
@@ -158,15 +158,15 @@ void CXenPLight::Touch(CBaseEntity* pOther)
 void CXenPLight::LightOn()
 {
 	SUB_UseTargets(this, USE_ON, 0);
-	if (m_pGlow)
-		m_pGlow->pev->effects &= ~EF_NODRAW;
+	if (auto glow = m_hGlow.Get(); glow)
+		glow->pev->effects &= ~EF_NODRAW;
 }
 
 void CXenPLight::LightOff()
 {
 	SUB_UseTargets(this, USE_OFF, 0);
-	if (m_pGlow)
-		m_pGlow->pev->effects |= EF_NODRAW;
+	if (auto glow = m_hGlow.Get(); glow)
+		glow->pev->effects |= EF_NODRAW;
 }
 
 class CXenHair : public CActAnimating
@@ -263,14 +263,14 @@ public:
 	static const char* pAttackMissSounds[];
 
 private:
-	CXenTreeTrigger* m_pTrigger;
+	EHandle<CXenTreeTrigger> m_hTrigger;
 };
 
 LINK_ENTITY_TO_CLASS(xen_tree, CXenTree);
 
 TYPEDESCRIPTION	CXenTree::m_SaveData[] =
 {
-	DEFINE_FIELD(CXenTree, m_pTrigger, FIELD_CLASSPTR),
+	DEFINE_FIELD(CXenTree, m_hTrigger, FIELD_EHANDLE),
 };
 
 IMPLEMENT_SAVERESTORE(CXenTree, CActAnimating);
@@ -295,8 +295,8 @@ void CXenTree::Spawn()
 	AngleVectors(pev->angles, &triggerPosition, nullptr, nullptr);
 	triggerPosition = pev->origin + (triggerPosition * 64);
 	// Create the trigger
-	m_pTrigger = CXenTreeTrigger::TriggerCreate(edict(), triggerPosition);
-	UTIL_SetSize(m_pTrigger->pev, Vector(-24, -24, 0), Vector(24, 24, 128));
+	auto trigger = m_hTrigger = CXenTreeTrigger::TriggerCreate(edict(), triggerPosition);
+	UTIL_SetSize(trigger->pev, Vector(-24, -24, 0), Vector(24, 24, 128));
 }
 
 const char* CXenTree::pAttackHitSounds[] =
@@ -346,7 +346,7 @@ void CXenTree::HandleAnimEvent(AnimationEvent& event)
 	{
 		CBaseEntity* pList[8];
 		bool sound = false;
-		int count = UTIL_EntitiesInBox(pList, ArraySize(pList), m_pTrigger->pev->absmin, m_pTrigger->pev->absmax, FL_MONSTER | FL_CLIENT);
+		int count = UTIL_EntitiesInBox(pList, ArraySize(pList), m_hTrigger->pev->absmin, m_hTrigger->pev->absmax, FL_MONSTER | FL_CLIENT);
 		Vector forward;
 
 		AngleVectors(pev->angles, &forward, nullptr, nullptr);

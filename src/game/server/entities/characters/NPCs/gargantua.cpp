@@ -243,7 +243,7 @@ public:
 	void FlameUpdate();
 	void FlameControls(float angleX, float angleY);
 	void FlameDestroy();
-	inline bool FlameIsOn() { return m_pFlame[0] != nullptr; }
+	inline bool FlameIsOn() { return m_hFlame[0] != nullptr; }
 
 	void FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
 
@@ -275,8 +275,8 @@ private:
 	*/
 	CBaseEntity* GargantuaCheckTraceHullAttack(float flDist, int iDamage, int iDmgType);
 
-	CSprite* m_pEyeGlow;		// Glow around the eyes
-	CBeam* m_pFlame[4];		// Flame beams
+	EHandle<CSprite> m_hEyeGlow;		// Glow around the eyes
+	EHandle<CBeam> m_hFlame[4];		// Flame beams
 
 	int			m_eyeBrightness;	// Brightness target
 	float		m_seeTime;			// Time to attack (when I see the enemy, I set this)
@@ -291,13 +291,13 @@ LINK_ENTITY_TO_CLASS(monster_gargantua, CGargantua);
 
 TYPEDESCRIPTION	CGargantua::m_SaveData[] =
 {
-	DEFINE_FIELD(CGargantua, m_pEyeGlow, FIELD_CLASSPTR),
+	DEFINE_FIELD(CGargantua, m_hEyeGlow, FIELD_EHANDLE),
 	DEFINE_FIELD(CGargantua, m_eyeBrightness, FIELD_INTEGER),
 	DEFINE_FIELD(CGargantua, m_seeTime, FIELD_TIME),
 	DEFINE_FIELD(CGargantua, m_flameTime, FIELD_TIME),
 	DEFINE_FIELD(CGargantua, m_streakTime, FIELD_TIME),
 	DEFINE_FIELD(CGargantua, m_painSoundTime, FIELD_TIME),
-	DEFINE_ARRAY(CGargantua, m_pFlame, FIELD_CLASSPTR, 4),
+	DEFINE_ARRAY(CGargantua, m_hFlame, FIELD_EHANDLE, 4),
 	DEFINE_FIELD(CGargantua, m_flameX, FIELD_FLOAT),
 	DEFINE_FIELD(CGargantua, m_flameY, FIELD_FLOAT),
 };
@@ -464,14 +464,14 @@ void CGargantua::EyeOff()
 
 void CGargantua::EyeUpdate()
 {
-	if (m_pEyeGlow)
+	if (auto glow = m_hEyeGlow.Get(); glow)
 	{
-		m_pEyeGlow->pev->renderamt = UTIL_Approach(m_eyeBrightness, m_pEyeGlow->pev->renderamt, 26);
-		if (m_pEyeGlow->pev->renderamt == 0)
-			m_pEyeGlow->pev->effects |= EF_NODRAW;
+		glow->pev->renderamt = UTIL_Approach(m_eyeBrightness, glow->pev->renderamt, 26);
+		if (glow->pev->renderamt == 0)
+			glow->pev->effects |= EF_NODRAW;
 		else
-			m_pEyeGlow->pev->effects &= ~EF_NODRAW;
-		UTIL_SetOrigin(m_pEyeGlow->pev, pev->origin);
+			glow->pev->effects &= ~EF_NODRAW;
+		UTIL_SetOrigin(glow->pev, pev->origin);
 	}
 }
 
@@ -503,10 +503,10 @@ void CGargantua::FlameCreate()
 	for (int i = 0; i < 4; i++)
 	{
 		if (i < 2)
-			m_pFlame[i] = CBeam::BeamCreate(GARG_BEAM_SPRITE_NAME.data(), 240);
+			m_hFlame[i] = CBeam::BeamCreate(GARG_BEAM_SPRITE_NAME.data(), 240);
 		else
-			m_pFlame[i] = CBeam::BeamCreate(GARG_BEAM_SPRITE2.data(), 140);
-		if (m_pFlame[i])
+			m_hFlame[i] = CBeam::BeamCreate(GARG_BEAM_SPRITE2.data(), 140);
+		if (auto flame = m_hFlame[i].Get(); flame)
 		{
 			int attach = i % 2;
 			// attachment is 0 based in GetAttachment
@@ -515,16 +515,16 @@ void CGargantua::FlameCreate()
 			Vector vecEnd = (gpGlobals->v_forward * GARG_FLAME_LENGTH) + posGun;
 			UTIL_TraceLine(posGun, vecEnd, IgnoreMonsters::No, edict(), &trace);
 
-			m_pFlame[i]->PointEntInit(trace.vecEndPos, entindex());
+			flame->PointEntInit(trace.vecEndPos, entindex());
 			if (i < 2)
-				m_pFlame[i]->SetColor(255, 130, 90);
+				flame->SetColor(255, 130, 90);
 			else
-				m_pFlame[i]->SetColor(0, 120, 255);
-			m_pFlame[i]->SetBrightness(190);
-			m_pFlame[i]->SetFlags(BEAM_FSHADEIN);
-			m_pFlame[i]->SetScrollRate(20);
+				flame->SetColor(0, 120, 255);
+			flame->SetBrightness(190);
+			flame->SetFlags(BEAM_FSHADEIN);
+			flame->SetScrollRate(20);
 			// attachment is 1 based in SetEndAttachment
-			m_pFlame[i]->SetEndAttachment(attach + 2);
+			flame->SetEndAttachment(attach + 2);
 			CSoundEnt::InsertSound(bits_SOUND_COMBAT, posGun, 384, 0.3);
 		}
 	}
@@ -559,7 +559,7 @@ void CGargantua::FlameUpdate()
 
 	for (int i = 0; i < 2; i++)
 	{
-		if (m_pFlame[i])
+		if (m_hFlame[i])
 		{
 			Vector vecAim = pev->angles;
 			vecAim.x += m_flameX;
@@ -572,8 +572,8 @@ void CGargantua::FlameUpdate()
 
 			UTIL_TraceLine(vecStart, vecEnd, IgnoreMonsters::No, edict(), &trace);
 
-			m_pFlame[i]->SetStartPos(trace.vecEndPos);
-			m_pFlame[i + 2]->SetStartPos((vecStart * 0.6) + (trace.vecEndPos * 0.4));
+			m_hFlame[i]->SetStartPos(trace.vecEndPos);
+			m_hFlame[i + 2]->SetStartPos((vecStart * 0.6) + (trace.vecEndPos * 0.4));
 
 			if (trace.flFraction != 1.0 && gpGlobals->time > m_streakTime)
 			{
@@ -675,10 +675,10 @@ void CGargantua::FlameDestroy()
 	EmitSound(SoundChannel::Weapon, pBeamAttackSounds[0]);
 	for (int i = 0; i < 4; i++)
 	{
-		if (m_pFlame[i])
+		if (m_hFlame[i])
 		{
-			UTIL_Remove(m_pFlame[i]);
-			m_pFlame[i] = nullptr;
+			UTIL_Remove(m_hFlame[i]);
+			m_hFlame[i] = nullptr;
 		}
 	}
 }
@@ -744,9 +744,9 @@ void CGargantua::Spawn()
 
 	MonsterInit();
 
-	m_pEyeGlow = CSprite::SpriteCreate(GARG_EYE_SPRITE_NAME.data(), pev->origin, false);
-	m_pEyeGlow->SetTransparency(RenderMode::Glow, 255, 255, 255, 0, RenderFX::NoDissipation);
-	m_pEyeGlow->SetAttachment(edict(), 1);
+	auto glow = m_hEyeGlow = CSprite::SpriteCreate(GARG_EYE_SPRITE_NAME.data(), pev->origin, false);
+	glow->SetTransparency(RenderMode::Glow, 255, 255, 255, 0, RenderFX::NoDissipation);
+	glow->SetAttachment(edict(), 1);
 	EyeOff();
 	m_seeTime = gpGlobals->time + 5;
 	m_flameTime = gpGlobals->time + 2;
@@ -858,8 +858,8 @@ void CGargantua::DeathEffect()
 void CGargantua::Killed(const KilledInfo& info)
 {
 	EyeOff();
-	UTIL_Remove(m_pEyeGlow);
-	m_pEyeGlow = nullptr;
+	UTIL_Remove(m_hEyeGlow);
+	m_hEyeGlow = nullptr;
 	CBaseMonster::Killed({info.GetAttacker(), GibType::Never});
 }
 

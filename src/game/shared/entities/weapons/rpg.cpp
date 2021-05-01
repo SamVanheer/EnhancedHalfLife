@@ -82,7 +82,7 @@ CRpgRocket* CRpgRocket::CreateRpgRocket(Vector vecOrigin, Vector vecAngles, CBas
 	pRocket->pev->angles = vecAngles;
 	pRocket->Spawn();
 	pRocket->SetTouch(&CRpgRocket::RocketTouch);
-	pRocket->m_pLauncher = pLauncher;// remember what RPG fired me. 
+	pRocket->m_hLauncher = pLauncher;// remember what RPG fired me. 
 	pLauncher->m_cActiveRockets++;// register this missile as active for the launcher
 	pRocket->pev->owner = pOwner->edict();
 
@@ -119,10 +119,10 @@ void CRpgRocket::Spawn()
 
 void CRpgRocket::RocketTouch(CBaseEntity* pOther)
 {
-	if (m_pLauncher)
+	if (auto launcher = m_hLauncher.Get(); launcher)
 	{
 		// my launcher is still around, tell it I'm dead.
-		static_cast<CRpg*>(static_cast<CBaseEntity*>(m_pLauncher))->m_cActiveRockets--;
+		launcher->m_cActiveRockets--;
 	}
 
 	StopSound(SoundChannel::Voice, "weapons/rocket1.wav");
@@ -247,7 +247,7 @@ void CRpg::Reload()
 		return;
 	}
 
-	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
+	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return;
 
 	// because the RPG waits to autoreload when no missiles are active while  the LTD is on, the
@@ -283,7 +283,7 @@ void CRpg::Reload()
 		iResult = DefaultReload(RPG_MAX_CLIP, RPG_RELOAD, 2);
 
 	if (iResult)
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15);
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_hPlayer->random_seed, 10, 15);
 }
 
 void CRpg::Spawn()
@@ -382,7 +382,7 @@ void CRpg::Holster()
 {
 	m_fInReload = false;// cancel any reload in progress.
 
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_hPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 
 	SendWeaponAnim(RPG_HOLSTER1);
 
@@ -399,20 +399,20 @@ void CRpg::PrimaryAttack()
 {
 	if (m_iClip)
 	{
-		m_pPlayer->m_iWeaponVolume = LOUD_GUN_VOLUME;
-		m_pPlayer->m_iWeaponFlash = BRIGHT_GUN_FLASH;
+		m_hPlayer->m_iWeaponVolume = LOUD_GUN_VOLUME;
+		m_hPlayer->m_iWeaponFlash = BRIGHT_GUN_FLASH;
 
 #ifndef CLIENT_DLL
 		// player "shoot" animation
-		m_pPlayer->SetAnimation(PlayerAnim::Attack1);
+		m_hPlayer->SetAnimation(PlayerAnim::Attack1);
 
-		UTIL_MakeVectors(m_pPlayer->pev->v_angle);
-		Vector vecSrc = m_pPlayer->GetGunPosition() + gpGlobals->v_forward * 16 + gpGlobals->v_right * 8 + gpGlobals->v_up * -8;
+		UTIL_MakeVectors(m_hPlayer->pev->v_angle);
+		Vector vecSrc = m_hPlayer->GetGunPosition() + gpGlobals->v_forward * 16 + gpGlobals->v_right * 8 + gpGlobals->v_up * -8;
 
-		CRpgRocket* pRocket = CRpgRocket::CreateRpgRocket(vecSrc, m_pPlayer->pev->v_angle, m_pPlayer, this);
+		CRpgRocket* pRocket = CRpgRocket::CreateRpgRocket(vecSrc, m_hPlayer->pev->v_angle, m_hPlayer, this);
 
-		UTIL_MakeVectors(m_pPlayer->pev->v_angle);// RpgRocket::Create stomps on globals, so remake.
-		pRocket->pev->velocity = pRocket->pev->velocity + gpGlobals->v_forward * DotProduct(m_pPlayer->pev->velocity, gpGlobals->v_forward);
+		UTIL_MakeVectors(m_hPlayer->pev->v_angle);// RpgRocket::Create stomps on globals, so remake.
+		pRocket->pev->velocity = pRocket->pev->velocity + gpGlobals->v_forward * DotProduct(m_hPlayer->pev->velocity, gpGlobals->v_forward);
 #endif
 
 		// firing RPG no longer turns on the designator. ALT fire is a toggle switch for the LTD.
@@ -425,7 +425,7 @@ void CRpg::PrimaryAttack()
 		flags = 0;
 #endif
 
-		PLAYBACK_EVENT(flags, m_pPlayer->edict(), m_usRpg);
+		PLAYBACK_EVENT(flags, m_hPlayer->edict(), m_usRpg);
 
 		m_iClip--;
 
@@ -462,10 +462,10 @@ void CRpg::WeaponIdle()
 	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
-	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 	{
 		int iAnim;
-		const float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
+		const float flRand = UTIL_SharedRandomFloat(m_hPlayer->random_seed, 0, 1);
 		if (flRand <= 0.75 || m_fSpotActive)
 		{
 			if (m_iClip == 0)
@@ -505,12 +505,12 @@ void CRpg::UpdateSpot()
 			m_pSpot = CLaserSpot::CreateSpot();
 		}
 
-		UTIL_MakeVectors(m_pPlayer->pev->v_angle);
-		const Vector vecSrc = m_pPlayer->GetGunPosition();
+		UTIL_MakeVectors(m_hPlayer->pev->v_angle);
+		const Vector vecSrc = m_hPlayer->GetGunPosition();
 		const Vector vecAiming = gpGlobals->v_forward;
 
 		TraceResult tr;
-		UTIL_TraceLine(vecSrc, vecSrc + vecAiming * WORLD_SIZE, IgnoreMonsters::No, ENT(m_pPlayer->pev), &tr);
+		UTIL_TraceLine(vecSrc, vecSrc + vecAiming * WORLD_SIZE, IgnoreMonsters::No, ENT(m_hPlayer->pev), &tr);
 
 		UTIL_SetOrigin(m_pSpot->pev, tr.vecEndPos);
 	}

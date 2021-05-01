@@ -207,7 +207,7 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	CSprite* m_pSprite;
+	EHandle<CSprite> m_hSprite;
 	string_t m_iszSpriteName;
 	Vector  m_firePosition;
 };

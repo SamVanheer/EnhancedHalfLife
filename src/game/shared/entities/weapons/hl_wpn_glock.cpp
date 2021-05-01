@@ -102,7 +102,7 @@ void CGlock::GlockFire(float flSpread, float flCycleTime, bool fUseAutoAim)
 
 	m_iClip--;
 
-	m_pPlayer->pev->effects = (int)(m_pPlayer->pev->effects) | EF_MUZZLEFLASH;
+	m_hPlayer->pev->effects = (int)(m_hPlayer->pev->effects) | EF_MUZZLEFLASH;
 
 	int flags;
 
@@ -113,49 +113,49 @@ void CGlock::GlockFire(float flSpread, float flCycleTime, bool fUseAutoAim)
 #endif
 
 	// player "shoot" animation
-	m_pPlayer->SetAnimation(PlayerAnim::Attack1);
+	m_hPlayer->SetAnimation(PlayerAnim::Attack1);
 
 	// silenced
 	if (pev->body == 1)
 	{
-		m_pPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
-		m_pPlayer->m_iWeaponFlash = DIM_GUN_FLASH;
+		m_hPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
+		m_hPlayer->m_iWeaponFlash = DIM_GUN_FLASH;
 	}
 	else
 	{
 		// non-silenced
-		m_pPlayer->m_iWeaponVolume = NORMAL_GUN_VOLUME;
-		m_pPlayer->m_iWeaponFlash = NORMAL_GUN_FLASH;
+		m_hPlayer->m_iWeaponVolume = NORMAL_GUN_VOLUME;
+		m_hPlayer->m_iWeaponFlash = NORMAL_GUN_FLASH;
 	}
 
-	const Vector vecSrc = m_pPlayer->GetGunPosition();
+	const Vector vecSrc = m_hPlayer->GetGunPosition();
 	Vector vecAiming;
 
 	if (fUseAutoAim)
 	{
-		vecAiming = m_pPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
+		vecAiming = m_hPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
 	}
 	else
 	{
 		vecAiming = gpGlobals->v_forward;
 	}
 
-	const Vector vecDir = m_pPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, Vector(flSpread, flSpread, flSpread), WORLD_SIZE, BULLET_PLAYER_9MM, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed);
+	const Vector vecDir = m_hPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, Vector(flSpread, flSpread, flSpread), WORLD_SIZE, BULLET_PLAYER_9MM, 0, 0, m_hPlayer->pev, m_hPlayer->random_seed);
 
-	PLAYBACK_EVENT_FULL(flags, m_pPlayer->edict(), fUseAutoAim ? m_usFireGlock1 : m_usFireGlock2, 0.0, vec3_origin, vec3_origin, vecDir.x, vecDir.y, 0, 0, m_iClip == 0, 0);
+	PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), fUseAutoAim ? m_usFireGlock1 : m_usFireGlock2, 0.0, vec3_origin, vec3_origin, vecDir.x, vecDir.y, 0, 0, m_iClip == 0, 0);
 
 	m_flNextPrimaryAttack = m_flNextSecondaryAttack = GetNextAttackDelay(flCycleTime);
 
-	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
+	if (!m_iClip && m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		// HEV suit - indicate out of ammo condition
-		m_pPlayer->SetSuitUpdate("!HEV_AMO0", SuitSoundType::Sentence, 0);
+		m_hPlayer->SetSuitUpdate("!HEV_AMO0", SuitSoundType::Sentence, 0);
 
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15);
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_hPlayer->random_seed, 10, 15);
 }
 
 void CGlock::Reload()
 {
-	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
+	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return;
 
 	int iResult;
@@ -167,7 +167,7 @@ void CGlock::Reload()
 
 	if (iResult)
 	{
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15);
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_hPlayer->random_seed, 10, 15);
 	}
 }
 
@@ -175,7 +175,7 @@ void CGlock::WeaponIdle()
 {
 	ResetEmptySound();
 
-	m_pPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
+	m_hPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
 
 	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
@@ -184,7 +184,7 @@ void CGlock::WeaponIdle()
 	if (m_iClip != 0)
 	{
 		int iAnim;
-		const float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0.0, 1.0);
+		const float flRand = UTIL_SharedRandomFloat(m_hPlayer->random_seed, 0.0, 1.0);
 
 		if (flRand <= 0.3 + 0 * 0.75)
 		{

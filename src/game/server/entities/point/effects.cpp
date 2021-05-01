@@ -900,7 +900,7 @@ LINK_ENTITY_TO_CLASS(env_laser, CLaser);
 
 TYPEDESCRIPTION	CLaser::m_SaveData[] =
 {
-	DEFINE_FIELD(CLaser, m_pSprite, FIELD_CLASSPTR),
+	DEFINE_FIELD(CLaser, m_hSprite, FIELD_EHANDLE),
 	DEFINE_FIELD(CLaser, m_iszSpriteName, FIELD_STRING),
 	DEFINE_FIELD(CLaser, m_firePosition, FIELD_POSITION_VECTOR),
 };
@@ -922,13 +922,13 @@ void CLaser::Spawn()
 
 	PointsInit(pev->origin, pev->origin);
 
-	if (!m_pSprite && !IsStringNull(m_iszSpriteName))
-		m_pSprite = CSprite::SpriteCreate(STRING(m_iszSpriteName), pev->origin, true);
+	if (!m_hSprite && !IsStringNull(m_iszSpriteName))
+		m_hSprite = CSprite::SpriteCreate(STRING(m_iszSpriteName), pev->origin, true);
 	else
-		m_pSprite = nullptr;
+		m_hSprite = nullptr;
 
-	if (m_pSprite)
-		m_pSprite->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
+	if (auto sprite = m_hSprite.Get(); sprite)
+		sprite->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
 
 	if (!IsStringNull(pev->targetname) && !(pev->spawnflags & SF_BEAM_STARTON))
 		TurnOff();
@@ -1000,15 +1000,15 @@ void CLaser::TurnOff()
 {
 	pev->effects |= EF_NODRAW;
 	pev->nextthink = 0;
-	if (m_pSprite)
-		m_pSprite->TurnOff();
+	if (auto sprite = m_hSprite.Get(); sprite)
+		sprite->TurnOff();
 }
 
 void CLaser::TurnOn()
 {
 	pev->effects &= ~EF_NODRAW;
-	if (m_pSprite)
-		m_pSprite->TurnOn();
+	if (auto sprite = m_hSprite.Get(); sprite)
+		sprite->TurnOn();
 	pev->dmgtime = gpGlobals->time;
 	pev->nextthink = gpGlobals->time;
 }
@@ -1032,8 +1032,8 @@ void CLaser::Use(const UseInfo& info)
 void CLaser::FireAtPoint(TraceResult& tr)
 {
 	SetEndPos(tr.vecEndPos);
-	if (m_pSprite)
-		UTIL_SetOrigin(m_pSprite->pev, tr.vecEndPos);
+	if (auto sprite = m_hSprite.Get(); sprite)
+		UTIL_SetOrigin(sprite->pev, tr.vecEndPos);
 
 	BeamDamage(&tr);
 	DoSparks(GetStartPos(), tr.vecEndPos);

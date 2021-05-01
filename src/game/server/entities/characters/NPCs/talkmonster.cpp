@@ -1089,7 +1089,7 @@ void CTalkMonster::Talk(float flDuration)
 
 void CTalkMonster::SetAnswerQuestion(CTalkMonster* pSpeaker)
 {
-	if (!m_pCine)
+	if (!m_hCine)
 		ChangeSchedule(slIdleResponse);
 	m_hTalkTarget = (CBaseMonster*)pSpeaker;
 }
@@ -1266,8 +1266,8 @@ void CTalkMonster::StopFollowing(bool clearSchedule)
 
 void CTalkMonster::StartFollowing(CBaseEntity* pLeader)
 {
-	if (m_pCine)
-		m_pCine->CancelScript();
+	if (auto cine = m_hCine.Get(); cine)
+		cine->CancelScript();
 
 	if (m_hEnemy != nullptr)
 		m_IdealMonsterState = NPCState::Alert;
@@ -1283,7 +1283,7 @@ bool CTalkMonster::CanFollow()
 {
 	if (m_MonsterState == NPCState::Script)
 	{
-		if (!m_pCine->CanInterrupt())
+		if (!m_hCine->CanInterrupt())
 			return false;
 	}
 

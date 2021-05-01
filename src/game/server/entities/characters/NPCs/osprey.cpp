@@ -56,7 +56,7 @@ public:
 	void TraceAttack(const TraceAttackInfo& info) override;
 	void ShowDamage();
 
-	CBaseEntity* m_pGoalEnt;
+	EHandle<CBaseEntity> m_hGoalEnt;
 	Vector m_vel1;
 	Vector m_vel2;
 	Vector m_pos1;
@@ -97,7 +97,7 @@ LINK_ENTITY_TO_CLASS(monster_osprey, COsprey);
 
 TYPEDESCRIPTION	COsprey::m_SaveData[] =
 {
-	DEFINE_FIELD(COsprey, m_pGoalEnt, FIELD_CLASSPTR),
+	DEFINE_FIELD(COsprey, m_hGoalEnt, FIELD_EHANDLE),
 	DEFINE_FIELD(COsprey, m_vel1, FIELD_VECTOR),
 	DEFINE_FIELD(COsprey, m_vel2, FIELD_VECTOR),
 	DEFINE_FIELD(COsprey, m_pos1, FIELD_POSITION_VECTOR),
@@ -323,18 +323,18 @@ void COsprey::HoverThink()
 
 void COsprey::UpdateGoal()
 {
-	if (m_pGoalEnt)
+	if (auto goal = m_hGoalEnt.Get(); goal)
 	{
 		m_pos1 = m_pos2;
 		m_ang1 = m_ang2;
 		m_vel1 = m_vel2;
-		m_pos2 = m_pGoalEnt->pev->origin;
-		m_ang2 = m_pGoalEnt->pev->angles;
+		m_pos2 = goal->pev->origin;
+		m_ang2 = goal->pev->angles;
 		UTIL_MakeAimVectors(Vector(0, m_ang2.y, 0));
-		m_vel2 = gpGlobals->v_forward * m_pGoalEnt->pev->speed;
+		m_vel2 = gpGlobals->v_forward * goal->pev->speed;
 
 		m_startTime = m_startTime + m_dTime;
-		m_dTime = 2.0 * (m_pos1 - m_pos2).Length() / (m_vel1.Length() + m_pGoalEnt->pev->speed);
+		m_dTime = 2.0 * (m_pos1 - m_pos2).Length() / (m_vel1.Length() + goal->pev->speed);
 
 		if (m_ang1.y - m_ang2.y < -180)
 		{
@@ -345,7 +345,7 @@ void COsprey::UpdateGoal()
 			m_ang1.y -= 360;
 		}
 
-		if (m_pGoalEnt->pev->speed < 400)
+		if (goal->pev->speed < 400)
 			m_flIdealtilt = 0;
 		else
 			m_flIdealtilt = -90;
@@ -361,23 +361,23 @@ void COsprey::FlyThink()
 	StudioFrameAdvance();
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	if (m_pGoalEnt == nullptr && !IsStringNull(pev->target))// this monster has a target
+	if (m_hGoalEnt == nullptr && !IsStringNull(pev->target))// this monster has a target
 	{
-		m_pGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+		m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
 		UpdateGoal();
 	}
 
 	if (gpGlobals->time > m_startTime + m_dTime)
 	{
-		if (m_pGoalEnt->pev->speed == 0)
+		if (m_hGoalEnt->pev->speed == 0)
 		{
 			SetThink(&COsprey::DeployThink);
 		}
 		//TODO: this doesn't check if target is valid and if goal ent is valid
 		do {
-			m_pGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(m_pGoalEnt->pev->target));
+			m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(m_hGoalEnt->pev->target));
 		}
-		while (m_pGoalEnt->pev->speed < 400 && !HasDead());
+		while (m_hGoalEnt->pev->speed < 400 && !HasDead());
 		UpdateGoal();
 	}
 

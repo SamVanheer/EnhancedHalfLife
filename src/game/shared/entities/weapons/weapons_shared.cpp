@@ -55,11 +55,11 @@ bool CBasePlayerWeapon::CanDeploy()
 
 	if (Ammo1Name())
 	{
-		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] != 0);
+		bHasAmmo |= (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] != 0);
 	}
 	if (Ammo2Name())
 	{
-		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType] != 0);
+		bHasAmmo |= (m_hPlayer->m_rgAmmo[m_iSecondaryAmmoType] != 0);
 	}
 	if (m_iClip > 0)
 	{
@@ -75,15 +75,15 @@ bool CBasePlayerWeapon::CanDeploy()
 
 bool CBasePlayerWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay, int body)
 {
-	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
+	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return false;
 
-	const int j = std::min(iClipSize - m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]);
+	const int j = std::min(iClipSize - m_iClip, m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType]);
 
 	if (j == 0)
 		return false;
 
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + fDelay;
+	m_hPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + fDelay;
 
 	//!!UNDONE -- reload sound goes here !!!
 	SendWeaponAnim(iAnim, body);
@@ -117,48 +117,50 @@ bool CanAttack(float attack_time, float curtime, bool isPredicted)
 
 void CBasePlayerWeapon::ItemPostFrame()
 {
-	if ((m_fInReload) && (m_pPlayer->m_flNextAttack <= UTIL_WeaponTimeBase()))
+	auto player = m_hPlayer.Get();
+
+	if ((m_fInReload) && (player->m_flNextAttack <= UTIL_WeaponTimeBase()))
 	{
 		// complete the reload. 
-		const int j = std::min(MaxClip() - m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]);
+		const int j = std::min(MaxClip() - m_iClip, player->m_rgAmmo[m_iPrimaryAmmoType]);
 
 		// Add them to the clip
 		m_iClip += j;
-		m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] -= j;
+		player->m_rgAmmo[m_iPrimaryAmmoType] -= j;
 
 		m_fInReload = false;
 	}
 
-	if (!(m_pPlayer->pev->button & IN_ATTACK))
+	if (!(player->pev->button & IN_ATTACK))
 	{
 		m_flLastFireTime = 0.0f;
 	}
 
-	if ((m_pPlayer->pev->button & IN_ATTACK2) && CanAttack(m_flNextSecondaryAttack, gpGlobals->time, UseDecrement()))
+	if ((player->pev->button & IN_ATTACK2) && CanAttack(m_flNextSecondaryAttack, gpGlobals->time, UseDecrement()))
 	{
-		if (Ammo2Name() && !m_pPlayer->m_rgAmmo[SecondaryAmmoIndex()])
+		if (Ammo2Name() && !player->m_rgAmmo[SecondaryAmmoIndex()])
 		{
 			m_fFireOnEmpty = true;
 		}
 
 		SecondaryAttack();
-		m_pPlayer->pev->button &= ~IN_ATTACK2;
+		player->pev->button &= ~IN_ATTACK2;
 	}
-	else if ((m_pPlayer->pev->button & IN_ATTACK) && CanAttack(m_flNextPrimaryAttack, gpGlobals->time, UseDecrement()))
+	else if ((player->pev->button & IN_ATTACK) && CanAttack(m_flNextPrimaryAttack, gpGlobals->time, UseDecrement()))
 	{
-		if ((m_iClip == 0 && Ammo1Name()) || (MaxClip() == -1 && !m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()]))
+		if ((m_iClip == 0 && Ammo1Name()) || (MaxClip() == -1 && !player->m_rgAmmo[PrimaryAmmoIndex()]))
 		{
 			m_fFireOnEmpty = true;
 		}
 
 		PrimaryAttack();
 	}
-	else if (m_pPlayer->pev->button & IN_RELOAD && MaxClip() != WEAPON_NOCLIP && !m_fInReload)
+	else if (player->pev->button & IN_RELOAD && MaxClip() != WEAPON_NOCLIP && !m_fInReload)
 	{
 		// reload when reload is pressed, or if no buttons are down and weapon is empty.
 		Reload();
 	}
-	else if (!(m_pPlayer->pev->button & (IN_ATTACK | IN_ATTACK2)))
+	else if (!(player->pev->button & (IN_ATTACK | IN_ATTACK2)))
 	{
 		// no fire buttons down
 
@@ -168,7 +170,7 @@ void CBasePlayerWeapon::ItemPostFrame()
 		if (!IsUseable() && m_flNextPrimaryAttack < (UseDecrement() ? 0.0 : gpGlobals->time))
 		{
 			// weapon isn't useable, switch.
-			if (!(Flags() & ITEM_FLAG_NOAUTOSWITCHEMPTY) && g_pGameRules->GetNextBestWeapon(m_pPlayer, this))
+			if (!(Flags() & ITEM_FLAG_NOAUTOSWITCHEMPTY) && g_pGameRules->GetNextBestWeapon(player, this))
 			{
 				m_flNextPrimaryAttack = (UseDecrement() ? 0.0 : gpGlobals->time) + 0.3;
 				return;
@@ -198,12 +200,14 @@ void CBasePlayerWeapon::ItemPostFrame()
 
 void CBasePlayer::SelectLastItem()
 {
-	if (!m_pLastItem)
+	if (!m_hLastItem)
 	{
 		return;
 	}
 
-	if (m_pActiveItem && !m_pActiveItem->CanHolster())
+	auto activeItem = m_hActiveItem.Get();
+
+	if (activeItem && !activeItem->CanHolster())
 	{
 		return;
 	}
@@ -211,12 +215,12 @@ void CBasePlayer::SelectLastItem()
 	ResetAutoaim();
 
 	// FIX, this needs to queue them up and delay
-	if (m_pActiveItem)
-		m_pActiveItem->Holster();
+	if (activeItem)
+		activeItem->Holster();
 
-	CBasePlayerItem* pTemp = m_pActiveItem;
-	m_pActiveItem = m_pLastItem;
-	m_pLastItem = pTemp;
-	m_pActiveItem->Deploy();
-	m_pActiveItem->UpdateItemInfo();
+	CBasePlayerItem* pTemp = activeItem;
+	activeItem = m_hActiveItem = m_hLastItem;
+	m_hLastItem = pTemp;
+	activeItem->Deploy();
+	activeItem->UpdateItemInfo();
 }

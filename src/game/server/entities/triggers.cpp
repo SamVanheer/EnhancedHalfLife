@@ -1065,7 +1065,7 @@ void CTriggerChangeTarget::Use(const UseInfo& info)
 		CBaseMonster* pMonster = pTarget->MyMonsterPointer();
 		if (pMonster)
 		{
-			pMonster->m_pGoalEnt = nullptr;
+			pMonster->m_hGoalEnt = nullptr;
 		}
 	}
 }
@@ -1077,7 +1077,7 @@ TYPEDESCRIPTION	CTriggerCamera::m_SaveData[] =
 {
 	DEFINE_FIELD(CTriggerCamera, m_hPlayer, FIELD_EHANDLE),
 	DEFINE_FIELD(CTriggerCamera, m_hTarget, FIELD_EHANDLE),
-	DEFINE_FIELD(CTriggerCamera, m_pentPath, FIELD_CLASSPTR),
+	DEFINE_FIELD(CTriggerCamera, m_hEntPath, FIELD_EHANDLE),
 	DEFINE_FIELD(CTriggerCamera, m_sPath, FIELD_STRING),
 	DEFINE_FIELD(CTriggerCamera, m_flWait, FIELD_FLOAT),
 	DEFINE_FIELD(CTriggerCamera, m_flReturnTime, FIELD_TIME),
@@ -1182,20 +1182,20 @@ void CTriggerCamera::Use(const UseInfo& info)
 
 	if (!IsStringNull(m_sPath))
 	{
-		m_pentPath = UTIL_FindEntityByTargetname(nullptr, STRING(m_sPath));
+		m_hEntPath = UTIL_FindEntityByTargetname(nullptr, STRING(m_sPath));
 	}
 	else
 	{
-		m_pentPath = nullptr;
+		m_hEntPath = nullptr;
 	}
 
 	m_flStopTime = gpGlobals->time;
-	if (m_pentPath)
+	if (auto path = m_hEntPath.Get(); path)
 	{
-		if (m_pentPath->pev->speed != 0)
-			m_targetSpeed = m_pentPath->pev->speed;
+		if (path->pev->speed != 0)
+			m_targetSpeed = path->pev->speed;
 
-		m_flStopTime += m_pentPath->GetDelay();
+		m_flStopTime += path->GetDelay();
 	}
 
 	// copy over player information
@@ -1289,8 +1289,9 @@ void CTriggerCamera::FollowTarget()
 
 void CTriggerCamera::Move()
 {
+	auto path = m_hEntPath.Get();
 	// Not moving on a path, return
-	if (!m_pentPath)
+	if (!path)
 		return;
 
 	// Subtract movement from the previous frame
@@ -1300,29 +1301,29 @@ void CTriggerCamera::Move()
 	if (m_moveDistance <= 0)
 	{
 		// Fire the passtarget if there is one
-		if (!IsStringNull(m_pentPath->pev->message))
+		if (!IsStringNull(path->pev->message))
 		{
-			FireTargets(STRING(m_pentPath->pev->message), this, this, USE_TOGGLE, 0);
-			if (IsBitSet(m_pentPath->pev->spawnflags, SF_CORNER_FIREONCE))
-				m_pentPath->pev->message = iStringNull;
+			FireTargets(STRING(path->pev->message), this, this, USE_TOGGLE, 0);
+			if (IsBitSet(path->pev->spawnflags, SF_CORNER_FIREONCE))
+				path->pev->message = iStringNull;
 		}
 		// Time to go to the next target
-		m_pentPath = m_pentPath->GetNextTarget();
+		path = m_hEntPath = path->GetNextTarget();
 
 		// Set up next corner
-		if (!m_pentPath)
+		if (!path)
 		{
 			pev->velocity = vec3_origin;
 		}
 		else
 		{
-			if (m_pentPath->pev->speed != 0)
-				m_targetSpeed = m_pentPath->pev->speed;
+			if (path->pev->speed != 0)
+				m_targetSpeed = path->pev->speed;
 
-			const Vector delta = m_pentPath->pev->origin - pev->origin;
+			const Vector delta = path->pev->origin - pev->origin;
 			m_moveDistance = delta.Length();
 			pev->movedir = delta.Normalize();
-			m_flStopTime = gpGlobals->time + m_pentPath->GetDelay();
+			m_flStopTime = gpGlobals->time + path->GetDelay();
 		}
 	}
 

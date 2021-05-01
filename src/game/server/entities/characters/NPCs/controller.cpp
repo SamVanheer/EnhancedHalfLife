@@ -86,7 +86,7 @@ public:
 	void Killed(const KilledInfo& info) override;
 	void GibMonster() override;
 
-	CSprite* m_pBall[2];	// hand balls
+	EHandle<CSprite> m_hBall[2];	// hand balls
 	int m_iBall[2];			// how bright it should be
 	float m_iBallTime[2];	// when it should be that color
 	int m_iBallCurrent[2];	// current brightness
@@ -101,7 +101,7 @@ LINK_ENTITY_TO_CLASS(monster_alien_controller, CController);
 
 TYPEDESCRIPTION	CController::m_SaveData[] =
 {
-	DEFINE_ARRAY(CController, m_pBall, FIELD_CLASSPTR, 2),
+	DEFINE_ARRAY(CController, m_hBall, FIELD_EHANDLE, 2),
 	DEFINE_ARRAY(CController, m_iBall, FIELD_INTEGER, 2),
 	DEFINE_ARRAY(CController, m_iBallTime, FIELD_TIME, 2),
 	DEFINE_ARRAY(CController, m_iBallCurrent, FIELD_INTEGER, 2),
@@ -167,15 +167,15 @@ bool CController::TakeDamage(const TakeDamageInfo& info)
 void CController::Killed(const KilledInfo& info)
 {
 	// fade balls
-	if (m_pBall[0])
+	if (m_hBall[0])
 	{
-		m_pBall[0]->SUB_StartFadeOut();
-		m_pBall[0] = nullptr;
+		m_hBall[0]->SUB_StartFadeOut();
+		m_hBall[0] = nullptr;
 	}
-	if (m_pBall[1])
+	if (m_hBall[1])
 	{
-		m_pBall[1]->SUB_StartFadeOut();
-		m_pBall[1] = nullptr;
+		m_hBall[1]->SUB_StartFadeOut();
+		m_hBall[1] = nullptr;
 	}
 
 	CSquadMonster::Killed(info);
@@ -184,15 +184,15 @@ void CController::Killed(const KilledInfo& info)
 void CController::GibMonster()
 {
 	// delete balls
-	if (m_pBall[0])
+	if (m_hBall[0])
 	{
-		UTIL_Remove(m_pBall[0]);
-		m_pBall[0] = nullptr;
+		UTIL_Remove(m_hBall[0]);
+		m_hBall[0] = nullptr;
 	}
-	if (m_pBall[1])
+	if (m_hBall[1])
 	{
-		UTIL_Remove(m_pBall[1]);
-		m_pBall[1] = nullptr;
+		UTIL_Remove(m_hBall[1]);
+		m_hBall[1] = nullptr;
 	}
 	CSquadMonster::GibMonster();
 }
@@ -748,12 +748,14 @@ void CController::RunAI()
 
 	for (int i = 0; i < 2; i++)
 	{
-		if (m_pBall[i] == nullptr)
+		auto ball = m_hBall[i].Get();
+
+		if (ball == nullptr)
 		{
-			m_pBall[i] = CSprite::SpriteCreate("sprites/xspark4.spr", pev->origin, true);
-			m_pBall[i]->SetTransparency(RenderMode::Glow, 255, 255, 255, 255, RenderFX::NoDissipation);
-			m_pBall[i]->SetAttachment(edict(), (i + 3));
-			m_pBall[i]->SetScale(1.0);
+			ball = m_hBall[i] = CSprite::SpriteCreate("sprites/xspark4.spr", pev->origin, true);
+			ball->SetTransparency(RenderMode::Glow, 255, 255, 255, 255, RenderFX::NoDissipation);
+			ball->SetAttachment(edict(), (i + 3));
+			ball->SetScale(1.0);
 		}
 
 		float t = m_iBallTime[i] - gpGlobals->time;
@@ -764,11 +766,11 @@ void CController::RunAI()
 
 		m_iBallCurrent[i] += (m_iBall[i] - m_iBallCurrent[i]) * t;
 
-		m_pBall[i]->SetBrightness(m_iBallCurrent[i]);
+		ball->SetBrightness(m_iBallCurrent[i]);
 
 		Vector vecStart, angleGun;
 		GetAttachment(i + 2, vecStart, angleGun);
-		UTIL_SetOrigin(m_pBall[i]->pev, vecStart);
+		UTIL_SetOrigin(ball->pev, vecStart);
 
 		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_ELIGHT);

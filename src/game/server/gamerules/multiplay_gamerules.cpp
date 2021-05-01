@@ -274,13 +274,15 @@ bool CHalfLifeMultiplay::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerIte
 		return false;
 	}
 
-	if (!pPlayer->m_pActiveItem)
+	auto activeItem = pPlayer->m_hActiveItem.Get();
+
+	if (!activeItem)
 	{
 		// player doesn't have an active item!
 		return true;
 	}
 
-	if (!pPlayer->m_pActiveItem->CanHolster())
+	if (!activeItem->CanHolster())
 	{
 		// can't put away the active item.
 		return false;
@@ -298,7 +300,7 @@ bool CHalfLifeMultiplay::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerIte
 		return false;
 	}
 
-	if (pWeapon->Weight() > pPlayer->m_pActiveItem->Weight())
+	if (pWeapon->Weight() > activeItem->Weight())
 	{
 		return true;
 	}
@@ -325,7 +327,7 @@ bool CHalfLifeMultiplay::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem
 
 	for (i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		pCheck = pPlayer->m_rgpPlayerItems[i];
+		pCheck = pPlayer->m_hPlayerItems[i];
 
 		while (pCheck)
 		{
@@ -354,7 +356,7 @@ bool CHalfLifeMultiplay::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem
 				}
 			}
 
-			pCheck = pCheck->m_pNext;
+			pCheck = pCheck->m_hNext;
 		}
 	}
 
@@ -654,9 +656,9 @@ void CHalfLifeMultiplay::DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, e
 				// If the inflictor is the killer,  then it must be their current weapon doing the damage
 				CBasePlayer* pPlayer = (CBasePlayer*)CBaseEntity::Instance(pKiller);
 
-				if (pPlayer->m_pActiveItem)
+				if (auto activeItem = pPlayer->m_hActiveItem.Get(); activeItem)
 				{
-					killer_weapon_name = pPlayer->m_pActiveItem->pszName();
+					killer_weapon_name = activeItem->pszName();
 				}
 			}
 			else
@@ -891,7 +893,7 @@ bool CHalfLifeMultiplay::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem
 		// check if the player already has this weapon
 		for (int i = 0; i < MAX_ITEM_TYPES; i++)
 		{
-			CBasePlayerItem* it = pPlayer->m_rgpPlayerItems[i];
+			CBasePlayerItem* it = pPlayer->m_hPlayerItems[i];
 
 			while (it != nullptr)
 			{
@@ -900,7 +902,7 @@ bool CHalfLifeMultiplay::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem
 					return false;
 				}
 
-				it = it->m_pNext;
+				it = it->m_hNext;
 			}
 		}
 	}

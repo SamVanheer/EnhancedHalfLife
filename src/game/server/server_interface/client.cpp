@@ -1244,11 +1244,9 @@ int GetWeaponData(edict_t* player, weapon_data_t* info)
 	// go through all of the weapons and make a list of the ones to pack
 	for (i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		if (pl->m_rgpPlayerItems[i])
+		if (CBasePlayerItem* pPlayerItem = pl->m_hPlayerItems[i]; pPlayerItem)
 		{
 			// there's a weapon here. Should I pack it?
-			CBasePlayerItem* pPlayerItem = pl->m_rgpPlayerItems[i];
-
 			while (pPlayerItem)
 			{
 				gun = dynamic_cast<CBasePlayerWeapon*>(pPlayerItem->GetWeaponPtr());
@@ -1277,7 +1275,7 @@ int GetWeaponData(edict_t* player, weapon_data_t* info)
 						//						item->m_flPumpTime				= std::max( gun->m_flPumpTime, -0.001f );
 					}
 				}
-				pPlayerItem = pPlayerItem->m_pNext;
+				pPlayerItem = pPlayerItem->m_hNext;
 			}
 		}
 	}
@@ -1364,10 +1362,10 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 			cd->vuser2.x = pl->GetAmmoCount("Hornets");
 
 
-			if (pl->m_pActiveItem)
+			if (pl->m_hActiveItem)
 			{
 				CBasePlayerWeapon* gun;
-				gun = (CBasePlayerWeapon*)pl->m_pActiveItem->GetWeaponPtr();
+				gun = (CBasePlayerWeapon*)pl->m_hActiveItem->GetWeaponPtr();
 				if (gun && gun->UseDecrement())
 				{
 					ItemInfo II;
@@ -1381,10 +1379,10 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 					cd->vuser4.y = pl->m_rgAmmo[gun->m_iPrimaryAmmoType];
 					cd->vuser4.z = pl->m_rgAmmo[gun->m_iSecondaryAmmoType];
 
-					if (pl->m_pActiveItem->m_iId == WEAPON_RPG)
+					if (gun->m_iId == WEAPON_RPG)
 					{
-						cd->vuser2.y = ((CRpg*)pl->m_pActiveItem)->m_fSpotActive;
-						cd->vuser2.z = ((CRpg*)pl->m_pActiveItem)->m_cActiveRockets;
+						cd->vuser2.y = ((CRpg*)gun)->m_fSpotActive;
+						cd->vuser2.z = ((CRpg*)gun)->m_cActiveRockets;
 					}
 				}
 			}

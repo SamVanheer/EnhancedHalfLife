@@ -105,7 +105,7 @@ public:
 	float m_flMaxSpin;		// Max time to spin the barrel w/o a target
 	bool m_iSpin;
 
-	CSprite* m_pEyeGlow;
+	EHandle<CSprite> m_hEyeGlow; //TODO: need to remove this entity on death
 	int		m_eyeBrightness;
 
 	int	m_iDeployHeight;
@@ -139,7 +139,7 @@ TYPEDESCRIPTION	CBaseTurret::m_SaveData[] =
 	DEFINE_FIELD(CBaseTurret, m_flMaxSpin, FIELD_FLOAT),
 	DEFINE_FIELD(CBaseTurret, m_iSpin, FIELD_BOOLEAN),
 
-	DEFINE_FIELD(CBaseTurret, m_pEyeGlow, FIELD_CLASSPTR),
+	DEFINE_FIELD(CBaseTurret, m_hEyeGlow, FIELD_EHANDLE),
 	DEFINE_FIELD(CBaseTurret, m_eyeBrightness, FIELD_INTEGER),
 	DEFINE_FIELD(CBaseTurret, m_iDeployHeight, FIELD_INTEGER),
 	DEFINE_FIELD(CBaseTurret, m_iRetractHeight, FIELD_INTEGER),
@@ -305,9 +305,9 @@ void CTurret::Spawn()
 
 	SetThink(&CTurret::Initialize);
 
-	m_pEyeGlow = CSprite::SpriteCreate(TURRET_GLOW_SPRITE.data(), pev->origin, false);
-	m_pEyeGlow->SetTransparency(RenderMode::Glow, 255, 0, 0, 0, RenderFX::NoDissipation);
-	m_pEyeGlow->SetAttachment(edict(), 2);
+	auto glow = m_hEyeGlow = CSprite::SpriteCreate(TURRET_GLOW_SPRITE.data(), pev->origin, false);
+	glow->SetTransparency(RenderMode::Glow, 255, 0, 0, 0, RenderFX::NoDissipation);
+	glow->SetAttachment(edict(), 2);
 	m_eyeBrightness = 0;
 
 	pev->nextthink = gpGlobals->time + 0.3;
@@ -429,24 +429,24 @@ void CBaseTurret::Ping()
 
 void CBaseTurret::EyeOn()
 {
-	if (m_pEyeGlow)
+	if (auto glow = m_hEyeGlow.Get(); glow)
 	{
 		if (m_eyeBrightness != 255)
 		{
 			m_eyeBrightness = 255;
 		}
-		m_pEyeGlow->SetBrightness(m_eyeBrightness);
+		glow->SetBrightness(m_eyeBrightness);
 	}
 }
 
 void CBaseTurret::EyeOff()
 {
-	if (m_pEyeGlow)
+	if (auto glow = m_hEyeGlow.Get(); glow)
 	{
 		if (m_eyeBrightness > 0)
 		{
 			m_eyeBrightness = std::max(0, m_eyeBrightness - 30);
-			m_pEyeGlow->SetBrightness(m_eyeBrightness);
+			glow->SetBrightness(m_eyeBrightness);
 		}
 	}
 }

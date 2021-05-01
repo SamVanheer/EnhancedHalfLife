@@ -268,7 +268,7 @@ int CSquadMonster::SquadRecruit(int searchRadius, int maxMembers)
 		while ((pEntity = UTIL_FindEntityInSphere(pEntity, pev->origin, searchRadius)) != nullptr)
 		{
 			if (CSquadMonster* pRecruit = pEntity->MySquadMonsterPointer();
-				pRecruit && pRecruit != this && pRecruit->IsAlive() && !pRecruit->m_pCine)
+				pRecruit && pRecruit != this && pRecruit->IsAlive() && !pRecruit->m_hCine)
 			{
 				// Can we recruit this guy?
 				if (!pRecruit->InSquad() && pRecruit->Classify() == iMyClass &&

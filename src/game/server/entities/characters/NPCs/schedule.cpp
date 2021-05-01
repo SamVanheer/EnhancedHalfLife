@@ -460,14 +460,14 @@ void CBaseMonster::RunTask(Task_t* pTask)
 	break;
 	case TASK_WAIT_FOR_SCRIPT:
 	{
-		if (m_pCine->m_iDelay <= 0 && gpGlobals->time >= m_pCine->m_startTime)
+		if (auto cine = m_hCine.Get(); cine->m_iDelay <= 0 && gpGlobals->time >= cine->m_startTime)
 		{
 			TaskComplete();
-			m_pCine->StartSequence(this, m_pCine->m_iszPlay, true);
+			cine->StartSequence(this, cine->m_iszPlay, true);
 			if (m_fSequenceFinished)
 				ClearSchedule();
 			pev->framerate = 1.0;
-			//ALERT( at_aiconsole, "Script %s has begun for %s\n", STRING( m_pCine->m_iszPlay ), STRING(pev->classname) );
+			//ALERT( at_aiconsole, "Script %s has begun for %s\n", STRING( cine->m_iszPlay ), STRING(pev->classname) );
 		}
 		break;
 	}
@@ -475,7 +475,7 @@ void CBaseMonster::RunTask(Task_t* pTask)
 	{
 		if (m_fSequenceFinished)
 		{
-			m_pCine->SequenceDone(this);
+			m_hCine->SequenceDone(this);
 		}
 		break;
 	}
@@ -1156,10 +1156,10 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_WAIT_FOR_SCRIPT:
 	{
-		if (!IsStringNull(m_pCine->m_iszIdle))
+		if (auto cine = m_hCine.Get(); !IsStringNull(cine->m_iszIdle))
 		{
-			m_pCine->StartSequence(this, m_pCine->m_iszIdle, false);
-			if (AreStringsEqual(STRING(m_pCine->m_iszIdle), STRING(m_pCine->m_iszPlay)))
+			cine->StartSequence(this, cine->m_iszIdle, false);
+			if (AreStringsEqual(STRING(cine->m_iszIdle), STRING(cine->m_iszPlay)))
 			{
 				pev->framerate = 0;
 			}
@@ -1178,7 +1178,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_ENABLE_SCRIPT:
 	{
-		m_pCine->DelayStart(0);
+		m_hCine->DelayStart(0);
 		TaskComplete();
 		break;
 	}
@@ -1389,8 +1389,8 @@ Schedule_t* CBaseMonster::GetSchedule()
 	}
 	case NPCState::Script:
 	{
-		ASSERT(m_pCine != nullptr);
-		if (!m_pCine)
+		ASSERT(m_hCine != nullptr);
+		if (!m_hCine)
 		{
 			ALERT(at_aiconsole, "Script failed for %s\n", STRING(pev->classname));
 			CineCleanup();

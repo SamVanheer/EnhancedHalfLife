@@ -95,7 +95,7 @@ TYPEDESCRIPTION	CBaseMonster::m_SaveData[] =
 	DEFINE_FIELD(CBaseMonster, m_HackedGunPos, FIELD_VECTOR),
 
 	DEFINE_FIELD(CBaseMonster, m_scriptState, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseMonster, m_pCine, FIELD_CLASSPTR),
+	DEFINE_FIELD(CBaseMonster, m_hCine, FIELD_EHANDLE),
 };
 
 //IMPLEMENT_SAVERESTORE( CBaseMonster, CBaseToggle );
@@ -483,8 +483,8 @@ int CBaseMonster::IgnoreConditions()
 		iIgnoreConditions |= bits_COND_SMELL_FOOD;
 	}
 
-	if (m_MonsterState == NPCState::Script && m_pCine)
-		iIgnoreConditions |= m_pCine->IgnoreConditions();
+	if (auto cine = m_hCine.Get(); m_MonsterState == NPCState::Script && cine)
+		iIgnoreConditions |= cine->IgnoreConditions();
 
 	return iIgnoreConditions;
 }
@@ -522,7 +522,7 @@ bool CBaseMonster::RefreshRoute()
 	case MOVEGOAL_PATHCORNER:
 	{
 		// monster is on a path_corner loop
-		CBaseEntity* pPathCorner = m_pGoalEnt;
+		CBaseEntity* pPathCorner = m_hGoalEnt;
 
 		for (int i = 0; pPathCorner && i < ROUTE_SIZE; ++i)
 		{
@@ -1223,9 +1223,9 @@ void CBaseMonster::AdvanceRoute(float distance)
 	{
 		if (!(m_Route[m_iRouteIndex].iType & bits_MF_IS_GOAL))
 		{
-			// If we've just passed a path_corner, advance m_pGoalEnt
+			// If we've just passed a path_corner, advance m_hGoalEnt
 			if ((m_Route[m_iRouteIndex].iType & ~bits_MF_NOT_TO_MASK) == bits_MF_TO_PATHCORNER)
-				m_pGoalEnt = m_pGoalEnt->GetNextTarget();
+				m_hGoalEnt = m_hGoalEnt->GetNextTarget();
 
 			// IF both waypoints are nodes, then check for a link for a door and operate it.
 			//
@@ -1794,21 +1794,21 @@ void CBaseMonster::StartMonster()
 	if (!IsStringNull(pev->target))// this monster has a target
 	{
 		// Find the monster's initial target entity, stash it
-		m_pGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+		m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
 
-		if (!m_pGoalEnt)
+		if (!m_hGoalEnt)
 		{
 			ALERT(at_error, "ReadyMonster()--%s couldn't find target %s", STRING(pev->classname), STRING(pev->target));
 		}
 		else
 		{
 			// Monster will start turning towards his destination
-			MakeIdealYaw(m_pGoalEnt->pev->origin);
+			MakeIdealYaw(m_hGoalEnt->pev->origin);
 
 			// JAY: How important is this error message?  Big Momma doesn't obey this rule, so I took it out.
 #if 0
 			// At this point, we expect only a path_corner as initial goal
-			if (!ClassnameIs(m_pGoalEnt->pev, "path_corner"))
+			if (!ClassnameIs(m_hGoalEnt->pev, "path_corner"))
 			{
 				ALERT(at_warning, "ReadyMonster--monster's initial goal '%s' is not a path_corner", STRING(pev->target));
 			}
@@ -2288,13 +2288,13 @@ void CBaseMonster::HandleAnimEvent(AnimationEvent& event)
 		break;
 
 	case SCRIPT_EVENT_NOINTERRUPT:		// Can't be interrupted from now on
-		if (m_pCine)
-			m_pCine->AllowInterrupt(false);
+		if (auto cine = m_hCine.Get(); cine)
+			cine->AllowInterrupt(false);
 		break;
 
 	case SCRIPT_EVENT_CANINTERRUPT:		// OK to interrupt now
-		if (m_pCine)
-			m_pCine->AllowInterrupt(true);
+		if (auto cine = m_hCine.Get(); cine)
+			cine->AllowInterrupt(true);
 		break;
 
 #if 0
@@ -2662,7 +2662,7 @@ bool CBaseMonster::CheckAITrigger()
 
 bool CBaseMonster::CanPlaySequence(bool fDisregardMonsterState, int interruptLevel)
 {
-	if (m_pCine || !IsAlive() || m_MonsterState == NPCState::Prone)
+	if (m_hCine || !IsAlive() || m_MonsterState == NPCState::Prone)
 	{
 		// monster is already running a scripted sequence or dead!
 		return false;

@@ -1029,8 +1029,9 @@ Schedule_t* CBaseMonster::GetScheduleOfType(int Type)
 		// This is the schedule for scripted sequences AND scripted AI
 	case SCHED_AISCRIPT:
 	{
-		ASSERT(m_pCine != nullptr);
-		if (!m_pCine)
+		auto cine = m_hCine.Get();
+		ASSERT(cine != nullptr);
+		if (!cine)
 		{
 			ALERT(at_aiconsole, "Script failed for %s\n", STRING(pev->classname));
 			CineCleanup();
@@ -1039,7 +1040,7 @@ Schedule_t* CBaseMonster::GetScheduleOfType(int Type)
 		//			else
 		//				ALERT( at_aiconsole, "Starting script %s for %s\n", STRING( m_pCine->m_iszPlay ), STRING(pev->classname) );
 
-		switch (m_pCine->m_fMoveTo)
+		switch (cine->m_fMoveTo)
 		{
 		case ScriptedMoveTo::No:
 		case ScriptedMoveTo::Instantaneous:
