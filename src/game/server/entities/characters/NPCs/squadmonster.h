@@ -55,8 +55,8 @@ class CSquadMonster : public CBaseMonster
 {
 public:
 	// squad leader info
-	EHANDLE	m_hSquadLeader;		//!< who is my leader
-	EHANDLE	m_hSquadMember[MAX_SQUAD_MEMBERS - 1];	//!< valid only for leader
+	EHandle<CSquadMonster> m_hSquadLeader;		//!< who is my leader
+	EHandle<CSquadMonster> m_hSquadMember[MAX_SQUAD_MEMBERS - 1];	//!< valid only for leader
 	int		m_afSquadSlots;
 	float	m_flLastEnemySightTime; //!< last time anyone in the squad saw the enemy
 	bool	m_fEnemyEluded;
@@ -84,8 +84,7 @@ public:
 	// squad functions still left in base class
 	CSquadMonster* MySquadLeader()
 	{
-		CSquadMonster* pSquadLeader = (CSquadMonster*)((CBaseEntity*)m_hSquadLeader);
-		if (pSquadLeader != nullptr)
+		if (CSquadMonster* pSquadLeader = m_hSquadLeader; pSquadLeader != nullptr)
 			return pSquadLeader;
 		return this;
 	}
@@ -94,7 +93,7 @@ public:
 		if (i >= MAX_SQUAD_MEMBERS - 1)
 			return this;
 		else
-			return (CSquadMonster*)((CBaseEntity*)m_hSquadMember[i]);
+			return m_hSquadMember[i];
 	}
 	bool InSquad() { return m_hSquadLeader != nullptr; }
 	bool IsLeader() { return m_hSquadLeader == this; }

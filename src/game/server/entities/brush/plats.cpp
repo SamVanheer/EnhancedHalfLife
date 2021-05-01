@@ -277,7 +277,7 @@ public:
 	*	@brief When the platform's trigger field is touched, the platform ???
 	*/
 	void Touch(CBaseEntity* pOther) override;
-	EHANDLE m_hPlatform;
+	EHandle<CFuncPlat> m_hPlatform;
 };
 
 void CFuncPlat::Setup()
@@ -376,7 +376,9 @@ void CPlatTrigger::SpawnInsideTrigger(CFuncPlat* pPlatform)
 void CPlatTrigger::Touch(CBaseEntity* pOther)
 {
 	//Platform was removed, remove trigger
-	if (!m_hPlatform || !m_hPlatform->pev)
+	auto platform = m_hPlatform.Get();
+
+	if (!platform || !platform->pev)
 	{
 		UTIL_Remove(this);
 		return;
@@ -389,8 +391,6 @@ void CPlatTrigger::Touch(CBaseEntity* pOther)
 	// Ignore touches by corpses
 	if (!pOther->IsAlive())
 		return;
-
-	CFuncPlat* platform = static_cast<CFuncPlat*>(static_cast<CBaseEntity*>(m_hPlatform));
 
 	// Make linked platform go up/down.
 	if (platform->m_toggle_state == ToggleState::AtBottom)

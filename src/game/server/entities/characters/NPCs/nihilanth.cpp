@@ -21,6 +21,8 @@
 #include "navigation/nodes.h"
 #include "effects.h"
 
+class CNihilanthHVR;
+
 constexpr int N_SCALE = 15;
 constexpr int N_SPHERES = 20;
 
@@ -113,7 +115,7 @@ public:
 
 	EHANDLE m_hRecharger;
 
-	EHANDLE m_hSphere[N_SPHERES];
+	EHandle<CNihilanthHVR> m_hSphere[N_SPHERES];
 	int	m_iActiveSpheres;
 
 	float m_flAdj;
@@ -948,7 +950,7 @@ bool CNihilanth::AbsorbSphere()
 	{
 		if (m_hSphere[i] != nullptr)
 		{
-			CNihilanthHVR* pSphere = (CNihilanthHVR*)((CBaseEntity*)m_hSphere[i]);
+			CNihilanthHVR* pSphere = m_hSphere[i];
 			pSphere->AbsorbInit();
 			m_hSphere[i] = nullptr;
 			m_iActiveSpheres--;
@@ -989,13 +991,13 @@ bool CNihilanth::EmitSphere()
 
 void CNihilanth::TargetSphere(USE_TYPE useType, float value)
 {
-	CBaseMonster* pSphere;
+	CNihilanthHVR* pSphere;
 	int i;
 	for (i = 0; i < N_SPHERES; i++)
 	{
 		if (m_hSphere[i] != nullptr)
 		{
-			pSphere = m_hSphere[i]->MyMonsterPointer();
+			pSphere = m_hSphere[i];
 			if (pSphere->m_hEnemy == nullptr)
 				break;
 		}

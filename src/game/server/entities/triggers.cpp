@@ -1154,7 +1154,7 @@ void CTriggerCamera::Use(const UseInfo& info)
 
 	auto player = static_cast<CBasePlayer*>(pActivator);
 
-	m_hPlayer = pActivator;
+	m_hPlayer = player;
 
 	m_flReturnTime = gpGlobals->time + m_flWait;
 	pev->speed = m_initialSpeed;
@@ -1228,13 +1228,13 @@ void CTriggerCamera::Use(const UseInfo& info)
 
 void CTriggerCamera::FollowTarget()
 {
-	if (m_hPlayer == nullptr)
+	auto player = m_hPlayer.Get();
+
+	if (!player)
 		return;
 
 	if (m_hTarget == nullptr || m_flReturnTime < gpGlobals->time)
 	{
-		auto player = static_cast<CBasePlayer*>(static_cast<CBaseEntity*>(m_hPlayer));
-
 		if (player->IsAlive())
 		{
 			SET_VIEW(player->edict(), player->edict());

@@ -15,6 +15,8 @@
 
 #pragma once
 
+class CBasePlayer;
+
 constexpr int SF_TRIGGER_ALLOWMONSTERS = 1;	//!< monsters allowed to fire this trigger
 constexpr int SF_TRIGGER_NOCLIENTS = 2;		//!< players not allowed to fire this trigger
 constexpr int SF_TRIGGER_PUSHABLES = 4;		//!< only pushables can fire this trigger
@@ -350,7 +352,7 @@ public:
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	EHANDLE m_hPlayer;
+	EHandle<CBasePlayer> m_hPlayer;
 	EHANDLE m_hTarget;
 	EHandle<CBaseEntity> m_hEntPath;
 	string_t m_sPath;
