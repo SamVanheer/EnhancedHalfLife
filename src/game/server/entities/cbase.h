@@ -490,22 +490,6 @@ public:
 		return Instance(ENT(pev));
 	}
 
-	CBaseMonster* GetMonsterPointer(entvars_t* pevMonster)
-	{
-		CBaseEntity* pEntity = Instance(pevMonster);
-		if (pEntity)
-			return pEntity->MyMonsterPointer();
-		return nullptr;
-	}
-	CBaseMonster* GetMonsterPointer(edict_t* pentMonster)
-	{
-		CBaseEntity* pEntity = Instance(pentMonster);
-		if (pEntity)
-			return pEntity->MyMonsterPointer();
-		return nullptr;
-	}
-
-
 	// Ugly code to lookup all functions to make sure they are exported when set.
 #ifdef _DEBUG
 	void FunctionCheck(void* pFunction, const char* name)
