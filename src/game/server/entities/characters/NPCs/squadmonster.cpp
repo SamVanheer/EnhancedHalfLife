@@ -303,7 +303,7 @@ bool CSquadMonster::CheckEnemy(CBaseEntity* pEnemy)
 	const bool updatedLKP = CBaseMonster::CheckEnemy(m_hEnemy);
 
 	// communicate with squad members about the enemy IF this individual has the same enemy as the squad leader.
-	if (InSquad() && (CBaseEntity*)m_hEnemy == MySquadLeader()->m_hEnemy)
+	if (InSquad() && m_hEnemy.Get() == MySquadLeader()->m_hEnemy)
 	{
 		if (updatedLKP)
 		{
