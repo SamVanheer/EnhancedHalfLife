@@ -184,8 +184,8 @@ const Vector& CBeam::GetStartPos()
 {
 	if (GetType() == BEAM_ENTS)
 	{
-		edict_t* pent = g_engfuncs.pfnPEntityOfEntIndex(GetStartEntity());
-		return pent->v.origin;
+		auto pEntity = UTIL_EntityByIndex(GetStartEntity());
+		return pEntity->pev->origin;
 	}
 	return pev->origin;
 }
@@ -198,8 +198,8 @@ const Vector& CBeam::GetEndPos()
 		return pev->angles;
 	}
 
-	if (edict_t* pent = g_engfuncs.pfnPEntityOfEntIndex(GetEndEntity()); pent)
-		return pent->v.origin;
+	if (CBaseEntity* pEntity = UTIL_EntityByIndex(GetEndEntity()); pEntity)
+		return pEntity->pev->origin;
 	return pev->angles;
 }
 
@@ -1700,16 +1700,16 @@ Vector CBlood::BloodPosition(CBaseEntity* pActivator)
 {
 	if (pev->spawnflags & SF_BLOOD_PLAYER)
 	{
-		edict_t* pPlayer;
+		CBaseEntity* pPlayer;
 
 		if (pActivator && pActivator->IsPlayer())
 		{
-			pPlayer = pActivator->edict();
+			pPlayer = pActivator;
 		}
 		else
-			pPlayer = g_engfuncs.pfnPEntityOfEntIndex(1);
+			pPlayer = UTIL_EntityByIndex(1);
 		if (pPlayer)
-			return (pPlayer->v.origin + pPlayer->v.view_ofs) + Vector(RANDOM_FLOAT(-10, 10), RANDOM_FLOAT(-10, 10), RANDOM_FLOAT(-10, 10));
+			return (pPlayer->pev->origin + pPlayer->pev->view_ofs) + Vector(RANDOM_FLOAT(-10, 10), RANDOM_FLOAT(-10, 10), RANDOM_FLOAT(-10, 10));
 	}
 
 	return pev->origin;

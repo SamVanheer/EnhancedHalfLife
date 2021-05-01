@@ -57,7 +57,7 @@ public:
 	void EXPORT TouchChangeLevel(CBaseEntity* pOther);
 	void ChangeLevelNow(CBaseEntity* pActivator);
 
-	static edict_t* FindLandmark(const char* pLandmarkName);
+	static CBaseEntity* FindLandmark(const char* pLandmarkName);
 
 	/**
 	*	@brief This builds the list of all transitions on this level and which entities are in their PVS's and can / should be moved across.
@@ -67,7 +67,7 @@ public:
 	/**
 	*	@brief Add a transition to the list, but ignore duplicates (a designer may have placed multiple trigger_changelevels with the same landmark)
 	*/
-	static bool AddTransitionToList(LEVELLIST* pLevelList, int listCount, const char* pMapName, const char* pLandmarkName, edict_t* pentLandmark);
+	static bool AddTransitionToList(LEVELLIST* pLevelList, int listCount, const char* pMapName, const char* pLandmarkName, CBaseEntity* pentLandmark);
 	static bool InTransitionVolume(CBaseEntity* pEntity, char* pVolumeName);
 
 	bool Save(CSave& save) override;

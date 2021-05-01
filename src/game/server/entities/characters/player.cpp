@@ -1372,16 +1372,16 @@ void CBasePlayer::Jump()
 *	@brief This is a glorious hack to find free space when you've crouched into some solid space
 *	Our crouching collisions do not work correctly for some reason and this is easier than fixing the problem :(
 */
-void FixPlayerCrouchStuck(edict_t* pPlayer)
+void FixPlayerCrouchStuck(CBasePlayer* pPlayer)
 {
 	TraceResult trace;
 
 	// Move up as many as 18 pixels if the player is stuck.
 	for (int i = 0; i < 18; i++)
 	{
-		UTIL_TraceHull(pPlayer->v.origin, pPlayer->v.origin, IgnoreMonsters::No, Hull::Head, pPlayer, &trace);
+		UTIL_TraceHull(pPlayer->pev->origin, pPlayer->pev->origin, IgnoreMonsters::No, Hull::Head, pPlayer->edict(), &trace);
 		if (trace.fStartSolid)
-			pPlayer->v.origin.z++;
+			pPlayer->pev->origin.z++;
 		else
 			break;
 	}
@@ -2376,9 +2376,9 @@ bool CBasePlayer::Restore(CRestore& restore)
 		ALERT(at_console, "No Landmark:%s\n", pSaveData->szLandmarkName);
 
 		// default to normal spawn
-		edict_t* pentSpawnSpot = EntSelectSpawnPoint(this);
-		pev->origin = VARS(pentSpawnSpot)->origin + vec3_up;
-		pev->angles = VARS(pentSpawnSpot)->angles;
+		CBaseEntity* pSpawnSpot = EntSelectSpawnPoint(this);
+		pev->origin = pSpawnSpot->pev->origin + vec3_up;
+		pev->angles = pSpawnSpot->pev->angles;
 	}
 	pev->v_angle.z = 0;	// Clear out roll
 	pev->angles = pev->v_angle;
@@ -2393,7 +2393,7 @@ bool CBasePlayer::Restore(CRestore& restore)
 	if (IsBitSet(pev->flags, FL_DUCKING))
 	{
 		// Use the crouch HACK
-		//FixPlayerCrouchStuck( edict() );
+		//FixPlayerCrouchStuck(this);
 		// Don't need to do this with new player prediction code.
 		UTIL_SetSize(pev, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX);
 	}
@@ -3583,38 +3583,34 @@ Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelt
 		}
 	}
 
-	edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex(1);
-
 	float bestdot = flDelta; // +- 10 degrees
-	edict_t* bestent = nullptr;
+	CBaseEntity* bestent = nullptr;
 
-	for (int i = 1; i < gpGlobals->maxEntities; i++, pEdict++)
+	for (int i = 1; i < gpGlobals->maxEntities; i++)
 	{
-		if (pEdict->free)	// Not in use
+		auto entity = UTIL_EntityByIndex(i);
+
+		if (IsNullEnt(entity))	// Not in use
 			continue;
 
-		if (pEdict->v.takedamage != static_cast<int>(DamageMode::Aim))
+		if (entity->pev->takedamage != static_cast<int>(DamageMode::Aim))
 			continue;
-		if (pEdict == edict())
+		if (entity == this)
 			continue;
 		//		if (pev->team > 0 && pEdict->v.team == pev->team)
 		//			continue;	// don't aim at teammate
-		if (!g_pGameRules->ShouldAutoAim(this, pEdict))
+		if (!g_pGameRules->ShouldAutoAim(this, entity))
 			continue;
 
-		auto pEntity = Instance(pEdict);
-		if (pEntity == nullptr)
-			continue;
-
-		if (!pEntity->IsAlive())
+		if (!entity->IsAlive())
 			continue;
 
 		// don't look through water
-		if ((pev->waterlevel != WaterLevel::Head && pEntity->pev->waterlevel == WaterLevel::Head)
-			|| (pev->waterlevel == WaterLevel::Head && pEntity->pev->waterlevel == WaterLevel::Dry))
+		if ((pev->waterlevel != WaterLevel::Head && entity->pev->waterlevel == WaterLevel::Head)
+			|| (pev->waterlevel == WaterLevel::Head && entity->pev->waterlevel == WaterLevel::Dry))
 			continue;
 
-		const Vector center = pEntity->BodyTarget(vecSrc);
+		const Vector center = entity->BodyTarget(vecSrc);
 
 		const Vector dir = (center - vecSrc).Normalize();
 
@@ -3632,23 +3628,23 @@ Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelt
 			continue;	// to far to turn
 
 		UTIL_TraceLine(vecSrc, center, IgnoreMonsters::No, edict(), &tr);
-		if (tr.flFraction != 1.0 && tr.pHit != pEdict)
+		if (tr.flFraction != 1.0 && tr.pHit != entity->edict())
 		{
 			// ALERT( at_console, "hit %s, can't see %s\n", STRING( tr.pHit->v.classname ), STRING( pEdict->v.classname ) );
 			continue;
 		}
 
 		// don't shoot at friends
-		if (GetRelationship(pEntity) < Relationship::None)
+		if (GetRelationship(entity) < Relationship::None)
 		{
-			if (!pEntity->IsPlayer() && !g_pGameRules->IsDeathmatch())
+			if (!entity->IsPlayer() && !g_pGameRules->IsDeathmatch())
 				// ALERT( at_console, "friend\n");
 				continue;
 		}
 
 		// can shoot at this one
 		bestdot = dot;
-		bestent = pEdict;
+		bestent = entity;
 		bestdir = dir;
 	}
 
@@ -3658,7 +3654,7 @@ Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelt
 		bestdir.x = -bestdir.x;
 		bestdir = bestdir - pev->v_angle - pev->punchangle;
 
-		if (bestent->v.takedamage == static_cast<int>(DamageMode::Aim))
+		if (bestent->pev->takedamage == static_cast<int>(DamageMode::Aim))
 			m_fOnTarget = true;
 
 		return bestdir;

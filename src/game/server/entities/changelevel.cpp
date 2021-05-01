@@ -116,7 +116,7 @@ void CChangeLevel::Spawn()
 static char st_szNextMap[MAX_MAPNAME_LENGTH];
 static char st_szNextSpot[MAX_MAPNAME_LENGTH];
 
-edict_t* CChangeLevel::FindLandmark(const char* pLandmarkName)
+CBaseEntity* CChangeLevel::FindLandmark(const char* pLandmarkName)
 {
 	CBaseEntity* pLandmark = nullptr;
 
@@ -124,7 +124,7 @@ edict_t* CChangeLevel::FindLandmark(const char* pLandmarkName)
 	{
 		// Found the landmark
 		if (ClassnameIs(pLandmark->pev, "info_landmark"))
-			return pLandmark->edict();
+			return pLandmark;
 	}
 
 	ALERT(at_error, "Can't find landmark %s\n", pLandmarkName);
@@ -178,11 +178,11 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 	st_szNextSpot[0] = 0;	// Init landmark to NULL
 
 	// look for a landmark entity		
-	edict_t* pentLandmark = FindLandmark(m_szLandmarkName);
-	if (!IsNullEnt(pentLandmark))
+	CBaseEntity* pLandmark = FindLandmark(m_szLandmarkName);
+	if (!IsNullEnt(pLandmark))
 	{
 		safe_strcpy(st_szNextSpot, m_szLandmarkName);
-		gpGlobals->vecLandmarkOffset = VARS(pentLandmark)->origin;
+		gpGlobals->vecLandmarkOffset = pLandmark->pev->origin;
 	}
 	//LEVELLIST	levels[16];
 	//	ALERT( at_console, "Level touches %d levels\n", ChangeList( levels, 16 ) );
@@ -198,20 +198,20 @@ void CChangeLevel::TouchChangeLevel(CBaseEntity* pOther)
 	ChangeLevelNow(pOther);
 }
 
-bool CChangeLevel::AddTransitionToList(LEVELLIST* pLevelList, int listCount, const char* pMapName, const char* pLandmarkName, edict_t* pentLandmark)
+bool CChangeLevel::AddTransitionToList(LEVELLIST* pLevelList, int listCount, const char* pMapName, const char* pLandmarkName, CBaseEntity* pLandmark)
 {
-	if (!pLevelList || !pMapName || !pLandmarkName || !pentLandmark)
+	if (!pLevelList || !pMapName || !pLandmarkName || !pLandmark)
 		return false;
 
 	for (int i = 0; i < listCount; i++)
 	{
-		if (pLevelList[i].pentLandmark == pentLandmark && strcmp(pLevelList[i].mapName, pMapName) == 0)
+		if (pLevelList[i].pentLandmark == pLandmark->edict() && strcmp(pLevelList[i].mapName, pMapName) == 0)
 			return false;
 	}
 	safe_strcpy(pLevelList[listCount].mapName, pMapName);
 	safe_strcpy(pLevelList[listCount].landmarkName, pLandmarkName);
-	pLevelList[listCount].pentLandmark = pentLandmark;
-	pLevelList[listCount].vecLandmarkOrigin = VARS(pentLandmark)->origin;
+	pLevelList[listCount].pentLandmark = pLandmark->edict();
+	pLevelList[listCount].vecLandmarkOrigin = pLandmark->pev->origin;
 
 	return true;
 }
@@ -265,11 +265,11 @@ int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 			auto pTrigger = static_cast<CChangeLevel*>(pChangelevel);
 
 			// Find the corresponding landmark
-			edict_t* pentLandmark = FindLandmark(pTrigger->m_szLandmarkName);
-			if (pentLandmark)
+			CBaseEntity* pLandmark = FindLandmark(pTrigger->m_szLandmarkName);
+			if (pLandmark)
 			{
 				// Build a list of unique transitions
-				if (AddTransitionToList(pLevelList, count, pTrigger->m_szMapName, pTrigger->m_szLandmarkName, pentLandmark))
+				if (AddTransitionToList(pLevelList, count, pTrigger->m_szMapName, pTrigger->m_szLandmarkName, pLandmark))
 				{
 					count++;
 					if (count >= maxList)		// FULL!!
@@ -290,40 +290,35 @@ int CChangeLevel::BuildChangeList(LEVELLIST* pLevelList, int maxList)
 			int entityFlags[MAX_ENTITY]{};
 
 			// Follow the linked list of entities in the PVS of the transition landmark
-			edict_t* pent = UTIL_EntitiesInPVS(pLevelList[i].pentLandmark);
-
-			// Build a list of valid entities in this linked list (we're going to use pent->v.chain again)
-			while (!IsNullEnt(pent))
+			// Build a list of valid entities in this linked list (we're going to use pEntity->pev->chain again)
+			for (CBaseEntity* pEntity = Instance(UTIL_EntitiesInPVS(pLevelList[i].pentLandmark));
+				!IsNullEnt(pEntity);
+				pEntity = Instance(pEntity->pev->chain))
 			{
-				CBaseEntity* pEntity = CBaseEntity::Instance(pent);
-				if (pEntity)
+				//					ALERT( at_console, "Trying %s\n", STRING(pEntity->pev->classname) );
+				int caps = pEntity->ObjectCaps();
+				if (!(caps & FCAP_DONT_SAVE))
 				{
-					//					ALERT( at_console, "Trying %s\n", STRING(pEntity->pev->classname) );
-					int caps = pEntity->ObjectCaps();
-					if (!(caps & FCAP_DONT_SAVE))
-					{
-						int flags = 0;
+					int flags = 0;
 
-						// If this entity can be moved or is global, mark it
-						if (caps & FCAP_ACROSS_TRANSITION)
-							flags |= FENTTABLE_MOVEABLE;
-						if (!IsStringNull(pEntity->pev->globalname) && !pEntity->IsDormant())
-							flags |= FENTTABLE_GLOBAL;
-						if (flags)
-						{
-							pEntList[entityCount] = pEntity;
-							entityFlags[entityCount] = flags;
-							entityCount++;
-							if (entityCount > MAX_ENTITY)
-								ALERT(at_error, "Too many entities across a transition!");
-						}
-						//						else
-						//							ALERT( at_console, "Failed %s\n", STRING(pEntity->pev->classname) );
+					// If this entity can be moved or is global, mark it
+					if (caps & FCAP_ACROSS_TRANSITION)
+						flags |= FENTTABLE_MOVEABLE;
+					if (!IsStringNull(pEntity->pev->globalname) && !pEntity->IsDormant())
+						flags |= FENTTABLE_GLOBAL;
+					if (flags)
+					{
+						pEntList[entityCount] = pEntity;
+						entityFlags[entityCount] = flags;
+						entityCount++;
+						if (entityCount > MAX_ENTITY)
+							ALERT(at_error, "Too many entities across a transition!");
 					}
-					//					else
-					//						ALERT( at_console, "DON'T SAVE %s\n", STRING(pEntity->pev->classname) );
+					//						else
+					//							ALERT( at_console, "Failed %s\n", STRING(pEntity->pev->classname) );
 				}
-				pent = pent->v.chain;
+				//					else
+				//						ALERT( at_console, "DON'T SAVE %s\n", STRING(pEntity->pev->classname) );
 			}
 
 			for (int j = 0; j < entityCount; j++)

@@ -99,7 +99,7 @@ class CBMortar : public CBaseEntity
 public:
 	void Spawn() override;
 
-	static CBMortar* Shoot(edict_t* pOwner, Vector vecStart, Vector vecVelocity);
+	static CBMortar* Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity);
 	void Touch(CBaseEntity* pOther) override;
 	void EXPORT Animate();
 
@@ -619,7 +619,7 @@ void CBigMomma::LaunchMortar()
 	startPos.z += 180;
 
 	EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pSackSounds), VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
-	CBMortar* pBomb = CBMortar::Shoot(edict(), startPos, pev->movedir);
+	CBMortar* pBomb = CBMortar::Shoot(this, startPos, pev->movedir);
 	pBomb->pev->gravity = 1.0;
 	MortarSpray(startPos, vec3_up, gSpitSprite, 24);
 }
@@ -1109,14 +1109,14 @@ void CBMortar::Animate()
 	}
 }
 
-CBMortar* CBMortar::Shoot(edict_t* pOwner, Vector vecStart, Vector vecVelocity)
+CBMortar* CBMortar::Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity)
 {
 	CBMortar* pSpit = GetClassPtr((CBMortar*)nullptr);
 	pSpit->Spawn();
 
 	UTIL_SetOrigin(pSpit->pev, vecStart);
 	pSpit->pev->velocity = vecVelocity;
-	pSpit->pev->owner = pOwner;
+	pSpit->pev->owner = pOwner ? pOwner->edict() : nullptr;
 	pSpit->pev->scale = 2.5;
 	pSpit->SetThink(&CBMortar::Animate);
 	pSpit->pev->nextthink = gpGlobals->time + 0.1;

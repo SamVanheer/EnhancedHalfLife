@@ -116,13 +116,11 @@ static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 	 // we haven't found a place to spawn yet,  so kill any guy at the first spawn point and spawn there
 		if (!IsNullEnt(pSpot))
 		{
-			edict_t* player = pPlayer->edict();
-
 			CBaseEntity* ent = nullptr;
 			while ((ent = UTIL_FindEntityInSphere(ent, pSpot->pev->origin, 128)) != nullptr)
 			{
 				// if ent is a client, kill em (unless they are ourselves)
-				if (ent->IsPlayer() && !(ent->edict() == player))
+				if (ent->IsPlayer() && ent != pPlayer)
 					ent->TakeDamage({VARS(INDEXENT(0)), VARS(INDEXENT(0)), 300, DMG_GENERIC});
 			}
 			return pSpot;
@@ -146,16 +144,16 @@ static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 	return nullptr;
 }
 
-edict_t* EntSelectSpawnPoint(CBaseEntity* pPlayer)
+CBaseEntity* EntSelectSpawnPoint(CBaseEntity* pPlayer)
 {
 	CBaseEntity* pSpot = FindSpawnPoint(pPlayer, g_pLastSpawn);
 
 	if (IsNullEnt(pSpot))
 	{
 		ALERT(at_error, "PutClientInServer: no info_player_start on level");
-		return INDEXENT(0);
+		return UTIL_EntityByIndex(0);
 	}
 
 	g_pLastSpawn = pSpot;
-	return pSpot->edict();
+	return pSpot;
 }

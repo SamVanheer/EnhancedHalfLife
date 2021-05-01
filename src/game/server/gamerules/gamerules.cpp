@@ -48,18 +48,18 @@ bool CGameRules::CanHaveAmmo(CBasePlayer* pPlayer, const char* pszAmmoName, int 
 	return false;
 }
 
-edict_t* CGameRules::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
+CBaseEntity* CGameRules::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
 {
-	edict_t* pentSpawnSpot = EntSelectSpawnPoint(pPlayer);
+	CBaseEntity* pSpawnSpot = EntSelectSpawnPoint(pPlayer);
 
-	pPlayer->pev->origin = VARS(pentSpawnSpot)->origin + vec3_up;
+	pPlayer->pev->origin = pSpawnSpot->pev->origin + vec3_up;
 	pPlayer->pev->v_angle = vec3_origin;
 	pPlayer->pev->velocity = vec3_origin;
-	pPlayer->pev->angles = VARS(pentSpawnSpot)->angles;
+	pPlayer->pev->angles = pSpawnSpot->pev->angles;
 	pPlayer->pev->punchangle = vec3_origin;
 	pPlayer->pev->fixangle = FixAngleMode::Absolute;
 
-	return pentSpawnSpot;
+	return pSpawnSpot;
 }
 
 bool CGameRules::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)

@@ -992,15 +992,15 @@ int CHalfLifeMultiplay::DeadPlayerAmmo(CBasePlayer* pPlayer)
 	return GR_PLR_DROP_AMMO_ACTIVE;
 }
 
-edict_t* CHalfLifeMultiplay::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
+CBaseEntity* CHalfLifeMultiplay::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
 {
-	edict_t* pentSpawnSpot = CGameRules::GetPlayerSpawnSpot(pPlayer);
-	if (IsMultiplayer() && !IsStringNull(pentSpawnSpot->v.target))
+	CBaseEntity* pSpawnSpot = CGameRules::GetPlayerSpawnSpot(pPlayer);
+	if (IsMultiplayer() && !IsStringNull(pSpawnSpot->pev->target))
 	{
-		FireTargets(STRING(pentSpawnSpot->v.target), pPlayer, pPlayer, USE_TOGGLE, 0);
+		FireTargets(STRING(pSpawnSpot->pev->target), pPlayer, pPlayer, USE_TOGGLE, 0);
 	}
 
-	return pentSpawnSpot;
+	return pSpawnSpot;
 }
 
 int CHalfLifeMultiplay::PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTarget)

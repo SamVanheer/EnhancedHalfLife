@@ -241,7 +241,7 @@ void CEnvExplosion::Smoke()
 	}
 }
 
-void UTIL_CreateExplosion(Vector center, const Vector& angles, edict_t* owner, int magnitude, bool doDamage, float randomRange, float delay)
+void UTIL_CreateExplosion(Vector center, const Vector& angles, CBaseEntity* owner, int magnitude, bool doDamage, float randomRange, float delay)
 {
 	if (randomRange != 0)
 	{
@@ -249,7 +249,7 @@ void UTIL_CreateExplosion(Vector center, const Vector& angles, edict_t* owner, i
 		center.y += RANDOM_FLOAT(-randomRange, randomRange);
 	}
 
-	CBaseEntity* pExplosion = CBaseEntity::Create("env_explosion", center, angles, owner);
+	CBaseEntity* pExplosion = CBaseEntity::Create("env_explosion", center, angles, owner ? owner->edict() : nullptr);
 
 	char buf[128];
 	snprintf(buf, sizeof(buf), "%3d", magnitude);

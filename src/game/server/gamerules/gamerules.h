@@ -146,7 +146,7 @@ public:
 	*	@brief can this player take damage from this attacker?
 	*/
 	virtual bool  PlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker) { return true; }
-	virtual bool ShouldAutoAim(CBasePlayer* pPlayer, edict_t* target) { return true; }
+	virtual bool ShouldAutoAim(CBasePlayer* pPlayer, CBaseEntity* target) { return true; }
 
 	// Client spawn/respawn control
 	/**
@@ -172,7 +172,7 @@ public:
 	/**
 	*	@brief Place this player on their spawnspot and face them the proper direction.
 	*/
-	virtual edict_t* GetPlayerSpawnSpot(CBasePlayer* pPlayer);
+	virtual CBaseEntity* GetPlayerSpawnSpot(CBasePlayer* pPlayer);
 
 	virtual bool AllowAutoTargetCrosshair() { return true; }
 
@@ -456,7 +456,7 @@ public:
 	void PlayerThink(CBasePlayer* pPlayer) override;
 	bool PlayerCanRespawn(CBasePlayer* pPlayer) override;
 	float PlayerSpawnTime(CBasePlayer* pPlayer) override;
-	edict_t* GetPlayerSpawnSpot(CBasePlayer* pPlayer) override;
+	CBaseEntity* GetPlayerSpawnSpot(CBasePlayer* pPlayer) override;
 
 	bool AllowAutoTargetCrosshair() override;
 	bool ClientCommand(CBasePlayer* pPlayer, const char* pcmd) override;

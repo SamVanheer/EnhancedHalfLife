@@ -29,4 +29,4 @@ inline CBaseEntity* g_pLastSpawn = nullptr;
 *
 *	USES AND SETS GLOBAL g_pLastSpawn
 */
-edict_t* EntSelectSpawnPoint(CBaseEntity* pPlayer);
+CBaseEntity* EntSelectSpawnPoint(CBaseEntity* pPlayer);

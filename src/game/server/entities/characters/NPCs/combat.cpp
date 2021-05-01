@@ -132,13 +132,12 @@ void CGib::SpawnHeadGib(entvars_t* pevVictim)
 	{
 		pGib->pev->origin = pevVictim->origin + pevVictim->view_ofs;
 
-		edict_t* pentPlayer = FIND_CLIENT_IN_PVS(pGib->edict());
+		CBaseEntity* pPlayer = Instance(FIND_CLIENT_IN_PVS(pGib->edict()));
 
-		if (RANDOM_LONG(0, 100) <= 5 && pentPlayer)
+		if (RANDOM_LONG(0, 100) <= 5 && !IsNullEnt(pPlayer))
 		{
 			// 5% chance head will be thrown at player's face.
-			entvars_t* pevPlayer = VARS(pentPlayer);
-			pGib->pev->velocity = ((pevPlayer->origin + pevPlayer->view_ofs) - pGib->pev->origin).Normalize() * 300;
+			pGib->pev->velocity = ((pPlayer->pev->origin + pPlayer->pev->view_ofs) - pGib->pev->origin).Normalize() * 300;
 			pGib->pev->velocity.z += 100;
 		}
 		else

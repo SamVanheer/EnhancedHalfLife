@@ -664,7 +664,7 @@ void PlayCDTrack(int iTrack)
 {
 	// manually find the single player. 
 	//TODO: make this work for all players
-	edict_t* pClient = g_engfuncs.pfnPEntityOfEntIndex(1);
+	CBaseEntity* pClient = UTIL_EntityByIndex(1);
 
 	// Can't play if the client is not connected!
 	if (!pClient)
@@ -678,14 +678,14 @@ void PlayCDTrack(int iTrack)
 
 	if (iTrack == -1)
 	{
-		CLIENT_COMMAND(pClient, "cd stop\n");
+		CLIENT_COMMAND(pClient->edict(), "cd stop\n");
 	}
 	else
 	{
 		char string[64];
 
 		snprintf(string, sizeof(string), "cd play %3d\n", iTrack);
-		CLIENT_COMMAND(pClient, string);
+		CLIENT_COMMAND(pClient->edict(), string);
 	}
 }
 
@@ -729,7 +729,7 @@ void CTargetCDAudio::Use(const UseInfo& info)
 void CTargetCDAudio::Think()
 {
 	// manually find the single player. 
-	edict_t* pClient = g_engfuncs.pfnPEntityOfEntIndex(1);
+	CBaseEntity* pClient = UTIL_EntityByIndex(1);
 
 	// Can't play if the client is not connected!
 	if (!pClient)
@@ -737,7 +737,7 @@ void CTargetCDAudio::Think()
 
 	pev->nextthink = gpGlobals->time + 0.5;
 
-	if ((pClient->v.origin - pev->origin).Length() <= pev->scale)
+	if ((pClient->pev->origin - pev->origin).Length() <= pev->scale)
 		Play();
 }
 

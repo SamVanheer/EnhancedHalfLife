@@ -93,7 +93,7 @@ public:
 	/**
 	*	@brief Acquire a target.  pPlayer is a player in the PVS
 	*/
-	edict_t* FindTarget(edict_t* pPlayer);
+	CBaseEntity* FindTarget(CBaseEntity* pPlayer);
 
 	void		TankTrace(const Vector& vecStart, const Vector& vecForward, const Vector& vecSpread, TraceResult& tr);
 
@@ -472,7 +472,7 @@ void CFuncTank::Use(const UseInfo& info)
 	}
 }
 
-edict_t* CFuncTank::FindTarget(edict_t* pPlayer)
+CBaseEntity* CFuncTank::FindTarget(CBaseEntity* pPlayer)
 {
 	return pPlayer;
 }
@@ -504,7 +504,7 @@ void CFuncTank::TrackTarget()
 	TraceResult tr;
 	bool updateTime = false;
 	Vector angles, direction, barrelEnd;
-	edict_t* pTarget;
+	CBaseEntity* pTarget;
 
 	// Get a position to aim for
 	if (auto controller = m_hController.Get(); controller)
@@ -521,7 +521,7 @@ void CFuncTank::TrackTarget()
 		else
 			return;
 
-		edict_t* pPlayer = FIND_CLIENT_IN_PVS(edict());
+		CBaseEntity* pPlayer = Instance(FIND_CLIENT_IN_PVS(edict()));
 		if (IsNullEnt(pPlayer))
 		{
 			if (IsActive())
@@ -534,7 +534,7 @@ void CFuncTank::TrackTarget()
 
 		// Calculate angle needed to aim at target
 		barrelEnd = BarrelPosition();
-		const Vector targetPosition = pTarget->v.origin + pTarget->v.view_ofs;
+		const Vector targetPosition = pTarget->pev->origin + pTarget->pev->view_ofs;
 		const float range = (targetPosition - barrelEnd).Length();
 
 		if (!InRange(range))
@@ -544,15 +544,14 @@ void CFuncTank::TrackTarget()
 
 		bool lineOfSight = false;
 		// No line of sight, don't track
-		if (tr.flFraction == 1.0 || tr.pHit == pTarget)
+		if (tr.flFraction == 1.0 || tr.pHit == pTarget->edict())
 		{
 			lineOfSight = true;
 
-			CBaseEntity* pInstance = CBaseEntity::Instance(pTarget);
-			if (InRange(range) && pInstance && pInstance->IsAlive())
+			if (InRange(range) && pTarget->IsAlive())
 			{
 				updateTime = true;
-				m_sightOrigin = UpdateTargetPosition(pInstance);
+				m_sightOrigin = UpdateTargetPosition(pTarget);
 			}
 		}
 
@@ -624,7 +623,7 @@ void CFuncTank::TrackTarget()
 		{
 			float length = direction.Length();
 			UTIL_TraceLine(barrelEnd, barrelEnd + forward * length, IgnoreMonsters::No, edict(), &tr);
-			if (tr.pHit == pTarget)
+			if (tr.pHit == pTarget->edict())
 				fire = true;
 		}
 		else
@@ -946,7 +945,7 @@ void CFuncTankMortar::Fire(const Vector& barrelEnd, const Vector& forward, entva
 
 			TankTrace(barrelEnd, forward, gTankSpread[m_spread], tr);
 
-			UTIL_CreateExplosion(tr.vecEndPos, pev->angles, edict(), pev->impulse, true);
+			UTIL_CreateExplosion(tr.vecEndPos, pev->angles, this, pev->impulse, true);
 
 			CFuncTank::Fire(barrelEnd, forward, pev);
 		}
@@ -1026,6 +1025,7 @@ void CFuncTankControls::Spawn()
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
 	UTIL_SetOrigin(pev, pev->origin);
 
+	//TODO: maybe use Activate() instead?
 	pev->nextthink = gpGlobals->time + 0.3;	// After all the func_tank's have spawned
 
 	CBaseEntity::Spawn();

@@ -47,12 +47,12 @@ CHalfLifeTeamplay::CHalfLifeTeamplay()
 	// Cache this because the team code doesn't want to deal with changing this in the middle of a game
 	safe_strcpy(m_szTeamList, teamlist.string);
 
-	edict_t* pWorld = INDEXENT(0);
-	if (pWorld && pWorld->v.team)
+	CBaseEntity* pWorld = UTIL_EntityByIndex(0);
+	if (pWorld && pWorld->pev->team)
 	{
 		if (teamoverride.value)
 		{
-			const char* pTeamList = STRING(static_cast<string_t>(pWorld->v.team));
+			const char* pTeamList = STRING(static_cast<string_t>(pWorld->pev->team));
 			if (pTeamList && strlen(pTeamList))
 			{
 				safe_strcpy(m_szTeamList, pTeamList);
@@ -404,13 +404,12 @@ int CHalfLifeTeamplay::PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTa
 	return GR_NOTTEAMMATE;
 }
 
-bool CHalfLifeTeamplay::ShouldAutoAim(CBasePlayer* pPlayer, edict_t* target)
+bool CHalfLifeTeamplay::ShouldAutoAim(CBasePlayer* pPlayer, CBaseEntity* target)
 {
 	// always autoaim, unless target is a teammate
-	CBaseEntity* pTgt = CBaseEntity::Instance(target);
-	if (pTgt && pTgt->IsPlayer())
+	if (target && target->IsPlayer())
 	{
-		if (PlayerRelationship(pPlayer, pTgt) == GR_TEAMMATE)
+		if (PlayerRelationship(pPlayer, target) == GR_TEAMMATE)
 			return false; // don't autoaim at teammates
 	}
 
