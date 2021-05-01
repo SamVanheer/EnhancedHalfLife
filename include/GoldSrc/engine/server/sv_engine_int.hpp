@@ -437,13 +437,13 @@ enum FIELDTYPE
 	FIELD_FLOAT = 0,		//!< Any floating point value
 	FIELD_STRING,			//!< A string ID (return from ALLOC_STRING)
 	FIELD_OBSOLETE1,		//!< An entity offset (EOFFSET). DO NOT USE. OBSOLETE
-	FIELD_CLASSPTR,			//!< CBaseEntity *
+	FIELD_OBSOLETE2,		//!< CBaseEntity * DO NOT USE. OBSOLETE
 	FIELD_EHANDLE,			//!< Entity handle
-	FIELD_EVARS,			//!< EVARS *
-	FIELD_EDICT,			//!< edict_t *, or edict_t *  (same thing)
+	FIELD_OBSOLETE3,		//!< EVARS * DO NOT USE. OBSOLETE
+	FIELD_EDICT,			//!< edict_t *, or edict_t *  (same thing) DO NOT USE. OBSOLETE
 	FIELD_VECTOR,			//!< Any vector
 	FIELD_POSITION_VECTOR,	//!< A world coordinate (these are fixed up across level transitions automagically)
-	FIELD_POINTER,			//!< Arbitrary data pointer... to be removed, use an array of FIELD_CHARACTER
+	FIELD_OBSOLETE4,		//!< DO NOT USE. OBSOLETE
 	FIELD_INTEGER,			//!< Any integer or enum
 	FIELD_FUNCTION,			//!< A class function pointer (Think, Use, etc)
 	FIELD_BOOLEAN,			//!< boolean, implemented as an int, I may use this as a hint for compression

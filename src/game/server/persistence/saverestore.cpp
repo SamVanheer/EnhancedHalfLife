@@ -167,14 +167,7 @@ int	CSaveRestoreBuffer::EntityIndex(CBaseEntity* pEntity)
 {
 	if (pEntity == nullptr)
 		return -1;
-	return EntityIndex(pEntity->pev);
-}
-
-int	CSaveRestoreBuffer::EntityIndex(entvars_t* pevLookup)
-{
-	if (pevLookup == nullptr)
-		return -1;
-	return EntityIndex(ENT(pevLookup));
+	return EntityIndex(pEntity->edict());
 }
 
 int	CSaveRestoreBuffer::EntityIndex(edict_t* pentLookup)
@@ -440,11 +433,11 @@ void EntvarsKeyvalue(entvars_t* pev, KeyValueData* pkvd)
 				break;
 
 			default:
-			case FIELD_EVARS:
-			case FIELD_CLASSPTR:
+			case FIELD_OBSOLETE3:
+			case FIELD_OBSOLETE2:
 			case FIELD_EDICT:
 			case FIELD_OBSOLETE1:
-			case FIELD_POINTER:
+			case FIELD_OBSOLETE4:
 				ALERT(at_error, "Bad field in entity!!\n");
 				break;
 			}
@@ -499,8 +492,6 @@ bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFi
 		case FIELD_STRING:
 			WriteString(pTest->fieldName, (string_t*)pOutputData, pTest->fieldSize);
 			break;
-		case FIELD_CLASSPTR:
-		case FIELD_EVARS:
 		case FIELD_EDICT:
 		case FIELD_EHANDLE:
 		{
@@ -511,12 +502,6 @@ bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFi
 			{
 				switch (pTest->fieldType)
 				{
-				case FIELD_EVARS:
-					entityArray[j] = EntityIndex(((entvars_t**)pOutputData)[j]);
-					break;
-				case FIELD_CLASSPTR:
-					entityArray[j] = EntityIndex(((CBaseEntity**)pOutputData)[j]);
-					break;
 				case FIELD_EDICT:
 					entityArray[j] = EntityIndex(((edict_t**)pOutputData)[j]);
 					break;
@@ -549,11 +534,6 @@ bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFi
 
 		case FIELD_CHARACTER:
 			WriteData(pTest->fieldName, pTest->fieldSize, ((char*)pOutputData));
-			break;
-
-			// For now, just write the address out, we're not going to change memory while doing this yet!
-		case FIELD_POINTER:
-			WriteInt(pTest->fieldName, (int*)(char*)pOutputData, pTest->fieldSize);
 			break;
 
 		case FIELD_FUNCTION:
@@ -689,26 +669,6 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 						}
 						break;
 					}
-					case FIELD_EVARS:
-					{
-						const int entityIndex = *(int*)pInputData;
-
-						if (edict_t* pent = EntityFromIndex(entityIndex); pent)
-							*((entvars_t**)pOutputData) = VARS(pent);
-						else
-							*((entvars_t**)pOutputData) = nullptr;
-						break;
-					}
-					case FIELD_CLASSPTR:
-					{
-						const int entityIndex = *(int*)pInputData;
-
-						if (edict_t* pent = EntityFromIndex(entityIndex); pent)
-							*((CBaseEntity**)pOutputData) = CBaseEntity::Instance(pent);
-						else
-							*((CBaseEntity**)pOutputData) = nullptr;
-						break;
-					}
 					case FIELD_EDICT:
 					{
 						const int entityIndex = *(int*)pInputData;
@@ -756,9 +716,6 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 						*((char*)pOutputData) = *(char*)pInputData;
 						break;
 
-					case FIELD_POINTER:
-						*((int*)pOutputData) = *(int*)pInputData;
-						break;
 					case FIELD_FUNCTION:
 					{
 						const char* inputString = reinterpret_cast<const char*>(pInputData);
