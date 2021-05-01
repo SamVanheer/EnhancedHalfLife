@@ -307,6 +307,15 @@ int UTIL_MonstersInSphere(CBaseEntity** pList, int listMax, const Vector& center
 	return count;
 }
 
+CBaseEntity* UTIL_EntityByIndex(int index)
+{
+	if (auto edict = INDEXENT(index); edict)
+	{
+		return reinterpret_cast<CBaseEntity*>(edict->pvPrivateData);
+	}
+
+	return nullptr;
+}
 
 CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& vecCenter, float flRadius)
 {

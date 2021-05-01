@@ -185,6 +185,8 @@ inline bool ClassnameIs(entvars_t* pev, const char* szClassname)
 // Misc. Prototypes
 void			UTIL_SetSize(entvars_t* pev, const Vector& vecMin, const Vector& vecMax);
 
+CBaseEntity* UTIL_EntityByIndex(int index);
+
 CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& vecCenter, float flRadius);
 CBaseEntity* UTIL_FindEntityByString(CBaseEntity* pStartEntity, const char* szKeyword, const char* szValue);
 CBaseEntity* UTIL_FindEntityByClassname(CBaseEntity* pStartEntity, const char* szName);
