@@ -273,6 +273,6 @@ void UTIL_CreateExplosion(Vector center, const Vector& angles, CBaseEntity* owne
 	}
 	else
 	{
-		pExplosion->Use({nullptr, nullptr, USE_TOGGLE});
+		pExplosion->Use({nullptr, nullptr, UseType::Toggle});
 	}
 }

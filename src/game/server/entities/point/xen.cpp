@@ -157,14 +157,14 @@ void CXenPLight::Touch(CBaseEntity* pOther)
 
 void CXenPLight::LightOn()
 {
-	SUB_UseTargets(this, USE_ON, 0);
+	SUB_UseTargets(this, UseType::On, 0);
 	if (auto glow = m_hGlow.Get(); glow)
 		glow->pev->effects &= ~EF_NODRAW;
 }
 
 void CXenPLight::LightOff()
 {
-	SUB_UseTargets(this, USE_OFF, 0);
+	SUB_UseTargets(this, UseType::Off, 0);
 	if (auto glow = m_hGlow.Get(); glow)
 		glow->pev->effects |= EF_NODRAW;
 }

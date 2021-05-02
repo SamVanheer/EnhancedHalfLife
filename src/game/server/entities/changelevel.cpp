@@ -48,7 +48,7 @@ void CFireAndDie::Precache()
 
 void CFireAndDie::Think()
 {
-	SUB_UseTargets(this, USE_TOGGLE, 0);
+	SUB_UseTargets(this, UseType::Toggle, 0);
 	UTIL_Remove(this);
 }
 
@@ -174,7 +174,7 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 	safe_strcpy(st_szNextMap, m_szMapName);
 
 	m_hActivator = pActivator;
-	SUB_UseTargets(pActivator, USE_TOGGLE, 0);
+	SUB_UseTargets(pActivator, UseType::Toggle, 0);
 	st_szNextSpot[0] = 0;	// Init landmark to NULL
 
 	// look for a landmark entity		

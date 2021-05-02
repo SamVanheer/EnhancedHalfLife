@@ -352,7 +352,7 @@ private:
 	bool		TeamMatch(CBaseEntity* pActivator);
 
 	int			m_teamIndex;
-	USE_TYPE	triggerType;
+	UseType	triggerType;
 };
 
 LINK_ENTITY_TO_CLASS(game_team_master, CGameTeamMaster);
@@ -378,7 +378,7 @@ void CGameTeamMaster::Use(const UseInfo& info)
 	if (!CanFireForActivator(info.GetActivator()))
 		return;
 
-	if (info.GetUseType() == USE_SET)
+	if (info.GetUseType() == UseType::Set)
 	{
 		if (info.GetValue() < 0)
 		{
@@ -449,11 +449,11 @@ void CGameTeamSet::Use(const UseInfo& info)
 
 	if (ShouldClearTeam())
 	{
-		SUB_UseTargets(info.GetActivator(), USE_SET, -1);
+		SUB_UseTargets(info.GetActivator(), UseType::Set, -1);
 	}
 	else
 	{
-		SUB_UseTargets(info.GetActivator(), USE_SET, 0);
+		SUB_UseTargets(info.GetActivator(), UseType::Set, 0);
 	}
 
 	if (RemoveOnFire())
@@ -565,12 +565,12 @@ void CGamePlayerZone::Use(const UseInfo& info)
 
 	if (!IsStringNull(m_iszInCount))
 	{
-		FireTargets(STRING(m_iszInCount), info.GetActivator(), this, USE_SET, playersInCount);
+		FireTargets(STRING(m_iszInCount), info.GetActivator(), this, UseType::Set, playersInCount);
 	}
 
 	if (!IsStringNull(m_iszOutCount))
 	{
-		FireTargets(STRING(m_iszOutCount), info.GetActivator(), this, USE_SET, playersOutCount);
+		FireTargets(STRING(m_iszOutCount), info.GetActivator(), this, UseType::Set, playersOutCount);
 	}
 }
 
@@ -657,23 +657,23 @@ void CGameCounter::Use(const UseInfo& info)
 
 	switch (info.GetUseType())
 	{
-	case USE_ON:
-	case USE_TOGGLE:
+	case UseType::On:
+	case UseType::Toggle:
 		CountUp();
 		break;
 
-	case USE_OFF:
+	case UseType::Off:
 		CountDown();
 		break;
 
-	case USE_SET:
+	case UseType::Set:
 		SetCountValue((int)info.GetValue());
 		break;
 	}
 
 	if (HitLimit())
 	{
-		SUB_UseTargets(info.GetActivator(), USE_TOGGLE, 0);
+		SUB_UseTargets(info.GetActivator(), UseType::Toggle, 0);
 		if (RemoveOnFire())
 		{
 			UTIL_Remove(this);
@@ -706,7 +706,7 @@ void CGameCounterSet::Use(const UseInfo& info)
 	if (!CanFireForActivator(info.GetActivator()))
 		return;
 
-	SUB_UseTargets(info.GetActivator(), USE_SET, pev->frags);
+	SUB_UseTargets(info.GetActivator(), UseType::Set, pev->frags);
 
 	if (RemoveOnFire())
 	{

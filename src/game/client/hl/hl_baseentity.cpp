@@ -48,7 +48,7 @@ bool CBaseEntity::Intersects(CBaseEntity* pOther) { return false; }
 void CBaseEntity::MakeDormant() { }
 bool CBaseEntity::IsDormant() { return false; }
 bool CBaseEntity::IsInWorld() { return true; }
-bool CBaseEntity::ShouldToggle(USE_TYPE useType, bool currentState) { return false; }
+bool CBaseEntity::ShouldToggle(UseType useType, bool currentState) { return false; }
 void CBaseEntity::SetAbsOrigin(const Vector& origin) {}
 void CBaseEntity::SetSize(const Vector& mins, const Vector& maxs) {}
 int	CBaseEntity::DamageDecal(int bitsDamageType) { return -1; }

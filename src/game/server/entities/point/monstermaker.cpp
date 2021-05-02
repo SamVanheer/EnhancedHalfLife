@@ -196,7 +196,7 @@ void CMonsterMaker::MakeMonster()
 	if (!IsStringNull(pev->target))
 	{
 		// delay already overloaded for this entity, so can't call SUB_UseTargets()
-		FireTargets(STRING(pev->target), this, this, USE_TOGGLE, 0);
+		FireTargets(STRING(pev->target), this, this, UseType::Toggle, 0);
 	}
 
 	pEntity->pev->origin = pev->origin;

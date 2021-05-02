@@ -1181,7 +1181,7 @@ float CBaseMonster::OpenDoorAndWait(CBaseEntity* pDoor)
 	if (pDoor && !pDoor->IsLockedByMaster())
 	{
 		//ALERT(at_aiconsole, "unlocked! ");
-		pDoor->Use({this, this, USE_ON});
+		pDoor->Use({this, this, UseType::On});
 		//ALERT(at_aiconsole, "pevDoor->nextthink = %d ms\n", (int)(1000*pevDoor->nextthink));
 		//ALERT(at_aiconsole, "pevDoor->ltime = %d ms\n", (int)(1000*pevDoor->ltime));
 		//ALERT(at_aiconsole, "pev-> nextthink = %d ms\n", (int)(1000*pev->nextthink));
@@ -1198,7 +1198,7 @@ float CBaseMonster::OpenDoorAndWait(CBaseEntity* pDoor)
 				{
 					if (pTarget->ClassnameIs(STRING(pDoor->pev->classname)))
 					{
-						pTarget->Use({this, this, USE_ON});
+						pTarget->Use({this, this, UseType::On});
 					}
 				}
 			}
@@ -2284,7 +2284,7 @@ void CBaseMonster::HandleAnimEvent(AnimationEvent& event)
 		break;
 
 	case SCRIPT_EVENT_FIREEVENT:		// Fire a trigger
-		FireTargets(event.options, this, this, USE_TOGGLE, 0);
+		FireTargets(event.options, this, this, UseType::Toggle, 0);
 		break;
 
 	case SCRIPT_EVENT_NOINTERRUPT:		// Can't be interrupted from now on
@@ -2652,7 +2652,7 @@ bool CBaseMonster::CheckAITrigger()
 	{
 		// fire the target, then set the trigger conditions to NONE so we don't fire again
 		ALERT(at_aiconsole, "AI Trigger Fire Target\n");
-		FireTargets(STRING(m_iszTriggerTarget), this, this, USE_TOGGLE, 0);
+		FireTargets(STRING(m_iszTriggerTarget), this, this, UseType::Toggle, 0);
 		m_iTriggerCondition = AITrigger::None;
 		return true;
 	}

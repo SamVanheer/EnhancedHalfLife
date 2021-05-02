@@ -111,7 +111,7 @@ void CBaseDelay::KeyValue(KeyValueData* pkvd)
 	}
 }
 
-void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value)
+void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float value)
 {
 	if (!IsStringNull(pev->target))
 	{
@@ -119,7 +119,7 @@ void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, floa
 	}
 }
 
-void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* pCaller, UseType useType, float value)
 {
 	if (!targetName)
 		return;
@@ -140,7 +140,7 @@ void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* p
 
 LINK_ENTITY_TO_CLASS(DelayedUse, CBaseDelay);
 
-void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value)
+void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float value)
 {
 	//
 	// exit immediately if we don't have a target or kill target
@@ -220,7 +220,7 @@ void CBaseDelay::DelayThink()
 		pActivator = CBaseEntity::Instance(pev->owner);
 	}
 	// The use type is cached (and stashed) in pev->button
-	SUB_UseTargets(pActivator, (USE_TYPE)pev->button, 0);
+	SUB_UseTargets(pActivator, (UseType)pev->button, 0);
 	REMOVE_ENTITY(edict());
 }
 

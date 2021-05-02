@@ -592,9 +592,9 @@ void CBaseDoor::DoorHitTop()
 
 	// Fire the close target (if startopen is set, then "top" is closed) - netname is the close target
 	if (!IsStringNull(pev->netname) && (pev->spawnflags & SF_DOOR_START_OPEN))
-		FireTargets(STRING(pev->netname), m_hActivator, this, USE_TOGGLE, 0);
+		FireTargets(STRING(pev->netname), m_hActivator, this, UseType::Toggle, 0);
 
-	SUB_UseTargets(m_hActivator, USE_TOGGLE, 0); // this isn't finished
+	SUB_UseTargets(m_hActivator, UseType::Toggle, 0); // this isn't finished
 }
 
 void CBaseDoor::DoorGoDown()
@@ -636,11 +636,11 @@ void CBaseDoor::DoorHitBottom()
 	else // touchable door
 		SetTouch(&CBaseDoor::DoorTouch);
 
-	SUB_UseTargets(m_hActivator, USE_TOGGLE, 0); // this isn't finished
+	SUB_UseTargets(m_hActivator, UseType::Toggle, 0); // this isn't finished
 
 	// Fire the close target (if startopen is set, then "top" is closed) - netname is the close target
 	if (!IsStringNull(pev->netname) && !(pev->spawnflags & SF_DOOR_START_OPEN))
-		FireTargets(STRING(pev->netname), m_hActivator, this, USE_TOGGLE, 0);
+		FireTargets(STRING(pev->netname), m_hActivator, this, UseType::Toggle, 0);
 }
 
 void CBaseDoor::Blocked(CBaseEntity* pOther)
@@ -915,7 +915,7 @@ void CMomentaryDoor::KeyValue(KeyValueData* pkvd)
 
 void CMomentaryDoor::Use(const UseInfo& info)
 {
-	if (info.GetUseType() != USE_SET)		// Momentary buttons will pass down a float in here
+	if (info.GetUseType() != UseType::Set)		// Momentary buttons will pass down a float in here
 		return;
 
 	const float value = std::clamp(info.GetValue(), 0.0f, 1.0f);

@@ -55,7 +55,13 @@ constexpr int FCAP_FORCE_TRANSITION = 0x00000080;	//!< ALWAYS goes across transi
 
 #define EXPORT DLLEXPORT
 
-enum USE_TYPE { USE_OFF = 0, USE_ON = 1, USE_SET = 2, USE_TOGGLE = 3 };
+enum class UseType
+{
+	Off = 0,
+	On = 1,
+	Set = 2,
+	Toggle = 3
+};
 
 enum class TriggerState
 {
@@ -64,17 +70,17 @@ enum class TriggerState
 	Toggle
 };
 
-constexpr USE_TYPE UTIL_TriggerStateToTriggerType(TriggerState state)
+constexpr UseType UTIL_TriggerStateToTriggerType(TriggerState state)
 {
 	switch (state)
 	{
-	case TriggerState::Off:		return USE_OFF;
-	case TriggerState::Toggle:	return USE_TOGGLE;
-	default:					return USE_ON;
+	case TriggerState::Off:		return UseType::Off;
+	case TriggerState::Toggle:	return UseType::Toggle;
+	default:					return UseType::On;
 	}
 }
 
-void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* pCaller, UseType useType, float value);
 
 // For CLASSIFY
 constexpr int CLASS_NONE = 0;
@@ -257,7 +263,7 @@ private:
 class UseInfo
 {
 public:
-	UseInfo(CBaseEntity* activator, CBaseEntity* caller, USE_TYPE useType, float value)
+	UseInfo(CBaseEntity* activator, CBaseEntity* caller, UseType useType, float value)
 		: _activator(activator)
 		, _caller(caller)
 		, _useType(useType)
@@ -265,7 +271,7 @@ public:
 	{
 	}
 
-	UseInfo(CBaseEntity* activator, CBaseEntity* caller, USE_TYPE useType)
+	UseInfo(CBaseEntity* activator, CBaseEntity* caller, UseType useType)
 		: UseInfo(activator, caller, useType, 0.0f)
 	{
 	}
@@ -274,14 +280,14 @@ public:
 
 	CBaseEntity* GetCaller() const { return _caller; }
 
-	USE_TYPE GetUseType() const { return _useType; }
+	UseType GetUseType() const { return _useType; }
 
 	float GetValue() const { return _value; }
 
 private:
 	CBaseEntity* _activator;
 	CBaseEntity* _caller;
-	USE_TYPE _useType;
+	UseType _useType;
 	float _value = 0.0f;
 };
 
@@ -430,8 +436,8 @@ public:
 	*/
 	void EXPORT SUB_StartFadeOut();
 	void EXPORT SUB_FadeOut();
-	void EXPORT SUB_CallUseToggle() { this->Use({this, this, USE_TOGGLE}); }
-	bool ShouldToggle(USE_TYPE useType, bool currentState);
+	void EXPORT SUB_CallUseToggle() { this->Use({this, this, UseType::Toggle}); }
+	bool ShouldToggle(UseType useType, bool currentState);
 
 	const char* GetClassname() const { return STRING(pev->classname); }
 
@@ -484,7 +490,7 @@ public:
 	*	If m_flDelay is set, a DelayedUse entity will be created that will actually do the SUB_UseTargets after that many seconds have passed.
 	*	Removes all entities with a targetname that match m_iszKillTarget, and removes them, so some events can remove other triggers.
 	*/
-	void SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value);
+	void SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float value);
 	/**
 	*	@brief Do the bounding boxes of these two intersect?
 	*/
@@ -709,7 +715,7 @@ public:
 	static TYPEDESCRIPTION m_SaveData[];
 	// common member functions
 	//TODO: this is a non-virtual override of the same function in CBaseEntity. Should probably just merge this class into CBaseEntity
-	void SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value);
+	void SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float value);
 	void EXPORT DelayThink();
 };
 

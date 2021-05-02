@@ -703,7 +703,7 @@ void CBreakable::Die()
 
 	pev->solid = Solid::Not;
 	// Fire targets on break
-	SUB_UseTargets(nullptr, USE_TOGGLE, 0);
+	SUB_UseTargets(nullptr, UseType::Toggle, 0);
 
 	SetThink(&CBreakable::SUB_Remove);
 	pev->nextthink = pev->ltime + 0.1;

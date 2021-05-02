@@ -673,21 +673,21 @@ void CTentacle::CommandUse(const UseInfo& info)
 	// ALERT( at_console, "%s triggered %d\n", STRING( pev->targetname ), useType ); 
 	switch (info.GetUseType())
 	{
-	case USE_OFF:
+	case UseType::Off:
 		SetDamageMode(DamageMode::No);
 		SetThink(&CTentacle::DieThink);
 		m_iGoalAnim = TENTACLE_ANIM_Engine_Death1;
 		break;
-	case USE_ON:
+	case UseType::On:
 		if (info.GetActivator())
 		{
 			// ALERT( at_console, "insert sound\n");
 			CSoundEnt::InsertSound(bits_SOUND_WORLD, info.GetActivator()->pev->origin, 1024, 1.0);
 		}
 		break;
-	case USE_SET:
+	case UseType::Set:
 		break;
-	case USE_TOGGLE:
+	case UseType::Toggle:
 		SetDamageMode(DamageMode::No);
 		SetThink(&CTentacle::DieThink);
 		m_iGoalAnim = TENTACLE_ANIM_Engine_Idle;

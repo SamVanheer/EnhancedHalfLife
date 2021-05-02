@@ -205,9 +205,9 @@ void CMultiSource::Use(const UseInfo& info)
 	if (IsTriggered(info.GetActivator()))
 	{
 		ALERT(at_aiconsole, "Multisource %s enabled (%d inputs)\n", STRING(pev->targetname), m_iTotal);
-		USE_TYPE useType = USE_TOGGLE;
+		UseType useType = UseType::Toggle;
 		if (!IsStringNull(m_globalstate))
-			useType = USE_ON;
+			useType = UseType::On;
 		SUB_UseTargets(nullptr, useType, 0);
 	}
 }
@@ -391,7 +391,7 @@ bool CBaseButton::TakeDamage(const TakeDamageInfo& info)
 
 		// Toggle buttons fire when they get back to their "home" position
 		if (!(pev->spawnflags & SF_BUTTON_TOGGLE))
-			SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
+			SUB_UseTargets(m_hActivator, UseType::Toggle, 0);
 		ButtonReturn();
 	}
 	else // code == BUTTON_ACTIVATE
@@ -594,7 +594,7 @@ void CBaseButton::ButtonTouch(CBaseEntity* pOther)
 	if (code == ButtonCode::Return)
 	{
 		EmitSound(SoundChannel::Voice, STRING(pev->noise));
-		SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
+		SUB_UseTargets(m_hActivator, UseType::Toggle, 0);
 		ButtonReturn();
 	}
 	else	// code == BUTTON_ACTIVATE
@@ -657,7 +657,7 @@ void CBaseButton::TriggerAndWait()
 	pev->frame = 1;			// use alternate textures
 
 
-	SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
+	SUB_UseTargets(m_hActivator, UseType::Toggle, 0);
 }
 
 void CBaseButton::ButtonReturn()
@@ -683,7 +683,7 @@ void CBaseButton::ButtonBackHome()
 	{
 		//EmitSound(SoundChannel::Voice, STRING(pev->noise));
 
-		SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
+		SUB_UseTargets(m_hActivator, UseType::Toggle, 0);
 	}
 
 
@@ -696,7 +696,7 @@ void CBaseButton::ButtonBackHome()
 			if (!pTarget->ClassnameIs("multisource"))
 				continue;
 
-			pTarget->Use({m_hActivator, this, USE_TOGGLE});
+			pTarget->Use({m_hActivator, this, UseType::Toggle});
 		}
 	}
 
@@ -979,7 +979,7 @@ void CMomentaryRotButton::UpdateTarget(float value)
 
 		while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target))) != nullptr)
 		{
-			pTarget->Use({this, this, USE_SET, value});
+			pTarget->Use({this, this, UseType::Set, value});
 		}
 	}
 }
@@ -1158,9 +1158,9 @@ void CButtonTarget::Use(const UseInfo& info)
 		return;
 	pev->frame = 1 - pev->frame;
 	if (pev->frame)
-		SUB_UseTargets(info.GetActivator(), USE_ON, 0);
+		SUB_UseTargets(info.GetActivator(), UseType::On, 0);
 	else
-		SUB_UseTargets(info.GetActivator(), USE_OFF, 0);
+		SUB_UseTargets(info.GetActivator(), UseType::Off, 0);
 }
 
 int	CButtonTarget::ObjectCaps()
@@ -1175,7 +1175,7 @@ int	CButtonTarget::ObjectCaps()
 
 bool CButtonTarget::TakeDamage(const TakeDamageInfo& info)
 {
-	Use({info.GetAttacker(), this, USE_TOGGLE});
+	Use({info.GetAttacker(), this, UseType::Toggle});
 
 	return true;
 }

@@ -60,7 +60,7 @@ void CItem::ItemTouch(CBaseEntity* pOther)
 
 	if (MyTouch(pPlayer))
 	{
-		SUB_UseTargets(pOther, USE_TOGGLE, 0);
+		SUB_UseTargets(pOther, UseType::Toggle, 0);
 		SetTouch(nullptr);
 
 		// player grabbed the item. 

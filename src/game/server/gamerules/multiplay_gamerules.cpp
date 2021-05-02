@@ -459,7 +459,7 @@ void CHalfLifeMultiplay::ClientDisconnected(edict_t* pClient)
 
 		if (pPlayer)
 		{
-			FireTargets("game_playerleave", pPlayer, pPlayer, USE_TOGGLE, 0);
+			FireTargets("game_playerleave", pPlayer, pPlayer, UseType::Toggle, 0);
 
 			// team match?
 			if (IsTeamplay())
@@ -577,7 +577,7 @@ void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller
 	pVictim->m_iDeaths += 1;
 
 
-	FireTargets("game_playerdie", pVictim, pVictim, USE_TOGGLE, 0);
+	FireTargets("game_playerdie", pVictim, pVictim, UseType::Toggle, 0);
 	CBasePlayer* peKiller = nullptr;
 	if (pKiller && pKiller->IsPlayer())
 		peKiller = (CBasePlayer*)pKiller;
@@ -591,7 +591,7 @@ void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller
 		// if a player dies in a deathmatch game and the killer is a client, award the killer some points
 		pKiller->pev->frags += PointsForKill(peKiller, pVictim);
 
-		FireTargets("game_playerkill", pKiller, pKiller, USE_TOGGLE, 0);
+		FireTargets("game_playerkill", pKiller, pKiller, UseType::Toggle, 0);
 	}
 	else
 	{  // killed by the world
@@ -993,7 +993,7 @@ CBaseEntity* CHalfLifeMultiplay::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
 	CBaseEntity* pSpawnSpot = CGameRules::GetPlayerSpawnSpot(pPlayer);
 	if (IsMultiplayer() && !IsStringNull(pSpawnSpot->pev->target))
 	{
-		FireTargets(STRING(pSpawnSpot->pev->target), pPlayer, pPlayer, USE_TOGGLE, 0);
+		FireTargets(STRING(pSpawnSpot->pev->target), pPlayer, pPlayer, UseType::Toggle, 0);
 	}
 
 	return pSpawnSpot;

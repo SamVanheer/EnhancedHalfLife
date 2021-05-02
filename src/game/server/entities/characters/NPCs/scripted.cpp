@@ -477,7 +477,7 @@ void CCineMonster::SequenceDone(CBaseMonster* pMonster)
 
 	// This may cause a sequence to attempt to grab this guy NOW, so we have to clear him out
 	// of the existing sequence
-	SUB_UseTargets(nullptr, USE_TOGGLE, 0);
+	SUB_UseTargets(nullptr, UseType::Toggle, 0);
 }
 
 void CCineMonster::FixScriptMonsterSchedule(CBaseMonster* pMonster)
@@ -1026,7 +1026,7 @@ bool CScriptedSentence::StartSentence(CBaseMonster* pTarget)
 
 	pTarget->PlayScriptedSentence(STRING(m_iszSentence), m_flDuration, m_flVolume, m_flAttenuation, bConcurrent, pListener);
 	ALERT(at_aiconsole, "Playing sentence %s (%.1f)\n", STRING(m_iszSentence), m_flDuration);
-	SUB_UseTargets(nullptr, USE_TOGGLE, 0);
+	SUB_UseTargets(nullptr, UseType::Toggle, 0);
 	return true;
 }
 

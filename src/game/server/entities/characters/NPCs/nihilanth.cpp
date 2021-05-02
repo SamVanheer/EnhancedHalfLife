@@ -66,7 +66,7 @@ public:
 
 	bool AbsorbSphere();
 	bool EmitSphere();
-	void TargetSphere(USE_TYPE useType, float value);
+	void TargetSphere(UseType useType, float value);
 	CBaseEntity* RandomTargetname(const char* szName);
 	void ShootBalls();
 	void MakeFriend(Vector vecPos);
@@ -432,7 +432,7 @@ void CNihilanth::DyingThink()
 		if (fabs(pev->origin.z - m_flMaxZ) < 16)
 		{
 			pev->velocity = vec3_origin;
-			FireTargets(m_szDeadUse, this, this, USE_ON, 1.0);
+			FireTargets(m_szDeadUse, this, this, UseType::On, 1.0);
 			pev->deadflag = DeadFlag::Dead;
 		}
 	}
@@ -741,7 +741,7 @@ void CNihilanth::NextActivity()
 				char szText[128];
 
 				snprintf(szText, sizeof(szText), "%s%d", m_szDrawUse, m_iLevel);
-				FireTargets(szText, this, this, USE_ON, 1.0);
+				FireTargets(szText, this, this, UseType::On, 1.0);
 
 				ALERT(at_console, "fireing %s\n", szText);
 			}
@@ -989,7 +989,7 @@ bool CNihilanth::EmitSphere()
 	return true;
 }
 
-void CNihilanth::TargetSphere(USE_TYPE useType, float value)
+void CNihilanth::TargetSphere(UseType useType, float value)
 {
 	CNihilanthHVR* pSphere;
 	int i;
@@ -1164,7 +1164,7 @@ void CNihilanth::CommandUse(const UseInfo& info)
 {
 	switch (info.GetUseType())
 	{
-	case USE_OFF:
+	case UseType::Off:
 	{
 		if (CBaseEntity* pTouch = UTIL_FindEntityByTargetname(nullptr, m_szDeadTouch); pTouch)
 		{
@@ -1183,15 +1183,15 @@ void CNihilanth::CommandUse(const UseInfo& info)
 		}
 	}
 	break;
-	case USE_ON:
+	case UseType::On:
 		if (m_irritation == 0)
 		{
 			m_irritation = 1;
 		}
 		break;
-	case USE_SET:
+	case UseType::Set:
 		break;
-	case USE_TOGGLE:
+	case UseType::Toggle:
 		break;
 	}
 }
@@ -1549,7 +1549,7 @@ void CNihilanthHVR::TeleportThink()
 		UTIL_Remove(this);
 
 		if (m_hTargetEnt != nullptr)
-			m_hTargetEnt->Use({m_hEnemy, m_hEnemy, USE_ON, 1.0});
+			m_hTargetEnt->Use({m_hEnemy, m_hEnemy, UseType::On, 1.0});
 
 		if (m_hTouch != nullptr && m_hEnemy != nullptr)
 			m_hTouch->Touch(m_hEnemy);
@@ -1606,7 +1606,7 @@ void CNihilanthHVR::TeleportTouch(CBaseEntity* pOther)
 	if (pOther == pEnemy)
 	{
 		if (m_hTargetEnt != nullptr)
-			m_hTargetEnt->Use({pEnemy, pEnemy, USE_ON, 1.0});
+			m_hTargetEnt->Use({pEnemy, pEnemy, UseType::On, 1.0});
 
 		if (m_hTouch != nullptr && pEnemy != nullptr)
 			m_hTouch->Touch(pEnemy);

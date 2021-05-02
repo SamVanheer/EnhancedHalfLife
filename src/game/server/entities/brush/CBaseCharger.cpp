@@ -178,7 +178,7 @@ void CBaseCharger::Activate()
 
 		if (m_iCurrentCapacity != 0 && !IsStringNull(m_iszFireOnRecharge))
 		{
-			FireTargets(STRING(m_iszFireOnRecharge), this, this, USE_ON, 0);
+			FireTargets(STRING(m_iszFireOnRecharge), this, this, UseType::On, 0);
 		}
 	}
 
@@ -289,7 +289,7 @@ void CBaseCharger::Recharge()
 
 	if (m_iCurrentCapacity > 0 && !IsStringNull(m_iszFireOnRecharge))
 	{
-		FireTargets(STRING(m_iszFireOnRecharge), this, this, USE_ON, 0);
+		FireTargets(STRING(m_iszFireOnRecharge), this, this, UseType::On, 0);
 	}
 }
 
@@ -332,7 +332,7 @@ void CBaseCharger::CheckIfOutOfCharge(bool fireTargets)
 	{
 		if (fireTargets && !IsStringNull(m_iszFireOnEmpty))
 		{
-			FireTargets(STRING(m_iszFireOnEmpty), this, this, USE_OFF, 0);
+			FireTargets(STRING(m_iszFireOnEmpty), this, this, UseType::Off, 0);
 		}
 
 		pev->frame = 1;

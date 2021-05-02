@@ -170,7 +170,7 @@ void DispatchUse(edict_t* pentUsed, edict_t* pentOther)
 	CBaseEntity* pOther = (CBaseEntity*)GET_PRIVATE(pentOther);
 
 	if (pEntity && !(pEntity->pev->flags & FL_KILLME))
-		pEntity->Use({pOther, pOther, USE_TOGGLE});
+		pEntity->Use({pOther, pOther, UseType::Toggle});
 }
 
 // HACKHACK -- this is a hack to keep the node graph entity from "touching" things (like triggers)

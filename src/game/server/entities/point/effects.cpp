@@ -308,7 +308,7 @@ void CBeam::TriggerTouch(CBaseEntity* pOther)
 		if (pev->owner)
 		{
 			CBaseEntity* pOwner = CBaseEntity::Instance(pev->owner);
-			pOwner->Use({pOther, this, USE_TOGGLE});
+			pOwner->Use({pOther, this, UseType::Toggle});
 		}
 		ALERT(at_console, "Firing targets!!!\n");
 	}
@@ -1881,7 +1881,7 @@ void CFade::Use(const UseInfo& info)
 	{
 		UTIL_ScreenFadeAll(pev->rendercolor, Duration(), HoldTime(), pev->renderamt, fadeFlags);
 	}
-	SUB_UseTargets(this, USE_TOGGLE, 0);
+	SUB_UseTargets(this, UseType::Toggle, 0);
 }
 
 class CMessage : public CPointEntity
@@ -1980,7 +1980,7 @@ void CMessage::Use(const UseInfo& info)
 	if (pev->spawnflags & SF_MESSAGE_ONCE)
 		UTIL_Remove(this);
 
-	SUB_UseTargets(this, USE_TOGGLE, 0);
+	SUB_UseTargets(this, UseType::Toggle, 0);
 }
 
 /**

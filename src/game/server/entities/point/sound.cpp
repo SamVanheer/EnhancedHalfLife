@@ -530,14 +530,14 @@ void CAmbientGeneric::ToggleUse(const UseInfo& info)
 {
 	const char* szSoundFile = STRING(pev->message);
 
-	if (info.GetUseType() != USE_TOGGLE)
+	if (info.GetUseType() != UseType::Toggle)
 	{
-		if ((m_fActive && info.GetUseType() == USE_ON) || (!m_fActive && info.GetUseType() == USE_OFF))
+		if ((m_fActive && info.GetUseType() == UseType::On) || (!m_fActive && info.GetUseType() == UseType::Off))
 			return;
 	}
 	// Directly change pitch if arg passed. Only works if sound is already playing.
 
-	if (info.GetUseType() == USE_SET && m_fActive)		// Momentary buttons will pass down a float in here
+	if (info.GetUseType() == UseType::Set && m_fActive)		// Momentary buttons will pass down a float in here
 	{
 		float fraction = info.GetValue();
 
@@ -1108,22 +1108,22 @@ void CSpeaker::ToggleUse(const UseInfo& info)
 
 	// fActive is true only if an announcement is pending
 
-	if (info.GetUseType() != USE_TOGGLE)
+	if (info.GetUseType() != UseType::Toggle)
 	{
 		// ignore if we're just turning something on that's already on, or
 		// turning something off that's already off.
-		if ((fActive && info.GetUseType() == USE_ON) || (!fActive && info.GetUseType() == USE_OFF))
+		if ((fActive && info.GetUseType() == UseType::On) || (!fActive && info.GetUseType() == UseType::Off))
 			return;
 	}
 
-	if (info.GetUseType() == USE_ON)
+	if (info.GetUseType() == UseType::On)
 	{
 		// turn on announcements
 		pev->nextthink = gpGlobals->time + 0.1;
 		return;
 	}
 
-	if (info.GetUseType() == USE_OFF)
+	if (info.GetUseType() == UseType::Off)
 	{
 		// turn off announcements
 		pev->nextthink = 0.0;

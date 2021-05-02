@@ -446,11 +446,11 @@ void CFuncTank::Use(const UseInfo& info)
 		if (!info.GetActivator()->IsPlayer())
 			return;
 
-		if (info.GetValue() == 2 && info.GetUseType() == USE_SET)
+		if (info.GetValue() == 2 && info.GetUseType() == UseType::Set)
 		{
 			ControllerPostFrame();
 		}
-		else if (!m_hController && info.GetUseType() != USE_OFF)
+		else if (!m_hController && info.GetUseType() != UseType::Off)
 		{
 			((CBasePlayer*)info.GetActivator())->m_pTank = this;
 			StartControl((CBasePlayer*)info.GetActivator());
@@ -681,7 +681,7 @@ void CFuncTank::Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity
 			// Hack Hack, make it stick around for at least 100 ms.
 			pSprite->pev->nextthink += 0.1;
 		}
-		SUB_UseTargets(this, USE_TOGGLE, 0);
+		SUB_UseTargets(this, UseType::Toggle, 0);
 	}
 	m_fireLast = gpGlobals->time;
 }

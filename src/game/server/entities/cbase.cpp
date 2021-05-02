@@ -205,11 +205,11 @@ bool CBaseEntity::IsInWorld()
 	return true;
 }
 
-bool CBaseEntity::ShouldToggle(USE_TYPE useType, bool currentState)
+bool CBaseEntity::ShouldToggle(UseType useType, bool currentState)
 {
-	if (useType != USE_TOGGLE && useType != USE_SET)
+	if (useType != UseType::Toggle && useType != UseType::Set)
 	{
-		if ((currentState && useType == USE_ON) || (!currentState && useType == USE_OFF))
+		if ((currentState && useType == UseType::On) || (!currentState && useType == UseType::Off))
 			return false;
 	}
 	return true;

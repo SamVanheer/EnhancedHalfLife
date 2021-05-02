@@ -405,7 +405,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 
 				/*
 				CBaseEntity *pEffect = Create( "test_effect", pNew->Center(), pev->angles );
-				pEffect->Use( this, this, USE_ON, 1 );
+				pEffect->Use( this, this, UseType::On, 1 );
 				*/
 				break;
 			}

@@ -483,7 +483,7 @@ void CBasePlayerItem::DefaultTouch(CBaseEntity* pOther)
 		pPlayer->EmitSound(SoundChannel::Item, "items/gunpickup2.wav");
 	}
 
-	SUB_UseTargets(pOther, USE_TOGGLE, 0); // UNDONE: when should this happen?
+	SUB_UseTargets(pOther, UseType::Toggle, 0); // UNDONE: when should this happen?
 }
 
 void CBasePlayerItem::DestroyItem()

@@ -223,7 +223,7 @@ void CMultiManager::ManagerThink()
 	const float time = gpGlobals->time - m_startTime;
 	while (m_index < m_cTargets && m_flTargetDelay[m_index] <= time)
 	{
-		FireTargets(STRING(m_iTargetName[m_index]), m_hActivator, this, USE_TOGGLE, 0);
+		FireTargets(STRING(m_iTargetName[m_index]), m_hActivator, this, UseType::Toggle, 0);
 		m_index++;
 	}
 
@@ -359,7 +359,7 @@ void CBaseTrigger::ActivateMultiTrigger(CBaseEntity* pActivator)
 		EmitSound(SoundChannel::Voice, STRING(pev->noise));
 
 	m_hActivator = pActivator;
-	SUB_UseTargets(m_hActivator, USE_TOGGLE, 0);
+	SUB_UseTargets(m_hActivator, UseType::Toggle, 0);
 
 	if (!IsStringNull(pev->message) && pActivator->IsPlayer())
 	{
@@ -538,7 +538,7 @@ void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
 			}
 		}
 
-		SUB_UseTargets(pOther, USE_TOGGLE, 0);
+		SUB_UseTargets(pOther, UseType::Toggle, 0);
 		if (pev->spawnflags & SF_TRIGGER_HURT_TARGETONCE)
 			pev->target = iStringNull;
 	}
@@ -1232,7 +1232,7 @@ void CTriggerCamera::FollowTarget()
 		player->m_hViewEntity = nullptr;
 		player->m_bResetViewEntity = false;
 
-		SUB_UseTargets(this, USE_TOGGLE, 0);
+		SUB_UseTargets(this, UseType::Toggle, 0);
 		pev->avelocity = vec3_origin;
 		m_state = false;
 		return;
@@ -1291,7 +1291,7 @@ void CTriggerCamera::Move()
 		// Fire the passtarget if there is one
 		if (!IsStringNull(path->pev->message))
 		{
-			FireTargets(STRING(path->pev->message), this, this, USE_TOGGLE, 0);
+			FireTargets(STRING(path->pev->message), this, this, UseType::Toggle, 0);
 			if (IsBitSet(path->pev->spawnflags, SF_CORNER_FIREONCE))
 				path->pev->message = iStringNull;
 		}

@@ -629,7 +629,7 @@ void CBaseTurret::Deploy()
 		m_iOn = true;
 		SetTurretAnim(TurretAnim::Deploy);
 		EmitSound(SoundChannel::Body, "turret/tu_deploy.wav", TURRET_MACHINE_VOLUME);
-		SUB_UseTargets(this, USE_ON, 0);
+		SUB_UseTargets(this, UseType::On, 0);
 	}
 
 	if (m_fSequenceFinished)
@@ -679,7 +679,7 @@ void CBaseTurret::Retire()
 		{
 			SetTurretAnim(TurretAnim::Retire);
 			EmitSound(SoundChannel::Body, "turret/tu_deploy.wav", TURRET_MACHINE_VOLUME, ATTN_NORM, 120);
-			SUB_UseTargets(this, USE_OFF, 0);
+			SUB_UseTargets(this, UseType::Off, 0);
 		}
 		else if (m_fSequenceFinished)
 		{
@@ -994,7 +994,7 @@ bool CBaseTurret::TakeDamage(const TakeDamageInfo& info)
 
 		SetUse(nullptr);
 		SetThink(&CBaseTurret::TurretDeath);
-		SUB_UseTargets(this, USE_ON, 0); // wake up others
+		SUB_UseTargets(this, UseType::On, 0); // wake up others
 		pev->nextthink = gpGlobals->time + 0.1;
 
 		return false;
@@ -1181,7 +1181,7 @@ bool CSentry::TakeDamage(const TakeDamageInfo& info)
 
 		SetUse(nullptr);
 		SetThink(&CSentry::SentryDeath);
-		SUB_UseTargets(this, USE_ON, 0); // wake up others
+		SUB_UseTargets(this, UseType::On, 0); // wake up others
 		pev->nextthink = gpGlobals->time + 0.1;
 
 		return false;

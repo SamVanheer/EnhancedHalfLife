@@ -517,7 +517,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 	case BIG_AE_EARLY_TARGET:
 	{
 		if (CBaseEntity* pTarget = m_hTargetEnt; pTarget && !IsStringNull(pTarget->pev->message))
-			FireTargets(STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0);
+			FireTargets(STRING(pTarget->pev->message), this, this, UseType::Toggle, 0);
 		Remember(bits_MEMORY_FIRED_NODE);
 	}
 	break;
@@ -710,7 +710,7 @@ void CBigMomma::NodeReach()
 	if (!HasMemory(bits_MEMORY_FIRED_NODE))
 	{
 		if (!IsStringNull(pTarget->pev->message))
-			FireTargets(STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0);
+			FireTargets(STRING(pTarget->pev->message), this, this, UseType::Toggle, 0);
 	}
 	Forget(bits_MEMORY_FIRED_NODE);
 

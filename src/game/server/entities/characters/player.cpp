@@ -616,7 +616,7 @@ void CBasePlayer::RemoveAllItems(bool removeSuit)
 
 	if (m_pTank != nullptr)
 	{
-		m_pTank->Use({this, this, USE_OFF});
+		m_pTank->Use({this, this, UseType::Off});
 		m_pTank = nullptr;
 	}
 
@@ -664,7 +664,7 @@ void CBasePlayer::Killed(const KilledInfo& info)
 
 	if (m_pTank != nullptr)
 	{
-		m_pTank->Use({this, this, USE_OFF});
+		m_pTank->Use({this, this, UseType::Off});
 		m_pTank = nullptr;
 	}
 
@@ -1163,7 +1163,7 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 
 	if (m_pTank != nullptr)
 	{
-		m_pTank->Use({this, this, USE_OFF});
+		m_pTank->Use({this, this, UseType::Off});
 		m_pTank = nullptr;
 	}
 
@@ -1233,7 +1233,7 @@ void CBasePlayer::PlayerUse()
 		if (m_pTank != nullptr)
 		{
 			// Stop controlling the tank
-			m_pTank->Use({this, this, USE_OFF});
+			m_pTank->Use({this, this, UseType::Off});
 			m_pTank = nullptr;
 			return;
 		}
@@ -1310,12 +1310,12 @@ void CBasePlayer::PlayerUse()
 			if (caps & FCAP_CONTINUOUS_USE)
 				m_afPhysicsFlags |= PFLAG_USING;
 
-			pObject->Use({this, this, USE_SET, 1});
+			pObject->Use({this, this, UseType::Set, 1});
 		}
 		// UNDONE: Send different USE codes for ON/OFF.  Cache last ONOFF_USE object to send 'off' if you turn away
 		else if ((m_afButtonReleased & IN_USE) && (pObject->ObjectCaps() & FCAP_ONOFF_USE))	// BUGBUG This is an "off" use
 		{
-			pObject->Use({this, this, USE_SET, 0});
+			pObject->Use({this, this, UseType::Set, 0});
 		}
 	}
 	else
@@ -1648,12 +1648,12 @@ void CBasePlayer::PreThink()
 		if (m_afButtonPressed & IN_FORWARD)
 		{
 			vel = 1;
-			pTrain->Use({this, this, USE_SET, (float)vel});
+			pTrain->Use({this, this, UseType::Set, (float)vel});
 		}
 		else if (m_afButtonPressed & IN_BACK)
 		{
 			vel = -1;
-			pTrain->Use({this, this, USE_SET, (float)vel});
+			pTrain->Use({this, this, UseType::Set, (float)vel});
 		}
 
 		if (vel)
@@ -2090,11 +2090,11 @@ void CBasePlayer::PostThink()
 		{ // if they've moved too far from the gun,  or selected a weapon, unuse the gun
 			if (m_pTank->OnControls(this) && IsStringNull(pev->weaponmodel))
 			{
-				m_pTank->Use({this, this, USE_SET, 2});	// try fire the gun
+				m_pTank->Use({this, this, UseType::Set, 2});	// try fire the gun
 			}
 			else
 			{  // they've moved off the platform
-				m_pTank->Use({this, this, USE_OFF});
+				m_pTank->Use({this, this, UseType::Off});
 				m_pTank = nullptr;
 			}
 		}
@@ -3197,11 +3197,11 @@ void CBasePlayer::UpdateClientData()
 
 			if (g_pGameRules->IsMultiplayer())
 			{
-				FireTargets("game_playerjoin", this, this, USE_TOGGLE, 0);
+				FireTargets("game_playerjoin", this, this, UseType::Toggle, 0);
 			}
 		}
 
-		FireTargets("game_playerspawn", this, this, USE_TOGGLE, 0);
+		FireTargets("game_playerspawn", this, this, UseType::Toggle, 0);
 
 		InitStatusBar();
 	}

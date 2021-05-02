@@ -85,7 +85,7 @@ void ClientDisconnect(edict_t* pEntity)
 	{
 		if (pPlayer->m_pTank != nullptr)
 		{
-			pPlayer->m_pTank->Use({pPlayer, pPlayer, USE_OFF});
+			pPlayer->m_pTank->Use({pPlayer, pPlayer, UseType::Off});
 			pPlayer->m_pTank = nullptr;
 		}
 	}

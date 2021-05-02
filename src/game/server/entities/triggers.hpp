@@ -63,7 +63,7 @@ public:
 
 private:
 	string_t m_globalstate;
-	USE_TYPE	triggerType;
+	UseType	triggerType;
 };
 
 constexpr int SF_RELAY_FIREONCE = 0x0001;
@@ -82,7 +82,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	USE_TYPE	triggerType;
+	UseType	triggerType;
 };
 
 constexpr int SF_MULTIMAN_CLONE = 0x80000000;

@@ -687,7 +687,7 @@ void CFuncTrain::Wait()
 	// Fire the pass target if there is one
 	if (!IsStringNull(pTarget->pev->message))
 	{
-		FireTargets(STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0);
+		FireTargets(STRING(pTarget->pev->message), this, this, UseType::Toggle, 0);
 		if (IsBitSet(pTarget->pev->spawnflags, SF_CORNER_FIREONCE))
 			pTarget->pev->message = iStringNull;
 	}
@@ -971,7 +971,7 @@ void CFuncTrackTrain::Blocked(CBaseEntity* pOther)
 
 void CFuncTrackTrain::Use(const UseInfo& info)
 {
-	if (info.GetUseType() != USE_SET)
+	if (info.GetUseType() != UseType::Set)
 	{
 		if (!ShouldToggle(info.GetUseType(), (pev->speed != 0)))
 			return;
@@ -1158,7 +1158,7 @@ void CFuncTrackTrain::Next()
 			// Fire the pass target if there is one
 			if (!IsStringNull(pFire->pev->message))
 			{
-				FireTargets(STRING(pFire->pev->message), this, this, USE_TOGGLE, 0);
+				FireTargets(STRING(pFire->pev->message), this, this, UseType::Toggle, 0);
 				if (IsBitSet(pFire->pev->spawnflags, SF_PATH_FIREONCE))
 					pFire->pev->message = iStringNull;
 			}
@@ -1249,7 +1249,7 @@ void CFuncTrackTrain::DeadEnd()
 	{
 		ALERT(at_aiconsole, "at %s\n", STRING(pTrack->pev->targetname));
 		if (!IsStringNull(pTrack->pev->netname))
-			FireTargets(STRING(pTrack->pev->netname), this, this, USE_TOGGLE, 0);
+			FireTargets(STRING(pTrack->pev->netname), this, this, UseType::Toggle, 0);
 	}
 	else
 		ALERT(at_aiconsole, "\n");
@@ -1923,7 +1923,7 @@ void CFuncTrackAuto::UpdateAutoTargets(ToggleState toggleState)
 	{
 		ClearBits(pTarget->pev->spawnflags, SF_PATH_DISABLED);
 		if (auto train = m_hTrain.Get(); m_code == TrainCode::Following && train && train->pev->speed == 0)
-			train->Use({this, this, USE_ON});
+			train->Use({this, this, UseType::On});
 	}
 
 	if (pNextTarget)
@@ -2051,7 +2051,7 @@ void CGunTarget::Activate()
 
 void CGunTarget::Start()
 {
-	Use({this, this, USE_ON});
+	Use({this, this, UseType::On});
 }
 
 void CGunTarget::Next()
@@ -2083,7 +2083,7 @@ void CGunTarget::Wait()
 	// Fire the pass target if there is one
 	if (!IsStringNull(pTarget->pev->message))
 	{
-		FireTargets(STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0);
+		FireTargets(STRING(pTarget->pev->message), this, this, UseType::Toggle, 0);
 		if (IsBitSet(pTarget->pev->spawnflags, SF_CORNER_FIREONCE))
 			pTarget->pev->message = iStringNull;
 	}
@@ -2119,7 +2119,7 @@ bool	CGunTarget::TakeDamage(const TakeDamageInfo& info)
 			pev->health = 0;
 			Stop();
 			if (!IsStringNull(pev->message))
-				FireTargets(STRING(pev->message), this, this, USE_TOGGLE, 0);
+				FireTargets(STRING(pev->message), this, this, UseType::Toggle, 0);
 		}
 	}
 	return false;
