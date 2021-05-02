@@ -408,6 +408,8 @@ CBaseEntity* UTIL_CreateNamedEntity(string_t className)
 	ALERT(at_error, "Couldn't create entity \"%s\" by name!\n", STRING(className));
 
 	REMOVE_ENTITY(edict);
+
+	return nullptr;
 }
 
 CBasePlayer* UTIL_PlayerByIndex(int playerIndex)
