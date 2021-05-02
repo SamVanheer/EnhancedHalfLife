@@ -259,28 +259,7 @@ void Host_Say(CBasePlayer* player, bool teamonly)
 
 	const char* const temp = teamonly ? cpSayTeam : cpSay;
 
-	//TODO: these log printf calls always seem to follow the same format, so maybe add a varargs method to gamerules to log stuff this way
-	// team match?
-	if (g_pGameRules->IsTeamplay())
-	{
-		UTIL_LogPrintf("\"%s<%i><%s><%s>\" %s \"%s\"\n",
-			STRING(player->pev->netname),
-			GETPLAYERUSERID(player->edict()),
-			GETPLAYERAUTHID(player->edict()),
-			g_engfuncs.pfnInfoKeyValue(g_engfuncs.pfnGetInfoKeyBuffer(player->edict()), "model"),
-			temp,
-			p);
-	}
-	else
-	{
-		UTIL_LogPrintf("\"%s<%i><%s><%i>\" %s \"%s\"\n",
-			STRING(player->pev->netname),
-			GETPLAYERUSERID(player->edict()),
-			GETPLAYERAUTHID(player->edict()),
-			GETPLAYERUSERID(player->edict()),
-			temp,
-			p);
-	}
+	g_pGameRules->LogPrintf(player, "%s \"%s\"", temp, p);
 }
 
 // Use CMD_ARGV,  CMD_ARGV, and CMD_ARGC to get pointers the character string command.
@@ -397,6 +376,8 @@ void ClientUserInfoChanged(edict_t* pEntity, char* infobuffer)
 	if (!pEntity->pvPrivateData)
 		return;
 
+	auto player = static_cast<CBasePlayer*>(CBaseEntity::InstanceOrNull(pEntity));
+
 	// msg everyone if someone changes their name,  and it isn't the first time (changing no name to current name)
 	if (!IsStringNull(pEntity->v.netname) && STRING(pEntity->v.netname)[0] != 0 && !AreStringsEqual(STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue(infobuffer, "name")))
 	{
@@ -425,28 +406,10 @@ void ClientUserInfoChanged(edict_t* pEntity, char* infobuffer)
 			MESSAGE_END();
 		}
 
-		// team match?
-		if (g_pGameRules->IsTeamplay())
-		{
-			UTIL_LogPrintf("\"%s<%i><%s><%s>\" changed name to \"%s\"\n",
-				STRING(pEntity->v.netname),
-				GETPLAYERUSERID(pEntity),
-				GETPLAYERAUTHID(pEntity),
-				g_engfuncs.pfnInfoKeyValue(infobuffer, "model"),
-				g_engfuncs.pfnInfoKeyValue(infobuffer, "name"));
-		}
-		else
-		{
-			UTIL_LogPrintf("\"%s<%i><%s><%i>\" changed name to \"%s\"\n",
-				STRING(pEntity->v.netname),
-				GETPLAYERUSERID(pEntity),
-				GETPLAYERAUTHID(pEntity),
-				GETPLAYERUSERID(pEntity),
-				g_engfuncs.pfnInfoKeyValue(infobuffer, "name"));
-		}
+		g_pGameRules->LogPrintf(player, "changed name to \"%s\"", g_engfuncs.pfnInfoKeyValue(infobuffer, "name"));
 	}
 
-	g_pGameRules->ClientUserInfoChanged(GetClassPtr((CBasePlayer*)&pEntity->v), infobuffer);
+	g_pGameRules->ClientUserInfoChanged(player, infobuffer);
 }
 
 static bool g_serveractive = false;

@@ -343,6 +343,11 @@ public:
 	*	@brief Immediately end a multiplayer game
 	*/
 	virtual void EndMultiplayerGame() {}
+
+	/**
+	*	@brief Output to the server log file
+	*/
+	virtual void LogPrintf(CBaseEntity* player, const char* format, ...);
 };
 
 /**

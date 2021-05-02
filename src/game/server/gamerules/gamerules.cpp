@@ -266,6 +266,25 @@ void CGameRules::RefreshSkillData()
 	gSkillData.plrArm = GetSkillCvar("sk_player_arm");
 }
 
+void CGameRules::LogPrintf(CBaseEntity* player, const char* format, ...)
+{
+	char message[1024];
+
+	va_list list;
+
+	va_start(list, format);
+	vsnprintf(message, sizeof(message), format, list);
+	va_end(list);
+
+	// Print to server console
+	ALERT(at_logged, "\"%s<%i><%s><%i>\" %s\n",
+		STRING(player->pev->netname),
+		GETPLAYERUSERID(player->edict()),
+		GETPLAYERAUTHID(player->edict()),
+		GETPLAYERUSERID(player->edict()),
+		message);
+}
+
 CGameRules* InstallGameRules()
 {
 	SERVER_COMMAND("exec game.cfg\n");

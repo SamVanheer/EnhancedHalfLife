@@ -317,12 +317,7 @@ void CHalfLifeTeamplay::ClientUserInfoChanged(CBasePlayer* pPlayer, char* infobu
 	snprintf(text, sizeof(text), "* %s has changed to team \'%s\'\n", STRING(pPlayer->pev->netname), mdls);
 	UTIL_SayTextAll(text, pPlayer);
 
-	UTIL_LogPrintf("\"%s<%i><%s><%s>\" joined team \"%s\"\n",
-		STRING(pPlayer->pev->netname),
-		GETPLAYERUSERID(pPlayer->edict()),
-		GETPLAYERAUTHID(pPlayer->edict()),
-		pPlayer->m_szTeamName,
-		mdls);
+	LogPrintf(pPlayer, "joined team \"%s\"", mdls);
 
 	ChangePlayerTeam(pPlayer, mdls, true, true);
 	// recound stuff
@@ -458,6 +453,26 @@ bool CHalfLifeTeamplay::IsValidTeam(const char* pTeamName)
 		return true;
 
 	return GetTeamIndex(pTeamName) != -1;
+}
+
+void CHalfLifeTeamplay::LogPrintf(CBaseEntity* player, const char* format, ...)
+{
+	char message[1024];
+
+	va_list list;
+
+	va_start(list, format);
+	vsnprintf(message, sizeof(message), format, list);
+	va_end(list);
+
+	//Log the team name instead of the user id
+	// Print to server console
+	ALERT(at_logged, "\"%s<%i><%s><%s>\" %s\n",
+		STRING(player->pev->netname),
+		GETPLAYERUSERID(player->edict()),
+		GETPLAYERAUTHID(player->edict()),
+		g_engfuncs.pfnInfoKeyValue(g_engfuncs.pfnGetInfoKeyBuffer(player->edict()), "model"),
+		message);
 }
 
 const char* CHalfLifeTeamplay::TeamWithFewestPlayers()

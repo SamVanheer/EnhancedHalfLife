@@ -44,6 +44,8 @@ public:
 	const char* SetDefaultPlayerTeam(CBasePlayer* pPlayer) override;
 	void ChangePlayerTeam(CBasePlayer* pPlayer, const char* pTeamName, bool bKill, bool bGib) override;
 
+	void LogPrintf(CBaseEntity* player, const char* format, ...) override;
+
 private:
 	void RecountTeams(bool bResendInfo = false);
 	const char* TeamWithFewestPlayers();
