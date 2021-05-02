@@ -550,7 +550,7 @@ void CApache::HuntThink()
 				{
 					TraceResult tr;
 
-					UTIL_TraceLine(pev->origin, pev->origin + vecEst * WORLD_BOUNDARY, IgnoreMonsters::Yes, edict(), &tr);
+					UTIL_TraceLine(pev->origin, pev->origin + vecEst * WORLD_BOUNDARY, IgnoreMonsters::Yes, this, &tr);
 					if ((tr.vecEndPos - m_posTarget).Length() < 512)
 						FireRocket();
 				}
@@ -559,7 +559,7 @@ void CApache::HuntThink()
 			{
 				TraceResult tr;
 
-				UTIL_TraceLine(pev->origin, pev->origin + vecEst * WORLD_BOUNDARY, IgnoreMonsters::No, edict(), &tr);
+				UTIL_TraceLine(pev->origin, pev->origin + vecEst * WORLD_BOUNDARY, IgnoreMonsters::No, this, &tr);
 				// just fire when close
 				if ((tr.vecEndPos - m_posTarget).Length() < 512)
 					FireRocket();

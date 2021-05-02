@@ -103,7 +103,7 @@ CBaseEntity* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 
 				// trace from the node to the trigger, make sure it's one we can see from the node.
 				// !!!HACKHACK Use bodyqueue here cause there are no ents we really wish to ignore!
-				UTIL_TraceLine(pNode->m_vecOrigin, GetBrushModelOrigin(pSearch), IgnoreMonsters::Yes, g_pBodyQueueHead->edict(), &tr);
+				UTIL_TraceLine(pNode->m_vecOrigin, GetBrushModelOrigin(pSearch), IgnoreMonsters::Yes, g_pBodyQueueHead, &tr);
 
 				if (tr.pHit == pSearch->edict())
 				{// good to go!
@@ -1069,7 +1069,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 			UTIL_TraceLine(m_pNodes[i].m_vecOrigin,
 				m_pNodes[j].m_vecOrigin,
 				IgnoreMonsters::Yes,
-				g_pBodyQueueHead->edict(),//!!!HACKHACK no real ent to supply here, using a global we don't care about
+				g_pBodyQueueHead,//!!!HACKHACK no real ent to supply here, using a global we don't care about
 				&tr);
 
 			if (tr.fStartSolid)
@@ -1083,7 +1083,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 				UTIL_TraceLine(m_pNodes[j].m_vecOrigin,
 					m_pNodes[i].m_vecOrigin,
 					IgnoreMonsters::Yes,
-					g_pBodyQueueHead->edict(),//!!!HACKHACK no real ent to supply here, using a global we don't care about
+					g_pBodyQueueHead,//!!!HACKHACK no real ent to supply here, using a global we don't care about
 					&tr);
 
 				// there is a solid_bsp ent in the way of these two nodes, so we must record several things about in order to keep
@@ -1510,7 +1510,7 @@ void CTestHull::BuildNodeGraph()
 			UTIL_TraceLine(WorldGraph.m_pNodes[i].m_vecOrigin,
 				WorldGraph.m_pNodes[i].m_vecOrigin - Vector(0, 0, 384),
 				IgnoreMonsters::Yes,
-				g_pBodyQueueHead->edict(),//!!!HACKHACK no real ent to supply here, using a global we don't care about
+				g_pBodyQueueHead,//!!!HACKHACK no real ent to supply here, using a global we don't care about
 				&tr);
 
 			// This trace is ONLY used if we hit an entity flagged with FL_WORLDBRUSH
@@ -1518,7 +1518,7 @@ void CTestHull::BuildNodeGraph()
 			UTIL_TraceLine(WorldGraph.m_pNodes[i].m_vecOrigin,
 				WorldGraph.m_pNodes[i].m_vecOrigin - Vector(0, 0, 384),
 				IgnoreMonsters::No,
-				g_pBodyQueueHead->edict(),//!!!HACKHACK no real ent to supply here, using a global we don't care about
+				g_pBodyQueueHead,//!!!HACKHACK no real ent to supply here, using a global we don't care about
 				&trEnt);
 
 			// Did we hit something closer than the floor?
@@ -1696,7 +1696,7 @@ void CTestHull::BuildNodeGraph()
 				{
 					TraceResult tr;
 
-					UTIL_TraceHull(pSrcNode->m_vecOrigin + Vector(0, 0, 32), pDestNode->m_vecOriginPeek + Vector(0, 0, 32), IgnoreMonsters::Yes, Hull::Large, edict(), &tr);
+					UTIL_TraceHull(pSrcNode->m_vecOrigin + Vector(0, 0, 32), pDestNode->m_vecOriginPeek + Vector(0, 0, 32), IgnoreMonsters::Yes, Hull::Large, this, &tr);
 					if (tr.fStartSolid || tr.flFraction < 1.0)
 					{
 						pTempPool[pSrcNode->m_iFirstLink + j].m_afLinkInfo &= ~bits_LINK_FLY_HULL;

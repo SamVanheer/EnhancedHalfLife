@@ -81,7 +81,7 @@ void CSatchelCharge::SatchelSlide(CBaseEntity* pOther)
 
 	// HACKHACK - On ground isn't always set, so look for ground underneath
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 10), IgnoreMonsters::Yes, edict(), &tr);
+	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 10), IgnoreMonsters::Yes, this, &tr);
 
 	if (tr.flFraction < 1.0)
 	{

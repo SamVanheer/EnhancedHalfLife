@@ -1196,7 +1196,7 @@ Schedule_t* CHoundeye::GetSchedule()
 			{
 				TraceResult tr;
 				UTIL_MakeVectors(pev->angles);
-				UTIL_TraceHull(pev->origin, pev->origin + gpGlobals->v_forward * -128, IgnoreMonsters::No, Hull::Head, edict(), &tr);
+				UTIL_TraceHull(pev->origin, pev->origin + gpGlobals->v_forward * -128, IgnoreMonsters::No, Hull::Head, this, &tr);
 
 				if (tr.flFraction == 1.0)
 				{

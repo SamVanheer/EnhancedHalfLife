@@ -1970,7 +1970,7 @@ bool CBaseMonster::FindCover(Vector vecThreat, Vector vecViewOffset, float flMin
 		// provide cover! Also make sure the node is within the mins/maxs of the search.
 		if (flDist >= flMinDist && flDist < flMaxDist)
 		{
-			UTIL_TraceLine(node.m_vecOrigin + vecViewOffset, vecLookersOffset, IgnoreMonsters::Yes, IgnoreGlass::Yes, edict(), &tr);
+			UTIL_TraceLine(node.m_vecOrigin + vecViewOffset, vecLookersOffset, IgnoreMonsters::Yes, IgnoreGlass::Yes, this, &tr);
 
 			// if this node will block the threat's line of sight to me...
 			if (tr.flFraction != 1.0)
@@ -2054,7 +2054,7 @@ bool CBaseMonster::BuildNearestRoute(Vector vecThreat, Vector vecViewOffset, flo
 			if (flDist > flMinDist && flDist < flMaxDist)
 			{
 				// can I see where I want to be from there?
-				UTIL_TraceLine(node.m_vecOrigin + pev->view_ofs, vecLookersOffset, IgnoreMonsters::Yes, edict(), &tr);
+				UTIL_TraceLine(node.m_vecOrigin + pev->view_ofs, vecLookersOffset, IgnoreMonsters::Yes, this, &tr);
 
 				if (tr.flFraction == 1.0)
 				{
@@ -2449,7 +2449,7 @@ int CBaseMonster::FindHintNode()
 			{
 				if (!node.m_sHintActivity || LookupActivity(node.m_sHintActivity) != ACTIVITY_NOT_AVAILABLE)
 				{
-					UTIL_TraceLine(pev->origin + pev->view_ofs, node.m_vecOrigin + pev->view_ofs, IgnoreMonsters::Yes, edict(), &tr);
+					UTIL_TraceLine(pev->origin + pev->view_ofs, node.m_vecOrigin + pev->view_ofs, IgnoreMonsters::Yes, this, &tr);
 
 					if (tr.flFraction == 1.0)
 					{
@@ -2698,7 +2698,7 @@ bool CBaseMonster::FindLateralCover(const Vector& vecThreat, const Vector& vecVi
 		vecRightTest = vecRightTest + vecStepRight;
 
 		// it's faster to check the SightEnt's visibility to the potential spot than to check the local move, so we do that first.
-		UTIL_TraceLine(vecThreat + vecViewOffset, vecLeftTest + pev->view_ofs, IgnoreMonsters::Yes, IgnoreGlass::Yes, edict(), &tr);
+		UTIL_TraceLine(vecThreat + vecViewOffset, vecLeftTest + pev->view_ofs, IgnoreMonsters::Yes, IgnoreGlass::Yes, this, &tr);
 
 		if (tr.flFraction != 1.0)
 		{
@@ -2712,7 +2712,7 @@ bool CBaseMonster::FindLateralCover(const Vector& vecThreat, const Vector& vecVi
 		}
 
 		// it's faster to check the SightEnt's visibility to the potential spot than to check the local move, so we do that first.
-		UTIL_TraceLine(vecThreat + vecViewOffset, vecRightTest + pev->view_ofs, IgnoreMonsters::Yes, IgnoreGlass::Yes, edict(), &tr);
+		UTIL_TraceLine(vecThreat + vecViewOffset, vecRightTest + pev->view_ofs, IgnoreMonsters::Yes, IgnoreGlass::Yes, this, &tr);
 
 		if (tr.flFraction != 1.0)
 		{
@@ -2831,13 +2831,13 @@ bool CBaseMonster::BBoxFlat()
 	};
 
 	TraceResult	tr;
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, edict(), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, this, &tr);
 	float flLength = (vecPoint - tr.vecEndPos).Length();
 
 	vecPoint.x = pev->origin.x - flXSize;
 	vecPoint.y = pev->origin.y - flYSize;
 
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, edict(), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, this, &tr);
 	float flLength2 = (vecPoint - tr.vecEndPos).Length();
 	if (flLength2 > flLength)
 	{
@@ -2847,7 +2847,7 @@ bool CBaseMonster::BBoxFlat()
 
 	vecPoint.x = pev->origin.x - flXSize;
 	vecPoint.y = pev->origin.y + flYSize;
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, edict(), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, this, &tr);
 	flLength2 = (vecPoint - tr.vecEndPos).Length();
 	if (flLength2 > flLength)
 	{
@@ -2857,7 +2857,7 @@ bool CBaseMonster::BBoxFlat()
 
 	vecPoint.x = pev->origin.x + flXSize;
 	vecPoint.y = pev->origin.y - flYSize;
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, edict(), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, this, &tr);
 	flLength2 = (vecPoint - tr.vecEndPos).Length();
 	if (flLength2 > flLength)
 	{

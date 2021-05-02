@@ -371,14 +371,14 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 	bool fFirstBeam = true;
 	int	nMaxHits = 10;
 
-	edict_t* pentIgnore = ENT(m_hPlayer->pev);
+	CBaseEntity* pIgnore = m_hPlayer;
 
 	while (flDamage > 10 && nMaxHits > 0)
 	{
 		nMaxHits--;
 
 		// ALERT( at_console, "." );
-		UTIL_TraceLine(vecSrc, vecDest, IgnoreMonsters::No, pentIgnore, &tr);
+		UTIL_TraceLine(vecSrc, vecDest, IgnoreMonsters::No, pIgnore, &tr);
 
 		if (tr.fAllSolid)
 			break;
@@ -405,7 +405,7 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 
 		if (pEntity->ReflectGauss())
 		{
-			pentIgnore = nullptr;
+			pIgnore = nullptr;
 
 			float n = -DotProduct(tr.vecPlaneNormal, vecDir);
 
@@ -440,11 +440,11 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 				// try punching through wall if secondary attack (primary is incapable of breaking through)
 				if (!m_fPrimaryFire)
 				{
-					UTIL_TraceLine(tr.vecEndPos + vecDir * 8, vecDest, IgnoreMonsters::No, pentIgnore, &beam_tr);
+					UTIL_TraceLine(tr.vecEndPos + vecDir * 8, vecDest, IgnoreMonsters::No, pIgnore, &beam_tr);
 					if (!beam_tr.fAllSolid)
 					{
 						// trace backwards to find exit point
-						UTIL_TraceLine(beam_tr.vecEndPos, tr.vecEndPos, IgnoreMonsters::No, pentIgnore, &beam_tr);
+						UTIL_TraceLine(beam_tr.vecEndPos, tr.vecEndPos, IgnoreMonsters::No, pIgnore, &beam_tr);
 
 						float n = (beam_tr.vecEndPos - tr.vecEndPos).Length();
 
@@ -495,7 +495,7 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 		else
 		{
 			vecSrc = tr.vecEndPos + vecDir;
-			pentIgnore = ENT(pEntity->pev);
+			pIgnore = pEntity;
 		}
 	}
 #endif

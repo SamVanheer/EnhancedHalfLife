@@ -1122,7 +1122,7 @@ void CBasePlayer::StartDeathCam()
 		// no intermission spot. Push them up in the air, looking down at their corpse
 		TraceResult tr;
 		CopyToBodyQue(this);
-		UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, 128), IgnoreMonsters::Yes, edict(), &tr);
+		UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, 128), IgnoreMonsters::Yes, this, &tr);
 
 		SetAbsOrigin(tr.vecEndPos);
 		pev->angles = pev->v_angle = VectorAngles(tr.vecEndPos - pev->origin);
@@ -1370,7 +1370,7 @@ void FixPlayerCrouchStuck(CBasePlayer* pPlayer)
 	// Move up as many as 18 pixels if the player is stuck.
 	for (int i = 0; i < 18; i++)
 	{
-		UTIL_TraceHull(pPlayer->pev->origin, pPlayer->pev->origin, IgnoreMonsters::No, Hull::Head, pPlayer->edict(), &trace);
+		UTIL_TraceHull(pPlayer->pev->origin, pPlayer->pev->origin, IgnoreMonsters::No, Hull::Head, pPlayer, &trace);
 		if (trace.fStartSolid)
 			pPlayer->pev->origin.z++;
 		else
@@ -1460,7 +1460,7 @@ void CBasePlayer::UpdateStatusBar()
 	UTIL_MakeVectors(pev->v_angle + pev->punchangle);
 	const Vector vecSrc = EyePosition();
 	const Vector vecEnd = vecSrc + (gpGlobals->v_forward * MAX_ID_RANGE);
-	UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, edict(), &tr);
+	UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, this, &tr);
 
 	if (tr.flFraction != 1.0)
 	{
@@ -1610,7 +1610,7 @@ void CBasePlayer::PreThink()
 		{
 			TraceResult trainTrace;
 			// Maybe this is on the other side of a level transition
-			UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -38), IgnoreMonsters::Yes, edict(), &trainTrace);
+			UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -38), IgnoreMonsters::Yes, this, &trainTrace);
 
 			// HACKHACK - Just look for the func_tracktrain classname
 			if (trainTrace.flFraction != 1.0 && trainTrace.pHit)
@@ -2518,7 +2518,7 @@ void CSprayCan::Think()
 
 	TraceResult	tr;
 	UTIL_MakeVectors(pev->angles);
-	UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, pev->owner, &tr);
+	UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, InstanceOrNull(pev->owner), &tr);
 
 	// No customization present.
 	if (nFrames == -1)
@@ -2560,7 +2560,7 @@ void CBloodSplat::Spray()
 	{
 		TraceResult	tr;
 		UTIL_MakeVectors(pev->angles);
-		UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, pev->owner, &tr);
+		UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, InstanceOrNull(pev->owner), &tr);
 
 		UTIL_BloodDecalTrace(&tr, BLOOD_COLOR_RED);
 	}
@@ -2690,7 +2690,7 @@ void CBasePlayer::ImpulseCommands()
 
 		TraceResult	tr;// UNDONE: kill me! This is temporary for PreAlpha CDs
 		UTIL_MakeVectors(pev->v_angle);
-		UTIL_TraceLine(pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, edict(), &tr);
+		UTIL_TraceLine(pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, this, &tr);
 
 		if (tr.flFraction != 1.0)
 		{// line hit something, so paint a decal
@@ -2831,7 +2831,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 
 		Vector start = pev->origin + pev->view_ofs;
 		Vector end = start + gpGlobals->v_forward * 1024;
-		UTIL_TraceLine(start, end, IgnoreMonsters::Yes, edict(), &tr);
+		UTIL_TraceLine(start, end, IgnoreMonsters::Yes, this, &tr);
 
 		auto pWorld = InstanceOrWorld(tr.pHit);
 
@@ -2870,7 +2870,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 	{
 		TraceResult tr;
 		UTIL_MakeVectors(pev->v_angle);
-		UTIL_TraceLine(pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, edict(), &tr);
+		UTIL_TraceLine(pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, this, &tr);
 
 		if (tr.flFraction != 1.0)
 		{// line hit something, so paint a decal
@@ -3506,7 +3506,7 @@ Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelt
 	m_fOnTarget = false;
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSrc, vecSrc + bestdir * flDist, IgnoreMonsters::No, edict(), &tr);
+	UTIL_TraceLine(vecSrc, vecSrc + bestdir * flDist, IgnoreMonsters::No, this, &tr);
 
 	if (tr.pHit && tr.pHit->v.takedamage != static_cast<int>(DamageMode::No))
 	{
@@ -3565,7 +3565,7 @@ Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelt
 		if (dot > bestdot)
 			continue;	// to far to turn
 
-		UTIL_TraceLine(vecSrc, center, IgnoreMonsters::No, edict(), &tr);
+		UTIL_TraceLine(vecSrc, center, IgnoreMonsters::No, this, &tr);
 		if (tr.flFraction != 1.0 && tr.pHit != entity->edict())
 		{
 			// ALERT( at_console, "hit %s, can't see %s\n", STRING( tr.pHit->v.classname ), STRING( pEdict->v.classname ) );

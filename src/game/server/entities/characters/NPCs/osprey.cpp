@@ -220,7 +220,7 @@ void COsprey::DeployThink()
 	const Vector vecUp = gpGlobals->v_up;
 
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::Yes, edict(), &tr);
+	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::Yes, this, &tr);
 	CSoundEnt::InsertSound(bits_SOUND_DANGER, tr.vecEndPos, 400, 0.3);
 
 	Vector vecSrc = pev->origin + vecForward * 32 + vecRight * 100 + vecUp * -96;
@@ -258,7 +258,7 @@ bool COsprey::HasDead()
 CBaseMonster* COsprey::MakeGrunt(Vector vecSrc)
 {
 	TraceResult tr;
-	UTIL_TraceLine(vecSrc, vecSrc + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, edict(), &tr);
+	UTIL_TraceLine(vecSrc, vecSrc + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, this, &tr);
 	if (tr.pHit && Instance(tr.pHit)->pev->solid != Solid::BSP)
 		return nullptr;
 

@@ -846,8 +846,8 @@ bool CAGrunt::CheckRangeAttack1(float flDot, float flDist)
 		// !!!LATER - we may wish to do something different for projectile weapons as opposed to instant-hit
 		UTIL_MakeVectors(pev->angles);
 		GetAttachment(0, vecArmPos, vecArmDir);
-		//		UTIL_TraceLine( vecArmPos, vecArmPos + gpGlobals->v_forward * 256, ignore_monsters, edict(), &tr);
-		UTIL_TraceLine(vecArmPos, m_hEnemy->BodyTarget(vecArmPos), IgnoreMonsters::No, edict(), &tr);
+		//		UTIL_TraceLine( vecArmPos, vecArmPos + gpGlobals->v_forward * 256, ignore_monsters, this, &tr);
+		UTIL_TraceLine(vecArmPos, m_hEnemy->BodyTarget(vecArmPos), IgnoreMonsters::No, this, &tr);
 
 		if (tr.flFraction == 1.0 || tr.pHit == m_hEnemy->edict())
 		{
@@ -895,7 +895,7 @@ void CAGrunt::StartTask(Task_t* pTask)
 
 			VectorAngles(m_vecEnemyLKP - pev->origin);
 
-			UTIL_TraceLine(Center() + gpGlobals->v_forward * 128, m_vecEnemyLKP, IgnoreMonsters::Yes, edict(), &tr);
+			UTIL_TraceLine(Center() + gpGlobals->v_forward * 128, m_vecEnemyLKP, IgnoreMonsters::Yes, this, &tr);
 			if (tr.flFraction == 1.0)
 			{
 				MakeIdealYaw(pev->origin + gpGlobals->v_right * 128);
@@ -905,7 +905,7 @@ void CAGrunt::StartTask(Task_t* pTask)
 
 			if (!fSkip)
 			{
-				UTIL_TraceLine(Center() - gpGlobals->v_forward * 128, m_vecEnemyLKP, IgnoreMonsters::Yes, edict(), &tr);
+				UTIL_TraceLine(Center() - gpGlobals->v_forward * 128, m_vecEnemyLKP, IgnoreMonsters::Yes, this, &tr);
 				if (tr.flFraction == 1.0)
 				{
 					MakeIdealYaw(pev->origin - gpGlobals->v_right * 128);
@@ -916,7 +916,7 @@ void CAGrunt::StartTask(Task_t* pTask)
 
 			if (!fSkip)
 			{
-				UTIL_TraceLine(Center() + gpGlobals->v_forward * 256, m_vecEnemyLKP, IgnoreMonsters::Yes, edict(), &tr);
+				UTIL_TraceLine(Center() + gpGlobals->v_forward * 256, m_vecEnemyLKP, IgnoreMonsters::Yes, this, &tr);
 				if (tr.flFraction == 1.0)
 				{
 					MakeIdealYaw(pev->origin + gpGlobals->v_right * 256);
@@ -927,7 +927,7 @@ void CAGrunt::StartTask(Task_t* pTask)
 
 			if (!fSkip)
 			{
-				UTIL_TraceLine(Center() - gpGlobals->v_forward * 256, m_vecEnemyLKP, IgnoreMonsters::Yes, edict(), &tr);
+				UTIL_TraceLine(Center() - gpGlobals->v_forward * 256, m_vecEnemyLKP, IgnoreMonsters::Yes, this, &tr);
 				if (tr.flFraction == 1.0)
 				{
 					MakeIdealYaw(pev->origin - gpGlobals->v_right * 256);

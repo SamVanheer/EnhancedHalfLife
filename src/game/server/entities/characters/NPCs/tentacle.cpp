@@ -631,10 +631,10 @@ void CTentacle::Cycle()
 			TraceResult tr1, tr2;
 
 			Vector vecSrc = pev->origin + Vector(0, 0, MyHeight() - 4);
-			UTIL_TraceLine(vecSrc, vecSrc + gpGlobals->v_forward * 512, IgnoreMonsters::Yes, edict(), &tr1);
+			UTIL_TraceLine(vecSrc, vecSrc + gpGlobals->v_forward * 512, IgnoreMonsters::Yes, this, &tr1);
 
 			vecSrc = pev->origin + Vector(0, 0, MyHeight() + 8);
-			UTIL_TraceLine(vecSrc, vecSrc + gpGlobals->v_forward * 512, IgnoreMonsters::Yes, edict(), &tr2);
+			UTIL_TraceLine(vecSrc, vecSrc + gpGlobals->v_forward * 512, IgnoreMonsters::Yes, this, &tr2);
 
 			// ALERT( at_console, "%f %f\n", tr1.flFraction * 512, tr2.flFraction * 512 );
 

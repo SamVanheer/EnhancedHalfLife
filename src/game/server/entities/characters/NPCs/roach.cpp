@@ -76,7 +76,7 @@ void CRoach::Touch(CBaseEntity* pOther)
 
 	const Vector vecSpot = pev->origin + Vector(0, 0, 8);//move up a bit, and trace down.
 	TraceResult	tr;
-	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -24), IgnoreMonsters::Yes, edict(), &tr);
+	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -24), IgnoreMonsters::Yes, this, &tr);
 
 	// This isn't really blood.  So you don't have to screen it out based on violence levels (UTIL_ShouldShowBlood())
 	UTIL_DecalTrace(&tr, DECAL_YBLOOD1 + RANDOM_LONG(0, 5));

@@ -533,7 +533,7 @@ void CFuncTank::TrackTarget()
 		if (!InRange(range))
 			return;
 
-		UTIL_TraceLine(barrelEnd, targetPosition, IgnoreMonsters::No, edict(), &tr);
+		UTIL_TraceLine(barrelEnd, targetPosition, IgnoreMonsters::No, this, &tr);
 
 		bool lineOfSight = false;
 		// No line of sight, don't track
@@ -615,7 +615,7 @@ void CFuncTank::TrackTarget()
 		if (pev->spawnflags & SF_TANK_LINEOFSIGHT)
 		{
 			float length = direction.Length();
-			UTIL_TraceLine(barrelEnd, barrelEnd + forward * length, IgnoreMonsters::No, edict(), &tr);
+			UTIL_TraceLine(barrelEnd, barrelEnd + forward * length, IgnoreMonsters::No, this, &tr);
 			if (tr.pHit == pTarget->edict())
 				fire = true;
 		}
@@ -694,7 +694,7 @@ void CFuncTank::TankTrace(const Vector& vecStart, const Vector& vecForward, cons
 		y * vecSpread.y * gpGlobals->v_up;
 
 	const Vector vecEnd = vecStart + vecDir * WORLD_BOUNDARY;
-	UTIL_TraceLine(vecStart, vecEnd, IgnoreMonsters::No, edict(), &tr);
+	UTIL_TraceLine(vecStart, vecEnd, IgnoreMonsters::No, this, &tr);
 }
 
 void CFuncTank::StartRotSound()

@@ -494,7 +494,7 @@ void CNihilanth::DyingThink()
 	GetAttachment(iAttachment - 1, vecSrc, vecAngles);
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_BOUNDARY, IgnoreMonsters::Yes, edict(), &tr);
+	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_BOUNDARY, IgnoreMonsters::Yes, this, &tr);
 
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMENTPOINT);
@@ -1412,7 +1412,7 @@ void CNihilanthHVR::ZapThink()
 	{
 		TraceResult tr;
 
-		UTIL_TraceLine(pev->origin, m_hEnemy->Center(), IgnoreMonsters::No, edict(), &tr);
+		UTIL_TraceLine(pev->origin, m_hEnemy->Center(), IgnoreMonsters::No, this, &tr);
 
 		if (CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit); pEntity != nullptr && pEntity->pev->takedamage)
 		{

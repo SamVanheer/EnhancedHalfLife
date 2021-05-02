@@ -781,7 +781,7 @@ void CLightning::RandomArea()
 		Vector vecDir1 = Vector(RANDOM_FLOAT(-1.0, 1.0), RANDOM_FLOAT(-1.0, 1.0), RANDOM_FLOAT(-1.0, 1.0));
 		vecDir1 = vecDir1.Normalize();
 		TraceResult		tr1;
-		UTIL_TraceLine(vecSrc, vecSrc + vecDir1 * m_radius, IgnoreMonsters::Yes, edict(), &tr1);
+		UTIL_TraceLine(vecSrc, vecSrc + vecDir1 * m_radius, IgnoreMonsters::Yes, this, &tr1);
 
 		if (tr1.flFraction == 1.0)
 			continue;
@@ -793,7 +793,7 @@ void CLightning::RandomArea()
 		while (DotProduct(vecDir1, vecDir2) > 0);
 		vecDir2 = vecDir2.Normalize();
 		TraceResult		tr2;
-		UTIL_TraceLine(vecSrc, vecSrc + vecDir2 * m_radius, IgnoreMonsters::Yes, edict(), &tr2);
+		UTIL_TraceLine(vecSrc, vecSrc + vecDir2 * m_radius, IgnoreMonsters::Yes, this, &tr2);
 
 		if (tr2.flFraction == 1.0)
 			continue;
@@ -801,7 +801,7 @@ void CLightning::RandomArea()
 		if ((tr1.vecEndPos - tr2.vecEndPos).Length() < m_radius * 0.1)
 			continue;
 
-		UTIL_TraceLine(tr1.vecEndPos, tr2.vecEndPos, IgnoreMonsters::Yes, edict(), &tr2);
+		UTIL_TraceLine(tr1.vecEndPos, tr2.vecEndPos, IgnoreMonsters::Yes, this, &tr2);
 
 		if (tr2.flFraction != 1.0)
 			continue;
@@ -819,7 +819,7 @@ void CLightning::RandomPoint(Vector& vecSrc)
 		Vector vecDir1 = Vector(RANDOM_FLOAT(-1.0, 1.0), RANDOM_FLOAT(-1.0, 1.0), RANDOM_FLOAT(-1.0, 1.0));
 		vecDir1 = vecDir1.Normalize();
 		TraceResult		tr1;
-		UTIL_TraceLine(vecSrc, vecSrc + vecDir1 * m_radius, IgnoreMonsters::Yes, edict(), &tr1);
+		UTIL_TraceLine(vecSrc, vecSrc + vecDir1 * m_radius, IgnoreMonsters::Yes, this, &tr1);
 
 		if ((tr1.vecEndPos - vecSrc).Length() < m_radius * 0.1)
 			continue;
@@ -1556,7 +1556,7 @@ void CTestEffect::TestThink()
 		Vector vecSrc = pev->origin;
 		Vector vecDir = Vector(RANDOM_FLOAT(-1.0, 1.0), RANDOM_FLOAT(-1.0, 1.0), RANDOM_FLOAT(-1.0, 1.0));
 		vecDir = vecDir.Normalize();
-		UTIL_TraceLine(vecSrc, vecSrc + vecDir * 128, IgnoreMonsters::Yes, edict(), &tr);
+		UTIL_TraceLine(vecSrc, vecSrc + vecDir * 128, IgnoreMonsters::Yes, this, &tr);
 
 		pbeam->PointsInit(vecSrc, tr.vecEndPos);
 		// pbeam->SetColor( 80, 100, 255 );

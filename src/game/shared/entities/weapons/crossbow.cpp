@@ -335,7 +335,7 @@ void CCrossbow::FireSniperBolt()
 	const Vector vecDir = gpGlobals->v_forward;
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_SIZE, IgnoreMonsters::No, m_hPlayer->edict(), &tr);
+	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_SIZE, IgnoreMonsters::No, m_hPlayer, &tr);
 
 #ifndef CLIENT_DLL
 	if (tr.pHit->v.takedamage)

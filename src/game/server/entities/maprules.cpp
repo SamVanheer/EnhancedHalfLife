@@ -537,7 +537,7 @@ void CGamePlayerZone::Use(const UseInfo& info)
 				hullNumber = Hull::Head;
 			}
 
-			UTIL_TraceModel(pPlayer->pev->origin, pPlayer->pev->origin, hullNumber, edict(), &trace);
+			UTIL_TraceModel(pPlayer->pev->origin, pPlayer->pev->origin, hullNumber, this, &trace);
 
 			if (trace.fStartSolid)
 			{

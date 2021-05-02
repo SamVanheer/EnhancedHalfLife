@@ -586,7 +586,7 @@ void CBigMomma::LayHeadcrab()
 	}
 
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 100), IgnoreMonsters::Yes, edict(), &tr);
+	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 100), IgnoreMonsters::Yes, this, &tr);
 	UTIL_DecalTrace(&tr, DECAL_MOMMABIRTH);
 
 	EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pBirthSounds), VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
@@ -1016,10 +1016,10 @@ Vector CheckSplatToss(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSp
 
 	// calculate the midpoint and apex of the 'triangle'
 	const Vector vecMidPoint = vecSpot1 + (vecSpot2 - vecSpot1) * 0.5; // halfway point between Spot1 and Spot2
-	UTIL_TraceLine(vecMidPoint, vecMidPoint + Vector(0, 0, maxHeight), IgnoreMonsters::Yes, pEntity->edict(), &tr);
+	UTIL_TraceLine(vecMidPoint, vecMidPoint + Vector(0, 0, maxHeight), IgnoreMonsters::Yes, pEntity, &tr);
 	const Vector vecApex = tr.vecEndPos; // highest point 
 
-	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, pEntity->edict(), &tr);
+	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, pEntity, &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
@@ -1138,7 +1138,7 @@ void CBMortar::Touch(CBaseEntity* pOther)
 	if (pOther->IsBSPModel())
 	{
 		// make a splat on the wall
-		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 10, IgnoreMonsters::No, edict(), &tr);
+		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 10, IgnoreMonsters::No, this, &tr);
 		UTIL_DecalTrace(&tr, DECAL_MOMMASPLAT);
 	}
 	else

@@ -437,7 +437,7 @@ bool CHGrunt::CheckRangeAttack1(float flDot, float flDist)
 		const Vector vecSrc = GetGunPosition();
 
 		// verify that a bullet fired from the gun will hit the enemy before the world.
-		UTIL_TraceLine(vecSrc, m_hEnemy->BodyTarget(vecSrc), IgnoreMonsters::Yes, IgnoreGlass::Yes, edict(), &tr);
+		UTIL_TraceLine(vecSrc, m_hEnemy->BodyTarget(vecSrc), IgnoreMonsters::Yes, IgnoreGlass::Yes, this, &tr);
 
 		if (tr.flFraction == 1.0)
 		{
@@ -706,7 +706,7 @@ CBaseEntity* CHGrunt::Kick()
 	vecStart.z += pev->size.z * 0.5;
 	const Vector vecEnd = vecStart + (gpGlobals->v_forward * 70);
 
-	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, edict(), &tr);
+	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, this, &tr);
 
 	if (tr.pHit)
 	{
@@ -2268,7 +2268,7 @@ void CHGruntRepel::Precache()
 void CHGruntRepel::RepelUse(const UseInfo& info)
 {
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, edict(), &tr);
+	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, this, &tr);
 	/*
 	if ( tr.pHit && Instance( tr.pHit )->pev->solid != Solid::BSP)
 		return;

@@ -587,7 +587,7 @@ void CIchthyosaur::RunTask(Task_t* pTask)
 
 			TraceResult tr;
 
-			UTIL_TraceHull(vecFrom, vecPos, IgnoreMonsters::Yes, Hull::Large, m_hEnemy->edict(), &tr);
+			UTIL_TraceHull(vecFrom, vecPos, IgnoreMonsters::Yes, Hull::Large, m_hEnemy, &tr);
 
 			if (tr.flFraction > 0.5)
 				vecPos = tr.vecEndPos;
@@ -1016,7 +1016,7 @@ Vector CIchthyosaur::DoProbe(const Vector& Probe)
 	bool bBumpedSomething = ProbeZ(pev->origin, Probe, &frac);
 
 	TraceResult tr;
-	UTIL_TraceMonsterHull(edict(), pev->origin, Probe, IgnoreMonsters::No, edict(), &tr);
+	UTIL_TraceMonsterHull(edict(), pev->origin, Probe, IgnoreMonsters::No, this, &tr);
 	if (tr.fAllSolid || tr.flFraction < 0.99)
 	{
 		if (tr.flFraction < 0.0) tr.flFraction = 0.0;

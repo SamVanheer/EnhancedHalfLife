@@ -180,7 +180,7 @@ void CRpgRocket::FollowThink()
 
 	while ((pOther = UTIL_FindEntityByClassname(pOther, "laser_spot")) != nullptr)
 	{
-		UTIL_TraceLine(pev->origin, pOther->pev->origin, IgnoreMonsters::No, ENT(pev), &tr);
+		UTIL_TraceLine(pev->origin, pOther->pev->origin, IgnoreMonsters::No, this, &tr);
 		// ALERT( at_console, "%f\n", tr.flFraction );
 		if (tr.flFraction >= 0.90)
 		{
@@ -510,7 +510,7 @@ void CRpg::UpdateSpot()
 		const Vector vecAiming = gpGlobals->v_forward;
 
 		TraceResult tr;
-		UTIL_TraceLine(vecSrc, vecSrc + vecAiming * WORLD_SIZE, IgnoreMonsters::No, ENT(m_hPlayer->pev), &tr);
+		UTIL_TraceLine(vecSrc, vecSrc + vecAiming * WORLD_SIZE, IgnoreMonsters::No, m_hPlayer, &tr);
 
 		m_pSpot->SetAbsOrigin(tr.vecEndPos);
 	}

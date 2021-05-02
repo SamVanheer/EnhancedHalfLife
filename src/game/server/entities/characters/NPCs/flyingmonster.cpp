@@ -28,7 +28,7 @@ LocalMoveResult CFlyingMonster::CheckLocalMove(const Vector& vecStart, const Vec
 	}
 
 	TraceResult tr;
-	UTIL_TraceHull(vecStart + Vector(0, 0, 32), vecEnd + Vector(0, 0, 32), IgnoreMonsters::No, Hull::Large, edict(), &tr);
+	UTIL_TraceHull(vecStart + Vector(0, 0, 32), vecEnd + Vector(0, 0, 32), IgnoreMonsters::No, Hull::Large, this, &tr);
 
 	// ALERT( at_console, "%.0f %.0f %.0f : ", vecStart.x, vecStart.y, vecStart.z );
 	// ALERT( at_console, "%.0f %.0f %.0f\n", vecEnd.x, vecEnd.y, vecEnd.z );

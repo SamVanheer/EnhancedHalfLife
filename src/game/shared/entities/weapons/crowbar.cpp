@@ -82,7 +82,7 @@ void FindHullIntersection(const Vector& vecSrc, TraceResult& tr, const Vector& m
 	const Vector vecHullEnd = vecSrc + ((tr.vecEndPos - vecSrc) * 2);
 
 	TraceResult tmpTrace;
-	UTIL_TraceLine(vecSrc, vecHullEnd, IgnoreMonsters::No, pEntity->edict(), &tmpTrace);
+	UTIL_TraceLine(vecSrc, vecHullEnd, IgnoreMonsters::No, pEntity, &tmpTrace);
 
 	if (tmpTrace.flFraction < 1.0)
 	{
@@ -107,7 +107,7 @@ void FindHullIntersection(const Vector& vecSrc, TraceResult& tr, const Vector& m
 					vecHullEnd.z + minmaxs[k]->z
 				};
 
-				UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, pEntity->edict(), &tmpTrace);
+				UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, pEntity, &tmpTrace);
 				if (tmpTrace.flFraction < 1.0)
 				{
 					float thisDistance = (tmpTrace.vecEndPos - vecSrc).Length();
@@ -148,12 +148,12 @@ bool CCrowbar::Swing(bool fFirst)
 	Vector vecEnd = vecSrc + gpGlobals->v_forward * 32;
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, m_hPlayer->edict(), &tr);
+	UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, m_hPlayer, &tr);
 
 #ifndef CLIENT_DLL
 	if (tr.flFraction >= 1.0)
 	{
-		UTIL_TraceHull(vecSrc, vecEnd, IgnoreMonsters::No, Hull::Head, m_hPlayer->edict(), &tr);
+		UTIL_TraceHull(vecSrc, vecEnd, IgnoreMonsters::No, Hull::Head, m_hPlayer, &tr);
 		if (tr.flFraction < 1.0)
 		{
 			// Calculate the point of intersection of the line (or hull) and the object we hit

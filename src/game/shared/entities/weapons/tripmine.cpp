@@ -153,7 +153,7 @@ void CTripmineGrenade::PowerupThink()
 		edict_t* oldowner = pev->owner;
 		pev->owner = nullptr;
 		TraceResult tr;
-		UTIL_TraceLine(pev->origin + m_vecDir * 8, pev->origin - m_vecDir * 32, IgnoreMonsters::No, ENT(pev), &tr);
+		UTIL_TraceLine(pev->origin + m_vecDir * 8, pev->origin - m_vecDir * 32, IgnoreMonsters::No, this, &tr);
 		if (tr.fStartSolid || (oldowner && tr.pHit == oldowner))
 		{
 			pev->owner = oldowner;
@@ -221,7 +221,7 @@ void CTripmineGrenade::MakeBeam()
 {
 	// ALERT( at_console, "serverflags %f\n", gpGlobals->serverflags );
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, m_vecEnd, IgnoreMonsters::No, ENT(pev), &tr);
+	UTIL_TraceLine(pev->origin, m_vecEnd, IgnoreMonsters::No, this, &tr);
 
 	m_flBeamLength = tr.flFraction;
 
@@ -243,7 +243,7 @@ void CTripmineGrenade::BeamBreakThink()
 	// HACKHACK Set simple box using this really nice global!
 	gpGlobals->trace_flags = FTRACE_SIMPLEBOX;
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, m_vecEnd, IgnoreMonsters::No, ENT(pev), &tr);
+	UTIL_TraceLine(pev->origin, m_vecEnd, IgnoreMonsters::No, this, &tr);
 
 	// ALERT( at_console, "%f : %f\n", tr.flFraction, m_flBeamLength );
 
@@ -320,7 +320,7 @@ void CTripmineGrenade::DelayDeathThink()
 {
 	KillBeam();
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin + m_vecDir * 8, pev->origin - m_vecDir * 64, IgnoreMonsters::No, ENT(pev), &tr);
+	UTIL_TraceLine(pev->origin + m_vecDir * 8, pev->origin - m_vecDir * 64, IgnoreMonsters::No, this, &tr);
 
 	Explode(&tr, DMG_BLAST);
 }
@@ -411,7 +411,7 @@ void CTripmine::PrimaryAttack()
 	const Vector vecAiming = gpGlobals->v_forward;
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSrc, vecSrc + vecAiming * 128, IgnoreMonsters::No, m_hPlayer->edict(), &tr);
+	UTIL_TraceLine(vecSrc, vecSrc + vecAiming * 128, IgnoreMonsters::No, m_hPlayer, &tr);
 
 	int flags;
 #ifdef CLIENT_WEAPONS
