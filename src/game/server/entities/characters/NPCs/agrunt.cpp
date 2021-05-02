@@ -849,7 +849,7 @@ bool CAGrunt::CheckRangeAttack1(float flDot, float flDist)
 		//		UTIL_TraceLine( vecArmPos, vecArmPos + gpGlobals->v_forward * 256, ignore_monsters, this, &tr);
 		UTIL_TraceLine(vecArmPos, m_hEnemy->BodyTarget(vecArmPos), IgnoreMonsters::No, this, &tr);
 
-		if (tr.flFraction == 1.0 || tr.pHit == m_hEnemy->edict())
+		if (tr.flFraction == 1.0 || InstanceOrNull(tr.pHit) == m_hEnemy)
 		{
 			m_flNextHornetAttackCheck = gpGlobals->time + RANDOM_FLOAT(2, 5);
 			m_fCanHornetAttack = true;

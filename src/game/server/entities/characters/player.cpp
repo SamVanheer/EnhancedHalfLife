@@ -2499,7 +2499,7 @@ void CSprayCan::Spawn(CBaseEntity* pOwner)
 {
 	pev->origin = pOwner->pev->origin + Vector(0, 0, 32);
 	pev->angles = pOwner->pev->v_angle;
-	pev->owner = pOwner->edict();
+	SetOwner(pOwner);
 	pev->frame = 0;
 
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -2508,17 +2508,17 @@ void CSprayCan::Spawn(CBaseEntity* pOwner)
 
 void CSprayCan::Think()
 {
-	auto pPlayer = (CBasePlayer*)GET_PRIVATE(pev->owner);
+	auto pPlayer = (CBasePlayer*)GetOwner();
 
 	const int nFrames = pPlayer ? pPlayer->GetCustomDecalFrames() : -1;
 
-	const int playernum = ENTINDEX(pev->owner);
+	const int playernum = pPlayer ? pPlayer->entindex() : 0;
 
 	// ALERT(at_console, "Spray by player %i, %i of %i\n", playernum, (int)(pev->frame + 1), nFrames);
 
 	TraceResult	tr;
 	UTIL_MakeVectors(pev->angles);
-	UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, InstanceOrNull(pev->owner), &tr);
+	UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, pPlayer, &tr);
 
 	// No customization present.
 	if (nFrames == -1)
@@ -2548,7 +2548,7 @@ void CBloodSplat::Spawn(CBaseEntity* pOwner)
 {
 	pev->origin = pOwner->pev->origin + Vector(0, 0, 32);
 	pev->angles = pOwner->pev->v_angle;
-	pev->owner = pOwner->edict();
+	SetOwner(pOwner);
 
 	SetThink(&CBloodSplat::Spray);
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -2560,7 +2560,7 @@ void CBloodSplat::Spray()
 	{
 		TraceResult	tr;
 		UTIL_MakeVectors(pev->angles);
-		UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, InstanceOrNull(pev->owner), &tr);
+		UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, GetOwner(), &tr);
 
 		UTIL_BloodDecalTrace(&tr, BLOOD_COLOR_RED);
 	}
@@ -3566,7 +3566,7 @@ Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelt
 			continue;	// to far to turn
 
 		UTIL_TraceLine(vecSrc, center, IgnoreMonsters::No, this, &tr);
-		if (tr.flFraction != 1.0 && tr.pHit != entity->edict())
+		if (tr.flFraction != 1.0 && InstanceOrNull(tr.pHit) != entity)
 		{
 			// ALERT( at_console, "hit %s, can't see %s\n", STRING( tr.pHit->v.classname ), STRING( pEdict->v.classname ) );
 			continue;

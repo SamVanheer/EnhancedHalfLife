@@ -78,7 +78,7 @@ void CHornet::Spawn()
 	SetTouch(&CHornet::DieTouch);
 	SetThink(&CHornet::StartTrack);
 
-	if (!IsNullEnt(pev->owner) && (pev->owner->v.flags & FL_CLIENT))
+	if (auto owner = GetOwner(); !IsNullEnt(owner) && (owner->pev->flags & FL_CLIENT))
 	{
 		pev->dmg = gSkillData.plrDmgHornet;
 	}
@@ -124,7 +124,7 @@ Relationship CHornet::GetRelationship(CBaseEntity* pTarget)
 
 int CHornet::Classify()
 {
-	if (pev->owner && pev->owner->v.flags & FL_CLIENT)
+	if (auto owner = GetOwner(); owner && owner->pev->flags & FL_CLIENT)
 	{
 		return CLASS_PLAYER_BIOWEAPON;
 	}
@@ -263,7 +263,7 @@ void CHornet::TrackTarget()
 
 	pev->velocity = (vecFlightDir + vecDirToEnemy).Normalize();
 
-	if (pev->owner && (pev->owner->v.flags & FL_MONSTER))
+	if (auto owner = GetOwner(); owner && (owner->pev->flags & FL_MONSTER))
 	{
 		// random pattern only applies to hornets fired by monsters, not players. 
 
@@ -321,7 +321,7 @@ void CHornet::TrackTarget()
 
 void CHornet::TrackTouch(CBaseEntity* pOther)
 {
-	if (pOther->edict() == pev->owner || pOther->pev->modelindex == pev->modelindex)
+	if (pOther == GetOwner() || pOther->pev->modelindex == pev->modelindex)
 	{// bumped into the guy that shot it.
 		pev->solid = Solid::Not;
 		return;
@@ -362,7 +362,7 @@ void CHornet::DieTouch(CBaseEntity* pOther)
 		case 2:	EmitSound(SoundChannel::Voice, "hornet/ag_hornethit3.wav"); break;
 		}
 
-		pOther->TakeDamage({this, InstanceOrNull(pev->owner), pev->dmg, DMG_BULLET});
+		pOther->TakeDamage({this, GetOwner(), pev->dmg, DMG_BULLET});
 	}
 
 	pev->modelindex = 0;// so will disappear for the 0.1 secs we wait until NEXTTHINK gets rid

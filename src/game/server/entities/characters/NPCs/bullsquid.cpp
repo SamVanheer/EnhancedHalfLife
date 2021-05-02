@@ -107,7 +107,7 @@ void CSquidSpit::Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity)
 
 	pSpit->SetAbsOrigin(vecStart);
 	pSpit->pev->velocity = vecVelocity;
-	pSpit->pev->owner = pOwner->edict();
+	pSpit->SetOwner(pOwner);
 
 	pSpit->SetThink(&CSquidSpit::Animate);
 	pSpit->pev->nextthink = gpGlobals->time + 0.1;

@@ -455,7 +455,7 @@ bool CISlave::CheckRangeAttack2(float flDot, float flDist)
 		TraceResult tr;
 
 		UTIL_TraceLine(EyePosition(), pEntity->EyePosition(), IgnoreMonsters::Yes, this, &tr);
-		if (tr.flFraction == 1.0 || tr.pHit == pEntity->edict())
+		if (tr.flFraction == 1.0 || InstanceOrNull(tr.pHit) == pEntity)
 		{
 			if (pEntity->pev->deadflag == DeadFlag::Dead)
 			{

@@ -537,7 +537,7 @@ void CFuncTank::TrackTarget()
 
 		bool lineOfSight = false;
 		// No line of sight, don't track
-		if (tr.flFraction == 1.0 || tr.pHit == pTarget->edict())
+		if (tr.flFraction == 1.0 || InstanceOrNull(tr.pHit) == pTarget)
 		{
 			lineOfSight = true;
 
@@ -616,7 +616,7 @@ void CFuncTank::TrackTarget()
 		{
 			float length = direction.Length();
 			UTIL_TraceLine(barrelEnd, barrelEnd + forward * length, IgnoreMonsters::No, this, &tr);
-			if (tr.pHit == pTarget->edict())
+			if (InstanceOrNull(tr.pHit) == pTarget)
 				fire = true;
 		}
 		else

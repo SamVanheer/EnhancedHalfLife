@@ -112,13 +112,13 @@ void CTripmineGrenade::Spawn()
 	pev->dmg = gSkillData.plrDmgTripmine;
 	pev->health = 1; // don't let die normally
 
-	if (pev->owner != nullptr)
+	if (auto owner = GetOwner(); owner)
 	{
 		// play deploy sound
 		EmitSound(SoundChannel::Voice, "weapons/mine_deploy.wav");
 		EmitSound(SoundChannel::Body, "weapons/mine_charge.wav", 0.2); // chargeup
 
-		m_hRealOwner = reinterpret_cast<CBaseEntity*>(GET_PRIVATE(pev->owner));// see CTripmineGrenade for why.
+		m_hRealOwner = owner;// see CTripmineGrenade for why.
 	}
 
 	UTIL_MakeAimVectors(pev->angles);
@@ -150,23 +150,24 @@ void CTripmineGrenade::PowerupThink()
 	if (m_hOwner == nullptr)
 	{
 		// find an owner
-		edict_t* oldowner = pev->owner;
-		pev->owner = nullptr;
+		auto oldowner = GetOwner();
+		SetOwner(nullptr);
 		TraceResult tr;
 		UTIL_TraceLine(pev->origin + m_vecDir * 8, pev->origin - m_vecDir * 32, IgnoreMonsters::No, this, &tr);
-		if (tr.fStartSolid || (oldowner && tr.pHit == oldowner))
+		if (tr.fStartSolid || (oldowner && InstanceOrNull(tr.pHit) == oldowner))
 		{
-			pev->owner = oldowner;
+			SetOwner(oldowner);
 			m_flPowerUp += 0.1;
 			pev->nextthink = gpGlobals->time + 0.1;
 			return;
 		}
 		if (tr.flFraction < 1.0)
 		{
-			pev->owner = tr.pHit;
-			m_hOwner = CBaseEntity::Instance(pev->owner);
-			m_posOwner = m_hOwner->pev->origin;
-			m_angleOwner = m_hOwner->pev->angles;
+			auto newOwner = InstanceOrNull(tr.pHit);
+			SetOwner(newOwner);
+			m_hOwner = newOwner;
+			m_posOwner = newOwner->pev->origin;
+			m_angleOwner = newOwner->pev->angles;
 		}
 		else
 		{
@@ -192,7 +193,7 @@ void CTripmineGrenade::PowerupThink()
 		pev->nextthink = gpGlobals->time + 0.1;
 		return;
 	}
-	// ALERT( at_console, "%d %.0f %.0f %0.f\n", pev->owner, m_pOwner->pev->origin.x, m_pOwner->pev->origin.y, m_pOwner->pev->origin.z );
+	// ALERT( at_console, "%d %.0f %.0f %0.f\n", GetOwner(), m_pOwner->pev->origin.x, m_pOwner->pev->origin.y, m_pOwner->pev->origin.z );
 
 	if (gpGlobals->time > m_flPowerUp)
 	{
@@ -277,9 +278,9 @@ void CTripmineGrenade::BeamBreakThink()
 		// so we have to restore pev->owner from pRealOwner, because an entity's tracelines don't strike it's pev->owner which meant
 		// that a player couldn't trigger his own tripmine. Now that the mine is exploding, it's safe the restore the owner so the 
 		// CGrenade code knows who the explosive really belongs to.
-		pev->owner = m_hRealOwner ? m_hRealOwner->edict() : nullptr;
+		SetOwner(m_hRealOwner);
 		pev->health = 0;
-		Killed({InstanceOrNull(pev->owner), GibType::Normal});
+		Killed({GetOwner(), GibType::Normal});
 		return;
 	}
 
@@ -307,7 +308,7 @@ void CTripmineGrenade::Killed(const KilledInfo& info)
 	if (auto attacker = info.GetAttacker(); attacker && (attacker->pev->flags & FL_CLIENT))
 	{
 		// some client has destroyed this mine, he'll get credit for any kills
-		pev->owner = attacker->edict();
+		SetOwner(attacker);
 	}
 
 	SetThink(&CTripmineGrenade::DelayDeathThink);

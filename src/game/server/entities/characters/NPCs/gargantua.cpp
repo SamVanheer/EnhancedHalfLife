@@ -136,12 +136,9 @@ void CStomp::Think()
 
 	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, this, &tr);
 
-	if (tr.pHit && tr.pHit != pev->owner)
+	if (auto hit = InstanceOrNull(tr.pHit); hit && hit != GetOwner())
 	{
-		CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit);
-
-		if (pEntity)
-			pEntity->TakeDamage({this, InstanceOrDefault(pev->owner, this), gSkillData.gargantuaDmgStomp, DMG_SONIC});
+		hit->TakeDamage({this, InstanceOrDefault(pev->owner, this), gSkillData.gargantuaDmgStomp, DMG_SONIC});
 	}
 
 	// Accelerate the effect
@@ -625,7 +622,7 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, CBaseEntity* pInfli
 
 			UTIL_TraceLine(vecSrc, vecSpot, IgnoreMonsters::No, this, &tr);
 
-			if (tr.flFraction == 1.0 || tr.pHit == pEntity->edict())
+			if (tr.flFraction == 1.0 || InstanceOrNull(tr.pHit) == pEntity)
 			{// the explosion can 'see' this entity, so hurt them!
 				// decrease damage for an ent that's farther from the flame.
 				dist = (vecSrc - tr.vecEndPos).Length();

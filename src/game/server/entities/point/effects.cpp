@@ -155,8 +155,8 @@ void CBeam::Spawn()
 
 void CBeam::Precache()
 {
-	if (pev->owner)
-		SetStartEntity(ENTINDEX(pev->owner));
+	if (auto owner = GetOwner(); owner)
+		SetStartEntity(owner->entindex());
 	if (pev->aiment)
 		SetEndEntity(ENTINDEX(pev->aiment));
 }
@@ -164,7 +164,7 @@ void CBeam::Precache()
 void CBeam::SetStartEntity(int entityIndex)
 {
 	pev->sequence = (entityIndex & 0x0FFF) | ((pev->sequence & 0xF000) << 12);
-	pev->owner = g_engfuncs.pfnPEntityOfEntIndex(entityIndex);
+	SetOwner(UTIL_EntityByIndex(entityIndex));
 }
 
 void CBeam::SetEndEntity(int entityIndex)
@@ -298,10 +298,9 @@ void CBeam::TriggerTouch(CBaseEntity* pOther)
 {
 	if (pOther->pev->flags & (FL_CLIENT | FL_MONSTER))
 	{
-		if (pev->owner)
+		if (auto owner = GetOwner(); owner)
 		{
-			CBaseEntity* pOwner = CBaseEntity::Instance(pev->owner);
-			pOwner->Use({pOther, this, UseType::Toggle});
+			owner->Use({pOther, this, UseType::Toggle});
 		}
 		ALERT(at_console, "Firing targets!!!\n");
 	}
@@ -2141,10 +2140,10 @@ void CItemSoda::CanTouch(CBaseEntity* pOther)
 
 	pOther->GiveHealth(1, DMG_GENERIC);// a bit of health.
 
-	if (!IsNullEnt(pev->owner))
+	if (auto owner = GetOwner(); !IsNullEnt(owner))
 	{
 		// tell the machine the can was taken
-		pev->owner->v.frags = 0;
+		owner->pev->frags = 0;
 	}
 
 	pev->solid = Solid::Not;

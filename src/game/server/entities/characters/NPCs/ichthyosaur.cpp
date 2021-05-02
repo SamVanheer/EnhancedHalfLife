@@ -1029,7 +1029,7 @@ Vector CIchthyosaur::DoProbe(const Vector& Probe)
 		}
 	}
 
-	if (bBumpedSomething && (m_hEnemy == nullptr || tr.pHit != m_hEnemy->edict()))
+	if (bBumpedSomething && (m_hEnemy == nullptr || InstanceOrNull(tr.pHit) != m_hEnemy))
 	{
 		const Vector ProbeDir = Probe - pev->origin;
 

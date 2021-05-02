@@ -390,7 +390,7 @@ void CEgon::CreateEffect()
 	beam->SetEndAttachment(1);
 	beam->pev->spawnflags |= SF_BEAM_TEMPORARY;	// Flag these to be destroyed on save/restore or level transition
 	beam->pev->flags |= FL_SKIPLOCALHOST;
-	beam->pev->owner = m_hPlayer->edict();
+	beam->SetOwner(m_hPlayer);
 
 	auto noise = m_hNoise = CBeam::BeamCreate(EGON_BEAM_SPRITE.data(), 55);
 	noise->PointEntInit(pev->origin, m_hPlayer->entindex());
@@ -399,14 +399,14 @@ void CEgon::CreateEffect()
 	noise->SetEndAttachment(1);
 	noise->pev->spawnflags |= SF_BEAM_TEMPORARY;
 	noise->pev->flags |= FL_SKIPLOCALHOST;
-	noise->pev->owner = m_hPlayer->edict();
+	noise->SetOwner(m_hPlayer);
 
 	auto sprite = m_hSprite = CSprite::SpriteCreate(EGON_FLARE_SPRITE.data(), pev->origin, false);
 	sprite->pev->scale = 1.0;
 	sprite->SetTransparency(RenderMode::Glow, 255, 255, 255, 255, RenderFX::NoDissipation);
 	sprite->pev->spawnflags |= SF_SPRITE_TEMPORARY;
 	sprite->pev->flags |= FL_SKIPLOCALHOST;
-	sprite->pev->owner = m_hPlayer->edict();
+	sprite->SetOwner(m_hPlayer);
 
 	if (m_fireMode == FIRE_WIDE)
 	{

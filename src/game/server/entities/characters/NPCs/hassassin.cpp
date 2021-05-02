@@ -564,7 +564,7 @@ bool CHAssassin::CheckRangeAttack1(float flDot, float flDist)
 		// verify that a bullet fired from the gun will hit the enemy before the world.
 		UTIL_TraceLine(vecSrc, m_hEnemy->BodyTarget(vecSrc), IgnoreMonsters::No, this, &tr);
 
-		if (tr.flFraction == 1 || tr.pHit == m_hEnemy->edict())
+		if (tr.flFraction == 1 || InstanceOrNull(tr.pHit) == m_hEnemy)
 		{
 			return true;
 		}

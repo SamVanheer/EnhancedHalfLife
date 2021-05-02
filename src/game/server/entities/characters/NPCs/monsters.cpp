@@ -1119,7 +1119,7 @@ LocalMoveResult CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vecto
 			{
 				*pflDist = flStep;
 			}
-			if (pTarget && pTarget->edict() == gpGlobals->trace_ent)
+			if (pTarget && pTarget == InstanceOrNull(gpGlobals->trace_ent))
 			{
 				// if this step hits target ent, the move is legal.
 				iReturn = LocalMoveResult::Valid;
@@ -2888,15 +2888,12 @@ bool CBaseMonster::GetEnemy()
 					m_vecEnemyLKP = m_hEnemy->pev->origin;
 				}
 				// if the new enemy has an owner, take that one as well
-				if (pNewEnemy->pev->owner != nullptr)
+				if (auto pOwner = pNewEnemy->GetOwner(); pOwner)
 				{
-					if (auto pOwner = Instance(pNewEnemy->pev->owner); pOwner)
+					if (CBaseEntity* pMonsterOwner = pOwner->MyMonsterPointer();
+						pMonsterOwner && (pMonsterOwner->pev->flags & FL_MONSTER) && GetRelationship(pMonsterOwner) != Relationship::None)
 					{
-						if (CBaseEntity* pMonsterOwner = pOwner->MyMonsterPointer();
-							pMonsterOwner && (pMonsterOwner->pev->flags & FL_MONSTER) && GetRelationship(pMonsterOwner) != Relationship::None)
-						{
-							PushEnemy(pMonsterOwner, m_vecEnemyLKP);
-						}
+						PushEnemy(pMonsterOwner, m_vecEnemyLKP);
 					}
 				}
 			}
@@ -2949,5 +2946,5 @@ CBaseEntity* CBaseMonster::DropItem(const char* pszItemName, const Vector& vecPo
 bool CBaseMonster::ShouldFadeOnDeath()
 {
 	// if flagged to fade out or I have an owner (I came from a monster spawner)
-	return (pev->spawnflags & SF_MONSTER_FADECORPSE) || !IsNullEnt(pev->owner);
+	return (pev->spawnflags & SF_MONSTER_FADECORPSE) || !IsNullEnt(GetOwner());
 }

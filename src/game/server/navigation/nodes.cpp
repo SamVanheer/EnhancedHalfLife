@@ -105,7 +105,7 @@ CBaseEntity* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 				// !!!HACKHACK Use bodyqueue here cause there are no ents we really wish to ignore!
 				UTIL_TraceLine(pNode->m_vecOrigin, GetBrushModelOrigin(pSearch), IgnoreMonsters::Yes, g_pBodyQueueHead, &tr);
 
-				if (tr.pHit == pSearch->edict())
+				if (CBaseEntity::InstanceOrNull(tr.pHit) == pSearch)
 				{// good to go!
 					return pSearch;
 				}

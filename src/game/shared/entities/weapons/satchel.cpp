@@ -73,7 +73,7 @@ void CSatchelCharge::Spawn()
 void CSatchelCharge::SatchelSlide(CBaseEntity* pOther)
 {
 	// don't hit the guy that launched this grenade
-	if (pOther->edict() == pev->owner)
+	if (pOther == GetOwner())
 		return;
 
 	// pev->avelocity = Vector (300, 300, 300);
@@ -307,7 +307,7 @@ void CSatchel::PrimaryAttack()
 	{
 		SendWeaponAnim(SATCHEL_RADIO_FIRE);
 
-		edict_t* pPlayer = m_hPlayer->edict();
+		CBaseEntity* pPlayer = m_hPlayer;
 
 		CBaseEntity* pSatchel = nullptr;
 
@@ -315,7 +315,7 @@ void CSatchel::PrimaryAttack()
 		{
 			if (pSatchel->ClassnameIs("monster_satchel"))
 			{
-				if (pSatchel->pev->owner == pPlayer)
+				if (pSatchel->GetOwner() == pPlayer)
 				{
 					pSatchel->Use({m_hPlayer, m_hPlayer, UseType::On});
 					m_chargeReady = ChargeState::Reloading;
@@ -442,7 +442,7 @@ void DeactivateSatchels(CBasePlayer* pOwner)
 	{
 		CSatchelCharge* pSatchel = (CSatchelCharge*)pFind;
 
-		if (pSatchel->pev->owner == pOwner->edict())
+		if (pSatchel->GetOwner() == pOwner)
 		{
 			pSatchel->Deactivate();
 		}

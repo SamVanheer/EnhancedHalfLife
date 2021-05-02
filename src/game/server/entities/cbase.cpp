@@ -241,7 +241,7 @@ CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, co
 		return nullptr;
 	}
 
-	pEntity->pev->owner = EdictOrNull(pOwner);
+	pEntity->SetOwner(pOwner);
 	pEntity->pev->origin = vecOrigin;
 	pEntity->pev->angles = vecAngles;
 

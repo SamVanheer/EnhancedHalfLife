@@ -1192,7 +1192,7 @@ void CNihilanth::CommandUse(const UseInfo& info)
 
 bool CNihilanth::TakeDamage(const TakeDamageInfo& info)
 {
-	if (info.GetInflictor()->pev->owner == edict())
+	if (info.GetInflictor()->GetOwner() == this)
 		return false;
 
 	if (info.GetDamage() >= pev->health)

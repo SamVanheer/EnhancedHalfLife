@@ -988,7 +988,7 @@ LocalMoveResult CController::CheckLocalMove(const Vector& vecStart, const Vector
 	// ALERT( at_console, "check %d %d %f\n", tr.fStartSolid, tr.fAllSolid, tr.flFraction );
 	if (tr.fStartSolid || tr.flFraction < 1.0)
 	{
-		if (pTarget && pTarget->edict() == gpGlobals->trace_ent)
+		if (pTarget && pTarget == InstanceOrNull(gpGlobals->trace_ent))
 			return LocalMoveResult::Valid;
 		return LocalMoveResult::Invalid;
 	}
@@ -1056,7 +1056,7 @@ void CControllerHeadBall::Spawn()
 
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	m_hOwner = Instance(pev->owner);
+	m_hOwner = InstanceOrWorld(pev->owner);
 	pev->dmgtime = gpGlobals->time;
 }
 
@@ -1233,7 +1233,7 @@ void CControllerZapBall::Spawn()
 	SetThink(&CControllerZapBall::AnimateThink);
 	SetTouch(&CControllerZapBall::ExplodeTouch);
 
-	m_hOwner = Instance(pev->owner);
+	m_hOwner = InstanceOrWorld(pev->owner);
 	pev->dmgtime = gpGlobals->time; // keep track of when ball spawned
 	pev->nextthink = gpGlobals->time + 0.1;
 }

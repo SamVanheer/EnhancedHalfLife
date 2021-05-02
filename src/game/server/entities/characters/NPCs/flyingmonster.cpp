@@ -41,7 +41,7 @@ LocalMoveResult CFlyingMonster::CheckLocalMove(const Vector& vecStart, const Vec
 	// ALERT( at_console, "check %d %d %f\n", tr.fStartSolid, tr.fAllSolid, tr.flFraction );
 	if (tr.fStartSolid || tr.flFraction < 1.0)
 	{
-		if (pTarget && pTarget->edict() == gpGlobals->trace_ent)
+		if (pTarget && pTarget == InstanceOrNull(gpGlobals->trace_ent))
 			return LocalMoveResult::Valid;
 		return LocalMoveResult::Invalid;
 	}

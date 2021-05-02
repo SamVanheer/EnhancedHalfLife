@@ -551,7 +551,7 @@ void CBaseMonster::Killed(const KilledInfo& info)
 	SetConditions(bits_COND_LIGHT_DAMAGE);
 
 	// tell owner ( if any ) that we're dead.This is mostly for MonsterMaker functionality.
-	if (CBaseEntity* pOwner = CBaseEntity::Instance(pev->owner); pOwner)
+	if (CBaseEntity* pOwner = GetOwner(); pOwner)
 	{
 		pOwner->DeathNotice(this);
 	}
@@ -942,7 +942,7 @@ void RadiusDamage(Vector vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker
 
 			UTIL_TraceLine(vecSrc, vecSpot, IgnoreMonsters::No, pInflictor, &tr);
 
-			if (tr.flFraction == 1.0 || tr.pHit == pEntity->edict())
+			if (tr.flFraction == 1.0 || CBaseEntity::InstanceOrNull(tr.pHit) == pEntity)
 			{// the explosion can 'see' this entity, so hurt them!
 				if (tr.fStartSolid)
 				{

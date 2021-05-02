@@ -366,7 +366,7 @@ void CBasePlayerItem::FallThink()
 	{
 		// clatter if we have an owner (i.e., dropped by someone)
 		// don't clatter if the gun is waiting to respawn (if it's waiting, it is invisible!)
-		if (!IsNullEnt(pev->owner))
+		if (!IsNullEnt(GetOwner()))
 		{
 			int pitch = 95 + RANDOM_LONG(0, 29);
 			EmitSound(SoundChannel::Voice, "items/weapondrop1.wav", VOL_NORM, ATTN_NORM, pitch);
@@ -428,7 +428,7 @@ CBaseEntity* CBasePlayerItem::Respawn()
 {
 	// make a copy of this weapon that is invisible and inaccessible to players (no touch function). The weapon spawn/respawn code
 	// will decide when to make the weapon visible and touchable.
-	CBaseEntity* pNewWeapon = CBaseEntity::Create(STRING(pev->classname), g_pGameRules->WeaponRespawnSpot(this), pev->angles, InstanceOrNull(pev->owner));
+	CBaseEntity* pNewWeapon = CBaseEntity::Create(STRING(pev->classname), g_pGameRules->WeaponRespawnSpot(this), pev->angles, GetOwner());
 
 	if (pNewWeapon)
 	{
@@ -524,7 +524,7 @@ void CBasePlayerItem::AttachToPlayer(CBasePlayer* pPlayer)
 	pev->effects = EF_NODRAW; // ??
 	pev->modelindex = 0;// server won't send down to clients if modelindex == 0
 	pev->model = iStringNull;
-	pev->owner = pPlayer->edict();
+	SetOwner(pPlayer);
 	pev->nextthink = gpGlobals->time + .1;
 	SetTouch(nullptr);
 }
@@ -1093,7 +1093,7 @@ bool CWeaponBox::PackWeapon(CBasePlayerItem* pWeapon)
 	pWeapon->pev->effects = EF_NODRAW;
 	pWeapon->pev->modelindex = 0;
 	pWeapon->pev->model = iStringNull;
-	pWeapon->pev->owner = edict();
+	pWeapon->SetOwner(this);
 	pWeapon->SetThink(nullptr);// crowbar may be trying to swing again, etc.
 	pWeapon->SetTouch(nullptr);
 	pWeapon->m_hPlayer = nullptr;

@@ -170,11 +170,11 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float 
 		// This code is not as ugly as that code
 		if (pActivator && pActivator->IsPlayer())		// If a player activates, then save it
 		{
-			pTemp->pev->owner = pActivator->edict();
+			pTemp->SetOwner(pActivator);
 		}
 		else
 		{
-			pTemp->pev->owner = nullptr;
+			pTemp->SetOwner(nullptr);
 		}
 
 		return;
@@ -212,9 +212,9 @@ void CBaseDelay::DelayThink()
 {
 	CBaseEntity* pActivator = nullptr;
 
-	if (pev->owner != nullptr)		// A player activated this on delay
+	if (auto owner = GetOwner(); owner)		// A player activated this on delay
 	{
-		pActivator = CBaseEntity::Instance(pev->owner);
+		pActivator = owner;
 	}
 	// The use type is cached (and stashed) in pev->button
 	SUB_UseTargets(pActivator, (UseType)pev->button, 0);

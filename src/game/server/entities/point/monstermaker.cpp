@@ -204,7 +204,7 @@ void CMonsterMaker::MakeMonster()
 		SetBits(pEntity->pev->spawnflags, SF_MONSTER_HITMONSTERCLIP);
 
 	DispatchSpawn(pEntity->edict());
-	pEntity->pev->owner = edict();
+	pEntity->SetOwner(this);
 
 	if (!IsStringNull(pev->netname))
 	{
@@ -261,6 +261,6 @@ void CMonsterMaker::DeathNotice(CBaseEntity* pChild)
 
 	if (!m_fFadeChildren)
 	{
-		pChild->pev->owner = nullptr;
+		pChild->SetOwner(nullptr);
 	}
 }

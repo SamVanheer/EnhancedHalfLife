@@ -62,11 +62,11 @@ void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 
 	CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, NORMAL_EXPLOSION_VOLUME, 3.0);
 
-	auto oldOwner = pev->owner;
+	auto oldOwner = GetOwner();
 
-	pev->owner = nullptr; // can't traceline attack owner if this is set
+	SetOwner(nullptr); // can't traceline attack owner if this is set
 
-	RadiusDamage(this, InstanceOrNull(oldOwner), pev->dmg, CLASS_NONE, bitsDamageType);
+	RadiusDamage(this, oldOwner, pev->dmg, CLASS_NONE, bitsDamageType);
 
 	if (RANDOM_FLOAT(0, 1) < 0.5)
 	{
@@ -179,13 +179,13 @@ void CGrenade::DangerSoundThink()
 void CGrenade::BounceTouch(CBaseEntity* pOther)
 {
 	// don't hit the guy that launched this grenade
-	if (pOther->edict() == pev->owner)
+	if (pOther == GetOwner())
 		return;
 
 	// only do damage if we're moving fairly fast
 	if (m_flNextAttack < gpGlobals->time && pev->velocity.Length() > 100)
 	{
-		if (auto pOwner = InstanceOrNull(pev->owner); pOwner)
+		if (auto pOwner = GetOwner(); pOwner)
 		{
 			TraceResult tr = UTIL_GetGlobalTrace();
 			ClearMultiDamage();
@@ -237,7 +237,7 @@ void CGrenade::BounceTouch(CBaseEntity* pOther)
 void CGrenade::SlideTouch(CBaseEntity* pOther)
 {
 	// don't hit the guy that launched this grenade
-	if (pOther->edict() == pev->owner)
+	if (pOther == GetOwner())
 		return;
 
 	// pev->avelocity = Vector (300, 300, 300);
@@ -318,7 +318,7 @@ CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, Vector vecStart, Vector ve
 	pGrenade->SetAbsOrigin(vecStart);
 	pGrenade->pev->velocity = vecVelocity;
 	pGrenade->pev->angles = VectorAngles(pGrenade->pev->velocity);
-	pGrenade->pev->owner = EdictOrNull(pOwner);
+	pGrenade->SetOwner(pOwner);
 
 	// make monsters afaid of it while in the air
 	pGrenade->SetThink(&CGrenade::DangerSoundThink);
@@ -342,7 +342,7 @@ CGrenade* CGrenade::ShootTimed(CBaseEntity* pOwner, Vector vecStart, Vector vecV
 	pGrenade->SetAbsOrigin(vecStart);
 	pGrenade->pev->velocity = vecVelocity;
 	pGrenade->pev->angles = VectorAngles(pGrenade->pev->velocity);
-	pGrenade->pev->owner = EdictOrNull(pOwner);
+	pGrenade->SetOwner(pOwner);
 
 	pGrenade->SetTouch(&CGrenade::BounceTouch);	// Bounce if touched
 

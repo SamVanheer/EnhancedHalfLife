@@ -68,7 +68,7 @@ void CAirtank::Precache()
 
 void CAirtank::Killed(const KilledInfo& info)
 {
-	pev->owner = EdictOrNull(info.GetAttacker());
+	SetOwner(info.GetAttacker());
 
 	// UNDONE: this should make a big bubble cloud, not an explosion
 

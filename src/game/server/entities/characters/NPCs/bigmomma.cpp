@@ -425,7 +425,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 		{
 			if (pList[i] != this)
 			{
-				if (pList[i]->pev->owner != edict())
+				if (pList[i]->GetOwner() != this)
 					pHurt = pList[i];
 			}
 		}
@@ -1109,7 +1109,7 @@ CBMortar* CBMortar::Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVeloci
 
 	pSpit->SetAbsOrigin(vecStart);
 	pSpit->pev->velocity = vecVelocity;
-	pSpit->pev->owner = pOwner ? pOwner->edict() : nullptr;
+	pSpit->SetOwner(pOwner);
 	pSpit->pev->scale = 2.5;
 	pSpit->SetThink(&CBMortar::Animate);
 	pSpit->pev->nextthink = gpGlobals->time + 0.1;
@@ -1149,6 +1149,6 @@ void CBMortar::Touch(CBaseEntity* pOther)
 	// make some flecks
 	MortarSpray(tr.vecEndPos, tr.vecPlaneNormal, gSpitSprite, 24);
 
-	RadiusDamage(pev->origin, this, InstanceOrNull(pev->owner), gSkillData.bigmommaDmgBlast, gSkillData.bigmommaRadiusBlast, CLASS_NONE, DMG_ACID);
+	RadiusDamage(pev->origin, this, GetOwner(), gSkillData.bigmommaDmgBlast, gSkillData.bigmommaRadiusBlast, CLASS_NONE, DMG_ACID);
 	UTIL_Remove(this);
 }

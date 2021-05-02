@@ -853,7 +853,7 @@ void CApache::ShowDamage()
 
 bool CApache::TakeDamage(const TakeDamageInfo& info)
 {
-	if (info.GetInflictor()->pev->owner == edict())
+	if (info.GetInflictor()->GetOwner() == this)
 		return false;
 
 	TakeDamageInfo adjustedInfo = info;

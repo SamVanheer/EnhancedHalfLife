@@ -65,7 +65,7 @@ public:
 		if (pOther->IsPlayer())
 		{
 			// If the client is pushing me, give me some base velocity
-			if (gpGlobals->trace_ent && gpGlobals->trace_ent == edict())
+			if (gpGlobals->trace_ent && InstanceOrNull(gpGlobals->trace_ent) == this)
 			{
 				pev->basevelocity = pOther->pev->velocity;
 				pev->flags |= FL_BASEVELOCITY;
@@ -347,7 +347,7 @@ float CLeech::ObstacleDistance(CBaseEntity* pTarget)
 
 	if (tr.flFraction != 1.0)
 	{
-		if ((pTarget == nullptr || tr.pHit != pTarget->edict()))
+		if (pTarget == nullptr || InstanceOrNull(tr.pHit) != pTarget)
 		{
 			return tr.flFraction;
 		}
@@ -632,7 +632,7 @@ void CLeech::Killed(const KilledInfo& info)
 {
 	//ALERT(at_aiconsole, "Leech: killed\n");
 	// tell owner ( if any ) that we're dead.This is mostly for MonsterMaker functionality.
-	if (CBaseEntity* pOwner = CBaseEntity::Instance(pev->owner); pOwner)
+	if (CBaseEntity* pOwner = GetOwner(); pOwner)
 		pOwner->DeathNotice(this);
 
 	// When we hit the ground, play the "death_end" activity

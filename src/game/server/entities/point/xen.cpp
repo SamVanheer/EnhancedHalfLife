@@ -223,17 +223,16 @@ CXenTreeTrigger* CXenTreeTrigger::TriggerCreate(CBaseEntity* pOwner, const Vecto
 	pTrigger->pev->classname = MAKE_STRING("xen_ttrigger");
 	pTrigger->pev->solid = Solid::Trigger;
 	pTrigger->pev->movetype = Movetype::None;
-	pTrigger->pev->owner = pOwner->edict();
+	pTrigger->SetOwner(pOwner);
 
 	return pTrigger;
 }
 
 void CXenTreeTrigger::Touch(CBaseEntity* pOther)
 {
-	if (pev->owner)
+	if (auto entity = GetOwner(); entity)
 	{
-		CBaseEntity* pEntity = CBaseEntity::Instance(pev->owner);
-		pEntity->Touch(pOther);
+		entity->Touch(pOther);
 	}
 }
 
@@ -351,7 +350,7 @@ void CXenTree::HandleAnimEvent(AnimationEvent& event)
 		{
 			if (pList[i] != this)
 			{
-				if (pList[i]->pev->owner != edict())
+				if (pList[i]->GetOwner() != this)
 				{
 					sound = true;
 					pList[i]->TakeDamage({this, this, 25, DMG_CRUSH | DMG_SLASH});
@@ -448,7 +447,7 @@ CXenHull* CXenHull::CreateHull(CBaseEntity* source, const Vector& mins, const Ve
 	pHull->pev->solid = Solid::BBox;
 	pHull->pev->classname = MAKE_STRING("xen_hull");
 	pHull->pev->movetype = Movetype::None;
-	pHull->pev->owner = source->edict();
+	pHull->SetOwner(source);
 	pHull->SetSize(mins, maxs);
 	pHull->pev->renderamt = 0;
 	pHull->pev->rendermode = RenderMode::TransTexture;

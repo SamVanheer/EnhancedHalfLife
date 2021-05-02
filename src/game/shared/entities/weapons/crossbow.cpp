@@ -100,7 +100,7 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 	{
 		TraceResult tr = UTIL_GetGlobalTrace();
 
-		auto owner = InstanceOrNull(pev->owner);
+		auto owner = GetOwner();
 
 		ClearMultiDamage();
 
@@ -198,11 +198,11 @@ void CCrossbowBolt::ExplodeThink()
 	WRITE_BYTE(TE_EXPLFLAG_NONE);
 	MESSAGE_END();
 
-	auto oldOwner = pev->owner;
+	auto oldOwner = GetOwner();
 
-	pev->owner = nullptr; // can't traceline attack owner if this is set
+	SetOwner(nullptr); // can't traceline attack owner if this is set
 
-	::RadiusDamage(pev->origin, this, InstanceOrNull(oldOwner), pev->dmg, 128, CLASS_NONE, DMG_BLAST | DMG_ALWAYSGIB);
+	::RadiusDamage(pev->origin, this, oldOwner, pev->dmg, 128, CLASS_NONE, DMG_BLAST | DMG_ALWAYSGIB);
 
 	UTIL_Remove(this);
 }
@@ -382,7 +382,7 @@ void CCrossbow::FireBolt()
 	CCrossbowBolt* pBolt = CCrossbowBolt::BoltCreate();
 	pBolt->pev->origin = vecSrc;
 	pBolt->pev->angles = anglesAim;
-	pBolt->pev->owner = m_hPlayer->edict();
+	pBolt->SetOwner(m_hPlayer);
 
 	if (m_hPlayer->pev->waterlevel == WaterLevel::Head)
 	{
