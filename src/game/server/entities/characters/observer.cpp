@@ -30,9 +30,9 @@ void CBasePlayer::Observer_FindNextPlayer(bool bReverse)
 
 	int iStart;
 	if (m_hObserverTarget)
-		iStart = ENTINDEX(m_hObserverTarget->edict());
+		iStart = m_hObserverTarget->entindex();
 	else
-		iStart = ENTINDEX(edict());
+		iStart = entindex();
 	int iCurrent = iStart;
 	m_hObserverTarget = nullptr;
 	const int iDir = bReverse ? -1 : 1;
@@ -74,7 +74,7 @@ void CBasePlayer::Observer_FindNextPlayer(bool bReverse)
 
 		// Store the target in pev so the physics DLL can get to it
 		if (pev->iuser1 != OBS_ROAMING)
-			pev->iuser2 = ENTINDEX(m_hObserverTarget->edict());
+			pev->iuser2 = m_hObserverTarget->entindex();
 	}
 }
 
@@ -149,7 +149,7 @@ void CBasePlayer::Observer_CheckTarget()
 		}
 	}
 
-	CBasePlayer* target = UTIL_PlayerByIndex(ENTINDEX(m_hObserverTarget->edict()));
+	CBasePlayer* target = UTIL_PlayerByIndex(m_hObserverTarget->entindex());
 
 	if (!target)
 	{
@@ -174,7 +174,7 @@ void CBasePlayer::Observer_CheckProperties()
 	// try to find a target if we have no current one
 	if (pev->iuser1 == OBS_IN_EYE && m_hObserverTarget != nullptr)
 	{
-		CBasePlayer* target = UTIL_PlayerByIndex(ENTINDEX(m_hObserverTarget->edict()));
+		CBasePlayer* target = UTIL_PlayerByIndex(m_hObserverTarget->entindex());
 
 		if (!target)
 			return;
@@ -259,7 +259,7 @@ void CBasePlayer::Observer_SetMode(int iMode)
 		pev->iuser2 = OBS_NONE;
 	}
 	else
-		pev->iuser2 = ENTINDEX(m_hObserverTarget->edict());
+		pev->iuser2 = m_hObserverTarget->entindex();
 
 	pev->iuser3 = 0;	// clear second target from death cam
 

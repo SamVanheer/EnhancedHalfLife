@@ -114,7 +114,6 @@ inline entvars_t* VARS(edict_t* pent)
 }
 
 inline int ENTINDEX(const edict_t* pEdict) { return (*g_engfuncs.pfnIndexOfEdict)(pEdict); }
-inline int ENTINDEX(entvars_t* pev) { return ENTINDEX(ENT(pev)); }
 inline edict_t* INDEXENT(int iEdictNum) { return (*g_engfuncs.pfnPEntityOfEntIndex)(iEdictNum); }
 inline void MESSAGE_BEGIN(MessageDest msg_dest, int msg_type, const float* pOrigin, entvars_t* ent) {
 	(*g_engfuncs.pfnMessageBegin)(msg_dest, msg_type, pOrigin, ENT(ent));

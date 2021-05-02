@@ -263,7 +263,7 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 				continue;
 
 		MESSAGE_BEGIN(MessageDest::One, gmsgSayText, nullptr, client->pev);
-		WRITE_BYTE(ENTINDEX(pEntity));
+		WRITE_BYTE(player->entindex());
 		WRITE_STRING(text);
 		MESSAGE_END();
 
@@ -271,7 +271,7 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 
 	// print to the sending client
 	MESSAGE_BEGIN(MessageDest::One, gmsgSayText, nullptr, &pEntity->v);
-	WRITE_BYTE(ENTINDEX(pEntity));
+	WRITE_BYTE(player->entindex());
 	WRITE_STRING(text);
 	MESSAGE_END();
 

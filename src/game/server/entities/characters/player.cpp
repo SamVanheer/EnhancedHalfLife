@@ -1203,7 +1203,7 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 
 	pev->team = 0;
 	MESSAGE_BEGIN(MessageDest::All, gmsgTeamInfo);
-	WRITE_BYTE(ENTINDEX(edict()));
+	WRITE_BYTE(entindex());
 	WRITE_STRING("");
 	MESSAGE_END();
 
@@ -1424,7 +1424,7 @@ void CBasePlayer::AddPoints(int score, bool bAllowNegativeScore)
 	pev->frags += score;
 
 	MESSAGE_BEGIN(MessageDest::All, gmsgScoreInfo);
-	WRITE_BYTE(ENTINDEX(edict()));
+	WRITE_BYTE(entindex());
 	WRITE_SHORT(pev->frags);
 	WRITE_SHORT(m_iDeaths);
 	WRITE_SHORT(0);
@@ -1480,7 +1480,7 @@ void CBasePlayer::UpdateStatusBar()
 
 			if (pEntity->IsPlayer())
 			{
-				newSBarState[SBAR_ID_TARGETNAME] = ENTINDEX(pEntity->edict());
+				newSBarState[SBAR_ID_TARGETNAME] = pEntity->entindex();
 				safe_strcpy(sbuf1, "1 %p1\n2 Health: %i2%%\n3 Armor: %i3%%");
 
 				// allies and medics get to see the targets health

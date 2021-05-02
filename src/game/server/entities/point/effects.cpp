@@ -141,7 +141,7 @@ void CBubbling::FizzThink()
 {
 	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, GetBrushModelOrigin(this));
 	WRITE_BYTE(TE_FIZZ);
-	WRITE_SHORT((short)ENTINDEX(edict()));
+	WRITE_SHORT((short)entindex());
 	WRITE_SHORT((short)m_bubbleModel);
 	WRITE_BYTE(m_density);
 	MESSAGE_END();

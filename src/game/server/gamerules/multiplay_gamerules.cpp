@@ -417,7 +417,7 @@ void CHalfLifeMultiplay::InitHUD(CBasePlayer* pl)
 	// sending just one score makes the hud scoreboard active;  otherwise
 	// it is just disabled for single play
 	MESSAGE_BEGIN(MessageDest::One, gmsgScoreInfo, nullptr, pl->edict());
-	WRITE_BYTE(ENTINDEX(pl->edict()));
+	WRITE_BYTE(pl->entindex());
 	WRITE_SHORT(0);
 	WRITE_SHORT(0);
 	WRITE_SHORT(0);
@@ -601,7 +601,7 @@ void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller
 	// update the scores
 	// killed scores
 	MESSAGE_BEGIN(MessageDest::All, gmsgScoreInfo);
-	WRITE_BYTE(ENTINDEX(pVictim->edict()));
+	WRITE_BYTE(pVictim->entindex());
 	WRITE_SHORT(pVictim->pev->frags);
 	WRITE_SHORT(pVictim->m_iDeaths);
 	WRITE_SHORT(0);
@@ -614,7 +614,7 @@ void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller
 		CBasePlayer* PK = (CBasePlayer*)pKiller;
 
 		MESSAGE_BEGIN(MessageDest::All, gmsgScoreInfo);
-		WRITE_BYTE(ENTINDEX(PK->edict()));
+		WRITE_BYTE(PK->entindex());
 		WRITE_SHORT(PK->pev->frags);
 		WRITE_SHORT(PK->m_iDeaths);
 		WRITE_SHORT(0);
@@ -677,8 +677,8 @@ void CHalfLifeMultiplay::DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller,
 		killer_weapon_name += 5;
 
 	MESSAGE_BEGIN(MessageDest::All, gmsgDeathMsg);
-	WRITE_BYTE(killer_index);						// the killer
-	WRITE_BYTE(ENTINDEX(pVictim->edict()));		// the victim
+	WRITE_BYTE(killer_index);				// the killer
+	WRITE_BYTE(pVictim->entindex());		// the victim
 	WRITE_STRING(killer_weapon_name);		// what they were killed by (should this be a string?)
 	MESSAGE_END();
 
