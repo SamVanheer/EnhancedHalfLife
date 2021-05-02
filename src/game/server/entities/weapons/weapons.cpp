@@ -359,7 +359,7 @@ void CBasePlayerItem::FallInit()
 	pev->solid = Solid::BBox;
 
 	SetAbsOrigin(pev->origin);
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);//pointsize until it lands on the ground.
+	SetSize(vec3_origin, vec3_origin);//pointsize until it lands on the ground.
 
 	SetTouch(&CBasePlayerItem::DefaultTouch);
 	SetThink(&CBasePlayerItem::FallThink);
@@ -789,7 +789,7 @@ void CBasePlayerAmmo::Spawn()
 {
 	pev->movetype = Movetype::Toss;
 	pev->solid = Solid::Trigger;
-	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 16));
+	SetSize(Vector(-16, -16, 0), Vector(16, 16, 16));
 	SetAbsOrigin(pev->origin);
 
 	SetTouch(&CBasePlayerAmmo::DefaultTouch);
@@ -972,7 +972,7 @@ void CWeaponBox::Spawn()
 	pev->movetype = Movetype::Toss;
 	pev->solid = Solid::Trigger;
 
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 
 	SET_MODEL(ENT(pev), "models/w_weaponbox.mdl");
 }

@@ -44,7 +44,7 @@ void CShower::Spawn()
 	pev->nextthink = gpGlobals->time + 0.1;
 	pev->solid = Solid::Not;
 	SET_MODEL(edict(), "models/grenade.mdl");	// Need a model, just use the grenade, we don't draw it anyway
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 	pev->effects |= EF_NODRAW;
 	pev->speed = RANDOM_FLOAT(0.5, 1.5);
 

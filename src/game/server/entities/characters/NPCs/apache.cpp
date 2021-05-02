@@ -119,7 +119,7 @@ void CApache::Spawn()
 	pev->solid = Solid::BBox;
 
 	SET_MODEL(ENT(pev), "models/apache.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, -64), Vector(32, 32, 0));
+	SetSize(Vector(-32, -32, -64), Vector(32, 32, 0));
 	SetAbsOrigin(pev->origin);
 
 	pev->flags |= FL_MONSTER;
@@ -192,7 +192,7 @@ void CApache::Killed(const KilledInfo& info)
 
 	StopSound(SoundChannel::Static, "apache/ap_rotor2.wav");
 
-	UTIL_SetSize(pev, Vector(-32, -32, -64), Vector(32, 32, 0));
+	SetSize(Vector(-32, -32, -64), Vector(32, 32, 0));
 	SetThink(&CApache::DyingThink);
 	SetTouch(&CApache::CrashTouch);
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -351,7 +351,7 @@ void CApache::DyingThink()
 		{
 			CBaseEntity* pWreckage = Create("cycler_wreckage", pev->origin, pev->angles);
 			// SET_MODEL( ENT(pWreckage->pev), STRING(pev->model) );
-			UTIL_SetSize(pWreckage->pev, Vector(-200, -200, -128), Vector(200, 200, -32));
+			pWreckage->SetSize(Vector(-200, -200, -128), Vector(200, 200, -32));
 			pWreckage->pev->frame = pev->frame;
 			pWreckage->pev->sequence = pev->sequence;
 			pWreckage->pev->framerate = 0;
@@ -938,7 +938,7 @@ void CApacheHVR::Spawn()
 	pev->solid = Solid::BBox;
 
 	SET_MODEL(ENT(pev), "models/HVR.mdl");
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 	SetAbsOrigin(pev->origin);
 
 	SetThink(&CApacheHVR::IgniteThink);

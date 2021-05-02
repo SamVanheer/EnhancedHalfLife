@@ -1306,7 +1306,7 @@ LINK_ENTITY_TO_CLASS(testhull, CTestHull);
 void CTestHull::Spawn(CBaseEntity* pMasterNode)
 {
 	SET_MODEL(ENT(pev), "models/player.mdl");
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;
@@ -1588,17 +1588,17 @@ void CTestHull::BuildNodeGraph()
 				switch (hull)
 				{
 				case NODE_SMALL_HULL:
-					UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 24));
+					SetSize(Vector(-12, -12, 0), Vector(12, 12, 24));
 					break;
 				case NODE_HUMAN_HULL:
-					UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+					SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 					break;
 				case NODE_LARGE_HULL:
-					UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
+					SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 					break;
 				case NODE_FLY_HULL:
-					UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
-					// UTIL_SetSize(pev, vec3_origin, vec3_origin);
+					SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
+					// SetSize( vec3_origin, vec3_origin);
 					break;
 				}
 
@@ -2726,16 +2726,16 @@ void CGraph::TestRoutingTables()
 								cPathSize2 = FindShortestPath(myPath2.get(), iFrom, iTo, iHull, iCapMask);
 								return;
 							}
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 	catch (const std::bad_alloc&)
 	{
 	}
-}
+	}
 
 /**
 *	@brief Draws a graph of the shorted path from all nodes to current location (typically the player).

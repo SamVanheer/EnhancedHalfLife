@@ -94,7 +94,7 @@ LINK_ENTITY_TO_CLASS(aiscripted_sequence, CCineAI);
 void CCineMonster::Spawn()
 {
 	// pev->solid = Solid::Trigger;
-	// UTIL_SetSize(pev, Vector(-8, -8, -8), Vector(8, 8, 8));
+	// SetSize( Vector(-8, -8, -8), Vector(8, 8, 8));
 	pev->solid = Solid::Not;
 
 	// REMOVE: The old side-effect
@@ -597,7 +597,7 @@ void CCineMonster::DelayStart(int state)
 	{
 		if (ClassnameIs(pCine->pev, "scripted_sequence"))
 		{
-			CCineMonster* pTarget = (CCineMonster*) pCine;
+			CCineMonster* pTarget = (CCineMonster*)pCine;
 			if (state)
 			{
 				pTarget->m_iDelay++;
@@ -682,7 +682,7 @@ bool CBaseMonster::CineCleanup()
 		pev->solid = Solid::Not;
 		SetState(NPCState::Dead);
 		pev->deadflag = DeadFlag::Dead;
-		UTIL_SetSize(pev, pev->mins, Vector(pev->maxs.x, pev->maxs.y, pev->mins.z + 2));
+		SetSize(pev->mins, Vector(pev->maxs.x, pev->maxs.y, pev->mins.z + 2));
 
 		if (pOldCine && IsBitSet(pOldCine->pev->spawnflags, SF_SCRIPT_LEAVECORPSE))
 		{

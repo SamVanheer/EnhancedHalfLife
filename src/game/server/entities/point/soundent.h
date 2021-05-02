@@ -47,7 +47,7 @@ public:
 	void	Clear();
 
 	/**
-	*	@brief clears the volume, origin, and type for a sound, but doesn't expire or unlink it. 
+	*	@brief clears the volume, origin, and type for a sound, but doesn't expire or unlink it.
 	*/
 	void	Reset();
 

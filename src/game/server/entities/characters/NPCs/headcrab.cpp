@@ -265,7 +265,7 @@ void CHeadCrab::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/headcrab.mdl");
-	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 24));
+	SetSize(Vector(-12, -12, 0), Vector(12, 12, 24));
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;
@@ -453,7 +453,7 @@ void CBabyCrab::Spawn()
 	SET_MODEL(ENT(pev), "models/baby_headcrab.mdl");
 	pev->rendermode = RenderMode::TransTexture;
 	pev->renderamt = 192;
-	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 24));
+	SetSize(Vector(-12, -12, 0), Vector(12, 12, 24));
 
 	pev->health = gSkillData.headcrabHealth * 0.25;	// less health than full grown
 }

@@ -297,7 +297,7 @@ public:
 	bool RemovePlayerItem(CBasePlayerItem* pItem);
 
 	/**
-	*	@brief drop the named item, or if no name, the active item. 
+	*	@brief drop the named item, or if no name, the active item.
 	*/
 	void DropPlayerItem(const char* pszItemName);
 	bool HasPlayerItem(CBasePlayerItem* pCheckItem);
@@ -380,14 +380,14 @@ public:
 	*	@brief if in range of radiation source, ping geiger counter
 	*	@details
 	*	THE HEV SUIT
-	*	
+	*
 	*	The Suit provides 3 main functions: Protection, Notification and Augmentation.
 	*	Some functions are automatic, some require power.
 	*	The player gets the suit shortly after getting off the train in C1A0 and it stays
 	*	with him for the entire game.
-	*	
+	*
 	*	Protection
-	*	
+	*
 	*		Heat/Cold
 	*			When the player enters a hot/cold area, the heating/cooling indicator on the suit
 	*			will come on and the battery will drain while the player stays in the area.
@@ -401,9 +401,9 @@ public:
 	*		Armor
 	*			The armor works using energy to create a protective field that deflects a
 	*			percentage of damage projectile and explosive attacks.
-	*	
+	*
 	*	Notification (via the HUD)
-	*	
+	*
 	*	x	Health
 	*	x	Ammo
 	*	x	Automatic Health Care
@@ -414,13 +414,13 @@ public:
 	*	x	Poison
 	*		Armor
 	*			Displays the current level of armor.
-	*	
+	*
 	*	Augmentation
 	*		Long Jump
 	*			Used by ducking and then jumping. Causes the player to further than normal.
-	*	
+	*
 	*	Things powered by the battery
-	*	
+	*
 	*		Armor
 	*			Uses N power for every M units of damage.
 	*		Heat/Cool

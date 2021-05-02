@@ -109,7 +109,7 @@ constexpr int SF_SCORE_NEGATIVE = 0x0001;
 constexpr int SF_SCORE_TEAM = 0x0002;
 
 /**
-*	@brief award points to player / team 
+*	@brief award points to player / team
 *	@details Points +/- total
 *	Flag: Allow negative scores					SF_SCORE_NEGATIVE
 *	Flag: Award points to team in teamplay		SF_SCORE_TEAM
@@ -570,7 +570,7 @@ void CGamePlayerZone::Use(const UseInfo& info)
 
 	if (!IsStringNull(m_iszOutCount))
 	{
-		FireTargets(STRING(m_iszOutCount), info.GetActivator() , this, USE_SET, playersOutCount);
+		FireTargets(STRING(m_iszOutCount), info.GetActivator(), this, USE_SET, playersOutCount);
 	}
 }
 

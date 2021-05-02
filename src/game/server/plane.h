@@ -24,7 +24,7 @@ public:
 	CPlane(const Vector& vecNormal, const Vector& vecPoint);
 
 	/**
-	*	@brief determines whether the given vector is in front of the plane. 
+	*	@brief determines whether the given vector is in front of the plane.
 	*/
 	bool PointInFront(const Vector& vecPoint) const;
 

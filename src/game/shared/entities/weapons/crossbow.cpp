@@ -68,7 +68,7 @@ void CCrossbowBolt::Spawn()
 	SET_MODEL(ENT(pev), "models/crossbow_bolt.mdl");
 
 	SetAbsOrigin(pev->origin);
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 
 	SetTouch(&CCrossbowBolt::BoltTouch);
 	SetThink(&CCrossbowBolt::BubbleThink);
@@ -313,7 +313,7 @@ void CCrossbow::FireSniperBolt()
 		return;
 	}
 
-	
+
 	m_hPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
 	m_iClip--;
 

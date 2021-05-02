@@ -236,7 +236,7 @@ constexpr int NEW_DLL_FUNCTIONS_VERSION = 1;
 struct NEW_DLL_FUNCTIONS
 {
 	/**
-	*	@brief Called right before the object's memory is freed. 
+	*	@brief Called right before the object's memory is freed.
 	*	Calls its destructor.
 	*/
 	void			(*pfnOnFreeEntPrivateData)(edict_t* pEnt);

@@ -40,7 +40,7 @@ struct DiskGraph
 	*	@brief Boolean flags for this graph
 	*/
 	std::uint32_t Flags;
-	
+
 	std::int32_t NodeCount;
 	std::int32_t LinkCount;
 	std::int32_t RouteInfoCount;

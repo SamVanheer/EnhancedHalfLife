@@ -309,7 +309,7 @@ Task_t tlInvestigateSound[] =
 };
 
 /**
-*	@brief sends a monster to the location of the sound that was just heard, to check things out. 
+*	@brief sends a monster to the location of the sound that was just heard, to check things out.
 */
 Schedule_t	slInvestigateSound[] =
 {
@@ -377,7 +377,7 @@ Task_t	tlStandoff[] =
 };
 
 /**
-*	@brief Used in combat when a monster is hiding in cover or the enemy has moved out of sight. 
+*	@brief Used in combat when a monster is hiding in cover or the enemy has moved out of sight.
 *	Should we look around in this schedule?
 */
 Schedule_t slStandoff[] =
@@ -888,7 +888,7 @@ Task_t	tlTakeCoverFromOrigin[] =
 };
 
 /**
-*	@brief move away from where you're currently standing. 
+*	@brief move away from where you're currently standing.
 */
 Schedule_t	slTakeCoverFromOrigin[] =
 {
@@ -939,7 +939,7 @@ Task_t	tlTakeCoverFromEnemy[] =
 };
 
 /**
-*	@brief Take cover from enemy! Tries lateral cover before node cover! 
+*	@brief Take cover from enemy! Tries lateral cover before node cover!
 */
 Schedule_t	slTakeCoverFromEnemy[] =
 {

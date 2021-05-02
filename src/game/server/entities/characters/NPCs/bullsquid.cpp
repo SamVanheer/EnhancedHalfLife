@@ -90,7 +90,7 @@ void CSquidSpit::Spawn()
 	pev->frame = 0;
 	pev->scale = 0.5;
 
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
 }
@@ -238,7 +238,7 @@ public:
 	int IgnoreConditions() override;
 
 	/**
-	*	@brief Overridden for Bullsquid to deal with the feature that makes it lose interest in headcrabs for a while if something injures it. 
+	*	@brief Overridden for Bullsquid to deal with the feature that makes it lose interest in headcrabs for a while if something injures it.
 	*/
 	NPCState GetIdealState() override;
 
@@ -629,7 +629,7 @@ void CBullsquid::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/bullsquid.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
+	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;
@@ -936,7 +936,7 @@ Task_t tlSquidWallow[] =
 };
 
 /**
-*	@brief squid does this to stinky things. 
+*	@brief squid does this to stinky things.
 */
 Schedule_t slSquidWallow[] =
 {

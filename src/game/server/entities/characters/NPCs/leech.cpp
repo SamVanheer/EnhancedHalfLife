@@ -177,8 +177,8 @@ void CLeech::Spawn()
 	// Just for fun
 	//	SET_MODEL(ENT(pev), "models/icky.mdl");
 
-//	UTIL_SetSize( pev, vec3_origin, vec3_origin );
-	UTIL_SetSize(pev, Vector(-1, -1, 0), Vector(1, 1, 2));
+//	SetSize( vec3_origin, vec3_origin );
+	SetSize(Vector(-1, -1, 0), Vector(1, 1, 2));
 	// Don't push the minz down too much or the water check will fail because this entity is really point-sized
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Fly;
@@ -241,7 +241,7 @@ void CLeech::SwitchLeechState()
 	else
 	{
 		Look(m_flDistLook);
-		
+
 		if (CBaseEntity* pEnemy = BestVisibleEnemy(); pEnemy && pEnemy->pev->waterlevel != WaterLevel::Dry)
 		{
 			m_hEnemy = pEnemy;
@@ -301,7 +301,7 @@ void CLeech::HandleAnimEvent(AnimationEvent& event)
 	{
 	case LEECH_AE_ATTACK:
 		AttackSound();
-		
+
 		if (CBaseEntity* pEnemy = m_hEnemy; pEnemy != nullptr)
 		{
 			Vector face;

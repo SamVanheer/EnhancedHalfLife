@@ -182,8 +182,6 @@ inline bool ClassnameIs(entvars_t* pev, const char* szClassname)
 }
 
 // Misc. Prototypes
-void			UTIL_SetSize(entvars_t* pev, const Vector& vecMin, const Vector& vecMax);
-
 CBaseEntity* UTIL_EntityByIndex(int index);
 
 CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& vecCenter, float flRadius);
@@ -233,7 +231,7 @@ void			UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, 
 
 /**
 *	@brief Shake the screen of all clients within radius
-* 
+*
 *	@details radius == 0, shake all clients
 *	UNDONE: Allow caller to shake clients not ONGROUND?
 *	UNDONE: Fix falloff model (disabled)?

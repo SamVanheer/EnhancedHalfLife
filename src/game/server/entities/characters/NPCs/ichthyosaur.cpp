@@ -311,9 +311,9 @@ Schedule_t slTwitchDie[] =
 DEFINE_CUSTOM_SCHEDULES(CIchthyosaur)
 {
 	slSwimAround,
-	slSwimAgitated,
-	slCircleEnemy,
-	slTwitchDie,
+		slSwimAgitated,
+		slCircleEnemy,
+		slTwitchDie,
 };
 IMPLEMENT_CUSTOM_SCHEDULES(CIchthyosaur, CFlyingMonster);
 
@@ -435,7 +435,7 @@ void CIchthyosaur::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/icky.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, -32), Vector(32, 32, 32));
+	SetSize(Vector(-32, -32, -32), Vector(32, 32, 32));
 
 	pev->solid = Solid::BBox;
 	pev->movetype = Movetype::Fly;

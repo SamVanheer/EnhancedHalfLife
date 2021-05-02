@@ -40,7 +40,7 @@ void CGlobalState::DumpGlobals()
 	static constexpr const char* estates[] = {"Off", "On", "Dead"};
 
 	ALERT(at_console, "-- Globals --\n");
-	
+
 	for (globalentity_t* pTest = m_pList; pTest; pTest = pTest->pNext)
 	{
 		ALERT(at_console, "%s: %s (%s)\n", pTest->name, pTest->levelName, estates[static_cast<std::size_t>(pTest->state)]);
@@ -141,7 +141,7 @@ void CGlobalState::EntityUpdate(string_t globalname, string_t mapname)
 
 void CGlobalState::ClearStates()
 {
-	for (globalentity_t* pNext = nullptr, * pFree = m_pList; pFree; pFree = pNext)
+	for (globalentity_t* pNext = nullptr, *pFree = m_pList; pFree; pFree = pNext)
 	{
 		pNext = pFree->pNext;
 		free(pFree);

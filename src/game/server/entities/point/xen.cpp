@@ -93,7 +93,7 @@ void CXenPLight::Spawn()
 	pev->movetype = Movetype::None;
 	pev->solid = Solid::Trigger;
 
-	UTIL_SetSize(pev, Vector(-80, -80, 0), Vector(80, 80, 32));
+	SetSize(Vector(-80, -80, 0), Vector(80, 80, 32));
 	SetActivity(ACT_IDLE);
 	pev->nextthink = gpGlobals->time + 0.1;
 	pev->frame = RANDOM_FLOAT(0, 255);
@@ -185,7 +185,7 @@ void CXenHair::Spawn()
 {
 	Precache();
 	SET_MODEL(edict(), "models/hair.mdl");
-	UTIL_SetSize(pev, Vector(-4, -4, 0), Vector(4, 4, 32));
+	SetSize(Vector(-4, -4, 0), Vector(4, 4, 32));
 	pev->sequence = 0;
 
 	if (!(pev->spawnflags & SF_HAIR_SYNC))
@@ -285,7 +285,7 @@ void CXenTree::Spawn()
 
 	SetDamageMode(DamageMode::Yes);
 
-	UTIL_SetSize(pev, Vector(-30, -30, 0), Vector(30, 30, 188));
+	SetSize(Vector(-30, -30, 0), Vector(30, 30, 188));
 	SetActivity(ACT_IDLE);
 	pev->nextthink = gpGlobals->time + 0.1;
 	pev->frame = RANDOM_FLOAT(0, 255);
@@ -296,7 +296,7 @@ void CXenTree::Spawn()
 	triggerPosition = pev->origin + (triggerPosition * 64);
 	// Create the trigger
 	auto trigger = m_hTrigger = CXenTreeTrigger::TriggerCreate(this, triggerPosition);
-	UTIL_SetSize(trigger->pev, Vector(-24, -24, 0), Vector(24, 24, 128));
+	trigger->SetSize(Vector(-24, -24, 0), Vector(24, 24, 128));
 }
 
 const char* CXenTree::pAttackHitSounds[] =
@@ -453,7 +453,7 @@ CXenHull* CXenHull::CreateHull(CBaseEntity* source, const Vector& mins, const Ve
 	pHull->pev->classname = MAKE_STRING("xen_hull");
 	pHull->pev->movetype = Movetype::None;
 	pHull->pev->owner = source->edict();
-	UTIL_SetSize(pHull->pev, mins, maxs);
+	pHull->SetSize(mins, maxs);
 	pHull->pev->renderamt = 0;
 	pHull->pev->rendermode = RenderMode::TransTexture;
 	//	pHull->pev->effects = EF_NODRAW;
@@ -470,14 +470,14 @@ void CXenSporeSmall::Spawn()
 {
 	pev->skin = 0;
 	CXenSpore::Spawn();
-	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 64));
+	SetSize(Vector(-16, -16, 0), Vector(16, 16, 64));
 }
 
 void CXenSporeMed::Spawn()
 {
 	pev->skin = 1;
 	CXenSpore::Spawn();
-	UTIL_SetSize(pev, Vector(-40, -40, 0), Vector(40, 40, 120));
+	SetSize(Vector(-40, -40, 0), Vector(40, 40, 120));
 }
 
 /**
@@ -496,7 +496,7 @@ void CXenSporeLarge::Spawn()
 {
 	pev->skin = 2;
 	CXenSpore::Spawn();
-	UTIL_SetSize(pev, Vector(-48, -48, 110), Vector(48, 48, 240));
+	SetSize(Vector(-48, -48, 110), Vector(48, 48, 240));
 
 	Vector forward, right;
 

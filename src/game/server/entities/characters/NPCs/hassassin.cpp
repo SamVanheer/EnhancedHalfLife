@@ -241,7 +241,7 @@ void CHAssassin::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/hassassin.mdl");
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;
@@ -337,7 +337,7 @@ Task_t	tlAssassinTakeCoverFromEnemy[] =
 };
 
 /**
-*	@brief Tries lateral cover before node cover! 
+*	@brief Tries lateral cover before node cover!
 */
 Schedule_t	slAssassinTakeCoverFromEnemy[] =
 {
@@ -368,7 +368,7 @@ Task_t	tlAssassinTakeCoverFromEnemy2[] =
 };
 
 /**
-*	@brief Tries lateral cover before node cover! 
+*	@brief Tries lateral cover before node cover!
 */
 Schedule_t	slAssassinTakeCoverFromEnemy2[] =
 {

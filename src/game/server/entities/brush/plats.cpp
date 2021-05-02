@@ -298,7 +298,7 @@ void CFuncPlat::Setup()
 	pev->movetype = Movetype::Push;
 
 	SetAbsOrigin(pev->origin);		// set size and link into world
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	SetSize(pev->mins, pev->maxs);
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	// vecPosition1 is the top position, vecPosition2 is the bottom
@@ -372,7 +372,7 @@ void CPlatTrigger::SpawnInsideTrigger(CFuncPlat* pPlatform)
 		vecTMin.y = (pPlatform->pev->mins.y + pPlatform->pev->maxs.y) / 2;
 		vecTMax.y = vecTMin.y + 1;
 	}
-	UTIL_SetSize(pev, vecTMin, vecTMax);
+	SetSize(vecTMin, vecTMax);
 }
 
 void CPlatTrigger::Touch(CBaseEntity* pOther)
@@ -614,7 +614,7 @@ public:
 	void EXPORT Wait();
 
 	/**
-	*	@brief path corner needs to change to next target 
+	*	@brief path corner needs to change to next target
 	*/
 	void EXPORT Next();
 	bool Save(CSave& save) override;
@@ -823,7 +823,7 @@ void CFuncTrain::Spawn()
 		pev->solid = Solid::BSP;
 
 	SET_MODEL(ENT(pev), STRING(pev->model));
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	SetSize(pev->mins, pev->maxs);
 	SetAbsOrigin(pev->origin);
 
 	m_activated = false;
@@ -1375,7 +1375,7 @@ void CFuncTrackTrain::OverrideReset()
 CFuncTrackTrain* CFuncTrackTrain::Instance(CBaseEntity* pent)
 {
 	if (pent && ClassnameIs(pent->pev, "func_tracktrain"))
-		return (CFuncTrackTrain*) pent;
+		return (CFuncTrackTrain*)pent;
 	return nullptr;
 }
 
@@ -1404,7 +1404,7 @@ void CFuncTrackTrain::Spawn()
 
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	SetSize(pev->mins, pev->maxs);
 	SetAbsOrigin(pev->origin);
 
 	// Cache off placed origin for train controls
@@ -1485,7 +1485,7 @@ void CFuncTrainControls::Spawn()
 	pev->movetype = Movetype::None;
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	SetSize(pev->mins, pev->maxs);
 	SetAbsOrigin(pev->origin);
 
 	SetThink(&CFuncTrainControls::Find);

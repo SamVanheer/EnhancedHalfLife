@@ -100,7 +100,7 @@ struct TEMPENTITY
 	/**
 	*	@details if attached, this is the index of the client to stick to
 	*	if COLLIDEALL, this is the index of the client to ignore
-	*	TENTS with FTENT_PLYRATTACHMENT MUST set the clientindex! 
+	*	TENTS with FTENT_PLYRATTACHMENT MUST set the clientindex!
 	*/
 	short		clientIndex;
 

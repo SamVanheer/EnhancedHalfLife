@@ -51,7 +51,7 @@ public:
 	void HandleAnimEvent(AnimationEvent& event) override;
 
 	/**
-	*	@brief normal beam attack 
+	*	@brief normal beam attack
 	*/
 	bool CheckRangeAttack1(float flDot, float flDist) override;
 
@@ -499,7 +499,7 @@ void CISlave::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/islave.mdl");
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;

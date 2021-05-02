@@ -121,13 +121,13 @@ public:
 	/**
 	*	@brief called when a scripted sequence animation sequence is done playing
 	*	( or when an AI Scripted Sequence doesn't supply an animation sequence to play ).
-	*	Expects the CBaseMonster pointer to the monster that the sequence possesses. 
+	*	Expects the CBaseMonster pointer to the monster that the sequence possesses.
 	*/
 	void SequenceDone(CBaseMonster* pMonster);
 
 	/**
 	*	@brief When a monster finishes a scripted sequence,
-	*	we have to fix up its state and schedule for it to return to a normal AI monster. 
+	*	we have to fix up its state and schedule for it to return to a normal AI monster.
 	*	Scripted sequences just dirty the Schedule and drop the monster in Idle State.
 	*/
 	virtual void FixScriptMonsterSchedule(CBaseMonster* pMonster);
@@ -175,7 +175,7 @@ class CCineAI : public CCineMonster
 
 	/**
 	*	@brief When a monster finishes a scripted sequence,
-	*	we have to fix up its state and schedule for it to return to a normal AI monster. 
+	*	we have to fix up its state and schedule for it to return to a normal AI monster.
 	*
 	*	@details AI Scripted sequences will, depending on what the level designer selects:
 	*	-Dirty the monster's schedule and drop out of the sequence in their current state.

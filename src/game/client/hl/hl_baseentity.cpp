@@ -50,6 +50,7 @@ bool CBaseEntity::IsDormant() { return false; }
 bool CBaseEntity::IsInWorld() { return true; }
 bool CBaseEntity::ShouldToggle(USE_TYPE useType, bool currentState) { return false; }
 void CBaseEntity::SetAbsOrigin(const Vector& origin) {}
+void CBaseEntity::SetSize(const Vector& mins, const Vector& maxs) {}
 int	CBaseEntity::DamageDecal(int bitsDamageType) { return -1; }
 CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner) { return nullptr; }
 void CBaseEntity::SUB_Remove() { }
@@ -96,7 +97,6 @@ CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, Vector vecStart, Vector ve
 void CGrenade::DetonateUse(const UseInfo& info) { }
 
 void UTIL_Remove(CBaseEntity* pEntity) { }
-void UTIL_SetSize(entvars_t* pev, const Vector& vecMin, const Vector& vecMax) { }
 CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& vecCenter, float flRadius) { return nullptr; }
 
 CSprite* CSprite::SpriteCreate(const char* pSpriteName, const Vector& origin, bool animate) { return nullptr; }

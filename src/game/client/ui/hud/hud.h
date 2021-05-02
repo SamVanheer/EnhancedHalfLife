@@ -209,7 +209,7 @@ public:
 	/**
 	*	@brief Message handler for StatusText message
 	*	@details accepts two values:
-	*		byte: line number of status bar text 
+	*		byte: line number of status bar text
 	*		string: status bar text
 	*	this string describes how the status bar should be drawn
 	*	a semi-regular expression:

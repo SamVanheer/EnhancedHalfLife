@@ -101,7 +101,7 @@ public:
 
 	/**
 	*	@brief update pitch based on speed, start sound if not playing
-	*	NOTE: when train goes through transition, m_soundPlaying should go to false, 
+	*	NOTE: when train goes through transition, m_soundPlaying should go to false,
 	*	which will cause the looped sound to restart.
 	*/
 	void UpdateSound();

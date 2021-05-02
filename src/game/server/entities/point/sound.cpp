@@ -127,7 +127,7 @@ public:
 	void Precache() override;
 
 	/**
-	*	@brief turns an ambient sound on or off. 
+	*	@brief turns an ambient sound on or off.
 	*	If the ambient is a looping sound, mark sound as active (m_fActive) if it's playing, innactive if not.
 	*	If the sound is not a looping sound, never mark it as active.
 	*/
@@ -967,7 +967,7 @@ void CEnvSound::Spawn()
 constexpr int SPEAKER_START_SILENT = 1;	//!< wait for trigger 'on' to start announcements
 
 /**
-*	@brief Used for announcements per level, for door lock/unlock spoken voice. 
+*	@brief Used for announcements per level, for door lock/unlock spoken voice.
 */
 class CSpeaker : public CBaseEntity
 {

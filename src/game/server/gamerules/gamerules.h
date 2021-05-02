@@ -92,7 +92,7 @@ public:
 	*/
 	virtual bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon) = 0;
 
-// Functions to verify the single/multiplayer status of a game
+	// Functions to verify the single/multiplayer status of a game
 	virtual bool IsMultiplayer() = 0;			//!< is this a multiplayer game? (either coop or deathmatch)
 	virtual bool IsDeathmatch() = 0;			//!< is this a deathmatch game?
 	virtual bool IsTeamplay() { return false; }	//!< is this deathmatch game being played with team rules?
@@ -113,12 +113,12 @@ public:
 	*/
 	virtual const char* GetGameDescription() { return GAME_NAME.data(); }
 
-// Client connection/disconnection
-	/**
-	*	@brief a client just connected to the server (player hasn't spawned yet)
-	*	@details If ClientConnected returns false, the connection is rejected and the user is provided the reason specified in szRejectReason
-	*	Only the client's name and remote address are provided to the dll for verification.
-	*/
+	// Client connection/disconnection
+		/**
+		*	@brief a client just connected to the server (player hasn't spawned yet)
+		*	@details If ClientConnected returns false, the connection is rejected and the user is provided the reason specified in szRejectReason
+		*	Only the client's name and remote address are provided to the dll for verification.
+		*/
 	virtual bool ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]) = 0;
 
 	/**
@@ -136,10 +136,10 @@ public:
 	*/
 	virtual void UpdateGameMode(CBasePlayer* pPlayer) {}
 
-// Client damage rules
-	/**
-	*	@brief this client just hit the ground after a fall. How much damage?
-	*/
+	// Client damage rules
+		/**
+		*	@brief this client just hit the ground after a fall. How much damage?
+		*/
 	virtual float PlayerFallDamage(CBasePlayer* pPlayer) = 0;
 
 	/**
@@ -187,10 +187,10 @@ public:
 	*/
 	virtual void ClientUserInfoChanged(CBasePlayer* pPlayer, char* infobuffer) {}
 
-// Client kills/scoring
-	/**
-	*	@brief how many points do I award whoever kills this player?
-	*/
+	// Client kills/scoring
+		/**
+		*	@brief how many points do I award whoever kills this player?
+		*/
 	virtual int PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) = 0;
 
 	/**
@@ -203,10 +203,10 @@ public:
 	*/
 	virtual void DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) = 0;
 
-// Weapon retrieval
-	/**
-	*	@brief The player is touching an CBasePlayerItem, do I give it to him?
-	*/
+	// Weapon retrieval
+		/**
+		*	@brief The player is touching an CBasePlayerItem, do I give it to him?
+		*/
 	virtual bool CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);
 
 	/**
@@ -214,10 +214,10 @@ public:
 	*/
 	virtual void PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) = 0;
 
-// Weapon spawn/respawn control
-	/**
-	*	@brief should this weapon respawn?
-	*/
+	// Weapon spawn/respawn control
+		/**
+		*	@brief should this weapon respawn?
+		*/
 	virtual int WeaponShouldRespawn(CBasePlayerItem* pWeapon) = 0;
 
 	/**
@@ -237,10 +237,10 @@ public:
 	*/
 	virtual Vector WeaponRespawnSpot(CBasePlayerItem* pWeapon) = 0;
 
-// Item retrieval
-	/**
-	*	@brief is this player allowed to take this item?
-	*/
+	// Item retrieval
+		/**
+		*	@brief is this player allowed to take this item?
+		*/
 	virtual bool CanHaveItem(CBasePlayer* pPlayer, CItem* pItem) = 0;
 
 	/**
@@ -248,10 +248,10 @@ public:
 	*/
 	virtual void PlayerGotItem(CBasePlayer* pPlayer, CItem* pItem) = 0;
 
-// Item spawn/respawn control
-	/**
-	*	@brief Should this item respawn?
-	*/
+	// Item spawn/respawn control
+		/**
+		*	@brief Should this item respawn?
+		*/
 	virtual int ItemShouldRespawn(CItem* pItem) = 0;
 
 	/**
@@ -265,10 +265,10 @@ public:
 	*/
 	virtual Vector ItemRespawnSpot(CItem* pItem) = 0;
 
-// Ammo retrieval
-	/**
-	*	@brief
-	*/
+	// Ammo retrieval
+		/**
+		*	@brief
+		*/
 	virtual bool CanHaveAmmo(CBasePlayer* pPlayer, const char* pszAmmoName, int iMaxCarry);// can this player take more of this ammo?
 
 	/**
@@ -292,10 +292,10 @@ public:
 	*/
 	virtual Vector AmmoRespawnSpot(CBasePlayerAmmo* pAmmo) = 0;
 
-// Healthcharger respawn control
-	/**
-	*	@brief how long until a depleted HealthCharger recharges itself?
-	*/
+	// Healthcharger respawn control
+		/**
+		*	@brief how long until a depleted HealthCharger recharges itself?
+		*/
 	virtual float HealthChargerRechargeTime() = 0;
 
 	/**
@@ -313,10 +313,10 @@ public:
 	*/
 	virtual int DeadPlayerAmmo(CBasePlayer* pPlayer) = 0;
 
-// Teamplay stuff
-	/**
-	*	@brief what team is this entity on?
-	*/
+	// Teamplay stuff
+		/**
+		*	@brief what team is this entity on?
+		*/
 	virtual const char* GetTeamID(CBaseEntity* pEntity) = 0;
 
 	/**
@@ -416,7 +416,7 @@ public:
 	int DeadPlayerAmmo(CBasePlayer* pPlayer) override;
 
 	bool AllowMonsters() override;
-	
+
 	const char* GetTeamID(CBaseEntity* pEntity) override { return ""; }
 	int PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTarget) override;
 };
@@ -493,7 +493,7 @@ public:
 	int DeadPlayerWeapons(CBasePlayer* pPlayer) override;
 
 	int DeadPlayerAmmo(CBasePlayer* pPlayer) override;
-	
+
 	const char* GetTeamID(CBaseEntity* pEntity) override { return ""; }
 	int PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTarget) override;
 

@@ -17,7 +17,7 @@
 
 /**
 *	@file
-* 
+*
 *	Constants shared by the engine and dlls
 *	This header file included by engine files and DLL files.
 *	Most came from server.h
@@ -111,7 +111,7 @@ enum class Movetype
 */
 enum class Solid
 {
-	Not = 0	,		//!< no interaction with other objects
+	Not = 0,		//!< no interaction with other objects
 	Trigger = 1,	//!< touch on edge, but not blocking
 	BBox = 2,		//!< touch on edge, block
 	SlideBox = 3,	//!< touch on edge, but not an onground

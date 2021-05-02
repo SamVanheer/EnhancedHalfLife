@@ -258,7 +258,7 @@ void CBaseDoor::KeyValue(KeyValueData* pkvd)
 LINK_ENTITY_TO_CLASS(func_door, CBaseDoor);
 
 /**
-*	@brief func_water - same as a door. 
+*	@brief func_water - same as a door.
 */
 LINK_ENTITY_TO_CLASS(func_water, CBaseDoor);
 
@@ -675,7 +675,7 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 			{
 				if (ClassnameIs(pTarget->pev, "func_door") || ClassnameIs(pTarget->pev, "func_door_rotating"))
 				{
-					CBaseDoor* pDoor = (CBaseDoor*) pTarget;
+					CBaseDoor* pDoor = (CBaseDoor*)pTarget;
 
 					if (pDoor->m_flWait >= 0)
 					{
@@ -717,7 +717,7 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 *	The center of that brush will be the point around which it is rotated.
 *	It will rotate around the Z axis by default.
 *	You can check either the X_AXIS or Y_AXIS box to change that.
-* 
+*
 *	"distance" is how many degrees the door will be rotated.
 *	"speed" determines how fast the door moves; default value is 100.
 *	REVERSE will cause the door to rotate in the opposite direction.

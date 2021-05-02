@@ -512,7 +512,7 @@ bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFi
 			}
 			WriteInt(pTest->fieldName, entityArray, pTest->fieldSize);
 		}
-			break;
+		break;
 		case FIELD_POSITION_VECTOR:
 			WritePositionVector(pTest->fieldName, (float*)pOutputData, pTest->fieldSize);
 			break;
@@ -681,7 +681,7 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 						// Input and Output sizes are different!
 						pOutputData = (char*)pOutputData + j * (sizeof(BaseHandle) - gSizes[pTest->fieldType]);
 						const int entityIndex = *(int*)pInputData;
-						
+
 						if (edict_t* pent = EntityFromIndex(entityIndex); pent)
 							*((BaseHandle*)pOutputData) = CBaseEntity::Instance(pent);
 						else

@@ -91,13 +91,13 @@ public:
 	bool CanCheckAttacks() override;
 
 	/**
-	*	@brief alien grunts zap the crap out of any enemy that gets too close. 
+	*	@brief alien grunts zap the crap out of any enemy that gets too close.
 	*/
 	bool CheckMeleeAttack1(float flDot, float flDist) override;
 
 	/**
 	*	@brief !!!LATER - we may want to load balance this.
-	*	Several tracelines are done, so we may not want to do this every server frame. Definitely not while firing. 
+	*	Several tracelines are done, so we may not want to do this every server frame. Definitely not while firing.
 	*/
 	bool CheckRangeAttack1(float flDot, float flDist) override;
 	void StartTask(Task_t* pTask) override;
@@ -548,7 +548,7 @@ void CAGrunt::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/agrunt.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
+	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;
@@ -638,7 +638,7 @@ Task_t	tlAGruntStandoff[] =
 };
 
 /**
-*	@brief Used in combat when a monster is hiding in cover or the enemy has moved out of sight. 
+*	@brief Used in combat when a monster is hiding in cover or the enemy has moved out of sight.
 *	Should we look around in this schedule?
 */
 Schedule_t slAGruntStandoff[] =
@@ -730,7 +730,7 @@ Task_t	tlAGruntTakeCoverFromEnemy[] =
 };
 
 /**
-*	@brief Take cover from enemy! Tries lateral cover before node cover! 
+*	@brief Take cover from enemy! Tries lateral cover before node cover!
 */
 Schedule_t	slAGruntTakeCoverFromEnemy[] =
 {

@@ -106,7 +106,7 @@ bool InternalLoadGraphFromDisk(const std::unique_ptr<byte[]>& fileBuffer, std::s
 	//Load arrays
 	auto nodes = std::make_unique<CNode[]>(diskGraph.NodeCount);
 	reader.ReadArray(nodes.get(), diskGraph.NodeCount);
-	
+
 	auto links = std::make_unique<CLink[]>(diskGraph.LinkCount);
 	{
 		auto diskLinks = std::make_unique<CDiskLink[]>(diskGraph.LinkCount);

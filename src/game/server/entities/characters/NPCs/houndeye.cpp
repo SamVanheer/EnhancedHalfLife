@@ -92,7 +92,7 @@ public:
 	void SetActivity(Activity NewActivity) override;
 
 	/**
-	*	@brief writes a color vector to the network based on the size of the group. 
+	*	@brief writes a color vector to the network based on the size of the group.
 	*/
 	void WriteBeamColor();
 
@@ -301,7 +301,7 @@ void CHoundeye::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/houndeye.mdl");
-	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 36));
+	SetSize(Vector(-16, -16, 0), Vector(16, 16, 36));
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;

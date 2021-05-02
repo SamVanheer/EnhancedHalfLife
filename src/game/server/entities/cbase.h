@@ -309,7 +309,7 @@ public:
 	EHANDLE m_hGoalEnt;
 
 	/**
-	*	@brief used for temporary link-list operations. 
+	*	@brief used for temporary link-list operations.
 	*/
 	CBaseEntity* m_pLink;
 
@@ -426,7 +426,7 @@ public:
 
 	/**
 	*	@brief fade out - slowly fades a entity out, then removes it.
-	*	@details DON'T USE ME FOR GIBS AND STUFF IN MULTIPLAYER! 
+	*	@details DON'T USE ME FOR GIBS AND STUFF IN MULTIPLAYER!
 	*	SET A FUTURE THINK AND A RENDERMODE!!
 	*/
 	void EXPORT SUB_StartFadeOut();
@@ -435,6 +435,7 @@ public:
 	bool		ShouldToggle(USE_TYPE useType, bool currentState);
 
 	void SetAbsOrigin(const Vector& origin);
+	void SetSize(const Vector& mins, const Vector& maxs);
 
 	DamageMode GetDamageMode() const { return static_cast<DamageMode>(pev->takedamage); }
 
@@ -458,7 +459,7 @@ public:
 	*	This version is used by Monsters.
 	*/
 	void		FireBullets(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr);
-	
+
 	/**
 	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
 	*	This version is used by Players, uses the random seed generator to sync client and server side shots.
@@ -657,8 +658,8 @@ struct locksound_t
 };
 
 /**
-*	@brief play door or button locked or unlocked sounds. 
-*	@details pass in pointer to valid locksound struct. 
+*	@brief play door or button locked or unlocked sounds.
+*	@details pass in pointer to valid locksound struct.
 *	NOTE: this routine is shared by doors and buttons
 *	@param flocked if true, play 'door is locked' sound, otherwise play 'door is unlocked' sound
 */
@@ -719,7 +720,7 @@ public:
 	// Basic Monster Animation functions
 	/**
 	*	@brief advance the animation frame up to the current time
-	* 
+	*
 	*	accumulate animation frame time from last time called until now
 	*	if an flInterval is passed in, only advance animation that number of seconds
 	*/

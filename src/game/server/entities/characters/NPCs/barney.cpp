@@ -372,7 +372,7 @@ void CBarney::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/barney.mdl");
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;
@@ -544,7 +544,7 @@ void CBarney::TraceAttack(const TraceAttackInfo& info)
 			if (adjustedInfo.GetDamage() <= 0)
 			{
 				UTIL_Ricochet(adjustedInfo.GetTraceResult().vecEndPos, 1.0);
-				adjustedInfo.SetDamage( 0.01f);
+				adjustedInfo.SetDamage(0.01f);
 			}
 		}
 		// always a head shot

@@ -62,7 +62,7 @@ void CRat::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/bigrat.mdl");
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;

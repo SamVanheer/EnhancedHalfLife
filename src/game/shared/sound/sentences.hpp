@@ -17,7 +17,7 @@
 
 /**
 *	@file
-* 
+*
 *	Sentences parsing and lookup
 */
 

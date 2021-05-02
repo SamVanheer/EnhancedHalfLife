@@ -250,12 +250,12 @@ public:
 	void EXPORT CorpseFallThink();
 
 	/**
-	*	@brief Calls StartMonster. Startmonster is virtual, but this function cannot be 
+	*	@brief Calls StartMonster. Startmonster is virtual, but this function cannot be
 	*/
 	void EXPORT MonsterInitThink();
 
 	/**
-	*	@brief final bit of initization before a monster is turned over to the AI. 
+	*	@brief final bit of initization before a monster is turned over to the AI.
 	*/
 	virtual void StartMonster();
 
@@ -271,13 +271,13 @@ public:
 
 	/**
 	*	@brief returns true is the passed ent is in the caller's forward view cone.
-	*	The dot product is performed in 2d, making the view cone infinitely tall. 
+	*	The dot product is performed in 2d, making the view cone infinitely tall.
 	*/
 	virtual bool IsInViewCone(CBaseEntity* pEntity);
 
 	/**
 	*	@brief returns true is the passed vector is in the caller's forward view cone.
-	*	The dot product is performed in 2d, making the view cone infinitely tall. 
+	*	The dot product is performed in 2d, making the view cone infinitely tall.
 	*/
 	virtual bool IsInViewCone(const Vector& origin);
 	void HandleAnimEvent(AnimationEvent& event) override;
@@ -289,9 +289,9 @@ public:
 	*	@details if a valid pointer to a int is passed,
 	*	the function will fill that int with the distance that the check reached before hitting something.
 	*	THIS ONLY HAPPENS IF THE LOCAL MOVE CHECK FAILS!
-	*	
+	*
 	*	!!!PERFORMANCE - should we try to load balance this?
-	*	DON"T USE SETORIGIN! 
+	*	DON"T USE SETORIGIN!
 	*/
 	virtual LocalMoveResult CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist);
 
@@ -361,7 +361,7 @@ public:
 
 	/**
 	*	@brief selects the correct activity and performs any necessary calculations
-	*	to start the next task on the schedule. 
+	*	to start the next task on the schedule.
 	*/
 	virtual void StartTask(Task_t* pTask);
 	virtual void RunTask(Task_t* pTask);
@@ -471,7 +471,7 @@ public:
 
 	/**
 	*	@brief poorly named function that advances the m_iRouteIndex.
-	*	If it goes beyond ROUTE_SIZE, the route is refreshed. 
+	*	If it goes beyond ROUTE_SIZE, the route is refreshed.
 	*/
 	void AdvanceRoute(float distance);
 
@@ -515,9 +515,9 @@ public:
 	bool FindLateralCover(const Vector& vecThreat, const Vector& vecViewOffset);
 
 	/**
-	*	@brief tries to find a nearby node that will hide the caller from its enemy. 
-	* 
-	*	@details If supplied, search will return a node at least as far away as flMinDist, but no farther than flMaxDist. 
+	*	@brief tries to find a nearby node that will hide the caller from its enemy.
+	*
+	*	@details If supplied, search will return a node at least as far away as flMinDist, but no farther than flMaxDist.
 	*	if flMaxDist isn't supplied, it defaults to a reasonable value
 	*	UNDONE: Should this find the nearest node?
 	*/
@@ -530,7 +530,7 @@ public:
 	virtual float CoverRadius() { return 784; } // Default cover radius
 
 	/**
-	*	@brief prequalifies a monster to do more fine checking of potential attacks. 
+	*	@brief prequalifies a monster to do more fine checking of potential attacks.
 	*/
 	virtual bool CanCheckAttacks();
 	virtual void CheckAmmo() {}
@@ -562,7 +562,7 @@ public:
 
 	/**
 	*	@brief subtracts the volume of the given sound from the distance the sound source is from the caller,
-	*	and returns that value, which is considered to be the 'local' volume of the sound. 
+	*	and returns that value, which is considered to be the 'local' volume of the sound.
 	*/
 	float SoundVolume(CSound* pSound);
 
@@ -703,7 +703,7 @@ public:
 	*	@brief The damage is coming from inflictor, but get mad at attacker
 	*	@details This should be the only function that ever reduces health.
 	*	bitsDamageType indicates the type of damage sustained, ie: DMG_SHOCK
-	*	
+	*
 	*	Time-based damage: only occurs while the monster is within the trigger_hurt.
 	*	When a monster is poisoned via an arrow etc it takes all the poison damage at once.
 	*/
@@ -744,7 +744,7 @@ public:
 	bool CineCleanup();
 
 	/**
-	*	@brief dead monster drops named item 
+	*	@brief dead monster drops named item
 	*/
 	CBaseEntity* DropItem(const char* pszItemName, const Vector& vecPos, const Vector& vecAng);// drop an item.
 };

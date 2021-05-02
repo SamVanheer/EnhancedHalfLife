@@ -103,7 +103,7 @@ public:
 /**
 *	@brief A link between 2 nodes
 */
-class CLink  : public CDiskLink
+class CLink : public CDiskLink
 {
 public:
 	EHANDLE m_hLinkEnt; //!< the entity that blocks this connection (doors, etc)
@@ -213,7 +213,7 @@ public:
 
 	/**
 	*	@brief finds the connection (line) nearest the given point.
-	*	@param iNearestLink index into the link pool, this is the nearest node at any time. 
+	*	@param iNearestLink index into the link pool, this is the nearest node at any time.
 	*	@param fAlongLine whether or not the point is along the line
 	*/
 	//int FindNearestLink(const Vector &vecTestPoint, int& iNearestLink, bool& fAlongLine);
@@ -243,11 +243,11 @@ public:
 	/**
 	*	@brief sometimes the ent that blocks a path is a usable door,
 	*	in which case the monster just needs to face the door and fire it.
-	* 
+	*
 	*	In other cases, the monster needs to operate a button or lever to get the door to open.
 	*	This function will return a pointer to the button if the monster needs to hit a button to open the door,
 	*	or returns a pointer to the door if the monster need only use the door.
-	* 
+	*
 	*	@param pNode is the node the monster will be standing on when it will need to stop and trigger the ent.
 	*/
 	CBaseEntity* LinkEntForLink(CLink* pLink, CNode* pNode);
@@ -380,7 +380,7 @@ public:
 };
 
 /**
-*	@brief Nodes start out as ents in the level. The node graph  is built, then these ents are discarded. 
+*	@brief Nodes start out as ents in the level. The node graph  is built, then these ents are discarded.
 */
 class CNodeEnt : public CBaseEntity
 {

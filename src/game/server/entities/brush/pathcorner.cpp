@@ -193,7 +193,7 @@ void CPathTrack::Link()
 void CPathTrack::Spawn()
 {
 	pev->solid = Solid::Trigger;
-	UTIL_SetSize(pev, Vector(-8, -8, -8), Vector(8, 8, 8));
+	SetSize(Vector(-8, -8, -8), Vector(8, 8, 8));
 
 	m_hNext = nullptr;
 	m_hPrevious = nullptr;
@@ -340,7 +340,7 @@ CPathTrack* CPathTrack::Nearest(Vector origin)
 	Vector delta = origin - pev->origin;
 	delta.z = 0;
 	float minDist = delta.Length();
-	CPathTrack*  pnearest = this;
+	CPathTrack* pnearest = this;
 	CPathTrack* ppath = GetNext();
 
 	// Hey, I could use the old 2 racing pointers solution to this, but I'm lazy :)

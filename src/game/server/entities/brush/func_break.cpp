@@ -825,20 +825,20 @@ void CPushable::KeyValue(KeyValueData* pkvd)
 		switch (bbox)
 		{
 		case Hull::Point:
-			UTIL_SetSize(pev, Vector(-8, -8, -8), Vector(8, 8, 8));
+			SetSize(Vector(-8, -8, -8), Vector(8, 8, 8));
 			break;
 
 		case Hull::Large:
-			UTIL_SetSize(pev, VEC_DUCK_HULL_MIN * 2, VEC_DUCK_HULL_MAX * 2);
+			SetSize(VEC_DUCK_HULL_MIN * 2, VEC_DUCK_HULL_MAX * 2);
 			break;
 
 		case Hull::Head:
-			UTIL_SetSize(pev, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX);
+			SetSize(VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX);
 			break;
 
 		default:
 		case Hull::Human:
-			UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
+			SetSize(VEC_HULL_MIN, VEC_HULL_MAX);
 			break;
 		}
 	}

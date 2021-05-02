@@ -17,7 +17,7 @@
 
 /**
 *	@file
-* 
+*
 *	Defines entity interface between engine and DLLs.
 *	This header file included by engine files and DLL files.
 */
@@ -160,7 +160,7 @@ struct enginefuncs_t
 	void		(*pfnParticleEffect)		(const float* org, const float* dir, float color, float count);
 	void		(*pfnLightStyle)			(int style, const char* val);
 	int			(*pfnDecalIndex)			(const char* name);
-	Contents (*pfnPointContents)			(const float* rgflVector);
+	Contents(*pfnPointContents)			(const float* rgflVector);
 	void		(*pfnMessageBegin)			(MessageDest msg_dest, int msg_type, const float* pOrigin, edict_t* ed);
 	void		(*pfnMessageEnd)			();
 	void		(*pfnWriteByte)				(int iValue);

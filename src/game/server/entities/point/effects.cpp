@@ -283,7 +283,7 @@ void CBeam::RelinkBeam()
 	pev->mins = pev->mins - pev->origin;
 	pev->maxs = pev->maxs - pev->origin;
 
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	SetSize(pev->mins, pev->maxs);
 	SetAbsOrigin(pev->origin);
 }
 
@@ -2037,7 +2037,7 @@ void CEnvFunnel::Spawn()
 
 /**
 *	@brief Beverage Dispenser
-*	@details overloaded pev->frags, is now a flag for whether or not a can is stuck in the dispenser. 
+*	@details overloaded pev->frags, is now a flag for whether or not a can is stuck in the dispenser.
 *	overloaded pev->health, is now how many cans remain in the machine.
 */
 class CEnvBeverage : public CBaseDelay
@@ -2121,7 +2121,7 @@ void CItemSoda::Spawn()
 	pev->movetype = Movetype::Toss;
 
 	SET_MODEL(ENT(pev), "models/can.mdl");
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 
 	SetThink(&CItemSoda::CanThink);
 	pev->nextthink = gpGlobals->time + 0.5;
@@ -2132,7 +2132,7 @@ void CItemSoda::CanThink()
 	EmitSound(SoundChannel::Weapon, "weapons/g_bounce3.wav");
 
 	pev->solid = Solid::Trigger;
-	UTIL_SetSize(pev, Vector(-8, -8, 0), Vector(8, 8, 8));
+	SetSize(Vector(-8, -8, 0), Vector(8, 8, 8));
 	SetThink(nullptr);
 	SetTouch(&CItemSoda::CanTouch);
 }

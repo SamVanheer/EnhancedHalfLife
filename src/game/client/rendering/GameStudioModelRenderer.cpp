@@ -23,7 +23,7 @@
 
 /**
 *	@file
-* 
+*
 *	Override the StudioModelRender virtual member functions here to implement custom bone setup, blending, etc.
 */
 

@@ -124,7 +124,7 @@ public:
 	void EXPORT BounceGibTouch(CBaseEntity* pOther);
 
 	/**
-	*	@brief Sticky gib puts blood on the wall and stays put. 
+	*	@brief Sticky gib puts blood on the wall and stays put.
 	*/
 	void EXPORT StickyGibTouch(CBaseEntity* pOther);
 

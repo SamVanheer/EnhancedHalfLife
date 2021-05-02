@@ -92,7 +92,7 @@ public:
 	void SpreadFlock();
 
 	/**
-	*	@brief Alters the caller's course if he's too close to others 
+	*	@brief Alters the caller's course if he's too close to others
 	*	This function should **ONLY** be called when Caller's velocity is normalized!!
 	*/
 	void SpreadFlock2();
@@ -306,7 +306,7 @@ void CFlockingFlyer::Killed(const KilledInfo& info)
 	pev->framerate = 0;
 	pev->effects = EF_NOINTERP;
 
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 	pev->movetype = Movetype::Toss;
 
 	SetThink(&CFlockingFlyer::FallHack);
@@ -345,8 +345,8 @@ void CFlockingFlyer::SpawnCommonCode()
 	//SET_MODEL(ENT(pev), "models/aflock.mdl");
 	SET_MODEL(ENT(pev), "models/boid.mdl");
 
-	//	UTIL_SetSize(pev, vec3_origin, vec3_origin);
-	UTIL_SetSize(pev, Vector(-5, -5, 0), Vector(5, 5, 2));
+	//	SetSize( vec3_origin, vec3_origin);
+	SetSize(Vector(-5, -5, 0), Vector(5, 5, 2));
 }
 
 void CFlockingFlyer::BoidAdvanceFrame()
@@ -815,7 +815,7 @@ int CFlockingFlyer::SquadCount()
 
 void CFlockingFlyer::SquadDisband()
 {
-	for (CFlockingFlyer* pNext = nullptr, * pList = m_hSquadLeader; pList; pList = pNext)
+	for (CFlockingFlyer* pNext = nullptr, *pList = m_hSquadLeader; pList; pList = pNext)
 	{
 		pNext = pList->m_hSquadNext;
 		pList->SquadUnlink();

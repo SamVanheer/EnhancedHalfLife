@@ -85,15 +85,15 @@ void CGenericMonster::Spawn()
 
 	/*
 		if ( AreStringsEqual( STRING(pev->model), "models/player.mdl" ) )
-			UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+			SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 		else
-			UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
+			SetSize(VEC_HULL_MIN, VEC_HULL_MAX);
 	*/
 
 	if (AreStringsEqual(STRING(pev->model), "models/player.mdl") || AreStringsEqual(STRING(pev->model), "models/holo.mdl"))
-		UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
+		SetSize(VEC_HULL_MIN, VEC_HULL_MAX);
 	else
-		UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+		SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;

@@ -2502,7 +2502,7 @@ void CBaseMonster::ReportAIState()
 		if (!pName)
 			pName = "Unknown";
 		ALERT(level, "Schedule %s, ", pName);
-		
+
 		if (Task_t* pTask = GetTask(); pTask)
 			ALERT(level, "Task %d (#%d), ", pTask->iTask, m_iScheduleIndex);
 	}
@@ -2818,7 +2818,7 @@ void CBaseMonster::MonsterInitDead()
 	pev->max_health = pev->health;
 	pev->deadflag = DeadFlag::Dead;
 
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 	SetAbsOrigin(pev->origin);
 
 	// Setup health counters, etc.

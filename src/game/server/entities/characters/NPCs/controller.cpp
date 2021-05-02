@@ -316,7 +316,7 @@ void CController::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/controller.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
+	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Fly;
@@ -430,9 +430,9 @@ Schedule_t	slControllerFail[] =
 DEFINE_CUSTOM_SCHEDULES(CController)
 {
 	slControllerChaseEnemy,
-	slControllerStrafe,
-	slControllerTakeCover,
-	slControllerFail,
+		slControllerStrafe,
+		slControllerTakeCover,
+		slControllerFail,
 };
 
 IMPLEMENT_CUSTOM_SCHEDULES(CController, CSquadMonster);
@@ -742,7 +742,7 @@ void CController::SetActivity(Activity NewActivity)
 void CController::RunAI()
 {
 	CBaseMonster::RunAI();
-	
+
 	if (HasMemory(bits_MEMORY_KILLED))
 		return;
 
@@ -1054,7 +1054,7 @@ void CControllerHeadBall::Spawn()
 	pev->renderamt = 255;
 	pev->scale = 2.0;
 
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 	SetAbsOrigin(pev->origin);
 
 	SetThink(&CControllerHeadBall::HuntThink);
@@ -1235,7 +1235,7 @@ void CControllerZapBall::Spawn()
 	pev->renderamt = 255;
 	pev->scale = 0.5;
 
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 	SetAbsOrigin(pev->origin);
 
 	SetThink(&CControllerZapBall::AnimateThink);

@@ -77,7 +77,7 @@ public:
 
 	/**
 	*	@brief checks for possibility of friendly fire
-	*	@details Builds a large box in front of the grunt and checks to see if any squad members are in that box. 
+	*	@details Builds a large box in front of the grunt and checks to see if any squad members are in that box.
 	*/
 	bool NoFriendlyFire();
 
@@ -139,7 +139,7 @@ public:
 	void SquadCopyEnemyInfo();
 
 	/**
-	*	@brief returns true if not all squad members are fighting the same enemy. 
+	*	@brief returns true if not all squad members are fighting the same enemy.
 	*/
 	bool SquadEnemySplit();
 	bool SquadMemberInRange(const Vector& vecLocation, float flDist);

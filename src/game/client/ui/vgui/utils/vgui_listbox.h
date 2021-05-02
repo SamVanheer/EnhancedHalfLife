@@ -20,7 +20,7 @@ namespace vgui
 *	@details This listbox clips its child items to its rectangle.
 *	You can access things like the scrollbar and find out the item width.
 *	The scrollbar scrolls one element at a time and the range is correct.
-*	Note: this listbox does not provide notification when items are 
+*	Note: this listbox does not provide notification when items are
 */
 class CListBox : public Panel
 {

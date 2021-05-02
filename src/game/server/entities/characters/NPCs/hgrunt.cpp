@@ -128,7 +128,7 @@ public:
 	*	@brief this is overridden for human grunts because they can throw/shoot grenades
 	*	when they can't see their target and the base class doesn't check attacks if the monster cannot see its enemy.
 	*	@details !!!BUGBUG - this gets called before a 3-round burst is fired
-	*	which means that a friendly can still be hit with up to 2 rounds. 
+	*	which means that a friendly can still be hit with up to 2 rounds.
 	*	ALSO, grenades will not be tossed if there is a friendly in front, this is a bad bug.
 	*	Friendly machine gun fire avoidance will unecessarily prevent the throwing of a grenade as well.
 	*/
@@ -144,7 +144,7 @@ public:
 	bool CheckRangeAttack1(float flDot, float flDist) override;
 
 	/**
-	*	@brief this checks the Grunt's grenade attack. 
+	*	@brief this checks the Grunt's grenade attack.
 	*/
 	bool CheckRangeAttack2(float flDot, float flDist) override;
 
@@ -917,7 +917,7 @@ void CHGrunt::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/hgrunt.mdl");
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;

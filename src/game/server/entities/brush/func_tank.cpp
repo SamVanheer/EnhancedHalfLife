@@ -1025,7 +1025,7 @@ void CFuncTankControls::Spawn()
 	pev->effects |= EF_NODRAW;
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	SetSize(pev->mins, pev->maxs);
 	SetAbsOrigin(pev->origin);
 
 	//TODO: maybe use Activate() instead?

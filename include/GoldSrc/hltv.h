@@ -2,7 +2,7 @@
 
 /**
 *	@file
-* 
+*
 *	all shared consts between server, clients and proxy
 */
 

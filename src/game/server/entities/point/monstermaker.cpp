@@ -48,7 +48,7 @@ public:
 	*/
 	void EXPORT MakerThink();
 	void DeathNotice(CBaseEntity* pChild) override;//!< monster maker children use this to tell the monster maker that they have died.
-	
+
 	/**
 	*	@brief this is the code that drops the monster
 	*/

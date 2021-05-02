@@ -444,7 +444,7 @@ Schedule_t	slGargSwipe[] =
 DEFINE_CUSTOM_SCHEDULES(CGargantua)
 {
 	slGargFlame,
-	slGargSwipe,
+		slGargSwipe,
 };
 
 IMPLEMENT_CUSTOM_SCHEDULES(CGargantua, CBaseMonster);
@@ -729,7 +729,7 @@ void CGargantua::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/garg.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
+	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;
@@ -1109,7 +1109,7 @@ void CGargantua::RunTask(Task_t* pTask)
 			Vector angles = vec3_origin;
 
 			FlameUpdate();
-			
+
 			if (CBaseEntity* pEnemy = m_hEnemy; pEnemy)
 			{
 				Vector org = pev->origin;
@@ -1154,7 +1154,7 @@ void CSmoker::Spawn()
 	pev->movetype = Movetype::None;
 	pev->nextthink = gpGlobals->time;
 	pev->solid = Solid::Not;
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 	pev->effects |= EF_NODRAW;
 	pev->angles = vec3_origin;
 }
@@ -1184,7 +1184,7 @@ void CSpiral::Spawn()
 	pev->movetype = Movetype::None;
 	pev->nextthink = gpGlobals->time;
 	pev->solid = Solid::Not;
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 	pev->effects |= EF_NODRAW;
 	pev->angles = vec3_origin;
 }

@@ -214,7 +214,7 @@ struct cldll_func_t
 
 	/**
 	*	@details this should be CreateInterfaceFn but that means including interface.h
-	*	which is a C++ file and some of the client files a C only... 
+	*	which is a C++ file and some of the client files a C only...
 	*	so we return a void * which we then do a typecast on later.
 	*/
 	void* (*pClientFactory)();

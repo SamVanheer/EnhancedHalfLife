@@ -657,7 +657,7 @@ public:
 	*	@details accepts three values:
 	*		string: team name
 	*		short: teams kills
-	*		short: teams deaths 
+	*		short: teams deaths
 	*	if this message is never received, then scores will simply be the combined totals of the players.
 	*/
 	bool MsgFunc_TeamScore(const char* pszName, int iSize, void* pbuf);

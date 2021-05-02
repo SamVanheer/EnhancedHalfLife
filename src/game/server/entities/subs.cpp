@@ -29,7 +29,7 @@
 void CPointEntity::Spawn()
 {
 	pev->solid = Solid::Not;
-	//	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	//	SetSize( vec3_origin, vec3_origin);
 }
 
 /**

@@ -507,7 +507,7 @@ void CBasePlayer::PackDeadPlayerItems()
 	// go through all of the weapons and make a list of the ones to pack
 	for (int i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		if (CBasePlayerItem * pPlayerItem = m_hPlayerItems[i]; pPlayerItem)
+		if (CBasePlayerItem* pPlayerItem = m_hPlayerItems[i]; pPlayerItem)
 		{
 			// there's a weapon here. Should I pack it?
 			while (pPlayerItem)
@@ -2278,9 +2278,9 @@ void CBasePlayer::Spawn()
 	pev->sequence = LookupActivity(ACT_IDLE);
 
 	if (IsBitSet(pev->flags, FL_DUCKING))
-		UTIL_SetSize(pev, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX);
+		SetSize(VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX);
 	else
-		UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
+		SetSize(VEC_HULL_MIN, VEC_HULL_MAX);
 
 	pev->view_ofs = VEC_VIEW;
 	Precache();
@@ -2396,11 +2396,11 @@ bool CBasePlayer::Restore(CRestore& restore)
 		// Use the crouch HACK
 		//FixPlayerCrouchStuck(this);
 		// Don't need to do this with new player prediction code.
-		UTIL_SetSize(pev, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX);
+		SetSize(VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX);
 	}
 	else
 	{
-		UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
+		SetSize(VEC_HULL_MIN, VEC_HULL_MAX);
 	}
 
 	g_engfuncs.pfnSetPhysicsKeyValue(edict(), "hl", "1");
@@ -3564,7 +3564,7 @@ Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelt
 
 	// try all possible entities
 	Vector bestdir = gpGlobals->v_forward;
-	
+
 	m_fOnTarget = false;
 
 	TraceResult tr;

@@ -401,17 +401,17 @@ Schedule_t	slFear[] =
 DEFINE_CUSTOM_SCHEDULES(CScientist)
 {
 	slFollow,
-	slFaceTarget,
-	slIdleSciStand,
-	slFear,
-	slScientistCover,
-	slScientistHide,
-	slScientistStartle,
-	slHeal,
-	slStopFollowing,
-	slSciPanic,
-	slFollowScared,
-	slFaceTargetScared,
+		slFaceTarget,
+		slIdleSciStand,
+		slFear,
+		slScientistCover,
+		slScientistHide,
+		slScientistStartle,
+		slHeal,
+		slStopFollowing,
+		slSciPanic,
+		slFollowScared,
+		slFaceTargetScared,
 };
 
 IMPLEMENT_CUSTOM_SCHEDULES(CScientist, CTalkMonster);
@@ -626,7 +626,7 @@ void CScientist::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/scientist.mdl");
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;
@@ -1162,7 +1162,7 @@ void CSittingScientist::Spawn()
 	Precache();
 	InitBoneControllers();
 
-	UTIL_SetSize(pev, Vector(-14, -14, 0), Vector(14, 14, 36));
+	SetSize(Vector(-14, -14, 0), Vector(14, 14, 36));
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;

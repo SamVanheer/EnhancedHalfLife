@@ -168,7 +168,7 @@ public:
 
 	//Resource waiting is obsolete and does nothing
 	virtual WaitForResourcesHandle_t WaitForResources(const char* resourcelist) = 0;
-	virtual bool			GetWaitForResourcesProgress(WaitForResourcesHandle_t handle, float* progress , bool* complete) = 0;
+	virtual bool			GetWaitForResourcesProgress(WaitForResourcesHandle_t handle, float* progress, bool* complete) = 0;
 	virtual void			CancelWaitForResources(WaitForResourcesHandle_t handle) = 0;
 
 	/**

@@ -384,7 +384,7 @@ public:
 	*	it's because the player is picking up this type of weapon for the first time.
 	*	If it is spawned by the world, m_iDefaultAmmo will have a default ammo amount in it.
 	*	if this is a weapon dropped by a dying player, has 0 m_iDefaultAmmo,
-	*	which means only the ammo in the weapon clip comes along. 
+	*	which means only the ammo in the weapon clip comes along.
 	*	@return true if you can add ammo to yourself when picked up
 	*/
 	virtual bool ExtractAmmo(CBasePlayerWeapon* pWeapon);
@@ -419,7 +419,7 @@ public:
 	bool CanDeploy() override;
 
 	/**
-	*	@brief this function determines whether or not a weapon is useable by the player in its current state. 
+	*	@brief this function determines whether or not a weapon is useable by the player in its current state.
 	*	(does it have ammo loaded? do I have any ammo for the weapon?, etc)
 	*/
 	virtual bool IsUseable();
@@ -563,7 +563,7 @@ constexpr Vector VECTOR_CONE_15DEGREES(0.13053, 0.13053, 0.13053);
 constexpr Vector VECTOR_CONE_20DEGREES(0.17365, 0.17365, 0.17365);
 
 /**
-*	@brief a single entity that can store weapons and ammo. 
+*	@brief a single entity that can store weapons and ammo.
 */
 class CWeaponBox : public CBaseEntity
 {
@@ -1055,7 +1055,7 @@ public:
 	/**
 	*	@details since all of this code has to run and then call Fire(),
 	*	it was easier at this point to rip it out of weaponidle() and make its own function then to try to merge this into Fire(),
-	*	which has some identical variable names 
+	*	which has some identical variable names
 	*/
 	void StartFire();
 	void Fire(Vector vecOrigSrc, Vector vecDirShooting, float flDamage);

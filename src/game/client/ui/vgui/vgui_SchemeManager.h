@@ -17,7 +17,7 @@ void Scheme_Init();
 
 /**
 *	@brief Handles the loading of text scheme description from disk
-*	supports different font/color/size schemes at different resolutions 
+*	supports different font/color/size schemes at different resolutions
 */
 class CSchemeManager
 {

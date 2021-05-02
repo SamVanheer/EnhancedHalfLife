@@ -122,7 +122,7 @@ bool CZombie::TakeDamage(const TakeDamageInfo& info)
 		const Vector vecDir = (pev->origin - (adjustedInfo.GetInflictor()->pev->absmin + adjustedInfo.GetInflictor()->pev->absmax) * 0.5).Normalize();
 		const float flForce = DamageForce(adjustedInfo.GetDamage());
 		pev->velocity = pev->velocity + vecDir * flForce;
-		adjustedInfo.SetDamage(adjustedInfo .GetDamage() * 0.3);
+		adjustedInfo.SetDamage(adjustedInfo.GetDamage() * 0.3);
 	}
 
 	// HACK HACK -- until we fix this.
@@ -242,7 +242,7 @@ void CZombie::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/zombie.mdl");
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Step;

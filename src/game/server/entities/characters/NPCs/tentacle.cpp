@@ -240,7 +240,7 @@ void CTentacle::Spawn()
 	pev->sequence = 0;
 
 	SET_MODEL(ENT(pev), "models/tentacle2.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
+	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	SetDamageMode(DamageMode::Aim);
 	pev->flags |= FL_MONSTER;
@@ -963,7 +963,7 @@ void CTentacleMaw::Spawn()
 {
 	Precache();
 	SET_MODEL(ENT(pev), "models/maw.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
+	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = Solid::Not;
 	pev->movetype = Movetype::Step;

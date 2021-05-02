@@ -191,9 +191,9 @@ struct playermove_t
 	void			(*Con_Printf)(const char* fmt, ...);
 	double			(*Sys_FloatTime)();
 	void			(*PM_StuckTouch)(int hitent, pmtrace_t* ptraceresult);
-	Contents (*PM_PointContents) (const float* p, Contents* truecontents /*filled in if this is non-null*/);
-	Contents (*PM_TruePointContents) (const float* p);
-	Contents (*PM_HullPointContents) (hull_t* hull, int num, const float* p);
+	Contents(*PM_PointContents) (const float* p, Contents* truecontents /*filled in if this is non-null*/);
+	Contents(*PM_TruePointContents) (const float* p);
+	Contents(*PM_HullPointContents) (hull_t* hull, int num, const float* p);
 	pmtrace_t(*PM_PlayerTrace) (const float* start, const float* end, int traceFlags, int ignore_pe);
 	pmtrace_t* (*PM_TraceLine)(const float* start, const float* end, int flags, int usehulll, int ignore_pe);
 	int32(*RandomLong)(int32 lLow, int32 lHigh);

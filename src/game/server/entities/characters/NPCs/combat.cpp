@@ -105,7 +105,7 @@ void CGib::SpawnStickyGibs(CBaseEntity* pVictim, Vector vecOrigin, int cGibs)
 
 			pGib->pev->movetype = Movetype::Toss;
 			pGib->pev->solid = Solid::BBox;
-			UTIL_SetSize(pGib->pev, vec3_origin, vec3_origin);
+			pGib->SetSize(vec3_origin, vec3_origin);
 			pGib->SetTouch(&CGib::StickyGibTouch);
 			pGib->SetThink(nullptr);
 		}
@@ -231,7 +231,7 @@ void CGib::SpawnRandomGibs(CBaseEntity* pVictim, int cGibs, int human) //TODO: h
 			}
 
 			pGib->pev->solid = Solid::BBox;
-			UTIL_SetSize(pGib->pev, vec3_origin, vec3_origin);
+			pGib->SetSize(vec3_origin, vec3_origin);
 		}
 		pGib->LimitVelocity();
 	}
@@ -717,7 +717,7 @@ void CGib::Spawn(const char* szGibModel)
 	pev->classname = MAKE_STRING("gib");
 
 	SET_MODEL(ENT(pev), szGibModel);
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 
 	pev->nextthink = gpGlobals->time + 4;
 	m_lifeTime = 25;

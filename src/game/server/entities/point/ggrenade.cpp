@@ -311,7 +311,7 @@ void CGrenade::Spawn()
 	pev->solid = Solid::BBox;
 
 	SET_MODEL(ENT(pev), "models/grenade.mdl");
-	UTIL_SetSize(pev, vec3_origin, vec3_origin);
+	SetSize(vec3_origin, vec3_origin);
 
 	pev->dmg = 100;
 	m_fRegisteredSound = false;
