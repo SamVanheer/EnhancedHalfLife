@@ -870,10 +870,10 @@ void CEnvSound::Think()
 	const float SlowThinkInterval = 0.75f;
 	const float FastThinkInterval = 0.25f;
 
-	// get pointer to client if visible; FIND_CLIENT_IN_PVS will
+	// get pointer to client if visible; UTIL_FindClientInPVS will
 	// cycle through visible clients on consecutive calls.
 
-	auto pPlayer = static_cast<CBasePlayer*>(InstanceOrNull(FIND_CLIENT_IN_PVS(edict())));
+	auto pPlayer = static_cast<CBasePlayer*>(UTIL_FindClientInPVS(this));
 
 	if (IsNullEnt(pPlayer))
 	{

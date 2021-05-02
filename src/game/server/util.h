@@ -189,6 +189,8 @@ CBaseEntity* UTIL_FindEntityByTarget(CBaseEntity* pStartEntity, const char* szNa
 
 CBaseEntity* UTIL_FindEntityGeneric(const char* szName, Vector& vecSrc, float flRadius);
 
+CBaseEntity* UTIL_FindClientInPVS(CBaseEntity* pPVSEntity);
+
 CBaseEntity* UTIL_CreateNamedEntity(string_t className);
 
 /**

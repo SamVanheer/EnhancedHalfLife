@@ -521,7 +521,7 @@ void CFuncTank::TrackTarget()
 		else
 			return;
 
-		CBaseEntity* pPlayer = Instance(FIND_CLIENT_IN_PVS(edict()));
+		CBaseEntity* pPlayer = UTIL_FindClientInPVS(this);
 		if (IsNullEnt(pPlayer))
 		{
 			if (IsActive())

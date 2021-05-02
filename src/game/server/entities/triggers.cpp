@@ -556,7 +556,7 @@ void CTriggerHurt::RadiationThink()
 	pev->origin = (pev->absmin + pev->absmax) * 0.5;
 	pev->view_ofs = pev->view_ofs * 0.0;
 
-	auto pPlayer = static_cast<CBasePlayer*>(InstanceOrNull(FIND_CLIENT_IN_PVS(edict())));
+	auto pPlayer = static_cast<CBasePlayer*>(UTIL_FindClientInPVS(this));
 
 	pev->origin = origin;
 	pev->view_ofs = view_ofs;

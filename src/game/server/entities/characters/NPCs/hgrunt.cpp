@@ -365,7 +365,7 @@ bool CHGrunt::OkToSpeak()
 	}
 
 	// if player is not in pvs, don't speak
-//	if (IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
+//	if (IsNullEnt(UTIL_FindClientInPVS(this)))
 //		return false;
 
 	return true;

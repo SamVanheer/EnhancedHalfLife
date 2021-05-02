@@ -157,7 +157,7 @@ void CRoach::Killed(const KilledInfo& info)
 
 void CRoach::MonsterThink()
 {
-	if (IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
+	if (IsNullEnt(UTIL_FindClientInPVS(this)))
 		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(1, 1.5);
 	else
 		pev->nextthink = gpGlobals->time + 0.1;// keep monster thinking
@@ -357,7 +357,7 @@ void CRoach::Look(int iDistance)
 
 	// don't let monsters outside of the player's PVS act up, or most of the interesting
 	// things will happen before the player gets there!
-	if (IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
+	if (IsNullEnt(UTIL_FindClientInPVS(this)))
 	{
 		return;
 	}

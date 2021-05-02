@@ -511,7 +511,7 @@ void CLeech::UpdateMotion()
 
 void CLeech::SwimThink()
 {
-	if (IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
+	if (IsNullEnt(UTIL_FindClientInPVS(this)))
 	{
 		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(1, 1.5);
 		pev->velocity = vec3_origin;

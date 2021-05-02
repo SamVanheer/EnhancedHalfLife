@@ -317,7 +317,7 @@ void CBaseMonster::RunTask(Task_t* pTask)
 	}
 	case TASK_WAIT_PVS:
 	{
-		if (!IsNullEnt(FIND_CLIENT_IN_PVS(edict())))
+		if (!IsNullEnt(UTIL_FindClientInPVS(this)))
 		{
 			TaskComplete();
 		}

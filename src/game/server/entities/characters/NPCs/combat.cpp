@@ -132,7 +132,7 @@ void CGib::SpawnHeadGib(CBaseEntity* pVictim)
 	{
 		pGib->pev->origin = pVictim->pev->origin + pVictim->pev->view_ofs;
 
-		CBaseEntity* pPlayer = Instance(FIND_CLIENT_IN_PVS(pGib->edict()));
+		CBaseEntity* pPlayer = UTIL_FindClientInPVS(pGib);
 
 		if (RANDOM_LONG(0, 100) <= 5 && !IsNullEnt(pPlayer))
 		{

@@ -388,6 +388,11 @@ CBaseEntity* UTIL_FindEntityGeneric(const char* szWhatever, Vector& vecSrc, floa
 	return pEntity;
 }
 
+CBaseEntity* UTIL_FindClientInPVS(CBaseEntity* pPVSEntity)
+{
+	return CBaseEntity::InstanceOrNull(FIND_CLIENT_IN_PVS(CBaseEntity::EdictOrNull(pPVSEntity)));
+}
+
 CBaseEntity* UTIL_CreateNamedEntity(string_t className)
 {
 	auto edict = CREATE_NAMED_ENTITY(className);
