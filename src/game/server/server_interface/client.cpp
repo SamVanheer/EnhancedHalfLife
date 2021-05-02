@@ -155,7 +155,7 @@ void ClientPutInServer(edict_t* pEntity)
 *	or as
 *	blah blah blah
 */
-void Host_Say(edict_t* pEntity, bool teamonly)
+void Host_Say(CBasePlayer* player, bool teamonly)
 {
 	CBasePlayer* client;
 	int		j;
@@ -169,8 +169,6 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 	// We can get a raw string now, without the "say " prepended
 	if (CMD_ARGC() == 0)
 		return;
-
-	CBasePlayer* player = GetClassPtr((CBasePlayer*)&pEntity->v);
 
 	//Not yet.
 	if (player->m_flNextChatTime > gpGlobals->time)
@@ -217,11 +215,11 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 // turn on color set 2  (color on,  no sound)
 	// turn on color set 2  (color on,  no sound)
 	if (player->IsObserver() && teamonly)
-		snprintf(text, sizeof(text), "%c(SPEC) %s: ", HUD_SAYTEXT_PRINTTALK, STRING(pEntity->v.netname));
+		snprintf(text, sizeof(text), "%c(SPEC) %s: ", HUD_SAYTEXT_PRINTTALK, STRING(player->pev->netname));
 	else if (teamonly)
-		snprintf(text, sizeof(text), "%c(TEAM) %s: ", HUD_SAYTEXT_PRINTTALK, STRING(pEntity->v.netname));
+		snprintf(text, sizeof(text), "%c(TEAM) %s: ", HUD_SAYTEXT_PRINTTALK, STRING(player->pev->netname));
 	else
-		snprintf(text, sizeof(text), "%c%s: ", HUD_SAYTEXT_PRINTTALK, STRING(pEntity->v.netname));
+		snprintf(text, sizeof(text), "%c%s: ", HUD_SAYTEXT_PRINTTALK, STRING(player->pev->netname));
 
 	j = sizeof(text) - 2 - strlen(text);  // -2 for /n and null terminator
 	if ((int)strlen(p) > j)
@@ -244,7 +242,7 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 		if (!client->pev)
 			continue;
 
-		if (client->edict() == pEntity)
+		if (client == player)
 			continue;
 
 		if (!(client->IsNetClient()))	// Not a client ? (should never be true)
@@ -254,7 +252,7 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 		if (g_VoiceGameMgr.PlayerHasBlockedPlayer(client, player))
 			continue;
 
-		if (!player->IsObserver() && teamonly && g_pGameRules->PlayerRelationship(client, CBaseEntity::Instance(pEntity)) != GR_TEAMMATE)
+		if (!player->IsObserver() && teamonly && g_pGameRules->PlayerRelationship(client, player) != GR_TEAMMATE)
 			continue;
 
 		// Spectators can only talk to other specs
@@ -270,7 +268,7 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 	}
 
 	// print to the sending client
-	MESSAGE_BEGIN(MessageDest::One, gmsgSayText, nullptr, &pEntity->v);
+	MESSAGE_BEGIN(MessageDest::One, gmsgSayText, nullptr, player->edict());
 	WRITE_BYTE(player->entindex());
 	WRITE_STRING(text);
 	MESSAGE_END();
@@ -288,20 +286,20 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 	if (g_pGameRules->IsTeamplay())
 	{
 		UTIL_LogPrintf("\"%s<%i><%s><%s>\" %s \"%s\"\n",
-			STRING(pEntity->v.netname),
-			GETPLAYERUSERID(pEntity),
-			GETPLAYERAUTHID(pEntity),
-			g_engfuncs.pfnInfoKeyValue(g_engfuncs.pfnGetInfoKeyBuffer(pEntity), "model"),
+			STRING(player->pev->netname),
+			GETPLAYERUSERID(player->edict()),
+			GETPLAYERAUTHID(player->edict()),
+			g_engfuncs.pfnInfoKeyValue(g_engfuncs.pfnGetInfoKeyBuffer(player->edict()), "model"),
 			temp,
 			p);
 	}
 	else
 	{
 		UTIL_LogPrintf("\"%s<%i><%s><%i>\" %s \"%s\"\n",
-			STRING(pEntity->v.netname),
-			GETPLAYERUSERID(pEntity),
-			GETPLAYERAUTHID(pEntity),
-			GETPLAYERUSERID(pEntity),
+			STRING(player->pev->netname),
+			GETPLAYERUSERID(player->edict()),
+			GETPLAYERAUTHID(player->edict()),
+			GETPLAYERUSERID(player->edict()),
 			temp,
 			p);
 	}
@@ -321,11 +319,11 @@ void ClientCommand(edict_t* pEntity)
 
 	if (AreStringsEqual(pcmd, "say"))
 	{
-		Host_Say(pEntity, false);
+		Host_Say(player, false);
 	}
 	else if (AreStringsEqual(pcmd, "say_team"))
 	{
-		Host_Say(pEntity, true);
+		Host_Say(player, true);
 	}
 	else if (AreStringsEqual(pcmd, "fullupdate"))
 	{
