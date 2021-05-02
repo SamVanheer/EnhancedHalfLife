@@ -255,7 +255,7 @@ void CAmbientGeneric::Precache()
 	}
 	if (m_fActive)
 	{
-		UTIL_EmitAmbientSound(edict(), pev->origin, szSoundFile,
+		UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
 			(m_dpv.vol * 0.01), m_flAttenuation, SND_SPAWNING, m_dpv.pitch);
 
 		pev->nextthink = gpGlobals->time + 0.1;
@@ -299,7 +299,7 @@ void CAmbientGeneric::RampThink()
 			m_dpv.spindown = 0;				// done with ramp down
 
 			// shut sound off
-			UTIL_EmitAmbientSound(edict(), pev->origin, szSoundFile,
+			UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
 				0, 0, SND_STOP, 0);
 
 			// return without setting nextthink
@@ -341,7 +341,7 @@ void CAmbientGeneric::RampThink()
 			m_dpv.fadeout = 0;				// done with ramp down
 
 			// shut sound off
-			UTIL_EmitAmbientSound(edict(), pev->origin, szSoundFile,
+			UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
 				0, 0, SND_STOP, 0);
 
 			// return without setting nextthink
@@ -442,7 +442,7 @@ void CAmbientGeneric::RampThink()
 		if (pitch == PITCH_NORM)
 			pitch = PITCH_NORM + 1; // don't send 'no pitch' !
 
-		UTIL_EmitAmbientSound(edict(), pev->origin, szSoundFile,
+		UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
 			(vol * 0.01), m_flAttenuation, flags, pitch);
 	}
 
@@ -548,7 +548,7 @@ void CAmbientGeneric::ToggleUse(const UseInfo& info)
 
 		m_dpv.pitch = fraction * 255;
 
-		UTIL_EmitAmbientSound(edict(), pev->origin, szSoundFile,
+		UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
 			0, 0, SND_CHANGE_PITCH, m_dpv.pitch);
 
 		return;
@@ -601,7 +601,7 @@ void CAmbientGeneric::ToggleUse(const UseInfo& info)
 				pev->nextthink = gpGlobals->time + 0.1;
 			}
 			else
-				UTIL_EmitAmbientSound(edict(), pev->origin, szSoundFile,
+				UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
 					0, 0, SND_STOP, 0);
 		}
 	}
@@ -617,14 +617,14 @@ void CAmbientGeneric::ToggleUse(const UseInfo& info)
 			m_fActive = true;
 		else
 			// shut sound off now - may be interrupting a long non-looping sound
-			UTIL_EmitAmbientSound(edict(), pev->origin, szSoundFile,
+			UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
 				0, 0, SND_STOP, 0);
 
 		// init all ramp params for startup
 
 		InitModulationParms();
 
-		UTIL_EmitAmbientSound(edict(), pev->origin, szSoundFile,
+		UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
 			(m_dpv.vol * 0.01), m_flAttenuation, 0, m_dpv.pitch);
 
 		pev->nextthink = gpGlobals->time + 0.1;
@@ -1081,7 +1081,7 @@ void CSpeaker::SpeakerThink()
 	if (szSoundFile[0] == '!')
 	{
 		// play single sentence, one shot
-		UTIL_EmitAmbientSound(edict(), pev->origin, szSoundFile,
+		UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
 			flvolume, flattenuation, flags, pitch);
 
 		// shut off and reset

@@ -20,6 +20,20 @@
 #include "gamerules.h"
 #include "sound_playback.hpp"
 
+void UTIL_EmitAmbientSound(CBaseEntity* entity, const Vector& vecOrigin, const char* samp, float vol, float attenuation, int fFlags, int pitch)
+{
+	auto edict = CBaseEntity::EdictOrNull(entity);
+
+	if (samp && *samp == '!')
+	{
+		char name[32];
+		if (SENTENCEG_Lookup(samp, name, sizeof(name)) >= 0)
+			EMIT_AMBIENT_SOUND(edict, vecOrigin, name, vol, attenuation, fFlags, pitch);
+	}
+	else
+		EMIT_AMBIENT_SOUND(edict, vecOrigin, samp, vol, attenuation, fFlags, pitch);
+}
+
 int SENTENCEG_PlayRndI(CBaseEntity* entity, int isentenceg,
 	float volume, float attenuation, int pitch, int flags)
 {
@@ -291,8 +305,8 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 			float flVolume = RANDOM_FLOAT(0.7, 1.0);//random volume range
 			switch (RANDOM_LONG(0, 1))
 			{
-			case 0: UTIL_EmitAmbientSound(UTIL_GetWorld()->edict(), ptr->vecEndPos, "buttons/spark5.wav", flVolume, ATTN_NORM, 0, 100); break;
-			case 1: UTIL_EmitAmbientSound(UTIL_GetWorld()->edict(), ptr->vecEndPos, "buttons/spark6.wav", flVolume, ATTN_NORM, 0, 100); break;
+			case 0: UTIL_EmitAmbientSound(UTIL_GetWorld(), ptr->vecEndPos, "buttons/spark5.wav", flVolume, ATTN_NORM, 0, 100); break;
+			case 1: UTIL_EmitAmbientSound(UTIL_GetWorld(), ptr->vecEndPos, "buttons/spark6.wav", flVolume, ATTN_NORM, 0, 100); break;
 				// case 0: EmitSound(SoundChannel::Voice, "buttons/spark5.wav", flVolume); break;
 				// case 1: EmitSound(SoundChannel::Voice, "buttons/spark6.wav", flVolume); break;
 			}
@@ -300,7 +314,7 @@ float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int 
 	}
 
 	// play material hit sound
-	UTIL_EmitAmbientSound(UTIL_GetWorld()->edict(), ptr->vecEndPos, rgsz[RANDOM_LONG(0, cnt - 1)], fvol, fattn, 0, 96 + RANDOM_LONG(0, 0xf));
+	UTIL_EmitAmbientSound(UTIL_GetWorld(), ptr->vecEndPos, rgsz[RANDOM_LONG(0, cnt - 1)], fvol, fattn, 0, 96 + RANDOM_LONG(0, 0xf));
 	//m_pPlayer->EmitSound(SoundChannel::Weapon, rgsz[RANDOM_LONG(0,cnt-1)], fvol, ATTN_NORM, 96 + RANDOM_LONG(0,0xf));
 
 	return fvolbar;

@@ -765,7 +765,7 @@ void CISlave::ZapBeam(int side)
 	{
 		pEntity->TraceAttack({this, gSkillData.slaveDmgZap, vecAim, tr, DMG_SHOCK});
 	}
-	UTIL_EmitAmbientSound(edict(), tr.vecEndPos, "weapons/electro4.wav", 0.5, ATTN_NORM, 0, RANDOM_LONG(140, 160));
+	UTIL_EmitAmbientSound(this, tr.vecEndPos, "weapons/electro4.wav", 0.5, ATTN_NORM, 0, RANDOM_LONG(140, 160));
 }
 
 void CISlave::ClearBeams()

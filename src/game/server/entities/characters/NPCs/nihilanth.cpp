@@ -1446,7 +1446,7 @@ void CNihilanthHVR::ZapThink()
 		WRITE_BYTE(10);		// speed
 		MESSAGE_END();
 
-		UTIL_EmitAmbientSound(edict(), tr.vecEndPos, "weapons/electro4.wav", 0.5, ATTN_NORM, 0, RANDOM_LONG(140, 160));
+		UTIL_EmitAmbientSound(this, tr.vecEndPos, "weapons/electro4.wav", 0.5, ATTN_NORM, 0, RANDOM_LONG(140, 160));
 
 		SetTouch(nullptr);
 		UTIL_Remove(this);
@@ -1475,7 +1475,7 @@ void CNihilanthHVR::ZapThink()
 
 void CNihilanthHVR::ZapTouch(CBaseEntity* pOther)
 {
-	UTIL_EmitAmbientSound(edict(), pev->origin, "weapons/electro4.wav", 1.0, ATTN_NORM, 0, RANDOM_LONG(90, 95));
+	UTIL_EmitAmbientSound(this, pev->origin, "weapons/electro4.wav", 1.0, ATTN_NORM, 0, RANDOM_LONG(90, 95));
 
 	RadiusDamage(this, this, 50, CLASS_NONE, DMG_SHOCK);
 	pev->velocity = pev->velocity * 0;

@@ -18,6 +18,8 @@
 class CBaseEntity;
 struct TraceResult;
 
+void UTIL_EmitAmbientSound(CBaseEntity* entity, const Vector& vecOrigin, const char* samp, float vol, float attenuation, int fFlags, int pitch);
+
 /**
 *	@brief for this entity, for the given sentence within the sentence group, stop the sentence.
 */
