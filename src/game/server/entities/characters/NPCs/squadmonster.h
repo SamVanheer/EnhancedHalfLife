@@ -56,15 +56,15 @@ class CSquadMonster : public CBaseMonster
 public:
 	// squad leader info
 	EHandle<CSquadMonster> m_hSquadLeader;		//!< who is my leader
-	EHandle<CSquadMonster> m_hSquadMember[MAX_SQUAD_MEMBERS - 1];	//!< valid only for leader
-	int		m_afSquadSlots;
-	float	m_flLastEnemySightTime; //!< last time anyone in the squad saw the enemy
-	bool	m_fEnemyEluded;
+	EHandle<CSquadMonster> m_hSquadMember[MAX_SQUAD_MEMBERS - 1]{};	//!< valid only for leader
+	int m_afSquadSlots = 0;
+	float m_flLastEnemySightTime = 0; //!< last time anyone in the squad saw the enemy
+	bool m_fEnemyEluded = false;
 
 	// squad member info
-	int		m_iMySlot;//!< this is the behaviour slot that the monster currently holds in the squad. 
+	int m_iMySlot = 0; //!< this is the behaviour slot that the monster currently holds in the squad. 
 
-	bool  CheckEnemy(CBaseEntity* pEnemy) override;
+	bool CheckEnemy(CBaseEntity* pEnemy) override;
 	void StartMonster() override;
 	void VacateSlot();
 	void ScheduleChange() override;

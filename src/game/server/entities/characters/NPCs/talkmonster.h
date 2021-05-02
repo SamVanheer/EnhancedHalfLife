@@ -56,7 +56,6 @@ enum TALKGROUPNAMES
 	TLK_CGROUPS,					//!< MUST be last entry
 };
 
-
 enum
 {
 	SCHED_CANT_FOLLOW = LAST_COMMON_SCHEDULE + 1,
@@ -97,47 +96,47 @@ public:
 	/**
 	*	@brief monsters derived from ctalkmonster should call this in precache()
 	*/
-	void			TalkInit();
+	void TalkInit();
 
 	/**
 	*	@brief Scan for nearest, visible friend.
 	*	@param fPlayer if true, look for nearest player
 	*/
 	CBaseEntity* FindNearestFriend(bool fPlayer);
-	float			TargetDistance();
-	void			StopTalking() { SentenceStop(); }
+	float TargetDistance();
+	void StopTalking() { SentenceStop(); }
 
 	// Base Monster functions
-	void			Precache() override;
+	void Precache() override;
 	bool TakeDamage(const TakeDamageInfo& info) override;
-	void			Touch(CBaseEntity* pOther) override;
-	void			Killed(const KilledInfo& info) override;
+	void Touch(CBaseEntity* pOther) override;
+	void Killed(const KilledInfo& info) override;
 	Relationship GetRelationship(CBaseEntity* pTarget) override;
 	bool CanPlaySentence(bool fDisregardState) override;
-	void	PlaySentence(const char* pszSentence, float duration, float volume, float attenuation) override;
-	void			PlayScriptedSentence(const char* pszSentence, float duration, float volume, float attenuation, bool bConcurrent, CBaseEntity* pListener) override;
-	void			KeyValue(KeyValueData* pkvd) override;
+	void PlaySentence(const char* pszSentence, float duration, float volume, float attenuation) override;
+	void PlayScriptedSentence(const char* pszSentence, float duration, float volume, float attenuation, bool bConcurrent, CBaseEntity* pListener) override;
+	void KeyValue(KeyValueData* pkvd) override;
 
 	// AI functions
-	void			SetActivity(Activity newActivity) override;
+	void SetActivity(Activity newActivity) override;
 	Schedule_t* GetScheduleOfType(int Type) override;
-	void			StartTask(Task_t* pTask) override;
-	void			RunTask(Task_t* pTask) override;
-	void			HandleAnimEvent(AnimationEvent& event) override;
+	void StartTask(Task_t* pTask) override;
+	void RunTask(Task_t* pTask) override;
+	void HandleAnimEvent(AnimationEvent& event) override;
 
 	/**
 	*	@brief If there's a player around, watch him.
 	*/
-	void			PrescheduleThink() override;
+	void PrescheduleThink() override;
 
 
 	// Conversations / communication
-	int				GetVoicePitch();
+	int GetVoicePitch();
 
 	/**
 	*	@brief Respond to a previous question
 	*/
-	void			IdleRespond();
+	void IdleRespond();
 
 	/**
 	*	@brief ask question of nearby friend, or make statement
@@ -153,50 +152,50 @@ public:
 	/**
 	*	@brief turn head towards supplied origin
 	*/
-	void			IdleHeadTurn(Vector& vecFriend);
+	void IdleHeadTurn(Vector& vecFriend);
 	bool OkToSpeak();
 
 	/**
 	*	@brief try to smell something
 	*/
-	void			TrySmellTalk();
+	void TrySmellTalk();
 	CBaseEntity* EnumFriends(CBaseEntity* pentPrevious, int listNumber, bool bTrace);
-	void			AlertFriends();
-	void			ShutUpFriends();
+	void AlertFriends();
+	void ShutUpFriends();
 
 	/**
 	*	@brief am I saying a sentence right now?
 	*/
-	bool			IsTalking();
+	bool IsTalking();
 
 	/**
 	*	@brief set a timer that tells us when the monster is done talking.
 	*/
-	void			Talk(float flDuration);
+	void Talk(float flDuration);
 	// For following
-	bool			CanFollow();
-	bool			IsFollowing() { return m_hTargetEnt != nullptr && m_hTargetEnt->IsPlayer(); }
-	void			StopFollowing(bool clearSchedule) override;
-	void			StartFollowing(CBaseEntity* pLeader);
-	virtual void	DeclineFollowing() {}
+	bool CanFollow();
+	bool IsFollowing() { return m_hTargetEnt != nullptr && m_hTargetEnt->IsPlayer(); }
+	void StopFollowing(bool clearSchedule) override;
+	void StartFollowing(CBaseEntity* pLeader);
+	virtual void DeclineFollowing() {}
 
 	/**
 	*	UNDONE: Keep a follow time in each follower, make a list of followers in this function and do LRU
 	*	UNDONE: Check this in Restore to keep restored monsters from joining a full list of followers
 	*/
-	void			LimitFollowers(CBaseEntity* pPlayer, int maxFollowers);
+	void LimitFollowers(CBaseEntity* pPlayer, int maxFollowers);
 
-	void EXPORT		FollowerUse(const UseInfo& info);
+	void EXPORT FollowerUse(const UseInfo& info);
 
 	/**
 	*	@brief Prepare this talking monster to answer question
 	*/
-	virtual void	SetAnswerQuestion(CTalkMonster* pSpeaker);
-	virtual int		FriendNumber(int arrayNumber) { return arrayNumber; }
+	virtual void SetAnswerQuestion(CTalkMonster* pSpeaker);
+	virtual int FriendNumber(int arrayNumber) { return arrayNumber; }
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
+	static TYPEDESCRIPTION m_SaveData[];
 
 	/**
 	*	@brief array of friend names
@@ -204,18 +203,18 @@ public:
 	static const char* m_szFriends[TLK_CFRIENDS];
 	static inline float g_talkWaitTime = 0; //!< time delay until it's ok to speak: used so that two NPCs don't talk at once
 
-	int			m_bitsSaid;						//!< set bits for sentences we don't want repeated
-	int			m_nSpeak;						//!< number of times initiated talking
-	int			m_voicePitch;					//!< pitch of voice for this head
-	const char* m_szGrp[TLK_CGROUPS];			//!< sentence group names
-	float		m_useTime;						//!< Don't allow +USE until this time
-	string_t m_iszUse;							//!< Custom +USE sentence group (follow)
-	string_t m_iszUnUse;						//!< Custom +USE sentence group (stop following)
+	int m_bitsSaid = 0; //!< set bits for sentences we don't want repeated
+	int m_nSpeak = 0; //!< number of times initiated talking
+	int m_voicePitch = 0; //!< pitch of voice for this head
+	const char* m_szGrp[TLK_CGROUPS]{}; //!< sentence group names
+	float m_useTime = 0; //!< Don't allow +USE until this time
+	string_t m_iszUse = iStringNull; //!< Custom +USE sentence group (follow)
+	string_t m_iszUnUse = iStringNull; //!< Custom +USE sentence group (stop following)
 
-	float		m_flLastSaidSmelled;//!< last time we talked about something that stinks
-	float		m_flStopTalkTime;	//!< when in the future that I'll be done saying this sentence.
+	float m_flLastSaidSmelled = 0; //!< last time we talked about something that stinks
+	float m_flStopTalkTime = 0; //!< when in the future that I'll be done saying this sentence.
 
-	EHANDLE		m_hTalkTarget;	//!< who to look at while talking
+	EHANDLE m_hTalkTarget; //!< who to look at while talking
 	CUSTOM_SCHEDULES;
 };
 

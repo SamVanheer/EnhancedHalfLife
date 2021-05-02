@@ -300,7 +300,7 @@ public:
 	*
 	*	Don't need to save/restore this pointer, the engine resets it
 	*/
-	entvars_t* pev;
+	entvars_t* pev = nullptr;
 
 	// path corners
 	/**
@@ -311,7 +311,7 @@ public:
 	/**
 	*	@brief used for temporary link-list operations.
 	*/
-	CBaseEntity* m_pLink;
+	CBaseEntity* m_pLink = nullptr;
 
 	virtual ~CBaseEntity() {}
 
@@ -329,22 +329,22 @@ public:
 	}
 
 	// initialization functions
-	virtual void	Spawn() {}
+	virtual void Spawn() {}
 
 	/**
 	*	@brief precaches all resources this entity needs
 	*/
-	virtual void	Precache() {}
-	virtual void	KeyValue(KeyValueData* pkvd) { pkvd->fHandled = false; }
-	virtual bool	Save(CSave& save);
-	virtual bool	Restore(CRestore& restore);
-	virtual int		ObjectCaps() { return FCAP_ACROSS_TRANSITION; }
-	virtual void	Activate() {}
+	virtual void Precache() {}
+	virtual void KeyValue(KeyValueData* pkvd) { pkvd->fHandled = false; }
+	virtual bool Save(CSave& save);
+	virtual bool Restore(CRestore& restore);
+	virtual int ObjectCaps() { return FCAP_ACROSS_TRANSITION; }
+	virtual void Activate() {}
 
 	/**
 	*	@brief Setup the object->object collision box (pev->mins / pev->maxs is the object->world collision box)
 	*/
-	virtual void	SetObjectCollisionBox();
+	virtual void SetObjectCollisionBox();
 
 	/**
 	*	@brief returns the type of group (i.e, "houndeye", or "human military")
@@ -361,43 +361,42 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	virtual void	TraceAttack(const TraceAttackInfo& info);
+	virtual void TraceAttack(const TraceAttackInfo& info);
 
 	/**
 	*	@brief inflict damage on this entity. bitsDamageType indicates type of damage inflicted, ie: DMG_CRUSH
 	*/
-	virtual bool	TakeDamage(const TakeDamageInfo& info);
-	virtual bool	GiveHealth(float flHealth, int bitsDamageType);
-	virtual void	Killed(const KilledInfo& info);
-	virtual int		BloodColor() { return DONT_BLEED; }
-	virtual void	TraceBleed(float flDamage, Vector vecDir, const TraceResult& tr, int bitsDamageType);
-	virtual bool    IsTriggered(CBaseEntity* pActivator) { return true; }
+	virtual bool TakeDamage(const TakeDamageInfo& info);
+	virtual bool GiveHealth(float flHealth, int bitsDamageType);
+	virtual void Killed(const KilledInfo& info);
+	virtual int BloodColor() { return DONT_BLEED; }
+	virtual void TraceBleed(float flDamage, Vector vecDir, const TraceResult& tr, int bitsDamageType);
+	virtual bool IsTriggered(CBaseEntity* pActivator) { return true; }
 	virtual CBaseMonster* MyMonsterPointer() { return nullptr; }
 	virtual CSquadMonster* MySquadMonsterPointer() { return nullptr; }
 	virtual	ToggleState GetToggleState() { return ToggleState::AtTop; }
-	virtual float	GetDelay() { return 0; }
-	virtual bool	IsMoving() { return pev->velocity != vec3_origin; }
-	virtual void	OverrideReset() {}
-	virtual int		DamageDecal(int bitsDamageType);
-	virtual bool	OnControls(CBaseEntity* pTest) { return false; }
-	virtual bool	IsAlive() { return (pev->deadflag == DeadFlag::No) && pev->health > 0; }
-	virtual bool	IsBSPModel() { return pev->solid == Solid::BSP || pev->movetype == Movetype::PushStep; }
-	virtual bool	ReflectGauss() { return (IsBSPModel() && !pev->takedamage); }
-	virtual bool	HasTarget(string_t targetname) { return AreStringsEqual(STRING(targetname), STRING(pev->targetname)); }
-	virtual bool    IsInWorld();
-	virtual	bool	IsPlayer() { return false; }
-	virtual bool	IsNetClient() { return false; }
+	virtual float GetDelay() { return 0; }
+	virtual bool IsMoving() { return pev->velocity != vec3_origin; }
+	virtual void OverrideReset() {}
+	virtual int DamageDecal(int bitsDamageType);
+	virtual bool OnControls(CBaseEntity* pTest) { return false; }
+	virtual bool IsAlive() { return (pev->deadflag == DeadFlag::No) && pev->health > 0; }
+	virtual bool IsBSPModel() { return pev->solid == Solid::BSP || pev->movetype == Movetype::PushStep; }
+	virtual bool ReflectGauss() { return (IsBSPModel() && !pev->takedamage); }
+	virtual bool HasTarget(string_t targetname) { return AreStringsEqual(STRING(targetname), STRING(pev->targetname)); }
+	virtual bool IsInWorld();
+	virtual	bool IsPlayer() { return false; }
+	virtual bool IsNetClient() { return false; }
 	virtual const char* TeamID() { return ""; }
-
 
 	//	virtual void	SetActivator( CBaseEntity *pActivator ) {}
 	virtual CBaseEntity* GetNextTarget();
 
 	// fundamental callbacks
-	BASEPTR m_pfnThink;
-	ENTITYFUNCPTR m_pfnTouch;
-	USEPTR m_pfnUse;
-	ENTITYFUNCPTR m_pfnBlocked;
+	BASEPTR m_pfnThink = nullptr;
+	ENTITYFUNCPTR m_pfnTouch = nullptr;
+	USEPTR m_pfnUse = nullptr;
+	ENTITYFUNCPTR m_pfnBlocked = nullptr;
 
 	virtual void Think() { if (m_pfnThink) (this->*m_pfnThink)(); }
 	virtual void Touch(CBaseEntity* pOther) { if (m_pfnTouch) (this->*m_pfnTouch)(pOther); }
@@ -432,7 +431,7 @@ public:
 	void EXPORT SUB_StartFadeOut();
 	void EXPORT SUB_FadeOut();
 	void EXPORT SUB_CallUseToggle() { this->Use({this, this, USE_TOGGLE}); }
-	bool		ShouldToggle(USE_TYPE useType, bool currentState);
+	bool ShouldToggle(USE_TYPE useType, bool currentState);
 
 	const char* GetClassname() const { return STRING(pev->classname); }
 
@@ -465,14 +464,14 @@ public:
 	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
 	*	This version is used by Monsters.
 	*/
-	void		FireBullets(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr);
+	void FireBullets(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr);
 
 	/**
 	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
 	*	This version is used by Players, uses the random seed generator to sync client and server side shots.
 	*/
 	//TODO: needs updates. the random seed and attacker are both part of the entity this is called on, so move this to CBasePlayer and use it properly
-	Vector		FireBulletsPlayer(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr, int shared_rand = 0);
+	Vector FireBulletsPlayer(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr, int shared_rand = 0);
 
 	virtual CBaseEntity* Respawn() { return nullptr; }
 
@@ -489,10 +488,10 @@ public:
 	/**
 	*	@brief Do the bounding boxes of these two intersect?
 	*/
-	bool	Intersects(CBaseEntity* pOther);
-	void	MakeDormant();
-	bool	IsDormant();
-	bool    IsLockedByMaster() { return false; }
+	bool Intersects(CBaseEntity* pOther);
+	void MakeDormant();
+	bool IsDormant();
+	bool IsLockedByMaster() { return false; }
 
 	static CBaseEntity* InstanceOrDefault(edict_t* pEntity, CBaseEntity* pDefault)
 	{
@@ -575,7 +574,6 @@ public:
 
 #endif
 
-
 	// virtual functions used by a few classes
 	/**
 	*	@brief NOTE: szName must be a pointer to constant memory, e.g. "monster_class" because the entity will keep a pointer to it after this call.
@@ -616,7 +614,6 @@ public:
 
 inline bool IsNullEnt(CBaseEntity* ent) { return (ent == nullptr) || IsNullEnt(ent->edict()); }
 
-
 // Ugly technique to override base member functions
 // Normally it's illegal to cast a pointer to a member function of a derived class to a pointer to a 
 // member function of a base class.  static_cast is a sleezy way around that problem.
@@ -640,7 +637,7 @@ inline bool IsNullEnt(CBaseEntity* ent) { return (ent == nullptr) || IsNullEnt(e
 class CPointEntity : public CBaseEntity
 {
 public:
-	void	Spawn() override;
+	void Spawn() override;
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 private:
 };
@@ -650,18 +647,18 @@ private:
 */
 struct locksound_t
 {
-	string_t	sLockedSound;		//!< sound a door makes when it's locked
-	string_t	sLockedSentence;	//!< sentence group played when door is locked
-	string_t	sUnlockedSound;		//!< sound a door makes when it's unlocked
-	string_t	sUnlockedSentence;	//!< sentence group played when door is unlocked
+	string_t sLockedSound = iStringNull;		//!< sound a door makes when it's locked
+	string_t sLockedSentence = iStringNull;		//!< sentence group played when door is locked
+	string_t sUnlockedSound = iStringNull;		//!< sound a door makes when it's unlocked
+	string_t sUnlockedSentence = iStringNull;	//!< sentence group played when door is unlocked
 
-	int		iLockedSentence;		//!< which sentence in sentence group to play next
-	int		iUnlockedSentence;		//!< which sentence in sentence group to play next
+	int iLockedSentence = 0;		//!< which sentence in sentence group to play next
+	int iUnlockedSentence = 0;		//!< which sentence in sentence group to play next
 
-	float	flwaitSound;			//!< time delay between playing consecutive 'locked/unlocked' sounds
-	float	flwaitSentence;			//!< time delay between playing consecutive sentences
-	bool	bEOFLocked;				//!< true if hit end of list of locked sentences
-	bool	bEOFUnlocked;			//!< true if hit end of list of unlocked sentences
+	float flwaitSound = 0;			//!< time delay between playing consecutive 'locked/unlocked' sounds
+	float flwaitSentence = 0;		//!< time delay between playing consecutive sentences
+	bool bEOFLocked = false;		//!< true if hit end of list of locked sentences
+	bool bEOFUnlocked = false;		//!< true if hit end of list of unlocked sentences
 };
 
 /**
@@ -689,11 +686,11 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	EHANDLE		m_rgEntities[MS_MAX_TARGETS];
-	bool		m_rgTriggered[MS_MAX_TARGETS];
+	EHANDLE m_rgEntities[MS_MAX_TARGETS]{};
+	bool m_rgTriggered[MS_MAX_TARGETS]{};
 
-	int			m_iTotal;
-	string_t	m_globalstate;
+	int m_iTotal = 0;
+	string_t m_globalstate = iStringNull;
 };
 
 /**
@@ -702,14 +699,14 @@ public:
 class CBaseDelay : public CBaseEntity
 {
 public:
-	float		m_flDelay;
-	string_t m_iszKillTarget;
+	float m_flDelay = 0;
+	string_t m_iszKillTarget = iStringNull;
 
-	void	KeyValue(KeyValueData* pkvd) override;
+	void KeyValue(KeyValueData* pkvd) override;
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 
-	static	TYPEDESCRIPTION m_SaveData[];
+	static TYPEDESCRIPTION m_SaveData[];
 	// common member functions
 	//TODO: this is a non-virtual override of the same function in CBaseEntity. Should probably just merge this class into CBaseEntity
 	void SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value);
@@ -722,7 +719,7 @@ public:
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 
-	static	TYPEDESCRIPTION m_SaveData[];
+	static TYPEDESCRIPTION m_SaveData[];
 
 	// Basic Monster Animation functions
 	/**
@@ -732,14 +729,14 @@ public:
 	*	if an flInterval is passed in, only advance animation that number of seconds
 	*/
 	float StudioFrameAdvance(float flInterval = 0.0);
-	int	 GetSequenceFlags();
-	int  LookupActivity(int activity);
+	int GetSequenceFlags();
+	int LookupActivity(int activity);
 
 	/**
 	*	@brief Get activity with highest 'weight'
 	*/
-	int  LookupActivityHeaviest(int activity);
-	int  LookupSequence(const char* label);
+	int LookupActivityHeaviest(int activity);
+	int LookupSequence(const char* label);
 	void ResetSequenceInfo();
 
 	/**
@@ -764,11 +761,11 @@ public:
 	void SetSequenceBox();
 
 	// animation needs
-	float				m_flFrameRate;		//!< computed FPS for current sequence
-	float				m_flGroundSpeed;	//!< computed linear movement rate for current sequence
-	float				m_flLastEventCheck;	//!< last time the event list was checked
-	bool				m_fSequenceFinished;//!< flag set when StudioAdvanceFrame moves across a frame boundry
-	bool				m_fSequenceLoops;	//!< true if the sequence loops
+	float m_flFrameRate = 0;			//!< computed FPS for current sequence
+	float m_flGroundSpeed = 0;			//!< computed linear movement rate for current sequence
+	float m_flLastEventCheck = 0;		//!< last time the event list was checked
+	bool m_fSequenceFinished = false;	//!< flag set when StudioAdvanceFrame moves across a frame boundry
+	bool m_fSequenceLoops = false;		//!< true if the sequence loops
 };
 
 constexpr int SF_ITEM_USE_ONLY = 256; //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR_USE_ONLY!!! 
@@ -779,36 +776,36 @@ constexpr int SF_ITEM_USE_ONLY = 256; //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR
 class CBaseToggle : public CBaseAnimating
 {
 public:
-	void				KeyValue(KeyValueData* pkvd) override;
+	void KeyValue(KeyValueData* pkvd) override;
 
-	ToggleState			m_toggle_state;
-	float				m_flActivateFinished;	//!< like attack_finished, but for doors
-	float				m_flMoveDistance;		//!< how far a door should slide or rotate
-	float				m_flWait;
-	float				m_flLip;
-	float				m_flTWidth;		//!< for plats
-	float				m_flTLength;	//!< for plats
+	ToggleState m_toggle_state = ToggleState::AtTop;
+	float m_flActivateFinished = 0;	//!< like attack_finished, but for doors
+	float m_flMoveDistance = 0;		//!< how far a door should slide or rotate
+	float m_flWait = 0;
+	float m_flLip = 0;
+	float m_flTWidth = 0;		//!< for plats
+	float m_flTLength = 0;	//!< for plats
 
-	Vector				m_vecPosition1;
-	Vector				m_vecPosition2;
-	Vector				m_vecAngle1;
-	Vector				m_vecAngle2;
+	Vector m_vecPosition1;
+	Vector m_vecPosition2;
+	Vector m_vecAngle1;
+	Vector m_vecAngle2;
 
-	float				m_flHeight;
-	EHANDLE				m_hActivator;
-	void (CBaseToggle::* m_pfnCallWhenMoveDone)();
-	Vector				m_vecFinalDest;
-	Vector				m_vecFinalAngle;
+	float m_flHeight = 0;
+	EHANDLE m_hActivator;
+	void (CBaseToggle::* m_pfnCallWhenMoveDone)() = nullptr;
+	Vector m_vecFinalDest;
+	Vector m_vecFinalAngle;
 
-	int					m_bitsDamageInflict;	//!< DMG_ damage type that the door or tigger does
+	int m_bitsDamageInflict = 0;	//!< DMG_ damage type that the door or tigger does
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 
-	static	TYPEDESCRIPTION m_SaveData[];
+	static TYPEDESCRIPTION m_SaveData[];
 
 	ToggleState GetToggleState() override { return m_toggle_state; }
-	float	GetDelay() override { return m_flWait; }
+	float GetDelay() override { return m_flWait; }
 
 	// common member functions
 	/**
@@ -834,9 +831,9 @@ public:
 	void EXPORT AngularMoveDone();
 	bool IsLockedByMaster(); //TODO: non-virtual override
 
-	static float		AxisValue(int flags, const Vector& angles);
-	static void			AxisDir(CBaseEntity* pEntity);
-	static float		AxisDelta(int flags, const Vector& angle1, const Vector& angle2);
+	static float AxisValue(int flags, const Vector& angles);
+	static void AxisDir(CBaseEntity* pEntity);
+	static float AxisDelta(int flags, const Vector& angle1, const Vector& angle2);
 
 	/**
 	*	@brief If this button has a master switch, this is the targetname.
@@ -845,7 +842,7 @@ public:
 	*	If all of the switches in the multisource have been triggered, then the button will be allowed to operate.
 	*	Otherwise, it will be deactivated.
 	*/
-	string_t m_sMaster;
+	string_t m_sMaster = iStringNull;
 };
 
 #define SetMoveDone(a) m_pfnCallWhenMoveDone = static_cast<void (CBaseToggle::*)()>(a)
@@ -947,23 +944,23 @@ public:
 
 	ButtonCode ButtonResponseToTouch();
 
-	static	TYPEDESCRIPTION m_SaveData[];
+	static TYPEDESCRIPTION m_SaveData[];
 	/**
 	*	@brief Buttons that don't take damage can be IMPULSE used
 	*/
 	int	ObjectCaps() override { return (CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | (pev->takedamage ? 0 : FCAP_IMPULSE_USE); }
 
-	bool	m_fStayPushed;		//!< button stays pushed in until touched again?
-	bool	m_fRotating;		//!< a rotating button?  default is a sliding button.
+	bool m_fStayPushed = false;		//!< button stays pushed in until touched again?
+	bool m_fRotating = false;		//!< a rotating button?  default is a sliding button.
 
 	locksound_t m_ls;			//!< door lock sounds
 
 	// ordinals from entity selection
-	byte	m_bLockedSound;
-	byte	m_bLockedSentence;
-	byte	m_bUnlockedSound;
-	byte	m_bUnlockedSentence;
-	int		m_sounds;
+	byte m_bLockedSound = 0;
+	byte m_bLockedSentence = 0;
+	byte m_bUnlockedSound = 0;
+	byte m_bUnlockedSentence = 0;
+	int m_sounds = 0;
 };
 
 /**

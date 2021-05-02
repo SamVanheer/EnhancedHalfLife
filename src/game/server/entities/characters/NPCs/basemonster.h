@@ -72,7 +72,7 @@ enum class AITrigger
 class CBaseMonster : public CBaseToggle
 {
 private:
-	int					m_afConditions;
+	int m_afConditions = 0;
 
 public:
 	enum class ScriptState
@@ -85,83 +85,83 @@ public:
 	};
 
 	// these fields have been added in the process of reworking the state machine. (sjb)
-	EHANDLE				m_hEnemy;		 //!< the entity that the monster is fighting.
-	EHANDLE				m_hTargetEnt;	 //!< the entity that the monster is trying to reach
-	EHANDLE				m_hOldEnemy[MAX_OLD_ENEMIES];
-	Vector				m_vecOldEnemy[MAX_OLD_ENEMIES];
+	EHANDLE m_hEnemy;		 //!< the entity that the monster is fighting.
+	EHANDLE m_hTargetEnt;	 //!< the entity that the monster is trying to reach
+	EHANDLE m_hOldEnemy[MAX_OLD_ENEMIES]{};
+	Vector m_vecOldEnemy[MAX_OLD_ENEMIES]{};
 
-	float				m_flFieldOfView;	//!< width of monster's field of view ( dot product )
-	float				m_flWaitFinished;	//!< if we're told to wait, this is the time that the wait will be over.
-	float				m_flMoveWaitFinished;
+	float m_flFieldOfView = 0; //!< width of monster's field of view ( dot product )
+	float m_flWaitFinished = 0; //!< if we're told to wait, this is the time that the wait will be over.
+	float m_flMoveWaitFinished = 0;
 
-	Activity			m_Activity;			//!< what the monster is doing (animation)
-	Activity			m_IdealActivity;	//!< monster should switch to this activity
+	Activity m_Activity = ACT_RESET; //!< what the monster is doing (animation)
+	Activity m_IdealActivity = ACT_RESET; //!< monster should switch to this activity
 
-	int					m_LastHitGroup;		//!< the last body region that took damage
+	int m_LastHitGroup = 0; //!< the last body region that took damage
 
-	NPCState			m_MonsterState;		//!< monster's current state
-	NPCState			m_IdealMonsterState;//!< monster should change to this state
+	NPCState m_MonsterState = NPCState::None; //!< monster's current state
+	NPCState m_IdealMonsterState = NPCState::None; //!< monster should change to this state
 
-	TaskStatus			m_iTaskStatus;
-	Schedule_t* m_pSchedule;
-	int					m_iScheduleIndex;
+	TaskStatus m_iTaskStatus = TaskStatus::New;
+	Schedule_t* m_pSchedule = nullptr;
+	int m_iScheduleIndex = 0;
 
-	WayPoint_t			m_Route[ROUTE_SIZE];	//!< Positions of movement
-	int					m_movementGoal;			//!< Goal that defines route
-	int					m_iRouteIndex;			//!< index into m_Route[]
-	float				m_moveWaitTime;			//!< How long I should wait for something to move
+	WayPoint_t m_Route[ROUTE_SIZE]{};	//!< Positions of movement
+	int m_movementGoal = 0;					//!< Goal that defines route
+	int m_iRouteIndex = 0;					//!< index into m_Route[]
+	float m_moveWaitTime = 0;				//!< How long I should wait for something to move
 
-	Vector				m_vecMoveGoal;		//!< kept around for node graph moves, so we know our ultimate goal
-	Activity			m_movementActivity;	//!< When moving, set this activity
+	Vector m_vecMoveGoal;			//!< kept around for node graph moves, so we know our ultimate goal
+	Activity m_movementActivity;	//!< When moving, set this activity
 
-	int					m_iAudibleList; //!< first index of a linked list of sounds that the monster can hear.
-	int					m_afSoundTypes;
+	int m_iAudibleList = 0; //!< first index of a linked list of sounds that the monster can hear.
+	int m_afSoundTypes = 0;
 
-	Vector				m_vecLastPosition;//!< monster sometimes wants to return to where it started after an operation.
+	Vector m_vecLastPosition;//!< monster sometimes wants to return to where it started after an operation.
 
-	int					m_iHintNode; //!< this is the hint node that the monster is moving towards or performing active idle on.
+	int m_iHintNode = 0; //!< this is the hint node that the monster is moving towards or performing active idle on.
 
-	int					m_afMemory;
+	int m_afMemory = 0;
 
-	int					m_iMaxHealth;//!< keeps track of monster's maximum health value (for re-healing, etc)
+	int m_iMaxHealth = 0; //!< keeps track of monster's maximum health value (for re-healing, etc)
 
-	Vector				m_vecEnemyLKP;//!< last known position of enemy. (enemy's origin)
+	Vector m_vecEnemyLKP; //!< last known position of enemy. (enemy's origin)
 
-	int					m_cAmmoLoaded;		//!< how much ammo is in the weapon (used to trigger reload anim sequences)
+	int m_cAmmoLoaded = 0; //!< how much ammo is in the weapon (used to trigger reload anim sequences)
 
-	int					m_afCapability;//!< tells us what a monster can/can't do.
+	int m_afCapability = 0;//!< tells us what a monster can/can't do.
 
-	float				m_flNextAttack;		//!< cannot attack again until this time
+	float m_flNextAttack = 0; //!< cannot attack again until this time
 
-	int					m_bitsDamageType;	//!< what types of damage has monster (player) taken
-	byte				m_rgbTimeBasedDamage[CDMG_TIMEBASED];
+	int m_bitsDamageType = 0; //!< what types of damage has monster (player) taken
+	byte m_rgbTimeBasedDamage[CDMG_TIMEBASED]{};
 
-	int					m_lastDamageAmount;//!< how much damage did monster (player) last take
-											//!< time based damage counters, decr. 1 per 2 seconds
-	int					m_bloodColor;		//!< color of blood particless
+	int m_lastDamageAmount = 0;//!< how much damage did monster (player) last take
+							//!< time based damage counters, decr. 1 per 2 seconds
+	int m_bloodColor = 0; //!< color of blood particless
 
-	int					m_failSchedule;				//!< Schedule type to choose if current schedule fails
+	int m_failSchedule = 0; //!< Schedule type to choose if current schedule fails
 
-	float				m_flHungryTime;//!< set this is a future time to stop the monster from eating for a while. 
+	float m_flHungryTime = 0; //!< set this is a future time to stop the monster from eating for a while. 
 
-	float				m_flDistTooFar;	//!< if enemy farther away than this, bits_COND_ENEMY_TOOFAR set in CheckEnemy
-	float				m_flDistLook;	//!< distance monster sees (Default 2048)
+	float m_flDistTooFar = 0; //!< if enemy farther away than this, bits_COND_ENEMY_TOOFAR set in CheckEnemy
+	float m_flDistLook = 0;	//!< distance monster sees (Default 2048)
 
-	AITrigger			m_iTriggerCondition;//!< for scripted AI, this is the condition that will cause the activation of the monster's TriggerTarget
-	string_t			m_iszTriggerTarget;//!< name of target that should be fired. 
+	AITrigger m_iTriggerCondition = AITrigger::None; //!< for scripted AI, this is the condition that will cause the activation of the monster's TriggerTarget
+	string_t m_iszTriggerTarget = iStringNull; //!< name of target that should be fired. 
 
-	Vector				m_HackedGunPos;	//!< HACK until we can query end of gun
+	Vector m_HackedGunPos; //!< HACK until we can query end of gun
 
 // Scripted sequence Info
-	ScriptState			m_scriptState;		//!< internal cinematic state
+	ScriptState m_scriptState = ScriptState::Playing; //!< internal cinematic state
 	EHandle<CCineMonster> m_hCine;
 
-	float m_flLastYawTime;
+	float m_flLastYawTime = 0;
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 
-	static	TYPEDESCRIPTION m_SaveData[];
+	static TYPEDESCRIPTION m_SaveData[];
 
 	/**
 	*	@details !!! netname entvar field is used in squadmonster for groupname!!!
@@ -172,7 +172,7 @@ public:
 	*	@brief monster use function
 	*	will make a monster angry at whomever activated it. (Actually does nothing)
 	*/
-	void EXPORT			MonsterUse(const UseInfo& info);
+	void EXPORT MonsterUse(const UseInfo& info);
 
 	// overrideable Monster member functions
 
@@ -200,8 +200,8 @@ public:
 	*/
 	void Listen();
 
-	bool	IsAlive() override { return (pev->deadflag != DeadFlag::Dead); }
-	virtual bool	ShouldFadeOnDeath();
+	bool IsAlive() override { return (pev->deadflag != DeadFlag::Dead); }
+	virtual bool ShouldFadeOnDeath();
 
 	// Basic Monster AI functions
 	/**
@@ -574,7 +574,7 @@ public:
 	/**
 	*	@brief Returns the time when the door will be open
 	*/
-	float	OpenDoorAndWait(CBaseEntity* pDoor);
+	float OpenDoorAndWait(CBaseEntity* pDoor);
 
 	/**
 	*	@brief returns a bit mask indicating which types of sounds this monster regards.
@@ -678,15 +678,15 @@ public:
 	*	@brief create some gore and get rid of a monster's model.
 	*/
 	virtual void GibMonster();
-	bool		 ShouldGibMonster(GibType gibType);
-	void		 CallGibMonster();
-	virtual bool	HasHumanGibs();
-	virtual bool	HasAlienGibs();
+	bool ShouldGibMonster(GibType gibType);
+	void CallGibMonster();
+	virtual bool HasHumanGibs();
+	virtual bool HasAlienGibs();
 
 	/**
 	*	@brief Called instead of GibMonster() when gibs are disabled
 	*/
-	virtual void	FadeMonster();
+	virtual void FadeMonster();
 
 	Vector ShootAtEnemy(const Vector& shootOrigin);
 
@@ -695,7 +695,7 @@ public:
 	*/
 	Vector BodyTarget(const Vector& posSrc) override { return Center() * 0.75 + EyePosition() * 0.25; }
 
-	virtual	Vector  GetGunPosition();
+	virtual	Vector GetGunPosition();
 
 	bool GiveHealth(float flHealth, int bitsDamageType) override;
 

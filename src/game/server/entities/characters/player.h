@@ -81,120 +81,118 @@ public:
 	/**
 	*	@brief Find the next client in the game for this player to spectate
 	*/
-	void	Observer_FindNextPlayer(bool bReverse);
+	void Observer_FindNextPlayer(bool bReverse);
 
 	/**
 	*	@brief Handle buttons in observer mode
 	*/
-	void	Observer_HandleButtons();
+	void Observer_HandleButtons();
 
 	/**
 	*	@brief Attempt to change the observer mode
 	*/
-	void	Observer_SetMode(int iMode);
-	void	Observer_CheckTarget();
-	void	Observer_CheckProperties();
+	void Observer_SetMode(int iMode);
+	void Observer_CheckTarget();
+	void Observer_CheckProperties();
 	EHANDLE	m_hObserverTarget;
-	float	m_flNextObserverInput;
-	int		m_iObserverWeapon;	//!< weapon of current tracked target
-	int		m_iObserverLastMode;//!< last used observer mode
+	float m_flNextObserverInput = 0;
+	int m_iObserverWeapon = 0;	//!< weapon of current tracked target
+	int m_iObserverLastMode = 0; //!< last used observer mode
 	bool IsObserver() { return pev->iuser1 != 0; }
 
-	int					random_seed;    //!< Seed that is shared between client & server for shared weapons code
+	int random_seed = 0; //!< Seed that is shared between client & server for shared weapons code
 
-	int					m_iPlayerSound;//!< the index of the sound list slot reserved for this player
-	int					m_iTargetVolume;//!< ideal sound volume. 
-	int					m_iWeaponVolume;//!< how loud the player's weapon is right now.
-	int					m_iExtraSoundTypes;//!< additional classification for this weapon's sound
-	int					m_iWeaponFlash;//!< brightness of the weapon flash
-	float				m_flStopExtraSoundTime;
+	int m_iPlayerSound = 0; //!< the index of the sound list slot reserved for this player
+	int m_iTargetVolume = 0; //!< ideal sound volume. 
+	int m_iWeaponVolume = 0; //!< how loud the player's weapon is right now.
+	int m_iExtraSoundTypes = 0; //!< additional classification for this weapon's sound
+	int m_iWeaponFlash = 0; //!< brightness of the weapon flash
+	float m_flStopExtraSoundTime = 0;
 
-	float				m_flFlashLightTime;	//!< Time until next battery draw/Recharge
-	int					m_iFlashBattery;		//!< Flashlight Battery Draw
+	float m_flFlashLightTime = 0; //!< Time until next battery draw/Recharge
+	int m_iFlashBattery = 0; //!< Flashlight Battery Draw
 
-	int					m_afButtonLast;
-	int					m_afButtonPressed;
-	int					m_afButtonReleased;
+	int m_afButtonLast = 0;
+	int m_afButtonPressed = 0;
+	int m_afButtonReleased = 0;
 
-	EHANDLE m_hSndLast;			//!< last sound entity to modify player room type
-	float				m_flSndRoomtype;		//!< last roomtype set by sound entity
-	float				m_flSndRange;			//!< dist from player to sound entity
+	EHANDLE m_hSndLast; //!< last sound entity to modify player room type
+	float m_flSndRoomtype = 0; //!< last roomtype set by sound entity
+	float m_flSndRange = 0; //!< dist from player to sound entity
 
-	float				m_flFallVelocity;
+	float m_flFallVelocity = 0;
 
-	int					m_rgItems[MAX_ITEMS];
-	bool				m_fKnownItem;		//!< True when a new item needs to be added
+	int m_rgItems[MAX_ITEMS]{};
+	bool m_fKnownItem = false; //!< True when a new item needs to be added
 
-	unsigned int		m_afPhysicsFlags;	//!< physics flags - set when 'normal' physics should be revisited or overriden
-	float				m_fNextSuicideTime; //!< the time after which the player can next use the suicide command
+	unsigned int m_afPhysicsFlags = 0; //!< physics flags - set when 'normal' physics should be revisited or overriden
+	float m_fNextSuicideTime = 0; //!< the time after which the player can next use the suicide command
 
+	// these are time-sensitive things that we keep track of
+	float m_flTimeStepSound = 0; //!< when the last stepping sound was made
+	float m_flTimeWeaponIdle = 0; //!< when to play another weapon idle animation.
+	float m_flSwimTime = 0; //!< how long player has been underwater
+	float m_flDuckTime = 0; //!< how long we've been ducking
+	float m_flWallJumpTime = 0; //!< how long until next walljump
 
-// these are time-sensitive things that we keep track of
-	float				m_flTimeStepSound;	//!< when the last stepping sound was made
-	float				m_flTimeWeaponIdle; //!< when to play another weapon idle animation.
-	float				m_flSwimTime;		//!< how long player has been underwater
-	float				m_flDuckTime;		//!< how long we've been ducking
-	float				m_flWallJumpTime;	//!< how long until next walljump
+	float m_flSuitUpdate = 0; //!< when to play next suit update
+	int m_rgSuitPlayList[CSUITPLAYLIST]{}; //!< next sentencenum to play for suit update
+	int m_iSuitPlayNext = 0; //!< next sentence slot for queue storage;
+	int m_rgiSuitNoRepeat[CSUITNOREPEAT]{}; //!< suit sentence no repeat list
+	float m_rgflSuitNoRepeatTime[CSUITNOREPEAT]{}; //!< how long to wait before allowing repeat
+	int m_lastDamageAmount = 0; //!< Last damage taken
+	float m_tbdPrev = 0; //!< Time-based damage timer
 
-	float				m_flSuitUpdate;					//!< when to play next suit update
-	int					m_rgSuitPlayList[CSUITPLAYLIST];//!< next sentencenum to play for suit update
-	int					m_iSuitPlayNext;				//!< next sentence slot for queue storage;
-	int					m_rgiSuitNoRepeat[CSUITNOREPEAT];		//!< suit sentence no repeat list
-	float				m_rgflSuitNoRepeatTime[CSUITNOREPEAT];	//!< how long to wait before allowing repeat
-	int					m_lastDamageAmount;		//!< Last damage taken
-	float				m_tbdPrev;				//!< Time-based damage timer
+	float m_flgeigerRange = 0; //!< range to nearest radiation source
+	float m_flgeigerDelay = 0; //!< delay per update of range msg to client
+	int m_igeigerRangePrev = 0;
+	int m_iStepLeft = 0; //!< alternate left/right foot stepping sound TODO should be bool
+	char m_szTextureName[CBTEXTURENAMEMAX]{}; //!< current texture name we're standing on
+	char m_chTextureType = '\0'; //!< current texture type
 
-	float				m_flgeigerRange;		//!< range to nearest radiation source
-	float				m_flgeigerDelay;		//!< delay per update of range msg to client
-	int					m_igeigerRangePrev;
-	int					m_iStepLeft;			//!< alternate left/right foot stepping sound
-	char				m_szTextureName[CBTEXTURENAMEMAX];	//!< current texture name we're standing on
-	char				m_chTextureType;		//!< current texture type
+	int m_idrowndmg = 0; //!< track drowning damage taken
+	int m_idrownrestored = 0; //!< track drowning damage restored
 
-	int					m_idrowndmg;			//!< track drowning damage taken
-	int					m_idrownrestored;		//!< track drowning damage restored
+	int m_bitsHUDDamage = 0; //!< Damage bits for the current fame. These get sent to the hude via the DAMAGE message TODO typo
+	bool m_fInitHUD = false; //!< True when deferred HUD restart msg needs to be sent
+	bool m_fGameHUDInitialized = false;
+	int m_iTrain = 0; //!< Train control position
+	bool m_fWeapon = false; //!< Set this to false to force a reset of the current weapon HUD info
 
-	int					m_bitsHUDDamage;		//!< Damage bits for the current fame. These get sent to 
-												//!< the hude via the DAMAGE message
-	bool				m_fInitHUD;				//!< True when deferred HUD restart msg needs to be sent
-	bool				m_fGameHUDInitialized;
-	int					m_iTrain;				//!< Train control position
-	bool				m_fWeapon;				//!< Set this to false to force a reset of the current weapon HUD info
+	EHANDLE m_pTank; //!< the tank which the player is currently controlling,  nullptr if no tank
+	EHANDLE m_hViewEntity; //!< The view entity being used, or null if the player is using itself as the view entity
+	bool m_bResetViewEntity = false; //!<True if the player's view needs to be set back to the view entity
+	float m_fDeadTime = 0; //!< the time at which the player died  (used in PlayerDeathThink())
 
-	EHANDLE				m_pTank;				//!< the tank which the player is currently controlling,  nullptr if no tank
-	EHANDLE				m_hViewEntity;			//!< The view entity being used, or null if the player is using itself as the view entity
-	bool m_bResetViewEntity;					//!<True if the player's view needs to be set back to the view entity
-	float				m_fDeadTime;			//!< the time at which the player died  (used in PlayerDeathThink())
+	bool m_fNoPlayerSound = false; //!< a debugging feature. Player makes no sound if this is true. 
+	bool m_fLongJump = false; //!< does this player have the longjump module?
 
-	bool			m_fNoPlayerSound;	//!< a debugging feature. Player makes no sound if this is true. 
-	bool			m_fLongJump; //!< does this player have the longjump module?
-
-	int			m_iClientHealth;	//!< the health currently known by the client.  If this changes, send a new
-	int			m_iClientBattery;	//!< the Battery currently known by the client.  If this changes, send a new
-	int			m_iHideHUD;		//!< the players hud weapon info is to be hidden
-	int			m_iClientHideHUD;
-	int			m_iFOV;			//!< field of view
-	int			m_iClientFOV;	//!< client's known FOV
+	int m_iClientHealth = 0; //!< the health currently known by the client.  If this changes, send a new
+	int m_iClientBattery = 0; //!< the Battery currently known by the client.  If this changes, send a new
+	int m_iHideHUD = 0; //!< the players hud weapon info is to be hidden
+	int m_iClientHideHUD = 0;
+	int m_iFOV = 0; //!< field of view
+	int m_iClientFOV = 0; //!< client's known FOV
 	// usable player items 
 	EHandle<CBasePlayerItem> m_hPlayerItems[MAX_ITEM_TYPES];
 	EHandle<CBasePlayerItem> m_hActiveItem;
 	EHandle<CBasePlayerItem> m_hClientActiveItem;  //!< client version of the active item
 	EHandle<CBasePlayerItem> m_hLastItem;
 	// shared ammo slots
-	int	m_rgAmmo[MAX_AMMO_TYPES];
-	int	m_rgAmmoLast[MAX_AMMO_TYPES];
+	int	m_rgAmmo[MAX_AMMO_TYPES]{};
+	int	m_rgAmmoLast[MAX_AMMO_TYPES]{};
 
-	Vector				m_vecAutoAim;
-	bool				m_fOnTarget;
-	int					m_iDeaths;
-	float				m_iRespawnFrames;	//!< used in PlayerDeathThink() to make sure players can always respawn
+	Vector m_vecAutoAim;
+	bool m_fOnTarget = false;
+	int m_iDeaths = 0;
+	float m_iRespawnFrames = 0;	//!< used in PlayerDeathThink() to make sure players can always respawn
 
-	int m_lastx, m_lasty;  //!< These are the previous update's crosshair angles, DON"T SAVE/RESTORE
+	int m_lastx = 0, m_lasty = 0;  //!< These are the previous update's crosshair angles, DON"T SAVE/RESTORE
 
-	int m_nCustomSprayFrames;//!< Custom clan logo frames for this player
-	float	m_flNextDecalTime;//!< next time this player can spray a decal
+	int m_nCustomSprayFrames = 0; //!< Custom clan logo frames for this player
+	float m_flNextDecalTime = 0; //!< next time this player can spray a decal
 
-	char m_szTeamName[TEAM_NAME_LENGTH];
+	char m_szTeamName[TEAM_NAME_LENGTH]{};
 
 	void Spawn() override;
 	void Pain();
@@ -248,17 +246,17 @@ public:
 	*/
 	virtual void UpdateClientData();
 
-	static	TYPEDESCRIPTION m_playerSaveData[];
+	static TYPEDESCRIPTION m_playerSaveData[];
 
 	/**
 	*	@brief Player is moved across the transition by other means
 	*/
-	int		ObjectCaps() override { return CBaseMonster::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	void	Precache() override;
-	bool			IsOnLadder();
-	bool			FlashlightIsOn();
-	void			FlashlightTurnOn();
-	void			FlashlightTurnOff();
+	int ObjectCaps() override { return CBaseMonster::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+	void Precache() override;
+	bool IsOnLadder();
+	bool FlashlightIsOn();
+	void FlashlightTurnOn();
+	void FlashlightTurnOff();
 
 	/**
 	*	@brief updates the position of the player's reserved sound slot in the sound list.
@@ -327,7 +325,7 @@ public:
 	/**
 	*	@brief Returns the unique ID for the ammo, or -1 if error
 	*/
-	int  GiveAmmo(int iAmount, const char* szName, int iMax);
+	int GiveAmmo(int iAmount, const char* szName, int iMax);
 
 	int GetAmmoCount(const char* name) const
 	{
@@ -546,19 +544,19 @@ public:
 	*/
 	void InitStatusBar();
 	void UpdateStatusBar();
-	int m_izSBarState[SBAR_END];
-	float m_flNextSBarUpdateTime;
-	float m_flStatusBarDisappearDelay;
-	char m_SbarString0[SBAR_STRING_SIZE];
-	char m_SbarString1[SBAR_STRING_SIZE];
+	int m_izSBarState[SBAR_END]{};
+	float m_flNextSBarUpdateTime = 0;
+	float m_flStatusBarDisappearDelay = 0;
+	char m_SbarString0[SBAR_STRING_SIZE]{};
+	char m_SbarString1[SBAR_STRING_SIZE]{};
 
-	float m_flNextChatTime;
+	float m_flNextChatTime = 0;
 
 	void SetPrefsFromUserinfo(char* infobuffer);
 
-	int m_iAutoWepSwitch;
+	int m_iAutoWepSwitch = 0;
 
-	bool m_bRestored;
+	bool m_bRestored = false;
 };
 
 extern bool gInitHUD;
