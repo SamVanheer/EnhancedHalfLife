@@ -1033,20 +1033,22 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 	// to deploy a better weapon that the player may pick up because he has no ammo for it.
 	for (i = 0; i < MAX_ITEM_TYPES; i++)
 	{
-		if (CBasePlayerItem* pItem = m_hPlayerItems[i]; pItem)
+		CBasePlayerItem* pItem = m_hPlayerItems[i];
+
+		while (pItem)
 		{
-			// have at least one weapon in this slot
-			while (pItem)
+			//ALERT ( at_console, "trying to give %s\n", STRING( m_rgpPlayerItems[ i ]->pev->classname ) );
+
+			auto next = m_hPlayerItems[i]->m_hNext;
+				
+			m_hPlayerItems[i] = next;// unlink this weapon from the box
+
+			if (pPlayer->AddPlayerItem(pItem))
 			{
-				//ALERT ( at_console, "trying to give %s\n", STRING( m_rgpPlayerItems[ i ]->pev->classname ) );
-
-				pItem = m_hPlayerItems[i] = m_hPlayerItems[i]->m_hNext;// unlink this weapon from the box
-
-				if (pPlayer->AddPlayerItem(pItem))
-				{
-					pItem->AttachToPlayer(pPlayer);
-				}
+				pItem->AttachToPlayer(pPlayer);
 			}
+
+			pItem = next;
 		}
 	}
 
