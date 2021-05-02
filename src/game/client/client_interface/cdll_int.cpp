@@ -19,8 +19,6 @@
 *	this implementation handles the linking of the engine to the DLL
 */
 
-#include "hud.h"
-#include "cl_util.h"
 #include "client_int.hpp"
 #include "netadr.h"
 #include "interface.h"
@@ -31,11 +29,9 @@
 
 #include "vgui_int.h"
 
-#include "Platform.h"
 #include "Exports.h"
 
 #include "tri.h"
-#include "vgui_TeamFortressViewport.h"
 #include "shared_interface/shared_interface.hpp"
 
 cl_enginefunc_t gEngfuncs;

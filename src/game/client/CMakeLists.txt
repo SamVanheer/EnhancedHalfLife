@@ -75,6 +75,7 @@ target_link_options(client PRIVATE
 target_sources(client PRIVATE
 	cl_dll.h
 	cl_util.h
+	client_precompiled.hpp
 	com_weapons.cpp
 	com_weapons.h
 	demo.cpp
@@ -233,6 +234,10 @@ target_sources(client PRIVATE
 add_subdirectory(../shared shared)
 
 add_shared_sources(client)
+
+target_precompile_headers(client
+	PRIVATE
+		client_precompiled.hpp)
 
 # Create filters
 get_target_property(CLIENT_SOURCES client SOURCES)

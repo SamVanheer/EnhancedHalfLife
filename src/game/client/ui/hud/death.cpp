@@ -13,12 +13,6 @@
 *
 ****/
 
-#include "hud.h"
-#include "cl_util.h"
-#include "parsemsg.h"
-
-#include "vgui_TeamFortressViewport.h"
-
 DECLARE_MESSAGE(m_DeathNotice, DeathMsg);
 
 struct DeathNoticeItem {

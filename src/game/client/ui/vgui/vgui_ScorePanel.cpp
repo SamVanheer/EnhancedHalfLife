@@ -20,12 +20,8 @@
 
 #include <VGUI_LineBorder.h>
 
-#include "hud.h"
-#include "cl_util.h"
-#include "const.h"
 #include "entity_state.h"
 #include "cl_entity.h"
-#include "vgui_TeamFortressViewport.h"
 #include "vgui_ScorePanel.h"
 #include "vgui_helpers.h"
 #include "vgui_loadtga.h"

@@ -14,10 +14,6 @@
 ****/
 
 #include "hud.h"
-#include "cl_util.h"
-
-#include "vgui_TeamFortressViewport.h"
-
 constexpr int MAX_LOGO_FRAMES = 56;
 
 constexpr int grgLogoFrame[MAX_LOGO_FRAMES] =

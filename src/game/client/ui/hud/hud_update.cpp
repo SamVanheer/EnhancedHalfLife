@@ -13,9 +13,6 @@
 *
 ****/
 
-#include "hud.h"
-#include "cl_util.h"
-
 int CL_ButtonBits(bool);
 void CL_ResetButtonBits(int bits);
 

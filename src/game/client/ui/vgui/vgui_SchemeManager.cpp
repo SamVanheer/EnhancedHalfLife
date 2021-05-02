@@ -18,8 +18,6 @@
 
 #include <string>
 
-#include "hud.h"
-#include "cl_util.h"
 #include "vgui_SchemeManager.h"
 #include "cvardef.h"
 #include "CTokenizer.hpp"

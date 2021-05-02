@@ -7,9 +7,6 @@
 
 #include <cassert>
 
-#include "hud.h"
-#include "cl_util.h"
-#include "parsemsg.h"
 #include "demo.h"
 #include "demo_api.h"
 #include "voice_status.h"

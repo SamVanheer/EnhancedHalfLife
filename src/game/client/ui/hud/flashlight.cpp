@@ -13,10 +13,6 @@
 *
 ****/
 
-#include "hud.h"
-#include "cl_util.h"
-#include "parsemsg.h"
-
 DECLARE_MESSAGE(m_Flash, FlashBat)
 DECLARE_MESSAGE(m_Flash, Flashlight)
 

@@ -4,9 +4,6 @@
 *	Client side entity management functions
 */
 
-#include "hud.h"
-#include "cl_util.h"
-#include "const.h"
 #include "entity_types.h"
 #include "studio.h" // def. of mstudioevent_t
 #include "r_efx.h"

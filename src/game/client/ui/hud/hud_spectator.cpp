@@ -8,18 +8,14 @@
 #include <string>
 #include <string_view>
 
-#include "hud.h"
-#include "cl_util.h"
 #include "cl_entity.h"
 #include "triangleapi.h"
-#include "vgui_TeamFortressViewport.h"
 #include "vgui_SpectatorPanel.h"
 #include "hltv.h"
 
 #include "pm_shared.h"
 #include "pm_defs.h"
 #include "pmtrace.h"
-#include "parsemsg.h"
 #include "entity_types.h"
 #include "view.h"
 #include "CTokenizer.hpp"

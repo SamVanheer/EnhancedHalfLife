@@ -7,9 +7,6 @@
 
 #include"vgui_int.h"
 #include<VGUI_BorderLayout.h>
-#include "hud.h"
-#include "cl_util.h"
-#include "vgui_TeamFortressViewport.h"
 
 using namespace vgui;
 

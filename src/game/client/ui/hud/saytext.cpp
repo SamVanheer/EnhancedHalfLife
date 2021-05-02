@@ -13,12 +13,6 @@
 *
 ****/
 
-#include "hud.h"
-#include "cl_util.h"
-#include "parsemsg.h"
-
-#include "vgui_TeamFortressViewport.h"
-
 // allow 20 pixels on either side of the text
 #define MAX_LINE_WIDTH  ( ScreenWidth - 40 )
 

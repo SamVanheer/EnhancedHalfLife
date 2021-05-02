@@ -12,14 +12,11 @@
 *	02/21/97 JCB Added extended DirectInput code to support external controllers.
 */
 
-#include "hud.h"
-#include "cl_util.h"
 #include "PlatformHeaders.hpp"
 #include "camera.h"
 #include "kbutton.h"
 #include "cvardef.h"
 #include "usercmd.h"
-#include "const.h"
 #include "camera.h"
 #include "keydefs.h"
 #include "view.h"

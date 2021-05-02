@@ -1,6 +1,6 @@
 /***
 *
-*	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
+*	Copyright (c) 1999, Valve LLC. All rights reserved.
 *
 *	This product contains software technology licensed from Id
 *	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
@@ -13,25 +13,13 @@
 *
 ****/
 
-/**
-*	@file
-*
-*	implementation of class-less helper functions
-*/
+#pragma once
 
+//Include a bunch of common headers
+
+//Includes Platform.h and mathlib.h
+#include "hud.h"
 #include "cl_util.h"
 
-HSPRITE LoadSprite(const char* pszName)
-{
-	int i;
-	char sz[256];
-
-	if (ScreenWidth < 640)
-		i = 320;
-	else
-		i = 640;
-
-	snprintf(sz, sizeof(sz), pszName, i);
-
-	return SPR_Load(sz);
-}
+#include "parsemsg.h"
+#include "vgui_TeamFortressViewport.h"

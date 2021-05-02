@@ -5,9 +5,6 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include "hud.h"
-#include "cl_util.h"
-
 void Game_HookEvents();
 
 /**

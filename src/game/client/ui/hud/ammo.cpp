@@ -13,13 +13,9 @@
 *
 ****/
 
-#include "hud.h"
-#include "cl_util.h"
-#include "parsemsg.h"
 #include "pm_shared.h"
 
 #include "ammohistory.h"
-#include "vgui_TeamFortressViewport.h"
 
 #include "extdll.h"
 #include "util.h"

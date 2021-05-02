@@ -22,14 +22,8 @@
 
 #include<VGUI_StackLayout.h>
 
-#include "hud.h"
-#include "cl_util.h"
 #include "camera.h"
 #include "kbutton.h"
-#include "const.h"
-
-#include "vgui_int.h"
-#include "vgui_TeamFortressViewport.h"
 
 #define MOTD_TITLE_X		XRES(16)
 #define MOTD_TITLE_Y		YRES(16)

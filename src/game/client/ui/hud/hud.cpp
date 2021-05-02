@@ -14,10 +14,6 @@
 ****/
 
 #include "hud.h"
-#include "cl_util.h"
-#include "parsemsg.h"
-#include "vgui_int.h"
-#include "vgui_TeamFortressViewport.h"
 
 #include "demo.h"
 #include "demo_api.h"
