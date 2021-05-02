@@ -121,7 +121,7 @@ static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 			{
 				// if ent is a client, kill em (unless they are ourselves)
 				if (ent->IsPlayer() && ent != pPlayer)
-					ent->TakeDamage({UTIL_EntityByIndex(0), UTIL_EntityByIndex(0), 300, DMG_GENERIC});
+					ent->TakeDamage({UTIL_GetWorld(), UTIL_GetWorld(), 300, DMG_GENERIC});
 			}
 			return pSpot;
 		}
@@ -151,7 +151,7 @@ CBaseEntity* EntSelectSpawnPoint(CBaseEntity* pPlayer)
 	if (IsNullEnt(pSpot))
 	{
 		ALERT(at_error, "PutClientInServer: no info_player_start on level");
-		return UTIL_EntityByIndex(0);
+		return UTIL_GetWorld();
 	}
 
 	g_pLastSpawn = pSpot;

@@ -268,7 +268,7 @@ void CGauss::SecondaryAttack()
 			m_hPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
 
 #ifndef CLIENT_DLL
-			m_hPlayer->TakeDamage({UTIL_EntityByIndex(0), UTIL_EntityByIndex(0), 50, DMG_SHOCK});
+			m_hPlayer->TakeDamage({UTIL_GetWorld(), UTIL_GetWorld(), 50, DMG_SHOCK});
 			UTIL_ScreenFade(m_hPlayer, Vector(255, 128, 0), 2, 0.5, 128, FFADE_IN);
 #endif
 			SendWeaponAnim(GAUSS_IDLE);

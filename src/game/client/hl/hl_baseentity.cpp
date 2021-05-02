@@ -80,6 +80,7 @@ bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapo
 void UTIL_LogPrintf(char*, ...) { }
 void UTIL_ClientPrintAll(int, char const*, char const*, char const*, char const*, char const*) { }
 void ClientPrint(entvars_t* client, int msg_dest, const char* msg_name, const char* param1, const char* param2, const char* param3, const char* param4) { }
+CBaseEntity* UTIL_EntityByIndex(int index) { return nullptr; }
 
 // CBaseToggle Stubs
 bool CBaseToggle::Restore(class CRestore&) { return true; }

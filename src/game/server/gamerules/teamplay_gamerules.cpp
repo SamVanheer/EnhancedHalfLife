@@ -47,7 +47,7 @@ CHalfLifeTeamplay::CHalfLifeTeamplay()
 	// Cache this because the team code doesn't want to deal with changing this in the middle of a game
 	safe_strcpy(m_szTeamList, teamlist.string);
 
-	CBaseEntity* pWorld = UTIL_EntityByIndex(0);
+	CBaseEntity* pWorld = UTIL_GetWorld();
 	if (pWorld && pWorld->pev->team)
 	{
 		if (teamoverride.value)
@@ -258,7 +258,7 @@ void CHalfLifeTeamplay::ChangePlayerTeam(CBasePlayer* pPlayer, const char* pTeam
 		m_DisableDeathMessages = true;
 		m_DisableDeathPenalty = true;
 
-		CBaseEntity* pWorld = UTIL_EntityByIndex(0);
+		CBaseEntity* pWorld = UTIL_GetWorld();
 		pPlayer->TakeDamage({pWorld, pWorld, 900, damageFlags});
 
 		m_DisableDeathMessages = false;

@@ -785,7 +785,7 @@ void CFuncTrain::Activate()
 		//TODO: currently mimics old behavior where it uses the world by default. Needs to handle null targets better
 		if (!pTarget)
 		{
-			pTarget = Instance(INDEXENT(0));
+			pTarget = UTIL_GetWorld();
 		}
 
 		pev->target = pTarget->pev->target;

@@ -119,8 +119,6 @@ inline void MESSAGE_BEGIN(MessageDest msg_dest, int msg_type, const float* pOrig
 	(*g_engfuncs.pfnMessageBegin)(msg_dest, msg_type, pOrigin, ENT(ent));
 }
 
-inline entvars_t* INDEXVARS(int iEdictNum) { return VARS(INDEXENT(iEdictNum)); }
-
 // Testing the two types of "entity" for nullity
 inline bool IsNullEnt(const edict_t* pent) { return pent == nullptr || ENTINDEX(pent) == 0; }
 
@@ -174,6 +172,12 @@ inline bool AreStringsEqual(const char* sz1, const char* sz2)
 
 // Misc. Prototypes
 CBaseEntity* UTIL_EntityByIndex(int index);
+
+//TODO: optimize this so it doesn't have to query every time
+inline CBaseEntity* UTIL_GetWorld()
+{
+	return UTIL_EntityByIndex(0);
+}
 
 CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& vecCenter, float flRadius);
 CBaseEntity* UTIL_FindEntityByString(CBaseEntity* pStartEntity, const char* szKeyword, const char* szValue);

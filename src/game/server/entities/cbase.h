@@ -507,7 +507,7 @@ public:
 	static CBaseEntity* Instance(edict_t* pent)
 	{
 		if (!pent)
-			pent = INDEXENT(0);
+			return UTIL_GetWorld();
 		CBaseEntity* pEnt = (CBaseEntity*)GET_PRIVATE(pent);
 		return pEnt;
 	}
@@ -515,7 +515,7 @@ public:
 	static CBaseEntity* Instance(entvars_t* pev)
 	{
 		if (!pev)
-			return Instance(INDEXENT(0));
+			return UTIL_GetWorld();
 
 		return Instance(ENT(pev));
 	}
@@ -527,7 +527,7 @@ public:
 
 	static CBaseEntity* InstanceOrWorld(edict_t* pEntity)
 	{
-		return InstanceOrDefault(pEntity, UTIL_EntityByIndex(0));
+		return InstanceOrDefault(pEntity, UTIL_GetWorld());
 	}
 
 	static edict_t* EdictOrNull(CBaseEntity* pEntity)
