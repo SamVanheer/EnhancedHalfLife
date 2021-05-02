@@ -905,6 +905,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 			JustSpoke();
 		}
 	}
+	break;
 
 	default:
 		CSquadMonster::HandleAnimEvent(event);
