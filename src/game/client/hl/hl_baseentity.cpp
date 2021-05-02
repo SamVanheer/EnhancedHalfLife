@@ -300,9 +300,6 @@ int CBasePlayer::GiveAmmo(int iCount, const char* szName, int iMax) { return 0; 
 void CBasePlayer::AddPoints(int score, bool bAllowNegativeScore) { }
 void CBasePlayer::AddPointsToTeam(int score, bool bAllowNegativeScore) { }
 
-void ClearMultiDamage() { }
-void ApplyMultiDamage(entvars_t* pevInflictor, entvars_t* pevAttacker) { }
-void AddMultiDamage(entvars_t* pevInflictor, CBaseEntity* pEntity, float flDamage, int bitsDamageType) { }
 void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage) { }
 int DamageDecal(CBaseEntity* pEntity, int bitsDamageType) { return 0; }
 void DecalGunshot(TraceResult* pTrace, int iBulletType) { }
@@ -342,6 +339,5 @@ bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon) { return false; 
 int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon) { return 0; }
 void CBasePlayerWeapon::RetireWeapon() { }
 void CSoundEnt::InsertSound(int iType, const Vector& vecOrigin, int iVolume, float flDuration) {}
-void RadiusDamage(Vector vecSrc, entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, float flRadius, int iClassIgnore, int bitsDamageType) {}
 
 CBaseEntity* UTIL_FindEntityByClassname(CBaseEntity* pStartEntity, const char* szName) { return nullptr; }
