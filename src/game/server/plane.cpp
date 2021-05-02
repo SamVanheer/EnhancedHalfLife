@@ -12,7 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#include "extdll.h"
+
 #include "plane.h"
 
 CPlane::CPlane(const Vector& vecNormal, const Vector& vecPoint)

@@ -13,10 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "decals.hpp"
 #include "explode.h"
 
 // Spark Shower

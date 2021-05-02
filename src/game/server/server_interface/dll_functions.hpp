@@ -15,7 +15,6 @@
 
 #pragma once
 
-#include "extdll.h"
 #include "server_int.hpp"
 
 extern bool gTouchDisabled;

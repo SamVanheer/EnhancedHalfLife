@@ -13,13 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "weapons.h"
-#include "effects.h"
-
 constexpr int TURRET_SHOTS = 2;
 constexpr int TURRET_RANGE = 100 * 12;
 constexpr Vector TURRET_SPREAD(0, 0, 0);

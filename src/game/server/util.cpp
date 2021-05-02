@@ -21,14 +21,7 @@
 #include <algorithm>
 #include <string>
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "shake.h"
-#include "decals.hpp"
-#include "player.h"
-#include "weapons.h"
-#include "gamerules.h"
 #include "UserMessages.h"
 
 #include "CStringPool.hpp"

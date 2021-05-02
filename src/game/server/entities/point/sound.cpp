@@ -13,12 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "player.h"
-#include "talkmonster.h"
-
 /**
 *	@brief runtime pitch shift and volume fadein/out structure
 *	NOTE: IF YOU CHANGE THIS STRUCT YOU MUST CHANGE THE SAVE/RESTORE VERSION NUMBER

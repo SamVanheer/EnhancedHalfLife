@@ -32,11 +32,6 @@
 // Try this on a model with hulls/tracehull?
 //
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-
 // Animation events
 constexpr int LEECH_AE_ATTACK = 1;
 constexpr int LEECH_AE_FLOP = 2;
@@ -53,10 +48,6 @@ constexpr int LEECH_SIZEX = 10;
 constexpr float LEECH_FRAMETIME = 0.1;
 
 #define DEBUG_BEAMS		0
-
-#if DEBUG_BEAMS
-#include "effects.h"
-#endif
 
 /**
 *	@brief basic little swimming monster

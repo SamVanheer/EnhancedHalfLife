@@ -13,12 +13,6 @@
 *
 ****/
 
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
-#include	"monsters.h"
-#include	"schedule.h"
-
 constexpr int BARNACLE_BODY_HEIGHT = 44; // how 'tall' the barnacle's model is.
 constexpr int BARNACLE_PULL_SPEED = 8;
 constexpr int BARNACLE_KILL_VICTIM_DELAY = 5; // how many seconds after pulling prey in to gib them. 

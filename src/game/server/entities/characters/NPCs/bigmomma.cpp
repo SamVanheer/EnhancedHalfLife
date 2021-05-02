@@ -13,13 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "schedule.h"
-#include "decals.hpp"
-#include "weapons.h"
 #include "game.h"
 
 constexpr int SF_INFOBM_RUN = 0x0001;

@@ -43,6 +43,7 @@ target_sources(hl PRIVATE
 	globals.cpp
 	plane.cpp
 	plane.h
+	server_precompiled.hpp
 	skill.cpp
 	skill.h
 	UserMessages.cpp
@@ -225,6 +226,10 @@ target_sources(hl PRIVATE
 add_subdirectory(../shared shared)
 
 add_shared_sources(hl)
+
+target_precompile_headers(hl
+	PRIVATE
+		server_precompiled.hpp)
 
 # Create filters
 get_target_property(SERVER_SOURCES hl SOURCES)

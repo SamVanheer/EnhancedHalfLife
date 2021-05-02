@@ -20,11 +20,6 @@
   TODO: this is a bad way to handle this, it results in a lot of redundant forward declarations. Clean this up
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "soundent.h"
-
 DLL_GLOBAL uint32		g_ulFrameCount;
 DLL_GLOBAL uint32		g_ulModelIndexEyes;
 DLL_GLOBAL uint32		g_ulModelIndexPlayer;

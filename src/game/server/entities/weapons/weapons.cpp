@@ -13,15 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "player.h"
-#include "monsters.h"
-#include "weapons.h"
-#include "soundent.h"
-#include "decals.hpp"
-#include "gamerules.h"
 #include "UserMessages.h"
 
 extern int gEvilImpulse101;

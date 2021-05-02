@@ -13,13 +13,7 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "weapons.h"
 #include "navigation/nodes.h"
-#include "effects.h"
 
 class CNihilanthHVR;
 

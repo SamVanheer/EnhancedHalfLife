@@ -19,9 +19,6 @@
 *	spawn, think, and touch functions for trains, etc
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "trains.h"
 
 class CFuncPlat;

@@ -13,12 +13,7 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
 #include "animation.h"
-#include "schedule.h"
 #include "scripted.h"
 #include "defaultai.h"
 

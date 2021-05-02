@@ -13,9 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "CBaseCharger.hpp"
 
 TYPEDESCRIPTION CBaseCharger::m_SaveData[] =

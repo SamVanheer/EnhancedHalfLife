@@ -13,11 +13,7 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "spawnpoints.hpp"
-#include "gamerules.h"
 
 // These are the new entry points to entities. 
 LINK_ENTITY_TO_CLASS(info_player_deathmatch, CBaseDMStart);

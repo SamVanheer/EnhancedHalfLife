@@ -13,16 +13,8 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "schedule.h"
 #include "flyingmonster.h"
-#include "soundent.h"
 #include "animation.h"
-#include "effects.h"
-#include "weapons.h"
 
 constexpr int SEARCH_RETRY = 16;
 

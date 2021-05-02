@@ -19,9 +19,6 @@
 *	button-related code
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "doors.h"
 
 constexpr int SF_BUTTON_DONTMOVE = 1;

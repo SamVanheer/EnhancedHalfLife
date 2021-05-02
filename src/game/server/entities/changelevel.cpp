@@ -13,11 +13,7 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "changelevel.hpp"
-#include "gamerules.h"
 #include "dll_functions.hpp"
 #include "shake.h"
 

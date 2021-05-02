@@ -13,10 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
 #include "soundent.h"
 
 LINK_ENTITY_TO_CLASS(soundent, CSoundEnt);

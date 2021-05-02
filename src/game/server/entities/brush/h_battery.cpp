@@ -19,11 +19,6 @@
 *	battery-related code
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "skill.h"
-#include "gamerules.h"
 #include "CBaseCharger.hpp"
 
 class CRecharge : public CBaseCharger

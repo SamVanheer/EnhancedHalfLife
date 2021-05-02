@@ -13,11 +13,7 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "decals.hpp"
-#include "gamerules.h"
 
 //
 // This must match the list in decals.hpp

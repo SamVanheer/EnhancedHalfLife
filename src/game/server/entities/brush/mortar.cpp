@@ -13,13 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "weapons.h"
-#include "decals.hpp"
-#include "soundent.h"
-
 enum class MortarControlType
 {
 	Random,

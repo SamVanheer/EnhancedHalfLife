@@ -14,13 +14,9 @@
 ****/
 
 #include "dll_functions.hpp"
-#include "util.h"
-#include "cbase.h"
 #include "game.h"
 #include "client.h"
 #include "pm_shared.h"
-
-#include "gamerules.h"
 
 void SpectatorDummyFunction(edict_t*)
 {

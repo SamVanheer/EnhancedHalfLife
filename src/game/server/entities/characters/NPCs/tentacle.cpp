@@ -13,13 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "weapons.h"
-#include "soundent.h"
-
 constexpr int ACT_T_IDLE = 1010;
 constexpr int ACT_T_TAP = 1020;
 constexpr int ACT_T_STRIKE = 1030;

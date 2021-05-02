@@ -13,14 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "schedule.h"
-#include "soundent.h"
-#include "decals.hpp"
-
 constexpr int ROACH_IDLE = 0;
 constexpr int ROACH_BORED = 1;
 constexpr int ROACH_SCARED_BY_ENT = 2;

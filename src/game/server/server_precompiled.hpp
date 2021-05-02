@@ -13,20 +13,20 @@
 *
 ****/
 
+#pragma once
+
+//Include a bunch of common headers
+
+//Includes extdll.h and util.h
+#include "cbase.h"
+
+#include "player.h"
+#include "talkmonster.h"
+#include "squadmonster.h"
+#include "monsters.h"
+#include "weapons.h"
+#include "effects.h"
 #include "skill.h"
-
-float GetSkillCvar(const char* pName)
-{
-	char	szBuffer[64];
-
-	const int iCount = snprintf(szBuffer, sizeof(szBuffer), "%s%d", pName, static_cast<int>(gSkillData.Level));
-
-	const float flValue = CVAR_GET_FLOAT(szBuffer);
-
-	if (flValue <= 0)
-	{
-		ALERT(at_console, "\n\n** GetSkillCVar Got a zero for %s **\n\n", szBuffer);
-	}
-
-	return flValue;
-}
+#include "gamerules.h"
+#include "decals.hpp"
+#include "soundent.h"

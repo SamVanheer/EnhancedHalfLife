@@ -13,14 +13,7 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "weapons.h"
-#include "soundent.h"
 #include "hornet.h"
-#include "gamerules.h"
 
 int iHornetTrail;
 int iHornetPuff;

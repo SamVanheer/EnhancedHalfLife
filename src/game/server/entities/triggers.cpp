@@ -19,13 +19,8 @@
 *	spawn and use functions for editor-placed triggers
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "player.h"
 #include "triggers.hpp"
 #include "trains.h"			// trigger_camera has train functionality
-#include "gamerules.h"
 
 LINK_ENTITY_TO_CLASS(func_friction, CFrictionModifier);
 

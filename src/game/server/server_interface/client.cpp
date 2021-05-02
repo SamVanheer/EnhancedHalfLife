@@ -13,17 +13,10 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "player.h"
 #include "changelevel.hpp"
 #include "client.h"
-#include "soundent.h"
-#include "gamerules.h"
 #include "game.h"
 #include "customentity.h"
-#include "weapons.h"
 #include "weaponinfo.h"
 #include "usercmd.h"
 #include "netadr.h"

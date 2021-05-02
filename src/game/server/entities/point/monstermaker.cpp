@@ -13,10 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
 #include "dll_functions.hpp"
 
 constexpr int SF_MONSTERMAKER_START_ON = 1;		//!< start active ( if has targetname )

@@ -13,16 +13,7 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "schedule.h"
 #include "customentity.h"
-#include "weapons.h"
-#include "effects.h"
-#include "soundent.h"
-#include "decals.hpp"
 #include "explode.h"
 #include "func_break.h"
 

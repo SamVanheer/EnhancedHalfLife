@@ -13,11 +13,7 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "func_break.h"
-#include "decals.hpp"
 #include "explode.h"
 
 extern DLL_GLOBAL Vector		g_vecAttackDir;

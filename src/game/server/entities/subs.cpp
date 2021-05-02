@@ -19,9 +19,6 @@
 *	frequently used global functions
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "navigation/nodes.h"
 #include "doors.h"
 

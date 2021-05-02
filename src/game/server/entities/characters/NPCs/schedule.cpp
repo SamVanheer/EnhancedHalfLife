@@ -19,15 +19,10 @@
 *	functions and data pertaining to the monsters' AI scheduling system.
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
 #include "animation.h"
 #include "scripted.h"
 #include "navigation/nodes.h"
 #include "defaultai.h"
-#include "soundent.h"
 
 bool CBaseMonster::HasSchedule()
 {

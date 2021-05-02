@@ -13,14 +13,7 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "effects.h"
-#include "weapons.h"
 #include "explode.h"
-
-#include "player.h"
 
 constexpr int SF_TANK_ACTIVE = 0x0001;
 constexpr int SF_TANK_PLAYER = 0x0002;

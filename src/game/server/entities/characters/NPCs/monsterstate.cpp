@@ -19,12 +19,7 @@
 *	base class monster functions for controlling core AI.
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
 #include "animation.h"
-#include "soundent.h"
 
 void CBaseMonster::SetState(NPCState State)
 {

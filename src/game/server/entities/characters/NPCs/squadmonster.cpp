@@ -13,12 +13,7 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
 #include "animation.h"
-#include "squadmonster.h"
 #include "plane.h"
 
 TYPEDESCRIPTION	CSquadMonster::m_SaveData[] =

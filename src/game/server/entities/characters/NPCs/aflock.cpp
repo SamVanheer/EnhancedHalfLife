@@ -13,12 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "squadmonster.h"
-
 constexpr int AFLOCK_MAX_RECRUIT_RADIUS = 1024;
 constexpr int AFLOCK_FLY_SPEED = 125;
 constexpr int AFLOCK_TURN_RATE = 75;

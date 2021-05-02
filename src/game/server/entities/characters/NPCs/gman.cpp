@@ -13,14 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "schedule.h"
-#include "weapons.h"
-#include "soundent.h"
-
 /**
 *	@brief misunderstood servant of the people
 */

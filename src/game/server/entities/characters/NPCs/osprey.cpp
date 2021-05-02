@@ -12,13 +12,7 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "weapons.h"
-#include "soundent.h"
-#include "effects.h"
+
 #include "customentity.h"
 
 constexpr int SF_WAITFORTRIGGER = 0x40;

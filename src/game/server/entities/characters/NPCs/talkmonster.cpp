@@ -15,16 +15,8 @@
 
 #include <limits>
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "player.h"
-#include "monsters.h"
-#include "schedule.h"
-#include "talkmonster.h"
 #include "defaultai.h"
 #include "scripted.h"
-#include "soundent.h"
 #include "animation.h"
 
 // NOTE: m_voicePitch & m_szGrp should be fixed up by precache each save/restore

@@ -15,14 +15,8 @@
 
 #include <limits>
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "player.h"
-#include "weapons.h"
 #include "gamerules.h"
 
-#include "skill.h"
 #include "game.h"
 #include "items.h"
 #include "voice_gamemgr.h"

@@ -17,10 +17,6 @@
 *	@brief halflife specific ai code
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
 #include "game.h"
 
 constexpr int NUM_LATERAL_CHECKS = 13;  //!< how many checks are made on each side of a monster looking for lateral cover

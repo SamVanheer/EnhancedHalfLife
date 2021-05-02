@@ -12,11 +12,7 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "schedule.h"
+
 #include "flyingmonster.h"
 
 constexpr int FLYING_AE_FLAP = 8;

@@ -19,18 +19,8 @@
 *	precaches and defs for entities and other data that must always be available.
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "navigation/nodes.h"
-#include "soundent.h"
 #include "client.h"
-#include "decals.hpp"
-#include "skill.h"
-#include "effects.h"
-#include "player.h"
-#include "weapons.h"
-#include "gamerules.h"
 #include "teamplay_gamerules.h"
 #include "dll_functions.hpp"
 #include "corpse.hpp"

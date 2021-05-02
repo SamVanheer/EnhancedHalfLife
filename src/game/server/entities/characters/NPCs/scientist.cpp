@@ -13,16 +13,9 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "talkmonster.h"
-#include "schedule.h"
 #include "defaultai.h"
 #include "scripted.h"
 #include "animation.h"
-#include "soundent.h"
 
 constexpr int SCIENTIST_BODYGROUP_HEAD = 1;
 constexpr int SCIENTIST_BODYGROUP_NEEDLE = 2;

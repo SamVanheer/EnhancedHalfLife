@@ -12,8 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#include "extdll.h"
-#include "util.h"
+
 #include "game.h"
 
 cvar_t	displaysoundlist = {"displaysoundlist","0"};

@@ -19,14 +19,7 @@
 *	functions dealing with damage infliction & death
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "soundent.h"
-#include "decals.hpp"
 #include "animation.h"
-#include "weapons.h"
 #include "func_break.h"
 
 extern CBaseEntity* g_pLastInflictor;

@@ -13,16 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "squadmonster.h"
-#include "schedule.h"
-#include "effects.h"
-#include "weapons.h"
-#include "soundent.h"
-
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================

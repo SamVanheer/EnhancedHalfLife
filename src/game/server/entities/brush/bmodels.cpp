@@ -19,9 +19,6 @@
 *	spawn, think, and use functions for entities that use brush models
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "doors.h"
 
 extern DLL_GLOBAL Vector		g_vecAttackDir;

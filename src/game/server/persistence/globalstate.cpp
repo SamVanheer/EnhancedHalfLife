@@ -13,11 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "player.h"
-
 globalentity_t* CGlobalState::Find(string_t globalname)
 {
 	if (IsStringNull(globalname))

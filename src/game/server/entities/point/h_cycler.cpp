@@ -19,13 +19,7 @@
 *	The Halflife Cycler Monsters
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
 #include "animation.h"
-#include "weapons.h"
-#include "player.h"
 
 class CCycler : public CBaseMonster
 {

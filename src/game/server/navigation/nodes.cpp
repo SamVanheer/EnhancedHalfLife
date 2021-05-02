@@ -18,10 +18,6 @@
 #include <new>
 #include <queue>
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
 #include "nodes.h"
 #include "animation.h"
 #include "doors.h"

@@ -15,9 +15,6 @@
 
 #include <limits>
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "animation.h"
 #include "studio.h"
 

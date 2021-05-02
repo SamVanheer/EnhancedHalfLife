@@ -19,10 +19,6 @@
 *	spawn and think functions for editor-placed lights
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-
 constexpr int SF_LIGHT_START_OFF = 1;
 
 /**

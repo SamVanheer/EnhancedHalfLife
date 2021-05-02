@@ -13,9 +13,6 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "corpse.hpp"
 
 LINK_ENTITY_TO_CLASS(bodyque, CCorpse);

@@ -13,11 +13,7 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
 #include "animation.h"
-#include "effects.h"
 
 constexpr std::string_view XEN_PLANT_GLOW_SPRITE{"sprites/flare3.spr"};
 constexpr int XEN_PLANT_HIDE_TIME = 5;

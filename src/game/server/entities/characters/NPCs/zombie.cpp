@@ -15,12 +15,6 @@
 
 // UNDONE: Don't flinch every time you get hit
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "schedule.h"
-
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================

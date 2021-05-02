@@ -13,18 +13,8 @@
 *
 ****/
 
-#include "extdll.h"
 #include "plane.h"
-#include "util.h"
-#include "cbase.h"
-#include "monsters.h"
-#include "schedule.h"
 #include "animation.h"
-#include "squadmonster.h"
-#include "weapons.h"
-#include "talkmonster.h"
-#include "soundent.h"
-#include "effects.h"
 #include "customentity.h"
 
 enum class GruntQuestion

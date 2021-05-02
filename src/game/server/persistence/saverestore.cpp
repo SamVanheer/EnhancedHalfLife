@@ -15,10 +15,6 @@
 
 #include <bit>
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-
 TYPEDESCRIPTION	gEntvarsDescription[] =
 {
 	DEFINE_ENTITY_FIELD(classname, FIELD_STRING),

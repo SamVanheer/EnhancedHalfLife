@@ -12,12 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#include	"extdll.h"
-#include	"util.h"
-#include	"cbase.h"
+
 #include	"client.h"
-#include	"decals.hpp"
-#include	"gamerules.h"
 #include	"game.h"
 #include "dll_functions.hpp"
 
