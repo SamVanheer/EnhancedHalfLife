@@ -1016,7 +1016,7 @@ Vector CIchthyosaur::DoProbe(const Vector& Probe)
 	bool bBumpedSomething = ProbeZ(pev->origin, Probe, &frac);
 
 	TraceResult tr;
-	UTIL_TraceMonsterHull(edict(), pev->origin, Probe, IgnoreMonsters::No, this, &tr);
+	UTIL_TraceMonsterHull(this, pev->origin, Probe, IgnoreMonsters::No, this, &tr);
 	if (tr.fAllSolid || tr.flFraction < 0.99)
 	{
 		if (tr.flFraction < 0.0) tr.flFraction = 0.0;

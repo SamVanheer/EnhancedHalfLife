@@ -801,9 +801,9 @@ void UTIL_TraceModel(const Vector& vecStart, const Vector& vecEnd, Hull hullNumb
 	g_engfuncs.pfnTraceModel(vecStart, vecEnd, static_cast<int>(hullNumber), CBaseEntity::EdictOrNull(pModel), ptr);
 }
 
-void UTIL_TraceMonsterHull(edict_t* pEdict, const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, CBaseEntity* pIgnore, TraceResult* ptr)
+void UTIL_TraceMonsterHull(CBaseEntity* pEntity, const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, CBaseEntity* pIgnore, TraceResult* ptr)
 {
-	TRACE_MONSTER_HULL(pEdict, vecStart, vecEnd, igmon == IgnoreMonsters::Yes ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING,
+	TRACE_MONSTER_HULL(CBaseEntity::EdictOrNull(pEntity), vecStart, vecEnd, igmon == IgnoreMonsters::Yes ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING,
 		CBaseEntity::EdictOrNull(pIgnore), ptr);
 }
 

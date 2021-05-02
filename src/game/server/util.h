@@ -256,7 +256,7 @@ void			UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonste
 void			UTIL_TraceHull(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, Hull hullNumber, CBaseEntity* pIgnore, TraceResult* ptr);
 TraceResult	UTIL_GetGlobalTrace();
 void			UTIL_TraceModel(const Vector& vecStart, const Vector& vecEnd, Hull hullNumber, CBaseEntity* pModel, TraceResult* ptr);
-void UTIL_TraceMonsterHull(edict_t* pEdict, const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, CBaseEntity* pIgnore, TraceResult* ptr);
+void UTIL_TraceMonsterHull(CBaseEntity* pEntity, const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, CBaseEntity* pIgnore, TraceResult* ptr);
 
 Vector		UTIL_GetAimVector(edict_t* pent, float flSpeed);
 Contents UTIL_PointContents(const Vector& vec);
