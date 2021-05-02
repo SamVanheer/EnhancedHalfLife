@@ -290,7 +290,7 @@ constexpr std::string_view TURRET_GLOW_SPRITE{"sprites/flare3.spr"};
 void CTurret::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), "models/turret.mdl");
+	SET_MODEL(edict(), "models/turret.mdl");
 	pev->health = gSkillData.turretHealth;
 	m_HackedGunPos = Vector(0, 0, 12.75);
 	m_flMaxSpin = TURRET_MAXSPIN;
@@ -323,7 +323,7 @@ void CTurret::Precache()
 void CMiniTurret::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), "models/miniturret.mdl");
+	SET_MODEL(edict(), "models/miniturret.mdl");
 	pev->health = gSkillData.miniturretHealth;
 	m_HackedGunPos = Vector(0, 0, 12.75);
 	m_flMaxSpin = 0;
@@ -1127,7 +1127,7 @@ void CSentry::Precache()
 void CSentry::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), "models/sentry.mdl");
+	SET_MODEL(edict(), "models/sentry.mdl");
 	pev->health = gSkillData.sentryHealth;
 	m_HackedGunPos = Vector(0, 0, 48);
 	pev->view_ofs.z = 48;

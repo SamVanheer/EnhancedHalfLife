@@ -118,7 +118,7 @@ void CApache::Spawn()
 	pev->movetype = Movetype::Fly;
 	pev->solid = Solid::BBox;
 
-	SET_MODEL(ENT(pev), "models/apache.mdl");
+	SET_MODEL(edict(), "models/apache.mdl");
 	SetSize(Vector(-32, -32, -64), Vector(32, 32, 0));
 	SetAbsOrigin(pev->origin);
 
@@ -937,7 +937,7 @@ void CApacheHVR::Spawn()
 	pev->movetype = Movetype::Fly;
 	pev->solid = Solid::BBox;
 
-	SET_MODEL(ENT(pev), "models/HVR.mdl");
+	SET_MODEL(edict(), "models/HVR.mdl");
 	SetSize(vec3_origin, vec3_origin);
 	SetAbsOrigin(pev->origin);
 

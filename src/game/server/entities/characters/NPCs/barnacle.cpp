@@ -95,7 +95,7 @@ void CBarnacle::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/barnacle.mdl");
+	SET_MODEL(edict(), "models/barnacle.mdl");
 	SetSize(Vector(-16, -16, -32), Vector(16, 16, 0));
 
 	pev->solid = Solid::SlideBox;
@@ -362,7 +362,7 @@ CBaseEntity* CBarnacle::TongueTouchEnt(float* pflLength)
 	TraceResult	tr;
 
 	// trace once to hit architecture and see if the tongue needs to change position.
-	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 2048), IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 2048), IgnoreMonsters::Yes, edict(), &tr);
 	const float length = fabs(pev->origin.z - tr.vecEndPos.z);
 	if (pflLength)
 	{

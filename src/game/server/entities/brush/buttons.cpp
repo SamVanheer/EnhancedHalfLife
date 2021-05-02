@@ -86,7 +86,7 @@ void CEnvGlobal::Spawn()
 {
 	if (IsStringNull(m_globalstate))
 	{
-		REMOVE_ENTITY(ENT(pev));
+		REMOVE_ENTITY(edict());
 		return;
 	}
 	if (IsBitSet(pev->spawnflags, SF_GLOBAL_SET))
@@ -424,7 +424,7 @@ void CBaseButton::Spawn()
 
 	pev->movetype = Movetype::Push;
 	pev->solid = Solid::BSP;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	if (pev->speed == 0)
 		pev->speed = 40;
@@ -752,7 +752,7 @@ void CRotButton::Spawn()
 	else
 		pev->solid = Solid::BSP;
 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	if (pev->speed == 0)
 		pev->speed = 40;
@@ -870,7 +870,7 @@ void CMomentaryRotButton::Spawn()
 
 	pev->movetype = Movetype::Push;
 	SetAbsOrigin(pev->origin);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	const char* pszSound = ButtonSound(m_sounds);
 	PRECACHE_SOUND(pszSound);
@@ -1145,7 +1145,7 @@ void CButtonTarget::Spawn()
 {
 	pev->movetype = Movetype::Push;
 	pev->solid = Solid::BSP;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 	SetDamageMode(DamageMode::Yes);
 
 	if (IsBitSet(pev->spawnflags, SF_BTARGET_ON))

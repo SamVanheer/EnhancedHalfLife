@@ -239,7 +239,7 @@ void CTentacle::Spawn()
 	pev->health = 75;
 	pev->sequence = 0;
 
-	SET_MODEL(ENT(pev), "models/tentacle2.mdl");
+	SET_MODEL(edict(), "models/tentacle2.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	SetDamageMode(DamageMode::Aim);
@@ -487,7 +487,7 @@ void CTentacle::Cycle()
 			case 1: sound = "tentacle/te_alert2.wav"; break;
 			}
 
-			// UTIL_EmitAmbientSound(ENT(pev), pev->origin + Vector( 0, 0, MyHeight()), sound, 1.0, ATTN_NORM, 0, 100);
+			// UTIL_EmitAmbientSound(edict(), pev->origin + Vector( 0, 0, MyHeight()), sound, 1.0, ATTN_NORM, 0, 100);
 		}
 		m_flSoundTime = gpGlobals->time + RANDOM_FLOAT(5.0, 10.0);
 	}
@@ -638,10 +638,10 @@ void CTentacle::Cycle()
 			TraceResult tr1, tr2;
 
 			Vector vecSrc = pev->origin + Vector(0, 0, MyHeight() - 4);
-			UTIL_TraceLine(vecSrc, vecSrc + gpGlobals->v_forward * 512, IgnoreMonsters::Yes, ENT(pev), &tr1);
+			UTIL_TraceLine(vecSrc, vecSrc + gpGlobals->v_forward * 512, IgnoreMonsters::Yes, edict(), &tr1);
 
 			vecSrc = pev->origin + Vector(0, 0, MyHeight() + 8);
-			UTIL_TraceLine(vecSrc, vecSrc + gpGlobals->v_forward * 512, IgnoreMonsters::Yes, ENT(pev), &tr2);
+			UTIL_TraceLine(vecSrc, vecSrc + gpGlobals->v_forward * 512, IgnoreMonsters::Yes, edict(), &tr2);
 
 			// ALERT( at_console, "%f %f\n", tr1.flFraction * 512, tr2.flFraction * 512 );
 
@@ -786,15 +786,15 @@ void CTentacle::HandleAnimEvent(AnimationEvent& event)
 		switch (m_iTapSound)
 		{
 		case TE_SILO:
-			UTIL_EmitAmbientSound(ENT(pev), vecSrc, RANDOM_SOUND_ARRAY(pHitSilo), 1.0, ATTN_NORM, 0, 100);
+			UTIL_EmitAmbientSound(edict(), vecSrc, RANDOM_SOUND_ARRAY(pHitSilo), 1.0, ATTN_NORM, 0, 100);
 			break;
 		case TE_NONE:
 			break;
 		case TE_DIRT:
-			UTIL_EmitAmbientSound(ENT(pev), vecSrc, RANDOM_SOUND_ARRAY(pHitDirt), 1.0, ATTN_NORM, 0, 100);
+			UTIL_EmitAmbientSound(edict(), vecSrc, RANDOM_SOUND_ARRAY(pHitDirt), 1.0, ATTN_NORM, 0, 100);
 			break;
 		case TE_WATER:
-			UTIL_EmitAmbientSound(ENT(pev), vecSrc, RANDOM_SOUND_ARRAY(pHitWater), 1.0, ATTN_NORM, 0, 100);
+			UTIL_EmitAmbientSound(edict(), vecSrc, RANDOM_SOUND_ARRAY(pHitWater), 1.0, ATTN_NORM, 0, 100);
 			break;
 		}
 		gpGlobals->force_retouch++;
@@ -803,7 +803,7 @@ void CTentacle::HandleAnimEvent(AnimationEvent& event)
 
 	case 3: // start killing swing
 		m_iHitDmg = 200;
-		// UTIL_EmitAmbientSound(ENT(pev), pev->origin + Vector( 0, 0, MyHeight()), "tentacle/te_swing1.wav", 1.0, ATTN_NORM, 0, 100);
+		// UTIL_EmitAmbientSound(edict(), pev->origin + Vector( 0, 0, MyHeight()), "tentacle/te_swing1.wav", 1.0, ATTN_NORM, 0, 100);
 		break;
 
 	case 4: // end killing swing
@@ -811,7 +811,7 @@ void CTentacle::HandleAnimEvent(AnimationEvent& event)
 		break;
 
 	case 5: // just "whoosh" sound
-		// UTIL_EmitAmbientSound(ENT(pev), pev->origin + Vector( 0, 0, MyHeight()), "tentacle/te_swing2.wav", 1.0, ATTN_NORM, 0, 100);
+		// UTIL_EmitAmbientSound(edict(), pev->origin + Vector( 0, 0, MyHeight()), "tentacle/te_swing2.wav", 1.0, ATTN_NORM, 0, 100);
 		break;
 
 	case 2:	// tap scrape
@@ -826,15 +826,15 @@ void CTentacle::HandleAnimEvent(AnimationEvent& event)
 		switch (m_iTapSound)
 		{
 		case TE_SILO:
-			UTIL_EmitAmbientSound(ENT(pev), vecSrc, RANDOM_SOUND_ARRAY(pHitSilo), flVol, ATTN_NORM, 0, 100);
+			UTIL_EmitAmbientSound(edict(), vecSrc, RANDOM_SOUND_ARRAY(pHitSilo), flVol, ATTN_NORM, 0, 100);
 			break;
 		case TE_NONE:
 			break;
 		case TE_DIRT:
-			UTIL_EmitAmbientSound(ENT(pev), vecSrc, RANDOM_SOUND_ARRAY(pHitDirt), flVol, ATTN_NORM, 0, 100);
+			UTIL_EmitAmbientSound(edict(), vecSrc, RANDOM_SOUND_ARRAY(pHitDirt), flVol, ATTN_NORM, 0, 100);
 			break;
 		case TE_WATER:
-			UTIL_EmitAmbientSound(ENT(pev), vecSrc, RANDOM_SOUND_ARRAY(pHitWater), flVol, ATTN_NORM, 0, 100);
+			UTIL_EmitAmbientSound(edict(), vecSrc, RANDOM_SOUND_ARRAY(pHitWater), flVol, ATTN_NORM, 0, 100);
 			break;
 		}
 	}
@@ -848,7 +848,7 @@ void CTentacle::HandleAnimEvent(AnimationEvent& event)
 		case 1: sound = "tentacle/te_roar2.wav"; break;
 		}
 
-		UTIL_EmitAmbientSound(ENT(pev), pev->origin + Vector(0, 0, MyHeight()), sound, 1.0, ATTN_NORM, 0, 100);
+		UTIL_EmitAmbientSound(edict(), pev->origin + Vector(0, 0, MyHeight()), sound, 1.0, ATTN_NORM, 0, 100);
 		break;
 
 	case 8: // search
@@ -858,7 +858,7 @@ void CTentacle::HandleAnimEvent(AnimationEvent& event)
 		case 1: sound = "tentacle/te_search2.wav"; break;
 		}
 
-		UTIL_EmitAmbientSound(ENT(pev), pev->origin + Vector(0, 0, MyHeight()), sound, 1.0, ATTN_NORM, 0, 100);
+		UTIL_EmitAmbientSound(edict(), pev->origin + Vector(0, 0, MyHeight()), sound, 1.0, ATTN_NORM, 0, 100);
 		break;
 
 	case 9: // swing
@@ -868,7 +868,7 @@ void CTentacle::HandleAnimEvent(AnimationEvent& event)
 		case 1: sound = "tentacle/te_move2.wav"; break;
 		}
 
-		UTIL_EmitAmbientSound(ENT(pev), pev->origin + Vector(0, 0, MyHeight()), sound, 1.0, ATTN_NORM, 0, 100);
+		UTIL_EmitAmbientSound(edict(), pev->origin + Vector(0, 0, MyHeight()), sound, 1.0, ATTN_NORM, 0, 100);
 		break;
 
 	default:
@@ -962,7 +962,7 @@ LINK_ENTITY_TO_CLASS(monster_tentaclemaw, CTentacleMaw);
 void CTentacleMaw::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), "models/maw.mdl");
+	SET_MODEL(edict(), "models/maw.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = Solid::Not;

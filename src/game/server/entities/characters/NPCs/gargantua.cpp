@@ -143,7 +143,7 @@ void CStomp::Think()
 	vecStart.z += 30;
 	const Vector vecEnd = vecStart + (pev->movedir * pev->speed * deltaTime);
 
-	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, ENT(pev), &tr);
+	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, edict(), &tr);
 
 	if (tr.pHit && tr.pHit != pev->owner)
 	{
@@ -632,7 +632,7 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, CBaseEntity* pInfli
 
 			const Vector vecSrc = vecMid + dist * vecAim;
 
-			UTIL_TraceLine(vecSrc, vecSpot, IgnoreMonsters::No, ENT(pev), &tr);
+			UTIL_TraceLine(vecSrc, vecSpot, IgnoreMonsters::No, edict(), &tr);
 
 			if (tr.flFraction == 1.0 || tr.pHit == pEntity->edict())
 			{// the explosion can 'see' this entity, so hurt them!
@@ -728,7 +728,7 @@ void CGargantua::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/garg.mdl");
+	SET_MODEL(edict(), "models/garg.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = Solid::SlideBox;
@@ -956,7 +956,7 @@ CBaseEntity* CGargantua::GargantuaCheckTraceHullAttack(float flDist, int iDamage
 	vecStart.z += 64;
 	const Vector vecEnd = vecStart + (gpGlobals->v_forward * flDist) - (gpGlobals->v_up * flDist * 0.3);
 
-	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, ENT(pev), &tr);
+	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, edict(), &tr);
 
 	if (tr.pHit)
 	{

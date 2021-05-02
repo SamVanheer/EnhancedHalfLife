@@ -300,7 +300,7 @@ void CHoundeye::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/houndeye.mdl");
+	SET_MODEL(edict(), "models/houndeye.mdl");
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 36));
 
 	pev->solid = Solid::SlideBox;
@@ -1203,7 +1203,7 @@ Schedule_t* CHoundeye::GetSchedule()
 			{
 				TraceResult tr;
 				UTIL_MakeVectors(pev->angles);
-				UTIL_TraceHull(pev->origin, pev->origin + gpGlobals->v_forward * -128, IgnoreMonsters::No, Hull::Head, ENT(pev), &tr);
+				UTIL_TraceHull(pev->origin, pev->origin + gpGlobals->v_forward * -128, IgnoreMonsters::No, Hull::Head, edict(), &tr);
 
 				if (tr.flFraction == 1.0)
 				{

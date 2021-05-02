@@ -33,7 +33,7 @@ void CShotgun::Spawn()
 {
 	Precache();
 	m_iId = WEAPON_SHOTGUN;
-	SET_MODEL(ENT(pev), "models/w_shotgun.mdl");
+	SET_MODEL(edict(), "models/w_shotgun.mdl");
 
 	m_iDefaultAmmo = SHOTGUN_DEFAULT_GIVE;
 
@@ -382,7 +382,7 @@ class CShotgunAmmo : public CBasePlayerAmmo
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(ENT(pev), "models/w_shotbox.mdl");
+		SET_MODEL(edict(), "models/w_shotbox.mdl");
 		CBasePlayerAmmo::Spawn();
 	}
 	void Precache() override

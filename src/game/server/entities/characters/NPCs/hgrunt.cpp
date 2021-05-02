@@ -447,7 +447,7 @@ bool CHGrunt::CheckRangeAttack1(float flDot, float flDist)
 		const Vector vecSrc = GetGunPosition();
 
 		// verify that a bullet fired from the gun will hit the enemy before the world.
-		UTIL_TraceLine(vecSrc, m_hEnemy->BodyTarget(vecSrc), IgnoreMonsters::Yes, IgnoreGlass::Yes, ENT(pev), &tr);
+		UTIL_TraceLine(vecSrc, m_hEnemy->BodyTarget(vecSrc), IgnoreMonsters::Yes, IgnoreGlass::Yes, edict(), &tr);
 
 		if (tr.flFraction == 1.0)
 		{
@@ -716,7 +716,7 @@ CBaseEntity* CHGrunt::Kick()
 	vecStart.z += pev->size.z * 0.5;
 	const Vector vecEnd = vecStart + (gpGlobals->v_forward * 70);
 
-	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, ENT(pev), &tr);
+	UTIL_TraceHull(vecStart, vecEnd, IgnoreMonsters::No, Hull::Head, edict(), &tr);
 
 	if (tr.pHit)
 	{
@@ -916,7 +916,7 @@ void CHGrunt::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/hgrunt.mdl");
+	SET_MODEL(edict(), "models/hgrunt.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
@@ -1748,7 +1748,7 @@ IMPLEMENT_CUSTOM_SCHEDULES(CHGrunt, CSquadMonster);
 void CHGrunt::SetActivity(Activity NewActivity)
 {
 	int	iSequence = ACTIVITY_NOT_AVAILABLE;
-	void* pmodel = GET_MODEL_PTR(ENT(pev));
+	void* pmodel = GET_MODEL_PTR(edict());
 
 	switch (NewActivity)
 	{
@@ -2277,7 +2277,7 @@ void CHGruntRepel::Precache()
 void CHGruntRepel::RepelUse(const UseInfo& info)
 {
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, ENT(pev), &tr);
+	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, edict(), &tr);
 	/*
 	if ( tr.pHit && Instance( tr.pHit )->pev->solid != Solid::BSP)
 		return;
@@ -2331,7 +2331,7 @@ LINK_ENTITY_TO_CLASS(monster_hgrunt_dead, CDeadHGrunt);
 void CDeadHGrunt::Spawn()
 {
 	PRECACHE_MODEL("models/hgrunt.mdl");
-	SET_MODEL(ENT(pev), "models/hgrunt.mdl");
+	SET_MODEL(edict(), "models/hgrunt.mdl");
 
 	pev->effects = 0;
 	pev->yaw_speed = 8;

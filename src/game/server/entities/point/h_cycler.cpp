@@ -79,13 +79,13 @@ void CCycler::GenericCyclerSpawn(const char* szModel, Vector vecMin, Vector vecM
 	if (!szModel || !*szModel)
 	{
 		ALERT(at_error, "cycler at %.0f %.0f %0.f missing modelname", pev->origin.x, pev->origin.y, pev->origin.z);
-		REMOVE_ENTITY(ENT(pev));
+		REMOVE_ENTITY(edict());
 		return;
 	}
 
 	pev->classname = MAKE_STRING("cycler");
 	PRECACHE_MODEL(szModel);
-	SET_MODEL(ENT(pev), szModel);
+	SET_MODEL(edict(), szModel);
 
 	CCycler::Spawn();
 
@@ -223,7 +223,7 @@ void CCyclerSprite::Spawn()
 	m_lastTime = gpGlobals->time;
 
 	PRECACHE_MODEL(STRING(pev->model));
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
 }
@@ -282,7 +282,7 @@ void CWeaponCycler::Spawn()
 	pev->movetype = Movetype::None;
 
 	PRECACHE_MODEL(STRING(pev->model));
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 	m_iszModel = pev->model;
 	m_iModel = pev->modelindex;
 
@@ -320,7 +320,7 @@ void CWeaponCycler::SecondaryAttack()
 	pev->sequence = (pev->sequence + 1) % 8;
 
 	pev->modelindex = m_iModel;
-	void* pmodel = GET_MODEL_PTR(ENT(pev));
+	void* pmodel = GET_MODEL_PTR(edict());
 	GetSequenceInfo(pmodel, this, flFrameRate, flGroundSpeed);
 	pev->modelindex = 0;
 
@@ -372,7 +372,7 @@ void CWreckage::Spawn()
 	if (!IsStringNull(pev->model))
 	{
 		PRECACHE_MODEL(STRING(pev->model));
-		SET_MODEL(ENT(pev), STRING(pev->model));
+		SET_MODEL(edict(), STRING(pev->model));
 	}
 	// pev->scale = 5.0;
 

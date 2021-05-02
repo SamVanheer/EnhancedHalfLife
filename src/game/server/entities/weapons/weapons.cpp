@@ -445,7 +445,7 @@ CBaseEntity* CBasePlayerItem::Respawn()
 		pNewWeapon->SetTouch(nullptr);// no touch
 		pNewWeapon->SetThink(&CBasePlayerItem::AttemptToMaterialize);
 
-		DROP_TO_FLOOR(ENT(pev));
+		DROP_TO_FLOOR(edict());
 
 		// not a typo! We want to know when the weapon the player just picked up should respawn! This new entity we created is the replacement,
 		// but when it should respawn is based on conditions belonging to the weapon that was taken.
@@ -974,7 +974,7 @@ void CWeaponBox::Spawn()
 
 	SetSize(vec3_origin, vec3_origin);
 
-	SET_MODEL(ENT(pev), "models/w_weaponbox.mdl");
+	SET_MODEL(edict(), "models/w_weaponbox.mdl");
 }
 
 void CWeaponBox::Kill()

@@ -91,7 +91,7 @@ void CDecal::Spawn()
 {
 	if (pev->skin < 0 || (g_pGameRules->IsDeathmatch() && IsBitSet(pev->spawnflags, SF_DECAL_NOTINDEATHMATCH)))
 	{
-		REMOVE_ENTITY(ENT(pev));
+		REMOVE_ENTITY(edict());
 		return;
 	}
 
@@ -116,7 +116,7 @@ void CDecal::TriggerDecal(const UseInfo& info)
 	TraceResult trace;
 	int			entityIndex;
 
-	UTIL_TraceLine(pev->origin - Vector(5, 5, 5), pev->origin + Vector(5, 5, 5), IgnoreMonsters::Yes, ENT(pev), &trace);
+	UTIL_TraceLine(pev->origin - Vector(5, 5, 5), pev->origin + Vector(5, 5, 5), IgnoreMonsters::Yes, edict(), &trace);
 
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BSPDECAL);
@@ -139,7 +139,7 @@ void CDecal::StaticDecal()
 	TraceResult trace;
 	int			entityIndex, modelIndex;
 
-	UTIL_TraceLine(pev->origin - Vector(5, 5, 5), pev->origin + Vector(5, 5, 5), IgnoreMonsters::Yes, ENT(pev), &trace);
+	UTIL_TraceLine(pev->origin - Vector(5, 5, 5), pev->origin + Vector(5, 5, 5), IgnoreMonsters::Yes, edict(), &trace);
 
 	entityIndex = (short)ENTINDEX(trace.pHit);
 	if (entityIndex)

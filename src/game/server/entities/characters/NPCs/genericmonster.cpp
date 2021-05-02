@@ -81,7 +81,7 @@ void CGenericMonster::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	/*
 		if ( AreStringsEqual( STRING(pev->model), "models/player.mdl" ) )

@@ -1092,7 +1092,7 @@ LocalMoveResult CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vecto
 
 	if (!(pev->flags & (FL_FLY | FL_SWIM)))
 	{
-		DROP_TO_FLOOR(ENT(pev));//make sure monster is on the floor!
+		DROP_TO_FLOOR(edict());//make sure monster is on the floor!
 	}
 
 	//pev->origin.z = vecStartPos.z;//!!!HACKHACK
@@ -1121,7 +1121,7 @@ LocalMoveResult CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vecto
 
 		//		UTIL_ParticleEffect ( pev->origin, vec3_origin, 255, 25 );
 
-		if (!WALK_MOVE(ENT(pev), flYaw, stepSize, WalkMoveMode::CheckOnly))
+		if (!WALK_MOVE(edict(), flYaw, stepSize, WalkMoveMode::CheckOnly))
 		{// can't take the next step, fail!
 
 			if (pflDist != nullptr)
@@ -1778,9 +1778,9 @@ void CBaseMonster::StartMonster()
 	if (pev->movetype != Movetype::Fly && !IsBitSet(pev->spawnflags, SF_MONSTER_FALL_TO_GROUND))
 	{
 		pev->origin.z += 1;
-		DROP_TO_FLOOR(ENT(pev));
+		DROP_TO_FLOOR(edict());
 		// Try to move the monster to make sure it's not stuck in a brush.
-		if (!WALK_MOVE(ENT(pev), 0, 0, WalkMoveMode::Normal))
+		if (!WALK_MOVE(edict(), 0, 0, WalkMoveMode::Normal))
 		{
 			ALERT(at_error, "Monster %s stuck in wall--level design error", STRING(pev->classname));
 			pev->effects = EF_BRIGHTFIELD;
@@ -1979,7 +1979,7 @@ bool CBaseMonster::FindCover(Vector vecThreat, Vector vecViewOffset, float flMin
 		// provide cover! Also make sure the node is within the mins/maxs of the search.
 		if (flDist >= flMinDist && flDist < flMaxDist)
 		{
-			UTIL_TraceLine(node.m_vecOrigin + vecViewOffset, vecLookersOffset, IgnoreMonsters::Yes, IgnoreGlass::Yes, ENT(pev), &tr);
+			UTIL_TraceLine(node.m_vecOrigin + vecViewOffset, vecLookersOffset, IgnoreMonsters::Yes, IgnoreGlass::Yes, edict(), &tr);
 
 			// if this node will block the threat's line of sight to me...
 			if (tr.flFraction != 1.0)
@@ -2225,7 +2225,7 @@ float CBaseMonster::VecToYaw(Vector vecDir)
 void CBaseMonster::SetEyePosition()
 {
 	Vector  vecEyePosition;
-	void* pmodel = GET_MODEL_PTR(ENT(pev));
+	void* pmodel = GET_MODEL_PTR(edict());
 
 	GetEyePosition(pmodel, vecEyePosition);
 
@@ -2458,7 +2458,7 @@ int CBaseMonster::FindHintNode()
 			{
 				if (!node.m_sHintActivity || LookupActivity(node.m_sHintActivity) != ACTIVITY_NOT_AVAILABLE)
 				{
-					UTIL_TraceLine(pev->origin + pev->view_ofs, node.m_vecOrigin + pev->view_ofs, IgnoreMonsters::Yes, ENT(pev), &tr);
+					UTIL_TraceLine(pev->origin + pev->view_ofs, node.m_vecOrigin + pev->view_ofs, IgnoreMonsters::Yes, edict(), &tr);
 
 					if (tr.flFraction == 1.0)
 					{
@@ -2707,7 +2707,7 @@ bool CBaseMonster::FindLateralCover(const Vector& vecThreat, const Vector& vecVi
 		vecRightTest = vecRightTest + vecStepRight;
 
 		// it's faster to check the SightEnt's visibility to the potential spot than to check the local move, so we do that first.
-		UTIL_TraceLine(vecThreat + vecViewOffset, vecLeftTest + pev->view_ofs, IgnoreMonsters::Yes, IgnoreGlass::Yes, ENT(pev)/*pentIgnore*/, &tr);
+		UTIL_TraceLine(vecThreat + vecViewOffset, vecLeftTest + pev->view_ofs, IgnoreMonsters::Yes, IgnoreGlass::Yes, edict(), &tr);
 
 		if (tr.flFraction != 1.0)
 		{
@@ -2721,7 +2721,7 @@ bool CBaseMonster::FindLateralCover(const Vector& vecThreat, const Vector& vecVi
 		}
 
 		// it's faster to check the SightEnt's visibility to the potential spot than to check the local move, so we do that first.
-		UTIL_TraceLine(vecThreat + vecViewOffset, vecRightTest + pev->view_ofs, IgnoreMonsters::Yes, IgnoreGlass::Yes, ENT(pev)/*pentIgnore*/, &tr);
+		UTIL_TraceLine(vecThreat + vecViewOffset, vecRightTest + pev->view_ofs, IgnoreMonsters::Yes, IgnoreGlass::Yes, edict(), &tr);
 
 		if (tr.flFraction != 1.0)
 		{
@@ -2840,13 +2840,13 @@ bool CBaseMonster::BBoxFlat()
 	};
 
 	TraceResult	tr;
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, edict(), &tr);
 	float flLength = (vecPoint - tr.vecEndPos).Length();
 
 	vecPoint.x = pev->origin.x - flXSize;
 	vecPoint.y = pev->origin.y - flYSize;
 
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, edict(), &tr);
 	float flLength2 = (vecPoint - tr.vecEndPos).Length();
 	if (flLength2 > flLength)
 	{
@@ -2856,7 +2856,7 @@ bool CBaseMonster::BBoxFlat()
 
 	vecPoint.x = pev->origin.x - flXSize;
 	vecPoint.y = pev->origin.y + flYSize;
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, edict(), &tr);
 	flLength2 = (vecPoint - tr.vecEndPos).Length();
 	if (flLength2 > flLength)
 	{
@@ -2866,7 +2866,7 @@ bool CBaseMonster::BBoxFlat()
 
 	vecPoint.x = pev->origin.x + flXSize;
 	vecPoint.y = pev->origin.y - flYSize;
-	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecPoint, vecPoint - Vector(0, 0, 100), IgnoreMonsters::Yes, edict(), &tr);
 	flLength2 = (vecPoint - tr.vecEndPos).Length();
 	if (flLength2 > flLength)
 	{

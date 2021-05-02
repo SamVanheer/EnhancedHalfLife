@@ -153,7 +153,7 @@ void CBreakable::Spawn()
 		pev->playerclass = 1;
 	}
 
-	SET_MODEL(ENT(pev), STRING(pev->model));//set size and link into world.
+	SET_MODEL(edict(), STRING(pev->model));//set size and link into world.
 
 	SetTouch(&CBreakable::BreakTouch);
 	if (IsBitSet(pev->spawnflags, SF_BREAK_TRIGGER_ONLY))		// Only break on trigger
@@ -789,7 +789,7 @@ void CPushable::Spawn()
 
 	pev->movetype = Movetype::PushStep;
 	pev->solid = Solid::BBox;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	if (pev->friction > 399)
 		pev->friction = 399;
@@ -876,7 +876,7 @@ void CPushable::Move(CBaseEntity* pOther, bool push)
 {
 
 	// Is entity standing on this pushable ?
-	if (IsBitSet(pOther->pev->flags, FL_ONGROUND) && pOther->pev->groundentity && VARS(pOther->pev->groundentity) == pev)
+	if (IsBitSet(pOther->pev->flags, FL_ONGROUND) && InstanceOrNull(pOther->pev->groundentity) == this)
 	{
 		// Only push if floating
 		if (pev->waterlevel > WaterLevel::Dry)

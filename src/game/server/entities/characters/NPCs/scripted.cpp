@@ -731,7 +731,7 @@ bool CBaseMonster::CineCleanup()
 			pev->origin.z += 1;
 
 			pev->flags |= FL_ONGROUND;
-			const int drop = DROP_TO_FLOOR(ENT(pev));
+			const int drop = DROP_TO_FLOOR(edict());
 
 			// Origin in solid?  Set to org at the end of the sequence
 			if (drop < 0)
@@ -1053,7 +1053,7 @@ LINK_ENTITY_TO_CLASS(monster_furniture, CFurniture);
 void CFurniture::Spawn()
 {
 	PRECACHE_MODEL(STRING(pev->model));
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	pev->movetype = Movetype::None;
 	pev->solid = Solid::BBox;

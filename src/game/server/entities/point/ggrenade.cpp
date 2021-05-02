@@ -29,7 +29,7 @@ constexpr int SF_DETONATE = 0x0001;
 void CGrenade::Explode(Vector vecSrc, Vector vecAim)
 {
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -32), IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -32), IgnoreMonsters::Yes, edict(), &tr);
 
 	Explode(&tr, DMG_BLAST);
 }
@@ -151,7 +151,7 @@ void CGrenade::Detonate()
 {
 	const Vector vecSpot = pev->origin + Vector(0, 0, 8); // trace starts here!
 	TraceResult tr;
-	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -40), IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -40), IgnoreMonsters::Yes, edict(), &tr);
 
 	Explode(&tr, DMG_BLAST);
 }
@@ -162,7 +162,7 @@ void CGrenade::ExplodeTouch(CBaseEntity* pOther)
 
 	const Vector vecSpot = pev->origin - pev->velocity.Normalize() * 32; // trace starts here!
 	TraceResult tr;
-	UTIL_TraceLine(vecSpot, vecSpot + pev->velocity.Normalize() * 64, IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot, vecSpot + pev->velocity.Normalize() * 64, IgnoreMonsters::Yes, edict(), &tr);
 
 	Explode(&tr, DMG_BLAST);
 }
@@ -310,7 +310,7 @@ void CGrenade::Spawn()
 
 	pev->solid = Solid::BBox;
 
-	SET_MODEL(ENT(pev), "models/grenade.mdl");
+	SET_MODEL(edict(), "models/grenade.mdl");
 	SetSize(vec3_origin, vec3_origin);
 
 	pev->dmg = 100;
@@ -376,7 +376,7 @@ CGrenade* CGrenade::ShootTimed(CBaseEntity* pOwner, Vector vecStart, Vector vecV
 	pGrenade->pev->gravity = 0.5;
 	pGrenade->pev->friction = 0.8;
 
-	SET_MODEL(ENT(pGrenade->pev), "models/w_grenade.mdl");
+	SET_MODEL(pGrenade->edict(), "models/w_grenade.mdl");
 	pGrenade->pev->dmg = 100;
 
 	return pGrenade;

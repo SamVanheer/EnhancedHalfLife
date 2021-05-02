@@ -464,7 +464,7 @@ bool CISlave::CheckRangeAttack2(float flDot, float flDist)
 	{
 		TraceResult tr;
 
-		UTIL_TraceLine(EyePosition(), pEntity->EyePosition(), IgnoreMonsters::Yes, ENT(pev), &tr);
+		UTIL_TraceLine(EyePosition(), pEntity->EyePosition(), IgnoreMonsters::Yes, edict(), &tr);
 		if (tr.flFraction == 1.0 || tr.pHit == pEntity->edict())
 		{
 			if (pEntity->pev->deadflag == DeadFlag::Dead)
@@ -498,7 +498,7 @@ void CISlave::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/islave.mdl");
+	SET_MODEL(edict(), "models/islave.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
@@ -676,7 +676,7 @@ void CISlave::ArmBeam(int side)
 	{
 		const Vector vecAim = gpGlobals->v_right * side * RANDOM_FLOAT(0, 1) + gpGlobals->v_up * RANDOM_FLOAT(-1, 1);
 		TraceResult tr1;
-		UTIL_TraceLine(vecSrc, vecSrc + vecAim * 512, IgnoreMonsters::No, ENT(pev), &tr1);
+		UTIL_TraceLine(vecSrc, vecSrc + vecAim * 512, IgnoreMonsters::No, edict(), &tr1);
 		if (flDist > tr1.flFraction)
 		{
 			tr = tr1;
@@ -748,7 +748,7 @@ void CISlave::ZapBeam(int side)
 	vecAim = vecAim + side * gpGlobals->v_right * RANDOM_FLOAT(0, deflection) + gpGlobals->v_up * RANDOM_FLOAT(-deflection, deflection);
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSrc, vecSrc + vecAim * 1024, IgnoreMonsters::No, ENT(pev), &tr);
+	UTIL_TraceLine(vecSrc, vecSrc + vecAim * 1024, IgnoreMonsters::No, edict(), &tr);
 
 	auto beam = m_hBeam[m_iBeams] = CBeam::BeamCreate("sprites/lgtning.spr", 50);
 	if (!beam)
@@ -765,7 +765,7 @@ void CISlave::ZapBeam(int side)
 	{
 		pEntity->TraceAttack({this, gSkillData.slaveDmgZap, vecAim, tr, DMG_SHOCK});
 	}
-	UTIL_EmitAmbientSound(ENT(pev), tr.vecEndPos, "weapons/electro4.wav", 0.5, ATTN_NORM, 0, RANDOM_LONG(140, 160));
+	UTIL_EmitAmbientSound(edict(), tr.vecEndPos, "weapons/electro4.wav", 0.5, ATTN_NORM, 0, RANDOM_LONG(140, 160));
 }
 
 void CISlave::ClearBeams()

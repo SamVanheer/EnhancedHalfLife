@@ -27,7 +27,7 @@ void CTriggerVolume::Spawn()
 {
 	pev->solid = Solid::Not;
 	pev->movetype = Movetype::None;
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	SET_MODEL(edict(), STRING(pev->model));    // set size and link into world
 	pev->model = iStringNull;
 	pev->modelindex = 0;
 }
@@ -362,7 +362,7 @@ void CTriggerEndSection::Spawn()
 {
 	if (g_pGameRules->IsMultiplayer())
 	{
-		REMOVE_ENTITY(ENT(pev));
+		REMOVE_ENTITY(edict());
 		return;
 	}
 
@@ -408,7 +408,7 @@ void CTriggerSave::Spawn()
 {
 	if (!g_pGameRules->AreSaveGamesSupported())
 	{
-		REMOVE_ENTITY(ENT(pev));
+		REMOVE_ENTITY(edict());
 		return;
 	}
 

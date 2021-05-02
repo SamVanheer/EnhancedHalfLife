@@ -628,7 +628,7 @@ void CBigMomma::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/big_mom.mdl");
+	SET_MODEL(edict(), "models/big_mom.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = Solid::SlideBox;
@@ -1081,7 +1081,7 @@ void CBMortar::Spawn()
 	pev->rendermode = RenderMode::TransAlpha;
 	pev->renderamt = 255;
 
-	SET_MODEL(ENT(pev), "sprites/mommaspit.spr");
+	SET_MODEL(edict(), "sprites/mommaspit.spr");
 	pev->frame = 0;
 	pev->scale = 0.5;
 
@@ -1145,7 +1145,7 @@ void CBMortar::Touch(CBaseEntity* pOther)
 	if (pOther->IsBSPModel())
 	{
 		// make a splat on the wall
-		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 10, IgnoreMonsters::No, ENT(pev), &tr);
+		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 10, IgnoreMonsters::No, edict(), &tr);
 		UTIL_DecalTrace(&tr, DECAL_MOMMASPLAT);
 	}
 	else

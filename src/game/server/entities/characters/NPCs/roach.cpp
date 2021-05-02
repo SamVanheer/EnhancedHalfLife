@@ -84,7 +84,7 @@ void CRoach::Touch(CBaseEntity* pOther)
 
 	const Vector vecSpot = pev->origin + Vector(0, 0, 8);//move up a bit, and trace down.
 	TraceResult	tr;
-	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -24), IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -24), IgnoreMonsters::Yes, edict(), &tr);
 
 	// This isn't really blood.  So you don't have to screen it out based on violence levels (UTIL_ShouldShowBlood())
 	UTIL_DecalTrace(&tr, DECAL_YBLOOD1 + RANDOM_LONG(0, 5));
@@ -101,7 +101,7 @@ void CRoach::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/roach.mdl");
+	SET_MODEL(edict(), "models/roach.mdl");
 	SetSize(Vector(-1, -1, 0), Vector(1, 1, 2));
 
 	pev->solid = Solid::SlideBox;
@@ -175,7 +175,7 @@ void CRoach::MonsterThink()
 	else if (m_flLastLightLevel < 0)
 	{
 		// collect light level for the first time, now that all of the lightmaps in the roach's area have been calculated.
-		m_flLastLightLevel = GETENTITYILLUM(ENT(pev));
+		m_flLastLightLevel = GETENTITYILLUM(edict());
 	}
 
 	switch (m_iMode)
@@ -218,7 +218,7 @@ void CRoach::MonsterThink()
 				Listen();
 			}
 
-			if (GETENTITYILLUM(ENT(pev)) > m_flLastLightLevel)
+			if (GETENTITYILLUM(edict()) > m_flLastLightLevel)
 			{
 				// someone turned on lights!
 				//ALERT ( at_console, "Lights!\n" );
@@ -242,10 +242,10 @@ void CRoach::MonsterThink()
 	case	ROACH_SCARED_BY_LIGHT:
 	{
 		// if roach was scared by light, then stop if we're over a spot at least as dark as where we started!
-		if (GETENTITYILLUM(ENT(pev)) <= m_flLastLightLevel)
+		if (GETENTITYILLUM(edict()) <= m_flLastLightLevel)
 		{
 			SetActivity(ACT_IDLE);
-			m_flLastLightLevel = GETENTITYILLUM(ENT(pev));// make this our new light level.
+			m_flLastLightLevel = GETENTITYILLUM(edict());// make this our new light level.
 		}
 		break;
 	}
@@ -316,14 +316,14 @@ void CRoach::Move(float flInterval)
 	if (RANDOM_LONG(0, 7) == 1)
 	{
 		// randomly check for blocked path.(more random load balancing)
-		if (!WALK_MOVE(ENT(pev), pev->ideal_yaw, 4, WalkMoveMode::Normal))
+		if (!WALK_MOVE(edict(), pev->ideal_yaw, 4, WalkMoveMode::Normal))
 		{
 			// stuck, so just pick a new spot to run off to
 			PickNewDest(m_iMode);
 		}
 	}
 
-	WALK_MOVE(ENT(pev), pev->ideal_yaw, m_flGroundSpeed * flInterval, WalkMoveMode::Normal);
+	WALK_MOVE(edict(), pev->ideal_yaw, m_flGroundSpeed * flInterval, WalkMoveMode::Normal);
 
 	// if the waypoint is closer than step size, then stop after next step (ok for roach to overshoot)
 	if (flWaypointDist <= m_flGroundSpeed * flInterval)
@@ -331,7 +331,7 @@ void CRoach::Move(float flInterval)
 		// take truncated step and stop
 
 		SetActivity(ACT_IDLE);
-		m_flLastLightLevel = GETENTITYILLUM(ENT(pev));// this is roach's new comfortable light level
+		m_flLastLightLevel = GETENTITYILLUM(edict());// this is roach's new comfortable light level
 
 		if (m_iMode == ROACH_SMELL_FOOD)
 		{

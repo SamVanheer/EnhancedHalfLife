@@ -1620,7 +1620,7 @@ void CBasePlayer::PreThink()
 		{
 			TraceResult trainTrace;
 			// Maybe this is on the other side of a level transition
-			UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -38), IgnoreMonsters::Yes, ENT(pev), &trainTrace);
+			UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -38), IgnoreMonsters::Yes, edict(), &trainTrace);
 
 			// HACKHACK - Just look for the func_tracktrain classname
 			if (trainTrace.flFraction != 1.0 && trainTrace.pHit)
@@ -2273,7 +2273,7 @@ void CBasePlayer::Spawn()
 	g_pGameRules->SetDefaultPlayerTeam(this);
 	g_pGameRules->GetPlayerSpawnSpot(this);
 
-	SET_MODEL(ENT(pev), "models/player.mdl");
+	SET_MODEL(edict(), "models/player.mdl");
 	g_ulModelIndexPlayer = pev->modelindex;
 	pev->sequence = LookupActivity(ACT_IDLE);
 
@@ -2644,7 +2644,7 @@ void CBasePlayer::GiveNamedItem(const char* pszName)
 	pEntity->pev->spawnflags |= SF_NORESPAWN;
 
 	DispatchSpawn(pEntity->edict());
-	DispatchTouch(pEntity->edict(), ENT(pev));
+	DispatchTouch(pEntity->edict(), edict());
 }
 
 bool CBasePlayer::FlashlightIsOn()
@@ -2752,7 +2752,7 @@ void CBasePlayer::ImpulseCommands()
 
 		TraceResult	tr;// UNDONE: kill me! This is temporary for PreAlpha CDs
 		UTIL_MakeVectors(pev->v_angle);
-		UTIL_TraceLine(pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, ENT(pev), &tr);
+		UTIL_TraceLine(pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, edict(), &tr);
 
 		if (tr.flFraction != 1.0)
 		{// line hit something, so paint a decal
@@ -2932,7 +2932,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 	{
 		TraceResult tr;
 		UTIL_MakeVectors(pev->v_angle);
-		UTIL_TraceLine(pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, ENT(pev), &tr);
+		UTIL_TraceLine(pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, edict(), &tr);
 
 		if (tr.flFraction != 1.0)
 		{// line hit something, so paint a decal

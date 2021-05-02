@@ -30,7 +30,7 @@ void CCrowbar::Spawn()
 {
 	Precache();
 	m_iId = WEAPON_CROWBAR;
-	SET_MODEL(ENT(pev), "models/w_crowbar.mdl");
+	SET_MODEL(edict(), "models/w_crowbar.mdl");
 	m_iClip = -1;
 
 	FallInit();// get ready to fall down.
@@ -148,12 +148,12 @@ bool CCrowbar::Swing(bool fFirst)
 	Vector vecEnd = vecSrc + gpGlobals->v_forward * 32;
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, ENT(m_hPlayer->pev), &tr);
+	UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, m_hPlayer->edict(), &tr);
 
 #ifndef CLIENT_DLL
 	if (tr.flFraction >= 1.0)
 	{
-		UTIL_TraceHull(vecSrc, vecEnd, IgnoreMonsters::No, Hull::Head, ENT(m_hPlayer->pev), &tr);
+		UTIL_TraceHull(vecSrc, vecEnd, IgnoreMonsters::No, Hull::Head, m_hPlayer->edict(), &tr);
 		if (tr.flFraction < 1.0)
 		{
 			// Calculate the point of intersection of the line (or hull) and the object we hit

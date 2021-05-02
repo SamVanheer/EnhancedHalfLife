@@ -65,7 +65,7 @@ void CCrossbowBolt::Spawn()
 
 	pev->gravity = 0.5;
 
-	SET_MODEL(ENT(pev), "models/crossbow_bolt.mdl");
+	SET_MODEL(edict(), "models/crossbow_bolt.mdl");
 
 	SetAbsOrigin(pev->origin);
 	SetSize(vec3_origin, vec3_origin);
@@ -214,7 +214,7 @@ void CCrossbow::Spawn()
 {
 	Precache();
 	m_iId = WEAPON_CROSSBOW;
-	SET_MODEL(ENT(pev), "models/w_crossbow.mdl");
+	SET_MODEL(edict(), "models/w_crossbow.mdl");
 
 	m_iDefaultAmmo = CROSSBOW_DEFAULT_GIVE;
 
@@ -484,7 +484,7 @@ class CCrossbowAmmo : public CBasePlayerAmmo
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(ENT(pev), "models/w_crossbow_clip.mdl");
+		SET_MODEL(edict(), "models/w_crossbow_clip.mdl");
 		CBasePlayerAmmo::Spawn();
 	}
 	void Precache() override

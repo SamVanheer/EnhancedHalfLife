@@ -500,7 +500,7 @@ void CNihilanth::DyingThink()
 	GetAttachment(iAttachment - 1, vecSrc, vecAngles);
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_BOUNDARY, IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecSrc, vecSrc + vecDir * WORLD_BOUNDARY, IgnoreMonsters::Yes, edict(), &tr);
 
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMENTPOINT);

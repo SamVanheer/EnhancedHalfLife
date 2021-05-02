@@ -591,7 +591,7 @@ public:
 	virtual Vector EarPosition() { return pev->origin + pev->view_ofs; }	//!< position of ears
 	virtual Vector BodyTarget(const Vector& posSrc) { return Center(); }	//!< position to shoot at
 
-	virtual int Illumination() { return GETENTITYILLUM(ENT(pev)); }
+	virtual int Illumination() { return GETENTITYILLUM(edict()); }
 
 	/**
 	*	@brief returns true if a line can be traced from the caller's eyes to the target

@@ -240,7 +240,7 @@ void CHAssassin::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/hassassin.mdl");
+	SET_MODEL(edict(), "models/hassassin.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
@@ -543,7 +543,7 @@ bool CHAssassin::CheckMeleeAttack1(float flDot, float flDist)
 
 		const Vector vecDest = pev->origin + Vector(RANDOM_FLOAT(-64, 64), RANDOM_FLOAT(-64, 64), 160);
 
-		UTIL_TraceHull(pev->origin + Vector(0, 0, 36), vecDest + Vector(0, 0, 36), IgnoreMonsters::No, Hull::Human, ENT(pev), &tr);
+		UTIL_TraceHull(pev->origin + Vector(0, 0, 36), vecDest + Vector(0, 0, 36), IgnoreMonsters::No, Hull::Human, edict(), &tr);
 
 		if (tr.fStartSolid || tr.flFraction < 1.0)
 		{
@@ -570,7 +570,7 @@ bool CHAssassin::CheckRangeAttack1(float flDot, float flDist)
 		const Vector vecSrc = GetGunPosition();
 
 		// verify that a bullet fired from the gun will hit the enemy before the world.
-		UTIL_TraceLine(vecSrc, m_hEnemy->BodyTarget(vecSrc), IgnoreMonsters::No, ENT(pev), &tr);
+		UTIL_TraceLine(vecSrc, m_hEnemy->BodyTarget(vecSrc), IgnoreMonsters::No, edict(), &tr);
 
 		if (tr.flFraction == 1 || tr.pHit == m_hEnemy->edict())
 		{

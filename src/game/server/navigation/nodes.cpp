@@ -1305,7 +1305,7 @@ LINK_ENTITY_TO_CLASS(testhull, CTestHull);
 
 void CTestHull::Spawn(CBaseEntity* pMasterNode)
 {
-	SET_MODEL(ENT(pev), "models/player.mdl");
+	SET_MODEL(edict(), "models/player.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
@@ -1647,7 +1647,7 @@ void CTestHull::BuildNodeGraph()
 						if ((step + stepSize) >= (flDist - 1))
 							stepSize = (flDist - step) - 1;
 
-						if (!WALK_MOVE(ENT(pev), flYaw, stepSize, MoveMode))
+						if (!WALK_MOVE(edict(), flYaw, stepSize, MoveMode))
 						{// can't take the next step
 
 							fWalkFailed = true;
@@ -1700,7 +1700,7 @@ void CTestHull::BuildNodeGraph()
 				{
 					TraceResult tr;
 
-					UTIL_TraceHull(pSrcNode->m_vecOrigin + Vector(0, 0, 32), pDestNode->m_vecOriginPeek + Vector(0, 0, 32), IgnoreMonsters::Yes, Hull::Large, ENT(pev), &tr);
+					UTIL_TraceHull(pSrcNode->m_vecOrigin + Vector(0, 0, 32), pDestNode->m_vecOriginPeek + Vector(0, 0, 32), IgnoreMonsters::Yes, Hull::Large, edict(), &tr);
 					if (tr.fStartSolid || tr.flFraction < 1.0)
 					{
 						pTempPool[pSrcNode->m_iFirstLink + j].m_afLinkInfo &= ~bits_LINK_FLY_HULL;

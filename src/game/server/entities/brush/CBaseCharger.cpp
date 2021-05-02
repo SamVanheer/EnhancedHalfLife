@@ -126,7 +126,7 @@ void CBaseCharger::Spawn()
 
 	SetAbsOrigin(pev->origin);		// set size and link into world
 	SetSize(pev->mins, pev->maxs);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	if (m_iCurrentCapacity == CHARGER_NOT_INITIALIZED)
 	{

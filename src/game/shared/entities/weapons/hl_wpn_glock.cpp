@@ -28,7 +28,7 @@ void CGlock::Spawn()
 	pev->classname = MAKE_STRING("weapon_9mmhandgun"); // hack to allow for old names
 	Precache();
 	m_iId = WEAPON_GLOCK;
-	SET_MODEL(ENT(pev), "models/w_9mmhandgun.mdl");
+	SET_MODEL(edict(), "models/w_9mmhandgun.mdl");
 
 	m_iDefaultAmmo = GLOCK_DEFAULT_GIVE;
 
@@ -210,7 +210,7 @@ class CGlockAmmo : public CBasePlayerAmmo
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(ENT(pev), "models/w_9mmclip.mdl");
+		SET_MODEL(edict(), "models/w_9mmclip.mdl");
 		CBasePlayerAmmo::Spawn();
 	}
 	void Precache() override

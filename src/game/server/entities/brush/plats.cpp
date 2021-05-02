@@ -299,7 +299,7 @@ void CFuncPlat::Setup()
 
 	SetAbsOrigin(pev->origin);		// set size and link into world
 	SetSize(pev->mins, pev->maxs);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	// vecPosition1 is the top position, vecPosition2 is the bottom
 	m_vecPosition1 = pev->origin;
@@ -822,7 +822,7 @@ void CFuncTrain::Spawn()
 	else
 		pev->solid = Solid::BSP;
 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 	SetSize(pev->mins, pev->maxs);
 	SetAbsOrigin(pev->origin);
 
@@ -952,7 +952,7 @@ void CFuncTrackTrain::NextThink(float thinkTime, bool alwaysThink)
 void CFuncTrackTrain::Blocked(CBaseEntity* pOther)
 {
 	// Blocker is on-ground on the train
-	if (IsBitSet(pOther->pev->flags, FL_ONGROUND) && VARS(pOther->pev->groundentity) == pev)
+	if (IsBitSet(pOther->pev->flags, FL_ONGROUND) && InstanceOrNull(pOther->pev->groundentity) == this)
 	{
 		const float deltaSpeed = std::min(fabs(pev->speed), 50.0f);
 		if (!pOther->pev->velocity.z)
@@ -1402,7 +1402,7 @@ void CFuncTrackTrain::Spawn()
 		pev->solid = Solid::BSP;
 	pev->movetype = Movetype::Push;
 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	SetSize(pev->mins, pev->maxs);
 	SetAbsOrigin(pev->origin);
@@ -1483,7 +1483,7 @@ void CFuncTrainControls::Spawn()
 {
 	pev->solid = Solid::Not;
 	pev->movetype = Movetype::None;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	SetSize(pev->mins, pev->maxs);
 	SetAbsOrigin(pev->origin);
@@ -2020,7 +2020,7 @@ void CGunTarget::Spawn()
 	pev->movetype = Movetype::Push;
 
 	SetAbsOrigin(pev->origin);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(edict(), STRING(pev->model));
 
 	if (pev->speed == 0)
 		pev->speed = 100;

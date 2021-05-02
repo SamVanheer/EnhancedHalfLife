@@ -146,7 +146,7 @@ void CEnvExplosion::Use(const UseInfo& info)
 
 	const Vector vecSpot = pev->origin + Vector(0, 0, 8); // trace starts here!
 	TraceResult tr;
-	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -40), IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -40), IgnoreMonsters::Yes, edict(), &tr);
 
 	// Pull out of the wall a bit
 	if (tr.flFraction != 1.0)

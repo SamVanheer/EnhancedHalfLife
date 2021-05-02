@@ -43,7 +43,7 @@ public:
 
 void CNullEntity::Spawn()
 {
-	REMOVE_ENTITY(ENT(pev));
+	REMOVE_ENTITY(edict());
 }
 LINK_ENTITY_TO_CLASS(info_null, CNullEntity);
 
@@ -77,7 +77,7 @@ void CBaseEntity::SUB_Remove()
 		ALERT(at_aiconsole, "SUB_Remove called on entity with health > 0\n");
 	}
 
-	REMOVE_ENTITY(ENT(pev));
+	REMOVE_ENTITY(edict());
 }
 
 void CBaseEntity::SUB_DoNothing()
@@ -221,7 +221,7 @@ void CBaseDelay::DelayThink()
 	}
 	// The use type is cached (and stashed) in pev->button
 	SUB_UseTargets(pActivator, (USE_TYPE)pev->button, 0);
-	REMOVE_ENTITY(ENT(pev));
+	REMOVE_ENTITY(edict());
 }
 
 // Global Savedata for Toggle

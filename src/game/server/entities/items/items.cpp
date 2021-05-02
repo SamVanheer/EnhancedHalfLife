@@ -31,7 +31,7 @@ void CItem::Spawn()
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 16));
 	SetTouch(&CItem::ItemTouch);
 
-	if (DROP_TO_FLOOR(ENT(pev)) == 0)
+	if (DROP_TO_FLOOR(edict()) == 0)
 	{
 		ALERT(at_error, "Item %s fell out of level at %f,%f,%f", STRING(pev->classname), pev->origin.x, pev->origin.y, pev->origin.z);
 		UTIL_Remove(this);
@@ -112,7 +112,7 @@ class CItemSuit : public CItem
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(ENT(pev), "models/w_suit.mdl");
+		SET_MODEL(edict(), "models/w_suit.mdl");
 		CItem::Spawn();
 	}
 	void Precache() override
@@ -141,7 +141,7 @@ class CItemBattery : public CItem
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(ENT(pev), "models/w_battery.mdl");
+		SET_MODEL(edict(), "models/w_battery.mdl");
 		CItem::Spawn();
 	}
 	void Precache() override
@@ -194,7 +194,7 @@ class CItemAntidote : public CItem
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(ENT(pev), "models/w_antidote.mdl");
+		SET_MODEL(edict(), "models/w_antidote.mdl");
 		CItem::Spawn();
 	}
 	void Precache() override
@@ -217,7 +217,7 @@ class CItemLongJump : public CItem
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(ENT(pev), "models/w_longjump.mdl");
+		SET_MODEL(edict(), "models/w_longjump.mdl");
 		CItem::Spawn();
 	}
 	void Precache() override

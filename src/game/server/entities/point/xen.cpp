@@ -89,7 +89,7 @@ void CXenPLight::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/light.mdl");
+	SET_MODEL(edict(), "models/light.mdl");
 	pev->movetype = Movetype::None;
 	pev->solid = Solid::Trigger;
 
@@ -279,7 +279,7 @@ void CXenTree::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/tree.mdl");
+	SET_MODEL(edict(), "models/tree.mdl");
 	pev->movetype = Movetype::None;
 	pev->solid = Solid::BBox;
 
@@ -511,7 +511,7 @@ void CXenSpore::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), pModelNames[pev->skin]);
+	SET_MODEL(edict(), pModelNames[pev->skin]);
 	pev->movetype = Movetype::None;
 	pev->solid = Solid::BBox;
 	SetDamageMode(DamageMode::Yes);

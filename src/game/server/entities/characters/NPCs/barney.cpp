@@ -303,7 +303,7 @@ bool CBarney::CheckRangeAttack1(float flDot, float flDist)
 			const Vector shootOrigin = pev->origin + Vector(0, 0, 55);
 			CBaseEntity* pEnemy = m_hEnemy;
 			const Vector shootTarget = ((pEnemy->BodyTarget(shootOrigin) - pEnemy->pev->origin) + m_vecEnemyLKP);
-			UTIL_TraceLine(shootOrigin, shootTarget, IgnoreMonsters::No, ENT(pev), &tr);
+			UTIL_TraceLine(shootOrigin, shootTarget, IgnoreMonsters::No, edict(), &tr);
 			m_checkAttackTime = gpGlobals->time + 1; //TODO: done twice
 
 			m_lastAttackCheck = tr.flFraction == 1.0 || (tr.pHit != nullptr && CBaseEntity::Instance(tr.pHit) == pEnemy);
@@ -371,7 +371,7 @@ void CBarney::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/barney.mdl");
+	SET_MODEL(edict(), "models/barney.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
@@ -737,7 +737,7 @@ LINK_ENTITY_TO_CLASS(monster_barney_dead, CDeadBarney);
 void CDeadBarney::Spawn()
 {
 	PRECACHE_MODEL("models/barney.mdl");
-	SET_MODEL(ENT(pev), "models/barney.mdl");
+	SET_MODEL(edict(), "models/barney.mdl");
 
 	pev->effects = 0;
 	pev->yaw_speed = 8;

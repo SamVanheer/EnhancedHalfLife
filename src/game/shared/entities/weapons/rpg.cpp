@@ -48,7 +48,7 @@ void CLaserSpot::Spawn()
 	pev->renderfx = RenderFX::NoDissipation;
 	pev->renderamt = 255;
 
-	SET_MODEL(ENT(pev), "sprites/laserdot.spr");
+	SET_MODEL(edict(), "sprites/laserdot.spr");
 	SetAbsOrigin(pev->origin);
 }
 
@@ -96,7 +96,7 @@ void CRpgRocket::Spawn()
 	pev->movetype = Movetype::Bounce;
 	pev->solid = Solid::BBox;
 
-	SET_MODEL(ENT(pev), "models/rpgrocket.mdl");
+	SET_MODEL(edict(), "models/rpgrocket.mdl");
 	SetSize(vec3_origin, vec3_origin);
 	SetAbsOrigin(pev->origin);
 
@@ -291,7 +291,7 @@ void CRpg::Spawn()
 	Precache();
 	m_iId = WEAPON_RPG;
 
-	SET_MODEL(ENT(pev), "models/w_rpg.mdl");
+	SET_MODEL(edict(), "models/w_rpg.mdl");
 	m_fSpotActive = true;
 
 #ifdef CLIENT_DLL
@@ -522,7 +522,7 @@ class CRpgAmmo : public CBasePlayerAmmo
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(ENT(pev), "models/w_rpgammo.mdl");
+		SET_MODEL(edict(), "models/w_rpgammo.mdl");
 		CBasePlayerAmmo::Spawn();
 	}
 	void Precache() override

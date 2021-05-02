@@ -40,7 +40,7 @@ IMPLEMENT_SAVERESTORE(CFrictionModifier, CBaseEntity);
 void CFrictionModifier::Spawn()
 {
 	pev->solid = Solid::Trigger;
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	SET_MODEL(edict(), STRING(pev->model));    // set size and link into world
 	pev->movetype = Movetype::None;
 	SetTouch(&CFrictionModifier::ChangeFriction);
 }
@@ -342,7 +342,7 @@ void CBaseTrigger::InitTrigger()
 		SetMovedir(this);
 	pev->solid = Solid::Trigger;
 	pev->movetype = Movetype::None;
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	SET_MODEL(edict(), STRING(pev->model));    // set size and link into world
 	if (CVAR_GET_FLOAT("showtriggers") == 0)
 		SetBits(pev->effects, EF_NODRAW);
 }
@@ -875,7 +875,7 @@ void CLadder::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	SET_MODEL(edict(), STRING(pev->model));    // set size and link into world
 	pev->movetype = Movetype::Push;
 }
 
@@ -1204,7 +1204,7 @@ void CTriggerCamera::Use(const UseInfo& info)
 
 	player->m_hViewEntity = this;
 
-	SET_MODEL(ENT(pev), STRING(pActivator->pev->model));
+	SET_MODEL(edict(), STRING(pActivator->pev->model));
 
 	// follow the player down
 	SetThink(&CTriggerCamera::FollowTarget);

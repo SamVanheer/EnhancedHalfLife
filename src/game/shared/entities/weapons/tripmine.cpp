@@ -84,7 +84,7 @@ void CTripmineGrenade::Spawn()
 	pev->movetype = Movetype::Fly;
 	pev->solid = Solid::Not;
 
-	SET_MODEL(ENT(pev), "models/v_tripmine.mdl");
+	SET_MODEL(edict(), "models/v_tripmine.mdl");
 	pev->frame = 0;
 	pev->body = 3;
 	pev->sequence = TRIPMINE_WORLD;
@@ -332,7 +332,7 @@ void CTripmine::Spawn()
 {
 	Precache();
 	m_iId = WEAPON_TRIPMINE;
-	SET_MODEL(ENT(pev), "models/v_tripmine.mdl");
+	SET_MODEL(edict(), "models/v_tripmine.mdl");
 	pev->frame = 0;
 	pev->body = 3;
 	pev->sequence = TRIPMINE_GROUND;
@@ -411,7 +411,7 @@ void CTripmine::PrimaryAttack()
 	const Vector vecAiming = gpGlobals->v_forward;
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSrc, vecSrc + vecAiming * 128, IgnoreMonsters::No, ENT(m_hPlayer->pev), &tr);
+	UTIL_TraceLine(vecSrc, vecSrc + vecAiming * 128, IgnoreMonsters::No, m_hPlayer->edict(), &tr);
 
 	int flags;
 #ifdef CLIENT_WEAPONS
