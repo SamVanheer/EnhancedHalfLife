@@ -212,7 +212,7 @@ void UTIL_PrecacheOtherWeapon(const char* szClassname)
 		memset(&II, 0, sizeof II);
 	}
 
-	REMOVE_ENTITY(pEntity->edict());
+	UTIL_RemoveNow(pEntity);
 }
 
 void W_Precache()

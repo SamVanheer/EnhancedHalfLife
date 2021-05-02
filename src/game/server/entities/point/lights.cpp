@@ -84,7 +84,7 @@ void CLight::Spawn()
 {
 	if (IsStringNull(pev->targetname))
 	{       // inert light
-		REMOVE_ENTITY(edict());
+		UTIL_RemoveNow(this);
 		return;
 	}
 

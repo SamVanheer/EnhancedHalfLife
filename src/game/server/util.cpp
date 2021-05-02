@@ -1214,6 +1214,13 @@ void UTIL_Remove(CBaseEntity* pEntity)
 	pEntity->pev->targetname = iStringNull;
 }
 
+void UTIL_RemoveNow(CBaseEntity* pEntity)
+{
+	if (!pEntity)
+		return;
+
+	REMOVE_ENTITY(pEntity->edict());
+}
 
 bool UTIL_IsValidEntity(edict_t* pent)
 {
@@ -1233,7 +1240,7 @@ void UTIL_PrecacheOther(const char* szClassname)
 	}
 
 	pEntity->Precache();
-	REMOVE_ENTITY(pEntity->edict());
+	UTIL_RemoveNow(pEntity);
 }
 
 void UTIL_LogPrintf(const char* fmt, ...)

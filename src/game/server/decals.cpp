@@ -91,7 +91,7 @@ void CDecal::Spawn()
 {
 	if (pev->skin < 0 || (g_pGameRules->IsDeathmatch() && IsBitSet(pev->spawnflags, SF_DECAL_NOTINDEATHMATCH)))
 	{
-		REMOVE_ENTITY(edict());
+		UTIL_RemoveNow(this);
 		return;
 	}
 

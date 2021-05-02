@@ -86,7 +86,7 @@ void CEnvGlobal::Spawn()
 {
 	if (IsStringNull(m_globalstate))
 	{
-		REMOVE_ENTITY(edict());
+		UTIL_RemoveNow(this);
 		return;
 	}
 	if (IsBitSet(pev->spawnflags, SF_GLOBAL_SET))
