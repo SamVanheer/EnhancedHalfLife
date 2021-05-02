@@ -198,6 +198,8 @@ CBaseEntity* UTIL_FindEntityByTarget(CBaseEntity* pStartEntity, const char* szNa
 
 CBaseEntity* UTIL_FindEntityGeneric(const char* szName, Vector& vecSrc, float flRadius);
 
+CBaseEntity* UTIL_CreateNamedEntity(string_t className);
+
 /**
 *	@brief Returns a CBasePlayer pointer to a player by index
 *

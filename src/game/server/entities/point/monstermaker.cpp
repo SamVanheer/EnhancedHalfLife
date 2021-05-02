@@ -184,7 +184,7 @@ void CMonsterMaker::MakeMonster()
 		return;
 	}
 
-	auto pEntity = InstanceOrNull(CREATE_NAMED_ENTITY(m_iszMonsterClassname));
+	auto pEntity = UTIL_CreateNamedEntity(m_iszMonsterClassname);
 
 	if (IsNullEnt(pEntity))
 	{

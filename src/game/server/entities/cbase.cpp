@@ -238,8 +238,7 @@ void CBaseEntity::StopSound(SoundChannel channel, const char* fileName)
 
 CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner)
 {
-	//TODO: wrap createnamedentity
-	auto pEntity = InstanceOrNull(CREATE_NAMED_ENTITY(MAKE_STRING(szName)));
+	auto pEntity = UTIL_CreateNamedEntity(MAKE_STRING(szName));
 	if (IsNullEnt(pEntity))
 	{
 		ALERT(at_console, "NULL Ent in Create!\n");

@@ -388,6 +388,28 @@ CBaseEntity* UTIL_FindEntityGeneric(const char* szWhatever, Vector& vecSrc, floa
 	return pEntity;
 }
 
+CBaseEntity* UTIL_CreateNamedEntity(string_t className)
+{
+	auto edict = CREATE_NAMED_ENTITY(className);
+
+	if (IsNullEnt(edict))
+	{
+		return nullptr;
+	}
+
+	auto entity = CBaseEntity::InstanceOrNull(edict);
+
+	if (entity)
+	{
+		return entity;
+	}
+
+	//Cover this edge case with a seperate error message
+	ALERT(at_error, "Couldn't create entity \"%s\" by name!\n", STRING(className));
+
+	REMOVE_ENTITY(edict);
+}
+
 CBasePlayer* UTIL_PlayerByIndex(int playerIndex)
 {
 	if (playerIndex > 0 && playerIndex <= gpGlobals->maxClients)
@@ -1220,19 +1242,15 @@ bool UTIL_IsValidEntity(edict_t* pent)
 
 void UTIL_PrecacheOther(const char* szClassname)
 {
-	edict_t* pent;
-
-	pent = CREATE_NAMED_ENTITY(MAKE_STRING(szClassname));
-	if (IsNullEnt(pent))
+	auto pEntity = UTIL_CreateNamedEntity(MAKE_STRING(szClassname));
+	if (IsNullEnt(pEntity))
 	{
 		ALERT(at_console, "NULL Ent in UTIL_PrecacheOther\n");
 		return;
 	}
 
-	CBaseEntity* pEntity = CBaseEntity::Instance(VARS(pent));
-	if (pEntity)
-		pEntity->Precache();
-	REMOVE_ENTITY(pent);
+	pEntity->Precache();
+	REMOVE_ENTITY(pEntity->edict());
 }
 
 void UTIL_LogPrintf(const char* fmt, ...)

@@ -2634,7 +2634,7 @@ void CBasePlayer::GiveNamedItem(const char* pszName)
 {
 	string_t istr = MAKE_STRING(pszName);
 
-	auto pEntity = InstanceOrNull(CREATE_NAMED_ENTITY(istr));
+	auto pEntity = UTIL_CreateNamedEntity(istr);
 	if (IsNullEnt(pEntity))
 	{
 		ALERT(at_console, "NULL Ent in GiveNamedItem!\n");
