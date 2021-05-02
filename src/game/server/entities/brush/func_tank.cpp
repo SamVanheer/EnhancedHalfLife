@@ -846,7 +846,6 @@ void CFuncTankLaser::Think()
 
 void CFuncTankLaser::Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker)
 {
-	//TODO: need to use pAttacker when calling baseclass
 	if (m_fireLast != 0 && GetLaser())
 	{
 		// TankTrace needs gpGlobals->v_up, etc.
@@ -869,12 +868,12 @@ void CFuncTankLaser::Fire(const Vector& barrelEnd, const Vector& forward, CBaseE
 				laser->FireAtPoint(tr);
 				laser->pev->nextthink = 0;
 			}
-			CFuncTank::Fire(barrelEnd, forward, this);
+			CFuncTank::Fire(barrelEnd, forward, pAttacker);
 		}
 	}
 	else
 	{
-		CFuncTank::Fire(barrelEnd, forward, this);
+		CFuncTank::Fire(barrelEnd, forward, pAttacker);
 	}
 }
 
@@ -895,7 +894,6 @@ void CFuncTankRocket::Precache()
 
 void CFuncTankRocket::Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker)
 {
-	//TODO: need to use pAttacker when calling baseclass
 	if (m_fireLast != 0)
 	{
 		const int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
@@ -905,11 +903,11 @@ void CFuncTankRocket::Fire(const Vector& barrelEnd, const Vector& forward, CBase
 			{
 				CBaseEntity* pRocket = CBaseEntity::Create("rpg_rocket", barrelEnd, pev->angles, this);
 			}
-			CFuncTank::Fire(barrelEnd, forward, this);
+			CFuncTank::Fire(barrelEnd, forward, pAttacker);
 		}
 	}
 	else
-		CFuncTank::Fire(barrelEnd, forward, this);
+		CFuncTank::Fire(barrelEnd, forward, pAttacker);
 }
 
 class CFuncTankMortar : public CFuncTank
@@ -934,7 +932,6 @@ void CFuncTankMortar::KeyValue(KeyValueData* pkvd)
 
 void CFuncTankMortar::Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker)
 {
-	//TODO: use pAttacker when calling baseclass
 	if (m_fireLast != 0)
 	{
 		const int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
@@ -950,11 +947,11 @@ void CFuncTankMortar::Fire(const Vector& barrelEnd, const Vector& forward, CBase
 
 			UTIL_CreateExplosion(tr.vecEndPos, pev->angles, this, pev->impulse, true);
 
-			CFuncTank::Fire(barrelEnd, forward, this);
+			CFuncTank::Fire(barrelEnd, forward, pAttacker);
 		}
 	}
 	else
-		CFuncTank::Fire(barrelEnd, forward, this);
+		CFuncTank::Fire(barrelEnd, forward, pAttacker);
 }
 
 /**
