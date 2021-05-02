@@ -72,7 +72,7 @@ constexpr int SF_BUBBLES_STARTOFF = 0x0001;
 void CBubbling::Spawn()
 {
 	Precache();
-	SET_MODEL(edict(), STRING(pev->model));		// Set size
+	SetModel(STRING(pev->model));		// Set size
 
 	pev->solid = Solid::Not;							// Remove model & collisions
 	pev->renderamt = 0;								// The engine won't draw this model if this is set to 0 and blending is on
@@ -1083,7 +1083,7 @@ void CGlow::Spawn()
 	pev->frame = 0;
 
 	PRECACHE_MODEL(STRING(pev->model));
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
 	if (m_maxFrame > 1.0 && pev->framerate != 0)
@@ -1124,7 +1124,7 @@ void CSprite::Spawn()
 	pev->frame = 0;
 
 	Precache();
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
 	if (!IsStringNull(pev->targetname) && !(pev->spawnflags & SF_SPRITE_STARTON))
@@ -2120,7 +2120,7 @@ void CItemSoda::Spawn()
 	pev->solid = Solid::Not;
 	pev->movetype = Movetype::Toss;
 
-	SET_MODEL(edict(), "models/can.mdl");
+	SetModel("models/can.mdl");
 	SetSize(vec3_origin, vec3_origin);
 
 	SetThink(&CItemSoda::CanThink);

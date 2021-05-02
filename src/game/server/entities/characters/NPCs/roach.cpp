@@ -101,7 +101,7 @@ void CRoach::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/roach.mdl");
+	SetModel("models/roach.mdl");
 	SetSize(Vector(-1, -1, 0), Vector(1, 1, 2));
 
 	pev->solid = Solid::SlideBox;

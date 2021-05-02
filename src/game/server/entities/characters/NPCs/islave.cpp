@@ -498,7 +498,7 @@ void CISlave::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/islave.mdl");
+	SetModel("models/islave.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;

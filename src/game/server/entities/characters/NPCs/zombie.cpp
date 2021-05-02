@@ -241,7 +241,7 @@ void CZombie::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/zombie.mdl");
+	SetModel("models/zombie.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;

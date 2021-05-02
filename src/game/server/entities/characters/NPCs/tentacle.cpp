@@ -239,7 +239,7 @@ void CTentacle::Spawn()
 	pev->health = 75;
 	pev->sequence = 0;
 
-	SET_MODEL(edict(), "models/tentacle2.mdl");
+	SetModel("models/tentacle2.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	SetDamageMode(DamageMode::Aim);
@@ -962,7 +962,7 @@ LINK_ENTITY_TO_CLASS(monster_tentaclemaw, CTentacleMaw);
 void CTentacleMaw::Spawn()
 {
 	Precache();
-	SET_MODEL(edict(), "models/maw.mdl");
+	SetModel("models/maw.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = Solid::Not;

@@ -59,7 +59,7 @@ void CFuncWall::Spawn()
 	pev->angles = vec3_origin;
 	pev->movetype = Movetype::Push;  // so it doesn't get pushed by anything
 	pev->solid = Solid::BSP;
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	// If it can't move/go away, it's really part of the world
 	pev->flags |= FL_WORLDBRUSH;
@@ -208,7 +208,7 @@ void CFuncIllusionary::Spawn()
 	pev->angles = vec3_origin;
 	pev->movetype = Movetype::None;
 	pev->solid = Solid::Not;// always solid_not 
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	// I'd rather eat the network bandwidth of this than figure out how to save/restore
 	// these entities after they have been moved to the client, or respawn them ala Quake
@@ -408,7 +408,7 @@ void CFuncRotating::Spawn()
 	}
 
 	SetAbsOrigin(pev->origin);
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	SetUse(&CFuncRotating::RotatingUse);
 	// did level designer forget to assign speed?
@@ -743,7 +743,7 @@ void CPendulum::Spawn()
 		pev->solid = Solid::BSP;
 	pev->movetype = Movetype::Push;
 	SetAbsOrigin(pev->origin);
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	if (m_distance == 0)
 		return;

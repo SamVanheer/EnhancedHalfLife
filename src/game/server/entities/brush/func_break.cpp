@@ -153,7 +153,7 @@ void CBreakable::Spawn()
 		pev->playerclass = 1;
 	}
 
-	SET_MODEL(edict(), STRING(pev->model));//set size and link into world.
+	SetModel(STRING(pev->model));//set size and link into world.
 
 	SetTouch(&CBreakable::BreakTouch);
 	if (IsBitSet(pev->spawnflags, SF_BREAK_TRIGGER_ONLY))		// Only break on trigger
@@ -789,7 +789,7 @@ void CPushable::Spawn()
 
 	pev->movetype = Movetype::PushStep;
 	pev->solid = Solid::BBox;
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	if (pev->friction > 399)
 		pev->friction = 399;

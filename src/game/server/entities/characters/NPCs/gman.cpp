@@ -102,7 +102,7 @@ void CGMan::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/gman.mdl");
+	SetModel("models/gman.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;

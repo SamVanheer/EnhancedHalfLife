@@ -159,7 +159,7 @@ void CBloater::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/floater.mdl");
+	SetModel("models/floater.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;

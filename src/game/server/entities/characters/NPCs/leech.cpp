@@ -173,9 +173,9 @@ const char* CLeech::pAlertSounds[] =
 void CLeech::Spawn()
 {
 	Precache();
-	SET_MODEL(edict(), "models/leech.mdl");
+	SetModel("models/leech.mdl");
 	// Just for fun
-	//	SET_MODEL(edict(), "models/icky.mdl");
+	//	SetModel( "models/icky.mdl");
 
 //	SetSize( vec3_origin, vec3_origin );
 	SetSize(Vector(-1, -1, 0), Vector(1, 1, 2));

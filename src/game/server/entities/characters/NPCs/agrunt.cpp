@@ -547,7 +547,7 @@ void CAGrunt::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/agrunt.mdl");
+	SetModel("models/agrunt.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = Solid::SlideBox;

@@ -917,7 +917,7 @@ void CHGrunt::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/hgrunt.mdl");
+	SetModel("models/hgrunt.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
@@ -2332,7 +2332,7 @@ LINK_ENTITY_TO_CLASS(monster_hgrunt_dead, CDeadHGrunt);
 void CDeadHGrunt::Spawn()
 {
 	PRECACHE_MODEL("models/hgrunt.mdl");
-	SET_MODEL(edict(), "models/hgrunt.mdl");
+	SetModel("models/hgrunt.mdl");
 
 	pev->effects = 0;
 	pev->yaw_speed = 8;

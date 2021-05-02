@@ -310,7 +310,7 @@ void CGrenade::Spawn()
 
 	pev->solid = Solid::BBox;
 
-	SET_MODEL(edict(), "models/grenade.mdl");
+	SetModel("models/grenade.mdl");
 	SetSize(vec3_origin, vec3_origin);
 
 	pev->dmg = 100;
@@ -376,7 +376,7 @@ CGrenade* CGrenade::ShootTimed(CBaseEntity* pOwner, Vector vecStart, Vector vecV
 	pGrenade->pev->gravity = 0.5;
 	pGrenade->pev->friction = 0.8;
 
-	SET_MODEL(pGrenade->edict(), "models/w_grenade.mdl");
+	pGrenade->SetModel("models/w_grenade.mdl");
 	pGrenade->pev->dmg = 100;
 
 	return pGrenade;

@@ -34,7 +34,7 @@ void CEgon::Spawn()
 {
 	Precache();
 	m_iId = WEAPON_EGON;
-	SET_MODEL(edict(), "models/w_egon.mdl");
+	SetModel("models/w_egon.mdl");
 
 	m_iDefaultAmmo = EGON_DEFAULT_GIVE;
 
@@ -512,7 +512,7 @@ class CEgonAmmo : public CBasePlayerAmmo
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(edict(), "models/w_chainammo.mdl");
+		SetModel("models/w_chainammo.mdl");
 		CBasePlayerAmmo::Spawn();
 	}
 	void Precache() override

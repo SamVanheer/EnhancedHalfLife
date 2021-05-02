@@ -210,7 +210,7 @@ void CFuncTank::Spawn()
 
 	pev->movetype = Movetype::Push;  // so it doesn't get pushed by anything
 	pev->solid = Solid::BSP;
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	m_yawCenter = pev->angles.y;
 	m_pitchCenter = pev->angles.x;
@@ -1020,7 +1020,7 @@ void CFuncTankControls::Spawn()
 	pev->solid = Solid::Trigger;
 	pev->movetype = Movetype::None;
 	pev->effects |= EF_NODRAW;
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	SetSize(pev->mins, pev->maxs);
 	SetAbsOrigin(pev->origin);

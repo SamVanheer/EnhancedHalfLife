@@ -716,7 +716,7 @@ void CGib::Spawn(const char* szGibModel)
 	pev->solid = Solid::SlideBox;/// hopefully this will fix the VELOCITY TOO LOW crap
 	pev->classname = MAKE_STRING("gib");
 
-	SET_MODEL(edict(), szGibModel);
+	SetModel(szGibModel);
 	SetSize(vec3_origin, vec3_origin);
 
 	pev->nextthink = gpGlobals->time + 4;

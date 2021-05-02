@@ -300,7 +300,7 @@ void CHoundeye::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/houndeye.mdl");
+	SetModel("models/houndeye.mdl");
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 36));
 
 	pev->solid = Solid::SlideBox;

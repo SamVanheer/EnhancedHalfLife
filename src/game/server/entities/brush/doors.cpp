@@ -282,7 +282,7 @@ void CBaseDoor::Spawn()
 
 	pev->movetype = Movetype::Push;
 	SetAbsOrigin(pev->origin);
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	if (pev->speed == 0)
 		pev->speed = 100;
@@ -757,7 +757,7 @@ void CRotDoor::Spawn()
 
 	pev->movetype = Movetype::Push;
 	SetAbsOrigin(pev->origin);
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	if (pev->speed == 0)
 		pev->speed = 100;
@@ -823,7 +823,7 @@ void CMomentaryDoor::Spawn()
 	pev->movetype = Movetype::Push;
 
 	SetAbsOrigin(pev->origin);
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	if (pev->speed == 0)
 		pev->speed = 100;

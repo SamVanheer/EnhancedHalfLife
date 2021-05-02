@@ -974,7 +974,7 @@ void CWeaponBox::Spawn()
 
 	SetSize(vec3_origin, vec3_origin);
 
-	SET_MODEL(edict(), "models/w_weaponbox.mdl");
+	SetModel("models/w_weaponbox.mdl");
 }
 
 void CWeaponBox::Kill()

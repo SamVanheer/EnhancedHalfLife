@@ -118,7 +118,7 @@ void CApache::Spawn()
 	pev->movetype = Movetype::Fly;
 	pev->solid = Solid::BBox;
 
-	SET_MODEL(edict(), "models/apache.mdl");
+	SetModel("models/apache.mdl");
 	SetSize(Vector(-32, -32, -64), Vector(32, 32, 0));
 	SetAbsOrigin(pev->origin);
 
@@ -350,7 +350,7 @@ void CApache::DyingThink()
 		if (/*!(pev->spawnflags & SF_NOWRECKAGE) && */(pev->flags & FL_ONGROUND))
 		{
 			CBaseEntity* pWreckage = Create("cycler_wreckage", pev->origin, pev->angles);
-			// SET_MODEL( ENT(pWreckage->pev), STRING(pev->model) );
+			// pWreckage->SetModel(STRING(pev->model));
 			pWreckage->SetSize(Vector(-200, -200, -128), Vector(200, 200, -32));
 			pWreckage->pev->frame = pev->frame;
 			pWreckage->pev->sequence = pev->sequence;
@@ -937,7 +937,7 @@ void CApacheHVR::Spawn()
 	pev->movetype = Movetype::Fly;
 	pev->solid = Solid::BBox;
 
-	SET_MODEL(edict(), "models/HVR.mdl");
+	SetModel("models/HVR.mdl");
 	SetSize(vec3_origin, vec3_origin);
 	SetAbsOrigin(pev->origin);
 

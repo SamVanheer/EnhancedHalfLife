@@ -449,6 +449,11 @@ public:
 	void SetAbsOrigin(const Vector& origin);
 	void SetSize(const Vector& mins, const Vector& maxs);
 
+	void SetModel(const char* modelName)
+	{
+		SET_MODEL(edict(), modelName);
+	}
+
 	DamageMode GetDamageMode() const { return static_cast<DamageMode>(pev->takedamage); }
 
 	void SetDamageMode(DamageMode mode)

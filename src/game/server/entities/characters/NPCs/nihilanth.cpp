@@ -282,7 +282,7 @@ void CNihilanth::Spawn()
 	pev->movetype = Movetype::Fly;
 	pev->solid = Solid::BBox;
 
-	SET_MODEL(edict(), "models/nihilanth.mdl");
+	SetModel("models/nihilanth.mdl");
 	// SetSize( Vector( -300, -300, 0), Vector(300, 300, 512));
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 	SetAbsOrigin(pev->origin);
@@ -1276,10 +1276,10 @@ void CNihilanthHVR::CircleInit(CBaseEntity* pTarget)
 	pev->movetype = Movetype::Noclip;
 	pev->solid = Solid::Not;
 
-	// SET_MODEL(edict(), "sprites/flare6.spr");
+	// SetModel( "sprites/flare6.spr");
 	// pev->scale = 3.0;
-	// SET_MODEL(edict(), "sprites/xspark4.spr");
-	SET_MODEL(edict(), "sprites/muzzleflash3.spr");
+	// SetModel( "sprites/xspark4.spr");
+	SetModel("sprites/muzzleflash3.spr");
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 224;
 	pev->rendercolor.z = 192;
@@ -1378,7 +1378,7 @@ void CNihilanthHVR::ZapInit(CBaseEntity* pEnemy)
 	pev->movetype = Movetype::Fly;
 	pev->solid = Solid::BBox;
 
-	SET_MODEL(edict(), "sprites/nhth1.spr");
+	SetModel("sprites/nhth1.spr");
 
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;
@@ -1502,7 +1502,7 @@ void CNihilanthHVR::TeleportInit(CNihilanth* pOwner, CBaseEntity* pEnemy, CBaseE
 	pev->rendercolor.z = 255;
 	pev->velocity.z *= 0.2;
 
-	SET_MODEL(edict(), "sprites/exit1.spr");
+	SetModel("sprites/exit1.spr");
 
 	m_hNihilanth = pOwner;
 	m_hEnemy = pEnemy;
@@ -1526,7 +1526,7 @@ void CNihilanthHVR::GreenBallInit()
 	pev->rendercolor.z = 255;
 	pev->scale = 1.0;
 
-	SET_MODEL(edict(), "sprites/exit1.spr");
+	SetModel("sprites/exit1.spr");
 
 	SetTouch(&CNihilanthHVR::RemoveTouch);
 }

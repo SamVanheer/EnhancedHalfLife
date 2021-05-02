@@ -95,7 +95,7 @@ void CBarnacle::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/barnacle.mdl");
+	SetModel("models/barnacle.mdl");
 	SetSize(Vector(-16, -16, -32), Vector(16, 16, 0));
 
 	pev->solid = Solid::SlideBox;

@@ -112,7 +112,7 @@ class CItemSuit : public CItem
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(edict(), "models/w_suit.mdl");
+		SetModel("models/w_suit.mdl");
 		CItem::Spawn();
 	}
 	void Precache() override
@@ -141,7 +141,7 @@ class CItemBattery : public CItem
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(edict(), "models/w_battery.mdl");
+		SetModel("models/w_battery.mdl");
 		CItem::Spawn();
 	}
 	void Precache() override
@@ -194,7 +194,7 @@ class CItemAntidote : public CItem
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(edict(), "models/w_antidote.mdl");
+		SetModel("models/w_antidote.mdl");
 		CItem::Spawn();
 	}
 	void Precache() override
@@ -217,7 +217,7 @@ class CItemLongJump : public CItem
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(edict(), "models/w_longjump.mdl");
+		SetModel("models/w_longjump.mdl");
 		CItem::Spawn();
 	}
 	void Precache() override

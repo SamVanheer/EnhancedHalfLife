@@ -315,7 +315,7 @@ void CController::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/controller.mdl");
+	SetModel("models/controller.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = Solid::SlideBox;
@@ -1046,7 +1046,7 @@ void CControllerHeadBall::Spawn()
 	pev->movetype = Movetype::Fly;
 	pev->solid = Solid::BBox;
 
-	SET_MODEL(edict(), "sprites/xspark4.spr");
+	SetModel("sprites/xspark4.spr");
 	pev->rendermode = RenderMode::TransAdd;
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;
@@ -1227,7 +1227,7 @@ void CControllerZapBall::Spawn()
 	pev->movetype = Movetype::Fly;
 	pev->solid = Solid::BBox;
 
-	SET_MODEL(edict(), "sprites/xspark4.spr");
+	SetModel("sprites/xspark4.spr");
 	pev->rendermode = RenderMode::TransAdd;
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;

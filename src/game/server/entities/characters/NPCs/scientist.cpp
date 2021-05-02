@@ -625,7 +625,7 @@ void CScientist::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/scientist.mdl");
+	SetModel("models/scientist.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = Solid::SlideBox;
@@ -1065,7 +1065,7 @@ LINK_ENTITY_TO_CLASS(monster_scientist_dead, CDeadScientist);
 void CDeadScientist::Spawn()
 {
 	PRECACHE_MODEL("models/scientist.mdl");
-	SET_MODEL(edict(), "models/scientist.mdl");
+	SetModel("models/scientist.mdl");
 
 	pev->effects = 0;
 	pev->sequence = 0;
@@ -1158,7 +1158,7 @@ enum SITTING_ANIM
 void CSittingScientist::Spawn()
 {
 	PRECACHE_MODEL("models/scientist.mdl");
-	SET_MODEL(edict(), "models/scientist.mdl");
+	SetModel("models/scientist.mdl");
 	Precache();
 	InitBoneControllers();
 

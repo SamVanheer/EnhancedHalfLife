@@ -106,7 +106,7 @@ void CFuncMortarField::KeyValue(KeyValueData* pkvd)
 void CFuncMortarField::Spawn()
 {
 	pev->solid = Solid::Not;
-	SET_MODEL(edict(), STRING(pev->model));    // set size and link into world
+	SetModel(STRING(pev->model));    // set size and link into world
 	pev->movetype = Movetype::None;
 	SetBits(pev->effects, EF_NODRAW);
 	SetUse(&CFuncMortarField::FieldUse);

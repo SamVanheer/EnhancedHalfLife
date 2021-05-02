@@ -61,7 +61,7 @@ void CRat::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/bigrat.mdl");
+	SetModel("models/bigrat.mdl");
 	SetSize(vec3_origin, vec3_origin);
 
 	pev->solid = Solid::SlideBox;

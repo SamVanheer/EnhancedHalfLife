@@ -141,7 +141,7 @@ bool CBaseEntity::Restore(CRestore& restore)
 
 
 		PRECACHE_MODEL(STRING(pev->model));
-		SET_MODEL(edict(), STRING(pev->model));
+		SetModel(STRING(pev->model));
 		SetSize(mins, maxs);	// Reset them
 	}
 

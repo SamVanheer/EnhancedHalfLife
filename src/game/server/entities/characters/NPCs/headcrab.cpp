@@ -264,7 +264,7 @@ void CHeadCrab::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/headcrab.mdl");
+	SetModel("models/headcrab.mdl");
 	SetSize(Vector(-12, -12, 0), Vector(12, 12, 24));
 
 	pev->solid = Solid::SlideBox;
@@ -450,7 +450,7 @@ LINK_ENTITY_TO_CLASS(monster_babycrab, CBabyCrab);
 void CBabyCrab::Spawn()
 {
 	CHeadCrab::Spawn();
-	SET_MODEL(edict(), "models/baby_headcrab.mdl");
+	SetModel("models/baby_headcrab.mdl");
 	pev->rendermode = RenderMode::TransTexture;
 	pev->renderamt = 192;
 	SetSize(Vector(-12, -12, 0), Vector(12, 12, 24));

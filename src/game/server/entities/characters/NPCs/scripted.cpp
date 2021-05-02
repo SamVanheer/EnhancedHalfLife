@@ -1053,7 +1053,7 @@ LINK_ENTITY_TO_CLASS(monster_furniture, CFurniture);
 void CFurniture::Spawn()
 {
 	PRECACHE_MODEL(STRING(pev->model));
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	pev->movetype = Movetype::None;
 	pev->solid = Solid::BBox;
