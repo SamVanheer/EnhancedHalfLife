@@ -1122,7 +1122,7 @@ void CBasePlayer::StartDeathCam()
 			iRand--;
 		}
 
-		CopyToBodyQue(pev);
+		CopyToBodyQue(this);
 
 		SetAbsOrigin(pSpot->pev->origin);
 		pev->angles = pev->v_angle = pSpot->pev->v_angle;
@@ -1131,7 +1131,7 @@ void CBasePlayer::StartDeathCam()
 	{
 		// no intermission spot. Push them up in the air, looking down at their corpse
 		TraceResult tr;
-		CopyToBodyQue(pev);
+		CopyToBodyQue(this);
 		UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, 128), IgnoreMonsters::Yes, edict(), &tr);
 
 		SetAbsOrigin(tr.vecEndPos);

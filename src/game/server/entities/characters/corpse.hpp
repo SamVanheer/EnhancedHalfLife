@@ -23,13 +23,13 @@ class CCorpse : public CBaseEntity
 	int ObjectCaps() override { return FCAP_DONT_SAVE; }
 };
 
-inline edict_t* g_pBodyQueueHead = nullptr;
+inline CBaseEntity* g_pBodyQueueHead = nullptr;
 
 void InitBodyQue();
 
 /**
 *	@brief make a body que entry for the given ent so the ent can be respawned elsewhere
 *
-*	GLOBALS ASSUMED SET:  g_eoBodyQueueHead
+*	GLOBALS ASSUMED SET:  g_pBodyQueueHead
 */
-void CopyToBodyQue(entvars_t* pev);
+void CopyToBodyQue(CBaseEntity* pEntity);

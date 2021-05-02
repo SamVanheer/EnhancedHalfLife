@@ -24,49 +24,47 @@ void InitBodyQue()
 {
 	string_t istrClassname = MAKE_STRING("bodyque");
 
-	g_pBodyQueueHead = CREATE_NAMED_ENTITY(istrClassname);
-	entvars_t* pev = VARS(g_pBodyQueueHead);
+	g_pBodyQueueHead = UTIL_CreateNamedEntity(istrClassname);
+	auto pEntity = g_pBodyQueueHead;
 
 	// Reserve 3 more slots for dead bodies
 	for (int i = 0; i < 3; i++)
 	{
-		pev->owner = CREATE_NAMED_ENTITY(istrClassname);
-		pev = VARS(pev->owner);
+		pEntity->SetOwner(UTIL_CreateNamedEntity(istrClassname));
+		pEntity = pEntity->GetOwner();
 	}
 
-	pev->owner = g_pBodyQueueHead;
+	pEntity->SetOwner(g_pBodyQueueHead);
 }
 
-void CopyToBodyQue(entvars_t* pev)
+void CopyToBodyQue(CBaseEntity* pEntity)
 {
-	if (pev->effects & EF_NODRAW)
+	if (pEntity->pev->effects & EF_NODRAW)
 		return;
 
-	entvars_t* pevHead = VARS(g_pBodyQueueHead);
+	g_pBodyQueueHead->pev->angles = pEntity->pev->angles;
+	g_pBodyQueueHead->pev->model = pEntity->pev->model;
+	g_pBodyQueueHead->pev->modelindex = pEntity->pev->modelindex;
+	g_pBodyQueueHead->pev->frame = pEntity->pev->frame;
+	g_pBodyQueueHead->pev->colormap = pEntity->pev->colormap;
+	g_pBodyQueueHead->pev->movetype = Movetype::Toss;
+	g_pBodyQueueHead->pev->velocity = pEntity->pev->velocity;
+	g_pBodyQueueHead->pev->flags = 0;
+	g_pBodyQueueHead->pev->deadflag = pEntity->pev->deadflag;
+	g_pBodyQueueHead->pev->renderfx = RenderFX::DeadPlayer;
+	g_pBodyQueueHead->pev->renderamt = pEntity->entindex();
 
-	pevHead->angles = pev->angles;
-	pevHead->model = pev->model;
-	pevHead->modelindex = pev->modelindex;
-	pevHead->frame = pev->frame;
-	pevHead->colormap = pev->colormap;
-	pevHead->movetype = Movetype::Toss;
-	pevHead->velocity = pev->velocity;
-	pevHead->flags = 0;
-	pevHead->deadflag = pev->deadflag;
-	pevHead->renderfx = RenderFX::DeadPlayer;
-	pevHead->renderamt = ENTINDEX(ENT(pev));
+	g_pBodyQueueHead->pev->effects = pEntity->pev->effects | EF_NOINTERP;
+	//g_pBodyQueueHead->pev->goalstarttime = pEntity->pev->goalstarttime;
+	//g_pBodyQueueHead->pev->goalframe	= pEntity->pev->goalframe;
+	//g_pBodyQueueHead->pev->goalendtime = pEntity->pev->goalendtime;
 
-	pevHead->effects = pev->effects | EF_NOINTERP;
-	//pevHead->goalstarttime = pev->goalstarttime;
-	//pevHead->goalframe	= pev->goalframe;
-	//pevHead->goalendtime = pev->goalendtime ;
+	g_pBodyQueueHead->pev->sequence = pEntity->pev->sequence;
+	g_pBodyQueueHead->pev->animtime = pEntity->pev->animtime;
 
-	pevHead->sequence = pev->sequence;
-	pevHead->animtime = pev->animtime;
-
-	SET_ORIGIN(g_pBodyQueueHead, pev->origin);
-	UTIL_SetSize(pevHead, pev->mins, pev->maxs);
-	g_pBodyQueueHead = pevHead->owner;
+	g_pBodyQueueHead->SetAbsOrigin(pEntity->pev->origin);
+	UTIL_SetSize(g_pBodyQueueHead->pev, pEntity->pev->mins, pEntity->pev->maxs);
+	g_pBodyQueueHead = g_pBodyQueueHead->GetOwner();
 }
 
 constexpr int DEADHEV_BODYGROUP_HEAD = 1;

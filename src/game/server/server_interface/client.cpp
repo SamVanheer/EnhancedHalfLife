@@ -102,7 +102,7 @@ void respawn(CBaseEntity* pEntity, bool fCopyCorpse)
 		if (fCopyCorpse)
 		{
 			// make a copy of the dead body for appearances sake
-			CopyToBodyQue(pEntity->pev);
+			CopyToBodyQue(pEntity);
 		}
 
 		// respawn player
