@@ -24,6 +24,7 @@
 #include "effects.h"
 
 class CBasePlayer;
+class CBasePlayerWeapon;
 struct weapon_data_t;
 
 /**
@@ -334,7 +335,7 @@ public:
 
 	virtual bool UpdateClientData(CBasePlayer* pPlayer) { return false; }
 
-	virtual CBasePlayerItem* GetWeaponPtr() { return nullptr; }
+	virtual CBasePlayerWeapon* GetWeaponPtr() { return nullptr; }
 
 	virtual void GetWeaponData(weapon_data_t& data) {}
 	virtual void SetWeaponData(const weapon_data_t& data) {}
@@ -454,7 +455,7 @@ public:
 
 	void PrintState();
 
-	CBasePlayerItem* GetWeaponPtr() override { return (CBasePlayerItem*)this; }
+	CBasePlayerWeapon* GetWeaponPtr() override { return this; }
 
 	/**
 	*	@brief An accurate way of calcualting the next attack time.

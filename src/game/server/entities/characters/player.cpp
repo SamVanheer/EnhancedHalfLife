@@ -2180,9 +2180,7 @@ void CBasePlayer::PostThink()
 		{
 			while (pPlayerItem)
 			{
-				CBasePlayerWeapon* gun;
-
-				gun = (CBasePlayerWeapon*)pPlayerItem->GetWeaponPtr();
+				CBasePlayerWeapon* gun = pPlayerItem->GetWeaponPtr();
 
 				if (gun && gun->UseDecrement())
 				{

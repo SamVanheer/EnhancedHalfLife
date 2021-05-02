@@ -1192,8 +1192,7 @@ int GetWeaponData(edict_t* player, weapon_data_t* info)
 			// there's a weapon here. Should I pack it?
 			while (pPlayerItem)
 			{
-				CBasePlayerWeapon* gun = dynamic_cast<CBasePlayerWeapon*>(pPlayerItem->GetWeaponPtr());
-				if (gun && gun->UseDecrement())
+				if (CBasePlayerWeapon* gun = pPlayerItem->GetWeaponPtr(); gun && gun->UseDecrement())
 				{
 					// Get The ID.
 					ItemInfo II{};
@@ -1296,8 +1295,7 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 
 			if (pl->m_hActiveItem)
 			{
-				CBasePlayerWeapon* gun = (CBasePlayerWeapon*)pl->m_hActiveItem->GetWeaponPtr();
-				if (gun && gun->UseDecrement())
+				if (CBasePlayerWeapon* gun = pl->m_hActiveItem->GetWeaponPtr(); gun && gun->UseDecrement())
 				{
 					ItemInfo II{};
 					gun->GetItemInfo(&II);
