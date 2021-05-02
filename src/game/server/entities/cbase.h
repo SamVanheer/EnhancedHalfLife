@@ -443,6 +443,16 @@ public:
 		pev->takedamage = static_cast<int>(mode);
 	}
 
+	CBaseEntity* GetOwner()
+	{
+		return InstanceOrNull(pev->owner);
+	}
+
+	void SetOwner(CBaseEntity* owner)
+	{
+		pev->owner = EdictOrNull(owner);
+	}
+
 	/**
 	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
 	*	This version is used by Monsters.
