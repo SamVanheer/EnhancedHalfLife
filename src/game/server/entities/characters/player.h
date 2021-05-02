@@ -301,8 +301,6 @@ public:
 	bool HasPlayerItem(CBasePlayerItem* pCheckItem);
 	bool HasNamedPlayerItem(const char* pszItemName);
 	bool HasWeapons();//!< do I have ANY weapons?
-	void SelectPrevItem(int iItem);
-	void SelectNextItem(int iItem);
 	void SelectLastItem();
 
 	/**

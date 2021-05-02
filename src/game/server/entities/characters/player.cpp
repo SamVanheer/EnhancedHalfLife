@@ -2426,51 +2426,6 @@ bool CBasePlayer::Restore(CRestore& restore)
 	return status;
 }
 
-void CBasePlayer::SelectNextItem(int iItem)
-{
-	//TODO: this function is never used (index based switching is pretty useless)
-	CBasePlayerItem* pItem = m_hPlayerItems[iItem];
-
-	if (!pItem)
-		return;
-
-	if (pItem == m_hActiveItem)
-	{
-		// select the next one in the chain
-		pItem = pItem->m_hNext;
-		if (!pItem)
-		{
-			return;
-		}
-
-		CBasePlayerItem* pLast;
-		pLast = pItem;
-		while (pLast->m_hNext)
-			pLast = pLast->m_hNext;
-
-		// relink chain
-		pLast->m_hNext = m_hActiveItem;
-		m_hActiveItem->m_hNext = nullptr;
-		m_hPlayerItems[iItem] = pItem;
-	}
-
-	ResetAutoaim();
-
-	// FIX, this needs to queue them up and delay
-	if (auto activeItem = m_hActiveItem.Get(); activeItem)
-	{
-		activeItem->Holster();
-	}
-
-	m_hActiveItem = pItem;
-
-	if (auto activeItem = m_hActiveItem.Get(); activeItem)
-	{
-		activeItem->Deploy();
-		activeItem->UpdateItemInfo();
-	}
-}
-
 void CBasePlayer::SelectItem(const char* pstr)
 {
 	if (!pstr)
@@ -2527,11 +2482,6 @@ bool CBasePlayer::HasWeapons()
 	}
 
 	return false;
-}
-
-void CBasePlayer::SelectPrevItem(int iItem)
-{
-	//TODO: does nothing, never used, remove
 }
 
 const char* CBasePlayer::TeamID()
