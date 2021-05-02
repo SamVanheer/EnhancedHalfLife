@@ -265,7 +265,7 @@ LINK_ENTITY_TO_CLASS(func_water, CBaseDoor);
 void CBaseDoor::Spawn()
 {
 	Precache();
-	SetMovedir(pev);
+	SetMovedir(this);
 
 	if (pev->skin == 0)
 	{//normal door
@@ -817,7 +817,7 @@ IMPLEMENT_SAVERESTORE(CMomentaryDoor, CBaseToggle);
 
 void CMomentaryDoor::Spawn()
 {
-	SetMovedir(pev);
+	SetMovedir(this);
 
 	pev->solid = Solid::BSP;
 	pev->movetype = Movetype::Push;

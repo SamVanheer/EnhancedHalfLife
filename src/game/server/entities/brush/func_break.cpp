@@ -708,7 +708,7 @@ void CBreakable::Die()
 	SetThink(&CBreakable::SUB_Remove);
 	pev->nextthink = pev->ltime + 0.1;
 	if (!IsStringNull(m_iszSpawnObject))
-		CBaseEntity::Create(STRING(m_iszSpawnObject), GetBrushModelOrigin(pev), pev->angles, this);
+		CBaseEntity::Create(STRING(m_iszSpawnObject), GetBrushModelOrigin(this), pev->angles, this);
 
 	if (Explodable())
 	{

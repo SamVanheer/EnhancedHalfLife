@@ -1282,28 +1282,28 @@ void UTIL_StripToken(const char* pKey, char* pDest)
 	pDest[i] = 0;
 }
 
-void SetMovedir(entvars_t* pev)
+void SetMovedir(CBaseEntity* pEntity)
 {
-	if (pev->angles == Vector(0, -1, 0))
+	if (pEntity->pev->angles == Vector(0, -1, 0))
 	{
-		pev->movedir = vec3_up;
+		pEntity->pev->movedir = vec3_up;
 	}
-	else if (pev->angles == Vector(0, -2, 0))
+	else if (pEntity->pev->angles == Vector(0, -2, 0))
 	{
-		pev->movedir = vec3_down;
+		pEntity->pev->movedir = vec3_down;
 	}
 	else
 	{
-		UTIL_MakeVectors(pev->angles);
-		pev->movedir = gpGlobals->v_forward;
+		UTIL_MakeVectors(pEntity->pev->angles);
+		pEntity->pev->movedir = gpGlobals->v_forward;
 	}
 
-	pev->angles = vec3_origin;
+	pEntity->pev->angles = vec3_origin;
 }
 
-Vector GetBrushModelOrigin(entvars_t* pevBModel)
+Vector GetBrushModelOrigin(CBaseEntity* pBModel)
 {
-	return pevBModel->absmin + (pevBModel->size * 0.5);
+	return pBModel->pev->absmin + (pBModel->pev->size * 0.5);
 }
 
 int UTIL_CountPlayers()

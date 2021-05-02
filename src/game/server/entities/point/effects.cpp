@@ -139,7 +139,7 @@ void CBubbling::KeyValue(KeyValueData* pkvd)
 
 void CBubbling::FizzThink()
 {
-	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, GetBrushModelOrigin(pev));
+	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, GetBrushModelOrigin(this));
 	WRITE_BYTE(TE_FIZZ);
 	WRITE_SHORT((short)ENTINDEX(edict()));
 	WRITE_SHORT((short)m_bubbleModel);
@@ -1373,7 +1373,7 @@ void CGibShooter::Spawn()
 		m_flGibLife = 25;
 	}
 
-	SetMovedir(pev);
+	SetMovedir(this);
 	pev->body = MODEL_FRAMES(m_iGibModelIndex);
 }
 
@@ -1659,7 +1659,7 @@ void CBlood::Spawn()
 	pev->movetype = Movetype::None;
 	pev->effects = 0;
 	pev->frame = 0;
-	SetMovedir(pev);
+	SetMovedir(this);
 }
 
 void CBlood::KeyValue(KeyValueData* pkvd)

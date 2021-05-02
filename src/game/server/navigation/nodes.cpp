@@ -107,7 +107,7 @@ CBaseEntity* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 
 				// trace from the node to the trigger, make sure it's one we can see from the node.
 				// !!!HACKHACK Use bodyqueue here cause there are no ents we really wish to ignore!
-				UTIL_TraceLine(pNode->m_vecOrigin, GetBrushModelOrigin(pSearch->pev), IgnoreMonsters::Yes, g_pBodyQueueHead->edict(), &tr);
+				UTIL_TraceLine(pNode->m_vecOrigin, GetBrushModelOrigin(pSearch), IgnoreMonsters::Yes, g_pBodyQueueHead->edict(), &tr);
 
 				if (tr.pHit == pSearch->edict())
 				{// good to go!

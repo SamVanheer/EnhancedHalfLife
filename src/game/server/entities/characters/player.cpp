@@ -1277,7 +1277,7 @@ void CBasePlayer::PlayerUse()
 			// !!!PERFORMANCE- should this check be done on a per case basis AFTER we've determined that
 			// this object is actually usable? This dot is being done for every object within PLAYER_SEARCH_RADIUS
 			// when player hits the use key. How many objects can be in that area, anyway? (sjb)
-			vecLOS = (GetBrushModelOrigin(pObject->pev) - (pev->origin + pev->view_ofs));
+			vecLOS = (GetBrushModelOrigin(pObject) - (pev->origin + pev->view_ofs));
 
 			// This essentially moves the origin of the target to the corner nearest the player to test to see 
 			// if it's "hull" is in the view cone

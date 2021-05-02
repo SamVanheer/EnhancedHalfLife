@@ -379,12 +379,12 @@ void UTIL_StripToken(const char* pKey, char* pDest);
 /**
 *	@brief QuakeEd only writes a single float for angles (bad idea), so up and down are just constant angles.
 */
-void SetMovedir(entvars_t* pev);
+void SetMovedir(CBaseEntity* pEntity);
 
 /**
 *	@brief calculates origin of a bmodel from absmin/size because all bmodel origins are 0 0 0
 */
-Vector GetBrushModelOrigin(entvars_t* pevBModel);
+Vector GetBrushModelOrigin(CBaseEntity* pBModel);
 
 //
 // How did I ever live without ASSERT?

@@ -139,7 +139,7 @@ LINK_ENTITY_TO_CLASS(func_conveyor, CFuncConveyor);
 
 void CFuncConveyor::Spawn()
 {
-	SetMovedir(pev);
+	SetMovedir(this);
 	CFuncWall::Spawn();
 
 	if (!(pev->spawnflags & SF_CONVEYOR_VISUAL))
@@ -512,7 +512,7 @@ void CFuncRotating::HurtTouch(CBaseEntity* pOther)
 
 	pOther->TakeDamage({this, this, pev->dmg, DMG_CRUSH});
 
-	pOther->pev->velocity = (pOther->pev->origin - GetBrushModelOrigin(pev)).Normalize() * pev->dmg;
+	pOther->pev->velocity = (pOther->pev->origin - GetBrushModelOrigin(this)).Normalize() * pev->dmg;
 }
 
 constexpr int FANPITCHMIN = 30;
@@ -866,7 +866,7 @@ void CPendulum::Touch(CBaseEntity* pOther)
 
 	pOther->TakeDamage({this, this, damage, DMG_CRUSH});
 
-	pOther->pev->velocity = (pOther->pev->origin - GetBrushModelOrigin(pev)).Normalize() * damage;
+	pOther->pev->velocity = (pOther->pev->origin - GetBrushModelOrigin(this)).Normalize() * damage;
 }
 
 void CPendulum::RopeTouch(CBaseEntity* pOther)

@@ -53,12 +53,12 @@ bool CBaseEntity::TakeDamage(const TakeDamageInfo& info)
 	Vector vecTemp;
 	if (info.GetAttacker() == info.GetInflictor())
 	{
-		vecTemp = info.GetInflictor()->pev->origin - (GetBrushModelOrigin(pev));
+		vecTemp = info.GetInflictor()->pev->origin - (GetBrushModelOrigin(this));
 	}
 	else
 		// an actual missile was involved.
 	{
-		vecTemp = info.GetInflictor()->pev->origin - (GetBrushModelOrigin(pev));
+		vecTemp = info.GetInflictor()->pev->origin - (GetBrushModelOrigin(this));
 	}
 
 	// this global is still used for glass and other non-monster killables, along with decals.

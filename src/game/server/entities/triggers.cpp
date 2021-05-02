@@ -339,7 +339,7 @@ void CBaseTrigger::InitTrigger()
 	// trigger angles are used for one-way touches.  An angle of 0 is assumed
 	// to mean no restrictions, so use a yaw of 360 instead.
 	if (pev->angles != vec3_origin)
-		SetMovedir(pev);
+		SetMovedir(this);
 	pev->solid = Solid::Trigger;
 	pev->movetype = Movetype::None;
 	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
@@ -588,7 +588,7 @@ LINK_ENTITY_TO_CLASS(trigger_monsterjump, CTriggerMonsterJump);
 
 void CTriggerMonsterJump::Spawn()
 {
-	SetMovedir(pev);
+	SetMovedir(this);
 
 	InitTrigger();
 
