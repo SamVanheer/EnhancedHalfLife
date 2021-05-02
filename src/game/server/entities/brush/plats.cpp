@@ -24,7 +24,9 @@
 #include "cbase.h"
 #include "trains.h"
 
-static void PlatSpawnInsideTrigger(entvars_t* pevPlatform);
+class CFuncPlat;
+
+static void PlatSpawnInsideTrigger(CFuncPlat* pPlatform);
 
 constexpr int SF_PLAT_TOGGLE = 0x0001;
 
@@ -319,7 +321,7 @@ void CFuncPlat::Precache()
 	//PRECACHE_SOUND("plats/platmove1.wav");
 	//PRECACHE_SOUND("plats/platstop1.wav");
 	if (!IsTogglePlat())
-		PlatSpawnInsideTrigger(pev);		// the "start moving" trigger
+		PlatSpawnInsideTrigger(this);		// the "start moving" trigger
 }
 
 void CFuncPlat::Spawn()
@@ -343,9 +345,9 @@ void CFuncPlat::Spawn()
 	}
 }
 
-static void PlatSpawnInsideTrigger(entvars_t* pevPlatform)
+static void PlatSpawnInsideTrigger(CFuncPlat* pPlatform)
 {
-	GetClassPtr((CPlatTrigger*)nullptr)->SpawnInsideTrigger(GetClassPtr((CFuncPlat*)pevPlatform));
+	GetClassPtr((CPlatTrigger*)nullptr)->SpawnInsideTrigger(pPlatform);
 }
 
 void CPlatTrigger::SpawnInsideTrigger(CFuncPlat* pPlatform)
@@ -480,7 +482,7 @@ void CFuncPlat::Blocked(CBaseEntity* pOther)
 {
 	ALERT(at_aiconsole, "%s Blocked by %s\n", STRING(pev->classname), STRING(pOther->pev->classname));
 	// Hurt the blocker a little
-	pOther->TakeDamage({pev, pev, 1, DMG_CRUSH});
+	pOther->TakeDamage({this, this, 1, DMG_CRUSH});
 
 	if (!IsStringNull(pev->noiseMovement))
 		StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
@@ -526,7 +528,7 @@ void CFuncPlatRot::SetupRotation()
 {
 	if (m_vecFinalAngle.x != 0)		// This plat rotates too!
 	{
-		CBaseToggle::AxisDir(pev);
+		CBaseToggle::AxisDir(this);
 		m_start = pev->angles;
 		m_end = pev->angles + pev->movedir * m_vecFinalAngle.x;
 	}
@@ -653,7 +655,7 @@ void CFuncTrain::Blocked(CBaseEntity* pOther)
 
 	m_flActivateFinished = gpGlobals->time + 0.5;
 
-	pOther->TakeDamage({pev, pev, pev->dmg, DMG_CRUSH});
+	pOther->TakeDamage({this, this, pev->dmg, DMG_CRUSH});
 }
 
 void CFuncTrain::Use(const UseInfo& info)
@@ -949,24 +951,22 @@ void CFuncTrackTrain::NextThink(float thinkTime, bool alwaysThink)
 
 void CFuncTrackTrain::Blocked(CBaseEntity* pOther)
 {
-	entvars_t* pevOther = pOther->pev;
-
 	// Blocker is on-ground on the train
-	if (IsBitSet(pevOther->flags, FL_ONGROUND) && VARS(pevOther->groundentity) == pev)
+	if (IsBitSet(pOther->pev->flags, FL_ONGROUND) && VARS(pOther->pev->groundentity) == pev)
 	{
 		const float deltaSpeed = std::min(fabs(pev->speed), 50.0f);
-		if (!pevOther->velocity.z)
-			pevOther->velocity.z += deltaSpeed;
+		if (!pOther->pev->velocity.z)
+			pOther->pev->velocity.z += deltaSpeed;
 		return;
 	}
 	else
-		pevOther->velocity = (pevOther->origin - pev->origin).Normalize() * pev->dmg;
+		pOther->pev->velocity = (pOther->pev->origin - pev->origin).Normalize() * pev->dmg;
 
 	ALERT(at_aiconsole, "TRAIN(%s): Blocked by %s (dmg:%.2f)\n", STRING(pev->targetname), STRING(pOther->pev->classname), pev->dmg);
 	if (pev->dmg <= 0)
 		return;
 	// we can't hurt this thing, so we're not concerned with it
-	pOther->TakeDamage({pev, pev, pev->dmg, DMG_CRUSH});
+	pOther->TakeDamage({this, this, pev->dmg, DMG_CRUSH});
 }
 
 void CFuncTrackTrain::Use(const UseInfo& info)
@@ -1255,17 +1255,17 @@ void CFuncTrackTrain::DeadEnd()
 		ALERT(at_aiconsole, "\n");
 }
 
-void CFuncTrackTrain::SetControls(entvars_t* pevControls)
+void CFuncTrackTrain::SetControls(CBaseEntity* pControls)
 {
-	const Vector offset = pevControls->origin - pev->oldorigin;
+	const Vector offset = pControls->pev->origin - pev->oldorigin;
 
-	m_controlMins = pevControls->mins + offset;
-	m_controlMaxs = pevControls->maxs + offset;
+	m_controlMins = pControls->pev->mins + offset;
+	m_controlMaxs = pControls->pev->maxs + offset;
 }
 
-bool CFuncTrackTrain::OnControls(entvars_t* pevTest)
+bool CFuncTrackTrain::OnControls(CBaseEntity* pTest)
 {
-	const Vector offset = pevTest->origin - pev->origin;
+	const Vector offset = pTest->pev->origin - pev->origin;
 
 	if (pev->spawnflags & SF_TRACKTRAIN_NOCONTROL)
 		return false;
@@ -1292,15 +1292,14 @@ void CFuncTrackTrain::Find()
 	if (!path)
 		return;
 
-	entvars_t* pevTarget = path->pev;
-	if (!ClassnameIs(pevTarget, "path_track"))
+	if (!ClassnameIs(path->pev, "path_track"))
 	{
 		ALERT(at_error, "func_track_train must be on a path of path_track\n");
 		m_hPath = nullptr;
 		return;
 	}
 
-	Vector nextPos = pevTarget->origin;
+	Vector nextPos = path->pev->origin;
 	nextPos.z += m_height;
 
 	Vector look = nextPos;
@@ -1476,7 +1475,7 @@ void CFuncTrainControls::Find()
 	}
 
 	CFuncTrackTrain* ptrain = CFuncTrackTrain::Instance(pTarget);
-	ptrain->SetControls(pev);
+	ptrain->SetControls(this);
 	UTIL_Remove(this);
 }
 
@@ -1620,7 +1619,6 @@ void CFuncTrackChange::Touch(CBaseEntity* pOther)
 {
 #if 0
 	TRAIN_CODE code;
-	entvars_t* pevToucher = pOther->pev;
 #endif
 }
 

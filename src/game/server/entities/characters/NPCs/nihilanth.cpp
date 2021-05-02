@@ -522,7 +522,7 @@ void CNihilanth::DyingThink()
 	MESSAGE_END();
 
 	GetAttachment(0, vecSrc, vecAngles);
-	CNihilanthHVR* pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, edict());
+	CNihilanthHVR* pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, this);
 	pEntity->pev->velocity = Vector(RANDOM_FLOAT(-0.7, 0.7), RANDOM_FLOAT(-0.7, 0.7), 1.0) * 600.0;
 	pEntity->GreenBallInit();
 }
@@ -585,7 +585,7 @@ void CNihilanth::ShootBalls()
 				// vecDir = (m_posTarget - vecSrc).Normalize( );
 				Vector vecDir = (m_posTarget - pev->origin).Normalize();
 				vecSrc = vecSrc + vecDir * (gpGlobals->time - m_flShootTime);
-				CNihilanthHVR* pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, edict());
+				CNihilanthHVR* pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, this);
 				pEntity->pev->velocity = vecDir * 200.0;
 				pEntity->ZapInit(m_hEnemy);
 
@@ -594,7 +594,7 @@ void CNihilanth::ShootBalls()
 				// vecDir = (m_posTarget - vecSrc).Normalize( );
 				vecDir = (m_posTarget - pev->origin).Normalize();
 				vecSrc = vecSrc + vecDir * (gpGlobals->time - m_flShootTime);
-				pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, edict());
+				pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, this);
 				pEntity->pev->velocity = vecDir * 200.0;
 				pEntity->ZapInit(m_hEnemy);
 			}
@@ -663,7 +663,7 @@ void CNihilanth::NextActivity()
 			if (ball)
 			{
 				ball->SetTransparency(RenderMode::TransAdd, 255, 255, 255, 255, RenderFX::NoDissipation);
-				ball->SetAttachment(edict(), 1);
+				ball->SetAttachment(this, 1);
 				ball->SetScale(4.0);
 				ball->pev->framerate = 10.0;
 				ball->TurnOn();
@@ -981,7 +981,7 @@ bool CNihilanth::EmitSphere()
 		return false;
 
 	const Vector vecSrc = m_hRecharger->pev->origin;
-	CNihilanthHVR* pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, edict());
+	CNihilanthHVR* pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, this);
 	pEntity->pev->velocity = pev->origin - vecSrc;
 	pEntity->CircleInit(this);
 
@@ -1077,7 +1077,7 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 
 				Vector vecSrc, vecAngles;
 				GetAttachment(2, vecSrc, vecAngles);
-				CNihilanthHVR* pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, edict());
+				CNihilanthHVR* pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, this);
 				pEntity->pev->velocity = pev->origin - vecSrc;
 				pEntity->TeleportInit(this, m_hEnemy, pTrigger, pTouch);
 			}
@@ -1143,7 +1143,7 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 		{
 			Vector vecSrc, vecAngles;
 			GetAttachment(2, vecSrc, vecAngles);
-			CNihilanthHVR* pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, edict());
+			CNihilanthHVR* pEntity = (CNihilanthHVR*)Create("nihilanth_energy_ball", vecSrc, pev->angles, this);
 			pEntity->pev->velocity = pev->origin - vecSrc;
 			pEntity->ZapInit(m_hEnemy);
 		}
@@ -1152,7 +1152,7 @@ void CNihilanth::HandleAnimEvent(AnimationEvent& event)
 		/*
 		Vector vecSrc, vecAngles;
 		GetAttachment( 0, vecSrc, vecAngles );
-		CNihilanthHVR *pEntity = (CNihilanthHVR *)Create( "nihilanth_energy_ball", vecSrc, pev->angles, edict() );
+		CNihilanthHVR *pEntity = (CNihilanthHVR *)Create( "nihilanth_energy_ball", vecSrc, pev->angles, this );
 		pEntity->pev->velocity = Vector ( RANDOM_FLOAT( -0.7, 0.7 ), RANDOM_FLOAT( -0.7, 0.7 ), 1.0 ) * 600.0;
 		pEntity->GreenBallInit( );
 		*/
@@ -1198,7 +1198,7 @@ void CNihilanth::CommandUse(const UseInfo& info)
 
 bool CNihilanth::TakeDamage(const TakeDamageInfo& info)
 {
-	if (info.GetInflictor()->owner == edict())
+	if (info.GetInflictor()->pev->owner == edict())
 		return false;
 
 	if (info.GetDamage() >= pev->health)
@@ -1423,8 +1423,8 @@ void CNihilanthHVR::ZapThink()
 		if (CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit); pEntity != nullptr && pEntity->pev->takedamage)
 		{
 			ClearMultiDamage();
-			pEntity->TraceAttack({pev, gSkillData.nihilanthZap, pev->velocity, tr, DMG_SHOCK});
-			ApplyMultiDamage(pev, pev);
+			pEntity->TraceAttack({this, gSkillData.nihilanthZap, pev->velocity, tr, DMG_SHOCK});
+			ApplyMultiDamage(this, this);
 		}
 
 		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
@@ -1477,7 +1477,7 @@ void CNihilanthHVR::ZapTouch(CBaseEntity* pOther)
 {
 	UTIL_EmitAmbientSound(edict(), pev->origin, "weapons/electro4.wav", 1.0, ATTN_NORM, 0, RANDOM_LONG(90, 95));
 
-	RadiusDamage(pev, pev, 50, CLASS_NONE, DMG_SHOCK);
+	RadiusDamage(this, this, 50, CLASS_NONE, DMG_SHOCK);
 	pev->velocity = pev->velocity * 0;
 
 	/*

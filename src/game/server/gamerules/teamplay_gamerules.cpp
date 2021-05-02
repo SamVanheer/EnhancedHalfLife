@@ -258,8 +258,8 @@ void CHalfLifeTeamplay::ChangePlayerTeam(CBasePlayer* pPlayer, const char* pTeam
 		m_DisableDeathMessages = true;
 		m_DisableDeathPenalty = true;
 
-		entvars_t* pevWorld = VARS(INDEXENT(0));
-		pPlayer->TakeDamage({pevWorld, pevWorld, 900, damageFlags});
+		CBaseEntity* pWorld = UTIL_EntityByIndex(0);
+		pPlayer->TakeDamage({pWorld, pWorld, 900, damageFlags});
 
 		m_DisableDeathMessages = false;
 		m_DisableDeathPenalty = false;
@@ -334,33 +334,28 @@ void CHalfLifeTeamplay::ClientUserInfoChanged(CBasePlayer* pPlayer, char* infobu
 	RecountTeams(true);
 }
 
-void CHalfLifeTeamplay::DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pevInflictor)
+void CHalfLifeTeamplay::DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor)
 {
 	if (m_DisableDeathMessages)
 		return;
 
-	if (pVictim && pKiller && pKiller->flags & FL_CLIENT)
+	if (pVictim && pKiller && pKiller->pev->flags & FL_CLIENT)
 	{
-		CBasePlayer* pk = (CBasePlayer*)CBaseEntity::Instance(pKiller);
-
-		if (pk)
+		if ((pKiller != pVictim) && (PlayerRelationship(pVictim, pKiller) == GR_TEAMMATE))
 		{
-			if ((pk != pVictim) && (PlayerRelationship(pVictim, pk) == GR_TEAMMATE))
-			{
-				MESSAGE_BEGIN(MessageDest::All, gmsgDeathMsg);
-				WRITE_BYTE(ENTINDEX(ENT(pKiller)));		// the killer
-				WRITE_BYTE(ENTINDEX(pVictim->edict()));	// the victim
-				WRITE_STRING("teammate");		// flag this as a teammate kill
-				MESSAGE_END();
-				return;
-			}
+			MESSAGE_BEGIN(MessageDest::All, gmsgDeathMsg);
+			WRITE_BYTE(pKiller->entindex());	// the killer
+			WRITE_BYTE(pVictim->entindex());	// the victim
+			WRITE_STRING("teammate");			// flag this as a teammate kill
+			MESSAGE_END();
+			return;
 		}
 	}
 
-	CHalfLifeMultiplay::DeathNotice(pVictim, pKiller, pevInflictor);
+	CHalfLifeMultiplay::DeathNotice(pVictim, pKiller, pInflictor);
 }
 
-void CHalfLifeTeamplay::PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor)
+void CHalfLifeTeamplay::PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor)
 {
 	if (!m_DisableDeathPenalty)
 	{

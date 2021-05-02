@@ -446,12 +446,12 @@ void CBarney::TalkInit()
 	m_voicePitch = 100;
 }
 
-bool IsFacing(entvars_t* pevTest, const Vector& reference)
+bool IsFacing(CBaseEntity* pTest, const Vector& reference)
 {
-	Vector vecDir = reference - pevTest->origin;
+	Vector vecDir = reference - pTest->pev->origin;
 	vecDir.z = 0;
 	vecDir = vecDir.Normalize();
-	Vector angle = pevTest->v_angle;
+	Vector angle = pTest->pev->v_angle;
 	angle.x = 0;
 	Vector forward;
 	AngleVectors(angle, &forward, nullptr, nullptr);
@@ -466,7 +466,7 @@ bool CBarney::TakeDamage(const TakeDamageInfo& info)
 	if (!IsAlive() || pev->deadflag == DeadFlag::Dying)
 		return ret;
 
-	if (m_MonsterState != NPCState::Prone && (info.GetAttacker()->flags & FL_CLIENT))
+	if (m_MonsterState != NPCState::Prone && (info.GetAttacker()->pev->flags & FL_CLIENT))
 	{
 		m_flPlayerDamage += info.GetDamage();
 

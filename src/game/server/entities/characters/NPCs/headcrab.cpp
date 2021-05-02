@@ -331,7 +331,7 @@ void CHeadCrab::LeapTouch(CBaseEntity* pOther)
 	{
 		EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pBiteSounds), GetSoundVolue(), ATTN_IDLE, GetVoicePitch());
 
-		pOther->TakeDamage({pev, pev, GetDamageAmount(), DMG_SLASH});
+		pOther->TakeDamage({this, this, GetDamageAmount(), DMG_SLASH});
 	}
 
 	SetTouch(nullptr);

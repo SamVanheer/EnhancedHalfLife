@@ -646,7 +646,7 @@ void COsprey::DyingThink()
 
 		EmitSound(SoundChannel::Static, "weapons/mortarhit.wav", VOL_NORM, 0.3);
 
-		RadiusDamage(pev->origin, pev, pev, 300, CLASS_NONE, DMG_BLAST);
+		RadiusDamage(pev->origin, this, this, 300, CLASS_NONE, DMG_BLAST);
 
 		// gibs
 		vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;

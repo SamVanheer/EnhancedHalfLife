@@ -419,7 +419,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 
 		EmitSound(SoundChannel::Weapon, "hassault/hw_shoot1.wav", VOL_NORM, ATTN_NORM, RANDOM_LONG(130, 160));
 		// StopSound(SoundChannel::Weapon, "debris/zap4.wav" );
-		ApplyMultiDamage(pev, pev);
+		ApplyMultiDamage(this, this);
 
 		m_flNextAttack = gpGlobals->time + RANDOM_FLOAT(0.5, 4.0);
 	}
@@ -539,7 +539,7 @@ void CISlave::Precache()
 bool CISlave::TakeDamage(const TakeDamageInfo& info)
 {
 	// don't slash one of your own
-	if ((info.GetDamageTypes() & DMG_SLASH) && info.GetAttacker() && GetRelationship(Instance(info.GetAttacker())) < Relationship::Dislike)
+	if ((info.GetDamageTypes() & DMG_SLASH) && info.GetAttacker() && GetRelationship(info.GetAttacker()) < Relationship::Dislike)
 		return false;
 
 	m_afMemory |= bits_MEMORY_PROVOKED;
@@ -763,7 +763,7 @@ void CISlave::ZapBeam(int side)
 
 	if (CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit); pEntity != nullptr && pEntity->pev->takedamage)
 	{
-		pEntity->TraceAttack({pev, gSkillData.slaveDmgZap, vecAim, tr, DMG_SHOCK});
+		pEntity->TraceAttack({this, gSkillData.slaveDmgZap, vecAim, tr, DMG_SHOCK});
 	}
 	UTIL_EmitAmbientSound(ENT(pev), tr.vecEndPos, "weapons/electro4.wav", 0.5, ATTN_NORM, 0, RANDOM_LONG(140, 160));
 }

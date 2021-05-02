@@ -410,7 +410,7 @@ void CIchthyosaur::HandleAnimEvent(AnimationEvent& event)
 					pHurt->pev->angles.z = 0;
 					pHurt->pev->fixangle = FixAngleMode::Absolute;
 				}
-				pHurt->TakeDamage({pev, pev, gSkillData.ichthyosaurDmgShake, DMG_SLASH});
+				pHurt->TakeDamage({this, this, gSkillData.ichthyosaurDmgShake, DMG_SLASH});
 			}
 		}
 		BiteSound();

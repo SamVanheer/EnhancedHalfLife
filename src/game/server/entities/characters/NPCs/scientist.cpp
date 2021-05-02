@@ -722,7 +722,7 @@ void CScientist::TalkInit()
 
 bool CScientist::TakeDamage(const TakeDamageInfo& info)
 {
-	if (info.GetInflictor() && info.GetInflictor()->flags & FL_CLIENT)
+	if (info.GetInflictor() && info.GetInflictor()->pev->flags & FL_CLIENT)
 	{
 		Remember(bits_MEMORY_PROVOKED);
 		StopFollowing(true);

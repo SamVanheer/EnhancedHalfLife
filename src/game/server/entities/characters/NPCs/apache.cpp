@@ -345,7 +345,7 @@ void CApache::DyingThink()
 
 		EmitSound(SoundChannel::Static, "weapons/mortarhit.wav", VOL_NORM, 0.3);
 
-		RadiusDamage(pev->origin, pev, pev, 300, CLASS_NONE, DMG_BLAST);
+		RadiusDamage(pev->origin, this, this, 300, CLASS_NONE, DMG_BLAST);
 
 		if (/*!(pev->spawnflags & SF_NOWRECKAGE) && */(pev->flags & FL_ONGROUND))
 		{
@@ -750,7 +750,7 @@ void CApache::FireRocket()
 	WRITE_BYTE(12); // framerate
 	MESSAGE_END();
 
-	if (CBaseEntity* pRocket = CBaseEntity::Create("hvr_rocket", vecSrc, pev->angles, edict()); pRocket)
+	if (CBaseEntity* pRocket = CBaseEntity::Create("hvr_rocket", vecSrc, pev->angles, this); pRocket)
 		pRocket->pev->velocity = pev->velocity + gpGlobals->v_forward * 100;
 
 	m_iRockets--;
@@ -860,7 +860,7 @@ void CApache::ShowDamage()
 
 bool CApache::TakeDamage(const TakeDamageInfo& info)
 {
-	if (info.GetInflictor()->owner == edict())
+	if (info.GetInflictor()->pev->owner == edict())
 		return false;
 
 	TakeDamageInfo adjustedInfo = info;

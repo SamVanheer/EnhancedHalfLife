@@ -307,7 +307,7 @@ void CTurret::Spawn()
 
 	auto glow = m_hEyeGlow = CSprite::SpriteCreate(TURRET_GLOW_SPRITE.data(), pev->origin, false);
 	glow->SetTransparency(RenderMode::Glow, 255, 0, 0, 0, RenderFX::NoDissipation);
-	glow->SetAttachment(edict(), 2);
+	glow->SetAttachment(this, 2);
 	m_eyeBrightness = 0;
 
 	pev->nextthink = gpGlobals->time + 0.3;
@@ -487,7 +487,7 @@ void CBaseTurret::ActiveThink()
 	Vector vecMidEnemy = m_hEnemy->BodyTarget(vecMid);
 
 	// Look for our current enemy
-	bool fEnemyVisible = IsBoxVisible(pev, m_hEnemy->pev, vecMidEnemy);
+	bool fEnemyVisible = IsBoxVisible(this, m_hEnemy, vecMidEnemy);
 
 	const Vector vecDirToEnemy = vecMidEnemy - vecMid;	// calculate dir and dist to enemy
 	float flDistToEnemy = vecDirToEnemy.Length();
@@ -550,7 +550,7 @@ void CBaseTurret::ActiveThink()
 		{
 			m_vecGoalAngles.y = RANDOM_FLOAT(0, 360);
 			m_vecGoalAngles.x = RANDOM_FLOAT(0, 90) - 90 * static_cast<int>(m_iOrientation);
-			TakeDamage({pev, pev, 1, DMG_GENERIC}); // don't beserk forever
+			TakeDamage({this, this, 1, DMG_GENERIC}); // don't beserk forever
 			return;
 		}
 	}
@@ -1194,7 +1194,7 @@ void CSentry::SentryTouch(CBaseEntity* pOther)
 {
 	if (pOther && (pOther->IsPlayer() || (pOther->pev->flags & FL_MONSTER)))
 	{
-		TakeDamage({pOther->pev, pOther->pev, 0, 0});
+		TakeDamage({pOther, pOther, 0, 0});
 	}
 }
 

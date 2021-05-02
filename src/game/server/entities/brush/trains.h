@@ -94,8 +94,8 @@ public:
 	void		NextThink(float thinkTime, bool alwaysThink);
 
 	void SetTrack(CPathTrack* track) { m_hPath = track->Nearest(pev->origin); }
-	void SetControls(entvars_t* pevControls);
-	bool OnControls(entvars_t* pev) override;
+	void SetControls(CBaseEntity* pControls);
+	bool OnControls(CBaseEntity* pTest) override;
 
 	void StopSound();
 

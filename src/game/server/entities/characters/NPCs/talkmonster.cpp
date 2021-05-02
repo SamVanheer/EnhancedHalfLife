@@ -612,10 +612,10 @@ void CTalkMonster::RunTask(Task_t* pTask)
 void CTalkMonster::Killed(const KilledInfo& info)
 {
 	// If a client killed me (unless I was already Barnacle'd), make everyone else mad/afraid of him
-	if ((info.GetAttacker()->flags & FL_CLIENT) && m_MonsterState != NPCState::Prone)
+	if ((info.GetAttacker()->pev->flags & FL_CLIENT) && m_MonsterState != NPCState::Prone)
 	{
 		AlertFriends();
-		LimitFollowers(CBaseEntity::Instance(info.GetAttacker()), 0);
+		LimitFollowers(info.GetAttacker(), 0);
 	}
 
 	m_hTargetEnt = nullptr;
@@ -1100,7 +1100,7 @@ bool CTalkMonster::TakeDamage(const TakeDamageInfo& info)
 	if (IsAlive())
 	{
 		// if player damaged this entity, have other friends talk about it
-		if (info.GetAttacker() && m_MonsterState != NPCState::Prone && IsBitSet(info.GetAttacker()->flags, FL_CLIENT))
+		if (info.GetAttacker() && m_MonsterState != NPCState::Prone && IsBitSet(info.GetAttacker()->pev->flags, FL_CLIENT))
 		{
 			if (CBaseEntity* pFriend = FindNearestFriend(false); pFriend && pFriend->IsAlive())
 			{

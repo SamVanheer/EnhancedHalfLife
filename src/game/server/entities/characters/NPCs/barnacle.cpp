@@ -83,7 +83,7 @@ void CBarnacle::HandleAnimEvent(AnimationEvent& event)
 	switch (event.event)
 	{
 	case BARNACLE_AE_PUKEGIB:
-		CGib::SpawnRandomGibs(pev, 1, 1);
+		CGib::SpawnRandomGibs(this, 1, 1);
 		break;
 	default:
 		CBaseMonster::HandleAnimEvent(event);
@@ -182,7 +182,7 @@ void CBarnacle::BarnacleThink()
 
 				if (CBaseMonster* pVictim = m_hEnemy->MyMonsterPointer(); pVictim)
 				{
-					pVictim->BarnacleVictimBitten(pev);
+					pVictim->BarnacleVictimBitten(this);
 					SetActivity(ACT_EAT);
 				}
 			}
@@ -200,7 +200,7 @@ void CBarnacle::BarnacleThink()
 				// kill!
 				if (pVictim)
 				{
-					pVictim->TakeDamage({pev, pev, pVictim->pev->health, DMG_SLASH | DMG_ALWAYSGIB});
+					pVictim->TakeDamage({this, this, pVictim->pev->health, DMG_SLASH | DMG_ALWAYSGIB});
 					m_cGibs = 3;
 				}
 
@@ -217,7 +217,7 @@ void CBarnacle::BarnacleThink()
 				case 2:	EmitSound(SoundChannel::Weapon, "barnacle/bcl_chew3.wav");	break;
 				}
 
-				pVictim->BarnacleVictimBitten(pev);
+				pVictim->BarnacleVictimBitten(this);
 			}
 		}
 	}
@@ -238,7 +238,7 @@ void CBarnacle::BarnacleThink()
 		if (m_cGibs && RANDOM_LONG(0, 99) == 1)
 		{
 			// cough up a gib.
-			CGib::SpawnRandomGibs(pev, 1, 1);
+			CGib::SpawnRandomGibs(this, 1, 1);
 			m_cGibs--;
 
 			switch (RANDOM_LONG(0, 2))

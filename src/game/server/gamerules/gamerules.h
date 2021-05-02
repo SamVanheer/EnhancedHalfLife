@@ -196,12 +196,12 @@ public:
 	/**
 	*	@brief Called each time a player dies
 	*/
-	virtual void PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor) = 0;
+	virtual void PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) = 0;
 
 	/**
 	*	@brief Call this from within a GameRules class to report an obituary.
 	*/
-	virtual void DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor) = 0;
+	virtual void DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) = 0;
 
 // Weapon retrieval
 	/**
@@ -386,8 +386,8 @@ public:
 	bool AllowAutoTargetCrosshair() override;
 
 	int PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) override;
-	void PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor) override;
-	void DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor) override;
+	void PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) override;
+	void DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) override;
 
 	void PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
 
@@ -463,8 +463,8 @@ public:
 	void ClientUserInfoChanged(CBasePlayer* pPlayer, char* infobuffer) override;
 
 	int PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) override;
-	void PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor) override;
-	void DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor) override;
+	void PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) override;
+	void DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) override;
 
 	void PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
 	bool CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;

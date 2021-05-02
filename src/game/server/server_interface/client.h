@@ -30,7 +30,7 @@ struct netadr_t;
 struct usercmd_t;
 struct weapon_data_t;
 
-void respawn(entvars_t* pev, bool fCopyCorpse);
+void respawn(CBaseEntity* pEntity, bool fCopyCorpse);
 qboolean ClientConnect(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
 void ClientDisconnect(edict_t* pEntity);
 void ClientKill(edict_t* pEntity);

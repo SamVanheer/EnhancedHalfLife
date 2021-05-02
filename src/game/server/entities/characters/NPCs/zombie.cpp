@@ -119,7 +119,7 @@ bool CZombie::TakeDamage(const TakeDamageInfo& info)
 	// Take 30% damage from bullets
 	if (adjustedInfo.GetDamageTypes() == DMG_BULLET)
 	{
-		const Vector vecDir = (pev->origin - (adjustedInfo.GetInflictor()->absmin + adjustedInfo.GetInflictor()->absmax) * 0.5).Normalize();
+		const Vector vecDir = (pev->origin - (adjustedInfo.GetInflictor()->pev->absmin + adjustedInfo.GetInflictor()->pev->absmax) * 0.5).Normalize();
 		const float flForce = DamageForce(adjustedInfo.GetDamage());
 		pev->velocity = pev->velocity + vecDir * flForce;
 		adjustedInfo.SetDamage(adjustedInfo .GetDamage() * 0.3);

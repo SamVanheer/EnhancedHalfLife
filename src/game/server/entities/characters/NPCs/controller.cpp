@@ -272,7 +272,7 @@ void CController::HandleAnimEvent(AnimationEvent& event)
 		WRITE_COORD(32); // decay
 		MESSAGE_END();
 
-		CBaseMonster* pBall = (CBaseMonster*)Create("controller_head_ball", vecStart, pev->angles, edict());
+		CBaseMonster* pBall = (CBaseMonster*)Create("controller_head_ball", vecStart, pev->angles, this);
 
 		pBall->pev->velocity = Vector(0, 0, 32);
 		pBall->m_hEnemy = m_hEnemy;
@@ -584,7 +584,7 @@ void CController::RunTask(Task_t* pTask)
 				vecDir = vecDir + Vector(RANDOM_FLOAT(-delta, delta), RANDOM_FLOAT(-delta, delta), RANDOM_FLOAT(-delta, delta)) * gSkillData.controllerSpeedBall;
 
 				vecSrc = vecSrc + vecDir * (gpGlobals->time - m_flShootTime);
-				CBaseMonster* pBall = (CBaseMonster*)Create("controller_energy_ball", vecSrc, pev->angles, edict());
+				CBaseMonster* pBall = (CBaseMonster*)Create("controller_energy_ball", vecSrc, pev->angles, this);
 				pBall->pev->velocity = vecDir;
 			}
 			m_flShootTime += 0.2;
@@ -754,7 +754,7 @@ void CController::RunAI()
 		{
 			ball = m_hBall[i] = CSprite::SpriteCreate("sprites/xspark4.spr", pev->origin, true);
 			ball->SetTransparency(RenderMode::Glow, 255, 255, 255, 255, RenderFX::NoDissipation);
-			ball->SetAttachment(edict(), (i + 3));
+			ball->SetAttachment(this, (i + 3));
 			ball->SetScale(1.0);
 		}
 
@@ -820,7 +820,7 @@ void CController::Move(float flInterval)
 	}
 #else
 // Debug, draw the route
-//	DrawRoute( pev, m_Route, m_iRouteIndex, 0, 0, 255 );
+//	DrawRoute( this, m_Route, m_iRouteIndex, 0, 0, 255 );
 #endif
 
 	// if the monster is moving directly towards an entity (enemy for instance), we'll set this pointer
@@ -1016,7 +1016,7 @@ void CController::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, flo
 
 	m_velocity = m_velocity * 0.8 + m_flGroundSpeed * vecDir * 0.2;
 
-	UTIL_MoveToOrigin(ENT(pev), pev->origin + m_velocity, m_velocity.Length() * flInterval, MoveToOriginType::Strafe);
+	UTIL_MoveToOrigin(this, pev->origin + m_velocity, m_velocity.Length() * flInterval, MoveToOriginType::Strafe);
 }
 
 /**
@@ -1113,8 +1113,8 @@ void CControllerHeadBall::HuntThink()
 		if (CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit); pEntity != nullptr && pEntity->pev->takedamage)
 		{
 			ClearMultiDamage();
-			pEntity->TraceAttack({m_hOwner->pev, gSkillData.controllerDmgZap, pev->velocity, tr, DMG_SHOCK});
-			ApplyMultiDamage(pev, m_hOwner->pev);
+			pEntity->TraceAttack({m_hOwner, gSkillData.controllerDmgZap, pev->velocity, tr, DMG_SHOCK});
+			ApplyMultiDamage(this, m_hOwner);
 		}
 
 		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
@@ -1272,11 +1272,11 @@ void CControllerZapBall::ExplodeTouch(CBaseEntity* pOther)
 	{
 		TraceResult tr = UTIL_GetGlobalTrace();
 
-		entvars_t* pevOwner = m_hOwner ? m_hOwner->pev : pev;
+		CBaseEntity* pOwner = m_hOwner ? m_hOwner : this;
 
 		ClearMultiDamage();
-		pOther->TraceAttack({pevOwner, gSkillData.controllerDmgBall, pev->velocity.Normalize(), tr, DMG_ENERGYBEAM});
-		ApplyMultiDamage(pevOwner, pevOwner);
+		pOther->TraceAttack({pOwner, gSkillData.controllerDmgBall, pev->velocity.Normalize(), tr, DMG_ENERGYBEAM});
+		ApplyMultiDamage(pOwner, pOwner);
 
 		UTIL_EmitAmbientSound(ENT(pev), tr.vecEndPos, "weapons/electro4.wav", 0.3, ATTN_NORM, 0, RANDOM_LONG(90, 99));
 	}

@@ -139,7 +139,7 @@ bool CBaseMonster::ShouldEat()
 	return m_flHungryTime <= gpGlobals->time;
 }
 
-void CBaseMonster::BarnacleVictimBitten(entvars_t* pevBarnacle)
+void CBaseMonster::BarnacleVictimBitten(CBaseEntity* pBarnacle)
 {
 	if (Schedule_t* pNewSchedule = GetScheduleOfType(SCHED_BARNACLE_VICTIM_CHOMP); pNewSchedule)
 	{
@@ -602,13 +602,13 @@ bool CBaseMonster::MoveToNode(Activity movementAct, float waitTime, const Vector
 	return RefreshRoute();
 }
 
-void UTIL_MoveToOrigin(edict_t* pent, const Vector& vecGoal, float flDist, MoveToOriginType iMoveType)
+void UTIL_MoveToOrigin(CBaseEntity* pent, const Vector& vecGoal, float flDist, MoveToOriginType iMoveType)
 {
-	MOVE_TO_ORIGIN(pent, vecGoal, flDist, static_cast<int>(iMoveType));
+	MOVE_TO_ORIGIN(pent->edict(), vecGoal, flDist, static_cast<int>(iMoveType));
 }
 
 #ifdef _DEBUG
-void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, int g, int b)
+void DrawRoute(CBaseEntity* pEntity, WayPoint_t* m_Route, int m_iRouteIndex, int r, int g, int b)
 {
 	if (m_Route[m_iRouteIndex].iType == 0)
 	{
@@ -620,9 +620,9 @@ void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, in
 
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMPOINTS);
-	WRITE_COORD(pev->origin.x);
-	WRITE_COORD(pev->origin.y);
-	WRITE_COORD(pev->origin.z);
+	WRITE_COORD(pEntity->pev->origin.x);
+	WRITE_COORD(pEntity->pev->origin.y);
+	WRITE_COORD(pEntity->pev->origin.z);
 	WRITE_COORD(m_Route[m_iRouteIndex].vecLocation.x);
 	WRITE_COORD(m_Route[m_iRouteIndex].vecLocation.y);
 	WRITE_COORD(m_Route[m_iRouteIndex].vecLocation.z);
@@ -699,7 +699,7 @@ void CBaseMonster::RouteSimplify(CBaseEntity* pTargetEnt)
 	// Can't simplify a direct route!
 	if (count < 2)
 	{
-		//		DrawRoute( pev, m_Route, m_iRouteIndex, 0, 0, 255 );
+		//		DrawRoute( this, m_Route, m_iRouteIndex, 0, 0, 255 );
 		return;
 	}
 
@@ -772,9 +772,9 @@ void CBaseMonster::RouteSimplify(CBaseEntity* pTargetEnt)
 	// Debug, test movement code
 #if 0
 //	if ( CVAR_GET_FLOAT( "simplify" ) != 0 )
-	DrawRoute(pev, outRoute, 0, 255, 0, 0);
+	DrawRoute(this, outRoute, 0, 255, 0, 0);
 	//	else
-	DrawRoute(pev, m_Route, m_iRouteIndex, 0, 255, 0);
+	DrawRoute(this, m_Route, m_iRouteIndex, 0, 255, 0);
 #endif
 }
 
@@ -1552,7 +1552,7 @@ void CBaseMonster::Move(float flInterval)
 	}
 #else
 // Debug, draw the route
-//	DrawRoute( pev, m_Route, m_iRouteIndex, 0, 200, 0 );
+//	DrawRoute( this, m_Route, m_iRouteIndex, 0, 200, 0 );
 #endif
 
 	// if the monster is moving directly towards an entity (enemy for instance), we'll set this pointer
@@ -1699,7 +1699,7 @@ void CBaseMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, fl
 	{
 		// don't walk more than 16 units or stairs stop working
 		const float flStep = std::min(16.0f, flTotal);
-		UTIL_MoveToOrigin(ENT(pev), m_Route[m_iRouteIndex].vecLocation, flStep, MoveToOriginType::Normal);
+		UTIL_MoveToOrigin(this, m_Route[m_iRouteIndex].vecLocation, flStep, MoveToOriginType::Normal);
 		flTotal -= flStep;
 	}
 	// ALERT( at_console, "dist %f\n", m_flGroundSpeed * pev->framerate * flInterval );
@@ -2941,7 +2941,7 @@ CBaseEntity* CBaseMonster::DropItem(const char* pszItemName, const Vector& vecPo
 		return nullptr;
 	}
 
-	if (CBaseEntity* pItem = CBaseEntity::Create(pszItemName, vecPos, vecAng, edict()); pItem)
+	if (CBaseEntity* pItem = CBaseEntity::Create(pszItemName, vecPos, vecAng, this); pItem)
 	{
 		// do we want this behavior to be default?! (sjb)
 		pItem->pev->velocity = pev->velocity;

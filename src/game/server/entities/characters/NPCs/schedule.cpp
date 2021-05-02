@@ -658,25 +658,25 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_FIND_COVER_FROM_ENEMY:
 	{
-		entvars_t* pevCover;
+		CBaseEntity* pCover;
 
 		if (m_hEnemy == nullptr)
 		{
 			// Find cover from self if no enemy available
-			pevCover = pev;
+			pCover = this;
 			//				TaskFail();
 			//				return;
 		}
 		else
-			pevCover = m_hEnemy->pev;
+			pCover = m_hEnemy;
 
-		if (FindLateralCover(pevCover->origin, pevCover->view_ofs))
+		if (FindLateralCover(pCover->pev->origin, pCover->pev->view_ofs))
 		{
 			// try lateral first
 			m_flMoveWaitFinished = gpGlobals->time + pTask->flData;
 			TaskComplete();
 		}
-		else if (FindCover(pevCover->origin, pevCover->view_ofs, 0, CoverRadius()))
+		else if (FindCover(pCover->pev->origin, pCover->pev->view_ofs, 0, CoverRadius()))
 		{
 			// then try for plain ole cover
 			m_flMoveWaitFinished = gpGlobals->time + pTask->flData;

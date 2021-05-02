@@ -126,7 +126,7 @@ void CHgun::PrimaryAttack()
 #ifndef CLIENT_DLL
 	UTIL_MakeVectors(m_hPlayer->pev->v_angle);
 
-	CBaseEntity* pHornet = CBaseEntity::Create("hornet", m_hPlayer->GetGunPosition() + gpGlobals->v_forward * 16 + gpGlobals->v_right * 8 + gpGlobals->v_up * -12, m_hPlayer->pev->v_angle, m_hPlayer->edict());
+	CBaseEntity* pHornet = CBaseEntity::Create("hornet", m_hPlayer->GetGunPosition() + gpGlobals->v_forward * 16 + gpGlobals->v_right * 8 + gpGlobals->v_up * -12, m_hPlayer->pev->v_angle, m_hPlayer);
 	pHornet->pev->velocity = gpGlobals->v_forward * 300;
 
 	m_flRechargeTime = gpGlobals->time + 0.5;
@@ -209,7 +209,7 @@ void CHgun::SecondaryAttack()
 		break;
 	}
 
-	CBaseEntity* pHornet = CBaseEntity::Create("hornet", vecSrc, m_hPlayer->pev->v_angle, m_hPlayer->edict());
+	CBaseEntity* pHornet = CBaseEntity::Create("hornet", vecSrc, m_hPlayer->pev->v_angle, m_hPlayer);
 	pHornet->pev->velocity = gpGlobals->v_forward * 1200;
 	pHornet->pev->angles = VectorAngles(pHornet->pev->velocity);
 

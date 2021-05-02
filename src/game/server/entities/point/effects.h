@@ -50,13 +50,13 @@ public:
 	void Expand(float scaleSpeed, float fadeSpeed);
 	void SpriteInit(const char* pSpriteName, const Vector& origin);
 
-	inline void SetAttachment(edict_t* pEntity, int attachment)
+	inline void SetAttachment(CBaseEntity* pEntity, int attachment)
 	{
 		if (pEntity)
 		{
-			pev->skin = ENTINDEX(pEntity);
+			pev->skin = pEntity->entindex();
 			pev->body = attachment;
-			pev->aiment = pEntity;
+			pev->aiment = pEntity->edict();
 			pev->movetype = Movetype::Follow;
 		}
 	}

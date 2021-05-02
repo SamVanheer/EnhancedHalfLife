@@ -279,7 +279,7 @@ bool CBasePlayer::TakeDamage(const TakeDamageInfo& info)
 	// go take the damage first
 
 
-	CBaseEntity* pAttacker = CBaseEntity::Instance(adjustedInfo.GetAttacker());
+	CBaseEntity* pAttacker = adjustedInfo.GetAttacker();
 
 	if (!g_pGameRules->PlayerCanTakeDamage(this, pAttacker))
 	{
@@ -328,8 +328,8 @@ bool CBasePlayer::TakeDamage(const TakeDamageInfo& info)
 	MESSAGE_BEGIN(MessageDest::Spectator, SVC_DIRECTOR);
 	WRITE_BYTE(9);	// command length in bytes
 	WRITE_BYTE(DRC_CMD_EVENT);	// take damage event
-	WRITE_SHORT(ENTINDEX(this->edict()));	// index number of primary entity
-	WRITE_SHORT(ENTINDEX(ENT(adjustedInfo.GetInflictor())));	// index number of secondary entity
+	WRITE_SHORT(this->entindex());	// index number of primary entity
+	WRITE_SHORT(adjustedInfo.GetInflictor() ? adjustedInfo.GetInflictor()->entindex() : 0);	// index number of secondary entity
 	WRITE_LONG(5);   // eventflags (priority and flags)
 	MESSAGE_END();
 
@@ -570,7 +570,7 @@ void CBasePlayer::PackDeadPlayerItems()
 	}
 
 	// create a box to pack the stuff into.
-	CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", pev->origin, pev->angles, edict());
+	CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", pev->origin, pev->angles, this);
 
 	pWeaponBox->pev->angles.x = 0;// don't let weaponbox tilt.
 	pWeaponBox->pev->angles.z = 0;
@@ -650,8 +650,9 @@ void CBasePlayer::RemoveAllItems(bool removeSuit)
 /**
 *	@brief Set in combat.cpp. Used to pass the damage inflictor for death messages.
 *	TODO Better solution:  Add as parameter to all Killed() functions.
+*	TODO Killed can be called without a preceding call to TakeDamage, so this can be wrong!
 */
-entvars_t* g_pevLastInflictor;
+CBaseEntity* g_pLastInflictor;
 
 void CBasePlayer::Killed(const KilledInfo& info)
 {
@@ -659,7 +660,7 @@ void CBasePlayer::Killed(const KilledInfo& info)
 	if (auto activeItem = m_hActiveItem.Get(); activeItem)
 		activeItem->Holster();
 
-	g_pGameRules->PlayerKilled(this, info.GetAttacker(), g_pevLastInflictor);
+	g_pGameRules->PlayerKilled(this, info.GetAttacker(), g_pLastInflictor);
 
 	if (m_pTank != nullptr)
 	{
@@ -948,7 +949,7 @@ void CBasePlayer::WaterMove()
 				pev->dmg += 1;
 				if (pev->dmg > 5)
 					pev->dmg = 5;
-				TakeDamage({INDEXVARS(0), INDEXVARS(0), pev->dmg, DMG_DROWN});
+				TakeDamage({UTIL_EntityByIndex(0), UTIL_EntityByIndex(0), pev->dmg, DMG_DROWN});
 				pev->pain_finished = gpGlobals->time + 1;
 
 				// track drowning damage, give it back when
@@ -989,12 +990,12 @@ void CBasePlayer::WaterMove()
 	if (pev->watertype == Contents::Lava)		// do damage
 	{
 		if (pev->dmgtime < gpGlobals->time)
-			TakeDamage({INDEXVARS(0), INDEXVARS(0), 10.0f * static_cast<int>(pev->waterlevel), DMG_BURN});
+			TakeDamage({UTIL_EntityByIndex(0), UTIL_EntityByIndex(0), 10.0f * static_cast<int>(pev->waterlevel), DMG_BURN});
 	}
 	else if (pev->watertype == Contents::Slime)		// do damage
 	{
 		pev->dmgtime = gpGlobals->time + 1;
-		TakeDamage({INDEXVARS(0), INDEXVARS(0), 4.0f * static_cast<int>(pev->waterlevel), DMG_ACID});
+		TakeDamage({UTIL_EntityByIndex(0), UTIL_EntityByIndex(0), 4.0f * static_cast<int>(pev->waterlevel), DMG_ACID});
 	}
 
 	if (!IsBitSet(pev->flags, FL_INWATER))
@@ -1090,7 +1091,7 @@ void CBasePlayer::PlayerDeathThink()
 
 	//ALERT(at_console, "Respawn\n");
 
-	respawn(pev, !(m_afPhysicsFlags & PFLAG_OBSERVER));// don't copy a corpse if we're in deathcam.
+	respawn(this, !(m_afPhysicsFlags & PFLAG_OBSERVER));// don't copy a corpse if we're in deathcam.
 	pev->nextthink = -1;
 }
 
@@ -1248,7 +1249,7 @@ void CBasePlayer::PlayerUse()
 			{	// Start controlling the train!
 				CBaseEntity* pTrain = CBaseEntity::Instance(pev->groundentity);
 
-				if (pTrain && !(pev->button & IN_JUMP) && IsBitSet(pev->flags, FL_ONGROUND) && (pTrain->ObjectCaps() & FCAP_DIRECTIONAL_USE) && pTrain->OnControls(pev))
+				if (pTrain && !(pev->button & IN_JUMP) && IsBitSet(pev->flags, FL_ONGROUND) && (pTrain->ObjectCaps() & FCAP_DIRECTIONAL_USE) && pTrain->OnControls(this))
 				{
 					m_afPhysicsFlags |= PFLAG_ONTRAIN;
 					m_iTrain = TrainSpeed(pTrain->pev->speed, pTrain->pev->impulse);
@@ -1361,8 +1362,8 @@ void CBasePlayer::Jump()
 	}
 
 	// If you're standing on a conveyor, add it's velocity to yours (for momentum)
-	entvars_t* pevGround = VARS(pev->groundentity);
-	if (pevGround && (pevGround->flags & FL_CONVEYOR))
+	auto pGround = InstanceOrNull(pev->groundentity);
+	if (pGround && (pGround->pev->flags & FL_CONVEYOR))
 	{
 		pev->velocity = pev->velocity + pev->basevelocity;
 	}
@@ -1626,7 +1627,7 @@ void CBasePlayer::PreThink()
 				pTrain = CBaseEntity::Instance(trainTrace.pHit);
 
 
-			if (!pTrain || !(pTrain->ObjectCaps() & FCAP_DIRECTIONAL_USE) || !pTrain->OnControls(pev))
+			if (!pTrain || !(pTrain->ObjectCaps() & FCAP_DIRECTIONAL_USE) || !pTrain->OnControls(this))
 			{
 				//ALERT( at_error, "In train mode with no train!\n" );
 				m_afPhysicsFlags &= ~PFLAG_ONTRAIN;
@@ -1722,7 +1723,7 @@ void CBasePlayer::CheckTimeBasedDamage()
 				bDuration = NERVEGAS_DURATION;
 				break;
 			case itbd_Poison:
-				TakeDamage({pev, pev, POISON_DAMAGE, DMG_GENERIC});
+				TakeDamage({this, this, POISON_DAMAGE, DMG_GENERIC});
 				bDuration = POISON_DURATION;
 				break;
 			case itbd_Radiation:
@@ -1958,12 +1959,12 @@ void CBasePlayer::SetSuitUpdate(const char* name, SuitSoundType type, int iNoRep
 /**
 *	@brief Check for turning off powerups
 */
-static void CheckPowerups(entvars_t* pev)
+static void CheckPowerups(CBaseEntity* pEntity)
 {
-	if (pev->health <= 0)
+	if (pEntity->pev->health <= 0)
 		return;
 
-	pev->modelindex = g_ulModelIndexPlayer;    // don't use eyes
+	pEntity->pev->modelindex = g_ulModelIndexPlayer;    // don't use eyes
 }
 
 void CBasePlayer::UpdatePlayerSound()
@@ -2087,7 +2088,7 @@ void CBasePlayer::PostThink()
 		// Handle Tank controlling
 		if (m_pTank != nullptr)
 		{ // if they've moved too far from the gun,  or selected a weapon, unuse the gun
-			if (m_pTank->OnControls(pev) && IsStringNull(pev->weaponmodel))
+			if (m_pTank->OnControls(this) && IsStringNull(pev->weaponmodel))
 			{
 				m_pTank->Use({this, this, USE_SET, 2});	// try fire the gun
 			}
@@ -2132,7 +2133,7 @@ void CBasePlayer::PostThink()
 
 				if (flFallDamage > 0)
 				{
-					TakeDamage({INDEXVARS(0), INDEXVARS(0), flFallDamage, DMG_FALL});
+					TakeDamage({UTIL_EntityByIndex(0), UTIL_EntityByIndex(0), flFallDamage, DMG_FALL});
 					pev->punchangle.x = 0;
 				}
 			}
@@ -2165,7 +2166,7 @@ void CBasePlayer::PostThink()
 		}
 
 		StudioFrameAdvance();
-		CheckPowerups(pev);
+		CheckPowerups(this);
 
 		UpdatePlayerSound();
 	}
@@ -2550,17 +2551,17 @@ const char* CBasePlayer::TeamID()
 class CSprayCan : public CBaseEntity
 {
 public:
-	void	Spawn(entvars_t* pevOwner);
+	void	Spawn(CBaseEntity* pOwner);
 	void	Think() override;
 
 	int	ObjectCaps() override { return FCAP_DONT_SAVE; }
 };
 
-void CSprayCan::Spawn(entvars_t* pevOwner)
+void CSprayCan::Spawn(CBaseEntity* pOwner)
 {
-	pev->origin = pevOwner->origin + Vector(0, 0, 32);
-	pev->angles = pevOwner->v_angle;
-	pev->owner = ENT(pevOwner);
+	pev->origin = pOwner->pev->origin + Vector(0, 0, 32);
+	pev->angles = pOwner->pev->v_angle;
+	pev->owner = pOwner->edict();
 	pev->frame = 0;
 
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -2601,15 +2602,15 @@ void CSprayCan::Think()
 class	CBloodSplat : public CBaseEntity
 {
 public:
-	void	Spawn(entvars_t* pevOwner);
+	void	Spawn(CBaseEntity* pOwner);
 	void	Spray();
 };
 
-void CBloodSplat::Spawn(entvars_t* pevOwner)
+void CBloodSplat::Spawn(CBaseEntity* pOwner)
 {
-	pev->origin = pevOwner->origin + Vector(0, 0, 32);
-	pev->angles = pevOwner->v_angle;
-	pev->owner = ENT(pevOwner);
+	pev->origin = pOwner->pev->origin + Vector(0, 0, 32);
+	pev->angles = pOwner->pev->v_angle;
+	pev->owner = pOwner->edict();
 
 	SetThink(&CBloodSplat::Spray);
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -2633,17 +2634,17 @@ void CBasePlayer::GiveNamedItem(const char* pszName)
 {
 	string_t istr = MAKE_STRING(pszName);
 
-	edict_t* pent = CREATE_NAMED_ENTITY(istr);
-	if (IsNullEnt(pent))
+	auto pEntity = InstanceOrNull(CREATE_NAMED_ENTITY(istr));
+	if (IsNullEnt(pEntity))
 	{
 		ALERT(at_console, "NULL Ent in GiveNamedItem!\n");
 		return;
 	}
-	VARS(pent)->origin = pev->origin;
-	pent->v.spawnflags |= SF_NORESPAWN;
+	pEntity->pev->origin = pev->origin;
+	pEntity->pev->spawnflags |= SF_NORESPAWN;
 
-	DispatchSpawn(pent);
-	DispatchTouch(pent, ENT(pev));
+	DispatchSpawn(pEntity->edict());
+	DispatchTouch(pEntity->edict(), ENT(pev));
 }
 
 bool CBasePlayer::FlashlightIsOn()
@@ -2757,7 +2758,7 @@ void CBasePlayer::ImpulseCommands()
 		{// line hit something, so paint a decal
 			m_flNextDecalTime = gpGlobals->time + decalfrequency.value;
 			CSprayCan* pCan = GetClassPtr((CSprayCan*)nullptr);
-			pCan->Spawn(pev);
+			pCan->Spawn(this);
 		}
 
 		break;
@@ -2828,7 +2829,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 
 	case 102:
 		// Gibbage!!!
-		CGib::SpawnRandomGibs(pev, 1, 1);
+		CGib::SpawnRandomGibs(this, 1, 1);
 		break;
 
 	case 103:
@@ -2890,14 +2891,13 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 	{
 		TraceResult tr;
 
-		edict_t* pWorld = g_engfuncs.pfnPEntityOfEntIndex(0);
-
 		Vector start = pev->origin + pev->view_ofs;
 		Vector end = start + gpGlobals->v_forward * 1024;
 		UTIL_TraceLine(start, end, IgnoreMonsters::Yes, edict(), &tr);
-		if (tr.pHit)
-			pWorld = tr.pHit;
-		const char* pTextureName = TRACE_TEXTURE(pWorld, start, end);
+
+		auto pWorld = InstanceOrWorld(tr.pHit);
+
+		const char* pTextureName = TRACE_TEXTURE(pWorld->edict(), start, end);
 		if (pTextureName)
 			ALERT(at_console, "Texture: %s\n", pTextureName);
 		break;
@@ -2937,7 +2937,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 		if (tr.flFraction != 1.0)
 		{// line hit something, so paint a decal
 			CBloodSplat* pBlood = GetClassPtr((CBloodSplat*)nullptr);
-			pBlood->Spawn(pev);
+			pBlood->Spawn(this);
 		}
 		break;
 	}
@@ -3440,9 +3440,9 @@ bool CBasePlayer::BecomeProne()
 	return true;
 }
 
-void CBasePlayer::BarnacleVictimBitten(entvars_t* pevBarnacle)
+void CBasePlayer::BarnacleVictimBitten(CBaseEntity* pBarnacle)
 {
-	TakeDamage({pevBarnacle, pevBarnacle, pev->health + pev->armorvalue, DMG_SLASH | DMG_ALWAYSGIB});
+	TakeDamage({pBarnacle, pBarnacle, pev->health + pev->armorvalue, DMG_SLASH | DMG_ALWAYSGIB});
 }
 
 void CBasePlayer::BarnacleVictimReleased()
@@ -3743,7 +3743,7 @@ void CBasePlayer::DropPlayerItem(const char* pszItemName)
 
 			pev->weapons &= ~(1 << pWeapon->m_iId);// take item off hud
 
-			CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", pev->origin + gpGlobals->v_forward * 10, pev->angles, edict());
+			CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", pev->origin + gpGlobals->v_forward * 10, pev->angles, this);
 			pWeaponBox->pev->angles.x = 0;
 			pWeaponBox->pev->angles.z = 0;
 			pWeaponBox->PackWeapon(pWeapon);

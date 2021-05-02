@@ -140,7 +140,7 @@ void CGlock::GlockFire(float flSpread, float flCycleTime, bool fUseAutoAim)
 		vecAiming = gpGlobals->v_forward;
 	}
 
-	const Vector vecDir = m_hPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, Vector(flSpread, flSpread, flSpread), WORLD_SIZE, BULLET_PLAYER_9MM, 0, 0, m_hPlayer->pev, m_hPlayer->random_seed);
+	const Vector vecDir = m_hPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, Vector(flSpread, flSpread, flSpread), WORLD_SIZE, BULLET_PLAYER_9MM, 0, 0, m_hPlayer, m_hPlayer->random_seed);
 
 	PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), fUseAutoAim ? m_usFireGlock1 : m_usFireGlock2, 0.0, vec3_origin, vec3_origin, vecDir.x, vecDir.y, 0, 0, m_iClip == 0, 0);
 

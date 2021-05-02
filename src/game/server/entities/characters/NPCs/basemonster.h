@@ -602,7 +602,7 @@ public:
 	/**
 	*	@brief called by Barnacle victims when the barnacle pulls their head into its mouth
 	*/
-	virtual void BarnacleVictimBitten(entvars_t* pevBarnacle);
+	virtual void BarnacleVictimBitten(CBaseEntity* pBarnacle);
 
 	/**
 	*	@brief called by barnacle victims when the host barnacle is killed.
@@ -714,8 +714,8 @@ public:
 	*/
 	bool DeadTakeDamage(const TakeDamageInfo& info);
 
-	void RadiusDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
-	void RadiusDamage(Vector vecSrc, entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
+	void RadiusDamage(CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
+	void RadiusDamage(Vector vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
 	bool IsMoving() override { return m_movementGoal != MOVEGOAL_NONE; }
 
 	/**

@@ -57,7 +57,7 @@ class CSquidSpit : public CBaseEntity
 public:
 	void Spawn() override;
 
-	static void Shoot(entvars_t* pevOwner, Vector vecStart, Vector vecVelocity);
+	static void Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity);
 	void Touch(CBaseEntity* pOther) override;
 	void EXPORT Animate();
 
@@ -108,14 +108,14 @@ void CSquidSpit::Animate()
 	}
 }
 
-void CSquidSpit::Shoot(entvars_t* pevOwner, Vector vecStart, Vector vecVelocity)
+void CSquidSpit::Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity)
 {
 	CSquidSpit* pSpit = GetClassPtr((CSquidSpit*)nullptr);
 	pSpit->Spawn();
 
 	UTIL_SetOrigin(pSpit->pev, vecStart);
 	pSpit->pev->velocity = vecVelocity;
-	pSpit->pev->owner = ENT(pevOwner);
+	pSpit->pev->owner = pOwner->edict();
 
 	pSpit->SetThink(&CSquidSpit::Animate);
 	pSpit->pev->nextthink = gpGlobals->time + 0.1;
@@ -162,7 +162,7 @@ void CSquidSpit::Touch(CBaseEntity* pOther)
 	}
 	else
 	{
-		pOther->TakeDamage({pev, pev, gSkillData.bullsquidDmgSpit, DMG_GENERIC});
+		pOther->TakeDamage({this, this, gSkillData.bullsquidDmgSpit, DMG_GENERIC});
 	}
 
 	SetThink(&CSquidSpit::SUB_Remove);
@@ -303,7 +303,7 @@ bool CBullsquid::TakeDamage(const TakeDamageInfo& info)
 {
 	// if the squid is running, has an enemy, was hurt by the enemy, hasn't been hurt in the last 3 seconds, and isn't too close to the enemy,
 	// it will swerve. (whew).
-	if (m_hEnemy != nullptr && IsMoving() && info.GetAttacker() == m_hEnemy->pev && gpGlobals->time - m_flLastHurtTime > 3)
+	if (m_hEnemy != nullptr && IsMoving() && info.GetAttacker() == m_hEnemy && gpGlobals->time - m_flLastHurtTime > 3)
 	{
 		float flDist = (pev->origin - m_hEnemy->pev->origin).Length2D();
 
@@ -319,7 +319,7 @@ bool CBullsquid::TakeDamage(const TakeDamageInfo& info)
 		}
 	}
 
-	if (!ClassnameIs(info.GetAttacker(), "monster_headcrab"))
+	if (!ClassnameIs(info.GetAttacker()->pev, "monster_headcrab"))
 	{
 		// don't forget about headcrabs if it was a headcrab that hurt the squid.
 		m_flLastHurtTime = gpGlobals->time;
@@ -532,7 +532,7 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 			WRITE_BYTE(25);			// noise ( client will divide by 100 )
 			MESSAGE_END();
 
-			CSquidSpit::Shoot(pev, vecSpitOffset, vecSpitDir * 900);
+			CSquidSpit::Shoot(this, vecSpitOffset, vecSpitDir * 900);
 		}
 	}
 	break;

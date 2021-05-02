@@ -156,7 +156,7 @@ constexpr int bits_MEMORY_COMPLETED_NODE = bits_MEMORY_CUSTOM3;
 constexpr int bits_MEMORY_FIRED_NODE = bits_MEMORY_CUSTOM4;
 
 int gSpitSprite, gSpitDebrisSprite;
-Vector CheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float maxHeight);
+Vector CheckSplatToss(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, float maxHeight);
 void MortarSpray(const Vector& position, const Vector& direction, int spriteModel, int count);
 
 // UNDONE:	
@@ -244,7 +244,7 @@ public:
 		m_crabCount = 0;
 	}
 
-	void DeathNotice(entvars_t* pevChild) override;
+	void DeathNotice(CBaseEntity* pChild) override;
 
 	bool CanLayCrab()
 	{
@@ -439,7 +439,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 
 		if (pHurt)
 		{
-			pHurt->TakeDamage({pev, pev, gSkillData.bigmommaDmgSlash, DMG_CRUSH | DMG_SLASH});
+			pHurt->TakeDamage({this, this, gSkillData.bigmommaDmgSlash, DMG_CRUSH | DMG_SLASH});
 			pHurt->pev->punchangle.x = 15;
 			switch (event.event)
 			{
@@ -576,7 +576,7 @@ bool CBigMomma::TakeDamage(const TakeDamageInfo& info)
 
 void CBigMomma::LayHeadcrab()
 {
-	CBaseEntity* pChild = CBaseEntity::Create(BIG_CHILDCLASS.data(), pev->origin, pev->angles, edict());
+	CBaseEntity* pChild = CBaseEntity::Create(BIG_CHILDCLASS.data(), pev->origin, pev->angles, this);
 
 	pChild->pev->spawnflags |= SF_MONSTER_FALL_TO_GROUND;
 
@@ -600,7 +600,7 @@ void CBigMomma::LayHeadcrab()
 	m_crabCount++;
 }
 
-void CBigMomma::DeathNotice(entvars_t* pevChild)
+void CBigMomma::DeathNotice(CBaseEntity* pChild)
 {
 	if (m_crabCount > 0)		// Some babies may cross a transition, but we reset the count then
 		m_crabCount--;
@@ -742,7 +742,7 @@ bool CBigMomma::CheckRangeAttack1(float flDot, float flDist)
 		{
 			Vector startPos = pev->origin;
 			startPos.z += 180;
-			pev->movedir = CheckSplatToss(pev, startPos, pEnemy->BodyTarget(pev->origin), RANDOM_FLOAT(150, 500));
+			pev->movedir = CheckSplatToss(this, startPos, pEnemy->BodyTarget(pev->origin), RANDOM_FLOAT(150, 500));
 			if (pev->movedir != vec3_origin)
 				return true;
 		}
@@ -1016,17 +1016,17 @@ void CBigMomma::RunTask(Task_t* pTask)
 	}
 }
 
-Vector CheckSplatToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float maxHeight)
+Vector CheckSplatToss(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, float maxHeight)
 {
 	TraceResult		tr;
 	const float flGravity = g_psv_gravity->value;
 
 	// calculate the midpoint and apex of the 'triangle'
 	const Vector vecMidPoint = vecSpot1 + (vecSpot2 - vecSpot1) * 0.5; // halfway point between Spot1 and Spot2
-	UTIL_TraceLine(vecMidPoint, vecMidPoint + Vector(0, 0, maxHeight), IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecMidPoint, vecMidPoint + Vector(0, 0, maxHeight), IgnoreMonsters::Yes, pEntity->edict(), &tr);
 	const Vector vecApex = tr.vecEndPos; // highest point 
 
-	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, pEntity->edict(), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
@@ -1156,8 +1156,6 @@ void CBMortar::Touch(CBaseEntity* pOther)
 	// make some flecks
 	MortarSpray(tr.vecEndPos, tr.vecPlaneNormal, gSpitSprite, 24);
 
-	entvars_t* pevOwner = pev->owner ? VARS(pev->owner) : nullptr;
-
-	RadiusDamage(pev->origin, pev, pevOwner, gSkillData.bigmommaDmgBlast, gSkillData.bigmommaRadiusBlast, CLASS_NONE, DMG_ACID);
+	RadiusDamage(pev->origin, this, InstanceOrNull(pev->owner), gSkillData.bigmommaDmgBlast, gSkillData.bigmommaRadiusBlast, CLASS_NONE, DMG_ACID);
 	UTIL_Remove(this);
 }

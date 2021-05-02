@@ -53,12 +53,12 @@ bool CBaseEntity::TakeDamage(const TakeDamageInfo& info)
 	Vector vecTemp;
 	if (info.GetAttacker() == info.GetInflictor())
 	{
-		vecTemp = info.GetInflictor()->origin - (GetBrushModelOrigin(pev));
+		vecTemp = info.GetInflictor()->pev->origin - (GetBrushModelOrigin(pev));
 	}
 	else
 		// an actual missile was involved.
 	{
-		vecTemp = info.GetInflictor()->origin - (GetBrushModelOrigin(pev));
+		vecTemp = info.GetInflictor()->pev->origin - (GetBrushModelOrigin(pev));
 	}
 
 	// this global is still used for glass and other non-monster killables, along with decals.
@@ -67,9 +67,9 @@ bool CBaseEntity::TakeDamage(const TakeDamageInfo& info)
 	// save damage based on the target's armor level
 
 	// figure momentum add (don't let hurt brushes or other triggers move player)
-	if ((!IsNullEnt(info.GetInflictor())) && (pev->movetype == Movetype::Walk || pev->movetype == Movetype::Step) && (info.GetAttacker()->solid != Solid::Trigger))
+	if ((!IsNullEnt(info.GetInflictor())) && (pev->movetype == Movetype::Walk || pev->movetype == Movetype::Step) && (info.GetAttacker()->pev->solid != Solid::Trigger))
 	{
-		Vector vecDir = pev->origin - (info.GetInflictor()->absmin + info.GetInflictor()->absmax) * 0.5;
+		Vector vecDir = pev->origin - (info.GetInflictor()->pev->absmin + info.GetInflictor()->pev->absmax) * 0.5;
 		vecDir = vecDir.Normalize();
 
 		float flForce = info.GetDamage() * ((32 * 32 * 72.0) / (pev->size.x * pev->size.y * pev->size.z)) * 5;
@@ -236,17 +236,17 @@ void CBaseEntity::StopSound(SoundChannel channel, const char* fileName)
 	EMIT_SOUND_DYN(edict(), channel, fileName, 0, 0, SND_STOP, PITCH_NORM);
 }
 
-CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner)
+CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner)
 {
-	edict_t* pent = CREATE_NAMED_ENTITY(MAKE_STRING(szName));
-	if (IsNullEnt(pent))
+	//TODO: wrap createnamedentity
+	auto pEntity = InstanceOrNull(CREATE_NAMED_ENTITY(MAKE_STRING(szName)));
+	if (IsNullEnt(pEntity))
 	{
 		ALERT(at_console, "NULL Ent in Create!\n");
 		return nullptr;
 	}
 
-	CBaseEntity* pEntity = Instance(pent);
-	pEntity->pev->owner = pentOwner;
+	pEntity->pev->owner = EdictOrNull(pOwner);
 	pEntity->pev->origin = vecOrigin;
 	pEntity->pev->angles = vecAngles;
 

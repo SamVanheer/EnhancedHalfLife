@@ -836,14 +836,13 @@ void CEnvSound::KeyValue(KeyValueData* pkvd)
 /**
 *	@brief returns true if the given sound entity (pev) is in range and can see the given player entity (pevTarget)
 */
-bool IsEnvSoundInRange(entvars_t* pev, entvars_t* pevTarget, float* pflRange)
+bool IsEnvSoundInRange(CEnvSound* pSound, CBaseEntity* pTarget, float* pflRange)
 {
-	CEnvSound* pSound = GetClassPtr((CEnvSound*)pev);
-	const Vector vecSpot1 = pev->origin + pev->view_ofs;
-	const Vector vecSpot2 = pevTarget->origin + pevTarget->view_ofs;
+	const Vector vecSpot1 = pSound->pev->origin + pSound->pev->view_ofs;
+	const Vector vecSpot2 = pTarget->pev->origin + pTarget->pev->view_ofs;
 	TraceResult tr;
 
-	UTIL_TraceLine(vecSpot1, vecSpot2, IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot1, vecSpot2, IgnoreMonsters::Yes, pSound->edict(), &tr);
 
 	// check if line of sight crosses water boundary, or is blocked
 
@@ -874,16 +873,15 @@ void CEnvSound::Think()
 	// get pointer to client if visible; FIND_CLIENT_IN_PVS will
 	// cycle through visible clients on consecutive calls.
 
-	edict_t* pentPlayer = FIND_CLIENT_IN_PVS(edict());
+	auto pPlayer = static_cast<CBasePlayer*>(InstanceOrNull(FIND_CLIENT_IN_PVS(edict())));
 
-	if (IsNullEnt(pentPlayer))
+	if (IsNullEnt(pPlayer))
 	{
 		// no player in pvs of sound entity, slow it down
 		pev->nextthink = gpGlobals->time + SlowThinkInterval;
 		return;
 	}
 
-	CBasePlayer* pPlayer = GetClassPtr((CBasePlayer*)VARS(pentPlayer));
 	float flRange;
 
 	// check to see if this is the sound entity that is 
@@ -899,7 +897,7 @@ void CEnvSound::Think()
 			// we're looking at a valid sound entity affecting
 			// player, make sure it's still valid, update range
 
-			if (IsEnvSoundInRange(pev, VARS(pentPlayer), &flRange)) {
+			if (IsEnvSoundInRange(this, pPlayer, &flRange)) {
 				pPlayer->m_flSndRange = flRange;
 				pev->nextthink = gpGlobals->time + FastThinkInterval;
 				return;
@@ -927,7 +925,7 @@ void CEnvSound::Think()
 	// if we got this far, we're looking at an entity that is contending
 	// for current player sound. the closest entity to player wins.
 
-	if (IsEnvSoundInRange(pev, VARS(pentPlayer), &flRange))
+	if (IsEnvSoundInRange(this, pPlayer, &flRange))
 	{
 		if (flRange < pPlayer->m_flSndRange || pPlayer->m_flSndRange == 0)
 		{
@@ -942,7 +940,7 @@ void CEnvSound::Think()
 
 			//CLIENT_COMMAND(pentPlayer, "room_type %f", m_flRoomtype);
 
-			MESSAGE_BEGIN(MessageDest::One, SVC_ROOMTYPE, nullptr, pentPlayer);		// use the magic #1 for "one client"
+			MESSAGE_BEGIN(MessageDest::One, SVC_ROOMTYPE, nullptr, pPlayer->edict());		// use the magic #1 for "one client"
 			WRITE_SHORT((short)m_flRoomtype);					// sequence number
 			MESSAGE_END();
 

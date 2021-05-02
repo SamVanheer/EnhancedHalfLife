@@ -181,7 +181,7 @@ void CFlyingMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, 
 		if (CheckLocalMove(pev->origin, vecMove, pTargetEnt, nullptr) != LocalMoveResult::Invalid)
 		{
 			m_vecTravel = (vecMove - pev->origin).Normalize();
-			UTIL_MoveToOrigin(ENT(pev), vecMove, (m_flGroundSpeed * flInterval), MoveToOriginType::Strafe);
+			UTIL_MoveToOrigin(this, vecMove, (m_flGroundSpeed * flInterval), MoveToOriginType::Strafe);
 		}
 		else
 		{

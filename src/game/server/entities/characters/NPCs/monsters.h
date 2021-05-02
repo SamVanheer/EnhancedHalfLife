@@ -63,19 +63,19 @@ enum class MoveToOriginType
 };
 
 // spawn flags 256 and above are already taken by the engine
-void UTIL_MoveToOrigin(edict_t* pent, const Vector& vecGoal, float flDist, MoveToOriginType iMoveType);
+void UTIL_MoveToOrigin(CBaseEntity* pent, const Vector& vecGoal, float flDist, MoveToOriginType iMoveType);
 
 /**
 *	@brief returns the velocity at which an object should be lobbed from vecspot1 to land near vecspot2.
 *	@return vec3_origin if toss is not feasible.
 */
-Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flGravityAdj = 1.0);
+Vector CheckToss(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, float flGravityAdj = 1.0);
 
 /**
 *	@brief returns the velocity vector at which an object should be thrown from vecspot1 to hit vecspot2.
 *	@return vec3_origin if throw is not feasible.
 */
-Vector CheckThrow(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj = 1.0);
+Vector CheckThrow(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj = 1.0);
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 
 /**
@@ -88,9 +88,9 @@ void ExplodeModel(const Vector& vecOrigin, float speed, int model, int count);
 *	@brief a more accurate ( and slower ) version of IsVisible.
 *	!!!UNDONE - make this CBaseMonster?
 */
-bool IsBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetOrigin, float flSize = 0.0);
+bool IsBoxVisible(CBaseEntity* pLooker, CBaseEntity* pTarget, Vector& vecTargetOrigin, float flSize = 0.0);
 
-void DrawRoute(entvars_t* pev, WayPoint_t* m_Route, int m_iRouteIndex, int r, int g, int b);
+void DrawRoute(CBaseEntity* pEntity, WayPoint_t* m_Route, int m_iRouteIndex, int r, int g, int b);
 
 // these bits represent the monster's memory
 constexpr int MEMORY_CLEAR = 0;
@@ -136,9 +136,9 @@ public:
 	void		LimitVelocity();
 
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DONT_SAVE; }
-	static	void SpawnHeadGib(entvars_t* pevVictim);
-	static	void SpawnRandomGibs(entvars_t* pevVictim, int cGibs, int human);
-	static  void SpawnStickyGibs(entvars_t* pevVictim, Vector vecOrigin, int cGibs);
+	static	void SpawnHeadGib(CBaseEntity* pVictim);
+	static	void SpawnRandomGibs(CBaseEntity* pVictim, int cGibs, int human);
+	static  void SpawnStickyGibs(CBaseEntity* pVictim, Vector vecOrigin, int cGibs);
 
 	int		m_bloodColor;
 	int		m_cBloodDecals;

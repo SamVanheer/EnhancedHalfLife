@@ -50,7 +50,7 @@ bool CBaseEntity::IsDormant() { return false; }
 bool CBaseEntity::IsInWorld() { return true; }
 bool CBaseEntity::ShouldToggle(USE_TYPE useType, bool currentState) { return false; }
 int	CBaseEntity::DamageDecal(int bitsDamageType) { return -1; }
-CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner) { return nullptr; }
+CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner) { return nullptr; }
 void CBaseEntity::SUB_Remove() { }
 void CBaseEntity::EmitSound(SoundChannel channel, const char* fileName, float volume, float attenuation, int pitch, int flags) {}
 
@@ -91,8 +91,8 @@ void CGrenade::Explode(Vector, Vector) { }
 void CGrenade::Explode(TraceResult*, int) { }
 void CGrenade::Killed(const KilledInfo& info) { }
 void CGrenade::Spawn() { }
-CGrenade* CGrenade::ShootTimed(entvars_t* pevOwner, Vector vecStart, Vector vecVelocity, float time) { return nullptr; }
-CGrenade* CGrenade::ShootContact(entvars_t* pevOwner, Vector vecStart, Vector vecVelocity) { return nullptr; }
+CGrenade* CGrenade::ShootTimed(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity, float time) { return nullptr; }
+CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity) { return nullptr; }
 void CGrenade::DetonateUse(const UseInfo& info) { }
 
 void UTIL_Remove(CBaseEntity* pEntity) { }
@@ -108,7 +108,7 @@ void CSprite::Expand(float scaleSpeed, float fadeSpeed) { }
 CBaseEntity* CBaseMonster::CheckTraceHullAttack(float flDist, int iDamage, int iDmgType) { return nullptr; }
 void CBaseMonster::Eat(float flFullDuration) { }
 bool CBaseMonster::ShouldEat() { return true; }
-void CBaseMonster::BarnacleVictimBitten(entvars_t* pevBarnacle) { }
+void CBaseMonster::BarnacleVictimBitten(CBaseEntity* pBarnacle) { }
 void CBaseMonster::BarnacleVictimReleased() { }
 void CBaseMonster::Listen() { }
 float CBaseMonster::SoundVolume(CSound* pSound) { return 0.0; }
@@ -193,7 +193,7 @@ void CBaseAnimating::SetBodygroup(int iGroup, int iValue) { }
 int CBaseAnimating::GetBodygroup(int iGroup) { return 0; }
 Vector CBaseMonster::GetGunPosition() { return vec3_origin; }
 void CBaseEntity::TraceAttack(const TraceAttackInfo& info) { }
-void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t* pevAttacker) { }
+void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, CBaseEntity* pAttacker) { }
 void CBaseEntity::TraceBleed(float flDamage, Vector vecDir, const TraceResult& tr, int bitsDamageType) { }
 void CBaseMonster::MakeDamageBloodDecal(int cCount, float flNoise, TraceResult* ptr, const Vector& vecDir) { }
 bool CBaseMonster::GetNodeRoute(Vector vecDest) { return true; }
@@ -216,8 +216,8 @@ bool CBaseMonster::GetEnemy() { return false; }
 void CBaseMonster::TraceAttack(const TraceAttackInfo& info) { }
 CBaseEntity* CBaseMonster::DropItem(const char* pszItemName, const Vector& vecPos, const Vector& vecAng) { return nullptr; }
 bool CBaseMonster::ShouldFadeOnDeath() { return false; }
-void CBaseMonster::RadiusDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType) { }
-void CBaseMonster::RadiusDamage(Vector vecSrc, entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType) { }
+void CBaseMonster::RadiusDamage(CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType) { }
+void CBaseMonster::RadiusDamage(Vector vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType) { }
 void CBaseMonster::FadeMonster() { }
 void CBaseMonster::GibMonster() { }
 bool CBaseMonster::HasHumanGibs() { return false; }
@@ -282,7 +282,7 @@ int CBasePlayer::GetAmmoIndex(const char* psz) { return -1; }
 void CBasePlayer::SendAmmoUpdate() { }
 void CBasePlayer::UpdateClientData() { }
 bool CBasePlayer::BecomeProne() { return true; }
-void CBasePlayer::BarnacleVictimBitten(entvars_t* pevBarnacle) { }
+void CBasePlayer::BarnacleVictimBitten(CBaseEntity* pBarnacle) { }
 void CBasePlayer::BarnacleVictimReleased() { }
 int CBasePlayer::Illumination() { return 0; }
 void CBasePlayer::EnableControl(bool fControl) { }

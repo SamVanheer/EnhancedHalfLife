@@ -289,7 +289,7 @@ bool CLeech::TakeDamage(const TakeDamageInfo& info)
 	// Nudge the leech away from the damage
 	if (info.GetInflictor())
 	{
-		pev->velocity = (pev->origin - info.GetInflictor()->origin).Normalize() * 25;
+		pev->velocity = (pev->origin - info.GetInflictor()->pev->origin).Normalize() * 25;
 	}
 
 	return CBaseMonster::TakeDamage(info);
@@ -314,7 +314,7 @@ void CLeech::HandleAnimEvent(AnimationEvent& event)
 			face = face.Normalize();
 
 			if (DotProduct(dir, face) > 0.9)		// Only take damage if the leech is facing the prey
-				pEnemy->TakeDamage({pev, pev, gSkillData.leechDmgBite, DMG_SLASH});
+				pEnemy->TakeDamage({this, this, gSkillData.leechDmgBite, DMG_SLASH});
 		}
 		m_stateTime -= 2;
 		break;
@@ -642,7 +642,7 @@ void CLeech::Killed(const KilledInfo& info)
 	//ALERT(at_aiconsole, "Leech: killed\n");
 	// tell owner ( if any ) that we're dead.This is mostly for MonsterMaker functionality.
 	if (CBaseEntity* pOwner = CBaseEntity::Instance(pev->owner); pOwner)
-		pOwner->DeathNotice(pev);
+		pOwner->DeathNotice(this);
 
 	// When we hit the ground, play the "death_end" activity
 	if (pev->waterlevel != WaterLevel::Dry)

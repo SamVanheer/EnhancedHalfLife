@@ -143,12 +143,12 @@ void CShotgun::PrimaryAttack()
 	if (g_pGameRules->IsMultiplayer())
 #endif
 	{
-		vecDir = m_hPlayer->FireBulletsPlayer(4, vecSrc, vecAiming, VECTOR_CONE_DM_SHOTGUN, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_hPlayer->pev, m_hPlayer->random_seed);
+		vecDir = m_hPlayer->FireBulletsPlayer(4, vecSrc, vecAiming, VECTOR_CONE_DM_SHOTGUN, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_hPlayer, m_hPlayer->random_seed);
 	}
 	else
 	{
 		// regular old, untouched spread. 
-		vecDir = m_hPlayer->FireBulletsPlayer(6, vecSrc, vecAiming, VECTOR_CONE_10DEGREES, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_hPlayer->pev, m_hPlayer->random_seed);
+		vecDir = m_hPlayer->FireBulletsPlayer(6, vecSrc, vecAiming, VECTOR_CONE_10DEGREES, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_hPlayer, m_hPlayer->random_seed);
 	}
 
 	PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), m_usSingleFire, 0.0, vec3_origin, vec3_origin, vecDir.x, vecDir.y, 0, 0, 0, 0);
@@ -215,12 +215,12 @@ void CShotgun::SecondaryAttack()
 #endif
 	{
 		// tuned for deathmatch
-		vecDir = m_hPlayer->FireBulletsPlayer(8, vecSrc, vecAiming, VECTOR_CONE_DM_DOUBLESHOTGUN, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_hPlayer->pev, m_hPlayer->random_seed);
+		vecDir = m_hPlayer->FireBulletsPlayer(8, vecSrc, vecAiming, VECTOR_CONE_DM_DOUBLESHOTGUN, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_hPlayer, m_hPlayer->random_seed);
 	}
 	else
 	{
 		// untouched default single player
-		vecDir = m_hPlayer->FireBulletsPlayer(12, vecSrc, vecAiming, VECTOR_CONE_10DEGREES, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_hPlayer->pev, m_hPlayer->random_seed);
+		vecDir = m_hPlayer->FireBulletsPlayer(12, vecSrc, vecAiming, VECTOR_CONE_10DEGREES, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_hPlayer, m_hPlayer->random_seed);
 	}
 
 	PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), m_usDoubleFire, 0.0, vec3_origin, vec3_origin, vecDir.x, vecDir.y, 0, 0, 0, 0);

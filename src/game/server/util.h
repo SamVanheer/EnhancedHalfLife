@@ -124,7 +124,6 @@ inline entvars_t* INDEXVARS(int iEdictNum) { return VARS(INDEXENT(iEdictNum)); }
 
 // Testing the two types of "entity" for nullity
 inline bool IsNullEnt(const edict_t* pent) { return pent == nullptr || ENTINDEX(pent) == 0; }
-inline bool IsNullEnt(entvars_t* pev) { return pev == nullptr || ENTINDEX(pev) == 0; }
 
 // Testing strings for nullity
 constexpr string_t iStringNull = 0;

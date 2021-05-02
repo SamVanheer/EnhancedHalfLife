@@ -108,7 +108,7 @@ constexpr int SF_NORESPAWN = 1 << 30; // !!!set this bit on guns and stuff that 
 class TakeDamageInfo
 {
 public:
-	TakeDamageInfo(entvars_t* inflictor, entvars_t* attacker, float damage, int damageTypes)
+	TakeDamageInfo(CBaseEntity* inflictor, CBaseEntity* attacker, float damage, int damageTypes)
 		: _inflictor(inflictor)
 		, _attacker(attacker)
 		, _damage(damage)
@@ -121,16 +121,16 @@ public:
 
 	~TakeDamageInfo() = default;
 
-	entvars_t* GetInflictor() const { return _inflictor; }
+	CBaseEntity* GetInflictor() const { return _inflictor; }
 
-	void SetInflictor(entvars_t* inflictor)
+	void SetInflictor(CBaseEntity* inflictor)
 	{
 		_inflictor = inflictor;
 	}
 
-	entvars_t* GetAttacker() const { return _attacker; }
+	CBaseEntity* GetAttacker() const { return _attacker; }
 
-	void SetAttacker(entvars_t* attacker)
+	void SetAttacker(CBaseEntity* attacker)
 	{
 		_attacker = attacker;
 	}
@@ -150,8 +150,8 @@ public:
 	}
 
 private:
-	entvars_t* _inflictor;
-	entvars_t* _attacker;
+	CBaseEntity* _inflictor;
+	CBaseEntity* _attacker;
 	float _damage;
 	int _damageTypes;
 };
@@ -159,7 +159,7 @@ private:
 class TraceAttackInfo
 {
 public:
-	TraceAttackInfo(entvars_t* attacker, float damage, const Vector& direction, const TraceResult& trace, int damageTypes)
+	TraceAttackInfo(CBaseEntity* attacker, float damage, const Vector& direction, const TraceResult& trace, int damageTypes)
 		: _attacker(attacker)
 		, _damage(damage)
 		, _direction(direction)
@@ -173,9 +173,9 @@ public:
 
 	~TraceAttackInfo() = default;
 
-	entvars_t* GetAttacker() const { return _attacker; }
+	CBaseEntity* GetAttacker() const { return _attacker; }
 
-	void SetAttacker(entvars_t* attacker)
+	void SetAttacker(CBaseEntity* attacker)
 	{
 		_attacker = attacker;
 	}
@@ -211,7 +211,7 @@ public:
 	}
 
 private:
-	entvars_t* _attacker;
+	CBaseEntity* _attacker;
 	float _damage;
 	Vector _direction;
 	TraceResult _trace;
@@ -234,20 +234,20 @@ enum class GibType
 class KilledInfo
 {
 public:
-	KilledInfo(entvars_t* pevAttacker, GibType gibType)
-		: _attacker(pevAttacker)
+	KilledInfo(CBaseEntity* attacker, GibType gibType)
+		: _attacker(attacker)
 		, _gibType(gibType)
 	{
 	}
 
 	~KilledInfo() = default;
 
-	entvars_t* GetAttacker() const { return _attacker; }
+	CBaseEntity* GetAttacker() const { return _attacker; }
 
 	GibType GetGibType() const { return _gibType; }
 
 private:
-	entvars_t* const _attacker;
+	CBaseEntity* const _attacker;
 	const GibType _gibType;
 };
 
@@ -356,7 +356,7 @@ public:
 	/**
 	*	@brief monster maker children use this to tell the monster maker that they have died.
 	*/
-	virtual void DeathNotice(entvars_t* pevChild) {}
+	virtual void DeathNotice(CBaseEntity* pChild) {}
 
 
 	static	TYPEDESCRIPTION m_SaveData[];
@@ -379,7 +379,7 @@ public:
 	virtual bool	IsMoving() { return pev->velocity != vec3_origin; }
 	virtual void	OverrideReset() {}
 	virtual int		DamageDecal(int bitsDamageType);
-	virtual bool	OnControls(entvars_t* pev) { return false; }
+	virtual bool	OnControls(CBaseEntity* pTest) { return false; }
 	virtual bool	IsAlive() { return (pev->deadflag == DeadFlag::No) && pev->health > 0; }
 	virtual bool	IsBSPModel() { return pev->solid == Solid::BSP || pev->movetype == Movetype::PushStep; }
 	virtual bool	ReflectGauss() { return (IsBSPModel() && !pev->takedamage); }
@@ -445,14 +445,14 @@ public:
 	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
 	*	This version is used by Monsters.
 	*/
-	void		FireBullets(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t* pevAttacker = nullptr);
+	void		FireBullets(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr);
 	
 	/**
 	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
 	*	This version is used by Players, uses the random seed generator to sync client and server side shots.
 	*/
 	//TODO: needs updates. the random seed and attacker are both part of the entity this is called on, so move this to CBasePlayer and use it properly
-	Vector		FireBulletsPlayer(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t* pevAttacker = nullptr, int shared_rand = 0);
+	Vector		FireBulletsPlayer(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr, int shared_rand = 0);
 
 	virtual CBaseEntity* Respawn() { return nullptr; }
 
@@ -474,6 +474,16 @@ public:
 	bool	IsDormant();
 	bool    IsLockedByMaster() { return false; }
 
+	static CBaseEntity* InstanceOrDefault(edict_t* pEntity, CBaseEntity* pDefault)
+	{
+		if (!pEntity)
+		{
+			return pDefault;
+		}
+
+		return reinterpret_cast<CBaseEntity*>(GET_PRIVATE(pEntity));
+	}
+
 	static CBaseEntity* Instance(edict_t* pent)
 	{
 		if (!pent)
@@ -488,6 +498,26 @@ public:
 			return Instance(INDEXENT(0));
 
 		return Instance(ENT(pev));
+	}
+
+	static CBaseEntity* InstanceOrNull(edict_t* pEntity)
+	{
+		return InstanceOrDefault(pEntity, nullptr);
+	}
+
+	static CBaseEntity* InstanceOrWorld(edict_t* pEntity)
+	{
+		return InstanceOrDefault(pEntity, UTIL_EntityByIndex(0));
+	}
+
+	static edict_t* EdictOrNull(CBaseEntity* pEntity)
+	{
+		if (!pEntity)
+		{
+			return nullptr;
+		}
+
+		return pEntity->edict();
 	}
 
 	// Ugly code to lookup all functions to make sure they are exported when set.
@@ -530,7 +560,7 @@ public:
 	/**
 	*	@brief NOTE: szName must be a pointer to constant memory, e.g. "monster_class" because the entity will keep a pointer to it after this call.
 	*/
-	static CBaseEntity* Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner = nullptr);
+	static CBaseEntity* Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner = nullptr);
 
 	virtual bool BecomeProne() { return false; }
 	edict_t* edict() { return ENT(pev); }
@@ -785,7 +815,7 @@ public:
 	bool IsLockedByMaster(); //TODO: non-virtual override
 
 	static float		AxisValue(int flags, const Vector& angles);
-	static void			AxisDir(entvars_t* pev);
+	static void			AxisDir(CBaseEntity* pEntity);
 	static float		AxisDelta(int flags, const Vector& angle1, const Vector& angle2);
 
 	/**

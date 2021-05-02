@@ -21,18 +21,18 @@ constexpr int ACTIVITY_NOT_AVAILABLE = -1;
 
 bool IsSoundEvent(int eventNumber);
 
-int LookupActivity(void* pmodel, entvars_t* pev, int activity);
-int LookupActivityHeaviest(void* pmodel, entvars_t* pev, int activity);
+int LookupActivity(void* pmodel, int activity);
+int LookupActivityHeaviest(void* pmodel, int activity);
 int LookupSequence(void* pmodel, const char* label);
-void GetSequenceInfo(void* pmodel, entvars_t* pev, float& flFrameRate, float& flGroundSpeed);
-int GetSequenceFlags(void* pmodel, entvars_t* pev);
-float SetController(void* pmodel, entvars_t* pev, int iController, float flValue);
-float SetBlending(void* pmodel, entvars_t* pev, int iBlender, float flValue);
+void GetSequenceInfo(void* pmodel, CBaseEntity* entity, float& flFrameRate, float& flGroundSpeed);
+int GetSequenceFlags(void* pmodel, CBaseEntity* entity);
+float SetController(void* pmodel, CBaseEntity* entity, int iController, float flValue);
+float SetBlending(void* pmodel, CBaseEntity* entity, int iBlender, float flValue);
 void GetEyePosition(void* pmodel, Vector& vecEyePosition);
 void SequencePrecache(void* pmodel, const char* pSequenceName);
 int FindTransition(void* pmodel, int iEndingAnim, int iGoalAnim, int& iDir);
-void SetBodygroup(void* pmodel, entvars_t* pev, int iGroup, int iValue);
-int GetBodygroup(void* pmodel, entvars_t* pev, int iGroup);
+void SetBodygroup(void* pmodel, CBaseEntity* entity, int iGroup, int iValue);
+int GetBodygroup(void* pmodel, CBaseEntity* entity, int iGroup);
 
-int GetAnimationEvent(void* pmodel, entvars_t* pev, AnimationEvent& animationEvent, float flStart, float flEnd, int index);
+int GetAnimationEvent(void* pmodel, CBaseEntity* entity, AnimationEvent& animationEvent, float flStart, float flEnd, int index);
 bool ExtractBbox(void* pmodel, int sequence, Vector& mins, Vector& maxs);

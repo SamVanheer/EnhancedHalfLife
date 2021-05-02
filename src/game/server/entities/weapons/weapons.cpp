@@ -65,7 +65,7 @@ void ClearMultiDamage()
 	gMultiDamage.type = 0;
 }
 
-void ApplyMultiDamage(entvars_t* pevInflictor, entvars_t* pevAttacker)
+void ApplyMultiDamage(CBaseEntity* pInflictor, CBaseEntity* pAttacker)
 {
 	Vector		vecSpot1;//where blood comes from
 	Vector		vecDir;//direction blood should go
@@ -74,10 +74,10 @@ void ApplyMultiDamage(entvars_t* pevInflictor, entvars_t* pevAttacker)
 	if (!gMultiDamage.pEntity)
 		return;
 
-	gMultiDamage.pEntity->TakeDamage({pevInflictor, pevAttacker, gMultiDamage.amount, gMultiDamage.type});
+	gMultiDamage.pEntity->TakeDamage({pInflictor, pAttacker, gMultiDamage.amount, gMultiDamage.type});
 }
 
-void AddMultiDamage(entvars_t* pevInflictor, CBaseEntity* pEntity, float flDamage, int bitsDamageType)
+void AddMultiDamage(CBaseEntity* pInflictor, CBaseEntity* pEntity, float flDamage, int bitsDamageType)
 {
 	if (!pEntity)
 		return;
@@ -86,7 +86,7 @@ void AddMultiDamage(entvars_t* pevInflictor, CBaseEntity* pEntity, float flDamag
 
 	if (pEntity != gMultiDamage.pEntity)
 	{
-		ApplyMultiDamage(pevInflictor, pevInflictor); // UNDONE: wrong attacker!
+		ApplyMultiDamage(pInflictor, pInflictor); // UNDONE: wrong attacker!
 		gMultiDamage.pEntity = pEntity;
 		gMultiDamage.amount = 0;
 	}
@@ -185,41 +185,34 @@ void ExplodeModel(const Vector& vecOrigin, float speed, int model, int count)
 */
 void UTIL_PrecacheOtherWeapon(const char* szClassname)
 {
-	edict_t* pent;
-
-	pent = CREATE_NAMED_ENTITY(MAKE_STRING(szClassname));
-	if (IsNullEnt(pent))
+	auto pEntity = CBaseEntity::InstanceOrNull(CREATE_NAMED_ENTITY(MAKE_STRING(szClassname)));
+	if (IsNullEnt(pEntity))
 	{
 		ALERT(at_console, "NULL Ent in UTIL_PrecacheOtherWeapon\n");
 		return;
 	}
 
-	CBaseEntity* pEntity = CBaseEntity::Instance(VARS(pent));
-
-	if (pEntity)
+	ItemInfo II;
+	pEntity->Precache();
+	memset(&II, 0, sizeof II);
+	if (((CBasePlayerItem*)pEntity)->GetItemInfo(&II))
 	{
-		ItemInfo II;
-		pEntity->Precache();
-		memset(&II, 0, sizeof II);
-		if (((CBasePlayerItem*)pEntity)->GetItemInfo(&II))
+		CBasePlayerItem::ItemInfoArray[II.iId] = II;
+
+		if (II.pszAmmo1 && *II.pszAmmo1)
 		{
-			CBasePlayerItem::ItemInfoArray[II.iId] = II;
-
-			if (II.pszAmmo1 && *II.pszAmmo1)
-			{
-				AddAmmoNameToAmmoRegistry(II.pszAmmo1);
-			}
-
-			if (II.pszAmmo2 && *II.pszAmmo2)
-			{
-				AddAmmoNameToAmmoRegistry(II.pszAmmo2);
-			}
-
-			memset(&II, 0, sizeof II);
+			AddAmmoNameToAmmoRegistry(II.pszAmmo1);
 		}
+
+		if (II.pszAmmo2 && *II.pszAmmo2)
+		{
+			AddAmmoNameToAmmoRegistry(II.pszAmmo2);
+		}
+
+		memset(&II, 0, sizeof II);
 	}
 
-	REMOVE_ENTITY(pent);
+	REMOVE_ENTITY(pEntity->edict());
 }
 
 void W_Precache()
@@ -444,7 +437,7 @@ CBaseEntity* CBasePlayerItem::Respawn()
 {
 	// make a copy of this weapon that is invisible and inaccessible to players (no touch function). The weapon spawn/respawn code
 	// will decide when to make the weapon visible and touchable.
-	CBaseEntity* pNewWeapon = CBaseEntity::Create(STRING(pev->classname), g_pGameRules->WeaponRespawnSpot(this), pev->angles, pev->owner);
+	CBaseEntity* pNewWeapon = CBaseEntity::Create(STRING(pev->classname), g_pGameRules->WeaponRespawnSpot(this), pev->angles, InstanceOrNull(pev->owner));
 
 	if (pNewWeapon)
 	{

@@ -540,16 +540,16 @@ void CBaseDoor::DoorGoUp()
 
 		if (m_hActivator != nullptr)
 		{
-			entvars_t* pevActivator = m_hActivator->pev;
+			CBaseEntity* pActivator = m_hActivator;
 
 			if (!IsBitSet(pev->spawnflags, SF_DOOR_ONEWAY) && pev->movedir.y) 		// Y axis rotation, move away from the player
 			{
-				const Vector vec = pevActivator->origin - pev->origin;
-				const Vector angles{0, pevActivator->angles.y, 0};
+				const Vector vec = pActivator->pev->origin - pev->origin;
+				const Vector angles{0, pActivator->pev->angles.y, 0};
 				UTIL_MakeVectors(angles);
 				//			Vector vnext = (pevToucher->origin + (pevToucher->velocity * 10)) - pev->origin;
-				UTIL_MakeVectors(pevActivator->angles);
-				const Vector vnext = (pevActivator->origin + (gpGlobals->v_forward * 10)) - pev->origin;
+				UTIL_MakeVectors(pActivator->pev->angles);
+				const Vector vnext = (pActivator->pev->origin + (gpGlobals->v_forward * 10)) - pev->origin;
 				if ((vec.x * vnext.y - vec.y * vnext.x) < 0)
 					sign = -1.0;
 			}
@@ -647,7 +647,7 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 {
 	// Hurt the blocker a little.
 	if (pev->dmg)
-		pOther->TakeDamage({pev, pev, pev->dmg, DMG_CRUSH});
+		pOther->TakeDamage({this, this, pev->dmg, DMG_CRUSH});
 
 	// if a door has a negative wait, it would never come back if blocked,
 	// so let it just squash the object to death real fast
@@ -738,7 +738,7 @@ void CRotDoor::Spawn()
 {
 	Precache();
 	// set the axis of rotation
-	CBaseToggle::AxisDir(pev);
+	CBaseToggle::AxisDir(this);
 
 	// check for clockwise rotation
 	if (IsBitSet(pev->spawnflags, SF_DOOR_ROTATE_BACKWARDS))

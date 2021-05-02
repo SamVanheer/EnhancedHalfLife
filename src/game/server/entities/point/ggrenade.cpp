@@ -69,15 +69,12 @@ void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 	MESSAGE_END();
 
 	CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, NORMAL_EXPLOSION_VOLUME, 3.0);
-	entvars_t* pevOwner;
-	if (pev->owner)
-		pevOwner = VARS(pev->owner);
-	else
-		pevOwner = nullptr;
+
+	auto oldOwner = pev->owner;
 
 	pev->owner = nullptr; // can't traceline attack owner if this is set
 
-	RadiusDamage(pev, pevOwner, pev->dmg, CLASS_NONE, bitsDamageType);
+	RadiusDamage(this, InstanceOrNull(oldOwner), pev->dmg, CLASS_NONE, bitsDamageType);
 
 	if (RANDOM_FLOAT(0, 1) < 0.5)
 	{
@@ -196,12 +193,12 @@ void CGrenade::BounceTouch(CBaseEntity* pOther)
 	// only do damage if we're moving fairly fast
 	if (m_flNextAttack < gpGlobals->time && pev->velocity.Length() > 100)
 	{
-		if (entvars_t* pevOwner = VARS(pev->owner); pevOwner)
+		if (auto pOwner = InstanceOrNull(pev->owner); pOwner)
 		{
 			TraceResult tr = UTIL_GetGlobalTrace();
 			ClearMultiDamage();
-			pOther->TraceAttack({pevOwner, 1, gpGlobals->v_forward, tr, DMG_CLUB});
-			ApplyMultiDamage(pev, pevOwner);
+			pOther->TraceAttack({pOwner, 1, gpGlobals->v_forward, tr, DMG_CLUB});
+			ApplyMultiDamage(this, pOwner);
 		}
 		m_flNextAttack = gpGlobals->time + 1.0; // debounce
 	}
@@ -320,7 +317,7 @@ void CGrenade::Spawn()
 	m_fRegisteredSound = false;
 }
 
-CGrenade* CGrenade::ShootContact(entvars_t* pevOwner, Vector vecStart, Vector vecVelocity)
+CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity)
 {
 	CGrenade* pGrenade = GetClassPtr((CGrenade*)nullptr);
 	pGrenade->Spawn();
@@ -329,7 +326,7 @@ CGrenade* CGrenade::ShootContact(entvars_t* pevOwner, Vector vecStart, Vector ve
 	UTIL_SetOrigin(pGrenade->pev, vecStart);
 	pGrenade->pev->velocity = vecVelocity;
 	pGrenade->pev->angles = VectorAngles(pGrenade->pev->velocity);
-	pGrenade->pev->owner = ENT(pevOwner);
+	pGrenade->pev->owner = EdictOrNull(pOwner);
 
 	// make monsters afaid of it while in the air
 	pGrenade->SetThink(&CGrenade::DangerSoundThink);
@@ -346,14 +343,14 @@ CGrenade* CGrenade::ShootContact(entvars_t* pevOwner, Vector vecStart, Vector ve
 	return pGrenade;
 }
 
-CGrenade* CGrenade::ShootTimed(entvars_t* pevOwner, Vector vecStart, Vector vecVelocity, float time)
+CGrenade* CGrenade::ShootTimed(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity, float time)
 {
 	CGrenade* pGrenade = GetClassPtr((CGrenade*)nullptr);
 	pGrenade->Spawn();
 	UTIL_SetOrigin(pGrenade->pev, vecStart);
 	pGrenade->pev->velocity = vecVelocity;
 	pGrenade->pev->angles = VectorAngles(pGrenade->pev->velocity);
-	pGrenade->pev->owner = ENT(pevOwner);
+	pGrenade->pev->owner = EdictOrNull(pOwner);
 
 	pGrenade->SetTouch(&CGrenade::BounceTouch);	// Bounce if touched
 

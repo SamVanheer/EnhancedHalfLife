@@ -47,7 +47,7 @@ public:
 	*	@brief creates a new monster every so often
 	*/
 	void EXPORT MakerThink();
-	void DeathNotice(entvars_t* pevChild) override;//!< monster maker children use this to tell the monster maker that they have died.
+	void DeathNotice(CBaseEntity* pChild) override;//!< monster maker children use this to tell the monster maker that they have died.
 	
 	/**
 	*	@brief this is the code that drops the monster
@@ -184,9 +184,9 @@ void CMonsterMaker::MakeMonster()
 		return;
 	}
 
-	edict_t* pent = CREATE_NAMED_ENTITY(m_iszMonsterClassname);
+	auto pEntity = InstanceOrNull(CREATE_NAMED_ENTITY(m_iszMonsterClassname));
 
-	if (IsNullEnt(pent))
+	if (IsNullEnt(pEntity))
 	{
 		ALERT(at_console, "NULL Ent in MonsterMaker!\n");
 		return;
@@ -199,22 +199,21 @@ void CMonsterMaker::MakeMonster()
 		FireTargets(STRING(pev->target), this, this, USE_TOGGLE, 0);
 	}
 
-	entvars_t* pevCreate = VARS(pent);
-	pevCreate->origin = pev->origin;
-	pevCreate->angles = pev->angles;
-	SetBits(pevCreate->spawnflags, SF_MONSTER_FALL_TO_GROUND);
+	pEntity->pev->origin = pev->origin;
+	pEntity->pev->angles = pev->angles;
+	SetBits(pEntity->pev->spawnflags, SF_MONSTER_FALL_TO_GROUND);
 
 	// Children hit monsterclip brushes
 	if (pev->spawnflags & SF_MONSTERMAKER_MONSTERCLIP)
-		SetBits(pevCreate->spawnflags, SF_MONSTER_HITMONSTERCLIP);
+		SetBits(pEntity->pev->spawnflags, SF_MONSTER_HITMONSTERCLIP);
 
-	DispatchSpawn(ENT(pevCreate));
-	pevCreate->owner = edict();
+	DispatchSpawn(pEntity->edict());
+	pEntity->pev->owner = edict();
 
 	if (!IsStringNull(pev->netname))
 	{
 		// if I have a netname (overloaded), give the child monster that name as a targetname
-		pevCreate->targetname = pev->netname;
+		pEntity->pev->targetname = pev->netname;
 	}
 
 	m_cLiveChildren++;// count this monster
@@ -259,13 +258,13 @@ void CMonsterMaker::MakerThink()
 	MakeMonster();
 }
 
-void CMonsterMaker::DeathNotice(entvars_t* pevChild)
+void CMonsterMaker::DeathNotice(CBaseEntity* pChild)
 {
 	// ok, we've gotten the deathnotice from our child, now clear out its owner if we don't want it to fade.
 	m_cLiveChildren--;
 
 	if (!m_fFadeChildren)
 	{
-		pevChild->owner = nullptr;
+		pChild->pev->owner = nullptr;
 	}
 }

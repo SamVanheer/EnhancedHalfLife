@@ -45,8 +45,8 @@ class CGrenade : public CBaseMonster
 public:
 	void Spawn() override;
 
-	static CGrenade* ShootTimed(entvars_t* pevOwner, Vector vecStart, Vector vecVelocity, float time);
-	static CGrenade* ShootContact(entvars_t* pevOwner, Vector vecStart, Vector vecVelocity);
+	static CGrenade* ShootTimed(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity, float time);
+	static CGrenade* ShootContact(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity);
 
 	void Explode(Vector vecSrc, Vector vecAim);
 	void Explode(TraceResult* pTrace, int bitsDamageType);
@@ -509,12 +509,12 @@ void ClearMultiDamage();
 /**
 *	@brief inflicts contents of global multi damage register on gMultiDamage.pEntity
 */
-void ApplyMultiDamage(entvars_t* pevInflictor, entvars_t* pevAttacker);
+void ApplyMultiDamage(CBaseEntity* pInflictor, CBaseEntity* pAttacker);
 
 /**
 *	@brief Collects multiple small damages into a single damage
 */
-void AddMultiDamage(entvars_t* pevInflictor, CBaseEntity* pEntity, float flDamage, int bitsDamageType);
+void AddMultiDamage(CBaseEntity* pInflictor, CBaseEntity* pEntity, float flDamage, int bitsDamageType);
 
 void DecalGunshot(TraceResult* pTrace, int iBulletType);
 void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage);
@@ -524,7 +524,7 @@ int DamageDecal(CBaseEntity* pEntity, int bitsDamageType);
 *	@brief this entity is exploding, or otherwise needs to inflict damage upon entities within a certain range.
 *	@details only damages ents that can clearly be seen by the explosion!
 */
-void RadiusDamage(Vector vecSrc, entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, float flRadius, int iClassIgnore, int bitsDamageType);
+void RadiusDamage(Vector vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, float flRadius, int iClassIgnore, int bitsDamageType);
 
 struct MULTIDAMAGE
 {

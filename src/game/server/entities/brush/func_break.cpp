@@ -413,8 +413,6 @@ void CBreakable::DamageSound()
 
 void CBreakable::BreakTouch(CBaseEntity* pOther)
 {
-	entvars_t* pevToucher = pOther->pev;
-
 	// only players can break these right now
 	if (!pOther->IsPlayer() || !IsBreakable())
 	{
@@ -423,19 +421,19 @@ void CBreakable::BreakTouch(CBaseEntity* pOther)
 
 	if (IsBitSet(pev->spawnflags, SF_BREAK_TOUCH))
 	{// can be broken when run into 
-		const float flDamage = pevToucher->velocity.Length() * 0.01;
+		const float flDamage = pOther->pev->velocity.Length() * 0.01;
 
 		if (flDamage >= pev->health)
 		{
 			SetTouch(nullptr);
-			TakeDamage({pevToucher, pevToucher, flDamage, DMG_CRUSH});
+			TakeDamage({pOther, pOther, flDamage, DMG_CRUSH});
 
 			// do a little damage to player if we broke glass or computer
-			pOther->TakeDamage({pev, pev, flDamage / 4, DMG_SLASH});
+			pOther->TakeDamage({this, this, flDamage / 4, DMG_SLASH});
 		}
 	}
 
-	if (IsBitSet(pev->spawnflags, SF_BREAK_PRESSURE) && pevToucher->absmin.z >= pev->maxs.z - 2)
+	if (IsBitSet(pev->spawnflags, SF_BREAK_PRESSURE) && pOther->pev->absmin.z >= pev->maxs.z - 2)
 	{// can be broken when stood upon
 
 		// play creaking sound here.
@@ -507,17 +505,17 @@ bool CBreakable::TakeDamage(const TakeDamageInfo& info)
 	// (that is, no actual entity projectile was involved in the attack so use the shooter's origin). 
 	if (adjustedInfo.GetAttacker() == adjustedInfo.GetInflictor())
 	{
-		vecTemp = adjustedInfo.GetInflictor()->origin - (pev->absmin + (pev->size * 0.5));
+		vecTemp = adjustedInfo.GetInflictor()->pev->origin - (pev->absmin + (pev->size * 0.5));
 
 		// if a client hit the breakable with a crowbar, and breakable is crowbar-sensitive, break it now.
-		if (IsBitSet(adjustedInfo.GetAttacker()->flags, FL_CLIENT) &&
+		if (IsBitSet(adjustedInfo.GetAttacker()->pev->flags, FL_CLIENT) &&
 			IsBitSet(pev->spawnflags, SF_BREAK_CROWBAR) && (adjustedInfo.GetDamageTypes() & DMG_CLUB))
 			adjustedInfo.SetDamage(pev->health);
 	}
 	else
 		// an actual missile was involved.
 	{
-		vecTemp = adjustedInfo.GetInflictor()->origin - (pev->absmin + (pev->size * 0.5));
+		vecTemp = adjustedInfo.GetInflictor()->pev->origin - (pev->absmin + (pev->size * 0.5));
 	}
 
 	// Breakables take double damage from the crowbar
@@ -710,7 +708,7 @@ void CBreakable::Die()
 	SetThink(&CBreakable::SUB_Remove);
 	pev->nextthink = pev->ltime + 0.1;
 	if (!IsStringNull(m_iszSpawnObject))
-		CBaseEntity::Create(STRING(m_iszSpawnObject), GetBrushModelOrigin(pev), pev->angles, edict());
+		CBaseEntity::Create(STRING(m_iszSpawnObject), GetBrushModelOrigin(pev), pev->angles, this);
 
 	if (Explodable())
 	{
@@ -876,14 +874,13 @@ void CPushable::Touch(CBaseEntity* pOther)
 
 void CPushable::Move(CBaseEntity* pOther, bool push)
 {
-	entvars_t* pevToucher = pOther->pev;
 
 	// Is entity standing on this pushable ?
-	if (IsBitSet(pevToucher->flags, FL_ONGROUND) && pevToucher->groundentity && VARS(pevToucher->groundentity) == pev)
+	if (IsBitSet(pOther->pev->flags, FL_ONGROUND) && pOther->pev->groundentity && VARS(pOther->pev->groundentity) == pev)
 	{
 		// Only push if floating
 		if (pev->waterlevel > WaterLevel::Dry)
-			pev->velocity.z += pevToucher->velocity.z * 0.1;
+			pev->velocity.z += pOther->pev->velocity.z * 0.1;
 
 		return;
 	}
@@ -891,7 +888,7 @@ void CPushable::Move(CBaseEntity* pOther, bool push)
 	bool playerTouch = false;
 	if (pOther->IsPlayer())
 	{
-		if (push && !(pevToucher->button & (IN_FORWARD | IN_USE)))	// Don't push unless the player is pushing forward and NOT use (pull)
+		if (push && !(pOther->pev->button & (IN_FORWARD | IN_USE)))	// Don't push unless the player is pushing forward and NOT use (pull)
 			return;
 		playerTouch = true;
 	}
@@ -900,7 +897,7 @@ void CPushable::Move(CBaseEntity* pOther, bool push)
 
 	if (playerTouch)
 	{
-		if (!(pevToucher->flags & FL_ONGROUND))	// Don't push away from jumping/falling players unless in water
+		if (!(pOther->pev->flags & FL_ONGROUND))	// Don't push away from jumping/falling players unless in water
 		{
 			if (pev->waterlevel < WaterLevel::Feet)
 				return;
@@ -913,8 +910,8 @@ void CPushable::Move(CBaseEntity* pOther, bool push)
 	else
 		factor = 0.25;
 
-	pev->velocity.x += pevToucher->velocity.x * factor;
-	pev->velocity.y += pevToucher->velocity.y * factor;
+	pev->velocity.x += pOther->pev->velocity.x * factor;
+	pev->velocity.y += pOther->pev->velocity.y * factor;
 
 	const float length = sqrt(pev->velocity.x * pev->velocity.x + pev->velocity.y * pev->velocity.y);
 	if (push && (length > MaxSpeed()))
@@ -924,8 +921,8 @@ void CPushable::Move(CBaseEntity* pOther, bool push)
 	}
 	if (playerTouch)
 	{
-		pevToucher->velocity.x = pev->velocity.x;
-		pevToucher->velocity.y = pev->velocity.y;
+		pOther->pev->velocity.x = pev->velocity.x;
+		pOther->pev->velocity.y = pev->velocity.y;
 		if ((gpGlobals->time - m_soundTime) > 0.7)
 		{
 			m_soundTime = gpGlobals->time;

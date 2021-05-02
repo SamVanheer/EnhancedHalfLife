@@ -1270,7 +1270,7 @@ int	CGraph::RejectInlineLinks(CLink* pLinkPool, FSFile& file)
 class CTestHull : public CBaseMonster
 {
 public:
-	void Spawn(entvars_t* pevMasterNode);
+	void Spawn(CBaseEntity* pMasterNode);
 	int	ObjectCaps() override { return CBaseMonster::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	void EXPORT CallBuildNodeGraph();
 
@@ -1303,7 +1303,7 @@ public:
 
 LINK_ENTITY_TO_CLASS(testhull, CTestHull);
 
-void CTestHull::Spawn(entvars_t* pevMasterNode)
+void CTestHull::Spawn(CBaseEntity* pMasterNode)
 {
 	SET_MODEL(ENT(pev), "models/player.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
@@ -1373,7 +1373,7 @@ void CNodeEnt::Spawn()
 	if (WorldGraph.m_cNodes == 0)
 	{// this is the first node to spawn, spawn the test hull entity that builds and walks the node tree
 		CTestHull* pHull = GetClassPtr((CTestHull*)nullptr);
-		pHull->Spawn(pev);
+		pHull->Spawn(this);
 	}
 
 	if (WorldGraph.m_cNodes >= MAX_NODES)

@@ -369,7 +369,7 @@ void CHornet::DieTouch(CBaseEntity* pOther)
 		case 2:	EmitSound(SoundChannel::Voice, "hornet/ag_hornethit3.wav"); break;
 		}
 
-		pOther->TakeDamage({pev, VARS(pev->owner), pev->dmg, DMG_BULLET});
+		pOther->TakeDamage({this, InstanceOrNull(pev->owner), pev->dmg, DMG_BULLET});
 	}
 
 	pev->modelindex = 0;// so will disappear for the 0.1 secs we wait until NEXTTHINK gets rid

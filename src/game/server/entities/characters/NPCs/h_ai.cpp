@@ -33,23 +33,23 @@ constexpr int NUM_LATERAL_LOS_CHECKS = 6;  //!< how many checks are made on each
 // !!!UNDONE - move CBaseMonster functions to monsters.cpp
 //=========================================================
 
-bool IsBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetOrigin, float flSize)
+bool IsBoxVisible(CBaseEntity* pLooker, CBaseEntity* pTarget, Vector& vecTargetOrigin, float flSize)
 {
 	// don't look through water
-	if ((pevLooker->waterlevel != WaterLevel::Head && pevTarget->waterlevel == WaterLevel::Head)
-		|| (pevLooker->waterlevel == WaterLevel::Head && pevTarget->waterlevel == WaterLevel::Dry))
+	if ((pLooker->pev->waterlevel != WaterLevel::Head && pTarget->pev->waterlevel == WaterLevel::Head)
+		|| (pLooker->pev->waterlevel == WaterLevel::Head && pTarget->pev->waterlevel == WaterLevel::Dry))
 		return false;
 
 	TraceResult tr;
-	const Vector vecLookerOrigin = pevLooker->origin + pevLooker->view_ofs;//look through the monster's 'eyes'
+	const Vector vecLookerOrigin = pLooker->pev->origin + pLooker->pev->view_ofs;//look through the monster's 'eyes'
 	for (int i = 0; i < 5; i++)
 	{
-		Vector vecTarget = pevTarget->origin;
-		vecTarget.x += RANDOM_FLOAT(pevTarget->mins.x + flSize, pevTarget->maxs.x - flSize);
-		vecTarget.y += RANDOM_FLOAT(pevTarget->mins.y + flSize, pevTarget->maxs.y - flSize);
-		vecTarget.z += RANDOM_FLOAT(pevTarget->mins.z + flSize, pevTarget->maxs.z - flSize);
+		Vector vecTarget = pTarget->pev->origin;
+		vecTarget.x += RANDOM_FLOAT(pTarget->pev->mins.x + flSize, pTarget->pev->maxs.x - flSize);
+		vecTarget.y += RANDOM_FLOAT(pTarget->pev->mins.y + flSize, pTarget->pev->maxs.y - flSize);
+		vecTarget.z += RANDOM_FLOAT(pTarget->pev->mins.z + flSize, pTarget->pev->maxs.z - flSize);
 
-		UTIL_TraceLine(vecLookerOrigin, vecTarget, IgnoreMonsters::Yes, IgnoreGlass::Yes, ENT(pevLooker)/*pentIgnore*/, &tr);
+		UTIL_TraceLine(vecLookerOrigin, vecTarget, IgnoreMonsters::Yes, IgnoreGlass::Yes, pLooker->edict(), &tr);
 
 		if (tr.flFraction == 1.0)
 		{
@@ -60,7 +60,7 @@ bool IsBoxVisible(entvars_t* pevLooker, entvars_t* pevTarget, Vector& vecTargetO
 	return false;// Line of sight is not established
 }
 
-Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flGravityAdj)
+Vector CheckToss(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, float flGravityAdj)
 {
 	if (vecSpot2.z - vecSpot1.z > 500)
 	{
@@ -70,7 +70,7 @@ Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float 
 
 	const float flGravity = g_psv_gravity->value * flGravityAdj;
 
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(pEntity->pev->angles);
 
 	// toss a little bit to the left or right, not right down on the enemy's bean (head). 
 	vecSpot2 = vecSpot2 + gpGlobals->v_right * (RANDOM_FLOAT(-8, 8) + RANDOM_FLOAT(-16, 16));
@@ -85,7 +85,7 @@ Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float 
 	// halfway point between Spot1 and Spot2
 	Vector vecMidPoint = vecSpot1 + (vecSpot2 - vecSpot1) * 0.5;
 	TraceResult tr;
-	UTIL_TraceLine(vecMidPoint, vecMidPoint + Vector(0, 0, 500), IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecMidPoint, vecMidPoint + Vector(0, 0, 500), IgnoreMonsters::Yes, pEntity->edict(), &tr);
 	vecMidPoint = tr.vecEndPos;
 	// (subtract 15 so the grenade doesn't hit the ceiling)
 	vecMidPoint.z -= 15;
@@ -119,7 +119,7 @@ Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float 
 	Vector vecApex = vecSpot1 + vecGrenadeVel * time1;
 	vecApex.z = vecMidPoint.z;
 
-	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, pEntity->edict(), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
@@ -127,7 +127,7 @@ Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float 
 	}
 
 	// UNDONE: either ignore monsters or change it to not care if we hit our enemy
-	UTIL_TraceLine(vecSpot2, vecApex, IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot2, vecApex, IgnoreMonsters::Yes, pEntity->edict(), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
@@ -137,7 +137,7 @@ Vector CheckToss(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float 
 	return vecGrenadeVel;
 }
 
-Vector CheckThrow(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj)
+Vector CheckThrow(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj)
 {
 	const float flGravity = g_psv_gravity->value * flGravityAdj;
 
@@ -154,14 +154,14 @@ Vector CheckThrow(entvars_t* pev, const Vector& vecSpot1, Vector vecSpot2, float
 	vecApex.z += 0.5 * flGravity * (time * 0.5) * (time * 0.5);
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot1, vecApex, IgnoreMonsters::No, pEntity->edict(), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!
 		return vec3_origin;
 	}
 
-	UTIL_TraceLine(vecSpot2, vecApex, IgnoreMonsters::Yes, ENT(pev), &tr);
+	UTIL_TraceLine(vecSpot2, vecApex, IgnoreMonsters::Yes, pEntity->edict(), &tr);
 	if (tr.flFraction != 1.0)
 	{
 		// fail!

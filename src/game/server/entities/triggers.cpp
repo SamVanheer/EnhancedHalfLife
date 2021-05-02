@@ -518,7 +518,7 @@ void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
 	if (fldmg < 0)
 		pOther->GiveHealth(-fldmg, m_bitsDamageInflict);
 	else
-		pOther->TakeDamage({pev, pev, fldmg, m_bitsDamageInflict});
+		pOther->TakeDamage({this, this, fldmg, m_bitsDamageInflict});
 
 	// Store pain time so we can get all of the other entities on this frame
 	pev->pain_finished = gpGlobals->time;
@@ -556,23 +556,19 @@ void CTriggerHurt::RadiationThink()
 	pev->origin = (pev->absmin + pev->absmax) * 0.5;
 	pev->view_ofs = pev->view_ofs * 0.0;
 
-	edict_t* pentPlayer = FIND_CLIENT_IN_PVS(edict());
+	auto pPlayer = static_cast<CBasePlayer*>(InstanceOrNull(FIND_CLIENT_IN_PVS(edict())));
 
 	pev->origin = origin;
 	pev->view_ofs = view_ofs;
 
 	// reset origin
 
-	if (!IsNullEnt(pentPlayer))
+	if (!IsNullEnt(pPlayer))
 	{
-		CBasePlayer* pPlayer = GetClassPtr((CBasePlayer*)VARS(pentPlayer));
-
-		entvars_t* pevTarget = VARS(pentPlayer);
-
 		// get range to player;
 
 		const Vector vecSpot1 = (pev->absmin + pev->absmax) * 0.5;
-		const Vector vecSpot2 = (pevTarget->absmin + pevTarget->absmax) * 0.5;
+		const Vector vecSpot2 = (pPlayer->pev->absmin + pPlayer->pev->absmax) * 0.5;
 
 		const Vector vecRange = vecSpot1 - vecSpot2;
 		const float flRange = vecRange.Length();
@@ -617,23 +613,21 @@ void CTriggerMonsterJump::Think()
 
 void CTriggerMonsterJump::Touch(CBaseEntity* pOther)
 {
-	entvars_t* pevOther = pOther->pev;
-
-	if (!IsBitSet(pevOther->flags, FL_MONSTER))
+	if (!IsBitSet(pOther->pev->flags, FL_MONSTER))
 	{// touched by a non-monster.
 		return;
 	}
 
-	pevOther->origin.z += 1;
+	pOther->pev->origin.z += 1;
 
-	if (IsBitSet(pevOther->flags, FL_ONGROUND))
+	if (IsBitSet(pOther->pev->flags, FL_ONGROUND))
 	{// clear the onground so physics don't bitch
-		pevOther->flags &= ~FL_ONGROUND;
+		pOther->pev->flags &= ~FL_ONGROUND;
 	}
 
 	// toss the monster!
-	pevOther->velocity = pev->movedir * pev->speed;
-	pevOther->velocity.z += m_flHeight;
+	pOther->pev->velocity = pev->movedir * pev->speed;
+	pOther->pev->velocity.z += m_flHeight;
 	pev->nextthink = gpGlobals->time;
 }
 
@@ -762,19 +756,17 @@ void CTriggerMultiple::Spawn()
 
 void CTriggerMultiple::MultiTouch(CBaseEntity* pOther)
 {
-	entvars_t* pevToucher = pOther->pev;
-
 	// Only touch clients, monsters, or pushables (depending on flags)
-	if (((pevToucher->flags & FL_CLIENT) && !(pev->spawnflags & SF_TRIGGER_NOCLIENTS)) ||
-		((pevToucher->flags & FL_MONSTER) && (pev->spawnflags & SF_TRIGGER_ALLOWMONSTERS)) ||
-		(pev->spawnflags & SF_TRIGGER_PUSHABLES) && ClassnameIs(pevToucher, "func_pushable"))
+	if (((pOther->pev->flags & FL_CLIENT) && !(pev->spawnflags & SF_TRIGGER_NOCLIENTS)) ||
+		((pOther->pev->flags & FL_MONSTER) && (pev->spawnflags & SF_TRIGGER_ALLOWMONSTERS)) ||
+		(pev->spawnflags & SF_TRIGGER_PUSHABLES) && ClassnameIs(pOther->pev, "func_pushable"))
 	{
 
 #if 0
 		// if the trigger has an angles field, check player's facing direction
 		if (pev->movedir != vec3_origin)
 		{
-			UTIL_MakeVectors(pevToucher->angles);
+			UTIL_MakeVectors(pOther->pev->angles);
 			if (DotProduct(gpGlobals->v_forward, pev->movedir) < 0)
 				return;         // not facing the right way
 		}
@@ -913,10 +905,8 @@ void CTriggerPush::Spawn()
 
 void CTriggerPush::Touch(CBaseEntity* pOther)
 {
-	entvars_t* pevToucher = pOther->pev;
-
 	// UNDONE: Is there a better way than health to detect things that have physics? (clients/monsters)
-	switch (pevToucher->movetype)
+	switch (pOther->pev->movetype)
 	{
 	case Movetype::None:
 	case Movetype::Push:
@@ -925,26 +915,26 @@ void CTriggerPush::Touch(CBaseEntity* pOther)
 		return;
 	}
 
-	if (pevToucher->solid != Solid::Not && pevToucher->solid != Solid::BSP)
+	if (pOther->pev->solid != Solid::Not && pOther->pev->solid != Solid::BSP)
 	{
 		// Instant trigger, just transfer velocity and remove
 		if (IsBitSet(pev->spawnflags, SF_TRIGGER_PUSH_ONCE))
 		{
-			pevToucher->velocity = pevToucher->velocity + (pev->speed * pev->movedir);
-			if (pevToucher->velocity.z > 0)
-				pevToucher->flags &= ~FL_ONGROUND;
+			pOther->pev->velocity = pOther->pev->velocity + (pev->speed * pev->movedir);
+			if (pOther->pev->velocity.z > 0)
+				pOther->pev->flags &= ~FL_ONGROUND;
 			UTIL_Remove(this);
 		}
 		else
 		{	// Push field, transfer to base velocity
 			Vector vecPush = (pev->speed * pev->movedir);
-			if (pevToucher->flags & FL_BASEVELOCITY)
-				vecPush = vecPush + pevToucher->basevelocity;
+			if (pOther->pev->flags & FL_BASEVELOCITY)
+				vecPush = vecPush + pOther->pev->basevelocity;
 
-			pevToucher->basevelocity = vecPush;
+			pOther->pev->basevelocity = vecPush;
 
-			pevToucher->flags |= FL_BASEVELOCITY;
-			//			ALERT( at_console, "Vel %f, base %f\n", pevToucher->velocity.z, pevToucher->basevelocity.z );
+			pOther->pev->flags |= FL_BASEVELOCITY;
+			//			ALERT( at_console, "Vel %f, base %f\n", pOther->pev->velocity.z, pOther->pev->basevelocity.z );
 		}
 	}
 }
@@ -961,10 +951,8 @@ void CTriggerTeleport::Spawn()
 
 void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 {
-	entvars_t* pevToucher = pOther->pev;
-
 	// Only teleport monsters or clients
-	if (!IsBitSet(pevToucher->flags, FL_CLIENT | FL_MONSTER))
+	if (!IsBitSet(pOther->pev->flags, FL_CLIENT | FL_MONSTER))
 		return;
 
 	if (!UTIL_IsMasterTriggered(m_sMaster, pOther))
@@ -972,7 +960,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 
 	if (!(pev->spawnflags & SF_TRIGGER_ALLOWMONSTERS))
 	{// no monsters allowed!
-		if (IsBitSet(pevToucher->flags, FL_MONSTER))
+		if (IsBitSet(pOther->pev->flags, FL_MONSTER))
 		{
 			return;
 		}
@@ -999,19 +987,19 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 
 	tmp.z++;
 
-	pevToucher->flags &= ~FL_ONGROUND;
+	pOther->pev->flags &= ~FL_ONGROUND;
 
-	UTIL_SetOrigin(pevToucher, tmp);
+	UTIL_SetOrigin(pOther->pev, tmp);
 
-	pevToucher->angles = pTarget->pev->angles;
+	pOther->pev->angles = pTarget->pev->angles;
 
 	if (pOther->IsPlayer())
 	{
-		pevToucher->v_angle = pTarget->pev->angles;
+		pOther->pev->v_angle = pTarget->pev->angles;
 	}
 
-	pevToucher->fixangle = FixAngleMode::Absolute;
-	pevToucher->velocity = pevToucher->basevelocity = vec3_origin;
+	pOther->pev->fixangle = FixAngleMode::Absolute;
+	pOther->pev->velocity = pOther->pev->basevelocity = vec3_origin;
 }
 
 LINK_ENTITY_TO_CLASS(trigger_gravity, CTriggerGravity);

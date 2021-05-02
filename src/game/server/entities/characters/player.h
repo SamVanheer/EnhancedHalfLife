@@ -504,7 +504,7 @@ public:
 	void CheckTimeBasedDamage();
 
 	bool BecomeProne() override;
-	void BarnacleVictimBitten(entvars_t* pevBarnacle) override;
+	void BarnacleVictimBitten(CBaseEntity* pBarnacle) override;
 	void BarnacleVictimReleased() override;
 	static int GetAmmoIndex(const char* psz);
 	int AmmoInventory(int iAmmoIndex);

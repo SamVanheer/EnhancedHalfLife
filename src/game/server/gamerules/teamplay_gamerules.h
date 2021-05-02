@@ -33,10 +33,10 @@ public:
 	bool ShouldAutoAim(CBasePlayer* pPlayer, CBaseEntity* target) override;
 	int PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled) override;
 	void InitHUD(CBasePlayer* pl) override;
-	void DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pevInflictor) override;
+	void DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) override;
 	const char* GetGameDescription() override { return "HL Teamplay"; } 
 	void UpdateGameMode(CBasePlayer* pPlayer) override;
-	void PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor) override;
+	void PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) override;
 	void Think() override;
 	int GetTeamIndex(std::string_view teamName) override;
 	const char* GetIndexedTeamName(int teamIndex) override;

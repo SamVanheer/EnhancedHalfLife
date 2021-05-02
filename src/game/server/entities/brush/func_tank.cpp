@@ -57,7 +57,7 @@ public:
 	/**
 	*	@brief Fire targets and spawn sprites
 	*/
-	virtual void Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker);
+	virtual void Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker);
 	virtual Vector UpdateTargetPosition(CBaseEntity* pTarget)
 	{
 		return pTarget->BodyTarget(pev->origin);
@@ -116,7 +116,7 @@ public:
 	/**
 	*	@brief TANK CONTROLLING
 	*/
-	bool OnControls(entvars_t* pevTest) override;
+	bool OnControls(CBaseEntity* pTest) override;
 	bool StartControl(CBasePlayer* pController);
 	void StopControl();
 
@@ -350,12 +350,12 @@ void CFuncTank::KeyValue(KeyValueData* pkvd)
 		CBaseEntity::KeyValue(pkvd);
 }
 
-bool CFuncTank::OnControls(entvars_t* pevTest)
+bool CFuncTank::OnControls(CBaseEntity* pTest)
 {
 	if (!(pev->spawnflags & SF_TANK_CANCONTROL))
 		return false;
 
-	if ((m_vecControllerUsePos - pevTest->origin).Length() < 30)
+	if ((m_vecControllerUsePos - pTest->pev->origin).Length() < 30)
 		return true;
 
 	return false;
@@ -428,7 +428,7 @@ void CFuncTank::ControllerPostFrame()
 
 		m_fireLast = gpGlobals->time - (1 / m_fireRate) - 0.01;  // to make sure the gun doesn't fire too many bullets
 
-		Fire(BarrelPosition(), vecForward, controller->pev);
+		Fire(BarrelPosition(), vecForward, controller);
 
 		// HACKHACK -- make some noise (that the AI can hear)
 		if (controller->IsPlayer())
@@ -631,7 +631,7 @@ void CFuncTank::TrackTarget()
 
 		if (fire)
 		{
-			Fire(BarrelPosition(), forward, pev);
+			Fire(BarrelPosition(), forward, this);
 		}
 		else
 			m_fireLast = 0;
@@ -659,7 +659,7 @@ void CFuncTank::AdjustAnglesForBarrel(Vector& angles, float distance)
 	}
 }
 
-void CFuncTank::Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker)
+void CFuncTank::Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker)
 {
 	if (m_fireLast != 0)
 	{
@@ -722,12 +722,12 @@ void CFuncTank::StopRotSound()
 class CFuncTankGun : public CFuncTank
 {
 public:
-	void Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker) override;
+	void Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker) override;
 };
 
 LINK_ENTITY_TO_CLASS(func_tank, CFuncTankGun);
 
-void CFuncTankGun::Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker)
+void CFuncTankGun::Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker)
 {
 	if (m_fireLast != 0)
 	{
@@ -742,15 +742,15 @@ void CFuncTankGun::Fire(const Vector& barrelEnd, const Vector& forward, entvars_
 				switch (m_bulletType)
 				{
 				case TankBullet::Cal9mm:
-					FireBullets(1, barrelEnd, forward, gTankSpread[m_spread], WORLD_BOUNDARY, BULLET_MONSTER_9MM, 1, m_iBulletDamage, pevAttacker);
+					FireBullets(1, barrelEnd, forward, gTankSpread[m_spread], WORLD_BOUNDARY, BULLET_MONSTER_9MM, 1, m_iBulletDamage, pAttacker);
 					break;
 
 				case TankBullet::MP5:
-					FireBullets(1, barrelEnd, forward, gTankSpread[m_spread], WORLD_BOUNDARY, BULLET_MONSTER_MP5, 1, m_iBulletDamage, pevAttacker);
+					FireBullets(1, barrelEnd, forward, gTankSpread[m_spread], WORLD_BOUNDARY, BULLET_MONSTER_MP5, 1, m_iBulletDamage, pAttacker);
 					break;
 
 				case TankBullet::Cal12mm:
-					FireBullets(1, barrelEnd, forward, gTankSpread[m_spread], WORLD_BOUNDARY, BULLET_MONSTER_12MM, 1, m_iBulletDamage, pevAttacker);
+					FireBullets(1, barrelEnd, forward, gTankSpread[m_spread], WORLD_BOUNDARY, BULLET_MONSTER_12MM, 1, m_iBulletDamage, pAttacker);
 					break;
 
 				default:
@@ -758,11 +758,11 @@ void CFuncTankGun::Fire(const Vector& barrelEnd, const Vector& forward, entvars_
 					break;
 				}
 			}
-			CFuncTank::Fire(barrelEnd, forward, pevAttacker);
+			CFuncTank::Fire(barrelEnd, forward, pAttacker);
 		}
 	}
 	else
-		CFuncTank::Fire(barrelEnd, forward, pevAttacker);
+		CFuncTank::Fire(barrelEnd, forward, pAttacker);
 }
 
 class CFuncTankLaser : public CFuncTank
@@ -770,7 +770,7 @@ class CFuncTankLaser : public CFuncTank
 public:
 	void	Activate() override;
 	void	KeyValue(KeyValueData* pkvd) override;
-	void	Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker) override;
+	void	Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker) override;
 	void	Think() override;
 	CLaser* GetLaser();
 
@@ -844,8 +844,9 @@ void CFuncTankLaser::Think()
 	CFuncTank::Think();
 }
 
-void CFuncTankLaser::Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker)
+void CFuncTankLaser::Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker)
 {
+	//TODO: need to use pAttacker when calling baseclass
 	if (m_fireLast != 0 && GetLaser())
 	{
 		// TankTrace needs gpGlobals->v_up, etc.
@@ -868,12 +869,12 @@ void CFuncTankLaser::Fire(const Vector& barrelEnd, const Vector& forward, entvar
 				laser->FireAtPoint(tr);
 				laser->pev->nextthink = 0;
 			}
-			CFuncTank::Fire(barrelEnd, forward, pev);
+			CFuncTank::Fire(barrelEnd, forward, this);
 		}
 	}
 	else
 	{
-		CFuncTank::Fire(barrelEnd, forward, pev);
+		CFuncTank::Fire(barrelEnd, forward, this);
 	}
 }
 
@@ -881,7 +882,7 @@ class CFuncTankRocket : public CFuncTank
 {
 public:
 	void Precache() override;
-	void Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker) override;
+	void Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker) override;
 };
 
 LINK_ENTITY_TO_CLASS(func_tankrocket, CFuncTankRocket);
@@ -892,8 +893,9 @@ void CFuncTankRocket::Precache()
 	CFuncTank::Precache();
 }
 
-void CFuncTankRocket::Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker)
+void CFuncTankRocket::Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker)
 {
+	//TODO: need to use pAttacker when calling baseclass
 	if (m_fireLast != 0)
 	{
 		const int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
@@ -901,20 +903,20 @@ void CFuncTankRocket::Fire(const Vector& barrelEnd, const Vector& forward, entva
 		{
 			for (int i = 0; i < bulletCount; i++)
 			{
-				CBaseEntity* pRocket = CBaseEntity::Create("rpg_rocket", barrelEnd, pev->angles, edict());
+				CBaseEntity* pRocket = CBaseEntity::Create("rpg_rocket", barrelEnd, pev->angles, this);
 			}
-			CFuncTank::Fire(barrelEnd, forward, pev);
+			CFuncTank::Fire(barrelEnd, forward, this);
 		}
 	}
 	else
-		CFuncTank::Fire(barrelEnd, forward, pev);
+		CFuncTank::Fire(barrelEnd, forward, this);
 }
 
 class CFuncTankMortar : public CFuncTank
 {
 public:
 	void KeyValue(KeyValueData* pkvd) override;
-	void Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker) override;
+	void Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker) override;
 };
 
 LINK_ENTITY_TO_CLASS(func_tankmortar, CFuncTankMortar);
@@ -930,8 +932,9 @@ void CFuncTankMortar::KeyValue(KeyValueData* pkvd)
 		CFuncTank::KeyValue(pkvd);
 }
 
-void CFuncTankMortar::Fire(const Vector& barrelEnd, const Vector& forward, entvars_t* pevAttacker)
+void CFuncTankMortar::Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker)
 {
+	//TODO: use pAttacker when calling baseclass
 	if (m_fireLast != 0)
 	{
 		const int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
@@ -947,11 +950,11 @@ void CFuncTankMortar::Fire(const Vector& barrelEnd, const Vector& forward, entva
 
 			UTIL_CreateExplosion(tr.vecEndPos, pev->angles, this, pev->impulse, true);
 
-			CFuncTank::Fire(barrelEnd, forward, pev);
+			CFuncTank::Fire(barrelEnd, forward, this);
 		}
 	}
 	else
-		CFuncTank::Fire(barrelEnd, forward, pev);
+		CFuncTank::Fire(barrelEnd, forward, this);
 }
 
 /**

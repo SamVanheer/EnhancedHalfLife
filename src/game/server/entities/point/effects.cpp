@@ -718,8 +718,8 @@ void CBeam::BeamDamage(TraceResult* ptr)
 		if (pHit)
 		{
 			ClearMultiDamage();
-			pHit->TraceAttack({pev, pev->dmg * (gpGlobals->time - pev->dmgtime), (ptr->vecEndPos - pev->origin).Normalize(), *ptr, DMG_ENERGYBEAM});
-			ApplyMultiDamage(pev, pev);
+			pHit->TraceAttack({this, pev->dmg * (gpGlobals->time - pev->dmgtime), (ptr->vecEndPos - pev->origin).Normalize(), *ptr, DMG_ENERGYBEAM});
+			ApplyMultiDamage(this, this);
 			if (pev->spawnflags & SF_BEAM_DECALS)
 			{
 				if (pHit->IsBSPModel())
@@ -1146,7 +1146,7 @@ void CSprite::Precache()
 
 	// Reset attachment after save/restore
 	if (pev->aiment)
-		SetAttachment(pev->aiment, pev->body);
+		SetAttachment(InstanceOrNull(pev->aiment), pev->body);
 	else
 	{
 		// Clear attachment
@@ -2064,7 +2064,7 @@ void CEnvBeverage::Use(const UseInfo& info)
 		return;
 	}
 
-	CBaseEntity* pCan = CBaseEntity::Create("item_sodacan", pev->origin, pev->angles, edict());
+	CBaseEntity* pCan = CBaseEntity::Create("item_sodacan", pev->origin, pev->angles, this);
 
 	if (pev->skin == 6)
 	{

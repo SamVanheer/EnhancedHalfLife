@@ -381,7 +381,7 @@ bool CBaseButton::TakeDamage(const TakeDamageInfo& info)
 	// Temporarily disable the touch function, until movement is finished.
 	SetTouch(nullptr);
 
-	m_hActivator = CBaseEntity::Instance(info.GetAttacker());
+	m_hActivator = info.GetAttacker();
 	if (m_hActivator == nullptr)
 		return false;
 
@@ -739,7 +739,7 @@ void CRotButton::Spawn()
 	pev->noise = ALLOC_STRING(pszSound);
 
 	// set the axis of rotation
-	CBaseToggle::AxisDir(pev);
+	CBaseToggle::AxisDir(this);
 
 	// check for clockwise rotation
 	if (IsBitSet(pev->spawnflags, SF_DOOR_ROTATE_BACKWARDS))
@@ -844,7 +844,7 @@ LINK_ENTITY_TO_CLASS(momentary_rot_button, CMomentaryRotButton);
 
 void CMomentaryRotButton::Spawn()
 {
-	CBaseToggle::AxisDir(pev);
+	CBaseToggle::AxisDir(this);
 
 	if (pev->speed == 0)
 		pev->speed = 100;
@@ -1175,7 +1175,7 @@ int	CButtonTarget::ObjectCaps()
 
 bool CButtonTarget::TakeDamage(const TakeDamageInfo& info)
 {
-	Use({Instance(info.GetAttacker()), this, USE_TOGGLE});
+	Use({info.GetAttacker(), this, USE_TOGGLE});
 
 	return true;
 }

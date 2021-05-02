@@ -176,10 +176,7 @@ void CFuncMortarField::FieldUse(const UseInfo& info)
 		TraceResult tr;
 		UTIL_TraceLine(vecSpot, vecSpot + vec3_down * WORLD_BOUNDARY, IgnoreMonsters::Yes, ENT(pev), &tr);
 
-		edict_t* pentOwner = nullptr;
-		if (info.GetActivator()) pentOwner = info.GetActivator()->edict();
-
-		CBaseEntity* pMortar = Create("monster_mortar", tr.vecEndPos, vec3_origin, pentOwner);
+		CBaseEntity* pMortar = Create("monster_mortar", tr.vecEndPos, vec3_origin, info.GetActivator());
 		pMortar->pev->nextthink = gpGlobals->time + t;
 		t += RANDOM_FLOAT(0.2, 0.5);
 

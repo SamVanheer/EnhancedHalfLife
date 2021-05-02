@@ -202,7 +202,7 @@ void CEnvExplosion::Use(const UseInfo& info)
 	// do damage
 	if (!(pev->spawnflags & SF_ENVEXPLOSION_NODAMAGE))
 	{
-		RadiusDamage(pev, pev, m_iMagnitude, CLASS_NONE, DMG_BLAST);
+		RadiusDamage(this, this, m_iMagnitude, CLASS_NONE, DMG_BLAST);
 	}
 
 	SetThink(&CEnvExplosion::Smoke);
@@ -249,7 +249,7 @@ void UTIL_CreateExplosion(Vector center, const Vector& angles, CBaseEntity* owne
 		center.y += RANDOM_FLOAT(-randomRange, randomRange);
 	}
 
-	CBaseEntity* pExplosion = CBaseEntity::Create("env_explosion", center, angles, owner ? owner->edict() : nullptr);
+	CBaseEntity* pExplosion = CBaseEntity::Create("env_explosion", center, angles, owner);
 
 	char buf[128];
 	snprintf(buf, sizeof(buf), "%3d", magnitude);

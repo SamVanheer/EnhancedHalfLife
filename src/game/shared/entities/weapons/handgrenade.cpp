@@ -134,7 +134,7 @@ void CHandGrenade::WeaponIdle()
 		// alway explode 3 seconds after the pin was pulled
 		const float time = std::max(0.0f, m_flStartThrow - gpGlobals->time + 3.0f);
 
-		CGrenade::ShootTimed(m_hPlayer->pev, vecSrc, vecThrow, time);
+		CGrenade::ShootTimed(m_hPlayer, vecSrc, vecThrow, time);
 
 		if (flVel < 500)
 		{

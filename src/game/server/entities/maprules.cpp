@@ -600,7 +600,7 @@ void CGamePlayerHurt::Use(const UseInfo& info)
 		if (pev->dmg < 0)
 			info.GetActivator()->GiveHealth(-pev->dmg, DMG_GENERIC);
 		else
-			info.GetActivator()->TakeDamage({pev, pev, pev->dmg, DMG_GENERIC});
+			info.GetActivator()->TakeDamage({this, this, pev->dmg, DMG_GENERIC});
 	}
 
 	SUB_UseTargets(info.GetActivator(), info.GetUseType(), info.GetValue());

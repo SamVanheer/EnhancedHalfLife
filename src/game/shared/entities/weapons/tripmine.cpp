@@ -279,7 +279,7 @@ void CTripmineGrenade::BeamBreakThink()
 		// CGrenade code knows who the explosive really belongs to.
 		pev->owner = m_hRealOwner ? m_hRealOwner->edict() : nullptr;
 		pev->health = 0;
-		Killed({VARS(pev->owner), GibType::Normal});
+		Killed({InstanceOrNull(pev->owner), GibType::Normal});
 		return;
 	}
 
@@ -304,10 +304,10 @@ void CTripmineGrenade::Killed(const KilledInfo& info)
 {
 	SetDamageMode(DamageMode::No);
 
-	if (auto pevAttacker = info.GetAttacker(); pevAttacker && (pevAttacker->flags & FL_CLIENT))
+	if (auto attacker = info.GetAttacker(); attacker && (attacker->pev->flags & FL_CLIENT))
 	{
 		// some client has destroyed this mine, he'll get credit for any kills
-		pev->owner = ENT(pevAttacker);
+		pev->owner = attacker->edict();
 	}
 
 	SetThink(&CTripmineGrenade::DelayDeathThink);
@@ -429,7 +429,7 @@ void CTripmine::PrimaryAttack()
 		{
 			const Vector angles = VectorAngles(tr.vecPlaneNormal);
 
-			CBaseEntity* pEnt = CBaseEntity::Create("monster_tripmine", tr.vecEndPos + tr.vecPlaneNormal * 8, angles, m_hPlayer->edict());
+			CBaseEntity* pEnt = CBaseEntity::Create("monster_tripmine", tr.vecEndPos + tr.vecPlaneNormal * 8, angles, m_hPlayer);
 
 			m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
 

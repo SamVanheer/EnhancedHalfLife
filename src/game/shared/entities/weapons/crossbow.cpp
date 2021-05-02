@@ -99,20 +99,21 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 	if (pOther->pev->takedamage)
 	{
 		TraceResult tr = UTIL_GetGlobalTrace();
-		entvars_t* pevOwner = VARS(pev->owner);
+
+		auto owner = InstanceOrNull(pev->owner);
 
 		ClearMultiDamage();
 
 		if (pOther->IsPlayer())
 		{
-			pOther->TraceAttack({pevOwner, gSkillData.plrDmgCrossbowClient, pev->velocity.Normalize(), tr, DMG_NEVERGIB});
+			pOther->TraceAttack({owner, gSkillData.plrDmgCrossbowClient, pev->velocity.Normalize(), tr, DMG_NEVERGIB});
 		}
 		else
 		{
-			pOther->TraceAttack({pevOwner, gSkillData.plrDmgCrossbowMonster, pev->velocity.Normalize(), tr, DMG_BULLET | DMG_NEVERGIB});
+			pOther->TraceAttack({owner, gSkillData.plrDmgCrossbowMonster, pev->velocity.Normalize(), tr, DMG_BULLET | DMG_NEVERGIB});
 		}
 
-		ApplyMultiDamage(pev, pevOwner);
+		ApplyMultiDamage(this, owner);
 
 		pev->velocity = vec3_origin;
 		// play body "thwack" sound
@@ -126,7 +127,7 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 
 		if (!g_pGameRules->IsMultiplayer())
 		{
-			Killed({pev, GibType::Never});
+			Killed({this, GibType::Never});
 		}
 	}
 	else
@@ -197,11 +198,11 @@ void CCrossbowBolt::ExplodeThink()
 	WRITE_BYTE(TE_EXPLFLAG_NONE);
 	MESSAGE_END();
 
-	entvars_t* pevOwner = pev->owner ? VARS(pev->owner) : nullptr;
+	auto oldOwner = pev->owner;
 
 	pev->owner = nullptr; // can't traceline attack owner if this is set
 
-	::RadiusDamage(pev->origin, pev, pevOwner, pev->dmg, 128, CLASS_NONE, DMG_BLAST | DMG_ALWAYSGIB);
+	::RadiusDamage(pev->origin, this, InstanceOrNull(oldOwner), pev->dmg, 128, CLASS_NONE, DMG_BLAST | DMG_ALWAYSGIB);
 
 	UTIL_Remove(this);
 }
@@ -340,8 +341,8 @@ void CCrossbow::FireSniperBolt()
 	if (tr.pHit->v.takedamage)
 	{
 		ClearMultiDamage();
-		CBaseEntity::Instance(tr.pHit)->TraceAttack({m_hPlayer->pev, 120, vecDir, tr, DMG_BULLET | DMG_NEVERGIB});
-		ApplyMultiDamage(pev, m_hPlayer->pev);
+		CBaseEntity::Instance(tr.pHit)->TraceAttack({m_hPlayer, 120, vecDir, tr, DMG_BULLET | DMG_NEVERGIB});
+		ApplyMultiDamage(this, m_hPlayer);
 	}
 #endif
 }

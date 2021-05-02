@@ -503,18 +503,16 @@ void CFuncRotating::Precache()
 
 void CFuncRotating::HurtTouch(CBaseEntity* pOther)
 {
-	entvars_t* pevOther = pOther->pev;
-
 	// we can't hurt this thing, so we're not concerned with it
-	if (!pevOther->takedamage)
+	if (!pOther->pev->takedamage)
 		return;
 
 	// calculate damage based on rotation speed
 	pev->dmg = pev->avelocity.Length() / 10;
 
-	pOther->TakeDamage({pev, pev, pev->dmg, DMG_CRUSH});
+	pOther->TakeDamage({this, this, pev->dmg, DMG_CRUSH});
 
-	pevOther->velocity = (pevOther->origin - GetBrushModelOrigin(pev)).Normalize() * pev->dmg;
+	pOther->pev->velocity = (pOther->pev->origin - GetBrushModelOrigin(pev)).Normalize() * pev->dmg;
 }
 
 constexpr int FANPITCHMIN = 30;
@@ -669,7 +667,7 @@ void CFuncRotating::RotatingUse(const UseInfo& info)
 
 void CFuncRotating::Blocked(CBaseEntity* pOther)
 {
-	pOther->TakeDamage({pev, pev, pev->dmg, DMG_CRUSH});
+	pOther->TakeDamage({this, this, pev->dmg, DMG_CRUSH});
 }
 
 constexpr int SF_PENDULUM_AUTO_RETURN = 16;
@@ -737,7 +735,7 @@ void CPendulum::KeyValue(KeyValueData* pkvd)
 void CPendulum::Spawn()
 {
 	// set the axis of rotation
-	CBaseToggle::AxisDir(pev);
+	CBaseToggle::AxisDir(this);
 
 	if (IsBitSet(pev->spawnflags, SF_DOOR_PASSABLE))
 		pev->solid = Solid::Not;
@@ -853,13 +851,11 @@ void CPendulum::Swing()
 
 void CPendulum::Touch(CBaseEntity* pOther)
 {
-	entvars_t* pevOther = pOther->pev;
-
 	if (pev->dmg <= 0)
 		return;
 
 	// we can't hurt this thing, so we're not concerned with it
-	if (!pevOther->takedamage)
+	if (!pOther->pev->takedamage)
 		return;
 
 	// calculate damage based on rotation speed
@@ -868,27 +864,26 @@ void CPendulum::Touch(CBaseEntity* pOther)
 	if (damage < 0)
 		damage = -damage;
 
-	pOther->TakeDamage({pev, pev, damage, DMG_CRUSH});
+	pOther->TakeDamage({this, this, damage, DMG_CRUSH});
 
-	pevOther->velocity = (pevOther->origin - GetBrushModelOrigin(pev)).Normalize() * damage;
+	pOther->pev->velocity = (pOther->pev->origin - GetBrushModelOrigin(pev)).Normalize() * damage;
 }
 
 void CPendulum::RopeTouch(CBaseEntity* pOther)
 {
-	entvars_t* pevOther = pOther->pev;
-
 	if (!pOther->IsPlayer())
 	{// not a player!
 		ALERT(at_console, "Not a client\n");
 		return;
 	}
 
-	if (ENT(pevOther) == pev->enemy)
+	//TODO: don't use pev->enemy
+	if (ENT(pOther->pev) == pev->enemy)
 	{// this player already on the rope.
 		return;
 	}
 
 	pev->enemy = pOther->edict();
-	pevOther->velocity = vec3_origin;
-	pevOther->movetype = Movetype::None;
+	pOther->pev->velocity = vec3_origin;
+	pOther->pev->movetype = Movetype::None;
 }

@@ -537,7 +537,7 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 
 	if (IsBitSet(pev->weapons, HGRUNT_HANDGRENADE))
 	{
-		const Vector vecToss = CheckToss(pev, GetGunPosition(), vecTarget, 0.5);
+		const Vector vecToss = CheckToss(this, GetGunPosition(), vecTarget, 0.5);
 
 		if (vecToss != vec3_origin)
 		{
@@ -558,7 +558,7 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 	}
 	else
 	{
-		const Vector vecToss = CheckThrow(pev, GetGunPosition(), vecTarget, gSkillData.hgruntGrenadeSpeed, 0.5);
+		const Vector vecToss = CheckThrow(this, GetGunPosition(), vecTarget, gSkillData.hgruntGrenadeSpeed, 0.5);
 
 		if (vecToss != vec3_origin)
 		{
@@ -825,7 +825,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 	{
 		UTIL_MakeVectors(pev->angles);
 		// CGrenade::ShootTimed( pev, pev->origin + gpGlobals->v_forward * 34 + Vector (0, 0, 32), m_vecTossVelocity, 3.5 );
-		CGrenade::ShootTimed(pev, GetGunPosition(), m_vecTossVelocity, 3.5);
+		CGrenade::ShootTimed(this, GetGunPosition(), m_vecTossVelocity, 3.5);
 
 		m_fThrowGrenade = false;
 		m_flNextGrenadeCheck = gpGlobals->time + 6;// wait six seconds before even looking again to see if a grenade can be thrown.
@@ -836,7 +836,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 	case HGRUNT_AE_GREN_LAUNCH:
 	{
 		EmitSound(SoundChannel::Weapon, "weapons/glauncher.wav", 0.8);
-		CGrenade::ShootContact(pev, GetGunPosition(), m_vecTossVelocity);
+		CGrenade::ShootContact(this, GetGunPosition(), m_vecTossVelocity);
 		m_fThrowGrenade = false;
 		if (g_SkillLevel == SkillLevel::Hard)
 			m_flNextGrenadeCheck = gpGlobals->time + RANDOM_FLOAT(2, 5);// wait a random amount of time before shooting again
@@ -848,7 +848,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 	case HGRUNT_AE_GREN_DROP:
 	{
 		UTIL_MakeVectors(pev->angles);
-		CGrenade::ShootTimed(pev, pev->origin + gpGlobals->v_forward * 17 - gpGlobals->v_right * 27 + gpGlobals->v_up * 6, vec3_origin, 3);
+		CGrenade::ShootTimed(this, pev->origin + gpGlobals->v_forward * 17 - gpGlobals->v_right * 27 + gpGlobals->v_up * 6, vec3_origin, 3);
 	}
 	break;
 
@@ -892,7 +892,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 			UTIL_MakeVectors(pev->angles);
 			pHurt->pev->punchangle.x = 15;
 			pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_forward * 100 + gpGlobals->v_up * 50;
-			pHurt->TakeDamage({pev, pev, gSkillData.hgruntDmgKick, DMG_CLUB});
+			pHurt->TakeDamage({this, this, gSkillData.hgruntDmgKick, DMG_CLUB});
 		}
 	}
 	break;

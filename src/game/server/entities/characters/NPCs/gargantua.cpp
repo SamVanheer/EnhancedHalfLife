@@ -148,12 +148,9 @@ void CStomp::Think()
 	if (tr.pHit && tr.pHit != pev->owner)
 	{
 		CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit);
-		entvars_t* pevOwner = pev;
-		if (pev->owner)
-			pevOwner = VARS(pev->owner);
 
 		if (pEntity)
-			pEntity->TakeDamage({pev, pevOwner, gSkillData.gargantuaDmgStomp, DMG_SONIC});
+			pEntity->TakeDamage({this, InstanceOrDefault(pev->owner, this), gSkillData.gargantuaDmgStomp, DMG_SONIC});
 	}
 
 	// Accelerate the effect
@@ -245,7 +242,7 @@ public:
 	void FlameDestroy();
 	inline bool FlameIsOn() { return m_hFlame[0] != nullptr; }
 
-	void FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
+	void FlameDamage(Vector vecStart, Vector vecEnd, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -581,8 +578,8 @@ void CGargantua::FlameUpdate()
 				streaks = true;
 				UTIL_DecalTrace(&trace, DECAL_SMALLSCORCH1 + RANDOM_LONG(0, 2));
 			}
-			// RadiusDamage( trace.vecEndPos, pev, pev, gSkillData.gargantuaDmgFire, CLASS_ALIEN_MONSTER, DMG_BURN );
-			FlameDamage(vecStart, trace.vecEndPos, pev, pev, gSkillData.gargantuaDmgFire, CLASS_ALIEN_MONSTER, DMG_BURN);
+			// RadiusDamage( trace.vecEndPos, this, this, gSkillData.gargantuaDmgFire, CLASS_ALIEN_MONSTER, DMG_BURN );
+			FlameDamage(vecStart, trace.vecEndPos, this, this, gSkillData.gargantuaDmgFire, CLASS_ALIEN_MONSTER, DMG_BURN);
 
 			MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 			WRITE_BYTE(TE_ELIGHT);
@@ -603,7 +600,7 @@ void CGargantua::FlameUpdate()
 		m_streakTime = gpGlobals->time;
 }
 
-void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType)
+void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType)
 {
 	CBaseEntity* pEntity = nullptr;
 	TraceResult	tr;
@@ -658,12 +655,12 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, entvars_t* pevInfli
 				if (tr.flFraction != 1.0)
 				{
 					ClearMultiDamage();
-					pEntity->TraceAttack({pevInflictor, flAdjustedDamage, (tr.vecEndPos - vecSrc).Normalize(), tr, bitsDamageType});
-					ApplyMultiDamage(pevInflictor, pevAttacker);
+					pEntity->TraceAttack({pInflictor, flAdjustedDamage, (tr.vecEndPos - vecSrc).Normalize(), tr, bitsDamageType});
+					ApplyMultiDamage(pInflictor, pAttacker);
 				}
 				else
 				{
-					pEntity->TakeDamage({pevInflictor, pevAttacker, flAdjustedDamage, bitsDamageType});
+					pEntity->TakeDamage({pInflictor, pAttacker, flAdjustedDamage, bitsDamageType});
 				}
 			}
 		}
@@ -746,7 +743,7 @@ void CGargantua::Spawn()
 
 	auto glow = m_hEyeGlow = CSprite::SpriteCreate(GARG_EYE_SPRITE_NAME.data(), pev->origin, false);
 	glow->SetTransparency(RenderMode::Glow, 255, 255, 255, 0, RenderFX::NoDissipation);
-	glow->SetAttachment(edict(), 1);
+	glow->SetAttachment(this, 1);
 	EyeOff();
 	m_seeTime = gpGlobals->time + 5;
 	m_flameTime = gpGlobals->time + 2;
@@ -967,7 +964,7 @@ CBaseEntity* CGargantua::GargantuaCheckTraceHullAttack(float flDist, int iDamage
 
 		if (iDamage > 0)
 		{
-			pEntity->TakeDamage({pev, pev, static_cast<float>(iDamage), iDmgType});
+			pEntity->TakeDamage({this, this, static_cast<float>(iDamage), iDmgType});
 		}
 
 		return pEntity;

@@ -165,9 +165,9 @@ void CSqueakGrenade::Killed(const KilledInfo& info)
 	UTIL_BloodDrips(pev->origin, vec3_origin, BloodColor(), 80);
 
 	if (m_hOwner != nullptr)
-		RadiusDamage(pev, m_hOwner->pev, pev->dmg, CLASS_NONE, DMG_BLAST);
+		RadiusDamage(this, m_hOwner, pev->dmg, CLASS_NONE, DMG_BLAST);
 	else
-		RadiusDamage(pev, pev, pev->dmg, CLASS_NONE, DMG_BLAST);
+		RadiusDamage(this, this, pev->dmg, CLASS_NONE, DMG_BLAST);
 
 	// reset owner so death message happens
 	if (m_hOwner != nullptr)
@@ -200,7 +200,7 @@ void CSqueakGrenade::HuntThink()
 	{
 		g_vecAttackDir = pev->velocity.Normalize();
 		pev->health = -1;
-		Killed({pev, GibType::Normal});
+		Killed({this, GibType::Normal});
 		return;
 	}
 
@@ -321,11 +321,11 @@ void CSqueakGrenade::SuperBounceTouch(CBaseEntity* pOther)
 			{
 				// ALERT( at_console, "hit enemy\n");
 				ClearMultiDamage();
-				pOther->TraceAttack({pev, gSkillData.snarkDmgBite, gpGlobals->v_forward, tr, DMG_SLASH});
+				pOther->TraceAttack({this, gSkillData.snarkDmgBite, gpGlobals->v_forward, tr, DMG_SLASH});
 				if (m_hOwner != nullptr)
-					ApplyMultiDamage(pev, m_hOwner->pev);
+					ApplyMultiDamage(this, m_hOwner);
 				else
-					ApplyMultiDamage(pev, pev);
+					ApplyMultiDamage(this, this);
 
 				pev->dmg += gSkillData.snarkDmgPop; // add more explosion damage
 				// m_flDie += 2.0; // add more life
@@ -494,7 +494,7 @@ void CSqueak::PrimaryAttack()
 			m_hPlayer->SetAnimation(PlayerAnim::Attack1);
 
 #ifndef CLIENT_DLL
-			CBaseEntity* pSqueak = CBaseEntity::Create("monster_snark", tr.vecEndPos, m_hPlayer->pev->v_angle, m_hPlayer->edict());
+			CBaseEntity* pSqueak = CBaseEntity::Create("monster_snark", tr.vecEndPos, m_hPlayer->pev->v_angle, m_hPlayer);
 			pSqueak->pev->velocity = gpGlobals->v_forward * 200 + m_hPlayer->pev->velocity;
 #endif
 

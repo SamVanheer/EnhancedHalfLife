@@ -100,7 +100,7 @@ void CXenPLight::Spawn()
 
 	auto glow = m_hGlow = CSprite::SpriteCreate(XEN_PLANT_GLOW_SPRITE.data(), pev->origin + Vector(0, 0, (pev->mins.z + pev->maxs.z) * 0.5), false);
 	glow->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
-	glow->SetAttachment(edict(), 1);
+	glow->SetAttachment(this, 1);
 }
 
 void CXenPLight::Precache()
@@ -358,7 +358,7 @@ void CXenTree::HandleAnimEvent(AnimationEvent& event)
 				if (pList[i]->pev->owner != edict())
 				{
 					sound = true;
-					pList[i]->TakeDamage({pev, pev, 25, DMG_CRUSH | DMG_SLASH});
+					pList[i]->TakeDamage({this, this, 25, DMG_CRUSH | DMG_SLASH});
 					pList[i]->pev->punchangle.x = 15;
 					pList[i]->pev->velocity = pList[i]->pev->velocity + forward * 100;
 				}

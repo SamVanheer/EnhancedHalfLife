@@ -77,12 +77,12 @@ void CCrowbar::Holster()
 	SendWeaponAnim(CROWBAR_HOLSTER);
 }
 
-void FindHullIntersection(const Vector& vecSrc, TraceResult& tr, const Vector& mins, const Vector& maxs, edict_t* pEntity)
+void FindHullIntersection(const Vector& vecSrc, TraceResult& tr, const Vector& mins, const Vector& maxs, CBaseEntity* pEntity)
 {
 	const Vector vecHullEnd = vecSrc + ((tr.vecEndPos - vecSrc) * 2);
 
 	TraceResult tmpTrace;
-	UTIL_TraceLine(vecSrc, vecHullEnd, IgnoreMonsters::No, pEntity, &tmpTrace);
+	UTIL_TraceLine(vecSrc, vecHullEnd, IgnoreMonsters::No, pEntity->edict(), &tmpTrace);
 
 	if (tmpTrace.flFraction < 1.0)
 	{
@@ -107,7 +107,7 @@ void FindHullIntersection(const Vector& vecSrc, TraceResult& tr, const Vector& m
 					vecHullEnd.z + minmaxs[k]->z
 				};
 
-				UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, pEntity, &tmpTrace);
+				UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, pEntity->edict(), &tmpTrace);
 				if (tmpTrace.flFraction < 1.0)
 				{
 					float thisDistance = (tmpTrace.vecEndPos - vecSrc).Length();
@@ -159,7 +159,7 @@ bool CCrowbar::Swing(bool fFirst)
 			// Calculate the point of intersection of the line (or hull) and the object we hit
 			// This is and approximation of the "best" intersection
 			if (CBaseEntity* pHit = CBaseEntity::Instance(tr.pHit); !pHit || pHit->IsBSPModel())
-				FindHullIntersection(vecSrc, tr, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX, m_hPlayer->edict());
+				FindHullIntersection(vecSrc, tr, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX, m_hPlayer);
 			vecEnd = tr.vecEndPos;	// This is the point on the actual surface (the hull could have hit space)
 		}
 	}
@@ -207,14 +207,14 @@ bool CCrowbar::Swing(bool fFirst)
 		if ((m_flNextPrimaryAttack + 1 < UTIL_WeaponTimeBase()) || g_pGameRules->IsMultiplayer())
 		{
 			// first swing does full damage
-			pEntity->TraceAttack({m_hPlayer->pev, gSkillData.plrDmgCrowbar, gpGlobals->v_forward, tr, DMG_CLUB});
+			pEntity->TraceAttack({m_hPlayer, gSkillData.plrDmgCrowbar, gpGlobals->v_forward, tr, DMG_CLUB});
 		}
 		else
 		{
 			// subsequent swings do half
-			pEntity->TraceAttack({m_hPlayer->pev, gSkillData.plrDmgCrowbar / 2, gpGlobals->v_forward, tr, DMG_CLUB});
+			pEntity->TraceAttack({m_hPlayer, gSkillData.plrDmgCrowbar / 2, gpGlobals->v_forward, tr, DMG_CLUB});
 		}
-		ApplyMultiDamage(m_hPlayer->pev, m_hPlayer->pev);
+		ApplyMultiDamage(m_hPlayer, m_hPlayer);
 
 #endif
 

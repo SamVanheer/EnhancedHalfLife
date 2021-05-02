@@ -95,18 +95,18 @@ void ClientDisconnect(edict_t* pEntity)
 
 // called by ClientKill and DeadThink
 //TODO: this should really just be merged into PlayerDeathThink because on its own it makes little sense
-void respawn(entvars_t* pev, bool fCopyCorpse)
+void respawn(CBaseEntity* pEntity, bool fCopyCorpse)
 {
 	if (g_pGameRules->IsCoOp() || g_pGameRules->IsDeathmatch())
 	{
 		if (fCopyCorpse)
 		{
 			// make a copy of the dead body for appearances sake
-			CopyToBodyQue(pev);
+			CopyToBodyQue(pEntity->pev);
 		}
 
 		// respawn player
-		GetClassPtr((CBasePlayer*)pev)->Spawn();
+		pEntity->Spawn();
 	}
 	else
 	{       // restart the entire server
@@ -116,9 +116,7 @@ void respawn(entvars_t* pev, bool fCopyCorpse)
 
 void ClientKill(edict_t* pEntity)
 {
-	entvars_t* pev = &pEntity->v;
-
-	CBasePlayer* pl = (CBasePlayer*)CBasePlayer::Instance(pev);
+	CBasePlayer* pl = (CBasePlayer*)CBasePlayer::Instance(pEntity);
 
 	if (pl->m_fNextSuicideTime > gpGlobals->time)
 		return;  // prevent suiciding too ofter
@@ -126,21 +124,19 @@ void ClientKill(edict_t* pEntity)
 	pl->m_fNextSuicideTime = gpGlobals->time + 1;  // don't let them suicide for 5 seconds after suiciding
 
 	// have the player kill themself
-	pev->health = 0;
-	pl->Killed({pev, GibType::Never});
+	pl->pev->health = 0;
+	pl->Killed({pl, GibType::Never});
 
-	//	pev->modelindex = g_ulModelIndexPlayer;
-	//	pev->frags -= 2;		// extra penalty
-	//	respawn( pev );
+	//	pl->pev->modelindex = g_ulModelIndexPlayer;
+	//	pl->pev->frags -= 2;		// extra penalty
+	//	respawn( pl );
 }
 
 void ClientPutInServer(edict_t* pEntity)
 {
 	CBasePlayer* pPlayer;
 
-	entvars_t* pev = &pEntity->v;
-
-	pPlayer = GetClassPtr((CBasePlayer*)pev);
+	pPlayer = GetClassPtr((CBasePlayer*)&pEntity->v);
 	pPlayer->SetCustomDecalFrames(-1); // Assume none;
 
 	// Allocate a CBasePlayer for pev, and call spawn
@@ -174,8 +170,7 @@ void Host_Say(edict_t* pEntity, bool teamonly)
 	if (CMD_ARGC() == 0)
 		return;
 
-	entvars_t* pev = &pEntity->v;
-	CBasePlayer* player = GetClassPtr((CBasePlayer*)pev);
+	CBasePlayer* player = GetClassPtr((CBasePlayer*)&pEntity->v);
 
 	//Not yet.
 	if (player->m_flNextChatTime > gpGlobals->time)
@@ -322,8 +317,6 @@ void ClientCommand(edict_t* pEntity)
 	if (!pEntity->pvPrivateData)
 		return;
 
-	entvars_t* pev = &pEntity->v;
-
 	auto player = GetClassPtr<CBasePlayer>(reinterpret_cast<CBasePlayer*>(&pEntity->v));
 
 	if (AreStringsEqual(pcmd, "say"))
@@ -377,17 +370,17 @@ void ClientCommand(edict_t* pEntity)
 	else if (AreStringsEqual(pcmd, "spectate"))	// clients wants to become a spectator
 	{
 		// always allow proxies to become a spectator
-		if ((pev->flags & FL_PROXY) || allow_spectators.value)
+		if ((player->pev->flags & FL_PROXY) || allow_spectators.value)
 		{
 			CBaseEntity* pSpawnSpot = g_pGameRules->GetPlayerSpawnSpot(player);
-			player->StartObserver(pev->origin, pSpawnSpot->pev->angles);
+			player->StartObserver(player->pev->origin, pSpawnSpot->pev->angles);
 
 			// notify other clients of player switching to spectator mode
 			UTIL_ClientPrintAll(HUD_PRINTNOTIFY, UTIL_VarArgs("%s switched to spectator mode\n",
-				(!IsStringNull(pev->netname) && STRING(pev->netname)[0] != 0) ? STRING(pev->netname) : "unconnected"));
+				(!IsStringNull(player->pev->netname) && STRING(player->pev->netname)[0] != 0) ? STRING(player->pev->netname) : "unconnected"));
 		}
 		else
-			ClientPrint(pev, HUD_PRINTCONSOLE, "Spectator mode is disabled.\n");
+			ClientPrint(player->pev, HUD_PRINTCONSOLE, "Spectator mode is disabled.\n");
 
 	}
 	else if (AreStringsEqual(pcmd, "specmode"))	// new spectator mode
@@ -533,7 +526,6 @@ void ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 
 void PlayerPreThink(edict_t* pEntity)
 {
-	entvars_t* pev = &pEntity->v;
 	CBasePlayer* pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity);
 
 	if (pPlayer)
@@ -542,7 +534,6 @@ void PlayerPreThink(edict_t* pEntity)
 
 void PlayerPostThink(edict_t* pEntity)
 {
-	entvars_t* pev = &pEntity->v;
 	CBasePlayer* pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity);
 
 	if (pPlayer)
@@ -703,7 +694,6 @@ void Sys_Error(const char* error_string)
 
 void PlayerCustomization(edict_t* pEntity, customization_t* pCust)
 {
-	entvars_t* pev = &pEntity->v;
 	CBasePlayer* pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity);
 
 	if (!pPlayer)
@@ -1230,8 +1220,7 @@ int GetWeaponData(edict_t* player, weapon_data_t* info)
 #if defined( CLIENT_WEAPONS )
 	int i;
 	weapon_data_t* item;
-	entvars_t* pev = &player->v;
-	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(pev));
+	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(player));
 	CBasePlayerWeapon* gun;
 
 	ItemInfo II;
@@ -1290,6 +1279,7 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 	if (!ent || !ent->pvPrivateData)
 		return;
 	entvars_t* pev = (entvars_t*)&ent->v;
+	//TODO: make this static_cast, the above private data check guards against it
 	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(pev));
 	entvars_t* pevOrg = nullptr;
 
@@ -1300,6 +1290,7 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 		{
 			pevOrg = pev;
 			pev = pl->m_hObserverTarget->pev;
+			//TODO: if pl is null here the target player isn't valid and shouldn't be spectated
 			pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(pev));
 		}
 	}
@@ -1393,8 +1384,7 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 
 void CmdStart(const edict_t* player, const usercmd_t* cmd, unsigned int random_seed)
 {
-	entvars_t* pev = (entvars_t*)&player->v;
-	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(pev));
+	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(const_cast<edict_t*>(player)));
 
 	if (!pl)
 		return;
@@ -1409,8 +1399,7 @@ void CmdStart(const edict_t* player, const usercmd_t* cmd, unsigned int random_s
 
 void CmdEnd(const edict_t* player)
 {
-	entvars_t* pev = (entvars_t*)&player->v;
-	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(pev));
+	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(const_cast<edict_t*>(player)));
 
 	if (!pl)
 		return;
