@@ -67,7 +67,7 @@ void CCrossbowBolt::Spawn()
 
 	SET_MODEL(ENT(pev), "models/crossbow_bolt.mdl");
 
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);
 
 	SetTouch(&CCrossbowBolt::BoltTouch);
@@ -141,7 +141,7 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 		{
 			// if what we hit is static architecture, can stay around for a while.
 			Vector vecDir = pev->velocity.Normalize();
-			UTIL_SetOrigin(pev, pev->origin - vecDir * 12);
+			SetAbsOrigin(pev->origin - vecDir * 12);
 			pev->angles = VectorAngles(vecDir);
 			pev->solid = Solid::Not;
 			pev->movetype = Movetype::Fly;

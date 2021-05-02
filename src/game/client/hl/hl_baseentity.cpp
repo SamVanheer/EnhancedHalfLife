@@ -49,6 +49,7 @@ void CBaseEntity::MakeDormant() { }
 bool CBaseEntity::IsDormant() { return false; }
 bool CBaseEntity::IsInWorld() { return true; }
 bool CBaseEntity::ShouldToggle(USE_TYPE useType, bool currentState) { return false; }
+void CBaseEntity::SetAbsOrigin(const Vector& origin) {}
 int	CBaseEntity::DamageDecal(int bitsDamageType) { return -1; }
 CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner) { return nullptr; }
 void CBaseEntity::SUB_Remove() { }
@@ -74,7 +75,6 @@ void UTIL_DecalTrace(TraceResult* pTrace, int decalNumber) { }
 void UTIL_GunshotDecalTrace(TraceResult* pTrace, int decalNumber) { }
 void UTIL_MakeVectors(const Vector& vecAngles) { }
 bool UTIL_IsValidEntity(edict_t* pent) { return true; }
-void UTIL_SetOrigin(entvars_t*, const Vector& org) { }
 bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon) { return true; }
 void UTIL_LogPrintf(char*, ...) { }
 void UTIL_ClientPrintAll(int, char const*, char const*, char const*, char const*, char const*) { }

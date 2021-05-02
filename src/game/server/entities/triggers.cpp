@@ -399,7 +399,7 @@ void CBaseTrigger::ToggleUse(const UseInfo& info)
 	{// turn the trigger off
 		pev->solid = Solid::Not;
 	}
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 }
 
 LINK_ENTITY_TO_CLASS(trigger_hurt, CTriggerHurt);
@@ -427,7 +427,7 @@ void CTriggerHurt::Spawn()
 	if (IsBitSet(pev->spawnflags, SF_TRIGGER_HURT_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
 		pev->solid = Solid::Not;
 
-	UTIL_SetOrigin(pev, pev->origin);		// Link into the list
+	SetAbsOrigin(pev->origin);		// Link into the list
 }
 
 void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
@@ -599,7 +599,7 @@ void CTriggerMonsterJump::Spawn()
 	if (!IsStringNull(pev->targetname))
 	{// if targetted, spawn turned off
 		pev->solid = Solid::Not;
-		UTIL_SetOrigin(pev, pev->origin); // Unlink from trigger list
+		SetAbsOrigin(pev->origin); // Unlink from trigger list
 		SetUse(&CTriggerMonsterJump::ToggleUse);
 	}
 }
@@ -607,7 +607,7 @@ void CTriggerMonsterJump::Spawn()
 void CTriggerMonsterJump::Think()
 {
 	pev->solid = Solid::Not;// kill the trigger for now !!!UNDONE
-	UTIL_SetOrigin(pev, pev->origin); // Unlink from trigger list
+	SetAbsOrigin(pev->origin); // Unlink from trigger list
 	SetThink(nullptr);
 }
 
@@ -900,7 +900,7 @@ void CTriggerPush::Spawn()
 
 	SetUse(&CTriggerPush::ToggleUse);
 
-	UTIL_SetOrigin(pev, pev->origin);		// Link into the list
+	SetAbsOrigin(pev->origin);		// Link into the list
 }
 
 void CTriggerPush::Touch(CBaseEntity* pOther)
@@ -989,7 +989,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 
 	pOther->pev->flags &= ~FL_ONGROUND;
 
-	UTIL_SetOrigin(pOther->pev, tmp);
+	pOther->SetAbsOrigin(tmp);
 
 	pOther->pev->angles = pTarget->pev->angles;
 
@@ -1189,7 +1189,7 @@ void CTriggerCamera::Use(const UseInfo& info)
 	// copy over player information
 	if (IsBitSet(pev->spawnflags, SF_CAMERA_PLAYER_POSITION))
 	{
-		UTIL_SetOrigin(pev, pActivator->pev->origin + pActivator->pev->view_ofs);
+		SetAbsOrigin(pActivator->pev->origin + pActivator->pev->view_ofs);
 		pev->angles.x = -pActivator->pev->angles.x;
 		pev->angles.y = pActivator->pev->angles.y;
 		pev->angles.z = 0;

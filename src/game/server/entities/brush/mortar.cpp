@@ -310,6 +310,6 @@ void CMortar::ShootTimed(EVARS* pevOwner, Vector vecStart, float time)
 
 	pMortar->pev->nextthink = gpGlobals->time + time;
 
-	UTIL_SetOrigin(pMortar->pev, tr.vecEndPos);
+	pMortar->SetAbsOrigin(tr.vecEndPos);
 }
 #endif

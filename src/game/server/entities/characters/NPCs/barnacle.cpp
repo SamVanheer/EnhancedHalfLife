@@ -118,7 +118,7 @@ void CBarnacle::Spawn()
 	SetThink(&CBarnacle::BarnacleThink);
 	pev->nextthink = gpGlobals->time + 0.5;
 
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 }
 
 bool CBarnacle::TakeDamage(const TakeDamageInfo& info)
@@ -187,7 +187,7 @@ void CBarnacle::BarnacleThink()
 				}
 			}
 
-			UTIL_SetOrigin(m_hEnemy->pev, vecNewEnemyOrigin);
+			m_hEnemy->SetAbsOrigin(vecNewEnemyOrigin);
 		}
 		else
 		{

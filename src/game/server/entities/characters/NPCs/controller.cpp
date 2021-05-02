@@ -770,7 +770,7 @@ void CController::RunAI()
 
 		Vector vecStart, angleGun;
 		GetAttachment(i + 2, vecStart, angleGun);
-		UTIL_SetOrigin(ball->pev, vecStart);
+		ball->SetAbsOrigin(vecStart);
 
 		MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 		WRITE_BYTE(TE_ELIGHT);
@@ -1055,7 +1055,7 @@ void CControllerHeadBall::Spawn()
 	pev->scale = 2.0;
 
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 
 	SetThink(&CControllerHeadBall::HuntThink);
 	SetTouch(&CControllerHeadBall::BounceTouch);
@@ -1236,7 +1236,7 @@ void CControllerZapBall::Spawn()
 	pev->scale = 0.5;
 
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 
 	SetThink(&CControllerZapBall::AnimateThink);
 	SetTouch(&CControllerZapBall::ExplodeTouch);

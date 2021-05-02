@@ -323,7 +323,7 @@ CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, Vector vecStart, Vector ve
 	pGrenade->Spawn();
 	// contact grenades arc lower
 	pGrenade->pev->gravity = 0.5;// lower gravity since grenade is aerodynamic and engine doesn't know it.
-	UTIL_SetOrigin(pGrenade->pev, vecStart);
+	pGrenade->SetAbsOrigin(vecStart);
 	pGrenade->pev->velocity = vecVelocity;
 	pGrenade->pev->angles = VectorAngles(pGrenade->pev->velocity);
 	pGrenade->pev->owner = EdictOrNull(pOwner);
@@ -347,7 +347,7 @@ CGrenade* CGrenade::ShootTimed(CBaseEntity* pOwner, Vector vecStart, Vector vecV
 {
 	CGrenade* pGrenade = GetClassPtr((CGrenade*)nullptr);
 	pGrenade->Spawn();
-	UTIL_SetOrigin(pGrenade->pev, vecStart);
+	pGrenade->SetAbsOrigin(vecStart);
 	pGrenade->pev->velocity = vecVelocity;
 	pGrenade->pev->angles = VectorAngles(pGrenade->pev->velocity);
 	pGrenade->pev->owner = EdictOrNull(pOwner);

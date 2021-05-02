@@ -92,7 +92,7 @@ void CTripmineGrenade::Spawn()
 	pev->framerate = 0;
 
 	UTIL_SetSize(pev, Vector(-8, -8, -8), Vector(8, 8, 8));
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 
 	if (pev->spawnflags & SF_TRIPMINE_INSTANT_ON)
 	{
@@ -198,7 +198,7 @@ void CTripmineGrenade::PowerupThink()
 	{
 		// make solid
 		pev->solid = Solid::BBox;
-		UTIL_SetOrigin(pev, pev->origin);
+		SetAbsOrigin(pev->origin);
 
 		MakeBeam();
 

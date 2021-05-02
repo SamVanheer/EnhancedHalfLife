@@ -113,7 +113,7 @@ void CSquidSpit::Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity)
 	CSquidSpit* pSpit = GetClassPtr((CSquidSpit*)nullptr);
 	pSpit->Spawn();
 
-	UTIL_SetOrigin(pSpit->pev, vecStart);
+	pSpit->SetAbsOrigin(vecStart);
 	pSpit->pev->velocity = vecVelocity;
 	pSpit->pev->owner = pOwner->edict();
 

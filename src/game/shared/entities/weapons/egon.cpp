@@ -370,7 +370,7 @@ void CEgon::UpdateEffect(const Vector& startPoint, const Vector& endPoint, float
 
 	auto sprite = m_hSprite.Get();
 
-	UTIL_SetOrigin(sprite->pev, endPoint);
+	sprite->SetAbsOrigin(endPoint);
 	sprite->pev->frame += 8 * gpGlobals->frametime;
 	if (sprite->pev->frame > sprite->Frames())
 		sprite->pev->frame = 0;

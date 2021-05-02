@@ -1124,7 +1124,7 @@ void CBasePlayer::StartDeathCam()
 
 		CopyToBodyQue(pev);
 
-		UTIL_SetOrigin(pev, pSpot->pev->origin);
+		SetAbsOrigin(pSpot->pev->origin);
 		pev->angles = pev->v_angle = pSpot->pev->v_angle;
 	}
 	else
@@ -1134,7 +1134,7 @@ void CBasePlayer::StartDeathCam()
 		CopyToBodyQue(pev);
 		UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, 128), IgnoreMonsters::Yes, edict(), &tr);
 
-		UTIL_SetOrigin(pev, tr.vecEndPos);
+		SetAbsOrigin(tr.vecEndPos);
 		pev->angles = pev->v_angle = VectorAngles(tr.vecEndPos - pev->origin);
 	}
 
@@ -1211,7 +1211,7 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 	RemoveAllItems(false);
 
 	// Move them to the new position
-	UTIL_SetOrigin(pev, vecPosition);
+	SetAbsOrigin(vecPosition);
 
 	// Find a player to watch
 	m_flNextObserverInput = 0;
@@ -3883,7 +3883,7 @@ class CInfoIntermission :public CPointEntity
 
 void CInfoIntermission::Spawn()
 {
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 	pev->solid = Solid::Not;
 	pev->effects = EF_NODRAW;
 	pev->v_angle = vec3_origin;

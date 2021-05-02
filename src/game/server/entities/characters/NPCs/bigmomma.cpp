@@ -508,7 +508,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 	case BIG_AE_JUMP_FORWARD:
 		ClearBits(pev->flags, FL_ONGROUND);
 
-		UTIL_SetOrigin(pev, pev->origin + Vector(0, 0, 1));// take him off ground so engine doesn't instantly reset onground 
+		SetAbsOrigin(pev->origin + Vector(0, 0, 1));// take him off ground so engine doesn't instantly reset onground 
 		UTIL_MakeVectors(pev->angles);
 
 		pev->velocity = (gpGlobals->v_forward * 200) + gpGlobals->v_up * 500;
@@ -1114,7 +1114,7 @@ CBMortar* CBMortar::Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVeloci
 	CBMortar* pSpit = GetClassPtr((CBMortar*)nullptr);
 	pSpit->Spawn();
 
-	UTIL_SetOrigin(pSpit->pev, vecStart);
+	pSpit->SetAbsOrigin(vecStart);
 	pSpit->pev->velocity = vecVelocity;
 	pSpit->pev->owner = pOwner ? pOwner->edict() : nullptr;
 	pSpit->pev->scale = 2.5;

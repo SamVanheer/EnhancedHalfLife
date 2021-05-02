@@ -434,6 +434,8 @@ public:
 	void EXPORT SUB_CallUseToggle() { this->Use({this, this, USE_TOGGLE}); }
 	bool		ShouldToggle(USE_TYPE useType, bool currentState);
 
+	void SetAbsOrigin(const Vector& origin);
+
 	DamageMode GetDamageMode() const { return static_cast<DamageMode>(pev->takedamage); }
 
 	void SetDamageMode(DamageMode mode)

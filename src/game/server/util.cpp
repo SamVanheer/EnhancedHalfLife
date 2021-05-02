@@ -820,13 +820,6 @@ void UTIL_SetSize(entvars_t* pev, const Vector& vecMin, const Vector& vecMax)
 	SET_SIZE(ENT(pev), vecMin, vecMax);
 }
 
-void UTIL_SetOrigin(entvars_t* pev, const Vector& vecOrigin)
-{
-	edict_t* ent = ENT(pev);
-	if (ent)
-		SET_ORIGIN(ent, vecOrigin);
-}
-
 void UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, uint32 ulColor, uint32 ulCount)
 {
 	PARTICLE_EFFECT(vecOrigin, vecDirection, (float)ulColor, (float)ulCount);

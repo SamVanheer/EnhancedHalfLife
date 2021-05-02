@@ -105,7 +105,7 @@ void CSqueakGrenade::Spawn()
 
 	SET_MODEL(ENT(pev), "models/w_squeak.mdl");
 	UTIL_SetSize(pev, Vector(-4, -4, 0), Vector(4, 4, 8));
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 
 	SetTouch(&CSqueakGrenade::SuperBounceTouch);
 	SetThink(&CSqueakGrenade::HuntThink);

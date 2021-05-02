@@ -284,7 +284,7 @@ void CBeam::RelinkBeam()
 	pev->maxs = pev->maxs - pev->origin;
 
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 }
 
 #if 0
@@ -1033,7 +1033,7 @@ void CLaser::FireAtPoint(TraceResult& tr)
 {
 	SetEndPos(tr.vecEndPos);
 	if (auto sprite = m_hSprite.Get(); sprite)
-		UTIL_SetOrigin(sprite->pev, tr.vecEndPos);
+		sprite->SetAbsOrigin(tr.vecEndPos);
 
 	BeamDamage(&tr);
 	DoSparks(GetStartPos(), tr.vecEndPos);

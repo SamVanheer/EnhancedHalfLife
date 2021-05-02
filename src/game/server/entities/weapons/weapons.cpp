@@ -358,7 +358,7 @@ void CBasePlayerItem::FallInit()
 	pev->movetype = Movetype::Toss;
 	pev->solid = Solid::BBox;
 
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 	UTIL_SetSize(pev, vec3_origin, vec3_origin);//pointsize until it lands on the ground.
 
 	SetTouch(&CBasePlayerItem::DefaultTouch);
@@ -401,7 +401,7 @@ void CBasePlayerItem::Materialize()
 
 	pev->solid = Solid::Trigger;
 
-	UTIL_SetOrigin(pev, pev->origin);// link into world.
+	SetAbsOrigin(pev->origin);// link into world.
 	SetTouch(&CBasePlayerItem::DefaultTouch);
 	SetThink(nullptr);
 
@@ -790,7 +790,7 @@ void CBasePlayerAmmo::Spawn()
 	pev->movetype = Movetype::Toss;
 	pev->solid = Solid::Trigger;
 	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 16));
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 
 	SetTouch(&CBasePlayerAmmo::DefaultTouch);
 }
@@ -800,7 +800,7 @@ CBaseEntity* CBasePlayerAmmo::Respawn()
 	pev->effects |= EF_NODRAW;
 	SetTouch(nullptr);
 
-	UTIL_SetOrigin(pev, g_pGameRules->AmmoRespawnSpot(this));// move to wherever I'm supposed to repawn.
+	SetAbsOrigin(g_pGameRules->AmmoRespawnSpot(this));// move to wherever I'm supposed to repawn.
 
 	SetThink(&CBasePlayerAmmo::Materialize);
 	pev->nextthink = g_pGameRules->AmmoRespawnTime(this);

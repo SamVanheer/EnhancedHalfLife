@@ -55,7 +55,7 @@ void CSatchelCharge::Spawn()
 	SET_MODEL(ENT(pev), "models/w_satchel.mdl");
 	//UTIL_SetSize(pev, Vector( -16, -16, -4), Vector(16, 16, 32));	// Old box -- size of headcrab monsters/players get blocked by this
 	UTIL_SetSize(pev, Vector(-4, -4, -4), Vector(4, 4, 4));	// Uses point-sized, and can be stepped over
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 
 	SetTouch(&CSatchelCharge::SatchelSlide);
 	SetUse(&CSatchelCharge::DetonateUse);

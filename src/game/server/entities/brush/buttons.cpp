@@ -869,7 +869,7 @@ void CMomentaryRotButton::Spawn()
 		pev->solid = Solid::Not;
 
 	pev->movetype = Movetype::Push;
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	const char* pszSound = ButtonSound(m_sounds);

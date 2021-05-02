@@ -447,7 +447,7 @@ CXenHull* CXenHull::CreateHull(CBaseEntity* source, const Vector& mins, const Ve
 {
 	CXenHull* pHull = GetClassPtr((CXenHull*)nullptr);
 
-	UTIL_SetOrigin(pHull->pev, source->pev->origin + offset);
+	pHull->SetAbsOrigin(source->pev->origin + offset);
 	SET_MODEL(pHull->edict(), STRING(source->pev->model));
 	pHull->pev->solid = Solid::BBox;
 	pHull->pev->classname = MAKE_STRING("xen_hull");

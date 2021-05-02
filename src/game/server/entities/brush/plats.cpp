@@ -297,7 +297,7 @@ void CFuncPlat::Setup()
 	pev->solid = Solid::BSP;
 	pev->movetype = Movetype::Push;
 
-	UTIL_SetOrigin(pev, pev->origin);		// set size and link into world
+	SetAbsOrigin(pev->origin);		// set size and link into world
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
@@ -334,13 +334,13 @@ void CFuncPlat::Spawn()
 	// and is brought down by that button.  Otherwise, it starts at BOTTOM.
 	if (!IsStringNull(pev->targetname))
 	{
-		UTIL_SetOrigin(pev, m_vecPosition1);
+		SetAbsOrigin(m_vecPosition1);
 		m_toggle_state = ToggleState::AtTop;
 		SetUse(&CFuncPlat::PlatUse);
 	}
 	else
 	{
-		UTIL_SetOrigin(pev, m_vecPosition2);
+		SetAbsOrigin(m_vecPosition2);
 		m_toggle_state = ToggleState::AtBottom;
 	}
 }
@@ -754,7 +754,7 @@ void CFuncTrain::Next()
 	{
 		// Path corner has indicated a teleport to the next corner.
 		SetBits(pev->effects, EF_NOINTERP);
-		UTIL_SetOrigin(pev, pTarg->pev->origin - (pev->mins + pev->maxs) * 0.5);
+		SetAbsOrigin(pTarg->pev->origin - (pev->mins + pev->maxs) * 0.5);
 		Wait(); // Get on with doing the next path corner.
 	}
 	else
@@ -791,7 +791,7 @@ void CFuncTrain::Activate()
 		pev->target = pTarget->pev->target;
 		m_hCurrentTarget = pTarget;// keep track of this since path corners change our target for us.
 
-		UTIL_SetOrigin(pev, pTarget->pev->origin - (pev->mins + pev->maxs) * 0.5);
+		SetAbsOrigin(pTarget->pev->origin - (pev->mins + pev->maxs) * 0.5);
 
 		if (IsStringNull(pev->targetname))
 		{	// not triggered, so start immediately
@@ -824,7 +824,7 @@ void CFuncTrain::Spawn()
 
 	SET_MODEL(ENT(pev), STRING(pev->model));
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 
 	m_activated = false;
 
@@ -1313,7 +1313,7 @@ void CFuncTrackTrain::Find()
 
 	if (pev->spawnflags & SF_TRACKTRAIN_NOPITCH)
 		pev->angles.x = 0;
-	UTIL_SetOrigin(pev, nextPos);
+	SetAbsOrigin(nextPos);
 	NextThink(pev->ltime + 0.1, false);
 	SetThink(&CFuncTrackTrain::Next);
 	pev->speed = m_startSpeed;
@@ -1405,7 +1405,7 @@ void CFuncTrackTrain::Spawn()
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 
 	// Cache off placed origin for train controls
 	pev->oldorigin = pev->origin;
@@ -1486,7 +1486,7 @@ void CFuncTrainControls::Spawn()
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 
 	SetThink(&CFuncTrainControls::Find);
 	pev->nextthink = gpGlobals->time;
@@ -1587,14 +1587,14 @@ void CFuncTrackChange::Spawn()
 
 	if (IsBitSet(pev->spawnflags, SF_TRACK_STARTBOTTOM))
 	{
-		UTIL_SetOrigin(pev, m_vecPosition2);
+		SetAbsOrigin(m_vecPosition2);
 		m_toggle_state = ToggleState::AtBottom;
 		pev->angles = m_start;
 		m_targetState = ToggleState::AtTop;
 	}
 	else
 	{
-		UTIL_SetOrigin(pev, m_vecPosition1);
+		SetAbsOrigin(m_vecPosition1);
 		m_toggle_state = ToggleState::AtTop;
 		pev->angles = m_end;
 		m_targetState = ToggleState::AtBottom;
@@ -2019,7 +2019,7 @@ void CGunTarget::Spawn()
 	pev->solid = Solid::BSP;
 	pev->movetype = Movetype::Push;
 
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	if (pev->speed == 0)
@@ -2045,7 +2045,7 @@ void CGunTarget::Activate()
 	if (CBaseEntity* pTarg = GetNextTarget(); pTarg)
 	{
 		m_hTargetEnt = pTarg;
-		UTIL_SetOrigin(pev, pTarg->pev->origin - (pev->mins + pev->maxs) * 0.5);
+		SetAbsOrigin(pTarg->pev->origin - (pev->mins + pev->maxs) * 0.5);
 	}
 }
 

@@ -281,7 +281,7 @@ void CBaseDoor::Spawn()
 	}
 
 	pev->movetype = Movetype::Push;
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	if (pev->speed == 0)
@@ -293,7 +293,7 @@ void CBaseDoor::Spawn()
 	ASSERTSZ(m_vecPosition1 != m_vecPosition2, "door start/end positions are equal");
 	if (IsBitSet(pev->spawnflags, SF_DOOR_START_OPEN))
 	{	// swap pos1 and pos2, put door at pos2
-		UTIL_SetOrigin(pev, m_vecPosition2);
+		SetAbsOrigin(m_vecPosition2);
 		m_vecPosition2 = m_vecPosition1;
 		m_vecPosition1 = pev->origin;
 	}
@@ -756,7 +756,7 @@ void CRotDoor::Spawn()
 		pev->solid = Solid::BSP;
 
 	pev->movetype = Movetype::Push;
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	if (pev->speed == 0)
@@ -822,7 +822,7 @@ void CMomentaryDoor::Spawn()
 	pev->solid = Solid::BSP;
 	pev->movetype = Movetype::Push;
 
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	if (pev->speed == 0)
@@ -837,7 +837,7 @@ void CMomentaryDoor::Spawn()
 
 	if (IsBitSet(pev->spawnflags, SF_DOOR_START_OPEN))
 	{	// swap pos1 and pos2, put door at pos2
-		UTIL_SetOrigin(pev, m_vecPosition2);
+		SetAbsOrigin(m_vecPosition2);
 		m_vecPosition2 = m_vecPosition1;
 		m_vecPosition1 = pev->origin;
 	}

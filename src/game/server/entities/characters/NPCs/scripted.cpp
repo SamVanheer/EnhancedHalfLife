@@ -285,7 +285,7 @@ void CCineMonster::PossessEntity()
 			break;
 
 		case ScriptedMoveTo::Instantaneous:
-			UTIL_SetOrigin(pTarget->pev, pev->origin);
+			pTarget->SetAbsOrigin(pev->origin);
 			pTarget->pev->ideal_yaw = pev->angles.y;
 			pTarget->pev->avelocity = vec3_origin;
 			pTarget->pev->velocity = vec3_origin;
@@ -351,7 +351,7 @@ void CCineAI::PossessEntity()
 
 		case ScriptedMoveTo::Instantaneous:
 			// zap the monster instantly to the site of the script entity.
-			UTIL_SetOrigin(pTarget->pev, pev->origin);
+			pTarget->SetAbsOrigin(pev->origin);
 			pTarget->pev->ideal_yaw = pev->angles.y;
 			pTarget->pev->avelocity = vec3_origin;
 			pTarget->pev->velocity = vec3_origin;
@@ -745,7 +745,7 @@ bool CBaseMonster::CineCleanup()
 
 			// pEntity->pev->origin.z = new_origin.z + 5.0; // damn, got to fix this
 
-			UTIL_SetOrigin(pev, pev->origin);
+			SetAbsOrigin(pev->origin);
 			pev->effects |= EF_NOINTERP;
 		}
 

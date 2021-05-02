@@ -178,7 +178,7 @@ void CBaseEntity::MakeDormant()
 	// Don't think
 	pev->nextthink = 0;
 	// Relink
-	UTIL_SetOrigin(pev, pev->origin);
+	SetAbsOrigin(pev->origin);
 }
 
 bool CBaseEntity::IsDormant()
@@ -253,4 +253,12 @@ CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, co
 	DispatchSpawn(pEntity->edict());
 
 	return pEntity;
+}
+
+void CBaseEntity::SetAbsOrigin(const Vector& origin)
+{
+	if (auto ent = edict(); ent)
+	{
+		SET_ORIGIN(ent, origin);
+	}
 }

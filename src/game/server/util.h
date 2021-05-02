@@ -226,7 +226,6 @@ int			UTIL_EntitiesInBox(CBaseEntity** pList, int listMax, const Vector& mins, c
 void			UTIL_MakeAimVectors(const Vector& vecAngles);
 void			UTIL_MakeInvVectors(const Vector& vec, globalvars_t* pgv);
 
-void			UTIL_SetOrigin(entvars_t* pev, const Vector& vecOrigin);
 void			UTIL_EmitAmbientSound(edict_t* entity, const Vector& vecOrigin, const char* samp, float vol, float attenuation, int fFlags, int pitch);
 void			UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, uint32 ulColor, uint32 ulCount);
 
