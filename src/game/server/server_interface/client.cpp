@@ -64,14 +64,10 @@ void ClientDisconnect(edict_t* pEntity)
 	WRITE_STRING(text);
 	MESSAGE_END();
 
-	CSound* pSound;
-	pSound = CSoundEnt::SoundPointerForIndex(CSoundEnt::ClientSoundIndex(pEntity));
+	// since this client isn't around to think anymore, reset their sound. 
+	if (CSound* pSound = CSoundEnt::SoundPointerForIndex(CSoundEnt::ClientSoundIndex(pEntity)); pSound)
 	{
-		// since this client isn't around to think anymore, reset their sound. 
-		if (pSound)
-		{
-			pSound->Reset();
-		}
+		pSound->Reset();
 	}
 
 	// since the edict doesn't get deleted, fix it so it doesn't interfere.
@@ -79,9 +75,7 @@ void ClientDisconnect(edict_t* pEntity)
 	pEntity->v.solid = Solid::Not;// nonsolid
 	SET_ORIGIN(pEntity, pEntity->v.origin);
 
-	auto pPlayer = reinterpret_cast<CBasePlayer*>(GET_PRIVATE(pEntity));
-
-	if (pPlayer)
+	if (auto pPlayer = reinterpret_cast<CBasePlayer*>(GET_PRIVATE(pEntity)); pPlayer)
 	{
 		if (pPlayer->m_pTank != nullptr)
 		{
@@ -134,9 +128,7 @@ void ClientKill(edict_t* pEntity)
 
 void ClientPutInServer(edict_t* pEntity)
 {
-	CBasePlayer* pPlayer;
-
-	pPlayer = GetClassPtr((CBasePlayer*)&pEntity->v);
+	CBasePlayer* pPlayer = GetClassPtr((CBasePlayer*)&pEntity->v);
 	pPlayer->SetCustomDecalFrames(-1); // Assume none;
 
 	// Allocate a CBasePlayer for pev, and call spawn
@@ -157,15 +149,6 @@ void ClientPutInServer(edict_t* pEntity)
 */
 void Host_Say(CBasePlayer* player, bool teamonly)
 {
-	CBasePlayer* client;
-	int		j;
-	char* p;
-	char	text[128];
-	char    szTemp[256];
-	const char* cpSay = "say";
-	const char* cpSayTeam = "say_team";
-	const char* pcmd = CMD_ARGV(0);
-
 	// We can get a raw string now, without the "say " prepended
 	if (CMD_ARGC() == 0)
 		return;
@@ -174,17 +157,22 @@ void Host_Say(CBasePlayer* player, bool teamonly)
 	if (player->m_flNextChatTime > gpGlobals->time)
 		return;
 
+	constexpr const char* cpSay = "say";
+	constexpr const char* cpSayTeam = "say_team";
+	const char* pcmd = CMD_ARGV(0);
+
+	char* p;
+	char szTemp[256];
+
 	if (!stricmp(pcmd, cpSay) || !stricmp(pcmd, cpSayTeam))
 	{
-		if (CMD_ARGC() >= 2)
-		{
-			p = const_cast<char*>(CMD_ARGS());
-		}
-		else
+		if (CMD_ARGC() < 2)
 		{
 			// say with a blank message, nothing to do
 			return;
 		}
+
+		p = const_cast<char*>(CMD_ARGS());
 	}
 	else  // Raw text, need to prepend argv[0]
 	{
@@ -204,7 +192,7 @@ void Host_Say(CBasePlayer* player, bool teamonly)
 	if (*p == '"')
 	{
 		p++;
-		p[strlen(p) - 1] = 0;
+		p[strlen(p) - 1] = '\0';
 	}
 
 	// make sure the text has content
@@ -212,8 +200,8 @@ void Host_Say(CBasePlayer* player, bool teamonly)
 	if (!p || !p[0] || !Q_UnicodeValidate(p))
 		return;  // no character found, so say nothing
 
-// turn on color set 2  (color on,  no sound)
 	// turn on color set 2  (color on,  no sound)
+	char text[128];
 	if (player->IsObserver() && teamonly)
 		snprintf(text, sizeof(text), "%c(SPEC) %s: ", HUD_SAYTEXT_PRINTTALK, STRING(player->pev->netname));
 	else if (teamonly)
@@ -221,13 +209,12 @@ void Host_Say(CBasePlayer* player, bool teamonly)
 	else
 		snprintf(text, sizeof(text), "%c%s: ", HUD_SAYTEXT_PRINTTALK, STRING(player->pev->netname));
 
-	j = sizeof(text) - 2 - strlen(text);  // -2 for /n and null terminator
+	const int j = sizeof(text) - 2 - strlen(text);  // -2 for \n and null terminator
 	if ((int)strlen(p) > j)
-		p[j] = 0;
+		p[j] = '\0';
 
 	safe_strcat(text, p);
 	safe_strcat(text, "\n");
-
 
 	player->m_flNextChatTime = gpGlobals->time + CHAT_INTERVAL;
 
@@ -236,8 +223,8 @@ void Host_Say(CBasePlayer* player, bool teamonly)
 	// This may return the world in single player if the client types something between levels or during spawn
 	// so check it, or it will infinite loop
 
-	client = nullptr;
-	while (((client = (CBasePlayer*)UTIL_FindEntityByClassname(client, "player")) != nullptr) && (!IsNullEnt(client->edict())))
+	CBasePlayer* client = nullptr;
+	while (((client = (CBasePlayer*)UTIL_FindEntityByClassname(client, "player")) != nullptr) && (!IsNullEnt(client)))
 	{
 		if (!client->pev)
 			continue;
@@ -245,7 +232,7 @@ void Host_Say(CBasePlayer* player, bool teamonly)
 		if (client == player)
 			continue;
 
-		if (!(client->IsNetClient()))	// Not a client ? (should never be true)
+		if (!client->IsNetClient())	// Not a client ? (should never be true)
 			continue;
 
 		// can the receiver hear the sender? or has he muted him?
@@ -257,14 +244,15 @@ void Host_Say(CBasePlayer* player, bool teamonly)
 
 		// Spectators can only talk to other specs
 		if (player->IsObserver() && teamonly)
+		{
 			if (!client->IsObserver())
 				continue;
+		}
 
 		MESSAGE_BEGIN(MessageDest::One, gmsgSayText, nullptr, client->pev);
 		WRITE_BYTE(player->entindex());
 		WRITE_STRING(text);
 		MESSAGE_END();
-
 	}
 
 	// print to the sending client
@@ -276,12 +264,9 @@ void Host_Say(CBasePlayer* player, bool teamonly)
 	// echo to server console
 	g_engfuncs.pfnServerPrint(text);
 
-	const char* temp;
-	if (teamonly)
-		temp = "say_team";
-	else
-		temp = "say";
+	const char* const temp = teamonly ? cpSayTeam : cpSay;
 
+	//TODO: these log printf calls always seem to follow the same format, so maybe add a varargs method to gamerules to log stuff this way
 	// team match?
 	if (g_pGameRules->IsTeamplay())
 	{
@@ -308,12 +293,12 @@ void Host_Say(CBasePlayer* player, bool teamonly)
 // Use CMD_ARGV,  CMD_ARGV, and CMD_ARGC to get pointers the character string command.
 void ClientCommand(edict_t* pEntity)
 {
-	const char* pcmd = CMD_ARGV(0);
-	const char* pstr;
-
 	// Is the client spawned yet?
 	if (!pEntity->pvPrivateData)
 		return;
+
+	const char* pcmd = CMD_ARGV(0);
+	const char* pstr;
 
 	auto player = GetClassPtr<CBasePlayer>(reinterpret_cast<CBasePlayer*>(&pEntity->v));
 
@@ -490,14 +475,11 @@ void ServerDeactivate()
 
 void ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 {
-	int				i;
-	CBaseEntity* pClass;
-
 	// Every call to ServerActivate should be matched by a call to ServerDeactivate
 	g_serveractive = true;
 
 	// Clients have not been initialized yet
-	for (i = 0; i < edictCount; i++)
+	for (int i = 0; i < edictCount; i++)
 	{
 		if (pEdictList[i].free)
 			continue;
@@ -506,7 +488,7 @@ void ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 		if (i < clientMax || !pEdictList[i].pvPrivateData)
 			continue;
 
-		pClass = CBaseEntity::Instance(&pEdictList[i]);
+		CBaseEntity* pClass = CBaseEntity::Instance(&pEdictList[i]);
 		// Activate this entity if it's got a class & isn't dormant
 		if (pClass && !(pClass->pev->flags & FL_DORMANT))
 		{
@@ -524,17 +506,13 @@ void ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 
 void PlayerPreThink(edict_t* pEntity)
 {
-	CBasePlayer* pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity);
-
-	if (pPlayer)
+	if (CBasePlayer* pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity); pPlayer)
 		pPlayer->PreThink();
 }
 
 void PlayerPostThink(edict_t* pEntity)
 {
-	CBasePlayer* pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity);
-
-	if (pPlayer)
+	if (CBasePlayer* pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity); pPlayer)
 		pPlayer->PostThink();
 }
 
@@ -545,9 +523,7 @@ void ParmsNewLevel()
 void ParmsChangeLevel()
 {
 	// retrieve the pointer to the save data
-	SAVERESTOREDATA* pSaveData = (SAVERESTOREDATA*)gpGlobals->pSaveData;
-
-	if (pSaveData)
+	if (SAVERESTOREDATA* pSaveData = (SAVERESTOREDATA*)gpGlobals->pSaveData; pSaveData)
 		pSaveData->connectionCount = CChangeLevel::BuildChangeList(pSaveData->levelList, MAX_LEVEL_CONNECTIONS);
 }
 
@@ -726,14 +702,8 @@ void PlayerCustomization(edict_t* pEntity, customization_t* pCust)
 
 void SetupVisibility(edict_t* pViewEntity, edict_t* pClient, unsigned char** pvs, unsigned char** pas)
 {
-	Vector org;
-	edict_t* pView = pClient;
-
 	// Find the client's PVS
-	if (pViewEntity)
-	{
-		pView = pViewEntity;
-	}
+	edict_t* pView = pViewEntity ? pViewEntity : pClient;
 
 	if (pClient->v.flags & FL_PROXY)
 	{
@@ -742,7 +712,7 @@ void SetupVisibility(edict_t* pViewEntity, edict_t* pClient, unsigned char** pvs
 		return;
 	}
 
-	org = pView->v.origin + pView->v.view_ofs;
+	Vector org = pView->v.origin + pView->v.view_ofs;
 	if (pView->v.flags & FL_DUCKING)
 	{
 		org = org + (VEC_HULL_MIN - VEC_DUCK_HULL_MIN);
@@ -754,8 +724,6 @@ void SetupVisibility(edict_t* pViewEntity, edict_t* pClient, unsigned char** pvs
 
 int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int hostflags, int player, unsigned char* pSet)
 {
-	int					i;
-
 	// don't send if flagged for NODRAW and it's not the host getting the message
 	if ((ent->v.effects & EF_NODRAW) &&
 		(ent != host))
@@ -780,7 +748,6 @@ int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int
 			return false;
 		}
 	}
-
 
 	// Don't send entity to local client if the client says it's predicting the entity itself.
 	if (ent->v.flags & FL_SKIPLOCALHOST)
@@ -869,12 +836,12 @@ int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int
 	state->framerate = ent->v.framerate;
 	state->body = ent->v.body;
 
-	for (i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		state->controller[i] = ent->v.controller[i];
 	}
 
-	for (i = 0; i < 2; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		state->blending[i] = ent->v.blending[i];
 	}
@@ -897,6 +864,7 @@ int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int
 	{
 		int owner = ENTINDEX(ent->v.owner);
 
+		//TODO: add a helper function to verify that an index is a player index
 		// Only care if owned by a player
 		if (owner >= 1 && owner <= gpGlobals->maxClients)
 		{
@@ -960,7 +928,6 @@ void CreateBaseline(int player, int eindex, entity_state_t* baseline, edict_t* e
 		baseline->solid = static_cast<short>(Solid::SlideBox);
 		baseline->framerate = 1.0;
 		baseline->gravity = 1.0;
-
 	}
 	else
 	{
@@ -993,12 +960,12 @@ constexpr int FIELD_ANGLES2 = 5;
 
 static entity_field_alias_t entity_field_alias[] =
 {
-	{ "origin[0]",			0 },
-	{ "origin[1]",			0 },
-	{ "origin[2]",			0 },
-	{ "angles[0]",			0 },
-	{ "angles[1]",			0 },
-	{ "angles[2]",			0 },
+	{ "origin[0]", 0 },
+	{ "origin[1]", 0 },
+	{ "origin[2]", 0 },
+	{ "angles[0]", 0 },
+	{ "angles[1]", 0 },
+	{ "angles[2]", 0 },
 };
 
 void Entity_FieldInit(delta_t* pFields)
@@ -1017,8 +984,6 @@ void Entity_FieldInit(delta_t* pFields)
 */
 void Entity_Encode(delta_t* pFields, const unsigned char* from, const unsigned char* to)
 {
-	entity_state_t* f, * t;
-	int localplayer = 0;
 	static bool initialized = false;
 
 	if (!initialized)
@@ -1027,11 +992,11 @@ void Entity_Encode(delta_t* pFields, const unsigned char* from, const unsigned c
 		initialized = true;
 	}
 
-	f = (entity_state_t*)from;
-	t = (entity_state_t*)to;
+	auto f = (entity_state_t*)from;
+	auto t = (entity_state_t*)to;
 
 	// Never send origin to local player, it's sent with more resolution in clientdata_t structure
-	localplayer = (t->number - 1) == ENGINE_CURRENT_PLAYER();
+	const bool localplayer = (t->number - 1) == ENGINE_CURRENT_PLAYER();
 	if (localplayer)
 	{
 		DELTA_UNSETBYINDEX(pFields, entity_field_alias[FIELD_ORIGIN0].field);
@@ -1067,9 +1032,9 @@ void Entity_Encode(delta_t* pFields, const unsigned char* from, const unsigned c
 
 static entity_field_alias_t player_field_alias[] =
 {
-	{ "origin[0]",			0 },
-	{ "origin[1]",			0 },
-	{ "origin[2]",			0 },
+	{ "origin[0]", 0 },
+	{ "origin[1]", 0 },
+	{ "origin[2]", 0 },
 };
 
 void Player_FieldInit(delta_t* pFields)
@@ -1084,8 +1049,6 @@ void Player_FieldInit(delta_t* pFields)
 */
 void Player_Encode(delta_t* pFields, const unsigned char* from, const unsigned char* to)
 {
-	entity_state_t* f, * t;
-	int localplayer = 0;
 	static bool initialized = false;
 
 	if (!initialized)
@@ -1094,11 +1057,11 @@ void Player_Encode(delta_t* pFields, const unsigned char* from, const unsigned c
 		initialized = true;
 	}
 
-	f = (entity_state_t*)from;
-	t = (entity_state_t*)to;
+	auto f = (entity_state_t*)from;
+	auto t = (entity_state_t*)to;
 
 	// Never send origin to local player, it's sent with more resolution in clientdata_t structure
-	localplayer = (t->number - 1) == ENGINE_CURRENT_PLAYER();
+	const bool localplayer = (t->number - 1) == ENGINE_CURRENT_PLAYER();
 	if (localplayer)
 	{
 		DELTA_UNSETBYINDEX(pFields, entity_field_alias[FIELD_ORIGIN0].field);
@@ -1133,15 +1096,15 @@ constexpr int CUSTOMFIELD_ANIMTIME = 8;
 
 entity_field_alias_t custom_entity_field_alias[] =
 {
-	{ "origin[0]",			0 },
-	{ "origin[1]",			0 },
-	{ "origin[2]",			0 },
-	{ "angles[0]",			0 },
-	{ "angles[1]",			0 },
-	{ "angles[2]",			0 },
-	{ "skin",				0 },
-	{ "sequence",			0 },
-	{ "animtime",			0 },
+	{ "origin[0]",	0 },
+	{ "origin[1]",	0 },
+	{ "origin[2]",	0 },
+	{ "angles[0]",	0 },
+	{ "angles[1]",	0 },
+	{ "angles[2]",	0 },
+	{ "skin",		0 },
+	{ "sequence",	0 },
+	{ "animtime",	0 },
 };
 
 void Custom_Entity_FieldInit(delta_t* pFields)
@@ -1163,8 +1126,6 @@ void Custom_Entity_FieldInit(delta_t* pFields)
 */
 void Custom_Encode(delta_t* pFields, const unsigned char* from, const unsigned char* to)
 {
-	entity_state_t* f, * t;
-	int beamType;
 	static bool initialized = false;
 
 	if (!initialized)
@@ -1173,10 +1134,10 @@ void Custom_Encode(delta_t* pFields, const unsigned char* from, const unsigned c
 		initialized = true;
 	}
 
-	f = (entity_state_t*)from;
-	t = (entity_state_t*)to;
+	auto f = (entity_state_t*)from;
+	auto t = (entity_state_t*)to;
 
-	beamType = static_cast<int>(t->rendermode) & 0x0f;
+	const int beamType = static_cast<int>(t->rendermode) & 0x0f;
 
 	if (beamType != BEAM_POINTS && beamType != BEAM_ENTPOINT)
 	{
@@ -1215,37 +1176,32 @@ void RegisterEncoders()
 
 int GetWeaponData(edict_t* player, weapon_data_t* info)
 {
-#if defined( CLIENT_WEAPONS )
-	int i;
-	weapon_data_t* item;
-	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(player));
-	CBasePlayerWeapon* gun;
-
-	ItemInfo II;
-
 	memset(info, 0, MAX_WEAPONS * sizeof(weapon_data_t));
+
+#if defined( CLIENT_WEAPONS )
+	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(player));
 
 	if (!pl)
 		return true;
 
 	// go through all of the weapons and make a list of the ones to pack
-	for (i = 0; i < MAX_ITEM_TYPES; i++)
+	for (int i = 0; i < MAX_ITEM_TYPES; i++)
 	{
 		if (CBasePlayerItem* pPlayerItem = pl->m_hPlayerItems[i]; pPlayerItem)
 		{
 			// there's a weapon here. Should I pack it?
 			while (pPlayerItem)
 			{
-				gun = dynamic_cast<CBasePlayerWeapon*>(pPlayerItem->GetWeaponPtr());
+				CBasePlayerWeapon* gun = dynamic_cast<CBasePlayerWeapon*>(pPlayerItem->GetWeaponPtr());
 				if (gun && gun->UseDecrement())
 				{
 					// Get The ID.
-					memset(&II, 0, sizeof(II));
+					ItemInfo II{};
 					gun->GetItemInfo(&II);
 
 					if (II.iId >= 0 && II.iId < MAX_WEAPONS)
 					{
-						item = &info[II.iId];
+						weapon_data_t* item = &info[II.iId];
 
 						item->m_iId = II.iId;
 						item->m_iClip = gun->m_iClip;
@@ -1258,16 +1214,13 @@ int GetWeaponData(edict_t* player, weapon_data_t* info)
 
 						gun->GetWeaponData(*item);
 
-
-						//						item->m_flPumpTime				= std::max( gun->m_flPumpTime, -0.001f );
+						// item->m_flPumpTime = std::max( gun->m_flPumpTime, -0.001f );
 					}
 				}
 				pPlayerItem = pPlayerItem->m_hNext;
 			}
 		}
 	}
-#else
-	memset(info, 0, MAX_WEAPONS * sizeof(weapon_data_t));
 #endif
 	return true;
 }
@@ -1276,17 +1229,16 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 {
 	if (!ent || !ent->pvPrivateData)
 		return;
-	entvars_t* pev = (entvars_t*)&ent->v;
+	entvars_t* pev = const_cast<entvars_t*>(&ent->v);
 	//TODO: make this static_cast, the above private data check guards against it
 	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(pev));
-	entvars_t* pevOrg = nullptr;
+	entvars_t* pevOrg = pev;
 
 	// if user is spectating different player in First person, override some vars
 	if (pl && pl->pev->iuser1 == OBS_IN_EYE)
 	{
 		if (pl->m_hObserverTarget)
 		{
-			pevOrg = pev;
 			pev = pl->m_hObserverTarget->pev;
 			//TODO: if pl is null here the target player isn't valid and shouldn't be spectated
 			pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(pev));
@@ -1323,17 +1275,9 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 	cd->pushmsec = pev->pushmsec;
 
 	//Spectator mode
-	if (pevOrg != nullptr)
-	{
-		// don't use spec vars from chased player
-		cd->iuser1 = pevOrg->iuser1;
-		cd->iuser2 = pevOrg->iuser2;
-	}
-	else
-	{
-		cd->iuser1 = pev->iuser1;
-		cd->iuser2 = pev->iuser2;
-	}
+	// don't use spec vars from chased player
+	cd->iuser1 = pevOrg->iuser1;
+	cd->iuser2 = pevOrg->iuser2;
 
 #if defined( CLIENT_WEAPONS )
 	if (sendweapons)
@@ -1350,15 +1294,12 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 			cd->ammo_cells = pl->GetAmmoCount("uranium");
 			cd->vuser2.x = pl->GetAmmoCount("Hornets");
 
-
 			if (pl->m_hActiveItem)
 			{
-				CBasePlayerWeapon* gun;
-				gun = (CBasePlayerWeapon*)pl->m_hActiveItem->GetWeaponPtr();
+				CBasePlayerWeapon* gun = (CBasePlayerWeapon*)pl->m_hActiveItem->GetWeaponPtr();
 				if (gun && gun->UseDecrement())
 				{
-					ItemInfo II;
-					memset(&II, 0, sizeof(II));
+					ItemInfo II{};
 					gun->GetItemInfo(&II);
 
 					cd->m_iId = II.iId;
@@ -1429,9 +1370,7 @@ int GetHullBounds(int hullnumber, Vector* mins, Vector* maxs)
 void CreateInstancedBaselines()
 {
 	int iret = 0;
-	entity_state_t state;
-
-	memset(&state, 0, sizeof(state));
+	entity_state_t state{};
 
 	// Create any additional baselines here for things like grendates, etc.
 	// iret = ENGINE_INSTANCE_BASELINE( pc->pev->classname, &state );
