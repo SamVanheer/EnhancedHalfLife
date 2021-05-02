@@ -70,7 +70,7 @@ void CShower::Touch(CBaseEntity* pOther)
 	else
 		pev->velocity = pev->velocity * 0.6;
 
-	if ((pev->velocity.x * pev->velocity.x + pev->velocity.y * pev->velocity.y) < 10.0)
+	if ((pev->velocity.x * pev->velocity.x + pev->velocity.y * pev->velocity.y) < 10.0f)
 		pev->speed = 0;
 }
 

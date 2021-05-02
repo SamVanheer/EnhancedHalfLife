@@ -455,7 +455,7 @@ void CTentacle::Cycle()
 	if (CSound* pSound = HasConditions(bits_COND_HEAR_SOUND) ? BestSound() : nullptr; pSound)
 	{
 		Vector vecDir;
-		if (gpGlobals->time - m_flPrevSoundTime < 0.5)
+		if (gpGlobals->time - m_flPrevSoundTime < 0.5f)
 		{
 			const float dt = gpGlobals->time - m_flPrevSoundTime;
 			vecDir = pSound->m_vecOrigin + (pSound->m_vecOrigin - m_vecPrevSound) / dt - pev->origin;

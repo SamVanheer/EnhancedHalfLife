@@ -642,7 +642,7 @@ void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, CBaseEntity* pInfli
 				float flAdjustedDamage;
 				if (dist > 64)
 				{
-					flAdjustedDamage = flDamage - (dist - 64) * 0.4;
+					flAdjustedDamage = flDamage - (dist - 64) * 0.4f;
 					if (flAdjustedDamage <= 0)
 						continue;
 				}
