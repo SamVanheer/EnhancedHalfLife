@@ -1176,7 +1176,7 @@ bool CWeaponBox::HasWeapon(CBasePlayerItem* pCheckItem)
 
 	while (pItem)
 	{
-		if (ClassnameIs(pItem->pev, STRING(pCheckItem->pev->classname)))
+		if (pItem->ClassnameIs(STRING(pCheckItem->pev->classname)))
 		{
 			return true;
 		}

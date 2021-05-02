@@ -172,14 +172,6 @@ inline bool AreStringsEqual(const char* sz1, const char* sz2)
 {
 	return (strcmp(sz1, sz2) == 0);
 }
-inline bool ClassnameIs(edict_t* pent, const char* szClassname)
-{
-	return AreStringsEqual(STRING(VARS(pent)->classname), szClassname);
-}
-inline bool ClassnameIs(entvars_t* pev, const char* szClassname)
-{
-	return AreStringsEqual(STRING(pev->classname), szClassname);
-}
 
 // Misc. Prototypes
 CBaseEntity* UTIL_EntityByIndex(int index);

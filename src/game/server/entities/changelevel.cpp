@@ -123,7 +123,7 @@ CBaseEntity* CChangeLevel::FindLandmark(const char* pLandmarkName)
 	while ((pLandmark = UTIL_FindEntityByTargetname(pLandmark, pLandmarkName)) != nullptr)
 	{
 		// Found the landmark
-		if (ClassnameIs(pLandmark->pev, "info_landmark"))
+		if (pLandmark->ClassnameIs("info_landmark"))
 			return pLandmark;
 	}
 
@@ -233,7 +233,7 @@ bool CChangeLevel::InTransitionVolume(CBaseEntity* pEntity, char* pVolumeName)
 	CBaseEntity* pVolume = nullptr;
 	while ((pVolume = UTIL_FindEntityByTargetname(pVolume, pVolumeName)) != nullptr)
 	{
-		if (pVolume && ClassnameIs(pVolume->pev, "trigger_transition"))
+		if (pVolume && pVolume->ClassnameIs("trigger_transition"))
 		{
 			if (pVolume->Intersects(pEntity))	// It touches one, it's in the volume
 				return true;

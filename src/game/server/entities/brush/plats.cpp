@@ -1292,7 +1292,7 @@ void CFuncTrackTrain::Find()
 	if (!path)
 		return;
 
-	if (!ClassnameIs(path->pev, "path_track"))
+	if (!path->ClassnameIs("path_track"))
 	{
 		ALERT(at_error, "func_track_train must be on a path of path_track\n");
 		m_hPath = nullptr;
@@ -1330,7 +1330,7 @@ void CFuncTrackTrain::NearestPath()
 	while ((pTrack = UTIL_FindEntityInSphere(pTrack, pev->origin, 1024)) != nullptr)
 	{
 		// filter out non-tracks
-		if (!(pTrack->pev->flags & (FL_CLIENT | FL_MONSTER)) && ClassnameIs(pTrack->pev, "path_track"))
+		if (!(pTrack->pev->flags & (FL_CLIENT | FL_MONSTER)) && pTrack->ClassnameIs("path_track"))
 		{
 			const float dist = (pev->origin - pTrack->pev->origin).Length();
 			if (dist < closest)
@@ -1374,7 +1374,7 @@ void CFuncTrackTrain::OverrideReset()
 
 CFuncTrackTrain* CFuncTrackTrain::Instance(CBaseEntity* pent)
 {
-	if (pent && ClassnameIs(pent->pev, "func_tracktrain"))
+	if (pent && pent->ClassnameIs("func_tracktrain"))
 		return (CFuncTrackTrain*)pent;
 	return nullptr;
 }
@@ -1466,7 +1466,7 @@ void CFuncTrainControls::Find()
 	{
 		pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target));
 	}
-	while (!IsNullEnt(pTarget) && !ClassnameIs(pTarget->pev, "func_tracktrain"));
+	while (!IsNullEnt(pTarget) && !pTarget->ClassnameIs("func_tracktrain"));
 
 	if (IsNullEnt(pTarget))
 	{
@@ -1943,7 +1943,7 @@ void CFuncTrackAuto::Use(const UseInfo& info)
 	else
 		pTarget = nullptr;
 
-	if (ClassnameIs(info.GetActivator()->pev, "func_tracktrain"))
+	if (info.GetActivator()->ClassnameIs("func_tracktrain"))
 	{
 		m_code = EvaluateTrain(pTarget);
 		// Safe to fire?

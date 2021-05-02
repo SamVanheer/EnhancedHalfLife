@@ -555,7 +555,7 @@ void CHoundeye::SonicAttack()
 	{
 		if (pEntity->GetDamageMode() != DamageMode::No)
 		{
-			if (!ClassnameIs(pEntity->pev, "monster_houndeye"))
+			if (!pEntity->ClassnameIs("monster_houndeye"))
 			{// houndeyes don't hurt other houndeyes with their attack
 
 				// houndeyes do FULL damage if the ent in question is visible. Half damage otherwise.
@@ -587,7 +587,7 @@ void CHoundeye::SonicAttack()
 						// so that monsters in other parts of the level don't take the damage and get pissed.
 						flAdjustedDamage *= 0.5;
 					}
-					else if (!ClassnameIs(pEntity->pev, "func_breakable") && !ClassnameIs(pEntity->pev, "func_pushable"))
+					else if (!pEntity->ClassnameIs("func_breakable") && !pEntity->ClassnameIs("func_pushable"))
 					{
 						// do not hurt nonclients through walls, but allow damage to be done to breakables
 						flAdjustedDamage = 0;

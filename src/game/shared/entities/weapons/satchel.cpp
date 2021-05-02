@@ -313,7 +313,7 @@ void CSatchel::PrimaryAttack()
 
 		while ((pSatchel = UTIL_FindEntityInSphere(pSatchel, m_hPlayer->pev->origin, WORLD_BOUNDARY)) != nullptr)
 		{
-			if (ClassnameIs(pSatchel->pev, "monster_satchel"))
+			if (pSatchel->ClassnameIs("monster_satchel"))
 			{
 				if (pSatchel->pev->owner == pPlayer)
 				{

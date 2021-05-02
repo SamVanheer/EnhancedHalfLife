@@ -534,7 +534,7 @@ void CBaseDoor::DoorGoUp()
 	m_toggle_state = ToggleState::GoingUp;
 
 	SetMoveDone(&CBaseDoor::DoorHitTop);
-	if (ClassnameIs(pev, "func_door_rotating"))		// !!! BUGBUG Triggered doors don't work with this yet
+	if (ClassnameIs("func_door_rotating"))		// !!! BUGBUG Triggered doors don't work with this yet
 	{
 		float sign = 1.0;
 
@@ -611,7 +611,7 @@ void CBaseDoor::DoorGoDown()
 	m_toggle_state = ToggleState::GoingDown;
 
 	SetMoveDone(&CBaseDoor::DoorHitBottom);
-	if (ClassnameIs(pev, "func_door_rotating"))//rotating door
+	if (ClassnameIs("func_door_rotating"))//rotating door
 		AngularMove(m_vecAngle1, pev->speed);
 	else
 		LinearMove(m_vecPosition1, pev->speed);
@@ -673,7 +673,7 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 		{
 			if (pTarget->pev != pev)
 			{
-				if (ClassnameIs(pTarget->pev, "func_door") || ClassnameIs(pTarget->pev, "func_door_rotating"))
+				if (pTarget->ClassnameIs("func_door") || pTarget->ClassnameIs("func_door_rotating"))
 				{
 					CBaseDoor* pDoor = (CBaseDoor*)pTarget;
 
@@ -682,7 +682,7 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 						if (pDoor->pev->velocity == pev->velocity && pDoor->pev->avelocity == pev->velocity)
 						{
 							// this is the most hacked, evil, bastardized thing I've ever seen. kjb
-							if (ClassnameIs(pDoor->pev, "func_door"))
+							if (pDoor->ClassnameIs("func_door"))
 							{// set origin to realign normal doors
 								pDoor->pev->origin = pev->origin;
 								pDoor->pev->velocity = vec3_origin;// stop!

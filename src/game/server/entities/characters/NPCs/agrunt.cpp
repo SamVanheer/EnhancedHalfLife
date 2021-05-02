@@ -214,7 +214,7 @@ const char* CAGrunt::pAlertSounds[] =
 
 Relationship CAGrunt::GetRelationship(CBaseEntity* pTarget)
 {
-	if (ClassnameIs(pTarget->pev, "monster_human_grunt"))
+	if (pTarget->ClassnameIs("monster_human_grunt"))
 	{
 		return Relationship::Nemesis;
 	}

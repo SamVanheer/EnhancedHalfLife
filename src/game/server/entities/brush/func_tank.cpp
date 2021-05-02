@@ -826,7 +826,7 @@ CLaser* CFuncTankLaser::GetLaser()
 
 	while ((pLaser = UTIL_FindEntityByTargetname(pLaser, STRING(pev->message))) != nullptr)
 	{
-		if (ClassnameIs(pLaser->pev, "env_laser"))
+		if (pLaser->ClassnameIs("env_laser"))
 		{
 			m_hLaser = (CLaser*)pLaser;
 			break;

@@ -317,7 +317,7 @@ void CFlockingFlyer::FallHack()
 {
 	if (pev->flags & FL_ONGROUND)
 	{
-		if (!ClassnameIs(pev->groundentity, "worldspawn"))
+		if (!Instance(pev->groundentity)->ClassnameIs("worldspawn"))
 		{
 			pev->flags &= ~FL_ONGROUND;
 			pev->nextthink = gpGlobals->time + 0.1;
@@ -430,7 +430,7 @@ void CFlockingFlyer::FormFlock()
 				pRecruit && pRecruit != this && pRecruit->IsAlive() && !pRecruit->m_hCine)
 			{
 				// Can we recruit this guy?
-				if (ClassnameIs(pRecruit->pev, "monster_flyer"))
+				if (pRecruit->ClassnameIs("monster_flyer"))
 				{
 					squadCount++;
 					SquadAdd((CFlockingFlyer*)pRecruit);

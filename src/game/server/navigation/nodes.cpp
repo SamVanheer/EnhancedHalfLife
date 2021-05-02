@@ -86,7 +86,7 @@ CBaseEntity* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 	if (!pLinkEnt)
 		return nullptr;
 
-	if (ClassnameIs(pLinkEnt->pev, "func_door") || ClassnameIs(pLinkEnt->pev, "func_door_rotating"))
+	if (pLinkEnt->ClassnameIs("func_door") || pLinkEnt->ClassnameIs("func_door_rotating"))
 	{
 		///!!!UNDONE - check for TOGGLE or STAY open doors here. If a door is in the way, and is 
 		// TOGGLE or STAY OPEN, even monsters that can't open doors can go that way.
@@ -102,7 +102,7 @@ CBaseEntity* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 
 		while ((pSearch = UTIL_FindEntityByTarget(pSearch, STRING(pLinkEnt->pev->targetname))) != nullptr) // find the button or trigger
 		{
-			if (ClassnameIs(pSearch->pev, "func_button") || ClassnameIs(pSearch->pev, "func_rot_button"))
+			if (pSearch->ClassnameIs("func_button") || pSearch->ClassnameIs("func_rot_button"))
 			{// only buttons are handled right now. 
 
 				// trace from the node to the trigger, make sure it's one we can see from the node.
@@ -145,7 +145,7 @@ bool CGraph::HandleLinkEnt(int iNode, CBaseEntity* pLinkEnt, int afCapMask, Node
 	}
 
 	// func_door
-	if (ClassnameIs(pLinkEnt->pev, "func_door") || ClassnameIs(pLinkEnt->pev, "func_door_rotating"))
+	if (pLinkEnt->ClassnameIs("func_door") || pLinkEnt->ClassnameIs("func_door_rotating"))
 	{// ent is a door.
 
 		if ((pLinkEnt->pev->spawnflags & SF_DOOR_USE_ONLY))
@@ -184,7 +184,7 @@ bool CGraph::HandleLinkEnt(int iNode, CBaseEntity* pLinkEnt, int afCapMask, Node
 		}
 	}
 	// func_breakable	
-	else if (ClassnameIs(pLinkEnt->pev, "func_breakable") && queryType == NodeQuery::Static)
+	else if (pLinkEnt->ClassnameIs("func_breakable") && queryType == NodeQuery::Static)
 	{
 		return true;
 	}
@@ -1094,7 +1094,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 				// track of it in the pathfinding code, as well as through save and restore of the node graph. ANY data that is manipulated 
 				// as part of the process of adding a LINKENT to a connection here must also be done in CGraph::SetGraphPointers, where reloaded
 				// graphs are prepared for use.
-				if (tr.pHit == pTraceEnt && !ClassnameIs(tr.pHit, "worldspawn"))
+				if (tr.pHit == pTraceEnt && !CBaseEntity::Instance(tr.pHit)->ClassnameIs("worldspawn"))
 				{
 					// get a pointer
 					pLinkPool[cTotalLinks].m_hLinkEnt = CBaseEntity::Instance(tr.pHit);
@@ -1388,7 +1388,7 @@ void CNodeEnt::Spawn()
 	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_sHintType = m_sHintType;
 	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_sHintActivity = m_sHintActivity;
 
-	if (ClassnameIs(pev, "info_node_air"))
+	if (ClassnameIs("info_node_air"))
 		WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_afNodeInfo = bits_NODE_AIR;
 	else
 		WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_afNodeInfo = 0;
@@ -2773,13 +2773,13 @@ void CNodeViewer::Spawn()
 		return;
 	}
 
-	if (ClassnameIs(pev, "node_viewer_fly"))
+	if (ClassnameIs("node_viewer_fly"))
 	{
 		m_iHull = NODE_FLY_HULL;
 		m_afNodeType = bits_NODE_AIR;
 		m_vecColor = Vector(160, 100, 255);
 	}
-	else if (ClassnameIs(pev, "node_viewer_large"))
+	else if (ClassnameIs("node_viewer_large"))
 	{
 		m_iHull = NODE_LARGE_HULL;
 		m_afNodeType = bits_NODE_LAND | bits_NODE_WATER;

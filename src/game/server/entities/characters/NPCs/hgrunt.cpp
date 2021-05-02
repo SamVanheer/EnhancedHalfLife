@@ -297,7 +297,7 @@ void CHGrunt::SpeakSentence()
 
 Relationship CHGrunt::GetRelationship(CBaseEntity* pTarget)
 {
-	if (ClassnameIs(pTarget->pev, "monster_alien_grunt") || (ClassnameIs(pTarget->pev, "monster_gargantua")))
+	if (pTarget->ClassnameIs("monster_alien_grunt") || pTarget- ClassnameIs("monster_gargantua"))
 	{
 		return Relationship::Nemesis;
 	}

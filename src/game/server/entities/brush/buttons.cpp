@@ -693,7 +693,7 @@ void CBaseButton::ButtonBackHome()
 
 		while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target))) != nullptr)
 		{
-			if (!ClassnameIs(pTarget->pev, "multisource"))
+			if (!pTarget->ClassnameIs("multisource"))
 				continue;
 
 			pTarget->Use({m_hActivator, this, USE_TOGGLE});
@@ -921,7 +921,7 @@ void CMomentaryRotButton::UpdateAllButtons(float value, bool start)
 
 	while ((pTarget = UTIL_FindEntityByTarget(pTarget, STRING(pev->target))) != nullptr)
 	{
-		if (ClassnameIs(pTarget->pev, "momentary_rot_button"))
+		if (pTarget->ClassnameIs("momentary_rot_button"))
 		{
 			auto pEntity = static_cast<CMomentaryRotButton*>(pTarget);
 

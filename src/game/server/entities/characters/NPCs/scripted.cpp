@@ -221,7 +221,7 @@ bool CCineMonster::FindEntity()
 		CBaseEntity* pEntity = nullptr;
 		while ((pEntity = UTIL_FindEntityInSphere(pEntity, pev->origin, m_flRadius)) != nullptr)
 		{
-			if (ClassnameIs(pEntity->pev, STRING(m_iszEntity)))
+			if (pEntity->ClassnameIs(STRING(m_iszEntity)))
 			{
 				if (IsBitSet(pEntity->pev->flags, FL_MONSTER))
 				{
@@ -549,7 +549,7 @@ int	CCineMonster::IgnoreConditions()
 void ScriptEntityCancel(CBaseEntity* pCine)
 {
 	// make sure they are a scripted_sequence
-	if (ClassnameIs(pCine->pev, "scripted_sequence"))
+	if (pCine->ClassnameIs("scripted_sequence"))
 	{
 		auto pCineTarget = static_cast<CCineMonster*>(pCine);
 		// make sure they have a monster in mind for the script
@@ -595,7 +595,7 @@ void CCineMonster::DelayStart(int state)
 
 	while ((pCine = UTIL_FindEntityByTargetname(pCine, STRING(pev->targetname))) != nullptr)
 	{
-		if (ClassnameIs(pCine->pev, "scripted_sequence"))
+		if (pCine->ClassnameIs("scripted_sequence"))
 		{
 			CCineMonster* pTarget = (CCineMonster*)pCine;
 			if (state)
@@ -990,7 +990,7 @@ CBaseMonster* CScriptedSentence::FindEntity()
 	pTarget = nullptr;
 	while ((pTarget = UTIL_FindEntityInSphere(pTarget, pev->origin, m_flRadius)) != nullptr)
 	{
-		if (ClassnameIs(pTarget->pev, STRING(m_iszEntity)))
+		if (pTarget->ClassnameIs(STRING(m_iszEntity)))
 		{
 			if (IsBitSet(pTarget->pev->flags, FL_MONSTER))
 			{

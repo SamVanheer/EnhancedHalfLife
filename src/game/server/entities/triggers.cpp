@@ -759,7 +759,7 @@ void CTriggerMultiple::MultiTouch(CBaseEntity* pOther)
 	// Only touch clients, monsters, or pushables (depending on flags)
 	if (((pOther->pev->flags & FL_CLIENT) && !(pev->spawnflags & SF_TRIGGER_NOCLIENTS)) ||
 		((pOther->pev->flags & FL_MONSTER) && (pev->spawnflags & SF_TRIGGER_ALLOWMONSTERS)) ||
-		(pev->spawnflags & SF_TRIGGER_PUSHABLES) && ClassnameIs(pOther->pev, "func_pushable"))
+		(pev->spawnflags & SF_TRIGGER_PUSHABLES) && pOther->ClassnameIs("func_pushable"))
 	{
 
 #if 0

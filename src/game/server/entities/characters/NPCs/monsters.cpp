@@ -1196,7 +1196,7 @@ float CBaseMonster::OpenDoorAndWait(CBaseEntity* pDoor)
 			{
 				if (pTarget->pev != pDoor->pev)
 				{
-					if (ClassnameIs(pTarget->pev, STRING(pDoor->pev->classname)))
+					if (pTarget->ClassnameIs(STRING(pDoor->pev->classname)))
 					{
 						pTarget->Use({this, this, USE_ON});
 					}
@@ -1808,7 +1808,7 @@ void CBaseMonster::StartMonster()
 			// JAY: How important is this error message?  Big Momma doesn't obey this rule, so I took it out.
 #if 0
 			// At this point, we expect only a path_corner as initial goal
-			if (!ClassnameIs(m_hGoalEnt->pev, "path_corner"))
+			if (!m_hGoalEnt->ClassnameIs("path_corner"))
 			{
 				ALERT(at_warning, "ReadyMonster--monster's initial goal '%s' is not a path_corner", STRING(pev->target));
 			}

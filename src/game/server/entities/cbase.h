@@ -434,6 +434,13 @@ public:
 	void EXPORT SUB_CallUseToggle() { this->Use({this, this, USE_TOGGLE}); }
 	bool		ShouldToggle(USE_TYPE useType, bool currentState);
 
+	const char* GetClassname() const { return STRING(pev->classname); }
+
+	bool ClassnameIs(const char* classname) const
+	{
+		return AreStringsEqual(GetClassname(), classname);
+	}
+
 	void SetAbsOrigin(const Vector& origin);
 	void SetSize(const Vector& mins, const Vector& maxs);
 

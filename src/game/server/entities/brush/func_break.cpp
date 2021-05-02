@@ -866,7 +866,7 @@ void CPushable::Use(const UseInfo& info)
 
 void CPushable::Touch(CBaseEntity* pOther)
 {
-	if (ClassnameIs(pOther->pev, "worldspawn"))
+	if (pOther->ClassnameIs("worldspawn"))
 		return;
 
 	Move(pOther, true);

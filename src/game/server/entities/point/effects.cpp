@@ -600,7 +600,7 @@ bool IsPointEntity(CBaseEntity* pEnt)
 
 	if (!pEnt->pev->modelindex)
 		return true;
-	if (ClassnameIs(pEnt->pev, "info_target") || ClassnameIs(pEnt->pev, "info_landmark") || ClassnameIs(pEnt->pev, "path_corner"))
+	if (pEnt->ClassnameIs("info_target") || pEnt->ClassnameIs("info_landmark") || pEnt->ClassnameIs("path_corner"))
 		return true;
 
 	return false;
