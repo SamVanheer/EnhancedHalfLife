@@ -1464,10 +1464,8 @@ void CBasePlayer::UpdateStatusBar()
 
 	if (tr.flFraction != 1.0)
 	{
-		if (!IsNullEnt(tr.pHit))
+		if (auto pEntity = CBaseEntity::InstanceOrWorld(tr.pHit); !IsNullEnt(pEntity))
 		{
-			CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit);
-
 			if (pEntity->IsPlayer())
 			{
 				newSBarState[SBAR_ID_TARGETNAME] = pEntity->entindex();
