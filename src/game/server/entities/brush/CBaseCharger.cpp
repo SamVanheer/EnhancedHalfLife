@@ -33,7 +33,6 @@ TYPEDESCRIPTION CBaseCharger::m_SaveData[] =
 	DEFINE_FIELD(CBaseCharger, m_iszFireOnEmpty, FIELD_STRING),
 };
 
-//TODO: was CBaseEntity before, needs investigating
 IMPLEMENT_SAVERESTORE(CBaseCharger, CBaseToggle);
 
 void CBaseCharger::KeyValue(KeyValueData* pkvd)
