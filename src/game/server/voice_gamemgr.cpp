@@ -184,7 +184,7 @@ void CVoiceGameMgr::UpdateMasks()
 		// Request the state of their "VModEnable" cvar.
 		if (g_bWantModEnable[iClient])
 		{
-			MESSAGE_BEGIN(MessageDest::One, m_msgRequestState, nullptr, pPlayer->pev);
+			MESSAGE_BEGIN(MessageDest::One, m_msgRequestState, pPlayer);
 			MESSAGE_END();
 		}
 
@@ -209,7 +209,7 @@ void CVoiceGameMgr::UpdateMasks()
 			g_SentGameRulesMasks[iClient] = gameRulesMask;
 			g_SentBanMasks[iClient] = g_BanMasks[iClient];
 
-			MESSAGE_BEGIN(MessageDest::One, m_msgPlayerVoiceMask, nullptr, pPlayer->pev);
+			MESSAGE_BEGIN(MessageDest::One, m_msgPlayerVoiceMask, pPlayer);
 			int dw;
 			for (dw = 0; dw < VOICE_MAX_PLAYERS_DW; dw++)
 			{

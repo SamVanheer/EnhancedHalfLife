@@ -531,7 +531,7 @@ void UTIL_ScreenShake(const Vector& center, float amplitude, float frequency, fl
 		{
 			shake.amplitude = FixedUnsigned16(localAmplitude, 1 << 12);		// 4.12 fixed
 
-			MESSAGE_BEGIN(MessageDest::One, gmsgShake, nullptr, pPlayer->edict());		// use the magic #1 for "one client"
+			MESSAGE_BEGIN(MessageDest::One, gmsgShake, pPlayer);
 
 			WRITE_SHORT(shake.amplitude);				// shake amount
 			WRITE_SHORT(shake.duration);				// shake lasts this long
@@ -562,12 +562,12 @@ void UTIL_ScreenFadeBuild(ScreenFade& fade, const Vector& color, float fadeTime,
 }
 
 
-void UTIL_ScreenFadeWrite(const ScreenFade& fade, CBaseEntity* pEntity)
+void UTIL_ScreenFadeWrite(const ScreenFade& fade, CBasePlayer* pEntity)
 {
 	if (!pEntity || !pEntity->IsNetClient())
 		return;
 
-	MESSAGE_BEGIN(MessageDest::One, gmsgFade, nullptr, pEntity->edict());		// use the magic #1 for "one client"
+	MESSAGE_BEGIN(MessageDest::One, gmsgFade, pEntity);
 
 	WRITE_SHORT(fade.duration);		// fade lasts this long
 	WRITE_SHORT(fade.holdTime);		// fade lasts this long
@@ -598,7 +598,7 @@ void UTIL_ScreenFadeAll(const Vector& color, float fadeTime, float fadeHold, int
 }
 
 
-void UTIL_ScreenFade(CBaseEntity* pEntity, const Vector& color, float fadeTime, float fadeHold, int alpha, int flags)
+void UTIL_ScreenFade(CBasePlayer* pEntity, const Vector& color, float fadeTime, float fadeHold, int alpha, int flags)
 {
 	ScreenFade	fade;
 
@@ -607,12 +607,12 @@ void UTIL_ScreenFade(CBaseEntity* pEntity, const Vector& color, float fadeTime, 
 }
 
 
-void UTIL_HudMessage(CBaseEntity* pEntity, const hudtextparms_t& textparms, const char* pMessage)
+void UTIL_HudMessage(CBasePlayer* pEntity, const hudtextparms_t& textparms, const char* pMessage)
 {
 	if (!pEntity || !pEntity->IsNetClient())
 		return;
 
-	MESSAGE_BEGIN(MessageDest::One, SVC_TEMPENTITY, nullptr, pEntity->edict());
+	MESSAGE_BEGIN(MessageDest::One, SVC_TEMPENTITY, pEntity);
 	WRITE_BYTE(TE_TEXTMESSAGE);
 	WRITE_BYTE(textparms.channel & 0xFF);
 
@@ -680,9 +680,9 @@ void UTIL_ClientPrintAll(int msg_dest, const char* msg_name, const char* param1,
 	MESSAGE_END();
 }
 
-void ClientPrint(CBaseEntity* client, int msg_dest, const char* msg_name, const char* param1, const char* param2, const char* param3, const char* param4)
+void ClientPrint(CBasePlayer* client, int msg_dest, const char* msg_name, const char* param1, const char* param2, const char* param3, const char* param4)
 {
-	MESSAGE_BEGIN(MessageDest::One, gmsgTextMsg, nullptr, CBaseEntity::EdictOrNull(client));
+	MESSAGE_BEGIN(MessageDest::One, gmsgTextMsg, client);
 	WRITE_BYTE(msg_dest);
 	WRITE_STRING(msg_name);
 
@@ -698,20 +698,20 @@ void ClientPrint(CBaseEntity* client, int msg_dest, const char* msg_name, const 
 	MESSAGE_END();
 }
 
-void UTIL_SayText(const char* pText, CBaseEntity* pEntity)
+void UTIL_SayText(const char* pText, CBasePlayer* pEntity)
 {
 	if (!pEntity->IsNetClient())
 		return;
 
-	MESSAGE_BEGIN(MessageDest::One, gmsgSayText, nullptr, pEntity->edict());
+	MESSAGE_BEGIN(MessageDest::One, gmsgSayText, pEntity);
 	WRITE_BYTE(pEntity->entindex());
 	WRITE_STRING(pText);
 	MESSAGE_END();
 }
 
-void UTIL_SayTextAll(const char* pText, CBaseEntity* pEntity)
+void UTIL_SayTextAll(const char* pText, CBasePlayer* pEntity)
 {
-	MESSAGE_BEGIN(MessageDest::All, gmsgSayText, nullptr);
+	MESSAGE_BEGIN(MessageDest::All, gmsgSayText);
 	WRITE_BYTE(pEntity->entindex());
 	WRITE_STRING(pText);
 	MESSAGE_END();
@@ -746,12 +746,12 @@ char* UTIL_dtos4(int d)
 	return buf;
 }
 
-void UTIL_ShowMessage(const char* pString, CBaseEntity* pEntity)
+void UTIL_ShowMessage(const char* pString, CBasePlayer* pEntity)
 {
 	if (!pEntity || !pEntity->IsNetClient())
 		return;
 
-	MESSAGE_BEGIN(MessageDest::One, gmsgHudText, nullptr, pEntity->edict());
+	MESSAGE_BEGIN(MessageDest::One, gmsgHudText, pEntity);
 	WRITE_STRING(pString);
 	MESSAGE_END();
 }

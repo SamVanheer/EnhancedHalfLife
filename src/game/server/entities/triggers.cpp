@@ -358,7 +358,7 @@ void CBaseTrigger::ActivateMultiTrigger(CBaseEntity* pActivator)
 
 	if (!IsStringNull(pev->message) && pActivator->IsPlayer())
 	{
-		UTIL_ShowMessage(STRING(pev->message), pActivator);
+		UTIL_ShowMessage(STRING(pev->message), static_cast<CBasePlayer*>(pActivator));
 	}
 
 	if (m_flWait > 0)

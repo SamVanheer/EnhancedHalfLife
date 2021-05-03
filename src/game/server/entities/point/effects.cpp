@@ -1866,7 +1866,7 @@ void CFade::Use(const UseInfo& info)
 	{
 		if (info.GetActivator()->IsNetClient())
 		{
-			UTIL_ScreenFade(info.GetActivator(), pev->rendercolor, Duration(), HoldTime(), pev->renderamt, fadeFlags);
+			UTIL_ScreenFade(static_cast<CBasePlayer*>(info.GetActivator()), pev->rendercolor, Duration(), HoldTime(), pev->renderamt, fadeFlags);
 		}
 	}
 	else
@@ -1960,10 +1960,11 @@ void CMessage::Use(const UseInfo& info)
 			pPlayer = activator;
 		else
 		{
+			//TODO: make it so that this only happens in singleplayer
 			pPlayer = CBaseEntity::Instance(g_engfuncs.pfnPEntityOfEntIndex(1));
 		}
 		if (pPlayer)
-			UTIL_ShowMessage(STRING(pev->message), pPlayer);
+			UTIL_ShowMessage(STRING(pev->message), static_cast<CBasePlayer*>(pPlayer));
 	}
 	if (!IsStringNull(pev->noise))
 	{

@@ -16,6 +16,7 @@
 #include "Platform.h"
 #include "shared_utils.hpp"
 #include "cbase.h"
+#include "player.h"
 
 char* memfgets(byte* pMemFile, std::size_t fileSize, std::size_t& filePos, char* pBuffer, std::size_t bufferSize)
 {
@@ -139,6 +140,21 @@ float UTIL_SharedRandomFloat(unsigned int seed, float low, float high)
 
 		return (low + offset * range);
 	}
+}
+
+void MESSAGE_BEGIN(MessageDest msg_dest, int msg_type, const float* pOrigin, CBasePlayer* pPlayer)
+{
+	//TODO: reliable versions of this don't seem to use the origin parameter properly in the engine
+	if ((msg_dest == MessageDest::PVS
+		|| msg_dest == MessageDest::PAS
+		|| msg_dest == MessageDest::PVSReliable
+		|| msg_dest == MessageDest::PASReliable)
+		&& !pOrigin)
+	{
+		ALERT(at_warning, "No origin provided for position-based message!\n");
+	}
+
+	g_engfuncs.pfnMessageBegin(msg_dest, msg_type, pOrigin, CBaseEntity::EdictOrNull(pPlayer));
 }
 
 void UTIL_PlaybackEvent(int flags, CBaseEntity* invoker, unsigned short eventIndex, const EventPlaybackArgs& args)

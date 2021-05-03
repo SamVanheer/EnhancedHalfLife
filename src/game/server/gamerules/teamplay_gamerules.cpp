@@ -152,7 +152,7 @@ bool CHalfLifeTeamplay::ClientCommand(CBasePlayer* pPlayer, const char* pcmd)
 
 void CHalfLifeTeamplay::UpdateGameMode(CBasePlayer* pPlayer)
 {
-	MESSAGE_BEGIN(MessageDest::One, gmsgGameMode, nullptr, pPlayer->edict());
+	MESSAGE_BEGIN(MessageDest::One, gmsgGameMode, pPlayer);
 	WRITE_BYTE(1);  // game mode teamplay
 	MESSAGE_END();
 }
@@ -192,7 +192,7 @@ void CHalfLifeTeamplay::InitHUD(CBasePlayer* pPlayer)
 	CHalfLifeMultiplay::InitHUD(pPlayer);
 
 	// Send down the team names
-	MESSAGE_BEGIN(MessageDest::One, gmsgTeamNames, nullptr, pPlayer->edict());
+	MESSAGE_BEGIN(MessageDest::One, gmsgTeamNames, pPlayer);
 	WRITE_BYTE(num_teams);
 	for (i = 0; i < num_teams; i++)
 	{
@@ -225,7 +225,7 @@ void CHalfLifeTeamplay::InitHUD(CBasePlayer* pPlayer)
 		CBasePlayer* plr = UTIL_PlayerByIndex(i);
 		if (plr && IsValidTeam(plr->TeamID()))
 		{
-			MESSAGE_BEGIN(MessageDest::One, gmsgTeamInfo, nullptr, pPlayer->edict());
+			MESSAGE_BEGIN(MessageDest::One, gmsgTeamInfo, pPlayer);
 			WRITE_BYTE(plr->entindex());
 			WRITE_STRING(plr->TeamID());
 			MESSAGE_END();
@@ -595,7 +595,7 @@ void CHalfLifeTeamplay::RecountTeams(bool bResendInfo)
 			{
 				if (plr && IsValidTeam(plr->TeamID()))
 				{
-					MESSAGE_BEGIN(MessageDest::All, gmsgTeamInfo, nullptr);
+					MESSAGE_BEGIN(MessageDest::All, gmsgTeamInfo);
 					WRITE_BYTE(plr->entindex());
 					WRITE_STRING(plr->TeamID());
 					MESSAGE_END();

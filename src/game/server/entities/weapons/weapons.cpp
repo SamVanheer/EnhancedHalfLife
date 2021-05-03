@@ -588,7 +588,7 @@ bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer)
 
 	if (bSend)
 	{
-		MESSAGE_BEGIN(MessageDest::One, gmsgCurWeapon, nullptr, pPlayer->pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgCurWeapon, pPlayer);
 		WRITE_BYTE(static_cast<int>(state));
 		WRITE_BYTE(m_iId);
 		WRITE_BYTE(m_iClip);
@@ -618,7 +618,7 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 		return;
 #endif
 
-	MESSAGE_BEGIN(MessageDest::One, SVC_WEAPONANIM, nullptr, player->pev);
+	MESSAGE_BEGIN(MessageDest::One, SVC_WEAPONANIM, player);
 	WRITE_BYTE(iAnim);						// sequence number
 	WRITE_BYTE(pev->body);					// weaponmodel bodygroup.
 	MESSAGE_END();

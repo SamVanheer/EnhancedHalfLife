@@ -377,7 +377,7 @@ bool CHalfLifeMultiplay::ClientConnected(edict_t* pEntity, const char* pszName, 
 
 void CHalfLifeMultiplay::UpdateGameMode(CBasePlayer* pPlayer)
 {
-	MESSAGE_BEGIN(MessageDest::One, gmsgGameMode, nullptr, pPlayer->edict());
+	MESSAGE_BEGIN(MessageDest::One, gmsgGameMode, pPlayer);
 	WRITE_BYTE(0);  // game mode none
 	MESSAGE_END();
 }
@@ -394,7 +394,7 @@ void CHalfLifeMultiplay::InitHUD(CBasePlayer* pl)
 
 	// sending just one score makes the hud scoreboard active;  otherwise
 	// it is just disabled for single play
-	MESSAGE_BEGIN(MessageDest::One, gmsgScoreInfo, nullptr, pl->edict());
+	MESSAGE_BEGIN(MessageDest::One, gmsgScoreInfo, pl);
 	WRITE_BYTE(pl->entindex());
 	WRITE_SHORT(0);
 	WRITE_SHORT(0);
@@ -402,7 +402,7 @@ void CHalfLifeMultiplay::InitHUD(CBasePlayer* pl)
 	WRITE_SHORT(0);
 	MESSAGE_END();
 
-	SendMOTDToClient(pl->edict());
+	SendMOTDToClient(pl);
 
 	// loop through all active players and send their score info to the new client
 	for (int i = 1; i <= gpGlobals->maxClients; i++)
@@ -412,7 +412,7 @@ void CHalfLifeMultiplay::InitHUD(CBasePlayer* pl)
 
 		if (plr)
 		{
-			MESSAGE_BEGIN(MessageDest::One, gmsgScoreInfo, nullptr, pl->edict());
+			MESSAGE_BEGIN(MessageDest::One, gmsgScoreInfo, pl);
 			WRITE_BYTE(i);	// client number
 			WRITE_SHORT(plr->pev->frags);
 			WRITE_SHORT(plr->m_iDeaths);
@@ -424,7 +424,7 @@ void CHalfLifeMultiplay::InitHUD(CBasePlayer* pl)
 
 	if (g_fGameOver)
 	{
-		MESSAGE_BEGIN(MessageDest::One, SVC_INTERMISSION, nullptr, pl->edict());
+		MESSAGE_BEGIN(MessageDest::One, SVC_INTERMISSION, pl);
 		MESSAGE_END();
 	}
 }
@@ -1096,7 +1096,7 @@ void CHalfLifeMultiplay::ChangeLevel()
 constexpr int MAX_MOTD_CHUNK = 60;
 constexpr int MAX_MOTD_LENGTH = 1536; // (MAX_MOTD_CHUNK * 4)
 
-void CHalfLifeMultiplay::SendMOTDToClient(edict_t* client)
+void CHalfLifeMultiplay::SendMOTDToClient(CBasePlayer* player)
 {
 	// read from the MOTD.txt file
 	int char_count = 0;
@@ -1107,7 +1107,7 @@ void CHalfLifeMultiplay::SendMOTDToClient(edict_t* client)
 	char* pFileList = aFileList;
 
 	// send the server name
-	MESSAGE_BEGIN(MessageDest::One, gmsgServerName, nullptr, client);
+	MESSAGE_BEGIN(MessageDest::One, gmsgServerName, player);
 	WRITE_STRING(CVAR_GET_STRING("hostname"));
 	MESSAGE_END();
 
@@ -1133,7 +1133,7 @@ void CHalfLifeMultiplay::SendMOTDToClient(edict_t* client)
 		else
 			*pFileList = 0;
 
-		MESSAGE_BEGIN(MessageDest::One, gmsgMOTD, nullptr, client);
+		MESSAGE_BEGIN(MessageDest::One, gmsgMOTD, player);
 		WRITE_BYTE(*pFileList ? false : true);	// false means there is still more message to come
 		WRITE_STRING(chunk);
 		MESSAGE_END();

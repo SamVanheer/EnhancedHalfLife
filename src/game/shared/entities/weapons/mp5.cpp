@@ -88,7 +88,7 @@ bool CMP5::AddToPlayer(CBasePlayer* pPlayer)
 {
 	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
 	{
-		MESSAGE_BEGIN(MessageDest::One, gmsgWeapPickup, nullptr, pPlayer->pev);
+		MESSAGE_BEGIN(MessageDest::One, gmsgWeapPickup, pPlayer);
 		WRITE_BYTE(m_iId);
 		MESSAGE_END();
 		return true;

@@ -517,7 +517,7 @@ protected:
 	virtual void GoToIntermission();
 	float m_flIntermissionEndTime;
 	bool m_iEndIntermissionButtonHit;
-	void SendMOTDToClient(edict_t* client);
+	void SendMOTDToClient(CBasePlayer* player);
 };
 
 inline CGameRules* g_pGameRules = nullptr;

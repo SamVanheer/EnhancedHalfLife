@@ -934,7 +934,7 @@ void CEnvSound::Think()
 
 			//CLIENT_COMMAND(pentPlayer, "room_type %f", m_flRoomtype);
 
-			MESSAGE_BEGIN(MessageDest::One, SVC_ROOMTYPE, nullptr, pPlayer->edict());		// use the magic #1 for "one client"
+			MESSAGE_BEGIN(MessageDest::One, SVC_ROOMTYPE, pPlayer);		// use the magic #1 for "one client"
 			WRITE_SHORT((short)m_flRoomtype);					// sequence number
 			MESSAGE_END();
 

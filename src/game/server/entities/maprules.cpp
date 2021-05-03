@@ -316,7 +316,7 @@ void CGameText::Use(const UseInfo& info)
 	{
 		if (info.GetActivator()->IsNetClient())
 		{
-			UTIL_HudMessage(info.GetActivator(), m_textParms, MessageGet());
+			UTIL_HudMessage(static_cast<CBasePlayer*>(info.GetActivator()), m_textParms, MessageGet());
 		}
 	}
 }

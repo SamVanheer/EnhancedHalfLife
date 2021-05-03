@@ -35,8 +35,6 @@ class CBasePlayerItem;
 
 constexpr int TEAM_NAME_LENGTH = 16;
 
-inline void MESSAGE_BEGIN(MessageDest msg_dest, int msg_type, const float* pOrigin, entvars_t* ent);
-
 extern globalvars_t* gpGlobals;
 
 inline const char* STRING(string_t offset)
@@ -113,9 +111,6 @@ inline entvars_t* VARS(edict_t* pent)
 
 inline int ENTINDEX(const edict_t* pEdict) { return (*g_engfuncs.pfnIndexOfEdict)(pEdict); }
 inline edict_t* INDEXENT(int iEdictNum) { return (*g_engfuncs.pfnPEntityOfEntIndex)(iEdictNum); }
-inline void MESSAGE_BEGIN(MessageDest msg_dest, int msg_type, const float* pOrigin, entvars_t* ent) {
-	(*g_engfuncs.pfnMessageBegin)(msg_dest, msg_type, pOrigin, ENT(ent));
-}
 
 // Testing the two types of "entity" for nullity
 inline bool IsNullEnt(const edict_t* pent) { return pent == nullptr || ENTINDEX(pent) == 0; }
@@ -233,10 +228,10 @@ void			UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, 
 */
 void			UTIL_ScreenShake(const Vector& center, float amplitude, float frequency, float duration, float radius);
 void			UTIL_ScreenShakeAll(const Vector& center, float amplitude, float frequency, float duration);
-void			UTIL_ShowMessage(const char* pString, CBaseEntity* pPlayer);
+void			UTIL_ShowMessage(const char* pString, CBasePlayer* pPlayer);
 void			UTIL_ShowMessageAll(const char* pString);
 void			UTIL_ScreenFadeAll(const Vector& color, float fadeTime, float holdTime, int alpha, int flags);
-void			UTIL_ScreenFade(CBaseEntity* pEntity, const Vector& color, float fadeTime, float fadeHold, int alpha, int flags);
+void			UTIL_ScreenFade(CBasePlayer* pEntity, const Vector& color, float fadeTime, float fadeHold, int alpha, int flags);
 
 enum class IgnoreMonsters
 {
@@ -312,18 +307,18 @@ bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapo
 /**
 *	@brief prints messages through the HUD
 */
-void ClientPrint(CBaseEntity* client, int msg_dest, const char* msg_name,
+void ClientPrint(CBasePlayer* client, int msg_dest, const char* msg_name,
 	const char* param1 = nullptr, const char* param2 = nullptr, const char* param3 = nullptr, const char* param4 = nullptr);
 
 /**
 *	@brief prints a message to the HUD say (chat)
 */
-void			UTIL_SayText(const char* pText, CBaseEntity* pEntity);
+void			UTIL_SayText(const char* pText, CBasePlayer* pEntity);
 
 /**
-*	@copydoc UTIL_SayText(const char*, CBaseEntity*)
+*	@copydoc UTIL_SayText(const char*, CBasePlayer*)
 */
-void			UTIL_SayTextAll(const char* pText, CBaseEntity* pEntity);
+void			UTIL_SayTextAll(const char* pText, CBasePlayer* pEntity);
 
 struct hudtextparms_t
 {
@@ -347,7 +342,7 @@ void			UTIL_HudMessageAll(const hudtextparms_t& textparms, const char* pMessage)
 /**
 *	@copydoc UTIL_HudMessageAll(const hudtextparms_t&, const char*)
 */
-void			UTIL_HudMessage(CBaseEntity* pEntity, const hudtextparms_t& textparms, const char* pMessage);
+void			UTIL_HudMessage(CBasePlayer* pEntity, const hudtextparms_t& textparms, const char* pMessage);
 
 char* UTIL_dtos1(int d);	//!< for handy use with ClientPrint params
 char* UTIL_dtos2(int d);	//!< @copydoc UTIL_dtos1(int)
