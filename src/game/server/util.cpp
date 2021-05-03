@@ -98,24 +98,24 @@ CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe)
 	return nullptr;
 }
 
-void UTIL_ParametricRocket(entvars_t* pev, Vector vecOrigin, Vector vecAngles, CBaseEntity* owner)
+void UTIL_ParametricRocket(CBaseEntity* entity, Vector vecOrigin, Vector vecAngles, CBaseEntity* owner)
 {
-	pev->startpos = vecOrigin;
+	entity->pev->startpos = vecOrigin;
 	// Trace out line to end pos
 	TraceResult tr;
 	UTIL_MakeVectors(vecAngles);
-	UTIL_TraceLine(pev->startpos, pev->startpos + gpGlobals->v_forward * WORLD_SIZE, IgnoreMonsters::Yes, owner, &tr);
-	pev->endpos = tr.vecEndPos;
+	UTIL_TraceLine(entity->pev->startpos, entity->pev->startpos + gpGlobals->v_forward * WORLD_SIZE, IgnoreMonsters::Yes, owner, &tr);
+	entity->pev->endpos = tr.vecEndPos;
 
 	// Now compute how long it will take based on current velocity
-	Vector vecTravel = pev->endpos - pev->startpos;
+	Vector vecTravel = entity->pev->endpos - entity->pev->startpos;
 	float travelTime = 0.0;
-	if (pev->velocity.Length() > 0)
+	if (entity->pev->velocity.Length() > 0)
 	{
-		travelTime = vecTravel.Length() / pev->velocity.Length();
+		travelTime = vecTravel.Length() / entity->pev->velocity.Length();
 	}
-	pev->starttime = gpGlobals->time;
-	pev->impacttime = gpGlobals->time + travelTime;
+	entity->pev->starttime = gpGlobals->time;
+	entity->pev->impacttime = gpGlobals->time + travelTime;
 }
 
 int g_groupmask = 0;
