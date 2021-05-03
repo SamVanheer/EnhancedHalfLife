@@ -1186,17 +1186,18 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 		return;
 	entvars_t* pev = const_cast<entvars_t*>(&ent->v);
 	//TODO: make this static_cast, the above private data check guards against it
-	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(pev));
+	CBasePlayer* pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(const_cast<edict_t*>(ent)));
 	entvars_t* pevOrg = pev;
 
 	// if user is spectating different player in First person, override some vars
 	if (pl && pl->pev->iuser1 == OBS_IN_EYE)
 	{
-		if (pl->m_hObserverTarget)
+		if (auto target = pl->m_hObserverTarget.Get(); target)
 		{
-			pev = pl->m_hObserverTarget->pev;
+			pev = target->pev;
 			//TODO: if pl is null here the target player isn't valid and shouldn't be spectated
-			pl = dynamic_cast<CBasePlayer*>(CBasePlayer::Instance(pev));
+			//TODO: this doesn't account for the possibility that the target isn't a player
+			pl = dynamic_cast<CBasePlayer*>(target);
 		}
 	}
 

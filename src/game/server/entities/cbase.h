@@ -524,14 +524,6 @@ public:
 		return pEnt;
 	}
 
-	static CBaseEntity* Instance(entvars_t* pev)
-	{
-		if (!pev)
-			return UTIL_GetWorld();
-
-		return Instance(ENT(pev));
-	}
-
 	static CBaseEntity* InstanceOrNull(edict_t* pEntity)
 	{
 		return InstanceOrDefault(pEntity, nullptr);
