@@ -394,14 +394,14 @@ void ClientUserInfoChanged(edict_t* pEntity, char* infobuffer)
 		}
 
 		// Set the name
-		g_engfuncs.pfnSetClientKeyValue(ENTINDEX(pEntity), infobuffer, "name", sName);
+		g_engfuncs.pfnSetClientKeyValue(player->entindex(), infobuffer, "name", sName);
 
 		if (gpGlobals->maxClients > 1)
 		{
 			char text[256];
 			snprintf(text, sizeof(text), "* %s changed name to %s\n", STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue(infobuffer, "name"));
 			MESSAGE_BEGIN(MessageDest::All, gmsgSayText);
-			WRITE_BYTE(ENTINDEX(pEntity));
+			WRITE_BYTE(player->entindex());
 			WRITE_STRING(text);
 			MESSAGE_END();
 		}

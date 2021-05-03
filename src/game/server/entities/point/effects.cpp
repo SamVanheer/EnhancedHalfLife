@@ -157,8 +157,8 @@ void CBeam::Precache()
 {
 	if (auto owner = GetOwner(); owner)
 		SetStartEntity(owner->entindex());
-	if (pev->aiment)
-		SetEndEntity(ENTINDEX(pev->aiment));
+	if (auto aiment = InstanceOrNull(pev->aiment); aiment)
+		SetEndEntity(aiment->entindex());
 }
 
 void CBeam::SetStartEntity(int entityIndex)

@@ -686,7 +686,7 @@ void CHalfLifeMultiplay::DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller,
 	MESSAGE_BEGIN(MessageDest::Spectator, SVC_DIRECTOR);
 	WRITE_BYTE(9);	// command length in bytes
 	WRITE_BYTE(DRC_CMD_EVENT);	// player killed
-	WRITE_SHORT(ENTINDEX(pVictim->edict()));	// index number of primary entity
+	WRITE_SHORT(pVictim->entindex());	// index number of primary entity
 	if (pInflictor)
 		WRITE_SHORT(pInflictor->entindex());	// index number of secondary entity
 	else

@@ -974,7 +974,7 @@ void UTIL_DecalTrace(TraceResult* pTrace, int decalNumber)
 		CBaseEntity* pEntity = CBaseEntity::Instance(pTrace->pHit);
 		if (pEntity && !pEntity->IsBSPModel())
 			return;
-		entityIndex = ENTINDEX(pTrace->pHit);
+		entityIndex = pEntity->entindex();
 	}
 	else
 		entityIndex = 0;
@@ -1028,13 +1028,15 @@ void UTIL_PlayerDecalTrace(TraceResult* pTrace, int playernum, int decalNumber, 
 	if (pTrace->flFraction == 1.0)
 		return;
 
+	auto hit = CBaseEntity::InstanceOrWorld(pTrace->pHit);
+
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_PLAYERDECAL);
 	WRITE_BYTE(playernum);
 	WRITE_COORD(pTrace->vecEndPos.x);
 	WRITE_COORD(pTrace->vecEndPos.y);
 	WRITE_COORD(pTrace->vecEndPos.z);
-	WRITE_SHORT((short)ENTINDEX(pTrace->pHit));
+	WRITE_SHORT((short)hit->entindex());
 	WRITE_BYTE(index);
 	MESSAGE_END();
 }
@@ -1051,12 +1053,14 @@ void UTIL_GunshotDecalTrace(TraceResult* pTrace, int decalNumber)
 	if (pTrace->flFraction == 1.0)
 		return;
 
+	auto hit = CBaseEntity::InstanceOrWorld(pTrace->pHit);
+
 	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pTrace->vecEndPos);
 	WRITE_BYTE(TE_GUNSHOTDECAL);
 	WRITE_COORD(pTrace->vecEndPos.x);
 	WRITE_COORD(pTrace->vecEndPos.y);
 	WRITE_COORD(pTrace->vecEndPos.z);
-	WRITE_SHORT((short)ENTINDEX(pTrace->pHit));
+	WRITE_SHORT((short)hit->entindex());
 	WRITE_BYTE(index);
 	MESSAGE_END();
 }
