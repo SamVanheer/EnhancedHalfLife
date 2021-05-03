@@ -1086,24 +1086,26 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 					g_pBodyQueueHead,//!!!HACKHACK no real ent to supply here, using a global we don't care about
 					&tr);
 
+				auto hit = CBaseEntity::Instance(tr.pHit);
+
 				// there is a solid_bsp ent in the way of these two nodes, so we must record several things about in order to keep
 				// track of it in the pathfinding code, as well as through save and restore of the node graph. ANY data that is manipulated 
 				// as part of the process of adding a LINKENT to a connection here must also be done in CGraph::SetGraphPointers, where reloaded
 				// graphs are prepared for use.
-				if (tr.pHit == pTraceEnt && !CBaseEntity::Instance(tr.pHit)->ClassnameIs("worldspawn"))
+				if (tr.pHit == pTraceEnt && !hit->ClassnameIs("worldspawn"))
 				{
 					// get a pointer
-					pLinkPool[cTotalLinks].m_hLinkEnt = CBaseEntity::Instance(tr.pHit);
+					pLinkPool[cTotalLinks].m_hLinkEnt = hit;
 
 					// record the modelname, so that we can save/load node trees
-					memcpy(pLinkPool[cTotalLinks].m_szLinkEntModelname, STRING(VARS(tr.pHit)->model), 4);
+					memcpy(pLinkPool[cTotalLinks].m_szLinkEntModelname, STRING(hit->pev->model), 4);
 
 					// set the flag for this ent that indicates that it is attached to the world graph
 					// if this ent is removed from the world, it must also be removed from the connections
 					// that it formerly blocked.
-					if (!IsBitSet(VARS(tr.pHit)->flags, FL_GRAPHED))
+					if (!IsBitSet(hit->pev->flags, FL_GRAPHED))
 					{
-						VARS(tr.pHit)->flags += FL_GRAPHED;
+						hit->pev->flags += FL_GRAPHED;
 					}
 				}
 				else
@@ -1116,9 +1118,9 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 			{
 				file.Printf("%4d", j);
 
-				if (!IsNullEnt(pLinkPool[cTotalLinks].m_hLinkEnt))
+				if (auto linkEnt = pLinkPool[cTotalLinks].m_hLinkEnt.Get(); !IsNullEnt(linkEnt))
 				{// record info about the ent in the way, if any.
-					file.Printf("  Entity on connection: %s, name: %s  Model: %s", STRING(VARS(pTraceEnt)->classname), STRING(VARS(pTraceEnt)->targetname), STRING(VARS(tr.pHit)->model));
+					file.Printf("  Entity on connection: %s, name: %s  Model: %s", STRING(linkEnt->pev->classname), STRING(linkEnt->pev->targetname), STRING(linkEnt->pev->model));
 				}
 
 				file.Printf("\n");

@@ -1252,7 +1252,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 				pEntity->TraceAttack({pAttacker, 50, vecDir, tr, DMG_CLUB});
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				// only decal glass
-				if (!IsNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != RenderMode::Normal)
+				if (auto hit = InstanceOrNull(tr.pHit); !IsNullEnt(hit) && hit->pev->rendermode != RenderMode::Normal)
 				{
 					UTIL_DecalTrace(&tr, DECAL_GLASSBREAK1 + RANDOM_LONG(0, 2));
 				}
@@ -1331,7 +1331,7 @@ Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDi
 				pEntity->TraceAttack({pAttacker, 50, vecDir, tr, DMG_CLUB});
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				// only decal glass
-				if (!IsNullEnt(tr.pHit) && VARS(tr.pHit)->rendermode != RenderMode::Normal)
+				if (auto hit = InstanceOrNull(tr.pHit); !IsNullEnt(hit) && hit->pev->rendermode != RenderMode::Normal)
 				{
 					UTIL_DecalTrace(&tr, DECAL_GLASSBREAK1 + RANDOM_LONG(0, 2));
 				}

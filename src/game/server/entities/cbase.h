@@ -983,7 +983,7 @@ template <class T> T* GetClassPtr(T* a)
 
 	// allocate entity if necessary
 	if (pev == nullptr)
-		pev = VARS(CREATE_ENTITY());
+		pev = &CREATE_ENTITY()->v;
 
 	// get the private data
 	a = (T*)GET_PRIVATE(ENT(pev));

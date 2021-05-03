@@ -210,7 +210,7 @@ void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
 		SV_NewMapStarted();
 	}
 
-	EntvarsKeyvalue(VARS(pentKeyvalue), pkvd);
+	EntvarsKeyvalue(&pentKeyvalue->v, pkvd);
 
 	// If the key was an entity variable, or there's no class set yet, don't look for the object, it may
 	// not exist yet.
