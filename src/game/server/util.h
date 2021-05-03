@@ -414,16 +414,6 @@ constexpr int SVC_WEAPONANIM = 35;
 constexpr int SVC_ROOMTYPE = 37;
 constexpr int SVC_DIRECTOR = 51;
 
-inline void PLAYBACK_EVENT(int flags, edict_t* invoker, unsigned short index)
-{
-	PLAYBACK_EVENT_FULL(flags, invoker, index, 0, vec3_origin, vec3_origin, 0.0, 0.0, 0, 0, 0, 0);
-}
-
-inline void PLAYBACK_EVENT_DELAY(int flags, edict_t* invoker, unsigned short index, float delay)
-{
-	PLAYBACK_EVENT_FULL(flags, invoker, index, delay, vec3_origin, vec3_origin, 0.0, 0.0, 0, 0, 0, 0);
-}
-
 constexpr int GROUP_OP_AND = 0;
 constexpr int GROUP_OP_NAND = 1;
 

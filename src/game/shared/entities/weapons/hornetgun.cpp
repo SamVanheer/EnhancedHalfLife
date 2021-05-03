@@ -145,7 +145,7 @@ void CHgun::PrimaryAttack()
 	flags = 0;
 #endif
 
-	PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), m_usHornetFire, 0.0, vec3_origin, vec3_origin, 0.0, 0.0, FIREMODE_TRACK, 0, 0, 0);
+	UTIL_PlaybackEvent(flags, m_hPlayer, m_usHornetFire, {.iparam1 = FIREMODE_TRACK});
 
 	// player "shoot" animation
 	m_hPlayer->SetAnimation(PlayerAnim::Attack1);
@@ -225,7 +225,7 @@ void CHgun::SecondaryAttack()
 	flags = 0;
 #endif
 
-	PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), m_usHornetFire, 0.0, vec3_origin, vec3_origin, 0.0, 0.0, FIREMODE_FAST, 0, 0, 0);
+	UTIL_PlaybackEvent(flags, m_hPlayer, m_usHornetFire, {.iparam1 = FIREMODE_FAST});
 
 	m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
 	m_hPlayer->m_iWeaponVolume = NORMAL_GUN_VOLUME;

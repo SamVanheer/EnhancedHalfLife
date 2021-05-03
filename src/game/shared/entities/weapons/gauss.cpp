@@ -115,7 +115,8 @@ bool CGauss::Deploy()
 
 void CGauss::Holster()
 {
-	PLAYBACK_EVENT_FULL(FEV_RELIABLE | FEV_GLOBAL, m_hPlayer->edict(), m_usGaussFire, 0.01, m_hPlayer->pev->origin, m_hPlayer->pev->angles, 0.0, 0.0, 0, 0, 0, 1);
+	UTIL_PlaybackEvent(FEV_GLOBAL | FEV_RELIABLE, m_hPlayer, m_usGaussFire,
+		{.delay = 0.01f, .origin = m_hPlayer->pev->origin, .angles = m_hPlayer->pev->angles, .fparam1 = 0.0f, .bparam1 = false, .bparam2 = true});
 
 	m_hPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 
@@ -194,7 +195,7 @@ void CGauss::SecondaryAttack()
 		m_flStartCharge = gpGlobals->time;
 		m_flAmmoStartCharge = UTIL_WeaponTimeBase() + GetFullChargeTime();
 
-		PLAYBACK_EVENT_FULL(FEV_NOTHOST, m_hPlayer->edict(), m_usGaussSpin, 0.0, vec3_origin, vec3_origin, 0.0, 0.0, 110, 0, 0, 0);
+		UTIL_PlaybackEvent(FEV_NOTHOST, m_hPlayer, m_usGaussSpin, {.iparam1 = 110, .bparam1 = false});
 
 		m_iSoundState = SND_CHANGE_PITCH;
 	}
@@ -250,7 +251,7 @@ void CGauss::SecondaryAttack()
 		if (m_iSoundState == 0)
 			ALERT(at_console, "sound state %d\n", m_iSoundState);
 
-		PLAYBACK_EVENT_FULL(FEV_NOTHOST, m_hPlayer->edict(), m_usGaussSpin, 0.0, vec3_origin, vec3_origin, 0.0, 0.0, pitch, 0, m_iSoundState == SND_CHANGE_PITCH, 0);
+		UTIL_PlaybackEvent(FEV_NOTHOST, m_hPlayer, m_usGaussSpin, {.iparam1 = pitch, .bparam1 = m_iSoundState == SND_CHANGE_PITCH});
 
 		m_iSoundState = SND_CHANGE_PITCH; // hack for going through level transitions
 
@@ -345,14 +346,15 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 #endif
 
 	// The main firing event is sent unreliably so it won't be delayed.
-	PLAYBACK_EVENT_FULL(FEV_NOTHOST, m_hPlayer->edict(), m_usGaussFire, 0.0, m_hPlayer->pev->origin, m_hPlayer->pev->angles, flDamage, 0.0, 0, 0, m_fPrimaryFire, 0);
+	UTIL_PlaybackEvent(FEV_NOTHOST, m_hPlayer, m_usGaussFire,
+		{.origin = m_hPlayer->pev->origin, .angles = m_hPlayer->pev->angles, .fparam1 =flDamage, .bparam1 = m_fPrimaryFire, .bparam2 = false});
 
 	// This reliable event is used to stop the spinning sound
 	// It's delayed by a fraction of second to make sure it is delayed by 1 frame on the client
 	// It's sent reliably anyway, which could lead to other delays
 
-	PLAYBACK_EVENT_FULL(FEV_NOTHOST | FEV_RELIABLE, m_hPlayer->edict(), m_usGaussFire, 0.01, m_hPlayer->pev->origin, m_hPlayer->pev->angles, 0.0, 0.0, 0, 0, 0, 1);
-
+	UTIL_PlaybackEvent(FEV_NOTHOST | FEV_RELIABLE, m_hPlayer, m_usGaussFire,
+		{.delay = 0.01f, .origin = m_hPlayer->pev->origin, .angles = m_hPlayer->pev->angles, .fparam1 = 0.0f, .bparam1 = false, .bparam2 = true});
 
 	/*ALERT( at_console, "%f %f %f\n%f %f %f\n",
 		vecSrc.x, vecSrc.y, vecSrc.z,

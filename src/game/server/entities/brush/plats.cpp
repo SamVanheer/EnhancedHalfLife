@@ -1021,8 +1021,7 @@ void CFuncTrackTrain::StopSound()
 
 		const unsigned short us_encode = us_sound;
 
-		PLAYBACK_EVENT_FULL(FEV_RELIABLE | FEV_UPDATE, edict(), m_usAdjustPitch, 0.0,
-			vec3_origin, vec3_origin, 0.0, 0.0, us_encode, 0, 1, 0);
+		UTIL_PlaybackEvent(FEV_RELIABLE | FEV_UPDATE, this, m_usAdjustPitch, {.iparam1 = us_encode, .bparam1 = true});
 
 		/*
 		StopSound(SoundChannel::Static, STRING(pev->noise));
@@ -1064,8 +1063,7 @@ void CFuncTrackTrain::UpdateSound()
 
 		const unsigned short us_encode = us_sound | us_pitch | us_volume;
 
-		PLAYBACK_EVENT_FULL(FEV_RELIABLE | FEV_UPDATE, edict(), m_usAdjustPitch, 0.0,
-			vec3_origin, vec3_origin, 0.0, 0.0, us_encode, 0, 0, 0);
+		UTIL_PlaybackEvent(FEV_RELIABLE | FEV_UPDATE, this, m_usAdjustPitch, {.iparam1 = us_encode, .bparam1 = false});
 	}
 }
 

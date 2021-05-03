@@ -425,7 +425,7 @@ void CRpg::PrimaryAttack()
 		flags = 0;
 #endif
 
-		PLAYBACK_EVENT(flags, m_hPlayer->edict(), m_usRpg);
+		UTIL_PlaybackEvent(flags, m_hPlayer, m_usRpg);
 
 		m_iClip--;
 

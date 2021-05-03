@@ -165,8 +165,7 @@ bool CCrowbar::Swing(bool fFirst)
 	}
 #endif
 
-	PLAYBACK_EVENT_FULL(FEV_NOTHOST, m_hPlayer->edict(), m_usCrowbar,
-		0.0, vec3_origin, vec3_origin, 0, 0, 0, 0.0, 0, 0.0);
+	UTIL_PlaybackEvent(FEV_NOTHOST, m_hPlayer, m_usCrowbar);
 
 	bool fDidHit = false;
 

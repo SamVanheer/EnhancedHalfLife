@@ -15,6 +15,7 @@
 
 #include "Platform.h"
 #include "shared_utils.hpp"
+#include "cbase.h"
 
 char* memfgets(byte* pMemFile, std::size_t fileSize, std::size_t& filePos, char* pBuffer, std::size_t bufferSize)
 {
@@ -138,4 +139,10 @@ float UTIL_SharedRandomFloat(unsigned int seed, float low, float high)
 
 		return (low + offset * range);
 	}
+}
+
+void UTIL_PlaybackEvent(int flags, CBaseEntity* invoker, unsigned short eventIndex, const EventPlaybackArgs& args)
+{
+	PLAYBACK_EVENT_FULL(flags, CBaseEntity::EdictOrNull(invoker), eventIndex, args.delay,
+		args.origin, args.angles, args.fparam1, args.fparam2, args.iparam1, args.iparam2, args.bparam1, args.bparam2);
 }

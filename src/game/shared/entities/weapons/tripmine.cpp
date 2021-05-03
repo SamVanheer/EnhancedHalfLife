@@ -421,7 +421,7 @@ void CTripmine::PrimaryAttack()
 	flags = 0;
 #endif
 
-	PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), m_usTripFire, 0.0, vec3_origin, vec3_origin, 0.0, 0.0, 0, 0, 0, 0);
+	UTIL_PlaybackEvent(flags, m_hPlayer, m_usTripFire);
 
 	if (tr.flFraction < 1.0)
 	{

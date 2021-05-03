@@ -430,6 +430,7 @@ void EV_FireGlock2(event_args_t* args)
 	{
 		// Add muzzle flash to current weapon model
 		EV_MuzzleFlash();
+		//TODO: needs to use empty shoot like above!
 		gEngfuncs.pEventAPI->EV_WeaponAnimation(GLOCK_SHOOT, 2);
 
 		V_PunchAxis(0, -2.0);

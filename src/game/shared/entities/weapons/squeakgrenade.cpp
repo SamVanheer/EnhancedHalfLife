@@ -486,7 +486,7 @@ void CSqueak::PrimaryAttack()
 		flags = 0;
 #endif
 
-		PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), m_usSnarkFire, 0.0, vec3_origin, vec3_origin, 0.0, 0.0, 0, 0, 0, 0);
+		UTIL_PlaybackEvent(flags, m_hPlayer, m_usSnarkFire);
 
 		if (tr.fAllSolid == 0 && tr.fStartSolid == 0 && tr.flFraction > 0.25)
 		{

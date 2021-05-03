@@ -17,7 +17,28 @@
 
 #include <cstddef>
 
+class CBaseEntity;
+
 char* memfgets(byte* pMemFile, std::size_t fileSize, std::size_t& filePos, char* pBuffer, std::size_t bufferSize);
 
 int UTIL_SharedRandomLong(unsigned int seed, int low, int high);
 float UTIL_SharedRandomFloat(unsigned int seed, float low, float high);
+
+struct EventPlaybackArgs
+{
+	const float delay = 0;
+
+	const Vector origin;
+	const Vector angles;
+
+	const float fparam1 = 0;
+	const float fparam2 = 0;
+
+	const int iparam1 = 0;
+	const int iparam2 = 0;
+
+	const bool bparam1 = false;
+	const bool bparam2 = false;
+};
+
+void UTIL_PlaybackEvent(int flags, CBaseEntity* invoker, unsigned short eventIndex, const EventPlaybackArgs& args = {});

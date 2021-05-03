@@ -324,7 +324,7 @@ void CCrossbow::FireSniperBolt()
 	flags = 0;
 #endif
 
-	PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), m_usCrossbow2, 0.0, vec3_origin, vec3_origin, 0, 0, m_iClip, m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType], 0, 0);
+	UTIL_PlaybackEvent(flags, m_hPlayer, m_usCrossbow2, {.iparam1 = m_iClip, .iparam2 = m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType]});
 
 	// player "shoot" animation
 	m_hPlayer->SetAnimation(PlayerAnim::Attack1);
@@ -366,7 +366,7 @@ void CCrossbow::FireBolt()
 	flags = 0;
 #endif
 
-	PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), m_usCrossbow, 0.0, vec3_origin, vec3_origin, 0, 0, m_iClip, m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType], 0, 0);
+	UTIL_PlaybackEvent(flags, m_hPlayer, m_usCrossbow, {.iparam1 = m_iClip, .iparam2 = m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType]});
 
 	// player "shoot" animation
 	m_hPlayer->SetAnimation(PlayerAnim::Attack1);

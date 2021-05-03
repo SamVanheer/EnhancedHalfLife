@@ -151,7 +151,7 @@ void CShotgun::PrimaryAttack()
 		vecDir = m_hPlayer->FireBulletsPlayer(6, vecSrc, vecAiming, VECTOR_CONE_10DEGREES, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_hPlayer, m_hPlayer->random_seed);
 	}
 
-	PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), m_usSingleFire, 0.0, vec3_origin, vec3_origin, vecDir.x, vecDir.y, 0, 0, 0, 0);
+	UTIL_PlaybackEvent(flags, m_hPlayer, m_usSingleFire, {.fparam1 = vecDir.x, .fparam2 = vecDir.y});
 
 	if (!m_iClip && m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		// HEV suit - indicate out of ammo condition
@@ -223,7 +223,7 @@ void CShotgun::SecondaryAttack()
 		vecDir = m_hPlayer->FireBulletsPlayer(12, vecSrc, vecAiming, VECTOR_CONE_10DEGREES, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_hPlayer, m_hPlayer->random_seed);
 	}
 
-	PLAYBACK_EVENT_FULL(flags, m_hPlayer->edict(), m_usDoubleFire, 0.0, vec3_origin, vec3_origin, vecDir.x, vecDir.y, 0, 0, 0, 0);
+	UTIL_PlaybackEvent(flags, m_hPlayer, m_usDoubleFire, {.fparam1 = vecDir.x, .fparam2 = vecDir.y});
 
 	if (!m_iClip && m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		// HEV suit - indicate out of ammo condition
