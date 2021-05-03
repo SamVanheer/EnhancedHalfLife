@@ -811,19 +811,18 @@ bool CBaseMonster::TakeDamage(const TakeDamageInfo& info)
 	{
 		g_pLastInflictor = info.GetInflictor();
 
-		//TODO: simplify
+		GibType gibType = GibType::Normal;
+
 		if (info.GetDamageTypes() & DMG_ALWAYSGIB)
 		{
-			Killed({info.GetAttacker(), GibType::Always});
+			gibType = GibType::Always;
 		}
 		else if (info.GetDamageTypes() & DMG_NEVERGIB)
 		{
-			Killed({info.GetAttacker(), GibType::Never});
+			gibType = GibType::Never;
 		}
-		else
-		{
-			Killed({info.GetAttacker(), GibType::Normal});
-		}
+
+		Killed({info.GetAttacker(), gibType});
 
 		g_pLastInflictor = nullptr;
 
