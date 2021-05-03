@@ -280,7 +280,7 @@ void CTripmineGrenade::BeamBreakThink()
 		// CGrenade code knows who the explosive really belongs to.
 		SetOwner(m_hRealOwner);
 		pev->health = 0;
-		Killed({GetOwner(), GibType::Normal});
+		Killed({GetOwner(), GetOwner(), GibType::Normal});
 		return;
 	}
 

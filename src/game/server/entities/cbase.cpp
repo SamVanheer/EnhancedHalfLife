@@ -79,7 +79,7 @@ bool CBaseEntity::TakeDamage(const TakeDamageInfo& info)
 	pev->health -= info.GetDamage();
 	if (pev->health <= 0)
 	{
-		Killed({info.GetAttacker(), GibType::Normal});
+		Killed({info.GetInflictor(), info.GetAttacker(), GibType::Normal});
 		return false;
 	}
 

@@ -173,7 +173,7 @@ void CSqueakGrenade::Killed(const KilledInfo& info)
 	if (m_hOwner != nullptr)
 		SetOwner(m_hOwner);
 
-	CBaseMonster::Killed({info.GetAttacker(), GibType::Always});
+	CBaseMonster::Killed({info.GetInflictor(), info.GetAttacker(), GibType::Always});
 }
 
 void CSqueakGrenade::GibMonster()
@@ -200,7 +200,7 @@ void CSqueakGrenade::HuntThink()
 	{
 		g_vecAttackDir = pev->velocity.Normalize();
 		pev->health = -1;
-		Killed({this, GibType::Normal});
+		Killed({this, this, GibType::Normal});
 		return;
 	}
 

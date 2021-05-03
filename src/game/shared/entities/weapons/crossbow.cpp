@@ -127,7 +127,7 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 
 		if (!g_pGameRules->IsMultiplayer())
 		{
-			Killed({this, GibType::Never});
+			Killed({this, this, GibType::Never});
 		}
 	}
 	else

@@ -637,20 +637,13 @@ void CBasePlayer::RemoveAllItems(bool removeSuit)
 	UpdateClientData();
 }
 
-/**
-*	@brief Set in combat.cpp. Used to pass the damage inflictor for death messages.
-*	TODO Better solution:  Add as parameter to all Killed() functions.
-*	TODO Killed can be called without a preceding call to TakeDamage, so this can be wrong!
-*/
-CBaseEntity* g_pLastInflictor;
-
 void CBasePlayer::Killed(const KilledInfo& info)
 {
 	// Holster weapon immediately, to allow it to cleanup
 	if (auto activeItem = m_hActiveItem.Get(); activeItem)
 		activeItem->Holster();
 
-	g_pGameRules->PlayerKilled(this, info.GetAttacker(), g_pLastInflictor);
+	g_pGameRules->PlayerKilled(this, info.GetAttacker(), info.GetInflictor());
 
 	if (m_pTank != nullptr)
 	{

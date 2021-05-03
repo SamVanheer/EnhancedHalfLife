@@ -242,19 +242,23 @@ enum class GibType
 class KilledInfo
 {
 public:
-	KilledInfo(CBaseEntity* attacker, GibType gibType)
-		: _attacker(attacker)
+	KilledInfo(CBaseEntity* inflictor, CBaseEntity* attacker, GibType gibType)
+		: _inflictor(inflictor)
+		, _attacker(attacker)
 		, _gibType(gibType)
 	{
 	}
 
 	~KilledInfo() = default;
 
+	CBaseEntity* GetInflictor() const { return _inflictor; }
+
 	CBaseEntity* GetAttacker() const { return _attacker; }
 
 	GibType GetGibType() const { return _gibType; }
 
 private:
+	CBaseEntity* const _inflictor;
 	CBaseEntity* const _attacker;
 	const GibType _gibType;
 };

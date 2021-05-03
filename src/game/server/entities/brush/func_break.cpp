@@ -529,7 +529,7 @@ bool CBreakable::TakeDamage(const TakeDamageInfo& info)
 	pev->health -= adjustedInfo.GetDamage();
 	if (pev->health <= 0)
 	{
-		Killed({adjustedInfo.GetAttacker(), GibType::Normal});
+		Killed({adjustedInfo.GetInflictor(), adjustedInfo.GetAttacker(), GibType::Normal});
 		Die();
 		return false;
 	}

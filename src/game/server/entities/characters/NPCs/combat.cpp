@@ -22,8 +22,6 @@
 #include "animation.h"
 #include "func_break.h"
 
-extern CBaseEntity* g_pLastInflictor;
-
 constexpr int GERMAN_GIB_COUNT = 4;
 constexpr int HUMAN_GIB_COUNT = 6;
 constexpr int ALIEN_GIB_COUNT = 4;
@@ -809,8 +807,6 @@ bool CBaseMonster::TakeDamage(const TakeDamageInfo& info)
 
 	if (pev->health <= 0)
 	{
-		g_pLastInflictor = info.GetInflictor();
-
 		GibType gibType = GibType::Normal;
 
 		if (info.GetDamageTypes() & DMG_ALWAYSGIB)
@@ -822,9 +818,7 @@ bool CBaseMonster::TakeDamage(const TakeDamageInfo& info)
 			gibType = GibType::Never;
 		}
 
-		Killed({info.GetAttacker(), gibType});
-
-		g_pLastInflictor = nullptr;
+		Killed({info.GetInflictor(), info.GetAttacker(), gibType});
 
 		return false;
 	}
@@ -897,7 +891,7 @@ bool CBaseMonster::DeadTakeDamage(const TakeDamageInfo& info)
 		if (pev->health <= info.GetDamage())
 		{
 			pev->health = -50;
-			Killed({info.GetAttacker(), GibType::Always});
+			Killed({info.GetInflictor(), info.GetAttacker(), GibType::Always});
 			return false;
 		}
 		// Accumulate corpse gibbing damage, so you can gib with multiple hits
