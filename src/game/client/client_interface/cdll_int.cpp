@@ -34,7 +34,6 @@
 #include "tri.h"
 #include "shared_interface/shared_interface.hpp"
 
-cl_enginefunc_t gEngfuncs;
 TeamFortressViewport* gViewPort = nullptr;
 
 #include "particleman.h"
