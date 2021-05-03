@@ -261,7 +261,7 @@ void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters
 /**
 *	@brief For debugging, draw a box around a player made out of particles
 */
-void UTIL_ParticleBox(CBasePlayer* player, float* mins, float* maxs, float life, unsigned char r, unsigned char g, unsigned char b)
+void UTIL_ParticleBox(CBasePlayer* player, const Vector& mins, const Vector& maxs, float life, unsigned char r, unsigned char g, unsigned char b)
 {
 	const Vector mmin = player->GetAbsOrigin() + mins;
 	const Vector mmax = player->GetAbsOrigin() + maxs;
@@ -309,7 +309,7 @@ void UTIL_ParticleBoxes()
 /**
 *	@brief For debugging, draw a line made out of particles
 */
-void UTIL_ParticleLine(CBasePlayer* player, float* start, float* end, float life, unsigned char r, unsigned char g, unsigned char b)
+void UTIL_ParticleLine(CBasePlayer* player, const Vector& start, const Vector& end, float life, unsigned char r, unsigned char g, unsigned char b)
 {
 	gEngfuncs.pEfxAPI->R_ParticleLine(start, end, r, g, b, life);
 }
@@ -374,15 +374,10 @@ void HUD_InitClientWeapons()
 /**
 *	@brief Returns the last position that we stored for egon beam endpoint.
 */
-void HUD_GetLastOrg(float* org)
+void HUD_GetLastOrg(Vector& org)
 {
-	int i;
-
 	// Return last origin
-	for (i = 0; i < 3; i++)
-	{
-		org[i] = previousorigin[i];
-	}
+	org = previousorigin;
 }
 
 /**
@@ -390,13 +385,8 @@ void HUD_GetLastOrg(float* org)
 */
 void HUD_SetLastOrg()
 {
-	int i;
-
 	// Offset final origin by view_offset
-	for (i = 0; i < 3; i++)
-	{
-		previousorigin[i] = g_finalstate->playerstate.origin[i] + g_finalstate->client.view_ofs[i];
-	}
+	previousorigin = g_finalstate->playerstate.origin + g_finalstate->client.view_ofs;
 }
 
 /**

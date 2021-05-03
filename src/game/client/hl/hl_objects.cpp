@@ -27,7 +27,7 @@
 extern BEAM* pBeam;
 extern BEAM* pBeam2;
 extern TEMPENTITY* pFlare;	// Vit_amiN: egon's energy flare
-void HUD_GetLastOrg(float* org);
+void HUD_GetLastOrg(Vector& org);
 
 void UpdateBeams()
 {
