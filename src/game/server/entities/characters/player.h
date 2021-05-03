@@ -321,6 +321,12 @@ public:
 	void EnableControl(bool fControl);
 
 	/**
+	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
+	*	This version is used by Players, uses the random seed generator to sync client and server side shots.
+	*/
+	Vector FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0);
+
+	/**
 	*	@brief Returns the unique ID for the ammo, or -1 if error
 	*/
 	int GiveAmmo(int iAmount, const char* szName, int iMax);

@@ -484,13 +484,6 @@ public:
 	*/
 	void FireBullets(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr);
 
-	/**
-	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
-	*	This version is used by Players, uses the random seed generator to sync client and server side shots.
-	*/
-	//TODO: needs updates. the random seed and attacker are both part of the entity this is called on, so move this to CBasePlayer and use it properly
-	Vector FireBulletsPlayer(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr, int shared_rand = 0);
-
 	virtual CBaseEntity* Respawn() { return nullptr; }
 
 	/**

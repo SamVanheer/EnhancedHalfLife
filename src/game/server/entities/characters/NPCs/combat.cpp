@@ -1266,7 +1266,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 	ApplyMultiDamage(this, pAttacker);
 }
 
-Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, CBaseEntity* pAttacker, int shared_rand)
+Vector CBasePlayer::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage)
 {
 	static int tracerCount = 0;
 	TraceResult tr;
@@ -1274,8 +1274,8 @@ Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDi
 	const Vector vecUp = gpGlobals->v_up;
 	float x, y, z;
 
-	if (pAttacker == nullptr)
-		pAttacker = this;  // the default attacker is ourselves
+	CBasePlayer* pAttacker = this;
+	const int shared_rand = random_seed;
 
 	ClearMultiDamage();
 	gMultiDamage.type = DMG_BULLET | DMG_NEVERGIB;

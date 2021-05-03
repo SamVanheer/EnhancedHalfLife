@@ -176,7 +176,7 @@ void CPython::PrimaryAttack()
 	const Vector vecSrc = m_hPlayer->GetGunPosition();
 	const Vector vecAiming = m_hPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
 
-	const Vector vecDir = m_hPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, VECTOR_CONE_1DEGREES, WORLD_SIZE, BULLET_PLAYER_357, 0, 0, m_hPlayer, m_hPlayer->random_seed);
+	const Vector vecDir = m_hPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, VECTOR_CONE_1DEGREES, WORLD_SIZE, BULLET_PLAYER_357, 0);
 
 	int flags;
 #if defined( CLIENT_WEAPONS )

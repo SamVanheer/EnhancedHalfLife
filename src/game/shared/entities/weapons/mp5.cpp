@@ -139,12 +139,12 @@ void CMP5::PrimaryAttack()
 #endif
 	{
 		// optimized multiplayer. Widened to make it easier to hit a moving player
-		vecDir = m_hPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, VECTOR_CONE_6DEGREES, WORLD_SIZE, BULLET_PLAYER_MP5, 2, 0, m_hPlayer, m_hPlayer->random_seed);
+		vecDir = m_hPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, VECTOR_CONE_6DEGREES, WORLD_SIZE, BULLET_PLAYER_MP5, 2);
 	}
 	else
 	{
 		// single player spread
-		vecDir = m_hPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, VECTOR_CONE_3DEGREES, WORLD_SIZE, BULLET_PLAYER_MP5, 2, 0, m_hPlayer, m_hPlayer->random_seed);
+		vecDir = m_hPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, VECTOR_CONE_3DEGREES, WORLD_SIZE, BULLET_PLAYER_MP5, 2);
 	}
 
 	int flags;

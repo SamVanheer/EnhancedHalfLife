@@ -189,31 +189,19 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 /**
 *	@brief Only produces random numbers to match the server ones.
 */
-Vector CBaseEntity::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, CBaseEntity* pAttacker, int shared_rand)
+Vector CBasePlayer::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage)
 {
+	const int shared_rand = random_seed;
+
 	float x, y, z;
 
 	for (uint32 iShot = 1; iShot <= cShots; iShot++)
 	{
-		if (pAttacker == nullptr)
-		{
-			// get circular gaussian spread
-			do {
-				x = RANDOM_FLOAT(-0.5, 0.5) + RANDOM_FLOAT(-0.5, 0.5);
-				y = RANDOM_FLOAT(-0.5, 0.5) + RANDOM_FLOAT(-0.5, 0.5);
-				z = x * x + y * y;
-			}
-			while (z > 1);
-		}
-		else
-		{
-			//Use player's random seed.
-			// get circular gaussian spread
-			x = UTIL_SharedRandomFloat(shared_rand + iShot, -0.5, 0.5) + UTIL_SharedRandomFloat(shared_rand + (1 + iShot), -0.5, 0.5);
-			y = UTIL_SharedRandomFloat(shared_rand + (2 + iShot), -0.5, 0.5) + UTIL_SharedRandomFloat(shared_rand + (3 + iShot), -0.5, 0.5);
-			z = x * x + y * y;
-		}
-
+		//Use player's random seed.
+		// get circular gaussian spread
+		x = UTIL_SharedRandomFloat(shared_rand + iShot, -0.5, 0.5) + UTIL_SharedRandomFloat(shared_rand + (1 + iShot), -0.5, 0.5);
+		y = UTIL_SharedRandomFloat(shared_rand + (2 + iShot), -0.5, 0.5) + UTIL_SharedRandomFloat(shared_rand + (3 + iShot), -0.5, 0.5);
+		z = x * x + y * y;
 	}
 
 	return Vector(x * vecSpread.x, y * vecSpread.y, 0.0);
