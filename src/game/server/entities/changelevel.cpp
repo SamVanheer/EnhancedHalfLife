@@ -464,7 +464,7 @@ void CRevertSaved::KeyValue(KeyValueData* pkvd)
 
 void CRevertSaved::Use(const UseInfo& info)
 {
-	UTIL_ScreenFadeAll(GetRenderColor(), Duration(), HoldTime(), pev->renderamt, FFADE_OUT);
+	UTIL_ScreenFadeAll(GetRenderColor(), Duration(), HoldTime(), GetRenderAmount(), FFADE_OUT);
 	pev->nextthink = gpGlobals->time + MessageTime();
 	SetThink(&CRevertSaved::MessageThink);
 }

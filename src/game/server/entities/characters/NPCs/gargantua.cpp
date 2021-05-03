@@ -107,7 +107,7 @@ void CStomp::Spawn()
 	pev->framerate = 30;
 	pev->model = MAKE_STRING(GARG_STOMP_SPRITE_NAME.data());
 	SetRenderMode(RenderMode::TransTexture);
-	pev->renderamt = 0;
+	SetRenderAmount(0);
 	EmitSound(SoundChannel::Body, GARG_STOMP_BUZZ_SOUND.data(), VOL_NORM, ATTN_NORM, PITCH_NORM * 0.55);
 }
 
@@ -451,8 +451,8 @@ void CGargantua::EyeUpdate()
 {
 	if (auto glow = m_hEyeGlow.Get(); glow)
 	{
-		glow->pev->renderamt = UTIL_Approach(m_eyeBrightness, glow->pev->renderamt, 26);
-		if (glow->pev->renderamt == 0)
+		glow->SetRenderAmount(UTIL_Approach(m_eyeBrightness, glow->GetRenderAmount(), 26));
+		if (glow->GetRenderAmount() == 0)
 			glow->pev->effects |= EF_NODRAW;
 		else
 			glow->pev->effects &= ~EF_NODRAW;

@@ -1072,7 +1072,7 @@ void CBMortar::Spawn()
 
 	SetSolidType(Solid::BBox);
 	SetRenderMode(RenderMode::TransAlpha);
-	pev->renderamt = 255;
+	SetRenderAmount(255);
 
 	SetModel("sprites/mommaspit.spr");
 	pev->frame = 0;

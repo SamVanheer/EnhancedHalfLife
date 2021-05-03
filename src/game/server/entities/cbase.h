@@ -484,6 +484,13 @@ public:
 		pev->rendermode = rendermode;
 	}
 
+	float GetRenderAmount() const { return pev->renderamt; }
+
+	void SetRenderAmount(float renderamount)
+	{
+		pev->renderamt = renderamount;
+	}
+
 	const Vector& GetRenderColor() const { return pev->rendercolor; }
 
 	void SetRenderColor(const Vector& rendercolor)

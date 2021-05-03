@@ -67,13 +67,13 @@ public:
 	{
 		SetRenderMode(rendermode);
 		SetRenderColor(rendercolor);
-		pev->renderamt = a;
+		SetRenderAmount(a);
 		SetRenderFX(fx);
 	}
 	inline void SetTexture(int spriteIndex) { pev->modelindex = spriteIndex; }
 	inline void SetScale(float scale) { pev->scale = scale; }
 	inline void SetColor(int r, int g, int b) { SetRenderColor({static_cast<float>(r), static_cast<float>(g), static_cast<float>(b)}); }
-	inline void SetBrightness(int brightness) { pev->renderamt = brightness; }
+	inline void SetBrightness(int brightness) { SetRenderAmount(brightness); }
 
 	inline void AnimateAndDie(float framerate)
 	{
@@ -127,7 +127,7 @@ public:
 	inline void SetWidth(int width) { pev->scale = width; }
 	inline void SetNoise(int amplitude) { pev->body = amplitude; }
 	inline void SetColor(int r, int g, int b) { SetRenderColor({static_cast<float>(r), static_cast<float>(g), static_cast<float>(b)}); }
-	inline void SetBrightness(int brightness) { pev->renderamt = brightness; }
+	inline void SetBrightness(int brightness) { SetRenderAmount(brightness); }
 	inline void SetFrame(float frame) { pev->frame = frame; }
 	inline void SetScrollRate(int speed) { pev->animtime = speed; }
 
@@ -152,7 +152,7 @@ public:
 	inline int  GetWidth() { return pev->scale; }
 	inline int  GetNoise() { return pev->body; }
 	// inline void GetColor( int r, int g, int b ) { SetRenderColor({static_cast<float>(r), static_cast<float>(g), static_cast<float>(b)}); }
-	inline int  GetBrightness() { return pev->renderamt; }
+	inline int  GetBrightness() { return GetRenderAmount(); }
 	inline int  GetFrame() { return pev->frame; }
 	inline int  GetScrollRate() { return pev->animtime; }
 

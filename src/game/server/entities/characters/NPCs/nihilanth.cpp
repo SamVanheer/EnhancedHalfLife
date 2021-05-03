@@ -444,9 +444,9 @@ void CNihilanth::DyingThink()
 
 	if (auto ball = m_hBall.Get(); ball)
 	{
-		if (ball->pev->renderamt > 0)
+		if (ball->GetRenderAmount() > 0)
 		{
-			ball->pev->renderamt = std::max(0.0f, ball->pev->renderamt - 2);
+			ball->SetRenderAmount(std::max(0.0f, ball->GetRenderAmount() - 2));
 		}
 		else
 		{
@@ -1247,7 +1247,7 @@ void CNihilanthHVR::Spawn()
 	Precache();
 
 	SetRenderMode(RenderMode::TransAdd);
-	pev->renderamt = 255;
+	SetRenderAmount(255);
 	pev->scale = 3.0;
 }
 
@@ -1277,7 +1277,7 @@ void CNihilanthHVR::CircleInit(CBaseEntity* pTarget)
 	SetRenderColor({255, 224, 192});
 	pev->scale = 2.0;
 	m_nFrames = 1;
-	pev->renderamt = 255;
+	SetRenderAmount(255);
 
 	SetSize(vec3_origin, vec3_origin);
 	SetAbsOrigin(GetAbsOrigin());
@@ -1565,7 +1565,7 @@ void CNihilanthHVR::TeleportThink()
 void CNihilanthHVR::AbsorbInit()
 {
 	SetThink(&CNihilanthHVR::DissipateThink);
-	pev->renderamt = 255;
+	SetRenderAmount(255);
 
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMENTS);
@@ -1614,7 +1614,7 @@ void CNihilanthHVR::DissipateThink()
 	if (pev->scale > 5.0)
 		UTIL_Remove(this);
 
-	pev->renderamt -= 2;
+	SetRenderAmount(GetRenderAmount() - 2);
 	pev->scale += 0.1;
 
 	if (m_hTargetEnt != nullptr)
@@ -1632,7 +1632,7 @@ void CNihilanthHVR::DissipateThink()
 	WRITE_COORD(GetAbsOrigin().x);		// origin
 	WRITE_COORD(GetAbsOrigin().y);
 	WRITE_COORD(GetAbsOrigin().z);
-	WRITE_COORD(pev->renderamt);	// radius
+	WRITE_COORD(GetRenderAmount());	// radius
 	WRITE_BYTE(255);	// R
 	WRITE_BYTE(192);	// G
 	WRITE_BYTE(64);	// B

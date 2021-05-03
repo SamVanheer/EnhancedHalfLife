@@ -1041,7 +1041,7 @@ void CControllerHeadBall::Spawn()
 	SetModel("sprites/xspark4.spr");
 	SetRenderMode(RenderMode::TransAdd);
 	SetRenderColor({255, 255, 255});
-	pev->renderamt = 255;
+	SetRenderAmount(255);
 	pev->scale = 2.0;
 
 	SetSize(vec3_origin, vec3_origin);
@@ -1069,7 +1069,7 @@ void CControllerHeadBall::HuntThink()
 {
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	pev->renderamt -= 5;
+	SetRenderAmount(GetRenderAmount() - 5);
 
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_ELIGHT);
@@ -1077,7 +1077,7 @@ void CControllerHeadBall::HuntThink()
 	WRITE_COORD(GetAbsOrigin().x);		// origin
 	WRITE_COORD(GetAbsOrigin().y);
 	WRITE_COORD(GetAbsOrigin().z);
-	WRITE_COORD(pev->renderamt / 16);	// radius
+	WRITE_COORD(GetRenderAmount() / 16);	// radius
 	WRITE_BYTE(255);	// R
 	WRITE_BYTE(255);	// G
 	WRITE_BYTE(255);	// B
@@ -1086,7 +1086,7 @@ void CControllerHeadBall::HuntThink()
 	MESSAGE_END();
 
 	// check world boundaries
-	if (gpGlobals->time - pev->dmgtime > 5 || pev->renderamt < 64 || m_hEnemy == nullptr || m_hOwner == nullptr || !UTIL_IsInWorld(GetAbsOrigin()))
+	if (gpGlobals->time - pev->dmgtime > 5 || GetRenderAmount() < 64 || m_hEnemy == nullptr || m_hOwner == nullptr || !UTIL_IsInWorld(GetAbsOrigin()))
 	{
 		SetTouch(nullptr);
 		UTIL_Remove(this);
@@ -1220,7 +1220,7 @@ void CControllerZapBall::Spawn()
 	SetModel("sprites/xspark4.spr");
 	SetRenderMode(RenderMode::TransAdd);
 	SetRenderColor({255, 255, 255});
-	pev->renderamt = 255;
+	SetRenderAmount(255);
 	pev->scale = 0.5;
 
 	SetSize(vec3_origin, vec3_origin);

@@ -76,7 +76,7 @@ void CSquidSpit::Spawn()
 
 	SetSolidType(Solid::BBox);
 	SetRenderMode(RenderMode::TransAlpha);
-	pev->renderamt = 255;
+	SetRenderAmount(255);
 
 	SetModel("sprites/bigspit.spr");
 	pev->frame = 0;

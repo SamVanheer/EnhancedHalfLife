@@ -68,7 +68,7 @@ void CBubbling::Spawn()
 	SetModel(STRING(pev->model));		// Set size
 
 	SetSolidType(Solid::Not);							// Remove model & collisions
-	pev->renderamt = 0;								// The engine won't draw this model if this is set to 0 and blending is on
+	SetRenderAmount(0);								// The engine won't draw this model if this is set to 0 and blending is on
 	SetRenderMode(RenderMode::TransTexture);
 	const int speed = pev->speed > 0 ? pev->speed : -pev->speed;
 
@@ -686,7 +686,7 @@ void CLightning::StrikeThink()
 		WRITE_BYTE((int)GetRenderColor().x);   // r, g, b
 		WRITE_BYTE((int)GetRenderColor().y);   // r, g, b
 		WRITE_BYTE((int)GetRenderColor().z);   // r, g, b
-		WRITE_BYTE(pev->renderamt);	// brightness
+		WRITE_BYTE(GetRenderAmount());	// brightness
 		WRITE_BYTE(m_speed);		// speed
 		MESSAGE_END();
 		DoSparks(pStart->GetAbsOrigin(), pEnd->GetAbsOrigin());
@@ -748,7 +748,7 @@ void CLightning::Zap(const Vector& vecSrc, const Vector& vecDest)
 	WRITE_BYTE((int)GetRenderColor().x);   // r, g, b
 	WRITE_BYTE((int)GetRenderColor().y);   // r, g, b
 	WRITE_BYTE((int)GetRenderColor().z);   // r, g, b
-	WRITE_BYTE(pev->renderamt);	// brightness
+	WRITE_BYTE(GetRenderAmount());	// brightness
 	WRITE_BYTE(m_speed);		// speed
 	MESSAGE_END();
 #else
@@ -918,7 +918,7 @@ void CLaser::Spawn()
 		m_hSprite = nullptr;
 
 	if (auto sprite = m_hSprite.Get(); sprite)
-		sprite->SetTransparency(RenderMode::Glow, GetRenderColor(), pev->renderamt, GetRenderFX());
+		sprite->SetTransparency(RenderMode::Glow, GetRenderColor(), GetRenderAmount(), GetRenderFX());
 
 	if (!IsStringNull(pev->targetname) && !(pev->spawnflags & SF_BEAM_STARTON))
 		TurnOff();
@@ -1198,10 +1198,10 @@ void CSprite::ExpandThink()
 {
 	const float frametime = gpGlobals->time - m_lastTime;
 	pev->scale += pev->speed * frametime;
-	pev->renderamt -= pev->health * frametime;
-	if (pev->renderamt <= 0)
+	SetRenderAmount(GetRenderAmount() - (pev->health * frametime));
+	if (GetRenderAmount() <= 0)
 	{
-		pev->renderamt = 0;
+		SetRenderAmount(0);
 		UTIL_Remove(this);
 	}
 	else
@@ -1506,7 +1506,7 @@ CGib* CEnvShooter::CreateGib()
 	pGib->m_material = m_iGibMaterial;
 
 	pGib->SetRenderMode(GetRenderMode());
-	pGib->pev->renderamt = pev->renderamt;
+	pGib->SetRenderAmount(GetRenderAmount());
 	pGib->SetRenderColor(GetRenderColor());
 	pGib->SetRenderFX(GetRenderFX());
 	pGib->pev->scale = pev->scale;
@@ -1864,12 +1864,12 @@ void CFade::Use(const UseInfo& info)
 	{
 		if (info.GetActivator()->IsNetClient())
 		{
-			UTIL_ScreenFade(static_cast<CBasePlayer*>(info.GetActivator()), GetRenderColor(), Duration(), HoldTime(), pev->renderamt, fadeFlags);
+			UTIL_ScreenFade(static_cast<CBasePlayer*>(info.GetActivator()), GetRenderColor(), Duration(), HoldTime(), GetRenderAmount(), fadeFlags);
 		}
 	}
 	else
 	{
-		UTIL_ScreenFadeAll(GetRenderColor(), Duration(), HoldTime(), pev->renderamt, fadeFlags);
+		UTIL_ScreenFadeAll(GetRenderColor(), Duration(), HoldTime(), GetRenderAmount(), fadeFlags);
 	}
 	SUB_UseTargets(this, UseType::Toggle, 0);
 }

@@ -589,7 +589,7 @@ void CBaseEntity::SUB_StartFadeOut()
 {
 	if (GetRenderMode() == RenderMode::Normal)
 	{
-		pev->renderamt = 255;
+		SetRenderAmount(255);
 		SetRenderMode(RenderMode::TransTexture);
 	}
 
@@ -602,14 +602,14 @@ void CBaseEntity::SUB_StartFadeOut()
 
 void CBaseEntity::SUB_FadeOut()
 {
-	if (pev->renderamt > 7)
+	if (GetRenderAmount() > 7)
 	{
-		pev->renderamt -= 7;
+		SetRenderAmount(GetRenderAmount() - 7);
 		pev->nextthink = gpGlobals->time + 0.1;
 	}
 	else
 	{
-		pev->renderamt = 0;
+		SetRenderAmount(0);
 		pev->nextthink = gpGlobals->time + 0.2;
 		SetThink(&CBaseEntity::SUB_Remove);
 	}
@@ -710,7 +710,7 @@ void CGib::Spawn(const char* szGibModel)
 
 	// sometimes an entity inherits the edict from a former piece of glass,
 	// and will spawn using the same render FX or rendermode! bad!
-	pev->renderamt = 255;
+	SetRenderAmount(255);
 	SetRenderMode(RenderMode::Normal);
 	SetRenderFX(RenderFX::None);
 	SetSolidType(Solid::SlideBox);/// hopefully this will fix the VELOCITY TOO LOW crap
