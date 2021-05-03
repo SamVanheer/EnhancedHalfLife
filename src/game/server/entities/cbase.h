@@ -321,6 +321,7 @@ public:
 	*/
 	CBaseEntity* m_pLink = nullptr;
 
+	CBaseEntity() = default;
 	virtual ~CBaseEntity() {}
 
 	void* operator new(std::size_t count)
@@ -337,6 +338,21 @@ public:
 	}
 
 	// initialization functions
+	void Construct()
+	{
+		OnConstruct();
+	}
+
+	void Destroy()
+	{
+		OnDestroy();
+	}
+
+protected:
+	virtual void OnConstruct() {}
+	virtual void OnDestroy() {}
+
+public:
 	virtual void Spawn() {}
 
 	/**
@@ -1036,6 +1052,7 @@ template <class T> T* GetClassPtr(T* a)
 		a = new T();
 		pev->pContainingEntity->pvPrivateData = a;
 		a->pev = pev;
+		a->Construct();
 	}
 	return a;
 }

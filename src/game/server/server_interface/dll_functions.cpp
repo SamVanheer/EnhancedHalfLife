@@ -402,6 +402,8 @@ void OnFreeEntPrivateData(edict_t* pEdict)
 	{
 		auto entity = reinterpret_cast<CBaseEntity*>(pEdict->pvPrivateData);
 
+		entity->Destroy();
+
 		delete entity;
 
 		pEdict->pvPrivateData = nullptr;
