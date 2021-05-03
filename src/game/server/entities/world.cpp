@@ -21,7 +21,6 @@
 
 #include "navigation/nodes.h"
 #include "client.h"
-#include "teamplay_gamerules.h"
 #include "dll_functions.hpp"
 #include "corpse.hpp"
 #include "spawnpoints.hpp"
