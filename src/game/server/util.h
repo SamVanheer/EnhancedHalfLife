@@ -92,7 +92,6 @@ constexpr bool IsBitSet(const T& flBitVector, int bit)
 	void mapClassName( entvars_t *pev ) { GetClassPtr( (DLLClassName *)pev ); }
 
 inline int ENTINDEX(const edict_t* pEdict) { return (*g_engfuncs.pfnIndexOfEdict)(pEdict); }
-inline edict_t* INDEXENT(int iEdictNum) { return (*g_engfuncs.pfnPEntityOfEntIndex)(iEdictNum); }
 
 // Testing the two types of "entity" for nullity
 inline bool IsNullEnt(const edict_t* pent) { return pent == nullptr || ENTINDEX(pent) == 0; }

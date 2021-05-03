@@ -287,7 +287,7 @@ int UTIL_MonstersInSphere(CBaseEntity** pList, int listMax, const Vector& center
 
 CBaseEntity* UTIL_EntityByIndex(int index)
 {
-	if (auto edict = INDEXENT(index); edict)
+	if (auto edict = g_engfuncs.pfnPEntityOfEntIndex(index); edict)
 	{
 		return reinterpret_cast<CBaseEntity*>(edict->pvPrivateData);
 	}
@@ -399,7 +399,7 @@ CBasePlayer* UTIL_PlayerByIndex(int playerIndex)
 {
 	if (playerIndex > 0 && playerIndex <= gpGlobals->maxClients)
 	{
-		edict_t* pPlayerEdict = INDEXENT(playerIndex);
+		edict_t* pPlayerEdict = g_engfuncs.pfnPEntityOfEntIndex(playerIndex);
 		if (pPlayerEdict && !pPlayerEdict->free)
 		{
 			return static_cast<CBasePlayer*>(CBaseEntity::Instance(pPlayerEdict));
