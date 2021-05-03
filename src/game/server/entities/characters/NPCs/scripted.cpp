@@ -749,7 +749,6 @@ bool CBaseMonster::CineCleanup()
 		m_Activity = ACT_RESET;
 	}
 	// set them back into a normal state
-	pev->enemy = nullptr;
 	if (pev->health > 0)
 		m_IdealMonsterState = NPCState::Idle; // m_previousState;
 	else

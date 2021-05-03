@@ -695,6 +695,8 @@ public:
 	float	m_dampSpeed;
 	Vector	m_center;
 	Vector	m_start;
+
+	EHandle<CBaseEntity> m_hRopeUser;
 };
 
 LINK_ENTITY_TO_CLASS(func_pendulum, CPendulum);
@@ -709,6 +711,7 @@ TYPEDESCRIPTION	CPendulum::m_SaveData[] =
 	DEFINE_FIELD(CPendulum, m_dampSpeed, FIELD_FLOAT),
 	DEFINE_FIELD(CPendulum, m_center, FIELD_VECTOR),
 	DEFINE_FIELD(CPendulum, m_start, FIELD_VECTOR),
+	DEFINE_FIELD(CPendulum, m_hRopeUser, FIELD_EHANDLE),
 };
 
 IMPLEMENT_SAVERESTORE(CPendulum, CBaseEntity);
@@ -763,6 +766,8 @@ void CPendulum::Spawn()
 
 	if (IsBitSet(pev->spawnflags, SF_PENDULUM_SWING))
 	{
+		//TODO Doesn't actually work because this class overrides Touch()
+		//Probably doesn't work anyway
 		SetTouch(&CPendulum::RopeTouch);
 	}
 }
@@ -874,13 +879,12 @@ void CPendulum::RopeTouch(CBaseEntity* pOther)
 		return;
 	}
 
-	//TODO: don't use pev->enemy
-	if (pOther->edict() == pev->enemy)
+	if (pOther == m_hRopeUser)
 	{// this player already on the rope.
 		return;
 	}
 
-	pev->enemy = pOther->edict();
+	m_hRopeUser = pOther;
 	pOther->pev->velocity = vec3_origin;
 	pOther->pev->movetype = Movetype::None;
 }

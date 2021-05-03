@@ -573,8 +573,6 @@ void CBaseMonster::Killed(const KilledInfo& info)
 		pev->health = 0;
 	}
 
-	//pev->enemy = ENT( pevAttacker );//why? (sjb)
-
 	m_IdealMonsterState = NPCState::Dead;
 }
 

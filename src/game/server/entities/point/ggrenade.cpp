@@ -150,8 +150,6 @@ void CGrenade::Detonate()
 
 void CGrenade::ExplodeTouch(CBaseEntity* pOther)
 {
-	pev->enemy = pOther->edict();
-
 	const Vector vecSpot = pev->origin - pev->velocity.Normalize() * 32; // trace starts here!
 	TraceResult tr;
 	UTIL_TraceLine(vecSpot, vecSpot + pev->velocity.Normalize() * 64, IgnoreMonsters::Yes, this, &tr);
