@@ -49,7 +49,7 @@ void CSatchelCharge::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = Movetype::Bounce;
+	SetMovetype(Movetype::Bounce);
 	SetSolidType(Solid::BBox);
 
 	SetModel("models/w_satchel.mdl");
@@ -110,14 +110,14 @@ void CSatchelCharge::SatchelThink()
 
 	if (pev->waterlevel == WaterLevel::Head)
 	{
-		pev->movetype = Movetype::Fly;
+		SetMovetype(Movetype::Fly);
 		pev->velocity = pev->velocity * 0.8;
 		pev->avelocity = pev->avelocity * 0.9;
 		pev->velocity.z += 8;
 	}
 	else if (pev->waterlevel == WaterLevel::Dry)
 	{
-		pev->movetype = Movetype::Bounce;
+		SetMovetype(Movetype::Bounce);
 	}
 	else
 	{

@@ -227,7 +227,7 @@ void CFlockingFlyerFlock::SpawnFlock()
 		const Vector vecSpot{pev->origin + Vector{RANDOM_FLOAT(-R, R), RANDOM_FLOAT(-R, R), RANDOM_FLOAT(0, 16)}};
 
 		pBoid->SetAbsOrigin(vecSpot);
-		pBoid->pev->movetype = Movetype::Fly;
+		pBoid->SetMovetype(Movetype::Fly);
 		pBoid->SpawnCommonCode();
 		pBoid->pev->flags &= ~FL_ONGROUND;
 		pBoid->pev->velocity = vec3_origin;
@@ -301,7 +301,7 @@ void CFlockingFlyer::Killed(const KilledInfo& info)
 	pev->effects = EF_NOINTERP;
 
 	SetSize(vec3_origin, vec3_origin);
-	pev->movetype = Movetype::Toss;
+	SetMovetype(Movetype::Toss);
 
 	SetThink(&CFlockingFlyer::FallHack);
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -329,7 +329,7 @@ void CFlockingFlyer::SpawnCommonCode()
 	pev->deadflag = DeadFlag::No;
 	SetClassname("monster_flyer");
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetDamageMode(DamageMode::No);
 	pev->health = 1;
 

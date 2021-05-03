@@ -56,7 +56,7 @@ bool CFlyingMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, f
 
 Activity CFlyingMonster::GetStoppedActivity()
 {
-	if (pev->movetype != Movetype::Fly)		// UNDONE: Ground idle here, IDLE may be something else
+	if (GetMovetype() != Movetype::Fly)		// UNDONE: Ground idle here, IDLE may be something else
 		return ACT_IDLE;
 
 	return ACT_HOVER;
@@ -77,7 +77,7 @@ void CFlyingMonster::Stop()
 
 float CFlyingMonster::ChangeYaw(int speed)
 {
-	if (pev->movetype == Movetype::Fly)
+	if (GetMovetype() == Movetype::Fly)
 	{
 		const float diff = YawDiff();
 		float target = 0;
@@ -106,7 +106,7 @@ float CFlyingMonster::ChangeYaw(int speed)
 
 void CFlyingMonster::Killed(const KilledInfo& info)
 {
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	ClearBits(pev->flags, FL_ONGROUND);
 	pev->angles.z = 0;
 	pev->angles.x = 0;
@@ -134,7 +134,7 @@ void CFlyingMonster::HandleAnimEvent(AnimationEvent& event)
 
 void CFlyingMonster::Move(float flInterval)
 {
-	if (pev->movetype == Movetype::Fly)
+	if (GetMovetype() == Movetype::Fly)
 		m_flGroundSpeed = m_flightSpeed;
 	CBaseMonster::Move(flInterval);
 }
@@ -153,7 +153,7 @@ bool CFlyingMonster::ShouldAdvanceRoute(float flWaypointDist)
 
 void CFlyingMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, float flInterval)
 {
-	if (pev->movetype == Movetype::Fly)
+	if (GetMovetype() == Movetype::Fly)
 	{
 		if (gpGlobals->time - m_stopTime > 1.0)
 		{

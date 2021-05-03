@@ -96,7 +96,7 @@ void CGib::SpawnStickyGibs(CBaseEntity* pVictim, Vector vecOrigin, int cGibs)
 			}
 
 
-			pGib->pev->movetype = Movetype::Toss;
+			pGib->SetMovetype(Movetype::Toss);
 			pGib->SetSolidType(Solid::BBox);
 			pGib->SetSize(vec3_origin, vec3_origin);
 			pGib->SetTouch(&CGib::StickyGibTouch);
@@ -264,7 +264,7 @@ void CBaseMonster::FadeMonster()
 {
 	StopAnimation();
 	pev->velocity = vec3_origin;
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->avelocity = vec3_origin;
 	pev->animtime = gpGlobals->time;
 	pev->effects |= EF_NOINTERP;
@@ -477,7 +477,7 @@ void CBaseMonster::BecomeDead()
 	pev->max_health = 5; // max_health now becomes a counter for how many blood decals the corpse can place.
 
 	// make the corpse fly away from the attack vector
-	pev->movetype = Movetype::Toss;
+	SetMovetype(Movetype::Toss);
 	//pev->flags &= ~FL_ONGROUND;
 	//pev->origin.z += 2;
 	//pev->velocity = g_vecAttackDir * -1;
@@ -691,12 +691,12 @@ void CGib::StickyGibTouch(CBaseEntity* pOther)
 	pev->angles = VectorAngles(pev->velocity);
 	pev->velocity = vec3_origin;
 	pev->avelocity = vec3_origin;
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 }
 
 void CGib::Spawn(const char* szGibModel)
 {
-	pev->movetype = Movetype::Bounce;
+	SetMovetype(Movetype::Bounce);
 	pev->friction = 0.55; // deading the bounce a bit
 
 	// sometimes an entity inherits the edict from a former piece of glass,
@@ -783,7 +783,7 @@ bool CBaseMonster::TakeDamage(const TakeDamageInfo& info)
 	}
 
 	// if this is a player, move him around!
-	if ((!IsNullEnt(info.GetInflictor())) && (pev->movetype == Movetype::Walk) && (!info.GetAttacker() || info.GetAttacker()->GetSolidType() != Solid::Trigger))
+	if ((!IsNullEnt(info.GetInflictor())) && (GetMovetype() == Movetype::Walk) && (!info.GetAttacker() || info.GetAttacker()->GetSolidType() != Solid::Trigger))
 	{
 		pev->velocity = pev->velocity + vecDir * -DamageForce(info.GetDamage());
 	}

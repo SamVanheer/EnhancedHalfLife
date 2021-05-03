@@ -97,7 +97,7 @@ void CRoach::Spawn()
 	SetSize(Vector(-1, -1, 0), Vector(1, 1, 2));
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	m_bloodColor = BLOOD_COLOR_YELLOW;
 	pev->effects = 0;
 	pev->health = 1;

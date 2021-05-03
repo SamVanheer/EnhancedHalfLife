@@ -239,7 +239,7 @@ void CZombie::Spawn()
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->health = gSkillData.zombieHealth;
 	pev->view_ofs = VEC_VIEW;// position of the eyes relative to monster's origin.

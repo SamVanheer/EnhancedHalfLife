@@ -138,7 +138,7 @@ void CBreakable::Spawn()
 		SetDamageMode(DamageMode::Yes);
 
 	SetSolidType(Solid::BSP);
-	pev->movetype = Movetype::Push;
+	SetMovetype(Movetype::Push);
 	m_angle = pev->angles.y;
 	pev->angles.y = 0;
 
@@ -783,7 +783,7 @@ void CPushable::Spawn()
 	else
 		Precache();
 
-	pev->movetype = Movetype::PushStep;
+	SetMovetype(Movetype::PushStep);
 	SetSolidType(Solid::BBox);
 	SetModel(STRING(pev->model));
 

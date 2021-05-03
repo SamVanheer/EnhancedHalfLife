@@ -1046,7 +1046,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_WALK_PATH:
 	{
-		if (pev->movetype == Movetype::Fly)
+		if (GetMovetype() == Movetype::Fly)
 		{
 			m_movementActivity = ACT_FLY;
 		}
@@ -1166,7 +1166,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_PLAY_SCRIPT:
 	{
-		pev->movetype = Movetype::Fly;
+		SetMovetype(Movetype::Fly);
 		ClearBits(pev->flags, FL_ONGROUND);
 		m_scriptState = ScriptState::Playing;
 		break;

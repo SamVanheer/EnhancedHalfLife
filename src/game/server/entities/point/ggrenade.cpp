@@ -295,7 +295,7 @@ void CGrenade::TumbleThink()
 
 void CGrenade::Spawn()
 {
-	pev->movetype = Movetype::Bounce;
+	SetMovetype(Movetype::Bounce);
 	SetClassname("grenade");
 
 	SetSolidType(Solid::BBox);

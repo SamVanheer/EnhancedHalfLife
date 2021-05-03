@@ -263,7 +263,7 @@ void CHeadCrab::Spawn()
 	SetSize(Vector(-12, -12, 0), Vector(12, 12, 24));
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->effects = 0;
 	pev->health = gSkillData.headcrabHealth;

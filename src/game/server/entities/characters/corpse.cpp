@@ -44,7 +44,7 @@ void CopyToBodyQue(CBaseEntity* pEntity)
 	g_pBodyQueueHead->pev->modelindex = pEntity->pev->modelindex;
 	g_pBodyQueueHead->pev->frame = pEntity->pev->frame;
 	g_pBodyQueueHead->pev->colormap = pEntity->pev->colormap;
-	g_pBodyQueueHead->pev->movetype = Movetype::Toss;
+	g_pBodyQueueHead->SetMovetype(Movetype::Toss);
 	g_pBodyQueueHead->pev->velocity = pEntity->pev->velocity;
 	g_pBodyQueueHead->pev->flags = 0;
 	g_pBodyQueueHead->pev->deadflag = pEntity->pev->deadflag;

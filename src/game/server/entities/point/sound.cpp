@@ -209,7 +209,7 @@ void CAmbientGeneric::Spawn()
 		return;
 	}
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 
 	// Set up think function for dynamic modification 
 	// of ambient sound's pitch or volume. Don't
@@ -1006,7 +1006,7 @@ void CSpeaker::Spawn()
 		return;
 	}
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 
 	SetThink(&CSpeaker::SpeakerThink);
 	pev->nextthink = 0.0;

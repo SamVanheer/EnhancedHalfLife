@@ -108,7 +108,7 @@ void CApache::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 
 	SetModel("models/apache.mdl");
@@ -180,7 +180,7 @@ void CApache::StartupUse(const UseInfo& info)
 
 void CApache::Killed(const KilledInfo& info)
 {
-	pev->movetype = Movetype::Toss;
+	SetMovetype(Movetype::Toss);
 	pev->gravity = 0.3;
 
 	StopSound(SoundChannel::Static, "apache/ap_rotor2.wav");
@@ -927,7 +927,7 @@ void CApacheHVR::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 
 	SetModel("models/HVR.mdl");
@@ -955,9 +955,9 @@ void CApacheHVR::Precache()
 
 void CApacheHVR::IgniteThink()
 {
-	// pev->movetype = Movetype::Toss;
+	// SetMovetype(Movetype::Toss);
 
-	// pev->movetype = Movetype::Fly;
+	// SetMovetype(Movetype::Fly);
 	pev->effects |= EF_LIGHT;
 
 	// make rocket sound

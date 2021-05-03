@@ -100,7 +100,7 @@ void CSqueakGrenade::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = Movetype::Bounce;
+	SetMovetype(Movetype::Bounce);
 	SetSolidType(Solid::BBox);
 
 	SetModel("models/w_squeak.mdl");
@@ -207,16 +207,16 @@ void CSqueakGrenade::HuntThink()
 	// float
 	if (pev->waterlevel != WaterLevel::Dry)
 	{
-		if (pev->movetype == Movetype::Bounce)
+		if (GetMovetype() == Movetype::Bounce)
 		{
-			pev->movetype = Movetype::Fly;
+			SetMovetype(Movetype::Fly);
 		}
 		pev->velocity = pev->velocity * 0.9;
 		pev->velocity.z += 8.0;
 	}
-	else //if (pev->movetype = Movetype::Fly)
+	else //if (SetMovetype(Movetype::Fly); GetMovetype() != Movetype::None)
 	{
-		pev->movetype = Movetype::Bounce;
+		SetMovetype(Movetype::Bounce);
 	}
 
 	// return if not time to hunt

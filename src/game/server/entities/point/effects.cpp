@@ -1070,7 +1070,7 @@ IMPLEMENT_SAVERESTORE(CGlow, CPointEntity);
 void CGlow::Spawn()
 {
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->effects = 0;
 	pev->frame = 0;
 
@@ -1111,7 +1111,7 @@ IMPLEMENT_SAVERESTORE(CSprite, CPointEntity);
 void CSprite::Spawn()
 {
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->effects = 0;
 	pev->frame = 0;
 
@@ -1160,7 +1160,7 @@ CSprite* CSprite::SpriteCreate(const char* pSpriteName, const Vector& origin, bo
 	pSprite->SpriteInit(pSpriteName, origin);
 	pSprite->SetClassname("env_sprite");
 	pSprite->SetSolidType(Solid::Not);
-	pSprite->pev->movetype = Movetype::Noclip;
+	pSprite->SetMovetype(Movetype::Noclip);
 	if (animate)
 		pSprite->TurnOn();
 
@@ -1648,7 +1648,7 @@ constexpr int SF_BLOOD_DECAL = 0x0008;
 void CBlood::Spawn()
 {
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->effects = 0;
 	pev->frame = 0;
 	SetMovedir(this);
@@ -1764,7 +1764,7 @@ constexpr int SF_SHAKE_INAIR = 0x0004;		//!< Shake players in air
 void CShake::Spawn()
 {
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->effects = 0;
 	pev->frame = 0;
 
@@ -1831,7 +1831,7 @@ constexpr int SF_FADE_ONLYONE = 0x0004;
 void CFade::Spawn()
 {
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->effects = 0;
 	pev->frame = 0;
 }
@@ -1893,7 +1893,7 @@ void CMessage::Spawn()
 	Precache();
 
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 
 	switch (pev->impulse)
 	{
@@ -2111,7 +2111,7 @@ void CItemSoda::Spawn()
 {
 	Precache();
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::Toss;
+	SetMovetype(Movetype::Toss);
 
 	SetModel("models/can.mdl");
 	SetSize(vec3_origin, vec3_origin);
@@ -2148,7 +2148,7 @@ void CItemSoda::CanTouch(CBaseEntity* pOther)
 	}
 
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->effects = EF_NODRAW;
 	SetTouch(nullptr);
 	SetThink(&CItemSoda::SUB_Remove);

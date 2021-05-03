@@ -41,7 +41,7 @@ CLaserSpot* CLaserSpot::CreateSpot()
 void CLaserSpot::Spawn()
 {
 	Precache();
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetSolidType(Solid::Not);
 
 	pev->rendermode = RenderMode::Glow;
@@ -93,7 +93,7 @@ void CRpgRocket::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = Movetype::Bounce;
+	SetMovetype(Movetype::Bounce);
 	SetSolidType(Solid::BBox);
 
 	SetModel("models/rpgrocket.mdl");
@@ -138,9 +138,9 @@ void CRpgRocket::Precache()
 
 void CRpgRocket::IgniteThink()
 {
-	// pev->movetype = Movetype::Toss;
+	// SetMovetype(Movetype::Toss);
 
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	pev->effects |= EF_LIGHT;
 
 	// make rocket sound

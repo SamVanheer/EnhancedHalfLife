@@ -201,7 +201,7 @@ void CFuncTank::Spawn()
 {
 	Precache();
 
-	pev->movetype = Movetype::Push;  // so it doesn't get pushed by anything
+	SetMovetype(Movetype::Push);  // so it doesn't get pushed by anything
 	SetSolidType(Solid::BSP);
 	SetModel(STRING(pev->model));
 
@@ -1011,7 +1011,7 @@ void CFuncTankControls::Think()
 void CFuncTankControls::Spawn()
 {
 	SetSolidType(Solid::Trigger);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->effects |= EF_NODRAW;
 	SetModel(STRING(pev->model));
 

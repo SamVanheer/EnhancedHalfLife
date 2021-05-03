@@ -430,7 +430,7 @@ void CIchthyosaur::Spawn()
 	SetSize(Vector(-32, -32, -32), Vector(32, 32, 32));
 
 	SetSolidType(Solid::BBox);
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->health = gSkillData.ichthyosaurHealth;
 	pev->view_ofs = Vector(0, 0, 16);
@@ -726,7 +726,7 @@ float CIchthyosaur::PitchDiff()
 
 float CIchthyosaur::ChangePitch(int speed)
 {
-	if (pev->movetype == Movetype::Fly)
+	if (GetMovetype() == Movetype::Fly)
 	{
 		const float diff = PitchDiff();
 		float target = 0;
@@ -754,7 +754,7 @@ float CIchthyosaur::ChangePitch(int speed)
 
 float CIchthyosaur::ChangeYaw(int speed)
 {
-	if (pev->movetype == Movetype::Fly)
+	if (GetMovetype() == Movetype::Fly)
 	{
 		const float diff = YawDiff();
 		float target = 0;
@@ -783,7 +783,7 @@ float CIchthyosaur::ChangeYaw(int speed)
 
 Activity CIchthyosaur::GetStoppedActivity()
 {
-	if (pev->movetype != Movetype::Fly)		// UNDONE: Ground idle here, IDLE may be something else
+	if (GetMovetype() != Movetype::Fly)		// UNDONE: Ground idle here, IDLE may be something else
 		return ACT_IDLE;
 	return ACT_WALK;
 }

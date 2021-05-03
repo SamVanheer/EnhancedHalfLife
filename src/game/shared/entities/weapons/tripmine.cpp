@@ -81,7 +81,7 @@ void CTripmineGrenade::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::Not);
 
 	SetModel("models/v_tripmine.mdl");

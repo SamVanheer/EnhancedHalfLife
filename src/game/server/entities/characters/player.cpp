@@ -671,7 +671,7 @@ void CBasePlayer::Killed(const KilledInfo& info)
 	pev->modelindex = g_ulModelIndexPlayer;    // don't use eyes
 
 	pev->deadflag = DeadFlag::Dying;
-	pev->movetype = Movetype::Toss;
+	SetMovetype(Movetype::Toss);
 	ClearBits(pev->flags, FL_ONGROUND);
 	if (pev->velocity.z < 10)
 		pev->velocity.z += RANDOM_FLOAT(0, 300);
@@ -890,7 +890,7 @@ void CBasePlayer::SetAnimation(PlayerAnim playerAnim)
 
 void CBasePlayer::WaterMove()
 {
-	if (pev->movetype == Movetype::Noclip)
+	if (GetMovetype() == Movetype::Noclip)
 		return;
 
 	if (pev->health < 0)
@@ -997,7 +997,7 @@ void CBasePlayer::WaterMove()
 
 bool CBasePlayer::IsOnLadder()
 {
-	return pev->movetype == Movetype::Fly;
+	return GetMovetype() == Movetype::Fly;
 }
 
 void CBasePlayer::PlayerDeathThink()
@@ -1031,8 +1031,8 @@ void CBasePlayer::PlayerDeathThink()
 
 	// once we're done animating our death and we're on the ground, we want to set movetype to None so our dead body won't do collisions and stuff anymore
 	// this prevents a bug where the dead body would go to a player's head if he walked over it while the dead player was clicking their button to respawn
-	if (pev->movetype != Movetype::None && IsBitSet(pev->flags, FL_ONGROUND))
-		pev->movetype = Movetype::None;
+	if (GetMovetype() != Movetype::None && IsBitSet(pev->flags, FL_ONGROUND))
+		SetMovetype(Movetype::None);
 
 	if (pev->deadflag == DeadFlag::Dying)
 		pev->deadflag = DeadFlag::Dead;
@@ -1135,7 +1135,7 @@ void CBasePlayer::StartDeathCam()
 	pev->fixangle = FixAngleMode::Absolute;
 	SetSolidType(Solid::Not);
 	SetDamageMode(DamageMode::No);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->modelindex = 0;
 }
 
@@ -1182,7 +1182,7 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 	pev->fixangle = FixAngleMode::Absolute;
 	SetSolidType(Solid::Not);
 	SetDamageMode(DamageMode::No);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	ClearBits(m_afPhysicsFlags, PFLAG_DUCKING);
 	ClearBits(pev->flags, FL_DUCKING);
 	pev->deadflag = DeadFlag::Respawnable;
@@ -2215,7 +2215,7 @@ void CBasePlayer::Spawn()
 	pev->armorvalue = 0;
 	SetDamageMode(DamageMode::Aim);
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Walk;
+	SetMovetype(Movetype::Walk);
 	pev->max_health = pev->health;
 	pev->flags &= FL_PROXY;	// keep proxy flag sey by engine
 	pev->flags |= FL_CLIENT;

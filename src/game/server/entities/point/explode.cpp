@@ -35,7 +35,7 @@ void CShower::Spawn()
 		pev->velocity.z += 200;
 	else
 		pev->velocity.z -= 200;
-	pev->movetype = Movetype::Bounce;
+	SetMovetype(Movetype::Bounce);
 	pev->gravity = 0.5;
 	pev->nextthink = gpGlobals->time + 0.1;
 	SetSolidType(Solid::Not);
@@ -111,7 +111,7 @@ void CEnvExplosion::Spawn()
 	SetSolidType(Solid::Not);
 	pev->effects = EF_NODRAW;
 
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	/*
 	if ( m_iMagnitude > 250 )
 	{

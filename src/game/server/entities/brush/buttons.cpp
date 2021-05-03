@@ -166,7 +166,7 @@ void CMultiSource::Spawn()
 	// set up think for later registration
 
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->nextthink = gpGlobals->time + 0.1;
 	pev->spawnflags |= SF_MULTI_INIT;	// Until it's initialized
 	SetThink(&CMultiSource::Register);
@@ -419,7 +419,7 @@ void CBaseButton::Spawn()
 
 	SetMovedir(this);
 
-	pev->movetype = Movetype::Push;
+	SetMovetype(Movetype::Push);
 	SetSolidType(Solid::BSP);
 	SetModel(STRING(pev->model));
 
@@ -742,7 +742,7 @@ void CRotButton::Spawn()
 	if (IsBitSet(pev->spawnflags, SF_DOOR_ROTATE_BACKWARDS))
 		pev->movedir = pev->movedir * -1;
 
-	pev->movetype = Movetype::Push;
+	SetMovetype(Movetype::Push);
 
 	if (pev->spawnflags & SF_ROTBUTTON_NOTSOLID)
 		SetSolidType(Solid::Not);
@@ -865,7 +865,7 @@ void CMomentaryRotButton::Spawn()
 	else
 		SetSolidType(Solid::Not);
 
-	pev->movetype = Movetype::Push;
+	SetMovetype(Movetype::Push);
 	SetAbsOrigin(pev->origin);
 	SetModel(STRING(pev->model));
 
@@ -1140,7 +1140,7 @@ LINK_ENTITY_TO_CLASS(button_target, CButtonTarget);
 
 void CButtonTarget::Spawn()
 {
-	pev->movetype = Movetype::Push;
+	SetMovetype(Movetype::Push);
 	SetSolidType(Solid::BSP);
 	SetModel(STRING(pev->model));
 	SetDamageMode(DamageMode::Yes);

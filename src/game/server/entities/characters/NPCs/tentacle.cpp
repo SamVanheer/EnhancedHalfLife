@@ -227,7 +227,7 @@ void CTentacle::Spawn()
 	Precache();
 
 	SetSolidType(Solid::BBox);
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	pev->effects = 0;
 	pev->health = 75;
 	pev->sequence = 0;
@@ -959,7 +959,7 @@ void CTentacleMaw::Spawn()
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	pev->effects = 0;
 	pev->health = 75;
 	pev->yaw_speed = 8;

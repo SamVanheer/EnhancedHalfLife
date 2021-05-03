@@ -143,7 +143,7 @@ void CBaseMonster::BarnacleVictimReleased()
 	m_IdealMonsterState = NPCState::Idle;
 
 	pev->velocity = vec3_origin;
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 }
 
 void CBaseMonster::Listen()
@@ -1378,7 +1378,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 	Vector vecTop;// the spot we'll try to triangulate to on the top
 	Vector vecBottom;// the spot we'll try to triangulate to on the bottom
 
-	if (pev->movetype == Movetype::Fly)
+	if (GetMovetype() == Movetype::Fly)
 	{
 		vecTop = pev->origin + (vecForward * flDist) + (vecDirUp * sizeZ * 3);
 		vecBottom = pev->origin + (vecForward * flDist) - (vecDirUp * sizeZ * 3);
@@ -1388,7 +1388,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 	const Vector vecFarSide = m_Route[m_iRouteIndex].vecLocation;
 
 	vecDir = vecDir * sizeX * 2;
-	if (pev->movetype == Movetype::Fly)
+	if (GetMovetype() == Movetype::Fly)
 		vecDirUp = vecDirUp * sizeZ * 2;
 
 	for (int i = 0; i < 8; i++)
@@ -1417,7 +1417,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 #endif
 
 #if 0
-		if (pev->movetype == Movetype::Fly)
+		if (GetMovetype() == Movetype::Fly)
 		{
 			MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 			WRITE_BYTE(TE_SHOWLINE);
@@ -1466,7 +1466,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 			}
 		}
 
-		if (pev->movetype == Movetype::Fly)
+		if (GetMovetype() == Movetype::Fly)
 		{
 			if (CheckLocalMove(pev->origin, vecTop, pTargetEnt, nullptr) == LocalMoveResult::Valid)
 			{
@@ -1500,7 +1500,7 @@ bool CBaseMonster::Triangulate(const Vector& vecStart, const Vector& vecEnd, flo
 
 		vecRight = vecRight + vecDir;
 		vecLeft = vecLeft - vecDir;
-		if (pev->movetype == Movetype::Fly)
+		if (GetMovetype() == Movetype::Fly)
 		{
 			vecTop = vecTop + vecDirUp;
 			vecBottom = vecBottom - vecDirUp;
@@ -1766,7 +1766,7 @@ void CBaseMonster::StartMonster()
 	}
 
 	// Raise monster off the floor one unit, then drop to floor
-	if (pev->movetype != Movetype::Fly && !IsBitSet(pev->spawnflags, SF_MONSTER_FALL_TO_GROUND))
+	if (GetMovetype() != Movetype::Fly && !IsBitSet(pev->spawnflags, SF_MONSTER_FALL_TO_GROUND))
 	{
 		pev->origin.z += 1;
 		DROP_TO_FLOOR(edict());
@@ -1810,7 +1810,7 @@ void CBaseMonster::StartMonster()
 			// JAYJAY
 			m_movementGoal = MOVEGOAL_PATHCORNER;
 
-			if (pev->movetype == Movetype::Fly)
+			if (GetMovetype() == Movetype::Fly)
 				m_movementActivity = ACT_FLY;
 			else
 				m_movementActivity = ACT_WALK;
@@ -2797,7 +2797,7 @@ void CBaseMonster::MonsterInitDead()
 	InitBoneControllers();
 
 	SetSolidType(Solid::BBox);
-	pev->movetype = Movetype::Toss;// so he'll fall to ground
+	SetMovetype(Movetype::Toss);// so he'll fall to ground
 
 	pev->frame = 0;
 	ResetSequenceInfo();

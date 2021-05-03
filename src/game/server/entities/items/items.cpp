@@ -18,7 +18,7 @@
 
 void CItem::Spawn()
 {
-	pev->movetype = Movetype::Toss;
+	SetMovetype(Movetype::Toss);
 	SetSolidType(Solid::Trigger);
 	SetAbsOrigin(pev->origin);
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 16));

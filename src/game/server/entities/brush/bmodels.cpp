@@ -54,7 +54,7 @@ LINK_ENTITY_TO_CLASS(func_wall, CFuncWall);
 void CFuncWall::Spawn()
 {
 	pev->angles = vec3_origin;
-	pev->movetype = Movetype::Push;  // so it doesn't get pushed by anything
+	SetMovetype(Movetype::Push);  // so it doesn't get pushed by anything
 	SetSolidType(Solid::BSP);
 	SetModel(STRING(pev->model));
 
@@ -203,7 +203,7 @@ void CFuncIllusionary::KeyValue(KeyValueData* pkvd)
 void CFuncIllusionary::Spawn()
 {
 	pev->angles = vec3_origin;
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetSolidType(Solid::Not);// always solid_not 
 	SetModel(STRING(pev->model));
 
@@ -396,12 +396,12 @@ void CFuncRotating::Spawn()
 	{
 		SetSolidType(Solid::Not);
 		pev->skin = static_cast<int>(Contents::Empty);
-		pev->movetype = Movetype::Push;
+		SetMovetype(Movetype::Push);
 	}
 	else
 	{
 		SetSolidType(Solid::BSP);
-		pev->movetype = Movetype::Push;
+		SetMovetype(Movetype::Push);
 	}
 
 	SetAbsOrigin(pev->origin);
@@ -741,7 +741,7 @@ void CPendulum::Spawn()
 		SetSolidType(Solid::Not);
 	else
 		SetSolidType(Solid::BSP);
-	pev->movetype = Movetype::Push;
+	SetMovetype(Movetype::Push);
 	SetAbsOrigin(pev->origin);
 	SetModel(STRING(pev->model));
 
@@ -886,5 +886,5 @@ void CPendulum::RopeTouch(CBaseEntity* pOther)
 
 	m_hRopeUser = pOther;
 	pOther->pev->velocity = vec3_origin;
-	pOther->pev->movetype = Movetype::None;
+	pOther->SetMovetype(Movetype::None);
 }

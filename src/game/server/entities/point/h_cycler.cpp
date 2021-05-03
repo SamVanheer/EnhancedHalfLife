@@ -90,7 +90,7 @@ void CCycler::Spawn()
 {
 	InitBoneControllers();
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetDamageMode(DamageMode::Yes);
 	pev->effects = 0;
 	pev->health = 80000;// no cycler should die
@@ -207,7 +207,7 @@ IMPLEMENT_SAVERESTORE(CCyclerSprite, CBaseEntity);
 void CCyclerSprite::Spawn()
 {
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetDamageMode(DamageMode::Yes);
 	pev->effects = 0;
 
@@ -273,7 +273,7 @@ LINK_ENTITY_TO_CLASS(cycler_weapon, CWeaponCycler);
 void CWeaponCycler::Spawn()
 {
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 
 	PRECACHE_MODEL(STRING(pev->model));
 	SetModel(STRING(pev->model));
@@ -355,7 +355,7 @@ LINK_ENTITY_TO_CLASS(cycler_wreckage, CWreckage);
 void CWreckage::Spawn()
 {
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->takedamage = 0;
 	pev->effects = 0;
 

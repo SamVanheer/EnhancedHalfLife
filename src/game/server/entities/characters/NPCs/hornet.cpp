@@ -43,7 +43,7 @@ void CHornet::Spawn()
 {
 	Precache();
 
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 	SetDamageMode(DamageMode::Yes);
 	pev->flags |= FL_MONSTER;

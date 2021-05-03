@@ -492,7 +492,7 @@ void CISlave::Spawn()
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->effects = 0;
 	pev->health = gSkillData.slaveHealth;

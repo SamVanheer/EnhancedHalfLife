@@ -911,7 +911,7 @@ void CHGrunt::Spawn()
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->effects = 0;
 	pev->health = gSkillData.hgruntHealth;
@@ -1038,7 +1038,7 @@ void CHGrunt::StartTask(Task_t* pTask)
 	case TASK_FACE_IDEAL:
 	case TASK_FACE_ENEMY:
 		CSquadMonster::StartTask(pTask);
-		if (pev->movetype == Movetype::Fly)
+		if (GetMovetype() == Movetype::Fly)
 		{
 			m_IdealActivity = ACT_GLIDE;
 		}
@@ -1847,12 +1847,12 @@ Schedule_t* CHGrunt::GetSchedule()
 	m_iSentence = HGRUNT_SENT_NONE;
 
 	// flying? If PRONE, barnacle has me. IF not, it's assumed I am rapelling. 
-	if (pev->movetype == Movetype::Fly && m_MonsterState != NPCState::Prone)
+	if (GetMovetype() == Movetype::Fly && m_MonsterState != NPCState::Prone)
 	{
 		if (pev->flags & FL_ONGROUND)
 		{
 			// just landed
-			pev->movetype = Movetype::Step;
+			SetMovetype(Movetype::Step);
 			return GetScheduleOfType(SCHED_GRUNT_REPEL_LAND);
 		}
 		else
@@ -2275,7 +2275,7 @@ void CHGruntRepel::RepelUse(const UseInfo& info)
 
 	CBaseEntity* pEntity = Create("monster_human_grunt", pev->origin, pev->angles);
 	CBaseMonster* pGrunt = pEntity->MyMonsterPointer();
-	pGrunt->pev->movetype = Movetype::Fly;
+	pGrunt->SetMovetype(Movetype::Fly);
 	pGrunt->pev->velocity = Vector(0, 0, RANDOM_FLOAT(-196, -128));
 	pGrunt->SetActivity(ACT_GLIDE);
 	// UNDONE: position?

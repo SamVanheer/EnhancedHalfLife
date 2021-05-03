@@ -311,7 +311,7 @@ void CController::Spawn()
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	pev->flags |= FL_FLY;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->health = gSkillData.controllerHealth;
@@ -1035,7 +1035,7 @@ void CControllerHeadBall::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 
 	SetModel("sprites/xspark4.spr");
@@ -1216,7 +1216,7 @@ void CControllerZapBall::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 
 	SetModel("sprites/xspark4.spr");

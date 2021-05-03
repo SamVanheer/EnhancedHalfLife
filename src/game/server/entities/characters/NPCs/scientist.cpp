@@ -622,7 +622,7 @@ void CScientist::Spawn()
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->health = gSkillData.scientistHealth;
 	pev->view_ofs = Vector(0, 0, 50);// position of the eyes relative to monster's origin.
@@ -1158,7 +1158,7 @@ void CSittingScientist::Spawn()
 	SetSize(Vector(-14, -14, 0), Vector(14, 14, 36));
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	pev->effects = 0;
 	pev->health = 50;
 

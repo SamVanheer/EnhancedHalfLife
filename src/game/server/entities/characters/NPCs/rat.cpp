@@ -59,7 +59,7 @@ void CRat::Spawn()
 	SetSize(vec3_origin, vec3_origin);
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->health = 8;
 	pev->view_ofs = Vector(0, 0, 6);// position of the eyes relative to monster's origin.

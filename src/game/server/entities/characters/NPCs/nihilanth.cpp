@@ -273,7 +273,7 @@ void CNihilanth::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 
 	SetModel("models/nihilanth.mdl");
@@ -1267,7 +1267,7 @@ void CNihilanthHVR::Precache()
 
 void CNihilanthHVR::CircleInit(CBaseEntity* pTarget)
 {
-	pev->movetype = Movetype::Noclip;
+	SetMovetype(Movetype::Noclip);
 	SetSolidType(Solid::Not);
 
 	// SetModel( "sprites/flare6.spr");
@@ -1369,7 +1369,7 @@ void CNihilanthHVR::HoverThink()
 
 void CNihilanthHVR::ZapInit(CBaseEntity* pEnemy)
 {
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 
 	SetModel("sprites/nhth1.spr");
@@ -1488,7 +1488,7 @@ void CNihilanthHVR::ZapTouch(CBaseEntity* pOther)
 
 void CNihilanthHVR::TeleportInit(CNihilanth* pOwner, CBaseEntity* pEnemy, CBaseEntity* pTarget, CBaseEntity* pTouch)
 {
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 
 	pev->rendercolor.x = 255;
@@ -1512,7 +1512,7 @@ void CNihilanthHVR::TeleportInit(CNihilanth* pOwner, CBaseEntity* pEnemy, CBaseE
 
 void CNihilanthHVR::GreenBallInit()
 {
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 
 	pev->rendercolor.x = 255;

@@ -720,7 +720,7 @@ void CGargantua::Spawn()
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->health = gSkillData.gargantuaHealth;
 	//pev->view_ofs		= Vector ( 0, 0, 96 );// taken from mdl file
@@ -1139,7 +1139,7 @@ LINK_ENTITY_TO_CLASS(env_smoker, CSmoker);
 
 void CSmoker::Spawn()
 {
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->nextthink = gpGlobals->time;
 	SetSolidType(Solid::Not);
 	SetSize(vec3_origin, vec3_origin);
@@ -1169,7 +1169,7 @@ void CSmoker::Think()
 
 void CSpiral::Spawn()
 {
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->nextthink = gpGlobals->time;
 	SetSolidType(Solid::Not);
 	SetSize(vec3_origin, vec3_origin);

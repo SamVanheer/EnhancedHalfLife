@@ -297,7 +297,7 @@ void CHoundeye::Spawn()
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 36));
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	m_bloodColor = BLOOD_COLOR_YELLOW;
 	pev->effects = 0;
 	pev->health = gSkillData.houndeyeHealth;

@@ -543,7 +543,7 @@ void CAGrunt::Spawn()
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->effects = 0;
 	pev->health = gSkillData.agruntHealth;

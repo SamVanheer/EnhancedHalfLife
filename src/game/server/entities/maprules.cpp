@@ -43,7 +43,7 @@ IMPLEMENT_SAVERESTORE(CRuleEntity, CBaseEntity);
 void CRuleEntity::Spawn()
 {
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->effects = EF_NODRAW;
 }
 

@@ -128,7 +128,7 @@ void COsprey::Spawn()
 {
 	Precache();
 	// motor
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 
 	SetModel("models/osprey.mdl");
@@ -272,7 +272,7 @@ CBaseMonster* COsprey::MakeGrunt(Vector vecSrc)
 			}
 			CBaseEntity* pEntity = Create("monster_human_grunt", vecSrc, pev->angles);
 			CBaseMonster* pGrunt = pEntity->MyMonsterPointer();
-			pGrunt->pev->movetype = Movetype::Fly;
+			pGrunt->SetMovetype(Movetype::Fly);
 			pGrunt->pev->velocity = Vector(0, 0, RANDOM_FLOAT(-196, -128));
 			pGrunt->SetActivity(ACT_GLIDE);
 
@@ -470,7 +470,7 @@ bool COsprey::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float
 
 void COsprey::Killed(const KilledInfo& info)
 {
-	pev->movetype = Movetype::Toss;
+	SetMovetype(Movetype::Toss);
 	pev->gravity = 0.3;
 	pev->velocity = m_velocity;
 	pev->avelocity = Vector(RANDOM_FLOAT(-20, 20), 0, RANDOM_FLOAT(-50, 50));

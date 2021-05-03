@@ -277,7 +277,7 @@ void CBaseDoor::Spawn()
 		SetBits(pev->spawnflags, SF_DOOR_SILENT);	// water is silent for now
 	}
 
-	pev->movetype = Movetype::Push;
+	SetMovetype(Movetype::Push);
 	SetAbsOrigin(pev->origin);
 	SetModel(STRING(pev->model));
 
@@ -752,7 +752,7 @@ void CRotDoor::Spawn()
 	else
 		SetSolidType(Solid::BSP);
 
-	pev->movetype = Movetype::Push;
+	SetMovetype(Movetype::Push);
 	SetAbsOrigin(pev->origin);
 	SetModel(STRING(pev->model));
 
@@ -817,7 +817,7 @@ void CMomentaryDoor::Spawn()
 	SetMovedir(this);
 
 	SetSolidType(Solid::BSP);
-	pev->movetype = Movetype::Push;
+	SetMovetype(Movetype::Push);
 
 	SetAbsOrigin(pev->origin);
 	SetModel(STRING(pev->model));

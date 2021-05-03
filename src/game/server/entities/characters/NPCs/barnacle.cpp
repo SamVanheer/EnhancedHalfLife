@@ -93,7 +93,7 @@ void CBarnacle::Spawn()
 	SetSize(Vector(-16, -16, -32), Vector(16, 16, 0));
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetDamageMode(DamageMode::Aim);
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->effects = EF_INVLIGHT; // take light from the ceiling 
@@ -258,7 +258,7 @@ void CBarnacle::BarnacleThink()
 
 				m_hEnemy = pTouchEnt;
 
-				pTouchEnt->pev->movetype = Movetype::Fly;
+				pTouchEnt->SetMovetype(Movetype::Fly);
 				pTouchEnt->pev->velocity = vec3_origin;
 				pTouchEnt->pev->basevelocity = vec3_origin;
 				pTouchEnt->pev->origin.x = pev->origin.x;

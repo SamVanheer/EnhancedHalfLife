@@ -240,7 +240,7 @@ void CBaseTurret::Spawn()
 {
 	Precache();
 	pev->nextthink = gpGlobals->time + 1;
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	pev->sequence = 0;
 	pev->frame = 0;
 	SetSolidType(Solid::SlideBox);

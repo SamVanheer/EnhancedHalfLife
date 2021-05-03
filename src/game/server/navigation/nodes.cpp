@@ -324,7 +324,7 @@ int	CGraph::FindNearestLink(const Vector& vecTestPoint, int& iNearestLink, bool&
 
 int	CGraph::HullIndex(const CBaseEntity* pEntity)
 {
-	if (pEntity->pev->movetype == Movetype::Fly)
+	if (pEntity->GetMovetype() == Movetype::Fly)
 		return NODE_FLY_HULL;
 
 	if (pEntity->pev->mins == Vector(-12, -12, 0))
@@ -340,7 +340,7 @@ int	CGraph::HullIndex(const CBaseEntity* pEntity)
 
 int	CGraph::NodeType(const CBaseEntity* pEntity)
 {
-	if (pEntity->pev->movetype == Movetype::Fly)
+	if (pEntity->GetMovetype() == Movetype::Fly)
 	{
 		if (pEntity->pev->waterlevel != WaterLevel::Dry)
 		{
@@ -1307,7 +1307,7 @@ void CTestHull::Spawn(CBaseEntity* pMasterNode)
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	SetSolidType(Solid::SlideBox);
-	pev->movetype = Movetype::Step;
+	SetMovetype(Movetype::Step);
 	pev->effects = 0;
 	pev->health = 50;
 	pev->yaw_speed = 8;
@@ -1359,7 +1359,7 @@ void CNodeEnt::KeyValue(KeyValueData* pkvd)
 
 void CNodeEnt::Spawn()
 {
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetSolidType(Solid::Not);// always solid_not 
 
 	if (WorldGraph.m_fGraphPresent)
@@ -1398,7 +1398,7 @@ void CNodeEnt::Spawn()
 
 void CTestHull::ShowBadNode()
 {
-	pev->movetype = Movetype::Fly;
+	SetMovetype(Movetype::Fly);
 	pev->angles.y = pev->angles.y + 4;
 
 	UTIL_MakeVectors(pev->angles);

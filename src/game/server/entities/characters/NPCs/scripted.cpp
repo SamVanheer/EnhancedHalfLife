@@ -258,7 +258,7 @@ void CCineMonster::PossessEntity()
 		pTarget->m_hCine = this;
 		pTarget->m_hTargetEnt = this;
 
-		m_saved_movetype = pTarget->pev->movetype;
+		m_saved_movetype = pTarget->GetMovetype();
 		m_saved_solid = pTarget->GetSolidType();
 		m_saved_effects = pTarget->pev->effects;
 		pTarget->pev->effects |= pev->effects;
@@ -324,7 +324,7 @@ void CCineAI::PossessEntity()
 		pTarget->m_hCine = this;
 		pTarget->m_hTargetEnt = this;
 
-		m_saved_movetype = pTarget->pev->movetype;
+		m_saved_movetype = pTarget->GetMovetype();
 		m_saved_solid = pTarget->GetSolidType();
 		m_saved_effects = pTarget->pev->effects;
 		pTarget->pev->effects |= pev->effects;
@@ -656,14 +656,14 @@ bool CBaseMonster::CineCleanup()
 	{
 		// okay, reset me to what it thought I was before
 		cine->m_hTargetEnt = nullptr;
-		pev->movetype = cine->m_saved_movetype;
+		SetMovetype(cine->m_saved_movetype);
 		SetSolidType(cine->m_saved_solid);
 		pev->effects = cine->m_saved_effects;
 	}
 	else
 	{
 		// arg, punt
-		pev->movetype = Movetype::Step;// this is evil
+		SetMovetype(Movetype::Step);// this is evil
 		SetSolidType(Solid::SlideBox);
 	}
 	m_hCine = nullptr;
@@ -689,7 +689,7 @@ bool CBaseMonster::CineCleanup()
 			SUB_StartFadeOut(); // SetThink( SUB_DoNothing );
 		// This turns off animation & physics in case their origin ends up stuck in the world or something
 		StopAnimation();
-		pev->movetype = Movetype::None;
+		SetMovetype(Movetype::None);
 		pev->effects |= EF_NOINTERP;	// Don't interpolate either, assume the corpse is positioned in its final resting place
 		return false;
 	}
@@ -1049,7 +1049,7 @@ void CFurniture::Spawn()
 	PRECACHE_MODEL(STRING(pev->model));
 	SetModel(STRING(pev->model));
 
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetSolidType(Solid::BBox);
 	pev->health = 80000;
 	SetDamageMode(DamageMode::Aim);

@@ -86,7 +86,7 @@ void CXenPLight::Spawn()
 	Precache();
 
 	SetModel("models/light.mdl");
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetSolidType(Solid::Trigger);
 
 	SetSize(Vector(-80, -80, 0), Vector(80, 80, 32));
@@ -192,7 +192,7 @@ void CXenHair::Spawn()
 	ResetSequenceInfo();
 
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	pev->nextthink = gpGlobals->time + RANDOM_FLOAT(0.1, 0.4);	// Load balance these a bit
 }
 
@@ -222,7 +222,7 @@ CXenTreeTrigger* CXenTreeTrigger::TriggerCreate(CBaseEntity* pOwner, const Vecto
 	pTrigger->pev->origin = position;
 	pTrigger->SetClassname("xen_ttrigger");
 	pTrigger->SetSolidType(Solid::Trigger);
-	pTrigger->pev->movetype = Movetype::None;
+	pTrigger->SetMovetype(Movetype::None);
 	pTrigger->SetOwner(pOwner);
 
 	return pTrigger;
@@ -275,7 +275,7 @@ void CXenTree::Spawn()
 	Precache();
 
 	SetModel("models/tree.mdl");
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetSolidType(Solid::BBox);
 
 	SetDamageMode(DamageMode::Yes);
@@ -446,7 +446,7 @@ CXenHull* CXenHull::CreateHull(CBaseEntity* source, const Vector& mins, const Ve
 	pHull->SetModel(STRING(source->pev->model));
 	pHull->SetSolidType(Solid::BBox);
 	pHull->SetClassname("xen_hull");
-	pHull->pev->movetype = Movetype::None;
+	pHull->SetMovetype(Movetype::None);
 	pHull->SetOwner(source);
 	pHull->SetSize(mins, maxs);
 	pHull->pev->renderamt = 0;
@@ -507,7 +507,7 @@ void CXenSpore::Spawn()
 	Precache();
 
 	SetModel(pModelNames[pev->skin]);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetSolidType(Solid::BBox);
 	SetDamageMode(DamageMode::Yes);
 

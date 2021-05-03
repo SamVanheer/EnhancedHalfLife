@@ -36,13 +36,13 @@ void CFrictionModifier::Spawn()
 {
 	SetSolidType(Solid::Trigger);
 	SetModel(STRING(pev->model));    // set size and link into world
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetTouch(&CFrictionModifier::ChangeFriction);
 }
 
 void CFrictionModifier::ChangeFriction(CBaseEntity* pOther)
 {
-	if (pOther->pev->movetype != Movetype::BounceMissile && pOther->pev->movetype != Movetype::Bounce)
+	if (pOther->GetMovetype() != Movetype::BounceMissile && pOther->GetMovetype() != Movetype::Bounce)
 		pOther->pev->friction = m_frictionFraction;
 }
 
@@ -336,7 +336,7 @@ void CBaseTrigger::InitTrigger()
 	if (pev->angles != vec3_origin)
 		SetMovedir(this);
 	SetSolidType(Solid::Trigger);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 	SetModel(STRING(pev->model));    // set size and link into world
 	if (CVAR_GET_FLOAT("showtriggers") == 0)
 		SetBits(pev->effects, EF_NODRAW);
@@ -703,7 +703,7 @@ void CTargetCDAudio::KeyValue(KeyValueData* pkvd)
 void CTargetCDAudio::Spawn()
 {
 	SetSolidType(Solid::Not);
-	pev->movetype = Movetype::None;
+	SetMovetype(Movetype::None);
 
 	if (pev->scale > 0)
 		pev->nextthink = gpGlobals->time + 1.0;
@@ -871,7 +871,7 @@ void CLadder::Spawn()
 	Precache();
 
 	SetModel(STRING(pev->model));    // set size and link into world
-	pev->movetype = Movetype::Push;
+	SetMovetype(Movetype::Push);
 }
 
 LINK_ENTITY_TO_CLASS(trigger_push, CTriggerPush);
@@ -901,7 +901,7 @@ void CTriggerPush::Spawn()
 void CTriggerPush::Touch(CBaseEntity* pOther)
 {
 	// UNDONE: Is there a better way than health to detect things that have physics? (clients/monsters)
-	switch (pOther->pev->movetype)
+	switch (pOther->GetMovetype())
 	{
 	case Movetype::None:
 	case Movetype::Push:
@@ -1077,7 +1077,7 @@ IMPLEMENT_SAVERESTORE(CTriggerCamera, CBaseDelay);
 
 void CTriggerCamera::Spawn()
 {
-	pev->movetype = Movetype::Noclip;
+	SetMovetype(Movetype::Noclip);
 	SetSolidType(Solid::Not);							// Remove model & collisions
 	pev->renderamt = 0;								// The engine won't draw this model if this is set to 0 and blending is on
 	pev->rendermode = RenderMode::TransTexture;
