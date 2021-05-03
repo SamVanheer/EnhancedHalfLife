@@ -833,9 +833,9 @@ void CLightning::BeamUpdateVars()
 {
 	CBaseEntity* pStart = UTIL_FindEntityByTargetname(nullptr, STRING(m_iszStartEntity));
 	CBaseEntity* pEnd = UTIL_FindEntityByTargetname(nullptr, STRING(m_iszEndEntity));
-	//TODO: bool
-	int pointStart = IsPointEntity(pStart);
-	int pointEnd = IsPointEntity(pEnd);
+
+	bool pointStart = IsPointEntity(pStart);
+	bool pointEnd = IsPointEntity(pEnd);
 
 	pev->skin = 0;
 	pev->sequence = 0;

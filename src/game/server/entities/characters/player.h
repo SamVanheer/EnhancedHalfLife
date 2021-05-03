@@ -146,7 +146,7 @@ public:
 	float m_flgeigerRange = 0; //!< range to nearest radiation source
 	float m_flgeigerDelay = 0; //!< delay per update of range msg to client
 	int m_igeigerRangePrev = 0;
-	int m_iStepLeft = 0; //!< alternate left/right foot stepping sound TODO should be bool
+	bool m_bStepLeft = false; //!< alternate left/right foot stepping sound
 	char m_szTextureName[CBTEXTURENAMEMAX]{}; //!< current texture name we're standing on
 	char m_chTextureType = '\0'; //!< current texture type
 
