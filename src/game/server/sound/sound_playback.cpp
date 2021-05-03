@@ -114,19 +114,21 @@ void SENTENCEG_Stop(CBaseEntity* entity, int isentenceg, int ipick)
 	entity->StopSound(SoundChannel::Voice, buffer);
 }
 
-void EMIT_SOUND_DYN(edict_t* entity, SoundChannel channel, const char* sample, float volume, float attenuation,
+void EMIT_SOUND_DYN(CBaseEntity* entity, SoundChannel channel, const char* sample, float volume, float attenuation,
 	int flags, int pitch)
 {
+	auto edict = CBaseEntity::EdictOrNull(entity);
+
 	if (sample && *sample == '!')
 	{
 		char name[32];
 		if (SENTENCEG_Lookup(sample, name, sizeof(name)) >= 0)
-			EMIT_SOUND_DYN2(entity, channel, name, volume, attenuation, flags, pitch);
+			EMIT_SOUND_DYN2(edict, channel, name, volume, attenuation, flags, pitch);
 		else
 			ALERT(at_aiconsole, "Unable to find %s in sentences.txt\n", sample);
 	}
 	else
-		EMIT_SOUND_DYN2(entity, channel, sample, volume, attenuation, flags, pitch);
+		EMIT_SOUND_DYN2(edict, channel, sample, volume, attenuation, flags, pitch);
 }
 
 void EMIT_SOUND_SUIT(CBaseEntity* entity, const char* sample)

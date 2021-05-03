@@ -224,12 +224,12 @@ int	CBaseEntity::DamageDecal(int bitsDamageType)
 
 void CBaseEntity::EmitSound(SoundChannel channel, const char* fileName, float volume, float attenuation, int pitch, int flags)
 {
-	EMIT_SOUND_DYN(edict(), channel, fileName, volume, attenuation, flags, pitch);
+	EMIT_SOUND_DYN(this, channel, fileName, volume, attenuation, flags, pitch);
 }
 
 void CBaseEntity::StopSound(SoundChannel channel, const char* fileName)
 {
-	EMIT_SOUND_DYN(edict(), channel, fileName, 0, 0, SND_STOP, PITCH_NORM);
+	EMIT_SOUND_DYN(this, channel, fileName, 0, 0, SND_STOP, PITCH_NORM);
 }
 
 CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner)
