@@ -1660,8 +1660,7 @@ void CFuncTrackChange::Find()
 			target = UTIL_FindEntityByTargetname(nullptr, STRING(m_trainName));
 			if (!IsNullEnt(target))
 			{
-				//TODO: redundant lookup
-				m_hTrain = CFuncTrackTrain::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(m_trainName)));
+				m_hTrain = CFuncTrackTrain::Instance(target);
 				if (!m_hTrain)
 				{
 					ALERT(at_error, "Can't find train for track change! %s\n", STRING(m_trainName));
@@ -1677,7 +1676,6 @@ void CFuncTrackChange::Find()
 			else
 			{
 				ALERT(at_error, "Can't find train for track change! %s\n", STRING(m_trainName));
-				target = UTIL_FindEntityByTargetname(nullptr, STRING(m_trainName)); //TODO: pointless?
 			}
 		}
 		else
