@@ -72,7 +72,7 @@ IMPLEMENT_SAVERESTORE(CSquidSpit, CBaseEntity);
 void CSquidSpit::Spawn()
 {
 	pev->movetype = Movetype::Fly;
-	pev->classname = MAKE_STRING("squidspit");
+	SetClassname("squidspit");
 
 	pev->solid = Solid::BBox;
 	pev->rendermode = RenderMode::TransAlpha;

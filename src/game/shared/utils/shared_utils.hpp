@@ -19,6 +19,31 @@
 
 class CBaseEntity;
 class CBasePlayer;
+struct globalvars_t;
+
+extern globalvars_t* gpGlobals;
+
+inline const char* STRING(string_t offset)
+{
+	return gpGlobals->pStringBase + static_cast<unsigned int>(offset);
+}
+
+/**
+*	@brief Use this instead of ALLOC_STRING on constant strings
+*/
+inline string_t MAKE_STRING(const char* str)
+{
+	return reinterpret_cast<uint64>(str) - reinterpret_cast<uint64>(STRING(0));
+}
+
+string_t ALLOC_STRING(const char* str);
+
+/**
+*	@brief Version of ALLOC_STRING that parses and converts escape characters
+*/
+string_t ALLOC_ESCAPED_STRING(const char* str);
+
+void ClearStringPool();
 
 char* memfgets(byte* pMemFile, std::size_t fileSize, std::size_t& filePos, char* pBuffer, std::size_t bufferSize);
 

@@ -152,7 +152,7 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float 
 	{
 		// create a temp object to fire at a later time
 		CBaseDelay* pTemp = GetClassPtr((CBaseDelay*)nullptr);
-		pTemp->pev->classname = MAKE_STRING("DelayedUse");
+		pTemp->SetClassname("DelayedUse");
 
 		pTemp->pev->nextthink = gpGlobals->time + m_flDelay;
 

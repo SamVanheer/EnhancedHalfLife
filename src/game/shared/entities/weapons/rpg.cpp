@@ -33,7 +33,7 @@ CLaserSpot* CLaserSpot::CreateSpot()
 	CLaserSpot* pSpot = GetClassPtr((CLaserSpot*)nullptr);
 	pSpot->Spawn();
 
-	pSpot->pev->classname = MAKE_STRING("laser_spot");
+	pSpot->SetClassname("laser_spot");
 
 	return pSpot;
 }
@@ -100,7 +100,7 @@ void CRpgRocket::Spawn()
 	SetSize(vec3_origin, vec3_origin);
 	SetAbsOrigin(pev->origin);
 
-	pev->classname = MAKE_STRING("rpg_rocket");
+	SetClassname("rpg_rocket");
 
 	SetThink(&CRpgRocket::IgniteThink);
 	SetTouch(&CRpgRocket::ExplodeTouch);

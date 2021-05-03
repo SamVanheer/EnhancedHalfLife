@@ -51,7 +51,7 @@ CCrossbowBolt* CCrossbowBolt::BoltCreate()
 {
 	// Create a new entity with CCrossbowBolt private data
 	CCrossbowBolt* pBolt = GetClassPtr((CCrossbowBolt*)nullptr);
-	pBolt->pev->classname = MAKE_STRING("bolt");
+	pBolt->SetClassname("bolt");
 	pBolt->Spawn();
 
 	return pBolt;

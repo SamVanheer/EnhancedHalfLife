@@ -101,7 +101,7 @@ CStomp* CStomp::StompCreate(const Vector& origin, const Vector& end, float speed
 void CStomp::Spawn()
 {
 	pev->nextthink = gpGlobals->time;
-	pev->classname = MAKE_STRING("garg_stomp");
+	SetClassname("garg_stomp");
 	pev->dmgtime = gpGlobals->time;
 
 	pev->framerate = 30;

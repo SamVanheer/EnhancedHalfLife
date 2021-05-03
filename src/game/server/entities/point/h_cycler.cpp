@@ -77,7 +77,7 @@ void CCycler::GenericCyclerSpawn(const char* szModel, Vector vecMin, Vector vecM
 		return;
 	}
 
-	pev->classname = MAKE_STRING("cycler");
+	SetClassname("cycler");
 	PRECACHE_MODEL(szModel);
 	SetModel(szModel);
 

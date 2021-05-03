@@ -35,30 +35,6 @@ class CBasePlayerItem;
 
 constexpr int TEAM_NAME_LENGTH = 16;
 
-extern globalvars_t* gpGlobals;
-
-inline const char* STRING(string_t offset)
-{
-	return gpGlobals->pStringBase + static_cast<unsigned int>(offset);
-}
-
-/**
-*	@brief Use this instead of ALLOC_STRING on constant strings
-*/
-inline string_t MAKE_STRING(const char* str)
-{
-	return reinterpret_cast<uint64>(str) - reinterpret_cast<uint64>(STRING(0));
-}
-
-string_t ALLOC_STRING(const char* str);
-
-/**
-*	@brief Version of ALLOC_STRING that parses and converts escape characters
-*/
-string_t ALLOC_ESCAPED_STRING(const char* str);
-
-void ClearStringPool();
-
 template<typename T>
 constexpr T& SetBits(T& flBitVector, int bits)
 {

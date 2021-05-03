@@ -327,7 +327,7 @@ void CFlockingFlyer::FallHack()
 void CFlockingFlyer::SpawnCommonCode()
 {
 	pev->deadflag = DeadFlag::No;
-	pev->classname = MAKE_STRING("monster_flyer");
+	SetClassname("monster_flyer");
 	pev->solid = Solid::SlideBox;
 	pev->movetype = Movetype::Fly;
 	SetDamageMode(DamageMode::No);

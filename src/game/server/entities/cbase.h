@@ -448,6 +448,11 @@ public:
 		return AreStringsEqual(GetClassname(), classname);
 	}
 
+	void SetClassname(const char* classname)
+	{
+		pev->classname = ALLOC_STRING(classname);
+	}
+
 	void SetAbsOrigin(const Vector& origin);
 	void SetSize(const Vector& mins, const Vector& maxs);
 

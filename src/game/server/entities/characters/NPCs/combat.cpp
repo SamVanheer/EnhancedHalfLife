@@ -705,7 +705,7 @@ void CGib::Spawn(const char* szGibModel)
 	pev->rendermode = RenderMode::Normal;
 	pev->renderfx = RenderFX::None;
 	pev->solid = Solid::SlideBox;/// hopefully this will fix the VELOCITY TOO LOW crap
-	pev->classname = MAKE_STRING("gib");
+	SetClassname("gib");
 
 	SetModel(szGibModel);
 	SetSize(vec3_origin, vec3_origin);

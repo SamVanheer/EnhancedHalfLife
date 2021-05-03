@@ -220,7 +220,7 @@ CXenTreeTrigger* CXenTreeTrigger::TriggerCreate(CBaseEntity* pOwner, const Vecto
 {
 	CXenTreeTrigger* pTrigger = GetClassPtr((CXenTreeTrigger*)nullptr);
 	pTrigger->pev->origin = position;
-	pTrigger->pev->classname = MAKE_STRING("xen_ttrigger");
+	pTrigger->SetClassname("xen_ttrigger");
 	pTrigger->pev->solid = Solid::Trigger;
 	pTrigger->pev->movetype = Movetype::None;
 	pTrigger->SetOwner(pOwner);
@@ -445,7 +445,7 @@ CXenHull* CXenHull::CreateHull(CBaseEntity* source, const Vector& mins, const Ve
 	pHull->SetAbsOrigin(source->pev->origin + offset);
 	pHull->SetModel(STRING(source->pev->model));
 	pHull->pev->solid = Solid::BBox;
-	pHull->pev->classname = MAKE_STRING("xen_hull");
+	pHull->SetClassname("xen_hull");
 	pHull->pev->movetype = Movetype::None;
 	pHull->SetOwner(source);
 	pHull->SetSize(mins, maxs);

@@ -2210,7 +2210,7 @@ void CBasePlayer::PostThink()
 
 void CBasePlayer::Spawn()
 {
-	pev->classname = MAKE_STRING("player");
+	SetClassname("player");
 	pev->health = 100;
 	pev->armorvalue = 0;
 	SetDamageMode(DamageMode::Aim);

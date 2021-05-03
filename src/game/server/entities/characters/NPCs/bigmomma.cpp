@@ -1068,7 +1068,7 @@ void MortarSpray(const Vector& position, const Vector& direction, int spriteMode
 void CBMortar::Spawn()
 {
 	pev->movetype = Movetype::Toss;
-	pev->classname = MAKE_STRING("bmortar");
+	SetClassname("bmortar");
 
 	pev->solid = Solid::BBox;
 	pev->rendermode = RenderMode::TransAlpha;
