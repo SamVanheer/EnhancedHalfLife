@@ -158,21 +158,6 @@ UTIL_GroupTrace::~UTIL_GroupTrace()
 }
 
 #ifdef	DEBUG
-edict_t* DBG_EntOfVars(const entvars_t* pev)
-{
-	if (pev->pContainingEntity != nullptr)
-		return pev->pContainingEntity;
-	ALERT(at_console, "entvars_t pContainingEntity is NULL, calling into engine");
-	edict_t* pent = (*g_engfuncs.pfnFindEntityByVars)((entvars_t*)pev);
-	if (pent == nullptr)
-		ALERT(at_console, "DAMN!  Even the engine couldn't FindEntityByVars!");
-	((entvars_t*)pev)->pContainingEntity = pent;
-	return pent;
-}
-#endif //DEBUG
-
-
-#ifdef	DEBUG
 void
 DBG_AssertFunction(
 	bool		fExpr,

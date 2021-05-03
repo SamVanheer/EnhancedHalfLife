@@ -586,7 +586,7 @@ public:
 	static CBaseEntity* Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner = nullptr);
 
 	virtual bool BecomeProne() { return false; }
-	edict_t* edict() { return ENT(pev); }
+	edict_t* edict() { return pev->pContainingEntity; }
 	int	  entindex() { return ENTINDEX(edict()); }
 
 	virtual Vector Center() { return (pev->absmax + pev->absmin) * 0.5; }	//!< center point of entity
@@ -986,7 +986,7 @@ template <class T> T* GetClassPtr(T* a)
 		pev = &CREATE_ENTITY()->v;
 
 	// get the private data
-	a = (T*)GET_PRIVATE(ENT(pev));
+	a = (T*)GET_PRIVATE(pev->pContainingEntity);
 
 	if (a == nullptr)
 	{

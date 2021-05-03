@@ -91,16 +91,6 @@ constexpr bool IsBitSet(const T& flBitVector, int bit)
 	extern "C" DLLEXPORT void mapClassName( entvars_t *pev ); \
 	void mapClassName( entvars_t *pev ) { GetClassPtr( (DLLClassName *)pev ); }
 
-//
-// Conversion among the two types of "entity", including identity-conversions.
-//
-#ifdef DEBUG
-edict_t* DBG_EntOfVars(const entvars_t* pev);
-inline edict_t* ENT(const entvars_t* pev) { return DBG_EntOfVars(pev); }
-#else
-inline edict_t* ENT(const entvars_t* pev) { return pev->pContainingEntity; }
-#endif
-
 inline int ENTINDEX(const edict_t* pEdict) { return (*g_engfuncs.pfnIndexOfEdict)(pEdict); }
 inline edict_t* INDEXENT(int iEdictNum) { return (*g_engfuncs.pfnPEntityOfEntIndex)(iEdictNum); }
 
