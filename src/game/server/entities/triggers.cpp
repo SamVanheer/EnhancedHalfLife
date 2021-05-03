@@ -304,7 +304,7 @@ void CRenderFxManager::Use(const UseInfo& info)
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKAMT))
 				pTarget->pev->renderamt = pev->renderamt;
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKMODE))
-				pTarget->pev->rendermode = pev->rendermode;
+				pTarget->SetRenderMode(GetRenderMode());
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKCOLOR))
 				pTarget->pev->rendercolor = pev->rendercolor;
 		}
@@ -860,7 +860,7 @@ void CLadder::Precache()
 	pev->skin = static_cast<int>(Contents::Ladder);
 	if (CVAR_GET_FLOAT("showtriggers") == 0)
 	{
-		pev->rendermode = RenderMode::TransTexture;
+		SetRenderMode(RenderMode::TransTexture);
 		pev->renderamt = 0;
 	}
 	pev->effects &= ~EF_NODRAW;
@@ -1080,7 +1080,7 @@ void CTriggerCamera::Spawn()
 	SetMovetype(Movetype::Noclip);
 	SetSolidType(Solid::Not);							// Remove model & collisions
 	pev->renderamt = 0;								// The engine won't draw this model if this is set to 0 and blending is on
-	pev->rendermode = RenderMode::TransTexture;
+	SetRenderMode(RenderMode::TransTexture);
 
 	m_initialSpeed = pev->speed;
 	if (m_acceleration == 0)

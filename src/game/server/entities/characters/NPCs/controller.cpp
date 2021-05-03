@@ -1039,7 +1039,7 @@ void CControllerHeadBall::Spawn()
 	SetSolidType(Solid::BBox);
 
 	SetModel("sprites/xspark4.spr");
-	pev->rendermode = RenderMode::TransAdd;
+	SetRenderMode(RenderMode::TransAdd);
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;
 	pev->rendercolor.z = 255;
@@ -1220,7 +1220,7 @@ void CControllerZapBall::Spawn()
 	SetSolidType(Solid::BBox);
 
 	SetModel("sprites/xspark4.spr");
-	pev->rendermode = RenderMode::TransAdd;
+	SetRenderMode(RenderMode::TransAdd);
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;
 	pev->rendercolor.z = 255;

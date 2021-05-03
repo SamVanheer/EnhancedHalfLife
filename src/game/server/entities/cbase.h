@@ -477,6 +477,13 @@ public:
 		pev->movetype = movetype;
 	}
 
+	RenderMode GetRenderMode() const { return pev->rendermode; }
+
+	void SetRenderMode(RenderMode rendermode)
+	{
+		pev->rendermode = rendermode;
+	}
+
 	DamageMode GetDamageMode() const { return static_cast<DamageMode>(pev->takedamage); }
 
 	void SetDamageMode(DamageMode mode)

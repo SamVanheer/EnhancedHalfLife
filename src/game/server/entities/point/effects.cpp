@@ -69,7 +69,7 @@ void CBubbling::Spawn()
 
 	SetSolidType(Solid::Not);							// Remove model & collisions
 	pev->renderamt = 0;								// The engine won't draw this model if this is set to 0 and blending is on
-	pev->rendermode = RenderMode::TransTexture;
+	SetRenderMode(RenderMode::TransTexture);
 	const int speed = pev->speed > 0 ? pev->speed : -pev->speed;
 
 	// HACKHACK!!! - Speed in rendercolor
@@ -220,7 +220,7 @@ void CBeam::BeamInit(const char* pSpriteName, int width)
 	SetWidth(width);
 	pev->skin = 0;
 	pev->sequence = 0;
-	pev->rendermode = RenderMode::Normal;
+	SetRenderMode(RenderMode::Normal);
 }
 
 void CBeam::PointsInit(const Vector& start, const Vector& end)
@@ -841,7 +841,7 @@ void CLightning::BeamUpdateVars()
 
 	pev->skin = 0;
 	pev->sequence = 0;
-	pev->rendermode = RenderMode::Normal;
+	SetRenderMode(RenderMode::Normal);
 	pev->flags |= FL_CUSTOMENTITY;
 	pev->model = m_iszSpriteName;
 	SetTexture(m_spriteTexture);
@@ -1507,7 +1507,7 @@ CGib* CEnvShooter::CreateGib()
 	pGib->m_bloodColor = DONT_BLEED;
 	pGib->m_material = m_iGibMaterial;
 
-	pGib->pev->rendermode = pev->rendermode;
+	pGib->SetRenderMode(GetRenderMode());
 	pGib->pev->renderamt = pev->renderamt;
 	pGib->pev->rendercolor = pev->rendercolor;
 	pGib->pev->renderfx = pev->renderfx;

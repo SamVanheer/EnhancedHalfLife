@@ -603,7 +603,7 @@ void CNihilanth::MakeFriend(Vector vecStart)
 	{
 		if (m_hFriend[i] != nullptr && !m_hFriend[i]->IsAlive())
 		{
-			if (pev->rendermode == RenderMode::Normal) // don't do it if they are already fading
+			if (GetRenderMode() == RenderMode::Normal) // don't do it if they are already fading
 				m_hFriend[i]->MyMonsterPointer()->FadeMonster();
 			m_hFriend[i] = nullptr;
 		}
@@ -1246,7 +1246,7 @@ void CNihilanthHVR::Spawn()
 {
 	Precache();
 
-	pev->rendermode = RenderMode::TransAdd;
+	SetRenderMode(RenderMode::TransAdd);
 	pev->renderamt = 255;
 	pev->scale = 3.0;
 }

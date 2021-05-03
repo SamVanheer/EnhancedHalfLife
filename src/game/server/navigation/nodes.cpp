@@ -1325,7 +1325,7 @@ void CTestHull::Spawn(CBaseEntity* pMasterNode)
 
 	// Make this invisible
 	// UNDONE: Shouldn't we just use EF_NODRAW?  This doesn't need to go to the client.
-	pev->rendermode = RenderMode::TransTexture;
+	SetRenderMode(RenderMode::TransTexture);
 	pev->renderamt = 0;
 }
 

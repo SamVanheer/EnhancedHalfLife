@@ -106,7 +106,7 @@ void CStomp::Spawn()
 
 	pev->framerate = 30;
 	pev->model = MAKE_STRING(GARG_STOMP_SPRITE_NAME.data());
-	pev->rendermode = RenderMode::TransTexture;
+	SetRenderMode(RenderMode::TransTexture);
 	pev->renderamt = 0;
 	EmitSound(SoundChannel::Body, GARG_STOMP_BUZZ_SOUND.data(), VOL_NORM, ATTN_NORM, PITCH_NORM * 0.55);
 }

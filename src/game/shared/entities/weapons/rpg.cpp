@@ -44,7 +44,7 @@ void CLaserSpot::Spawn()
 	SetMovetype(Movetype::None);
 	SetSolidType(Solid::Not);
 
-	pev->rendermode = RenderMode::Glow;
+	SetRenderMode(RenderMode::Glow);
 	pev->renderfx = RenderFX::NoDissipation;
 	pev->renderamt = 255;
 

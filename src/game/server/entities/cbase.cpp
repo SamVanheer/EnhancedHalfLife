@@ -213,10 +213,10 @@ bool CBaseEntity::ShouldToggle(UseType useType, bool currentState)
 
 int	CBaseEntity::DamageDecal(int bitsDamageType)
 {
-	if (pev->rendermode == RenderMode::TransAlpha)
+	if (GetRenderMode() == RenderMode::TransAlpha)
 		return -1;
 
-	if (pev->rendermode != RenderMode::Normal)
+	if (GetRenderMode() != RenderMode::Normal)
 		return DECAL_BPROOF1;
 
 	return DECAL_GUNSHOT1 + RANDOM_LONG(0, 4);

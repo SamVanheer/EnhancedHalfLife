@@ -587,10 +587,10 @@ void CBaseMonster::Killed(const KilledInfo& info)
 
 void CBaseEntity::SUB_StartFadeOut()
 {
-	if (pev->rendermode == RenderMode::Normal)
+	if (GetRenderMode() == RenderMode::Normal)
 	{
 		pev->renderamt = 255;
-		pev->rendermode = RenderMode::TransTexture;
+		SetRenderMode(RenderMode::TransTexture);
 	}
 
 	SetSolidType(Solid::Not);
@@ -711,7 +711,7 @@ void CGib::Spawn(const char* szGibModel)
 	// sometimes an entity inherits the edict from a former piece of glass,
 	// and will spawn using the same render FX or rendermode! bad!
 	pev->renderamt = 255;
-	pev->rendermode = RenderMode::Normal;
+	SetRenderMode(RenderMode::Normal);
 	pev->renderfx = RenderFX::None;
 	SetSolidType(Solid::SlideBox);/// hopefully this will fix the VELOCITY TOO LOW crap
 	SetClassname("gib");
@@ -1261,7 +1261,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 				pEntity->TraceAttack({pAttacker, 50, vecDir, tr, DMG_CLUB});
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				// only decal glass
-				if (auto hit = InstanceOrNull(tr.pHit); !IsNullEnt(hit) && hit->pev->rendermode != RenderMode::Normal)
+				if (auto hit = InstanceOrNull(tr.pHit); !IsNullEnt(hit) && hit->GetRenderMode() != RenderMode::Normal)
 				{
 					UTIL_DecalTrace(&tr, DECAL_GLASSBREAK1 + RANDOM_LONG(0, 2));
 				}
@@ -1340,7 +1340,7 @@ Vector CBasePlayer::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDi
 				pEntity->TraceAttack({pAttacker, 50, vecDir, tr, DMG_CLUB});
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
 				// only decal glass
-				if (auto hit = InstanceOrNull(tr.pHit); !IsNullEnt(hit) && hit->pev->rendermode != RenderMode::Normal)
+				if (auto hit = InstanceOrNull(tr.pHit); !IsNullEnt(hit) && hit->GetRenderMode() != RenderMode::Normal)
 				{
 					UTIL_DecalTrace(&tr, DECAL_GLASSBREAK1 + RANDOM_LONG(0, 2));
 				}

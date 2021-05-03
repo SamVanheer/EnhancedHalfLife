@@ -249,7 +249,7 @@ void CHAssassin::Spawn()
 
 	m_iTargetRanderamt = 20;
 	pev->renderamt = 20;
-	pev->rendermode = RenderMode::TransTexture;
+	SetRenderMode(RenderMode::TransTexture);
 
 	MonsterInit();
 }
@@ -622,13 +622,13 @@ void CHAssassin::RunAI()
 		}
 
 		pev->renderamt = std::max(pev->renderamt - 50, static_cast<float>(m_iTargetRanderamt));
-		pev->rendermode = RenderMode::TransTexture;
+		SetRenderMode(RenderMode::TransTexture);
 	}
 	else if (pev->renderamt < m_iTargetRanderamt)
 	{
 		pev->renderamt = std::min(pev->renderamt + 50, static_cast<float>(m_iTargetRanderamt));
 		if (pev->renderamt == 255)
-			pev->rendermode = RenderMode::Normal;
+			SetRenderMode(RenderMode::Normal);
 	}
 
 	if (m_Activity == ACT_RUN || m_Activity == ACT_WALK)

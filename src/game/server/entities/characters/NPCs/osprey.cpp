@@ -266,7 +266,7 @@ CBaseMonster* COsprey::MakeGrunt(Vector vecSrc)
 	{
 		if (m_hGrunt[i] == nullptr || !m_hGrunt[i]->IsAlive())
 		{
-			if (m_hGrunt[i] != nullptr && m_hGrunt[i]->pev->rendermode == RenderMode::Normal)
+			if (m_hGrunt[i] != nullptr && m_hGrunt[i]->GetRenderMode() == RenderMode::Normal)
 			{
 				m_hGrunt[i]->SUB_StartFadeOut();
 			}
