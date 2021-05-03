@@ -159,7 +159,7 @@ void CStomp::Think()
 				// pSprite->AnimateAndDie( RANDOM_FLOAT( 8.0, 12.0 ) );
 				pSprite->pev->nextthink = gpGlobals->time + 0.3;
 				pSprite->SetThink(&CSprite::SUB_Remove);
-				pSprite->SetTransparency(RenderMode::TransAdd, 255, 255, 255, 255, RenderFX::FadeFast);
+				pSprite->SetTransparency(RenderMode::TransAdd, {255, 255, 255}, 255, RenderFX::FadeFast);
 			}
 		}
 		pev->dmgtime += STOMP_INTERVAL;
@@ -730,7 +730,7 @@ void CGargantua::Spawn()
 	MonsterInit();
 
 	auto glow = m_hEyeGlow = CSprite::SpriteCreate(GARG_EYE_SPRITE_NAME.data(), GetAbsOrigin(), false);
-	glow->SetTransparency(RenderMode::Glow, 255, 255, 255, 0, RenderFX::NoDissipation);
+	glow->SetTransparency(RenderMode::Glow, {255, 255, 255}, 0, RenderFX::NoDissipation);
 	glow->SetAttachment(this, 1);
 	EyeOff();
 	m_seeTime = gpGlobals->time + 5;
@@ -1017,9 +1017,7 @@ void CGargantua::RunTask(Task_t* pTask)
 		if (gpGlobals->time > m_flWaitFinished)
 		{
 			SetRenderFX(RenderFX::Explode);
-			pev->rendercolor.x = 255;
-			pev->rendercolor.y = 0;
-			pev->rendercolor.z = 0;
+			SetRenderColor({255, 0, 0});
 			StopAnimation();
 			pev->nextthink = gpGlobals->time + 0.15;
 			SetThink(&CGargantua::SUB_Remove);

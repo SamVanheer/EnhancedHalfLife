@@ -63,18 +63,16 @@ public:
 	void TurnOff();
 	void TurnOn();
 	inline float Frames() { return m_maxFrame; }
-	inline void SetTransparency(RenderMode rendermode, int r, int g, int b, int a, RenderFX fx)
+	inline void SetTransparency(RenderMode rendermode, const Vector& rendercolor, int a, RenderFX fx)
 	{
 		SetRenderMode(rendermode);
-		pev->rendercolor.x = r;
-		pev->rendercolor.y = g;
-		pev->rendercolor.z = b;
+		SetRenderColor(rendercolor);
 		pev->renderamt = a;
 		SetRenderFX(fx);
 	}
 	inline void SetTexture(int spriteIndex) { pev->modelindex = spriteIndex; }
 	inline void SetScale(float scale) { pev->scale = scale; }
-	inline void SetColor(int r, int g, int b) { pev->rendercolor.x = r; pev->rendercolor.y = g; pev->rendercolor.z = b; }
+	inline void SetColor(int r, int g, int b) { SetRenderColor({r, g, b}); }
 	inline void SetBrightness(int brightness) { pev->renderamt = brightness; }
 
 	inline void AnimateAndDie(float framerate)
@@ -128,7 +126,7 @@ public:
 	inline void SetTexture(int spriteIndex) { pev->modelindex = spriteIndex; }
 	inline void SetWidth(int width) { pev->scale = width; }
 	inline void SetNoise(int amplitude) { pev->body = amplitude; }
-	inline void SetColor(int r, int g, int b) { pev->rendercolor.x = r; pev->rendercolor.y = g; pev->rendercolor.z = b; }
+	inline void SetColor(int r, int g, int b) { SetRenderColor({r, g, b}); }
 	inline void SetBrightness(int brightness) { pev->renderamt = brightness; }
 	inline void SetFrame(float frame) { pev->frame = frame; }
 	inline void SetScrollRate(int speed) { pev->animtime = speed; }
@@ -153,7 +151,7 @@ public:
 	inline int  GetTexture() { return pev->modelindex; }
 	inline int  GetWidth() { return pev->scale; }
 	inline int  GetNoise() { return pev->body; }
-	// inline void GetColor( int r, int g, int b ) { pev->rendercolor.x = r; pev->rendercolor.y = g; pev->rendercolor.z = b; }
+	// inline void GetColor( int r, int g, int b ) { SetRenderColor({r, g, b}); }
 	inline int  GetBrightness() { return pev->renderamt; }
 	inline int  GetFrame() { return pev->frame; }
 	inline int  GetScrollRate() { return pev->animtime; }

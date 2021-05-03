@@ -306,7 +306,7 @@ void CRenderFxManager::Use(const UseInfo& info)
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKMODE))
 				pTarget->SetRenderMode(GetRenderMode());
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKCOLOR))
-				pTarget->pev->rendercolor = pev->rendercolor;
+				pTarget->SetRenderColor(GetRenderColor());
 		}
 	}
 }

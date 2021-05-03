@@ -656,7 +656,7 @@ void CNihilanth::NextActivity()
 			ball = m_hBall = CSprite::SpriteCreate("sprites/tele1.spr", GetAbsOrigin(), true);
 			if (ball)
 			{
-				ball->SetTransparency(RenderMode::TransAdd, 255, 255, 255, 255, RenderFX::NoDissipation);
+				ball->SetTransparency(RenderMode::TransAdd, {255, 255, 255}, 255, RenderFX::NoDissipation);
 				ball->SetAttachment(this, 1);
 				ball->SetScale(4.0);
 				ball->pev->framerate = 10.0;
@@ -1274,9 +1274,7 @@ void CNihilanthHVR::CircleInit(CBaseEntity* pTarget)
 	// pev->scale = 3.0;
 	// SetModel( "sprites/xspark4.spr");
 	SetModel("sprites/muzzleflash3.spr");
-	pev->rendercolor.x = 255;
-	pev->rendercolor.y = 224;
-	pev->rendercolor.z = 192;
+	SetRenderColor({255, 224, 192});
 	pev->scale = 2.0;
 	m_nFrames = 1;
 	pev->renderamt = 255;
@@ -1374,9 +1372,7 @@ void CNihilanthHVR::ZapInit(CBaseEntity* pEnemy)
 
 	SetModel("sprites/nhth1.spr");
 
-	pev->rendercolor.x = 255;
-	pev->rendercolor.y = 255;
-	pev->rendercolor.z = 255;
+	SetRenderColor({255, 255, 255});
 	pev->scale = 2.0;
 
 	pev->velocity = (pEnemy->GetAbsOrigin() - GetAbsOrigin()).Normalize() * 200;
@@ -1491,9 +1487,7 @@ void CNihilanthHVR::TeleportInit(CNihilanth* pOwner, CBaseEntity* pEnemy, CBaseE
 	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 
-	pev->rendercolor.x = 255;
-	pev->rendercolor.y = 255;
-	pev->rendercolor.z = 255;
+	SetRenderColor({255, 255, 255});
 	pev->velocity.z *= 0.2;
 
 	SetModel("sprites/exit1.spr");
@@ -1515,9 +1509,7 @@ void CNihilanthHVR::GreenBallInit()
 	SetMovetype(Movetype::Fly);
 	SetSolidType(Solid::BBox);
 
-	pev->rendercolor.x = 255;
-	pev->rendercolor.y = 255;
-	pev->rendercolor.z = 255;
+	SetRenderColor({255, 255, 255});
 	pev->scale = 1.0;
 
 	SetModel("sprites/exit1.spr");

@@ -161,13 +161,7 @@ void CFuncConveyor::UpdateSpeed(float speed)
 	// Encode it as an integer with 4 fractional bits
 	const int speedCode = (int)(fabs(speed) * 16.0);
 
-	if (speed < 0)
-		pev->rendercolor.x = 1;
-	else
-		pev->rendercolor.x = 0;
-
-	pev->rendercolor.y = (speedCode >> 8);
-	pev->rendercolor.z = (speedCode & 0xFF);
+	SetRenderColor({speed < 0 ? 1 : 0, speedCode >> 8, speedCode & 0xFF});
 }
 
 void CFuncConveyor::Use(const UseInfo& info)

@@ -745,7 +745,7 @@ void CController::RunAI()
 		if (ball == nullptr)
 		{
 			ball = m_hBall[i] = CSprite::SpriteCreate("sprites/xspark4.spr", GetAbsOrigin(), true);
-			ball->SetTransparency(RenderMode::Glow, 255, 255, 255, 255, RenderFX::NoDissipation);
+			ball->SetTransparency(RenderMode::Glow, {255, 255, 255}, 255, RenderFX::NoDissipation);
 			ball->SetAttachment(this, (i + 3));
 			ball->SetScale(1.0);
 		}
@@ -1040,9 +1040,7 @@ void CControllerHeadBall::Spawn()
 
 	SetModel("sprites/xspark4.spr");
 	SetRenderMode(RenderMode::TransAdd);
-	pev->rendercolor.x = 255;
-	pev->rendercolor.y = 255;
-	pev->rendercolor.z = 255;
+	SetRenderColor({255, 255, 255});
 	pev->renderamt = 255;
 	pev->scale = 2.0;
 
@@ -1221,9 +1219,7 @@ void CControllerZapBall::Spawn()
 
 	SetModel("sprites/xspark4.spr");
 	SetRenderMode(RenderMode::TransAdd);
-	pev->rendercolor.x = 255;
-	pev->rendercolor.y = 255;
-	pev->rendercolor.z = 255;
+	SetRenderColor({255, 255, 255});
 	pev->renderamt = 255;
 	pev->scale = 0.5;
 

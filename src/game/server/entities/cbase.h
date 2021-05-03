@@ -484,6 +484,13 @@ public:
 		pev->rendermode = rendermode;
 	}
 
+	const Vector& GetRenderColor() const { return pev->rendercolor; }
+
+	void SetRenderColor(const Vector& rendercolor)
+	{
+		pev->rendercolor = rendercolor;
+	}
+
 	RenderFX GetRenderFX() const { return pev->renderfx; }
 
 	void SetRenderFX(RenderFX renderfx)

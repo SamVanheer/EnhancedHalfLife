@@ -403,7 +403,7 @@ void CEgon::CreateEffect()
 
 	auto sprite = m_hSprite = CSprite::SpriteCreate(EGON_FLARE_SPRITE.data(), GetAbsOrigin(), false);
 	sprite->pev->scale = 1.0;
-	sprite->SetTransparency(RenderMode::Glow, 255, 255, 255, 255, RenderFX::NoDissipation);
+	sprite->SetTransparency(RenderMode::Glow, {255, 255, 255}, 255, RenderFX::NoDissipation);
 	sprite->pev->spawnflags |= SF_SPRITE_TEMPORARY;
 	sprite->pev->flags |= FL_SKIPLOCALHOST;
 	sprite->SetOwner(m_hPlayer);

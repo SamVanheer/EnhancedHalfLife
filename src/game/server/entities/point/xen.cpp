@@ -95,7 +95,7 @@ void CXenPLight::Spawn()
 	pev->frame = RANDOM_FLOAT(0, 255);
 
 	auto glow = m_hGlow = CSprite::SpriteCreate(XEN_PLANT_GLOW_SPRITE.data(), GetAbsOrigin() + Vector(0, 0, (pev->mins.z + pev->maxs.z) * 0.5), false);
-	glow->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, GetRenderFX());
+	glow->SetTransparency(RenderMode::Glow, GetRenderColor(), pev->renderamt, GetRenderFX());
 	glow->SetAttachment(this, 1);
 }
 

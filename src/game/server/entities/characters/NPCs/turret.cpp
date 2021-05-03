@@ -299,7 +299,7 @@ void CTurret::Spawn()
 	SetThink(&CTurret::Initialize);
 
 	auto glow = m_hEyeGlow = CSprite::SpriteCreate(TURRET_GLOW_SPRITE.data(), GetAbsOrigin(), false);
-	glow->SetTransparency(RenderMode::Glow, 255, 0, 0, 0, RenderFX::NoDissipation);
+	glow->SetTransparency(RenderMode::Glow, {255, 0, 0}, 0, RenderFX::NoDissipation);
 	glow->SetAttachment(this, 2);
 	m_eyeBrightness = 0;
 

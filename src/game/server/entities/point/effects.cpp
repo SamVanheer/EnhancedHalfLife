@@ -73,9 +73,8 @@ void CBubbling::Spawn()
 	const int speed = pev->speed > 0 ? pev->speed : -pev->speed;
 
 	// HACKHACK!!! - Speed in rendercolor
-	pev->rendercolor.x = speed >> 8;
-	pev->rendercolor.y = speed & 255;
-	pev->rendercolor.z = (pev->speed < 0) ? 1 : 0;
+	//TODO: func_conveyor also does this but puts the values in a different order
+	SetRenderColor({speed >> 8, speed & 0xFF, pev->speed < 0 ? 1 : 0});
 
 	if (!(pev->spawnflags & SF_BUBBLES_STARTOFF))
 	{
@@ -685,9 +684,9 @@ void CLightning::StrikeThink()
 		WRITE_BYTE((int)(m_life * 10.0)); // life
 		WRITE_BYTE(m_boltWidth);  // width
 		WRITE_BYTE(m_noiseAmplitude);   // noise
-		WRITE_BYTE((int)pev->rendercolor.x);   // r, g, b
-		WRITE_BYTE((int)pev->rendercolor.y);   // r, g, b
-		WRITE_BYTE((int)pev->rendercolor.z);   // r, g, b
+		WRITE_BYTE((int)GetRenderColor().x);   // r, g, b
+		WRITE_BYTE((int)GetRenderColor().y);   // r, g, b
+		WRITE_BYTE((int)GetRenderColor().z);   // r, g, b
 		WRITE_BYTE(pev->renderamt);	// brightness
 		WRITE_BYTE(m_speed);		// speed
 		MESSAGE_END();
@@ -747,9 +746,9 @@ void CLightning::Zap(const Vector& vecSrc, const Vector& vecDest)
 	WRITE_BYTE((int)(m_life * 10.0)); // life
 	WRITE_BYTE(m_boltWidth);  // width
 	WRITE_BYTE(m_noiseAmplitude);   // noise
-	WRITE_BYTE((int)pev->rendercolor.x);   // r, g, b
-	WRITE_BYTE((int)pev->rendercolor.y);   // r, g, b
-	WRITE_BYTE((int)pev->rendercolor.z);   // r, g, b
+	WRITE_BYTE((int)GetRenderColor().x);   // r, g, b
+	WRITE_BYTE((int)GetRenderColor().y);   // r, g, b
+	WRITE_BYTE((int)GetRenderColor().z);   // r, g, b
 	WRITE_BYTE(pev->renderamt);	// brightness
 	WRITE_BYTE(m_speed);		// speed
 	MESSAGE_END();
@@ -920,7 +919,7 @@ void CLaser::Spawn()
 		m_hSprite = nullptr;
 
 	if (auto sprite = m_hSprite.Get(); sprite)
-		sprite->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, GetRenderFX());
+		sprite->SetTransparency(RenderMode::Glow, GetRenderColor(), pev->renderamt, GetRenderFX());
 
 	if (!IsStringNull(pev->targetname) && !(pev->spawnflags & SF_BEAM_STARTON))
 		TurnOff();
@@ -1509,7 +1508,7 @@ CGib* CEnvShooter::CreateGib()
 
 	pGib->SetRenderMode(GetRenderMode());
 	pGib->pev->renderamt = pev->renderamt;
-	pGib->pev->rendercolor = pev->rendercolor;
+	pGib->SetRenderColor(GetRenderColor());
 	pGib->SetRenderFX(GetRenderFX());
 	pGib->pev->scale = pev->scale;
 	pGib->pev->skin = pev->skin;
@@ -1866,12 +1865,12 @@ void CFade::Use(const UseInfo& info)
 	{
 		if (info.GetActivator()->IsNetClient())
 		{
-			UTIL_ScreenFade(static_cast<CBasePlayer*>(info.GetActivator()), pev->rendercolor, Duration(), HoldTime(), pev->renderamt, fadeFlags);
+			UTIL_ScreenFade(static_cast<CBasePlayer*>(info.GetActivator()), GetRenderColor(), Duration(), HoldTime(), pev->renderamt, fadeFlags);
 		}
 	}
 	else
 	{
-		UTIL_ScreenFadeAll(pev->rendercolor, Duration(), HoldTime(), pev->renderamt, fadeFlags);
+		UTIL_ScreenFadeAll(GetRenderColor(), Duration(), HoldTime(), pev->renderamt, fadeFlags);
 	}
 	SUB_UseTargets(this, UseType::Toggle, 0);
 }
