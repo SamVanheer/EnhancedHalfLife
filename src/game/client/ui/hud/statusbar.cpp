@@ -174,7 +174,7 @@ bool CHudStatusBar::Draw(float fTime)
 	for (int i = 0; i < MAX_STATUSBAR_LINES; i++)
 	{
 		int TextHeight, TextWidth;
-		GetConsoleStringSize(m_szStatusBar[i], &TextWidth, &TextHeight);
+		GetConsoleStringSize(m_szStatusBar[i], TextWidth, TextHeight);
 
 		int x = 8;
 		int y = Y_START - (4 + TextHeight * i); // draw along bottom of screen

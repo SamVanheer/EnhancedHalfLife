@@ -830,7 +830,7 @@ void CEnvSound::KeyValue(KeyValueData* pkvd)
 /**
 *	@brief returns true if the given sound entity (pev) is in range and can see the given player entity (pevTarget)
 */
-bool IsEnvSoundInRange(CEnvSound* pSound, CBaseEntity* pTarget, float* pflRange)
+bool IsEnvSoundInRange(CEnvSound* pSound, CBaseEntity* pTarget, float& flRange)
 {
 	const Vector vecSpot1 = pSound->GetAbsOrigin() + pSound->pev->view_ofs;
 	const Vector vecSpot2 = pTarget->GetAbsOrigin() + pTarget->pev->view_ofs;
@@ -846,13 +846,12 @@ bool IsEnvSoundInRange(CEnvSound* pSound, CBaseEntity* pTarget, float* pflRange)
 	// calc range from sound entity to player
 
 	const Vector vecRange = tr.vecEndPos - vecSpot1;
-	const float flRange = vecRange.Length();
+	const float flCandidateRange = vecRange.Length();
 
-	if (pSound->m_flRadius < flRange)
+	if (pSound->m_flRadius < flCandidateRange)
 		return false;
 
-	if (pflRange)
-		*pflRange = flRange;
+	flRange = flCandidateRange;
 
 	return true;
 }
@@ -891,7 +890,7 @@ void CEnvSound::Think()
 			// we're looking at a valid sound entity affecting
 			// player, make sure it's still valid, update range
 
-			if (IsEnvSoundInRange(this, pPlayer, &flRange)) {
+			if (IsEnvSoundInRange(this, pPlayer, flRange)) {
 				pPlayer->m_flSndRange = flRange;
 				pev->nextthink = gpGlobals->time + FastThinkInterval;
 				return;
@@ -919,7 +918,7 @@ void CEnvSound::Think()
 	// if we got this far, we're looking at an entity that is contending
 	// for current player sound. the closest entity to player wins.
 
-	if (IsEnvSoundInRange(this, pPlayer, &flRange))
+	if (IsEnvSoundInRange(this, pPlayer, flRange))
 	{
 		if (flRange < pPlayer->m_flSndRange || pPlayer->m_flSndRange == 0)
 		{

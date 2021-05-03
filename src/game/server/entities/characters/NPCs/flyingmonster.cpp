@@ -208,7 +208,7 @@ float CFlyingMonster::CeilingZ(const Vector& position)
 	return maxUp.z;
 }
 
-bool CFlyingMonster::ProbeZ(const Vector& position, const Vector& probe, float* pFraction)
+bool CFlyingMonster::ProbeZ(const Vector& position, const Vector& probe, float& fraction)
 {
 	const Contents conPosition = UTIL_PointContents(position);
 	if ((((pev->flags) & FL_SWIM) == FL_SWIM) ^ (conPosition == Contents::Water))
@@ -216,7 +216,7 @@ bool CFlyingMonster::ProbeZ(const Vector& position, const Vector& probe, float* 
 		//    SWIMING & !WATER
 		// or FLYING  & WATER
 		//
-		*pFraction = 0.0;
+		fraction = 0.0;
 		return true; // We hit a water boundary because we are where we don't belong.
 	}
 	const Contents conProbe = UTIL_PointContents(probe);
@@ -225,7 +225,7 @@ bool CFlyingMonster::ProbeZ(const Vector& position, const Vector& probe, float* 
 		// The probe is either entirely inside the water (for fish) or entirely
 		// outside the water (for birds).
 		//
-		*pFraction = 1.0;
+		fraction = 1.0;
 		return false;
 	}
 
@@ -249,7 +249,7 @@ bool CFlyingMonster::ProbeZ(const Vector& position, const Vector& probe, float* 
 		}
 		diff = maxProbeLength - minProbeLength;
 	}
-	*pFraction = minProbeLength / ProbeLength;
+	fraction = minProbeLength / ProbeLength;
 
 	return true;
 }

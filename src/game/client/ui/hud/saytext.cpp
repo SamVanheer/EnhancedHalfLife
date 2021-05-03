@@ -201,7 +201,7 @@ void CHudSayText::SayTextPrint(const char* pszBuf, int iBufSize, int clientIndex
 void CHudSayText::EnsureTextFitsInOneLineAndWrapIfHaveTo(int line)
 {
 	int line_width = 0;
-	GetConsoleStringSize(m_szLineBuffer[line], &line_width, &m_line_height);
+	GetConsoleStringSize(m_szLineBuffer[line], line_width, m_line_height);
 
 	if ((line_width + LINE_START) > MAX_LINE_WIDTH)
 	{ // string is too long to fit on line
@@ -233,7 +233,7 @@ void CHudSayText::EnsureTextFitsInOneLineAndWrapIfHaveTo(int line)
 				last_break = x;
 
 			buf[0] = *x;  // get the length of the current character
-			GetConsoleStringSize(buf, &tmp_len, &m_line_height);
+			GetConsoleStringSize(buf, tmp_len, m_line_height);
 			length += tmp_len;
 
 			if (length > MAX_LINE_WIDTH)

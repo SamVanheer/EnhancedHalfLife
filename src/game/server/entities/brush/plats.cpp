@@ -1094,7 +1094,7 @@ void CFuncTrackTrain::Next()
 	Vector nextPos = GetAbsOrigin();
 
 	nextPos.z -= m_height;
-	CPathTrack* pnext = m_hPath->LookAhead(&nextPos, pev->speed * 0.1, 1);
+	CPathTrack* pnext = m_hPath->LookAhead(nextPos, pev->speed * 0.1, 1);
 	nextPos.z += m_height;
 
 	pev->velocity = (nextPos - GetAbsOrigin()) * 10;
@@ -1102,9 +1102,9 @@ void CFuncTrackTrain::Next()
 
 	nextFront.z -= m_height;
 	if (m_length > 0)
-		m_hPath->LookAhead(&nextFront, m_length, 0);
+		m_hPath->LookAhead(nextFront, m_length, 0);
 	else
-		m_hPath->LookAhead(&nextFront, 100, 0);
+		m_hPath->LookAhead(nextFront, 100, 0);
 	nextFront.z += m_height;
 
 	const Vector delta = nextFront - GetAbsOrigin();
@@ -1299,7 +1299,7 @@ void CFuncTrackTrain::Find()
 
 	Vector look = nextPos;
 	look.z -= m_height;
-	path->LookAhead(&look, m_length, 0);
+	path->LookAhead(look, m_length, 0);
 	look.z += m_height;
 
 	pev->angles = VectorAngles(look - nextPos);

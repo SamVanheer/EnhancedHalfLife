@@ -51,11 +51,11 @@ public:
 	void		Use(const UseInfo& info) override;
 
 	CPathTrack* ValidPath(CPathTrack* ppath, int testFlag);		// Returns ppath if enabled, nullptr otherwise
-	void		Project(CPathTrack* pstart, CPathTrack* pend, Vector* origin, float dist);
+	void		Project(CPathTrack* pstart, CPathTrack* pend, Vector& origin, float dist);
 
 	static CPathTrack* Instance(CBaseEntity* pent);
 
-	CPathTrack* LookAhead(Vector* origin, float dist, int move);
+	CPathTrack* LookAhead(Vector& origin, float dist, int move);
 	CPathTrack* Nearest(Vector origin);
 
 	CPathTrack* GetNext();

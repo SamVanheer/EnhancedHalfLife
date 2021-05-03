@@ -80,7 +80,7 @@ public:
 
 	// Player specific data
 	// Determine pitch and blending amounts for players
-	virtual void StudioPlayerBlend(mstudioseqdesc_t* pseqdesc, int* pBlend, float* pPitch);
+	virtual void StudioPlayerBlend(mstudioseqdesc_t* pseqdesc, int& blend, float& pitch);
 
 	// Estimate gait frame for player
 	virtual void StudioEstimateGait(entity_state_t* pplayer);

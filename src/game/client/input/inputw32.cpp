@@ -345,9 +345,9 @@ void IN_Shutdown()
 /**
 *	@brief Ask for mouse position from engine
 */
-void IN_GetMousePos(int* mx, int* my)
+void IN_GetMousePos(int& mx, int& my)
 {
-	gEngfuncs.GetMousePosition(mx, my);
+	gEngfuncs.GetMousePosition(&mx, &my);
 }
 
 /**
@@ -402,10 +402,10 @@ void DLLEXPORT IN_MouseEvent(int mstate)
 /**
 *	@brief Purpose: Allows modulation of mouse scaling/senstivity value and application of custom algorithms.
 */
-void IN_ScaleMouse(float* x, float* y)
+void IN_ScaleMouse(float& x, float& y)
 {
-	float mx = *x;
-	float my = *y;
+	float mx = x;
+	float my = y;
 
 	// This is the default sensitivity
 	float mouse_senstivity = (gHUD.GetSensitivity() != 0) ? gHUD.GetSensitivity() : sensitivity->value;
@@ -425,23 +425,23 @@ void IN_ScaleMouse(float* x, float* y)
 			accelerated_sensitivity = accelerated_sensitivity_max;
 		}
 
-		*x *= accelerated_sensitivity;
-		*y *= accelerated_sensitivity;
+		x *= accelerated_sensitivity;
+		y *= accelerated_sensitivity;
 
 		// Further re-scale by yaw and pitch magnitude if user requests alternate mode 2
 		// This means that they will need to up their value for m_customaccel_scale greatly (>40x) since m_pitch/yaw default
 		//  to 0.022
 		if (m_customaccel->value == 2)
 		{
-			*x *= m_yaw->value;
-			*y *= m_pitch->value;
+			x *= m_yaw->value;
+			y *= m_pitch->value;
 		}
 	}
 	else
 	{
 		// Just apply the default
-		*x *= mouse_senstivity;
-		*y *= mouse_senstivity;
+		x *= mouse_senstivity;
+		y *= mouse_senstivity;
 	}
 }
 
@@ -527,7 +527,7 @@ void IN_MouseMove(float frametime, usercmd_t* cmd)
 		old_mouse_y = my;
 
 		// Apply custom mouse scaling/acceleration
-		IN_ScaleMouse(&mouse_x, &mouse_y);
+		IN_ScaleMouse(mouse_x, mouse_y);
 
 		// add mouse X/Y movement to cmd
 		if ((in_strafe.state & KEYBUTTON_DOWN) || (lookstrafe->value && (in_mlook.state & KEYBUTTON_DOWN)))
@@ -583,7 +583,7 @@ void IN_MouseMove(float frametime, usercmd_t* cmd)
 		{
 			int mx, my;
 			void V_Move( int mx, int my );
-			IN_GetMousePos( &mx, &my );
+			IN_GetMousePos( mx, my );
 			V_Move( mx, my );
 		}
 	#endif

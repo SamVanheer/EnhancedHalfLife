@@ -136,15 +136,15 @@ inline int DrawConsoleString(int x, int y, const char* string)
 	return gEngfuncs.pfnDrawConsoleString(x, y, string);
 }
 
-inline void GetConsoleStringSize(const char* string, int* width, int* height)
+inline void GetConsoleStringSize(const char* string, int& width, int& height)
 {
-	gEngfuncs.pfnDrawConsoleStringLen(string, width, height);
+	gEngfuncs.pfnDrawConsoleStringLen(string, &width, &height);
 }
 
 inline int ConsoleStringLen(const char* string)
 {
 	int _width, _height;
-	GetConsoleStringSize(string, &_width, &_height);
+	GetConsoleStringSize(string, _width, _height);
 	return _width;
 }
 

@@ -218,12 +218,12 @@ CPathTrack* CPathTrack::ValidPath(CPathTrack* ppath, int testFlag)
 	return ppath;
 }
 
-void CPathTrack::Project(CPathTrack* pstart, CPathTrack* pend, Vector* origin, float dist)
+void CPathTrack::Project(CPathTrack* pstart, CPathTrack* pend, Vector& origin, float dist)
 {
 	if (pstart && pend)
 	{
 		const Vector dir = (pend->GetAbsOrigin() - pstart->GetAbsOrigin()).Normalize();
-		*origin = pend->GetAbsOrigin() + dir * dist;
+		origin = pend->GetAbsOrigin() + dir * dist;
 	}
 }
 
@@ -251,12 +251,12 @@ void CPathTrack::SetPrevious(CPathTrack* pprev)
 }
 
 // Assumes this is ALWAYS enabled
-CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
+CPathTrack* CPathTrack::LookAhead(Vector& origin, float dist, int move)
 {
 	const float originalDist = dist;
 
 	CPathTrack* pcurrent = this;
-	Vector currentPos = *origin;
+	Vector currentPos = origin;
 
 	if (dist < 0)		// Travelling backwards through path
 	{
@@ -277,21 +277,21 @@ CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 			}
 			else if (length > dist)	// enough left in this path to move
 			{
-				*origin = currentPos + (dir * (dist / length));
+				origin = currentPos + (dir * (dist / length));
 				return pcurrent;
 			}
 			else
 			{
 				dist -= length;
 				currentPos = pcurrent->GetAbsOrigin();
-				*origin = currentPos;
+				origin = currentPos;
 				if (!ValidPath(pcurrent->GetPrevious(), move))	// If there is no previous node, or it's disabled, return now.
 					return nullptr;
 
 				pcurrent = pcurrent->GetPrevious();
 			}
 		}
-		*origin = currentPos;
+		origin = currentPos;
 		return pcurrent;
 	}
 	else
@@ -314,7 +314,7 @@ CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 			}
 			if (length > dist)	// enough left in this path to move
 			{
-				*origin = currentPos + (dir * (dist / length));
+				origin = currentPos + (dir * (dist / length));
 				return pcurrent;
 			}
 			else
@@ -322,10 +322,10 @@ CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 				dist -= length;
 				currentPos = pcurrent->GetNext()->GetAbsOrigin();
 				pcurrent = pcurrent->GetNext();
-				*origin = currentPos;
+				origin = currentPos;
 			}
 		}
-		*origin = currentPos;
+		origin = currentPos;
 	}
 
 	return pcurrent;

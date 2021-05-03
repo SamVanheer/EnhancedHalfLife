@@ -1013,7 +1013,7 @@ Vector CIchthyosaur::DoProbe(const Vector& Probe)
 {
 	Vector WallNormal = vec3_down; // WATER normal is Straight Down for fish.
 	float frac;
-	bool bBumpedSomething = ProbeZ(GetAbsOrigin(), Probe, &frac);
+	bool bBumpedSomething = ProbeZ(GetAbsOrigin(), Probe, frac);
 
 	TraceResult tr;
 	UTIL_TraceMonsterHull(this, GetAbsOrigin(), Probe, IgnoreMonsters::No, this, &tr);

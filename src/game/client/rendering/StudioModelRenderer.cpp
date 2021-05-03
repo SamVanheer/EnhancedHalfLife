@@ -300,27 +300,27 @@ mstudioanim_t* CStudioModelRenderer::StudioGetAnim(model_t* m_pSubModel, mstudio
 	return (mstudioanim_t*)((byte*)paSequences[pseqdesc->seqgroup].data + pseqdesc->animindex);
 }
 
-void CStudioModelRenderer::StudioPlayerBlend(mstudioseqdesc_t* pseqdesc, int* pBlend, float* pPitch)
+void CStudioModelRenderer::StudioPlayerBlend(mstudioseqdesc_t* pseqdesc, int& blend, float& pitch)
 {
 	// calc up/down pointing
-	*pBlend = (*pPitch * 3);
-	if (*pBlend < pseqdesc->blendstart[0])
+	blend = (pitch * 3);
+	if (blend < pseqdesc->blendstart[0])
 	{
-		*pPitch -= pseqdesc->blendstart[0] / 3.0;
-		*pBlend = 0;
+		pitch -= pseqdesc->blendstart[0] / 3.0;
+		blend = 0;
 	}
-	else if (*pBlend > pseqdesc->blendend[0])
+	else if (blend > pseqdesc->blendend[0])
 	{
-		*pPitch -= pseqdesc->blendend[0] / 3.0;
-		*pBlend = 255;
+		pitch -= pseqdesc->blendend[0] / 3.0;
+		blend = 255;
 	}
 	else
 	{
 		if (pseqdesc->blendend[0] - pseqdesc->blendstart[0] < 0.1) // catch qc error
-			*pBlend = 127;
+			blend = 127;
 		else
-			*pBlend = 255 * (*pBlend - pseqdesc->blendstart[0]) / (pseqdesc->blendend[0] - pseqdesc->blendstart[0]);
-		*pPitch = 0;
+			blend = 255 * (blend - pseqdesc->blendstart[0]) / (pseqdesc->blendend[0] - pseqdesc->blendstart[0]);
+		pitch = 0;
 	}
 }
 
@@ -1133,7 +1133,7 @@ void CStudioModelRenderer::StudioProcessGait(entity_state_t* pplayer)
 
 	pseqdesc = (mstudioseqdesc_t*)((byte*)m_pStudioHeader + m_pStudioHeader->seqindex) + m_pCurrentEntity->curstate.sequence;
 
-	StudioPlayerBlend(pseqdesc, &iBlend, &m_pCurrentEntity->angles[PITCH]);
+	StudioPlayerBlend(pseqdesc, iBlend, m_pCurrentEntity->angles[PITCH]);
 
 	m_pCurrentEntity->latched.prevangles[PITCH] = m_pCurrentEntity->angles[PITCH];
 	m_pCurrentEntity->curstate.blending[0] = iBlend;

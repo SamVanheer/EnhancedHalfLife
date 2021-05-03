@@ -37,7 +37,7 @@ public:
 	inline void	SetFlyingSpeed(float speed) { m_flightSpeed = speed; }
 	float		CeilingZ(const Vector& position);
 	float		FloorZ(const Vector& position);
-	bool		ProbeZ(const Vector& position, const Vector& probe, float* pFraction);
+	bool		ProbeZ(const Vector& position, const Vector& probe, float& fraction);
 
 	// UNDONE:  Save/restore this stuff!!!
 protected:
