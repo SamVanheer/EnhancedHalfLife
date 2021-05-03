@@ -4,7 +4,7 @@ add_library(vgui SHARED IMPORTED)
 if (WIN32)
 	set_target_properties(vgui PROPERTIES IMPORTED_IMPLIB "${CMAKE_CURRENT_SOURCE_DIR}/../../utils/vgui/lib/win32_vc6/vgui.lib")
 else()
-	set_target_properties(vgui PROPERTIES IMPORTED_LOCATION "${HalfLife_GAME_DIRECTORY}/vgui.so")
+	set_target_properties(vgui PROPERTIES IMPORTED_LOCATION "${GAME_DIRECTORY}/vgui.so")
 endif()
 
 target_include_directories(vgui INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../utils/vgui/include)
@@ -15,7 +15,7 @@ add_library(SDL2 SHARED IMPORTED)
 if (WIN32)
 	set_target_properties(SDL2 PROPERTIES IMPORTED_IMPLIB "${CMAKE_CURRENT_SOURCE_DIR}/../../../external/SDL2/lib/SDL2.lib")
 else()
-	set_target_properties(SDL2 PROPERTIES IMPORTED_LOCATION "${HalfLife_GAME_DIRECTORY}/libSDL2.so")
+	set_target_properties(SDL2 PROPERTIES IMPORTED_LOCATION "${GAME_DIRECTORY}/libSDL2.so")
 endif()
 
 target_include_directories(vgui INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../../external/SDL2/include)
@@ -247,9 +247,9 @@ if (MSVC)
 	set(HL_EXECUTABLE "hl.exe")
 
 	set_target_properties(client PROPERTIES
-		VS_DEBUGGER_COMMAND "${HalfLife_GAME_DIRECTORY}/${HL_EXECUTABLE}"
+		VS_DEBUGGER_COMMAND "${GAME_DIRECTORY}/${HL_EXECUTABLE}"
 		VS_DEBUGGER_COMMAND_ARGUMENTS ${COMMAND_ARGUMENTS}
-		VS_DEBUGGER_WORKING_DIRECTORY "${HalfLife_GAME_DIRECTORY}")
+		VS_DEBUGGER_WORKING_DIRECTORY "${GAME_DIRECTORY}")
 endif()
 	
 # Set install paths to the user-defined mod directory

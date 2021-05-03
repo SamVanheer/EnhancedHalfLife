@@ -8,13 +8,7 @@ project(HalfLifeMod
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if (WIN32)
-	#Try to get the directory path from registry if possible
-	get_filename_component(STEAM_HALFLIFE_DIRECTORY "[HKEY_CURRENT_USER\\Software\\Valve\\Steam;ModInstallPath]" ABSOLUTE)
-endif()
-
-# Used to locate binaries so dependencies are fixed up correctly (e.g. vgui.so)
-set(HalfLife_GAME_DIRECTORY "${STEAM_HALFLIFE_DIRECTORY}" CACHE PATH "Path to the Half-Life directory")
+get_filename_component(GAME_DIRECTORY ${CMAKE_INSTALL_PREFIX} DIRECTORY)
 
 if (MSVC)
 	# These options are prefixed with HalfLife so the CMake GUI can group them
@@ -41,10 +35,10 @@ if (MSVC)
 	endif()
 endif()
 
-if ("${HalfLife_GAME_DIRECTORY}" STREQUAL "")
-	message(FATAL_ERROR "You must specify the path to the Half-Life directory")
-elseif (NOT EXISTS ${HalfLife_GAME_DIRECTORY})
-	message(FATAL_ERROR "The given Half-Life directory path ${HalfLife_GAME_DIRECTORY} is not valid")
+if ("${GAME_DIRECTORY}" STREQUAL "")
+	message(FATAL_ERROR "You must specify the path to the mod directory in CMAKE_INSTALL_PREFIX")
+elseif (NOT EXISTS ${GAME_DIRECTORY})
+	message(FATAL_ERROR "The given Half-Life directory path ${CMAKE_INSTALL_PREFIX} is not valid")
 endif()
 
 set(INCLUDE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../include)
