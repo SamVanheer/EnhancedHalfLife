@@ -161,7 +161,7 @@ void CGib::SpawnHeadGib(CBaseEntity* pVictim)
 	pGib->LimitVelocity();
 }
 
-void CGib::SpawnRandomGibs(CBaseEntity* pVictim, int cGibs, int human) //TODO: human should be bool
+void CGib::SpawnRandomGibs(CBaseEntity* pVictim, int cGibs, bool human)
 {
 	for (int cSplat = 0; cSplat < cGibs; cSplat++)
 	{
@@ -290,7 +290,7 @@ void CBaseMonster::GibMonster()
 		if (CVAR_GET_FLOAT("violence_hgibs") != 0)	// Only the player will ever get here
 		{
 			CGib::SpawnHeadGib(this);
-			CGib::SpawnRandomGibs(this, 4, 1);	// throw some human gibs.
+			CGib::SpawnRandomGibs(this, 4, true);	// throw some human gibs.
 		}
 		gibbed = true;
 	}
@@ -298,7 +298,7 @@ void CBaseMonster::GibMonster()
 	{
 		if (CVAR_GET_FLOAT("violence_agibs") != 0)	// Should never get here, but someone might call it directly
 		{
-			CGib::SpawnRandomGibs(this, 4, 0);	// Throw alien gibs
+			CGib::SpawnRandomGibs(this, 4, false);	// Throw alien gibs
 		}
 		gibbed = true;
 	}

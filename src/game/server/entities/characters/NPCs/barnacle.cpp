@@ -77,7 +77,7 @@ void CBarnacle::HandleAnimEvent(AnimationEvent& event)
 	switch (event.event)
 	{
 	case BARNACLE_AE_PUKEGIB:
-		CGib::SpawnRandomGibs(this, 1, 1);
+		CGib::SpawnRandomGibs(this, 1, true);
 		break;
 	default:
 		CBaseMonster::HandleAnimEvent(event);
@@ -232,7 +232,7 @@ void CBarnacle::BarnacleThink()
 		if (m_cGibs && RANDOM_LONG(0, 99) == 1)
 		{
 			// cough up a gib.
-			CGib::SpawnRandomGibs(this, 1, 1);
+			CGib::SpawnRandomGibs(this, 1, true);
 			m_cGibs--;
 
 			switch (RANDOM_LONG(0, 2))
@@ -304,7 +304,7 @@ void CBarnacle::Killed(const KilledInfo& info)
 		}
 	}
 
-	//	CGib::SpawnRandomGibs( pev, 4, 1 );
+	//	CGib::SpawnRandomGibs( pev, 4, true );
 
 	switch (RANDOM_LONG(0, 1))
 	{
