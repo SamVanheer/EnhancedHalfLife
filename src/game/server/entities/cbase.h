@@ -433,6 +433,7 @@ public:
 
 	/**
 	*	@brief This updates global tables that need to know about entities being removed
+	*	Do not call this in the destructor/Destroy/OnDestroy as it's not meant to be called there, only on explicit removal
 	*/
 	void UpdateOnRemove();
 
