@@ -54,6 +54,8 @@ constexpr int FCAP_FORCE_TRANSITION = 0x00000080;	//!< ALWAYS goes across transi
 #include "animationevent.hpp"
 #include "ehandle.hpp"
 
+struct studiohdr_t;
+
 #define EXPORT DLLEXPORT
 
 enum class UseType
@@ -732,6 +734,12 @@ public:
 	bool Restore(CRestore& restore) override;
 
 	static TYPEDESCRIPTION m_SaveData[];
+
+	/**
+	*	@brief Gets the studio model header
+	*	Only valid for entities that use studio models
+	*/
+	studiohdr_t* GetModelPointer();
 
 	// Basic Monster Animation functions
 	/**

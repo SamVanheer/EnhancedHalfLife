@@ -2216,9 +2216,7 @@ float CBaseMonster::VecToYaw(Vector vecDir)
 void CBaseMonster::SetEyePosition()
 {
 	Vector  vecEyePosition;
-	void* pmodel = GET_MODEL_PTR(edict());
-
-	GetEyePosition(pmodel, vecEyePosition);
+	GetEyePosition(GetModelPointer(), vecEyePosition);
 
 	pev->view_ofs = vecEyePosition;
 

@@ -638,7 +638,7 @@ void CCineMonster::Activate()
 	// Found a compatible entity
 	if (pTarget)
 	{
-		if (void* pmodel = GET_MODEL_PTR(pTarget->edict()); pmodel)
+		if (void* pmodel = GetModelPointer(); pmodel)
 		{
 			// Look through the event list for stuff to precache
 			SequencePrecache(pmodel, STRING(m_iszIdle));

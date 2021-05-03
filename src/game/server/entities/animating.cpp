@@ -29,6 +29,11 @@ TYPEDESCRIPTION	CBaseAnimating::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CBaseAnimating, CBaseDelay);
 
+studiohdr_t* CBaseAnimating::GetModelPointer()
+{
+	return reinterpret_cast<studiohdr_t*>(GET_MODEL_PTR(edict()));
+}
+
 float CBaseAnimating::StudioFrameAdvance(float flInterval)
 {
 	if (flInterval == 0.0)
@@ -61,30 +66,22 @@ float CBaseAnimating::StudioFrameAdvance(float flInterval)
 int CBaseAnimating::LookupActivity(int activity)
 {
 	ASSERT(activity != 0);
-	void* pmodel = GET_MODEL_PTR(edict());
-
-	return ::LookupActivity(pmodel, activity);
+	return ::LookupActivity(GetModelPointer(), activity);
 }
 
 int CBaseAnimating::LookupActivityHeaviest(int activity)
 {
-	void* pmodel = GET_MODEL_PTR(edict());
-
-	return ::LookupActivityHeaviest(pmodel, activity);
+	return ::LookupActivityHeaviest(GetModelPointer(), activity);
 }
 
 int CBaseAnimating::LookupSequence(const char* label)
 {
-	void* pmodel = GET_MODEL_PTR(edict());
-
-	return ::LookupSequence(pmodel, label);
+	return ::LookupSequence(GetModelPointer(), label);
 }
 
 void CBaseAnimating::ResetSequenceInfo()
 {
-	void* pmodel = GET_MODEL_PTR(edict());
-
-	GetSequenceInfo(pmodel, this, m_flFrameRate, m_flGroundSpeed);
+	GetSequenceInfo(GetModelPointer(), this, m_flFrameRate, m_flGroundSpeed);
 	m_fSequenceLoops = ((GetSequenceFlags() & STUDIO_LOOPING) != 0);
 	pev->animtime = gpGlobals->time;
 	pev->framerate = 1.0;
@@ -94,14 +91,12 @@ void CBaseAnimating::ResetSequenceInfo()
 
 int CBaseAnimating::GetSequenceFlags()
 {
-	void* pmodel = GET_MODEL_PTR(edict());
-
-	return ::GetSequenceFlags(pmodel, this);
+	return ::GetSequenceFlags(GetModelPointer(), this);
 }
 
 void CBaseAnimating::DispatchAnimEvents(float flInterval)
 {
-	void* pmodel = GET_MODEL_PTR(edict());
+	void* pmodel = GetModelPointer();
 
 	if (!pmodel)
 	{
@@ -130,14 +125,12 @@ void CBaseAnimating::DispatchAnimEvents(float flInterval)
 
 float CBaseAnimating::SetBoneController(int iController, float flValue)
 {
-	void* pmodel = GET_MODEL_PTR(edict());
-
-	return SetController(pmodel, this, iController, flValue);
+	return SetController(GetModelPointer(), this, iController, flValue);
 }
 
 void CBaseAnimating::InitBoneControllers()
 {
-	void* pmodel = GET_MODEL_PTR(edict());
+	void* pmodel = GetModelPointer();
 
 	SetController(pmodel, this, 0, 0.0);
 	SetController(pmodel, this, 1, 0.0);
@@ -147,9 +140,7 @@ void CBaseAnimating::InitBoneControllers()
 
 float CBaseAnimating::SetBlending(int iBlender, float flValue)
 {
-	void* pmodel = GET_MODEL_PTR(edict());
-
-	return ::SetBlending(pmodel, this, iBlender, flValue);
+	return ::SetBlending(GetModelPointer(), this, iBlender, flValue);
 }
 
 void CBaseAnimating::GetBonePosition(int iBone, Vector& origin, Vector& angles)
@@ -164,8 +155,7 @@ void CBaseAnimating::GetAttachment(int iAttachment, Vector& origin, Vector& angl
 
 int CBaseAnimating::FindTransition(int iEndingSequence, int iGoalSequence, int& iDir)
 {
-	void* pmodel = GET_MODEL_PTR(edict());
-	return ::FindTransition(pmodel, iEndingSequence, iGoalSequence, iDir);
+	return ::FindTransition(GetModelPointer(), iEndingSequence, iGoalSequence, iDir);
 }
 
 int CBaseAnimating::FindTransition(int iEndingSequence, int iGoalSequence)
@@ -180,18 +170,18 @@ int CBaseAnimating::FindTransition(int iEndingSequence, int iGoalSequence)
 
 void CBaseAnimating::SetBodygroup(int iGroup, int iValue)
 {
-	::SetBodygroup(GET_MODEL_PTR(edict()), this, iGroup, iValue);
+	::SetBodygroup(GetModelPointer(), this, iGroup, iValue);
 }
 
 int CBaseAnimating::GetBodygroup(int iGroup)
 {
-	return ::GetBodygroup(GET_MODEL_PTR(edict()), this, iGroup);
+	return ::GetBodygroup(GetModelPointer(), this, iGroup);
 }
 
 
 bool CBaseAnimating::ExtractBbox(int sequence, Vector& mins, Vector& maxs)
 {
-	return ::ExtractBbox(GET_MODEL_PTR(edict()), sequence, mins, maxs);
+	return ::ExtractBbox(GetModelPointer(), sequence, mins, maxs);
 }
 
 void CBaseAnimating::SetSequenceBox()
