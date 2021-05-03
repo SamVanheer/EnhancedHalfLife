@@ -307,3 +307,8 @@ void CWorld::KeyValue(KeyValueData* pkvd)
 	else
 		CBaseEntity::KeyValue(pkvd);
 }
+
+int CWorld::DamageDecal(int bitsDamageType)
+{
+	return DECAL_GUNSHOT1 + RANDOM_LONG(0, 4);
+}

@@ -281,7 +281,7 @@ void			UTIL_Ricochet(const Vector& position, float scale);
 char* UTIL_VarArgs(const char* format, ...);
 void			UTIL_Remove(CBaseEntity* pEntity);
 void UTIL_RemoveNow(CBaseEntity* pEntity);
-bool			UTIL_IsValidEntity(edict_t* pent);
+bool			UTIL_IsValidEntity(CBaseEntity* pEntity);
 bool			UTIL_TeamsMatch(const char* pTeamName1, const char* pTeamName2);
 
 /**

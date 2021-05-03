@@ -75,7 +75,7 @@ void UTIL_BloodDrips(const Vector& origin, const Vector& direction, int color, i
 void UTIL_DecalTrace(TraceResult* pTrace, int decalNumber) { }
 void UTIL_GunshotDecalTrace(TraceResult* pTrace, int decalNumber) { }
 void UTIL_MakeVectors(const Vector& vecAngles) { }
-bool UTIL_IsValidEntity(edict_t* pent) { return true; }
+bool UTIL_IsValidEntity(CBaseEntity* pEntity) { return true; }
 bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon) { return true; }
 void UTIL_LogPrintf(const char*, ...) { }
 void UTIL_ClientPrintAll(int, char const*, char const*, char const*, char const*, char const*) { }

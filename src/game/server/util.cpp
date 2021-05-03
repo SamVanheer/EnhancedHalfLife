@@ -1221,13 +1221,11 @@ void UTIL_RemoveNow(CBaseEntity* pEntity)
 	REMOVE_ENTITY(pEntity->edict());
 }
 
-bool UTIL_IsValidEntity(edict_t* pent)
+bool UTIL_IsValidEntity(CBaseEntity* pEntity)
 {
-	if (!pent || pent->free || (pent->v.flags & FL_KILLME))
-		return false;
-	return true;
+	//Players can have a valid entity while the edict is actually marked free if the player disconnected
+	return pEntity && !pEntity->edict()->free && (pEntity->pev->flags & FL_KILLME) == 0;
 }
-
 
 void UTIL_PrecacheOther(const char* szClassname)
 {

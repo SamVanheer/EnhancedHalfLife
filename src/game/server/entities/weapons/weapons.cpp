@@ -90,26 +90,16 @@ void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage)
 	UTIL_BloodDrips(vecSpot, g_vecAttackDir, bloodColor, (int)flDamage);
 }
 
-int DamageDecal(CBaseEntity* pEntity, int bitsDamageType)
-{
-	if (!pEntity)
-		return (DECAL_GUNSHOT1 + RANDOM_LONG(0, 4));
-
-	return pEntity->DamageDecal(bitsDamageType);
-}
-
 void DecalGunshot(TraceResult* pTrace, int iBulletType)
 {
-	if (!UTIL_IsValidEntity(pTrace->pHit))
+	auto hit = CBaseEntity::InstanceOrNull(pTrace->pHit);
+
+	if (!UTIL_IsValidEntity(hit))
 		return;
 
-	if (VARS(pTrace->pHit)->solid == Solid::BSP || VARS(pTrace->pHit)->movetype == Movetype::PushStep)
+	if (hit->pev->solid == Solid::BSP || hit->pev->movetype == Movetype::PushStep)
 	{
-		CBaseEntity* pEntity = nullptr;
 		// Decal the wall with a gunshot
-		if (!IsNullEnt(pTrace->pHit))
-			pEntity = CBaseEntity::Instance(pTrace->pHit);
-
 		switch (iBulletType)
 		{
 		case BULLET_PLAYER_9MM:
@@ -120,15 +110,15 @@ void DecalGunshot(TraceResult* pTrace, int iBulletType)
 		case BULLET_PLAYER_357:
 		default:
 			// smoke and decal
-			UTIL_GunshotDecalTrace(pTrace, DamageDecal(pEntity, DMG_BULLET));
+			UTIL_GunshotDecalTrace(pTrace, hit->DamageDecal(DMG_BULLET));
 			break;
 		case BULLET_MONSTER_12MM:
 			// smoke and decal
-			UTIL_GunshotDecalTrace(pTrace, DamageDecal(pEntity, DMG_BULLET));
+			UTIL_GunshotDecalTrace(pTrace, hit->DamageDecal(DMG_BULLET));
 			break;
 		case BULLET_PLAYER_CROWBAR:
 			// wall decal
-			UTIL_DecalTrace(pTrace, DamageDecal(pEntity, DMG_CLUB));
+			UTIL_DecalTrace(pTrace, hit->DamageDecal(DMG_CLUB));
 			break;
 		}
 	}

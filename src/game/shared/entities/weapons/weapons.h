@@ -519,7 +519,6 @@ void AddMultiDamage(CBaseEntity* pInflictor, CBaseEntity* pEntity, float flDamag
 
 void DecalGunshot(TraceResult* pTrace, int iBulletType);
 void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage);
-int DamageDecal(CBaseEntity* pEntity, int bitsDamageType);
 
 /**
 *	@brief this entity is exploding, or otherwise needs to inflict damage upon entities within a certain range.

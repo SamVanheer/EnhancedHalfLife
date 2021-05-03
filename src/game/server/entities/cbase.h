@@ -1011,5 +1011,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void KeyValue(KeyValueData* pkvd) override;
+
+	int DamageDecal(int bitsDamageType) override;
 };
 
