@@ -280,14 +280,14 @@ void CBaseToggle::LinearMove(Vector	vecDest, float flSpeed)
 	m_vecFinalDest = vecDest;
 
 	// Already there?
-	if (vecDest == pev->origin)
+	if (vecDest == GetAbsOrigin())
 	{
 		LinearMoveDone();
 		return;
 	}
 
 	// set destdelta to the vector needed to move
-	const Vector vecDestDelta = vecDest - pev->origin;
+	const Vector vecDestDelta = vecDest - GetAbsOrigin();
 
 	// divide vector length by speed to get time to reach dest
 	const float flTravelTime = vecDestDelta.Length() / flSpeed;
@@ -302,7 +302,7 @@ void CBaseToggle::LinearMove(Vector	vecDest, float flSpeed)
 
 void CBaseToggle::LinearMoveDone()
 {
-	const Vector delta = m_vecFinalDest - pev->origin;
+	const Vector delta = m_vecFinalDest - GetAbsOrigin();
 	const float error = delta.Length();
 	//If we're more than 1/32th of a unit away from the target position, move us through linear movement.
 	//Otherwise snap us to the position immediately.

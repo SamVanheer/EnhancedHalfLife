@@ -199,7 +199,7 @@ Vector CBasePlayer::GetGunPosition()
 {
 	//	UTIL_MakeVectors(pev->v_angle);
 	//	m_HackedGunPos = pev->view_ofs;
-	const Vector origin = pev->origin + pev->view_ofs;
+	const Vector origin = GetAbsOrigin() + pev->view_ofs;
 
 	return origin;
 }
@@ -560,7 +560,7 @@ void CBasePlayer::PackDeadPlayerItems()
 	}
 
 	// create a box to pack the stuff into.
-	CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", pev->origin, pev->angles, this);
+	CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", GetAbsOrigin(), pev->angles, this);
 
 	pWeaponBox->pev->angles.x = 0;// don't let weaponbox tilt.
 	pWeaponBox->pev->angles.z = 0;
@@ -1114,7 +1114,7 @@ void CBasePlayer::StartDeathCam()
 
 		CopyToBodyQue(this);
 
-		SetAbsOrigin(pSpot->pev->origin);
+		SetAbsOrigin(pSpot->GetAbsOrigin());
 		pev->angles = pev->v_angle = pSpot->pev->v_angle;
 	}
 	else
@@ -1122,10 +1122,10 @@ void CBasePlayer::StartDeathCam()
 		// no intermission spot. Push them up in the air, looking down at their corpse
 		TraceResult tr;
 		CopyToBodyQue(this);
-		UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, 128), IgnoreMonsters::Yes, this, &tr);
+		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + Vector(0, 0, 128), IgnoreMonsters::Yes, this, &tr);
 
 		SetAbsOrigin(tr.vecEndPos);
-		pev->angles = pev->v_angle = VectorAngles(tr.vecEndPos - pev->origin);
+		pev->angles = pev->v_angle = VectorAngles(tr.vecEndPos - GetAbsOrigin());
 	}
 
 	// start death cam
@@ -1142,7 +1142,7 @@ void CBasePlayer::StartDeathCam()
 void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 {
 	// clear any clientside entities attached to this player
-	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
+	MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, GetAbsOrigin());
 	WRITE_BYTE(TE_KILLPLAYERATTACHMENTS);
 	WRITE_BYTE((byte)entindex());
 	MESSAGE_END();
@@ -1259,7 +1259,7 @@ void CBasePlayer::PlayerUse()
 
 	UTIL_MakeVectors(pev->v_angle);// so we know which way we are facing
 
-	while ((pObject = UTIL_FindEntityInSphere(pObject, pev->origin, PLAYER_USE_SEARCH_RADIUS)) != nullptr)
+	while ((pObject = UTIL_FindEntityInSphere(pObject, GetAbsOrigin(), PLAYER_USE_SEARCH_RADIUS)) != nullptr)
 	{
 
 		if (pObject->ObjectCaps() & (FCAP_IMPULSE_USE | FCAP_CONTINUOUS_USE | FCAP_ONOFF_USE))
@@ -1267,7 +1267,7 @@ void CBasePlayer::PlayerUse()
 			// !!!PERFORMANCE- should this check be done on a per case basis AFTER we've determined that
 			// this object is actually usable? This dot is being done for every object within PLAYER_SEARCH_RADIUS
 			// when player hits the use key. How many objects can be in that area, anyway? (sjb)
-			vecLOS = (GetBrushModelOrigin(pObject) - (pev->origin + pev->view_ofs));
+			vecLOS = (GetBrushModelOrigin(pObject) - (GetAbsOrigin() + pev->view_ofs));
 
 			// This essentially moves the origin of the target to the corner nearest the player to test to see 
 			// if it's "hull" is in the view cone
@@ -1367,15 +1367,19 @@ void FixPlayerCrouchStuck(CBasePlayer* pPlayer)
 {
 	TraceResult trace;
 
+	Vector origin = pPlayer->GetAbsOrigin();
+
 	// Move up as many as 18 pixels if the player is stuck.
 	for (int i = 0; i < 18; i++)
 	{
-		UTIL_TraceHull(pPlayer->pev->origin, pPlayer->pev->origin, IgnoreMonsters::No, Hull::Head, pPlayer, &trace);
+		UTIL_TraceHull(origin, origin, IgnoreMonsters::No, Hull::Head, pPlayer, &trace);
 		if (trace.fStartSolid)
-			pPlayer->pev->origin.z++;
+			++origin.z;
 		else
 			break;
 	}
+
+	pPlayer->SetAbsOrigin(origin);
 }
 
 void CBasePlayer::Duck()
@@ -1608,7 +1612,7 @@ void CBasePlayer::PreThink()
 		{
 			TraceResult trainTrace;
 			// Maybe this is on the other side of a level transition
-			UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -38), IgnoreMonsters::Yes, this, &trainTrace);
+			UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + Vector(0, 0, -38), IgnoreMonsters::Yes, this, &trainTrace);
 
 			// HACKHACK - Just look for the func_tracktrain classname
 			if (trainTrace.flFraction != 1.0 && trainTrace.pHit)
@@ -2049,7 +2053,7 @@ void CBasePlayer::UpdatePlayerSound()
 
 	if (pSound)
 	{
-		pSound->m_vecOrigin = pev->origin;
+		pSound->m_vecOrigin = GetAbsOrigin();
 		pSound->m_iType |= (bits_SOUND_PLAYER | m_iExtraSoundTypes);
 		pSound->m_iVolume = iVolume;
 	}
@@ -2064,7 +2068,7 @@ void CBasePlayer::UpdatePlayerSound()
 
 	// Below are a couple of useful little bits that make it easier to determine just how much noise the 
 	// player is making. 
-	// UTIL_ParticleEffect ( pev->origin + gpGlobals->v_forward * iVolume, vec3_origin, 255, 25 );
+	// UTIL_ParticleEffect ( GetAbsOrigin() + gpGlobals->v_forward * iVolume, vec3_origin, 255, 25 );
 	//ALERT ( at_console, "%d/%d\n", iVolume, m_iTargetVolume );
 }
 
@@ -2136,7 +2140,7 @@ void CBasePlayer::PostThink()
 		{
 			if (m_flFallVelocity > 64 && !g_pGameRules->IsMultiplayer())
 			{
-				CSoundEnt::InsertSound(bits_SOUND_PLAYER, pev->origin, m_flFallVelocity, 0.2);
+				CSoundEnt::InsertSound(bits_SOUND_PLAYER, GetAbsOrigin(), m_flFallVelocity, 0.2);
 				// ALERT( at_console, "fall %f\n", m_flFallVelocity );
 			}
 			m_flFallVelocity = 0;
@@ -2364,7 +2368,7 @@ bool CBasePlayer::Restore(CRestore& restore)
 
 		// default to normal spawn
 		CBaseEntity* pSpawnSpot = EntSelectSpawnPoint(this);
-		pev->origin = pSpawnSpot->pev->origin + vec3_up;
+		SetAbsOrigin(pSpawnSpot->GetAbsOrigin() + vec3_up);
 		pev->angles = pSpawnSpot->pev->angles;
 	}
 	pev->v_angle.z = 0;	// Clear out roll
@@ -2495,7 +2499,7 @@ public:
 
 void CSprayCan::Spawn(CBaseEntity* pOwner)
 {
-	pev->origin = pOwner->pev->origin + Vector(0, 0, 32);
+	SetAbsOrigin(pOwner->GetAbsOrigin() + Vector(0, 0, 32));
 	pev->angles = pOwner->pev->v_angle;
 	SetOwner(pOwner);
 	pev->frame = 0;
@@ -2516,7 +2520,7 @@ void CSprayCan::Think()
 
 	TraceResult	tr;
 	UTIL_MakeVectors(pev->angles);
-	UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, pPlayer, &tr);
+	UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, pPlayer, &tr);
 
 	// No customization present.
 	if (nFrames == -1)
@@ -2544,7 +2548,7 @@ public:
 
 void CBloodSplat::Spawn(CBaseEntity* pOwner)
 {
-	pev->origin = pOwner->pev->origin + Vector(0, 0, 32);
+	SetAbsOrigin(pOwner->GetAbsOrigin() + Vector(0, 0, 32));
 	pev->angles = pOwner->pev->v_angle;
 	SetOwner(pOwner);
 
@@ -2558,7 +2562,7 @@ void CBloodSplat::Spray()
 	{
 		TraceResult	tr;
 		UTIL_MakeVectors(pev->angles);
-		UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, GetOwner(), &tr);
+		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, GetOwner(), &tr);
 
 		UTIL_BloodDecalTrace(&tr, BLOOD_COLOR_RED);
 	}
@@ -2576,7 +2580,7 @@ void CBasePlayer::GiveNamedItem(const char* pszName)
 		ALERT(at_console, "NULL Ent in GiveNamedItem!\n");
 		return;
 	}
-	pEntity->pev->origin = pev->origin;
+	pEntity->SetAbsOrigin(GetAbsOrigin());
 	pEntity->pev->spawnflags |= SF_NORESPAWN;
 
 	DispatchSpawn(pEntity->edict());
@@ -2688,7 +2692,7 @@ void CBasePlayer::ImpulseCommands()
 
 		TraceResult	tr;// UNDONE: kill me! This is temporary for PreAlpha CDs
 		UTIL_MakeVectors(pev->v_angle);
-		UTIL_TraceLine(pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, this, &tr);
+		UTIL_TraceLine(GetAbsOrigin() + pev->view_ofs, GetAbsOrigin() + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, this, &tr);
 
 		if (tr.flFraction != 1.0)
 		{// line hit something, so paint a decal
@@ -2728,7 +2732,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 		else
 		{
 			UTIL_MakeVectors(Vector(0, pev->v_angle.y, 0));
-			Create("monster_human_grunt", pev->origin + gpGlobals->v_forward * 128, pev->angles);
+			Create("monster_human_grunt", GetAbsOrigin() + gpGlobals->v_forward * 128, pev->angles);
 		}
 		break;
 	}
@@ -2827,7 +2831,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 	{
 		TraceResult tr;
 
-		Vector start = pev->origin + pev->view_ofs;
+		Vector start = GetAbsOrigin() + pev->view_ofs;
 		Vector end = start + gpGlobals->v_forward * 1024;
 		UTIL_TraceLine(start, end, IgnoreMonsters::Yes, this, &tr);
 
@@ -2841,26 +2845,26 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 
 	case	195:// show shortest paths for entire level to nearest node
 	{
-		Create("node_viewer_fly", pev->origin, pev->angles);
+		Create("node_viewer_fly", GetAbsOrigin(), pev->angles);
 		break;
 	}
 
 	case	196:// show shortest paths for entire level to nearest node
 	{
-		Create("node_viewer_large", pev->origin, pev->angles);
+		Create("node_viewer_large", GetAbsOrigin(), pev->angles);
 		break;
 	}
 
 	case	197:// show shortest paths for entire level to nearest node
 	{
-		Create("node_viewer_human", pev->origin, pev->angles);
+		Create("node_viewer_human", GetAbsOrigin(), pev->angles);
 		break;
 	}
 
 	case	199:// show nearest node and all connections
 	{
-		ALERT(at_console, "%d\n", WorldGraph.FindNearestNode(pev->origin, bits_NODE_GROUP_REALM));
-		WorldGraph.ShowNodeConnections(WorldGraph.FindNearestNode(pev->origin, bits_NODE_GROUP_REALM));
+		ALERT(at_console, "%d\n", WorldGraph.FindNearestNode(GetAbsOrigin(), bits_NODE_GROUP_REALM));
+		WorldGraph.ShowNodeConnections(WorldGraph.FindNearestNode(GetAbsOrigin(), bits_NODE_GROUP_REALM));
 		break;
 	}
 
@@ -2868,7 +2872,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 	{
 		TraceResult tr;
 		UTIL_MakeVectors(pev->v_angle);
-		UTIL_TraceLine(pev->origin + pev->view_ofs, pev->origin + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, this, &tr);
+		UTIL_TraceLine(GetAbsOrigin() + pev->view_ofs, GetAbsOrigin() + pev->view_ofs + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, this, &tr);
 
 		if (tr.flFraction != 1.0)
 		{// line hit something, so paint a decal
@@ -3198,7 +3202,7 @@ void CBasePlayer::UpdateClientData()
 	if (pev->dmg_take || pev->dmg_save || m_bitsHUDDamage != m_bitsDamageType)
 	{
 		// Comes from inside me if not set
-		Vector damageOrigin = pev->origin;
+		Vector damageOrigin = GetAbsOrigin();
 		// send "damage" message
 		// causes screen to flash, and pain compass to show direction of damage
 		if (pev->dmg_inflictor)
@@ -3679,7 +3683,7 @@ void CBasePlayer::DropPlayerItem(const char* pszItemName)
 
 			pev->weapons &= ~(1 << pWeapon->m_iId);// take item off hud
 
-			CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", pev->origin + gpGlobals->v_forward * 10, pev->angles, this);
+			CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", GetAbsOrigin() + gpGlobals->v_forward * 10, pev->angles, this);
 			pWeaponBox->pev->angles.x = 0;
 			pWeaponBox->pev->angles.z = 0;
 			pWeaponBox->PackWeapon(pWeapon);
@@ -3819,7 +3823,7 @@ class CInfoIntermission :public CPointEntity
 
 void CInfoIntermission::Spawn()
 {
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 	SetSolidType(Solid::Not);
 	pev->effects = EF_NODRAW;
 	pev->v_angle = vec3_origin;
@@ -3834,7 +3838,7 @@ void CInfoIntermission::Think()
 
 	if (!IsNullEnt(pTarget))
 	{
-		pev->v_angle = VectorAngles((pTarget->pev->origin - pev->origin).Normalize());
+		pev->v_angle = VectorAngles((pTarget->GetAbsOrigin() - GetAbsOrigin()).Normalize());
 		pev->v_angle.x = -pev->v_angle.x;
 	}
 }

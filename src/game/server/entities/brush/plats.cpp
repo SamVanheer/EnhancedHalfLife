@@ -294,17 +294,17 @@ void CFuncPlat::Setup()
 	SetSolidType(Solid::BSP);
 	SetMovetype(Movetype::Push);
 
-	SetAbsOrigin(pev->origin);		// set size and link into world
+	SetAbsOrigin(GetAbsOrigin());		// set size and link into world
 	SetSize(pev->mins, pev->maxs);
 	SetModel(STRING(pev->model));
 
 	// vecPosition1 is the top position, vecPosition2 is the bottom
-	m_vecPosition1 = pev->origin;
-	m_vecPosition2 = pev->origin;
+	m_vecPosition1 = GetAbsOrigin();
+	m_vecPosition2 = GetAbsOrigin();
 	if (m_flHeight != 0)
-		m_vecPosition2.z = pev->origin.z - m_flHeight;
+		m_vecPosition2.z = GetAbsOrigin().z - m_flHeight;
 	else
-		m_vecPosition2.z = pev->origin.z - pev->size.z + 8;
+		m_vecPosition2.z = GetAbsOrigin().z - pev->size.z + 8;
 	if (pev->speed == 0)
 		pev->speed = 150;
 
@@ -353,7 +353,7 @@ void CPlatTrigger::SpawnInsideTrigger(CFuncPlat* pPlatform)
 	// Create trigger entity, "point" it at the owning platform, give it a touch method
 	SetSolidType(Solid::Trigger);
 	SetMovetype(Movetype::None);
-	pev->origin = pPlatform->pev->origin;
+	SetAbsOrigin(pPlatform->GetAbsOrigin());
 
 	// Establish the trigger field's size
 	Vector vecTMin = pPlatform->pev->mins + Vector(25, 25, 0);
@@ -751,7 +751,7 @@ void CFuncTrain::Next()
 	{
 		// Path corner has indicated a teleport to the next corner.
 		SetBits(pev->effects, EF_NOINTERP);
-		SetAbsOrigin(pTarg->pev->origin - (pev->mins + pev->maxs) * 0.5);
+		SetAbsOrigin(pTarg->GetAbsOrigin() - (pev->mins + pev->maxs) * 0.5);
 		Wait(); // Get on with doing the next path corner.
 	}
 	else
@@ -767,7 +767,7 @@ void CFuncTrain::Next()
 			EmitSound(SoundChannel::Static, STRING(pev->noiseMovement), m_volume);
 		ClearBits(pev->effects, EF_NOINTERP);
 		SetMoveDone(&CFuncTrain::Wait);
-		LinearMove(pTarg->pev->origin - (pev->mins + pev->maxs) * 0.5, pev->speed);
+		LinearMove(pTarg->GetAbsOrigin() - (pev->mins + pev->maxs) * 0.5, pev->speed);
 	}
 }
 
@@ -788,7 +788,7 @@ void CFuncTrain::Activate()
 		pev->target = pTarget->pev->target;
 		m_hCurrentTarget = pTarget;// keep track of this since path corners change our target for us.
 
-		SetAbsOrigin(pTarget->pev->origin - (pev->mins + pev->maxs) * 0.5);
+		SetAbsOrigin(pTarget->GetAbsOrigin() - (pev->mins + pev->maxs) * 0.5);
 
 		if (IsStringNull(pev->targetname))
 		{	// not triggered, so start immediately
@@ -821,7 +821,7 @@ void CFuncTrain::Spawn()
 
 	SetModel(STRING(pev->model));
 	SetSize(pev->mins, pev->maxs);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	m_activated = false;
 
@@ -957,7 +957,7 @@ void CFuncTrackTrain::Blocked(CBaseEntity* pOther)
 		return;
 	}
 	else
-		pOther->pev->velocity = (pOther->pev->origin - pev->origin).Normalize() * pev->dmg;
+		pOther->pev->velocity = (pOther->GetAbsOrigin() - GetAbsOrigin()).Normalize() * pev->dmg;
 
 	ALERT(at_aiconsole, "TRAIN(%s): Blocked by %s (dmg:%.2f)\n", STRING(pev->targetname), pOther->GetClassname(), pev->dmg);
 	if (pev->dmg <= 0)
@@ -1091,14 +1091,14 @@ void CFuncTrackTrain::Next()
 
 	UpdateSound();
 
-	Vector nextPos = pev->origin;
+	Vector nextPos = GetAbsOrigin();
 
 	nextPos.z -= m_height;
 	CPathTrack* pnext = m_hPath->LookAhead(&nextPos, pev->speed * 0.1, 1);
 	nextPos.z += m_height;
 
-	pev->velocity = (nextPos - pev->origin) * 10;
-	Vector nextFront = pev->origin;
+	pev->velocity = (nextPos - GetAbsOrigin()) * 10;
+	Vector nextFront = GetAbsOrigin();
 
 	nextFront.z -= m_height;
 	if (m_length > 0)
@@ -1107,7 +1107,7 @@ void CFuncTrackTrain::Next()
 		m_hPath->LookAhead(&nextFront, 100, 0);
 	nextFront.z += m_height;
 
-	const Vector delta = nextFront - pev->origin;
+	const Vector delta = nextFront - GetAbsOrigin();
 	Vector angles = VectorAngles(delta);
 	// The train actually points west
 	angles.y += 180;
@@ -1178,7 +1178,7 @@ void CFuncTrackTrain::Next()
 	else	// end of path, stop
 	{
 		StopSound();
-		pev->velocity = (nextPos - pev->origin);
+		pev->velocity = (nextPos - GetAbsOrigin());
 		pev->avelocity = vec3_origin;
 		const float distance = pev->velocity.Length();
 		m_oldSpeed = pev->speed;
@@ -1252,7 +1252,7 @@ void CFuncTrackTrain::DeadEnd()
 
 void CFuncTrackTrain::SetControls(CBaseEntity* pControls)
 {
-	const Vector offset = pControls->pev->origin - pev->oldorigin;
+	const Vector offset = pControls->GetAbsOrigin() - pev->oldorigin;
 
 	m_controlMins = pControls->pev->mins + offset;
 	m_controlMaxs = pControls->pev->maxs + offset;
@@ -1260,7 +1260,7 @@ void CFuncTrackTrain::SetControls(CBaseEntity* pControls)
 
 bool CFuncTrackTrain::OnControls(CBaseEntity* pTest)
 {
-	const Vector offset = pTest->pev->origin - pev->origin;
+	const Vector offset = pTest->GetAbsOrigin() - GetAbsOrigin();
 
 	if (pev->spawnflags & SF_TRACKTRAIN_NOCONTROL)
 		return false;
@@ -1294,7 +1294,7 @@ void CFuncTrackTrain::Find()
 		return;
 	}
 
-	Vector nextPos = path->pev->origin;
+	Vector nextPos = path->GetAbsOrigin();
 	nextPos.z += m_height;
 
 	Vector look = nextPos;
@@ -1322,12 +1322,12 @@ void CFuncTrackTrain::NearestPath()
 	CBaseEntity* pNearest = nullptr;
 	float closest = 1024;
 
-	while ((pTrack = UTIL_FindEntityInSphere(pTrack, pev->origin, 1024)) != nullptr)
+	while ((pTrack = UTIL_FindEntityInSphere(pTrack, GetAbsOrigin(), 1024)) != nullptr)
 	{
 		// filter out non-tracks
 		if (!(pTrack->pev->flags & (FL_CLIENT | FL_MONSTER)) && pTrack->ClassnameIs("path_track"))
 		{
-			const float dist = (pev->origin - pTrack->pev->origin).Length();
+			const float dist = (GetAbsOrigin() - pTrack->GetAbsOrigin()).Length();
 			if (dist < closest)
 			{
 				closest = dist;
@@ -1348,7 +1348,7 @@ void CFuncTrackTrain::NearestPath()
 	pTrack = ((CPathTrack*)pNearest)->GetNext();
 	if (pTrack)
 	{
-		if ((pev->origin - pTrack->pev->origin).Length() < (pev->origin - pNearest->pev->origin).Length())
+		if ((GetAbsOrigin() - pTrack->GetAbsOrigin()).Length() < (GetAbsOrigin() - pNearest->GetAbsOrigin()).Length())
 			pNearest = pTrack;
 	}
 
@@ -1400,10 +1400,10 @@ void CFuncTrackTrain::Spawn()
 	SetModel(STRING(pev->model));
 
 	SetSize(pev->mins, pev->maxs);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	// Cache off placed origin for train controls
-	pev->oldorigin = pev->origin;
+	pev->oldorigin = GetAbsOrigin();
 
 	m_controlMins = pev->mins;
 	m_controlMaxs = pev->maxs;
@@ -1481,7 +1481,7 @@ void CFuncTrainControls::Spawn()
 	SetModel(STRING(pev->model));
 
 	SetSize(pev->mins, pev->maxs);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	SetThink(&CFuncTrainControls::Find);
 	pev->nextthink = gpGlobals->time;
@@ -1576,7 +1576,7 @@ void CFuncTrackChange::Spawn()
 {
 	Setup();
 	if (IsBitSet(pev->spawnflags, SF_TRACK_DONT_MOVE))
-		m_vecPosition2.z = pev->origin.z;
+		m_vecPosition2.z = GetAbsOrigin().z;
 
 	SetupRotation();
 
@@ -1701,7 +1701,7 @@ TrainCode CFuncTrackChange::EvaluateTrain(CPathTrack* pcurrent)
 		if (train->pev->speed != 0)
 			return TrainCode::Blocking;
 
-		const Vector dist = pev->origin - train->pev->origin;
+		const Vector dist = GetAbsOrigin() - train->GetAbsOrigin();
 		const float length = dist.Length2D();
 		if (length < train->m_length)		// Empirically determined close distance
 			return TrainCode::Following;
@@ -1728,7 +1728,7 @@ void CFuncTrackChange::UpdateTrain(Vector& dest)
 	if (time <= 0)
 		return;
 
-	const Vector offset = train->pev->origin - pev->origin;
+	const Vector offset = train->GetAbsOrigin() - GetAbsOrigin();
 	const Vector delta = dest - pev->angles;
 	// Transform offset into local coordinates
 	UTIL_MakeInvVectors(delta, gpGlobals);
@@ -1988,7 +1988,7 @@ public:
 	int				Classify() override { return CLASS_MACHINE; }
 	bool TakeDamage(const TakeDamageInfo& info) override;
 	void			Use(const UseInfo& info) override;
-	Vector			BodyTarget(const Vector& posSrc) override { return pev->origin; }
+	Vector			BodyTarget(const Vector& posSrc) override { return GetAbsOrigin(); }
 
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	bool Save(CSave& save) override;
@@ -2014,7 +2014,7 @@ void CGunTarget::Spawn()
 	SetSolidType(Solid::BSP);
 	SetMovetype(Movetype::Push);
 
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 	SetModel(STRING(pev->model));
 
 	if (pev->speed == 0)
@@ -2040,7 +2040,7 @@ void CGunTarget::Activate()
 	if (CBaseEntity* pTarg = GetNextTarget(); pTarg)
 	{
 		m_hTargetEnt = pTarg;
-		SetAbsOrigin(pTarg->pev->origin - (pev->mins + pev->maxs) * 0.5);
+		SetAbsOrigin(pTarg->GetAbsOrigin() - (pev->mins + pev->maxs) * 0.5);
 	}
 }
 
@@ -2062,7 +2062,7 @@ void CGunTarget::Next()
 		return;
 	}
 	SetMoveDone(&CGunTarget::Wait);
-	LinearMove(pTarget->pev->origin - (pev->mins + pev->maxs) * 0.5, pev->speed);
+	LinearMove(pTarget->GetAbsOrigin() - (pev->mins + pev->maxs) * 0.5, pev->speed);
 }
 
 void CGunTarget::Wait()

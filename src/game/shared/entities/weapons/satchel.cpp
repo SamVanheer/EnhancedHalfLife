@@ -55,7 +55,7 @@ void CSatchelCharge::Spawn()
 	SetModel("models/w_satchel.mdl");
 	//SetSize( Vector( -16, -16, -4), Vector(16, 16, 32));	// Old box -- size of headcrab monsters/players get blocked by this
 	SetSize(Vector(-4, -4, -4), Vector(4, 4, 4));	// Uses point-sized, and can be stepped over
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	SetTouch(&CSatchelCharge::SatchelSlide);
 	SetUse(&CSatchelCharge::DetonateUse);
@@ -81,7 +81,7 @@ void CSatchelCharge::SatchelSlide(CBaseEntity* pOther)
 
 	// HACKHACK - On ground isn't always set, so look for ground underneath
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 10), IgnoreMonsters::Yes, this, &tr);
+	UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() - Vector(0, 0, 10), IgnoreMonsters::Yes, this, &tr);
 
 	if (tr.flFraction < 1.0)
 	{
@@ -311,7 +311,7 @@ void CSatchel::PrimaryAttack()
 
 		CBaseEntity* pSatchel = nullptr;
 
-		while ((pSatchel = UTIL_FindEntityInSphere(pSatchel, m_hPlayer->pev->origin, WORLD_BOUNDARY)) != nullptr)
+		while ((pSatchel = UTIL_FindEntityInSphere(pSatchel, m_hPlayer->GetAbsOrigin(), WORLD_BOUNDARY)) != nullptr)
 		{
 			if (pSatchel->ClassnameIs("monster_satchel"))
 			{
@@ -350,7 +350,7 @@ void CSatchel::Throw()
 {
 	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 	{
-		const Vector vecSrc = m_hPlayer->pev->origin;
+		const Vector vecSrc = m_hPlayer->GetAbsOrigin();
 
 		const Vector vecThrow = gpGlobals->v_forward * 274 + m_hPlayer->pev->velocity;
 

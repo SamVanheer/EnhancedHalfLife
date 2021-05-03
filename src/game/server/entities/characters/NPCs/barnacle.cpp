@@ -112,7 +112,7 @@ void CBarnacle::Spawn()
 	SetThink(&CBarnacle::BarnacleThink);
 	pev->nextthink = gpGlobals->time + 0.5;
 
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 }
 
 bool CBarnacle::TakeDamage(const TakeDamageInfo& info)
@@ -154,9 +154,9 @@ void CBarnacle::BarnacleThink()
 			}
 
 			// still pulling prey.
-			Vector vecNewEnemyOrigin = m_hEnemy->pev->origin;
-			vecNewEnemyOrigin.x = pev->origin.x;
-			vecNewEnemyOrigin.y = pev->origin.y;
+			Vector vecNewEnemyOrigin = m_hEnemy->GetAbsOrigin();
+			vecNewEnemyOrigin.x = GetAbsOrigin().x;
+			vecNewEnemyOrigin.y = GetAbsOrigin().y;
 
 			// guess as to where their neck is
 			vecNewEnemyOrigin.x -= 6 * cos(m_hEnemy->pev->angles.y * M_PI / 180.0);
@@ -165,7 +165,7 @@ void CBarnacle::BarnacleThink()
 			m_flAltitude -= BARNACLE_PULL_SPEED;
 			vecNewEnemyOrigin.z += BARNACLE_PULL_SPEED;
 
-			if (fabs(pev->origin.z - (vecNewEnemyOrigin.z + m_hEnemy->pev->view_ofs.z - 8)) < BARNACLE_BODY_HEIGHT)
+			if (fabs(GetAbsOrigin().z - (vecNewEnemyOrigin.z + m_hEnemy->pev->view_ofs.z - 8)) < BARNACLE_BODY_HEIGHT)
 			{
 				// prey has just been lifted into position ( if the victim origin + eye height + 8 is higher than the bottom of the barnacle, it is assumed that the head is within barnacle's body )
 				m_fLiftingPrey = false;
@@ -261,13 +261,12 @@ void CBarnacle::BarnacleThink()
 				pTouchEnt->SetMovetype(Movetype::Fly);
 				pTouchEnt->pev->velocity = vec3_origin;
 				pTouchEnt->pev->basevelocity = vec3_origin;
-				pTouchEnt->pev->origin.x = pev->origin.x;
-				pTouchEnt->pev->origin.y = pev->origin.y;
+				pTouchEnt->SetAbsOrigin({GetAbsOrigin().x, GetAbsOrigin().y, pTouchEnt->GetAbsOrigin().z});
 
 				m_fLiftingPrey = true;// indicate that we should be lifting prey.
 				m_flKillVictimTime = -1;// set this to a bogus time while the victim is lifted.
 
-				m_flAltitude = pev->origin.z - pTouchEnt->EyePosition().z;
+				m_flAltitude = GetAbsOrigin().z - pTouchEnt->EyePosition().z;
 			}
 		}
 		else
@@ -356,17 +355,17 @@ CBaseEntity* CBarnacle::TongueTouchEnt(float* pflLength)
 	TraceResult	tr;
 
 	// trace once to hit architecture and see if the tongue needs to change position.
-	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 2048), IgnoreMonsters::Yes, this, &tr);
-	const float length = fabs(pev->origin.z - tr.vecEndPos.z);
+	UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() - Vector(0, 0, 2048), IgnoreMonsters::Yes, this, &tr);
+	const float length = fabs(GetAbsOrigin().z - tr.vecEndPos.z);
 	if (pflLength)
 	{
 		*pflLength = length;
 	}
 
 	const Vector delta = Vector(BARNACLE_CHECK_SPACING, BARNACLE_CHECK_SPACING, 0);
-	Vector mins = pev->origin - delta;
-	Vector maxs = pev->origin + delta;
-	maxs.z = pev->origin.z;
+	Vector mins = GetAbsOrigin() - delta;
+	Vector maxs = GetAbsOrigin() + delta;
+	maxs.z = GetAbsOrigin().z;
 	mins.z -= length;
 
 	CBaseEntity* pList[10];

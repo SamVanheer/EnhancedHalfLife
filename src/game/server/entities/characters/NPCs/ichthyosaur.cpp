@@ -383,10 +383,10 @@ void CIchthyosaur::HandleAnimEvent(AnimationEvent& event)
 		{
 			CBaseEntity* pHurt = m_hEnemy;
 
-			if (m_flEnemyTouched < gpGlobals->time - 0.2 && (m_hEnemy->BodyTarget(pev->origin) - pev->origin).Length() >(32 + 16 + 32))
+			if (m_flEnemyTouched < gpGlobals->time - 0.2 && (m_hEnemy->BodyTarget(GetAbsOrigin()) - GetAbsOrigin()).Length() >(32 + 16 + 32))
 				break;
 
-			const Vector vecShootDir = ShootAtEnemy(pev->origin);
+			const Vector vecShootDir = ShootAtEnemy(GetAbsOrigin());
 			UTIL_MakeAimVectors(pev->angles);
 
 			if (DotProduct(vecShootDir, gpGlobals->v_forward) > 0.707)
@@ -417,7 +417,7 @@ void CIchthyosaur::HandleAnimEvent(AnimationEvent& event)
 
 	if (bDidAttack)
 	{
-		const Vector vecSrc = pev->origin + gpGlobals->v_forward * 32;
+		const Vector vecSrc = GetAbsOrigin() + gpGlobals->v_forward * 32;
 		UTIL_Bubbles(vecSrc - Vector(8, 8, 8), vecSrc + Vector(8, 8, 8), 16);
 	}
 }
@@ -575,7 +575,7 @@ void CIchthyosaur::RunTask(Task_t* pTask)
 		{
 			const Vector vecFrom = m_hEnemy->EyePosition();
 
-			const Vector vecDelta = (pev->origin - vecFrom).Normalize();
+			const Vector vecDelta = (GetAbsOrigin() - vecFrom).Normalize();
 			Vector vecSwim = CrossProduct(vecDelta, vec3_up).Normalize();
 
 			if (DotProduct(vecSwim, m_SaveVelocity) < 0)
@@ -592,7 +592,7 @@ void CIchthyosaur::RunTask(Task_t* pTask)
 			if (tr.flFraction > 0.5)
 				vecPos = tr.vecEndPos;
 
-			m_SaveVelocity = m_SaveVelocity * 0.8 + 0.2 * (vecPos - pev->origin).Normalize() * m_flightSpeed;
+			m_SaveVelocity = m_SaveVelocity * 0.8 + 0.2 * (vecPos - GetAbsOrigin()).Normalize() * m_flightSpeed;
 
 			// ALERT( at_console, "m_SaveVelocity %.2f %.2f %.2f\n", m_SaveVelocity.x, m_SaveVelocity.y, m_SaveVelocity.z );
 
@@ -828,7 +828,7 @@ void CIchthyosaur::Stop()
 
 void CIchthyosaur::Swim()
 {
-	const Vector start = pev->origin;
+	const Vector start = GetAbsOrigin();
 
 	if (IsBitSet(pev->flags, FL_ONGROUND))
 	{
@@ -870,7 +870,7 @@ void CIchthyosaur::Swim()
 		if (!m_pBeam)
 		{
 			m_pBeam = CBeam::BeamCreate( "sprites/laserbeam.spr", 80 );
-			m_pBeam->PointEntInit( pev->origin + m_SaveVelocity, entindex( ) );
+			m_pBeam->PointEntInit( GetAbsOrigin() + m_SaveVelocity, entindex( ) );
 			m_pBeam->SetEndAttachment( 1 );
 			m_pBeam->SetColor( 255, 180, 96 );
 			m_pBeam->SetBrightness( 192 );
@@ -909,7 +909,7 @@ void CIchthyosaur::Swim()
 	// ALERT( at_console, "Steer %f %f %f\n", SteeringVector.x, SteeringVector.y, SteeringVector.z );
 
 /*
-	m_pBeam->SetStartPos( pev->origin + pev->velocity );
+	m_pBeam->SetStartPos( GetAbsOrigin() + pev->velocity );
 	m_pBeam->RelinkBeam( );
 */
 
@@ -1006,17 +1006,17 @@ void CIchthyosaur::Swim()
 
 	//AngleVectors(Vector(-Angles.x, Angles.y, Angles.z), &Forward, nullptr, nullptr);
 
-	// UTIL_MoveToOrigin ( ENT(pev), pev->origin + Forward * speed, speed, MoveToOriginType::Strafe );
+	// UTIL_MoveToOrigin ( ENT(pev), GetAbsOrigin() + Forward * speed, speed, MoveToOriginType::Strafe );
 }
 
 Vector CIchthyosaur::DoProbe(const Vector& Probe)
 {
 	Vector WallNormal = vec3_down; // WATER normal is Straight Down for fish.
 	float frac;
-	bool bBumpedSomething = ProbeZ(pev->origin, Probe, &frac);
+	bool bBumpedSomething = ProbeZ(GetAbsOrigin(), Probe, &frac);
 
 	TraceResult tr;
-	UTIL_TraceMonsterHull(this, pev->origin, Probe, IgnoreMonsters::No, this, &tr);
+	UTIL_TraceMonsterHull(this, GetAbsOrigin(), Probe, IgnoreMonsters::No, this, &tr);
 	if (tr.fAllSolid || tr.flFraction < 0.99)
 	{
 		if (tr.flFraction < 0.0) tr.flFraction = 0.0;
@@ -1031,7 +1031,7 @@ Vector CIchthyosaur::DoProbe(const Vector& Probe)
 
 	if (bBumpedSomething && (m_hEnemy == nullptr || InstanceOrNull(tr.pHit) != m_hEnemy))
 	{
-		const Vector ProbeDir = Probe - pev->origin;
+		const Vector ProbeDir = Probe - GetAbsOrigin();
 
 		const Vector NormalToProbeAndWallNormal = CrossProduct(ProbeDir, WallNormal);
 		Vector SteeringVector = CrossProduct(NormalToProbeAndWallNormal, ProbeDir);

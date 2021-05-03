@@ -214,7 +214,7 @@ bool CCineMonster::FindEntity()
 	if (!pTargetMonster)
 	{
 		CBaseEntity* pEntity = nullptr;
-		while ((pEntity = UTIL_FindEntityInSphere(pEntity, pev->origin, m_flRadius)) != nullptr)
+		while ((pEntity = UTIL_FindEntityInSphere(pEntity, GetAbsOrigin(), m_flRadius)) != nullptr)
 		{
 			if (pEntity->ClassnameIs(STRING(m_iszEntity)))
 			{
@@ -280,7 +280,7 @@ void CCineMonster::PossessEntity()
 			break;
 
 		case ScriptedMoveTo::Instantaneous:
-			pTarget->SetAbsOrigin(pev->origin);
+			pTarget->SetAbsOrigin(GetAbsOrigin());
 			pTarget->pev->ideal_yaw = pev->angles.y;
 			pTarget->pev->avelocity = vec3_origin;
 			pTarget->pev->velocity = vec3_origin;
@@ -346,7 +346,7 @@ void CCineAI::PossessEntity()
 
 		case ScriptedMoveTo::Instantaneous:
 			// zap the monster instantly to the site of the script entity.
-			pTarget->SetAbsOrigin(pev->origin);
+			pTarget->SetAbsOrigin(GetAbsOrigin());
 			pTarget->pev->ideal_yaw = pev->angles.y;
 			pTarget->pev->avelocity = vec3_origin;
 			pTarget->pev->velocity = vec3_origin;
@@ -713,7 +713,7 @@ bool CBaseMonster::CineCleanup()
 			// irregular motion that can't be properly accounted for.
 
 			// UNDONE: THIS SHOULD ONLY HAPPEN IF WE ACTUALLY PLAYED THE SEQUENCE.
-			const Vector oldOrigin = pev->origin;
+			const Vector oldOrigin = GetAbsOrigin();
 
 			// UNDONE: ugly hack.  Don't move monster if they don't "seem" to move
 			// this really needs to be done with the AX,AY,etc. flags, but that aren't consistantly
@@ -721,26 +721,23 @@ bool CBaseMonster::CineCleanup()
 			if ((oldOrigin - new_origin).Length2D() < 8.0)
 				new_origin = oldOrigin;
 
-			pev->origin.x = new_origin.x;
-			pev->origin.y = new_origin.y;
-			pev->origin.z += 1;
+			SetAbsOrigin({new_origin.x, new_origin.y, oldOrigin.z + 1});
 
 			pev->flags |= FL_ONGROUND;
 			const int drop = DROP_TO_FLOOR(edict());
 
 			// Origin in solid?  Set to org at the end of the sequence
 			if (drop < 0)
-				pev->origin = oldOrigin;
+				SetAbsOrigin(oldOrigin);
 			else if (drop == 0) // Hanging in air?
 			{
-				pev->origin.z = new_origin.z;
+				SetAbsOrigin({GetAbsOrigin().x, GetAbsOrigin().y, new_origin.z});
 				pev->flags &= ~FL_ONGROUND;
 			}
 			// else entity hit floor, leave there
 
-			// pEntity->pev->origin.z = new_origin.z + 5.0; // damn, got to fix this
+			//SetAbsOrigin({GetAbsOrigin().x, GetAbsOrigin().y, new_origin.z + 5.0f}); // damn, got to fix this
 
-			SetAbsOrigin(pev->origin);
 			pev->effects |= EF_NOINTERP;
 		}
 
@@ -982,7 +979,7 @@ CBaseMonster* CScriptedSentence::FindEntity()
 	}
 
 	pTarget = nullptr;
-	while ((pTarget = UTIL_FindEntityInSphere(pTarget, pev->origin, m_flRadius)) != nullptr)
+	while ((pTarget = UTIL_FindEntityInSphere(pTarget, GetAbsOrigin(), m_flRadius)) != nullptr)
 	{
 		if (pTarget->ClassnameIs(STRING(m_iszEntity)))
 		{
@@ -1013,7 +1010,7 @@ bool CScriptedSentence::StartSentence(CBaseMonster* pTarget)
 		if (AreStringsEqual(STRING(m_iszListener), "player"))
 			radius = WORLD_BOUNDARY;	// Always find the player
 
-		pListener = UTIL_FindEntityGeneric(STRING(m_iszListener), pTarget->pev->origin, radius);
+		pListener = UTIL_FindEntityGeneric(STRING(m_iszListener), pTarget->GetAbsOrigin(), radius);
 	}
 
 	const bool bConcurrent = !(pev->spawnflags & SF_SENTENCE_CONCURRENT);

@@ -99,7 +99,7 @@ void CPathCorner::Touch(CBaseEntity* pOther)
 	}
 
 	// Turn towards the next stop in the path.
-	pOther->pev->ideal_yaw = UTIL_VecToYaw(pOther->m_hGoalEnt->pev->origin - pOther->pev->origin);
+	pOther->pev->ideal_yaw = UTIL_VecToYaw(pOther->m_hGoalEnt->GetAbsOrigin() - pOther->GetAbsOrigin());
 }
 #endif
 
@@ -222,8 +222,8 @@ void CPathTrack::Project(CPathTrack* pstart, CPathTrack* pend, Vector* origin, f
 {
 	if (pstart && pend)
 	{
-		const Vector dir = (pend->pev->origin - pstart->pev->origin).Normalize();
-		*origin = pend->pev->origin + dir * dist;
+		const Vector dir = (pend->GetAbsOrigin() - pstart->GetAbsOrigin()).Normalize();
+		*origin = pend->GetAbsOrigin() + dir * dist;
 	}
 }
 
@@ -263,7 +263,7 @@ CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 		dist = -dist;
 		while (dist > 0)
 		{
-			const Vector dir = pcurrent->pev->origin - currentPos;
+			const Vector dir = pcurrent->GetAbsOrigin() - currentPos;
 			const float length = dir.Length();
 			if (!length)
 			{
@@ -283,7 +283,7 @@ CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 			else
 			{
 				dist -= length;
-				currentPos = pcurrent->pev->origin;
+				currentPos = pcurrent->GetAbsOrigin();
 				*origin = currentPos;
 				if (!ValidPath(pcurrent->GetPrevious(), move))	// If there is no previous node, or it's disabled, return now.
 					return nullptr;
@@ -304,7 +304,7 @@ CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 					Project(pcurrent->GetPrevious(), pcurrent, origin, dist);
 				return nullptr;
 			}
-			const Vector dir = pcurrent->GetNext()->pev->origin - currentPos;
+			const Vector dir = pcurrent->GetNext()->GetAbsOrigin() - currentPos;
 			const float length = dir.Length();
 			if (!length && !ValidPath(pcurrent->GetNext()->GetNext(), move))
 			{
@@ -320,7 +320,7 @@ CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 			else
 			{
 				dist -= length;
-				currentPos = pcurrent->GetNext()->pev->origin;
+				currentPos = pcurrent->GetNext()->GetAbsOrigin();
 				pcurrent = pcurrent->GetNext();
 				*origin = currentPos;
 			}
@@ -334,7 +334,7 @@ CPathTrack* CPathTrack::LookAhead(Vector* origin, float dist, int move)
 // Assumes this is ALWAYS enabled
 CPathTrack* CPathTrack::Nearest(Vector origin)
 {
-	Vector delta = origin - pev->origin;
+	Vector delta = origin - GetAbsOrigin();
 	delta.z = 0;
 	float minDist = delta.Length();
 	CPathTrack* pnearest = this;
@@ -350,7 +350,7 @@ CPathTrack* CPathTrack::Nearest(Vector origin)
 			ALERT(at_error, "Bad sequence of path_tracks from %s", STRING(pev->targetname));
 			return nullptr;
 		}
-		delta = origin - ppath->pev->origin;
+		delta = origin - ppath->GetAbsOrigin();
 		delta.z = 0;
 		const float dist = delta.Length();
 		if (dist < minDist)
@@ -377,8 +377,8 @@ void CPathTrack::Sparkle()
 
 	pev->nextthink = gpGlobals->time + 0.2;
 	if (IsBitSet(pev->spawnflags, SF_PATH_DISABLED))
-		UTIL_ParticleEffect(pev->origin, Vector(0, 0, 100), 210, 10);
+		UTIL_ParticleEffect(GetAbsOrigin(), Vector(0, 0, 100), 210, 10);
 	else
-		UTIL_ParticleEffect(pev->origin, Vector(0, 0, 100), 84, 10);
+		UTIL_ParticleEffect(GetAbsOrigin(), Vector(0, 0, 100), 84, 10);
 }
 #endif

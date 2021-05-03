@@ -49,7 +49,7 @@ void CShower::Spawn()
 
 void CShower::Think()
 {
-	UTIL_Sparks(pev->origin);
+	UTIL_Sparks(GetAbsOrigin());
 
 	pev->speed -= 0.1;
 	if (pev->speed > 0)
@@ -140,18 +140,18 @@ void CEnvExplosion::Use(const UseInfo& info)
 	pev->model = iStringNull;//invisible
 	SetSolidType(Solid::Not);// intangible
 
-	const Vector vecSpot = pev->origin + Vector(0, 0, 8); // trace starts here!
+	const Vector vecSpot = GetAbsOrigin() + Vector(0, 0, 8); // trace starts here!
 	TraceResult tr;
 	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -40), IgnoreMonsters::Yes, this, &tr);
 
 	// Pull out of the wall a bit
 	if (tr.flFraction != 1.0)
 	{
-		pev->origin = tr.vecEndPos + (tr.vecPlaneNormal * (m_iMagnitude - 24) * 0.6);
+		SetAbsOrigin(tr.vecEndPos + (tr.vecPlaneNormal * (m_iMagnitude - 24) * 0.6));
 	}
 	else
 	{
-		pev->origin = pev->origin;
+		SetAbsOrigin(GetAbsOrigin());
 	}
 
 	// draw decal
@@ -170,11 +170,11 @@ void CEnvExplosion::Use(const UseInfo& info)
 	// draw fireball
 	if (!(pev->spawnflags & SF_ENVEXPLOSION_NOFIREBALL))
 	{
-		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, GetAbsOrigin());
 		WRITE_BYTE(TE_EXPLOSION);
-		WRITE_COORD(pev->origin.x);
-		WRITE_COORD(pev->origin.y);
-		WRITE_COORD(pev->origin.z);
+		WRITE_COORD(GetAbsOrigin().x);
+		WRITE_COORD(GetAbsOrigin().y);
+		WRITE_COORD(GetAbsOrigin().z);
 		WRITE_SHORT(g_sModelIndexFireball);
 		WRITE_BYTE((byte)m_spriteScale); // scale * 10
 		WRITE_BYTE(15); // framerate
@@ -183,11 +183,11 @@ void CEnvExplosion::Use(const UseInfo& info)
 	}
 	else
 	{
-		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, GetAbsOrigin());
 		WRITE_BYTE(TE_EXPLOSION);
-		WRITE_COORD(pev->origin.x);
-		WRITE_COORD(pev->origin.y);
-		WRITE_COORD(pev->origin.z);
+		WRITE_COORD(GetAbsOrigin().x);
+		WRITE_COORD(GetAbsOrigin().y);
+		WRITE_COORD(GetAbsOrigin().z);
 		WRITE_SHORT(g_sModelIndexFireball);
 		WRITE_BYTE(0); // no sprite
 		WRITE_BYTE(15); // framerate
@@ -211,7 +211,7 @@ void CEnvExplosion::Use(const UseInfo& info)
 
 		for (int i = 0; i < sparkCount; i++)
 		{
-			Create("spark_shower", pev->origin, tr.vecPlaneNormal, nullptr);
+			Create("spark_shower", GetAbsOrigin(), tr.vecPlaneNormal, nullptr);
 		}
 	}
 }
@@ -220,11 +220,11 @@ void CEnvExplosion::Smoke()
 {
 	if (!(pev->spawnflags & SF_ENVEXPLOSION_NOSMOKE))
 	{
-		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PAS, SVC_TEMPENTITY, GetAbsOrigin());
 		WRITE_BYTE(TE_SMOKE);
-		WRITE_COORD(pev->origin.x);
-		WRITE_COORD(pev->origin.y);
-		WRITE_COORD(pev->origin.z);
+		WRITE_COORD(GetAbsOrigin().x);
+		WRITE_COORD(GetAbsOrigin().y);
+		WRITE_COORD(GetAbsOrigin().z);
 		WRITE_SHORT(g_sModelIndexSmoke);
 		WRITE_BYTE((byte)m_spriteScale); // scale * 10
 		WRITE_BYTE(12); // framerate

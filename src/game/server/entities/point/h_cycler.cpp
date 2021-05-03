@@ -72,7 +72,7 @@ void CCycler::GenericCyclerSpawn(const char* szModel, Vector vecMin, Vector vecM
 {
 	if (!szModel || !*szModel)
 	{
-		ALERT(at_error, "cycler at %.0f %.0f %0.f missing modelname", pev->origin.x, pev->origin.y, pev->origin.z);
+		ALERT(at_error, "cycler at %.0f %.0f %0.f missing modelname", GetAbsOrigin().x, GetAbsOrigin().y, GetAbsOrigin().z);
 		UTIL_RemoveNow(this);
 		return;
 	}
@@ -280,7 +280,7 @@ void CWeaponCycler::Spawn()
 	m_iszModel = pev->model;
 	m_iModel = pev->modelindex;
 
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 16));
 	SetTouch(&CWeaponCycler::DefaultTouch);
 }

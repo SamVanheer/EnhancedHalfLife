@@ -88,7 +88,7 @@ CStomp* CStomp::StompCreate(const Vector& origin, const Vector& end, float speed
 {
 	CStomp* pStomp = GetClassPtr((CStomp*)nullptr);
 
-	pStomp->pev->origin = origin;
+	pStomp->SetAbsOrigin(origin);
 	const Vector dir = (end - origin);
 	pStomp->pev->scale = dir.Length();
 	pStomp->pev->movedir = dir.Normalize();
@@ -130,7 +130,7 @@ void CStomp::Think()
 	pev->nextthink = gpGlobals->time + 0.1;
 
 	// Do damage for this frame
-	Vector vecStart = pev->origin;
+	Vector vecStart = GetAbsOrigin();
 	vecStart.z += 30;
 	const Vector vecEnd = vecStart + (pev->movedir * pev->speed * deltaTime);
 
@@ -148,13 +148,13 @@ void CStomp::Think()
 	// Move and spawn trails
 	while (gpGlobals->time - pev->dmgtime > STOMP_INTERVAL)
 	{
-		pev->origin = pev->origin + pev->movedir * pev->speed * STOMP_INTERVAL;
+		SetAbsOrigin(GetAbsOrigin() + pev->movedir * pev->speed * STOMP_INTERVAL);
 		for (int i = 0; i < 2; i++)
 		{
-			if (CSprite* pSprite = CSprite::SpriteCreate(GARG_STOMP_SPRITE_NAME.data(), pev->origin, true); pSprite)
+			if (CSprite* pSprite = CSprite::SpriteCreate(GARG_STOMP_SPRITE_NAME.data(), GetAbsOrigin(), true); pSprite)
 			{
-				UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 500), IgnoreMonsters::Yes, this, &tr);
-				pSprite->pev->origin = tr.vecEndPos;
+				UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() - Vector(0, 0, 500), IgnoreMonsters::Yes, this, &tr);
+				pSprite->SetAbsOrigin(tr.vecEndPos);
 				pSprite->pev->velocity = Vector(RANDOM_FLOAT(-200, 200), RANDOM_FLOAT(-200, 200), 175);
 				// pSprite->AnimateAndDie( RANDOM_FLOAT( 8.0, 12.0 ) );
 				pSprite->pev->nextthink = gpGlobals->time + 0.3;
@@ -207,8 +207,8 @@ public:
 	bool CheckRangeAttack1(float flDot, float flDist) override;		//!< Stomp attack
 	void SetObjectCollisionBox() override
 	{
-		pev->absmin = pev->origin + Vector(-80, -80, 0);
-		pev->absmax = pev->origin + Vector(80, 80, 214);
+		pev->absmin = GetAbsOrigin() + Vector(-80, -80, 0);
+		pev->absmax = GetAbsOrigin() + Vector(80, 80, 214);
 	}
 
 	Schedule_t* GetScheduleOfType(int Type) override;
@@ -456,24 +456,24 @@ void CGargantua::EyeUpdate()
 			glow->pev->effects |= EF_NODRAW;
 		else
 			glow->pev->effects &= ~EF_NODRAW;
-		glow->SetAbsOrigin(pev->origin);
+		glow->SetAbsOrigin(GetAbsOrigin());
 	}
 }
 
 void CGargantua::StompAttack()
 {
 	UTIL_MakeVectors(pev->angles);
-	const Vector vecStart = pev->origin + Vector(0, 0, 60) + 35 * gpGlobals->v_forward;
+	const Vector vecStart = GetAbsOrigin() + Vector(0, 0, 60) + 35 * gpGlobals->v_forward;
 	const Vector vecAim = ShootAtEnemy(vecStart);
 	const Vector vecEnd = (vecAim * 1024) + vecStart;
 
 	TraceResult trace;
 	UTIL_TraceLine(vecStart, vecEnd, IgnoreMonsters::Yes, this, &trace);
 	CStomp::StompCreate(vecStart, trace.vecEndPos, 0);
-	UTIL_ScreenShake(pev->origin, 12.0, 100.0, 2.0, 1000);
+	UTIL_ScreenShake(GetAbsOrigin(), 12.0, 100.0, 2.0, 1000);
 	EmitSound(SoundChannel::Weapon, pStompSounds[RANDOM_LONG(0, ArraySize(pStompSounds) - 1)], VOL_NORM, ATTN_GARG, PITCH_NORM + RANDOM_LONG(-10, 10));
 
-	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 20), IgnoreMonsters::Yes, this, &trace);
+	UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() - Vector(0, 0, 20), IgnoreMonsters::Yes, this, &trace);
 	if (trace.flFraction < 1.0)
 		UTIL_DecalTrace(&trace, DECAL_GARGSTOMP1);
 }
@@ -729,7 +729,7 @@ void CGargantua::Spawn()
 
 	MonsterInit();
 
-	auto glow = m_hEyeGlow = CSprite::SpriteCreate(GARG_EYE_SPRITE_NAME.data(), pev->origin, false);
+	auto glow = m_hEyeGlow = CSprite::SpriteCreate(GARG_EYE_SPRITE_NAME.data(), GetAbsOrigin(), false);
 	glow->SetTransparency(RenderMode::Glow, 255, 255, 255, 0, RenderFX::NoDissipation);
 	glow->SetAttachment(this, 1);
 	EyeOff();
@@ -820,12 +820,12 @@ bool CGargantua::TakeDamage(const TakeDamageInfo& info)
 void CGargantua::DeathEffect()
 {
 	UTIL_MakeVectors(pev->angles);
-	const Vector deathPos = pev->origin + gpGlobals->v_forward * 100;
+	const Vector deathPos = GetAbsOrigin() + gpGlobals->v_forward * 100;
 
 	// Create a spiral of streaks
 	CSpiral::Create(deathPos, (pev->absmax.z - pev->absmin.z) * 0.6, 125, 1.5);
 
-	Vector position = pev->origin;
+	Vector position = GetAbsOrigin();
 	position.z += 32;
 	for (int i = 0; i < 7; i += 2)
 	{
@@ -833,7 +833,7 @@ void CGargantua::DeathEffect()
 		position.z += 15;
 	}
 
-	CBaseEntity* pSmoker = CBaseEntity::Create("env_smoker", pev->origin, vec3_origin, nullptr);
+	CBaseEntity* pSmoker = CBaseEntity::Create("env_smoker", GetAbsOrigin(), vec3_origin, nullptr);
 	pSmoker->pev->health = 1;	// 1 smoke balls
 	pSmoker->pev->scale = 46;	// 4.6X normal size
 	pSmoker->pev->dmg = 0;		// 0 radial distribution
@@ -916,7 +916,7 @@ void CGargantua::HandleAnimEvent(AnimationEvent& event)
 
 	case GARG_AE_RIGHT_FOOT:
 	case GARG_AE_LEFT_FOOT:
-		UTIL_ScreenShake(pev->origin, 4.0, 3.0, 1.0, 750);
+		UTIL_ScreenShake(GetAbsOrigin(), 4.0, 3.0, 1.0, 750);
 		EmitSound(SoundChannel::Body, pFootSounds[RANDOM_LONG(0, ArraySize(pFootSounds) - 1)], VOL_NORM, ATTN_GARG, PITCH_NORM + RANDOM_LONG(-10, 10));
 		break;
 
@@ -940,7 +940,7 @@ CBaseEntity* CGargantua::GargantuaCheckTraceHullAttack(float flDist, int iDamage
 	TraceResult tr;
 
 	UTIL_MakeVectors(pev->angles);
-	Vector vecStart = pev->origin;
+	Vector vecStart = GetAbsOrigin();
 	vecStart.z += 64;
 	const Vector vecEnd = vecStart + (gpGlobals->v_forward * flDist) - (gpGlobals->v_up * flDist * 0.3);
 
@@ -1035,18 +1035,18 @@ void CGargantua::RunTask(Task_t* pTask)
 				pGib->pev->body = bodyPart;
 				pGib->m_bloodColor = BLOOD_COLOR_YELLOW;
 				pGib->m_material = Materials::None;
-				pGib->pev->origin = pev->origin;
+				pGib->SetAbsOrigin(GetAbsOrigin());
 				pGib->pev->velocity = UTIL_RandomBloodVector() * RANDOM_FLOAT(300, 500);
 				pGib->pev->nextthink = gpGlobals->time + 1.25;
 				pGib->SetThink(&CGib::SUB_FadeOut);
 			}
-			MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
+			MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, GetAbsOrigin());
 			WRITE_BYTE(TE_BREAKMODEL);
 
 			// position
-			WRITE_COORD(pev->origin.x);
-			WRITE_COORD(pev->origin.y);
-			WRITE_COORD(pev->origin.z);
+			WRITE_COORD(GetAbsOrigin().x);
+			WRITE_COORD(GetAbsOrigin().y);
+			WRITE_COORD(GetAbsOrigin().z);
 
 			// size
 			WRITE_COORD(200);
@@ -1100,7 +1100,7 @@ void CGargantua::RunTask(Task_t* pTask)
 
 			if (CBaseEntity* pEnemy = m_hEnemy; pEnemy)
 			{
-				Vector org = pev->origin;
+				Vector org = GetAbsOrigin();
 				org.z += 64;
 				Vector dir = pEnemy->BodyTarget(org) - org;
 				angles = VectorAngles(dir);
@@ -1150,11 +1150,11 @@ void CSmoker::Spawn()
 void CSmoker::Think()
 {
 	// lots of smoke
-	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, GetAbsOrigin());
 	WRITE_BYTE(TE_SMOKE);
-	WRITE_COORD(pev->origin.x + RANDOM_FLOAT(-pev->dmg, pev->dmg));
-	WRITE_COORD(pev->origin.y + RANDOM_FLOAT(-pev->dmg, pev->dmg));
-	WRITE_COORD(pev->origin.z);
+	WRITE_COORD(GetAbsOrigin().x + RANDOM_FLOAT(-pev->dmg, pev->dmg));
+	WRITE_COORD(GetAbsOrigin().y + RANDOM_FLOAT(-pev->dmg, pev->dmg));
+	WRITE_COORD(GetAbsOrigin().z);
 	WRITE_SHORT(g_sModelIndexSmoke);
 	WRITE_BYTE(RANDOM_LONG(pev->scale, pev->scale * 1.1));
 	WRITE_BYTE(RANDOM_LONG(8, 14)); // framerate
@@ -1185,7 +1185,7 @@ CSpiral* CSpiral::Create(const Vector& origin, float height, float radius, float
 	CSpiral* pSpiral = GetClassPtr((CSpiral*)nullptr);
 	pSpiral->Spawn();
 	pSpiral->pev->dmgtime = pSpiral->pev->nextthink;
-	pSpiral->pev->origin = origin;
+	pSpiral->SetAbsOrigin(origin);
 	pSpiral->pev->scale = radius;
 	pSpiral->pev->dmg = height;
 	pSpiral->pev->speed = duration;
@@ -1203,7 +1203,7 @@ void CSpiral::Think()
 
 	while (time > SPIRAL_INTERVAL)
 	{
-		Vector position = pev->origin;
+		Vector position = GetAbsOrigin();
 
 		const float fraction = 1.0 / pev->speed;
 

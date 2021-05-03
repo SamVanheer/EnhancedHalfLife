@@ -174,7 +174,7 @@ void CHAssassin::Shoot()
 	UTIL_MakeVectors(pev->angles);
 
 	const Vector vecShellVelocity = gpGlobals->v_right * RANDOM_FLOAT(40, 90) + gpGlobals->v_up * RANDOM_FLOAT(75, 200) + gpGlobals->v_forward * RANDOM_FLOAT(-40, 40);
-	EjectBrass(pev->origin + gpGlobals->v_up * 32 + gpGlobals->v_forward * 12, vecShellVelocity, pev->angles.y, m_iShell, TE_BOUNCE_SHELL);
+	EjectBrass(GetAbsOrigin() + gpGlobals->v_up * 32 + gpGlobals->v_forward * 12, vecShellVelocity, pev->angles.y, m_iShell, TE_BOUNCE_SHELL);
 	FireBullets(1, vecShootOrigin, vecShootDir, Vector(m_flDiviation, m_flDiviation, m_flDiviation), 2048, BULLET_MONSTER_9MM); // shoot +-8 degrees
 
 	switch (RANDOM_LONG(0, 1))
@@ -205,7 +205,7 @@ void CHAssassin::HandleAnimEvent(AnimationEvent& event)
 	case ASSASSIN_AE_TOSS1:
 	{
 		UTIL_MakeVectors(pev->angles);
-		CGrenade::ShootTimed(this, pev->origin + gpGlobals->v_forward * 34 + Vector(0, 0, 32), m_vecTossVelocity, 2.0);
+		CGrenade::ShootTimed(this, GetAbsOrigin() + gpGlobals->v_forward * 34 + Vector(0, 0, 32), m_vecTossVelocity, 2.0);
 
 		m_flNextGrenadeCheck = gpGlobals->time + 6;// wait six seconds before even looking again to see if a grenade can be thrown.
 		m_fThrowGrenade = false;
@@ -533,9 +533,9 @@ bool CHAssassin::CheckMeleeAttack1(float flDot, float flDist)
 	{
 		TraceResult	tr;
 
-		const Vector vecDest = pev->origin + Vector(RANDOM_FLOAT(-64, 64), RANDOM_FLOAT(-64, 64), 160);
+		const Vector vecDest = GetAbsOrigin() + Vector(RANDOM_FLOAT(-64, 64), RANDOM_FLOAT(-64, 64), 160);
 
-		UTIL_TraceHull(pev->origin + Vector(0, 0, 36), vecDest + Vector(0, 0, 36), IgnoreMonsters::No, Hull::Human, this, &tr);
+		UTIL_TraceHull(GetAbsOrigin() + Vector(0, 0, 36), vecDest + Vector(0, 0, 36), IgnoreMonsters::No, Hull::Human, this, &tr);
 
 		if (tr.fStartSolid || tr.flFraction < 1.0)
 		{
@@ -546,7 +546,7 @@ bool CHAssassin::CheckMeleeAttack1(float flDot, float flDist)
 
 		const float time = sqrt(160 / (0.5 * flGravity));
 		const float speed = flGravity * time / 160;
-		m_vecJumpVelocity = (vecDest - pev->origin) * speed;
+		m_vecJumpVelocity = (vecDest - GetAbsOrigin()) * speed;
 
 		return true;
 	}

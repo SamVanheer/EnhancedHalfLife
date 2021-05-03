@@ -181,7 +181,7 @@ void CISlave::CallForHelp(const char* szClassname, float flDist, EHANDLE hEnemy,
 
 	while ((pEntity = UTIL_FindEntityByString(pEntity, "netname", STRING(pev->netname))) != nullptr)
 	{
-		const float d = (pev->origin - pEntity->pev->origin).Length();
+		const float d = (GetAbsOrigin() - pEntity->GetAbsOrigin()).Length();
 		if (d < flDist)
 		{
 			CBaseMonster* pMonster = pEntity->MyMonsterPointer();
@@ -218,7 +218,7 @@ void CISlave::IdleSound()
 	ArmBeam(side);
 
 	UTIL_MakeAimVectors(pev->angles);
-	Vector vecSrc = pev->origin + gpGlobals->v_right * 2 * side;
+	Vector vecSrc = GetAbsOrigin() + gpGlobals->v_right * 2 * side;
 	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSrc);
 	WRITE_BYTE(TE_DLIGHT);
 	WRITE_COORD(vecSrc.x);	// X
@@ -341,7 +341,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 
 		if (m_iBeams == 0)
 		{
-			const Vector vecSrc = pev->origin + gpGlobals->v_forward * 2;
+			const Vector vecSrc = GetAbsOrigin() + gpGlobals->v_forward * 2;
 			MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSrc);
 			WRITE_BYTE(TE_DLIGHT);
 			WRITE_COORD(vecSrc.x);	// X
@@ -379,13 +379,13 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 
 		if (m_hDead != nullptr)
 		{
-			const Vector vecDest = m_hDead->pev->origin + Vector(0, 0, 38);
+			const Vector vecDest = m_hDead->GetAbsOrigin() + Vector(0, 0, 38);
 			TraceResult trace;
 			UTIL_TraceHull(vecDest, vecDest, IgnoreMonsters::No, Hull::Human, m_hDead, &trace);
 
 			if (!trace.fStartSolid)
 			{
-				CBaseEntity* pNew = Create("monster_alien_slave", m_hDead->pev->origin, m_hDead->pev->angles);
+				CBaseEntity* pNew = Create("monster_alien_slave", m_hDead->GetAbsOrigin(), m_hDead->pev->angles);
 				CBaseMonster* pNewMonster = pNew->MyMonsterPointer();
 				pNew->pev->spawnflags |= SF_ISLAVE_IS_REVIVED_SLAVE;
 				WackBeam(-1, pNew);
@@ -459,7 +459,7 @@ bool CISlave::CheckRangeAttack2(float flDot, float flDist)
 		{
 			if (pEntity->pev->deadflag == DeadFlag::Dead)
 			{
-				const float d = (pev->origin - pEntity->pev->origin).Length();
+				const float d = (GetAbsOrigin() - pEntity->GetAbsOrigin()).Length();
 				if (d < flDist)
 				{
 					m_hDead = pEntity;
@@ -660,7 +660,7 @@ void CISlave::ArmBeam(int side)
 		return;
 
 	UTIL_MakeAimVectors(pev->angles);
-	const Vector vecSrc = pev->origin + gpGlobals->v_up * 36 + gpGlobals->v_right * side * 16 + gpGlobals->v_forward * 32;
+	const Vector vecSrc = GetAbsOrigin() + gpGlobals->v_up * 36 + gpGlobals->v_right * side * 16 + gpGlobals->v_forward * 32;
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -732,7 +732,7 @@ void CISlave::ZapBeam(int side)
 	if (m_iBeams >= ISLAVE_MAX_BEAMS)
 		return;
 
-	const Vector vecSrc = pev->origin + gpGlobals->v_up * 36;
+	const Vector vecSrc = GetAbsOrigin() + gpGlobals->v_up * 36;
 	Vector vecAim = ShootAtEnemy(vecSrc);
 	float deflection = 0.01;
 	vecAim = vecAim + side * gpGlobals->v_right * RANDOM_FLOAT(0, deflection) + gpGlobals->v_up * RANDOM_FLOAT(-deflection, deflection);

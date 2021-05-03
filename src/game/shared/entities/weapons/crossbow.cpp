@@ -67,7 +67,7 @@ void CCrossbowBolt::Spawn()
 
 	SetModel("models/crossbow_bolt.mdl");
 
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 	SetSize(vec3_origin, vec3_origin);
 
 	SetTouch(&CCrossbowBolt::BoltTouch);
@@ -141,7 +141,7 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 		{
 			// if what we hit is static architecture, can stay around for a while.
 			Vector vecDir = pev->velocity.Normalize();
-			SetAbsOrigin(pev->origin - vecDir * 12);
+			SetAbsOrigin(GetAbsOrigin() - vecDir * 12);
 			pev->angles = VectorAngles(vecDir);
 			SetSolidType(Solid::Not);
 			SetMovetype(Movetype::Fly);
@@ -151,9 +151,9 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 			pev->nextthink = gpGlobals->time + 10.0;
 		}
 
-		if (UTIL_PointContents(pev->origin) != Contents::Water)
+		if (UTIL_PointContents(GetAbsOrigin()) != Contents::Water)
 		{
-			UTIL_Sparks(pev->origin);
+			UTIL_Sparks(GetAbsOrigin());
 		}
 	}
 
@@ -171,20 +171,20 @@ void CCrossbowBolt::BubbleThink()
 	if (pev->waterlevel == WaterLevel::Dry)
 		return;
 
-	UTIL_BubbleTrail(pev->origin - pev->velocity * 0.1, pev->origin, 1);
+	UTIL_BubbleTrail(GetAbsOrigin() - pev->velocity * 0.1, GetAbsOrigin(), 1);
 }
 
 void CCrossbowBolt::ExplodeThink()
 {
-	const Contents iContents = UTIL_PointContents(pev->origin);
+	const Contents iContents = UTIL_PointContents(GetAbsOrigin());
 
 	pev->dmg = 40;
 
-	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
+	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, GetAbsOrigin());
 	WRITE_BYTE(TE_EXPLOSION);
-	WRITE_COORD(pev->origin.x);
-	WRITE_COORD(pev->origin.y);
-	WRITE_COORD(pev->origin.z);
+	WRITE_COORD(GetAbsOrigin().x);
+	WRITE_COORD(GetAbsOrigin().y);
+	WRITE_COORD(GetAbsOrigin().z);
 	if (iContents != Contents::Water)
 	{
 		WRITE_SHORT(g_sModelIndexFireball);
@@ -202,7 +202,7 @@ void CCrossbowBolt::ExplodeThink()
 
 	SetOwner(nullptr); // can't traceline attack owner if this is set
 
-	::RadiusDamage(pev->origin, this, oldOwner, pev->dmg, 128, CLASS_NONE, DMG_BLAST | DMG_ALWAYSGIB);
+	::RadiusDamage(GetAbsOrigin(), this, oldOwner, pev->dmg, 128, CLASS_NONE, DMG_BLAST | DMG_ALWAYSGIB);
 
 	UTIL_Remove(this);
 }
@@ -380,7 +380,7 @@ void CCrossbow::FireBolt()
 
 #ifndef CLIENT_DLL
 	CCrossbowBolt* pBolt = CCrossbowBolt::BoltCreate();
-	pBolt->pev->origin = vecSrc;
+	pBolt->SetAbsOrigin(vecSrc);
 	pBolt->pev->angles = anglesAim;
 	pBolt->SetOwner(m_hPlayer);
 

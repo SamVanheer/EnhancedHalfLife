@@ -199,7 +199,7 @@ void CMP5::SecondaryAttack()
 
 	// we don't add in player velocity anymore.
 	CGrenade::ShootContact(m_hPlayer,
-		m_hPlayer->pev->origin + m_hPlayer->pev->view_ofs + gpGlobals->v_forward * 16,
+		m_hPlayer->GetAbsOrigin() + m_hPlayer->pev->view_ofs + gpGlobals->v_forward * 16,
 		gpGlobals->v_forward * 800);
 
 	int flags;

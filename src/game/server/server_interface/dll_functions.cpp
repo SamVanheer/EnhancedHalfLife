@@ -103,8 +103,8 @@ int DispatchSpawn(edict_t* pent)
 	if (pEntity)
 	{
 		// Initialize these or entities who don't link to the world won't have anything in here
-		pEntity->pev->absmin = pEntity->pev->origin - Vector(1, 1, 1);
-		pEntity->pev->absmax = pEntity->pev->origin + Vector(1, 1, 1);
+		pEntity->pev->absmin = pEntity->GetAbsOrigin() - Vector(1, 1, 1);
+		pEntity->pev->absmax = pEntity->GetAbsOrigin() + Vector(1, 1, 1);
 
 		pEntity->Spawn();
 
@@ -340,11 +340,11 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 		// Is this an overriding global entity (coming over the transition), or one restoring in a level
 		if (globalEntity)
 		{
-			//			ALERT( at_console, "After: %f %f %f %s\n", pEntity->pev->origin.x, pEntity->pev->origin.y, pEntity->pev->origin.z, STRING(pEntity->pev->model) );
+			//			ALERT( at_console, "After: %f %f %f %s\n", pEntity->GetAbsOrigin().x, pEntity->GetAbsOrigin().y, pEntity->GetAbsOrigin().z, STRING(pEntity->pev->model) );
 			pSaveData->vecLandmarkOffset = oldOffset;
 			if (pEntity)
 			{
-				pEntity->SetAbsOrigin(pEntity->pev->origin);
+				pEntity->SetAbsOrigin(pEntity->GetAbsOrigin());
 				pEntity->OverrideReset();
 			}
 		}

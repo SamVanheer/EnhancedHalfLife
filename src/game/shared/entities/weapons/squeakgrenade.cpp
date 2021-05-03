@@ -105,7 +105,7 @@ void CSqueakGrenade::Spawn()
 
 	SetModel("models/w_squeak.mdl");
 	SetSize(Vector(-4, -4, 0), Vector(4, 4, 8));
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	SetTouch(&CSqueakGrenade::SuperBounceTouch);
 	SetThink(&CSqueakGrenade::HuntThink);
@@ -160,9 +160,9 @@ void CSqueakGrenade::Killed(const KilledInfo& info)
 	// play squeek blast
 	EmitSound(SoundChannel::Item, "squeek/sqk_blast1.wav", VOL_NORM, 0.5, PITCH_NORM);
 
-	CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, SMALL_EXPLOSION_VOLUME, 3.0);
+	CSoundEnt::InsertSound(bits_SOUND_COMBAT, GetAbsOrigin(), SMALL_EXPLOSION_VOLUME, 3.0);
 
-	UTIL_BloodDrips(pev->origin, vec3_origin, BloodColor(), 80);
+	UTIL_BloodDrips(GetAbsOrigin(), vec3_origin, BloodColor(), 80);
 
 	if (m_hOwner != nullptr)
 		RadiusDamage(this, m_hOwner, pev->dmg, CLASS_NONE, DMG_BLAST);
@@ -242,14 +242,14 @@ void CSqueakGrenade::HuntThink()
 	if ((m_flDie - gpGlobals->time <= 0.5) && (m_flDie - gpGlobals->time >= 0.3))
 	{
 		EmitSound(SoundChannel::Voice, "squeek/sqk_die1.wav", VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(0, 0x3F));
-		CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, 256, 0.25);
+		CSoundEnt::InsertSound(bits_SOUND_COMBAT, GetAbsOrigin(), 256, 0.25);
 	}
 
 	if (m_hEnemy != nullptr)
 	{
 		if (IsVisible(m_hEnemy))
 		{
-			const Vector vecDir = m_hEnemy->EyePosition() - pev->origin;
+			const Vector vecDir = m_hEnemy->EyePosition() - GetAbsOrigin();
 			m_vecTarget = vecDir.Normalize();
 		}
 
@@ -276,12 +276,12 @@ void CSqueakGrenade::HuntThink()
 		}
 	}
 
-	if ((pev->origin - m_posPrev).Length() < 1.0)
+	if ((GetAbsOrigin() - m_posPrev).Length() < 1.0)
 	{
 		pev->velocity.x = RANDOM_FLOAT(-100, 100);
 		pev->velocity.y = RANDOM_FLOAT(-100, 100);
 	}
-	m_posPrev = pev->origin;
+	m_posPrev = GetAbsOrigin();
 
 	pev->angles = VectorAngles(pev->velocity);
 	pev->angles.z = 0;
@@ -365,12 +365,12 @@ void CSqueakGrenade::SuperBounceTouch(CBaseEntity* pOther)
 			EmitSound(SoundChannel::Voice, "squeek/sqk_hunt2.wav", VOL_NORM, ATTN_NORM, (int)flpitch);
 		else
 			EmitSound(SoundChannel::Voice, "squeek/sqk_hunt3.wav", VOL_NORM, ATTN_NORM, (int)flpitch);
-		CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, 256, 0.25);
+		CSoundEnt::InsertSound(bits_SOUND_COMBAT, GetAbsOrigin(), 256, 0.25);
 	}
 	else
 	{
 		// skittering sound
-		CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, 100, 0.1);
+		CSoundEnt::InsertSound(bits_SOUND_COMBAT, GetAbsOrigin(), 100, 0.1);
 	}
 
 	m_flNextBounceSoundTime = gpGlobals->time + 0.5;// half second.
@@ -469,7 +469,7 @@ void CSqueak::PrimaryAttack()
 
 		// HACK HACK:  Ugly hacks to handle change in origin based on new physics code for players
 		// Move origin up if crouched and start trace a bit outside of body ( 20 units instead of 16 )
-		Vector trace_origin = m_hPlayer->pev->origin;
+		Vector trace_origin = m_hPlayer->GetAbsOrigin();
 		if (m_hPlayer->pev->flags & FL_DUCKING)
 		{
 			trace_origin = trace_origin - (VEC_HULL_MIN - VEC_DUCK_HULL_MIN);

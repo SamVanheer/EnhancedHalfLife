@@ -178,9 +178,9 @@ const Vector& CBeam::GetStartPos()
 	if (GetType() == BEAM_ENTS)
 	{
 		auto pEntity = UTIL_EntityByIndex(GetStartEntity());
-		return pEntity->pev->origin;
+		return pEntity->GetAbsOrigin();
 	}
-	return pev->origin;
+	return GetAbsOrigin();
 }
 
 const Vector& CBeam::GetEndPos()
@@ -192,7 +192,7 @@ const Vector& CBeam::GetEndPos()
 	}
 
 	if (CBaseEntity* pEntity = UTIL_EntityByIndex(GetEndEntity()); pEntity)
-		return pEntity->pev->origin;
+		return pEntity->GetAbsOrigin();
 	return pev->angles;
 }
 
@@ -273,11 +273,11 @@ void CBeam::RelinkBeam()
 	pev->maxs.x = std::max(startPos.x, endPos.x);
 	pev->maxs.y = std::max(startPos.y, endPos.y);
 	pev->maxs.z = std::max(startPos.z, endPos.z);
-	pev->mins = pev->mins - pev->origin;
-	pev->maxs = pev->maxs - pev->origin;
+	pev->mins = pev->mins - GetAbsOrigin();
+	pev->maxs = pev->maxs - GetAbsOrigin();
 
 	SetSize(pev->mins, pev->maxs);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 }
 
 #if 0
@@ -347,7 +347,7 @@ public:
 	void	EXPORT StrikeThink();
 	void	EXPORT DamageThink();
 	void	RandomArea();
-	void	RandomPoint(Vector& vecSrc);
+	void	RandomPoint(const Vector& vecSrc);
 	void	Zap(const Vector& vecSrc, const Vector& vecDest);
 	void	EXPORT StrikeUse(const UseInfo& info);
 	void	EXPORT ToggleUse(const UseInfo& info);
@@ -619,7 +619,7 @@ void CLightning::StrikeThink()
 		{
 			CBaseEntity* pStart = RandomTargetname(STRING(m_iszStartEntity));
 			if (pStart != nullptr)
-				RandomPoint(pStart->pev->origin);
+				RandomPoint(pStart->GetAbsOrigin());
 			else
 				ALERT(at_console, "env_beam: unknown entity \"%s\"\n", STRING(m_iszStartEntity));
 		}
@@ -654,19 +654,19 @@ void CLightning::StrikeThink()
 			{
 				WRITE_BYTE(TE_BEAMENTPOINT);
 				WRITE_SHORT(pStart->entindex());
-				WRITE_COORD(pEnd->pev->origin.x);
-				WRITE_COORD(pEnd->pev->origin.y);
-				WRITE_COORD(pEnd->pev->origin.z);
+				WRITE_COORD(pEnd->GetAbsOrigin().x);
+				WRITE_COORD(pEnd->GetAbsOrigin().y);
+				WRITE_COORD(pEnd->GetAbsOrigin().z);
 			}
 			else
 			{
 				WRITE_BYTE(TE_BEAMPOINTS);
-				WRITE_COORD(pStart->pev->origin.x);
-				WRITE_COORD(pStart->pev->origin.y);
-				WRITE_COORD(pStart->pev->origin.z);
-				WRITE_COORD(pEnd->pev->origin.x);
-				WRITE_COORD(pEnd->pev->origin.y);
-				WRITE_COORD(pEnd->pev->origin.z);
+				WRITE_COORD(pStart->GetAbsOrigin().x);
+				WRITE_COORD(pStart->GetAbsOrigin().y);
+				WRITE_COORD(pStart->GetAbsOrigin().z);
+				WRITE_COORD(pEnd->GetAbsOrigin().x);
+				WRITE_COORD(pEnd->GetAbsOrigin().y);
+				WRITE_COORD(pEnd->GetAbsOrigin().z);
 			}
 		}
 		else
@@ -691,11 +691,11 @@ void CLightning::StrikeThink()
 		WRITE_BYTE(pev->renderamt);	// brightness
 		WRITE_BYTE(m_speed);		// speed
 		MESSAGE_END();
-		DoSparks(pStart->pev->origin, pEnd->pev->origin);
+		DoSparks(pStart->GetAbsOrigin(), pEnd->GetAbsOrigin());
 		if (pev->dmg > 0)
 		{
 			TraceResult tr;
-			UTIL_TraceLine(pStart->pev->origin, pEnd->pev->origin, IgnoreMonsters::No, nullptr, &tr);
+			UTIL_TraceLine(pStart->GetAbsOrigin(), pEnd->GetAbsOrigin(), IgnoreMonsters::No, nullptr, &tr);
 			BeamDamageInstant(&tr, pev->dmg);
 		}
 	}
@@ -710,7 +710,7 @@ void CBeam::BeamDamage(TraceResult* ptr)
 		if (pHit)
 		{
 			ClearMultiDamage();
-			pHit->TraceAttack({this, pev->dmg * (gpGlobals->time - pev->dmgtime), (ptr->vecEndPos - pev->origin).Normalize(), *ptr, DMG_ENERGYBEAM});
+			pHit->TraceAttack({this, pev->dmg * (gpGlobals->time - pev->dmgtime), (ptr->vecEndPos - GetAbsOrigin()).Normalize(), *ptr, DMG_ENERGYBEAM});
 			ApplyMultiDamage(this, this);
 			if (pev->spawnflags & SF_BEAM_DECALS)
 			{
@@ -775,7 +775,7 @@ void CLightning::RandomArea()
 {
 	for (int iLoops = 0; iLoops < 10; iLoops++)
 	{
-		const Vector vecSrc = pev->origin;
+		const Vector vecSrc = GetAbsOrigin();
 
 		Vector vecDir1 = Vector(RANDOM_FLOAT(-1.0, 1.0), RANDOM_FLOAT(-1.0, 1.0), RANDOM_FLOAT(-1.0, 1.0));
 		vecDir1 = vecDir1.Normalize();
@@ -811,7 +811,7 @@ void CLightning::RandomArea()
 	}
 }
 
-void CLightning::RandomPoint(Vector& vecSrc)
+void CLightning::RandomPoint(const Vector& vecSrc)
 {
 	for (int iLoops = 0; iLoops < 10; iLoops++)
 	{
@@ -864,9 +864,9 @@ void CLightning::BeamUpdateVars()
 	SetType(beamType);
 	if (beamType == BEAM_POINTS || beamType == BEAM_ENTPOINT || beamType == BEAM_HOSE)
 	{
-		SetStartPos(pStart->pev->origin);
+		SetStartPos(pStart->GetAbsOrigin());
 		if (beamType == BEAM_POINTS || beamType == BEAM_HOSE)
-			SetEndPos(pEnd->pev->origin);
+			SetEndPos(pEnd->GetAbsOrigin());
 		else
 			SetEndEntity(pEnd->entindex());
 	}
@@ -912,10 +912,10 @@ void CLaser::Spawn()
 	SetThink(&CLaser::StrikeThink);
 	pev->flags |= FL_CUSTOMENTITY;
 
-	PointsInit(pev->origin, pev->origin);
+	PointsInit(GetAbsOrigin(), GetAbsOrigin());
 
 	if (!m_hSprite && !IsStringNull(m_iszSpriteName))
-		m_hSprite = CSprite::SpriteCreate(STRING(m_iszSpriteName), pev->origin, true);
+		m_hSprite = CSprite::SpriteCreate(STRING(m_iszSpriteName), GetAbsOrigin(), true);
 	else
 		m_hSprite = nullptr;
 
@@ -1034,11 +1034,11 @@ void CLaser::FireAtPoint(TraceResult& tr)
 void CLaser::StrikeThink()
 {
 	if (CBaseEntity* pEnd = RandomTargetname(STRING(pev->message)); pEnd)
-		m_firePosition = pEnd->pev->origin;
+		m_firePosition = pEnd->GetAbsOrigin();
 
 	TraceResult tr;
 
-	UTIL_TraceLine(pev->origin, m_firePosition, IgnoreMonsters::No, nullptr, &tr);
+	UTIL_TraceLine(GetAbsOrigin(), m_firePosition, IgnoreMonsters::No, nullptr, &tr);
 	FireAtPoint(tr);
 	pev->nextthink = gpGlobals->time + 0.1;
 }
@@ -1150,7 +1150,7 @@ void CSprite::Precache()
 void CSprite::SpriteInit(const char* pSpriteName, const Vector& origin)
 {
 	pev->model = MAKE_STRING(pSpriteName);
-	pev->origin = origin;
+	SetAbsOrigin(origin);
 	Spawn();
 }
 
@@ -1403,7 +1403,7 @@ void CGibShooter::ShootThink()
 
 	if (pGib)
 	{
-		pGib->pev->origin = pev->origin;
+		pGib->SetAbsOrigin(GetAbsOrigin());
 		pGib->pev->velocity = vecShootDir * m_flGibVelocity;
 
 		pGib->pev->avelocity.x = RANDOM_FLOAT(100, 200);
@@ -1552,7 +1552,7 @@ void CTestEffect::TestThink()
 
 		TraceResult		tr;
 
-		Vector vecSrc = pev->origin;
+		Vector vecSrc = GetAbsOrigin();
 		Vector vecDir = Vector(RANDOM_FLOAT(-1.0, 1.0), RANDOM_FLOAT(-1.0, 1.0), RANDOM_FLOAT(-1.0, 1.0));
 		vecDir = vecDir.Normalize();
 		UTIL_TraceLine(vecSrc, vecSrc + vecDir * 128, IgnoreMonsters::Yes, this, &tr);
@@ -1701,10 +1701,10 @@ Vector CBlood::BloodPosition(CBaseEntity* pActivator)
 		else
 			pPlayer = UTIL_EntityByIndex(1);
 		if (pPlayer)
-			return (pPlayer->pev->origin + pPlayer->pev->view_ofs) + Vector(RANDOM_FLOAT(-10, 10), RANDOM_FLOAT(-10, 10), RANDOM_FLOAT(-10, 10));
+			return (pPlayer->GetAbsOrigin() + pPlayer->pev->view_ofs) + Vector(RANDOM_FLOAT(-10, 10), RANDOM_FLOAT(-10, 10), RANDOM_FLOAT(-10, 10));
 	}
 
-	return pev->origin;
+	return GetAbsOrigin();
 }
 
 void CBlood::Use(const UseInfo& info)
@@ -1800,7 +1800,7 @@ void CShake::KeyValue(KeyValueData* pkvd)
 
 void CShake::Use(const UseInfo& info)
 {
-	UTIL_ScreenShake(pev->origin, Amplitude(), Frequency(), Duration(), Radius());
+	UTIL_ScreenShake(GetAbsOrigin(), Amplitude(), Frequency(), Duration(), Radius());
 }
 
 /**
@@ -2000,9 +2000,9 @@ void CEnvFunnel::Use(const UseInfo& info)
 {
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_LARGEFUNNEL);
-	WRITE_COORD(pev->origin.x);
-	WRITE_COORD(pev->origin.y);
-	WRITE_COORD(pev->origin.z);
+	WRITE_COORD(GetAbsOrigin().x);
+	WRITE_COORD(GetAbsOrigin().y);
+	WRITE_COORD(GetAbsOrigin().z);
 	WRITE_SHORT(m_iSprite);
 
 	if (pev->spawnflags & SF_FUNNEL_REVERSE)// funnel flows in reverse?
@@ -2057,7 +2057,7 @@ void CEnvBeverage::Use(const UseInfo& info)
 		return;
 	}
 
-	CBaseEntity* pCan = CBaseEntity::Create("item_sodacan", pev->origin, pev->angles, this);
+	CBaseEntity* pCan = CBaseEntity::Create("item_sodacan", GetAbsOrigin(), pev->angles, this);
 
 	if (pev->skin == 6)
 	{

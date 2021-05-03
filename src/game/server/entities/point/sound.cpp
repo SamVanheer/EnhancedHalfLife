@@ -203,7 +203,7 @@ void CAmbientGeneric::Spawn()
 
 	if (IsStringNull(pev->message) || strlen(szSoundFile) < 1)
 	{
-		ALERT(at_error, "EMPTY AMBIENT AT: %f, %f, %f\n", pev->origin.x, pev->origin.y, pev->origin.z);
+		ALERT(at_error, "EMPTY AMBIENT AT: %f, %f, %f\n", GetAbsOrigin().x, GetAbsOrigin().y, GetAbsOrigin().z);
 		pev->nextthink = gpGlobals->time + 0.1;
 		SetThink(&CAmbientGeneric::SUB_Remove);
 		return;
@@ -249,7 +249,7 @@ void CAmbientGeneric::Precache()
 	}
 	if (m_fActive)
 	{
-		UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
+		UTIL_EmitAmbientSound(this, GetAbsOrigin(), szSoundFile,
 			(m_dpv.vol * 0.01), m_flAttenuation, SND_SPAWNING, m_dpv.pitch);
 
 		pev->nextthink = gpGlobals->time + 0.1;
@@ -293,7 +293,7 @@ void CAmbientGeneric::RampThink()
 			m_dpv.spindown = 0;				// done with ramp down
 
 			// shut sound off
-			UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
+			UTIL_EmitAmbientSound(this, GetAbsOrigin(), szSoundFile,
 				0, 0, SND_STOP, 0);
 
 			// return without setting nextthink
@@ -335,7 +335,7 @@ void CAmbientGeneric::RampThink()
 			m_dpv.fadeout = 0;				// done with ramp down
 
 			// shut sound off
-			UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
+			UTIL_EmitAmbientSound(this, GetAbsOrigin(), szSoundFile,
 				0, 0, SND_STOP, 0);
 
 			// return without setting nextthink
@@ -436,7 +436,7 @@ void CAmbientGeneric::RampThink()
 		if (pitch == PITCH_NORM)
 			pitch = PITCH_NORM + 1; // don't send 'no pitch' !
 
-		UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
+		UTIL_EmitAmbientSound(this, GetAbsOrigin(), szSoundFile,
 			(vol * 0.01), m_flAttenuation, flags, pitch);
 	}
 
@@ -542,7 +542,7 @@ void CAmbientGeneric::ToggleUse(const UseInfo& info)
 
 		m_dpv.pitch = fraction * 255;
 
-		UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
+		UTIL_EmitAmbientSound(this, GetAbsOrigin(), szSoundFile,
 			0, 0, SND_CHANGE_PITCH, m_dpv.pitch);
 
 		return;
@@ -595,7 +595,7 @@ void CAmbientGeneric::ToggleUse(const UseInfo& info)
 				pev->nextthink = gpGlobals->time + 0.1;
 			}
 			else
-				UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
+				UTIL_EmitAmbientSound(this, GetAbsOrigin(), szSoundFile,
 					0, 0, SND_STOP, 0);
 		}
 	}
@@ -611,14 +611,14 @@ void CAmbientGeneric::ToggleUse(const UseInfo& info)
 			m_fActive = true;
 		else
 			// shut sound off now - may be interrupting a long non-looping sound
-			UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
+			UTIL_EmitAmbientSound(this, GetAbsOrigin(), szSoundFile,
 				0, 0, SND_STOP, 0);
 
 		// init all ramp params for startup
 
 		InitModulationParms();
 
-		UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
+		UTIL_EmitAmbientSound(this, GetAbsOrigin(), szSoundFile,
 			(m_dpv.vol * 0.01), m_flAttenuation, 0, m_dpv.pitch);
 
 		pev->nextthink = gpGlobals->time + 0.1;
@@ -832,8 +832,8 @@ void CEnvSound::KeyValue(KeyValueData* pkvd)
 */
 bool IsEnvSoundInRange(CEnvSound* pSound, CBaseEntity* pTarget, float* pflRange)
 {
-	const Vector vecSpot1 = pSound->pev->origin + pSound->pev->view_ofs;
-	const Vector vecSpot2 = pTarget->pev->origin + pTarget->pev->view_ofs;
+	const Vector vecSpot1 = pSound->GetAbsOrigin() + pSound->pev->view_ofs;
+	const Vector vecSpot2 = pTarget->GetAbsOrigin() + pTarget->pev->view_ofs;
 	TraceResult tr;
 
 	UTIL_TraceLine(vecSpot1, vecSpot2, IgnoreMonsters::Yes, pSound, &tr);
@@ -1000,7 +1000,7 @@ void CSpeaker::Spawn()
 
 	if (!m_preset && (IsStringNull(pev->message) || strlen(szSoundFile) < 1))
 	{
-		ALERT(at_error, "SPEAKER with no Level/Sentence! at: %f, %f, %f\n", pev->origin.x, pev->origin.y, pev->origin.z);
+		ALERT(at_error, "SPEAKER with no Level/Sentence! at: %f, %f, %f\n", GetAbsOrigin().x, GetAbsOrigin().y, GetAbsOrigin().z);
 		pev->nextthink = gpGlobals->time + 0.1;
 		SetThink(&CSpeaker::SUB_Remove);
 		return;
@@ -1075,7 +1075,7 @@ void CSpeaker::SpeakerThink()
 	if (szSoundFile[0] == '!')
 	{
 		// play single sentence, one shot
-		UTIL_EmitAmbientSound(this, pev->origin, szSoundFile,
+		UTIL_EmitAmbientSound(this, GetAbsOrigin(), szSoundFile,
 			flvolume, flattenuation, flags, pitch);
 
 		// shut off and reset

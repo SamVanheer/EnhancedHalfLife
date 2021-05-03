@@ -501,7 +501,7 @@ bool CBreakable::TakeDamage(const TakeDamageInfo& info)
 	// (that is, no actual entity projectile was involved in the attack so use the shooter's origin). 
 	if (adjustedInfo.GetAttacker() == adjustedInfo.GetInflictor())
 	{
-		vecTemp = adjustedInfo.GetInflictor()->pev->origin - (pev->absmin + (pev->size * 0.5));
+		vecTemp = adjustedInfo.GetInflictor()->GetAbsOrigin() - (pev->absmin + (pev->size * 0.5));
 
 		// if a client hit the breakable with a crowbar, and breakable is crowbar-sensitive, break it now.
 		if (IsBitSet(adjustedInfo.GetAttacker()->pev->flags, FL_CLIENT) &&
@@ -511,7 +511,7 @@ bool CBreakable::TakeDamage(const TakeDamageInfo& info)
 	else
 		// an actual missile was involved.
 	{
-		vecTemp = adjustedInfo.GetInflictor()->pev->origin - (pev->absmin + (pev->size * 0.5));
+		vecTemp = adjustedInfo.GetInflictor()->GetAbsOrigin() - (pev->absmin + (pev->size * 0.5));
 	}
 
 	// Breakables take double damage from the crowbar
@@ -634,7 +634,7 @@ void CBreakable::Die()
 	}
 
 	// shard origin
-	const Vector vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
+	const Vector vecSpot = GetAbsOrigin() + (pev->mins + pev->maxs) * 0.5;
 	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 	WRITE_BYTE(TE_BREAKMODEL);
 
@@ -794,8 +794,8 @@ void CPushable::Spawn()
 	SetBits(pev->flags, FL_FLOAT);
 	pev->friction = 0;
 
-	pev->origin.z += 1;	// Pick up off of the floor
-	SetAbsOrigin(pev->origin);
+	// Pick up off of the floor
+	SetAbsOrigin(GetAbsOrigin() + Vector(0, 0, 1));
 
 	// Multiply by area of the box's cross-section (assume 1000 units^3 standard volume)
 	pev->skin = (pev->skin * (pev->maxs.x - pev->mins.x) * (pev->maxs.y - pev->mins.y)) * 0.0005;
@@ -938,7 +938,7 @@ void CPushable::Move(CBaseEntity* pOther, bool push)
 #if 0
 void CPushable::StopMovementSound()
 {
-	Vector dist = pev->oldorigin - pev->origin;
+	Vector dist = pev->oldorigin - GetAbsOrigin();
 	if (dist.Length() <= 0)
 		StopSound(SoundChannel::Weapon, m_soundNames[m_lastSound]);
 }

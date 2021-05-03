@@ -224,7 +224,7 @@ void CFlockingFlyerFlock::SpawnFlock()
 			pLeader->m_hSquadNext = nullptr;
 		}
 
-		const Vector vecSpot{pev->origin + Vector{RANDOM_FLOAT(-R, R), RANDOM_FLOAT(-R, R), RANDOM_FLOAT(0, 16)}};
+		const Vector vecSpot{GetAbsOrigin() + Vector{RANDOM_FLOAT(-R, R), RANDOM_FLOAT(-R, R), RANDOM_FLOAT(0, 16)}};
 
 		pBoid->SetAbsOrigin(vecSpot);
 		pBoid->SetMovetype(Movetype::Fly);
@@ -418,7 +418,7 @@ void CFlockingFlyer::FormFlock()
 
 		CBaseEntity* pEntity = nullptr;
 
-		while ((pEntity = UTIL_FindEntityInSphere(pEntity, pev->origin, AFLOCK_MAX_RECRUIT_RADIUS)) != nullptr)
+		while ((pEntity = UTIL_FindEntityInSphere(pEntity, GetAbsOrigin(), AFLOCK_MAX_RECRUIT_RADIUS)) != nullptr)
 		{
 			if (CBaseMonster* pRecruit = pEntity->MyMonsterPointer();
 				pRecruit && pRecruit != this && pRecruit->IsAlive() && !pRecruit->m_hCine)
@@ -441,10 +441,10 @@ void CFlockingFlyer::SpreadFlock()
 {
 	for (CFlockingFlyer* pList = m_hSquadLeader; pList; pList = pList->m_hSquadNext)
 	{
-		if (pList != this && (pev->origin - pList->pev->origin).Length() <= AFLOCK_TOO_CLOSE)
+		if (pList != this && (GetAbsOrigin() - pList->GetAbsOrigin()).Length() <= AFLOCK_TOO_CLOSE)
 		{
 			// push the other away
-			const Vector vecDir = (pList->pev->origin - pev->origin).Normalize();
+			const Vector vecDir = (pList->GetAbsOrigin() - GetAbsOrigin()).Normalize();
 
 			// store the magnitude of the other boid's velocity, and normalize it so we
 			// can average in a course that points away from the leader.
@@ -458,9 +458,9 @@ void CFlockingFlyer::SpreadFlock2()
 {
 	for (CFlockingFlyer* pList = m_hSquadLeader; pList; pList = pList->m_hSquadNext)
 	{
-		if (pList != this && (pev->origin - pList->pev->origin).Length() <= AFLOCK_TOO_CLOSE)
+		if (pList != this && (GetAbsOrigin() - pList->GetAbsOrigin()).Length() <= AFLOCK_TOO_CLOSE)
 		{
-			const Vector vecDir = (pev->origin - pList->pev->origin).Normalize();
+			const Vector vecDir = (GetAbsOrigin() - pList->GetAbsOrigin()).Normalize();
 
 			pev->velocity = pev->velocity + vecDir;
 		}
@@ -483,7 +483,7 @@ bool CFlockingFlyer::PathBlocked()
 
 	// check for obstacle ahead
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * AFLOCK_CHECK_DIST, IgnoreMonsters::Yes, this, &tr);
+	UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + gpGlobals->v_forward * AFLOCK_CHECK_DIST, IgnoreMonsters::Yes, this, &tr);
 	if (tr.flFraction != 1.0)
 	{
 		m_flLastBlockedTime = gpGlobals->time;
@@ -491,14 +491,14 @@ bool CFlockingFlyer::PathBlocked()
 	}
 
 	// extra wide checks
-	UTIL_TraceLine(pev->origin + gpGlobals->v_right * 12, pev->origin + gpGlobals->v_right * 12 + gpGlobals->v_forward * AFLOCK_CHECK_DIST, IgnoreMonsters::Yes, this, &tr);
+	UTIL_TraceLine(GetAbsOrigin() + gpGlobals->v_right * 12, GetAbsOrigin() + gpGlobals->v_right * 12 + gpGlobals->v_forward * AFLOCK_CHECK_DIST, IgnoreMonsters::Yes, this, &tr);
 	if (tr.flFraction != 1.0)
 	{
 		m_flLastBlockedTime = gpGlobals->time;
 		fBlocked = true;
 	}
 
-	UTIL_TraceLine(pev->origin - gpGlobals->v_right * 12, pev->origin - gpGlobals->v_right * 12 + gpGlobals->v_forward * AFLOCK_CHECK_DIST, IgnoreMonsters::Yes, this, &tr);
+	UTIL_TraceLine(GetAbsOrigin() - gpGlobals->v_right * 12, GetAbsOrigin() - gpGlobals->v_right * 12 + gpGlobals->v_forward * AFLOCK_CHECK_DIST, IgnoreMonsters::Yes, this, &tr);
 	if (tr.flFraction != 1.0)
 	{
 		m_flLastBlockedTime = gpGlobals->time;
@@ -550,11 +550,11 @@ void CFlockingFlyer::FlockLeaderThink()
 	if (!m_fTurning)// something in the way and boid is not already turning to avoid
 	{
 		// measure clearance on left and right to pick the best dir to turn
-		UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_right * AFLOCK_CHECK_DIST, IgnoreMonsters::Yes, this, &tr);
-		const float flRightSide = (tr.vecEndPos - pev->origin).Length();
+		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + gpGlobals->v_right * AFLOCK_CHECK_DIST, IgnoreMonsters::Yes, this, &tr);
+		const float flRightSide = (tr.vecEndPos - GetAbsOrigin()).Length();
 
-		UTIL_TraceLine(pev->origin, pev->origin - gpGlobals->v_right * AFLOCK_CHECK_DIST, IgnoreMonsters::Yes, this, &tr);
-		const float flLeftSide = (tr.vecEndPos - pev->origin).Length();
+		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() - gpGlobals->v_right * AFLOCK_CHECK_DIST, IgnoreMonsters::Yes, this, &tr);
+		const float flLeftSide = (tr.vecEndPos - GetAbsOrigin()).Length();
 
 		// turn right if more clearance on right side
 		if (flRightSide > flLeftSide)
@@ -588,14 +588,14 @@ void CFlockingFlyer::FlockLeaderThink()
 	pev->velocity = gpGlobals->v_forward * pev->speed;
 
 	// check and make sure we aren't about to plow into the ground, don't let it happen
-	UTIL_TraceLine(pev->origin, pev->origin - gpGlobals->v_up * 16, IgnoreMonsters::Yes, this, &tr);
+	UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() - gpGlobals->v_up * 16, IgnoreMonsters::Yes, this, &tr);
 	if (tr.flFraction != 1.0 && pev->velocity.z < 0)
 		pev->velocity.z = 0;
 
 	// maybe it did, though.
 	if (IsBitSet(pev->flags, FL_ONGROUND))
 	{
-		SetAbsOrigin(pev->origin + Vector(0, 0, 1));
+		SetAbsOrigin(GetAbsOrigin() + Vector(0, 0, 1));
 		pev->velocity.z = 0;
 	}
 
@@ -621,7 +621,7 @@ void CFlockingFlyer::FlockFollowerThink()
 
 	auto squadLeader = m_hSquadLeader.Get();
 
-	Vector vecDirToLeader = (squadLeader->pev->origin - pev->origin);
+	Vector vecDirToLeader = squadLeader->GetAbsOrigin() - GetAbsOrigin();
 	const float flDistToLeader = vecDirToLeader.Length();
 
 	// match heading with leader
@@ -705,11 +705,11 @@ void CFlockingFlyer::FlockFollowerThink()
 
 			// measure clearance on left and right to pick the best dir to turn
 			TraceResult tr;
-			UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_right * AFLOCK_CHECK_DIST, ignore_monsters, ENT(pev), &tr);
-			flRightSide = (tr.vecEndPos - pev->origin).Length();
+			UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + gpGlobals->v_right * AFLOCK_CHECK_DIST, ignore_monsters, ENT(pev), &tr);
+			flRightSide = (tr.vecEndPos - GetAbsOrigin()).Length();
 
-			UTIL_TraceLine(pev->origin, pev->origin - gpGlobals->v_right * AFLOCK_CHECK_DIST, ignore_monsters, ENT(pev), &tr);
-			flLeftSide = (tr.vecEndPos - pev->origin).Length();
+			UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() - gpGlobals->v_right * AFLOCK_CHECK_DIST, ignore_monsters, ENT(pev), &tr);
+			flLeftSide = (tr.vecEndPos - GetAbsOrigin()).Length();
 
 			// slide right if more clearance on right side
 			if ( flRightSide > flLeftSide )

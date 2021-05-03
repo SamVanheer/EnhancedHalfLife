@@ -56,14 +56,17 @@ void CGib::SpawnStickyGibs(CBaseEntity* pVictim, Vector vecOrigin, int cGibs)
 
 		if (pVictim)
 		{
-			pGib->pev->origin.x = vecOrigin.x + RANDOM_FLOAT(-3, 3);
-			pGib->pev->origin.y = vecOrigin.y + RANDOM_FLOAT(-3, 3);
-			pGib->pev->origin.z = vecOrigin.z + RANDOM_FLOAT(-3, 3);
+			pGib->SetAbsOrigin(vecOrigin + Vector{RANDOM_FLOAT(-3, 3), RANDOM_FLOAT(-3, 3), RANDOM_FLOAT(-3, 3)});
 
 			/*
-			pGib->pev->origin.x = pVictim->pev->absmin.x + pVictim->pev->size.x * (RANDOM_FLOAT ( 0 , 1 ) );
-			pGib->pev->origin.y = pVictim->pev->absmin.y + pVictim->pev->size.y * (RANDOM_FLOAT ( 0 , 1 ) );
-			pGib->pev->origin.z = pVictim->pev->absmin.z + pVictim->pev->size.z * (RANDOM_FLOAT ( 0 , 1 ) );
+			Vector origin = pVictim->pev->absmin;
+
+			for (int i = 0; i < 3; ++i)
+			{
+				origin[i] = origin[i] + pVictim->pev->size[i] * RANDOM_FLOAT(0, 1);
+			}
+
+			pGib->SetAbsOrigin(origin);
 			*/
 
 			// make the gib fly away from the attack vector
@@ -123,14 +126,14 @@ void CGib::SpawnHeadGib(CBaseEntity* pVictim)
 
 	if (pVictim)
 	{
-		pGib->pev->origin = pVictim->pev->origin + pVictim->pev->view_ofs;
+		pGib->SetAbsOrigin(pVictim->GetAbsOrigin() + pVictim->pev->view_ofs);
 
 		CBaseEntity* pPlayer = UTIL_FindClientInPVS(pGib);
 
 		if (RANDOM_LONG(0, 100) <= 5 && !IsNullEnt(pPlayer))
 		{
 			// 5% chance head will be thrown at player's face.
-			pGib->pev->velocity = ((pPlayer->pev->origin + pPlayer->pev->view_ofs) - pGib->pev->origin).Normalize() * 300;
+			pGib->pev->velocity = ((pPlayer->GetAbsOrigin() + pPlayer->pev->view_ofs) - pGib->GetAbsOrigin()).Normalize() * 300;
 			pGib->pev->velocity.z += 100;
 		}
 		else
@@ -190,9 +193,15 @@ void CGib::SpawnRandomGibs(CBaseEntity* pVictim, int cGibs, int human) //TODO: h
 		if (pVictim)
 		{
 			// spawn the gib somewhere in the monster's bounding volume
-			pGib->pev->origin.x = pVictim->pev->absmin.x + pVictim->pev->size.x * (RANDOM_FLOAT(0, 1));
-			pGib->pev->origin.y = pVictim->pev->absmin.y + pVictim->pev->size.y * (RANDOM_FLOAT(0, 1));
-			pGib->pev->origin.z = pVictim->pev->absmin.z + pVictim->pev->size.z * (RANDOM_FLOAT(0, 1)) + 1;	// absmin.z is in the floor because the engine subtracts 1 to enlarge the box
+			// absmin.z is in the floor because the engine subtracts 1 to enlarge the box
+			Vector origin = pVictim->pev->absmin + Vector(0, 0, 1);
+
+			for (int i = 0; i < 3; ++i)
+			{
+				origin[i] = origin[i] + pVictim->pev->size[i] * RANDOM_FLOAT(0, 1);
+			}
+
+			pGib->SetAbsOrigin(origin);
 
 			// make the gib fly away from the attack vector
 			pGib->pev->velocity = g_vecAttackDir * -1;
@@ -479,7 +488,7 @@ void CBaseMonster::BecomeDead()
 	// make the corpse fly away from the attack vector
 	SetMovetype(Movetype::Toss);
 	//pev->flags &= ~FL_ONGROUND;
-	//pev->origin.z += 2;
+	//SetAbsOrigin(GetAbsOrigin() + Vector(0, 0, 2));
 	//pev->velocity = g_vecAttackDir * -1;
 	//pev->velocity = pev->velocity * RANDOM_FLOAT( 300, 400 );
 }
@@ -623,7 +632,7 @@ void CGib::WaitTillLand()
 		if (m_bloodColor != DONT_BLEED)
 		{
 			// ok, start stinkin!
-			CSoundEnt::InsertSound(bits_SOUND_MEAT, pev->origin, 384, 25);
+			CSoundEnt::InsertSound(bits_SOUND_MEAT, GetAbsOrigin(), 384, 25);
 		}
 	}
 	else
@@ -650,7 +659,7 @@ void CGib::BounceGibTouch(CBaseEntity* pOther)
 	{
 		if (g_Language != LANGUAGE_GERMAN && m_cBloodDecals > 0 && m_bloodColor != DONT_BLEED)
 		{
-			const Vector vecSpot = pev->origin + Vector(0, 0, 8);//move up a bit, and trace down.
+			const Vector vecSpot = GetAbsOrigin() + Vector(0, 0, 8);//move up a bit, and trace down.
 			TraceResult	tr;
 			UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -24), IgnoreMonsters::Yes, this, &tr);
 
@@ -683,7 +692,7 @@ void CGib::StickyGibTouch(CBaseEntity* pOther)
 	}
 
 	TraceResult	tr;
-	UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 32, IgnoreMonsters::Yes, this, &tr);
+	UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + pev->velocity * 32, IgnoreMonsters::Yes, this, &tr);
 
 	UTIL_BloodDecalTrace(&tr, m_bloodColor);
 
@@ -831,12 +840,12 @@ bool CBaseMonster::TakeDamage(const TakeDamageInfo& info)
 			{
 				if (m_hEnemy == nullptr || info.GetInflictor() == m_hEnemy || !HasConditions(bits_COND_SEE_ENEMY))
 				{
-					m_vecEnemyLKP = info.GetInflictor()->pev->origin;
+					m_vecEnemyLKP = info.GetInflictor()->GetAbsOrigin();
 				}
 			}
 			else
 			{
-				m_vecEnemyLKP = pev->origin + (g_vecAttackDir * 64);
+				m_vecEnemyLKP = GetAbsOrigin() + (g_vecAttackDir * 64);
 			}
 
 			MakeIdealYaw(m_vecEnemyLKP);
@@ -874,7 +883,7 @@ bool CBaseMonster::DeadTakeDamage(const TakeDamageInfo& info)
 
 #if 0// turn this back on when the bounding box issues are resolved.
 	pev->flags &= ~FL_ONGROUND;
-	pev->origin.z += 1;
+	SetAbsOrigin(GetAbsOrigin() + Vector(0, 0, 1));
 
 	// let the damage scoot the corpse around a bit.
 	if (!IsNullEnt(pevInflictor) && (pevAttacker->solid != Solid::Trigger))
@@ -976,7 +985,7 @@ void RadiusDamage(Vector vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker
 
 void CBaseMonster::RadiusDamage(CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType)
 {
-	::RadiusDamage(pev->origin, pInflictor, pAttacker, flDamage, flDamage * 2.5, iClassIgnore, bitsDamageType);
+	::RadiusDamage(GetAbsOrigin(), pInflictor, pAttacker, flDamage, flDamage * 2.5, iClassIgnore, bitsDamageType);
 }
 
 void CBaseMonster::RadiusDamage(Vector vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType)
@@ -991,7 +1000,7 @@ CBaseEntity* CBaseMonster::CheckTraceHullAttack(float flDist, int iDamage, int i
 	else
 		UTIL_MakeAimVectors(pev->angles);
 
-	Vector vecStart = pev->origin;
+	Vector vecStart = GetAbsOrigin();
 	vecStart.z += pev->size.z * 0.5;
 	const Vector vecEnd = vecStart + (gpGlobals->v_forward * flDist);
 
@@ -1015,14 +1024,14 @@ CBaseEntity* CBaseMonster::CheckTraceHullAttack(float flDist, int iDamage, int i
 
 bool CBaseMonster::IsInViewCone(CBaseEntity* pEntity)
 {
-	return IsInViewCone(pEntity->pev->origin);
+	return IsInViewCone(pEntity->GetAbsOrigin());
 }
 
 bool CBaseMonster::IsInViewCone(const Vector& origin)
 {
 	UTIL_MakeVectors(pev->angles);
 
-	const Vector2D vec2LOS = (origin - pev->origin).Make2D().Normalize();
+	const Vector2D vec2LOS = (origin - GetAbsOrigin()).Make2D().Normalize();
 
 	const float flDot = DotProduct(vec2LOS, gpGlobals->v_forward.Make2D());
 
@@ -1039,7 +1048,7 @@ bool CBaseEntity::IsVisible(CBaseEntity* pEntity)
 		|| (pev->waterlevel == WaterLevel::Head && pEntity->pev->waterlevel == WaterLevel::Dry))
 		return false;
 
-	const Vector vecLookerOrigin = pev->origin + pev->view_ofs;//look through the caller's 'eyes'
+	const Vector vecLookerOrigin = GetAbsOrigin() + pev->view_ofs;//look through the caller's 'eyes'
 	const Vector vecTargetOrigin = pEntity->EyePosition();
 
 	TraceResult tr;

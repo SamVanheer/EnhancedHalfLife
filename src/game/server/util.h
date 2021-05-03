@@ -139,7 +139,7 @@ CBaseEntity* UTIL_FindEntityByTargetname(CBaseEntity* pStartEntity, const char* 
 */
 CBaseEntity* UTIL_FindEntityByTarget(CBaseEntity* pStartEntity, const char* szName);
 
-CBaseEntity* UTIL_FindEntityGeneric(const char* szName, Vector& vecSrc, float flRadius);
+CBaseEntity* UTIL_FindEntityGeneric(const char* szName, const Vector& vecSrc, float flRadius);
 
 CBaseEntity* UTIL_FindClientInPVS(CBaseEntity* pPVSEntity);
 

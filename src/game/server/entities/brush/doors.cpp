@@ -278,13 +278,13 @@ void CBaseDoor::Spawn()
 	}
 
 	SetMovetype(Movetype::Push);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 	SetModel(STRING(pev->model));
 
 	if (pev->speed == 0)
 		pev->speed = 100;
 
-	m_vecPosition1 = pev->origin;
+	m_vecPosition1 = GetAbsOrigin();
 	// Subtract 2 from size because the engine expands bboxes by 1 in all directions making the size too big
 	m_vecPosition2 = m_vecPosition1 + (pev->movedir * (fabs(pev->movedir.x * (pev->size.x - 2)) + fabs(pev->movedir.y * (pev->size.y - 2)) + fabs(pev->movedir.z * (pev->size.z - 2)) - m_flLip));
 	ASSERTSZ(m_vecPosition1 != m_vecPosition2, "door start/end positions are equal");
@@ -292,7 +292,7 @@ void CBaseDoor::Spawn()
 	{	// swap pos1 and pos2, put door at pos2
 		SetAbsOrigin(m_vecPosition2);
 		m_vecPosition2 = m_vecPosition1;
-		m_vecPosition1 = pev->origin;
+		m_vecPosition1 = GetAbsOrigin();
 	}
 
 	m_toggle_state = ToggleState::AtBottom;
@@ -541,12 +541,12 @@ void CBaseDoor::DoorGoUp()
 
 			if (!IsBitSet(pev->spawnflags, SF_DOOR_ONEWAY) && pev->movedir.y) 		// Y axis rotation, move away from the player
 			{
-				const Vector vec = pActivator->pev->origin - pev->origin;
+				const Vector vec = pActivator->GetAbsOrigin() - GetAbsOrigin();
 				const Vector angles{0, pActivator->pev->angles.y, 0};
 				UTIL_MakeVectors(angles);
-				//			Vector vnext = (pevToucher->origin + (pevToucher->velocity * 10)) - pev->origin;
+				//			Vector vnext = (pActivator->GetAbsOrigin() + (pActivator->pev->velocity * 10)) - GetAbsOrigin();
 				UTIL_MakeVectors(pActivator->pev->angles);
-				const Vector vnext = (pActivator->pev->origin + (gpGlobals->v_forward * 10)) - pev->origin;
+				const Vector vnext = (pActivator->GetAbsOrigin() + (gpGlobals->v_forward * 10)) - GetAbsOrigin();
 				if ((vec.x * vnext.y - vec.y * vnext.x) < 0)
 					sign = -1.0;
 			}
@@ -681,7 +681,7 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 							// this is the most hacked, evil, bastardized thing I've ever seen. kjb
 							if (pDoor->ClassnameIs("func_door"))
 							{// set origin to realign normal doors
-								pDoor->pev->origin = pev->origin;
+								pDoor->SetAbsOrigin(GetAbsOrigin());
 								pDoor->pev->velocity = vec3_origin;// stop!
 							}
 							else
@@ -753,7 +753,7 @@ void CRotDoor::Spawn()
 		SetSolidType(Solid::BSP);
 
 	SetMovetype(Movetype::Push);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 	SetModel(STRING(pev->model));
 
 	if (pev->speed == 0)
@@ -819,7 +819,7 @@ void CMomentaryDoor::Spawn()
 	SetSolidType(Solid::BSP);
 	SetMovetype(Movetype::Push);
 
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 	SetModel(STRING(pev->model));
 
 	if (pev->speed == 0)
@@ -827,7 +827,7 @@ void CMomentaryDoor::Spawn()
 	if (pev->dmg == 0)
 		pev->dmg = 2;
 
-	m_vecPosition1 = pev->origin;
+	m_vecPosition1 = GetAbsOrigin();
 	// Subtract 2 from size because the engine expands bboxes by 1 in all directions making the size too big
 	m_vecPosition2 = m_vecPosition1 + (pev->movedir * (fabs(pev->movedir.x * (pev->size.x - 2)) + fabs(pev->movedir.y * (pev->size.y - 2)) + fabs(pev->movedir.z * (pev->size.z - 2)) - m_flLip));
 	ASSERTSZ(m_vecPosition1 != m_vecPosition2, "door start/end positions are equal");
@@ -836,7 +836,7 @@ void CMomentaryDoor::Spawn()
 	{	// swap pos1 and pos2, put door at pos2
 		SetAbsOrigin(m_vecPosition2);
 		m_vecPosition2 = m_vecPosition1;
-		m_vecPosition1 = pev->origin;
+		m_vecPosition1 = GetAbsOrigin();
 	}
 	SetTouch(nullptr);
 
@@ -919,7 +919,7 @@ void CMomentaryDoor::Use(const UseInfo& info)
 
 	const Vector move = m_vecPosition1 + (value * (m_vecPosition2 - m_vecPosition1));
 
-	const Vector delta = move - pev->origin;
+	const Vector delta = move - GetAbsOrigin();
 	//float speed = delta.Length() * 10;
 	const float speed = delta.Length() / 0.1; // move there in 0.1 sec
 	if (speed == 0)

@@ -59,7 +59,7 @@ void CopyToBodyQue(CBaseEntity* pEntity)
 	g_pBodyQueueHead->pev->sequence = pEntity->pev->sequence;
 	g_pBodyQueueHead->pev->animtime = pEntity->pev->animtime;
 
-	g_pBodyQueueHead->SetAbsOrigin(pEntity->pev->origin);
+	g_pBodyQueueHead->SetAbsOrigin(pEntity->GetAbsOrigin());
 	g_pBodyQueueHead->SetSize(pEntity->pev->mins, pEntity->pev->maxs);
 	g_pBodyQueueHead = g_pBodyQueueHead->GetOwner();
 }

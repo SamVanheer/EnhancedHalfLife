@@ -134,7 +134,7 @@ void CSquidSpit::Touch(CBaseEntity* pOther)
 	{
 		TraceResult tr;
 		// make a splat on the wall
-		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 10, IgnoreMonsters::No, this, &tr);
+		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + pev->velocity * 10, IgnoreMonsters::No, this, &tr);
 		UTIL_DecalTrace(&tr, DECAL_SPIT1 + RANDOM_LONG(0, 1));
 
 		// make some flecks
@@ -297,14 +297,14 @@ bool CBullsquid::TakeDamage(const TakeDamageInfo& info)
 	// it will swerve. (whew).
 	if (m_hEnemy != nullptr && IsMoving() && info.GetAttacker() == m_hEnemy && gpGlobals->time - m_flLastHurtTime > 3)
 	{
-		float flDist = (pev->origin - m_hEnemy->pev->origin).Length2D();
+		float flDist = (GetAbsOrigin() - m_hEnemy->GetAbsOrigin()).Length2D();
 
 		if (flDist > SQUID_SPRINT_DIST)
 		{
-			flDist = (pev->origin - m_Route[m_iRouteIndex].vecLocation).Length2D();// reusing flDist. 
+			flDist = (GetAbsOrigin() - m_Route[m_iRouteIndex].vecLocation).Length2D();// reusing flDist. 
 
 			Vector vecApex;
-			if (Triangulate(pev->origin, m_Route[m_iRouteIndex].vecLocation, flDist * 0.5, m_hEnemy, &vecApex))
+			if (Triangulate(GetAbsOrigin(), m_Route[m_iRouteIndex].vecLocation, flDist * 0.5, m_hEnemy, &vecApex))
 			{
 				InsertWaypoint(vecApex, bits_MF_TO_DETOUR | bits_MF_DONT_SIMPLIFY);
 			}
@@ -332,7 +332,7 @@ bool CBullsquid::CheckRangeAttack1(float flDot, float flDist)
 	{
 		if (m_hEnemy != nullptr)
 		{
-			if (fabs(pev->origin.z - m_hEnemy->pev->origin.z) > 256)
+			if (fabs(GetAbsOrigin().z - m_hEnemy->GetAbsOrigin().z) > 256)
 			{
 				// don't try to spit at someone up really high or down really low.
 				return false;
@@ -498,8 +498,8 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 			// !!!HACKHACK - the spot at which the spit originates (in front of the mouth) was measured in 3ds and hardcoded here.
 			// we should be able to read the position of bones at runtime for this info.
 			Vector vecSpitOffset = (gpGlobals->v_right * 8 + gpGlobals->v_forward * 37 + gpGlobals->v_up * 23);
-			vecSpitOffset = (pev->origin + vecSpitOffset);
-			Vector vecSpitDir = ((m_hEnemy->pev->origin + m_hEnemy->pev->view_ofs) - vecSpitOffset).Normalize();
+			vecSpitOffset = (GetAbsOrigin() + vecSpitOffset);
+			Vector vecSpitDir = ((m_hEnemy->GetAbsOrigin() + m_hEnemy->pev->view_ofs) - vecSpitOffset).Normalize();
 
 			vecSpitDir.x += RANDOM_FLOAT(-0.05, 0.05);
 			vecSpitDir.y += RANDOM_FLOAT(-0.05, 0.05);
@@ -600,7 +600,7 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 			//pHurt->pev->punchangle.y = RANDOM_LONG(0,89) - 45;
 
 			// screeshake transforms the viewmodel as well as the viewangle. No problems with seeing the ends of the viewmodels.
-			UTIL_ScreenShake(pHurt->pev->origin, 25.0, 1.5, 0.7, 2);
+			UTIL_ScreenShake(pHurt->GetAbsOrigin(), 25.0, 1.5, 0.7, 2);
 
 			if (pHurt->IsPlayer())
 			{
@@ -726,7 +726,7 @@ void CBullsquid::RunAI()
 	if (m_hEnemy != nullptr && m_Activity == ACT_RUN)
 	{
 		// chasing enemy. Sprint for last bit
-		if ((pev->origin - m_hEnemy->pev->origin).Length2D() < SQUID_SPRINT_DIST)
+		if ((GetAbsOrigin() - m_hEnemy->GetAbsOrigin()).Length2D() < SQUID_SPRINT_DIST)
 		{
 			pev->framerate = 1.25;
 		}
@@ -1111,7 +1111,7 @@ void CBullsquid::StartTask(Task_t* pTask)
 	}
 	case TASK_GET_PATH_TO_ENEMY:
 	{
-		if (BuildRoute(m_hEnemy->pev->origin, bits_MF_TO_ENEMY, m_hEnemy))
+		if (BuildRoute(m_hEnemy->GetAbsOrigin(), bits_MF_TO_ENEMY, m_hEnemy))
 		{
 			m_iTaskStatus = TaskStatus::Complete;
 		}

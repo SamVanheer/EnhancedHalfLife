@@ -196,7 +196,7 @@ void CSquadMonster::SquadMakeEnemy(CBaseEntity* pEnemy)
 				}
 				// give them a new enemy
 				pMember->m_hEnemy = pEnemy;
-				pMember->m_vecEnemyLKP = pEnemy->pev->origin;
+				pMember->m_vecEnemyLKP = pEnemy->GetAbsOrigin();
 				pMember->SetConditions(bits_COND_NEW_ENEMY);
 			}
 		}
@@ -260,7 +260,7 @@ int CSquadMonster::SquadRecruit(int searchRadius, int maxMembers)
 	}
 	else
 	{
-		while ((pEntity = UTIL_FindEntityInSphere(pEntity, pev->origin, searchRadius)) != nullptr)
+		while ((pEntity = UTIL_FindEntityInSphere(pEntity, GetAbsOrigin(), searchRadius)) != nullptr)
 		{
 			if (CSquadMonster* pRecruit = pEntity->MySquadMonsterPointer();
 				pRecruit && pRecruit != this && pRecruit->IsAlive() && !pRecruit->m_hCine)
@@ -271,7 +271,7 @@ int CSquadMonster::SquadRecruit(int searchRadius, int maxMembers)
 					IsStringNull(pRecruit->pev->netname))
 				{
 					TraceResult tr;
-					UTIL_TraceLine(pev->origin + pev->view_ofs, pRecruit->pev->origin + pev->view_ofs, IgnoreMonsters::Yes, pRecruit, &tr);// try to hit recruit with a traceline.
+					UTIL_TraceLine(GetAbsOrigin() + pev->view_ofs, pRecruit->GetAbsOrigin() + pev->view_ofs, IgnoreMonsters::Yes, pRecruit, &tr);// try to hit recruit with a traceline.
 					if (tr.flFraction == 1.0)
 					{
 						if (!SquadAdd(pRecruit))
@@ -362,17 +362,17 @@ bool CSquadMonster::NoFriendlyFire()
 		return false;
 	}
 
-	UTIL_MakeVectors(VectorAngles(m_hEnemy->Center() - pev->origin));
+	UTIL_MakeVectors(VectorAngles(m_hEnemy->Center() - GetAbsOrigin()));
 
 	//UTIL_MakeVectors ( pev->angles );
 
-	const Vector vecLeftSide = pev->origin - (gpGlobals->v_right * (pev->size.x * 1.5));
-	const Vector vecRightSide = pev->origin + (gpGlobals->v_right * (pev->size.x * 1.5));
+	const Vector vecLeftSide = GetAbsOrigin() - (gpGlobals->v_right * (pev->size.x * 1.5));
+	const Vector vecRightSide = GetAbsOrigin() + (gpGlobals->v_right * (pev->size.x * 1.5));
 	const Vector v_left = gpGlobals->v_right * -1;
 
 	CPlane leftPlane(gpGlobals->v_right, vecLeftSide);
 	CPlane rightPlane(v_left, vecRightSide);
-	CPlane backPlane(gpGlobals->v_forward, pev->origin);
+	CPlane backPlane(gpGlobals->v_forward, GetAbsOrigin());
 
 	/*
 		ALERT ( at_console, "LeftPlane: %f %f %f : %f\n", leftPlane.m_vecNormal.x, leftPlane.m_vecNormal.y, leftPlane.m_vecNormal.z, leftPlane.m_flDist );
@@ -387,9 +387,9 @@ bool CSquadMonster::NoFriendlyFire()
 			pMember && pMember != this)
 		{
 
-			if (backPlane.PointInFront(pMember->pev->origin) &&
-				leftPlane.PointInFront(pMember->pev->origin) &&
-				rightPlane.PointInFront(pMember->pev->origin))
+			if (backPlane.PointInFront(pMember->GetAbsOrigin()) &&
+				leftPlane.PointInFront(pMember->GetAbsOrigin()) &&
+				rightPlane.PointInFront(pMember->GetAbsOrigin()))
 			{
 				// this guy is in the check volume! Don't shoot!
 				return false;
@@ -464,7 +464,7 @@ bool CSquadMonster::SquadMemberInRange(const Vector& vecLocation, float flDist)
 	for (int i = 0; i < MAX_SQUAD_MEMBERS; i++)
 	{
 		if (CSquadMonster* pSquadMember = pSquadLeader->MySquadMember(i);
-			pSquadMember && (vecLocation - pSquadMember->pev->origin).Length2D() <= flDist)
+			pSquadMember && (vecLocation - pSquadMember->GetAbsOrigin()).Length2D() <= flDist)
 			return true;
 	}
 	return false;

@@ -31,8 +31,8 @@ class CApache : public CBaseMonster
 
 	void SetObjectCollisionBox() override
 	{
-		pev->absmin = pev->origin + Vector(-300, -300, -172);
-		pev->absmax = pev->origin + Vector(300, 300, 8);
+		pev->absmin = GetAbsOrigin() + Vector(-300, -300, -172);
+		pev->absmax = GetAbsOrigin() + Vector(300, 300, 8);
 	}
 
 	void EXPORT HuntThink();
@@ -113,7 +113,7 @@ void CApache::Spawn()
 
 	SetModel("models/apache.mdl");
 	SetSize(Vector(-32, -32, -64), Vector(32, 32, 0));
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	pev->flags |= FL_MONSTER;
 	SetDamageMode(DamageMode::Aim);
@@ -213,11 +213,11 @@ void CApache::DyingThink()
 	if (m_flNextRocket > gpGlobals->time)
 	{
 		// random explosions
-		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, GetAbsOrigin());
 		WRITE_BYTE(TE_EXPLOSION);		// This just makes a dynamic light now
-		WRITE_COORD(pev->origin.x + RANDOM_FLOAT(-150, 150));
-		WRITE_COORD(pev->origin.y + RANDOM_FLOAT(-150, 150));
-		WRITE_COORD(pev->origin.z + RANDOM_FLOAT(-150, -50));
+		WRITE_COORD(GetAbsOrigin().x + RANDOM_FLOAT(-150, 150));
+		WRITE_COORD(GetAbsOrigin().y + RANDOM_FLOAT(-150, 150));
+		WRITE_COORD(GetAbsOrigin().z + RANDOM_FLOAT(-150, -50));
 		WRITE_SHORT(g_sModelIndexFireball);
 		WRITE_BYTE(RANDOM_LONG(0, 29) + 30); // scale * 10
 		WRITE_BYTE(12); // framerate
@@ -225,17 +225,17 @@ void CApache::DyingThink()
 		MESSAGE_END();
 
 		// lots of smoke
-		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, GetAbsOrigin());
 		WRITE_BYTE(TE_SMOKE);
-		WRITE_COORD(pev->origin.x + RANDOM_FLOAT(-150, 150));
-		WRITE_COORD(pev->origin.y + RANDOM_FLOAT(-150, 150));
-		WRITE_COORD(pev->origin.z + RANDOM_FLOAT(-150, -50));
+		WRITE_COORD(GetAbsOrigin().x + RANDOM_FLOAT(-150, 150));
+		WRITE_COORD(GetAbsOrigin().y + RANDOM_FLOAT(-150, 150));
+		WRITE_COORD(GetAbsOrigin().z + RANDOM_FLOAT(-150, -50));
 		WRITE_SHORT(g_sModelIndexSmoke);
 		WRITE_BYTE(100); // scale * 10
 		WRITE_BYTE(10); // framerate
 		MESSAGE_END();
 
-		Vector vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
+		Vector vecSpot = GetAbsOrigin() + (pev->mins + pev->maxs) * 0.5;
 		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 		WRITE_BYTE(TE_BREAKMODEL);
 
@@ -278,7 +278,7 @@ void CApache::DyingThink()
 	}
 	else
 	{
-		Vector vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
+		Vector vecSpot = GetAbsOrigin() + (pev->mins + pev->maxs) * 0.5;
 
 		/*
 		MESSAGE_BEGIN( MessageDest::Broadcast, SVC_TEMPENTITY );
@@ -315,14 +315,14 @@ void CApache::DyingThink()
 		MESSAGE_END();
 
 		// blast circle
-		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, GetAbsOrigin());
 		WRITE_BYTE(TE_BEAMCYLINDER);
-		WRITE_COORD(pev->origin.x);
-		WRITE_COORD(pev->origin.y);
-		WRITE_COORD(pev->origin.z);
-		WRITE_COORD(pev->origin.x);
-		WRITE_COORD(pev->origin.y);
-		WRITE_COORD(pev->origin.z + 2000); // reach damage radius over .2 seconds
+		WRITE_COORD(GetAbsOrigin().x);
+		WRITE_COORD(GetAbsOrigin().y);
+		WRITE_COORD(GetAbsOrigin().z);
+		WRITE_COORD(GetAbsOrigin().x);
+		WRITE_COORD(GetAbsOrigin().y);
+		WRITE_COORD(GetAbsOrigin().z + 2000); // reach damage radius over .2 seconds
 		WRITE_SHORT(m_iSpriteTexture);
 		WRITE_BYTE(0); // startframe
 		WRITE_BYTE(0); // framerate
@@ -338,11 +338,11 @@ void CApache::DyingThink()
 
 		EmitSound(SoundChannel::Static, "weapons/mortarhit.wav", VOL_NORM, 0.3);
 
-		RadiusDamage(pev->origin, this, this, 300, CLASS_NONE, DMG_BLAST);
+		RadiusDamage(GetAbsOrigin(), this, this, 300, CLASS_NONE, DMG_BLAST);
 
 		if (/*!(pev->spawnflags & SF_NOWRECKAGE) && */(pev->flags & FL_ONGROUND))
 		{
-			CBaseEntity* pWreckage = Create("cycler_wreckage", pev->origin, pev->angles);
+			CBaseEntity* pWreckage = Create("cycler_wreckage", GetAbsOrigin(), pev->angles);
 			// pWreckage->SetModel(STRING(pev->model));
 			pWreckage->SetSize(Vector(-200, -200, -128), Vector(200, 200, -32));
 			pWreckage->pev->frame = pev->frame;
@@ -352,7 +352,7 @@ void CApache::DyingThink()
 		}
 
 		// gibs
-		vecSpot = pev->origin + (pev->mins + pev->maxs) * 0.5;
+		vecSpot = GetAbsOrigin() + (pev->mins + pev->maxs) * 0.5;
 		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
 		WRITE_BYTE(TE_BREAKMODEL);
 
@@ -433,7 +433,7 @@ void CApache::HuntThink()
 		m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
 		if (auto goal = m_hGoalEnt.Get(); goal)
 		{
-			m_posDesired = goal->pev->origin;
+			m_posDesired = goal->GetAbsOrigin();
 			UTIL_MakeAimVectors(goal->pev->angles);
 			m_vecGoal = gpGlobals->v_forward;
 		}
@@ -465,9 +465,9 @@ void CApache::HuntThink()
 		}
 	}
 
-	m_vecTarget = (m_posTarget - pev->origin).Normalize();
+	m_vecTarget = (m_posTarget - GetAbsOrigin()).Normalize();
 
-	float flLength = (pev->origin - m_posDesired).Length();
+	float flLength = (GetAbsOrigin() - m_posDesired).Length();
 
 	if (auto goal = m_hGoalEnt.Get(); goal)
 	{
@@ -478,29 +478,29 @@ void CApache::HuntThink()
 			m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(goal->pev->target));
 			if (goal = m_hGoalEnt.Get(); goal)
 			{
-				m_posDesired = goal->pev->origin;
+				m_posDesired = goal->GetAbsOrigin();
 				UTIL_MakeAimVectors(goal->pev->angles);
 				m_vecGoal = gpGlobals->v_forward;
-				flLength = (pev->origin - m_posDesired).Length();
+				flLength = (GetAbsOrigin() - m_posDesired).Length();
 			}
 		}
 	}
 	else
 	{
-		m_posDesired = pev->origin;
+		m_posDesired = GetAbsOrigin();
 	}
 
 	if (flLength > 250) // 500
 	{
-		// float flLength2 = (m_posTarget - pev->origin).Length() * (1.5 - DotProduct((m_posTarget - pev->origin).Normalize(), pev->velocity.Normalize() ));
+		// float flLength2 = (m_posTarget - GetAbsOrigin()).Length() * (1.5 - DotProduct((m_posTarget - GetAbsOrigin()).Normalize(), pev->velocity.Normalize() ));
 		// if (flLength2 < flLength)
-		if (m_flLastSeen + 90 > gpGlobals->time && DotProduct((m_posTarget - pev->origin).Normalize(), (m_posDesired - pev->origin).Normalize()) > 0.25)
+		if (m_flLastSeen + 90 > gpGlobals->time && DotProduct((m_posTarget - GetAbsOrigin()).Normalize(), (m_posDesired - GetAbsOrigin()).Normalize()) > 0.25)
 		{
-			m_vecDesired = (m_posTarget - pev->origin).Normalize();
+			m_vecDesired = (m_posTarget - GetAbsOrigin()).Normalize();
 		}
 		else
 		{
-			m_vecDesired = (m_posDesired - pev->origin).Normalize();
+			m_vecDesired = (m_posDesired - GetAbsOrigin()).Normalize();
 		}
 	}
 	else
@@ -550,7 +550,7 @@ void CApache::HuntThink()
 				{
 					TraceResult tr;
 
-					UTIL_TraceLine(pev->origin, pev->origin + vecEst * WORLD_BOUNDARY, IgnoreMonsters::Yes, this, &tr);
+					UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + vecEst * WORLD_BOUNDARY, IgnoreMonsters::Yes, this, &tr);
 					if ((tr.vecEndPos - m_posTarget).Length() < 512)
 						FireRocket();
 				}
@@ -559,7 +559,7 @@ void CApache::HuntThink()
 			{
 				TraceResult tr;
 
-				UTIL_TraceLine(pev->origin, pev->origin + vecEst * WORLD_BOUNDARY, IgnoreMonsters::No, this, &tr);
+				UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + vecEst * WORLD_BOUNDARY, IgnoreMonsters::No, this, &tr);
 				// just fire when close
 				if ((tr.vecEndPos - m_posTarget).Length() < 512)
 					FireRocket();
@@ -575,7 +575,7 @@ void CApache::Flight()
 
 	// estimate where I'll be facing in one seconds
 	UTIL_MakeAimVectors(pev->angles + pev->avelocity * 2 + vecAdj);
-	// Vector vecEst1 = pev->origin + pev->velocity + gpGlobals->v_up * m_flForce - Vector( 0, 0, 384 );
+	// Vector vecEst1 = GetAbsOrigin() + pev->velocity + gpGlobals->v_up * m_flForce - Vector( 0, 0, 384 );
 	// float flSide = DotProduct( m_posDesired - vecEst1, gpGlobals->v_right );
 
 	const float flSide = DotProduct(m_vecDesired, gpGlobals->v_right);
@@ -598,7 +598,7 @@ void CApache::Flight()
 
 	// estimate where I'll be in two seconds
 	UTIL_MakeAimVectors(pev->angles + pev->avelocity * 1 + vecAdj);
-	Vector vecEst = pev->origin + pev->velocity * 2.0 + gpGlobals->v_up * m_flForce * 20 - Vector(0, 0, 384 * 2);
+	Vector vecEst = GetAbsOrigin() + pev->velocity * 2.0 + gpGlobals->v_up * m_flForce * 20 - Vector(0, 0, 384 * 2);
 
 	// add immediate force
 	UTIL_MakeAimVectors(pev->angles + vecAdj);
@@ -679,8 +679,8 @@ void CApache::Flight()
 		pev->avelocity.x += 4.0;
 	}
 
-	// ALERT( at_console, "%.0f %.0f : %.0f %.0f : %.0f %.0f : %.0f\n", pev->origin.x, pev->velocity.x, flDist, flSpeed, pev->angles.x, pev->avelocity.x, m_flForce ); 
-	// ALERT( at_console, "%.0f %.0f : %.0f %0.f : %.0f\n", pev->origin.z, pev->velocity.z, vecEst.z, m_posDesired.z, m_flForce ); 
+	// ALERT( at_console, "%.0f %.0f : %.0f %.0f : %.0f %.0f : %.0f\n", GetAbsOrigin().x, pev->velocity.x, flDist, flSpeed, pev->angles.x, pev->avelocity.x, m_flForce ); 
+	// ALERT( at_console, "%.0f %.0f : %.0f %0.f : %.0f\n", GetAbsOrigin().z, pev->velocity.z, vecEst.z, m_posDesired.z, m_flForce ); 
 
 	// make rotor, engine sounds
 	if (m_iSoundState == 0)
@@ -695,7 +695,7 @@ void CApache::Flight()
 		// UNDONE: this needs to send different sounds to every player for multiplayer.	
 		if (CBaseEntity* pPlayer = UTIL_FindEntityByClassname(nullptr, "player"); pPlayer)
 		{
-			float pitch = DotProduct(pev->velocity - pPlayer->pev->velocity, (pPlayer->pev->origin - pev->origin).Normalize());
+			float pitch = DotProduct(pev->velocity - pPlayer->pev->velocity, (pPlayer->GetAbsOrigin() - GetAbsOrigin()).Normalize());
 
 			pitch = (int)(100 + pitch / 50.0);
 			pitch = std::clamp(pitch, 50.0f, 250.0f);
@@ -722,7 +722,7 @@ void CApache::FireRocket()
 		return;
 
 	UTIL_MakeAimVectors(pev->angles);
-	Vector vecSrc = pev->origin + 1.5 * (gpGlobals->v_forward * 21 + gpGlobals->v_right * 70 * side + gpGlobals->v_up * -79);
+	Vector vecSrc = GetAbsOrigin() + 1.5 * (gpGlobals->v_forward * 21 + gpGlobals->v_right * 70 * side + gpGlobals->v_up * -79);
 
 	switch (m_iRockets % 5)
 	{
@@ -808,7 +808,7 @@ bool CApache::FireGun()
 		if (!m_pBeam)
 		{
 			m_pBeam = CBeam::BeamCreate("sprites/lgtning.spr", 80);
-			m_pBeam->PointEntInit(pev->origin, entindex());
+			m_pBeam->PointEntInit(GetAbsOrigin(), entindex());
 			m_pBeam->SetEndAttachment(1);
 			m_pBeam->SetColor(255, 180, 96);
 			m_pBeam->SetBrightness(192);
@@ -837,11 +837,11 @@ void CApache::ShowDamage()
 {
 	if (m_iDoSmokePuff > 0 || RANDOM_LONG(0, 99) > pev->health)
 	{
-		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, pev->origin);
+		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, GetAbsOrigin());
 		WRITE_BYTE(TE_SMOKE);
-		WRITE_COORD(pev->origin.x);
-		WRITE_COORD(pev->origin.y);
-		WRITE_COORD(pev->origin.z - 32);
+		WRITE_COORD(GetAbsOrigin().x);
+		WRITE_COORD(GetAbsOrigin().y);
+		WRITE_COORD(GetAbsOrigin().z - 32);
 		WRITE_SHORT(g_sModelIndexSmoke);
 		WRITE_BYTE(RANDOM_LONG(0, 9) + 20); // scale * 10
 		WRITE_BYTE(12); // framerate
@@ -932,7 +932,7 @@ void CApacheHVR::Spawn()
 
 	SetModel("models/HVR.mdl");
 	SetSize(vec3_origin, vec3_origin);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	SetThink(&CApacheHVR::IgniteThink);
 	SetTouch(&CApacheHVR::ExplodeTouch);
@@ -986,7 +986,7 @@ void CApacheHVR::IgniteThink()
 void CApacheHVR::AccelerateThink()
 {
 	// check world boundaries
-	if (!UTIL_IsInWorld(pev->origin))
+	if (!UTIL_IsInWorld(GetAbsOrigin()))
 	{
 		UTIL_Remove(this);
 		return;

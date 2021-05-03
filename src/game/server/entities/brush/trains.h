@@ -93,7 +93,7 @@ public:
 
 	void		NextThink(float thinkTime, bool alwaysThink);
 
-	void SetTrack(CPathTrack* track) { m_hPath = track->Nearest(pev->origin); }
+	void SetTrack(CPathTrack* track) { m_hPath = track->Nearest(GetAbsOrigin()); }
 	void SetControls(CBaseEntity* pControls);
 	bool OnControls(CBaseEntity* pTest) override;
 

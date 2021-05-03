@@ -69,8 +69,8 @@ public:
 	void HandleAnimEvent(AnimationEvent& event) override;
 	void SetObjectCollisionBox() override
 	{
-		pev->absmin = pev->origin + Vector(-32, -32, 0);
-		pev->absmax = pev->origin + Vector(32, 32, 85);
+		pev->absmin = GetAbsOrigin() + Vector(-32, -32, 0);
+		pev->absmax = GetAbsOrigin() + Vector(32, 32, 85);
 	}
 
 	Schedule_t* GetSchedule() override;
@@ -404,7 +404,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 
 		if (HasConditions(bits_COND_SEE_ENEMY))
 		{
-			vecDirToEnemy = ((m_vecEnemyLKP)-pev->origin);
+			vecDirToEnemy = m_vecEnemyLKP - GetAbsOrigin();
 			angDir = VectorAngles(vecDirToEnemy);
 			vecDirToEnemy = vecDirToEnemy.Normalize();
 		}
@@ -893,12 +893,12 @@ void CAGrunt::StartTask(Task_t* pTask)
 			bool fSkip = false;
 			const Vector vecCenter = Center();
 
-			VectorAngles(m_vecEnemyLKP - pev->origin);
+			VectorAngles(m_vecEnemyLKP - GetAbsOrigin());
 
 			UTIL_TraceLine(Center() + gpGlobals->v_forward * 128, m_vecEnemyLKP, IgnoreMonsters::Yes, this, &tr);
 			if (tr.flFraction == 1.0)
 			{
-				MakeIdealYaw(pev->origin + gpGlobals->v_right * 128);
+				MakeIdealYaw(GetAbsOrigin() + gpGlobals->v_right * 128);
 				fSkip = true;
 				TaskComplete();
 			}
@@ -908,7 +908,7 @@ void CAGrunt::StartTask(Task_t* pTask)
 				UTIL_TraceLine(Center() - gpGlobals->v_forward * 128, m_vecEnemyLKP, IgnoreMonsters::Yes, this, &tr);
 				if (tr.flFraction == 1.0)
 				{
-					MakeIdealYaw(pev->origin - gpGlobals->v_right * 128);
+					MakeIdealYaw(GetAbsOrigin() - gpGlobals->v_right * 128);
 					fSkip = true;
 					TaskComplete();
 				}
@@ -919,7 +919,7 @@ void CAGrunt::StartTask(Task_t* pTask)
 				UTIL_TraceLine(Center() + gpGlobals->v_forward * 256, m_vecEnemyLKP, IgnoreMonsters::Yes, this, &tr);
 				if (tr.flFraction == 1.0)
 				{
-					MakeIdealYaw(pev->origin + gpGlobals->v_right * 256);
+					MakeIdealYaw(GetAbsOrigin() + gpGlobals->v_right * 256);
 					fSkip = true;
 					TaskComplete();
 				}
@@ -930,7 +930,7 @@ void CAGrunt::StartTask(Task_t* pTask)
 				UTIL_TraceLine(Center() - gpGlobals->v_forward * 256, m_vecEnemyLKP, IgnoreMonsters::Yes, this, &tr);
 				if (tr.flFraction == 1.0)
 				{
-					MakeIdealYaw(pev->origin - gpGlobals->v_right * 256);
+					MakeIdealYaw(GetAbsOrigin() - gpGlobals->v_right * 256);
 					fSkip = true;
 					TaskComplete();
 				}

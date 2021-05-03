@@ -49,7 +49,7 @@ void CLaserSpot::Spawn()
 	pev->renderamt = 255;
 
 	SetModel("sprites/laserdot.spr");
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 }
 
 void CLaserSpot::Suspend(float flSuspendTime)
@@ -98,7 +98,7 @@ void CRpgRocket::Spawn()
 
 	SetModel("models/rpgrocket.mdl");
 	SetSize(vec3_origin, vec3_origin);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	SetClassname("rpg_rocket");
 
@@ -180,11 +180,11 @@ void CRpgRocket::FollowThink()
 
 	while ((pOther = UTIL_FindEntityByClassname(pOther, "laser_spot")) != nullptr)
 	{
-		UTIL_TraceLine(pev->origin, pOther->pev->origin, IgnoreMonsters::No, this, &tr);
+		UTIL_TraceLine(GetAbsOrigin(), pOther->GetAbsOrigin(), IgnoreMonsters::No, this, &tr);
 		// ALERT( at_console, "%f\n", tr.flFraction );
 		if (tr.flFraction >= 0.90)
 		{
-			Vector vecDir = pOther->pev->origin - pev->origin;
+			Vector vecDir = pOther->GetAbsOrigin() - GetAbsOrigin();
 			const float flDist = vecDir.Length();
 			vecDir = vecDir.Normalize();
 			const float flDot = DotProduct(gpGlobals->v_forward, vecDir);
@@ -210,7 +210,7 @@ void CRpgRocket::FollowThink()
 			{
 				pev->velocity = pev->velocity.Normalize() * 300;
 			}
-			UTIL_BubbleTrail(pev->origin - pev->velocity * 0.1, pev->origin, 4);
+			UTIL_BubbleTrail(GetAbsOrigin() - pev->velocity * 0.1, GetAbsOrigin(), 4);
 		}
 		else
 		{

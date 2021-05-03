@@ -385,7 +385,7 @@ void CEgon::CreateEffect()
 	DestroyEffect();
 
 	auto beam = m_hBeam = CBeam::BeamCreate(EGON_BEAM_SPRITE.data(), 40);
-	beam->PointEntInit(pev->origin, m_hPlayer->entindex());
+	beam->PointEntInit(GetAbsOrigin(), m_hPlayer->entindex());
 	beam->SetFlags(BEAM_FSINE);
 	beam->SetEndAttachment(1);
 	beam->pev->spawnflags |= SF_BEAM_TEMPORARY;	// Flag these to be destroyed on save/restore or level transition
@@ -393,7 +393,7 @@ void CEgon::CreateEffect()
 	beam->SetOwner(m_hPlayer);
 
 	auto noise = m_hNoise = CBeam::BeamCreate(EGON_BEAM_SPRITE.data(), 55);
-	noise->PointEntInit(pev->origin, m_hPlayer->entindex());
+	noise->PointEntInit(GetAbsOrigin(), m_hPlayer->entindex());
 	noise->SetScrollRate(25);
 	noise->SetBrightness(100);
 	noise->SetEndAttachment(1);
@@ -401,7 +401,7 @@ void CEgon::CreateEffect()
 	noise->pev->flags |= FL_SKIPLOCALHOST;
 	noise->SetOwner(m_hPlayer);
 
-	auto sprite = m_hSprite = CSprite::SpriteCreate(EGON_FLARE_SPRITE.data(), pev->origin, false);
+	auto sprite = m_hSprite = CSprite::SpriteCreate(EGON_FLARE_SPRITE.data(), GetAbsOrigin(), false);
 	sprite->pev->scale = 1.0;
 	sprite->SetTransparency(RenderMode::Glow, 255, 255, 255, 255, RenderFX::NoDissipation);
 	sprite->pev->spawnflags |= SF_SPRITE_TEMPORARY;
@@ -487,7 +487,7 @@ void CEgon::EndAttack()
 {
 	const bool bMakeNoise = m_fireState != FIRE_OFF; //Checking the button just in case!.
 
-	UTIL_PlaybackEvent(FEV_GLOBAL | FEV_RELIABLE, m_hPlayer, m_usEgonStop, {.origin = m_hPlayer->pev->origin, .angles = m_hPlayer->pev->angles, .iparam1 = bMakeNoise});
+	UTIL_PlaybackEvent(FEV_GLOBAL | FEV_RELIABLE, m_hPlayer, m_usEgonStop, {.origin = m_hPlayer->GetAbsOrigin(), .angles = m_hPlayer->pev->angles, .iparam1 = bMakeNoise});
 
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 2.0;
 	m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;

@@ -870,7 +870,7 @@ void EV_FireGauss(event_args_t* args)
 								255, 100);
 
 							//////////////////////////////////// WHAT TO DO HERE
-													// CSoundEnt::InsertSound ( bits_SOUND_COMBAT, pev->origin, NORMAL_EXPLOSION_VOLUME, 3.0 );
+													// CSoundEnt::InsertSound ( bits_SOUND_COMBAT, GetAbsOrigin(), NORMAL_EXPLOSION_VOLUME, 3.0 );
 
 							EV_HLDM_DecalGunshot(&beam_tr, BULLET_MONSTER_12MM);
 

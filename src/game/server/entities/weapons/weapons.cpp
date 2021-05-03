@@ -330,8 +330,8 @@ IMPLEMENT_SAVERESTORE(CBasePlayerWeapon, CBasePlayerItem);
 
 void CBasePlayerItem::SetObjectCollisionBox()
 {
-	pev->absmin = pev->origin + Vector(-24, -24, 0);
-	pev->absmax = pev->origin + Vector(24, 24, 16);
+	pev->absmin = GetAbsOrigin() + Vector(-24, -24, 0);
+	pev->absmax = GetAbsOrigin() + Vector(24, 24, 16);
 }
 
 void CBasePlayerItem::FallInit()
@@ -339,7 +339,7 @@ void CBasePlayerItem::FallInit()
 	SetMovetype(Movetype::Toss);
 	SetSolidType(Solid::BBox);
 
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 	SetSize(vec3_origin, vec3_origin);//pointsize until it lands on the ground.
 
 	SetTouch(&CBasePlayerItem::DefaultTouch);
@@ -382,7 +382,7 @@ void CBasePlayerItem::Materialize()
 
 	SetSolidType(Solid::Trigger);
 
-	SetAbsOrigin(pev->origin);// link into world.
+	SetAbsOrigin(GetAbsOrigin());// link into world.
 	SetTouch(&CBasePlayerItem::DefaultTouch);
 	SetThink(nullptr);
 
@@ -771,7 +771,7 @@ void CBasePlayerAmmo::Spawn()
 	SetMovetype(Movetype::Toss);
 	SetSolidType(Solid::Trigger);
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 16));
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	SetTouch(&CBasePlayerAmmo::DefaultTouch);
 }
@@ -1195,8 +1195,8 @@ bool CWeaponBox::IsEmpty()
 
 void CWeaponBox::SetObjectCollisionBox()
 {
-	pev->absmin = pev->origin + Vector(-16, -16, 0);
-	pev->absmax = pev->origin + Vector(16, 16, 16);
+	pev->absmin = GetAbsOrigin() + Vector(-16, -16, 0);
+	pev->absmax = GetAbsOrigin() + Vector(16, 16, 16);
 }
 
 void CBasePlayerWeapon::PrintState()

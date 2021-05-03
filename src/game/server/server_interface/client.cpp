@@ -328,7 +328,7 @@ void ClientCommand(edict_t* pEntity)
 		if ((player->pev->flags & FL_PROXY) || allow_spectators.value)
 		{
 			CBaseEntity* pSpawnSpot = g_pGameRules->GetPlayerSpawnSpot(player);
-			player->StartObserver(player->pev->origin, pSpawnSpot->pev->angles);
+			player->StartObserver(player->GetAbsOrigin(), pSpawnSpot->pev->angles);
 
 			// notify other clients of player switching to spectator mode
 			UTIL_ClientPrintAll(HUD_PRINTNOTIFY, UTIL_VarArgs("%s switched to spectator mode\n",

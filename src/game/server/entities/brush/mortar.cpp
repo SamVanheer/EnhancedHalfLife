@@ -129,8 +129,8 @@ void CFuncMortarField::FieldUse(const UseInfo& info)
 	case MortarControlType::Activator: // Trigger Activator
 		if (auto pActivator = info.GetActivator(); pActivator != nullptr)
 		{
-			vecStart.x = pActivator->pev->origin.x;
-			vecStart.y = pActivator->pev->origin.y;
+			vecStart.x = pActivator->GetAbsOrigin().x;
+			vecStart.y = pActivator->GetAbsOrigin().y;
 		}
 		break;
 	case MortarControlType::Table: // table
@@ -215,12 +215,12 @@ void CMortar::MortarExplode()
 	// mortar beam
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMPOINTS);
-	WRITE_COORD(pev->origin.x);
-	WRITE_COORD(pev->origin.y);
-	WRITE_COORD(pev->origin.z);
-	WRITE_COORD(pev->origin.x);
-	WRITE_COORD(pev->origin.y);
-	WRITE_COORD(pev->origin.z + 1024);
+	WRITE_COORD(GetAbsOrigin().x);
+	WRITE_COORD(GetAbsOrigin().y);
+	WRITE_COORD(GetAbsOrigin().z);
+	WRITE_COORD(GetAbsOrigin().x);
+	WRITE_COORD(GetAbsOrigin().y);
+	WRITE_COORD(GetAbsOrigin().z + 1024);
 	WRITE_SHORT(m_spriteTexture);
 	WRITE_BYTE(0); // framerate
 	WRITE_BYTE(0); // framerate
@@ -239,12 +239,12 @@ void CMortar::MortarExplode()
 	// blast circle
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMTORUS);
-	WRITE_COORD(pev->origin.x);
-	WRITE_COORD(pev->origin.y);
-	WRITE_COORD(pev->origin.z + 32);
-	WRITE_COORD(pev->origin.x);
-	WRITE_COORD(pev->origin.y);
-	WRITE_COORD(pev->origin.z + 32 + pev->dmg * 2 / .2); // reach damage radius over .3 seconds
+	WRITE_COORD(GetAbsOrigin().x);
+	WRITE_COORD(GetAbsOrigin().y);
+	WRITE_COORD(GetAbsOrigin().z + 32);
+	WRITE_COORD(GetAbsOrigin().x);
+	WRITE_COORD(GetAbsOrigin().y);
+	WRITE_COORD(GetAbsOrigin().z + 32 + pev->dmg * 2 / .2); // reach damage radius over .3 seconds
 	WRITE_SHORT(m_spriteTexture);
 	WRITE_BYTE(0); // startframe
 	WRITE_BYTE(0); // framerate
@@ -260,7 +260,7 @@ void CMortar::MortarExplode()
 #endif
 
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin + Vector(0, 0, 1024), pev->origin - Vector(0, 0, 1024), IgnoreMonsters::No, this, &tr);
+	UTIL_TraceLine(GetAbsOrigin() + Vector(0, 0, 1024), GetAbsOrigin() - Vector(0, 0, 1024), IgnoreMonsters::No, this, &tr);
 
 	Explode(&tr, DMG_BLAST | DMG_MORTAR);
 	UTIL_ScreenShake(tr.vecEndPos, 25.0, 150.0, 1.0, 750);
@@ -271,7 +271,7 @@ void CMortar::MortarExplode()
 
 	// ForceSound( SNDRADIUS_MP5, bits_SOUND_COMBAT );
 
-	// ExplodeModel( pev->origin, 400, g_sModelIndexShrapnel, 30 );
+	// ExplodeModel( GetAbsOrigin(), 400, g_sModelIndexShrapnel, 30 );
 
 	RadiusDamage(this, GetOwner(), pev->dmg, CLASS_NONE, DMG_BLAST);
 

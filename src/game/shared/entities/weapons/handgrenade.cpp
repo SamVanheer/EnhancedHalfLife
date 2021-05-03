@@ -127,7 +127,7 @@ void CHandGrenade::WeaponIdle()
 
 		UTIL_MakeVectors(angThrow);
 
-		Vector vecSrc = m_hPlayer->pev->origin + m_hPlayer->pev->view_ofs + gpGlobals->v_forward * 16;
+		Vector vecSrc = m_hPlayer->GetAbsOrigin() + m_hPlayer->pev->view_ofs + gpGlobals->v_forward * 16;
 
 		Vector vecThrow = gpGlobals->v_forward * flVel + m_hPlayer->pev->velocity;
 

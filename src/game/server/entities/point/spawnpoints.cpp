@@ -48,7 +48,7 @@ bool IsSpawnPointValid(CBaseEntity* pPlayer, CBaseEntity* pSpot)
 
 	CBaseEntity* ent = nullptr;
 
-	while ((ent = UTIL_FindEntityInSphere(ent, pSpot->pev->origin, 128)) != nullptr)
+	while ((ent = UTIL_FindEntityInSphere(ent, pSpot->GetAbsOrigin(), 128)) != nullptr)
 	{
 		// if ent is a client, don't spawn on 'em
 		if (ent->IsPlayer() && ent != pPlayer)
@@ -94,7 +94,7 @@ static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 				// check if pSpot is valid
 				if (IsSpawnPointValid(pPlayer, pSpot))
 				{
-					if (pSpot->pev->origin == vec3_origin)
+					if (pSpot->GetAbsOrigin() == vec3_origin)
 					{
 						pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_deathmatch");
 						continue;
@@ -113,7 +113,7 @@ static CBaseEntity* FindSpawnPoint(CBaseEntity* pPlayer, CBaseEntity* lastSpawn)
 		if (!IsNullEnt(pSpot))
 		{
 			CBaseEntity* ent = nullptr;
-			while ((ent = UTIL_FindEntityInSphere(ent, pSpot->pev->origin, 128)) != nullptr)
+			while ((ent = UTIL_FindEntityInSphere(ent, pSpot->GetAbsOrigin(), 128)) != nullptr)
 			{
 				// if ent is a client, kill em (unless they are ourselves)
 				if (ent->IsPlayer() && ent != pPlayer)

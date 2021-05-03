@@ -1381,7 +1381,7 @@ void CNodeEnt::Spawn()
 	}
 
 	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_vecOriginPeek =
-		WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_vecOrigin = pev->origin;
+		WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_vecOrigin = GetAbsOrigin();
 	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_flHintYaw = pev->angles.y;
 	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_sHintType = m_sHintType;
 	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_sHintActivity = m_sHintActivity;
@@ -1403,11 +1403,11 @@ void CTestHull::ShowBadNode()
 
 	UTIL_MakeVectors(pev->angles);
 
-	UTIL_ParticleEffect(pev->origin, vec3_origin, 255, 25);
-	UTIL_ParticleEffect(pev->origin + gpGlobals->v_forward * 64, vec3_origin, 255, 25);
-	UTIL_ParticleEffect(pev->origin - gpGlobals->v_forward * 64, vec3_origin, 255, 25);
-	UTIL_ParticleEffect(pev->origin + gpGlobals->v_right * 64, vec3_origin, 255, 25);
-	UTIL_ParticleEffect(pev->origin - gpGlobals->v_right * 64, vec3_origin, 255, 25);
+	UTIL_ParticleEffect(GetAbsOrigin(), vec3_origin, 255, 25);
+	UTIL_ParticleEffect(GetAbsOrigin() + gpGlobals->v_forward * 64, vec3_origin, 255, 25);
+	UTIL_ParticleEffect(GetAbsOrigin() - gpGlobals->v_forward * 64, vec3_origin, 255, 25);
+	UTIL_ParticleEffect(GetAbsOrigin() + gpGlobals->v_right * 64, vec3_origin, 255, 25);
+	UTIL_ParticleEffect(GetAbsOrigin() - gpGlobals->v_right * 64, vec3_origin, 255, 25);
 
 	pev->nextthink = gpGlobals->time + 0.1;
 }
@@ -1546,7 +1546,7 @@ void CTestHull::BuildNodeGraph()
 
 		SetThink(&CTestHull::ShowBadNode);// send the hull off to show the offending node.
 		//SetSolidType(Solid::Not);
-		pev->origin = WorldGraph.m_pNodes[iBadNode].m_vecOrigin;
+		SetAbsOrigin(WorldGraph.m_pNodes[iBadNode].m_vecOrigin);
 		return;
 	}
 
@@ -1617,7 +1617,7 @@ void CTestHull::BuildNodeGraph()
 				CNode* pDestNode = &WorldGraph.m_pNodes[pTempPool[pSrcNode->m_iFirstLink + j].m_iDestNode];
 
 				const Vector vecSpot = pDestNode->m_vecOrigin;
-				//vecSpot.z = pev->origin.z;
+				//vecSpot.z = GetAbsOrigin().z;
 
 				if (hull < NODE_FLY_HULL)
 				{
@@ -1629,9 +1629,9 @@ void CTestHull::BuildNodeGraph()
 						MoveMode = WalkMoveMode::Normal;
 					}
 
-					const float flYaw = UTIL_VecToYaw(pDestNode->m_vecOrigin - pev->origin);
+					const float flYaw = UTIL_VecToYaw(pDestNode->m_vecOrigin - GetAbsOrigin());
 
-					const float flDist = (vecSpot - pev->origin).Length2D();
+					const float flDist = (vecSpot - GetAbsOrigin()).Length2D();
 
 					bool fWalkFailed = false;
 
@@ -1653,7 +1653,7 @@ void CTestHull::BuildNodeGraph()
 						}
 					}
 
-					if (!fWalkFailed && (pev->origin - vecSpot).Length() > 64)
+					if (!fWalkFailed && (GetAbsOrigin() - vecSpot).Length() > 64)
 					{
 						// ALERT( at_console, "bogus walk\n");
 						// we thought we 
@@ -2790,7 +2790,7 @@ void CNodeViewer::Spawn()
 		m_vecColor = Vector(255, 160, 100);
 	}
 
-	m_iBaseNode = WorldGraph.FindNearestNode(pev->origin, m_afNodeType);
+	m_iBaseNode = WorldGraph.FindNearestNode(GetAbsOrigin(), m_afNodeType);
 
 	if (m_iBaseNode < 0)
 	{

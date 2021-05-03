@@ -244,8 +244,8 @@ public:
 		if (m_crabTime < gpGlobals->time && m_crabCount < BIG_MAXCHILDREN)
 		{
 			// Don't spawn crabs inside each other
-			Vector mins = pev->origin - Vector(32, 32, 0);
-			Vector maxs = pev->origin + Vector(32, 32, 0);
+			Vector mins = GetAbsOrigin() - Vector(32, 32, 0);
+			Vector maxs = GetAbsOrigin() + Vector(32, 32, 0);
 
 			CBaseEntity* pList[2];
 			int count = UTIL_EntitiesInBox(pList, ArraySize(pList), mins, maxs, FL_MONSTER);
@@ -264,8 +264,8 @@ public:
 
 	void SetObjectCollisionBox() override
 	{
-		pev->absmin = pev->origin + Vector(-95, -95, 0);
-		pev->absmax = pev->origin + Vector(95, 95, 190);
+		pev->absmin = GetAbsOrigin() + Vector(-95, -95, 0);
+		pev->absmax = GetAbsOrigin() + Vector(95, 95, 190);
 	}
 
 	bool CheckMeleeAttack1(float flDot, float flDist) override;	//!< Slash
@@ -413,7 +413,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 		Vector forward, right;
 		AngleVectors(pev->angles, &forward, &right, nullptr);
 
-		const Vector center = pev->origin + forward * 128;
+		const Vector center = GetAbsOrigin() + forward * 128;
 		const Vector mins = center - Vector(64, 64, 0);
 		const Vector maxs = center + Vector(64, 64, 64);
 
@@ -501,7 +501,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 	case BIG_AE_JUMP_FORWARD:
 		ClearBits(pev->flags, FL_ONGROUND);
 
-		SetAbsOrigin(pev->origin + Vector(0, 0, 1));// take him off ground so engine doesn't instantly reset onground 
+		SetAbsOrigin(GetAbsOrigin() + Vector(0, 0, 1));// take him off ground so engine doesn't instantly reset onground 
 		UTIL_MakeVectors(pev->angles);
 
 		pev->velocity = (gpGlobals->v_forward * 200) + gpGlobals->v_up * 500;
@@ -569,7 +569,7 @@ bool CBigMomma::TakeDamage(const TakeDamageInfo& info)
 
 void CBigMomma::LayHeadcrab()
 {
-	CBaseEntity* pChild = CBaseEntity::Create(BIG_CHILDCLASS.data(), pev->origin, pev->angles, this);
+	CBaseEntity* pChild = CBaseEntity::Create(BIG_CHILDCLASS.data(), GetAbsOrigin(), pev->angles, this);
 
 	pChild->pev->spawnflags |= SF_MONSTER_FALL_TO_GROUND;
 
@@ -586,7 +586,7 @@ void CBigMomma::LayHeadcrab()
 	}
 
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 100), IgnoreMonsters::Yes, this, &tr);
+	UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() - Vector(0, 0, 100), IgnoreMonsters::Yes, this, &tr);
 	UTIL_DecalTrace(&tr, DECAL_MOMMABIRTH);
 
 	EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pBirthSounds), VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
@@ -608,7 +608,7 @@ void CBigMomma::LaunchMortar()
 {
 	m_mortarTime = gpGlobals->time + RANDOM_FLOAT(2, 15);
 
-	Vector startPos = pev->origin;
+	Vector startPos = GetAbsOrigin();
 	startPos.z += 180;
 
 	EmitSound(SoundChannel::Weapon, RANDOM_SOUND_ARRAY(pSackSounds), VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
@@ -733,9 +733,9 @@ bool CBigMomma::CheckRangeAttack1(float flDot, float flDist)
 	{
 		if (CBaseEntity* pEnemy = m_hEnemy; pEnemy)
 		{
-			Vector startPos = pev->origin;
+			Vector startPos = GetAbsOrigin();
 			startPos.z += 180;
-			pev->movedir = CheckSplatToss(this, startPos, pEnemy->BodyTarget(pev->origin), RANDOM_FLOAT(150, 500));
+			pev->movedir = CheckSplatToss(this, startPos, pEnemy->BodyTarget(GetAbsOrigin()), RANDOM_FLOAT(150, 500));
 			if (pev->movedir != vec3_origin)
 				return true;
 		}
@@ -929,7 +929,7 @@ void CBigMomma::StartTask(Task_t* pTask)
 			TaskFail();
 		else
 		{
-			if ((pTarget->pev->origin - pev->origin).Length() < GetNodeRange())
+			if ((pTarget->GetAbsOrigin() - GetAbsOrigin()).Length() < GetNodeRange())
 				TaskComplete();
 			else
 			{
@@ -937,7 +937,7 @@ void CBigMomma::StartTask(Task_t* pTask)
 				if (pTarget->pev->spawnflags & SF_INFOBM_RUN)
 					act = ACT_RUN;
 
-				m_vecMoveGoal = pTarget->pev->origin;
+				m_vecMoveGoal = pTarget->GetAbsOrigin();
 				if (!MoveToTarget(act, 2))
 				{
 					TaskFail();
@@ -971,7 +971,7 @@ void CBigMomma::RunTask(Task_t* pTask)
 			TaskFail();
 		else
 		{
-			const float distance = (m_vecMoveGoal - pev->origin).Length2D();
+			const float distance = (m_vecMoveGoal - GetAbsOrigin()).Length2D();
 			// Set the appropriate activity based on an overlapping range
 			// overlap the range to prevent oscillation
 			if ((distance < GetNodeRange()) || MovementIsComplete())
@@ -1091,7 +1091,7 @@ void CBMortar::Animate()
 	if (gpGlobals->time > pev->dmgtime)
 	{
 		pev->dmgtime = gpGlobals->time + 0.2;
-		MortarSpray(pev->origin, -pev->velocity.Normalize(), gSpitSprite, 3);
+		MortarSpray(GetAbsOrigin(), -pev->velocity.Normalize(), gSpitSprite, 3);
 	}
 	if (pev->frame++)
 	{
@@ -1138,17 +1138,17 @@ void CBMortar::Touch(CBaseEntity* pOther)
 	if (pOther->IsBSPModel())
 	{
 		// make a splat on the wall
-		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 10, IgnoreMonsters::No, this, &tr);
+		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + pev->velocity * 10, IgnoreMonsters::No, this, &tr);
 		UTIL_DecalTrace(&tr, DECAL_MOMMASPLAT);
 	}
 	else
 	{
-		tr.vecEndPos = pev->origin;
+		tr.vecEndPos = GetAbsOrigin();
 		tr.vecPlaneNormal = -1 * pev->velocity.Normalize();
 	}
 	// make some flecks
 	MortarSpray(tr.vecEndPos, tr.vecPlaneNormal, gSpitSprite, 24);
 
-	RadiusDamage(pev->origin, this, GetOwner(), gSkillData.bigmommaDmgBlast, gSkillData.bigmommaRadiusBlast, CLASS_NONE, DMG_ACID);
+	RadiusDamage(GetAbsOrigin(), this, GetOwner(), gSkillData.bigmommaDmgBlast, gSkillData.bigmommaRadiusBlast, CLASS_NONE, DMG_ACID);
 	UTIL_Remove(this);
 }

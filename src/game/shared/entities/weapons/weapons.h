@@ -1366,8 +1366,8 @@ public:
 	void SetObjectCollisionBox() override
 	{
 		//!!!BUGBUG - fix the model!
-		pev->absmin = pev->origin + Vector(-16, -16, -5);
-		pev->absmax = pev->origin + Vector(16, 16, 28);
+		pev->absmin = GetAbsOrigin() + Vector(-16, -16, -5);
+		pev->absmax = GetAbsOrigin() + Vector(16, 16, 28);
 	}
 
 	void PrimaryAttack() override;

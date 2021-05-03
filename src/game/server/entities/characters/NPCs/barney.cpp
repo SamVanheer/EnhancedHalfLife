@@ -292,9 +292,9 @@ bool CBarney::CheckRangeAttack1(float flDot, float flDist)
 		{
 			TraceResult tr;
 
-			const Vector shootOrigin = pev->origin + Vector(0, 0, 55);
+			const Vector shootOrigin = GetAbsOrigin() + Vector(0, 0, 55);
 			CBaseEntity* pEnemy = m_hEnemy;
-			const Vector shootTarget = ((pEnemy->BodyTarget(shootOrigin) - pEnemy->pev->origin) + m_vecEnemyLKP);
+			const Vector shootTarget = ((pEnemy->BodyTarget(shootOrigin) - pEnemy->GetAbsOrigin()) + m_vecEnemyLKP);
 			UTIL_TraceLine(shootOrigin, shootTarget, IgnoreMonsters::No, this, &tr);
 			m_checkAttackTime = gpGlobals->time + 1; //TODO: done twice
 
@@ -310,7 +310,7 @@ bool CBarney::CheckRangeAttack1(float flDot, float flDist)
 void CBarney::BarneyFirePistol()
 {
 	UTIL_MakeVectors(pev->angles);
-	const Vector vecShootOrigin = pev->origin + Vector(0, 0, 55);
+	const Vector vecShootOrigin = GetAbsOrigin() + Vector(0, 0, 55);
 	const Vector vecShootDir = ShootAtEnemy(vecShootOrigin);
 
 	const Vector angDir = VectorAngles(vecShootDir);
@@ -328,7 +328,7 @@ void CBarney::BarneyFirePistol()
 		pitchShift -= 5;
 	EmitSound(SoundChannel::Weapon, "barney/ba_attack2.wav", VOL_NORM, ATTN_NORM, PITCH_NORM + pitchShift);
 
-	CSoundEnt::InsertSound(bits_SOUND_COMBAT, pev->origin, 384, 0.3);
+	CSoundEnt::InsertSound(bits_SOUND_COMBAT, GetAbsOrigin(), 384, 0.3);
 
 	// UNDONE: Reload?
 	m_cAmmoLoaded--;// take away a bullet!
@@ -440,7 +440,7 @@ void CBarney::TalkInit()
 
 bool IsFacing(CBaseEntity* pTest, const Vector& reference)
 {
-	Vector vecDir = reference - pTest->pev->origin;
+	Vector vecDir = reference - pTest->GetAbsOrigin();
 	vecDir.z = 0;
 	vecDir = vecDir.Normalize();
 	Vector angle = pTest->pev->v_angle;
@@ -467,7 +467,7 @@ bool CBarney::TakeDamage(const TakeDamageInfo& info)
 		if (m_hEnemy == nullptr)
 		{
 			// If the player was facing directly at me, or I'm already suspicious, get mad
-			if ((m_afMemory & bits_MEMORY_SUSPICIOUS) || IsFacing(info.GetAttacker(), pev->origin))
+			if ((m_afMemory & bits_MEMORY_SUSPICIOUS) || IsFacing(info.GetAttacker(), GetAbsOrigin()))
 			{
 				// Alright, now I'm pissed!
 				PlaySentence("BA_MAD", 4, VOL_NORM, ATTN_NORM);

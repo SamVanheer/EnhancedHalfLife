@@ -37,7 +37,7 @@ CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe)
 	TraceResult tr;
 
 	UTIL_MakeVectors(pMe->pev->v_angle);
-	UTIL_TraceLine(pMe->pev->origin + pMe->pev->view_ofs, pMe->pev->origin + pMe->pev->view_ofs + gpGlobals->v_forward * WORLD_SIZE, IgnoreMonsters::No, pMe, &tr);
+	UTIL_TraceLine(pMe->GetAbsOrigin() + pMe->pev->view_ofs, pMe->GetAbsOrigin() + pMe->pev->view_ofs + gpGlobals->v_forward * WORLD_SIZE, IgnoreMonsters::No, pMe, &tr);
 	if (tr.flFraction != 1.0 && !IsNullEnt(tr.pHit))
 	{
 		CBaseEntity* pHit = CBaseEntity::Instance(tr.pHit);
@@ -291,7 +291,7 @@ CBaseEntity* UTIL_FindEntityByTarget(CBaseEntity* pStartEntity, const char* szNa
 	return UTIL_FindEntityByString(pStartEntity, "target", szName);
 }
 
-CBaseEntity* UTIL_FindEntityGeneric(const char* szWhatever, Vector& vecSrc, float flRadius)
+CBaseEntity* UTIL_FindEntityGeneric(const char* szWhatever, const Vector& vecSrc, float flRadius)
 {
 	CBaseEntity* pEntity = nullptr;
 
@@ -303,7 +303,7 @@ CBaseEntity* UTIL_FindEntityGeneric(const char* szWhatever, Vector& vecSrc, floa
 	float flMaxDist2 = flRadius * flRadius;
 	while ((pSearch = UTIL_FindEntityByClassname(pSearch, szWhatever)) != nullptr)
 	{
-		float flDist2 = (pSearch->pev->origin - vecSrc).Length();
+		float flDist2 = (pSearch->GetAbsOrigin() - vecSrc).Length();
 		flDist2 = flDist2 * flDist2;
 		if (flMaxDist2 > flDist2)
 		{
@@ -453,7 +453,7 @@ void UTIL_ScreenShake(const Vector& center, float amplitude, float frequency, fl
 			localAmplitude = amplitude;
 		else
 		{
-			Vector delta = center - pPlayer->pev->origin;
+			Vector delta = center - pPlayer->GetAbsOrigin();
 			float distance = delta.Length();
 
 			// Had to get rid of this falloff - it didn't work well

@@ -139,7 +139,7 @@ float CHalfLifeRules::WeaponTryRespawn(CBasePlayerItem* pWeapon)
 
 Vector CHalfLifeRules::WeaponRespawnSpot(CBasePlayerItem* pWeapon)
 {
-	return pWeapon->pev->origin;
+	return pWeapon->GetAbsOrigin();
 }
 
 int CHalfLifeRules::WeaponShouldRespawn(CBasePlayerItem* pWeapon)
@@ -168,7 +168,7 @@ float CHalfLifeRules::ItemRespawnTime(CItem* pItem)
 
 Vector CHalfLifeRules::ItemRespawnSpot(CItem* pItem)
 {
-	return pItem->pev->origin;
+	return pItem->GetAbsOrigin();
 }
 
 bool CHalfLifeRules::IsAllowedToSpawn(CBaseEntity* pEntity)
@@ -192,7 +192,7 @@ float CHalfLifeRules::AmmoRespawnTime(CBasePlayerAmmo* pAmmo)
 
 Vector CHalfLifeRules::AmmoRespawnSpot(CBasePlayerAmmo* pAmmo)
 {
-	return pAmmo->pev->origin;
+	return pAmmo->GetAbsOrigin();
 }
 
 float CHalfLifeRules::HealthChargerRechargeTime()

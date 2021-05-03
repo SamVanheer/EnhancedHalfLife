@@ -263,14 +263,8 @@ void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters
 */
 void UTIL_ParticleBox(CBasePlayer* player, float* mins, float* maxs, float life, unsigned char r, unsigned char g, unsigned char b)
 {
-	int i;
-	Vector mmin, mmax;
-
-	for (i = 0; i < 3; i++)
-	{
-		mmin[i] = player->pev->origin[i] + mins[i];
-		mmax[i] = player->pev->origin[i] + maxs[i];
-	}
+	const Vector mmin = player->GetAbsOrigin() + mins;
+	const Vector mmax = player->GetAbsOrigin() + maxs;
 
 	gEngfuncs.pEfxAPI->R_ParticleBox(mmin, mmax, 5.0, 0, 255, 0);
 }

@@ -453,7 +453,9 @@ public:
 		pev->classname = ALLOC_STRING(classname);
 	}
 
+	const Vector& GetAbsOrigin() { return pev->origin; }
 	void SetAbsOrigin(const Vector& origin);
+
 	void SetSize(const Vector& mins, const Vector& maxs);
 
 	void SetModel(const char* modelName)
@@ -602,8 +604,8 @@ public:
 	int	  entindex() { return ENTINDEX(edict()); }
 
 	virtual Vector Center() { return (pev->absmax + pev->absmin) * 0.5; }	//!< center point of entity
-	virtual Vector EyePosition() { return pev->origin + pev->view_ofs; }	//!< position of eyes
-	virtual Vector EarPosition() { return pev->origin + pev->view_ofs; }	//!< position of ears
+	virtual Vector EyePosition() { return GetAbsOrigin() + pev->view_ofs; }	//!< position of eyes
+	virtual Vector EarPosition() { return GetAbsOrigin() + pev->view_ofs; }	//!< position of ears
 	virtual Vector BodyTarget(const Vector& posSrc) { return Center(); }	//!< position to shoot at
 
 	virtual int Illumination() { return GETENTITYILLUM(edict()); }
@@ -832,7 +834,7 @@ public:
 
 	// common member functions
 	/**
-	*	@brief calculate pev->velocity and pev->nextthink to reach vecDest from pev->origin traveling at flSpeed
+	*	@brief calculate pev->velocity and pev->nextthink to reach vecDest from GetAbsOrigin() traveling at flSpeed
 	*/
 	void LinearMove(Vector	vecDest, float flSpeed);
 
@@ -842,7 +844,7 @@ public:
 	void EXPORT LinearMoveDone();
 
 	/**
-	*	@brief calculate pev->velocity and pev->nextthink to reach vecDest from pev->origin traveling at flSpeed
+	*	@brief calculate pev->velocity and pev->nextthink to reach vecDest from GetAbsOrigin() traveling at flSpeed
 	*
 	*	Just like LinearMove, but rotational.
 	*/

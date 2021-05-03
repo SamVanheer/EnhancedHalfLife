@@ -53,7 +53,7 @@ public:
 	virtual void Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker);
 	virtual Vector UpdateTargetPosition(CBaseEntity* pTarget)
 	{
-		return pTarget->BodyTarget(pev->origin);
+		return pTarget->BodyTarget(GetAbsOrigin());
 	}
 
 	void	StartRotSound();
@@ -94,7 +94,7 @@ public:
 	{
 		Vector forward, right, up;
 		AngleVectors(pev->angles, forward, right, up);
-		return pev->origin + (forward * m_barrelPos.x) + (right * m_barrelPos.y) + (up * m_barrelPos.z);
+		return GetAbsOrigin() + (forward * m_barrelPos.x) + (right * m_barrelPos.y) + (up * m_barrelPos.z);
 	}
 
 	/**
@@ -218,7 +218,7 @@ void CFuncTank::Spawn()
 	if (m_spread > MAX_FIRING_SPREADS)
 		m_spread = 0;
 
-	pev->oldorigin = pev->origin;
+	pev->oldorigin = GetAbsOrigin();
 }
 
 void CFuncTank::Precache()
@@ -348,7 +348,7 @@ bool CFuncTank::OnControls(CBaseEntity* pTest)
 	if (!(pev->spawnflags & SF_TANK_CANCONTROL))
 		return false;
 
-	if ((m_vecControllerUsePos - pTest->pev->origin).Length() < 30)
+	if ((m_vecControllerUsePos - pTest->GetAbsOrigin()).Length() < 30)
 		return true;
 
 	return false;
@@ -379,7 +379,7 @@ bool CFuncTank::StartControl(CBasePlayer* pController)
 	}
 
 	pController->m_iHideHUD |= HIDEHUD_WEAPONS;
-	m_vecControllerUsePos = pController->pev->origin;
+	m_vecControllerUsePos = pController->GetAbsOrigin();
 
 	pev->nextthink = pev->ltime + 0.1;
 
@@ -527,7 +527,7 @@ void CFuncTank::TrackTarget()
 
 		// Calculate angle needed to aim at target
 		barrelEnd = BarrelPosition();
-		const Vector targetPosition = pTarget->pev->origin + pTarget->pev->view_ofs;
+		const Vector targetPosition = pTarget->GetAbsOrigin() + pTarget->pev->view_ofs;
 		const float range = (targetPosition - barrelEnd).Length();
 
 		if (!InRange(range))
@@ -551,7 +551,7 @@ void CFuncTank::TrackTarget()
 		// Track sight origin
 
 // !!! I'm not sure what i changed
-		direction = m_sightOrigin - pev->origin;
+		direction = m_sightOrigin - GetAbsOrigin();
 		//		direction = m_sightOrigin - barrelEnd;
 		angles = VectorAngles(direction);
 
@@ -852,7 +852,7 @@ void CFuncTankLaser::Fire(const Vector& barrelEnd, const Vector& forward, CBaseE
 			TraceResult tr;
 			for (int i = 0; i < bulletCount; i++)
 			{
-				laser->pev->origin = barrelEnd;
+				laser->SetAbsOrigin(barrelEnd);
 				TankTrace(barrelEnd, forward, gTankSpread[m_spread], tr);
 
 				m_laserTime = gpGlobals->time;
@@ -1016,7 +1016,7 @@ void CFuncTankControls::Spawn()
 	SetModel(STRING(pev->model));
 
 	SetSize(pev->mins, pev->maxs);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	//TODO: maybe use Activate() instead?
 	pev->nextthink = gpGlobals->time + 0.3;	// After all the func_tank's have spawned

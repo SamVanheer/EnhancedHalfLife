@@ -437,7 +437,7 @@ void CBaseButton::Spawn()
 		m_flLip = 4;
 
 	m_toggle_state = ToggleState::AtBottom;
-	m_vecPosition1 = pev->origin;
+	m_vecPosition1 = GetAbsOrigin();
 	// Subtract 2 from size because the engine expands bboxes by 1 in all directions making the size too big
 	m_vecPosition2 = m_vecPosition1 + (pev->movedir * (fabs(pev->movedir.x * (pev->size.x - 2)) + fabs(pev->movedir.y * (pev->size.y - 2)) + fabs(pev->movedir.z * (pev->size.z - 2)) - m_flLip));
 
@@ -866,7 +866,7 @@ void CMomentaryRotButton::Spawn()
 		SetSolidType(Solid::Not);
 
 	SetMovetype(Movetype::Push);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 	SetModel(STRING(pev->model));
 
 	const char* pszSound = ButtonSound(m_sounds);
@@ -1108,7 +1108,7 @@ void CEnvSpark::KeyValue(KeyValueData* pkvd)
 void EXPORT CEnvSpark::SparkThink()
 {
 	pev->nextthink = gpGlobals->time + 0.1 + RANDOM_FLOAT(0, m_flDelay);
-	DoSpark(this, pev->origin);
+	DoSpark(this, GetAbsOrigin());
 }
 
 void EXPORT CEnvSpark::SparkStart(const UseInfo& info)

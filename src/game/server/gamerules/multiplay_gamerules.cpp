@@ -782,7 +782,7 @@ float CHalfLifeMultiplay::WeaponTryRespawn(CBasePlayerItem* pWeapon)
 
 Vector CHalfLifeMultiplay::WeaponRespawnSpot(CBasePlayerItem* pWeapon)
 {
-	return pWeapon->pev->origin;
+	return pWeapon->GetAbsOrigin();
 }
 
 int CHalfLifeMultiplay::WeaponShouldRespawn(CBasePlayerItem* pWeapon)
@@ -848,7 +848,7 @@ float CHalfLifeMultiplay::ItemRespawnTime(CItem* pItem)
 
 Vector CHalfLifeMultiplay::ItemRespawnSpot(CItem* pItem)
 {
-	return pItem->pev->origin;
+	return pItem->GetAbsOrigin();
 }
 
 void CHalfLifeMultiplay::PlayerGotAmmo(CBasePlayer* pPlayer, char* szName, int iCount)
@@ -880,7 +880,7 @@ float CHalfLifeMultiplay::AmmoRespawnTime(CBasePlayerAmmo* pAmmo)
 
 Vector CHalfLifeMultiplay::AmmoRespawnSpot(CBasePlayerAmmo* pAmmo)
 {
-	return pAmmo->pev->origin;
+	return pAmmo->GetAbsOrigin();
 }
 
 float CHalfLifeMultiplay::HealthChargerRechargeTime()

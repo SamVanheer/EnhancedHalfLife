@@ -298,7 +298,7 @@ void CTurret::Spawn()
 
 	SetThink(&CTurret::Initialize);
 
-	auto glow = m_hEyeGlow = CSprite::SpriteCreate(TURRET_GLOW_SPRITE.data(), pev->origin, false);
+	auto glow = m_hEyeGlow = CSprite::SpriteCreate(TURRET_GLOW_SPRITE.data(), GetAbsOrigin(), false);
 	glow->SetTransparency(RenderMode::Glow, 255, 0, 0, 0, RenderFX::NoDissipation);
 	glow->SetAttachment(this, 2);
 	m_eyeBrightness = 0;
@@ -476,7 +476,7 @@ void CBaseTurret::ActiveThink()
 		}
 	}
 
-	const Vector vecMid = pev->origin + pev->view_ofs;
+	const Vector vecMid = GetAbsOrigin() + pev->view_ofs;
 	Vector vecMidEnemy = m_hEnemy->BodyTarget(vecMid);
 
 	// Look for our current enemy
@@ -919,7 +919,7 @@ void CBaseTurret::TurretDeath()
 		WRITE_BYTE(TE_SMOKE);
 		WRITE_COORD(RANDOM_FLOAT(pev->absmin.x, pev->absmax.x));
 		WRITE_COORD(RANDOM_FLOAT(pev->absmin.y, pev->absmax.y));
-		WRITE_COORD(pev->origin.z - static_cast<int>(m_iOrientation) * 64);
+		WRITE_COORD(GetAbsOrigin().z - static_cast<int>(m_iOrientation) * 64);
 		WRITE_SHORT(g_sModelIndexSmoke);
 		WRITE_BYTE(25); // scale * 10
 		WRITE_BYTE(10 - static_cast<int>(m_iOrientation) * 5); // framerate
@@ -930,9 +930,9 @@ void CBaseTurret::TurretDeath()
 	{
 		Vector vecSrc = Vector(RANDOM_FLOAT(pev->absmin.x, pev->absmax.x), RANDOM_FLOAT(pev->absmin.y, pev->absmax.y), 0);
 		if (m_iOrientation == TurretOrientation::Floor)
-			vecSrc = vecSrc + Vector(0, 0, RANDOM_FLOAT(pev->origin.z, pev->absmax.z));
+			vecSrc = vecSrc + Vector(0, 0, RANDOM_FLOAT(GetAbsOrigin().z, pev->absmax.z));
 		else
-			vecSrc = vecSrc + Vector(0, 0, RANDOM_FLOAT(pev->absmin.z, pev->origin.z));
+			vecSrc = vecSrc + Vector(0, 0, RANDOM_FLOAT(pev->absmin.z, GetAbsOrigin().z));
 
 		UTIL_Sparks(vecSrc);
 	}

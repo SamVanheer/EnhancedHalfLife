@@ -394,7 +394,7 @@ void CBaseTrigger::ToggleUse(const UseInfo& info)
 	{// turn the trigger off
 		SetSolidType(Solid::Not);
 	}
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 }
 
 LINK_ENTITY_TO_CLASS(trigger_hurt, CTriggerHurt);
@@ -422,7 +422,7 @@ void CTriggerHurt::Spawn()
 	if (IsBitSet(pev->spawnflags, SF_TRIGGER_HURT_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
 		SetSolidType(Solid::Not);
 
-	SetAbsOrigin(pev->origin);		// Link into the list
+	SetAbsOrigin(GetAbsOrigin());		// Link into the list
 }
 
 void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
@@ -545,15 +545,15 @@ void CTriggerHurt::RadiationThink()
 	// if not, continue	
 
 	// set origin to center of trigger so that this check works
-	const Vector origin = pev->origin;
+	const Vector origin = GetAbsOrigin();
 	const Vector view_ofs = pev->view_ofs;
 
-	pev->origin = (pev->absmin + pev->absmax) * 0.5;
+	SetAbsOrigin((pev->absmin + pev->absmax) * 0.5);
 	pev->view_ofs = pev->view_ofs * 0.0;
 
 	auto pPlayer = static_cast<CBasePlayer*>(UTIL_FindClientInPVS(this));
 
-	pev->origin = origin;
+	SetAbsOrigin(origin);
 	pev->view_ofs = view_ofs;
 
 	// reset origin
@@ -594,7 +594,7 @@ void CTriggerMonsterJump::Spawn()
 	if (!IsStringNull(pev->targetname))
 	{// if targetted, spawn turned off
 		SetSolidType(Solid::Not);
-		SetAbsOrigin(pev->origin); // Unlink from trigger list
+		SetAbsOrigin(GetAbsOrigin()); // Unlink from trigger list
 		SetUse(&CTriggerMonsterJump::ToggleUse);
 	}
 }
@@ -602,7 +602,7 @@ void CTriggerMonsterJump::Spawn()
 void CTriggerMonsterJump::Think()
 {
 	SetSolidType(Solid::Not);// kill the trigger for now !!!UNDONE
-	SetAbsOrigin(pev->origin); // Unlink from trigger list
+	SetAbsOrigin(GetAbsOrigin()); // Unlink from trigger list
 	SetThink(nullptr);
 }
 
@@ -613,7 +613,7 @@ void CTriggerMonsterJump::Touch(CBaseEntity* pOther)
 		return;
 	}
 
-	pOther->pev->origin.z += 1;
+	pOther->SetAbsOrigin(pOther->GetAbsOrigin() + vec3_up);
 
 	if (IsBitSet(pOther->pev->flags, FL_ONGROUND))
 	{// clear the onground so physics don't bitch
@@ -726,7 +726,7 @@ void CTargetCDAudio::Think()
 
 	pev->nextthink = gpGlobals->time + 0.5;
 
-	if ((pClient->pev->origin - pev->origin).Length() <= pev->scale)
+	if ((pClient->GetAbsOrigin() - GetAbsOrigin()).Length() <= pev->scale)
 		Play();
 }
 
@@ -895,7 +895,7 @@ void CTriggerPush::Spawn()
 
 	SetUse(&CTriggerPush::ToggleUse);
 
-	SetAbsOrigin(pev->origin);		// Link into the list
+	SetAbsOrigin(GetAbsOrigin());		// Link into the list
 }
 
 void CTriggerPush::Touch(CBaseEntity* pOther)
@@ -973,7 +973,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 	if (IsNullEnt(pTarget))
 		return;
 
-	Vector tmp = pTarget->pev->origin;
+	Vector tmp = pTarget->GetAbsOrigin();
 
 	if (pOther->IsPlayer())
 	{
@@ -1184,7 +1184,7 @@ void CTriggerCamera::Use(const UseInfo& info)
 	// copy over player information
 	if (IsBitSet(pev->spawnflags, SF_CAMERA_PLAYER_POSITION))
 	{
-		SetAbsOrigin(pActivator->pev->origin + pActivator->pev->view_ofs);
+		SetAbsOrigin(pActivator->GetAbsOrigin() + pActivator->pev->view_ofs);
 		pev->angles.x = -pActivator->pev->angles.x;
 		pev->angles.y = pActivator->pev->angles.y;
 		pev->angles.z = 0;
@@ -1233,7 +1233,7 @@ void CTriggerCamera::FollowTarget()
 		return;
 	}
 
-	Vector vecGoal = VectorAngles(m_hTarget->pev->origin - pev->origin);
+	Vector vecGoal = VectorAngles(m_hTarget->GetAbsOrigin() - GetAbsOrigin());
 	vecGoal.x = -vecGoal.x;
 
 	if (pev->angles.y > 360)
@@ -1303,7 +1303,7 @@ void CTriggerCamera::Move()
 			if (path->pev->speed != 0)
 				m_targetSpeed = path->pev->speed;
 
-			const Vector delta = path->pev->origin - pev->origin;
+			const Vector delta = path->GetAbsOrigin() - GetAbsOrigin();
 			m_moveDistance = delta.Length();
 			pev->movedir = delta.Normalize();
 			m_flStopTime = gpGlobals->time + path->GetDelay();

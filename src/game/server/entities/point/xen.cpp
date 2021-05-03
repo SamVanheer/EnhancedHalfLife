@@ -94,7 +94,7 @@ void CXenPLight::Spawn()
 	pev->nextthink = gpGlobals->time + 0.1;
 	pev->frame = RANDOM_FLOAT(0, 255);
 
-	auto glow = m_hGlow = CSprite::SpriteCreate(XEN_PLANT_GLOW_SPRITE.data(), pev->origin + Vector(0, 0, (pev->mins.z + pev->maxs.z) * 0.5), false);
+	auto glow = m_hGlow = CSprite::SpriteCreate(XEN_PLANT_GLOW_SPRITE.data(), GetAbsOrigin() + Vector(0, 0, (pev->mins.z + pev->maxs.z) * 0.5), false);
 	glow->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
 	glow->SetAttachment(this, 1);
 }
@@ -219,7 +219,7 @@ LINK_ENTITY_TO_CLASS(xen_ttrigger, CXenTreeTrigger);
 CXenTreeTrigger* CXenTreeTrigger::TriggerCreate(CBaseEntity* pOwner, const Vector& position)
 {
 	CXenTreeTrigger* pTrigger = GetClassPtr((CXenTreeTrigger*)nullptr);
-	pTrigger->pev->origin = position;
+	pTrigger->SetAbsOrigin(position);
 	pTrigger->SetClassname("xen_ttrigger");
 	pTrigger->SetSolidType(Solid::Trigger);
 	pTrigger->SetMovetype(Movetype::None);
@@ -288,7 +288,7 @@ void CXenTree::Spawn()
 
 	Vector triggerPosition;
 	AngleVectors(pev->angles, &triggerPosition, nullptr, nullptr);
-	triggerPosition = pev->origin + (triggerPosition * 64);
+	triggerPosition = GetAbsOrigin() + (triggerPosition * 64);
 	// Create the trigger
 	auto trigger = m_hTrigger = CXenTreeTrigger::TriggerCreate(this, triggerPosition);
 	trigger->SetSize(Vector(-24, -24, 0), Vector(24, 24, 128));
@@ -442,7 +442,7 @@ CXenHull* CXenHull::CreateHull(CBaseEntity* source, const Vector& mins, const Ve
 {
 	CXenHull* pHull = GetClassPtr((CXenHull*)nullptr);
 
-	pHull->SetAbsOrigin(source->pev->origin + offset);
+	pHull->SetAbsOrigin(source->GetAbsOrigin() + offset);
 	pHull->SetModel(STRING(source->pev->model));
 	pHull->SetSolidType(Solid::BBox);
 	pHull->SetClassname("xen_hull");

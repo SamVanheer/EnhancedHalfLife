@@ -438,7 +438,7 @@ void CController::StartTask(Task_t* pTask)
 		break;
 	case TASK_GET_PATH_TO_ENEMY_LKP:
 	{
-		if (BuildNearestRoute(m_vecEnemyLKP, pev->view_ofs, pTask->flData, (m_vecEnemyLKP - pev->origin).Length() + 1024))
+		if (BuildNearestRoute(m_vecEnemyLKP, pev->view_ofs, pTask->flData, (m_vecEnemyLKP - GetAbsOrigin()).Length() + 1024))
 		{
 			TaskComplete();
 		}
@@ -460,7 +460,7 @@ void CController::StartTask(Task_t* pTask)
 			return;
 		}
 
-		if (BuildNearestRoute(pEnemy->pev->origin, pEnemy->pev->view_ofs, pTask->flData, (pEnemy->pev->origin - pev->origin).Length() + 1024))
+		if (BuildNearestRoute(pEnemy->GetAbsOrigin(), pEnemy->pev->view_ofs, pTask->flData, (pEnemy->GetAbsOrigin() - GetAbsOrigin()).Length() + 1024))
 		{
 			TaskComplete();
 		}
@@ -571,7 +571,7 @@ void CController::RunTask(Task_t* pTask)
 				{
 					m_vecEstVelocity = m_vecEstVelocity * 0.8;
 				}
-				Vector vecDir = Intersect(vecSrc, m_hEnemy->BodyTarget(pev->origin), m_vecEstVelocity, gSkillData.controllerSpeedBall);
+				Vector vecDir = Intersect(vecSrc, m_hEnemy->BodyTarget(GetAbsOrigin()), m_vecEstVelocity, gSkillData.controllerSpeedBall);
 				const float delta = 0.03490; // +-2 degree
 				vecDir = vecDir + Vector(RANDOM_FLOAT(-delta, delta), RANDOM_FLOAT(-delta, delta), RANDOM_FLOAT(-delta, delta)) * gSkillData.controllerSpeedBall;
 
@@ -744,7 +744,7 @@ void CController::RunAI()
 
 		if (ball == nullptr)
 		{
-			ball = m_hBall[i] = CSprite::SpriteCreate("sprites/xspark4.spr", pev->origin, true);
+			ball = m_hBall[i] = CSprite::SpriteCreate("sprites/xspark4.spr", GetAbsOrigin(), true);
 			ball->SetTransparency(RenderMode::Glow, 255, 255, 255, 255, RenderFX::NoDissipation);
 			ball->SetAttachment(this, (i + 3));
 			ball->SetScale(1.0);
@@ -834,8 +834,8 @@ void CController::Move(float flInterval)
 	do
 	{
 		// local move to waypoint.
-		const Vector vecDir = (m_Route[m_iRouteIndex].vecLocation - pev->origin).Normalize();
-		flWaypointDist = (m_Route[m_iRouteIndex].vecLocation - pev->origin).Length();
+		const Vector vecDir = (m_Route[m_iRouteIndex].vecLocation - GetAbsOrigin()).Normalize();
+		flWaypointDist = (m_Route[m_iRouteIndex].vecLocation - GetAbsOrigin()).Length();
 
 		// MakeIdealYaw ( m_Route[ m_iRouteIndex ].vecLocation );
 		// ChangeYaw ( pev->yaw_speed );
@@ -864,7 +864,7 @@ void CController::Move(float flInterval)
 		// If this fails, it should be because of some dynamic entity blocking this guy.
 		// We've already checked this path, so we should wait and time out if the entity doesn't move
 		float flDist = 0; // how far the lookahead check got before hitting an object.
-		if (CheckLocalMove(pev->origin, pev->origin + vecDir * flCheckDist, pTargetEnt, &flDist) != LocalMoveResult::Valid)
+		if (CheckLocalMove(GetAbsOrigin(), GetAbsOrigin() + vecDir * flCheckDist, pTargetEnt, &flDist) != LocalMoveResult::Valid)
 		{
 			// Can't move, stop
 			Stop();
@@ -889,7 +889,7 @@ void CController::Move(float flInterval)
 			{
 				// try to triangulate around whatever is in the way.
 				Vector vecApex;
-				if (Triangulate(pev->origin, m_Route[m_iRouteIndex].vecLocation, flDist, pTargetEnt, &vecApex))
+				if (Triangulate(GetAbsOrigin(), m_Route[m_iRouteIndex].vecLocation, flDist, pTargetEnt, &vecApex))
 				{
 					InsertWaypoint(vecApex, bits_MF_TO_DETOUR);
 					RouteSimplify(pTargetEnt);
@@ -907,7 +907,7 @@ void CController::Move(float flInterval)
 					{
 						TaskFail();
 						ALERT(at_aiconsole, "Failed to move!\n");
-						//ALERT( at_aiconsole, "%f, %f, %f\n", pev->origin.z, (pev->origin + (vecDir * flCheckDist)).z, m_Route[m_iRouteIndex].vecLocation.z );
+						//ALERT( at_aiconsole, "%f, %f, %f\n", GetAbsOrigin().z, (GetAbsOrigin() + (vecDir * flCheckDist)).z, m_Route[m_iRouteIndex].vecLocation.z );
 					}
 					return;
 				}
@@ -1008,7 +1008,7 @@ void CController::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, flo
 
 	m_velocity = m_velocity * 0.8 + m_flGroundSpeed * vecDir * 0.2;
 
-	UTIL_MoveToOrigin(this, pev->origin + m_velocity, m_velocity.Length() * flInterval, MoveToOriginType::Strafe);
+	UTIL_MoveToOrigin(this, GetAbsOrigin() + m_velocity, m_velocity.Length() * flInterval, MoveToOriginType::Strafe);
 }
 
 /**
@@ -1047,7 +1047,7 @@ void CControllerHeadBall::Spawn()
 	pev->scale = 2.0;
 
 	SetSize(vec3_origin, vec3_origin);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	SetThink(&CControllerHeadBall::HuntThink);
 	SetTouch(&CControllerHeadBall::BounceTouch);
@@ -1076,9 +1076,9 @@ void CControllerHeadBall::HuntThink()
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_ELIGHT);
 	WRITE_SHORT(entindex());		// entity, attachment
-	WRITE_COORD(pev->origin.x);		// origin
-	WRITE_COORD(pev->origin.y);
-	WRITE_COORD(pev->origin.z);
+	WRITE_COORD(GetAbsOrigin().x);		// origin
+	WRITE_COORD(GetAbsOrigin().y);
+	WRITE_COORD(GetAbsOrigin().z);
 	WRITE_COORD(pev->renderamt / 16);	// radius
 	WRITE_BYTE(255);	// R
 	WRITE_BYTE(255);	// G
@@ -1088,7 +1088,7 @@ void CControllerHeadBall::HuntThink()
 	MESSAGE_END();
 
 	// check world boundaries
-	if (gpGlobals->time - pev->dmgtime > 5 || pev->renderamt < 64 || m_hEnemy == nullptr || m_hOwner == nullptr || !UTIL_IsInWorld(pev->origin))
+	if (gpGlobals->time - pev->dmgtime > 5 || pev->renderamt < 64 || m_hEnemy == nullptr || m_hOwner == nullptr || !UTIL_IsInWorld(GetAbsOrigin()))
 	{
 		SetTouch(nullptr);
 		UTIL_Remove(this);
@@ -1097,10 +1097,10 @@ void CControllerHeadBall::HuntThink()
 
 	MovetoTarget(m_hEnemy->Center());
 
-	if ((m_hEnemy->Center() - pev->origin).Length() < 64)
+	if ((m_hEnemy->Center() - GetAbsOrigin()).Length() < 64)
 	{
 		TraceResult tr;
-		UTIL_TraceLine(pev->origin, m_hEnemy->Center(), IgnoreMonsters::No, this, &tr);
+		UTIL_TraceLine(GetAbsOrigin(), m_hEnemy->Center(), IgnoreMonsters::No, this, &tr);
 
 		if (CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit); pEntity != nullptr && pEntity->pev->takedamage)
 		{
@@ -1158,14 +1158,14 @@ void CControllerHeadBall::MovetoTarget(Vector vecTarget)
 	{
 		m_vecIdeal = m_vecIdeal.Normalize() * 400;
 	}
-	m_vecIdeal = m_vecIdeal + (vecTarget - pev->origin).Normalize() * 100;
+	m_vecIdeal = m_vecIdeal + (vecTarget - GetAbsOrigin()).Normalize() * 100;
 	pev->velocity = m_vecIdeal;
 }
 
 void CControllerHeadBall::Crawl()
 {
 	const Vector vecAim = Vector(RANDOM_FLOAT(-1, 1), RANDOM_FLOAT(-1, 1), RANDOM_FLOAT(-1, 1)).Normalize();
-	const Vector vecPnt = pev->origin + pev->velocity * 0.3 + vecAim * 64;
+	const Vector vecPnt = GetAbsOrigin() + pev->velocity * 0.3 + vecAim * 64;
 
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMENTPOINT);
@@ -1228,7 +1228,7 @@ void CControllerZapBall::Spawn()
 	pev->scale = 0.5;
 
 	SetSize(vec3_origin, vec3_origin);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	SetThink(&CControllerZapBall::AnimateThink);
 	SetTouch(&CControllerZapBall::ExplodeTouch);

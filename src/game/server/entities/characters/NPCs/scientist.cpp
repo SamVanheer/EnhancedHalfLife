@@ -480,11 +480,11 @@ void CScientist::StartTask(Task_t* pTask)
 
 	case TASK_MOVE_TO_TARGET_RANGE_SCARED:
 	{
-		if ((m_hTargetEnt->pev->origin - pev->origin).Length() < 1)
+		if ((m_hTargetEnt->GetAbsOrigin() - GetAbsOrigin()).Length() < 1)
 			TaskComplete();
 		else
 		{
-			m_vecMoveGoal = m_hTargetEnt->pev->origin;
+			m_vecMoveGoal = m_hTargetEnt->GetAbsOrigin();
 			if (!MoveToTarget(ACT_WALK_SCARED, 0.5))
 				TaskFail();
 		}
@@ -519,12 +519,12 @@ void CScientist::RunTask(Task_t* pTask)
 		}
 		else
 		{
-			float distance = (m_vecMoveGoal - pev->origin).Length2D();
+			float distance = (m_vecMoveGoal - GetAbsOrigin()).Length2D();
 			// Re-evaluate when you think your finished, or the target has moved too far
-			if ((distance < pTask->flData) || (m_vecMoveGoal - m_hTargetEnt->pev->origin).Length() > pTask->flData * 0.5)
+			if ((distance < pTask->flData) || (m_vecMoveGoal - m_hTargetEnt->GetAbsOrigin()).Length() > pTask->flData * 0.5)
 			{
-				m_vecMoveGoal = m_hTargetEnt->pev->origin;
-				distance = (m_vecMoveGoal - pev->origin).Length2D();
+				m_vecMoveGoal = m_hTargetEnt->GetAbsOrigin();
+				distance = (m_vecMoveGoal - GetAbsOrigin()).Length2D();
 				RefreshRoute();
 			}
 
@@ -552,7 +552,7 @@ void CScientist::RunTask(Task_t* pTask)
 		{
 			if (TargetDistance() > 90)
 				TaskComplete();
-			pev->ideal_yaw = UTIL_VecToYaw(m_hTargetEnt->pev->origin - pev->origin);
+			pev->ideal_yaw = UTIL_VecToYaw(m_hTargetEnt->GetAbsOrigin() - GetAbsOrigin());
 			ChangeYaw(pev->yaw_speed);
 		}
 		break;
@@ -1012,7 +1012,7 @@ void CScientist::Heal()
 	if (!CanHeal())
 		return;
 
-	const Vector target = m_hTargetEnt->pev->origin - pev->origin;
+	const Vector target = m_hTargetEnt->GetAbsOrigin() - GetAbsOrigin();
 	if (target.Length() > 100)
 		return;
 
@@ -1220,7 +1220,7 @@ void CSittingScientist::SittingThink()
 		CBaseEntity* pent = FindNearestFriend(true);
 		if (pent)
 		{
-			float yaw = VecToYaw(pent->pev->origin - pev->origin) - pev->angles.y;
+			float yaw = VecToYaw(pent->GetAbsOrigin() - GetAbsOrigin()) - pev->angles.y;
 
 			if (yaw > 180) yaw -= 360;
 			if (yaw < -180) yaw += 360;
@@ -1267,7 +1267,7 @@ void CSittingScientist::SittingThink()
 			else
 			{
 				// only turn head if we spoke
-				float yaw = VecToYaw(pent->pev->origin - pev->origin) - pev->angles.y;
+				float yaw = VecToYaw(pent->GetAbsOrigin() - GetAbsOrigin()) - pev->angles.y;
 
 				//TODO: this keeps showing up everywhere
 				if (yaw > 180) yaw -= 360;
@@ -1332,7 +1332,7 @@ int CSittingScientist::IdleSpeak()
 		CTalkMonster* pTalkMonster = GetClassPtr((CTalkMonster*)pentFriend->pev);
 		pTalkMonster->SetAnswerQuestion(this);
 
-		IdleHeadTurn(pentFriend->pev->origin);
+		IdleHeadTurn(pentFriend->GetAbsOrigin());
 		SENTENCEG_PlayRndSz(this, m_szGrp[TLK_PQUESTION], 1.0, ATTN_IDLE, pitch);
 		// set global min delay for next conversation
 		CTalkMonster::g_talkWaitTime = gpGlobals->time + RANDOM_FLOAT(4.8, 5.2);

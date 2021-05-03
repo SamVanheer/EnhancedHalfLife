@@ -93,14 +93,14 @@ void CFuncWallToggle::TurnOff()
 {
 	SetSolidType(Solid::Not);
 	pev->effects |= EF_NODRAW;
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 }
 
 void CFuncWallToggle::TurnOn()
 {
 	SetSolidType(Solid::BSP);
 	pev->effects &= ~EF_NODRAW;
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 }
 
 bool CFuncWallToggle::IsOn()
@@ -336,7 +336,7 @@ void CFuncRotating::KeyValue(KeyValueData* pkvd)
 	{
 		const Vector tmp = UTIL_StringToVector(pkvd->szValue);
 		if (tmp != vec3_origin)
-			pev->origin = tmp;
+			SetAbsOrigin(tmp);
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "sounds"))
 	{
@@ -404,7 +404,7 @@ void CFuncRotating::Spawn()
 		SetMovetype(Movetype::Push);
 	}
 
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 	SetModel(STRING(pev->model));
 
 	SetUse(&CFuncRotating::RotatingUse);
@@ -509,7 +509,7 @@ void CFuncRotating::HurtTouch(CBaseEntity* pOther)
 
 	pOther->TakeDamage({this, this, pev->dmg, DMG_CRUSH});
 
-	pOther->pev->velocity = (pOther->pev->origin - GetBrushModelOrigin(this)).Normalize() * pev->dmg;
+	pOther->pev->velocity = (pOther->GetAbsOrigin() - GetBrushModelOrigin(this)).Normalize() * pev->dmg;
 }
 
 constexpr int FANPITCHMIN = 30;
@@ -742,7 +742,7 @@ void CPendulum::Spawn()
 	else
 		SetSolidType(Solid::BSP);
 	SetMovetype(Movetype::Push);
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 	SetModel(STRING(pev->model));
 
 	if (m_distance == 0)
@@ -868,7 +868,7 @@ void CPendulum::Touch(CBaseEntity* pOther)
 
 	pOther->TakeDamage({this, this, damage, DMG_CRUSH});
 
-	pOther->pev->velocity = (pOther->pev->origin - GetBrushModelOrigin(this)).Normalize() * damage;
+	pOther->pev->velocity = (pOther->GetAbsOrigin() - GetBrushModelOrigin(this)).Normalize() * damage;
 }
 
 void CPendulum::RopeTouch(CBaseEntity* pOther)

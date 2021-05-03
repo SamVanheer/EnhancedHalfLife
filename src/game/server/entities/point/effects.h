@@ -117,7 +117,7 @@ public:
 	// Encoding beams as entities simplifies their management in the client/server architecture
 	inline void	SetType(int type) { pev->rendermode = static_cast<RenderMode>((static_cast<int>(pev->rendermode) & 0xF0) | (type & 0x0F)); }
 	inline void	SetFlags(int flags) { pev->rendermode = static_cast<RenderMode>((static_cast<int>(pev->rendermode) & 0x0F) | (flags & 0xF0)); }
-	inline void SetStartPos(const Vector& pos) { pev->origin = pos; }
+	inline void SetStartPos(const Vector& pos) { SetAbsOrigin(pos); }
 	inline void SetEndPos(const Vector& pos) { pev->angles = pos; }
 	void SetStartEntity(int entityIndex);
 	void SetEndEntity(int entityIndex);

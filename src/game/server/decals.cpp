@@ -112,15 +112,15 @@ void CDecal::TriggerDecal(const UseInfo& info)
 	TraceResult trace;
 	int			entityIndex;
 
-	UTIL_TraceLine(pev->origin - Vector(5, 5, 5), pev->origin + Vector(5, 5, 5), IgnoreMonsters::Yes, this, &trace);
+	UTIL_TraceLine(GetAbsOrigin() - Vector(5, 5, 5), GetAbsOrigin() + Vector(5, 5, 5), IgnoreMonsters::Yes, this, &trace);
 
 	auto hit = InstanceOrWorld(trace.pHit);
 
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BSPDECAL);
-	WRITE_COORD(pev->origin.x);
-	WRITE_COORD(pev->origin.y);
-	WRITE_COORD(pev->origin.z);
+	WRITE_COORD(GetAbsOrigin().x);
+	WRITE_COORD(GetAbsOrigin().y);
+	WRITE_COORD(GetAbsOrigin().z);
 	WRITE_SHORT((int)pev->skin);
 	entityIndex = (short)hit->entindex();
 	WRITE_SHORT(entityIndex);
@@ -135,14 +135,14 @@ void CDecal::TriggerDecal(const UseInfo& info)
 void CDecal::StaticDecal()
 {
 	TraceResult trace;
-	UTIL_TraceLine(pev->origin - Vector(5, 5, 5), pev->origin + Vector(5, 5, 5), IgnoreMonsters::Yes, this, &trace);
+	UTIL_TraceLine(GetAbsOrigin() - Vector(5, 5, 5), GetAbsOrigin() + Vector(5, 5, 5), IgnoreMonsters::Yes, this, &trace);
 
 	auto hit = InstanceOrWorld(trace.pHit);
 
 	const int entityIndex = (short)hit->entindex();
 	const int modelIndex = entityIndex ? hit->pev->modelindex : 0;
 
-	g_engfuncs.pfnStaticDecal(pev->origin, pev->skin, entityIndex, modelIndex);
+	g_engfuncs.pfnStaticDecal(GetAbsOrigin(), pev->skin, entityIndex, modelIndex);
 
 	SUB_Remove();
 }

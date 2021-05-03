@@ -152,7 +152,7 @@ public:
 	/**
 	*	@brief turn head towards supplied origin
 	*/
-	void IdleHeadTurn(Vector& vecFriend);
+	void IdleHeadTurn(const Vector& vecFriend);
 	bool OkToSpeak();
 
 	/**

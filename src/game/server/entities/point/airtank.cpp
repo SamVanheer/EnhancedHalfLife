@@ -48,7 +48,7 @@ void CAirtank::Spawn()
 
 	SetModel("models/w_oxygen.mdl");
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 36));
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 
 	SetTouch(&CAirtank::TankTouch);
 	SetThink(&CAirtank::TankThink);
@@ -72,7 +72,7 @@ void CAirtank::Killed(const KilledInfo& info)
 
 	// UNDONE: this should make a big bubble cloud, not an explosion
 
-	Explode(pev->origin, vec3_down);
+	Explode(GetAbsOrigin(), vec3_down);
 }
 
 void CAirtank::TankThink()

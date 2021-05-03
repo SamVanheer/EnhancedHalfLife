@@ -121,7 +121,7 @@ void CBaseCharger::Spawn()
 	SetSolidType(Solid::BSP);
 	SetMovetype(Movetype::Push);
 
-	SetAbsOrigin(pev->origin);		// set size and link into world
+	SetAbsOrigin(GetAbsOrigin());		// set size and link into world
 	SetSize(pev->mins, pev->maxs);
 	SetModel(STRING(pev->model));
 

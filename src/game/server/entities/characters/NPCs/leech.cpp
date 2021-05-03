@@ -75,8 +75,8 @@ public:
 
 	void SetObjectCollisionBox() override
 	{
-		pev->absmin = pev->origin + Vector(-8, -8, 0);
-		pev->absmax = pev->origin + Vector(8, 8, 2);
+		pev->absmin = GetAbsOrigin() + Vector(-8, -8, 0);
+		pev->absmax = GetAbsOrigin() + Vector(8, 8, 2);
 	}
 
 	void AttackSound();
@@ -199,17 +199,17 @@ void CLeech::Activate()
 void CLeech::RecalculateWaterlevel()
 {
 	// Calculate boundaries
-	const Vector vecTest = pev->origin - Vector(0, 0, 400);
+	const Vector vecTest = GetAbsOrigin() - Vector(0, 0, 400);
 
 	TraceResult tr;
 
-	UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, this, &tr);
+	UTIL_TraceLine(GetAbsOrigin(), vecTest, IgnoreMonsters::No, this, &tr);
 	if (tr.flFraction != 1.0)
 		m_bottom = tr.vecEndPos.z + 1;
 	else
 		m_bottom = vecTest.z;
 
-	m_top = UTIL_WaterLevel(pev->origin, pev->origin.z, pev->origin.z + 400) - 1;
+	m_top = UTIL_WaterLevel(GetAbsOrigin(), GetAbsOrigin().z, GetAbsOrigin().z + 400) - 1;
 
 	// Chop off 20% of the outside range
 	const float newBottom = m_bottom * 0.8 + m_top * 0.2;
@@ -280,7 +280,7 @@ bool CLeech::TakeDamage(const TakeDamageInfo& info)
 	// Nudge the leech away from the damage
 	if (info.GetInflictor())
 	{
-		pev->velocity = (pev->origin - info.GetInflictor()->pev->origin).Normalize() * 25;
+		pev->velocity = (GetAbsOrigin() - info.GetInflictor()->GetAbsOrigin()).Normalize() * 25;
 	}
 
 	return CBaseMonster::TakeDamage(info);
@@ -299,7 +299,7 @@ void CLeech::HandleAnimEvent(AnimationEvent& event)
 			AngleVectors(pev->angles, &face, nullptr, nullptr);
 			face.z = 0;
 
-			Vector dir = pEnemy->pev->origin - pev->origin;
+			Vector dir = pEnemy->GetAbsOrigin() - GetAbsOrigin();
 			dir.z = 0;
 			dir = dir.Normalize();
 			face = face.Normalize();
@@ -334,14 +334,14 @@ float CLeech::ObstacleDistance(CBaseEntity* pTarget)
 	MakeVectors();
 
 	// check for obstacle ahead
-	Vector vecTest = pev->origin + gpGlobals->v_forward * LEECH_CHECK_DIST;
+	Vector vecTest = GetAbsOrigin() + gpGlobals->v_forward * LEECH_CHECK_DIST;
 	TraceResult tr;
-	UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, this, &tr);
+	UTIL_TraceLine(GetAbsOrigin(), vecTest, IgnoreMonsters::No, this, &tr);
 
 	if (tr.fStartSolid)
 	{
 		pev->speed = -LEECH_SWIM_SPEED * 0.5;
-		//		ALERT( at_console, "Stuck from (%f %f %f) to (%f %f %f)\n", pev->oldorigin.x, pev->oldorigin.y, pev->oldorigin.z, pev->origin.x, pev->origin.y, pev->origin.z );
+		//		ALERT( at_console, "Stuck from (%f %f %f) to (%f %f %f)\n", pev->oldorigin.x, pev->oldorigin.y, pev->oldorigin.z, GetAbsOrigin().x, GetAbsOrigin().y, GetAbsOrigin().z );
 		//		SetAbsOrigin( pev->oldorigin );
 	}
 
@@ -353,7 +353,7 @@ float CLeech::ObstacleDistance(CBaseEntity* pTarget)
 		}
 		else
 		{
-			if (fabs(m_height - pev->origin.z) > 10)
+			if (fabs(m_height - GetAbsOrigin().z) > 10)
 				return tr.flFraction;
 		}
 	}
@@ -361,13 +361,13 @@ float CLeech::ObstacleDistance(CBaseEntity* pTarget)
 	if (m_sideTime < gpGlobals->time)
 	{
 		// extra wide checks
-		vecTest = pev->origin + gpGlobals->v_right * LEECH_SIZEX * 2 + gpGlobals->v_forward * LEECH_CHECK_DIST;
-		UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, this, &tr);
+		vecTest = GetAbsOrigin() + gpGlobals->v_right * LEECH_SIZEX * 2 + gpGlobals->v_forward * LEECH_CHECK_DIST;
+		UTIL_TraceLine(GetAbsOrigin(), vecTest, IgnoreMonsters::No, this, &tr);
 		if (tr.flFraction != 1.0)
 			return tr.flFraction;
 
-		vecTest = pev->origin - gpGlobals->v_right * LEECH_SIZEX * 2 + gpGlobals->v_forward * LEECH_CHECK_DIST;
-		UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, this, &tr);
+		vecTest = GetAbsOrigin() - gpGlobals->v_right * LEECH_SIZEX * 2 + gpGlobals->v_forward * LEECH_CHECK_DIST;
+		UTIL_TraceLine(GetAbsOrigin(), vecTest, IgnoreMonsters::No, this, &tr);
 		if (tr.flFraction != 1.0)
 			return tr.flFraction;
 
@@ -402,7 +402,7 @@ void CLeech::DeadThink()
 		TraceResult tr;
 
 		// Look 0.5 seconds ahead
-		UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 0.5, IgnoreMonsters::No, this, &tr);
+		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + pev->velocity * 0.5, IgnoreMonsters::No, this, &tr);
 		if (tr.flFraction != 1.0)
 		{
 			pev->velocity.x = 0;
@@ -432,7 +432,7 @@ void CLeech::UpdateMotion()
 		m_IdealActivity = ACT_SWIM;
 
 	// lean
-	const float delta = m_height - pev->origin.z;
+	const float delta = m_height - GetAbsOrigin().z;
 
 	float targetPitch;
 	if (delta < -10)
@@ -484,8 +484,8 @@ void CLeech::UpdateMotion()
 		m_pb = CBeam::BeamCreate("sprites/laserbeam.spr", 5);
 	if (!m_pt)
 		m_pt = CBeam::BeamCreate("sprites/laserbeam.spr", 5);
-	m_pb->PointsInit(pev->origin, pev->origin + gpGlobals->v_forward * LEECH_CHECK_DIST);
-	m_pt->PointsInit(pev->origin, pev->origin - gpGlobals->v_right * (pev->avelocity.y * 0.25));
+	m_pb->PointsInit(GetAbsOrigin(), GetAbsOrigin() + gpGlobals->v_forward * LEECH_CHECK_DIST);
+	m_pt->PointsInit(GetAbsOrigin(), GetAbsOrigin() - gpGlobals->v_right * (pev->avelocity.y * 0.25));
 	if (m_fPathBlocked)
 	{
 		float color = m_obstacle * 30;
@@ -534,13 +534,13 @@ void CLeech::SwimThink()
 		else
 		{
 			// Chase the enemy's eyes
-			m_height = pTarget->pev->origin.z + pTarget->pev->view_ofs.z - 5;
+			m_height = pTarget->GetAbsOrigin().z + pTarget->pev->view_ofs.z - 5;
 			// Clip to viable water area
 			if (m_height < m_bottom)
 				m_height = m_bottom;
 			else if (m_height > m_top)
 				m_height = m_top;
-			Vector location = pTarget->pev->origin - pev->origin;
+			Vector location = pTarget->GetAbsOrigin() - GetAbsOrigin();
 			location.z += (pTarget->pev->view_ofs.z);
 			if (location.Length() < 40)
 				SetConditions(bits_COND_CAN_MELEE_ATTACK1);
@@ -570,7 +570,7 @@ void CLeech::SwimThink()
 			targetYaw = RANDOM_LONG(-30, 30);
 		pTarget = nullptr;
 		// oldorigin test
-		if ((pev->origin - pev->oldorigin).Length() < 1)
+		if ((GetAbsOrigin() - pev->oldorigin).Length() < 1)
 		{
 			// If leech didn't move, there must be something blocking it, so try to turn
 			m_sideTime = 0;
@@ -580,7 +580,7 @@ void CLeech::SwimThink()
 	}
 
 	m_obstacle = ObstacleDistance(pTarget);
-	pev->oldorigin = pev->origin;
+	pev->oldorigin = GetAbsOrigin();
 	if (m_obstacle < 0.1)
 		m_obstacle = 0.1;
 
@@ -606,12 +606,12 @@ void CLeech::SwimThink()
 		if (m_flTurning == 0)// something in the way and leech is not already turning to avoid
 		{
 			// measure clearance on left and right to pick the best dir to turn
-			Vector vecTest = pev->origin + (gpGlobals->v_right * LEECH_SIZEX) + (gpGlobals->v_forward * LEECH_CHECK_DIST);
-			UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, this, &tr);
+			Vector vecTest = GetAbsOrigin() + (gpGlobals->v_right * LEECH_SIZEX) + (gpGlobals->v_forward * LEECH_CHECK_DIST);
+			UTIL_TraceLine(GetAbsOrigin(), vecTest, IgnoreMonsters::No, this, &tr);
 			const float flRightSide = tr.flFraction;
 
-			vecTest = pev->origin + (gpGlobals->v_right * -LEECH_SIZEX) + (gpGlobals->v_forward * LEECH_CHECK_DIST);
-			UTIL_TraceLine(pev->origin, vecTest, IgnoreMonsters::No, this, &tr);
+			vecTest = GetAbsOrigin() + (gpGlobals->v_right * -LEECH_SIZEX) + (gpGlobals->v_forward * LEECH_CHECK_DIST);
+			UTIL_TraceLine(GetAbsOrigin(), vecTest, IgnoreMonsters::No, this, &tr);
 			const float flLeftSide = tr.flFraction;
 
 			// turn left, right or random depending on clearance ratio
@@ -640,7 +640,7 @@ void CLeech::Killed(const KilledInfo& info)
 	{
 		pev->angles.z = 0;
 		pev->angles.x = 0;
-		pev->origin.z += 1;
+		SetAbsOrigin(GetAbsOrigin() + Vector(0, 0, 1));
 		pev->avelocity = vec3_origin;
 		if (RANDOM_LONG(0, 99) < 70)
 			pev->avelocity.y = RANDOM_LONG(-720, 720);

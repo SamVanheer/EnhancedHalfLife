@@ -49,12 +49,12 @@ bool CBaseEntity::TakeDamage(const TakeDamageInfo& info)
 	Vector vecTemp;
 	if (info.GetAttacker() == info.GetInflictor())
 	{
-		vecTemp = info.GetInflictor()->pev->origin - (GetBrushModelOrigin(this));
+		vecTemp = info.GetInflictor()->GetAbsOrigin() - GetBrushModelOrigin(this);
 	}
 	else
 		// an actual missile was involved.
 	{
-		vecTemp = info.GetInflictor()->pev->origin - (GetBrushModelOrigin(this));
+		vecTemp = info.GetInflictor()->GetAbsOrigin() - GetBrushModelOrigin(this);
 	}
 
 	// this global is still used for glass and other non-monster killables, along with decals.
@@ -65,7 +65,7 @@ bool CBaseEntity::TakeDamage(const TakeDamageInfo& info)
 	// figure momentum add (don't let hurt brushes or other triggers move player)
 	if ((!IsNullEnt(info.GetInflictor())) && (GetMovetype() == Movetype::Walk || GetMovetype() == Movetype::Step) && (info.GetAttacker()->GetSolidType() != Solid::Trigger))
 	{
-		Vector vecDir = pev->origin - (info.GetInflictor()->pev->absmin + info.GetInflictor()->pev->absmax) * 0.5;
+		Vector vecDir = GetAbsOrigin() - (info.GetInflictor()->pev->absmin + info.GetInflictor()->pev->absmax) * 0.5;
 		vecDir = vecDir.Normalize();
 
 		float flForce = info.GetDamage() * ((32 * 32 * 72.0) / (pev->size.x * pev->size.y * pev->size.z)) * 5;
@@ -174,7 +174,7 @@ void CBaseEntity::MakeDormant()
 	// Don't think
 	pev->nextthink = 0;
 	// Relink
-	SetAbsOrigin(pev->origin);
+	SetAbsOrigin(GetAbsOrigin());
 }
 
 bool CBaseEntity::IsDormant()
@@ -185,7 +185,7 @@ bool CBaseEntity::IsDormant()
 bool CBaseEntity::IsInWorld()
 {
 	// position 
-	if (!UTIL_IsInWorld(pev->origin))
+	if (!UTIL_IsInWorld(GetAbsOrigin()))
 	{
 		return false;
 	}
@@ -242,7 +242,7 @@ CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, co
 	}
 
 	pEntity->SetOwner(pOwner);
-	pEntity->pev->origin = vecOrigin;
+	pEntity->SetAbsOrigin(vecOrigin);
 	pEntity->pev->angles = vecAngles;
 
 	DispatchSpawn(pEntity->edict());
