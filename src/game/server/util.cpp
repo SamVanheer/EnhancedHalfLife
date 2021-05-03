@@ -826,10 +826,10 @@ char* UTIL_VarArgs(const char* format, ...)
 	return string;
 }
 
-Vector UTIL_GetAimVector(edict_t* pent, float flSpeed)
+Vector UTIL_GetAimVector(CBaseEntity* entity, float flSpeed)
 {
 	Vector tmp;
-	GET_AIM_VECTOR(pent, flSpeed, tmp);
+	GET_AIM_VECTOR(CBaseEntity::EdictOrNull(entity), flSpeed, tmp);
 	return tmp;
 }
 

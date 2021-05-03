@@ -234,7 +234,7 @@ TraceResult	UTIL_GetGlobalTrace();
 void			UTIL_TraceModel(const Vector& vecStart, const Vector& vecEnd, Hull hullNumber, CBaseEntity* pModel, TraceResult* ptr);
 void UTIL_TraceMonsterHull(CBaseEntity* pEntity, const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, CBaseEntity* pIgnore, TraceResult* ptr);
 
-Vector		UTIL_GetAimVector(edict_t* pent, float flSpeed);
+Vector		UTIL_GetAimVector(CBaseEntity* entity, float flSpeed);
 Contents UTIL_PointContents(const Vector& vec);
 
 bool UTIL_IsMasterTriggered(string_t sMaster, CBaseEntity* pActivator);
