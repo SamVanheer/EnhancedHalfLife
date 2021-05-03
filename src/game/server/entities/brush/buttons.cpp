@@ -190,7 +190,7 @@ void CMultiSource::Use(const UseInfo& info)
 	// if we didn't find it, report error and leave
 	if (i > m_iTotal)
 	{
-		ALERT(at_console, "MultiSrc:Used by non member %s.\n", STRING(info.GetCaller()->pev->classname));
+		ALERT(at_console, "MultiSrc:Used by non member %s.\n", info.GetCaller()->GetClassname());
 		return;
 	}
 

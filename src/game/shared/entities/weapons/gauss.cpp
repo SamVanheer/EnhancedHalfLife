@@ -92,7 +92,7 @@ bool CGauss::AddToPlayer(CBasePlayer* pPlayer)
 
 bool CGauss::GetItemInfo(ItemInfo* p)
 {
-	p->pszName = STRING(pev->classname);
+	p->pszName = GetClassname();
 	p->pszAmmo1 = "uranium";
 	p->iMaxAmmo1 = URANIUM_MAX_CARRY;
 	p->pszAmmo2 = nullptr;

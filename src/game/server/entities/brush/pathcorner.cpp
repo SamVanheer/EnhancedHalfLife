@@ -94,7 +94,7 @@ void CPathCorner::Touch(CBaseEntity* pOther)
 	// If "next spot" was not found (does not exist - level design error)
 	if (!pOther->m_hGoalEnt)
 	{
-		ALERT(at_console, "PathCornerTouch--%s couldn't find next stop in path: %s", STRING(pev->classname), STRING(pev->target));
+		ALERT(at_console, "PathCornerTouch--%s couldn't find next stop in path: %s", GetClassname(), STRING(pev->target));
 		return;
 	}
 

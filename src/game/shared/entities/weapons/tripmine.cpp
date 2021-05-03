@@ -365,7 +365,7 @@ void CTripmine::Precache()
 
 bool CTripmine::GetItemInfo(ItemInfo* p)
 {
-	p->pszName = STRING(pev->classname);
+	p->pszName = GetClassname();
 	p->pszAmmo1 = "Trip Mine";
 	p->iMaxAmmo1 = TRIPMINE_MAX_CARRY;
 	p->pszAmmo2 = nullptr;

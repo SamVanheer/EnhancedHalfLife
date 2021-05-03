@@ -330,7 +330,7 @@ void CRpg::Precache()
 
 bool CRpg::GetItemInfo(ItemInfo* p)
 {
-	p->pszName = STRING(pev->classname);
+	p->pszName = GetClassname();
 	p->pszAmmo1 = "rockets";
 	p->iMaxAmmo1 = ROCKET_MAX_CARRY;
 	p->pszAmmo2 = nullptr;

@@ -129,7 +129,7 @@ void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* p
 	{
 		if (!(pTarget->pev->flags & FL_KILLME)) // Don't use dying ents
 		{
-			ALERT(at_aiconsole, "Found: %s, firing (%s)\n", STRING(pTarget->pev->classname), targetName);
+			ALERT(at_aiconsole, "Found: %s, firing (%s)\n", pTarget->GetClassname(), targetName);
 			pTarget->Use({pActivator, pCaller, useType, value});
 		}
 	}
@@ -195,7 +195,7 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float 
 			UTIL_Remove(pKillTarget);
 
 			//TODO: do this before removing it to be sure it's still a valid pointer
-			ALERT(at_aiconsole, "killing %s\n", STRING(pKillTarget->pev->classname));
+			ALERT(at_aiconsole, "killing %s\n", pKillTarget->GetClassname());
 		}
 	}
 

@@ -170,7 +170,7 @@ CBaseEntity* FindGlobalEntity(string_t classname, string_t globalname)
 	{
 		if (!pReturn->ClassnameIs(STRING(classname)))
 		{
-			ALERT(at_console, "Global entity found %s, wrong class %s\n", STRING(globalname), STRING(pReturn->pev->classname));
+			ALERT(at_console, "Global entity found %s, wrong class %s\n", STRING(globalname), pReturn->GetClassname());
 			pReturn = nullptr;
 		}
 	}

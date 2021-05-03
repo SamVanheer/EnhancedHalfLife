@@ -27,7 +27,7 @@ LINK_ENTITY_TO_CLASS(weapon_357, CPython);
 
 bool CPython::GetItemInfo(ItemInfo* p)
 {
-	p->pszName = STRING(pev->classname);
+	p->pszName = GetClassname();
 	p->pszAmmo1 = "357";
 	p->iMaxAmmo1 = _357_MAX_CARRY;
 	p->pszAmmo2 = nullptr;

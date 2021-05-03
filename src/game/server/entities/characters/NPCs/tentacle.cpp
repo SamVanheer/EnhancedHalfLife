@@ -921,7 +921,7 @@ void CTentacle::HitTouch(CBaseEntity* pOther)
 
 	// ALERT( at_console, "%s : ", STRING( tr.pHit->v.classname ) );
 
-	// ALERT( at_console, "%.0f : %s : %d\n", pev->angles.y, STRING( pOther->pev->classname ), tr.iHitgroup );
+	// ALERT( at_console, "%.0f : %s : %d\n", pev->angles.y, pOther->GetClassname(), tr.iHitgroup );
 }
 
 bool CTentacle::TakeDamage(const TakeDamageInfo& info)

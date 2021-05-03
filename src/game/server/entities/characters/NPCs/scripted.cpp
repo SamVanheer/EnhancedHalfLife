@@ -249,7 +249,7 @@ void CCineMonster::PossessEntity()
 #if 0
 		if (!pTarget->CanPlaySequence(CanOverrideState()))
 		{
-			ALERT(at_aiconsole, "Can't possess entity %s\n", STRING(pTarget->pev->classname));
+			ALERT(at_aiconsole, "Can't possess entity %s\n", pTarget->GetClassname());
 			return;
 		}
 #endif
@@ -316,7 +316,7 @@ void CCineAI::PossessEntity()
 	{
 		if (!pTarget->CanPlaySequence(CanOverrideState(), SS_INTERRUPT_AI))
 		{
-			ALERT(at_aiconsole, "(AI)Can't possess entity %s\n", STRING(pTarget->pev->classname));
+			ALERT(at_aiconsole, "(AI)Can't possess entity %s\n", pTarget->GetClassname());
 			return;
 		}
 
@@ -419,7 +419,7 @@ bool CCineMonster::StartSequence(CBaseMonster* pTarget, string_t iszSeq, bool co
 #if 0
 	const char* s = !(pev->spawnflags & SF_SCRIPT_NOINTERRUPT) ? "Yes" : "No";
 
-	ALERT(at_console, "%s (%s): started \"%s\":INT:%s\n", STRING(pTarget->pev->targetname), STRING(pTarget->pev->classname), STRING(iszSeq), s);
+	ALERT(at_console, "%s (%s): started \"%s\":INT:%s\n", STRING(pTarget->pev->targetname), pTarget->GetClassname(), STRING(iszSeq), s);
 #endif
 
 	pTarget->pev->frame = 0;
@@ -977,7 +977,7 @@ CBaseMonster* CScriptedSentence::FindEntity()
 		{
 			if (AcceptableSpeaker(pMonster))
 				return pMonster;
-			//			ALERT( at_console, "%s (%s), not acceptable\n", STRING(pMonster->pev->classname), STRING(pMonster->pev->targetname) );
+			//			ALERT( at_console, "%s (%s), not acceptable\n", pMonster->GetClassname(), STRING(pMonster->pev->targetname) );
 		}
 	}
 

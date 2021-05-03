@@ -418,7 +418,7 @@ CBaseEntity* CBasePlayerItem::Respawn()
 {
 	// make a copy of this weapon that is invisible and inaccessible to players (no touch function). The weapon spawn/respawn code
 	// will decide when to make the weapon visible and touchable.
-	CBaseEntity* pNewWeapon = CBaseEntity::Create(STRING(pev->classname), g_pGameRules->WeaponRespawnSpot(this), pev->angles, GetOwner());
+	CBaseEntity* pNewWeapon = CBaseEntity::Create(GetClassname(), g_pGameRules->WeaponRespawnSpot(this), pev->angles, GetOwner());
 
 	if (pNewWeapon)
 	{
@@ -434,7 +434,7 @@ CBaseEntity* CBasePlayerItem::Respawn()
 	}
 	else
 	{
-		ALERT(at_console, "Respawn failed to create %s!\n", STRING(pev->classname));
+		ALERT(at_console, "Respawn failed to create %s!\n", GetClassname());
 	}
 
 	return pNewWeapon;
@@ -1027,7 +1027,7 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 
 		while (pItem)
 		{
-			//ALERT ( at_console, "trying to give %s\n", STRING( m_rgpPlayerItems[ i ]->pev->classname ) );
+			//ALERT ( at_console, "trying to give %s\n", m_rgpPlayerItems[ i ]->GetClassname() );
 
 			auto next = m_hPlayerItems[i]->m_hNext;
 				
@@ -1090,7 +1090,7 @@ bool CWeaponBox::PackWeapon(CBasePlayerItem* pWeapon)
 	pWeapon->SetTouch(nullptr);
 	pWeapon->m_hPlayer = nullptr;
 
-	//ALERT ( at_console, "packed %s\n", STRING(pWeapon->pev->classname) );
+	//ALERT ( at_console, "packed %s\n", pWeapon->GetClassname() );
 
 	return true;
 }
@@ -1159,7 +1159,7 @@ bool CWeaponBox::HasWeapon(CBasePlayerItem* pCheckItem)
 
 	while (pItem)
 	{
-		if (pItem->ClassnameIs(STRING(pCheckItem->pev->classname)))
+		if (pItem->ClassnameIs(pCheckItem->GetClassname()))
 		{
 			return true;
 		}

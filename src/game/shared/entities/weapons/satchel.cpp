@@ -203,7 +203,7 @@ void CSatchel::Precache()
 
 bool CSatchel::GetItemInfo(ItemInfo* p)
 {
-	p->pszName = STRING(pev->classname);
+	p->pszName = GetClassname();
 	p->pszAmmo1 = "Satchel Charge";
 	p->iMaxAmmo1 = SATCHEL_MAX_CARRY;
 	p->pszAmmo2 = nullptr;

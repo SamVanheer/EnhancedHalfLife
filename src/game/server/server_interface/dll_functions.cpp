@@ -139,7 +139,7 @@ int DispatchSpawn(edict_t* pent)
 			{
 				// Spawned entities default to 'On'
 				gGlobalState.EntityAdd(pEntity->pev->globalname, gpGlobals->mapname, GlobalEntState::On);
-				//				ALERT( at_console, "Added global entity %s (%s)\n", STRING(pEntity->pev->classname), STRING(pEntity->pev->globalname) );
+				//				ALERT( at_console, "Added global entity %s (%s)\n", pEntity->GetClassname(), STRING(pEntity->pev->globalname) );
 			}
 		}
 
@@ -154,7 +154,7 @@ void DispatchThink(edict_t* pent)
 	if (pEntity)
 	{
 		if (IsBitSet(pEntity->pev->flags, FL_DORMANT))
-			ALERT(at_error, "Dormant entity %s is thinking!!\n", STRING(pEntity->pev->classname));
+			ALERT(at_error, "Dormant entity %s is thinking!!\n", pEntity->GetClassname());
 
 		pEntity->Think();
 	}
@@ -298,7 +298,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 			CBaseEntity* pNewEntity = FindGlobalEntity(tmpVars.classname, tmpVars.globalname);
 			if (pNewEntity)
 			{
-				//				ALERT( at_console, "Overlay %s with %s\n", STRING(pNewEntity->pev->classname), STRING(tmpVars.classname) );
+				//				ALERT( at_console, "Overlay %s with %s\n", pNewEntity->GetClassname(), STRING(tmpVars.classname) );
 								// Tell the restore code we're overlaying a global entity from another level
 				restoreHelper.SetGlobalMode(1);	// Don't overwrite global fields
 				pSaveData->vecLandmarkOffset = (pSaveData->vecLandmarkOffset - pNewEntity->pev->mins) + tmpVars.mins;
@@ -364,7 +364,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 			}
 			else
 			{
-				ALERT(at_error, "Global Entity %s (%s) not in table!!!\n", STRING(pEntity->pev->globalname), STRING(pEntity->pev->classname));
+				ALERT(at_error, "Global Entity %s (%s) not in table!!!\n", STRING(pEntity->pev->globalname), pEntity->GetClassname());
 				// Spawned entities default to 'On'
 				gGlobalState.EntityAdd(pEntity->pev->globalname, gpGlobals->mapname, GlobalEntState::On);
 			}

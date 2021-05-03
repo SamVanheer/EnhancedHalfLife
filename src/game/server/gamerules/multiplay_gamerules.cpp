@@ -338,7 +338,7 @@ bool CHalfLifeMultiplay::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem
 			}
 			else if (pCheck->Weight() > iBestWeight && pCheck != pCurrentWeapon)// don't reselect the weapon we're trying to get rid of
 			{
-				//ALERT ( at_console, "Considering %s\n", STRING( pCheck->pev->classname ) );
+				//ALERT ( at_console, "Considering %s\n", pCheck->GetClassname() );
 				// we keep updating the 'best' weapon just in case we can't find a weapon of the same weight
 				// that the player was using. This will end up leaving the player with his heaviest-weighted 
 				// weapon. 
@@ -621,13 +621,13 @@ void CHalfLifeMultiplay::DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller,
 			}
 			else
 			{
-				killer_weapon_name = STRING(pInflictor->pev->classname);  // it's just that easy
+				killer_weapon_name = pInflictor->GetClassname();  // it's just that easy
 			}
 		}
 	}
 	else
 	{
-		killer_weapon_name = STRING(pInflictor->pev->classname);
+		killer_weapon_name = pInflictor->GetClassname();
 	}
 
 	// strip the monster_* or weapon_* from the inflictor's classname

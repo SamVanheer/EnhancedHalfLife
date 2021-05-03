@@ -83,7 +83,7 @@ void CBaseMonster::ChangeSchedule(Schedule_t* pNewSchedule)
 				pName = "Unknown";
 			}
 
-			ALERT(at_aiconsole, "%s: picked schedule %s\n", STRING(pev->classname), pName);
+			ALERT(at_aiconsole, "%s: picked schedule %s\n", GetClassname(), pName);
 		}
 	}
 #endif// 0
@@ -462,7 +462,7 @@ void CBaseMonster::RunTask(Task_t* pTask)
 			if (m_fSequenceFinished)
 				ClearSchedule();
 			pev->framerate = 1.0;
-			//ALERT( at_aiconsole, "Script %s has begun for %s\n", STRING( cine->m_iszPlay ), STRING(pev->classname) );
+			//ALERT( at_aiconsole, "Script %s has begun for %s\n", STRING( cine->m_iszPlay ), GetClassname() );
 		}
 		break;
 	}
@@ -822,7 +822,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 				if (m_hTargetEnt == nullptr || !MoveToTarget(newActivity, 2))
 				{
 					TaskFail();
-					ALERT(at_aiconsole, "%s Failed to reach target!!!\n", STRING(pev->classname));
+					ALERT(at_aiconsole, "%s Failed to reach target!!!\n", GetClassname());
 					RouteClear();
 				}
 			}
@@ -1387,7 +1387,7 @@ Schedule_t* CBaseMonster::GetSchedule()
 		ASSERT(m_hCine != nullptr);
 		if (!m_hCine)
 		{
-			ALERT(at_aiconsole, "Script failed for %s\n", STRING(pev->classname));
+			ALERT(at_aiconsole, "Script failed for %s\n", GetClassname());
 			CineCleanup();
 			return GetScheduleOfType(SCHED_IDLE_STAND);
 		}

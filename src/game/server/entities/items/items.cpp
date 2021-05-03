@@ -26,7 +26,7 @@ void CItem::Spawn()
 
 	if (DROP_TO_FLOOR(edict()) == 0)
 	{
-		ALERT(at_error, "Item %s fell out of level at %f,%f,%f", STRING(pev->classname), pev->origin.x, pev->origin.y, pev->origin.z);
+		ALERT(at_error, "Item %s fell out of level at %f,%f,%f", GetClassname(), pev->origin.x, pev->origin.y, pev->origin.z);
 		UTIL_Remove(this);
 		return;
 	}
@@ -158,7 +158,7 @@ class CItemBattery : public CItem
 			pPlayer->EmitSound(SoundChannel::Item, "items/gunpickup2.wav");
 
 			MESSAGE_BEGIN(MessageDest::One, gmsgItemPickup, pPlayer);
-			WRITE_STRING(STRING(pev->classname));
+			WRITE_STRING(GetClassname());
 			MESSAGE_END();
 
 
@@ -231,7 +231,7 @@ class CItemLongJump : public CItem
 			g_engfuncs.pfnSetPhysicsKeyValue(pPlayer->edict(), "slj", "1");
 
 			MESSAGE_BEGIN(MessageDest::One, gmsgItemPickup, pPlayer);
-			WRITE_STRING(STRING(pev->classname));
+			WRITE_STRING(GetClassname());
 			MESSAGE_END();
 
 			EMIT_SOUND_SUIT(pPlayer, "!HEV_A1");	// Play the longjump sound UNDONE: Kelly? correct sound?

@@ -1836,7 +1836,7 @@ void CHGrunt::SetActivity(Activity NewActivity)
 	else
 	{
 		// Not available try to get default anim
-		ALERT(at_console, "%s has no sequence for act:%d\n", STRING(pev->classname), NewActivity);
+		ALERT(at_console, "%s has no sequence for act:%d\n", GetClassname(), NewActivity);
 		pev->sequence = 0;	// Set to the reset anim (if it's there)
 	}
 }

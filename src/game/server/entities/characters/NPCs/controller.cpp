@@ -881,7 +881,7 @@ void CController::Move(float flInterval)
 				{
 					// Wait for a second
 					m_flMoveWaitFinished = gpGlobals->time + m_moveWaitTime;
-					//				ALERT( at_aiconsole, "Move %s!!!\n", STRING( pBlocker->pev->classname ) );
+					//				ALERT( at_aiconsole, "Move %s!!!\n", pBlocker->GetClassname() );
 					return;
 				}
 			}

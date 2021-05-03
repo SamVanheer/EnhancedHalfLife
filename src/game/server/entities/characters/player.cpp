@@ -1278,9 +1278,9 @@ void CBasePlayer::PlayerUse()
 			{// only if the item is in front of the user
 				pClosest = pObject;
 				flMaxDot = flDot;
-				//				ALERT( at_console, "%s : %f\n", STRING( pObject->pev->classname ), flDot );
+				//				ALERT( at_console, "%s : %f\n", pObject->GetClassname(), flDot );
 			}
-			//			ALERT( at_console, "%s : %f\n", STRING( pObject->pev->classname ), flDot );
+			//			ALERT( at_console, "%s : %f\n", pObject->GetClassname(), flDot );
 		}
 	}
 	pObject = pClosest;
@@ -2805,7 +2805,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 		// Give me the classname and targetname of this entity.
 		if (auto pEntity = UTIL_FindEntityForward(this); pEntity)
 		{
-			ALERT(at_console, "Classname: %s", STRING(pEntity->pev->classname));
+			ALERT(at_console, "Classname: %s", pEntity->GetClassname());
 
 			if (!IsStringNull(pEntity->pev->targetname))
 			{
@@ -2896,7 +2896,7 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 
 	while (pInsert)
 	{
-		if (pInsert->ClassnameIs(STRING(pItem->pev->classname)))
+		if (pInsert->ClassnameIs(pItem->GetClassname()))
 		{
 			if (pItem->AddDuplicate(pInsert))
 			{
@@ -3648,7 +3648,7 @@ void CBasePlayer::DropPlayerItem(const char* pszItemName)
 			if (pszItemName)
 			{
 				// try to match by name. 
-				if (!strcmp(pszItemName, STRING(pWeapon->pev->classname)))
+				if (!strcmp(pszItemName, pWeapon->GetClassname()))
 				{
 					// match! 
 					break;
@@ -3718,7 +3718,7 @@ bool CBasePlayer::HasPlayerItem(CBasePlayerItem* pCheckItem)
 {
 	for (CBasePlayerItem* pItem = m_hPlayerItems[pCheckItem->ItemSlot()]; pItem; pItem = pItem->m_hNext)
 	{
-		if (pItem->ClassnameIs(STRING(pCheckItem->pev->classname)))
+		if (pItem->ClassnameIs(pCheckItem->GetClassname()))
 		{
 			return true;
 		}
@@ -3733,7 +3733,7 @@ bool CBasePlayer::HasNamedPlayerItem(const char* pszItemName)
 	{
 		for (CBasePlayerItem* pItem = m_hPlayerItems[i]; pItem; pItem = pItem->m_hNext)
 		{
-			if (!strcmp(pszItemName, STRING(pItem->pev->classname)))
+			if (!strcmp(pszItemName, pItem->GetClassname()))
 			{
 				return true;
 			}

@@ -993,7 +993,7 @@ void CFuncTankControls::Think()
 
 	while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target))) != nullptr)
 	{
-		if (!strncmp(STRING(pTarget->pev->classname), "func_tank", 9))
+		if (!strncmp(pTarget->GetClassname(), "func_tank", 9))
 		{
 			break;
 		}

@@ -121,7 +121,7 @@ CBaseEntity* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 	}
 	else
 	{
-		ALERT(at_aiconsole, "Unsupported PathEnt:\n'%s'\n", STRING(pLinkEnt->pev->classname));
+		ALERT(at_aiconsole, "Unsupported PathEnt:\n'%s'\n", pLinkEnt->GetClassname());
 		return nullptr;
 	}
 }
@@ -186,7 +186,7 @@ bool CGraph::HandleLinkEnt(int iNode, CBaseEntity* pLinkEnt, int afCapMask, Node
 	}
 	else
 	{
-		ALERT(at_aiconsole, "Unhandled Ent in Path %s\n", STRING(pLinkEnt->pev->classname));
+		ALERT(at_aiconsole, "Unhandled Ent in Path %s\n", pLinkEnt->GetClassname());
 		return false;
 	}
 
@@ -1120,7 +1120,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 
 				if (auto linkEnt = pLinkPool[cTotalLinks].m_hLinkEnt.Get(); !IsNullEnt(linkEnt))
 				{// record info about the ent in the way, if any.
-					file.Printf("  Entity on connection: %s, name: %s  Model: %s", STRING(linkEnt->pev->classname), STRING(linkEnt->pev->targetname), STRING(linkEnt->pev->model));
+					file.Printf("  Entity on connection: %s, name: %s  Model: %s", linkEnt->GetClassname(), STRING(linkEnt->pev->targetname), STRING(linkEnt->pev->model));
 				}
 
 				file.Printf("\n");
