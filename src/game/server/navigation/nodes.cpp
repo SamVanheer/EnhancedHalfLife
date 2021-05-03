@@ -1904,12 +1904,11 @@ bool CGraph::SetGraphPointers()
 	for (int i = 0; i < m_cLinks; i++)
 	{// go through all of the links
 
-		if (m_pLinkPool[i].m_hLinkEnt != nullptr)
+		if (m_pLinkPool[i].m_afLinkInfo & bits_LINK_HAS_ENTITY)
 		{
 			char name[5];
-			// when graphs are saved, any valid pointers are will be non-zero, signifying that we should
-			// reset those pointers upon reloading. Any pointers that were nullptr when the graph was saved
-			// will be nullptr when reloaded, and will ignored by this function.
+			// when graphs are saved, any links with valid pointers will set the bits_LINK_HAS_ENTITY flag,
+			// signifying that we should reset those pointers upon reloading.
 
 			// m_szLinkEntModelname is not necessarily nullptr terminated (so we can store it in a more alignment-friendly 4 bytes)
 			memcpy(name, m_pLinkPool[i].m_szLinkEntModelname, 4);
@@ -1922,6 +1921,7 @@ bool CGraph::SetGraphPointers()
 				// ( like a func_breakable that's been destroyed or something ). Make sure that LinkEnt is null.
 				ALERT(at_aiconsole, "**Could not find model %s\n", name);
 				m_pLinkPool[i].m_hLinkEnt = nullptr;
+				m_pLinkPool[i].m_afLinkInfo &= ~bits_LINK_HAS_ENTITY;
 			}
 			else
 			{

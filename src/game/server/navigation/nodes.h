@@ -75,7 +75,7 @@ constexpr int bits_LINK_SMALL_HULL = 1 << 0;	//!< headcrab box can fit through t
 constexpr int bits_LINK_HUMAN_HULL = 1 << 1;	//!< player box can fit through this connection
 constexpr int bits_LINK_LARGE_HULL = 1 << 2;	//!< big box can fit through this connection
 constexpr int bits_LINK_FLY_HULL = 1 << 3;		//!< a flying big box can fit through this connection
-constexpr int bits_LINK_DISABLED = 1 << 4;		//!< link is not valid when the set
+constexpr int bits_LINK_HAS_ENTITY = 1 << 4;	//!< link has an entity that needs fixing up on load. Updated on save and load
 
 //TODO: same as Hull enum
 constexpr int NODE_SMALL_HULL = 0;

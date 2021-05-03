@@ -286,8 +286,18 @@ bool CGraph::SaveGraph(const char* szMapName)
 		//Don't write the entity pointer
 		auto diskLinks = std::make_unique<CDiskLink[]>(m_cLinks);
 
-		std::transform(m_pLinkPool.get(), m_pLinkPool.get() + m_cLinks, diskLinks.get(), [](const auto& link)
+		std::transform(m_pLinkPool.get(), m_pLinkPool.get() + m_cLinks, diskLinks.get(), [](auto& link)
 			{
+				//Update the flag on save so we can patch it up on load
+				if (link.m_hLinkEnt)
+				{
+					link.m_afLinkInfo |= bits_LINK_HAS_ENTITY;
+				}
+				else
+				{
+					link.m_afLinkInfo &= ~bits_LINK_HAS_ENTITY;
+				}
+
 				return link;
 			});
 
