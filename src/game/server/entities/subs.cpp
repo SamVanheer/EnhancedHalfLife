@@ -25,7 +25,7 @@
 // Landmark class
 void CPointEntity::Spawn()
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	//	SetSize( vec3_origin, vec3_origin);
 }
 

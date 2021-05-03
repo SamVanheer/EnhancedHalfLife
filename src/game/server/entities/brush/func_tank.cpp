@@ -202,7 +202,7 @@ void CFuncTank::Spawn()
 	Precache();
 
 	pev->movetype = Movetype::Push;  // so it doesn't get pushed by anything
-	pev->solid = Solid::BSP;
+	SetSolidType(Solid::BSP);
 	SetModel(STRING(pev->model));
 
 	m_yawCenter = pev->angles.y;
@@ -1010,7 +1010,7 @@ void CFuncTankControls::Think()
 
 void CFuncTankControls::Spawn()
 {
-	pev->solid = Solid::Trigger;
+	SetSolidType(Solid::Trigger);
 	pev->movetype = Movetype::None;
 	pev->effects |= EF_NODRAW;
 	SetModel(STRING(pev->model));

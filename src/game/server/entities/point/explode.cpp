@@ -38,7 +38,7 @@ void CShower::Spawn()
 	pev->movetype = Movetype::Bounce;
 	pev->gravity = 0.5;
 	pev->nextthink = gpGlobals->time + 0.1;
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	SetModel("models/grenade.mdl");	// Need a model, just use the grenade, we don't draw it anyway
 	SetSize(vec3_origin, vec3_origin);
 	pev->effects |= EF_NODRAW;
@@ -108,7 +108,7 @@ void CEnvExplosion::KeyValue(KeyValueData* pkvd)
 
 void CEnvExplosion::Spawn()
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	pev->effects = EF_NODRAW;
 
 	pev->movetype = Movetype::None;
@@ -138,7 +138,7 @@ void CEnvExplosion::Spawn()
 void CEnvExplosion::Use(const UseInfo& info)
 {
 	pev->model = iStringNull;//invisible
-	pev->solid = Solid::Not;// intangible
+	SetSolidType(Solid::Not);// intangible
 
 	const Vector vecSpot = pev->origin + Vector(0, 0, 8); // trace starts here!
 	TraceResult tr;

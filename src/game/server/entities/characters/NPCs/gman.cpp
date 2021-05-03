@@ -97,7 +97,7 @@ void CGMan::Spawn()
 	SetModel("models/gman.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	m_bloodColor = DONT_BLEED;
 	pev->health = 100;

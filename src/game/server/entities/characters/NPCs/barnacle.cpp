@@ -92,7 +92,7 @@ void CBarnacle::Spawn()
 	SetModel("models/barnacle.mdl");
 	SetSize(Vector(-16, -16, -32), Vector(16, 16, 0));
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::None;
 	SetDamageMode(DamageMode::Aim);
 	m_bloodColor = BLOOD_COLOR_RED;
@@ -294,7 +294,7 @@ void CBarnacle::BarnacleThink()
 
 void CBarnacle::Killed(const KilledInfo& info)
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	SetDamageMode(DamageMode::No);
 
 	if (m_hEnemy != nullptr)

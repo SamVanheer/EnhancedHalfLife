@@ -98,7 +98,7 @@ void CFuncMortarField::KeyValue(KeyValueData* pkvd)
 
 void CFuncMortarField::Spawn()
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	SetModel(STRING(pev->model));    // set size and link into world
 	pev->movetype = Movetype::None;
 	SetBits(pev->effects, EF_NODRAW);
@@ -194,7 +194,7 @@ LINK_ENTITY_TO_CLASS(monster_mortar, CMortar);
 void CMortar::Spawn()
 {
 	pev->movetype = Movetype::None;
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 
 	pev->dmg = 200;
 

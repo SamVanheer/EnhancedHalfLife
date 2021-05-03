@@ -41,7 +41,7 @@ LINK_ENTITY_TO_CLASS(monster_satchel, CSatchelCharge);
 
 void CSatchelCharge::Deactivate()
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	UTIL_Remove(this);
 }
 
@@ -50,7 +50,7 @@ void CSatchelCharge::Spawn()
 	Precache();
 	// motor
 	pev->movetype = Movetype::Bounce;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	SetModel("models/w_satchel.mdl");
 	//SetSize( Vector( -16, -16, -4), Vector(16, 16, 32));	// Old box -- size of headcrab monsters/players get blocked by this

@@ -208,7 +208,7 @@ void CAmbientGeneric::Spawn()
 		SetThink(&CAmbientGeneric::SUB_Remove);
 		return;
 	}
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	pev->movetype = Movetype::None;
 
 	// Set up think function for dynamic modification 
@@ -1005,7 +1005,7 @@ void CSpeaker::Spawn()
 		SetThink(&CSpeaker::SUB_Remove);
 		return;
 	}
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	pev->movetype = Movetype::None;
 
 	SetThink(&CSpeaker::SpeakerThink);

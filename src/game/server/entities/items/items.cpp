@@ -19,7 +19,7 @@
 void CItem::Spawn()
 {
 	pev->movetype = Movetype::Toss;
-	pev->solid = Solid::Trigger;
+	SetSolidType(Solid::Trigger);
 	SetAbsOrigin(pev->origin);
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 16));
 	SetTouch(&CItem::ItemTouch);

@@ -74,7 +74,7 @@ void CSquidSpit::Spawn()
 	pev->movetype = Movetype::Fly;
 	SetClassname("squidspit");
 
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 	pev->rendermode = RenderMode::TransAlpha;
 	pev->renderamt = 255;
 
@@ -623,7 +623,7 @@ void CBullsquid::Spawn()
 	SetModel("models/bullsquid.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->effects = 0;

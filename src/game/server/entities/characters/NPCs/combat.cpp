@@ -97,7 +97,7 @@ void CGib::SpawnStickyGibs(CBaseEntity* pVictim, Vector vecOrigin, int cGibs)
 
 
 			pGib->pev->movetype = Movetype::Toss;
-			pGib->pev->solid = Solid::BBox;
+			pGib->SetSolidType(Solid::BBox);
 			pGib->SetSize(vec3_origin, vec3_origin);
 			pGib->SetTouch(&CGib::StickyGibTouch);
 			pGib->SetThink(nullptr);
@@ -223,7 +223,7 @@ void CGib::SpawnRandomGibs(CBaseEntity* pVictim, int cGibs, int human) //TODO: h
 				pGib->pev->velocity = pGib->pev->velocity * 4;
 			}
 
-			pGib->pev->solid = Solid::BBox;
+			pGib->SetSolidType(Solid::BBox);
 			pGib->SetSize(vec3_origin, vec3_origin);
 		}
 		pGib->LimitVelocity();
@@ -508,7 +508,7 @@ void CBaseMonster::CallGibMonster()
 	}
 
 	SetDamageMode(DamageMode::No);
-	pev->solid = Solid::Not;// do something with the body. while monster blows up
+	SetSolidType(Solid::Not);// do something with the body. while monster blows up
 
 	if (fade)
 	{
@@ -584,7 +584,7 @@ void CBaseEntity::SUB_StartFadeOut()
 		pev->rendermode = RenderMode::TransTexture;
 	}
 
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	pev->avelocity = vec3_origin;
 
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -704,7 +704,7 @@ void CGib::Spawn(const char* szGibModel)
 	pev->renderamt = 255;
 	pev->rendermode = RenderMode::Normal;
 	pev->renderfx = RenderFX::None;
-	pev->solid = Solid::SlideBox;/// hopefully this will fix the VELOCITY TOO LOW crap
+	SetSolidType(Solid::SlideBox);/// hopefully this will fix the VELOCITY TOO LOW crap
 	SetClassname("gib");
 
 	SetModel(szGibModel);
@@ -783,7 +783,7 @@ bool CBaseMonster::TakeDamage(const TakeDamageInfo& info)
 	}
 
 	// if this is a player, move him around!
-	if ((!IsNullEnt(info.GetInflictor())) && (pev->movetype == Movetype::Walk) && (!info.GetAttacker() || info.GetAttacker()->pev->solid != Solid::Trigger))
+	if ((!IsNullEnt(info.GetInflictor())) && (pev->movetype == Movetype::Walk) && (!info.GetAttacker() || info.GetAttacker()->GetSolidType() != Solid::Trigger))
 	{
 		pev->velocity = pev->velocity + vecDir * -DamageForce(info.GetDamage());
 	}

@@ -107,7 +107,7 @@ void CMonsterMaker::KeyValue(KeyValueData* pkvd)
 
 void CMonsterMaker::Spawn()
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 
 	m_cLiveChildren = 0;
 	Precache();

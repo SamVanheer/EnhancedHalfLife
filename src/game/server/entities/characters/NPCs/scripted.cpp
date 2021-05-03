@@ -88,9 +88,9 @@ LINK_ENTITY_TO_CLASS(aiscripted_sequence, CCineAI);
 
 void CCineMonster::Spawn()
 {
-	// pev->solid = Solid::Trigger;
+	// SetSolidType(Solid::Trigger);
 	// SetSize( Vector(-8, -8, -8), Vector(8, 8, 8));
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 
 	// REMOVE: The old side-effect
 #if 0
@@ -181,7 +181,7 @@ void CCineMonster::Touch(CBaseEntity* pOther)
 	pevOther->velocity.z += m_flHeight;
 
 
-	pev->solid = Solid::Not;// kill the trigger for now !!!UNDONE
+	SetSolidType(Solid::Not);// kill the trigger for now !!!UNDONE
 }
 */
 
@@ -259,7 +259,7 @@ void CCineMonster::PossessEntity()
 		pTarget->m_hTargetEnt = this;
 
 		m_saved_movetype = pTarget->pev->movetype;
-		m_saved_solid = pTarget->pev->solid;
+		m_saved_solid = pTarget->GetSolidType();
 		m_saved_effects = pTarget->pev->effects;
 		pTarget->pev->effects |= pev->effects;
 
@@ -325,7 +325,7 @@ void CCineAI::PossessEntity()
 		pTarget->m_hTargetEnt = this;
 
 		m_saved_movetype = pTarget->pev->movetype;
-		m_saved_solid = pTarget->pev->solid;
+		m_saved_solid = pTarget->GetSolidType();
 		m_saved_effects = pTarget->pev->effects;
 		pTarget->pev->effects |= pev->effects;
 
@@ -657,14 +657,14 @@ bool CBaseMonster::CineCleanup()
 		// okay, reset me to what it thought I was before
 		cine->m_hTargetEnt = nullptr;
 		pev->movetype = cine->m_saved_movetype;
-		pev->solid = cine->m_saved_solid;
+		SetSolidType(cine->m_saved_solid);
 		pev->effects = cine->m_saved_effects;
 	}
 	else
 	{
 		// arg, punt
 		pev->movetype = Movetype::Step;// this is evil
-		pev->solid = Solid::SlideBox;
+		SetSolidType(Solid::SlideBox);
 	}
 	m_hCine = nullptr;
 	m_hTargetEnt = nullptr;
@@ -674,7 +674,7 @@ bool CBaseMonster::CineCleanup()
 		// last frame of death animation?
 		pev->health = 0;
 		pev->framerate = 0.0;
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 		SetState(NPCState::Dead);
 		pev->deadflag = DeadFlag::Dead;
 		SetSize(pev->mins, Vector(pev->maxs.x, pev->maxs.y, pev->mins.z + 2));
@@ -887,7 +887,7 @@ void CScriptedSentence::Use(const UseInfo& info)
 
 void CScriptedSentence::Spawn()
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 
 	m_active = true;
 	// if no targetname, start now
@@ -1050,7 +1050,7 @@ void CFurniture::Spawn()
 	SetModel(STRING(pev->model));
 
 	pev->movetype = Movetype::None;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 	pev->health = 80000;
 	SetDamageMode(DamageMode::Aim);
 	pev->effects = 0;

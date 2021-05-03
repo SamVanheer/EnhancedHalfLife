@@ -156,7 +156,7 @@ void CBloater::Spawn()
 	SetModel("models/floater.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Fly;
 	pev->spawnflags |= FL_FLY;
 	m_bloodColor = BLOOD_COLOR_GREEN;

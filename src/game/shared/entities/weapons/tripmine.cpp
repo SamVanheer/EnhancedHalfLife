@@ -82,7 +82,7 @@ void CTripmineGrenade::Spawn()
 	Precache();
 	// motor
 	pev->movetype = Movetype::Fly;
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 
 	SetModel("models/v_tripmine.mdl");
 	pev->frame = 0;
@@ -198,7 +198,7 @@ void CTripmineGrenade::PowerupThink()
 	if (gpGlobals->time > m_flPowerUp)
 	{
 		// make solid
-		pev->solid = Solid::BBox;
+		SetSolidType(Solid::BBox);
 		SetAbsOrigin(pev->origin);
 
 		MakeBeam();

@@ -291,7 +291,7 @@ void CFuncPlat::Setup()
 
 	pev->angles = vec3_origin;
 
-	pev->solid = Solid::BSP;
+	SetSolidType(Solid::BSP);
 	pev->movetype = Movetype::Push;
 
 	SetAbsOrigin(pev->origin);		// set size and link into world
@@ -351,7 +351,7 @@ void CPlatTrigger::SpawnInsideTrigger(CFuncPlat* pPlatform)
 {
 	m_hPlatform = pPlatform;
 	// Create trigger entity, "point" it at the owning platform, give it a touch method
-	pev->solid = Solid::Trigger;
+	SetSolidType(Solid::Trigger);
 	pev->movetype = Movetype::None;
 	pev->origin = pPlatform->pev->origin;
 
@@ -815,9 +815,9 @@ void CFuncTrain::Spawn()
 	pev->movetype = Movetype::Push;
 
 	if (IsBitSet(pev->spawnflags, SF_TRACKTRAIN_PASSABLE))
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 	else
-		pev->solid = Solid::BSP;
+		SetSolidType(Solid::BSP);
 
 	SetModel(STRING(pev->model));
 	SetSize(pev->mins, pev->maxs);
@@ -1392,9 +1392,9 @@ void CFuncTrackTrain::Spawn()
 		ALERT(at_console, "FuncTrain with no target");
 
 	if (pev->spawnflags & SF_TRACKTRAIN_PASSABLE)
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 	else
-		pev->solid = Solid::BSP;
+		SetSolidType(Solid::BSP);
 	pev->movetype = Movetype::Push;
 
 	SetModel(STRING(pev->model));
@@ -1476,7 +1476,7 @@ void CFuncTrainControls::Find()
 
 void CFuncTrainControls::Spawn()
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	pev->movetype = Movetype::None;
 	SetModel(STRING(pev->model));
 
@@ -2011,7 +2011,7 @@ IMPLEMENT_SAVERESTORE(CGunTarget, CBaseMonster);
 
 void CGunTarget::Spawn()
 {
-	pev->solid = Solid::BSP;
+	SetSolidType(Solid::BSP);
 	pev->movetype = Movetype::Push;
 
 	SetAbsOrigin(pev->origin);

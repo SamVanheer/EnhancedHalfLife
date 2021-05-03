@@ -63,7 +63,7 @@ bool CBaseEntity::TakeDamage(const TakeDamageInfo& info)
 	// save damage based on the target's armor level
 
 	// figure momentum add (don't let hurt brushes or other triggers move player)
-	if ((!IsNullEnt(info.GetInflictor())) && (pev->movetype == Movetype::Walk || pev->movetype == Movetype::Step) && (info.GetAttacker()->pev->solid != Solid::Trigger))
+	if ((!IsNullEnt(info.GetInflictor())) && (pev->movetype == Movetype::Walk || pev->movetype == Movetype::Step) && (info.GetAttacker()->GetSolidType() != Solid::Trigger))
 	{
 		Vector vecDir = pev->origin - (info.GetInflictor()->pev->absmin + info.GetInflictor()->pev->absmax) * 0.5;
 		vecDir = vecDir.Normalize();
@@ -166,7 +166,7 @@ void CBaseEntity::MakeDormant()
 	SetBits(pev->flags, FL_DORMANT);
 
 	// Don't touch
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	// Don't move
 	pev->movetype = Movetype::None;
 	// Don't draw

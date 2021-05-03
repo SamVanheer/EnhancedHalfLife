@@ -243,7 +243,7 @@ void CBaseTurret::Spawn()
 	pev->movetype = Movetype::Fly;
 	pev->sequence = 0;
 	pev->frame = 0;
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	SetDamageMode(DamageMode::Aim);
 
 	SetBits(pev->flags, FL_MONSTER);
@@ -1218,7 +1218,7 @@ void CSentry::SentryDeath()
 
 		SetTurretAnim(TurretAnim::Die);
 
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 		pev->angles.y = UTIL_AngleMod(pev->angles.y + RANDOM_LONG(0, 2) * 120);
 
 		EyeOn();

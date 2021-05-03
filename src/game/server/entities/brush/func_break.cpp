@@ -137,7 +137,7 @@ void CBreakable::Spawn()
 	else
 		SetDamageMode(DamageMode::Yes);
 
-	pev->solid = Solid::BSP;
+	SetSolidType(Solid::BSP);
 	pev->movetype = Movetype::Push;
 	m_angle = pev->angles.y;
 	pev->angles.y = 0;
@@ -697,7 +697,7 @@ void CBreakable::Die()
 	// Don't fire something that could fire myself
 	pev->targetname = iStringNull;
 
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	// Fire targets on break
 	SUB_UseTargets(nullptr, UseType::Toggle, 0);
 
@@ -784,7 +784,7 @@ void CPushable::Spawn()
 		Precache();
 
 	pev->movetype = Movetype::PushStep;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 	SetModel(STRING(pev->model));
 
 	if (pev->friction > 399)

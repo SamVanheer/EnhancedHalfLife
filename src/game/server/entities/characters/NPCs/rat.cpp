@@ -58,7 +58,7 @@ void CRat::Spawn()
 	SetModel("models/bigrat.mdl");
 	SetSize(vec3_origin, vec3_origin);
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->health = 8;

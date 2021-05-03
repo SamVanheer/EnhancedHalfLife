@@ -61,7 +61,7 @@ void CCrossbowBolt::Spawn()
 {
 	Precache();
 	pev->movetype = Movetype::Fly;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	pev->gravity = 0.5;
 
@@ -143,7 +143,7 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 			Vector vecDir = pev->velocity.Normalize();
 			SetAbsOrigin(pev->origin - vecDir * 12);
 			pev->angles = VectorAngles(vecDir);
-			pev->solid = Solid::Not;
+			SetSolidType(Solid::Not);
 			pev->movetype = Movetype::Fly;
 			pev->velocity = vec3_origin;
 			pev->avelocity.z = 0;

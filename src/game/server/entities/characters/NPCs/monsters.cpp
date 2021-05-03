@@ -2796,7 +2796,7 @@ void CBaseMonster::MonsterInitDead()
 {
 	InitBoneControllers();
 
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 	pev->movetype = Movetype::Toss;// so he'll fall to ground
 
 	pev->frame = 0;

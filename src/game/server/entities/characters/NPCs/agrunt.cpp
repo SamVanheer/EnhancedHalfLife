@@ -542,7 +542,7 @@ void CAGrunt::Spawn()
 	SetModel("models/agrunt.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->effects = 0;

@@ -118,7 +118,7 @@ void CBaseCharger::Spawn()
 {
 	Precache();
 
-	pev->solid = Solid::BSP;
+	SetSolidType(Solid::BSP);
 	pev->movetype = Movetype::Push;
 
 	SetAbsOrigin(pev->origin);		// set size and link into world

@@ -42,7 +42,7 @@ void CLaserSpot::Spawn()
 {
 	Precache();
 	pev->movetype = Movetype::None;
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 
 	pev->rendermode = RenderMode::Glow;
 	pev->renderfx = RenderFX::NoDissipation;
@@ -94,7 +94,7 @@ void CRpgRocket::Spawn()
 	Precache();
 	// motor
 	pev->movetype = Movetype::Bounce;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	SetModel("models/rpgrocket.mdl");
 	SetSize(vec3_origin, vec3_origin);

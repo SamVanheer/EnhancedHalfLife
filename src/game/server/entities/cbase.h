@@ -389,7 +389,7 @@ public:
 	virtual int DamageDecal(int bitsDamageType);
 	virtual bool OnControls(CBaseEntity* pTest) { return false; }
 	virtual bool IsAlive() { return (pev->deadflag == DeadFlag::No) && pev->health > 0; }
-	virtual bool IsBSPModel() { return pev->solid == Solid::BSP || pev->movetype == Movetype::PushStep; }
+	virtual bool IsBSPModel() { return GetSolidType() == Solid::BSP || pev->movetype == Movetype::PushStep; }
 	virtual bool ReflectGauss() { return (IsBSPModel() && !pev->takedamage); }
 	virtual bool HasTarget(string_t targetname) { return AreStringsEqual(STRING(targetname), STRING(pev->targetname)); }
 	virtual bool IsInWorld();
@@ -459,6 +459,13 @@ public:
 	void SetModel(const char* modelName)
 	{
 		SET_MODEL(edict(), modelName);
+	}
+
+	Solid GetSolidType() const { return pev->solid; }
+
+	void SetSolidType(Solid solid)
+	{
+		pev->solid = solid;
 	}
 
 	DamageMode GetDamageMode() const { return static_cast<DamageMode>(pev->takedamage); }

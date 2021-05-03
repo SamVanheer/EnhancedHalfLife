@@ -274,7 +274,7 @@ void CNihilanth::Spawn()
 	Precache();
 	// motor
 	pev->movetype = Movetype::Fly;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	SetModel("models/nihilanth.mdl");
 	// SetSize( Vector( -300, -300, 0), Vector(300, 300, 512));
@@ -524,7 +524,7 @@ void CNihilanth::DyingThink()
 void CNihilanth::CrashTouch(CBaseEntity* pOther)
 {
 	// only crash if we hit something solid
-	if (pOther->pev->solid == Solid::BSP)
+	if (pOther->GetSolidType() == Solid::BSP)
 	{
 		SetTouch(nullptr);
 		pev->nextthink = gpGlobals->time;
@@ -1268,7 +1268,7 @@ void CNihilanthHVR::Precache()
 void CNihilanthHVR::CircleInit(CBaseEntity* pTarget)
 {
 	pev->movetype = Movetype::Noclip;
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 
 	// SetModel( "sprites/flare6.spr");
 	// pev->scale = 3.0;
@@ -1370,7 +1370,7 @@ void CNihilanthHVR::HoverThink()
 void CNihilanthHVR::ZapInit(CBaseEntity* pEnemy)
 {
 	pev->movetype = Movetype::Fly;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	SetModel("sprites/nhth1.spr");
 
@@ -1489,7 +1489,7 @@ void CNihilanthHVR::ZapTouch(CBaseEntity* pOther)
 void CNihilanthHVR::TeleportInit(CNihilanth* pOwner, CBaseEntity* pEnemy, CBaseEntity* pTarget, CBaseEntity* pTouch)
 {
 	pev->movetype = Movetype::Fly;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;
@@ -1513,7 +1513,7 @@ void CNihilanthHVR::TeleportInit(CNihilanth* pOwner, CBaseEntity* pEnemy, CBaseE
 void CNihilanthHVR::GreenBallInit()
 {
 	pev->movetype = Movetype::Fly;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	pev->rendercolor.x = 255;
 	pev->rendercolor.y = 255;

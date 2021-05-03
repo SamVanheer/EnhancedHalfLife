@@ -296,7 +296,7 @@ void CHoundeye::Spawn()
 	SetModel("models/houndeye.mdl");
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 36));
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_YELLOW;
 	pev->effects = 0;

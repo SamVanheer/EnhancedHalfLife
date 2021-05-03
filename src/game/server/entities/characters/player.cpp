@@ -704,7 +704,7 @@ void CBasePlayer::Killed(const KilledInfo& info)
 
 	if ((pev->health < -40 && info.GetGibType() != GibType::Never) || info.GetGibType() == GibType::Always)
 	{
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 		GibMonster();	// This clears pev->model
 		pev->effects |= EF_NODRAW;
 		return;
@@ -1133,7 +1133,7 @@ void CBasePlayer::StartDeathCam()
 	m_afPhysicsFlags |= PFLAG_OBSERVER;
 	pev->view_ofs = vec3_origin;
 	pev->fixangle = FixAngleMode::Absolute;
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	SetDamageMode(DamageMode::No);
 	pev->movetype = Movetype::None;
 	pev->modelindex = 0;
@@ -1180,7 +1180,7 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 	pev->view_ofs = vec3_origin;
 	pev->angles = pev->v_angle = vecViewAngle;
 	pev->fixangle = FixAngleMode::Absolute;
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	SetDamageMode(DamageMode::No);
 	pev->movetype = Movetype::None;
 	ClearBits(m_afPhysicsFlags, PFLAG_DUCKING);
@@ -2214,7 +2214,7 @@ void CBasePlayer::Spawn()
 	pev->health = 100;
 	pev->armorvalue = 0;
 	SetDamageMode(DamageMode::Aim);
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Walk;
 	pev->max_health = pev->health;
 	pev->flags &= FL_PROXY;	// keep proxy flag sey by engine
@@ -3820,7 +3820,7 @@ class CInfoIntermission :public CPointEntity
 void CInfoIntermission::Spawn()
 {
 	SetAbsOrigin(pev->origin);
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	pev->effects = EF_NODRAW;
 	pev->v_angle = vec3_origin;
 

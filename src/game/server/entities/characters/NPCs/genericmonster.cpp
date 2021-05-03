@@ -88,7 +88,7 @@ void CGenericMonster::Spawn()
 	else
 		SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->health = 8;
@@ -99,7 +99,7 @@ void CGenericMonster::Spawn()
 
 	if (pev->spawnflags & SF_GENERICMONSTER_NOTSOLID)
 	{
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 		SetDamageMode(DamageMode::No);
 	}
 }

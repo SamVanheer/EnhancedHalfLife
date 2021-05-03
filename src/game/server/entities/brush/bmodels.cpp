@@ -55,7 +55,7 @@ void CFuncWall::Spawn()
 {
 	pev->angles = vec3_origin;
 	pev->movetype = Movetype::Push;  // so it doesn't get pushed by anything
-	pev->solid = Solid::BSP;
+	SetSolidType(Solid::BSP);
 	SetModel(STRING(pev->model));
 
 	// If it can't move/go away, it's really part of the world
@@ -91,21 +91,21 @@ void CFuncWallToggle::Spawn()
 
 void CFuncWallToggle::TurnOff()
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	pev->effects |= EF_NODRAW;
 	SetAbsOrigin(pev->origin);
 }
 
 void CFuncWallToggle::TurnOn()
 {
-	pev->solid = Solid::BSP;
+	SetSolidType(Solid::BSP);
 	pev->effects &= ~EF_NODRAW;
 	SetAbsOrigin(pev->origin);
 }
 
 bool CFuncWallToggle::IsOn()
 {
-	return pev->solid != Solid::Not;
+	return GetSolidType() != Solid::Not;
 }
 
 void CFuncWallToggle::Use(const UseInfo& info)
@@ -145,7 +145,7 @@ void CFuncConveyor::Spawn()
 	// HACKHACK - This is to allow for some special effects
 	if (pev->spawnflags & SF_CONVEYOR_NOTSOLID)
 	{
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 		pev->skin = 0;		// Don't want the engine thinking we've got special contents on this brush
 	}
 
@@ -204,7 +204,7 @@ void CFuncIllusionary::Spawn()
 {
 	pev->angles = vec3_origin;
 	pev->movetype = Movetype::None;
-	pev->solid = Solid::Not;// always solid_not 
+	SetSolidType(Solid::Not);// always solid_not 
 	SetModel(STRING(pev->model));
 
 	// I'd rather eat the network bandwidth of this than figure out how to save/restore
@@ -394,13 +394,13 @@ void CFuncRotating::Spawn()
 	// some rotating objects like fake volumetric lights will not be solid.
 	if (IsBitSet(pev->spawnflags, SF_ROTATING_NOT_SOLID))
 	{
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 		pev->skin = static_cast<int>(Contents::Empty);
 		pev->movetype = Movetype::Push;
 	}
 	else
 	{
-		pev->solid = Solid::BSP;
+		SetSolidType(Solid::BSP);
 		pev->movetype = Movetype::Push;
 	}
 
@@ -738,9 +738,9 @@ void CPendulum::Spawn()
 	CBaseToggle::AxisDir(this);
 
 	if (IsBitSet(pev->spawnflags, SF_DOOR_PASSABLE))
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 	else
-		pev->solid = Solid::BSP;
+		SetSolidType(Solid::BSP);
 	pev->movetype = Movetype::Push;
 	SetAbsOrigin(pev->origin);
 	SetModel(STRING(pev->model));

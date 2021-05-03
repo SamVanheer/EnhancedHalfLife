@@ -44,7 +44,7 @@ void CAirtank::Spawn()
 	Precache();
 	// motor
 	pev->movetype = Movetype::Fly;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	SetModel("models/w_oxygen.mdl");
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 36));

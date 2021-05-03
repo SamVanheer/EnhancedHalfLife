@@ -97,7 +97,7 @@ void DecalGunshot(TraceResult* pTrace, int iBulletType)
 	if (!UTIL_IsValidEntity(hit))
 		return;
 
-	if (hit->pev->solid == Solid::BSP || hit->pev->movetype == Movetype::PushStep)
+	if (hit->GetSolidType() == Solid::BSP || hit->pev->movetype == Movetype::PushStep)
 	{
 		// Decal the wall with a gunshot
 		switch (iBulletType)
@@ -337,7 +337,7 @@ void CBasePlayerItem::SetObjectCollisionBox()
 void CBasePlayerItem::FallInit()
 {
 	pev->movetype = Movetype::Toss;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	SetAbsOrigin(pev->origin);
 	SetSize(vec3_origin, vec3_origin);//pointsize until it lands on the ground.
@@ -380,7 +380,7 @@ void CBasePlayerItem::Materialize()
 		pev->effects |= EF_MUZZLEFLASH;
 	}
 
-	pev->solid = Solid::Trigger;
+	SetSolidType(Solid::Trigger);
 
 	SetAbsOrigin(pev->origin);// link into world.
 	SetTouch(&CBasePlayerItem::DefaultTouch);
@@ -509,7 +509,7 @@ void CBasePlayerItem::Holster()
 void CBasePlayerItem::AttachToPlayer(CBasePlayer* pPlayer)
 {
 	pev->movetype = Movetype::Follow;
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	pev->aiment = pPlayer->edict();
 	pev->effects = EF_NODRAW; // ??
 	pev->modelindex = 0;// server won't send down to clients if modelindex == 0
@@ -769,7 +769,7 @@ void CBasePlayerWeapon::Holster()
 void CBasePlayerAmmo::Spawn()
 {
 	pev->movetype = Movetype::Toss;
-	pev->solid = Solid::Trigger;
+	SetSolidType(Solid::Trigger);
 	SetSize(Vector(-16, -16, 0), Vector(16, 16, 16));
 	SetAbsOrigin(pev->origin);
 
@@ -951,7 +951,7 @@ void CWeaponBox::Spawn()
 	Precache();
 
 	pev->movetype = Movetype::Toss;
-	pev->solid = Solid::Trigger;
+	SetSolidType(Solid::Trigger);
 
 	SetSize(vec3_origin, vec3_origin);
 
@@ -1081,7 +1081,7 @@ bool CWeaponBox::PackWeapon(CBasePlayerItem* pWeapon)
 
 	pWeapon->pev->spawnflags |= SF_NORESPAWN;// never respawn
 	pWeapon->pev->movetype = Movetype::None;
-	pWeapon->pev->solid = Solid::Not;
+	pWeapon->SetSolidType(Solid::Not);
 	pWeapon->pev->effects = EF_NODRAW;
 	pWeapon->pev->modelindex = 0;
 	pWeapon->pev->model = iStringNull;

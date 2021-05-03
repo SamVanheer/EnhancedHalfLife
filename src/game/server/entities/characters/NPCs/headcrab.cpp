@@ -262,7 +262,7 @@ void CHeadCrab::Spawn()
 	SetModel("models/headcrab.mdl");
 	SetSize(Vector(-12, -12, 0), Vector(12, 12, 24));
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->effects = 0;

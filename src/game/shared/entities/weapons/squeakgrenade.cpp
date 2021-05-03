@@ -101,7 +101,7 @@ void CSqueakGrenade::Spawn()
 	Precache();
 	// motor
 	pev->movetype = Movetype::Bounce;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	SetModel("models/w_squeak.mdl");
 	SetSize(Vector(-4, -4, 0), Vector(4, 4, 8));

@@ -226,7 +226,7 @@ void CTentacle::Spawn()
 {
 	Precache();
 
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 	pev->movetype = Movetype::Fly;
 	pev->effects = 0;
 	pev->health = 75;
@@ -958,7 +958,7 @@ void CTentacleMaw::Spawn()
 	SetModel("models/maw.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	pev->movetype = Movetype::Step;
 	pev->effects = 0;
 	pev->health = 75;

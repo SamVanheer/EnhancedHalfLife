@@ -624,7 +624,7 @@ void CBigMomma::Spawn()
 	SetModel("models/big_mom.mdl");
 	SetSize(Vector(-32, -32, 0), Vector(32, 32, 64));
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->health = 150 * gSkillData.bigmommaHealthFactor;
@@ -1070,7 +1070,7 @@ void CBMortar::Spawn()
 	pev->movetype = Movetype::Toss;
 	SetClassname("bmortar");
 
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 	pev->rendermode = RenderMode::TransAlpha;
 	pev->renderamt = 255;
 

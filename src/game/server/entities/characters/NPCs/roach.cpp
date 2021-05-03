@@ -96,7 +96,7 @@ void CRoach::Spawn()
 	SetModel("models/roach.mdl");
 	SetSize(Vector(-1, -1, 0), Vector(1, 1, 2));
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_YELLOW;
 	pev->effects = 0;
@@ -126,7 +126,7 @@ void CRoach::Precache()
 
 void CRoach::Killed(const KilledInfo& info)
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 
 	//random sound
 	if (RANDOM_LONG(0, 4) == 1)

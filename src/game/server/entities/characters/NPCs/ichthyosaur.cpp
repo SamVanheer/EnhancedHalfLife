@@ -429,7 +429,7 @@ void CIchthyosaur::Spawn()
 	SetModel("models/icky.mdl");
 	SetSize(Vector(-32, -32, -32), Vector(32, 32, 32));
 
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 	pev->movetype = Movetype::Fly;
 	m_bloodColor = BLOOD_COLOR_GREEN;
 	pev->health = gSkillData.ichthyosaurHealth;

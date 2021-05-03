@@ -30,7 +30,7 @@ void CGrenade::Explode(Vector vecSrc, Vector vecAim)
 void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 {
 	pev->model = iStringNull;//invisible
-	pev->solid = Solid::Not;// intangible
+	SetSolidType(Solid::Not);// intangible
 
 	SetDamageMode(DamageMode::No);
 
@@ -298,7 +298,7 @@ void CGrenade::Spawn()
 	pev->movetype = Movetype::Bounce;
 	SetClassname("grenade");
 
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	SetModel("models/grenade.mdl");
 	SetSize(vec3_origin, vec3_origin);

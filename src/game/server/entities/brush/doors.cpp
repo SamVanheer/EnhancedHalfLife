@@ -267,13 +267,13 @@ void CBaseDoor::Spawn()
 	if (pev->skin == 0)
 	{//normal door
 		if (IsBitSet(pev->spawnflags, SF_DOOR_PASSABLE))
-			pev->solid = Solid::Not;
+			SetSolidType(Solid::Not);
 		else
-			pev->solid = Solid::BSP;
+			SetSolidType(Solid::BSP);
 	}
 	else
 	{// special contents
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 		SetBits(pev->spawnflags, SF_DOOR_SILENT);	// water is silent for now
 	}
 
@@ -748,9 +748,9 @@ void CRotDoor::Spawn()
 	ASSERTSZ(m_vecAngle1 != m_vecAngle2, "rotating door start/end positions are equal");
 
 	if (IsBitSet(pev->spawnflags, SF_DOOR_PASSABLE))
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 	else
-		pev->solid = Solid::BSP;
+		SetSolidType(Solid::BSP);
 
 	pev->movetype = Movetype::Push;
 	SetAbsOrigin(pev->origin);
@@ -816,7 +816,7 @@ void CMomentaryDoor::Spawn()
 {
 	SetMovedir(this);
 
-	pev->solid = Solid::BSP;
+	SetSolidType(Solid::BSP);
 	pev->movetype = Movetype::Push;
 
 	SetAbsOrigin(pev->origin);

@@ -910,7 +910,7 @@ void CHGrunt::Spawn()
 	SetModel("models/hgrunt.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->effects = 0;
@@ -2253,7 +2253,7 @@ LINK_ENTITY_TO_CLASS(monster_grunt_repel, CHGruntRepel);
 void CHGruntRepel::Spawn()
 {
 	Precache();
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 
 	SetUse(&CHGruntRepel::RepelUse);
 }
@@ -2269,7 +2269,7 @@ void CHGruntRepel::RepelUse(const UseInfo& info)
 	TraceResult tr;
 	UTIL_TraceLine(pev->origin, pev->origin + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, this, &tr);
 	/*
-	if ( tr.pHit && Instance( tr.pHit )->pev->solid != Solid::BSP)
+	if ( tr.pHit && Instance( tr.pHit )->GetSolidType() != Solid::BSP)
 		return;
 	*/
 

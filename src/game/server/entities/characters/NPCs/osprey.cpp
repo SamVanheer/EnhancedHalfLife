@@ -129,7 +129,7 @@ void COsprey::Spawn()
 	Precache();
 	// motor
 	pev->movetype = Movetype::Fly;
-	pev->solid = Solid::BBox;
+	SetSolidType(Solid::BBox);
 
 	SetModel("models/osprey.mdl");
 	SetSize(Vector(-400, -400, -100), Vector(400, 400, 32));
@@ -259,7 +259,7 @@ CBaseMonster* COsprey::MakeGrunt(Vector vecSrc)
 {
 	TraceResult tr;
 	UTIL_TraceLine(vecSrc, vecSrc + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, this, &tr);
-	if (tr.pHit && Instance(tr.pHit)->pev->solid != Solid::BSP)
+	if (tr.pHit && Instance(tr.pHit)->GetSolidType() != Solid::BSP)
 		return nullptr;
 
 	for (int i = 0; i < m_iUnits; i++)
@@ -489,7 +489,7 @@ void COsprey::Killed(const KilledInfo& info)
 void COsprey::CrashTouch(CBaseEntity* pOther)
 {
 	// only crash if we hit something solid
-	if (pOther->pev->solid == Solid::BSP)
+	if (pOther->GetSolidType() == Solid::BSP)
 	{
 		SetTouch(nullptr);
 		m_startTime = gpGlobals->time;

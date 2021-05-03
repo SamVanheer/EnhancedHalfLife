@@ -34,7 +34,7 @@ IMPLEMENT_SAVERESTORE(CFrictionModifier, CBaseEntity);
 
 void CFrictionModifier::Spawn()
 {
-	pev->solid = Solid::Trigger;
+	SetSolidType(Solid::Trigger);
 	SetModel(STRING(pev->model));    // set size and link into world
 	pev->movetype = Movetype::None;
 	SetTouch(&CFrictionModifier::ChangeFriction);
@@ -178,7 +178,7 @@ void CMultiManager::KeyValue(KeyValueData* pkvd)
 
 void CMultiManager::Spawn()
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	SetUse(&CMultiManager::ManagerUse);
 	SetThink(&CMultiManager::ManagerThink);
 
@@ -288,7 +288,7 @@ LINK_ENTITY_TO_CLASS(env_render, CRenderFxManager);
 
 void CRenderFxManager::Spawn()
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 }
 
 void CRenderFxManager::Use(const UseInfo& info)
@@ -335,7 +335,7 @@ void CBaseTrigger::InitTrigger()
 	// to mean no restrictions, so use a yaw of 360 instead.
 	if (pev->angles != vec3_origin)
 		SetMovedir(this);
-	pev->solid = Solid::Trigger;
+	SetSolidType(Solid::Trigger);
 	pev->movetype = Movetype::None;
 	SetModel(STRING(pev->model));    // set size and link into world
 	if (CVAR_GET_FLOAT("showtriggers") == 0)
@@ -383,16 +383,16 @@ void CBaseTrigger::MultiWaitOver()
 
 void CBaseTrigger::ToggleUse(const UseInfo& info)
 {
-	if (pev->solid == Solid::Not)
+	if (GetSolidType() == Solid::Not)
 	{// if the trigger is off, turn it on
-		pev->solid = Solid::Trigger;
+		SetSolidType(Solid::Trigger);
 
 		// Force retouch
 		gpGlobals->force_retouch++;
 	}
 	else
 	{// turn the trigger off
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 	}
 	SetAbsOrigin(pev->origin);
 }
@@ -420,7 +420,7 @@ void CTriggerHurt::Spawn()
 	}
 
 	if (IsBitSet(pev->spawnflags, SF_TRIGGER_HURT_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 
 	SetAbsOrigin(pev->origin);		// Link into the list
 }
@@ -593,7 +593,7 @@ void CTriggerMonsterJump::Spawn()
 
 	if (!IsStringNull(pev->targetname))
 	{// if targetted, spawn turned off
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 		SetAbsOrigin(pev->origin); // Unlink from trigger list
 		SetUse(&CTriggerMonsterJump::ToggleUse);
 	}
@@ -601,7 +601,7 @@ void CTriggerMonsterJump::Spawn()
 
 void CTriggerMonsterJump::Think()
 {
-	pev->solid = Solid::Not;// kill the trigger for now !!!UNDONE
+	SetSolidType(Solid::Not);// kill the trigger for now !!!UNDONE
 	SetAbsOrigin(pev->origin); // Unlink from trigger list
 	SetThink(nullptr);
 }
@@ -702,7 +702,7 @@ void CTargetCDAudio::KeyValue(KeyValueData* pkvd)
 
 void CTargetCDAudio::Spawn()
 {
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	pev->movetype = Movetype::None;
 
 	if (pev->scale > 0)
@@ -856,7 +856,7 @@ void CLadder::KeyValue(KeyValueData* pkvd)
 void CLadder::Precache()
 {
 	// Do all of this in here because we need to 'convert' old saved games
-	pev->solid = Solid::Not;
+	SetSolidType(Solid::Not);
 	pev->skin = static_cast<int>(Contents::Ladder);
 	if (CVAR_GET_FLOAT("showtriggers") == 0)
 	{
@@ -891,7 +891,7 @@ void CTriggerPush::Spawn()
 		pev->speed = 100;
 
 	if (IsBitSet(pev->spawnflags, SF_TRIGGER_PUSH_START_OFF))// if flagged to Start Turned Off, make trigger nonsolid.
-		pev->solid = Solid::Not;
+		SetSolidType(Solid::Not);
 
 	SetUse(&CTriggerPush::ToggleUse);
 
@@ -910,7 +910,7 @@ void CTriggerPush::Touch(CBaseEntity* pOther)
 		return;
 	}
 
-	if (pOther->pev->solid != Solid::Not && pOther->pev->solid != Solid::BSP)
+	if (pOther->GetSolidType() != Solid::Not && pOther->GetSolidType() != Solid::BSP)
 	{
 		// Instant trigger, just transfer velocity and remove
 		if (IsBitSet(pev->spawnflags, SF_TRIGGER_PUSH_ONCE))
@@ -1078,7 +1078,7 @@ IMPLEMENT_SAVERESTORE(CTriggerCamera, CBaseDelay);
 void CTriggerCamera::Spawn()
 {
 	pev->movetype = Movetype::Noclip;
-	pev->solid = Solid::Not;							// Remove model & collisions
+	SetSolidType(Solid::Not);							// Remove model & collisions
 	pev->renderamt = 0;								// The engine won't draw this model if this is set to 0 and blending is on
 	pev->rendermode = RenderMode::TransTexture;
 

@@ -621,7 +621,7 @@ void CScientist::Spawn()
 	SetModel("models/scientist.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	m_bloodColor = BLOOD_COLOR_RED;
 	pev->health = gSkillData.scientistHealth;
@@ -1157,7 +1157,7 @@ void CSittingScientist::Spawn()
 
 	SetSize(Vector(-14, -14, 0), Vector(14, 14, 36));
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	pev->effects = 0;
 	pev->health = 50;

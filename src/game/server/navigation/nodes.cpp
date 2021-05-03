@@ -1306,7 +1306,7 @@ void CTestHull::Spawn(CBaseEntity* pMasterNode)
 	SetModel("models/player.mdl");
 	SetSize(VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
-	pev->solid = Solid::SlideBox;
+	SetSolidType(Solid::SlideBox);
 	pev->movetype = Movetype::Step;
 	pev->effects = 0;
 	pev->health = 50;
@@ -1360,7 +1360,7 @@ void CNodeEnt::KeyValue(KeyValueData* pkvd)
 void CNodeEnt::Spawn()
 {
 	pev->movetype = Movetype::None;
-	pev->solid = Solid::Not;// always solid_not 
+	SetSolidType(Solid::Not);// always solid_not 
 
 	if (WorldGraph.m_fGraphPresent)
 	{// graph loaded from disk, so discard all these node ents as soon as they spawn
@@ -1545,7 +1545,7 @@ void CTestHull::BuildNodeGraph()
 		ALERT(at_aiconsole, "**ConnectVisibleNodes FAILED!\n");
 
 		SetThink(&CTestHull::ShowBadNode);// send the hull off to show the offending node.
-		//pev->solid = Solid::Not;
+		//SetSolidType(Solid::Not);
 		pev->origin = WorldGraph.m_pNodes[iBadNode].m_vecOrigin;
 		return;
 	}
