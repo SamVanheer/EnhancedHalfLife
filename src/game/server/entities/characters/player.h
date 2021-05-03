@@ -153,7 +153,7 @@ public:
 	int m_idrowndmg = 0; //!< track drowning damage taken
 	int m_idrownrestored = 0; //!< track drowning damage restored
 
-	int m_bitsHUDDamage = 0; //!< Damage bits for the current fame. These get sent to the hude via the DAMAGE message TODO typo
+	int m_bitsHUDDamage = 0; //!< Damage bits for the current frame. These get sent to the hude via the DAMAGE message
 	bool m_fInitHUD = false; //!< True when deferred HUD restart msg needs to be sent
 	bool m_fGameHUDInitialized = false;
 	int m_iTrain = 0; //!< Train control position
