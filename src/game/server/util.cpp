@@ -680,9 +680,9 @@ void UTIL_ClientPrintAll(int msg_dest, const char* msg_name, const char* param1,
 	MESSAGE_END();
 }
 
-void ClientPrint(entvars_t* client, int msg_dest, const char* msg_name, const char* param1, const char* param2, const char* param3, const char* param4)
+void ClientPrint(CBaseEntity* client, int msg_dest, const char* msg_name, const char* param1, const char* param2, const char* param3, const char* param4)
 {
-	MESSAGE_BEGIN(MessageDest::One, gmsgTextMsg, nullptr, client);
+	MESSAGE_BEGIN(MessageDest::One, gmsgTextMsg, nullptr, CBaseEntity::EdictOrNull(client));
 	WRITE_BYTE(msg_dest);
 	WRITE_STRING(msg_name);
 

@@ -312,7 +312,7 @@ bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapo
 /**
 *	@brief prints messages through the HUD
 */
-void ClientPrint(entvars_t* client, int msg_dest, const char* msg_name,
+void ClientPrint(CBaseEntity* client, int msg_dest, const char* msg_name,
 	const char* param1 = nullptr, const char* param2 = nullptr, const char* param3 = nullptr, const char* param4 = nullptr);
 
 /**

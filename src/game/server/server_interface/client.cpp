@@ -335,7 +335,7 @@ void ClientCommand(edict_t* pEntity)
 				(!IsStringNull(player->pev->netname) && STRING(player->pev->netname)[0] != 0) ? STRING(player->pev->netname) : "unconnected"));
 		}
 		else
-			ClientPrint(player->pev, HUD_PRINTCONSOLE, "Spectator mode is disabled.\n");
+			ClientPrint(player, HUD_PRINTCONSOLE, "Spectator mode is disabled.\n");
 
 	}
 	else if (AreStringsEqual(pcmd, "specmode"))	// new spectator mode
@@ -366,7 +366,7 @@ void ClientCommand(edict_t* pEntity)
 		safe_strcpy(command, pcmd);
 
 		// tell the user they entered an unknown command
-		ClientPrint(&pEntity->v, HUD_PRINTCONSOLE, UTIL_VarArgs("Unknown command: %s\n", command));
+		ClientPrint(player, HUD_PRINTCONSOLE, UTIL_VarArgs("Unknown command: %s\n", command));
 	}
 }
 
