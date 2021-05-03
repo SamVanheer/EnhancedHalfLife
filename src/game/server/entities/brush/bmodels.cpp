@@ -161,7 +161,7 @@ void CFuncConveyor::UpdateSpeed(float speed)
 	// Encode it as an integer with 4 fractional bits
 	const int speedCode = (int)(fabs(speed) * 16.0);
 
-	SetRenderColor({speed < 0 ? 1 : 0, speedCode >> 8, speedCode & 0xFF});
+	SetRenderColor({static_cast<float>(speed < 0 ? 1 : 0), static_cast<float>(speedCode >> 8), static_cast<float>(speedCode & 0xFF)});
 }
 
 void CFuncConveyor::Use(const UseInfo& info)

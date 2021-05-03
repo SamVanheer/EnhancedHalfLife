@@ -73,8 +73,7 @@ void CBubbling::Spawn()
 	const int speed = pev->speed > 0 ? pev->speed : -pev->speed;
 
 	// HACKHACK!!! - Speed in rendercolor
-	//TODO: func_conveyor also does this but puts the values in a different order
-	SetRenderColor({speed >> 8, speed & 0xFF, pev->speed < 0 ? 1 : 0});
+	SetRenderColor({static_cast<float>(speed >> 8), static_cast<float>(speed & 0xFF), static_cast<float>(pev->speed < 0 ? 1 : 0)});
 
 	if (!(pev->spawnflags & SF_BUBBLES_STARTOFF))
 	{
