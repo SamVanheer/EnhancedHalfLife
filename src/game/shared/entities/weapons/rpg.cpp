@@ -45,7 +45,7 @@ void CLaserSpot::Spawn()
 	SetSolidType(Solid::Not);
 
 	SetRenderMode(RenderMode::Glow);
-	pev->renderfx = RenderFX::NoDissipation;
+	SetRenderFX(RenderFX::NoDissipation);
 	pev->renderamt = 255;
 
 	SetModel("sprites/laserdot.spr");

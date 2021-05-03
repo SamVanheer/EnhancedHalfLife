@@ -920,7 +920,7 @@ void CLaser::Spawn()
 		m_hSprite = nullptr;
 
 	if (auto sprite = m_hSprite.Get(); sprite)
-		sprite->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx);
+		sprite->SetTransparency(RenderMode::Glow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, GetRenderFX());
 
 	if (!IsStringNull(pev->targetname) && !(pev->spawnflags & SF_BEAM_STARTON))
 		TurnOff();
@@ -1510,7 +1510,7 @@ CGib* CEnvShooter::CreateGib()
 	pGib->SetRenderMode(GetRenderMode());
 	pGib->pev->renderamt = pev->renderamt;
 	pGib->pev->rendercolor = pev->rendercolor;
-	pGib->pev->renderfx = pev->renderfx;
+	pGib->SetRenderFX(GetRenderFX());
 	pGib->pev->scale = pev->scale;
 	pGib->pev->skin = pev->skin;
 

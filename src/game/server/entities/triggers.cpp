@@ -300,7 +300,7 @@ void CRenderFxManager::Use(const UseInfo& info)
 		while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target))) != nullptr)
 		{
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKFX))
-				pTarget->pev->renderfx = pev->renderfx;
+				pTarget->SetRenderFX(GetRenderFX());
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKAMT))
 				pTarget->pev->renderamt = pev->renderamt;
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKMODE))

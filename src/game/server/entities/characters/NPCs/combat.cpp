@@ -712,7 +712,7 @@ void CGib::Spawn(const char* szGibModel)
 	// and will spawn using the same render FX or rendermode! bad!
 	pev->renderamt = 255;
 	SetRenderMode(RenderMode::Normal);
-	pev->renderfx = RenderFX::None;
+	SetRenderFX(RenderFX::None);
 	SetSolidType(Solid::SlideBox);/// hopefully this will fix the VELOCITY TOO LOW crap
 	SetClassname("gib");
 

@@ -70,7 +70,7 @@ public:
 		pev->rendercolor.y = g;
 		pev->rendercolor.z = b;
 		pev->renderamt = a;
-		pev->renderfx = fx;
+		SetRenderFX(fx);
 	}
 	inline void SetTexture(int spriteIndex) { pev->modelindex = spriteIndex; }
 	inline void SetScale(float scale) { pev->scale = scale; }

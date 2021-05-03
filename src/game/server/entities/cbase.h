@@ -484,6 +484,13 @@ public:
 		pev->rendermode = rendermode;
 	}
 
+	RenderFX GetRenderFX() const { return pev->renderfx; }
+
+	void SetRenderFX(RenderFX renderfx)
+	{
+		pev->renderfx = renderfx;
+	}
+
 	DamageMode GetDamageMode() const { return static_cast<DamageMode>(pev->takedamage); }
 
 	void SetDamageMode(DamageMode mode)

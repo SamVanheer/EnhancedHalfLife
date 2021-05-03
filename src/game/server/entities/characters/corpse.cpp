@@ -48,7 +48,7 @@ void CopyToBodyQue(CBaseEntity* pEntity)
 	g_pBodyQueueHead->pev->velocity = pEntity->pev->velocity;
 	g_pBodyQueueHead->pev->flags = 0;
 	g_pBodyQueueHead->pev->deadflag = pEntity->pev->deadflag;
-	g_pBodyQueueHead->pev->renderfx = RenderFX::DeadPlayer;
+	g_pBodyQueueHead->SetRenderFX(RenderFX::DeadPlayer);
 	g_pBodyQueueHead->pev->renderamt = pEntity->entindex();
 
 	g_pBodyQueueHead->pev->effects = pEntity->pev->effects | EF_NOINTERP;
