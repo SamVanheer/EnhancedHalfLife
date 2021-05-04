@@ -147,7 +147,7 @@ struct DLL_FUNCTIONS
 	*	At this point, we could override the actual PAS or PVS values, or use a different origin.
 	*	NOTE: Do not cache the values of pas and pvs, as they depend on reusable memory in the engine, they are only good for this one frame
 	*/
-	void			(*pfnSetupVisibility)(edict_t* pViewEntity, edict_t* pClient, unsigned char** pvs, unsigned char** pas);
+	void			(*pfnSetupVisibility)(edict_t* pViewEntity, edict_t* pClient, byte** pvs, byte** pas);
 
 	/**
 	*	@brief Data sent to current client only
@@ -167,7 +167,7 @@ struct DLL_FUNCTIONS
 	*	we could also use the pas/ pvs that we set in SetupVisibility, if we wanted to.
 	*	Caching the value is valid in that case, but still only for the current frame
 	*/
-	int				(*pfnAddToFullPack)(entity_state_t* state, int e, edict_t* ent, edict_t* host, int hostflags, int player, unsigned char* pSet);
+	int				(*pfnAddToFullPack)(entity_state_t* state, int e, edict_t* ent, edict_t* host, int hostflags, int player, byte* pSet);
 
 	/**
 	*	@brief Creates baselines used for network encoding, especially for player data since players are not spawned until connect time.

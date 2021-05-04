@@ -220,7 +220,7 @@ struct enginefuncs_t
 	void		(*pfnGetAttachment)			(const edict_t* pEdict, int iAttachment, float* rgflOrigin, float* rgflAngles);
 	void		(*pfnCRC32_Init)			(CRC32_t* pulCRC);
 	void        (*pfnCRC32_ProcessBuffer)   (CRC32_t* pulCRC, const void* p, int len);
-	void		(*pfnCRC32_ProcessByte)     (CRC32_t* pulCRC, unsigned char ch);
+	void		(*pfnCRC32_ProcessByte)     (CRC32_t* pulCRC, byte ch);
 	CRC32_t(*pfnCRC32_Final)			(CRC32_t pulCRC);
 	std::int32_t(*pfnRandomLong)			(std::int32_t  lLow, std::int32_t  lHigh);
 	float		(*pfnRandomFloat)			(float flLow, float flHigh);
@@ -281,14 +281,14 @@ struct enginefuncs_t
 	unsigned short (*pfnPrecacheEvent)		(int type, const char* psz);
 	void		(*pfnPlaybackEvent)			(int flags, const edict_t* pInvoker, unsigned short eventindex, float delay, const float* origin, const float* angles, float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2);
 
-	unsigned char* (*pfnSetFatPVS)			(const float* org);
-	unsigned char* (*pfnSetFatPAS)			(const float* org);
+	byte* (*pfnSetFatPVS)			(const float* org);
+	byte* (*pfnSetFatPAS)			(const float* org);
 
-	int			(*pfnCheckVisibility)		(const edict_t* entity, unsigned char* pset);
+	int			(*pfnCheckVisibility)		(const edict_t* entity, byte* pset);
 
 	void		(*pfnDeltaSetField)			(delta_t* pFields, const char* fieldname);
 	void		(*pfnDeltaUnsetField)		(delta_t* pFields, const char* fieldname);
-	void		(*pfnDeltaAddEncoder)		(const char* name, void (*conditionalencode)(delta_t* pFields, const unsigned char* from, const unsigned char* to));
+	void		(*pfnDeltaAddEncoder)		(const char* name, void (*conditionalencode)(delta_t* pFields, const byte* from, const byte* to));
 	int			(*pfnGetCurrentPlayer)		();
 	int			(*pfnCanSkipPlayer)			(const edict_t* player);
 	int			(*pfnDeltaFindField)		(delta_t* pFields, const char* fieldname);

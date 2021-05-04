@@ -656,7 +656,7 @@ void PlayerCustomization(edict_t* pEntity, customization_t* pCust)
 
 // PAS and PVS routines for client messaging
 
-void SetupVisibility(edict_t* pViewEntity, edict_t* pClient, unsigned char** pvs, unsigned char** pas)
+void SetupVisibility(edict_t* pViewEntity, edict_t* pClient, byte** pvs, byte** pas)
 {
 	// Find the client's PVS
 	edict_t* pView = pViewEntity ? pViewEntity : pClient;
@@ -678,7 +678,7 @@ void SetupVisibility(edict_t* pViewEntity, edict_t* pClient, unsigned char** pvs
 	*pas = ENGINE_SET_PAS(org);
 }
 
-int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int hostflags, int player, unsigned char* pSet)
+int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int hostflags, int player, byte* pSet)
 {
 	// don't send if flagged for NODRAW and it's not the host getting the message
 	if ((ent->v.effects & EF_NODRAW) &&
@@ -938,7 +938,7 @@ void Entity_FieldInit(delta_t* pFields)
 *	@brief Callback for sending entity_state_t info over network.
 *	FIXME:  Move to script
 */
-void Entity_Encode(delta_t* pFields, const unsigned char* from, const unsigned char* to)
+void Entity_Encode(delta_t* pFields, const byte* from, const byte* to)
 {
 	static bool initialized = false;
 
@@ -1003,7 +1003,7 @@ void Player_FieldInit(delta_t* pFields)
 /**
 *	@brief Callback for sending entity_state_t for players info over network.
 */
-void Player_Encode(delta_t* pFields, const unsigned char* from, const unsigned char* to)
+void Player_Encode(delta_t* pFields, const byte* from, const byte* to)
 {
 	static bool initialized = false;
 
@@ -1080,7 +1080,7 @@ void Custom_Entity_FieldInit(delta_t* pFields)
 *	@brief Callback for sending entity_state_t info ( for custom entities ) over network.
 *	FIXME:  Move to script
 */
-void Custom_Encode(delta_t* pFields, const unsigned char* from, const unsigned char* to)
+void Custom_Encode(delta_t* pFields, const byte* from, const byte* to)
 {
 	static bool initialized = false;
 

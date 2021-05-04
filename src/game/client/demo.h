@@ -19,7 +19,7 @@ enum
 /**
 *	@brief Write some data to the demo stream
 */
-void Demo_WriteBuffer(int type, int size, unsigned char* buffer);
+void Demo_WriteBuffer(int type, int size, byte* buffer);
 
 extern int g_demosniper;
 extern int g_demosniperdamage;

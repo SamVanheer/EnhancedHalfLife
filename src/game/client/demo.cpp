@@ -25,10 +25,10 @@ float g_demozoom;
 
 // FIXME:  There should be buffer helper functions to avoid all of the *(int *)& crap.
 
-void Demo_WriteBuffer(int type, int size, unsigned char* buffer)
+void Demo_WriteBuffer(int type, int size, byte* buffer)
 {
 	int pos = 0;
-	unsigned char buf[32 * 1024];
+	byte buf[32 * 1024];
 	*(int*)&buf[pos] = type;
 	pos += sizeof(int);
 
@@ -38,7 +38,7 @@ void Demo_WriteBuffer(int type, int size, unsigned char* buffer)
 	gEngfuncs.pDemoAPI->WriteBuffer(size + sizeof(int), buf);
 }
 
-void DLLEXPORT Demo_ReadBuffer(int size, unsigned char* buffer)
+void DLLEXPORT Demo_ReadBuffer(int size, byte* buffer)
 {
 	int type;
 	int i = 0;

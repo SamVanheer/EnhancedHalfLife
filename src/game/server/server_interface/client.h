@@ -52,9 +52,9 @@ void PlayerCustomization(edict_t* pEntity, customization_t* pCust);
 
 void Sys_Error(const char* error_string);
 
-void SetupVisibility(edict_t* pViewEntity, edict_t* pClient, unsigned char** pvs, unsigned char** pas);
+void SetupVisibility(edict_t* pViewEntity, edict_t* pClient, byte** pvs, byte** pas);
 void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd);
-int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int hostflags, int player, unsigned char* pSet);
+int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int hostflags, int player, byte* pSet);
 void CreateBaseline(int player, int eindex, entity_state_t* baseline, edict_t* entity, int playermodelindex, Vector* player_mins, Vector* player_maxs);
 void RegisterEncoders();
 

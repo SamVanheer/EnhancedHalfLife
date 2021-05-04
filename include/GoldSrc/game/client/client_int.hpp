@@ -145,7 +145,7 @@ struct cldll_func_t
 	/**
 	*	@brief Engine wants us to parse some data from the demo stream
 	*/
-	void (*pReadDemoBuffer)(int size, unsigned char* buffer);
+	void (*pReadDemoBuffer)(int size, byte* buffer);
 
 	/**
 	*	@brief Return true if the packet is valid. Set response_buffer_size if you want to send a response packet.

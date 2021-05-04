@@ -40,7 +40,7 @@ extern "C"
 	void DLLEXPORT HUD_ChatInputPosition(int* x, int* y);
 
 	// From demo
-	void DLLEXPORT Demo_ReadBuffer(int size, unsigned char* buffer);
+	void DLLEXPORT Demo_ReadBuffer(int size, byte* buffer);
 
 	// From entity
 	int DLLEXPORT HUD_AddEntity(int type, cl_entity_t* ent, const char* modelname);

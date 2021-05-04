@@ -20,5 +20,5 @@ struct demo_api_t
 	int		(*IsRecording)	();
 	int		(*IsPlayingback)	();
 	int		(*IsTimeDemo)		();
-	void	(*WriteBuffer)	(int size, unsigned char* buffer);
+	void	(*WriteBuffer)	(int size, byte* buffer);
 };

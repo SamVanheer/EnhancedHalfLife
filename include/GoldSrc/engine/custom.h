@@ -59,10 +59,10 @@ struct resource_t
 	unsigned char     ucFlags;
 
 	// For handling client to client resource propagation
-	unsigned char     rgucMD5_hash[16];    // To determine if we already have it.
+	byte rgucMD5_hash[16];    // To determine if we already have it.
 	unsigned char     playernum;           // Which player index this resource is associated with, if it's a custom resource.
 
-	unsigned char	  rguc_reserved[32]; // For future expansion
+	byte rguc_reserved[32]; // For future expansion
 	resource_t* pNext;              // Next in chain.
 	resource_t* pPrev;
 };
