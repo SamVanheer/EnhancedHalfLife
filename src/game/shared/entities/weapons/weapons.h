@@ -74,7 +74,7 @@ public:
 	int	BloodColor() override { return DONT_BLEED; }
 	void Killed(const KilledInfo& info) override;
 
-	bool m_fRegisteredSound;//!< whether or not this grenade has issued its DANGER sound to the world sound list yet.
+	bool m_fRegisteredSound = false;//!< whether or not this grenade has issued its DANGER sound to the world sound list yet.
 };
 
 // constant items
@@ -346,7 +346,7 @@ public:
 
 	EHandle<CBasePlayer> m_hPlayer;
 	EHandle<CBasePlayerItem> m_hNext;
-	int		m_iId;												// WEAPON_???
+	int m_iId = WEAPON_NONE; // WEAPON_???
 
 	/**
 	*	@brief return 0 to MAX_ITEMS_SLOTS, used in hud
@@ -407,8 +407,8 @@ public:
 
 	void UpdateItemInfo() override {}	// updates HUD state
 
-	bool m_iPlayEmptySound;
-	bool m_fFireOnEmpty;		//!< True when the gun is empty and the player is still holding down the attack key(s)
+	bool m_iPlayEmptySound = false;
+	bool m_fFireOnEmpty = false;		//!< True when the gun is empty and the player is still holding down the attack key(s)
 	virtual bool PlayEmptySound();
 	virtual void ResetEmptySound();
 
@@ -462,22 +462,22 @@ public:
 	*/
 	float GetNextAttackDelay(float delay);
 
-	float m_flPumpTime;
-	float	m_flNextPrimaryAttack;								//!< soonest time ItemPostFrame will call PrimaryAttack
-	float	m_flNextSecondaryAttack;							//!< soonest time ItemPostFrame will call SecondaryAttack
-	float	m_flTimeWeaponIdle;									//!< soonest time ItemPostFrame will call WeaponIdle
-	int		m_iPrimaryAmmoType;									//!< "primary" ammo index into players m_rgAmmo[]
-	int		m_iSecondaryAmmoType;								//!< "secondary" ammo index into players m_rgAmmo[]
-	int		m_iClip;											//!< number of shots left in the primary weapon clip, -1 it not used
-	int		m_iClientClip;										//!< the last version of m_iClip sent to hud dll
-	WeaponState m_iClientWeaponState;							//!< the last version of the weapon state sent to hud dll (is current weapon, is on target)
-	bool	m_fInReload;										//!< Are we in the middle of a reload;
+	float m_flPumpTime = 0;
+	float m_flNextPrimaryAttack = 0;							//!< soonest time ItemPostFrame will call PrimaryAttack
+	float m_flNextSecondaryAttack = 0;							//!< soonest time ItemPostFrame will call SecondaryAttack
+	float m_flTimeWeaponIdle = 0;								//!< soonest time ItemPostFrame will call WeaponIdle
+	int m_iPrimaryAmmoType = 0;									//!< "primary" ammo index into players m_rgAmmo[]
+	int m_iSecondaryAmmoType = 0;								//!< "secondary" ammo index into players m_rgAmmo[]
+	int m_iClip = 0;											//!< number of shots left in the primary weapon clip, -1 it not used
+	int m_iClientClip = 0;										//!< the last version of m_iClip sent to hud dll
+	WeaponState m_iClientWeaponState = WeaponState::NotActive;	//!< the last version of the weapon state sent to hud dll (is current weapon, is on target)
+	bool m_fInReload = false;									//!< Are we in the middle of a reload;
 
-	int		m_iDefaultAmmo;//!< how much ammo you get when you pick up this weapon as placed by a level designer.
+	int m_iDefaultAmmo = 0;//!< how much ammo you get when you pick up this weapon as placed by a level designer.
 
 	// hle time creep vars
-	float	m_flPrevPrimaryAttack;
-	float	m_flLastFireTime;
+	float m_flPrevPrimaryAttack = 0;
+	float m_flLastFireTime = 0;
 };
 
 class CBasePlayerAmmo : public CBaseEntity
@@ -664,10 +664,10 @@ public:
 	}
 
 private:
-	int m_iShell;
+	int m_iShell = 0;
 
-	unsigned short m_usFireGlock1;
-	unsigned short m_usFireGlock2;
+	unsigned short m_usFireGlock1 = 0;
+	unsigned short m_usFireGlock2 = 0;
 };
 
 enum crowbar_e
@@ -697,7 +697,7 @@ public:
 	bool Swing(bool fFirst);
 	bool Deploy() override;
 	void Holster() override;
-	int m_iSwing;
+	int m_iSwing = 0;
 	TraceResult m_trHit;
 
 	bool UseDecrement() override
@@ -709,7 +709,7 @@ public:
 #endif
 	}
 private:
-	unsigned short m_usCrowbar;
+	unsigned short m_usCrowbar = 0;
 };
 
 enum python_e
@@ -749,7 +749,7 @@ public:
 	}
 
 private:
-	unsigned short m_usFirePython;
+	unsigned short m_usFirePython = 0;
 };
 
 enum mp5_e
@@ -778,8 +778,8 @@ public:
 	bool Deploy() override;
 	void Reload() override;
 	void WeaponIdle() override;
-	float m_flNextAnimTime;
-	int m_iShell;
+	float m_flNextAnimTime = 0;
+	int m_iShell = 0;
 
 	bool UseDecrement() override
 	{
@@ -791,8 +791,8 @@ public:
 	}
 
 private:
-	unsigned short m_usMP5;
-	unsigned short m_usMP52;
+	unsigned short m_usMP5 = 0;
+	unsigned short m_usMP52 = 0;
 };
 
 enum crossbow_e
@@ -839,8 +839,8 @@ public:
 	}
 
 private:
-	unsigned short m_usCrossbow;
-	unsigned short m_usCrossbow2;
+	unsigned short m_usCrossbow = 0;
+	unsigned short m_usCrossbow2 = 0;
 };
 
 enum shotgun_e
@@ -885,8 +885,8 @@ public:
 	void Reload() override;
 	void WeaponIdle() override;
 	void ItemPostFrame() override;
-	float m_flNextReload;
-	int m_iShell;
+	float m_flNextReload = 0;
+	int m_iShell = 0;
 
 	bool UseDecrement() override
 	{
@@ -900,11 +900,11 @@ public:
 	void GetWeaponData(weapon_data_t& data) override;
 	void SetWeaponData(const weapon_data_t& data) override;
 
-	ReloadState m_fInSpecialReload; //!< Are we in the middle of a reload
+	ReloadState m_fInSpecialReload = ReloadState::NotReloading; //!< Are we in the middle of a reload
 
 private:
-	unsigned short m_usDoubleFire;
-	unsigned short m_usSingleFire;
+	unsigned short m_usDoubleFire = 0;
+	unsigned short m_usSingleFire = 0;
 };
 
 class CLaserSpot : public CBaseEntity
@@ -970,9 +970,9 @@ public:
 	void UpdateSpot();
 	bool ShouldWeaponIdle() override { return true; }
 
-	CLaserSpot* m_pSpot;
-	bool m_fSpotActive;
-	int m_cActiveRockets;// how many missiles in flight from this launcher right now?
+	CLaserSpot* m_pSpot = nullptr; //TODO: make EHANDLE
+	bool m_fSpotActive = false;
+	int m_cActiveRockets = 0;// how many missiles in flight from this launcher right now?
 
 	bool UseDecrement() override
 	{
@@ -984,8 +984,7 @@ public:
 	}
 
 private:
-	unsigned short m_usRpg;
-
+	unsigned short m_usRpg = 0;
 };
 
 class CRpgRocket : public CGrenade
@@ -1001,8 +1000,8 @@ public:
 	void EXPORT RocketTouch(CBaseEntity* pOther);
 	static CRpgRocket* CreateRpgRocket(const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner, CRpg* pLauncher);
 
-	int m_iTrail;
-	float m_flIgniteTime;
+	int m_iTrail = 0;
+	float m_flIgniteTime = 0;
 	EHandle<CRpg> m_hLauncher;// handle back to the launcher that fired me. 
 };
 
@@ -1060,15 +1059,15 @@ public:
 	void StartFire();
 	void Fire(const Vector& vecOrigSrc, Vector vecDirShooting, float flDamage);
 	float GetFullChargeTime();
-	int m_iBalls;
-	int m_iGlow;
-	int m_iBeam;
-	int m_iSoundState; // don't save this
+	int m_iBalls = 0;
+	int m_iGlow = 0;
+	int m_iBeam = 0;
+	int m_iSoundState = 0; // don't save this
 
 	// was this weapon just fired primary or secondary?
 	// we need to know so we can pick the right set of effects. 
-	bool m_fPrimaryFire;
-	AttackState m_fInAttack;
+	bool m_fPrimaryFire = false;
+	AttackState m_fInAttack = AttackState::NotAttacking;
 
 	bool UseDecrement() override
 	{
@@ -1083,14 +1082,14 @@ public:
 	void SetWeaponData(const weapon_data_t& data) override;
 	void DecrementTimers() override;
 
-	float m_flStartCharge;
-	float m_flAmmoStartCharge;
-	float m_flPlayAftershock;
-	float m_flNextAmmoBurn;//!< while charging, when to absorb another unit of player's ammo?
+	float m_flStartCharge = 0;
+	float m_flAmmoStartCharge = 0;
+	float m_flPlayAftershock = 0;
+	float m_flNextAmmoBurn = 0;//!< while charging, when to absorb another unit of player's ammo?
 
 private:
-	unsigned short m_usGaussFire;
-	unsigned short m_usGaussSpin;
+	unsigned short m_usGaussFire = 0;
+	unsigned short m_usGaussSpin = 0;
 };
 
 enum egon_e
@@ -1154,7 +1153,7 @@ public:
 	bool ShouldWeaponIdle() override { return true; }
 	void WeaponIdle() override;
 
-	float m_flAmmoUseTime;// since we use < 1 point of ammo per update, we subtract ammo on a timer.
+	float m_flAmmoUseTime = 0;// since we use < 1 point of ammo per update, we subtract ammo on a timer.
 
 	float GetPulseInterval();
 	float GetDischargeInterval();
@@ -1168,7 +1167,7 @@ public:
 	EHandle<CBeam> m_hBeam;
 	EHandle<CBeam> m_hNoise;
 	EHandle<CSprite> m_hSprite;
-	int m_fireState;
+	int m_fireState = 0;
 
 	bool UseDecrement() override
 	{
@@ -1185,12 +1184,12 @@ public:
 	unsigned short m_usEgonStop;
 
 private:
-	float				m_shootTime;
-	EGON_FIREMODE		m_fireMode;
-	float				m_shakeTime;
-	bool				m_deployed;
+	float				m_shootTime = 0;
+	EGON_FIREMODE		m_fireMode = FIRE_NARROW;
+	float				m_shakeTime = 0;
+	bool				m_deployed = 0;
 
-	unsigned short m_usEgonFire;
+	unsigned short m_usEgonFire = 0;
 };
 
 enum hgun_e
@@ -1219,11 +1218,11 @@ public:
 	void Holster() override;
 	void Reload() override;
 	void WeaponIdle() override;
-	float m_flNextAnimTime;
+	float m_flNextAnimTime = 0;
 
-	float m_flRechargeTime;
+	float m_flRechargeTime = 0;
 
-	int m_iFirePhase;// don't save me.
+	int m_iFirePhase = 0;// don't save me.
 
 	bool UseDecrement() override
 	{
@@ -1234,7 +1233,7 @@ public:
 #endif
 	}
 private:
-	unsigned short m_usHornetFire;
+	unsigned short m_usHornetFire = 0;
 };
 
 enum handgrenade_e
@@ -1275,8 +1274,8 @@ public:
 	void GetWeaponData(weapon_data_t& data) override;
 	void SetWeaponData(const weapon_data_t& data) override;
 
-	float m_flStartThrow;
-	float m_flReleaseThrow;
+	float m_flStartThrow = 0;
+	float m_flReleaseThrow = 0;
 };
 
 enum satchel_e
@@ -1340,7 +1339,7 @@ public:
 	void GetWeaponData(weapon_data_t& data) override;
 	void SetWeaponData(const weapon_data_t& data) override;
 
-	ChargeState m_chargeReady;
+	ChargeState m_chargeReady = ChargeState::NoSatchelsDeployed;
 };
 
 enum tripmine_e
@@ -1385,7 +1384,7 @@ public:
 	}
 
 private:
-	unsigned short m_usTripFire;
+	unsigned short m_usTripFire = 0;
 
 };
 
@@ -1412,7 +1411,7 @@ public:
 	bool Deploy() override;
 	void Holster() override;
 	void WeaponIdle() override;
-	bool m_fJustThrown;
+	bool m_fJustThrown = false;
 
 	bool UseDecrement() override
 	{
@@ -1424,5 +1423,5 @@ public:
 	}
 
 private:
-	unsigned short m_usSnarkFire;
+	unsigned short m_usSnarkFire = 0;
 };

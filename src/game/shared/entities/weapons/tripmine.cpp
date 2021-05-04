@@ -48,10 +48,10 @@ class CTripmineGrenade : public CGrenade
 	void MakeBeam();
 	void KillBeam();
 
-	float		m_flPowerUp;
+	float		m_flPowerUp = 0;
 	Vector		m_vecDir;
 	Vector		m_vecEnd;
-	float		m_flBeamLength;
+	float		m_flBeamLength = 0;
 
 	EHANDLE		m_hOwner;
 	EHandle<CBeam> m_hBeam;

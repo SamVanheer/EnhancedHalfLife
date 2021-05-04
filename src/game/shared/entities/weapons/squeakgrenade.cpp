@@ -50,13 +50,13 @@ class CSqueakGrenade : public CGrenade
 	static inline float m_flNextBounceSoundTime = 0;
 
 	// CBaseEntity *m_pTarget;
-	float m_flDie;
+	float m_flDie = 0;
 	Vector m_vecTarget;
-	float m_flNextHunt;
-	float m_flNextHit;
+	float m_flNextHunt = 0;
+	float m_flNextHit = 0;
 	Vector m_posPrev;
 	EHANDLE m_hOwner;
-	int  m_iMyClass;
+	int  m_iMyClass = 0;
 };
 
 LINK_ENTITY_TO_CLASS(monster_snark, CSqueakGrenade);

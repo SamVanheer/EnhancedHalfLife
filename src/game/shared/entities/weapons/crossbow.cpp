@@ -40,7 +40,7 @@ class CCrossbowBolt : public CBaseEntity
 	void EXPORT BoltTouch(CBaseEntity* pOther);
 	void EXPORT ExplodeThink();
 
-	int m_iTrail;
+	int m_iTrail = 0;
 
 public:
 	static CCrossbowBolt* BoltCreate();

@@ -112,7 +112,7 @@ public:
 	float m_moveWaitTime = 0;				//!< How long I should wait for something to move
 
 	Vector m_vecMoveGoal;			//!< kept around for node graph moves, so we know our ultimate goal
-	Activity m_movementActivity;	//!< When moving, set this activity
+	Activity m_movementActivity = ACT_RESET;	//!< When moving, set this activity
 
 	int m_iAudibleList = 0; //!< first index of a linked list of sounds that the monster can hear.
 	int m_afSoundTypes = 0;
