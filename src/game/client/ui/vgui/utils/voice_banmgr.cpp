@@ -47,9 +47,9 @@ bool CVoiceBanMgr::Init()
 		{
 			if (version == BANMGR_FILEVERSION)
 			{
-				g_pFileSystem->Seek(fileHandle, 0, FILESYSTEM_SEEK_TAIL);
+				g_pFileSystem->Seek(fileHandle, 0, FileSystemSeek::Tail);
 				int nIDs = (g_pFileSystem->Tell(fileHandle) - sizeof(version)) / 16;
-				g_pFileSystem->Seek(fileHandle, sizeof(version), FILESYSTEM_SEEK_HEAD);
+				g_pFileSystem->Seek(fileHandle, sizeof(version), FileSystemSeek::Head);
 
 				for (int i = 0; i < nIDs; i++)
 				{

@@ -16,11 +16,11 @@ typedef int FileFindHandle_t;
 typedef int WaitForResourcesHandle_t;
 
 #ifndef FILESYSTEM_INTERNAL_H
-enum FileSystemSeek_t
+enum class FileSystemSeek
 {
-	FILESYSTEM_SEEK_HEAD = 0,
-	FILESYSTEM_SEEK_CURRENT,
-	FILESYSTEM_SEEK_TAIL,
+	Head = 0,
+	Current,
+	Tail
 };
 
 enum
@@ -100,7 +100,7 @@ public:
 
 	virtual void			Close(FileHandle_t file) = 0;
 
-	virtual void			Seek(FileHandle_t file, int pos, FileSystemSeek_t seekType) = 0;
+	virtual void			Seek(FileHandle_t file, int pos, FileSystemSeek seekType) = 0;
 	virtual unsigned int	Tell(FileHandle_t file) = 0;
 
 	virtual unsigned int	Size(FileHandle_t file) = 0;

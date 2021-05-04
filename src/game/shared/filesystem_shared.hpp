@@ -43,7 +43,7 @@ public:
 	bool Open(const char* filename, const char* options, const char* pathID = nullptr);
 	void Close();
 
-	void Seek(int pos, FileSystemSeek_t seekType);
+	void Seek(int pos, FileSystemSeek seekType);
 
 	int Read(void* dest, int size);
 
@@ -89,7 +89,7 @@ inline void FSFile::Close()
 	}
 }
 
-inline void FSFile::Seek(int pos, FileSystemSeek_t seekType)
+inline void FSFile::Seek(int pos, FileSystemSeek seekType)
 {
 	if (IsOpen())
 	{
