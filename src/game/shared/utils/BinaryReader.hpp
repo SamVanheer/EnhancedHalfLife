@@ -22,11 +22,11 @@ public:
 
 	~BinaryReader() noexcept = default;
 
-	constexpr [[nodiscard]] const byte* GetData() const noexcept { return _data; }
+	[[nodiscard]] constexpr const byte* GetData() const noexcept { return _data; }
 
-	constexpr [[nodiscard]] std::size_t GetSizeInBytes() const noexcept { return _sizeInBytes; }
+	[[nodiscard]] constexpr std::size_t GetSizeInBytes() const noexcept { return _sizeInBytes; }
 
-	constexpr [[nodiscard]] std::size_t GetOffset() const noexcept { return _offset; }
+	[[nodiscard]] constexpr std::size_t GetOffset() const noexcept { return _offset; }
 
 	[[nodiscard]] std::size_t Read(byte* destination, std::size_t destinationSizeInBytes) noexcept
 	{

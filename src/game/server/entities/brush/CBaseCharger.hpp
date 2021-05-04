@@ -47,16 +47,16 @@ public:
 	void CheckIfOutOfCharge(bool fireTargets);
 
 protected:
-	virtual [[nodiscard]] float GetCurrentValue(CBaseEntity* target) = 0;
-	virtual [[nodiscard]] bool SetCurrentValue(CBaseEntity* target, float value) = 0;
+	[[nodiscard]] virtual float GetCurrentValue(CBaseEntity* target) = 0;
+	[[nodiscard]] virtual bool SetCurrentValue(CBaseEntity* target, float value) = 0;
 
 	/**
 	*	@brief Gets the maximum value that the chargeable value can be
 	*	@return -1 for no maximum, a positive value otherwise
 	*/
-	virtual [[nodiscard]] float GetMaximumValue(CBaseEntity* target) = 0;
+	[[nodiscard]] virtual float GetMaximumValue(CBaseEntity* target) = 0;
 
-	virtual [[nodiscard]] float GetDefaultRechargeDelay() = 0;
+	[[nodiscard]] virtual float GetDefaultRechargeDelay() = 0;
 
 public:
 	static TYPEDESCRIPTION m_SaveData[];
