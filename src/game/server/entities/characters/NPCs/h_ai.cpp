@@ -144,7 +144,7 @@ Vector CheckThrow(CBaseEntity* pEntity, const Vector& vecSpot1, const Vector& ve
 	vecGrenadeVel = vecGrenadeVel * (1.0 / time);
 
 	// adjust upward toss to compensate for gravity loss
-	vecGrenadeVel.z += flGravity * time * 0.5;
+	vecGrenadeVel.z += flGravity * time * 0.5f;
 
 	Vector vecApex = vecSpot1 + (vecSpot2 - vecSpot1) * 0.5;
 	vecApex.z += 0.5 * flGravity * (time * 0.5) * (time * 0.5);

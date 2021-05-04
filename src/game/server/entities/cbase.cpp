@@ -68,7 +68,7 @@ bool CBaseEntity::TakeDamage(const TakeDamageInfo& info)
 		Vector vecDir = GetAbsOrigin() - (info.GetInflictor()->pev->absmin + info.GetInflictor()->pev->absmax) * 0.5;
 		vecDir = vecDir.Normalize();
 
-		float flForce = info.GetDamage() * ((32 * 32 * 72.0) / (pev->size.x * pev->size.y * pev->size.z)) * 5;
+		float flForce = info.GetDamage() * ((32.0 * 32.0 * 72.0) / (static_cast<double>(pev->size.x) * static_cast<double>(pev->size.y) * pev->size.z)) * 5.0;
 
 		if (flForce > 1000.0)
 			flForce = 1000.0;

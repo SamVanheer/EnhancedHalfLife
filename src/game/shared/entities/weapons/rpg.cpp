@@ -203,7 +203,7 @@ void CRpgRocket::FollowThink()
 
 	// this acceleration and turning math is totally wrong, but it seems to respond well so don't change it.
 	const float flSpeed = GetAbsVelocity().Length();
-	if (gpGlobals->time - m_flIgniteTime < 1.0)
+	if (gpGlobals->time - m_flIgniteTime < 1.0f)
 	{
 		SetAbsVelocity(GetAbsVelocity() * 0.2 + vecTarget * (flSpeed * 0.8 + 400));
 		if (pev->waterlevel == WaterLevel::Head)

@@ -102,7 +102,7 @@ float V_CalcBob(ref_params_t* pparams)
 	lasttime = pparams->time;
 
 	bobtime += pparams->frametime;
-	float cycle = bobtime - (int)(bobtime / cl_bobcycle->value) * cl_bobcycle->value;
+	float cycle = bobtime - std::floor((bobtime / cl_bobcycle->value) * cl_bobcycle->value);
 	cycle /= cl_bobcycle->value;
 
 	if (cycle < cl_bobup->value)
@@ -111,7 +111,7 @@ float V_CalcBob(ref_params_t* pparams)
 	}
 	else
 	{
-		cycle = M_PI + M_PI * (cycle - cl_bobup->value) / (1.0 - cl_bobup->value);
+		cycle = M_PI + M_PI * (static_cast<double>(cycle) - cl_bobup->value) / (1.0 - cl_bobup->value);
 	}
 
 	// bob is proportional to simulated velocity in the xy plane
@@ -243,7 +243,7 @@ void V_CalcGunAngle(ref_params_t* pparams)
 	viewent->angles[ROLL] -= v_idlescale * sin(pparams->time * v_iroll_cycle.value) * v_iroll_level.value;
 
 	// don't apply all of the v_ipitch to prevent normally unseen parts of viewmodel from coming into view.
-	viewent->angles[PITCH] -= v_idlescale * sin(pparams->time * v_ipitch_cycle.value) * (v_ipitch_level.value * 0.5);
+	viewent->angles[PITCH] -= v_idlescale * sin(pparams->time * v_ipitch_cycle.value) * (v_ipitch_level.value * 0.5f);
 	viewent->angles[YAW] -= v_idlescale * sin(pparams->time * v_iyaw_cycle.value) * v_iyaw_level.value;
 
 	viewent->curstate.angles = viewent->angles;
@@ -588,10 +588,10 @@ void V_CalcNormalRefdef(ref_params_t* pparams)
 		if (i < ORIGIN_MASK && ViewInterp.OriginTime[foundidx & ORIGIN_MASK] != 0.0)
 		{
 			// Interpolate
-			const double dt = ViewInterp.OriginTime[(foundidx + 1) & ORIGIN_MASK] - ViewInterp.OriginTime[foundidx & ORIGIN_MASK];
+			const double dt = static_cast<double>(ViewInterp.OriginTime[(foundidx + 1) & ORIGIN_MASK]) - ViewInterp.OriginTime[foundidx & ORIGIN_MASK];
 			if (dt > 0.0)
 			{
-				double frac = (t - ViewInterp.OriginTime[foundidx & ORIGIN_MASK]) / dt;
+				double frac = (static_cast<double>(t) - ViewInterp.OriginTime[foundidx & ORIGIN_MASK]) / dt;
 				frac = std::min(1.0, frac);
 				Vector delta = ViewInterp.Origins[(foundidx + 1) & ORIGIN_MASK] - ViewInterp.Origins[foundidx & ORIGIN_MASK];
 				const Vector neworg = ViewInterp.Origins[foundidx & ORIGIN_MASK] + frac * delta;

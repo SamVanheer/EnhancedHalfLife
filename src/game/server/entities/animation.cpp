@@ -205,8 +205,8 @@ int GetAnimationEvent(void* pmodel, CBaseEntity* entity, AnimationEvent& animati
 
 	if (pseqdesc->numframes > 1)
 	{
-		flStart *= (pseqdesc->numframes - 1) / 256.0;
-		flEnd *= (pseqdesc->numframes - 1) / 256.0;
+		flStart *= (pseqdesc->numframes - 1) / 256.0f;
+		flEnd *= (pseqdesc->numframes - 1) / 256.0f;
 	}
 	else
 	{
@@ -260,9 +260,9 @@ float SetController(void* pmodel, CBaseEntity* entity, int iController, float fl
 		// does the controller not wrap?
 		if (pbonecontroller->start + 359.0 >= pbonecontroller->end)
 		{
-			if (flValue > ((pbonecontroller->start + pbonecontroller->end) / 2.0) + 180)
+			if (flValue > ((pbonecontroller->start + pbonecontroller->end) / 2.0f) + 180)
 				flValue = flValue - 360;
-			if (flValue < ((pbonecontroller->start + pbonecontroller->end) / 2.0) - 180)
+			if (flValue < ((pbonecontroller->start + pbonecontroller->end) / 2.0f) - 180)
 				flValue = flValue + 360;
 		}
 		else
@@ -280,7 +280,7 @@ float SetController(void* pmodel, CBaseEntity* entity, int iController, float fl
 
 	entity->pev->controller[iController] = setting;
 
-	return setting * (1.0 / 255.0) * (pbonecontroller->end - pbonecontroller->start) + pbonecontroller->start;
+	return setting * (1.0 / 255.0) * (static_cast<double>(pbonecontroller->end) - pbonecontroller->start) + pbonecontroller->start;
 }
 
 float SetBlending(void* pmodel, CBaseEntity* entity, int iBlender, float flValue)
@@ -303,9 +303,9 @@ float SetBlending(void* pmodel, CBaseEntity* entity, int iBlender, float flValue
 		// does the controller not wrap?
 		if (pseqdesc->blendstart[iBlender] + 359.0 >= pseqdesc->blendend[iBlender])
 		{
-			if (flValue > ((pseqdesc->blendstart[iBlender] + pseqdesc->blendend[iBlender]) / 2.0) + 180)
+			if (flValue > ((pseqdesc->blendstart[iBlender] + pseqdesc->blendend[iBlender]) / 2.0f) + 180)
 				flValue = flValue - 360;
-			if (flValue < ((pseqdesc->blendstart[iBlender] + pseqdesc->blendend[iBlender]) / 2.0) - 180)
+			if (flValue < ((pseqdesc->blendstart[iBlender] + pseqdesc->blendend[iBlender]) / 2.0f) - 180)
 				flValue = flValue + 360;
 		}
 	}
@@ -316,7 +316,7 @@ float SetBlending(void* pmodel, CBaseEntity* entity, int iBlender, float flValue
 
 	entity->pev->blending[iBlender] = setting;
 
-	return setting * (1.0 / 255.0) * (pseqdesc->blendend[iBlender] - pseqdesc->blendstart[iBlender]) + pseqdesc->blendstart[iBlender];
+	return setting * (1.0 / 255.0) * (static_cast<double>(pseqdesc->blendend[iBlender]) - pseqdesc->blendstart[iBlender]) + pseqdesc->blendstart[iBlender];
 }
 
 int FindTransition(void* pmodel, int iEndingAnim, int iGoalAnim, int& iDir)

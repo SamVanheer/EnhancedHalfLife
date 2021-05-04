@@ -952,7 +952,7 @@ void IN_JoyMove(float frametime, usercmd_t* cmd)
 					}
 					else
 					{
-						viewangles[YAW] += (fAxisValue * joy_yawsensitivity->value) * speed * 180.0;
+						viewangles[YAW] += (fAxisValue * joy_yawsensitivity->value) * speed * 180.0f;
 					}
 
 				}
@@ -971,7 +971,7 @@ void IN_JoyMove(float frametime, usercmd_t* cmd)
 					}
 					else
 					{
-						viewangles[PITCH] += (fAxisValue * joy_pitchsensitivity->value) * speed * 180.0;
+						viewangles[PITCH] += (fAxisValue * joy_pitchsensitivity->value) * speed * 180.0f;
 					}
 					V_StopPitchDrift();
 				}

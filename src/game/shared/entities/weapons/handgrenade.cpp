@@ -119,9 +119,9 @@ void CHandGrenade::WeaponIdle()
 		Vector angThrow = m_hPlayer->pev->v_angle + m_hPlayer->pev->punchangle;
 
 		if (angThrow.x < 0)
-			angThrow.x = -10 + angThrow.x * ((90 - 10) / 90.0);
+			angThrow.x = -10 + angThrow.x * ((90 - 10) / 90.0f);
 		else
-			angThrow.x = -10 + angThrow.x * ((90 + 10) / 90.0);
+			angThrow.x = -10 + angThrow.x * ((90 + 10) / 90.0f);
 
 		const float flVel = std::min(500.0f, (90 - angThrow.x) * 4);
 

@@ -804,7 +804,7 @@ void EV_FireGauss(event_args_t* args)
 				vecSrc = tr.endpos + 8 * forward;
 				vecDest = vecSrc + WORLD_SIZE * forward;
 
-				gEngfuncs.pEfxAPI->R_TempSprite(tr.endpos, vec3_origin, 0.2, m_iGlow, RenderMode::Glow, RenderFX::NoDissipation, flDamage * n / 255.0, flDamage * n * 0.5 * 0.1, FTENT_FADEOUT);
+				gEngfuncs.pEfxAPI->R_TempSprite(tr.endpos, vec3_origin, 0.2, m_iGlow, RenderMode::Glow, RenderFX::NoDissipation, flDamage * n / 255.0f, flDamage * n * 0.5 * 0.1, FTENT_FADEOUT);
 
 				const Vector fwd = tr.endpos + tr.plane.normal;
 

@@ -928,7 +928,7 @@ void CPushable::Move(CBaseEntity* pOther, bool push)
 	if (playerTouch)
 	{
 		pOther->SetAbsVelocity({newVelocity.x, newVelocity.y, pOther->GetAbsVelocity().z});
-		if ((gpGlobals->time - m_soundTime) > 0.7)
+		if ((gpGlobals->time - m_soundTime) > 0.7f)
 		{
 			m_soundTime = gpGlobals->time;
 			if (length > 0 && IsBitSet(pev->flags, FL_ONGROUND))

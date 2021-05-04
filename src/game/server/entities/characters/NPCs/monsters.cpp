@@ -1621,7 +1621,7 @@ void CBaseMonster::Move(float flInterval)
 					else
 					{
 						// Don't get stuck
-						if ((gpGlobals->time - m_flMoveWaitFinished) < 0.2)
+						if ((gpGlobals->time - m_flMoveWaitFinished) < 0.2f)
 							Remember(bits_MEMORY_MOVE_FAILED);
 
 						m_flMoveWaitFinished = gpGlobals->time + 0.1;
@@ -2511,7 +2511,7 @@ void CBaseMonster::ReportAIState()
 	{
 		ALERT(level, " Moving ");
 		if (m_flMoveWaitFinished > gpGlobals->time)
-			ALERT(level, ": Stopped for %.2f. ", m_flMoveWaitFinished - gpGlobals->time);
+			ALERT(level, ": Stopped for %.2f. ", static_cast<double>(m_flMoveWaitFinished) - gpGlobals->time);
 		else if (m_IdealActivity == GetStoppedActivity())
 			ALERT(level, ": In stopped anim. ");
 	}

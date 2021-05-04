@@ -91,14 +91,14 @@ float MoveToward(float cur, float goal, float maxspeed)
 		if (cur < goal)
 		{
 			if (cur < goal - 1.0)
-				cur += (goal - cur) / 4.0;
+				cur += (goal - cur) / 4.0f;
 			else
 				cur = goal;
 		}
 		else
 		{
 			if (cur > goal + 1.0)
-				cur -= (cur - goal) / 4.0;
+				cur -= (cur - goal) / 4.0f;
 			else
 				cur = goal;
 		}
@@ -360,7 +360,7 @@ void DLLEXPORT CAM_Think()
 		if (fabs(camAngles[2] - cam_idealdist->value) < 2.0)
 			camAngles[2] = cam_idealdist->value;
 		else
-			camAngles[2] += (cam_idealdist->value - camAngles[2]) / 4.0;
+			camAngles[2] += (cam_idealdist->value - camAngles[2]) / 4.0f;
 	}
 #ifdef LATER
 	if (cam_contain->value)

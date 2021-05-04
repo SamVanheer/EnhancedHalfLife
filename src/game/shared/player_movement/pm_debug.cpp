@@ -227,7 +227,7 @@ void PM_ViewEntity()
 	Vector forward, right, up;
 	AngleVectors(pmove->angles, &forward, &right, &up);  // Determine movement angles
 
-	float fup = 0.5 * (pmove->player_mins[pmove->usehull][2] + pmove->player_maxs[pmove->usehull][2]);
+	float fup = 0.5f * (pmove->player_mins[pmove->usehull][2] + pmove->player_maxs[pmove->usehull][2]);
 	fup += pmove->view_ofs[2];
 	fup -= 4;
 

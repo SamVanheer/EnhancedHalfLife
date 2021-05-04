@@ -155,7 +155,7 @@ void CFlyingMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, 
 {
 	if (GetMovetype() == Movetype::Fly)
 	{
-		if (gpGlobals->time - m_stopTime > 1.0)
+		if (gpGlobals->time - m_stopTime > 1.0f)
 		{
 			if (m_IdealActivity != m_movementActivity)
 			{

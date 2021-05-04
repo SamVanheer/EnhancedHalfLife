@@ -76,10 +76,10 @@ void CStudioModelRenderer::StudioCalcBoneAdj(float dadt, float* adj, const byte*
 			}
 			else
 			{
-				value = (pcontroller1[i] * dadt + pcontroller2[i] * (1.0 - dadt)) / 255.0;
+				value = (static_cast<double>(pcontroller1[i]) * dadt + pcontroller2[i] * (1.0 - dadt)) / 255.0;
 				if (value < 0) value = 0;
 				if (value > 1.0) value = 1.0;
-				value = (1.0 - value) * pbonecontroller[j].start + value * pbonecontroller[j].end;
+				value = (1.0 - value) * pbonecontroller[j].start + static_cast<double>(value) * pbonecontroller[j].end;
 			}
 			// Con_DPrintf( "%d %d %f : %f\n", m_pCurrentEntity->curstate.controller[j], m_pCurrentEntity->latched.prevcontroller[j], value, dadt );
 		}
@@ -87,7 +87,7 @@ void CStudioModelRenderer::StudioCalcBoneAdj(float dadt, float* adj, const byte*
 		{
 			value = mouthopen / 64.0;
 			if (value > 1.0) value = 1.0;
-			value = (1.0 - value) * pbonecontroller[j].start + value * pbonecontroller[j].end;
+			value = (1.0 - value) * pbonecontroller[j].start + static_cast<double>(value) * pbonecontroller[j].end;
 			// Con_DPrintf("%d %f\n", mouthopen, value );
 		}
 		switch (pbonecontroller[j].type & STUDIO_TYPES)
@@ -221,7 +221,7 @@ void CStudioModelRenderer::StudioCalcBonePosition(int frame, float s, mstudiobon
 				// and there's more data in the span
 				if (panimvalue->num.valid > k + 1)
 				{
-					pos[j] += (panimvalue[k + 1].value * (1.0 - s) + s * panimvalue[k + 2].value) * pbone->scale[j];
+					pos[j] += (panimvalue[k + 1].value * (1.0 - s) + static_cast<double>(s) * panimvalue[k + 2].value) * pbone->scale[j];
 				}
 				else
 				{
@@ -233,7 +233,7 @@ void CStudioModelRenderer::StudioCalcBonePosition(int frame, float s, mstudiobon
 				// are we at the end of the repeating values section and there's another section with data?
 				if (panimvalue->num.total <= k + 1)
 				{
-					pos[j] += (panimvalue[panimvalue->num.valid].value * (1.0 - s) + s * panimvalue[panimvalue->num.valid + 2].value) * pbone->scale[j];
+					pos[j] += (panimvalue[panimvalue->num.valid].value * (1.0 - s) + static_cast<double>(s) * panimvalue[panimvalue->num.valid + 2].value) * pbone->scale[j];
 				}
 				else
 				{
@@ -316,7 +316,7 @@ void CStudioModelRenderer::StudioPlayerBlend(mstudioseqdesc_t* pseqdesc, int& bl
 	}
 	else
 	{
-		if (pseqdesc->blendend[0] - pseqdesc->blendstart[0] < 0.1) // catch qc error
+		if (pseqdesc->blendend[0] - pseqdesc->blendstart[0] < 0.1f) // catch qc error
 			blend = 127;
 		else
 			blend = 255 * (blend - pseqdesc->blendstart[0]) / (pseqdesc->blendend[0] - pseqdesc->blendstart[0]);
@@ -354,10 +354,10 @@ void CStudioModelRenderer::StudioSetUpTransform(int trivial_accept)
 		// NOTE:  Because we need to interpolate multiplayer characters, the interpolation time limit
 		//  was increased to 1.0 s., which is 2x the max lag we are accounting for.
 
-		if ((m_clTime < m_pCurrentEntity->curstate.animtime + 1.0f) &&
+		if ((m_clTime < m_pCurrentEntity->curstate.animtime + 1.0) &&
 			(m_pCurrentEntity->curstate.animtime != m_pCurrentEntity->latched.prevanimtime))
 		{
-			f = (m_clTime - m_pCurrentEntity->curstate.animtime) / (m_pCurrentEntity->curstate.animtime - m_pCurrentEntity->latched.prevanimtime);
+			f = (m_clTime - m_pCurrentEntity->curstate.animtime) / (static_cast<double>(m_pCurrentEntity->curstate.animtime) - m_pCurrentEntity->latched.prevanimtime);
 			//Con_DPrintf("%4.2f %.2f %.2f\n", f, m_pCurrentEntity->curstate.animtime, m_clTime);
 		}
 
@@ -525,7 +525,7 @@ void CStudioModelRenderer::StudioCalcRotations(float pos[][3], vec4_t* q, mstudi
 		pos[pseqdesc->motionbone][2] = 0.0;
 	}
 
-	s = 0 * ((1.0 - (f - (int)(f))) / (pseqdesc->numframes)) * m_pCurrentEntity->curstate.framerate;
+	s = 0 * ((1.0 - (f - std::floor(static_cast<double>(f)))) / (pseqdesc->numframes)) * m_pCurrentEntity->curstate.framerate;
 
 	if (pseqdesc->motiontype & STUDIO_LX)
 	{
@@ -607,7 +607,7 @@ float CStudioModelRenderer::StudioEstimateFrame(mstudioseqdesc_t* pseqdesc)
 	}
 	else
 	{
-		f = (m_pCurrentEntity->curstate.frame * (pseqdesc->numframes - 1)) / 256.0;
+		f = (m_pCurrentEntity->curstate.frame * (static_cast<double>(pseqdesc->numframes) - 1)) / 256.0;
 	}
 
 	f += dfdt;
@@ -616,11 +616,11 @@ float CStudioModelRenderer::StudioEstimateFrame(mstudioseqdesc_t* pseqdesc)
 	{
 		if (pseqdesc->numframes > 1)
 		{
-			f -= (int)(f / (pseqdesc->numframes - 1)) * (pseqdesc->numframes - 1);
+			f -= (int)(f / (static_cast<double>(pseqdesc->numframes) - 1)) * (static_cast<double>(pseqdesc->numframes) - 1);
 		}
 		if (f < 0)
 		{
-			f += (pseqdesc->numframes - 1);
+			f += (static_cast<double>(pseqdesc->numframes) - 1);
 		}
 	}
 	else
@@ -699,7 +699,7 @@ void CStudioModelRenderer::StudioSetupBones()
 		StudioCalcRotations(pos2, q2, pseqdesc, panim, f);
 
 		dadt = StudioEstimateInterpolant();
-		s = (m_pCurrentEntity->curstate.blending[0] * dadt + m_pCurrentEntity->latched.prevblending[0] * (1.0 - dadt)) / 255.0;
+		s = (m_pCurrentEntity->curstate.blending[0] * static_cast<double>(dadt) + m_pCurrentEntity->latched.prevblending[0] * (1.0 - dadt)) / 255.0;
 
 		StudioSlerpBones(q, pos, q2, pos2, s);
 
@@ -711,10 +711,10 @@ void CStudioModelRenderer::StudioSetupBones()
 			panim += m_pStudioHeader->numbones;
 			StudioCalcRotations(pos4, q4, pseqdesc, panim, f);
 
-			s = (m_pCurrentEntity->curstate.blending[0] * dadt + m_pCurrentEntity->latched.prevblending[0] * (1.0 - dadt)) / 255.0;
+			s = (m_pCurrentEntity->curstate.blending[0] * static_cast<double>(dadt) + m_pCurrentEntity->latched.prevblending[0] * (1.0 - dadt)) / 255.0;
 			StudioSlerpBones(q3, pos3, q4, pos4, s);
 
-			s = (m_pCurrentEntity->curstate.blending[1] * dadt + m_pCurrentEntity->latched.prevblending[1] * (1.0 - dadt)) / 255.0;
+			s = (m_pCurrentEntity->curstate.blending[1] * static_cast<double>(dadt) + m_pCurrentEntity->latched.prevblending[1] * (1.0 - dadt)) / 255.0;
 			StudioSlerpBones(q, pos, q3, pos3, s);
 		}
 	}
@@ -1110,7 +1110,7 @@ void CStudioModelRenderer::StudioEstimateGait(entity_state_t* pplayer)
 	}
 	else
 	{
-		m_pPlayerInfo->gaityaw = (atan2(est_velocity[1], est_velocity[0]) * 180 / M_PI);
+		m_pPlayerInfo->gaityaw = (atan2(est_velocity[1], est_velocity[0]) * 180.0 / M_PI);
 		if (m_pPlayerInfo->gaityaw > 180)
 			m_pPlayerInfo->gaityaw = 180;
 		if (m_pPlayerInfo->gaityaw < -180)

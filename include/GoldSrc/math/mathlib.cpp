@@ -319,7 +319,7 @@ float AngleBetweenVectors(const Vector& v1, const Vector& v2)
 		return 0.0f;
 
 	float angle = acos(DotProduct(v1, v2)) / (l1 * l2);
-	angle = (angle * 180.0f) / M_PI;
+	angle = (angle * 180.0) / M_PI;
 
 	return angle;
 }
@@ -436,12 +436,12 @@ Vector VectorAngles(const Vector& forward)
 	}
 	else
 	{
-		yaw = (atan2(forward[1], forward[0]) * 180 / M_PI);
+		yaw = (atan2(forward[1], forward[0]) * 180.0 / M_PI);
 		if (yaw < 0)
 			yaw += 360;
 
-		const float tmp = sqrt(forward[0] * forward[0] + forward[1] * forward[1]);
-		pitch = (atan2(forward[2], tmp) * 180 / M_PI);
+		const double tmp = sqrt(forward[0] * forward[0] + forward[1] * forward[1]);
+		pitch = (atan2(static_cast<double>(forward[2]), tmp) * 180 / M_PI);
 		if (pitch < 0)
 			pitch += 360;
 	}
@@ -460,7 +460,7 @@ float UTIL_VecToYaw(const Vector& vec)
 	else
 	{
 		//Note: this uses floor, unlike VectorAngles!
-		yaw = floor(atan2(vec[1], vec[0]) * 180 / M_PI);
+		yaw = floor(atan2(vec[1], vec[0]) * 180.0 / M_PI);
 		if (yaw < 0)
 			yaw += 360;
 	}

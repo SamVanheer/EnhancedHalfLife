@@ -241,7 +241,7 @@ void CSqueakGrenade::HuntThink()
 	}
 
 	// squeek if it's about time blow up
-	if ((m_flDie - gpGlobals->time <= 0.5) && (m_flDie - gpGlobals->time >= 0.3))
+	if ((m_flDie - gpGlobals->time <= 0.5f) && (m_flDie - gpGlobals->time >= 0.3f))
 	{
 		EmitSound(SoundChannel::Voice, "squeek/sqk_die1.wav", VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(0, 0x3F));
 		CSoundEnt::InsertSound(bits_SOUND_COMBAT, GetAbsOrigin(), 256, 0.25);

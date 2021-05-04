@@ -1735,7 +1735,7 @@ void CHudSpectator::DeathMessage(int victim)
 	cl_entity_t* pl = gEngfuncs.GetEntityByIndex(victim);
 
 	if (pl && pl->player)
-		AddOverviewEntityToList(m_hsprPlayerDead, pl, gEngfuncs.GetClientTime() + 2.0f);
+		AddOverviewEntityToList(m_hsprPlayerDead, pl, gEngfuncs.GetClientTime() + 2.0);
 }
 
 bool CHudSpectator::AddOverviewEntityToList(HSPRITE sprite, cl_entity_t* ent, double killTime)

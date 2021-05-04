@@ -513,7 +513,7 @@ void PM_AddCorrectGravity()
 
 	// Add gravity so they'll be in the correct position during movement
 	// yes, this 0.5 looks wrong, but it's not.  
-	pmove->velocity[2] -= (ent_gravity * pmove->movevars->gravity * 0.5 * pmove->frametime);
+	pmove->velocity[2] -= (ent_gravity * pmove->movevars->gravity * 0.5f * pmove->frametime);
 	pmove->velocity[2] += pmove->basevelocity[2] * pmove->frametime;
 	pmove->basevelocity[2] = 0;
 
@@ -529,7 +529,7 @@ void PM_FixupGravityVelocity()
 	const float ent_gravity = pmove->gravity ? pmove->gravity : 1.0;
 
 	// Get the correct velocity for the end of the dt 
-	pmove->velocity[2] -= (ent_gravity * pmove->movevars->gravity * pmove->frametime * 0.5);
+	pmove->velocity[2] -= (ent_gravity * pmove->movevars->gravity * pmove->frametime * 0.5f);
 
 	PM_CheckVelocity();
 }
@@ -649,7 +649,7 @@ int PM_FlyMove()
 					original_velocity = new_velocity;
 				}
 				else
-					PM_ClipVelocity(original_velocity, planes[i], new_velocity, 1.0 + pmove->movevars->bounce * (1 - pmove->friction));
+					PM_ClipVelocity(original_velocity, planes[i], new_velocity, 1.0f + pmove->movevars->bounce * (1 - pmove->friction));
 			}
 
 			pmove->velocity = new_velocity;
@@ -2147,16 +2147,16 @@ void PM_Jump()
 				pmove->velocity[i] = pmove->forward[i] * PLAYER_LONGJUMP_SPEED * 1.6;
 			}
 
-			pmove->velocity[2] = sqrt(2 * 800 * 56.0);
+			pmove->velocity[2] = sqrt(2 * 800 * 56.0f);
 		}
 		else
 		{
-			pmove->velocity[2] = sqrt(2 * 800 * 45.0);
+			pmove->velocity[2] = sqrt(2 * 800 * 45.0f);
 		}
 	}
 	else
 	{
-		pmove->velocity[2] = sqrt(2 * 800 * 45.0);
+		pmove->velocity[2] = sqrt(2 * 800 * 45.0f);
 	}
 
 	// Decay it for simulation

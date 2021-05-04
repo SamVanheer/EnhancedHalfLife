@@ -1269,7 +1269,7 @@ void CBaseEntity::FireBullets(std::uint32_t cShots, const Vector& vecSrc, const 
 			}
 		}
 		// make bullet trails
-		UTIL_BubbleTrail(vecSrc, tr.vecEndPos, (flDistance * tr.flFraction) / 64.0);
+		UTIL_BubbleTrail(vecSrc, tr.vecEndPos, (flDistance * tr.flFraction) / 64.0f);
 	}
 	ApplyMultiDamage(this, pAttacker);
 }
@@ -1348,7 +1348,7 @@ Vector CBasePlayer::FireBulletsPlayer(std::uint32_t cShots, const Vector& vecSrc
 			}
 		}
 		// make bullet trails
-		UTIL_BubbleTrail(vecSrc, tr.vecEndPos, (flDistance * tr.flFraction) / 64.0);
+		UTIL_BubbleTrail(vecSrc, tr.vecEndPos, (flDistance * tr.flFraction) / 64.0f);
 	}
 	ApplyMultiDamage(this, pAttacker);
 

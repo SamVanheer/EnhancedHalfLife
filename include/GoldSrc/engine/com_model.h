@@ -36,7 +36,7 @@ constexpr int ALIAS_Z_CLIP = 0x0010;
 constexpr int ALIAS_ONSEAM = 0x0020;
 constexpr int ALIAS_XY_CLIP_MASK = 0x000F;
 
-constexpr float ZISCALE = 0x8000;
+constexpr double ZISCALE = 0x8000;
 
 constexpr int CACHE_SIZE = 32;		// used to align key data structures
 
