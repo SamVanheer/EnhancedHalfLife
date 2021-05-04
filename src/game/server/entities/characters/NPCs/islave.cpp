@@ -392,11 +392,6 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 				WackBeam(1, pNew);
 				UTIL_Remove(m_hDead);
 				EmitSound(SoundChannel::Weapon, "hassault/hw_shoot1.wav", VOL_NORM, ATTN_NORM, RANDOM_LONG(130, 160));
-
-				/*
-				CBaseEntity *pEffect = Create("test_effect", pNew->Center(), GetAbsAngles());
-				pEffect->Use( this, this, UseType::On, 1 );
-				*/
 				break;
 			}
 		}
@@ -522,8 +517,6 @@ void CISlave::Precache()
 	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
 	PRECACHE_SOUND_ARRAY(pPainSounds);
 	PRECACHE_SOUND_ARRAY(pDeathSounds);
-
-	UTIL_PrecacheOther("test_effect");
 }
 
 bool CISlave::TakeDamage(const TakeDamageInfo& info)
