@@ -1220,7 +1220,7 @@ void CSittingScientist::SittingThink()
 		CBaseEntity* pent = FindNearestFriend(true);
 		if (pent)
 		{
-			float yaw = VecToYaw(pent->GetAbsOrigin() - GetAbsOrigin()) - pev->angles.y;
+			float yaw = VecToYaw(pent->GetAbsOrigin() - GetAbsOrigin()) - GetAbsAngles().y;
 
 			if (yaw > 180) yaw -= 360;
 			if (yaw < -180) yaw += 360;
@@ -1267,7 +1267,7 @@ void CSittingScientist::SittingThink()
 			else
 			{
 				// only turn head if we spoke
-				float yaw = VecToYaw(pent->GetAbsOrigin() - GetAbsOrigin()) - pev->angles.y;
+				float yaw = VecToYaw(pent->GetAbsOrigin() - GetAbsOrigin()) - GetAbsAngles().y;
 
 				//TODO: this keeps showing up everywhere
 				if (yaw > 180) yaw -= 360;

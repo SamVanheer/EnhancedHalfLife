@@ -53,7 +53,7 @@ LINK_ENTITY_TO_CLASS(func_wall, CFuncWall);
 
 void CFuncWall::Spawn()
 {
-	pev->angles = vec3_origin;
+	SetAbsAngles(vec3_origin);
 	SetMovetype(Movetype::Push);  // so it doesn't get pushed by anything
 	SetSolidType(Solid::BSP);
 	SetModel(STRING(pev->model));
@@ -196,7 +196,7 @@ void CFuncIllusionary::KeyValue(KeyValueData* pkvd)
 
 void CFuncIllusionary::Spawn()
 {
-	pev->angles = vec3_origin;
+	SetAbsAngles(vec3_origin);
 	SetMovetype(Movetype::None);
 	SetSolidType(Solid::Not);// always solid_not 
 	SetModel(STRING(pev->model));
@@ -747,8 +747,8 @@ void CPendulum::Spawn()
 
 	m_accel = (pev->speed * pev->speed) / (2 * fabs(m_distance));	// Calculate constant acceleration from speed and distance
 	m_maxSpeed = pev->speed;
-	m_start = pev->angles;
-	m_center = pev->angles + (m_distance * 0.5) * pev->movedir;
+	m_start = GetAbsAngles();
+	m_center = GetAbsAngles() + (m_distance * 0.5) * pev->movedir;
 
 	if (IsBitSet(pev->spawnflags, SF_BRUSH_ROTATE_INSTANT))
 	{
@@ -772,7 +772,7 @@ void CPendulum::PendulumUse(const UseInfo& info)
 	{
 		if (IsBitSet(pev->spawnflags, SF_PENDULUM_AUTO_RETURN))
 		{
-			const float delta = CBaseToggle::AxisDelta(pev->spawnflags, pev->angles, m_start);
+			const float delta = CBaseToggle::AxisDelta(pev->spawnflags, GetAbsAngles(), m_start);
 
 			pev->avelocity = m_maxSpeed * pev->movedir;
 			pev->nextthink = pev->ltime + (delta / m_maxSpeed);
@@ -796,7 +796,7 @@ void CPendulum::PendulumUse(const UseInfo& info)
 
 void CPendulum::Stop()
 {
-	pev->angles = m_start;
+	SetAbsAngles(m_start);
 	pev->speed = 0;
 	SetThink(nullptr);
 	pev->avelocity = vec3_origin;
@@ -809,7 +809,7 @@ void CPendulum::Blocked(CBaseEntity* pOther)
 
 void CPendulum::Swing()
 {
-	const float delta = CBaseToggle::AxisDelta(pev->spawnflags, pev->angles, m_center);
+	const float delta = CBaseToggle::AxisDelta(pev->spawnflags, GetAbsAngles(), m_center);
 	const float dt = gpGlobals->time - m_time;	// How much time has passed?
 	m_time = gpGlobals->time;		// Remember the last time called
 
@@ -833,7 +833,7 @@ void CPendulum::Swing()
 		m_dampSpeed -= m_damp * m_dampSpeed * dt;
 		if (m_dampSpeed < 30.0)
 		{
-			pev->angles = m_center;
+			SetAbsAngles(m_center);
 			pev->speed = 0;
 			SetThink(nullptr);
 			pev->avelocity = vec3_origin;

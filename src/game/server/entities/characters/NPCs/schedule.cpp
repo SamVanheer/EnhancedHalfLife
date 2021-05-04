@@ -497,14 +497,14 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	{
 	case TASK_TURN_RIGHT:
 	{
-		const float flCurrentYaw = UTIL_AngleMod(pev->angles.y);
+		const float flCurrentYaw = UTIL_AngleMod(GetAbsAngles().y);
 		pev->ideal_yaw = UTIL_AngleMod(flCurrentYaw - pTask->flData);
 		SetTurnActivity();
 		break;
 	}
 	case TASK_TURN_LEFT:
 	{
-		const float flCurrentYaw = UTIL_AngleMod(pev->angles.y);
+		const float flCurrentYaw = UTIL_AngleMod(GetAbsAngles().y);
 		pev->ideal_yaw = UTIL_AngleMod(flCurrentYaw + pTask->flData);
 		SetTurnActivity();
 		break;
@@ -928,7 +928,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	}
 	case TASK_GET_PATH_TO_ENEMY_CORPSE:
 	{
-		UTIL_MakeVectors(pev->angles);
+		UTIL_MakeVectors(GetAbsAngles());
 		if (BuildRoute(m_vecEnemyLKP - gpGlobals->v_forward * 64, bits_MF_TO_LOCATION, nullptr))
 		{
 			TaskComplete();
@@ -1064,7 +1064,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	case TASK_STRAFE_PATH:
 	{
 		// to start strafing, we have to first figure out if the target is on the left side or right side
-		UTIL_MakeVectors(pev->angles);
+		UTIL_MakeVectors(GetAbsAngles());
 
 		const Vector2D vec2DirToPoint = (m_Route[0].vecLocation - GetAbsOrigin()).Make2D().Normalize();
 		const Vector2D vec2RightSide = gpGlobals->v_right.Make2D().Normalize();
@@ -1191,7 +1191,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	{
 		if (m_hTargetEnt != nullptr)
 		{
-			pev->ideal_yaw = UTIL_AngleMod(m_hTargetEnt->pev->angles.y);
+			pev->ideal_yaw = UTIL_AngleMod(m_hTargetEnt->GetAbsAngles().y);
 		}
 
 		TaskComplete();

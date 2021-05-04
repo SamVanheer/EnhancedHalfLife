@@ -158,7 +158,7 @@ void COsprey::Spawn()
 	}
 
 	m_pos2 = GetAbsOrigin();
-	m_ang2 = pev->angles;
+	m_ang2 = GetAbsAngles();
 	m_vel2 = GetAbsVelocity();
 }
 
@@ -213,7 +213,7 @@ void COsprey::FindAllThink()
 
 void COsprey::DeployThink()
 {
-	UTIL_MakeAimVectors(pev->angles);
+	UTIL_MakeAimVectors(GetAbsAngles());
 
 	const Vector vecForward = gpGlobals->v_forward;
 	const Vector vecRight = gpGlobals->v_right;
@@ -270,7 +270,7 @@ CBaseMonster* COsprey::MakeGrunt(Vector vecSrc)
 			{
 				m_hGrunt[i]->SUB_StartFadeOut();
 			}
-			CBaseEntity* pEntity = Create("monster_human_grunt", vecSrc, pev->angles);
+			CBaseEntity* pEntity = Create("monster_human_grunt", vecSrc, GetAbsAngles());
 			CBaseMonster* pGrunt = pEntity->MyMonsterPointer();
 			pGrunt->SetMovetype(Movetype::Fly);
 			pGrunt->SetAbsVelocity(Vector(0, 0, RANDOM_FLOAT(-196, -128)));
@@ -311,7 +311,7 @@ void COsprey::HoverThink()
 	}
 
 	pev->nextthink = gpGlobals->time + 0.1;
-	UTIL_MakeAimVectors(pev->angles);
+	UTIL_MakeAimVectors(GetAbsAngles());
 	ShowDamage();
 }
 
@@ -323,7 +323,7 @@ void COsprey::UpdateGoal()
 		m_ang1 = m_ang2;
 		m_vel1 = m_vel2;
 		m_pos2 = goal->GetAbsOrigin();
-		m_ang2 = goal->pev->angles;
+		m_ang2 = goal->GetAbsAngles();
 		UTIL_MakeAimVectors(Vector(0, m_ang2.y, 0));
 		m_vel2 = gpGlobals->v_forward * goal->pev->speed;
 
@@ -391,8 +391,8 @@ void COsprey::Flight()
 	m_velocity = m_vel1 * (1.0 - f) + m_vel2 * f;
 
 	SetAbsOrigin(pos);
-	pev->angles = ang;
-	UTIL_MakeAimVectors(pev->angles);
+	SetAbsAngles(ang);
+	UTIL_MakeAimVectors(GetAbsAngles());
 	const float flSpeed = DotProduct(gpGlobals->v_forward, m_velocity);
 
 	// float flSpeed = DotProduct(gpGlobals->v_forward, GetAbsVelocity());
@@ -508,7 +508,7 @@ void COsprey::DyingThink()
 	// still falling?
 	if (m_startTime > gpGlobals->time)
 	{
-		UTIL_MakeAimVectors(pev->angles);
+		UTIL_MakeAimVectors(GetAbsAngles());
 		ShowDamage();
 
 		Vector vecSpot = GetAbsOrigin() + GetAbsVelocity() * 0.2;

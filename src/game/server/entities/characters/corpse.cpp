@@ -39,7 +39,7 @@ void CopyToBodyQue(CBaseEntity* pEntity)
 	if (pEntity->pev->effects & EF_NODRAW)
 		return;
 
-	g_pBodyQueueHead->pev->angles = pEntity->pev->angles;
+	g_pBodyQueueHead->SetAbsAngles(pEntity->GetAbsAngles());
 	g_pBodyQueueHead->pev->model = pEntity->pev->model;
 	g_pBodyQueueHead->pev->modelindex = pEntity->pev->modelindex;
 	g_pBodyQueueHead->pev->frame = pEntity->pev->frame;

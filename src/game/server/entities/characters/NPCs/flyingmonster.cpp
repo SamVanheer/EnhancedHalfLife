@@ -70,8 +70,7 @@ void CFlyingMonster::Stop()
 		m_flightSpeed = 0;
 		m_IdealActivity = stopped;
 	}
-	pev->angles.z = 0;
-	pev->angles.x = 0;
+	SetAbsAngles({0, GetAbsAngles().y, 0});
 	m_vecTravel = vec3_origin;
 }
 
@@ -99,7 +98,9 @@ float CFlyingMonster::ChangeYaw(int speed)
 
 		m_flLastZYawTime = gpGlobals->time;
 
-		pev->angles.z = UTIL_Approach(target, pev->angles.z, 220.0 * delta);
+		Vector angles = GetAbsAngles();
+		angles.z = UTIL_Approach(target, angles.z, 220.0 * delta);
+		SetAbsAngles(angles);
 	}
 	return CBaseMonster::ChangeYaw(speed);
 }
@@ -108,8 +109,7 @@ void CFlyingMonster::Killed(const KilledInfo& info)
 {
 	SetMovetype(Movetype::Step);
 	ClearBits(pev->flags, FL_ONGROUND);
-	pev->angles.z = 0;
-	pev->angles.x = 0;
+	SetAbsAngles({0, GetAbsAngles().y, 0});
 	CBaseMonster::Killed(info);
 }
 

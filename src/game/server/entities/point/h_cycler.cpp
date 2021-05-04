@@ -95,7 +95,7 @@ void CCycler::Spawn()
 	pev->effects = 0;
 	pev->health = 80000;// no cycler should die
 	pev->yaw_speed = 5;
-	pev->ideal_yaw = pev->angles.y;
+	pev->ideal_yaw = GetAbsAngles().y;
 	ChangeYaw(360);
 
 	m_flFrameRate = 75;

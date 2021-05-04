@@ -332,14 +332,14 @@ void CBaseToggle::AngularMove(Vector vecDestAngle, float flSpeed)
 	m_vecFinalAngle = vecDestAngle;
 
 	// Already there?
-	if (vecDestAngle == pev->angles)
+	if (vecDestAngle == GetAbsAngles())
 	{
 		AngularMoveDone();
 		return;
 	}
 
 	// set destdelta to the vector needed to move
-	const Vector vecDestDelta = vecDestAngle - pev->angles;
+	const Vector vecDestDelta = vecDestAngle - GetAbsAngles();
 
 	// divide by speed to get time to reach dest
 	const float flTravelTime = vecDestDelta.Length() / flSpeed;
@@ -354,7 +354,7 @@ void CBaseToggle::AngularMove(Vector vecDestAngle, float flSpeed)
 
 void CBaseToggle::AngularMoveDone()
 {
-	pev->angles = m_vecFinalAngle;
+	SetAbsAngles(m_vecFinalAngle);
 	pev->avelocity = vec3_origin;
 	pev->nextthink = -1;
 	if (m_pfnCallWhenMoveDone)

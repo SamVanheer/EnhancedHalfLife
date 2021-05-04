@@ -335,7 +335,7 @@ Activity CBaseMonster::GetDeathActivity()
 
 	const Vector vecSrc = Center();
 
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 	const float flDot = DotProduct(gpGlobals->v_forward, g_vecAttackDir * -1);
 
 	bool fTriedDirection = false;
@@ -440,7 +440,7 @@ Activity CBaseMonster::GetDeathActivity()
 Activity CBaseMonster::GetSmallFlinchActivity()
 {
 	bool fTriedDirection = false;
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 	const float flDot = DotProduct(gpGlobals->v_forward, g_vecAttackDir * -1);
 
 	Activity flinchActivity;
@@ -655,8 +655,7 @@ void CGib::BounceGibTouch(CBaseEntity* pOther)
 	if (pev->flags & FL_ONGROUND)
 	{
 		SetAbsVelocity(GetAbsVelocity() * 0.9);
-		pev->angles.x = 0;
-		pev->angles.z = 0;
+		SetAbsAngles({0, GetAbsAngles().y, 0});
 		pev->avelocity.x = 0;
 		pev->avelocity.z = 0;
 	}
@@ -702,7 +701,7 @@ void CGib::StickyGibTouch(CBaseEntity* pOther)
 	UTIL_BloodDecalTrace(&tr, m_bloodColor);
 
 	SetAbsVelocity(tr.vecPlaneNormal * -1);
-	pev->angles = VectorAngles(GetAbsVelocity());
+	SetAbsAngles(VectorAngles(GetAbsVelocity()));
 	SetAbsVelocity(vec3_origin);
 	pev->avelocity = vec3_origin;
 	SetMovetype(Movetype::None);
@@ -996,9 +995,9 @@ void CBaseMonster::RadiusDamage(Vector vecSrc, CBaseEntity* pInflictor, CBaseEnt
 CBaseEntity* CBaseMonster::CheckTraceHullAttack(float flDist, int iDamage, int iDmgType)
 {
 	if (IsPlayer())
-		UTIL_MakeVectors(pev->angles);
+		UTIL_MakeVectors(GetAbsAngles());
 	else
-		UTIL_MakeAimVectors(pev->angles);
+		UTIL_MakeAimVectors(GetAbsAngles());
 
 	Vector vecStart = GetAbsOrigin();
 	vecStart.z += pev->size.z * 0.5;
@@ -1029,7 +1028,7 @@ bool CBaseMonster::IsInViewCone(CBaseEntity* pEntity)
 
 bool CBaseMonster::IsInViewCone(const Vector& origin)
 {
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 
 	const Vector2D vec2LOS = (origin - GetAbsOrigin()).Make2D().Normalize();
 

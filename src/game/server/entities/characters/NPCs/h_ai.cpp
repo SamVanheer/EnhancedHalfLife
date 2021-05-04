@@ -66,7 +66,7 @@ Vector CheckToss(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, 
 
 	const float flGravity = g_psv_gravity->value * flGravityAdj;
 
-	UTIL_MakeVectors(pEntity->pev->angles);
+	UTIL_MakeVectors(pEntity->GetAbsAngles());
 
 	// toss a little bit to the left or right, not right down on the enemy's bean (head). 
 	vecSpot2 = vecSpot2 + gpGlobals->v_right * (RANDOM_FLOAT(-8, 8) + RANDOM_FLOAT(-16, 16));

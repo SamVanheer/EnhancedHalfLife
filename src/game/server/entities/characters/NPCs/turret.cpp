@@ -352,16 +352,19 @@ void CBaseTurret::Initialize()
 
 	if (m_iBaseTurnRate == 0) m_iBaseTurnRate = TURRET_TURNRATE;
 	if (m_flMaxWait == 0) m_flMaxWait = TURRET_MAXWAIT;
-	m_flStartYaw = pev->angles.y;
+	m_flStartYaw = GetAbsAngles().y;
 	if (m_iOrientation == TurretOrientation::Ceiling)
 	{
+		Vector myAngles = GetAbsAngles();
 		pev->idealpitch = 180;
-		pev->angles.x = 180;
+		myAngles.x = 180;
 		pev->view_ofs.z = -pev->view_ofs.z;
 		pev->effects |= EF_INVLIGHT;
-		pev->angles.y = pev->angles.y + 180;
-		if (pev->angles.y > 360)
-			pev->angles.y = pev->angles.y - 360;
+		myAngles.y = myAngles.y + 180;
+		if (myAngles.y > 360)
+			myAngles.y = myAngles.y - 360;
+
+		SetAbsAngles(myAngles);
 	}
 
 	m_vecGoalAngles.x = 0;
@@ -635,11 +638,11 @@ void CBaseTurret::Deploy()
 
 		if (m_iOrientation == TurretOrientation::Ceiling)
 		{
-			m_vecCurAngles.y = UTIL_AngleMod(pev->angles.y + 180);
+			m_vecCurAngles.y = UTIL_AngleMod(GetAbsAngles().y + 180);
 		}
 		else
 		{
-			m_vecCurAngles.y = UTIL_AngleMod(pev->angles.y);
+			m_vecCurAngles.y = UTIL_AngleMod(GetAbsAngles().y);
 		}
 
 		SetTurretAnim(TurretAnim::Spin);
@@ -1073,9 +1076,9 @@ bool CBaseTurret::MoveTurret()
 
 		//ALERT(at_console, "%.2f -> %.2f\n", m_vecCurAngles.y, y);
 		if (m_iOrientation == TurretOrientation::Floor)
-			SetBoneController(0, m_vecCurAngles.y - pev->angles.y);
+			SetBoneController(0, m_vecCurAngles.y - GetAbsAngles().y);
 		else
-			SetBoneController(0, pev->angles.y - 180 - m_vecCurAngles.y);
+			SetBoneController(0, GetAbsAngles().y - 180 - m_vecCurAngles.y);
 		state = true;
 	}
 
@@ -1219,8 +1222,9 @@ void CSentry::SentryDeath()
 		SetTurretAnim(TurretAnim::Die);
 
 		SetSolidType(Solid::Not);
-		pev->angles.y = UTIL_AngleMod(pev->angles.y + RANDOM_LONG(0, 2) * 120);
-
+		Vector myAngles = GetAbsAngles();
+		myAngles.y = UTIL_AngleMod(myAngles.y + RANDOM_LONG(0, 2) * 120);
+		SetAbsAngles(myAngles);
 		EyeOn();
 	}
 

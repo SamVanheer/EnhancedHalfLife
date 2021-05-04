@@ -62,7 +62,7 @@ void CLight::KeyValue(KeyValueData* pkvd)
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "pitch"))
 	{
-		pev->angles.x = atof(pkvd->szValue);
+		SetAbsAngles({static_cast<float>(atof(pkvd->szValue)), GetAbsAngles().y, GetAbsAngles().z});
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "pattern"))
@@ -172,7 +172,7 @@ void CEnvLight::KeyValue(KeyValueData* pkvd)
 void CEnvLight::Spawn()
 {
 	char szVector[64];
-	UTIL_MakeAimVectors(pev->angles);
+	UTIL_MakeAimVectors(GetAbsAngles());
 
 	snprintf(szVector, sizeof(szVector), "%f", gpGlobals->v_forward.x);
 	CVAR_SET_STRING("sv_skyvec_x", szVector);

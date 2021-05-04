@@ -387,7 +387,7 @@ void CIchthyosaur::HandleAnimEvent(AnimationEvent& event)
 				break;
 
 			const Vector vecShootDir = ShootAtEnemy(GetAbsOrigin());
-			UTIL_MakeAimVectors(pev->angles);
+			UTIL_MakeAimVectors(GetAbsAngles());
 
 			if (DotProduct(vecShootDir, gpGlobals->v_forward) > 0.707)
 			{
@@ -397,9 +397,12 @@ void CIchthyosaur::HandleAnimEvent(AnimationEvent& event)
 				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() - gpGlobals->v_right * 300);
 				if (pHurt->IsPlayer())
 				{
-					pHurt->pev->angles.x += RANDOM_FLOAT(-35, 35);
-					pHurt->pev->angles.y += RANDOM_FLOAT(-90, 90);
-					pHurt->pev->angles.z = 0;
+					Vector angles = pHurt->GetAbsAngles();
+					angles.x += RANDOM_FLOAT(-35, 35);
+					angles.y += RANDOM_FLOAT(-90, 90);
+					angles.z = 0;
+					pHurt->SetAbsAngles(angles);
+
 					pHurt->pev->fixangle = FixAngleMode::Absolute;
 				}
 				pHurt->TakeDamage({this, this, gSkillData.ichthyosaurDmgShake, DMG_SLASH});
@@ -453,7 +456,7 @@ void CIchthyosaur::Spawn()
 	m_flMaxDist = 384;
 
 	Vector Forward;
-	AngleVectors(pev->angles, &Forward, nullptr, nullptr);
+	AngleVectors(GetAbsAngles(), &Forward, nullptr, nullptr);
 	SetAbsVelocity(m_flightSpeed * Forward.Normalize());
 	m_SaveVelocity = GetAbsVelocity();
 }
@@ -662,7 +665,9 @@ void CIchthyosaur::RunTask(Task_t* pTask)
 
 	case TASK_ICHTHYOSAUR_FLOAT:
 	{
-		pev->angles.x = UTIL_ApproachAngle(0, pev->angles.x, 20);
+		Vector angles = GetAbsAngles();
+		angles.x = UTIL_ApproachAngle(0, angles.x, 20);
+		SetAbsAngles(angles);
 
 		Vector newVelocity = GetAbsVelocity() * 0.8;
 		if (pev->waterlevel > WaterLevel::Feet && newVelocity.z < 64)
@@ -706,7 +711,7 @@ void CIchthyosaur::Move(float flInterval)
 
 float CIchthyosaur::PitchDiff()
 {
-	const float flCurrentPitch = UTIL_AngleMod(pev->angles.z);
+	const float flCurrentPitch = UTIL_AngleMod(GetAbsAngles().z);
 
 	if (flCurrentPitch == pev->idealpitch)
 	{
@@ -751,7 +756,9 @@ float CIchthyosaur::ChangePitch(int speed)
 
 		m_flLastPitchTime = gpGlobals->time;
 
-		pev->angles.x = UTIL_Approach(target, pev->angles.x, 220.0 * delta);
+		Vector angles = GetAbsAngles();
+		angles.x = UTIL_Approach(target, angles.x, 220.0 * delta);
+		SetAbsAngles(angles);
 	}
 	return 0;
 }
@@ -780,7 +787,9 @@ float CIchthyosaur::ChangeYaw(int speed)
 
 		m_flLastZYawTime = gpGlobals->time;
 
-		pev->angles.z = UTIL_Approach(target, pev->angles.z, 220.0 * delta);
+		Vector angles = GetAbsAngles();
+		angles.z = UTIL_Approach(target, angles.z, 220.0 * delta);
+		SetAbsAngles(angles);
 	}
 	return CFlyingMonster::ChangeYaw(speed);
 }
@@ -836,11 +845,13 @@ void CIchthyosaur::Swim()
 
 	if (IsBitSet(pev->flags, FL_ONGROUND))
 	{
-		pev->angles.x = 0;
-		pev->angles.y += RANDOM_FLOAT(-45, 45);
+		Vector angles = GetAbsAngles();
+		angles.x = 0;
+		angles.y += RANDOM_FLOAT(-45, 45);
+		SetAbsAngles(angles);
 		ClearBits(pev->flags, FL_ONGROUND);
 
-		const Vector Angles = Vector(-pev->angles.x, pev->angles.y, pev->angles.z);
+		const Vector Angles = Vector(-GetAbsAngles().x, GetAbsAngles().y, GetAbsAngles().z);
 
 		Vector Forward, Up;
 		AngleVectors(Angles, &Forward, nullptr, &Up);
@@ -895,7 +906,9 @@ void CIchthyosaur::Swim()
 	const Vector SteeringVector = f + r + l + u + d;
 	m_SaveVelocity = (m_SaveVelocity + SteeringVector / 2).Normalize();
 
-	Angles = Vector(-pev->angles.x, pev->angles.y, pev->angles.z);
+	Vector myAngles = GetAbsAngles();
+
+	Angles = Vector(-myAngles.x, myAngles.y, myAngles.z);
 	AngleVectors(Angles, &Forward, nullptr, nullptr);
 	// ALERT( at_console, "%f : %f\n", Angles.x, Forward.z );
 
@@ -927,26 +940,27 @@ void CIchthyosaur::Swim()
 	//
 	if (Angles.x > 180)
 		Angles.x = Angles.x - 360;
-	pev->angles.x = UTIL_Approach(Angles.x, pev->angles.x, 50 * 0.1);
-	if (pev->angles.x < -80) pev->angles.x = -80;
-	if (pev->angles.x > 80) pev->angles.x = 80;
+
+	myAngles.x = UTIL_Approach(Angles.x, myAngles.x, 50 * 0.1);
+	if (myAngles.x < -80) myAngles.x = -80;
+	if (myAngles.x > 80) myAngles.x = 80;
 
 	// Smooth Yaw and generate Roll
 	//
 	float turn = 360;
-	// ALERT( at_console, "Y %.0f %.0f\n", Angles.y, pev->angles.y );
+	// ALERT( at_console, "Y %.0f %.0f\n", Angles.y, myAngles.y );
 
-	if (fabs(Angles.y - pev->angles.y) < fabs(turn))
+	if (fabs(Angles.y - myAngles.y) < fabs(turn))
 	{
-		turn = Angles.y - pev->angles.y;
+		turn = Angles.y - myAngles.y;
 	}
-	if (fabs(Angles.y - pev->angles.y + 360) < fabs(turn))
+	if (fabs(Angles.y - myAngles.y + 360) < fabs(turn))
 	{
-		turn = Angles.y - pev->angles.y + 360;
+		turn = Angles.y - myAngles.y + 360;
 	}
-	if (fabs(Angles.y - pev->angles.y - 360) < fabs(turn))
+	if (fabs(Angles.y - myAngles.y - 360) < fabs(turn))
 	{
-		turn = Angles.y - pev->angles.y - 360;
+		turn = Angles.y - myAngles.y - 360;
 	}
 
 	float speed = m_flightSpeed * 0.1;
@@ -963,9 +977,10 @@ void CIchthyosaur::Swim()
 			turn = speed;
 		}
 	}
-	pev->angles.y += turn;
-	pev->angles.z -= turn;
-	pev->angles.y = fmod((pev->angles.y + 360.0), 360.0);
+
+	myAngles.y += turn;
+	myAngles.z -= turn;
+	myAngles.y = fmod((myAngles.y + 360.0), 360.0);
 
 	//TODO: could break if multiple ichtys exist
 	static float yaw_adj;
@@ -979,36 +994,38 @@ void CIchthyosaur::Swim()
 	// Roll Smoothing
 	//
 	turn = 360;
-	if (fabs(Angles.z - pev->angles.z) < fabs(turn))
+	if (fabs(Angles.z - myAngles.z) < fabs(turn))
 	{
-		turn = Angles.z - pev->angles.z;
+		turn = Angles.z - myAngles.z;
 	}
-	if (fabs(Angles.z - pev->angles.z + 360) < fabs(turn))
+	if (fabs(Angles.z - myAngles.z + 360) < fabs(turn))
 	{
-		turn = Angles.z - pev->angles.z + 360;
+		turn = Angles.z - myAngles.z + 360;
 	}
-	if (fabs(Angles.z - pev->angles.z - 360) < fabs(turn))
+	if (fabs(Angles.z - myAngles.z - 360) < fabs(turn))
 	{
-		turn = Angles.z - pev->angles.z - 360;
+		turn = Angles.z - myAngles.z - 360;
 	}
 	speed = m_flightSpeed / 2 * 0.1;
 	if (fabs(turn) < speed)
 	{
-		pev->angles.z += turn;
+		myAngles.z += turn;
 	}
 	else
 	{
 		if (turn < 0.0)
 		{
-			pev->angles.z -= speed;
+			myAngles.z -= speed;
 		}
 		else
 		{
-			pev->angles.z += speed;
+			myAngles.z += speed;
 		}
 	}
-	if (pev->angles.z < -20) pev->angles.z = -20;
-	if (pev->angles.z > 20) pev->angles.z = 20;
+	if (myAngles.z < -20) myAngles.z = -20;
+	if (myAngles.z > 20) myAngles.z = 20;
+
+	SetAbsAngles(myAngles);
 
 	//AngleVectors(Vector(-Angles.x, Angles.y, Angles.z), &Forward, nullptr, nullptr);
 

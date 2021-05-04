@@ -186,12 +186,12 @@ const Vector& CBeam::GetEndPos()
 	const int type = GetType();
 	if (type == BEAM_POINTS || type == BEAM_HOSE)
 	{
-		return pev->angles;
+		return GetAbsAngles();
 	}
 
 	if (CBaseEntity* pEntity = UTIL_EntityByIndex(GetEndEntity()); pEntity)
 		return pEntity->GetAbsOrigin();
-	return pev->angles;
+	return GetAbsAngles();
 }
 
 CBeam* CBeam::BeamCreate(const char* pSpriteName, int width)
@@ -1123,10 +1123,12 @@ void CSprite::Spawn()
 		TurnOn();
 
 	// Worldcraft only sets y rotation, copy to Z
-	if (pev->angles.y != 0 && pev->angles.z == 0)
+	Vector myAngles = GetAbsAngles();
+	if (myAngles.y != 0 && myAngles.z == 0)
 	{
-		pev->angles.z = pev->angles.y;
-		pev->angles.y = 0;
+		myAngles.z = myAngles.y;
+		myAngles.y = 0;
+		SetAbsAngles(myAngles);
 	}
 }
 
@@ -2055,7 +2057,7 @@ void CEnvBeverage::Use(const UseInfo& info)
 		return;
 	}
 
-	CBaseEntity* pCan = CBaseEntity::Create("item_sodacan", GetAbsOrigin(), pev->angles, this);
+	CBaseEntity* pCan = CBaseEntity::Create("item_sodacan", GetAbsOrigin(), GetAbsAngles(), this);
 
 	if (pev->skin == 6)
 	{

@@ -243,7 +243,7 @@ CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, co
 
 	pEntity->SetOwner(pOwner);
 	pEntity->SetAbsOrigin(vecOrigin);
-	pEntity->pev->angles = vecAngles;
+	pEntity->SetAbsAngles(vecAngles);
 
 	DispatchSpawn(pEntity->edict());
 

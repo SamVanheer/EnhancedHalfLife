@@ -116,7 +116,7 @@ bool CGauss::Deploy()
 void CGauss::Holster()
 {
 	UTIL_PlaybackEvent(FEV_GLOBAL | FEV_RELIABLE, m_hPlayer, m_usGaussFire,
-		{.delay = 0.01f, .origin = m_hPlayer->GetAbsOrigin(), .angles = m_hPlayer->pev->angles, .fparam1 = 0.0f, .bparam1 = false, .bparam2 = true});
+		{.delay = 0.01f, .origin = m_hPlayer->GetAbsOrigin(), .angles = m_hPlayer->GetAbsAngles(), .fparam1 = 0.0f, .bparam1 = false, .bparam2 = true});
 
 	m_hPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 
@@ -350,14 +350,14 @@ void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
 
 	// The main firing event is sent unreliably so it won't be delayed.
 	UTIL_PlaybackEvent(FEV_NOTHOST, m_hPlayer, m_usGaussFire,
-		{.origin = m_hPlayer->GetAbsOrigin(), .angles = m_hPlayer->pev->angles, .fparam1 =flDamage, .bparam1 = m_fPrimaryFire, .bparam2 = false});
+		{.origin = m_hPlayer->GetAbsOrigin(), .angles = m_hPlayer->GetAbsAngles(), .fparam1 =flDamage, .bparam1 = m_fPrimaryFire, .bparam2 = false});
 
 	// This reliable event is used to stop the spinning sound
 	// It's delayed by a fraction of second to make sure it is delayed by 1 frame on the client
 	// It's sent reliably anyway, which could lead to other delays
 
 	UTIL_PlaybackEvent(FEV_NOTHOST | FEV_RELIABLE, m_hPlayer, m_usGaussFire,
-		{.delay = 0.01f, .origin = m_hPlayer->GetAbsOrigin(), .angles = m_hPlayer->pev->angles, .fparam1 = 0.0f, .bparam1 = false, .bparam2 = true});
+		{.delay = 0.01f, .origin = m_hPlayer->GetAbsOrigin(), .angles = m_hPlayer->GetAbsAngles(), .fparam1 = 0.0f, .bparam1 = false, .bparam2 = true});
 
 	/*ALERT( at_console, "%f %f %f\n%f %f %f\n",
 		vecSrc.x, vecSrc.y, vecSrc.z,

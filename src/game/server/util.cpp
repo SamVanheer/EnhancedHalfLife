@@ -1214,21 +1214,21 @@ void UTIL_StripToken(const char* pKey, char* pDest)
 
 void SetMovedir(CBaseEntity* pEntity)
 {
-	if (pEntity->pev->angles == Vector(0, -1, 0))
+	if (pEntity->GetAbsAngles() == Vector(0, -1, 0))
 	{
 		pEntity->pev->movedir = vec3_up;
 	}
-	else if (pEntity->pev->angles == Vector(0, -2, 0))
+	else if (pEntity->GetAbsAngles() == Vector(0, -2, 0))
 	{
 		pEntity->pev->movedir = vec3_down;
 	}
 	else
 	{
-		UTIL_MakeVectors(pEntity->pev->angles);
+		UTIL_MakeVectors(pEntity->GetAbsAngles());
 		pEntity->pev->movedir = gpGlobals->v_forward;
 	}
 
-	pEntity->pev->angles = vec3_origin;
+	pEntity->SetAbsAngles(vec3_origin);
 }
 
 Vector GetBrushModelOrigin(CBaseEntity* pBModel)

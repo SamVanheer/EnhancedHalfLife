@@ -296,7 +296,7 @@ void CLeech::HandleAnimEvent(AnimationEvent& event)
 		if (CBaseEntity* pEnemy = m_hEnemy; pEnemy != nullptr)
 		{
 			Vector face;
-			AngleVectors(pev->angles, &face, nullptr, nullptr);
+			AngleVectors(GetAbsAngles(), &face, nullptr, nullptr);
 			face.z = 0;
 
 			Vector dir = pEnemy->GetAbsOrigin() - GetAbsOrigin();
@@ -322,7 +322,7 @@ void CLeech::HandleAnimEvent(AnimationEvent& event)
 
 void CLeech::MakeVectors()
 {
-	Vector tmp = pev->angles;
+	Vector tmp = GetAbsAngles();
 	tmp.x = -tmp.x;
 	UTIL_MakeVectors(tmp);
 }
@@ -441,10 +441,12 @@ void CLeech::UpdateMotion()
 	else
 		targetPitch = 0;
 
-	pev->angles.x = UTIL_Approach(targetPitch, pev->angles.x, 60 * LEECH_FRAMETIME);
+	Vector myAngles = GetAbsAngles();
+
+	myAngles.x = UTIL_Approach(targetPitch, myAngles.x, 60 * LEECH_FRAMETIME);
 
 	// bank
-	pev->avelocity.z = -(pev->angles.z + (pev->avelocity.y * 0.25));
+	pev->avelocity.z = -(myAngles.z + (pev->avelocity.y * 0.25));
 
 	if (m_MonsterState == NPCState::Combat && HasConditions(bits_COND_CAN_MELEE_ATTACK1))
 		m_IdealActivity = ACT_MELEE_ATTACK1;
@@ -457,8 +459,8 @@ void CLeech::UpdateMotion()
 		SetAbsVelocity(vec3_origin);
 
 		// Animation will intersect the floor if either of these is non-zero
-		pev->angles.z = 0;
-		pev->angles.x = 0;
+		myAngles.x = 0;
+		myAngles.z = 0;
 
 		if (pev->framerate < 1.0)
 			pev->framerate = 1.0;
@@ -470,6 +472,8 @@ void CLeech::UpdateMotion()
 		RecalculateWaterlevel();
 		m_waterTime = gpGlobals->time + 2;	// Recalc again soon, water may be rising
 	}
+
+	SetAbsAngles(myAngles);
 
 	if (m_Activity != m_IdealActivity)
 	{
@@ -546,7 +550,7 @@ void CLeech::SwimThink()
 			// Turn towards target ent
 			targetYaw = UTIL_VecToYaw(location);
 
-			targetYaw = UTIL_AngleDiff(targetYaw, UTIL_AngleMod(pev->angles.y));
+			targetYaw = UTIL_AngleDiff(targetYaw, UTIL_AngleMod(GetAbsAngles().y));
 
 			if (targetYaw < (-LEECH_TURN_RATE * 0.75))
 				targetYaw = (-LEECH_TURN_RATE * 0.75);
@@ -637,8 +641,7 @@ void CLeech::Killed(const KilledInfo& info)
 	// When we hit the ground, play the "death_end" activity
 	if (pev->waterlevel != WaterLevel::Dry)
 	{
-		pev->angles.z = 0;
-		pev->angles.x = 0;
+		SetAbsAngles({0, GetAbsAngles().y, 0});
 		SetAbsOrigin(GetAbsOrigin() + Vector(0, 0, 1));
 		pev->avelocity = vec3_origin;
 		if (RANDOM_LONG(0, 99) < 70)

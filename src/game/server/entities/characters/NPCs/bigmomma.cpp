@@ -225,10 +225,10 @@ public:
 		CBaseEntity* pTarget = m_hTargetEnt;
 		if (pTarget)
 		{
-			if (pTarget->pev->angles.y != 0)
-				return pTarget->pev->angles.y;
+			if (pTarget->GetAbsAngles().y != 0)
+				return pTarget->GetAbsAngles().y;
 		}
-		return pev->angles.y;
+		return GetAbsAngles().y;
 	}
 
 	// Restart the crab count on each new level
@@ -411,7 +411,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 	case BIG_AE_MELEE_ATTACK1:
 	{
 		Vector forward, right;
-		AngleVectors(pev->angles, &forward, &right, nullptr);
+		AngleVectors(GetAbsAngles(), &forward, &right, nullptr);
 
 		const Vector center = GetAbsOrigin() + forward * 128;
 		const Vector mins = center - Vector(64, 64, 0);
@@ -502,7 +502,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 		ClearBits(pev->flags, FL_ONGROUND);
 
 		SetAbsOrigin(GetAbsOrigin() + Vector(0, 0, 1));// take him off ground so engine doesn't instantly reset onground 
-		UTIL_MakeVectors(pev->angles);
+		UTIL_MakeVectors(GetAbsAngles());
 
 		SetAbsVelocity((gpGlobals->v_forward * 200) + gpGlobals->v_up * 500);
 		break;
@@ -569,7 +569,7 @@ bool CBigMomma::TakeDamage(const TakeDamageInfo& info)
 
 void CBigMomma::LayHeadcrab()
 {
-	CBaseEntity* pChild = CBaseEntity::Create(BIG_CHILDCLASS.data(), GetAbsOrigin(), pev->angles, this);
+	CBaseEntity* pChild = CBaseEntity::Create(BIG_CHILDCLASS.data(), GetAbsOrigin(), GetAbsAngles(), this);
 
 	pChild->pev->spawnflags |= SF_MONSTER_FALL_TO_GROUND;
 

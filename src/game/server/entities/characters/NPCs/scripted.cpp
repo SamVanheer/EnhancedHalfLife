@@ -238,6 +238,7 @@ bool CCineMonster::FindEntity()
 
 void CCineMonster::PossessEntity()
 {
+	//TOOD: most of this is identical to aiscripted_sequence
 	CBaseMonster* pTarget = nullptr;
 	if (CBaseEntity* pEntity = m_hTargetEnt; pEntity)
 		pTarget = pEntity->MyMonsterPointer();
@@ -281,11 +282,11 @@ void CCineMonster::PossessEntity()
 
 		case ScriptedMoveTo::Instantaneous:
 			pTarget->SetAbsOrigin(GetAbsOrigin());
-			pTarget->pev->ideal_yaw = pev->angles.y;
+			pTarget->pev->ideal_yaw = GetAbsAngles().y;
 			pTarget->pev->avelocity = vec3_origin;
 			pTarget->SetAbsVelocity(vec3_origin);
 			pTarget->pev->effects |= EF_NOINTERP;
-			pTarget->pev->angles.y = pev->angles.y;
+			pTarget->SetAbsAngles({0, GetAbsAngles().y, 0});
 			pTarget->m_scriptState = ScriptState::Wait;
 			m_startTime = gpGlobals->time + 1E6;
 			// UNDONE: Add a flag to do this so people can fixup physics after teleporting monsters
@@ -347,11 +348,11 @@ void CCineAI::PossessEntity()
 		case ScriptedMoveTo::Instantaneous:
 			// zap the monster instantly to the site of the script entity.
 			pTarget->SetAbsOrigin(GetAbsOrigin());
-			pTarget->pev->ideal_yaw = pev->angles.y;
+			pTarget->pev->ideal_yaw = GetAbsAngles().y;
 			pTarget->pev->avelocity = vec3_origin;
 			pTarget->SetAbsVelocity(vec3_origin);
 			pTarget->pev->effects |= EF_NOINTERP;
-			pTarget->pev->angles.y = pev->angles.y;
+			pTarget->SetAbsAngles({0, GetAbsAngles().y, 0});
 			pTarget->m_scriptState = ScriptState::Wait;
 			m_startTime = gpGlobals->time + 1E6;
 			// UNDONE: Add a flag to do this so people can fixup physics after teleporting monsters

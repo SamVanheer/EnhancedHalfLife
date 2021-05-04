@@ -395,18 +395,18 @@ void CTalkMonster::StartTask(Task_t* pTask)
 		if (m_hTalkTarget != nullptr)
 		{
 			pev->yaw_speed = 60;
-			float yaw = VecToYaw(m_hTalkTarget->GetAbsOrigin() - GetAbsOrigin()) - pev->angles.y;
+			float yaw = VecToYaw(m_hTalkTarget->GetAbsOrigin() - GetAbsOrigin()) - GetAbsAngles().y;
 
 			if (yaw > 180) yaw -= 360;
 			if (yaw < -180) yaw += 360;
 
 			if (yaw < 0)
 			{
-				pev->ideal_yaw = std::min(yaw + 45, 0.0f) + pev->angles.y;
+				pev->ideal_yaw = std::min(yaw + 45, 0.0f) + GetAbsAngles().y;
 			}
 			else
 			{
-				pev->ideal_yaw = std::max(yaw - 45, 0.0f) + pev->angles.y;
+				pev->ideal_yaw = std::max(yaw - 45, 0.0f) + GetAbsAngles().y;
 			}
 		}
 		TaskComplete();
@@ -436,7 +436,7 @@ void CTalkMonster::StartTask(Task_t* pTask)
 
 	case TASK_MOVE_AWAY_PATH:
 	{
-		Vector dir = pev->angles;
+		Vector dir = GetAbsAngles();
 		dir.y = pev->ideal_yaw + 180;
 		Vector move;
 
@@ -508,7 +508,7 @@ void CTalkMonster::RunTask(Task_t* pTask)
 				TaskFail();
 			}
 
-			UTIL_MakeVectors(pPlayer->pev->angles);
+			UTIL_MakeVectors(pPlayer->GetAbsAngles());
 			if (UTIL_DotPoints(pPlayer->GetAbsOrigin(), GetAbsOrigin(), gpGlobals->v_forward) < m_flFieldOfView)
 			{
 				// player looked away
@@ -925,7 +925,7 @@ void CTalkMonster::IdleHeadTurn(const Vector& vecFriend)
 	// turn head in desired direction only if ent has a turnable head
 	if (m_afCapability & bits_CAP_TURN_HEAD)
 	{
-		float yaw = VecToYaw(vecFriend - GetAbsOrigin()) - pev->angles.y;
+		float yaw = VecToYaw(vecFriend - GetAbsOrigin()) - GetAbsAngles().y;
 
 		if (yaw > 180) yaw -= 360;
 		if (yaw < -180) yaw += 360;
@@ -1165,7 +1165,7 @@ Schedule_t* CTalkMonster::GetScheduleOfType(int Type)
 			if (CBasePlayer* pPlayer = UTIL_PlayerByIndex(1); pPlayer)
 			{
 				// watch the client.
-				UTIL_MakeVectors(pPlayer->pev->angles);
+				UTIL_MakeVectors(pPlayer->GetAbsAngles());
 				if ((pPlayer->GetAbsOrigin() - GetAbsOrigin()).Length2D() < TLK_STARE_DIST &&
 					UTIL_DotPoints(pPlayer->GetAbsOrigin(), GetAbsOrigin(), gpGlobals->v_forward) >= m_flFieldOfView)
 				{

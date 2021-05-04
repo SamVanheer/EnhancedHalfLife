@@ -333,7 +333,7 @@ void CBaseTrigger::InitTrigger()
 {
 	// trigger angles are used for one-way touches.  An angle of 0 is assumed
 	// to mean no restrictions, so use a yaw of 360 instead.
-	if (pev->angles != vec3_origin)
+	if (GetAbsAngles() != vec3_origin)
 		SetMovedir(this);
 	SetSolidType(Solid::Trigger);
 	SetMovetype(Movetype::None);
@@ -762,7 +762,7 @@ void CTriggerMultiple::MultiTouch(CBaseEntity* pOther)
 		// if the trigger has an angles field, check player's facing direction
 		if (pev->movedir != vec3_origin)
 		{
-			UTIL_MakeVectors(pOther->pev->angles);
+			UTIL_MakeVectors(pOther->GetAbsAngles());
 			if (DotProduct(gpGlobals->v_forward, pev->movedir) < 0)
 				return;         // not facing the right way
 		}
@@ -884,8 +884,11 @@ void CTriggerPush::KeyValue(KeyValueData* pkvd)
 
 void CTriggerPush::Spawn()
 {
-	if (pev->angles == vec3_origin)
-		pev->angles.y = 360;
+	if (Vector myAngles = GetAbsAngles(); myAngles == vec3_origin)
+	{
+		myAngles.y = 360;
+		SetAbsAngles(myAngles);
+	}
 	InitTrigger();
 
 	if (pev->speed == 0)
@@ -987,11 +990,11 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 
 	pOther->SetAbsOrigin(tmp);
 
-	pOther->pev->angles = pTarget->pev->angles;
+	pOther->SetAbsAngles(pTarget->GetAbsAngles());
 
 	if (pOther->IsPlayer())
 	{
-		pOther->pev->v_angle = pTarget->pev->angles;
+		pOther->pev->v_angle = pTarget->GetAbsAngles();
 	}
 
 	pOther->pev->fixangle = FixAngleMode::Absolute;
@@ -1187,9 +1190,10 @@ void CTriggerCamera::Use(const UseInfo& info)
 	if (IsBitSet(pev->spawnflags, SF_CAMERA_PLAYER_POSITION))
 	{
 		SetAbsOrigin(pActivator->GetAbsOrigin() + pActivator->pev->view_ofs);
-		pev->angles.x = -pActivator->pev->angles.x;
-		pev->angles.y = pActivator->pev->angles.y;
-		pev->angles.z = 0;
+		Vector angles = pActivator->GetAbsAngles();
+		angles.x = -angles.x;
+		angles.z = 0;
+		SetAbsAngles(angles);
 		SetAbsVelocity(pActivator->GetAbsVelocity());
 	}
 	else
@@ -1238,14 +1242,18 @@ void CTriggerCamera::FollowTarget()
 	Vector vecGoal = VectorAngles(m_hTarget->GetAbsOrigin() - GetAbsOrigin());
 	vecGoal.x = -vecGoal.x;
 
-	if (pev->angles.y > 360)
-		pev->angles.y -= 360;
+	Vector myAngles = GetAbsAngles();
 
-	if (pev->angles.y < 0)
-		pev->angles.y += 360;
+	if (myAngles.y > 360)
+		myAngles.y -= 360;
 
-	float dx = vecGoal.x - pev->angles.x;
-	float dy = vecGoal.y - pev->angles.y;
+	if (myAngles.y < 0)
+		myAngles.y += 360;
+
+	SetAbsAngles(myAngles);
+
+	float dx = vecGoal.x - myAngles.x;
+	float dy = vecGoal.y - myAngles.y;
 
 	if (dx < -180)
 		dx += 360;

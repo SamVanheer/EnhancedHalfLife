@@ -142,12 +142,15 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 			// if what we hit is static architecture, can stay around for a while.
 			Vector vecDir = GetAbsVelocity().Normalize();
 			SetAbsOrigin(GetAbsOrigin() - vecDir * 12);
-			pev->angles = VectorAngles(vecDir);
 			SetSolidType(Solid::Not);
 			SetMovetype(Movetype::Fly);
 			SetAbsVelocity(vec3_origin);
 			pev->avelocity.z = 0;
-			pev->angles.z = RANDOM_LONG(0, 360);
+
+			Vector myAngles = VectorAngles(vecDir);
+			myAngles.z = RANDOM_LONG(0, 360);
+			SetAbsAngles(myAngles);
+
 			pev->nextthink = gpGlobals->time + 10.0;
 		}
 
@@ -381,7 +384,7 @@ void CCrossbow::FireBolt()
 #ifndef CLIENT_DLL
 	CCrossbowBolt* pBolt = CCrossbowBolt::BoltCreate();
 	pBolt->SetAbsOrigin(vecSrc);
-	pBolt->pev->angles = anglesAim;
+	pBolt->SetAbsAngles(anglesAim);
 	pBolt->SetOwner(m_hPlayer);
 
 	if (m_hPlayer->pev->waterlevel == WaterLevel::Head)

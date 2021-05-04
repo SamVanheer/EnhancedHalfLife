@@ -171,10 +171,10 @@ void CHAssassin::Shoot()
 	}
 	m_flLastShot = gpGlobals->time;
 
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 
 	const Vector vecShellVelocity = gpGlobals->v_right * RANDOM_FLOAT(40, 90) + gpGlobals->v_up * RANDOM_FLOAT(75, 200) + gpGlobals->v_forward * RANDOM_FLOAT(-40, 40);
-	EjectBrass(GetAbsOrigin() + gpGlobals->v_up * 32 + gpGlobals->v_forward * 12, vecShellVelocity, pev->angles.y, m_iShell, TE_BOUNCE_SHELL);
+	EjectBrass(GetAbsOrigin() + gpGlobals->v_up * 32 + gpGlobals->v_forward * 12, vecShellVelocity, GetAbsAngles().y, m_iShell, TE_BOUNCE_SHELL);
 	FireBullets(1, vecShootOrigin, vecShootDir, Vector(m_flDiviation, m_flDiviation, m_flDiviation), 2048, BULLET_MONSTER_9MM); // shoot +-8 degrees
 
 	switch (RANDOM_LONG(0, 1))
@@ -204,7 +204,7 @@ void CHAssassin::HandleAnimEvent(AnimationEvent& event)
 		break;
 	case ASSASSIN_AE_TOSS1:
 	{
-		UTIL_MakeVectors(pev->angles);
+		UTIL_MakeVectors(GetAbsAngles());
 		CGrenade::ShootTimed(this, GetAbsOrigin() + gpGlobals->v_forward * 34 + Vector(0, 0, 32), m_vecTossVelocity, 2.0);
 
 		m_flNextGrenadeCheck = gpGlobals->time + 6;// wait six seconds before even looking again to see if a grenade can be thrown.
@@ -215,7 +215,7 @@ void CHAssassin::HandleAnimEvent(AnimationEvent& event)
 	case ASSASSIN_AE_JUMP:
 	{
 		// ALERT( at_console, "jumping");
-		UTIL_MakeAimVectors(pev->angles);
+		UTIL_MakeAimVectors(GetAbsAngles());
 		SetMovetype(Movetype::Toss);
 		pev->flags &= ~FL_ONGROUND;
 		SetAbsVelocity(m_vecJumpVelocity);

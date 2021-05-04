@@ -289,7 +289,7 @@ void CFuncPlat::Setup()
 	if (m_flTWidth == 0)
 		m_flTWidth = 10;
 
-	pev->angles = vec3_origin;
+	SetAbsAngles(vec3_origin);
 
 	SetSolidType(Solid::BSP);
 	SetMovetype(Movetype::Push);
@@ -526,8 +526,8 @@ void CFuncPlatRot::SetupRotation()
 	if (m_vecFinalAngle.x != 0)		// This plat rotates too!
 	{
 		CBaseToggle::AxisDir(this);
-		m_start = pev->angles;
-		m_end = pev->angles + pev->movedir * m_vecFinalAngle.x;
+		m_start = GetAbsAngles();
+		m_end = GetAbsAngles() + pev->movedir * m_vecFinalAngle.x;
 	}
 	else
 	{
@@ -536,7 +536,7 @@ void CFuncPlatRot::SetupRotation()
 	}
 	if (!IsStringNull(pev->targetname))	// Start at top
 	{
-		pev->angles = m_end;
+		SetAbsAngles(m_end);
 	}
 }
 
@@ -556,7 +556,7 @@ void CFuncPlatRot::HitBottom()
 {
 	CFuncPlat::HitBottom();
 	pev->avelocity = vec3_origin;
-	pev->angles = m_start;
+	SetAbsAngles(m_start);
 }
 
 void CFuncPlatRot::GoUp()
@@ -569,13 +569,13 @@ void CFuncPlatRot::HitTop()
 {
 	CFuncPlat::HitTop();
 	pev->avelocity = vec3_origin;
-	pev->angles = m_end;
+	SetAbsAngles(m_end);
 }
 
 void CFuncPlatRot::RotMove(const Vector& destAngle, float time)
 {
 	// set destdelta to the vector needed to move
-	const Vector vecDestDelta = destAngle - pev->angles;
+	const Vector vecDestDelta = destAngle - GetAbsAngles();
 
 	// Travel time is so short, we're practically there already;  so make it so.
 	if (time >= 0.1)
@@ -1113,18 +1113,18 @@ void CFuncTrackTrain::Next()
 	angles.y += 180;
 
 	// !!!  All of this crap has to be done to make the angles not wrap around, revisit this.
-	UTIL_FixupAngles(angles);
-	UTIL_FixupAngles(pev->angles);
+	angles = UTIL_FixupAngles(angles);
+	SetAbsAngles(UTIL_FixupAngles(GetAbsAngles()));
 
 	if (!pnext || (delta.x == 0 && delta.y == 0))
-		angles = pev->angles;
+		angles = GetAbsAngles();
 
 	float vx;
 	if (!(pev->spawnflags & SF_TRACKTRAIN_NOPITCH))
-		vx = UTIL_AngleDistance(angles.x, pev->angles.x);
+		vx = UTIL_AngleDistance(angles.x, GetAbsAngles().x);
 	else
 		vx = 0;
-	const float vy = UTIL_AngleDistance(angles.y, pev->angles.y);
+	const float vy = UTIL_AngleDistance(angles.y, GetAbsAngles().y);
 
 	pev->avelocity.y = vy * 10;
 	pev->avelocity.x = vx * 10;
@@ -1132,11 +1132,11 @@ void CFuncTrackTrain::Next()
 	if (m_flBank != 0)
 	{
 		if (pev->avelocity.y < -5)
-			pev->avelocity.z = UTIL_AngleDistance(UTIL_ApproachAngle(-m_flBank, pev->angles.z, m_flBank * 2), pev->angles.z);
+			pev->avelocity.z = UTIL_AngleDistance(UTIL_ApproachAngle(-m_flBank, GetAbsAngles().z, m_flBank * 2), GetAbsAngles().z);
 		else if (pev->avelocity.y > 5)
-			pev->avelocity.z = UTIL_AngleDistance(UTIL_ApproachAngle(m_flBank, pev->angles.z, m_flBank * 2), pev->angles.z);
+			pev->avelocity.z = UTIL_AngleDistance(UTIL_ApproachAngle(m_flBank, GetAbsAngles().z, m_flBank * 2), GetAbsAngles().z);
 		else
-			pev->avelocity.z = UTIL_AngleDistance(UTIL_ApproachAngle(0, pev->angles.z, m_flBank * 4), pev->angles.z) * 4;
+			pev->avelocity.z = UTIL_AngleDistance(UTIL_ApproachAngle(0, GetAbsAngles().z, m_flBank * 4), GetAbsAngles().z) * 4;
 	}
 
 	if (pnext)
@@ -1266,7 +1266,7 @@ bool CFuncTrackTrain::OnControls(CBaseEntity* pTest)
 		return false;
 
 	// Transform offset into local coordinates
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 	const Vector local
 	{
 		DotProduct(offset, gpGlobals->v_forward),
@@ -1302,12 +1302,16 @@ void CFuncTrackTrain::Find()
 	path->LookAhead(look, m_length, 0);
 	look.z += m_height;
 
-	pev->angles = VectorAngles(look - nextPos);
+	Vector angles = VectorAngles(look - nextPos);
+
 	// The train actually points west
-	pev->angles.y += 180;
+	angles.y += 180;
 
 	if (pev->spawnflags & SF_TRACKTRAIN_NOPITCH)
-		pev->angles.x = 0;
+		angles.x = 0;
+
+	SetAbsAngles(angles);
+
 	SetAbsOrigin(nextPos);
 	NextThink(pev->ltime + 0.1, false);
 	SetThink(&CFuncTrackTrain::Next);
@@ -1584,14 +1588,14 @@ void CFuncTrackChange::Spawn()
 	{
 		SetAbsOrigin(m_vecPosition2);
 		m_toggle_state = ToggleState::AtBottom;
-		pev->angles = m_start;
+		SetAbsAngles(m_start);
 		m_targetState = ToggleState::AtTop;
 	}
 	else
 	{
 		SetAbsOrigin(m_vecPosition1);
 		m_toggle_state = ToggleState::AtTop;
-		pev->angles = m_end;
+		SetAbsAngles(m_end);
 		m_targetState = ToggleState::AtBottom;
 	}
 
@@ -1727,7 +1731,7 @@ void CFuncTrackChange::UpdateTrain(Vector& dest)
 		return;
 
 	const Vector offset = train->GetAbsOrigin() - GetAbsOrigin();
-	const Vector delta = dest - pev->angles;
+	const Vector delta = dest - GetAbsAngles();
 	// Transform offset into local coordinates
 	UTIL_MakeInvVectors(delta, gpGlobals);
 	Vector local

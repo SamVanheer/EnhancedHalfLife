@@ -484,6 +484,13 @@ public:
 		pev->velocity = velocity;
 	}
 
+	const Vector& GetAbsAngles() const { return pev->angles; }
+
+	void SetAbsAngles(const Vector& angles)
+	{
+		pev->angles = angles;
+	}
+
 	void SetSize(const Vector& mins, const Vector& maxs);
 
 	void SetModel(const char* modelName)

@@ -139,8 +139,11 @@ void CBreakable::Spawn()
 
 	SetSolidType(Solid::BSP);
 	SetMovetype(Movetype::Push);
-	m_angle = pev->angles.y;
-	pev->angles.y = 0;
+
+	Vector angles = GetAbsAngles();
+	m_angle = angles.y;
+	angles.y = 0;
+	SetAbsAngles(angles);
 
 	// HACK:  matGlass can receive decals, we need the client to know about this
 	//  so use class to store the material flag
@@ -451,8 +454,10 @@ void CBreakable::Use(const UseInfo& info)
 {
 	if (IsBreakable())
 	{
-		pev->angles.y = m_angle;
-		UTIL_MakeVectors(pev->angles);
+		Vector angles = GetAbsAngles();
+		angles.y = m_angle;
+		SetAbsAngles(angles);
+		UTIL_MakeVectors(angles);
 		g_vecAttackDir = gpGlobals->v_forward;
 
 		Die();
@@ -704,11 +709,11 @@ void CBreakable::Die()
 	SetThink(&CBreakable::SUB_Remove);
 	pev->nextthink = pev->ltime + 0.1;
 	if (!IsStringNull(m_iszSpawnObject))
-		CBaseEntity::Create(STRING(m_iszSpawnObject), GetBrushModelOrigin(this), pev->angles, this);
+		CBaseEntity::Create(STRING(m_iszSpawnObject), GetBrushModelOrigin(this), GetAbsAngles(), this);
 
 	if (Explodable())
 	{
-		UTIL_CreateExplosion(Center(), pev->angles, this, ExplosionMagnitude(), true);
+		UTIL_CreateExplosion(Center(), GetAbsAngles(), this, ExplosionMagnitude(), true);
 	}
 }
 

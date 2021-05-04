@@ -121,7 +121,7 @@ void CTripmineGrenade::Spawn()
 		m_hRealOwner = owner;// see CTripmineGrenade for why.
 	}
 
-	UTIL_MakeAimVectors(pev->angles);
+	UTIL_MakeAimVectors(GetAbsAngles());
 
 	m_vecDir = gpGlobals->v_forward;
 	m_vecEnd = GetAbsOrigin() + m_vecDir * 2048;
@@ -167,7 +167,7 @@ void CTripmineGrenade::PowerupThink()
 			SetOwner(newOwner);
 			m_hOwner = newOwner;
 			m_posOwner = newOwner->GetAbsOrigin();
-			m_angleOwner = newOwner->pev->angles;
+			m_angleOwner = newOwner->GetAbsAngles();
 		}
 		else
 		{
@@ -180,12 +180,12 @@ void CTripmineGrenade::PowerupThink()
 			return;
 		}
 	}
-	else if (m_posOwner != m_hOwner->GetAbsOrigin() || m_angleOwner != m_hOwner->pev->angles)
+	else if (m_posOwner != m_hOwner->GetAbsOrigin() || m_angleOwner != m_hOwner->GetAbsAngles())
 	{
 		// disable
 		StopSound(SoundChannel::Voice, "weapons/mine_deploy.wav");
 		StopSound(SoundChannel::Body, "weapons/mine_charge.wav");
-		CBaseEntity* pMine = Create("weapon_tripmine", GetAbsOrigin() + m_vecDir * 24, pev->angles);
+		CBaseEntity* pMine = Create("weapon_tripmine", GetAbsOrigin() + m_vecDir * 24, GetAbsAngles());
 		pMine->pev->spawnflags |= SF_NORESPAWN;
 
 		SetThink(&CTripmineGrenade::SUB_Remove);
@@ -268,7 +268,7 @@ void CTripmineGrenade::BeamBreakThink()
 			bBlowup = true;
 		else if (m_posOwner != m_hOwner->GetAbsOrigin())
 			bBlowup = true;
-		else if (m_angleOwner != m_hOwner->pev->angles)
+		else if (m_angleOwner != m_hOwner->GetAbsAngles())
 			bBlowup = true;
 	}
 
@@ -292,7 +292,7 @@ bool CTripmineGrenade::TakeDamage(const TakeDamageInfo& info)
 	if (gpGlobals->time < m_flPowerUp && info.GetDamage() < pev->health)
 	{
 		// disable
-		// Create( "weapon_tripmine", GetAbsOrigin() + m_vecDir * 24, pev->angles );
+		// Create("weapon_tripmine", GetAbsOrigin() + m_vecDir * 24, GetAbsAngles());
 		SetThink(&CTripmineGrenade::SUB_Remove);
 		pev->nextthink = gpGlobals->time + 0.1;
 		KillBeam();

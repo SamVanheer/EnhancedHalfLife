@@ -93,7 +93,7 @@ public:
 	Vector		BarrelPosition()
 	{
 		Vector forward, right, up;
-		AngleVectors(pev->angles, forward, right, up);
+		AngleVectors(GetAbsAngles(), forward, right, up);
 		return GetAbsOrigin() + (forward * m_barrelPos.x) + (right * m_barrelPos.y) + (up * m_barrelPos.z);
 	}
 
@@ -205,8 +205,8 @@ void CFuncTank::Spawn()
 	SetSolidType(Solid::BSP);
 	SetModel(STRING(pev->model));
 
-	m_yawCenter = pev->angles.y;
-	m_pitchCenter = pev->angles.x;
+	m_yawCenter = GetAbsAngles().y;
+	m_pitchCenter = GetAbsAngles().x;
 
 	if (IsActive())
 		pev->nextthink = pev->ltime + 1.0;
@@ -417,7 +417,7 @@ void CFuncTank::ControllerPostFrame()
 	if (CBasePlayer* controller = m_hController; controller->pev->button & IN_ATTACK)
 	{
 		Vector vecForward;
-		AngleVectors(pev->angles, &vecForward, nullptr, nullptr);
+		AngleVectors(GetAbsAngles(), &vecForward, nullptr, nullptr);
 
 		m_fireLast = gpGlobals->time - (1 / m_fireRate) - 0.01;  // to make sure the gun doesn't fire too many bullets
 
@@ -581,7 +581,7 @@ void CFuncTank::TrackTarget()
 		m_lastSightTime = gpGlobals->time;
 
 	// Move toward target at rate or less
-	const float distY = UTIL_AngleDistance(angles.y, pev->angles.y);
+	const float distY = UTIL_AngleDistance(angles.y, GetAbsAngles().y);
 	pev->avelocity.y = distY * 10;
 	if (pev->avelocity.y > m_yawRate)
 		pev->avelocity.y = m_yawRate;
@@ -595,7 +595,7 @@ void CFuncTank::TrackTarget()
 		angles.x = m_pitchCenter - m_pitchRange;
 
 	// Move toward target at rate or less
-	const float distX = UTIL_AngleDistance(angles.x, pev->angles.x);
+	const float distX = UTIL_AngleDistance(angles.x, GetAbsAngles().x);
 	pev->avelocity.x = distX * 10;
 
 	if (pev->avelocity.x > m_pitchRate)
@@ -610,7 +610,7 @@ void CFuncTank::TrackTarget()
 	{
 		bool fire = false;
 		Vector forward;
-		AngleVectors(pev->angles, &forward, nullptr, nullptr);
+		AngleVectors(GetAbsAngles(), &forward, nullptr, nullptr);
 
 		if (pev->spawnflags & SF_TANK_LINEOFSIGHT)
 		{
@@ -725,7 +725,7 @@ void CFuncTankGun::Fire(const Vector& barrelEnd, const Vector& forward, CBaseEnt
 	if (m_fireLast != 0)
 	{
 		// FireBullets needs gpGlobals->v_up, etc.
-		UTIL_MakeAimVectors(pev->angles);
+		UTIL_MakeAimVectors(GetAbsAngles());
 
 		const int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
 		if (bulletCount > 0)
@@ -842,7 +842,7 @@ void CFuncTankLaser::Fire(const Vector& barrelEnd, const Vector& forward, CBaseE
 	if (m_fireLast != 0 && GetLaser())
 	{
 		// TankTrace needs gpGlobals->v_up, etc.
-		UTIL_MakeAimVectors(pev->angles);
+		UTIL_MakeAimVectors(GetAbsAngles());
 
 		const int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
 		if (bulletCount)
@@ -894,7 +894,7 @@ void CFuncTankRocket::Fire(const Vector& barrelEnd, const Vector& forward, CBase
 		{
 			for (int i = 0; i < bulletCount; i++)
 			{
-				CBaseEntity* pRocket = CBaseEntity::Create("rpg_rocket", barrelEnd, pev->angles, this);
+				CBaseEntity* pRocket = CBaseEntity::Create("rpg_rocket", barrelEnd, GetAbsAngles(), this);
 			}
 			CFuncTank::Fire(barrelEnd, forward, pAttacker);
 		}
@@ -934,11 +934,11 @@ void CFuncTankMortar::Fire(const Vector& barrelEnd, const Vector& forward, CBase
 			TraceResult tr;
 
 			// TankTrace needs gpGlobals->v_up, etc.
-			UTIL_MakeAimVectors(pev->angles);
+			UTIL_MakeAimVectors(GetAbsAngles());
 
 			TankTrace(barrelEnd, forward, gTankSpread[m_spread], tr);
 
-			UTIL_CreateExplosion(tr.vecEndPos, pev->angles, this, pev->impulse, true);
+			UTIL_CreateExplosion(tr.vecEndPos, GetAbsAngles(), this, pev->impulse, true);
 
 			CFuncTank::Fire(barrelEnd, forward, pAttacker);
 		}

@@ -560,10 +560,10 @@ void CBasePlayer::PackDeadPlayerItems()
 	}
 
 	// create a box to pack the stuff into.
-	CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", GetAbsOrigin(), pev->angles, this);
+	CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", GetAbsOrigin(), GetAbsAngles(), this);
 
-	pWeaponBox->pev->angles.x = 0;// don't let weaponbox tilt.
-	pWeaponBox->pev->angles.z = 0;
+	// don't let weaponbox tilt.
+	pWeaponBox->SetAbsAngles({0, pWeaponBox->GetAbsAngles().y, 0});
 
 	pWeaponBox->SetThink(&CWeaponBox::Kill);
 	pWeaponBox->pev->nextthink = gpGlobals->time + 120;
@@ -705,8 +705,7 @@ void CBasePlayer::Killed(const KilledInfo& info)
 
 	DeathSound();
 
-	pev->angles.x = 0;
-	pev->angles.z = 0;
+	SetAbsAngles({0, GetAbsAngles().y, 0});
 
 	SetThink(&CBasePlayer::PlayerDeathThink);
 	pev->nextthink = gpGlobals->time + 0.1;
@@ -1108,7 +1107,7 @@ void CBasePlayer::StartDeathCam()
 		CopyToBodyQue(this);
 
 		SetAbsOrigin(pSpot->GetAbsOrigin());
-		pev->angles = pev->v_angle = pSpot->pev->v_angle;
+		SetAbsAngles(pev->v_angle = pSpot->pev->v_angle);
 	}
 	else
 	{
@@ -1118,7 +1117,7 @@ void CBasePlayer::StartDeathCam()
 		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + Vector(0, 0, 128), IgnoreMonsters::Yes, this, &tr);
 
 		SetAbsOrigin(tr.vecEndPos);
-		pev->angles = pev->v_angle = VectorAngles(tr.vecEndPos - GetAbsOrigin());
+		SetAbsAngles(pev->v_angle = VectorAngles(tr.vecEndPos - GetAbsOrigin()));
 	}
 
 	// start death cam
@@ -1171,7 +1170,7 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 	m_afPhysicsFlags |= PFLAG_OBSERVER;
 	pev->effects = EF_NODRAW;
 	pev->view_ofs = vec3_origin;
-	pev->angles = pev->v_angle = vecViewAngle;
+	SetAbsAngles(pev->v_angle = vecViewAngle);
 	pev->fixangle = FixAngleMode::Absolute;
 	SetSolidType(Solid::Not);
 	SetDamageMode(DamageMode::No);
@@ -1330,7 +1329,7 @@ void CBasePlayer::Jump()
 	}
 
 	// many features in this function use v_forward, so makevectors now.
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 
 	// ClearBits(pev->flags, FL_ONGROUND);		// don't stairwalk
 
@@ -2056,7 +2055,7 @@ void CBasePlayer::UpdatePlayerSound()
 	if (m_iWeaponFlash < 0)
 		m_iWeaponFlash = 0;
 
-	//UTIL_MakeVectors ( pev->angles );
+	//UTIL_MakeVectors(GetAbsAngles());
 	//gpGlobals->v_forward.z = 0;
 
 	// Below are a couple of useful little bits that make it easier to determine just how much noise the 
@@ -2362,10 +2361,10 @@ bool CBasePlayer::Restore(CRestore& restore)
 		// default to normal spawn
 		CBaseEntity* pSpawnSpot = EntSelectSpawnPoint(this);
 		SetAbsOrigin(pSpawnSpot->GetAbsOrigin() + vec3_up);
-		pev->angles = pSpawnSpot->pev->angles;
+		SetAbsAngles(pSpawnSpot->GetAbsAngles());
 	}
 	pev->v_angle.z = 0;	// Clear out roll
-	pev->angles = pev->v_angle;
+	SetAbsAngles(pev->v_angle);
 
 	pev->fixangle = FixAngleMode::Absolute;           // turn this way immediately
 
@@ -2493,7 +2492,7 @@ public:
 void CSprayCan::Spawn(CBaseEntity* pOwner)
 {
 	SetAbsOrigin(pOwner->GetAbsOrigin() + Vector(0, 0, 32));
-	pev->angles = pOwner->pev->v_angle;
+	SetAbsAngles(pOwner->pev->v_angle);
 	SetOwner(pOwner);
 	pev->frame = 0;
 
@@ -2512,7 +2511,7 @@ void CSprayCan::Think()
 	// ALERT(at_console, "Spray by player %i, %i of %i\n", playernum, (int)(pev->frame + 1), nFrames);
 
 	TraceResult	tr;
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 	UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, pPlayer, &tr);
 
 	// No customization present.
@@ -2542,7 +2541,7 @@ public:
 void CBloodSplat::Spawn(CBaseEntity* pOwner)
 {
 	SetAbsOrigin(pOwner->GetAbsOrigin() + Vector(0, 0, 32));
-	pev->angles = pOwner->pev->v_angle;
+	SetAbsAngles(pOwner->pev->v_angle);
 	SetOwner(pOwner);
 
 	SetThink(&CBloodSplat::Spray);
@@ -2554,7 +2553,7 @@ void CBloodSplat::Spray()
 	if (g_Language != LANGUAGE_GERMAN)
 	{
 		TraceResult	tr;
-		UTIL_MakeVectors(pev->angles);
+		UTIL_MakeVectors(GetAbsAngles());
 		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + gpGlobals->v_forward * 128, IgnoreMonsters::Yes, GetOwner(), &tr);
 
 		UTIL_BloodDecalTrace(&tr, BLOOD_COLOR_RED);
@@ -2725,7 +2724,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 		else
 		{
 			UTIL_MakeVectors(Vector(0, pev->v_angle.y, 0));
-			Create("monster_human_grunt", GetAbsOrigin() + gpGlobals->v_forward * 128, pev->angles);
+			Create("monster_human_grunt", GetAbsOrigin() + gpGlobals->v_forward * 128, GetAbsAngles());
 		}
 		break;
 	}
@@ -2838,19 +2837,19 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 
 	case	195:// show shortest paths for entire level to nearest node
 	{
-		Create("node_viewer_fly", GetAbsOrigin(), pev->angles);
+		Create("node_viewer_fly", GetAbsOrigin(), GetAbsAngles());
 		break;
 	}
 
 	case	196:// show shortest paths for entire level to nearest node
 	{
-		Create("node_viewer_large", GetAbsOrigin(), pev->angles);
+		Create("node_viewer_large", GetAbsOrigin(), GetAbsAngles());
 		break;
 	}
 
 	case	197:// show shortest paths for entire level to nearest node
 	{
-		Create("node_viewer_human", GetAbsOrigin(), pev->angles);
+		Create("node_viewer_human", GetAbsOrigin(), GetAbsAngles());
 		break;
 	}
 
@@ -3672,13 +3671,12 @@ void CBasePlayer::DropPlayerItem(const char* pszItemName)
 			if (!g_pGameRules->GetNextBestWeapon(this, pWeapon))
 				return; // can't drop the item they asked for, may be our last item or something we can't holster
 
-			UTIL_MakeVectors(pev->angles);
+			UTIL_MakeVectors(GetAbsAngles());
 
 			pev->weapons &= ~(1 << pWeapon->m_iId);// take item off hud
 
-			CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", GetAbsOrigin() + gpGlobals->v_forward * 10, pev->angles, this);
-			pWeaponBox->pev->angles.x = 0;
-			pWeaponBox->pev->angles.z = 0;
+			CWeaponBox* pWeaponBox = (CWeaponBox*)CBaseEntity::Create("weaponbox", GetAbsOrigin() + gpGlobals->v_forward * 10, GetAbsAngles(), this);
+			pWeaponBox->SetAbsAngles({0, pWeaponBox->GetAbsAngles().y, 0});
 			pWeaponBox->PackWeapon(pWeapon);
 			pWeaponBox->SetAbsVelocity(gpGlobals->v_forward * 300 + gpGlobals->v_forward * 100);
 

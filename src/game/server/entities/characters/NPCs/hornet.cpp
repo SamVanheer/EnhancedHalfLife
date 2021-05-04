@@ -282,7 +282,7 @@ void CHornet::TrackTarget()
 		break;
 	}
 
-	pev->angles = VectorAngles(GetAbsVelocity());
+	SetAbsAngles(VectorAngles(GetAbsVelocity()));
 
 	SetSolidType(Solid::BBox);
 

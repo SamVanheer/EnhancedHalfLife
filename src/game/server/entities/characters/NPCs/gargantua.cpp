@@ -462,7 +462,7 @@ void CGargantua::EyeUpdate()
 
 void CGargantua::StompAttack()
 {
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 	const Vector vecStart = GetAbsOrigin() + Vector(0, 0, 60) + 35 * gpGlobals->v_forward;
 	const Vector vecAim = ShootAtEnemy(vecStart);
 	const Vector vecEnd = (vecAim * 1024) + vecStart;
@@ -483,7 +483,7 @@ void CGargantua::FlameCreate()
 	Vector posGun, angleGun;
 	TraceResult trace;
 
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -546,7 +546,7 @@ void CGargantua::FlameUpdate()
 	{
 		if (m_hFlame[i])
 		{
-			Vector vecAim = pev->angles;
+			Vector vecAim = GetAbsAngles();
 			vecAim.x += m_flameX;
 			vecAim.y += m_flameY;
 
@@ -819,7 +819,7 @@ bool CGargantua::TakeDamage(const TakeDamageInfo& info)
 
 void CGargantua::DeathEffect()
 {
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 	const Vector deathPos = GetAbsOrigin() + gpGlobals->v_forward * 100;
 
 	// Create a spiral of streaks
@@ -901,7 +901,7 @@ void CGargantua::HandleAnimEvent(AnimationEvent& event)
 				pHurt->pev->punchangle.x = -30; // pitch
 				pHurt->pev->punchangle.y = -30;	// yaw
 				pHurt->pev->punchangle.z = 30;	// roll
-				//UTIL_MakeVectors(pev->angles);	// called by CheckTraceHullAttack
+				//UTIL_MakeVectors(GetAbsAngles());	// called by CheckTraceHullAttack
 				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() - gpGlobals->v_right * 100);
 			}
 			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, 50 + RANDOM_LONG(0, 15));
@@ -910,7 +910,7 @@ void CGargantua::HandleAnimEvent(AnimationEvent& event)
 			EmitSound(SoundChannel::Weapon, pAttackMissSounds[RANDOM_LONG(0, ArraySize(pAttackMissSounds) - 1)], VOL_NORM, ATTN_NORM, 50 + RANDOM_LONG(0, 15));
 
 		Vector forward;
-		AngleVectors(pev->angles, &forward, nullptr, nullptr);
+		AngleVectors(GetAbsAngles(), &forward, nullptr, nullptr);
 	}
 	break;
 
@@ -939,7 +939,7 @@ CBaseEntity* CGargantua::GargantuaCheckTraceHullAttack(float flDist, int iDamage
 {
 	TraceResult tr;
 
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 	Vector vecStart = GetAbsOrigin();
 	vecStart.z += 64;
 	const Vector vecEnd = vecStart + (gpGlobals->v_forward * flDist) - (gpGlobals->v_up * flDist * 0.3);
@@ -1103,7 +1103,7 @@ void CGargantua::RunTask(Task_t* pTask)
 				Vector dir = pEnemy->BodyTarget(org) - org;
 				angles = VectorAngles(dir);
 				angles.x = -angles.x;
-				angles.y -= pev->angles.y;
+				angles.y -= GetAbsAngles().y;
 				if (dir.Length() > 400)
 					cancel = true;
 			}
@@ -1142,7 +1142,7 @@ void CSmoker::Spawn()
 	SetSolidType(Solid::Not);
 	SetSize(vec3_origin, vec3_origin);
 	pev->effects |= EF_NODRAW;
-	pev->angles = vec3_origin;
+	SetAbsAngles(vec3_origin);
 }
 
 void CSmoker::Think()
@@ -1172,7 +1172,7 @@ void CSpiral::Spawn()
 	SetSolidType(Solid::Not);
 	SetSize(vec3_origin, vec3_origin);
 	pev->effects |= EF_NODRAW;
-	pev->angles = vec3_origin;
+	SetAbsAngles(vec3_origin);
 }
 
 CSpiral* CSpiral::Create(const Vector& origin, float height, float radius, float duration)
@@ -1188,7 +1188,7 @@ CSpiral* CSpiral::Create(const Vector& origin, float height, float radius, float
 	pSpiral->pev->dmg = height;
 	pSpiral->pev->speed = duration;
 	pSpiral->pev->health = 0;
-	pSpiral->pev->angles = vec3_origin;
+	pSpiral->SetAbsAngles(vec3_origin);
 
 	return pSpiral;
 }
@@ -1208,8 +1208,12 @@ void CSpiral::Think()
 		const float radius = (pev->scale * pev->health) * fraction;
 
 		position.z += (pev->health * pev->dmg) * fraction;
-		pev->angles.y = (pev->health * 360 * 8) * fraction;
-		UTIL_MakeVectors(pev->angles);
+
+		Vector angles = GetAbsAngles();
+		angles.y = (pev->health * 360 * 8) * fraction;
+		SetAbsAngles(angles);
+
+		UTIL_MakeVectors(angles);
 		position = position + gpGlobals->v_forward * radius;
 		const Vector direction = (vec3_up + gpGlobals->v_forward).Normalize();
 

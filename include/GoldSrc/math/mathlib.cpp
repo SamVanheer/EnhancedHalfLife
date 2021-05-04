@@ -213,11 +213,14 @@ float UTIL_FixAngle(float angle)
 	return angle;
 }
 
-void UTIL_FixupAngles(Vector& v)
+Vector UTIL_FixupAngles(const Vector& v)
 {
-	v.x = UTIL_FixAngle(v.x);
-	v.y = UTIL_FixAngle(v.y);
-	v.z = UTIL_FixAngle(v.z);
+	return
+	{
+		UTIL_FixAngle(v.x),
+		UTIL_FixAngle(v.y),
+		UTIL_FixAngle(v.z)
+	};
 }
 
 void InterpolateAngles(Vector& start, Vector& end, Vector& output, float frac)

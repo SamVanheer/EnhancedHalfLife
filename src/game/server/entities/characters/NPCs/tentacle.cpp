@@ -250,7 +250,7 @@ void CTentacle::Spawn()
 	m_iDir = 1;
 
 	pev->yaw_speed = 18;
-	m_flInitialYaw = pev->angles.y;
+	m_flInitialYaw = GetAbsAngles().y;
 	pev->ideal_yaw = m_flInitialYaw;
 
 	g_fFlySound = false;
@@ -429,7 +429,7 @@ void CTentacle::Cycle()
 
 	if (m_MonsterState == NPCState::Script || m_IdealMonsterState == NPCState::Script)
 	{
-		pev->angles.y = m_flInitialYaw;
+		SetAbsAngles({GetAbsAngles().x, m_flInitialYaw, GetAbsAngles().z});
 		pev->ideal_yaw = m_flInitialYaw;
 		ClearConditions(IgnoreConditions());
 		MonsterThink();
@@ -626,7 +626,7 @@ void CTentacle::Cycle()
 		case TENTACLE_ANIM_Lev2_Tap:
 		case TENTACLE_ANIM_Lev3_Tap:
 		{
-			UTIL_MakeVectors(pev->angles);
+			UTIL_MakeVectors(GetAbsAngles());
 
 			TraceResult tr1, tr2;
 
@@ -772,7 +772,7 @@ void CTentacle::HandleAnimEvent(AnimationEvent& event)
 		Vector vecSrc, vecAngles;
 		GetAttachment(0, vecSrc, vecAngles);
 
-		// Vector vecSrc = GetAbsOrigin() + m_flTapRadius * Vector( cos( pev->angles.y * (3.14192653 / 180.0) ), sin( pev->angles.y * (M_PI / 180.0) ), 0.0 );
+		// Vector vecSrc = GetAbsOrigin() + m_flTapRadius * Vector( cos(GetAbsAngles().y * (3.14192653 / 180.0) ), sin(GetAbsAngles().y * (M_PI / 180.0) ), 0.0 );
 
 		// vecSrc.z += MyHeight( );
 
@@ -810,7 +810,7 @@ void CTentacle::HandleAnimEvent(AnimationEvent& event)
 	case 2:	// tap scrape
 	case 6: // light tap
 	{
-		Vector vecSrc = GetAbsOrigin() + m_flTapRadius * Vector(cos(pev->angles.y * (M_PI / 180.0)), sin(pev->angles.y * (M_PI / 180.0)), 0.0);
+		Vector vecSrc = GetAbsOrigin() + m_flTapRadius * Vector(cos(GetAbsAngles().y * (M_PI / 180.0)), sin(GetAbsAngles().y * (M_PI / 180.0)), 0.0);
 
 		vecSrc.z += MyHeight();
 
@@ -921,7 +921,7 @@ void CTentacle::HitTouch(CBaseEntity* pOther)
 
 	// ALERT( at_console, "%s : ", STRING( tr.pHit->v.classname ) );
 
-	// ALERT( at_console, "%.0f : %s : %d\n", pev->angles.y, pOther->GetClassname(), tr.iHitgroup );
+	// ALERT( at_console, "%.0f : %s : %d\n", GetAbsAngles().y, pOther->GetClassname(), tr.iHitgroup );
 }
 
 bool CTentacle::TakeDamage(const TakeDamageInfo& info)
@@ -965,7 +965,8 @@ void CTentacleMaw::Spawn()
 	pev->yaw_speed = 8;
 	pev->sequence = 0;
 
-	pev->angles.x = 90;
+	SetAbsAngles({90, GetAbsAngles().y, GetAbsAngles().z});
+
 	// ResetSequenceInfo( );
 }
 

@@ -542,10 +542,10 @@ void CBaseDoor::DoorGoUp()
 			if (!IsBitSet(pev->spawnflags, SF_DOOR_ONEWAY) && pev->movedir.y) 		// Y axis rotation, move away from the player
 			{
 				const Vector vec = pActivator->GetAbsOrigin() - GetAbsOrigin();
-				const Vector angles{0, pActivator->pev->angles.y, 0};
+				const Vector angles{0, pActivator->GetAbsAngles().y, 0};
 				UTIL_MakeVectors(angles);
 				//			Vector vnext = (pActivator->GetAbsOrigin() + (pActivator->GetAbsVelocity() * 10)) - GetAbsOrigin();
-				UTIL_MakeVectors(pActivator->pev->angles);
+				UTIL_MakeVectors(pActivator->GetAbsAngles());
 				const Vector vnext = (pActivator->GetAbsOrigin() + (gpGlobals->v_forward * 10)) - GetAbsOrigin();
 				if ((vec.x * vnext.y - vec.y * vnext.x) < 0)
 					sign = -1.0;
@@ -686,7 +686,7 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 							}
 							else
 							{// set angles to realign rotating doors
-								pDoor->pev->angles = pev->angles;
+								pDoor->SetAbsAngles(GetAbsAngles());
 								pDoor->pev->avelocity = vec3_origin;
 							}
 						}
@@ -742,8 +742,8 @@ void CRotDoor::Spawn()
 		pev->movedir = pev->movedir * -1;
 
 	//m_flWait			= 2; who the hell did this? (sjb)
-	m_vecAngle1 = pev->angles;
-	m_vecAngle2 = pev->angles + pev->movedir * m_flMoveDistance;
+	m_vecAngle1 = GetAbsAngles();
+	m_vecAngle2 = GetAbsAngles() + pev->movedir * m_flMoveDistance;
 
 	ASSERTSZ(m_vecAngle1 != m_vecAngle2, "rotating door start/end positions are equal");
 
@@ -764,7 +764,7 @@ void CRotDoor::Spawn()
 	if (IsBitSet(pev->spawnflags, SF_DOOR_START_OPEN))
 	{	// swap pos1 and pos2, put door at pos2, invert movement direction
 		//TODO: swapping incorrectly?
-		pev->angles = m_vecAngle2;
+		SetAbsAngles(m_vecAngle2);
 		const Vector vecSav = m_vecAngle1;
 		m_vecAngle2 = m_vecAngle1;
 		m_vecAngle1 = vecSav;

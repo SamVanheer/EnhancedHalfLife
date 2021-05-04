@@ -231,7 +231,7 @@ void CFlockingFlyerFlock::SpawnFlock()
 		pBoid->SpawnCommonCode();
 		pBoid->pev->flags &= ~FL_ONGROUND;
 		pBoid->SetAbsVelocity(vec3_origin);
-		pBoid->pev->angles = pev->angles;
+		pBoid->SetAbsAngles(GetAbsAngles());
 
 		pBoid->pev->frame = 0;
 		pBoid->pev->nextthink = gpGlobals->time + 0.2;
@@ -352,10 +352,10 @@ void CFlockingFlyer::BoidAdvanceFrame()
 	pev->framerate = flapspeed;
 
 	// lean
-	pev->avelocity.x = -(pev->angles.x + flapspeed * 5);
+	pev->avelocity.x = -(GetAbsAngles().x + flapspeed * 5);
 
 	// bank
-	pev->avelocity.z = -(pev->angles.z + pev->avelocity.y);
+	pev->avelocity.z = -(GetAbsAngles().z + pev->avelocity.y);
 
 	// pev->framerate		= flapspeed;
 	StudioFrameAdvance(0.1);
@@ -477,7 +477,7 @@ bool CFlockingFlyer::PathBlocked()
 
 	// use VELOCITY, not angles, not all boids point the direction they are flying
 	//vecDir = VectorAngles( pevBoid->velocity );
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 
 	bool fBlocked = false;// assume the way ahead is clear
 
@@ -518,7 +518,7 @@ void CFlockingFlyer::FlockLeaderThink()
 {
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 
 	// is the way ahead clear?
 	if (!PathBlocked())
@@ -625,7 +625,7 @@ void CFlockingFlyer::FlockFollowerThink()
 	const float flDistToLeader = vecDirToLeader.Length();
 
 	// match heading with leader
-	pev->angles = squadLeader->pev->angles;
+	SetAbsAngles(squadLeader->GetAbsAngles());
 
 	//
 	// We can see the leader, so try to catch up to it
@@ -701,7 +701,7 @@ void CFlockingFlyer::FlockFollowerThink()
 			//const Vector vecDir = VectorAngles(GetAbsVelocity());
 			//UTIL_MakeVectors ( vecDir );
 
-			UTIL_MakeVectors ( pev->angles );
+			UTIL_MakeVectors (GetAbsAngles());
 
 			// measure clearance on left and right to pick the best dir to turn
 			TraceResult tr;

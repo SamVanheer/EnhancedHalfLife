@@ -217,7 +217,7 @@ void CISlave::IdleSound()
 	ClearBeams();
 	ArmBeam(side);
 
-	UTIL_MakeAimVectors(pev->angles);
+	UTIL_MakeAimVectors(GetAbsAngles());
 	Vector vecSrc = GetAbsOrigin() + gpGlobals->v_right * 2 * side;
 	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSrc);
 	WRITE_BYTE(TE_DLIGHT);
@@ -337,7 +337,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 		if (g_SkillLevel == SkillLevel::Hard)
 			pev->framerate = 1.5;
 
-		UTIL_MakeAimVectors(pev->angles);
+		UTIL_MakeAimVectors(GetAbsAngles());
 
 		if (m_iBeams == 0)
 		{
@@ -385,7 +385,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 
 			if (!trace.fStartSolid)
 			{
-				CBaseEntity* pNew = Create("monster_alien_slave", m_hDead->GetAbsOrigin(), m_hDead->pev->angles);
+				CBaseEntity* pNew = Create("monster_alien_slave", m_hDead->GetAbsOrigin(), m_hDead->GetAbsAngles());
 				CBaseMonster* pNewMonster = pNew->MyMonsterPointer();
 				pNew->pev->spawnflags |= SF_ISLAVE_IS_REVIVED_SLAVE;
 				WackBeam(-1, pNew);
@@ -394,7 +394,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 				EmitSound(SoundChannel::Weapon, "hassault/hw_shoot1.wav", VOL_NORM, ATTN_NORM, RANDOM_LONG(130, 160));
 
 				/*
-				CBaseEntity *pEffect = Create( "test_effect", pNew->Center(), pev->angles );
+				CBaseEntity *pEffect = Create("test_effect", pNew->Center(), GetAbsAngles());
 				pEffect->Use( this, this, UseType::On, 1 );
 				*/
 				break;
@@ -402,7 +402,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 		}
 		ClearMultiDamage();
 
-		UTIL_MakeAimVectors(pev->angles);
+		UTIL_MakeAimVectors(GetAbsAngles());
 
 		ZapBeam(-1);
 		ZapBeam(1);
@@ -659,7 +659,7 @@ void CISlave::ArmBeam(int side)
 	if (m_iBeams >= ISLAVE_MAX_BEAMS)
 		return;
 
-	UTIL_MakeAimVectors(pev->angles);
+	UTIL_MakeAimVectors(GetAbsAngles());
 	const Vector vecSrc = GetAbsOrigin() + gpGlobals->v_up * 36 + gpGlobals->v_right * side * 16 + gpGlobals->v_forward * 32;
 
 	for (int i = 0; i < 3; i++)

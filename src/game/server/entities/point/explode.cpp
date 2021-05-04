@@ -28,7 +28,7 @@ LINK_ENTITY_TO_CLASS(spark_shower, CShower);
 
 void CShower::Spawn()
 {
-	Vector velocity = RANDOM_FLOAT(200, 300) * pev->angles;
+	Vector velocity = RANDOM_FLOAT(200, 300) * GetAbsAngles();
 
 	velocity.x += RANDOM_FLOAT(-100.f, 100.f);
 	velocity.y += RANDOM_FLOAT(-100.f, 100.f);
@@ -48,7 +48,7 @@ void CShower::Spawn()
 	pev->effects |= EF_NODRAW;
 	pev->speed = RANDOM_FLOAT(0.5, 1.5);
 
-	pev->angles = vec3_origin;
+	SetAbsAngles(vec3_origin);
 }
 
 void CShower::Think()

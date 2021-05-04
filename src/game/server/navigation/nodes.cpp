@@ -1382,7 +1382,7 @@ void CNodeEnt::Spawn()
 
 	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_vecOriginPeek =
 		WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_vecOrigin = GetAbsOrigin();
-	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_flHintYaw = pev->angles.y;
+	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_flHintYaw = GetAbsAngles().y;
 	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_sHintType = m_sHintType;
 	WorldGraph.m_pNodes[WorldGraph.m_cNodes].m_sHintActivity = m_sHintActivity;
 
@@ -1399,9 +1399,11 @@ void CNodeEnt::Spawn()
 void CTestHull::ShowBadNode()
 {
 	SetMovetype(Movetype::Fly);
-	pev->angles.y = pev->angles.y + 4;
+	Vector myAngles = GetAbsAngles();
+	myAngles.y = myAngles.y + 4;
+	SetAbsAngles(myAngles);
 
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(myAngles);
 
 	UTIL_ParticleEffect(GetAbsOrigin(), vec3_origin, 255, 25);
 	UTIL_ParticleEffect(GetAbsOrigin() + gpGlobals->v_forward * 64, vec3_origin, 255, 25);
@@ -1636,7 +1638,7 @@ void CTestHull::BuildNodeGraph()
 					bool fWalkFailed = false;
 
 					// in this loop we take tiny steps from the current node to the nodes that it links to, one at a time.
-					// pev->angles.y = flYaw;
+					// SetAbsAngles({GetAbsAngles().x, flYaw, GetAbsAngles().z});
 					int step;
 					for (step = 0; step < flDist && !fWalkFailed; step += HULL_STEP_SIZE)
 					{

@@ -364,7 +364,7 @@ bool CSquadMonster::NoFriendlyFire()
 
 	UTIL_MakeVectors(VectorAngles(m_hEnemy->Center() - GetAbsOrigin()));
 
-	//UTIL_MakeVectors ( pev->angles );
+	//UTIL_MakeVectors (GetAbsAngles());
 
 	const Vector vecLeftSide = GetAbsOrigin() - (gpGlobals->v_right * (pev->size.x * 1.5));
 	const Vector vecRightSide = GetAbsOrigin() + (gpGlobals->v_right * (pev->size.x * 1.5));

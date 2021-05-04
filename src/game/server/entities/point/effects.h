@@ -116,7 +116,7 @@ public:
 	inline void	SetType(int type) { SetRenderMode(static_cast<RenderMode>((static_cast<int>(GetRenderMode()) & 0xF0) | (type & 0x0F))); }
 	inline void	SetFlags(int flags) { SetRenderMode(static_cast<RenderMode>((static_cast<int>(GetRenderMode()) & 0x0F) | (flags & 0xF0))); }
 	inline void SetStartPos(const Vector& pos) { SetAbsOrigin(pos); }
-	inline void SetEndPos(const Vector& pos) { pev->angles = pos; }
+	inline void SetEndPos(const Vector& pos) { SetAbsAngles(pos); }
 	void SetStartEntity(int entityIndex);
 	void SetEndEntity(int entityIndex);
 

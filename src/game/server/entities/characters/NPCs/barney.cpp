@@ -309,7 +309,7 @@ bool CBarney::CheckRangeAttack1(float flDot, float flDist)
 
 void CBarney::BarneyFirePistol()
 {
-	UTIL_MakeVectors(pev->angles);
+	UTIL_MakeVectors(GetAbsAngles());
 	const Vector vecShootOrigin = GetAbsOrigin() + Vector(0, 0, 55);
 	const Vector vecShootDir = ShootAtEnemy(vecShootOrigin);
 

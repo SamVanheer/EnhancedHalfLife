@@ -196,7 +196,7 @@ void CMonsterMaker::MakeMonster()
 	}
 
 	pEntity->SetAbsOrigin(GetAbsOrigin());
-	pEntity->pev->angles = pev->angles;
+	pEntity->SetAbsAngles(GetAbsAngles());
 	SetBits(pEntity->pev->spawnflags, SF_MONSTER_FALL_TO_GROUND);
 
 	// Children hit monsterclip brushes

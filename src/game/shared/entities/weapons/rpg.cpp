@@ -79,7 +79,7 @@ CRpgRocket* CRpgRocket::CreateRpgRocket(Vector vecOrigin, Vector vecAngles, CBas
 	CRpgRocket* pRocket = GetClassPtr((CRpgRocket*)nullptr);
 
 	pRocket->SetAbsOrigin(vecOrigin);
-	pRocket->pev->angles = vecAngles;
+	pRocket->SetAbsAngles(vecAngles);
 	pRocket->Spawn();
 	pRocket->SetTouch(&CRpgRocket::RocketTouch);
 	pRocket->m_hLauncher = pLauncher;// remember what RPG fired me. 
@@ -105,9 +105,12 @@ void CRpgRocket::Spawn()
 	SetThink(&CRpgRocket::IgniteThink);
 	SetTouch(&CRpgRocket::ExplodeTouch);
 
-	pev->angles.x -= 30;
-	UTIL_MakeVectors(pev->angles);
-	pev->angles.x = -(pev->angles.x + 30);
+	Vector myAngles = GetAbsAngles();
+
+	myAngles.x -= 30;
+	UTIL_MakeVectors(myAngles);
+	myAngles.x = -(myAngles.x + 30);
+	SetAbsAngles(myAngles);
 
 	SetAbsVelocity(gpGlobals->v_forward * 250);
 	pev->gravity = 0.5;
@@ -170,7 +173,7 @@ void CRpgRocket::IgniteThink()
 
 void CRpgRocket::FollowThink()
 {
-	UTIL_MakeAimVectors(pev->angles);
+	UTIL_MakeAimVectors(GetAbsAngles());
 
 	// Examine all entities within a reasonable radius
 	CBaseEntity* pOther = nullptr;
@@ -196,7 +199,7 @@ void CRpgRocket::FollowThink()
 		}
 	}
 
-	pev->angles = VectorAngles(vecTarget);
+	SetAbsAngles(VectorAngles(vecTarget));
 
 	// this acceleration and turning math is totally wrong, but it seems to respond well so don't change it.
 	const float flSpeed = GetAbsVelocity().Length();
