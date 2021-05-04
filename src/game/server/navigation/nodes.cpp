@@ -549,7 +549,7 @@ int CGraph::FindShortestPath(int* piPath, int iStart, int iDest, int iHull, int 
 
 		m_pNodes[iStart].m_flClosestSoFar = 0.0;
 		m_pNodes[iStart].m_iPreviousNode = iStart;// tag this as the origin node
-		queue.emplace(iStart, 0.0f);// insert start node 
+		queue.push({iStart, 0.0f});// insert start node 
 
 		while (!queue.empty())
 		{
@@ -593,7 +593,7 @@ int CGraph::FindShortestPath(int* piPath, int iStart, int iDest, int iHull, int 
 					m_pNodes[iVisitNode].m_flClosestSoFar = flOurDistance;
 					m_pNodes[iVisitNode].m_iPreviousNode = iCurrentNode;
 
-					queue.emplace(iVisitNode, flOurDistance);
+					queue.push({iVisitNode, flOurDistance});
 				}
 			}
 		}

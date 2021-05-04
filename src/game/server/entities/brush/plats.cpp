@@ -951,7 +951,7 @@ void CFuncTrackTrain::Blocked(CBaseEntity* pOther)
 	// Blocker is on-ground on the train
 	if (IsBitSet(pOther->pev->flags, FL_ONGROUND) && InstanceOrNull(pOther->pev->groundentity) == this)
 	{
-		const float deltaSpeed = std::min(fabs(pev->speed), 50.0f);
+		const float deltaSpeed = std::min(std::abs(pev->speed), 50.0f);
 		if (!pOther->GetAbsVelocity().z)
 			pOther->SetAbsVelocity(pOther->GetAbsVelocity() + Vector{0, 0, deltaSpeed});
 		return;
