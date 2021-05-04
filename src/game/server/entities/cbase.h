@@ -398,7 +398,7 @@ public:
 	virtual bool GiveHealth(float flHealth, int bitsDamageType);
 	virtual void Killed(const KilledInfo& info);
 	virtual int BloodColor() { return DONT_BLEED; }
-	virtual void TraceBleed(float flDamage, const Vector& vecDir, const TraceResult& tr, int bitsDamageType);
+	virtual void TraceBleed(const TraceAttackInfo& info);
 	virtual bool IsTriggered(CBaseEntity* pActivator) { return true; }
 	virtual CBaseMonster* MyMonsterPointer() { return nullptr; }
 	virtual CSquadMonster* MySquadMonsterPointer() { return nullptr; }

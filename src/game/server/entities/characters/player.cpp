@@ -244,7 +244,7 @@ void CBasePlayer::TraceAttack(const TraceAttackInfo& info)
 		}
 
 		SpawnBlood(info.GetTraceResult().vecEndPos, BloodColor(), adjustedInfo.GetDamage());// a little surface blood.
-		TraceBleed(adjustedInfo.GetDamage(), adjustedInfo.GetDirection(), adjustedInfo.GetTraceResult(), adjustedInfo.GetDamageTypes());
+		TraceBleed(adjustedInfo);
 		AddMultiDamage(adjustedInfo.GetAttacker(), this, adjustedInfo.GetDamage(), adjustedInfo.GetDamageTypes());
 	}
 }

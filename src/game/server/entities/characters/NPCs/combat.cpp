@@ -1093,7 +1093,7 @@ void CBaseEntity::TraceAttack(const TraceAttackInfo& info)
 		if (blood != DONT_BLEED)
 		{
 			SpawnBlood(vecOrigin, blood, info.GetDamage());// a little surface blood.
-			TraceBleed(info.GetDamage(), info.GetDirection(), info.GetTraceResult(), info.GetDamageTypes());
+			TraceBleed(info);
 		}
 	}
 }
@@ -1138,7 +1138,7 @@ void CBaseMonster::TraceAttack(const TraceAttackInfo& info)
 		}
 
 		SpawnBlood(adjustedInfo.GetTraceResult().vecEndPos, BloodColor(), adjustedInfo.GetDamage());// a little surface blood.
-		TraceBleed(adjustedInfo.GetDamage(), adjustedInfo.GetDirection(), adjustedInfo.GetTraceResult(), adjustedInfo.GetDamageTypes());
+		TraceBleed(adjustedInfo);
 		AddMultiDamage(adjustedInfo.GetAttacker(), this, adjustedInfo.GetDamage(), adjustedInfo.GetDamageTypes());
 	}
 }
@@ -1355,15 +1355,15 @@ Vector CBasePlayer::FireBulletsPlayer(uint32 cShots, const Vector& vecSrc, const
 	return Vector(x * vecSpread.x, y * vecSpread.y, 0.0);
 }
 
-void CBaseEntity::TraceBleed(float flDamage, const Vector& vecDir, const TraceResult& tr, int bitsDamageType)
+void CBaseEntity::TraceBleed(const TraceAttackInfo& info)
 {
 	if (BloodColor() == DONT_BLEED)
 		return;
 
-	if (flDamage == 0)
+	if (info.GetDamage() == 0)
 		return;
 
-	if (!(bitsDamageType & (DMG_CRUSH | DMG_BULLET | DMG_SLASH | DMG_BLAST | DMG_CLUB | DMG_MORTAR)))
+	if (!(info.GetDamageTypes() & (DMG_CRUSH | DMG_BULLET | DMG_SLASH | DMG_BLAST | DMG_CLUB | DMG_MORTAR)))
 		return;
 
 	// make blood decal on the wall! 
@@ -1386,12 +1386,12 @@ void CBaseEntity::TraceBleed(float flDamage, const Vector& vecDir, const TraceRe
 		}
 	*/
 
-	if (flDamage < 10)
+	if (info.GetDamage() < 10)
 	{
 		flNoise = 0.1;
 		cCount = 1;
 	}
-	else if (flDamage < 25)
+	else if (info.GetDamage() < 25)
 	{
 		flNoise = 0.2;
 		cCount = 2;
@@ -1405,13 +1405,13 @@ void CBaseEntity::TraceBleed(float flDamage, const Vector& vecDir, const TraceRe
 	TraceResult Bloodtr;
 	for (int i = 0; i < cCount; i++)
 	{
-		Vector vecTraceDir = vecDir * -1;// trace in the opposite direction the shot came from (the direction the shot is going)
+		Vector vecTraceDir = info.GetDirection() * -1;// trace in the opposite direction the shot came from (the direction the shot is going)
 
 		vecTraceDir.x += RANDOM_FLOAT(-flNoise, flNoise);
 		vecTraceDir.y += RANDOM_FLOAT(-flNoise, flNoise);
 		vecTraceDir.z += RANDOM_FLOAT(-flNoise, flNoise);
 
-		UTIL_TraceLine(tr.vecEndPos, tr.vecEndPos + vecTraceDir * -172, IgnoreMonsters::Yes, this, &Bloodtr);
+		UTIL_TraceLine(info.GetTraceResult().vecEndPos, info.GetTraceResult().vecEndPos + vecTraceDir * -172, IgnoreMonsters::Yes, this, &Bloodtr);
 
 		if (Bloodtr.flFraction != 1.0)
 		{
