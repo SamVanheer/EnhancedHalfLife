@@ -59,31 +59,31 @@ cvar_t* cl_pitchspeed;
 cvar_t* cl_anglespeedkey;
 cvar_t* cl_vsmoothing;
 
-kbutton_t	in_mlook;
-kbutton_t	in_klook;
-kbutton_t	in_jlook;
-kbutton_t	in_left;
-kbutton_t	in_right;
-kbutton_t	in_forward;
-kbutton_t	in_back;
-kbutton_t	in_lookup;
-kbutton_t	in_lookdown;
-kbutton_t	in_moveleft;
-kbutton_t	in_moveright;
-kbutton_t	in_strafe;
-kbutton_t	in_speed;
-kbutton_t	in_use;
-kbutton_t	in_jump;
-kbutton_t	in_attack;
-kbutton_t	in_attack2;
-kbutton_t	in_up;
-kbutton_t	in_down;
-kbutton_t	in_duck;
-kbutton_t	in_reload;
-kbutton_t	in_alt1;
-kbutton_t	in_score;
-kbutton_t	in_break;
-kbutton_t	in_graph;  // Display the netgraph
+kbutton_t in_mlook;
+kbutton_t in_klook;
+kbutton_t in_jlook;
+kbutton_t in_left;
+kbutton_t in_right;
+kbutton_t in_forward;
+kbutton_t in_back;
+kbutton_t in_lookup;
+kbutton_t in_lookdown;
+kbutton_t in_moveleft;
+kbutton_t in_moveright;
+kbutton_t in_strafe;
+kbutton_t in_speed;
+kbutton_t in_use;
+kbutton_t in_jump;
+kbutton_t in_attack;
+kbutton_t in_attack2;
+kbutton_t in_up;
+kbutton_t in_down;
+kbutton_t in_duck;
+kbutton_t in_reload;
+kbutton_t in_alt1;
+kbutton_t in_score;
+kbutton_t in_break;
+kbutton_t in_graph;  // Display the netgraph
 
 struct kblist_t
 {
@@ -101,24 +101,21 @@ kblist_t* g_kbkeys = nullptr;
 */
 bool KB_ConvertString(char* in, char** ppout)
 {
-	char sz[4096];
-	char binding[64];
-	char* p;
-	char* pOut;
-	char* pEnd;
-	const char* pBinding;
-
 	if (!ppout)
 		return false;
 
 	*ppout = nullptr;
-	p = in;
-	pOut = sz;
-	while (*p)
+
+	char sz[4096]{};
+	char* pOut = sz;
+
+	char binding[64]{};
+
+	for (char* p = in; *p;)
 	{
 		if (*p == '+')
 		{
-			pEnd = binding;
+			char* pEnd = binding;
 			while (*p && (isalnum(*p) || (pEnd == binding)) && ((pEnd - binding) < 63))
 			{
 				*pEnd++ = *p++;
@@ -126,7 +123,7 @@ bool KB_ConvertString(char* in, char** ppout)
 
 			*pEnd = '\0';
 
-			pBinding = nullptr;
+			const char* pBinding = nullptr;
 			if (strlen(binding + 1) > 0)
 			{
 				// See if there is a binding for binding?
@@ -169,14 +166,10 @@ bool KB_ConvertString(char* in, char** ppout)
 
 kbutton_t DLLEXPORT* KB_Find(const char* name)
 {
-	kblist_t* p;
-	p = g_kbkeys;
-	while (p)
+	for (kblist_t* p = g_kbkeys; p; p = p->next)
 	{
 		if (!stricmp(name, p->name))
 			return p->pkey;
-
-		p = p->next;
 	}
 	return nullptr;
 }
@@ -186,15 +179,10 @@ kbutton_t DLLEXPORT* KB_Find(const char* name)
 */
 void KB_Add(const char* name, kbutton_t* pkb)
 {
-	kblist_t* p;
-	kbutton_t* kb;
-
-	kb = KB_Find(name);
-
-	if (kb)
+	if (kbutton_t* kb = KB_Find(name); kb)
 		return;
 
-	p = (kblist_t*)malloc(sizeof(kblist_t));
+	kblist_t* p = (kblist_t*)malloc(sizeof(kblist_t));
 	memset(p, 0, sizeof(*p));
 
 	safe_strcpy(p->name, name);
@@ -221,27 +209,19 @@ void KB_Init()
 */
 void KB_Shutdown()
 {
-	kblist_t* p, * n;
-	p = g_kbkeys;
-	while (p)
+	for (kblist_t* p = g_kbkeys, * n = nullptr; p; p = n)
 	{
 		n = p->next;
 		free(p);
-		p = n;
 	}
 	g_kbkeys = nullptr;
 }
 
 void KeyDown(kbutton_t* b)
 {
-	int		k;
-	char* c;
+	char* c = gEngfuncs.Cmd_Argv(1);
 
-	c = gEngfuncs.Cmd_Argv(1);
-	if (c[0])
-		k = atoi(c);
-	else
-		k = -1;		// typed manually at the console for continuous down
+	const int k = c[0] ? atoi(c) : -1; // typed manually at the console for continuous down
 
 	if (k == b->down[0] || k == b->down[1])
 		return;		// repeating key
@@ -263,18 +243,16 @@ void KeyDown(kbutton_t* b)
 
 void KeyUp(kbutton_t* b)
 {
-	int		k;
-	char* c;
+	char* c = gEngfuncs.Cmd_Argv(1);
 
-	c = gEngfuncs.Cmd_Argv(1);
-	if (c[0])
-		k = atoi(c);
-	else
+	if (!c[0])
 	{ // typed manually at the console, assume for unsticking, so clear all
 		b->down[0] = b->down[1] = 0;
 		b->state = KEYBUTTON_IMPULSE_UP;	// impulse up
 		return;
 	}
+
+	const int k = atoi(c);
 
 	if (b->down[0] == k)
 		b->down[0] = 0;
@@ -467,7 +445,7 @@ void IN_MLookUp()
 */
 float CL_KeyState(kbutton_t* key)
 {
-	float		val = 0.0;
+	float val = 0.0;
 	const bool impulsedown = (key->state & KEYBUTTON_IMPULSE_DOWN) != 0;
 	const bool impulseup = (key->state & KEYBUTTON_IMPULSE_UP) != 0;
 	const bool down = (key->state & KEYBUTTON_DOWN) != 0;
@@ -514,8 +492,7 @@ float CL_KeyState(kbutton_t* key)
 */
 void CL_AdjustAngles(float frametime, Vector& viewangles)
 {
-	float	speed;
-	float	up, down;
+	float speed;
 
 	if (in_speed.state & KEYBUTTON_DOWN)
 	{
@@ -539,8 +516,8 @@ void CL_AdjustAngles(float frametime, Vector& viewangles)
 		viewangles[PITCH] += speed * cl_pitchspeed->value * CL_KeyState(&in_back);
 	}
 
-	up = CL_KeyState(&in_lookup);
-	down = CL_KeyState(&in_lookdown);
+	const float up = CL_KeyState(&in_lookup);
+	const float down = CL_KeyState(&in_lookdown);
 
 	viewangles[PITCH] -= speed * cl_pitchspeed->value * up;
 	viewangles[PITCH] += speed * cl_pitchspeed->value * down;
@@ -561,9 +538,7 @@ void CL_AdjustAngles(float frametime, Vector& viewangles)
 
 void DLLEXPORT CL_CreateMove(float frametime, usercmd_t* cmd, int active)
 {
-	float spd;
 	Vector viewangles;
-	static Vector oldangles;
 
 	if (active)
 	{
@@ -604,7 +579,7 @@ void DLLEXPORT CL_CreateMove(float frametime, usercmd_t* cmd, int active)
 		}
 
 		// clip to maxspeed
-		spd = gEngfuncs.GetClientMaxspeed();
+		const float spd = gEngfuncs.GetClientMaxspeed();
 		if (spd != 0.0)
 		{
 			// scale the 3 speeds so that the total velocity is not > cl.maxspeed
@@ -652,6 +627,8 @@ void DLLEXPORT CL_CreateMove(float frametime, usercmd_t* cmd, int active)
 
 	gEngfuncs.GetViewAngles(viewangles);
 	// Set current view angles.
+
+	static Vector oldangles;
 
 	if (g_iAlive)
 	{
@@ -780,7 +757,7 @@ int CL_ButtonBits(bool bResetState)
 
 void CL_ResetButtonBits(int bits)
 {
-	int bitsNew = CL_ButtonBits(false) ^ bits;
+	const int bitsNew = CL_ButtonBits(false) ^ bits;
 
 	// Has the attack button been changed
 	if (bitsNew & IN_ATTACK)
@@ -890,7 +867,6 @@ void ShutdownInput()
 	KB_Shutdown();
 }
 
-#include "interface.h"
 void CL_UnloadParticleMan();
 
 void DLLEXPORT HUD_Shutdown()
