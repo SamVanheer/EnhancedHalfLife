@@ -66,7 +66,7 @@ void CEgon::Precache()
 bool CEgon::Deploy()
 {
 	m_deployed = false;
-	m_fireState = FIRE_OFF;
+	m_fireState = FireState::Off;
 	return DefaultDeploy("models/v_egon.mdl", "models/p_egon.mdl", EGON_DRAW, "egon");
 }
 
@@ -142,7 +142,7 @@ void CEgon::Attack()
 	if (m_hPlayer->pev->waterlevel == WaterLevel::Head)
 	{
 
-		if (m_fireState != FIRE_OFF || m_hBeam)
+		if (m_fireState != FireState::Off || m_hBeam)
 		{
 			EndAttack();
 		}
@@ -166,7 +166,7 @@ void CEgon::Attack()
 
 	switch (m_fireState)
 	{
-	case FIRE_OFF:
+	case FireState::Off:
 	{
 		if (!HasAmmo())
 		{
@@ -177,7 +177,7 @@ void CEgon::Attack()
 
 		m_flAmmoUseTime = gpGlobals->time;// start using ammo ASAP.
 
-		UTIL_PlaybackEvent(flags, m_hPlayer, m_usEgonFire, {.iparam1 = m_fireState, .iparam2 = m_fireMode, .bparam1 = true});
+		UTIL_PlaybackEvent(flags, m_hPlayer, m_usEgonFire, {.iparam1 = static_cast<int>(m_fireState), .iparam2 = static_cast<int>(m_fireMode), .bparam1 = true});
 
 		m_shakeTime = 0;
 
@@ -186,18 +186,18 @@ void CEgon::Attack()
 		pev->fuser1 = UTIL_WeaponTimeBase() + 2;
 
 		pev->dmgtime = gpGlobals->time + GetPulseInterval();
-		m_fireState = FIRE_CHARGE;
+		m_fireState = FireState::Charge;
 	}
 	break;
 
-	case FIRE_CHARGE:
+	case FireState::Charge:
 	{
 		Fire(vecSrc, vecAiming);
 		m_hPlayer->m_iWeaponVolume = EGON_PRIMARY_VOLUME;
 
 		if (pev->fuser1 <= UTIL_WeaponTimeBase())
 		{
-			UTIL_PlaybackEvent(flags, m_hPlayer, m_usEgonFire, {.iparam1 = m_fireState, .iparam2 = m_fireMode, .bparam1 = false});
+			UTIL_PlaybackEvent(flags, m_hPlayer, m_usEgonFire, {.iparam1 = static_cast<int>(m_fireState), .iparam2 = static_cast<int>(m_fireMode), .bparam1 = false});
 			pev->fuser1 = 1000;
 		}
 
@@ -214,7 +214,7 @@ void CEgon::Attack()
 
 void CEgon::PrimaryAttack()
 {
-	m_fireMode = FIRE_WIDE;
+	m_fireMode = FireMode::Wide;
 	Attack();
 }
 
@@ -255,7 +255,7 @@ void CEgon::Fire(const Vector& vecOrigSrc, const Vector& vecDir)
 
 	switch (m_fireMode)
 	{
-	case FIRE_NARROW:
+	case FireMode::Narrow:
 #ifndef CLIENT_DLL
 		if (pev->dmgtime < gpGlobals->time)
 		{
@@ -292,7 +292,7 @@ void CEgon::Fire(const Vector& vecOrigSrc, const Vector& vecDir)
 		timedist = (pev->dmgtime - gpGlobals->time) / GetPulseInterval();
 		break;
 
-	case FIRE_WIDE:
+	case FireMode::Wide:
 #ifndef CLIENT_DLL
 		if (pev->dmgtime < gpGlobals->time)
 		{
@@ -363,7 +363,7 @@ void CEgon::UpdateEffect(const Vector& startPoint, const Vector& endPoint, float
 	beam->SetBrightness(255 - (timeBlend * 180));
 	beam->SetWidth(40 - (timeBlend * 20));
 
-	if (m_fireMode == FIRE_WIDE)
+	if (m_fireMode == FireMode::Wide)
 		beam->SetColor(30 + (25 * timeBlend), 30 + (30 * timeBlend), 64 + 80 * fabs(sin(gpGlobals->time * 10)));
 	else
 		beam->SetColor(60 + (25 * timeBlend), 120 + (30 * timeBlend), 64 + 80 * fabs(sin(gpGlobals->time * 10)));
@@ -408,7 +408,7 @@ void CEgon::CreateEffect()
 	sprite->pev->flags |= FL_SKIPLOCALHOST;
 	sprite->SetOwner(m_hPlayer);
 
-	if (m_fireMode == FIRE_WIDE)
+	if (m_fireMode == FireMode::Wide)
 	{
 		beam->SetScrollRate(50);
 		beam->SetNoise(20);
@@ -440,7 +440,7 @@ void CEgon::DestroyEffect()
 	}
 	if (auto sprite = m_hSprite.Get(); sprite)
 	{
-		if (m_fireMode == FIRE_WIDE)
+		if (m_fireMode == FireMode::Wide)
 			sprite->Expand(10, 500);
 		else
 			UTIL_Remove(sprite);
@@ -461,7 +461,7 @@ void CEgon::WeaponIdle()
 	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
-	if (m_fireState != FIRE_OFF)
+	if (m_fireState != FireState::Off)
 		EndAttack();
 
 	int iAnim;
@@ -485,26 +485,26 @@ void CEgon::WeaponIdle()
 
 void CEgon::EndAttack()
 {
-	const bool bMakeNoise = m_fireState != FIRE_OFF; //Checking the button just in case!.
+	const bool bMakeNoise = m_fireState != FireState::Off; //Checking the button just in case!.
 
 	UTIL_PlaybackEvent(FEV_GLOBAL | FEV_RELIABLE, m_hPlayer, m_usEgonStop, {.origin = m_hPlayer->GetAbsOrigin(), .angles = m_hPlayer->GetAbsAngles(), .iparam1 = bMakeNoise});
 
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 2.0;
 	m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;
 
-	m_fireState = FIRE_OFF;
+	m_fireState = FireState::Off;
 
 	DestroyEffect();
 }
 
 void CEgon::GetWeaponData(weapon_data_t& data)
 {
-	data.iuser3 = m_fireState;
+	data.iuser3 = static_cast<int>(m_fireState);
 }
 
 void CEgon::SetWeaponData(const weapon_data_t& data)
 {
-	m_fireState = data.iuser3;
+	m_fireState = static_cast<FireState>(data.iuser3);
 }
 
 class CEgonAmmo : public CBasePlayerAmmo

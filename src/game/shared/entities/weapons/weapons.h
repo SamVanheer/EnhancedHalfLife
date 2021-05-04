@@ -1107,16 +1107,6 @@ enum egon_e
 	EGON_HOLSTER
 };
 
-enum EGON_FIRESTATE
-{
-	FIRE_OFF, FIRE_CHARGE
-};
-
-enum EGON_FIREMODE
-{
-	FIRE_NARROW, FIRE_WIDE
-};
-
 constexpr int EGON_PRIMARY_VOLUME = 450;
 constexpr std::string_view EGON_BEAM_SPRITE{"sprites/xbeam1.spr"};
 constexpr std::string_view EGON_FLARE_SPRITE{"sprites/XSpark1.spr"};
@@ -1127,6 +1117,18 @@ constexpr std::string_view EGON_SOUND_STARTUP{"weapons/egon_windup2.wav"};
 class CEgon : public CBasePlayerWeapon
 {
 public:
+	enum class FireState
+	{
+		Off,
+		Charge
+	};
+
+	enum class FireMode
+	{
+		Narrow,
+		Wide
+	};
+
 #ifndef CLIENT_DLL
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -1167,7 +1169,7 @@ public:
 	EHandle<CBeam> m_hBeam;
 	EHandle<CBeam> m_hNoise;
 	EHandle<CSprite> m_hSprite;
-	int m_fireState = 0;
+	FireState m_fireState = FireState::Off;
 
 	bool UseDecrement() override
 	{
@@ -1184,10 +1186,10 @@ public:
 	unsigned short m_usEgonStop;
 
 private:
-	float				m_shootTime = 0;
-	EGON_FIREMODE		m_fireMode = FIRE_NARROW;
-	float				m_shakeTime = 0;
-	bool				m_deployed = 0;
+	float m_shootTime = 0;
+	FireMode m_fireMode = FireMode::Narrow;
+	float m_shakeTime = 0;
+	bool m_deployed = 0;
 
 	unsigned short m_usEgonFire = 0;
 };

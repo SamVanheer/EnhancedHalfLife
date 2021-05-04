@@ -1091,12 +1091,12 @@ void EV_EgonFire(event_args_t* args)
 	const int idx = args->entindex;
 	const Vector origin = args->origin;
 	const int iFireState = args->iparam1;
-	const int iFireMode = args->iparam2;
+	const CEgon::FireMode iFireMode = static_cast<CEgon::FireMode>(args->iparam2);
 	const bool iStartup = args->bparam1 != 0;
 
 	if (iStartup)
 	{
-		if (iFireMode == FIRE_WIDE)
+		if (iFireMode == CEgon::FireMode::Wide)
 			gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, SoundChannel::Weapon, EGON_SOUND_STARTUP.data(), 0.98, ATTN_NORM, 0, 125);
 		else
 			gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, SoundChannel::Weapon, EGON_SOUND_STARTUP.data(), 0.9, ATTN_NORM, 0, 100);
@@ -1109,7 +1109,7 @@ void EV_EgonFire(event_args_t* args)
 		//This ensures no more than 1 of those is ever active at the same time.
 		gEngfuncs.pEventAPI->EV_StopSound(idx, SoundChannel::Static, EGON_SOUND_RUN.data());
 
-		if (iFireMode == FIRE_WIDE)
+		if (iFireMode == CEgon::FireMode::Wide)
 			gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, SoundChannel::Static, EGON_SOUND_RUN.data(), 0.98, ATTN_NORM, 0, 125);
 		else
 			gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, SoundChannel::Static, EGON_SOUND_RUN.data(), 0.9, ATTN_NORM, 0, 100);
@@ -1179,7 +1179,7 @@ void EV_EgonFire(event_args_t* args)
 
 	if (pFlare)	// Vit_amiN: store the last mode for EV_EgonStop()
 	{
-		pFlare->tentOffset.x = (iFireMode == FIRE_WIDE) ? 1.0f : 0.0f;
+		pFlare->tentOffset.x = (iFireMode == CEgon::FireMode::Wide) ? 1.0f : 0.0f;
 	}
 }
 
