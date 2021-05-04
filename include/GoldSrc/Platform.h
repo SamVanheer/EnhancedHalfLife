@@ -33,8 +33,6 @@
 #pragma warning(disable : 4514)		// unreferenced inline function removed
 #pragma warning(disable : 4100)		// unreferenced formal parameter
 
-#include "steam/steamtypes.h"
-
 // Misc C-runtime library headers
 #include <algorithm>
 #include <climits>

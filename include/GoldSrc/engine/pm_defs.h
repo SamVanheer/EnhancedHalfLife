@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "steam/steamtypes.h"
+#include <cstdint>
 
 constexpr int MAX_PHYSENTS = 600; 		  //!< Must have room for all entities in the world. (can break if num_edicts is greater than this)
 constexpr int MAX_MOVEENTS = 64;

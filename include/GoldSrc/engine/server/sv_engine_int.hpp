@@ -22,7 +22,8 @@
 *	This header file included by engine files and DLL files.
 */
 
-#include "steam/steamtypes.h"
+#include <cstdint>
+
 #include "cvardef.h"
 #include "Sequence.h"
 #include "crc.h"

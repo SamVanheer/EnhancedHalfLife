@@ -1,6 +1,7 @@
 #pragma once
 
-#include "steam/steamtypes.h"
+#include <cstdint>
+
 #include "netadr.h"
 #include "Sequence.h"
 

@@ -8,9 +8,8 @@
 #pragma once
 
 #include <cassert>
+#include <cstdint>
 #include <cstring>
-
-#include "steam/steamtypes.h"
 
 class CBitVecAccessor
 {

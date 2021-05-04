@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "steam/steamtypes.h"
+#include <cstdint>
 
 //
 // Misc utility code

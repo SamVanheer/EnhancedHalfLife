@@ -9,7 +9,6 @@
 
 #include <string_view>
 
-#include "steam/steamtypes.h"
 #include "interface.h"
 
 typedef void* FileHandle_t;

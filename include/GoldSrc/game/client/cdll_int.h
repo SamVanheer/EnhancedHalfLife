@@ -24,8 +24,9 @@
 *	so make sure engine declarations aren't done twice
 */
 
+#include <cstdint>
+
 #include "const.h"
-#include "steam/steamtypes.h"
 #include "ref_params.h"
 #include "r_efx.h"
 #include "wrect.h"

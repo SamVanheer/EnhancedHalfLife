@@ -15,7 +15,8 @@
 
 #pragma once
 
-#include "steam/steamtypes.h"
+#include <cstdint>
+
 #include "custom.h"
 
 struct clientdata_t;

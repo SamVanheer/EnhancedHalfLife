@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "steam/steamtypes.h"
+#include <cstdint>
 
 /*
 *	@brief MD5 Hash

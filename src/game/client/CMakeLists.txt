@@ -228,8 +228,7 @@ target_sources(client PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/game/server/server_int.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/math/mathlib.cpp
 	${INCLUDE_DIRECTORY}/GoldSrc/math/mathlib.h
-	${INCLUDE_DIRECTORY}/GoldSrc/math/vector.h
-	${INCLUDE_DIRECTORY}/GoldSrc/steam/steamtypes.h)
+	${INCLUDE_DIRECTORY}/GoldSrc/math/vector.h)
 
 add_subdirectory(../shared shared)
 
