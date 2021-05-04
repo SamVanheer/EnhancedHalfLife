@@ -87,13 +87,6 @@ public:
 	{
 	}
 
-	constexpr Vector(float rgfl[3])
-		: x(rgfl[0])
-		, y(rgfl[1])
-		, z(rgfl[2])
-	{
-	}
-
 	// Operators
 	constexpr Vector operator-() const { return Vector(-x, -y, -z); }
 	constexpr bool operator==(const Vector& v) const { return x == v.x && y == v.y && z == v.z; }
@@ -104,7 +97,6 @@ public:
 	constexpr Vector operator/(float fl) const { return Vector(x / fl, y / fl, z / fl); }
 
 	// Methods
-	void CopyToArray(float* rgfl) const { rgfl[0] = x, rgfl[1] = y, rgfl[2] = z; }
 	float Length() const { return static_cast<float>(sqrt(x * x + y * y + z * z)); }
 
 	operator float* () { return &x; } // Vectors will now automatically convert to float * when needed
