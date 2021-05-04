@@ -67,16 +67,14 @@ void ShowBannedCallback()
 		g_pInternalVoiceStatus->m_BanMgr.ForEachBannedPlayer([&](char id[16])
 			{
 				char str[256];
-				snprintf(str, sizeof(str), "Ban %d: %2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x%2x\n",
+				snprintf(str, sizeof(str), "Ban %d: %2X%2X%2X%2X%2X%2X%2X%2X%2X%2X%2X%2X%2X%2X%2X%2X\n",
 					bannedPlayerPrintCount++,
 					id[0], id[1], id[2], id[3],
 					id[4], id[5], id[6], id[7],
 					id[8], id[9], id[10], id[11],
 					id[12], id[13], id[14], id[15]
 				);
-#ifdef _WIN32
-				strupr(str);
-#endif
+
 				gEngfuncs.pfnConsolePrint(str);
 			}
 		);
