@@ -49,5 +49,9 @@ struct event_state_t
 	event_info_t ei[MAX_EVENT_QUEUE];
 };
 
-#define	STRUCT_FROM_LINK(l,t,m) ((t *)((byte *)l - (int)&(((t *)0)->m)))
-#define	EDICT_FROM_AREA(l) STRUCT_FROM_LINK(l,edict_t,area)
+#define	STRUCT_FROM_LINK(l, t, m) ((t*)((byte*)l - (int)&(((t*)0)->m)))
+
+inline edict_t* EdictFromArea(link_t* link)
+{
+	return STRUCT_FROM_LINK(link, edict_t, area);
+}
