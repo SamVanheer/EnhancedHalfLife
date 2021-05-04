@@ -143,7 +143,7 @@ bool CHudDeathNotice::MsgFunc_DeathMsg(const char* pszName, int iSize, void* pbu
 	int killer = reader.ReadByte();
 	int victim = reader.ReadByte();
 
-	char killedwith[32];
+	char killedwith[32]{};
 	safe_strcpy(killedwith, "d_");
 	safe_strcat(killedwith, reader.ReadString());
 

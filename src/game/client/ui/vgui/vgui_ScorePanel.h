@@ -145,7 +145,7 @@ public:
 	virtual void setText(const char* text)
 	{
 		// strip any non-alnum characters from the end
-		char buf[512];
+		char buf[512]{};
 		safe_strcpy(buf, text);
 
 		int len = strlen(buf);

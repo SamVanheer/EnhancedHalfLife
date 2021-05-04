@@ -1116,7 +1116,7 @@ void CHalfLifeMultiplay::SendMOTDToClient(CBasePlayer* player)
 
 	while (pFileList && *pFileList && char_count < MAX_MOTD_LENGTH)
 	{
-		char chunk[MAX_MOTD_CHUNK + 1];
+		char chunk[MAX_MOTD_CHUNK + 1]{};
 
 		if (strlen(pFileList) < MAX_MOTD_CHUNK)
 		{
