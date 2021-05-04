@@ -58,9 +58,9 @@ void UTIL_ParametricRocket(CBaseEntity* entity, Vector vecOrigin, Vector vecAngl
 	// Now compute how long it will take based on current velocity
 	Vector vecTravel = entity->pev->endpos - entity->pev->startpos;
 	float travelTime = 0.0;
-	if (entity->pev->velocity.Length() > 0)
+	if (entity->GetAbsVelocity().Length() > 0)
 	{
-		travelTime = vecTravel.Length() / entity->pev->velocity.Length();
+		travelTime = vecTravel.Length() / entity->GetAbsVelocity().Length();
 	}
 	entity->pev->starttime = gpGlobals->time;
 	entity->pev->impacttime = gpGlobals->time + travelTime;

@@ -538,7 +538,7 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 	// Set player variables that weapons code might check/alter
 	player.pev->button = cmd->buttons;
 
-	player.pev->velocity = from->client.velocity;
+	player.SetAbsVelocity(from->client.velocity);
 	player.pev->flags = from->client.flags;
 
 	player.pev->deadflag = from->client.deadflag;

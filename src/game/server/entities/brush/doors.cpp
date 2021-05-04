@@ -544,7 +544,7 @@ void CBaseDoor::DoorGoUp()
 				const Vector vec = pActivator->GetAbsOrigin() - GetAbsOrigin();
 				const Vector angles{0, pActivator->pev->angles.y, 0};
 				UTIL_MakeVectors(angles);
-				//			Vector vnext = (pActivator->GetAbsOrigin() + (pActivator->pev->velocity * 10)) - GetAbsOrigin();
+				//			Vector vnext = (pActivator->GetAbsOrigin() + (pActivator->GetAbsVelocity() * 10)) - GetAbsOrigin();
 				UTIL_MakeVectors(pActivator->pev->angles);
 				const Vector vnext = (pActivator->GetAbsOrigin() + (gpGlobals->v_forward * 10)) - GetAbsOrigin();
 				if ((vec.x * vnext.y - vec.y * vnext.x) < 0)
@@ -676,13 +676,13 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 
 					if (pDoor->m_flWait >= 0)
 					{
-						if (pDoor->pev->velocity == pev->velocity && pDoor->pev->avelocity == pev->velocity)
+						if (pDoor->GetAbsVelocity() == GetAbsVelocity() && pDoor->pev->avelocity == GetAbsVelocity())
 						{
 							// this is the most hacked, evil, bastardized thing I've ever seen. kjb
 							if (pDoor->ClassnameIs("func_door"))
 							{// set origin to realign normal doors
 								pDoor->SetAbsOrigin(GetAbsOrigin());
-								pDoor->pev->velocity = vec3_origin;// stop!
+								pDoor->SetAbsVelocity(vec3_origin);// stop!
 							}
 							else
 							{// set angles to realign rotating doors

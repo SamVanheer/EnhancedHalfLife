@@ -283,7 +283,7 @@ void CCineMonster::PossessEntity()
 			pTarget->SetAbsOrigin(GetAbsOrigin());
 			pTarget->pev->ideal_yaw = pev->angles.y;
 			pTarget->pev->avelocity = vec3_origin;
-			pTarget->pev->velocity = vec3_origin;
+			pTarget->SetAbsVelocity(vec3_origin);
 			pTarget->pev->effects |= EF_NOINTERP;
 			pTarget->pev->angles.y = pev->angles.y;
 			pTarget->m_scriptState = ScriptState::Wait;
@@ -349,7 +349,7 @@ void CCineAI::PossessEntity()
 			pTarget->SetAbsOrigin(GetAbsOrigin());
 			pTarget->pev->ideal_yaw = pev->angles.y;
 			pTarget->pev->avelocity = vec3_origin;
-			pTarget->pev->velocity = vec3_origin;
+			pTarget->SetAbsVelocity(vec3_origin);
 			pTarget->pev->effects |= EF_NOINTERP;
 			pTarget->pev->angles.y = pev->angles.y;
 			pTarget->m_scriptState = ScriptState::Wait;

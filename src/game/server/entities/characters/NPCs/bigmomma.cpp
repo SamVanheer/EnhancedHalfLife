@@ -437,15 +437,15 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 			switch (event.event)
 			{
 			case BIG_AE_MELEE_ATTACKBR:
-				pHurt->pev->velocity = pHurt->pev->velocity + (forward * 150) + Vector(0, 0, 250) - (right * 200);
+				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + (forward * 150) + Vector(0, 0, 250) - (right * 200));
 				break;
 
 			case BIG_AE_MELEE_ATTACKBL:
-				pHurt->pev->velocity = pHurt->pev->velocity + (forward * 150) + Vector(0, 0, 250) + (right * 200);
+				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + (forward * 150) + Vector(0, 0, 250) + (right * 200));
 				break;
 
 			case BIG_AE_MELEE_ATTACK1:
-				pHurt->pev->velocity = pHurt->pev->velocity + (forward * 220) + Vector(0, 0, 200);
+				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + (forward * 220) + Vector(0, 0, 200));
 				break;
 			}
 
@@ -504,7 +504,7 @@ void CBigMomma::HandleAnimEvent(AnimationEvent& event)
 		SetAbsOrigin(GetAbsOrigin() + Vector(0, 0, 1));// take him off ground so engine doesn't instantly reset onground 
 		UTIL_MakeVectors(pev->angles);
 
-		pev->velocity = (gpGlobals->v_forward * 200) + gpGlobals->v_up * 500;
+		SetAbsVelocity((gpGlobals->v_forward * 200) + gpGlobals->v_up * 500);
 		break;
 
 	case BIG_AE_EARLY_TARGET:
@@ -1091,7 +1091,7 @@ void CBMortar::Animate()
 	if (gpGlobals->time > pev->dmgtime)
 	{
 		pev->dmgtime = gpGlobals->time + 0.2;
-		MortarSpray(GetAbsOrigin(), -pev->velocity.Normalize(), gSpitSprite, 3);
+		MortarSpray(GetAbsOrigin(), -GetAbsVelocity().Normalize(), gSpitSprite, 3);
 	}
 	if (pev->frame++)
 	{
@@ -1108,7 +1108,7 @@ CBMortar* CBMortar::Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVeloci
 	pSpit->Spawn();
 
 	pSpit->SetAbsOrigin(vecStart);
-	pSpit->pev->velocity = vecVelocity;
+	pSpit->SetAbsVelocity(vecVelocity);
 	pSpit->SetOwner(pOwner);
 	pSpit->pev->scale = 2.5;
 	pSpit->SetThink(&CBMortar::Animate);
@@ -1138,13 +1138,13 @@ void CBMortar::Touch(CBaseEntity* pOther)
 	if (pOther->IsBSPModel())
 	{
 		// make a splat on the wall
-		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + pev->velocity * 10, IgnoreMonsters::No, this, &tr);
+		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + GetAbsVelocity() * 10, IgnoreMonsters::No, this, &tr);
 		UTIL_DecalTrace(&tr, DECAL_MOMMASPLAT);
 	}
 	else
 	{
 		tr.vecEndPos = GetAbsOrigin();
-		tr.vecPlaneNormal = -1 * pev->velocity.Normalize();
+		tr.vecPlaneNormal = -1 * GetAbsVelocity().Normalize();
 	}
 	// make some flecks
 	MortarSpray(tr.vecEndPos, tr.vecPlaneNormal, gSpitSprite, 24);

@@ -503,7 +503,7 @@ void CFuncRotating::HurtTouch(CBaseEntity* pOther)
 
 	pOther->TakeDamage({this, this, pev->dmg, DMG_CRUSH});
 
-	pOther->pev->velocity = (pOther->GetAbsOrigin() - GetBrushModelOrigin(this)).Normalize() * pev->dmg;
+	pOther->SetAbsVelocity((pOther->GetAbsOrigin() - GetBrushModelOrigin(this)).Normalize() * pev->dmg);
 }
 
 constexpr int FANPITCHMIN = 30;
@@ -862,7 +862,7 @@ void CPendulum::Touch(CBaseEntity* pOther)
 
 	pOther->TakeDamage({this, this, damage, DMG_CRUSH});
 
-	pOther->pev->velocity = (pOther->GetAbsOrigin() - GetBrushModelOrigin(this)).Normalize() * damage;
+	pOther->SetAbsVelocity((pOther->GetAbsOrigin() - GetBrushModelOrigin(this)).Normalize() * damage);
 }
 
 void CPendulum::RopeTouch(CBaseEntity* pOther)
@@ -879,6 +879,6 @@ void CPendulum::RopeTouch(CBaseEntity* pOther)
 	}
 
 	m_hRopeUser = pOther;
-	pOther->pev->velocity = vec3_origin;
+	pOther->SetAbsVelocity(vec3_origin);
 	pOther->SetMovetype(Movetype::None);
 }

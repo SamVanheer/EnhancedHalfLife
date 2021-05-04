@@ -159,7 +159,7 @@ void COsprey::Spawn()
 
 	m_pos2 = GetAbsOrigin();
 	m_ang2 = pev->angles;
-	m_vel2 = pev->velocity;
+	m_vel2 = GetAbsVelocity();
 }
 
 void COsprey::Precache()
@@ -273,7 +273,7 @@ CBaseMonster* COsprey::MakeGrunt(Vector vecSrc)
 			CBaseEntity* pEntity = Create("monster_human_grunt", vecSrc, pev->angles);
 			CBaseMonster* pGrunt = pEntity->MyMonsterPointer();
 			pGrunt->SetMovetype(Movetype::Fly);
-			pGrunt->pev->velocity = Vector(0, 0, RANDOM_FLOAT(-196, -128));
+			pGrunt->SetAbsVelocity(Vector(0, 0, RANDOM_FLOAT(-196, -128)));
 			pGrunt->SetActivity(ACT_GLIDE);
 
 			CBeam* pBeam = CBeam::BeamCreate("sprites/rope.spr", 10);
@@ -281,7 +281,7 @@ CBaseMonster* COsprey::MakeGrunt(Vector vecSrc)
 			pBeam->SetFlags(BEAM_FSOLID);
 			pBeam->SetColor(255, 255, 255);
 			pBeam->SetThink(&CBeam::SUB_Remove);
-			pBeam->pev->nextthink = gpGlobals->time + -WORLD_BOUNDARY * tr.flFraction / pGrunt->pev->velocity.z + 0.5;
+			pBeam->pev->nextthink = gpGlobals->time + -WORLD_BOUNDARY * tr.flFraction / pGrunt->GetAbsVelocity().z + 0.5;
 
 			// ALERT( at_console, "%d at %.0f %.0f %.0f\n", i, m_vecOrigin[i].x, m_vecOrigin[i].y, m_vecOrigin[i].z );  
 			pGrunt->m_vecLastPosition = m_vecOrigin[i];
@@ -395,7 +395,7 @@ void COsprey::Flight()
 	UTIL_MakeAimVectors(pev->angles);
 	const float flSpeed = DotProduct(gpGlobals->v_forward, m_velocity);
 
-	// float flSpeed = DotProduct( gpGlobals->v_forward, pev->velocity );
+	// float flSpeed = DotProduct(gpGlobals->v_forward, GetAbsVelocity());
 
 	const float m_flIdealtilt = (160 - flSpeed) / 10.0f;
 
@@ -427,7 +427,7 @@ void COsprey::Flight()
 		// UNDONE: this needs to send different sounds to every player for multiplayer.	
 		if (CBaseEntity* pPlayer = UTIL_FindEntityByClassname(nullptr, "player"); pPlayer)
 		{
-			float pitch = DotProduct(m_velocity - pPlayer->pev->velocity, (pPlayer->GetAbsOrigin() - GetAbsOrigin()).Normalize());
+			float pitch = DotProduct(m_velocity - pPlayer->GetAbsVelocity(), (pPlayer->GetAbsOrigin() - GetAbsOrigin()).Normalize());
 
 			pitch = (int)(100 + pitch / 75.0);
 
@@ -472,7 +472,7 @@ void COsprey::Killed(const KilledInfo& info)
 {
 	SetMovetype(Movetype::Toss);
 	pev->gravity = 0.3;
-	pev->velocity = m_velocity;
+	SetAbsVelocity(m_velocity);
 	pev->avelocity = Vector(RANDOM_FLOAT(-20, 20), 0, RANDOM_FLOAT(-50, 50));
 	StopSound(SoundChannel::Static, "apache/ap_rotor4.wav");
 
@@ -494,7 +494,7 @@ void COsprey::CrashTouch(CBaseEntity* pOther)
 		SetTouch(nullptr);
 		m_startTime = gpGlobals->time;
 		pev->nextthink = gpGlobals->time;
-		m_velocity = pev->velocity;
+		m_velocity = GetAbsVelocity();
 	}
 }
 
@@ -511,7 +511,7 @@ void COsprey::DyingThink()
 		UTIL_MakeAimVectors(pev->angles);
 		ShowDamage();
 
-		Vector vecSpot = GetAbsOrigin() + pev->velocity * 0.2;
+		Vector vecSpot = GetAbsOrigin() + GetAbsVelocity() * 0.2;
 
 		// random explosions
 		MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, vecSpot);
@@ -551,9 +551,9 @@ void COsprey::DyingThink()
 		WRITE_COORD(132);
 
 		// velocity
-		WRITE_COORD(pev->velocity.x);
-		WRITE_COORD(pev->velocity.y);
-		WRITE_COORD(pev->velocity.z);
+		WRITE_COORD(GetAbsVelocity().x);
+		WRITE_COORD(GetAbsVelocity().y);
+		WRITE_COORD(GetAbsVelocity().z);
 
 		// randomization
 		WRITE_BYTE(50);

@@ -259,7 +259,7 @@ void CBarnacle::BarnacleThink()
 				m_hEnemy = pTouchEnt;
 
 				pTouchEnt->SetMovetype(Movetype::Fly);
-				pTouchEnt->pev->velocity = vec3_origin;
+				pTouchEnt->SetAbsVelocity(vec3_origin);
 				pTouchEnt->pev->basevelocity = vec3_origin;
 				pTouchEnt->SetAbsOrigin({GetAbsOrigin().x, GetAbsOrigin().y, pTouchEnt->GetAbsOrigin().z});
 

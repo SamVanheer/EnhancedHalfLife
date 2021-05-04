@@ -313,7 +313,7 @@ void CHGrunt::GibMonster()
 		}
 		if (pGun)
 		{
-			pGun->pev->velocity = Vector(RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(200, 300));
+			pGun->SetAbsVelocity(Vector(RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(200, 300)));
 			pGun->pev->avelocity = Vector(0, RANDOM_FLOAT(200, 400), 0);
 		}
 
@@ -322,7 +322,7 @@ void CHGrunt::GibMonster()
 			pGun = DropItem("ammo_ARgrenades", vecGunPos, vecGunAngles);
 			if (pGun)
 			{
-				pGun->pev->velocity = Vector(RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(200, 300));
+				pGun->SetAbsVelocity(Vector(RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(200, 300)));
 				pGun->pev->avelocity = Vector(0, RANDOM_FLOAT(200, 400), 0);
 			}
 		}
@@ -494,7 +494,7 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 		}
 		// vecTarget = m_vecEnemyLKP + (m_hEnemy->BodyTarget( GetAbsOrigin() ) - m_hEnemy->GetAbsOrigin());
 		// estimate position
-		// vecTarget = vecTarget + m_hEnemy->pev->velocity * 2;
+		// vecTarget = vecTarget + m_hEnemy->GetAbsVelocity() * 2;
 	}
 	else
 	{
@@ -503,7 +503,7 @@ bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 		vecTarget = m_vecEnemyLKP + (m_hEnemy->BodyTarget(GetAbsOrigin()) - m_hEnemy->GetAbsOrigin());
 		// estimate position
 		if (HasConditions(bits_COND_SEE_ENEMY))
-			vecTarget = vecTarget + ((vecTarget - GetAbsOrigin()).Length() / gSkillData.hgruntGrenadeSpeed) * m_hEnemy->pev->velocity;
+			vecTarget = vecTarget + ((vecTarget - GetAbsOrigin()).Length() / gSkillData.hgruntGrenadeSpeed) * m_hEnemy->GetAbsVelocity();
 	}
 
 	// are any of my squad members near the intended grenade impact area?
@@ -881,7 +881,7 @@ void CHGrunt::HandleAnimEvent(AnimationEvent& event)
 			// SOUND HERE!
 			UTIL_MakeVectors(pev->angles);
 			pHurt->pev->punchangle.x = 15;
-			pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_forward * 100 + gpGlobals->v_up * 50;
+			pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + gpGlobals->v_forward * 100 + gpGlobals->v_up * 50);
 			pHurt->TakeDamage({this, this, gSkillData.hgruntDmgKick, DMG_CLUB});
 		}
 	}
@@ -2215,14 +2215,14 @@ Schedule_t* CHGrunt::GetScheduleOfType(int Type)
 	}
 	case SCHED_GRUNT_REPEL:
 	{
-		if (pev->velocity.z > -128)
-			pev->velocity.z -= 32;
+		if (GetAbsVelocity().z > -128)
+			SetAbsVelocity(GetAbsVelocity() - Vector(0, 0, 32));
 		return &slGruntRepel[0];
 	}
 	case SCHED_GRUNT_REPEL_ATTACK:
 	{
-		if (pev->velocity.z > -128)
-			pev->velocity.z -= 32;
+		if (GetAbsVelocity().z > -128)
+			SetAbsVelocity(GetAbsVelocity() - Vector(0, 0, 32));
 		return &slGruntRepelAttack[0];
 	}
 	case SCHED_GRUNT_REPEL_LAND:
@@ -2276,7 +2276,7 @@ void CHGruntRepel::RepelUse(const UseInfo& info)
 	CBaseEntity* pEntity = Create("monster_human_grunt", GetAbsOrigin(), pev->angles);
 	CBaseMonster* pGrunt = pEntity->MyMonsterPointer();
 	pGrunt->SetMovetype(Movetype::Fly);
-	pGrunt->pev->velocity = Vector(0, 0, RANDOM_FLOAT(-196, -128));
+	pGrunt->SetAbsVelocity(Vector(0, 0, RANDOM_FLOAT(-196, -128)));
 	pGrunt->SetActivity(ACT_GLIDE);
 	// UNDONE: position?
 	pGrunt->m_vecLastPosition = tr.vecEndPos;
@@ -2286,7 +2286,7 @@ void CHGruntRepel::RepelUse(const UseInfo& info)
 	pBeam->SetFlags(BEAM_FSOLID);
 	pBeam->SetColor(255, 255, 255);
 	pBeam->SetThink(&CBeam::SUB_Remove);
-	pBeam->pev->nextthink = gpGlobals->time + -WORLD_BOUNDARY * tr.flFraction / pGrunt->pev->velocity.z + 0.5;
+	pBeam->pev->nextthink = gpGlobals->time + -WORLD_BOUNDARY * tr.flFraction / pGrunt->GetAbsVelocity().z + 0.5;
 
 	UTIL_Remove(this);
 }

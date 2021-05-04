@@ -218,7 +218,7 @@ void CHAssassin::HandleAnimEvent(AnimationEvent& event)
 		UTIL_MakeAimVectors(pev->angles);
 		SetMovetype(Movetype::Toss);
 		pev->flags &= ~FL_ONGROUND;
-		pev->velocity = m_vecJumpVelocity;
+		SetAbsVelocity(m_vecJumpVelocity);
 		m_flNextJump = gpGlobals->time + 3.0;
 	}
 	return;
@@ -681,7 +681,7 @@ void CHAssassin::RunTask(Task_t* pTask)
 
 		if (m_fSequenceFinished)
 		{
-			if (pev->velocity.z > 0)
+			if (GetAbsVelocity().z > 0)
 			{
 				pev->sequence = LookupSequence("fly_up");
 			}

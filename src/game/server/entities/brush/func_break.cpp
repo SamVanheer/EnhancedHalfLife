@@ -417,7 +417,7 @@ void CBreakable::BreakTouch(CBaseEntity* pOther)
 
 	if (IsBitSet(pev->spawnflags, SF_BREAK_TOUCH))
 	{// can be broken when run into 
-		const float flDamage = pOther->pev->velocity.Length() * 0.01;
+		const float flDamage = pOther->GetAbsVelocity().Length() * 0.01;
 
 		if (flDamage >= pev->health)
 		{
@@ -856,7 +856,7 @@ void CPushable::Use(const UseInfo& info)
 		return;
 	}
 
-	if (info.GetActivator()->pev->velocity != vec3_origin)
+	if (info.GetActivator()->GetAbsVelocity() != vec3_origin)
 		Move(info.GetActivator(), false);
 }
 
@@ -876,7 +876,7 @@ void CPushable::Move(CBaseEntity* pOther, bool push)
 	{
 		// Only push if floating
 		if (pev->waterlevel > WaterLevel::Dry)
-			pev->velocity.z += pOther->pev->velocity.z * 0.1;
+			SetAbsVelocity(GetAbsVelocity() + Vector(0, 0, pOther->GetAbsVelocity().z * 0.1));
 
 		return;
 	}
@@ -906,19 +906,23 @@ void CPushable::Move(CBaseEntity* pOther, bool push)
 	else
 		factor = 0.25;
 
-	pev->velocity.x += pOther->pev->velocity.x * factor;
-	pev->velocity.y += pOther->pev->velocity.y * factor;
+	Vector newVelocity = GetAbsVelocity();
 
-	const float length = sqrt(pev->velocity.x * pev->velocity.x + pev->velocity.y * pev->velocity.y);
+	newVelocity.x += pOther->GetAbsVelocity().x * factor;
+	newVelocity.y += pOther->GetAbsVelocity().y * factor;
+
+	const float length = newVelocity.Length2D();
 	if (push && (length > MaxSpeed()))
 	{
-		pev->velocity.x = (pev->velocity.x * MaxSpeed() / length);
-		pev->velocity.y = (pev->velocity.y * MaxSpeed() / length);
+		newVelocity.x = newVelocity.x * MaxSpeed() / length;
+		newVelocity.y = newVelocity.y * MaxSpeed() / length;
 	}
+
+	SetAbsVelocity(newVelocity);
+
 	if (playerTouch)
 	{
-		pOther->pev->velocity.x = pev->velocity.x;
-		pOther->pev->velocity.y = pev->velocity.y;
+		pOther->SetAbsVelocity({newVelocity.x, newVelocity.y, pOther->GetAbsVelocity().z});
 		if ((gpGlobals->time - m_soundTime) > 0.7)
 		{
 			m_soundTime = gpGlobals->time;

@@ -106,16 +106,16 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 
 		if (pOther->IsPlayer())
 		{
-			pOther->TraceAttack({owner, gSkillData.plrDmgCrossbowClient, pev->velocity.Normalize(), tr, DMG_NEVERGIB});
+			pOther->TraceAttack({owner, gSkillData.plrDmgCrossbowClient, GetAbsVelocity().Normalize(), tr, DMG_NEVERGIB});
 		}
 		else
 		{
-			pOther->TraceAttack({owner, gSkillData.plrDmgCrossbowMonster, pev->velocity.Normalize(), tr, DMG_BULLET | DMG_NEVERGIB});
+			pOther->TraceAttack({owner, gSkillData.plrDmgCrossbowMonster, GetAbsVelocity().Normalize(), tr, DMG_BULLET | DMG_NEVERGIB});
 		}
 
 		ApplyMultiDamage(this, owner);
 
-		pev->velocity = vec3_origin;
+		SetAbsVelocity(vec3_origin);
 		// play body "thwack" sound
 		switch (RANDOM_LONG(0, 1))
 		{
@@ -140,12 +140,12 @@ void CCrossbowBolt::BoltTouch(CBaseEntity* pOther)
 		if (pOther->ClassnameIs("worldspawn"))
 		{
 			// if what we hit is static architecture, can stay around for a while.
-			Vector vecDir = pev->velocity.Normalize();
+			Vector vecDir = GetAbsVelocity().Normalize();
 			SetAbsOrigin(GetAbsOrigin() - vecDir * 12);
 			pev->angles = VectorAngles(vecDir);
 			SetSolidType(Solid::Not);
 			SetMovetype(Movetype::Fly);
-			pev->velocity = vec3_origin;
+			SetAbsVelocity(vec3_origin);
 			pev->avelocity.z = 0;
 			pev->angles.z = RANDOM_LONG(0, 360);
 			pev->nextthink = gpGlobals->time + 10.0;
@@ -171,7 +171,7 @@ void CCrossbowBolt::BubbleThink()
 	if (pev->waterlevel == WaterLevel::Dry)
 		return;
 
-	UTIL_BubbleTrail(GetAbsOrigin() - pev->velocity * 0.1, GetAbsOrigin(), 1);
+	UTIL_BubbleTrail(GetAbsOrigin() - GetAbsVelocity() * 0.1, GetAbsOrigin(), 1);
 }
 
 void CCrossbowBolt::ExplodeThink()
@@ -386,12 +386,12 @@ void CCrossbow::FireBolt()
 
 	if (m_hPlayer->pev->waterlevel == WaterLevel::Head)
 	{
-		pBolt->pev->velocity = vecDir * BOLT_WATER_VELOCITY;
+		pBolt->SetAbsVelocity(vecDir * BOLT_WATER_VELOCITY);
 		pBolt->pev->speed = BOLT_WATER_VELOCITY;
 	}
 	else
 	{
-		pBolt->pev->velocity = vecDir * BOLT_AIR_VELOCITY;
+		pBolt->SetAbsVelocity(vecDir * BOLT_AIR_VELOCITY);
 		pBolt->pev->speed = BOLT_AIR_VELOCITY;
 	}
 	pBolt->pev->avelocity.z = 10;

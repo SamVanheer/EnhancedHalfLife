@@ -48,7 +48,7 @@ CBaseEntity* CGameRules::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
 
 	pPlayer->SetAbsOrigin(pSpawnSpot->GetAbsOrigin() + vec3_up);
 	pPlayer->pev->v_angle = vec3_origin;
-	pPlayer->pev->velocity = vec3_origin;
+	pPlayer->SetAbsVelocity(vec3_origin);
 	pPlayer->pev->angles = pSpawnSpot->pev->angles;
 	pPlayer->pev->punchangle = vec3_origin;
 	pPlayer->pev->fixangle = FixAngleMode::Absolute;

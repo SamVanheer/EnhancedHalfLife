@@ -142,7 +142,7 @@ void CBaseMonster::BarnacleVictimReleased()
 {
 	m_IdealMonsterState = NPCState::Idle;
 
-	pev->velocity = vec3_origin;
+	SetAbsVelocity(vec3_origin);
 	SetMovetype(Movetype::Step);
 }
 
@@ -917,10 +917,10 @@ bool CBaseMonster::CheckEnemy(CBaseEntity* pEnemy)
 				ClearConditions(bits_COND_ENEMY_FACING_ME);
 		}
 
-		if (pEnemy->pev->velocity != vec3_origin)
+		if (pEnemy->GetAbsVelocity() != vec3_origin)
 		{
 			// trail the enemy a bit
-			m_vecEnemyLKP = m_vecEnemyLKP - pEnemy->pev->velocity * RANDOM_FLOAT(-0.05, 0);
+			m_vecEnemyLKP = m_vecEnemyLKP - pEnemy->GetAbsVelocity() * RANDOM_FLOAT(-0.05, 0);
 		}
 		else
 		{
@@ -2930,7 +2930,7 @@ CBaseEntity* CBaseMonster::DropItem(const char* pszItemName, const Vector& vecPo
 	if (CBaseEntity* pItem = CBaseEntity::Create(pszItemName, vecPos, vecAng, this); pItem)
 	{
 		// do we want this behavior to be default?! (sjb)
-		pItem->pev->velocity = pev->velocity;
+		pItem->SetAbsVelocity(GetAbsVelocity());
 		pItem->pev->avelocity = Vector(0, RANDOM_FLOAT(0, 100), 0);
 		return pItem;
 	}

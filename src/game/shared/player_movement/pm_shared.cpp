@@ -1764,7 +1764,7 @@ void PM_LadderMove(physent_t* pLadder)
 			if (forward != 0 || right != 0)
 			{
 				//ALERT(at_console, "pev %.2f %.2f %.2f - ",
-				//	pev->velocity.x, pev->velocity.y, pev->velocity.z);
+				//	GetAbsVelocity().x, GetAbsVelocity().y, GetAbsVelocity().z);
 				// Calculate player's intended velocity
 				const Vector velocity = vpn * forward + v_right * right;
 
@@ -1791,7 +1791,7 @@ void PM_LadderMove(physent_t* pLadder)
 				{
 					pmove->velocity = pmove->velocity + MAX_CLIMB_SPEED * trace.plane.normal;
 				}
-				//pev->velocity = lateral - (CrossProduct( trace.vecPlaneNormal, perp ) * normal);
+				//pmove->velocity = lateral - (CrossProduct( trace.vecPlaneNormal, perp ) * normal);
 			}
 			else
 			{

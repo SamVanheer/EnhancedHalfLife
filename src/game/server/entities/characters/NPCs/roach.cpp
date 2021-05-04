@@ -69,7 +69,7 @@ int	CRoach::Classify()
 
 void CRoach::Touch(CBaseEntity* pOther)
 {
-	if (pOther->pev->velocity == vec3_origin || !pOther->IsPlayer())
+	if (pOther->GetAbsVelocity() == vec3_origin || !pOther->IsPlayer())
 	{
 		return;
 	}

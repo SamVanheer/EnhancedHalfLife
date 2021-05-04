@@ -440,7 +440,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 
 		CBaseEntity* pHornet = CBaseEntity::Create("hornet", vecArmPos, VectorAngles(vecDirToEnemy), this);
 		UTIL_MakeVectors(pHornet->pev->angles);
-		pHornet->pev->velocity = gpGlobals->v_forward * 300;
+		pHornet->SetAbsVelocity(gpGlobals->v_forward * 300);
 
 		switch (RANDOM_LONG(0, 2))
 		{
@@ -484,7 +484,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 			if (pHurt->IsPlayer())
 			{
 				// this is a player. Knock him around.
-				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * 250;
+				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + gpGlobals->v_right * 250);
 			}
 
 			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
@@ -512,7 +512,7 @@ void CAGrunt::HandleAnimEvent(AnimationEvent& event)
 			if (pHurt->IsPlayer())
 			{
 				// this is a player. Knock him around.
-				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * -250;
+				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + gpGlobals->v_right * -250);
 			}
 
 			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));

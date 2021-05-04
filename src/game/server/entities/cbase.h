@@ -404,7 +404,7 @@ public:
 	virtual CSquadMonster* MySquadMonsterPointer() { return nullptr; }
 	virtual	ToggleState GetToggleState() { return ToggleState::AtTop; }
 	virtual float GetDelay() { return 0; }
-	virtual bool IsMoving() { return pev->velocity != vec3_origin; }
+	virtual bool IsMoving() { return GetAbsVelocity() != vec3_origin; }
 	virtual void OverrideReset() {}
 	virtual int DamageDecal(int bitsDamageType);
 	virtual bool OnControls(CBaseEntity* pTest) { return false; }
@@ -476,6 +476,13 @@ public:
 
 	const Vector& GetAbsOrigin() { return pev->origin; }
 	void SetAbsOrigin(const Vector& origin);
+
+	const Vector& GetAbsVelocity() const { return pev->velocity; }
+
+	void SetAbsVelocity(const Vector& velocity)
+	{
+		pev->velocity = velocity;
+	}
 
 	void SetSize(const Vector& mins, const Vector& maxs);
 

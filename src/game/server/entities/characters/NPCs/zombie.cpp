@@ -115,7 +115,7 @@ bool CZombie::TakeDamage(const TakeDamageInfo& info)
 	{
 		const Vector vecDir = (GetAbsOrigin() - (adjustedInfo.GetInflictor()->pev->absmin + adjustedInfo.GetInflictor()->pev->absmax) * 0.5).Normalize();
 		const float flForce = DamageForce(adjustedInfo.GetDamage());
-		pev->velocity = pev->velocity + vecDir * flForce;
+		SetAbsVelocity(GetAbsVelocity() + vecDir * flForce);
 		adjustedInfo.SetDamage(adjustedInfo.GetDamage() * 0.3);
 	}
 
@@ -170,7 +170,7 @@ void CZombie::HandleAnimEvent(AnimationEvent& event)
 			{
 				pHurt->pev->punchangle.z = -18;
 				pHurt->pev->punchangle.x = 5;
-				pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_right * 100;
+				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() - gpGlobals->v_right * 100);
 			}
 			// Play a random attack hit sound
 			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
@@ -193,7 +193,7 @@ void CZombie::HandleAnimEvent(AnimationEvent& event)
 			{
 				pHurt->pev->punchangle.z = 18;
 				pHurt->pev->punchangle.x = 5;
-				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * 100;
+				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + gpGlobals->v_right * 100);
 			}
 			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 		}
@@ -213,7 +213,7 @@ void CZombie::HandleAnimEvent(AnimationEvent& event)
 			if (pHurt->pev->flags & (FL_MONSTER | FL_CLIENT))
 			{
 				pHurt->pev->punchangle.x = 5;
-				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_forward * -100;
+				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + gpGlobals->v_forward * -100);
 			}
 			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, PITCH_NORM + RANDOM_LONG(-5, 5));
 		}

@@ -106,7 +106,7 @@ void CSquidSpit::Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity)
 	pSpit->Spawn();
 
 	pSpit->SetAbsOrigin(vecStart);
-	pSpit->pev->velocity = vecVelocity;
+	pSpit->SetAbsVelocity(vecVelocity);
 	pSpit->SetOwner(pOwner);
 
 	pSpit->SetThink(&CSquidSpit::Animate);
@@ -134,7 +134,7 @@ void CSquidSpit::Touch(CBaseEntity* pOther)
 	{
 		TraceResult tr;
 		// make a splat on the wall
-		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + pev->velocity * 10, IgnoreMonsters::No, this, &tr);
+		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + GetAbsVelocity() * 10, IgnoreMonsters::No, this, &tr);
 		UTIL_DecalTrace(&tr, DECAL_SPIT1 + RANDOM_LONG(0, 1));
 
 		// make some flecks
@@ -536,8 +536,8 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 		{
 			//pHurt->pev->punchangle.z = -15;
 			//pHurt->pev->punchangle.x = -45;
-			pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_forward * 100;
-			pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_up * 100;
+			pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() - gpGlobals->v_forward * 100);
+			pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + gpGlobals->v_up * 100);
 		}
 	}
 	break;
@@ -548,8 +548,8 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 		{
 			pHurt->pev->punchangle.z = -20;
 			pHurt->pev->punchangle.x = 20;
-			pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * 200;
-			pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_up * 100;
+			pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + gpGlobals->v_right * 200);
+			pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + gpGlobals->v_up * 100);
 		}
 	}
 	break;
@@ -572,8 +572,8 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 		}
 
 		// jump into air for 0.8 (24/30) seconds
-//			pev->velocity.z += (0.875 * flGravity) * 0.5;
-		pev->velocity.z += (0.625 * flGravity) * 0.5;
+		// SetAbsVelocity(GetAbsVelocity() + Vector(0, 0, (0.875 * flGravity) * 0.5));
+		SetAbsVelocity(GetAbsVelocity() + Vector(0, 0, (0.625 * flGravity) * 0.5));
 	}
 	break;
 
@@ -605,7 +605,7 @@ void CBullsquid::HandleAnimEvent(AnimationEvent& event)
 			if (pHurt->IsPlayer())
 			{
 				UTIL_MakeVectors(pev->angles);
-				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_forward * 300 + gpGlobals->v_up * 300;
+				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() + gpGlobals->v_forward * 300 + gpGlobals->v_up * 300);
 			}
 		}
 	}

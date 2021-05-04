@@ -266,7 +266,7 @@ void CController::HandleAnimEvent(AnimationEvent& event)
 
 		CBaseMonster* pBall = (CBaseMonster*)Create("controller_head_ball", vecStart, pev->angles, this);
 
-		pBall->pev->velocity = Vector(0, 0, 32);
+		pBall->SetAbsVelocity(Vector(0, 0, 32));
 		pBall->m_hEnemy = m_hEnemy;
 
 		m_iBall[0] = 0;
@@ -559,13 +559,13 @@ void CController::RunTask(Task_t* pTask)
 
 		while (m_flShootTime < m_flShootEnd && m_flShootTime < gpGlobals->time)
 		{
-			Vector vecSrc = vecHand + pev->velocity * (m_flShootTime - gpGlobals->time);
+			Vector vecSrc = vecHand + GetAbsVelocity() * (m_flShootTime - gpGlobals->time);
 
 			if (m_hEnemy != nullptr)
 			{
 				if (HasConditions(bits_COND_SEE_ENEMY))
 				{
-					m_vecEstVelocity = m_vecEstVelocity * 0.5 + m_hEnemy->pev->velocity * 0.5;
+					m_vecEstVelocity = m_vecEstVelocity * 0.5 + m_hEnemy->GetAbsVelocity() * 0.5;
 				}
 				else
 				{
@@ -577,7 +577,7 @@ void CController::RunTask(Task_t* pTask)
 
 				vecSrc = vecSrc + vecDir * (gpGlobals->time - m_flShootTime);
 				CBaseMonster* pBall = (CBaseMonster*)Create("controller_energy_ball", vecSrc, pev->angles, this);
-				pBall->pev->velocity = vecDir;
+				pBall->SetAbsVelocity(vecDir);
 			}
 			m_flShootTime += 0.2;
 		}
@@ -1103,7 +1103,7 @@ void CControllerHeadBall::HuntThink()
 		if (CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit); pEntity != nullptr && pEntity->pev->takedamage)
 		{
 			ClearMultiDamage();
-			pEntity->TraceAttack({m_hOwner, gSkillData.controllerDmgZap, pev->velocity, tr, DMG_SHOCK});
+			pEntity->TraceAttack({m_hOwner, gSkillData.controllerDmgZap, GetAbsVelocity(), tr, DMG_SHOCK});
 			ApplyMultiDamage(this, m_hOwner);
 		}
 
@@ -1148,7 +1148,7 @@ void CControllerHeadBall::MovetoTarget(Vector vecTarget)
 	float flSpeed = m_vecIdeal.Length();
 	if (flSpeed == 0)
 	{
-		m_vecIdeal = pev->velocity;
+		m_vecIdeal = GetAbsVelocity();
 		flSpeed = m_vecIdeal.Length();
 	}
 
@@ -1157,13 +1157,13 @@ void CControllerHeadBall::MovetoTarget(Vector vecTarget)
 		m_vecIdeal = m_vecIdeal.Normalize() * 400;
 	}
 	m_vecIdeal = m_vecIdeal + (vecTarget - GetAbsOrigin()).Normalize() * 100;
-	pev->velocity = m_vecIdeal;
+	SetAbsVelocity(m_vecIdeal);
 }
 
 void CControllerHeadBall::Crawl()
 {
 	const Vector vecAim = Vector(RANDOM_FLOAT(-1, 1), RANDOM_FLOAT(-1, 1), RANDOM_FLOAT(-1, 1)).Normalize();
-	const Vector vecPnt = GetAbsOrigin() + pev->velocity * 0.3 + vecAim * 64;
+	const Vector vecPnt = GetAbsOrigin() + GetAbsVelocity() * 0.3 + vecAim * 64;
 
 	MESSAGE_BEGIN(MessageDest::Broadcast, SVC_TEMPENTITY);
 	WRITE_BYTE(TE_BEAMENTPOINT);
@@ -1247,7 +1247,7 @@ void CControllerZapBall::AnimateThink()
 
 	pev->frame = ((int)pev->frame + 1) % 11;
 
-	if (gpGlobals->time - pev->dmgtime > 5 || pev->velocity.Length() < 10)
+	if (gpGlobals->time - pev->dmgtime > 5 || GetAbsVelocity().Length() < 10)
 	{
 		SetTouch(nullptr);
 		UTIL_Remove(this);
@@ -1263,7 +1263,7 @@ void CControllerZapBall::ExplodeTouch(CBaseEntity* pOther)
 		CBaseEntity* pOwner = m_hOwner ? m_hOwner : this;
 
 		ClearMultiDamage();
-		pOther->TraceAttack({pOwner, gSkillData.controllerDmgBall, pev->velocity.Normalize(), tr, DMG_ENERGYBEAM});
+		pOther->TraceAttack({pOwner, gSkillData.controllerDmgBall, GetAbsVelocity().Normalize(), tr, DMG_ENERGYBEAM});
 		ApplyMultiDamage(pOwner, pOwner);
 
 		UTIL_EmitAmbientSound(this, tr.vecEndPos, "weapons/electro4.wav", 0.3, ATTN_NORM, 0, RANDOM_LONG(90, 99));

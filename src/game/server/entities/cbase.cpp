@@ -72,7 +72,7 @@ bool CBaseEntity::TakeDamage(const TakeDamageInfo& info)
 
 		if (flForce > 1000.0)
 			flForce = 1000.0;
-		pev->velocity = pev->velocity + vecDir * flForce;
+		SetAbsVelocity(GetAbsVelocity() + vecDir * flForce);
 	}
 
 	// do the damage
@@ -191,12 +191,12 @@ bool CBaseEntity::IsInWorld()
 	}
 
 	// speed
-	if (pev->velocity.x >= 2000) return false;
-	if (pev->velocity.y >= 2000) return false;
-	if (pev->velocity.z >= 2000) return false;
-	if (pev->velocity.x <= -2000) return false;
-	if (pev->velocity.y <= -2000) return false;
-	if (pev->velocity.z <= -2000) return false;
+	if (GetAbsVelocity().x >= 2000) return false;
+	if (GetAbsVelocity().y >= 2000) return false;
+	if (GetAbsVelocity().z >= 2000) return false;
+	if (GetAbsVelocity().x <= -2000) return false;
+	if (GetAbsVelocity().y <= -2000) return false;
+	if (GetAbsVelocity().z <= -2000) return false;
 
 	return true;
 }

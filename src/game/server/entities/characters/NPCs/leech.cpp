@@ -67,7 +67,7 @@ public:
 			// If the client is pushing me, give me some base velocity
 			if (gpGlobals->trace_ent && InstanceOrNull(gpGlobals->trace_ent) == this)
 			{
-				pev->basevelocity = pOther->pev->velocity;
+				pev->basevelocity = pOther->GetAbsVelocity();
 				pev->flags |= FL_BASEVELOCITY;
 			}
 		}
@@ -275,12 +275,12 @@ void CLeech::Precache()
 
 bool CLeech::TakeDamage(const TakeDamageInfo& info)
 {
-	pev->velocity = vec3_origin;
+	SetAbsVelocity(vec3_origin);
 
 	// Nudge the leech away from the damage
 	if (info.GetInflictor())
 	{
-		pev->velocity = (GetAbsOrigin() - info.GetInflictor()->GetAbsOrigin()).Normalize() * 25;
+		SetAbsVelocity((GetAbsOrigin() - info.GetInflictor()->GetAbsOrigin()).Normalize() * 25);
 	}
 
 	return CBaseMonster::TakeDamage(info);
@@ -330,7 +330,7 @@ void CLeech::MakeVectors()
 float CLeech::ObstacleDistance(CBaseEntity* pTarget)
 {
 	// use VELOCITY, not angles, not all boids point the direction they are flying
-	//Vector vecDir = VectorAngles( pev->velocity );
+	//Vector vecDir = VectorAngles(GetAbsVelocity());
 	MakeVectors();
 
 	// check for obstacle ahead
@@ -397,16 +397,15 @@ void CLeech::DeadThink()
 	pev->nextthink = gpGlobals->time + 0.1;
 
 	// Apply damage velocity, but keep out of the walls
-	if (pev->velocity.x != 0 || pev->velocity.y != 0)
+	if (GetAbsVelocity().x != 0 || GetAbsVelocity().y != 0)
 	{
 		TraceResult tr;
 
 		// Look 0.5 seconds ahead
-		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + pev->velocity * 0.5, IgnoreMonsters::No, this, &tr);
+		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + GetAbsVelocity() * 0.5, IgnoreMonsters::No, this, &tr);
 		if (tr.flFraction != 1.0)
 		{
-			pev->velocity.x = 0;
-			pev->velocity.y = 0;
+			SetAbsVelocity({0, 0, GetAbsVelocity().z});
 		}
 	}
 }
@@ -455,7 +454,7 @@ void CLeech::UpdateMotion()
 	{
 		SetMovetype(Movetype::Toss);
 		m_IdealActivity = ACT_TWITCH;
-		pev->velocity = vec3_origin;
+		SetAbsVelocity(vec3_origin);
 
 		// Animation will intersect the floor if either of these is non-zero
 		pev->angles.z = 0;
@@ -505,7 +504,7 @@ void CLeech::SwimThink()
 	if (IsNullEnt(UTIL_FindClientInPVS(this)))
 	{
 		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(1, 1.5);
-		pev->velocity = vec3_origin;
+		SetAbsVelocity(vec3_origin);
 		return;
 	}
 	else
@@ -595,7 +594,7 @@ void CLeech::SwimThink()
 
 		m_fPathBlocked = false;
 		pev->speed = UTIL_Approach(targetSpeed, pev->speed, LEECH_SWIM_ACCEL * LEECH_FRAMETIME);
-		pev->velocity = gpGlobals->v_forward * pev->speed;
+		SetAbsVelocity(gpGlobals->v_forward * pev->speed);
 	}
 	else
 	{
@@ -622,7 +621,7 @@ void CLeech::SwimThink()
 				m_flTurning = LEECH_TURN_RATE;
 		}
 		pev->speed = UTIL_Approach(-(LEECH_SWIM_SPEED * 0.5), pev->speed, LEECH_SWIM_DECEL * LEECH_FRAMETIME * m_obstacle);
-		pev->velocity = gpGlobals->v_forward * pev->speed;
+		SetAbsVelocity(gpGlobals->v_forward * pev->speed);
 	}
 	pev->ideal_yaw = m_flTurning + targetYaw;
 	UpdateMotion();

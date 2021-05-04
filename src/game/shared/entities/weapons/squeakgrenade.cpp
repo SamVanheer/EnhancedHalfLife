@@ -198,7 +198,7 @@ void CSqueakGrenade::HuntThink()
 	// explode when ready
 	if (gpGlobals->time >= m_flDie)
 	{
-		g_vecAttackDir = pev->velocity.Normalize();
+		g_vecAttackDir = GetAbsVelocity().Normalize();
 		pev->health = -1;
 		Killed({this, this, GibType::Normal});
 		return;
@@ -211,8 +211,10 @@ void CSqueakGrenade::HuntThink()
 		{
 			SetMovetype(Movetype::Fly);
 		}
-		pev->velocity = pev->velocity * 0.9;
-		pev->velocity.z += 8.0;
+
+		Vector velocity = GetAbsVelocity() * 0.9;
+		velocity.z += 8;
+		SetAbsVelocity(velocity);
 	}
 	else //if (SetMovetype(Movetype::Fly); GetMovetype() != Movetype::None)
 	{
@@ -225,7 +227,7 @@ void CSqueakGrenade::HuntThink()
 
 	m_flNextHunt = gpGlobals->time + 2.0;
 
-	Vector vecFlat = pev->velocity;
+	Vector vecFlat = GetAbsVelocity();
 	vecFlat.z = 0;
 	vecFlat = vecFlat.Normalize();
 
@@ -253,14 +255,14 @@ void CSqueakGrenade::HuntThink()
 			m_vecTarget = vecDir.Normalize();
 		}
 
-		const float flVel = pev->velocity.Length();
+		const float flVel = GetAbsVelocity().Length();
 		const float flAdj = std::min(1.2f, 50.0f / (flVel + 10.0f));
 
 		// ALERT( at_console, "think : enemy\n");
 
 		// ALERT( at_console, "%.0f %.2f %.2f %.2f\n", flVel, m_vecTarget.x, m_vecTarget.y, m_vecTarget.z );
 
-		pev->velocity = pev->velocity * flAdj + m_vecTarget * 300;
+		SetAbsVelocity(GetAbsVelocity() * flAdj + m_vecTarget * 300);
 	}
 
 	if (pev->flags & FL_ONGROUND)
@@ -278,12 +280,11 @@ void CSqueakGrenade::HuntThink()
 
 	if ((GetAbsOrigin() - m_posPrev).Length() < 1.0)
 	{
-		pev->velocity.x = RANDOM_FLOAT(-100, 100);
-		pev->velocity.y = RANDOM_FLOAT(-100, 100);
+		SetAbsVelocity({RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), GetAbsVelocity().z});
 	}
 	m_posPrev = GetAbsOrigin();
 
-	pev->angles = VectorAngles(pev->velocity);
+	pev->angles = VectorAngles(GetAbsVelocity());
 	pev->angles.z = 0;
 	pev->angles.x = 0;
 }
@@ -495,7 +496,7 @@ void CSqueak::PrimaryAttack()
 
 #ifndef CLIENT_DLL
 			CBaseEntity* pSqueak = CBaseEntity::Create("monster_snark", tr.vecEndPos, m_hPlayer->pev->v_angle, m_hPlayer);
-			pSqueak->pev->velocity = gpGlobals->v_forward * 200 + m_hPlayer->pev->velocity;
+			pSqueak->SetAbsVelocity(gpGlobals->v_forward * 200 + m_hPlayer->GetAbsVelocity());
 #endif
 
 			// play hunt sound

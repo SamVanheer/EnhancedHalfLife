@@ -155,7 +155,7 @@ void CStomp::Think()
 			{
 				UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() - Vector(0, 0, 500), IgnoreMonsters::Yes, this, &tr);
 				pSprite->SetAbsOrigin(tr.vecEndPos);
-				pSprite->pev->velocity = Vector(RANDOM_FLOAT(-200, 200), RANDOM_FLOAT(-200, 200), 175);
+				pSprite->SetAbsVelocity(Vector(RANDOM_FLOAT(-200, 200), RANDOM_FLOAT(-200, 200), 175));
 				// pSprite->AnimateAndDie( RANDOM_FLOAT( 8.0, 12.0 ) );
 				pSprite->pev->nextthink = gpGlobals->time + 0.3;
 				pSprite->SetThink(&CSprite::SUB_Remove);
@@ -902,7 +902,7 @@ void CGargantua::HandleAnimEvent(AnimationEvent& event)
 				pHurt->pev->punchangle.y = -30;	// yaw
 				pHurt->pev->punchangle.z = 30;	// roll
 				//UTIL_MakeVectors(pev->angles);	// called by CheckTraceHullAttack
-				pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_right * 100;
+				pHurt->SetAbsVelocity(pHurt->GetAbsVelocity() - gpGlobals->v_right * 100);
 			}
 			EmitSound(SoundChannel::Weapon, pAttackHitSounds[RANDOM_LONG(0, ArraySize(pAttackHitSounds) - 1)], VOL_NORM, ATTN_NORM, 50 + RANDOM_LONG(0, 15));
 		}
@@ -1034,7 +1034,7 @@ void CGargantua::RunTask(Task_t* pTask)
 				pGib->m_bloodColor = BLOOD_COLOR_YELLOW;
 				pGib->m_material = Materials::None;
 				pGib->SetAbsOrigin(GetAbsOrigin());
-				pGib->pev->velocity = UTIL_RandomBloodVector() * RANDOM_FLOAT(300, 500);
+				pGib->SetAbsVelocity(UTIL_RandomBloodVector() * RANDOM_FLOAT(300, 500));
 				pGib->pev->nextthink = gpGlobals->time + 1.25;
 				pGib->SetThink(&CGib::SUB_FadeOut);
 			}

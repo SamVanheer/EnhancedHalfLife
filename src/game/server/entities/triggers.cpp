@@ -621,8 +621,9 @@ void CTriggerMonsterJump::Touch(CBaseEntity* pOther)
 	}
 
 	// toss the monster!
-	pOther->pev->velocity = pev->movedir * pev->speed;
-	pOther->pev->velocity.z += m_flHeight;
+	Vector velocity = pev->movedir * pev->speed;
+	velocity.z += m_flHeight;
+	pOther->SetAbsVelocity(velocity);
 	pev->nextthink = gpGlobals->time;
 }
 
@@ -915,8 +916,8 @@ void CTriggerPush::Touch(CBaseEntity* pOther)
 		// Instant trigger, just transfer velocity and remove
 		if (IsBitSet(pev->spawnflags, SF_TRIGGER_PUSH_ONCE))
 		{
-			pOther->pev->velocity = pOther->pev->velocity + (pev->speed * pev->movedir);
-			if (pOther->pev->velocity.z > 0)
+			pOther->SetAbsVelocity(pOther->GetAbsVelocity() + (pev->speed * pev->movedir));
+			if (pOther->GetAbsVelocity().z > 0)
 				pOther->pev->flags &= ~FL_ONGROUND;
 			UTIL_Remove(this);
 		}
@@ -929,7 +930,7 @@ void CTriggerPush::Touch(CBaseEntity* pOther)
 			pOther->pev->basevelocity = vecPush;
 
 			pOther->pev->flags |= FL_BASEVELOCITY;
-			//			ALERT( at_console, "Vel %f, base %f\n", pOther->pev->velocity.z, pOther->pev->basevelocity.z );
+			//			ALERT( at_console, "Vel %f, base %f\n", pOther->GetAbsVelocity().z, pOther->pev->basevelocity.z );
 		}
 	}
 }
@@ -994,7 +995,8 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 	}
 
 	pOther->pev->fixangle = FixAngleMode::Absolute;
-	pOther->pev->velocity = pOther->pev->basevelocity = vec3_origin;
+	pOther->pev->basevelocity = vec3_origin;
+	pOther->SetAbsVelocity(vec3_origin);
 }
 
 LINK_ENTITY_TO_CLASS(trigger_gravity, CTriggerGravity);
@@ -1188,11 +1190,11 @@ void CTriggerCamera::Use(const UseInfo& info)
 		pev->angles.x = -pActivator->pev->angles.x;
 		pev->angles.y = pActivator->pev->angles.y;
 		pev->angles.z = 0;
-		pev->velocity = pActivator->pev->velocity;
+		SetAbsVelocity(pActivator->GetAbsVelocity());
 	}
 	else
 	{
-		pev->velocity = vec3_origin;
+		SetAbsVelocity(vec3_origin);
 	}
 
 	SET_VIEW(pActivator->edict(), edict());
@@ -1260,9 +1262,9 @@ void CTriggerCamera::FollowTarget()
 
 	if (!(IsBitSet(pev->spawnflags, SF_CAMERA_PLAYER_TAKECONTROL)))
 	{
-		pev->velocity = pev->velocity * 0.8;
-		if (pev->velocity.Length() < 10.0)
-			pev->velocity = vec3_origin;
+		SetAbsVelocity(GetAbsVelocity() * 0.8);
+		if (GetAbsVelocity().Length() < 10.0)
+			SetAbsVelocity(vec3_origin);
 	}
 
 	pev->nextthink = gpGlobals->time;
@@ -1296,7 +1298,7 @@ void CTriggerCamera::Move()
 		// Set up next corner
 		if (!path)
 		{
-			pev->velocity = vec3_origin;
+			SetAbsVelocity(vec3_origin);
 		}
 		else
 		{
@@ -1316,5 +1318,5 @@ void CTriggerCamera::Move()
 		pev->speed = UTIL_Approach(m_targetSpeed, pev->speed, m_acceleration * gpGlobals->frametime);
 
 	const float fraction = 2 * gpGlobals->frametime;
-	pev->velocity = ((pev->movedir * pev->speed) * fraction) + (pev->velocity * (1 - fraction));
+	SetAbsVelocity(((pev->movedir * pev->speed) * fraction) + (GetAbsVelocity() * (1 - fraction)));
 }

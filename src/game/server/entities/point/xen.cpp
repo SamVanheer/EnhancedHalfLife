@@ -355,7 +355,7 @@ void CXenTree::HandleAnimEvent(AnimationEvent& event)
 					sound = true;
 					pList[i]->TakeDamage({this, this, 25, DMG_CRUSH | DMG_SLASH});
 					pList[i]->pev->punchangle.x = 15;
-					pList[i]->pev->velocity = pList[i]->pev->velocity + forward * 100;
+					pList[i]->SetAbsVelocity(pList[i]->GetAbsVelocity() + forward * 100);
 				}
 			}
 		}

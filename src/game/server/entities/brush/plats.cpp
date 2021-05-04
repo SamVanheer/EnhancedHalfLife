@@ -670,7 +670,7 @@ void CFuncTrain::Use(const UseInfo& info)
 		if (CBaseEntity* last = m_hCurrentTarget; last)
 			pev->target = last->pev->targetname;
 		pev->nextthink = 0;
-		pev->velocity = vec3_origin;
+		SetAbsVelocity(vec3_origin);
 		if (!IsStringNull(pev->noiseStopMoving))
 			EmitSound(SoundChannel::Voice, STRING(pev->noiseStopMoving), m_volume);
 	}
@@ -862,7 +862,7 @@ void CFuncTrain::Precache()
 void CFuncTrain::OverrideReset()
 {
 	// Are we moving?
-	if (pev->velocity != vec3_origin && pev->nextthink != 0)
+	if (GetAbsVelocity() != vec3_origin && pev->nextthink != 0)
 	{
 		pev->target = pev->message;
 		// now find our next target
@@ -870,7 +870,7 @@ void CFuncTrain::OverrideReset()
 		if (!pTarg)
 		{
 			pev->nextthink = 0;
-			pev->velocity = vec3_origin;
+			SetAbsVelocity(vec3_origin);
 		}
 		else	// Keep moving for 0.1 secs, then find path_corner again and restart
 		{
@@ -952,12 +952,12 @@ void CFuncTrackTrain::Blocked(CBaseEntity* pOther)
 	if (IsBitSet(pOther->pev->flags, FL_ONGROUND) && InstanceOrNull(pOther->pev->groundentity) == this)
 	{
 		const float deltaSpeed = std::min(fabs(pev->speed), 50.0f);
-		if (!pOther->pev->velocity.z)
-			pOther->pev->velocity.z += deltaSpeed;
+		if (!pOther->GetAbsVelocity().z)
+			pOther->SetAbsVelocity(pOther->GetAbsVelocity() + Vector{0, 0, deltaSpeed});
 		return;
 	}
 	else
-		pOther->pev->velocity = (pOther->GetAbsOrigin() - GetAbsOrigin()).Normalize() * pev->dmg;
+		pOther->SetAbsVelocity((pOther->GetAbsOrigin() - GetAbsOrigin()).Normalize() * pev->dmg);
 
 	ALERT(at_aiconsole, "TRAIN(%s): Blocked by %s (dmg:%.2f)\n", STRING(pev->targetname), pOther->GetClassname(), pev->dmg);
 	if (pev->dmg <= 0)
@@ -982,7 +982,7 @@ void CFuncTrackTrain::Use(const UseInfo& info)
 		else
 		{
 			pev->speed = 0;
-			pev->velocity = vec3_origin;
+			SetAbsVelocity(vec3_origin);
 			pev->avelocity = vec3_origin;
 			StopSound();
 			SetThink(nullptr);
@@ -1097,7 +1097,7 @@ void CFuncTrackTrain::Next()
 	CPathTrack* pnext = m_hPath->LookAhead(nextPos, pev->speed * 0.1, 1);
 	nextPos.z += m_height;
 
-	pev->velocity = (nextPos - GetAbsOrigin()) * 10;
+	SetAbsVelocity((nextPos - GetAbsOrigin()) * 10);
 	Vector nextFront = GetAbsOrigin();
 
 	nextFront.z -= m_height;
@@ -1178,9 +1178,9 @@ void CFuncTrackTrain::Next()
 	else	// end of path, stop
 	{
 		StopSound();
-		pev->velocity = (nextPos - GetAbsOrigin());
+		SetAbsVelocity(nextPos - GetAbsOrigin());
 		pev->avelocity = vec3_origin;
-		const float distance = pev->velocity.Length();
+		const float distance = GetAbsVelocity().Length();
 		m_oldSpeed = pev->speed;
 
 		pev->speed = 0;
@@ -1192,7 +1192,7 @@ void CFuncTrackTrain::Next()
 		{
 			// no, how long to get there?
 			const float time = distance / m_oldSpeed;
-			pev->velocity = pev->velocity * (m_oldSpeed / distance);
+			SetAbsVelocity(GetAbsVelocity() * (m_oldSpeed / distance));
 			SetThink(&CFuncTrackTrain::DeadEnd);
 			NextThink(pev->ltime + time, false);
 		}
@@ -1238,7 +1238,7 @@ void CFuncTrackTrain::DeadEnd()
 		}
 	}
 
-	pev->velocity = vec3_origin;
+	SetAbsVelocity(vec3_origin);
 	pev->avelocity = vec3_origin;
 	if (pTrack)
 	{
@@ -1382,7 +1382,7 @@ void CFuncTrackTrain::Spawn()
 		m_speed = pev->speed;
 
 	pev->speed = 0;
-	pev->velocity = vec3_origin;
+	SetAbsVelocity(vec3_origin);
 	pev->avelocity = vec3_origin;
 	pev->impulse = m_speed;
 
@@ -1718,7 +1718,7 @@ void CFuncTrackChange::UpdateTrain(Vector& dest)
 
 	const float time = pev->nextthink - pev->ltime;
 
-	train->pev->velocity = pev->velocity;
+	train->SetAbsVelocity(GetAbsVelocity());
 	train->pev->avelocity = pev->avelocity;
 	train->NextThink(train->pev->ltime + time, false);
 
@@ -1738,7 +1738,7 @@ void CFuncTrackChange::UpdateTrain(Vector& dest)
 	};
 
 	local = local - offset;
-	train->pev->velocity = pev->velocity + (local * (1.0 / time));
+	train->SetAbsVelocity(GetAbsVelocity() + (local * (1.0 / time)));
 }
 
 void CFuncTrackChange::GoDown()
@@ -2097,7 +2097,7 @@ void CGunTarget::Wait()
 
 void CGunTarget::Stop()
 {
-	pev->velocity = vec3_origin;
+	SetAbsVelocity(vec3_origin);
 	pev->nextthink = 0;
 	SetDamageMode(DamageMode::No);
 }

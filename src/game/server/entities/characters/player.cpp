@@ -588,7 +588,7 @@ void CBasePlayer::PackDeadPlayerItems()
 		iPW++;
 	}
 
-	pWeaponBox->pev->velocity = pev->velocity * 1.2;// weaponbox has player's velocity, then some.
+	pWeaponBox->SetAbsVelocity(GetAbsVelocity() * 1.2);// weaponbox has player's velocity, then some.
 
 	RemoveAllItems(true);// now strip off everything that wasn't handled by the code above.
 }
@@ -666,8 +666,8 @@ void CBasePlayer::Killed(const KilledInfo& info)
 	pev->deadflag = DeadFlag::Dying;
 	SetMovetype(Movetype::Toss);
 	ClearBits(pev->flags, FL_ONGROUND);
-	if (pev->velocity.z < 10)
-		pev->velocity.z += RANDOM_FLOAT(0, 300);
+	if (GetAbsVelocity().z < 10)
+		SetAbsVelocity(GetAbsVelocity() + Vector{0, 0, RANDOM_FLOAT(0, 300)});
 
 	// clear out the suit message cache so we don't keep chattering
 	SetSuitUpdate(nullptr, SuitSoundType::Sentence, 0);
@@ -714,7 +714,7 @@ void CBasePlayer::Killed(const KilledInfo& info)
 
 void CBasePlayer::SetAnimation(PlayerAnim playerAnim)
 {
-	float speed = pev->velocity.Length2D();
+	float speed = GetAbsVelocity().Length2D();
 
 	if (pev->flags & FL_FROZEN)
 	{
@@ -997,11 +997,11 @@ void CBasePlayer::PlayerDeathThink()
 {
 	if (IsBitSet(pev->flags, FL_ONGROUND))
 	{
-		const float flForward = pev->velocity.Length() - 20;
+		const float flForward = GetAbsVelocity().Length() - 20;
 		if (flForward <= 0)
-			pev->velocity = vec3_origin;
+			SetAbsVelocity(vec3_origin);
 		else
-			pev->velocity = flForward * pev->velocity.Normalize();
+			SetAbsVelocity(flForward * GetAbsVelocity().Normalize());
 	}
 
 	if (HasWeapons())
@@ -1339,7 +1339,7 @@ void CBasePlayer::Jump()
 	if (m_fLongJump &&
 		(pev->button & IN_DUCK) &&
 		(pev->flDuckTime > 0) &&
-		pev->velocity.Length() > 50)
+		GetAbsVelocity().Length() > 50)
 	{
 		SetAnimation(PlayerAnim::SuperJump);
 	}
@@ -1348,7 +1348,7 @@ void CBasePlayer::Jump()
 	auto pGround = InstanceOrNull(pev->groundentity);
 	if (pGround && (pGround->pev->flags & FL_CONVEYOR))
 	{
-		pev->velocity = pev->velocity + pev->basevelocity;
+		SetAbsVelocity(GetAbsVelocity() + pev->basevelocity);
 	}
 }
 
@@ -1628,7 +1628,7 @@ void CBasePlayer::PreThink()
 			return;
 		}
 
-		pev->velocity = vec3_origin;
+		SetAbsVelocity(vec3_origin);
 		float vel = 0;
 		if (m_afButtonPressed & IN_FORWARD)
 		{
@@ -1665,7 +1665,7 @@ void CBasePlayer::PreThink()
 
 	if (!IsBitSet(pev->flags, FL_ONGROUND))
 	{
-		m_flFallVelocity = -pev->velocity.z;
+		m_flFallVelocity = -GetAbsVelocity().z;
 	}
 
 	// StudioFrameAdvance( );//!!!HACKHACK!!! Can't be hit by traceline when not animating?
@@ -1675,7 +1675,7 @@ void CBasePlayer::PreThink()
 
 	if (m_afPhysicsFlags & PFLAG_ONBARNACLE)
 	{
-		pev->velocity = vec3_origin;
+		SetAbsVelocity(vec3_origin);
 	}
 }
 
@@ -1969,7 +1969,7 @@ void CBasePlayer::UpdatePlayerSound()
 	int iBodyVolume;
 	if (IsBitSet(pev->flags, FL_ONGROUND))
 	{
-		iBodyVolume = pev->velocity.Length();
+		iBodyVolume = GetAbsVelocity().Length();
 
 		// clamp the noise that can be made by the body, in case a push trigger,
 		// weapon recoil, or anything shoves the player abnormally fast. 
@@ -2142,9 +2142,9 @@ void CBasePlayer::PostThink()
 		// select the proper animation for the player character	
 		if (IsAlive())
 		{
-			if (!pev->velocity.x && !pev->velocity.y)
+			if (!GetAbsVelocity().x && !GetAbsVelocity().y)
 				SetAnimation(PlayerAnim::Idle);
-			else if ((pev->velocity.x || pev->velocity.y) && (IsBitSet(pev->flags, FL_ONGROUND)))
+			else if ((GetAbsVelocity().x || GetAbsVelocity().y) && (IsBitSet(pev->flags, FL_ONGROUND)))
 				SetAnimation(PlayerAnim::Walk);
 			else if (pev->waterlevel > WaterLevel::Feet)
 				SetAnimation(PlayerAnim::Walk);
@@ -3680,7 +3680,7 @@ void CBasePlayer::DropPlayerItem(const char* pszItemName)
 			pWeaponBox->pev->angles.x = 0;
 			pWeaponBox->pev->angles.z = 0;
 			pWeaponBox->PackWeapon(pWeapon);
-			pWeaponBox->pev->velocity = gpGlobals->v_forward * 300 + gpGlobals->v_forward * 100;
+			pWeaponBox->SetAbsVelocity(gpGlobals->v_forward * 300 + gpGlobals->v_forward * 100);
 
 			// drop half of the ammo for this weapon.
 			int	iAmmoIndex;

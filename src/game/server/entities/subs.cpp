@@ -297,7 +297,7 @@ void CBaseToggle::LinearMove(Vector	vecDest, float flSpeed)
 	SetThink(&CBaseToggle::LinearMoveDone);
 
 	// scale the destdelta vector by the time spent traveling to get velocity
-	pev->velocity = vecDestDelta / flTravelTime;
+	SetAbsVelocity(vecDestDelta / flTravelTime);
 }
 
 void CBaseToggle::LinearMoveDone()
@@ -313,7 +313,7 @@ void CBaseToggle::LinearMoveDone()
 	}
 
 	SetAbsOrigin(m_vecFinalDest);
-	pev->velocity = vec3_origin;
+	SetAbsVelocity(vec3_origin);
 	pev->nextthink = -1;
 	if (m_pfnCallWhenMoveDone)
 		(this->*m_pfnCallWhenMoveDone)();
