@@ -93,9 +93,6 @@ static cvar_t* m_mousethread_sleep;
 
 int			mouse_buttons;
 int			mouse_oldbuttonstate;
-#ifdef _WIN32
-POINT		current_pos;
-#endif
 int			old_mouse_x, old_mouse_y, mx_accum, my_accum;
 float		mouse_x, mouse_y;
 
@@ -169,6 +166,11 @@ HANDLE	s_hMouseThread = nullptr;
 HANDLE	s_hMouseQuitEvent = nullptr;
 HANDLE	s_hMouseDoneQuitEvent = nullptr;
 SDL_bool mouseRelative = SDL_TRUE;
+
+long s_mouseDeltaX = 0;
+long s_mouseDeltaY = 0;
+POINT current_pos;
+POINT old_mouse_pos;
 #endif
 
 void Force_CenterView_f()
@@ -184,10 +186,6 @@ void Force_CenterView_f()
 }
 
 #ifdef _WIN32
-long s_mouseDeltaX = 0;
-long s_mouseDeltaY = 0;
-POINT		old_mouse_pos;
-
 long ThreadInterlockedExchange(long* pDest, long value)
 {
 	return InterlockedExchange(pDest, value);
