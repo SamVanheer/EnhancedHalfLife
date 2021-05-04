@@ -92,7 +92,7 @@ class CBMortar : public CBaseEntity
 public:
 	void Spawn() override;
 
-	static CBMortar* Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity);
+	static CBMortar* Shoot(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity);
 	void Touch(CBaseEntity* pOther) override;
 	void EXPORT Animate();
 
@@ -149,7 +149,7 @@ constexpr int bits_MEMORY_COMPLETED_NODE = bits_MEMORY_CUSTOM3;
 constexpr int bits_MEMORY_FIRED_NODE = bits_MEMORY_CUSTOM4;
 
 int gSpitSprite, gSpitDebrisSprite;
-Vector CheckSplatToss(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, float maxHeight);
+Vector CheckSplatToss(CBaseEntity* pEntity, const Vector& vecSpot1, const Vector& vecSpot2, float maxHeight);
 void MortarSpray(const Vector& position, const Vector& direction, int spriteModel, int count);
 
 // UNDONE:	
@@ -1009,7 +1009,7 @@ void CBigMomma::RunTask(Task_t* pTask)
 	}
 }
 
-Vector CheckSplatToss(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, float maxHeight)
+Vector CheckSplatToss(CBaseEntity* pEntity, const Vector& vecSpot1, const Vector& vecSpot2, float maxHeight)
 {
 	TraceResult		tr;
 	const float flGravity = g_psv_gravity->value;
@@ -1102,7 +1102,7 @@ void CBMortar::Animate()
 	}
 }
 
-CBMortar* CBMortar::Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity)
+CBMortar* CBMortar::Shoot(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity)
 {
 	CBMortar* pSpit = GetClassPtr((CBMortar*)nullptr);
 	pSpit->Spawn();

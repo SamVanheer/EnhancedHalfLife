@@ -272,7 +272,7 @@ void CBaseToggle::KeyValue(KeyValueData* pkvd)
 		CBaseDelay::KeyValue(pkvd);
 }
 
-void CBaseToggle::LinearMove(Vector	vecDest, float flSpeed)
+void CBaseToggle::LinearMove(const Vector& vecDest, float flSpeed)
 {
 	ASSERTSZ(flSpeed != 0, "LinearMove:  no speed is defined!");
 	//	ASSERTSZ(m_pfnCallWhenMoveDone != nullptr, "LinearMove: no post-move function defined");
@@ -324,7 +324,7 @@ bool CBaseToggle::IsLockedByMaster()
 	return !IsStringNull(m_sMaster) && !UTIL_IsMasterTriggered(m_sMaster, m_hActivator);
 }
 
-void CBaseToggle::AngularMove(Vector vecDestAngle, float flSpeed)
+void CBaseToggle::AngularMove(const Vector& vecDestAngle, float flSpeed)
 {
 	ASSERTSZ(flSpeed != 0, "AngularMove:  no speed is defined!");
 	//	ASSERTSZ(m_pfnCallWhenMoveDone != nullptr, "AngularMove: no post-move function defined");

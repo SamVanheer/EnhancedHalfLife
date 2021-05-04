@@ -339,7 +339,7 @@ void CGauss::StartFire()
 	Fire(vecSrc, vecAiming, flDamage);
 }
 
-void CGauss::Fire(Vector vecOrigSrc, Vector vecDir, float flDamage)
+void CGauss::Fire(const Vector& vecOrigSrc, Vector vecDir, float flDamage)
 {
 	m_hPlayer->m_iWeaponVolume = GAUSS_PRIMARY_FIRE_VOLUME;
 

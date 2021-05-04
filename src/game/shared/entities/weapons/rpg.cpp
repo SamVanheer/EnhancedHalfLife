@@ -74,7 +74,7 @@ void CLaserSpot::Precache()
 
 LINK_ENTITY_TO_CLASS(rpg_rocket, CRpgRocket);
 
-CRpgRocket* CRpgRocket::CreateRpgRocket(Vector vecOrigin, Vector vecAngles, CBaseEntity* pOwner, CRpg* pLauncher)
+CRpgRocket* CRpgRocket::CreateRpgRocket(const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner, CRpg* pLauncher)
 {
 	CRpgRocket* pRocket = GetClassPtr((CRpgRocket*)nullptr);
 

@@ -212,7 +212,7 @@ public:
 	/**
 	*	@brief turns a directional vector into a yaw value that points down that vector.
 	*/
-	float VecToYaw(Vector vecDir);
+	float VecToYaw(const Vector& vecDir);
 
 	/**
 	*	@brief returns the difference ( in degrees ) between monster's current yaw and ideal_yaw
@@ -426,7 +426,7 @@ public:
 	/**
 	*	@brief remember the last few enemies, always remember the player
 	*/
-	void PushEnemy(CBaseEntity* pEnemy, Vector& vecLastKnownPos);
+	void PushEnemy(CBaseEntity* pEnemy, const Vector& vecLastKnownPos);
 
 	/**
 	*	@brief try remembering the last few enemies
@@ -485,7 +485,7 @@ public:
 	*	@brief gets a yaw value for the caller that would face the supplied vector.
 	*	Value is stuffed into the monster's ideal_yaw
 	*/
-	void MakeIdealYaw(Vector vecTarget);
+	void MakeIdealYaw(const Vector& vecTarget);
 
 	/**
 	*	@brief allows different yaw_speeds for each activity
@@ -500,7 +500,7 @@ public:
 	*	but no farther than MaxDist.
 	*	if MaxDist isn't supplied, it defaults to a reasonable value
 	*/
-	virtual bool BuildNearestRoute(Vector vecThreat, Vector vecViewOffset, float flMinDist, float flMaxDist);
+	virtual bool BuildNearestRoute(Vector vecThreat, const Vector& vecViewOffset, float flMinDist, float flMaxDist);
 	int RouteClassify(int iMoveFlag);
 
 	/**
@@ -715,7 +715,7 @@ public:
 	bool DeadTakeDamage(const TakeDamageInfo& info);
 
 	void RadiusDamage(CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
-	void RadiusDamage(Vector vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
+	void RadiusDamage(const Vector& vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
 	bool IsMoving() override { return m_movementGoal != MOVEGOAL_NONE; }
 
 	/**

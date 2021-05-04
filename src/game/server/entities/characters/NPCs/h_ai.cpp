@@ -133,7 +133,7 @@ Vector CheckToss(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, 
 	return vecGrenadeVel;
 }
 
-Vector CheckThrow(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj)
+Vector CheckThrow(CBaseEntity* pEntity, const Vector& vecSpot1, const Vector& vecSpot2, float flSpeed, float flGravityAdj)
 {
 	const float flGravity = g_psv_gravity->value * flGravityAdj;
 

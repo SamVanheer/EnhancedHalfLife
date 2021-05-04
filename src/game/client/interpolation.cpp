@@ -44,7 +44,7 @@ bool SolveLSE(const Vector& v0, const Vector& v1, const Vector& v2, const Vector
 /**
 *	@brief p = closest point between vector lines a1+x*m1 and a2+x*m2
 */
-bool GetPointBetweenLines(Vector& p, Vector a1, Vector m1, Vector a2, Vector m2)
+bool GetPointBetweenLines(Vector& p, const Vector& a1, const Vector& m1, const Vector& a2, const Vector& m2)
 {
 	float x, z;
 
@@ -89,7 +89,7 @@ CInterpolation::~CInterpolation()
 	m_SmoothStart = m_SmoothEnd = false;
 }
 
-void CInterpolation::SetViewAngles(Vector start, Vector end)
+void CInterpolation::SetViewAngles(const Vector& start, const Vector& end)
 {
 	m_StartAngle = start;
 	m_EndAngle = end;
@@ -103,7 +103,7 @@ void CInterpolation::SetFOVs(float start, float end)
 	m_EndFov = end;
 }
 
-void CInterpolation::SetWaypoints(Vector* prev, Vector start, Vector end, Vector* next)
+void CInterpolation::SetWaypoints(Vector* prev, const Vector& start, const Vector& end, Vector* next)
 {
 	m_StartPoint = start;
 	m_EndPoint = end;

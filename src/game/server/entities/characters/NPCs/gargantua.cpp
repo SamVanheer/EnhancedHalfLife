@@ -230,7 +230,7 @@ public:
 	void FlameDestroy();
 	inline bool FlameIsOn() { return m_hFlame[0] != nullptr; }
 
-	void FlameDamage(Vector vecStart, Vector vecEnd, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
+	void FlameDamage(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
@@ -588,7 +588,7 @@ void CGargantua::FlameUpdate()
 		m_streakTime = gpGlobals->time;
 }
 
-void CGargantua::FlameDamage(Vector vecStart, Vector vecEnd, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType)
+void CGargantua::FlameDamage(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType)
 {
 	CBaseEntity* pEntity = nullptr;
 	TraceResult	tr;

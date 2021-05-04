@@ -100,8 +100,8 @@ public:
 
 	bool Draw(float flTime) override;
 
-	void AddWaypoint(float time, Vector pos, Vector angle, float fov, int flags);
-	void SetCameraView(Vector pos, Vector angle, float fov);
+	void AddWaypoint(float time, const Vector& pos, const Vector& angle, float fov, int flags);
+	void SetCameraView(const Vector& pos, const Vector& angle, float fov);
 	float GetFOV();
 	bool GetDirectorCamera(Vector& position, Vector& angle);
 	void SetWayInterpolation(cameraWayPoint_t* prev, cameraWayPoint_t* start, cameraWayPoint_t* end, cameraWayPoint_t* next);

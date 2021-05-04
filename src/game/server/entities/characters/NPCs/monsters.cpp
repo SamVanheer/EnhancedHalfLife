@@ -969,7 +969,7 @@ bool CBaseMonster::CheckEnemy(CBaseEntity* pEnemy)
 	return updatedLKP;
 }
 
-void CBaseMonster::PushEnemy(CBaseEntity* pEnemy, Vector& vecLastKnownPos)
+void CBaseMonster::PushEnemy(CBaseEntity* pEnemy, const Vector& vecLastKnownPos)
 {
 	if (pEnemy == nullptr)
 		return;
@@ -2003,7 +2003,7 @@ bool CBaseMonster::FindCover(Vector vecThreat, Vector vecViewOffset, float flMin
 	return false;
 }
 
-bool CBaseMonster::BuildNearestRoute(Vector vecThreat, Vector vecViewOffset, float flMinDist, float flMaxDist)
+bool CBaseMonster::BuildNearestRoute(Vector vecThreat, const Vector& vecViewOffset, float flMinDist, float flMaxDist)
 {
 	if (!flMaxDist)
 	{
@@ -2115,7 +2115,7 @@ CBaseEntity* CBaseMonster::BestVisibleEnemy()
 	return pReturn;
 }
 
-void CBaseMonster::MakeIdealYaw(Vector vecTarget)
+void CBaseMonster::MakeIdealYaw(const Vector& vecTarget)
 {
 	Vector vecProjection;
 
@@ -2209,7 +2209,7 @@ float CBaseMonster::ChangeYaw(int yawSpeed)
 	return 0;
 }
 
-float CBaseMonster::VecToYaw(Vector vecDir)
+float CBaseMonster::VecToYaw(const Vector& vecDir)
 {
 	if (vecDir.x == 0 && vecDir.y == 0 && vecDir.z == 0)
 		return GetAbsAngles().y;

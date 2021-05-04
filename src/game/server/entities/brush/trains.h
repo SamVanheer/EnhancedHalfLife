@@ -56,7 +56,7 @@ public:
 	static CPathTrack* Instance(CBaseEntity* pent);
 
 	CPathTrack* LookAhead(Vector& origin, float dist, int move);
-	CPathTrack* Nearest(Vector origin);
+	CPathTrack* Nearest(const Vector& origin);
 
 	CPathTrack* GetNext();
 	CPathTrack* GetPrevious();

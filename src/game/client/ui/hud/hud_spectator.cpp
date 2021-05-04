@@ -331,7 +331,7 @@ void CHudSpectator::SetSpectatorStartPosition()
 	iJumpSpectator = true;	// jump anyway
 }
 
-void CHudSpectator::SetCameraView(Vector pos, Vector angle, float fov)
+void CHudSpectator::SetCameraView(const Vector& pos, const Vector& angle, float fov)
 {
 	m_FOV = fov;
 	vJumpOrigin = pos;
@@ -340,7 +340,7 @@ void CHudSpectator::SetCameraView(Vector pos, Vector angle, float fov)
 	iJumpSpectator = true;	// jump anyway
 }
 
-void CHudSpectator::AddWaypoint(float time, Vector pos, Vector angle, float fov, int flags)
+void CHudSpectator::AddWaypoint(float time, const Vector& pos, const Vector& angle, float fov, int flags)
 {
 	if (!flags == 0 && time == 0.0f)
 	{

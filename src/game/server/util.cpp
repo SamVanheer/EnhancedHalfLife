@@ -1083,7 +1083,7 @@ float UTIL_WaterLevel(const Vector& position, float minz, float maxz)
 	return midUp.z;
 }
 
-void UTIL_Bubbles(Vector mins, Vector maxs, int count)
+void UTIL_Bubbles(const Vector& mins, const Vector& maxs, int count)
 {
 	Vector mid = (mins + maxs) * 0.5;
 
@@ -1105,7 +1105,7 @@ void UTIL_Bubbles(Vector mins, Vector maxs, int count)
 	MESSAGE_END();
 }
 
-void UTIL_BubbleTrail(Vector from, Vector to, int count)
+void UTIL_BubbleTrail(const Vector& from, const Vector& to, int count)
 {
 	float flHeight = UTIL_WaterLevel(from, from.z, from.z + 256);
 	flHeight = flHeight - from.z;

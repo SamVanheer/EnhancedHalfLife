@@ -24,7 +24,7 @@
 class CCycler : public CBaseMonster
 {
 public:
-	void GenericCyclerSpawn(const char* szModel, Vector vecMin, Vector vecMax);
+	void GenericCyclerSpawn(const char* szModel, const Vector& vecMin, const Vector& vecMax);
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() | FCAP_IMPULSE_USE); }
 
 	/**
@@ -68,7 +68,7 @@ public:
 
 LINK_ENTITY_TO_CLASS(cycler, CGenericCycler);
 
-void CCycler::GenericCyclerSpawn(const char* szModel, Vector vecMin, Vector vecMax)
+void CCycler::GenericCyclerSpawn(const char* szModel, const Vector& vecMin, const Vector& vecMax)
 {
 	if (!szModel || !*szModel)
 	{

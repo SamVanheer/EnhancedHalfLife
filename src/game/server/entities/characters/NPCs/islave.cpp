@@ -49,7 +49,7 @@ public:
 	*	@brief check bravery and try to resurect dead comrades
 	*/
 	bool CheckRangeAttack2(float flDot, float flDist) override;
-	void CallForHelp(const char* szClassname, float flDist, EHANDLE hEnemy, Vector& vecLocation);
+	void CallForHelp(const char* szClassname, float flDist, EHANDLE hEnemy, const Vector& vecLocation);
 	void TraceAttack(const TraceAttackInfo& info) override;
 
 	/**
@@ -169,7 +169,7 @@ Relationship CISlave::GetRelationship(CBaseEntity* pTarget)
 	return CBaseMonster::GetRelationship(pTarget);
 }
 
-void CISlave::CallForHelp(const char* szClassname, float flDist, EHANDLE hEnemy, Vector& vecLocation)
+void CISlave::CallForHelp(const char* szClassname, float flDist, EHANDLE hEnemy, const Vector& vecLocation)
 {
 	// ALERT( at_aiconsole, "help " );
 

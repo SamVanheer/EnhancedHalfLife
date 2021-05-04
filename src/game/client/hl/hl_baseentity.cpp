@@ -92,8 +92,8 @@ void CGrenade::Explode(Vector, Vector) { }
 void CGrenade::Explode(TraceResult*, int) { }
 void CGrenade::Killed(const KilledInfo& info) { }
 void CGrenade::Spawn() { }
-CGrenade* CGrenade::ShootTimed(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity, float time) { return nullptr; }
-CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity) { return nullptr; }
+CGrenade* CGrenade::ShootTimed(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity, float time) { return nullptr; }
+CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity) { return nullptr; }
 void CGrenade::DetonateUse(const UseInfo& info) { }
 
 void UTIL_Remove(CBaseEntity* pEntity) { }
@@ -139,7 +139,7 @@ bool CBaseMonster::CheckMeleeAttack2(float flDot, float flDist) { return false; 
 void CBaseMonster::CheckAttacks(CBaseEntity* pTarget, float flDist) { }
 bool CBaseMonster::CanCheckAttacks() { return false; }
 bool CBaseMonster::CheckEnemy(CBaseEntity* pEnemy) { return false; }
-void CBaseMonster::PushEnemy(CBaseEntity* pEnemy, Vector& vecLastKnownPos) { }
+void CBaseMonster::PushEnemy(CBaseEntity* pEnemy, const Vector& vecLastKnownPos) { }
 bool CBaseMonster::PopEnemy() { return false; }
 void CBaseMonster::SetActivity(Activity NewActivity) { }
 void CBaseMonster::SetSequenceByName(const char* szSequence) { }
@@ -165,16 +165,16 @@ void CBaseMonster::MovementComplete() { }
 bool CBaseMonster::TaskIsRunning() { return false; }
 Relationship CBaseMonster::GetRelationship(CBaseEntity* pTarget) { return Relationship::None; }
 bool CBaseMonster::FindCover(Vector vecThreat, Vector vecViewOffset, float flMinDist, float flMaxDist) { return false; }
-bool CBaseMonster::BuildNearestRoute(Vector vecThreat, Vector vecViewOffset, float flMinDist, float flMaxDist) { return false; }
+bool CBaseMonster::BuildNearestRoute(Vector vecThreat, const Vector& vecViewOffset, float flMinDist, float flMaxDist) { return false; }
 CBaseEntity* CBaseMonster::BestVisibleEnemy() { return nullptr; }
 bool CBaseMonster::IsInViewCone(CBaseEntity* pEntity) { return false; }
 bool CBaseMonster::IsInViewCone(const Vector& origin) { return false; }
 bool CBaseEntity::IsVisible(CBaseEntity* pEntity) { return false; }
 bool CBaseEntity::IsVisible(const Vector& vecOrigin) { return false; }
-void CBaseMonster::MakeIdealYaw(Vector vecTarget) { }
+void CBaseMonster::MakeIdealYaw(const Vector& vecTarget) { }
 float	CBaseMonster::YawDiff() { return 0.0; }
 float CBaseMonster::ChangeYaw(int yawSpeed) { return 0; }
-float	CBaseMonster::VecToYaw(Vector vecDir) { return 0.0; }
+float	CBaseMonster::VecToYaw(const Vector& vecDir) { return 0.0; }
 int CBaseAnimating::LookupActivity(int activity) { return 0; }
 int CBaseAnimating::LookupActivityHeaviest(int activity) { return 0; }
 void CBaseMonster::SetEyePosition() { }
@@ -193,8 +193,8 @@ void CBaseAnimating::SetBodygroup(int iGroup, int iValue) { }
 int CBaseAnimating::GetBodygroup(int iGroup) { return 0; }
 Vector CBaseMonster::GetGunPosition() { return vec3_origin; }
 void CBaseEntity::TraceAttack(const TraceAttackInfo& info) { }
-void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, CBaseEntity* pAttacker) { }
-void CBaseEntity::TraceBleed(float flDamage, Vector vecDir, const TraceResult& tr, int bitsDamageType) { }
+void CBaseEntity::FireBullets(uint32 cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, CBaseEntity* pAttacker) { }
+void CBaseEntity::TraceBleed(float flDamage, const Vector& vecDir, const TraceResult& tr, int bitsDamageType) { }
 void CBaseMonster::MakeDamageBloodDecal(int cCount, float flNoise, TraceResult* ptr, const Vector& vecDir) { }
 bool CBaseMonster::GetNodeRoute(Vector vecDest) { return true; }
 int CBaseMonster::FindHintNode() { return NO_NODE; }
@@ -217,7 +217,7 @@ void CBaseMonster::TraceAttack(const TraceAttackInfo& info) { }
 CBaseEntity* CBaseMonster::DropItem(const char* pszItemName, const Vector& vecPos, const Vector& vecAng) { return nullptr; }
 bool CBaseMonster::ShouldFadeOnDeath() { return false; }
 void CBaseMonster::RadiusDamage(CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType) { }
-void CBaseMonster::RadiusDamage(Vector vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType) { }
+void CBaseMonster::RadiusDamage(const Vector& vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType) { }
 void CBaseMonster::FadeMonster() { }
 void CBaseMonster::GibMonster() { }
 bool CBaseMonster::HasHumanGibs() { return false; }
@@ -285,7 +285,7 @@ void CBasePlayer::BarnacleVictimReleased() { }
 int CBasePlayer::Illumination() { return 0; }
 void CBasePlayer::EnableControl(bool fControl) { }
 Vector CBasePlayer::GetAutoaimVector(float flDelta) { return vec3_origin; }
-Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelta) { return vec3_origin; }
+Vector CBasePlayer::AutoaimDeflection(const Vector& vecSrc, float flDist, float flDelta) { return vec3_origin; }
 void CBasePlayer::ResetAutoaim() { }
 void CBasePlayer::SetCustomDecalFrames(int nFrames) { }
 int CBasePlayer::GetCustomDecalFrames() { return -1; }
@@ -298,7 +298,7 @@ int CBasePlayer::GiveAmmo(int iCount, const char* szName, int iMax) { return 0; 
 void CBasePlayer::AddPoints(int score, bool bAllowNegativeScore) { }
 void CBasePlayer::AddPointsToTeam(int score, bool bAllowNegativeScore) { }
 
-void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage) { }
+void SpawnBlood(const Vector& vecSpot, int bloodColor, float flDamage) { }
 int DamageDecal(CBaseEntity* pEntity, int bitsDamageType) { return 0; }
 void DecalGunshot(TraceResult* pTrace, int iBulletType) { }
 void EjectBrass(const Vector& vecOrigin, const Vector& vecVelocity, float rotation, int model, int soundtype) { }

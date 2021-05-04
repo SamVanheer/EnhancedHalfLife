@@ -48,7 +48,7 @@ int SENTENCEG_PlaySequentialSz(CBaseEntity* entity, const char* szrootname, floa
 *	@param iBulletType the type of bullet that hit the texture.
 *	@return volume of strike instrument (crowbar) to play
 */
-float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int iBulletType);
+float TEXTURETYPE_PlaySound(TraceResult* ptr, const Vector& vecSrc, const Vector& vecEnd, int iBulletType);
 
 /**
 *	@brief use EMIT_SOUND_DYN to set the pitch of a sound.

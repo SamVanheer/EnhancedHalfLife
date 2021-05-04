@@ -214,7 +214,7 @@ PM_DrawBBox(Vector mins, Vector maxs, Vector origin, int pcolor, float life)
 
 ================
 */
-void PM_DrawBBox(Vector mins, Vector maxs, Vector origin, int pcolor, float life)
+void PM_DrawBBox(Vector mins, const Vector& maxs, const Vector& origin, int pcolor, float life)
 {
 	Vector tmp;
 	Vector p[8];

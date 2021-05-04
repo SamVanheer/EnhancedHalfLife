@@ -332,7 +332,7 @@ CPathTrack* CPathTrack::LookAhead(Vector& origin, float dist, int move)
 }
 
 // Assumes this is ALWAYS enabled
-CPathTrack* CPathTrack::Nearest(Vector origin)
+CPathTrack* CPathTrack::Nearest(const Vector& origin)
 {
 	Vector delta = origin - GetAbsOrigin();
 	delta.z = 0;

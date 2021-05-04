@@ -398,7 +398,7 @@ public:
 	virtual bool GiveHealth(float flHealth, int bitsDamageType);
 	virtual void Killed(const KilledInfo& info);
 	virtual int BloodColor() { return DONT_BLEED; }
-	virtual void TraceBleed(float flDamage, Vector vecDir, const TraceResult& tr, int bitsDamageType);
+	virtual void TraceBleed(float flDamage, const Vector& vecDir, const TraceResult& tr, int bitsDamageType);
 	virtual bool IsTriggered(CBaseEntity* pActivator) { return true; }
 	virtual CBaseMonster* MyMonsterPointer() { return nullptr; }
 	virtual CSquadMonster* MySquadMonsterPointer() { return nullptr; }
@@ -571,7 +571,7 @@ public:
 	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
 	*	This version is used by Monsters.
 	*/
-	void FireBullets(uint32	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr);
+	void FireBullets(uint32 cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr);
 
 	virtual CBaseEntity* Respawn() { return nullptr; }
 
@@ -909,7 +909,7 @@ public:
 	/**
 	*	@brief calculate pev->velocity and pev->nextthink to reach vecDest from GetAbsOrigin() traveling at flSpeed
 	*/
-	void LinearMove(Vector	vecDest, float flSpeed);
+	void LinearMove(const Vector& vecDest, float flSpeed);
 
 	/**
 	*	@brief After moving, set origin to exact final destination, call "move done" function
@@ -921,7 +921,7 @@ public:
 	*
 	*	Just like LinearMove, but rotational.
 	*/
-	void AngularMove(Vector vecDestAngle, float flSpeed);
+	void AngularMove(const Vector& vecDestAngle, float flSpeed);
 
 	/**
 	*	@brief After rotating, set angle to exact final angle, call "move done" function

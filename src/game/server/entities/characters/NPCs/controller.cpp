@@ -478,7 +478,7 @@ void CController::StartTask(Task_t* pTask)
 	}
 }
 
-Vector Intersect(Vector vecSrc, Vector vecDst, Vector vecMove, float flSpeed)
+Vector Intersect(const Vector& vecSrc, const Vector& vecDst, const Vector& vecMove, float flSpeed)
 {
 	const Vector vecTo = vecDst - vecSrc;
 

@@ -93,7 +93,7 @@ public:
 	// other functions
 	void SetTurretAnim(TurretAnim anim);
 	bool MoveTurret();
-	virtual void Shoot(Vector& vecSrc, Vector& vecDirToEnemy) {}
+	virtual void Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy) {}
 
 	float m_flMaxSpin;		// Max time to spin the barrel w/o a target
 	bool m_iSpin;
@@ -175,7 +175,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	// other functions
-	void Shoot(Vector& vecSrc, Vector& vecDirToEnemy) override;
+	void Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy) override;
 
 private:
 	bool m_iStartSpin;
@@ -195,7 +195,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	// other functions
-	void Shoot(Vector& vecSrc, Vector& vecDirToEnemy) override;
+	void Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy) override;
 };
 
 LINK_ENTITY_TO_CLASS(monster_turret, CTurret);
@@ -595,14 +595,14 @@ void CBaseTurret::ActiveThink()
 	MoveTurret();
 }
 
-void CTurret::Shoot(Vector& vecSrc, Vector& vecDirToEnemy)
+void CTurret::Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy)
 {
 	FireBullets(1, vecSrc, vecDirToEnemy, TURRET_SPREAD, TURRET_RANGE, BULLET_MONSTER_12MM, 1);
 	EmitSound(SoundChannel::Weapon, "turret/tu_fire1.wav", VOL_NORM, 0.6);
 	pev->effects = pev->effects | EF_MUZZLEFLASH;
 }
 
-void CMiniTurret::Shoot(Vector& vecSrc, Vector& vecDirToEnemy)
+void CMiniTurret::Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy)
 {
 	FireBullets(1, vecSrc, vecDirToEnemy, TURRET_SPREAD, TURRET_RANGE, BULLET_MONSTER_9MM, 1);
 
@@ -1106,7 +1106,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	// other functions
-	void Shoot(Vector& vecSrc, Vector& vecDirToEnemy) override;
+	void Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy) override;
 	bool TakeDamage(const TakeDamageInfo& info) override;
 	void EXPORT SentryTouch(CBaseEntity* pOther);
 	void EXPORT SentryDeath();
@@ -1141,7 +1141,7 @@ void CSentry::Spawn()
 	pev->nextthink = gpGlobals->time + 0.3;
 }
 
-void CSentry::Shoot(Vector& vecSrc, Vector& vecDirToEnemy)
+void CSentry::Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy)
 {
 	FireBullets(1, vecSrc, vecDirToEnemy, TURRET_SPREAD, TURRET_RANGE, BULLET_MONSTER_MP5, 1);
 

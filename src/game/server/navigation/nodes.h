@@ -298,7 +298,7 @@ public:
 	*	the pointers are not valid.
 	*/
 	bool SetGraphPointers();
-	void	CheckNode(Vector vecOrigin, int iNode);
+	void	CheckNode(const Vector& vecOrigin, int iNode);
 
 	void    BuildRegionTables();
 	void    ComputeStaticRoutingTables();

@@ -85,7 +85,7 @@ void AddMultiDamage(CBaseEntity* pInflictor, CBaseEntity* pEntity, float flDamag
 	gMultiDamage.amount += flDamage;
 }
 
-void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage)
+void SpawnBlood(const Vector& vecSpot, int bloodColor, float flDamage)
 {
 	UTIL_BloodDrips(vecSpot, g_vecAttackDir, bloodColor, (int)flDamage);
 }

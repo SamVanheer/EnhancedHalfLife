@@ -75,7 +75,7 @@ Vector CheckToss(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, 
 *	@brief returns the velocity vector at which an object should be thrown from vecspot1 to hit vecspot2.
 *	@return vec3_origin if throw is not feasible.
 */
-Vector CheckThrow(CBaseEntity* pEntity, const Vector& vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj = 1.0);
+Vector CheckThrow(CBaseEntity* pEntity, const Vector& vecSpot1, const Vector& vecSpot2, float flSpeed, float flGravityAdj = 1.0);
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 
 /**
@@ -138,7 +138,7 @@ public:
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DONT_SAVE; }
 	static	void SpawnHeadGib(CBaseEntity* pVictim);
 	static	void SpawnRandomGibs(CBaseEntity* pVictim, int cGibs, bool human);
-	static  void SpawnStickyGibs(CBaseEntity* pVictim, Vector vecOrigin, int cGibs);
+	static  void SpawnStickyGibs(CBaseEntity* pVictim, const Vector& vecOrigin, int cGibs);
 
 	int		m_bloodColor;
 	int		m_cBloodDecals;

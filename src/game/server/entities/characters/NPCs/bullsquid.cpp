@@ -49,7 +49,7 @@ class CSquidSpit : public CBaseEntity
 public:
 	void Spawn() override;
 
-	static void Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity);
+	static void Shoot(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity);
 	void Touch(CBaseEntity* pOther) override;
 	void EXPORT Animate();
 
@@ -100,7 +100,7 @@ void CSquidSpit::Animate()
 	}
 }
 
-void CSquidSpit::Shoot(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity)
+void CSquidSpit::Shoot(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity)
 {
 	CSquidSpit* pSpit = GetClassPtr((CSquidSpit*)nullptr);
 	pSpit->Spawn();

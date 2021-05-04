@@ -240,8 +240,8 @@ bool			UTIL_TeamsMatch(const char* pTeamName1, const char* pTeamName2);
 *	@brief Search for water transition along a vertical line
 */
 float		UTIL_WaterLevel(const Vector& position, float minz, float maxz);
-void			UTIL_Bubbles(Vector mins, Vector maxs, int count);
-void			UTIL_BubbleTrail(Vector from, Vector to, int count);
+void			UTIL_Bubbles(const Vector& mins, const Vector& maxs, int count);
+void			UTIL_BubbleTrail(const Vector& from, const Vector& to, int count);
 
 /**
 *	@brief allows precaching of other entities

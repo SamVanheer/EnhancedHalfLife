@@ -3484,7 +3484,7 @@ Vector CBasePlayer::GetAutoaimVector(float flDelta)
 	return gpGlobals->v_forward;
 }
 
-Vector CBasePlayer::AutoaimDeflection(Vector& vecSrc, float flDist, float flDelta)
+Vector CBasePlayer::AutoaimDeflection(const Vector& vecSrc, float flDist, float flDelta)
 {
 	if (g_psv_aim->value == 0)
 	{

@@ -167,7 +167,7 @@ void EMIT_GROUPNAME_SUIT(CBaseEntity* entity, const char* groupname)
 		SENTENCEG_PlayRndSz(entity, groupname, fvol, ATTN_NORM, pitch);
 }
 
-float TEXTURETYPE_PlaySound(TraceResult* ptr, Vector vecSrc, Vector vecEnd, int iBulletType)
+float TEXTURETYPE_PlaySound(TraceResult* ptr, const Vector& vecSrc, const Vector& vecEnd, int iBulletType)
 {
 	// hit the world, try to play sound based on texture material type
 	if (!g_pGameRules->PlayTextureSounds())

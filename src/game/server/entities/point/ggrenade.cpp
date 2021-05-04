@@ -18,6 +18,7 @@ LINK_ENTITY_TO_CLASS(grenade, CGrenade);
 // Grenades flagged with this will be triggered when the owner calls detonateSatchelCharges
 constexpr int SF_DETONATE = 0x0001;
 
+//TODO: inline this in airtank
 void CGrenade::Explode(Vector vecSrc, Vector vecAim)
 {
 	TraceResult tr;
@@ -307,7 +308,7 @@ void CGrenade::Spawn()
 	m_fRegisteredSound = false;
 }
 
-CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity)
+CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity)
 {
 	CGrenade* pGrenade = GetClassPtr((CGrenade*)nullptr);
 	pGrenade->Spawn();
@@ -333,7 +334,7 @@ CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, Vector vecStart, Vector ve
 	return pGrenade;
 }
 
-CGrenade* CGrenade::ShootTimed(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity, float time)
+CGrenade* CGrenade::ShootTimed(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity, float time)
 {
 	CGrenade* pGrenade = GetClassPtr((CGrenade*)nullptr);
 	pGrenade->Spawn();

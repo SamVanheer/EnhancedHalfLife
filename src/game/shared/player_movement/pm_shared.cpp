@@ -1000,7 +1000,7 @@ void PM_Friction()
 	pmove->velocity = vel * newspeed;
 }
 
-void PM_AirAccelerate(Vector wishdir, float wishspeed, float accel)
+void PM_AirAccelerate(const Vector& wishdir, float wishspeed, float accel)
 {
 	if (pmove->dead)
 		return;

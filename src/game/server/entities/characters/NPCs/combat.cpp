@@ -37,7 +37,7 @@ void CGib::LimitVelocity()
 		SetAbsVelocity(GetAbsVelocity().Normalize() * 1500);		// This should really be sv_maxvelocity * 0.75 or something
 }
 
-void CGib::SpawnStickyGibs(CBaseEntity* pVictim, Vector vecOrigin, int cGibs)
+void CGib::SpawnStickyGibs(CBaseEntity* pVictim, const Vector& vecOrigin, int cGibs)
 {
 	if (g_Language == LANGUAGE_GERMAN)
 	{
@@ -987,7 +987,7 @@ void CBaseMonster::RadiusDamage(CBaseEntity* pInflictor, CBaseEntity* pAttacker,
 	::RadiusDamage(GetAbsOrigin(), pInflictor, pAttacker, flDamage, flDamage * 2.5, iClassIgnore, bitsDamageType);
 }
 
-void CBaseMonster::RadiusDamage(Vector vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType)
+void CBaseMonster::RadiusDamage(const Vector& vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType)
 {
 	::RadiusDamage(vecSrc, pInflictor, pAttacker, flDamage, flDamage * 2.5, iClassIgnore, bitsDamageType);
 }
@@ -1143,7 +1143,7 @@ void CBaseMonster::TraceAttack(const TraceAttackInfo& info)
 	}
 }
 
-void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, CBaseEntity* pAttacker)
+void CBaseEntity::FireBullets(uint32 cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, CBaseEntity* pAttacker)
 {
 	static int tracerCount = 0;
 	TraceResult tr;
@@ -1274,7 +1274,7 @@ void CBaseEntity::FireBullets(uint32 cShots, Vector vecSrc, Vector vecDirShootin
 	ApplyMultiDamage(this, pAttacker);
 }
 
-Vector CBasePlayer::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage)
+Vector CBasePlayer::FireBulletsPlayer(uint32 cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage)
 {
 	static int tracerCount = 0;
 	TraceResult tr;
@@ -1355,7 +1355,7 @@ Vector CBasePlayer::FireBulletsPlayer(uint32 cShots, Vector vecSrc, Vector vecDi
 	return Vector(x * vecSpread.x, y * vecSpread.y, 0.0);
 }
 
-void CBaseEntity::TraceBleed(float flDamage, Vector vecDir, const TraceResult& tr, int bitsDamageType)
+void CBaseEntity::TraceBleed(float flDamage, const Vector& vecDir, const TraceResult& tr, int bitsDamageType)
 {
 	if (BloodColor() == DONT_BLEED)
 		return;

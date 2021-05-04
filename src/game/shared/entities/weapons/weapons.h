@@ -46,8 +46,8 @@ class CGrenade : public CBaseMonster
 public:
 	void Spawn() override;
 
-	static CGrenade* ShootTimed(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity, float time);
-	static CGrenade* ShootContact(CBaseEntity* pOwner, Vector vecStart, Vector vecVelocity);
+	static CGrenade* ShootTimed(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity, float time);
+	static CGrenade* ShootContact(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity);
 
 	void Explode(Vector vecSrc, Vector vecAim);
 	void Explode(TraceResult* pTrace, int bitsDamageType);
@@ -518,7 +518,7 @@ void ApplyMultiDamage(CBaseEntity* pInflictor, CBaseEntity* pAttacker);
 void AddMultiDamage(CBaseEntity* pInflictor, CBaseEntity* pEntity, float flDamage, int bitsDamageType);
 
 void DecalGunshot(TraceResult* pTrace, int iBulletType);
-void SpawnBlood(Vector vecSpot, int bloodColor, float flDamage);
+void SpawnBlood(const Vector& vecSpot, int bloodColor, float flDamage);
 
 /**
 *	@brief this entity is exploding, or otherwise needs to inflict damage upon entities within a certain range.
@@ -999,7 +999,7 @@ public:
 	void EXPORT FollowThink();
 	void EXPORT IgniteThink();
 	void EXPORT RocketTouch(CBaseEntity* pOther);
-	static CRpgRocket* CreateRpgRocket(Vector vecOrigin, Vector vecAngles, CBaseEntity* pOwner, CRpg* pLauncher);
+	static CRpgRocket* CreateRpgRocket(const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner, CRpg* pLauncher);
 
 	int m_iTrail;
 	float m_flIgniteTime;
@@ -1058,7 +1058,7 @@ public:
 	*	which has some identical variable names
 	*/
 	void StartFire();
-	void Fire(Vector vecOrigSrc, Vector vecDirShooting, float flDamage);
+	void Fire(const Vector& vecOrigSrc, Vector vecDirShooting, float flDamage);
 	float GetFullChargeTime();
 	int m_iBalls;
 	int m_iGlow;

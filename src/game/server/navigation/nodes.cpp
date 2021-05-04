@@ -701,7 +701,7 @@ void inline UpdateRange(int& minValue, int& maxValue, int Goal, int Best)
 	if (minValue < Lower) minValue = Lower;
 }
 
-void CGraph::CheckNode(Vector vecOrigin, int iNode)
+void CGraph::CheckNode(const Vector& vecOrigin, int iNode)
 {
 	// Have we already seen this point before?.
 	//

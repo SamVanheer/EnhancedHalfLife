@@ -293,7 +293,7 @@ void CMortar::MortarExplode()
 }
 
 #if 0
-void CMortar::ShootTimed(EVARS* pevOwner, Vector vecStart, float time)
+void CMortar::ShootTimed(EVARS* pevOwner, const Vector& vecStart, float time)
 {
 	CMortar* pMortar = GetClassPtr((CMortar*)nullptr);
 	pMortar->Spawn();

@@ -41,7 +41,7 @@ public:
 	void EXPORT HitTouch(CBaseEntity* pOther);
 	void EXPORT FindAllThink();
 	void EXPORT HoverThink();
-	CBaseMonster* MakeGrunt(Vector vecSrc);
+	CBaseMonster* MakeGrunt(const Vector& vecSrc);
 	void EXPORT CrashTouch(CBaseEntity* pOther);
 	void EXPORT DyingThink();
 	void EXPORT CommandUse(const UseInfo& info);
@@ -255,7 +255,7 @@ bool COsprey::HasDead()
 	return false;
 }
 
-CBaseMonster* COsprey::MakeGrunt(Vector vecSrc)
+CBaseMonster* COsprey::MakeGrunt(const Vector& vecSrc)
 {
 	TraceResult tr;
 	UTIL_TraceLine(vecSrc, vecSrc + Vector(0, 0, -WORLD_BOUNDARY), IgnoreMonsters::No, this, &tr);
