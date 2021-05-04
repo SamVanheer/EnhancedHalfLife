@@ -235,7 +235,7 @@ void CHud::Init()
 		{
 			pList = m_pHudList;
 			m_pHudList = m_pHudList->pNext;
-			free(pList);
+			delete pList;
 		}
 		m_pHudList = nullptr;
 	}
@@ -276,7 +276,7 @@ CHud :: ~CHud()
 		{
 			pList = m_pHudList;
 			m_pHudList = m_pHudList->pNext;
-			free(pList);
+			delete pList;
 		}
 		m_pHudList = nullptr;
 	}
@@ -493,9 +493,7 @@ void CHud::AddHudElem(CHudBase* phudelem)
 	if (!phudelem)
 		return;
 
-	pdl = (HUDLIST*)malloc(sizeof(HUDLIST));
-	if (!pdl)
-		return;
+	pdl = new HUDLIST;
 
 	memset(pdl, 0, sizeof(HUDLIST));
 	pdl->p = phudelem;

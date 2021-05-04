@@ -228,7 +228,7 @@ bool CHudMenu::MsgFunc_ShowMenu(const char* pszName, int iSize, void* pbuf)
 			if (KB_ConvertString(m_szMenuString, &temp))
 			{
 				safe_strcpy(m_szMenuString, temp);
-				free(temp);
+				delete[] temp;
 			}
 		}
 

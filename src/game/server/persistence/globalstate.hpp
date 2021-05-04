@@ -26,10 +26,10 @@ enum class GlobalEntState
 
 struct globalentity_t
 {
-	char			name[64];
-	char			levelName[32];
-	GlobalEntState	state;
-	globalentity_t* pNext;
+	char			name[64]{};
+	char			levelName[32]{};
+	GlobalEntState	state = GlobalEntState::Off;
+	globalentity_t* pNext = nullptr;
 };
 
 class CGlobalState

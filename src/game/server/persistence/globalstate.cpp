@@ -47,7 +47,7 @@ void CGlobalState::EntityAdd(string_t globalname, string_t mapName, GlobalEntSta
 {
 	ASSERT(!Find(globalname));
 
-	globalentity_t* pNewEntity = (globalentity_t*)calloc(sizeof(globalentity_t), 1);
+	globalentity_t* pNewEntity = new globalentity_t{};
 	ASSERT(pNewEntity != nullptr);
 	pNewEntity->pNext = m_pList;
 	m_pList = pNewEntity;
@@ -139,7 +139,7 @@ void CGlobalState::ClearStates()
 	for (globalentity_t* pNext = nullptr, *pFree = m_pList; pFree; pFree = pNext)
 	{
 		pNext = pFree->pNext;
-		free(pFree);
+		delete pFree;
 	}
 	Reset();
 }
