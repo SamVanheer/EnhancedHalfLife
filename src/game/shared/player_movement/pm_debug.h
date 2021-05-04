@@ -15,6 +15,11 @@
 
 #pragma once
 
+/**
+*	@brief Shows a particle trail from player to entity in crosshair.
+*	Shows particles at that entities bbox
+*	Tries to shoot a ray out by about 128 units.
+*/
 void PM_ViewEntity();
 void PM_DrawBBox(Vector mins, const Vector& maxs, const Vector& origin, int pcolor, float life);
 void PM_ParticleLine(const Vector& start, const Vector& end, int pcolor, float life, float vert);

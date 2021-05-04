@@ -83,12 +83,6 @@ void PM_ShowClipBox()
 #endif
 }
 
-/*
-===============
-PM_ParticleLine(Vector start, Vector end, int color, float life)
-
-================
-*/
 void PM_ParticleLine(const Vector& start, const Vector& end, int pcolor, float life, float vert)
 {
 	constexpr float linestep = 2.0f;
@@ -107,12 +101,6 @@ void PM_ParticleLine(const Vector& start, const Vector& end, int pcolor, float l
 
 }
 
-/*
-================
-PM_DrawRectangle(Vector tl, Vector br)
-
-================
-*/
 void PM_DrawRectangle(const Vector& tl, const Vector& bl, const Vector& tr, const Vector& br, int pcolor, float life)
 {
 	PM_ParticleLine(tl, bl, pcolor, life, 0);
@@ -121,12 +109,6 @@ void PM_DrawRectangle(const Vector& tl, const Vector& bl, const Vector& tr, cons
 	PM_ParticleLine(tr, tl, pcolor, life, 0);
 }
 
-/*
-================
-PM_DrawPhysEntBBox(int num)
-
-================
-*/
 void PM_DrawPhysEntBBox(int num, int pcolor, float life)
 {
 	if (num >= pmove->numphysent ||
@@ -208,12 +190,6 @@ void PM_DrawPhysEntBBox(int num, int pcolor, float life)
 	}
 }
 
-/*
-================
-PM_DrawBBox(Vector mins, Vector maxs, Vector origin, int pcolor, float life)
-
-================
-*/
 void PM_DrawBBox(Vector mins, const Vector& maxs, const Vector& origin, int pcolor, float life)
 {
 	Vector tmp;
@@ -241,16 +217,6 @@ void PM_DrawBBox(Vector mins, const Vector& maxs, const Vector& origin, int pcol
 	}
 }
 
-/*
-================
-PM_ViewEntity
-
-Shows a particle trail from player to entity in crosshair.
-Shows particles at that entities bbox
-
-Tries to shoot a ray out by about 128 units.
-================
-*/
 void PM_ViewEntity()
 {
 #if 0
