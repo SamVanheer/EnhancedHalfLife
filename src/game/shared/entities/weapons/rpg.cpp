@@ -273,9 +273,9 @@ void CRpg::Reload()
 	}
 
 #ifndef CLIENT_DLL
-	if (m_pSpot && m_fSpotActive)
+	if (m_hSpot && m_fSpotActive)
 	{
-		m_pSpot->Suspend(2.1);
+		m_hSpot->Suspend(2.1);
 		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 2.1;
 	}
 #endif
@@ -390,10 +390,10 @@ void CRpg::Holster()
 	SendWeaponAnim(RPG_HOLSTER1);
 
 #ifndef CLIENT_DLL
-	if (m_pSpot)
+	if (m_hSpot)
 	{
-		m_pSpot->Killed({nullptr, nullptr, GibType::Never});
-		m_pSpot = nullptr;
+		m_hSpot->Killed({nullptr, nullptr, GibType::Never});
+		m_hSpot = nullptr;
 	}
 #endif
 }
@@ -447,11 +447,11 @@ void CRpg::SecondaryAttack()
 	m_fSpotActive = !m_fSpotActive;
 
 #ifndef CLIENT_DLL
-	if (!m_fSpotActive && m_pSpot)
+	if (!m_fSpotActive && m_hSpot)
 	{
 		//TODO: don't use Killed to remove this
-		m_pSpot->Killed({nullptr, nullptr, GibType::Normal});
-		m_pSpot = nullptr;
+		m_hSpot->Killed({nullptr, nullptr, GibType::Normal});
+		m_hSpot = nullptr;
 	}
 #endif
 
@@ -503,9 +503,9 @@ void CRpg::UpdateSpot()
 #ifndef CLIENT_DLL
 	if (m_fSpotActive)
 	{
-		if (!m_pSpot)
+		if (!m_hSpot)
 		{
-			m_pSpot = CLaserSpot::CreateSpot();
+			m_hSpot = CLaserSpot::CreateSpot();
 		}
 
 		UTIL_MakeVectors(m_hPlayer->pev->v_angle);
@@ -515,7 +515,7 @@ void CRpg::UpdateSpot()
 		TraceResult tr;
 		UTIL_TraceLine(vecSrc, vecSrc + vecAiming * WORLD_SIZE, IgnoreMonsters::No, m_hPlayer, &tr);
 
-		m_pSpot->SetAbsOrigin(tr.vecEndPos);
+		m_hSpot->SetAbsOrigin(tr.vecEndPos);
 	}
 #endif
 }

@@ -123,8 +123,8 @@ private:
 	float	m_attackSoundTime;
 
 #if DEBUG_BEAMS
-	CBeam* m_pb;
-	CBeam* m_pt;
+	EHandle<CBeam> m_hb;
+	EHandle<CBeam> m_ht;
 #endif
 };
 
@@ -483,23 +483,23 @@ void CLeech::UpdateMotion()
 	DispatchAnimEvents(flInterval);
 
 #if DEBUG_BEAMS
-	if (!m_pb)
-		m_pb = CBeam::BeamCreate("sprites/laserbeam.spr", 5);
-	if (!m_pt)
-		m_pt = CBeam::BeamCreate("sprites/laserbeam.spr", 5);
-	m_pb->PointsInit(GetAbsOrigin(), GetAbsOrigin() + gpGlobals->v_forward * LEECH_CHECK_DIST);
-	m_pt->PointsInit(GetAbsOrigin(), GetAbsOrigin() - gpGlobals->v_right * (pev->avelocity.y * 0.25));
+	if (!m_hb)
+		m_hb = CBeam::BeamCreate("sprites/laserbeam.spr", 5);
+	if (!m_ht)
+		m_ht = CBeam::BeamCreate("sprites/laserbeam.spr", 5);
+	m_hb->PointsInit(GetAbsOrigin(), GetAbsOrigin() + gpGlobals->v_forward * LEECH_CHECK_DIST);
+	m_ht->PointsInit(GetAbsOrigin(), GetAbsOrigin() - gpGlobals->v_right * (pev->avelocity.y * 0.25));
 	if (m_fPathBlocked)
 	{
 		float color = m_obstacle * 30;
 		if (m_obstacle == 1.0)
 			color = 0;
 		color = std::min(255.0f, color);
-		m_pb->SetColor(255, (int)color, (int)color);
+		m_hb->SetColor(255, (int)color, (int)color);
 	}
 	else
-		m_pb->SetColor(255, 255, 0);
-	m_pt->SetColor(0, 0, 255);
+		m_hb->SetColor(255, 255, 0);
+	m_ht->SetColor(0, 0, 255);
 #endif
 }
 

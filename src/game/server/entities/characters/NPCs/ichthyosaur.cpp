@@ -94,7 +94,7 @@ public:
 	float m_flMinSpeed;
 	float m_flMaxDist;
 
-	CBeam* m_pBeam;
+	EHandle<CBeam> m_hBeam;
 
 	float m_flNextAlert;
 
@@ -882,13 +882,13 @@ void CIchthyosaur::Swim()
 	}
 
 	/*
-		if (!m_pBeam)
+		if (!m_hBeam)
 		{
-			m_pBeam = CBeam::BeamCreate( "sprites/laserbeam.spr", 80 );
-			m_pBeam->PointEntInit( GetAbsOrigin() + m_SaveVelocity, entindex( ) );
-			m_pBeam->SetEndAttachment( 1 );
-			m_pBeam->SetColor( 255, 180, 96 );
-			m_pBeam->SetBrightness( 192 );
+			m_hBeam = CBeam::BeamCreate( "sprites/laserbeam.spr", 80 );
+			m_hBeam->PointEntInit( GetAbsOrigin() + m_SaveVelocity, entindex( ) );
+			m_hBeam->SetEndAttachment( 1 );
+			m_hBeam->SetColor( 255, 180, 96 );
+			m_hBeam->SetBrightness( 192 );
 		}
 	*/
 	constexpr int PROBE_LENGTH = 150;
@@ -928,8 +928,8 @@ void CIchthyosaur::Swim()
 	// ALERT( at_console, "Steer %f %f %f\n", SteeringVector.x, SteeringVector.y, SteeringVector.z );
 
 /*
-	m_pBeam->SetStartPos(GetAbsOrigin() + GetAbsVelocity());
-	m_pBeam->RelinkBeam();
+	m_hBeam->SetStartPos(GetAbsOrigin() + GetAbsVelocity());
+	m_hBeam->RelinkBeam();
 */
 
 // ALERT( at_console, "speed %f\n", m_flightSpeed );

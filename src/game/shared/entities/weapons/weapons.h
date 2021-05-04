@@ -970,7 +970,7 @@ public:
 	void UpdateSpot();
 	bool ShouldWeaponIdle() override { return true; }
 
-	CLaserSpot* m_pSpot = nullptr; //TODO: make EHANDLE
+	EHandle<CLaserSpot> m_hSpot;
 	bool m_fSpotActive = false;
 	int m_cActiveRockets = 0;// how many missiles in flight from this launcher right now?
 
