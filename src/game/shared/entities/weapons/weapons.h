@@ -1183,7 +1183,7 @@ public:
 	void GetWeaponData(weapon_data_t& data) override;
 	void SetWeaponData(const weapon_data_t& data) override;
 
-	unsigned short m_usEgonStop;
+	unsigned short m_usEgonStop = 0;
 
 private:
 	float m_shootTime = 0;
