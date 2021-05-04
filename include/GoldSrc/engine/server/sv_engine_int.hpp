@@ -178,7 +178,7 @@ struct enginefuncs_t
 	void		(*pfnCVarSetString)			(const char* szVarName, const char* szValue);
 	void		(*pfnAlertMessage)			(ALERT_TYPE atype, const char* szFmt, ...);
 	void		(*pfnEngineFprintf)			(void* pfile, const char* szFmt, ...);
-	void* (*pfnPvAllocEntPrivateData)	(edict_t* pEdict, int32 cb);
+	void* (*pfnPvAllocEntPrivateData)	(edict_t* pEdict, std::int32_t cb);
 	void* (*pfnPvEntPrivateData)		(edict_t* pEdict);
 	void		(*pfnFreeEntPrivateData)	(edict_t* pEdict);
 	const char* (*pfnSzFromIndex)			(int iString);
@@ -193,8 +193,8 @@ struct enginefuncs_t
 	int			(*pfnRegUserMsg)			(const char* pszName, int iSize);
 	void		(*pfnAnimationAutomove)		(const edict_t* pEdict, float flTime);
 	void		(*pfnGetBonePosition)		(const edict_t* pEdict, int iBone, float* rgflOrigin, float* rgflAngles);
-	uint32(*pfnFunctionFromName)	(const char* pName);
-	const char* (*pfnNameForFunction)		(uint32 function);
+	std::uint32_t (*pfnFunctionFromName)	(const char* pName);
+	const char* (*pfnNameForFunction)		(std::uint32_t function);
 
 	/**
 	*	@brief JOHN: engine callbacks so game DLL can print messages to individual clients
@@ -221,7 +221,7 @@ struct enginefuncs_t
 	void        (*pfnCRC32_ProcessBuffer)   (CRC32_t* pulCRC, const void* p, int len);
 	void		(*pfnCRC32_ProcessByte)     (CRC32_t* pulCRC, unsigned char ch);
 	CRC32_t(*pfnCRC32_Final)			(CRC32_t pulCRC);
-	int32(*pfnRandomLong)			(int32  lLow, int32  lHigh);
+	std::int32_t(*pfnRandomLong)			(std::int32_t  lLow, std::int32_t  lHigh);
 	float		(*pfnRandomFloat)			(float flLow, float flHigh);
 	void		(*pfnSetView)				(const edict_t* pClient, const edict_t* pViewent);
 	float		(*pfnTime)					();
@@ -380,7 +380,7 @@ struct KeyValueData
 	const char* szClassName;	//!< in: entity classname
 	const char* szKeyName;		//!< in: name of key
 	const char* szValue;		//!< in: value of key
-	int32		fHandled;		//!< out: DLL sets to true if key-value pair was understood
+	std::int32_t fHandled;		//!< out: DLL sets to true if key-value pair was understood
 };
 
 struct LEVELLIST

@@ -1143,7 +1143,7 @@ void CBaseMonster::TraceAttack(const TraceAttackInfo& info)
 	}
 }
 
-void CBaseEntity::FireBullets(uint32 cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, CBaseEntity* pAttacker)
+void CBaseEntity::FireBullets(std::uint32_t cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, CBaseEntity* pAttacker)
 {
 	static int tracerCount = 0;
 	TraceResult tr;
@@ -1156,7 +1156,7 @@ void CBaseEntity::FireBullets(uint32 cShots, const Vector& vecSrc, const Vector&
 	ClearMultiDamage();
 	gMultiDamage.type = DMG_BULLET | DMG_NEVERGIB;
 
-	for (uint32 iShot = 1; iShot <= cShots; iShot++)
+	for (std::uint32_t iShot = 1; iShot <= cShots; iShot++)
 	{
 		// get circular gaussian spread
 		float x, y, z;
@@ -1274,7 +1274,7 @@ void CBaseEntity::FireBullets(uint32 cShots, const Vector& vecSrc, const Vector&
 	ApplyMultiDamage(this, pAttacker);
 }
 
-Vector CBasePlayer::FireBulletsPlayer(uint32 cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage)
+Vector CBasePlayer::FireBulletsPlayer(std::uint32_t cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage)
 {
 	static int tracerCount = 0;
 	TraceResult tr;
@@ -1288,7 +1288,7 @@ Vector CBasePlayer::FireBulletsPlayer(uint32 cShots, const Vector& vecSrc, const
 	ClearMultiDamage();
 	gMultiDamage.type = DMG_BULLET | DMG_NEVERGIB;
 
-	for (uint32 iShot = 1; iShot <= cShots; iShot++)
+	for (std::uint32_t iShot = 1; iShot <= cShots; iShot++)
 	{
 		//Use player's random seed.
 		// get circular gaussian spread

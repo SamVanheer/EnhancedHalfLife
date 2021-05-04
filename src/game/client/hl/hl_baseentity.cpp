@@ -193,7 +193,7 @@ void CBaseAnimating::SetBodygroup(int iGroup, int iValue) { }
 int CBaseAnimating::GetBodygroup(int iGroup) { return 0; }
 Vector CBaseMonster::GetGunPosition() { return vec3_origin; }
 void CBaseEntity::TraceAttack(const TraceAttackInfo& info) { }
-void CBaseEntity::FireBullets(uint32 cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, CBaseEntity* pAttacker) { }
+void CBaseEntity::FireBullets(std::uint32_t cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, CBaseEntity* pAttacker) { }
 void CBaseEntity::TraceBleed(const TraceAttackInfo& info) { }
 void CBaseMonster::MakeDamageBloodDecal(int cCount, float flNoise, TraceResult* ptr, const Vector& vecDir) { }
 bool CBaseMonster::GetNodeRoute(Vector vecDest) { return true; }

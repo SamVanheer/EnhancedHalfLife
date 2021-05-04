@@ -173,7 +173,7 @@ int			UTIL_EntitiesInBox(CBaseEntity** pList, int listMax, const Vector& mins, c
 void			UTIL_MakeAimVectors(const Vector& vecAngles);
 void			UTIL_MakeInvVectors(const Vector& vec, globalvars_t* pgv);
 
-void			UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, uint32 ulColor, uint32 ulCount);
+void			UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, std::uint32_t ulColor, std::uint32_t ulCount);
 
 /**
 *	@brief Shake the screen of all clients within radius

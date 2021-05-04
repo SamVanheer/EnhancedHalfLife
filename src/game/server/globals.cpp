@@ -20,9 +20,9 @@
   TODO: this is a bad way to handle this, it results in a lot of redundant forward declarations. Clean this up
 */
 
-DLL_GLOBAL uint32		g_ulFrameCount;
-DLL_GLOBAL uint32		g_ulModelIndexEyes;
-DLL_GLOBAL uint32		g_ulModelIndexPlayer;
+DLL_GLOBAL std::uint32_t g_ulFrameCount;
+DLL_GLOBAL std::uint32_t g_ulModelIndexEyes;
+DLL_GLOBAL std::uint32_t g_ulModelIndexPlayer;
 DLL_GLOBAL Vector		g_vecAttackDir;
 DLL_GLOBAL int			gDisplayTitle;
 DLL_GLOBAL bool			g_fGameOver;

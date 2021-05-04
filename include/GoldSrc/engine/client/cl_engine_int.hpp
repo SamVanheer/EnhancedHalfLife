@@ -116,7 +116,7 @@ struct cl_enginefunc_t
 		float fparam1, float fparam2, int iparam1, int iparam2, int bparam1, int bparam2);
 	void (*pfnWeaponAnim)(int iAnim, int body);
 	float (*pfnRandomFloat)(float flLow, float flHigh);
-	int32(*pfnRandomLong)(int32 lLow, int32 lHigh);
+	std::int32_t(*pfnRandomLong)(std::int32_t lLow, std::int32_t lHigh);
 	void (*pfnHookEvent)(const char* name, void (*pfnEvent)(event_args_t* args));
 	int (*Con_IsVisible)();
 	const char* (*pfnGetGameDirectory)();

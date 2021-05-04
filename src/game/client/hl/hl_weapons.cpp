@@ -189,13 +189,13 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 /**
 *	@brief Only produces random numbers to match the server ones.
 */
-Vector CBasePlayer::FireBulletsPlayer(uint32 cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage)
+Vector CBasePlayer::FireBulletsPlayer(std::uint32_t cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage)
 {
 	const int shared_rand = random_seed;
 
 	float x, y, z;
 
-	for (uint32 iShot = 1; iShot <= cShots; iShot++)
+	for (std::uint32_t iShot = 1; iShot <= cShots; iShot++)
 	{
 		//Use player's random seed.
 		// get circular gaussian spread

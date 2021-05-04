@@ -196,7 +196,7 @@ struct playermove_t
 	Contents(*PM_HullPointContents) (hull_t* hull, int num, const float* p);
 	pmtrace_t(*PM_PlayerTrace) (const float* start, const float* end, int traceFlags, int ignore_pe);
 	pmtrace_t* (*PM_TraceLine)(const float* start, const float* end, int flags, int usehulll, int ignore_pe);
-	int32(*RandomLong)(int32 lLow, int32 lHigh);
+	std::int32_t(*RandomLong)(std::int32_t lLow, std::int32_t lHigh);
 	float			(*RandomFloat)(float flLow, float flHigh);
 	int				(*PM_GetModelType)(model_t* mod);
 	void			(*PM_GetModelBounds)(model_t* mod, float* mins, float* maxs);

@@ -15,13 +15,13 @@
 class CBitVecAccessor
 {
 public:
-	CBitVecAccessor(uint32* pDWords, int iBit);
+	CBitVecAccessor(std::uint32_t* pDWords, int iBit);
 
 	void		operator=(int val);
-	operator uint32();
+	operator std::uint32_t();
 
 private:
-	uint32* m_pDWords;
+	std::uint32_t* m_pDWords;
 	int				m_iBit;
 };
 
@@ -48,15 +48,15 @@ public:
 
 	// Get underlying dword representations of the bits.
 	int				GetNumDWords();
-	uint32	GetDWord(int i);
-	void			SetDWord(int i, uint32 val);
+	std::uint32_t	GetDWord(int i);
+	void			SetDWord(int i, std::uint32_t val);
 
 	int				GetNumBits();
 
 private:
 
 	enum { NUM_DWORDS = NUM_BITS / 32 + !!(NUM_BITS & 31) };
-	uint32	m_DWords[NUM_DWORDS];
+	std::uint32_t	m_DWords[NUM_DWORDS];
 };
 
 
@@ -65,7 +65,7 @@ private:
 // CBitVecAccessor inlines.
 // ------------------------------------------------------------------------ //
 
-inline CBitVecAccessor::CBitVecAccessor(uint32* pDWords, int iBit)
+inline CBitVecAccessor::CBitVecAccessor(std::uint32_t* pDWords, int iBit)
 {
 	m_pDWords = pDWords;
 	m_iBit = iBit;
@@ -77,10 +77,10 @@ inline void CBitVecAccessor::operator=(int val)
 	if (val)
 		m_pDWords[m_iBit >> 5] |= (1 << (m_iBit & 31));
 	else
-		m_pDWords[m_iBit >> 5] &= ~(uint32)(1 << (m_iBit & 31));
+		m_pDWords[m_iBit >> 5] &= ~(std::uint32_t)(1 << (m_iBit & 31));
 }
 
-inline CBitVecAccessor::operator uint32()
+inline CBitVecAccessor::operator std::uint32_t()
 {
 	return m_pDWords[m_iBit >> 5] & (1 << (m_iBit & 31));
 }
@@ -157,7 +157,7 @@ inline int CBitVec<NUM_BITS>::GetNumDWords()
 }
 
 template<int NUM_BITS>
-inline uint32 CBitVec<NUM_BITS>::GetDWord(int i)
+inline std::uint32_t CBitVec<NUM_BITS>::GetDWord(int i)
 {
 	assert(i >= 0 && i < NUM_DWORDS);
 	return m_DWords[i];
@@ -165,7 +165,7 @@ inline uint32 CBitVec<NUM_BITS>::GetDWord(int i)
 
 
 template<int NUM_BITS>
-inline void CBitVec<NUM_BITS>::SetDWord(int i, uint32 val)
+inline void CBitVec<NUM_BITS>::SetDWord(int i, std::uint32_t val)
 {
 	assert(i >= 0 && i < NUM_DWORDS);
 	m_DWords[i] = val;

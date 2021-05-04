@@ -87,5 +87,5 @@ float UTIL_WeaponTimeBase()
 int				stub_PrecacheModel(const char* s) { return 0; }
 int				stub_PrecacheSound(const char* s) { return 0; }
 unsigned short	stub_PrecacheEvent(int type, const char* s) { return 0; }
-const char* stub_NameForFunction(uint32 function) { return "func"; }
+const char* stub_NameForFunction(std::uint32_t function) { return "func"; }
 void			stub_SetModel(edict_t* e, const char* m) {}

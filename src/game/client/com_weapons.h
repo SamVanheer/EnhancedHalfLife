@@ -44,7 +44,7 @@ void			HUD_SetMaxSpeed(const edict_t* ed, float speed);
 int				stub_PrecacheModel(const char* s);
 int				stub_PrecacheSound(const char* s);
 unsigned short	stub_PrecacheEvent(int type, const char* s);
-const char* stub_NameForFunction(uint32 function);
+const char* stub_NameForFunction(std::uint32_t function);
 void			stub_SetModel(edict_t* e, const char* m);
 
 

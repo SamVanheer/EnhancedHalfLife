@@ -28,9 +28,9 @@
 #include "server_int.hpp"
 #include "shared_interface/shared_interface.hpp"
 
-extern DLL_GLOBAL uint32	g_ulModelIndexPlayer;
+extern DLL_GLOBAL std::uint32_t	g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;
-extern DLL_GLOBAL uint32	g_ulFrameCount;
+extern DLL_GLOBAL std::uint32_t	g_ulFrameCount;
 
 extern bool giPrecacheGrunt;
 

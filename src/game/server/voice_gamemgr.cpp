@@ -138,7 +138,7 @@ bool CVoiceGameMgr::ClientCommand(CBasePlayer* pPlayer, const char* cmd)
 	{
 		for (int i = 1; i < CMD_ARGC(); i++)
 		{
-			const uint32 mask = strtoul(CMD_ARGV(i), nullptr, 16);
+			const std::uint32_t mask = strtoul(CMD_ARGV(i), nullptr, 16);
 
 			if (i <= VOICE_MAX_PLAYERS_DW)
 			{

@@ -79,5 +79,5 @@ struct hud_player_info_t
 	short topcolor;
 	short bottomcolor;
 
-	uint64 m_nSteamID;
+	std::uint64_t m_nSteamID;
 };

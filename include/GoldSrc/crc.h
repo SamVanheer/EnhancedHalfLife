@@ -27,4 +27,4 @@ struct MD5Context_t
 	unsigned char in[64];
 };
 
-typedef uint32 CRC32_t;
+typedef std::uint32_t CRC32_t;

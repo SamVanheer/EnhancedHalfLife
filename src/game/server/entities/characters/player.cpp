@@ -33,7 +33,7 @@
 #include "corpse.hpp"
 #include "spawnpoints.hpp"
 
-extern DLL_GLOBAL uint32	g_ulModelIndexPlayer;
+extern DLL_GLOBAL std::uint32_t	g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;
 int gEvilImpulse101;
 extern DLL_GLOBAL int		gDisplayTitle;

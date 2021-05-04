@@ -571,7 +571,7 @@ public:
 	*	@brief Go to the trouble of combining multiple pellets into a single damage call.
 	*	This version is used by Monsters.
 	*/
-	void FireBullets(uint32 cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr);
+	void FireBullets(std::uint32_t cShots, const Vector& vecSrc, const Vector& vecDirShooting, const Vector& vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, CBaseEntity* pAttacker = nullptr);
 
 	virtual CBaseEntity* Respawn() { return nullptr; }
 
@@ -635,8 +635,8 @@ public:
 #ifdef _DEBUG
 	void FunctionCheck(void* pFunction, const char* name)
 	{
-		if (pFunction && !NAME_FOR_FUNCTION((uint32)pFunction))
-			ALERT(at_error, "No EXPORT: %s:%s (%08lx)\n", GetClassname(), name, (uint32)pFunction);
+		if (pFunction && !NAME_FOR_FUNCTION((std::uint32_t)pFunction))
+			ALERT(at_error, "No EXPORT: %s:%s (%08lx)\n", GetClassname(), name, (std::uint32_t)pFunction);
 	}
 
 	BASEPTR	ThinkSet(BASEPTR func, const char* name)

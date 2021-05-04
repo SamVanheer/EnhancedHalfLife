@@ -335,5 +335,5 @@ struct player_info_t
 	customization_t customdata;
 
 	char hashedcdkey[16];
-	uint64 m_nSteamID;
+	std::uint64_t m_nSteamID;
 };

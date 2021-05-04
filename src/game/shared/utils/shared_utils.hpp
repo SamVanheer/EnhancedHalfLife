@@ -33,7 +33,7 @@ inline const char* STRING(string_t offset)
 */
 inline string_t MAKE_STRING(const char* str)
 {
-	return reinterpret_cast<uint64>(str) - reinterpret_cast<uint64>(STRING(0));
+	return reinterpret_cast<std::uint64_t>(str) - reinterpret_cast<std::uint64_t>(STRING(0));
 }
 
 string_t ALLOC_STRING(const char* str);

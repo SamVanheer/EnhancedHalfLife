@@ -757,7 +757,7 @@ TraceResult UTIL_GetGlobalTrace()
 	return tr;
 }
 
-void UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, uint32 ulColor, uint32 ulCount)
+void UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, std::uint32_t ulColor, std::uint32_t ulCount)
 {
 	PARTICLE_EFFECT(vecOrigin, vecDirection, (float)ulColor, (float)ulCount);
 }
