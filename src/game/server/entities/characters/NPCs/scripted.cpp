@@ -639,7 +639,7 @@ void CCineMonster::Activate()
 	// Found a compatible entity
 	if (pTarget)
 	{
-		if (void* pmodel = GetModelPointer(); pmodel)
+		if (void* pmodel = pTarget->GetModelPointer(); pmodel)
 		{
 			// Look through the event list for stuff to precache
 			SequencePrecache(pmodel, STRING(m_iszIdle));
