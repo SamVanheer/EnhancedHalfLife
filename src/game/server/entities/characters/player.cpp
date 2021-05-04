@@ -1170,7 +1170,8 @@ void CBasePlayer::StartObserver(Vector vecPosition, Vector vecViewAngle)
 	m_afPhysicsFlags |= PFLAG_OBSERVER;
 	pev->effects = EF_NODRAW;
 	pev->view_ofs = vec3_origin;
-	SetAbsAngles(pev->v_angle = vecViewAngle);
+	pev->v_angle = vecViewAngle;
+	SetAbsAngles(vecViewAngle);
 	pev->fixangle = FixAngleMode::Absolute;
 	SetSolidType(Solid::Not);
 	SetDamageMode(DamageMode::No);
