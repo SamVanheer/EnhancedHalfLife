@@ -21,7 +21,6 @@
 */
 
 DLL_GLOBAL std::uint32_t g_ulFrameCount;
-DLL_GLOBAL std::uint32_t g_ulModelIndexEyes;
 DLL_GLOBAL std::uint32_t g_ulModelIndexPlayer;
 DLL_GLOBAL Vector		g_vecAttackDir;
 DLL_GLOBAL int			gDisplayTitle;
