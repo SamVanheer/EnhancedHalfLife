@@ -48,23 +48,17 @@ using word = unsigned short;
 using string_t = unsigned int;
 using qboolean = int;
 
-// Prevent tons of unused windows definitions
 #ifdef _WIN32
-
 //Avoid the ISO conformant warning
 #define stricmp _stricmp
 #define strnicmp _strnicmp
-#define itoa _itoa
-#define strupr _strupr
 
-#define DLLEXPORT __declspec( dllexport )
+#define DLLEXPORT __declspec(dllexport)
 #else // _WIN32
-
 #define stricmp strcasecmp
 #define strnicmp strncasecmp
-#define _alloca alloca
 
-#define DLLEXPORT __attribute__ ( ( visibility( "default" ) ) )
+#define DLLEXPORT __attribute__((visibility("default")))
 #endif //_WIN32
 
 template<typename T, std::size_t Size>
