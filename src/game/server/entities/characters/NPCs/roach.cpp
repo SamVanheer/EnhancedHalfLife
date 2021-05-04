@@ -167,7 +167,7 @@ void CRoach::MonsterThink()
 	else if (m_flLastLightLevel < 0)
 	{
 		// collect light level for the first time, now that all of the lightmaps in the roach's area have been calculated.
-		m_flLastLightLevel = GETENTITYILLUM(edict());
+		m_flLastLightLevel = Illumination();
 	}
 
 	switch (m_iMode)
@@ -210,7 +210,7 @@ void CRoach::MonsterThink()
 				Listen();
 			}
 
-			if (GETENTITYILLUM(edict()) > m_flLastLightLevel)
+			if (Illumination() > m_flLastLightLevel)
 			{
 				// someone turned on lights!
 				//ALERT ( at_console, "Lights!\n" );
@@ -234,10 +234,10 @@ void CRoach::MonsterThink()
 	case	ROACH_SCARED_BY_LIGHT:
 	{
 		// if roach was scared by light, then stop if we're over a spot at least as dark as where we started!
-		if (GETENTITYILLUM(edict()) <= m_flLastLightLevel)
+		if (Illumination() <= m_flLastLightLevel)
 		{
 			SetActivity(ACT_IDLE);
-			m_flLastLightLevel = GETENTITYILLUM(edict());// make this our new light level.
+			m_flLastLightLevel = Illumination();// make this our new light level.
 		}
 		break;
 	}
@@ -323,7 +323,7 @@ void CRoach::Move(float flInterval)
 		// take truncated step and stop
 
 		SetActivity(ACT_IDLE);
-		m_flLastLightLevel = GETENTITYILLUM(edict());// this is roach's new comfortable light level
+		m_flLastLightLevel = Illumination();// this is roach's new comfortable light level
 
 		if (m_iMode == ROACH_SMELL_FOOD)
 		{
