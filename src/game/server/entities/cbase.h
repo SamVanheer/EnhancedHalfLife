@@ -547,6 +547,16 @@ public:
 		pev->takedamage = static_cast<int>(mode);
 	}
 
+	CBaseEntity* GetAimEntity()
+	{
+		return InstanceOrNull(pev->aiment);
+	}
+
+	void SetAimEntity(CBaseEntity* aiment)
+	{
+		pev->aiment = EdictOrNull(aiment);
+	}
+
 	CBaseEntity* GetOwner()
 	{
 		return InstanceOrNull(pev->owner);

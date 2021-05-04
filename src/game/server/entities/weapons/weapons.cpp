@@ -509,7 +509,7 @@ void CBasePlayerItem::AttachToPlayer(CBasePlayer* pPlayer)
 {
 	SetMovetype(Movetype::Follow);
 	SetSolidType(Solid::Not);
-	pev->aiment = pPlayer->edict();
+	SetAimEntity(pPlayer);
 	pev->effects = EF_NODRAW; // ??
 	pev->modelindex = 0;// server won't send down to clients if modelindex == 0
 	pev->model = iStringNull;

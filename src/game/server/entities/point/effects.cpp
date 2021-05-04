@@ -155,7 +155,7 @@ void CBeam::Precache()
 {
 	if (auto owner = GetOwner(); owner)
 		SetStartEntity(owner->entindex());
-	if (auto aiment = InstanceOrNull(pev->aiment); aiment)
+	if (auto aiment = GetAimEntity(); aiment)
 		SetEndEntity(aiment->entindex());
 }
 
@@ -168,7 +168,7 @@ void CBeam::SetStartEntity(int entityIndex)
 void CBeam::SetEndEntity(int entityIndex)
 {
 	pev->skin = (entityIndex & 0x0FFF) | ((pev->skin & 0xF000) << 12);
-	pev->aiment = g_engfuncs.pfnPEntityOfEntIndex(entityIndex);
+	SetAimEntity(UTIL_EntityByIndex(entityIndex));
 }
 
 const Vector& CBeam::GetStartPos()
@@ -1137,8 +1137,8 @@ void CSprite::Precache()
 	PRECACHE_MODEL(STRING(pev->model));
 
 	// Reset attachment after save/restore
-	if (pev->aiment)
-		SetAttachment(InstanceOrNull(pev->aiment), pev->body);
+	if (auto aiment = GetAimEntity(); aiment)
+		SetAttachment(aiment, pev->body);
 	else
 	{
 		// Clear attachment

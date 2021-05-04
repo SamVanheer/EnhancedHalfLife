@@ -56,7 +56,7 @@ public:
 		{
 			pev->skin = pEntity->entindex();
 			pev->body = attachment;
-			pev->aiment = pEntity->edict();
+			SetAimEntity(pEntity);
 			SetMovetype(Movetype::Follow);
 		}
 	}
