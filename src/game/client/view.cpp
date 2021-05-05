@@ -102,7 +102,7 @@ float V_CalcBob(ref_params_t* pparams)
 	lasttime = pparams->time;
 
 	bobtime += pparams->frametime;
-	float cycle = bobtime - std::floor((bobtime / cl_bobcycle->value) * cl_bobcycle->value);
+	float cycle = bobtime - std::floor(bobtime / cl_bobcycle->value) * cl_bobcycle->value;
 	cycle /= cl_bobcycle->value;
 
 	if (cycle < cl_bobup->value)
