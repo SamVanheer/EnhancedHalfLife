@@ -280,13 +280,11 @@ void CRpg::Reload()
 	}
 #endif
 
-	bool iResult;
-
 	if (m_iClip == 0)
-		iResult = DefaultReload(RPG_MAX_CLIP, RPG_RELOAD, 2);
-
-	if (iResult)
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_hPlayer->random_seed, 10, 15);
+	{
+		if (DefaultReload(RPG_MAX_CLIP, RPG_RELOAD, 2))
+			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_hPlayer->random_seed, 10, 15);
+	}
 }
 
 void CRpg::Spawn()

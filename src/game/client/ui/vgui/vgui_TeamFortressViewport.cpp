@@ -1076,7 +1076,7 @@ void TeamFortressViewport::SetCurrentMenu(CMenuPanel* pMenu)
 CMenuPanel* TeamFortressViewport::CreateTextWindow(int iTextToShow)
 {
 	char sz[256]{};
-	char* cText;
+	char* cText = nullptr;
 	static const int MAX_TITLE_LENGTH = 64;
 	char cTitle[MAX_TITLE_LENGTH];
 

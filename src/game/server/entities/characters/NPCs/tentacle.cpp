@@ -763,7 +763,7 @@ void CTentacle::DieThink()
 
 void CTentacle::HandleAnimEvent(AnimationEvent& event)
 {
-	const char* sound;
+	const char* sound = nullptr;
 
 	switch (event.event)
 	{

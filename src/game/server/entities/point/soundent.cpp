@@ -228,6 +228,7 @@ int CSoundEnt::SoundsInList(int iListType)
 	else
 	{
 		ALERT(at_console, "Unknown Sound List Type!\n");
+		return 0;
 	}
 
 	if (iThisSound == SOUNDLIST_EMPTY)

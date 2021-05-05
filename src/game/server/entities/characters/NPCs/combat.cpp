@@ -1280,7 +1280,7 @@ Vector CBasePlayer::FireBulletsPlayer(std::uint32_t cShots, const Vector& vecSrc
 	TraceResult tr;
 	const Vector vecRight = gpGlobals->v_right;
 	const Vector vecUp = gpGlobals->v_up;
-	float x, y, z;
+	float x = 0, y = 0, z;
 
 	CBasePlayer* pAttacker = this;
 	const int shared_rand = random_seed;

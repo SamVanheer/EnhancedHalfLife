@@ -401,17 +401,15 @@ bool CHGrunt::CanCheckAttacks()
 
 bool CHGrunt::CheckMeleeAttack1(float flDot, float flDist)
 {
-	CBaseMonster* pEnemy;
+	auto target = m_hEnemy.Get();
 
-	if (m_hEnemy != nullptr)
-	{
-		pEnemy = m_hEnemy->MyMonsterPointer();
+	if (!target)
+		return false;
 
-		if (!pEnemy)
-		{
-			return false;
-		}
-	}
+	auto pEnemy = target->MyMonsterPointer();
+
+	if (!pEnemy)
+		return false;
 
 	if (flDist <= 64 && flDot >= 0.7 &&
 		pEnemy->Classify() != CLASS_ALIEN_BIOWEAPON &&

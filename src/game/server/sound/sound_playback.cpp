@@ -19,14 +19,28 @@ void UTIL_EmitAmbientSound(CBaseEntity* entity, const Vector& vecOrigin, const c
 {
 	auto edict = CBaseEntity::EdictOrNull(entity);
 
-	if (samp && *samp == '!')
+	if (samp)
 	{
-		char name[32];
-		if (SENTENCEG_Lookup(samp, name, sizeof(name)) >= 0)
-			EMIT_AMBIENT_SOUND(edict, vecOrigin, name, vol, attenuation, fFlags, pitch);
+		if (*samp == '!')
+		{
+			char name[32];
+			if (SENTENCEG_Lookup(samp, name, sizeof(name)) >= 0)
+				EMIT_AMBIENT_SOUND(edict, vecOrigin, name, vol, attenuation, fFlags, pitch);
+		}
+		else
+			EMIT_AMBIENT_SOUND(edict, vecOrigin, samp, vol, attenuation, fFlags, pitch);
 	}
 	else
-		EMIT_AMBIENT_SOUND(edict, vecOrigin, samp, vol, attenuation, fFlags, pitch);
+	{
+		if (entity)
+		{
+			ALERT(at_warning, "UTIL_EmitAmbientSound: NULL sample name passed for entity %s(%s)\n", entity->GetClassname(), STRING(entity->pev->target));
+		}
+		else
+		{
+			ALERT(at_warning, "UTIL_EmitAmbientSound: NULL entity passed\n");
+		}
+	}
 }
 
 int SENTENCEG_PlayRndI(CBaseEntity* entity, int isentenceg,

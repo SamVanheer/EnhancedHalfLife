@@ -106,7 +106,11 @@ CMessageWindowPanel::CMessageWindowPanel(const char* szMOTD, const char* szTitle
 	pText->setFgColor(r, g, b, a);
 	pSchemes->getBgColor(hMOTDText, r, g, b, a);
 	pText->setBgColor(r, g, b, a);
-	pText->setText(szMOTD);
+
+	if (szMOTD)
+	{
+		pText->setText(szMOTD);
+	}
 
 	// Get the total size of the MOTD text and resize the text panel
 	int iScrollSizeX, iScrollSizeY;

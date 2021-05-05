@@ -193,7 +193,7 @@ Vector CBasePlayer::FireBulletsPlayer(std::uint32_t cShots, const Vector& vecSrc
 {
 	const int shared_rand = random_seed;
 
-	float x, y, z;
+	float x = 0, y = 0, z;
 
 	for (std::uint32_t iShot = 1; iShot <= cShots; iShot++)
 	{
