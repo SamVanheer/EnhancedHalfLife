@@ -171,8 +171,11 @@ void CBaseMonster::Listen()
 	{
 		CSound* pCurrentSound = CSoundEnt::SoundPointerForIndex(iSound);
 
-		if (pCurrentSound &&
-			(pCurrentSound->m_iType & iMySounds) &&
+		//Should never happen
+		if (!pCurrentSound)
+			break;
+
+		if ((pCurrentSound->m_iType & iMySounds) &&
 			(pCurrentSound->m_vecOrigin - EarPosition()).Length() <= pCurrentSound->m_iVolume * hearingSensitivity)
 
 			//if ( ( g_pSoundEnt->m_SoundPool[ iSound ].m_iType & iMySounds ) && ( g_pSoundEnt->m_SoundPool[ iSound ].m_vecOrigin - EarPosition()).Length () <= g_pSoundEnt->m_SoundPool[ iSound ].m_iVolume * hearingSensitivity ) 
@@ -248,7 +251,8 @@ void CBaseMonster::Look(int iDistance)
 			// the current visible entity that we're dealing with
 			CBaseEntity* pSightEnt = pList[i];
 			// !!!temporarily only considering other monsters and clients, don't see prisoners
-			if (pSightEnt != this &&
+			if (pSightEnt &&
+				pSightEnt != this &&
 				!IsBitSet(pSightEnt->pev->spawnflags, SF_MONSTER_PRISONER) &&
 				pSightEnt->pev->health > 0)
 			{
@@ -344,7 +348,11 @@ CSound* CBaseMonster::BestSound()
 	{
 		CSound* pSound = CSoundEnt::SoundPointerForIndex(iThisSound);
 
-		if (pSound && pSound->IsSound())
+		//Should never happen
+		if (!pSound)
+			break;
+
+		if (pSound->IsSound())
 		{
 			const float flDist = (pSound->m_vecOrigin - EarPosition()).Length();
 

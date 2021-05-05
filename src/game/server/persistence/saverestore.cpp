@@ -236,7 +236,11 @@ unsigned short CSaveRestoreBuffer::TokenHash(const char* pszToken)
 	static int tokensparsed = 0;
 	tokensparsed++;
 	if (!m_pdata->tokenCount || !m_pdata->pTokens)
+	{
 		ALERT(at_error, "No token table array in TokenHash()!");
+		return 0;
+	}
+
 #endif
 
 	for (int i = 0; i < m_pdata->tokenCount; i++)

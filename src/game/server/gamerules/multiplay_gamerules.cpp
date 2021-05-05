@@ -534,10 +534,12 @@ int CHalfLifeMultiplay::PointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKill
 
 void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor)
 {
+	if (!pVictim)
+		return;
+
 	DeathNotice(pVictim, pKiller, pInflictor);
 
 	pVictim->m_iDeaths += 1;
-
 
 	FireTargets("game_playerdie", pVictim, pVictim, UseType::Toggle, 0);
 	CBasePlayer* peKiller = nullptr;
@@ -548,16 +550,20 @@ void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller
 	{  // killed self
 		pKiller->pev->frags -= 1;
 	}
-	else if (pKiller && pKiller->IsPlayer())
+	else if (pKiller)
 	{
-		// if a player dies in a deathmatch game and the killer is a client, award the killer some points
-		pKiller->pev->frags += PointsForKill(peKiller, pVictim);
+		if (pKiller->IsPlayer())
+		{
+			// if a player dies in a deathmatch game and the killer is a client, award the killer some points
+			pKiller->pev->frags += PointsForKill(peKiller, pVictim);
 
-		FireTargets("game_playerkill", pKiller, pKiller, UseType::Toggle, 0);
-	}
-	else
-	{  // killed by the world
-		pKiller->pev->frags -= 1;
+			FireTargets("game_playerkill", pKiller, pKiller, UseType::Toggle, 0);
+		}
+		else
+		{
+			// killed by the world
+			pKiller->pev->frags -= 1;
+		}
 	}
 
 	// update the scores

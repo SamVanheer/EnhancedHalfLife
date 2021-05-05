@@ -659,7 +659,7 @@ void ScorePanel::FillGrid()
 			safe_strcpy(sz, "");
 			if (m_iIsATeam[row] != TeamType::No)
 			{
-				char sz2[128];
+				char sz2[128]{};
 
 				switch (col)
 				{
@@ -668,7 +668,7 @@ void ScorePanel::FillGrid()
 					{
 						snprintf(sz2, sizeof(sz2), "%s", CHudTextMessage::BufferedLocaliseTextString("#Spectators"));
 					}
-					else
+					else if (team_info)
 					{
 						snprintf(sz2, sizeof(sz2), "%s", gViewPort->GetTeamName(team_info->teamnumber));
 					}
@@ -676,7 +676,7 @@ void ScorePanel::FillGrid()
 					safe_strcpy(sz, sz2);
 
 					// Append the number of players
-					if (m_iIsATeam[row] == TeamType::Yes)
+					if (team_info)
 					{
 						if (team_info->players == 1)
 						{
@@ -696,15 +696,15 @@ void ScorePanel::FillGrid()
 				case COLUMN_CLASS:
 					break;
 				case COLUMN_KILLS:
-					if (m_iIsATeam[row] == TeamType::Yes)
+					if (team_info)
 						snprintf(sz, sizeof(sz), "%d", team_info->frags);
 					break;
 				case COLUMN_DEATHS:
-					if (m_iIsATeam[row] == TeamType::Yes)
+					if (team_info)
 						snprintf(sz, sizeof(sz), "%d", team_info->deaths);
 					break;
 				case COLUMN_LATENCY:
-					if (m_iIsATeam[row] == TeamType::Yes)
+					if (team_info)
 						snprintf(sz, sizeof(sz), "%d", team_info->ping);
 					break;
 				default:
