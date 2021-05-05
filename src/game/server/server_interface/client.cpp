@@ -310,6 +310,21 @@ void ClientCommand(edict_t* pEntity)
 			CLIENT_PRINTF(pEntity, print_console, UTIL_VarArgs("\"fov\" is \"%d\"\n", (int)player->m_iFOV));
 		}
 	}
+	else if (AreStringsEqual(pcmd, "ent_remove"))
+	{
+		if (g_psv_cheats->value)
+		{
+			//Find the entity the player is looking at and remove it
+			if (auto target = UTIL_FindEntityForward(player); target)
+			{
+				UTIL_Remove(target);
+			}
+		}
+		else
+		{
+			CLIENT_PRINTF(pEntity, print_console, "Can't use \"ent_remove\" unless sv_cheats is set to 1\n");
+		}
+	}
 	else if (AreStringsEqual(pcmd, "use"))
 	{
 		player->SelectItem(CMD_ARGV(1));
