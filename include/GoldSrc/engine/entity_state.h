@@ -28,96 +28,96 @@ constexpr int ENTITY_BEAM = 1 << 1;
 struct entity_state_t
 {
 	// Fields which are filled in by routines outside of delta compression
-	int			entityType;
+	int			entityType = 0;
 	// Index into cl_entities array for this entity.
-	int			number;
-	float		msg_time;
+	int			number = 0;
+	float		msg_time = 0;
 
 	// Message number last time the player/entity state was updated.
-	int			messagenum;
+	int			messagenum = 0;
 
 	// Fields which can be transitted and reconstructed over the network stream
 	Vector		origin;
 	Vector		angles;
 
-	int			modelindex;
-	int			sequence;
-	float		frame;
-	int			colormap;
-	short		skin;
-	short		solid;
+	int			modelindex = 0;
+	int			sequence = 0;
+	float		frame = 0;
+	int			colormap = 0;
+	short		skin = 0;
+	short		solid = 0;
 
 	Solid GetSolid() const { return static_cast<Solid>(solid); }
 
-	int			effects;
-	float		scale;
+	int			effects = 0;
+	float		scale = 0;
 
-	byte		eflags;
+	byte		eflags = 0;
 
 	// Render information
-	RenderMode rendermode;
-	int			renderamt;
+	RenderMode rendermode = RenderMode::Normal;
+	int			renderamt = 0;
 	color24		rendercolor;
-	RenderFX renderfx;
+	RenderFX renderfx = RenderFX::None;
 
-	Movetype movetype;
-	float		animtime;
-	float		framerate;
-	int			body;
-	byte		controller[4];
-	byte		blending[4];
+	Movetype movetype = Movetype::None;
+	float		animtime = 0;
+	float		framerate = 0;
+	int			body = 0;
+	byte		controller[4]{};
+	byte		blending[4]{};
 	Vector		velocity;
 
 	// Send bbox down to client for use during prediction.
 	Vector		mins;
 	Vector		maxs;
 
-	int			aiment;
+	int			aiment = 0;
 	// If owned by a player, the index of that player ( for projectiles ).
-	int			owner;
+	int			owner = 0;
 
 	// Friction, for prediction.
-	float		friction;
+	float		friction = 0;
 	// Gravity multiplier
-	float		gravity;
+	float		gravity = 0;
 
 	// PLAYER SPECIFIC
-	int			team;
-	int			playerclass;
-	int			health;
-	qboolean	spectator;
-	int         weaponmodel;
-	int			gaitsequence;
+	int			team = 0;
+	int			playerclass = 0;
+	int			health = 0;
+	qboolean	spectator = false;
+	int         weaponmodel = 0;
+	int			gaitsequence = 0;
 	// If standing on conveyor, e.g.
 	Vector		basevelocity;
 	// Use the crouched hull, or the regular player hull.
-	int			usehull;
+	int			usehull = 0;
 	// Latched buttons last time state updated.
-	int			oldbuttons;
+	int			oldbuttons = 0;
 	// -1 = in air, else pmove entity number
-	int			onground;
-	int			iStepLeft;
+	int			onground = 0;
+	int			iStepLeft = 0;
 	// How fast we are falling
-	float		flFallVelocity;
+	float		flFallVelocity = 0;
 
-	float		fov;
-	int			weaponanim;
+	float		fov = 0;
+	int			weaponanim = 0;
 
 	// Parametric movement overrides
 	Vector				startpos;
 	Vector				endpos;
-	float				impacttime;
-	float				starttime;
+	float				impacttime = 0;
+	float				starttime = 0;
 
 	// For mods
-	int			iuser1;
-	int			iuser2;
-	int			iuser3;
-	int			iuser4;
-	float		fuser1;
-	float		fuser2;
-	float		fuser3;
-	float		fuser4;
+	int			iuser1 = 0;
+	int			iuser2 = 0;
+	int			iuser3 = 0;
+	int			iuser4 = 0;
+	float		fuser1 = 0;
+	float		fuser2 = 0;
+	float		fuser3 = 0;
+	float		fuser4 = 0;
 	Vector		vuser1;
 	Vector		vuser2;
 	Vector		vuser3;

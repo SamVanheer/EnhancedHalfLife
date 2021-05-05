@@ -38,7 +38,7 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	float		m_frictionFraction;		// Sorry, couldn't resist this name :)
+	float m_frictionFraction = 0; // Sorry, couldn't resist this name :)
 };
 
 constexpr int SF_AUTO_FIREONCE = 0x0001;
@@ -62,8 +62,8 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	string_t m_globalstate;
-	UseType	triggerType;
+	string_t m_globalstate = iStringNull;
+	UseType	triggerType = UseType::Off;
 };
 
 constexpr int SF_RELAY_FIREONCE = 0x0001;
@@ -82,7 +82,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	UseType	triggerType;
+	UseType	triggerType = UseType::Off;
 };
 
 constexpr int SF_MULTIMAN_CLONE = 0x80000000;
@@ -115,11 +115,11 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int		m_cTargets;	//!< the total number of targets in this manager's fire list.
-	int		m_index;	//!< Current target
-	float	m_startTime;//!< Time we started firing
-	string_t m_iTargetName[MAX_MULTI_TARGETS];//!< list if indexes into global string array
-	float	m_flTargetDelay[MAX_MULTI_TARGETS];//!< delay (in seconds) from time of manager fire to target fire
+	int m_cTargets = 0;								//!< the total number of targets in this manager's fire list.
+	int m_index = 0;								//!< Current target
+	float m_startTime = 0;							//!< Time we started firing
+	string_t m_iTargetName[MAX_MULTI_TARGETS]{};	//!< list if indexes into global string array
+	float m_flTargetDelay[MAX_MULTI_TARGETS]{};		//!< delay (in seconds) from time of manager fire to target fire
 private:
 	inline bool IsClone() { return (pev->spawnflags & SF_MULTIMAN_CLONE) != 0; }
 	inline bool ShouldClone()
@@ -271,7 +271,7 @@ public:
 
 	static TYPEDESCRIPTION m_SaveData[];
 
-	int m_cTriggersLeft; //!< # of activations remaining
+	int m_cTriggersLeft = 0; //!< # of activations remaining
 };
 
 /**
@@ -331,7 +331,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	string_t m_iszNewTarget;
+	string_t m_iszNewTarget = iStringNull;
 };
 
 constexpr int SF_CAMERA_PLAYER_POSITION = 1;
@@ -355,14 +355,14 @@ public:
 	EHandle<CBasePlayer> m_hPlayer;
 	EHANDLE m_hTarget;
 	EHandle<CBaseEntity> m_hEntPath;
-	string_t m_sPath;
-	float m_flWait;
-	float m_flReturnTime;
-	float m_flStopTime;
-	float m_moveDistance;
-	float m_targetSpeed;
-	float m_initialSpeed;
-	float m_acceleration;
-	float m_deceleration;
-	bool m_state;
+	string_t m_sPath = iStringNull;
+	float m_flWait = 0;
+	float m_flReturnTime = 0;
+	float m_flStopTime = 0;
+	float m_moveDistance = 0;
+	float m_targetSpeed = 0;
+	float m_initialSpeed = 0;
+	float m_acceleration = 0;
+	float m_deceleration = 0;
+	bool m_state = false;
 };

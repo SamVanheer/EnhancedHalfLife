@@ -140,10 +140,10 @@ public:
 	static	void SpawnRandomGibs(CBaseEntity* pVictim, int cGibs, bool human);
 	static  void SpawnStickyGibs(CBaseEntity* pVictim, const Vector& vecOrigin, int cGibs);
 
-	int		m_bloodColor;
-	int		m_cBloodDecals;
-	Materials m_material;
-	float	m_lifeTime;
+	int m_bloodColor = 0;
+	int m_cBloodDecals = 0;
+	Materials m_material = Materials::Glass;
+	float m_lifeTime = 0;
 };
 
 #define CUSTOM_SCHEDULES\

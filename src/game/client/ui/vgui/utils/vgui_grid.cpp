@@ -17,16 +17,6 @@ using namespace vgui;
 		return 0;\
 	}
 
-CGrid::CGridEntry::CGridEntry()
-{
-	m_pPanel = nullptr;
-	m_bUnderline = false;
-}
-
-CGrid::CGridEntry::~CGridEntry()
-{
-}
-
 CGrid::CGrid()
 {
 	Clear();

@@ -52,16 +52,6 @@ static void VoiceServerDebug(char const* pFmt, ...)
 	ALERT(at_console, "%s", msg);
 }
 
-CVoiceGameMgr::CVoiceGameMgr()
-{
-	m_UpdateInterval = 0;
-	m_nMaxPlayers = 0;
-}
-
-CVoiceGameMgr::~CVoiceGameMgr()
-{
-}
-
 bool CVoiceGameMgr::Init(
 	IVoiceGameMgrHelper* pHelper,
 	int maxClients)

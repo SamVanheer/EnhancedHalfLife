@@ -49,9 +49,9 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	string_t	m_globalstate;
-	GlobalTriggerMode m_triggermode;
-	GlobalEntState m_initialstate;
+	string_t m_globalstate = iStringNull;
+	GlobalTriggerMode m_triggermode = GlobalTriggerMode::Off;
+	GlobalEntState m_initialstate = GlobalEntState::Off;
 };
 
 TYPEDESCRIPTION CEnvGlobal::m_SaveData[] =
@@ -817,12 +817,12 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	bool m_lastUsed;
-	int		m_direction;
-	float	m_returnSpeed;
-	Vector	m_start;
-	Vector	m_end;
-	int		m_sounds;
+	bool m_lastUsed = false;
+	int m_direction = 0;
+	float m_returnSpeed = 0;
+	Vector m_start;
+	Vector m_end;
+	int m_sounds = 0;
 };
 
 TYPEDESCRIPTION CMomentaryRotButton::m_SaveData[] =
@@ -1038,7 +1038,7 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	float	m_flDelay;
+	float m_flDelay = 0;
 };
 
 TYPEDESCRIPTION CEnvSpark::m_SaveData[] =

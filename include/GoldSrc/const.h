@@ -646,6 +646,7 @@ enum class MessageDest
 */
 enum class Contents
 {
+	None = 0,
 	Empty = -1,
 	Solid = -2,
 	Water = -3,
@@ -779,7 +780,7 @@ enum class RenderFX
 
 struct color24
 {
-	byte r, g, b;
+	byte r = 0, g = 0, b = 0;
 };
 
 struct colorVec
@@ -794,25 +795,25 @@ struct PackedColorVec
 
 struct link_t
 {
-	link_t* prev, * next;
+	link_t* prev = nullptr, * next = nullptr;
 };
 
 struct edict_t;
 
 struct plane_t
 {
-	Vector	normal;
-	float	dist;
+	Vector	normal{};
+	float	dist = 0;
 };
 
 struct trace_t
 {
-	qboolean	allsolid;	// if true, plane is not valid
-	qboolean	startsolid;	// if true, the initial point was in a solid area
-	qboolean	inopen, inwater;
-	float	fraction;		// time completed, 1.0 = didn't hit anything
-	Vector	endpos;			// final position
-	plane_t	plane;			// surface normal at impact
-	edict_t* ent;			// entity the surface is on
-	int		hitgroup;		// 0 == generic, non zero is specific body part
+	qboolean	allsolid = false;	// if true, plane is not valid
+	qboolean	startsolid = false;	// if true, the initial point was in a solid area
+	qboolean	inopen = false, inwater = false;
+	float	fraction = 0;			// time completed, 1.0 = didn't hit anything
+	Vector	endpos{};				// final position
+	plane_t	plane;					// surface normal at impact
+	edict_t* ent = nullptr;			// entity the surface is on
+	int		hitgroup = 0;			// 0 == generic, non zero is specific body part
 };

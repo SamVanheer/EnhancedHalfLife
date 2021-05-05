@@ -13,6 +13,7 @@
 *
 ****/
 
+//TODO: make enum
 constexpr int ROACH_IDLE = 0;
 constexpr int ROACH_BORED = 1;
 constexpr int ROACH_SCARED_BY_ENT = 2;
@@ -39,8 +40,8 @@ public:
 	void EXPORT Touch(CBaseEntity* pOther) override;
 	void Killed(const KilledInfo& info) override;
 
-	float	m_flLastLightLevel;
-	float	m_flNextSmellTime;
+	float	m_flLastLightLevel = 0;
+	float	m_flNextSmellTime = 0;
 	int		Classify() override;
 
 	/**
@@ -50,8 +51,8 @@ public:
 	int		SoundMask() override;
 
 	// UNDONE: These don't necessarily need to be save/restored, but if we add more data, it may
-	bool	m_fLightHacked;
-	int		m_iMode;
+	bool m_fLightHacked = false;
+	int m_iMode = 0;
 	// -----------------------------
 };
 

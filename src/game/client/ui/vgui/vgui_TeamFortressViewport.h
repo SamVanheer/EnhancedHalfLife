@@ -382,8 +382,8 @@ private:
 	int			  m_iYOffset;
 
 	// Buttons in this menu
-	CommandButton* m_aButtons[MAX_BUTTONS];
-	int			  m_iButtons;
+	CommandButton* m_aButtons[MAX_BUTTONS]{};
+	int			  m_iButtons = 0;
 
 	// opens menu from top to bottom (0 = default), or from bottom to top (1)?
 	int				m_iDirection;
@@ -393,7 +393,6 @@ public:
 		m_pParentMenu = pParentMenu;
 		m_iXOffset = x;
 		m_iYOffset = y;
-		m_iButtons = 0;
 		m_iDirection = 0;
 	}
 
@@ -403,12 +402,11 @@ public:
 		m_pParentMenu = pParentMenu;
 		m_iXOffset = x;
 		m_iYOffset = y;
-		m_iButtons = 0;
 		m_iDirection = direction;
 	}
 
-	float		m_flButtonSizeY;
-	int			m_iSpectCmdMenu;
+	float		m_flButtonSizeY = 0;
+	int			m_iSpectCmdMenu = 0;
 	void		AddButton(CommandButton* pButton);
 
 	/**
@@ -922,15 +920,14 @@ class CDragNDropHandler : public InputSignal
 {
 private:
 	DragNDropPanel* m_pPanel;
-	bool			m_bDragging;
-	int				m_iaDragOrgPos[2];
-	int				m_iaDragStart[2];
+	bool			m_bDragging = false;
+	int				m_iaDragOrgPos[2]{};
+	int				m_iaDragStart[2]{};
 
 public:
 	CDragNDropHandler(DragNDropPanel* pPanel)
 	{
 		m_pPanel = pPanel;
-		m_bDragging = false;
 	}
 
 	void cursorMoved(int x, int y, Panel* panel);

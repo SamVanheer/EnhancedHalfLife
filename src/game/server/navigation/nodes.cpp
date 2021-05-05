@@ -2746,13 +2746,13 @@ class CNodeViewer : public CBaseEntity
 public:
 	void Spawn() override;
 
-	int m_iBaseNode;
-	int m_iDraw;
-	int	m_nVisited;
-	int m_aFrom[128];
-	int m_aTo[128];
-	int m_iHull;
-	int m_afNodeType;
+	int m_iBaseNode = 0;
+	int m_iDraw = 0;
+	int	m_nVisited = 0;
+	int m_aFrom[128]{};
+	int m_aTo[128]{};
+	int m_iHull = 0;
+	int m_afNodeType = 0;
 	Vector m_vecColor;
 
 	void FindNodeConnections(int iNode);

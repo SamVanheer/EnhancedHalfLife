@@ -37,7 +37,7 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	string_t m_preSequence;
+	string_t m_preSequence = iStringNull;
 };
 
 LINK_ENTITY_TO_CLASS(info_bigmomma, CInfoBM);
@@ -100,7 +100,7 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int  m_maxFrame;
+	int m_maxFrame = 0;
 };
 
 LINK_ENTITY_TO_CLASS(bmortar, CBMortar);
@@ -289,11 +289,11 @@ public:
 	CUSTOM_SCHEDULES;
 
 private:
-	float	m_nodeTime;
-	float	m_crabTime;
-	float	m_mortarTime;
-	float	m_painSoundTime;
-	int		m_crabCount;
+	float m_nodeTime = 0;
+	float m_crabTime = 0;
+	float m_mortarTime = 0;
+	float m_painSoundTime = 0;
+	int m_crabCount = 0;
 };
 
 LINK_ENTITY_TO_CLASS(monster_bigmomma, CBigMomma);

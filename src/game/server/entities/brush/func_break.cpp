@@ -764,9 +764,9 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	static const char* m_soundNames[3];
-	int		m_lastSound;	// no need to save/restore, just keeps the same sound from playing twice in a row
-	float	m_maxSpeed;
-	float	m_soundTime;
+	int m_lastSound = 0;	// no need to save/restore, just keeps the same sound from playing twice in a row
+	float m_maxSpeed = 0;
+	float m_soundTime = 0;
 };
 
 TYPEDESCRIPTION	CPushable::m_SaveData[] =

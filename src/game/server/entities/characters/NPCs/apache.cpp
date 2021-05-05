@@ -50,9 +50,9 @@ class CApache : public CBaseMonster
 	bool TakeDamage(const TakeDamageInfo& info) override;
 	void TraceAttack(const TraceAttackInfo& info) override;
 
-	int m_iRockets;
-	float m_flForce;
-	float m_flNextRocket;
+	int m_iRockets = 0;
+	float m_flForce = 0;
+	float m_flNextRocket = 0;
 
 	Vector m_vecTarget;
 	Vector m_posTarget;
@@ -63,18 +63,18 @@ class CApache : public CBaseMonster
 	Vector m_vecGoal;
 
 	Vector m_angGun;
-	float m_flLastSeen;
-	float m_flPrevSeen;
+	float m_flLastSeen = 0;
+	float m_flPrevSeen = 0;
 
-	int m_iSoundState; // don't save this
+	int m_iSoundState = 0; // don't save this
 
-	int m_iSpriteTexture;
-	int m_iExplode;
-	int m_iBodyGibs;
+	int m_iSpriteTexture = 0;
+	int m_iExplode = 0;
+	int m_iBodyGibs = 0;
 
-	float m_flGoalSpeed;
+	float m_flGoalSpeed = 0;
 
-	int m_iDoSmokePuff;
+	int m_iDoSmokePuff = 0;
 	EHandle<CBeam> m_hBeam;
 };
 
@@ -912,7 +912,7 @@ class CApacheHVR : public CGrenade
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int m_iTrail;
+	int m_iTrail = 0;
 	Vector m_vecForward;
 };
 

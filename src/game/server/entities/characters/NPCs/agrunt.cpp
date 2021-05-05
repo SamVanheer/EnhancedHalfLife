@@ -128,15 +128,15 @@ public:
 	static const char* pIdleSounds[];
 	static const char* pAlertSounds[];
 
-	bool	m_fCanHornetAttack;
-	float	m_flNextHornetAttackCheck;
+	bool m_fCanHornetAttack = false;
+	float m_flNextHornetAttackCheck = 0;
 
-	float m_flNextPainTime;
+	float m_flNextPainTime = 0;
 
 	// three hacky fields for speech stuff. These don't really need to be saved.
-	float	m_flNextSpeakTime;
-	float	m_flNextWordTime;
-	int		m_iLastWord;
+	float m_flNextSpeakTime = 0;
+	float m_flNextWordTime = 0;
+	int m_iLastWord = 0;
 };
 LINK_ENTITY_TO_CLASS(monster_alien_grunt, CAGrunt);
 

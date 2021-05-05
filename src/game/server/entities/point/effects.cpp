@@ -41,10 +41,10 @@ public:
 	int		ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int		m_density;
-	int		m_frequency;
-	int		m_bubbleModel;
-	bool	m_state;
+	int m_density = 0;
+	int m_frequency = 0;
+	int m_bubbleModel = 0;
+	bool m_state = false;
 };
 
 LINK_ENTITY_TO_CLASS(env_bubbles, CBubbling);
@@ -361,20 +361,20 @@ public:
 
 	void	BeamUpdateVars();
 
-	bool m_active;
-	string_t m_iszStartEntity;
-	string_t m_iszEndEntity;
-	float	m_life;
-	int		m_boltWidth;
-	int		m_noiseAmplitude;
-	int		m_brightness;
-	int		m_speed;
-	float	m_restrike;
-	int		m_spriteTexture;
-	string_t m_iszSpriteName;
-	int		m_frameStart;
+	bool m_active = false;
+	string_t m_iszStartEntity = iStringNull;
+	string_t m_iszEndEntity = iStringNull;
+	float m_life = 0;
+	int m_boltWidth = 0;
+	int m_noiseAmplitude = 0;
+	int m_brightness = 0;
+	int m_speed = 0;
+	float m_restrike = 0;
+	int m_spriteTexture = 0;
+	string_t m_iszSpriteName = iStringNull;
+	int m_frameStart = 0;
 
-	float	m_radius;
+	float m_radius = 0;
 };
 
 LINK_ENTITY_TO_CLASS(env_lightning, CLightning);
@@ -1062,8 +1062,8 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	float		m_lastTime;
-	float		m_maxFrame;
+	float m_lastTime = 0;
+	float m_maxFrame = 0;
 };
 
 LINK_ENTITY_TO_CLASS(env_glow, CGlow);
@@ -1290,13 +1290,13 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int	m_iGibs;
-	int m_iGibCapacity;
-	Materials m_iGibMaterial;
-	int m_iGibModelIndex;
-	float m_flGibVelocity;
-	float m_flVariance;
-	float m_flGibLife;
+	int	m_iGibs = 0;
+	int m_iGibCapacity = 0;
+	Materials m_iGibMaterial = Materials::Glass;
+	int m_iGibModelIndex = 0;
+	float m_flGibVelocity = 0;
+	float m_flVariance = 0;
+	float m_flGibLife = 0;
 };
 
 TYPEDESCRIPTION CGibShooter::m_SaveData[] =
@@ -1898,7 +1898,7 @@ public:
 	void	Precache() override;
 	void	Use(const UseInfo& info) override;
 
-	int		m_iSprite;	// Don't save, precache
+	int m_iSprite = 0;	// Don't save, precache
 };
 
 void CEnvFunnel::Precache()

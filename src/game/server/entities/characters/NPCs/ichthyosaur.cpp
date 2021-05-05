@@ -83,22 +83,22 @@ public:
 	float ChangePitch(int speed);
 
 	Vector m_SaveVelocity;
-	float m_idealDist;
+	float m_idealDist = 0;
 
-	float m_flBlink;
+	float m_flBlink = 0;
 
-	float m_flEnemyTouched;
-	bool  m_bOnAttack;
+	float m_flEnemyTouched = 0;
+	bool  m_bOnAttack = false;
 
-	float m_flMaxSpeed;
-	float m_flMinSpeed;
-	float m_flMaxDist;
+	float m_flMaxSpeed = 0;
+	float m_flMinSpeed = 0;
+	float m_flMaxDist = 0;
 
 	EHandle<CBeam> m_hBeam;
 
-	float m_flNextAlert;
+	float m_flNextAlert = 0;
 
-	float m_flLastPitchTime;
+	float m_flLastPitchTime = 0;
 
 	static const char* pIdleSounds[];
 	static const char* pAlertSounds[];

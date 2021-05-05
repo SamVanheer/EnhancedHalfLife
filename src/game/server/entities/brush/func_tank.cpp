@@ -121,37 +121,37 @@ public:
 
 protected:
 	EHandle<CBasePlayer> m_hController;
-	float		m_flNextAttack;
-	Vector		m_vecControllerUsePos;
+	float m_flNextAttack = 0;
+	Vector m_vecControllerUsePos;
 
-	float		m_yawCenter;	// "Center" yaw
-	float		m_yawRate;		// Max turn rate to track targets
-	float		m_yawRange;		// Range of turning motion (one-sided: 30 is +/- 30 degress from center)
-								// Zero is full rotation
-	float		m_yawTolerance;	// Tolerance angle
+	float m_yawCenter = 0;		// "Center" yaw
+	float m_yawRate = 0;		// Max turn rate to track targets
+	float m_yawRange = 0;		// Range of turning motion (one-sided: 30 is +/- 30 degress from center)
+		 						// Zero is full rotation
+	float m_yawTolerance = 0;	// Tolerance angle
+		  
+	float m_pitchCenter = 0;	// "Center" pitch
+	float m_pitchRate = 0;		// Max turn rate on pitch
+	float m_pitchRange = 0;		// Range of pitch motion as above
+	float m_pitchTolerance = 0;	// Tolerance angle
+		  
+	float m_fireLast= 0;		// Last time I fired
+	float m_fireRate= 0;		// How many rounds/second
+	float m_lastSightTime = 0;	// Last time I saw target
+	float m_persist = 0;		// Persistence of firing (how long do I shoot when I can't see)
+	float m_minRange= 0;		// Minimum range to aim/track
+	float m_maxRange= 0;		// Max range to aim/track
 
-	float		m_pitchCenter;	// "Center" pitch
-	float		m_pitchRate;	// Max turn rate on pitch
-	float		m_pitchRange;	// Range of pitch motion as above
-	float		m_pitchTolerance;	// Tolerance angle
+	Vector m_barrelPos;			// Length of the freakin barrel
+	float m_spriteScale = 0;	// Scale of any sprites we shoot
+	string_t m_iszSpriteSmoke = iStringNull;
+	string_t m_iszSpriteFlash = iStringNull;
+	TankBullet m_bulletType = TankBullet::None;	// Bullet type
+	int m_iBulletDamage = 0;	// 0 means use Bullet type's default damage
 
-	float		m_fireLast;		// Last time I fired
-	float		m_fireRate;		// How many rounds/second
-	float		m_lastSightTime;// Last time I saw target
-	float		m_persist;		// Persistence of firing (how long do I shoot when I can't see)
-	float		m_minRange;		// Minimum range to aim/track
-	float		m_maxRange;		// Max range to aim/track
-
-	Vector		m_barrelPos;	// Length of the freakin barrel
-	float		m_spriteScale;	// Scale of any sprites we shoot
-	string_t	m_iszSpriteSmoke;
-	string_t	m_iszSpriteFlash;
-	TankBullet	m_bulletType;	// Bullet type
-	int			m_iBulletDamage; // 0 means use Bullet type's default damage
-
-	Vector		m_sightOrigin;	// Last sight of target
-	int			m_spread;		// firing spread
-	string_t	m_iszMaster;	// Master entity (game_team_master or multisource)
+	Vector m_sightOrigin;		// Last sight of target
+	int m_spread = 0;			// firing spread
+	string_t m_iszMaster = iStringNull;	// Master entity (game_team_master or multisource)
 };
 
 TYPEDESCRIPTION	CFuncTank::m_SaveData[] =
@@ -773,7 +773,7 @@ public:
 
 private:
 	EHandle<CLaser> m_hLaser;
-	float	m_laserTime;
+	float m_laserTime = 0;
 };
 
 LINK_ENTITY_TO_CLASS(func_tanklaser, CFuncTankLaser);

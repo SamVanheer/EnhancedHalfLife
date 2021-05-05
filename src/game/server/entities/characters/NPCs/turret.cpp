@@ -95,36 +95,36 @@ public:
 	bool MoveTurret();
 	virtual void Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy) {}
 
-	float m_flMaxSpin;		// Max time to spin the barrel w/o a target
-	bool m_iSpin;
+	float m_flMaxSpin = 0;		// Max time to spin the barrel w/o a target
+	bool m_iSpin = false;
 
-	EHandle<CSprite> m_hEyeGlow; //TODO: need to remove this entity on death
-	int		m_eyeBrightness;
+	EHandle<CSprite> m_hEyeGlow;//TODO: need to remove this entity on death
+	int m_eyeBrightness = 0;
 
-	int	m_iDeployHeight;
-	int	m_iRetractHeight;
-	int m_iMinPitch;
+	int	m_iDeployHeight = 0;
+	int	m_iRetractHeight = 0;
+	int m_iMinPitch = 0;
 
-	int m_iBaseTurnRate;	// angles per second
-	float m_fTurnRate;		// actual turn rate
-	TurretOrientation m_iOrientation;
-	bool m_iOn;
-	bool m_fBeserk;			// Sometimes this bitch will just freak out
-	bool m_iAutoStart;		// true if the turret auto deploys when a target
-							// enters its range
+	int m_iBaseTurnRate = 0;	// angles per second
+	float m_fTurnRate = 0;		// actual turn rate
+	TurretOrientation m_iOrientation = TurretOrientation::Floor;
+	bool m_iOn = false;
+	bool m_fBeserk = false;		// Sometimes this bitch will just freak out
+	bool m_iAutoStart = false;	// true if the turret auto deploys when a target
+								// enters its range
 
 	Vector m_vecLastSight;
-	float m_flLastSight;	// Last time we saw a target
-	float m_flMaxWait;		// Max time to seach w/o a target
-	int m_iSearchSpeed;		// Not Used!
+	float m_flLastSight = 0;	// Last time we saw a target
+	float m_flMaxWait = 0;		// Max time to seach w/o a target
+	int m_iSearchSpeed = 0;		// Not Used!
 
 	// movement
-	float	m_flStartYaw;
-	Vector	m_vecCurAngles;
-	Vector	m_vecGoalAngles;
+	float m_flStartYaw = 0;
+	Vector m_vecCurAngles;
+	Vector m_vecGoalAngles;
 
-	float	m_flPingTime;	// Time until the next ping, used when searching
-	float	m_flSpinUpTime;	// Amount of time until the barrel should spin down when searching
+	float m_flPingTime = 0;		// Time until the next ping, used when searching
+	float m_flSpinUpTime = 0;	// Amount of time until the barrel should spin down when searching
 };
 
 TYPEDESCRIPTION	CBaseTurret::m_SaveData[] =
@@ -178,7 +178,7 @@ public:
 	void Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy) override;
 
 private:
-	bool m_iStartSpin;
+	bool m_iStartSpin = false;
 
 };
 

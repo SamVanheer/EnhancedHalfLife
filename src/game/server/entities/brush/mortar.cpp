@@ -44,12 +44,12 @@ public:
 	*/
 	void EXPORT FieldUse(const UseInfo& info);
 
-	string_t m_iszXController;
-	string_t m_iszYController;
-	float m_flSpread;
-	float m_flDelay;
-	int m_iCount;
-	MortarControlType m_fControl;
+	string_t m_iszXController = iStringNull;
+	string_t m_iszYController = iStringNull;
+	float m_flSpread = 0;
+	float m_flDelay = 0;
+	int m_iCount = 0;
+	MortarControlType m_fControl = MortarControlType::Random;
 };
 
 LINK_ENTITY_TO_CLASS(func_mortar_field, CFuncMortarField);
@@ -186,7 +186,7 @@ public:
 
 	void EXPORT MortarExplode();
 
-	int m_spriteTexture;
+	int m_spriteTexture = 0;
 };
 
 LINK_ENTITY_TO_CLASS(monster_mortar, CMortar);

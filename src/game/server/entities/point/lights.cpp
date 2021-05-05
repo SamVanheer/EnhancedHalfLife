@@ -39,8 +39,8 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	int		m_iStyle;
-	string_t m_iszPattern;
+	int m_iStyle = 0;
+	string_t m_iszPattern = iStringNull;
 };
 
 LINK_ENTITY_TO_CLASS(light, CLight);

@@ -69,8 +69,8 @@ public:
 	void EXPORT Sparkle();
 #endif
 
-	float		m_length;
-	string_t	m_altName;
+	float m_length = 0;
+	string_t m_altName = iStringNull;
 	EHandle<CPathTrack> m_hNext;
 	EHandle<CPathTrack> m_hPrevious;
 	EHandle<CPathTrack> m_hAltPath;
@@ -117,19 +117,19 @@ public:
 	void	OverrideReset() override;
 
 	EHandle<CPathTrack> m_hPath;
-	float		m_length;
-	float		m_height;
-	float		m_speed;
-	float		m_dir;
-	float		m_startSpeed;
-	Vector		m_controlMins;
-	Vector		m_controlMaxs;
-	bool m_soundPlaying;
-	int			m_sounds;
-	float		m_flVolume;
-	float		m_flBank;
-	float		m_oldSpeed;
+	float m_length = 0;
+	float m_height = 0;
+	float m_speed = 0;
+	float m_dir = 0;
+	float m_startSpeed = 0;
+	Vector m_controlMins;
+	Vector m_controlMaxs;
+	bool m_soundPlaying = false;
+	int m_sounds = 0;
+	float m_flVolume = 0;
+	float m_flBank = 0;
+	float m_oldSpeed = 0;
 
 private:
-	unsigned short m_usAdjustPitch;
+	unsigned short m_usAdjustPitch = 0;
 };

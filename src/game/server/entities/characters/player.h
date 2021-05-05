@@ -273,7 +273,7 @@ public:
 	*	@brief Set the activity based on an event or current state
 	*/
 	void SetAnimation(PlayerAnim playerAnim);
-	char m_szAnimExtension[32];
+	char m_szAnimExtension[32]{};
 
 	// custom player functions
 	virtual void ImpulseCommands();

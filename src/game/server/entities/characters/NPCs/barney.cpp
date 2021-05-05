@@ -77,13 +77,13 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	bool	m_fGunDrawn;
-	float	m_painTime;
-	float	m_checkAttackTime;
-	bool	m_lastAttackCheck;
+	bool m_fGunDrawn = false;
+	float m_painTime = 0;
+	float m_checkAttackTime = 0;
+	bool m_lastAttackCheck = false;
 
 	// UNDONE: What is this for?  It isn't used?
-	float	m_flPlayerDamage;// how much pain has the player inflicted on me?
+	float m_flPlayerDamage = 0;// how much pain has the player inflicted on me?
 
 	CUSTOM_SCHEDULES;
 };
@@ -707,7 +707,7 @@ public:
 
 	void KeyValue(KeyValueData* pkvd) override;
 
-	int	m_iPose;// which sequence to display	-- temporary, don't need to save
+	int	m_iPose = 0;// which sequence to display	-- temporary, don't need to save
 	static const char* m_szPoses[3];
 };
 

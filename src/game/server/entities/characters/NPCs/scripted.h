@@ -135,22 +135,22 @@ public:
 	void	AllowInterrupt(bool fAllow);
 	int		IgnoreConditions() override;
 
-	string_t m_iszIdle;		// string index for idle animation
-	string_t m_iszPlay;		// string index for scripted animation
-	string_t m_iszEntity;	// entity that is wanted for this script
-	ScriptedMoveTo m_fMoveTo;
-	int m_iFinishSchedule;
-	float m_flRadius;		// range to search
-	float m_flRepeat;	// repeat rate
+	string_t m_iszIdle = iStringNull;		// string index for idle animation
+	string_t m_iszPlay = iStringNull;		// string index for scripted animation
+	string_t m_iszEntity = iStringNull;		// entity that is wanted for this script
+	ScriptedMoveTo m_fMoveTo = ScriptedMoveTo::No;
+	int m_iFinishSchedule = 0;
+	float m_flRadius = 0;		// range to search
+	float m_flRepeat = 0;	// repeat rate
 
-	int m_iDelay;
-	float m_startTime;
+	int m_iDelay = 0;
+	float m_startTime = 0;
 
-	Movetype m_saved_movetype;
-	Solid m_saved_solid;
-	int m_saved_effects;
+	Movetype m_saved_movetype = Movetype::None;
+	Solid m_saved_solid = Solid::Not;
+	int m_saved_effects = 0;
 	//	Vector m_vecOrigOrigin;
-	bool m_interruptable;
+	bool m_interruptable = false;
 };
 
 class CCineAI : public CCineMonster

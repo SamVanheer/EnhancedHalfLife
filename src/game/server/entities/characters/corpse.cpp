@@ -78,7 +78,7 @@ public:
 
 	void KeyValue(KeyValueData* pkvd) override;
 
-	int	m_iPose;// which sequence to display	-- temporary, don't need to save
+	int	m_iPose = 0;// which sequence to display	-- temporary, don't need to save
 	static constexpr const char* m_szPoses[4] = {"deadback", "deadsitting", "deadstomach", "deadtable"};
 };
 

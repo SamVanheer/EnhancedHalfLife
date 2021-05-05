@@ -102,10 +102,10 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	Materials	m_Material;
-	Explosions	m_Explosion;
-	int			m_idShard;
-	float		m_angle;
-	string_t m_iszGibModel;
-	string_t m_iszSpawnObject;
+	Materials m_Material = Materials::Glass;
+	Explosions m_Explosion = Explosions::Random;
+	int m_idShard = 0;
+	float m_angle = 0;
+	string_t m_iszGibModel = iStringNull;
+	string_t m_iszSpawnObject = iStringNull;
 };

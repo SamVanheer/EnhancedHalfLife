@@ -34,7 +34,7 @@ public:
 	void HandleAnimEvent(AnimationEvent& event) override;
 	int IgnoreConditions() override;
 
-	float m_flNextFlinch;
+	float m_flNextFlinch = 0;
 
 	void PainSound() override;
 	void AlertSound() override;

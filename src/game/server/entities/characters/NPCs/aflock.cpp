@@ -36,8 +36,8 @@ public:
 	// Sounds are shared by the flock
 	static  void PrecacheFlockSounds();
 
-	int		m_cFlockSize;
-	float	m_flFlockRadius;
+	int m_cFlockSize = 0;
+	float m_flFlockRadius = 0;
 };
 
 TYPEDESCRIPTION	CFlockingFlyerFlock::m_SaveData[] =
@@ -134,16 +134,16 @@ public:
 
 	EHandle<CFlockingFlyer> m_hSquadLeader;
 	EHandle<CFlockingFlyer> m_hSquadNext;
-	bool	m_fTurning;// is this boid turning?
-	bool	m_fCourseAdjust;// followers set this flag true to override flocking while they avoid something
-	bool	m_fPathBlocked;// true if there is an obstacle ahead
-	Vector	m_vecReferencePoint;// last place we saw leader
-	Vector	m_vecAdjustedVelocity;// adjusted velocity (used when fCourseAdjust is true)
-	float	m_flGoalSpeed;
-	float	m_flLastBlockedTime;
-	float	m_flFakeBlockedTime;
-	float	m_flAlertTime;
-	float	m_flFlockNextSoundTime;
+	bool m_fTurning = false;// is this boid turning?
+	bool m_fCourseAdjust = false;// followers set this flag true to override flocking while they avoid something
+	bool m_fPathBlocked = false;// true if there is an obstacle ahead
+	Vector m_vecReferencePoint;// last place we saw leader
+	Vector m_vecAdjustedVelocity;// adjusted velocity (used when fCourseAdjust is true)
+	float m_flGoalSpeed = 0;
+	float m_flLastBlockedTime = 0;
+	float m_flFakeBlockedTime = 0;
+	float m_flAlertTime = 0;
+	float m_flFlockNextSoundTime = 0;
 };
 LINK_ENTITY_TO_CLASS(monster_flyer, CFlockingFlyer);
 LINK_ENTITY_TO_CLASS(monster_flyer_flock, CFlockingFlyerFlock);

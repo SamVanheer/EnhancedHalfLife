@@ -72,7 +72,7 @@ public:
 	*/
 	bool TakeDamage(const TakeDamageInfo& info) override;
 
-	float			m_flStopAttack;
-	int				m_iHornetType;
-	float			m_flFlySpeed;
+	float m_flStopAttack = 0;
+	int m_iHornetType = 0; //TODO: enum
+	float m_flFlySpeed = 0;
 };

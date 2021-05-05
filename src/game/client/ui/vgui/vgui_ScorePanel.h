@@ -219,7 +219,7 @@ public:
 private:
 	CTextImage2* _dualImage;
 	int _row;
-	int _gap;
+	int _gap = 0;
 	int _offset[2];
 	bool _useFgColorAsImageColor;
 };

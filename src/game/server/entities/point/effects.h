@@ -92,8 +92,8 @@ public:
 
 private:
 
-	float		m_lastTime;
-	float		m_maxFrame;
+	float m_lastTime = 0;
+	float m_maxFrame = 0;
 };
 
 class CBeam : public CBaseEntity
@@ -206,6 +206,6 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	EHandle<CSprite> m_hSprite;
-	string_t m_iszSpriteName;
+	string_t m_iszSpriteName = iStringNull;
 	Vector  m_firePosition;
 };

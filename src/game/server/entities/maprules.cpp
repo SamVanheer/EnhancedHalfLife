@@ -30,7 +30,7 @@ protected:
 	bool	CanFireForActivator(CBaseEntity* pActivator);
 
 private:
-	string_t	m_iszMaster;
+	string_t m_iszMaster = iStringNull;
 };
 
 TYPEDESCRIPTION	CRuleEntity::m_SaveData[] =
@@ -206,7 +206,7 @@ public:
 
 private:
 
-	hudtextparms_t	m_textParms;
+	hudtextparms_t m_textParms;
 };
 
 LINK_ENTITY_TO_CLASS(game_text, CGameText);
@@ -346,8 +346,8 @@ public:
 private:
 	bool		TeamMatch(CBaseEntity* pActivator);
 
-	int			m_teamIndex;
-	UseType	triggerType;
+	int m_teamIndex = 0;
+	UseType	triggerType = UseType::Off;
 };
 
 LINK_ENTITY_TO_CLASS(game_team_master, CGameTeamMaster);
@@ -472,10 +472,10 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	string_t	m_iszInTarget;
-	string_t	m_iszOutTarget;
-	string_t	m_iszInCount;
-	string_t	m_iszOutCount;
+	string_t m_iszInTarget = iStringNull;
+	string_t m_iszOutTarget = iStringNull;
+	string_t m_iszInCount = iStringNull;
+	string_t m_iszOutCount = iStringNull;
 };
 
 LINK_ENTITY_TO_CLASS(game_zone_player, CGamePlayerZone);
@@ -730,8 +730,8 @@ private:
 
 	void		EquipPlayer(CBaseEntity* pPlayer);
 
-	string_t	m_weaponNames[MAX_EQUIP];
-	int			m_weaponCount[MAX_EQUIP];
+	string_t m_weaponNames[MAX_EQUIP]{};
+	int m_weaponCount[MAX_EQUIP]{};
 };
 
 LINK_ENTITY_TO_CLASS(game_player_equip, CGamePlayerEquip);

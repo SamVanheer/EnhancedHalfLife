@@ -73,21 +73,21 @@ public:
 	bool Restore(CRestore& restore) override;
 	static TYPEDESCRIPTION m_SaveData[];
 
-	float m_flLastShot;
-	float m_flDiviation;
+	float m_flLastShot = 0;
+	float m_flDiviation = 0;
 
-	float m_flNextJump;
+	float m_flNextJump = 0;
 	Vector m_vecJumpVelocity;
 
-	float m_flNextGrenadeCheck;
-	Vector	m_vecTossVelocity;
-	bool	m_fThrowGrenade;
+	float m_flNextGrenadeCheck = 0;
+	Vector m_vecTossVelocity;
+	bool m_fThrowGrenade = false;
 
-	int		m_iTargetRanderamt;
+	int m_iTargetRanderamt = 0;
 
-	int		m_iFrustration;
+	int m_iFrustration = 0;
 
-	int		m_iShell;
+	int m_iShell = 0;
 };
 
 LINK_ENTITY_TO_CLASS(monster_human_assassin, CHAssassin);

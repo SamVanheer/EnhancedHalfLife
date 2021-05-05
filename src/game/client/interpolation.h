@@ -39,9 +39,9 @@ protected:
 	Vector	m_StartAngle;
 	Vector	m_EndAngle;
 	Vector	m_Center;
-	float	m_StartFov;
-	float	m_EndFov;
+	float	m_StartFov = 0;
+	float	m_EndFov = 0;
 
-	bool	m_SmoothStart;
-	bool	m_SmoothEnd;
+	bool	m_SmoothStart = false;
+	bool	m_SmoothEnd = false;
 };

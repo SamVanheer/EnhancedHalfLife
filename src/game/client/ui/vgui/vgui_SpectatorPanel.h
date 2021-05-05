@@ -51,32 +51,32 @@ public:
 	void EnableInsetView(bool isEnabled);
 	void ShowMenu(bool isVisible);
 
-	DropDownButton* m_OptionButton;
+	DropDownButton* m_OptionButton = nullptr;
 	//	CommandButton     *	m_HideButton;
 		//ColorButton	  *	m_PrevPlayerButton;
 		//ColorButton	  *	m_NextPlayerButton;
-	CImageButton* m_PrevPlayerButton;
-	CImageButton* m_NextPlayerButton;
-	DropDownButton* m_CamButton;
+	CImageButton* m_PrevPlayerButton = nullptr;
+	CImageButton* m_NextPlayerButton = nullptr;
+	DropDownButton* m_CamButton = nullptr;
 
-	CTransparentPanel* m_TopBorder;
-	CTransparentPanel* m_BottomBorder;
+	CTransparentPanel* m_TopBorder = nullptr;
+	CTransparentPanel* m_BottomBorder = nullptr;
 
-	ColorButton* m_InsetViewButton;
+	ColorButton* m_InsetViewButton = nullptr;
 
-	DropDownButton* m_BottomMainButton;
-	CImageLabel* m_TimerImage;
-	Label* m_BottomMainLabel;
-	Label* m_CurrentTime;
-	Label* m_ExtraInfo;
-	Panel* m_Separator;
+	DropDownButton* m_BottomMainButton = nullptr;
+	CImageLabel* m_TimerImage = nullptr;
+	Label* m_BottomMainLabel = nullptr;
+	Label* m_CurrentTime = nullptr;
+	Label* m_ExtraInfo = nullptr;
+	Panel* m_Separator = nullptr;
 
-	Label* m_TeamScores[TEAM_NUMBER];
+	Label* m_TeamScores[TEAM_NUMBER]{};
 
-	CImageLabel* m_TopBanner;
+	CImageLabel* m_TopBanner = nullptr;
 
-	bool			m_menuVisible;
-	bool			m_insetVisible;
+	bool			m_menuVisible = false;
+	bool			m_insetVisible = false;
 };
 
 class CSpectatorHandler_Command : public ActionSignal

@@ -219,8 +219,8 @@ struct Schedule_t
 // !!!LATER- this declaration doesn't belong in this file.
 struct WayPoint_t
 {
-	Vector	vecLocation;
-	int		iType;
+	Vector vecLocation;
+	int iType = 0;
 };
 
 // these MoveFlag values are assigned to a WayPoint's TYPE in order to demonstrate the 

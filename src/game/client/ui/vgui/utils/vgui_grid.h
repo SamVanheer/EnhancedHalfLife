@@ -91,14 +91,14 @@ protected:
 	class CGridEntry
 	{
 	public:
-		CGridEntry();
-		~CGridEntry();
+		CGridEntry() = default;
+		~CGridEntry() = default;
 
-		Panel* m_pPanel;
+		Panel* m_pPanel = nullptr;
 
-		bool	m_bUnderline;
-		short	m_UnderlineColor[4];
-		int		m_iUnderlineOffset;
+		bool	m_bUnderline = false;
+		short	m_UnderlineColor[4]{};
+		int		m_iUnderlineOffset = 0;
 	};
 
 	void				Clear();

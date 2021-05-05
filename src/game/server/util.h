@@ -73,7 +73,6 @@ inline int ENTINDEX(const edict_t* pEdict) { return (*g_engfuncs.pfnIndexOfEdict
 inline bool IsNullEnt(const edict_t* pent) { return pent == nullptr || ENTINDEX(pent) == 0; }
 
 // Testing strings for nullity
-constexpr string_t iStringNull = 0;
 inline bool IsStringNull(string_t iString) { return iString == iStringNull; }
 
 // Dot products for view cone checking
@@ -279,16 +278,16 @@ void			UTIL_SayTextAll(const char* pText, CBasePlayer* pEntity);
 
 struct hudtextparms_t
 {
-	float		x;
-	float		y;
-	int			effect;
-	byte		r1, g1, b1, a1;
-	byte		r2, g2, b2, a2;
-	float		fadeinTime;
-	float		fadeoutTime;
-	float		holdTime;
-	float		fxTime;
-	int			channel;
+	float x = 0;
+	float y = 0;
+	int effect = 0; //TODO: define constants
+	byte r1 = 0, g1 = 0, b1 = 0, a1 = 0;
+	byte r2 = 0, g2 = 0, b2 = 0, a2 = 0;
+	float fadeinTime = 0;
+	float fadeoutTime = 0;
+	float holdTime = 0;
+	float fxTime = 0;
+	int channel = 0;
 };
 
 // prints as transparent 'title' to the HUD

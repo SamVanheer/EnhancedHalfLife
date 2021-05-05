@@ -41,9 +41,9 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	byte	m_bMoveSnd;			// sound a plat makes while moving
-	byte	m_bStopSnd;			// sound a plat makes when it stops
-	float	m_volume;			// Sound volume
+	byte m_bMoveSnd = 0; // sound a plat makes while moving
+	byte m_bStopSnd = 0; // sound a plat makes when it stops
+	float m_volume = 0; // Sound volume
 };
 
 TYPEDESCRIPTION	CBasePlatTrain::m_SaveData[] =
@@ -619,8 +619,8 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	EHANDLE m_hCurrentTarget;
-	int			m_sounds;
-	bool		m_activated;
+	int m_sounds = 0;
+	bool m_activated = false;
 };
 
 LINK_ENTITY_TO_CLASS(func_train, CFuncTrain);
@@ -1551,12 +1551,12 @@ public:
 
 	EHandle<CFuncTrackTrain> m_hTrain;
 
-	string_t m_trackTopName;
-	string_t m_trackBottomName;
-	string_t m_trainName;
-	TrainCode m_code;
-	ToggleState m_targetState;
-	bool m_use;
+	string_t m_trackTopName = iStringNull;
+	string_t m_trackBottomName = iStringNull;
+	string_t m_trainName = iStringNull;
+	TrainCode m_code = TrainCode::Safe;
+	ToggleState m_targetState = ToggleState::AtTop;
+	bool m_use = false;
 };
 
 LINK_ENTITY_TO_CLASS(func_trackchange, CFuncTrackChange);
@@ -1999,7 +1999,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	bool			m_on;
+	bool m_on = false;
 };
 
 LINK_ENTITY_TO_CLASS(func_guntarget, CGunTarget);

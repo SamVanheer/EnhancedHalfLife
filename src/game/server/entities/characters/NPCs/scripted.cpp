@@ -795,15 +795,15 @@ public:
 
 
 private:
-	string_t m_iszSentence;		// string index for idle animation
-	string_t m_iszEntity;	// entity that is wanted for this sentence
-	float	m_flRadius;		// range to search
-	float	m_flDuration;	// How long the sentence lasts
-	float	m_flRepeat;	// repeat rate
-	float	m_flAttenuation;
-	float	m_flVolume;
-	bool	m_active;
-	string_t m_iszListener;	// name of entity to look at while talking
+	string_t m_iszSentence = iStringNull;	// string index for idle animation
+	string_t m_iszEntity = iStringNull;		// entity that is wanted for this sentence
+	float m_flRadius = 0;					// range to search
+	float m_flDuration = 0;					// How long the sentence lasts
+	float m_flRepeat = 0;					// repeat rate
+	float m_flAttenuation = 0;
+	float m_flVolume = 0;
+	bool m_active = false;
+	string_t m_iszListener = iStringNull;	// name of entity to look at while talking
 };
 
 constexpr int SF_SENTENCE_ONCE = 0x0001;

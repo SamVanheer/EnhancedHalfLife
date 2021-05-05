@@ -289,11 +289,11 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	float m_flFanFriction;
-	float m_flAttenuation;
-	float m_flVolume;
-	float m_pitch;
-	int	  m_sounds;
+	float m_flFanFriction = 0;
+	float m_flAttenuation = 0;
+	float m_flVolume = 0;
+	float m_pitch = 0;
+	int m_sounds = 0;
 };
 
 TYPEDESCRIPTION	CFuncRotating::m_SaveData[] =
@@ -681,14 +681,14 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	float	m_accel;			// Acceleration
-	float	m_distance;			// 
-	float	m_time;
-	float	m_damp;
-	float	m_maxSpeed;
-	float	m_dampSpeed;
-	Vector	m_center;
-	Vector	m_start;
+	float m_accel = 0;			// Acceleration
+	float m_distance = 0;			// 
+	float m_time = 0;
+	float m_damp = 0;
+	float m_maxSpeed = 0;
+	float m_dampSpeed = 0;
+	Vector m_center;
+	Vector m_start;
 
 	EHandle<CBaseEntity> m_hRopeUser;
 };

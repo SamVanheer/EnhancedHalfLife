@@ -84,17 +84,17 @@ public:
 	*/
 	void EXPORT DoorHitBottom();
 
-	byte	m_bHealthValue;//!< some doors are medi-kit doors, they give players health
+	byte m_bHealthValue = 0;//!< some doors are medi-kit doors, they give players health
 
-	byte	m_bMoveSnd;			//!< sound a door makes while moving
-	byte	m_bStopSnd;			//!< sound a door makes when it stops
+	byte m_bMoveSnd = 0;		//!< sound a door makes while moving
+	byte m_bStopSnd = 0;		//!< sound a door makes when it stops
 
 	locksound_t m_ls;			//!< door lock sounds
 
-	byte	m_bLockedSound;		//!< ordinals from entity selection
-	byte	m_bLockedSentence;
-	byte	m_bUnlockedSound;
-	byte	m_bUnlockedSentence;
+	byte m_bLockedSound = 0;	//!< ordinals from entity selection
+	byte m_bLockedSentence = 0;
+	byte m_bUnlockedSound = 0;
+	byte m_bUnlockedSentence = 0;
 };
 
 TYPEDESCRIPTION	CBaseDoor::m_SaveData[] =
@@ -800,7 +800,7 @@ public:
 	*/
 	void EXPORT DoorMoveDone();
 
-	byte	m_bMoveSnd;			// sound a door makes while moving	
+	byte m_bMoveSnd = 0;			// sound a door makes while moving	
 };
 
 LINK_ENTITY_TO_CLASS(momentary_door, CMomentaryDoor);

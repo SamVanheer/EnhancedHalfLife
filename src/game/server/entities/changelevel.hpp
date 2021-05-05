@@ -75,10 +75,10 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	char m_szMapName[MAX_MAPNAME_LENGTH];		//!< next map
-	char m_szLandmarkName[MAX_MAPNAME_LENGTH];	//!< landmark on next map
-	string_t m_changeTarget;
-	float	m_changeTargetDelay;
+	char m_szMapName[MAX_MAPNAME_LENGTH]{};			//!< next map
+	char m_szLandmarkName[MAX_MAPNAME_LENGTH]{};	//!< landmark on next map
+	string_t m_changeTarget = iStringNull;
+	float m_changeTargetDelay = 0;
 };
 
 constexpr int SF_ENDSECTION_USEONLY = 0x0001;
@@ -122,6 +122,6 @@ public:
 	inline	void	SetLoadTime(float time) { m_loadTime = time; }
 
 private:
-	float	m_messageTime;
-	float	m_loadTime;
+	float m_messageTime = 0;
+	float m_loadTime = 0;
 };

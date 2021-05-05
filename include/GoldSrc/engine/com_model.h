@@ -288,10 +288,10 @@ typedef vec_t vec4_t[4];
 
 struct alight_t
 {
-	int			ambientlight;	// clip at 128
-	int			shadelight;		// clip at 192 - ambientlight
-	Vector		color;
-	float* plightvec;
+	int			ambientlight = 0;	// clip at 128
+	int			shadelight = 0;		// clip at 192 - ambientlight
+	Vector		color{};
+	float* plightvec = nullptr;
 };
 
 struct auxvert_t

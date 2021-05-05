@@ -28,7 +28,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	float	m_flWait;
+	float m_flWait = 0;
 };
 
 LINK_ENTITY_TO_CLASS(path_corner, CPathCorner);

@@ -43,40 +43,30 @@ public:
 	};
 
 	// name
-	char schemeName[SCHEME_NAME_LENGTH];
+	char schemeName[SCHEME_NAME_LENGTH]{};
 
 	// font
-	char fontName[FONT_NAME_LENGTH];
+	char fontName[FONT_NAME_LENGTH]{};
 
-	int fontSize;
-	int fontWeight;
+	int fontSize = 0;
+	int fontWeight = 0;
 
-	vgui::Font* font;
-	int ownFontPointer; // true if the font is ours to delete
+	vgui::Font* font = nullptr;
+	int ownFontPointer = 0; // true if the font is ours to delete TODO bool
 
 	// scheme
-	byte fgColor[4];
-	byte bgColor[4];
-	byte armedFgColor[4];
-	byte armedBgColor[4];
-	byte mousedownFgColor[4];
-	byte mousedownBgColor[4];
-	byte borderColor[4];
+	byte fgColor[4]{};
+	byte bgColor[4]{};
+	byte armedFgColor[4]{};
+	byte armedBgColor[4]{};
+	byte mousedownFgColor[4]{};
+	byte mousedownBgColor[4]{};
+	byte borderColor[4]{};
 
 	// construction/destruction
-	CScheme();
+	CScheme() = default;
 	~CScheme();
 };
-
-CSchemeManager::CScheme::CScheme()
-{
-	schemeName[0] = 0;
-	fontName[0] = 0;
-	fontSize = 0;
-	fontWeight = 0;
-	font = nullptr;
-	ownFontPointer = false;
-}
 
 CSchemeManager::CScheme::~CScheme()
 {

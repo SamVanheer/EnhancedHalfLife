@@ -57,7 +57,7 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int  m_maxFrame;
+	int m_maxFrame = 0;
 };
 
 LINK_ENTITY_TO_CLASS(squidspit, CSquidSpit);
@@ -240,10 +240,10 @@ public:
 	CUSTOM_SCHEDULES;
 	static TYPEDESCRIPTION m_SaveData[];
 
-	bool m_fCanThreatDisplay;// this is so the squid only does the "I see a headcrab!" dance one time. 
+	bool m_fCanThreatDisplay = false;// this is so the squid only does the "I see a headcrab!" dance one time. 
 
-	float m_flLastHurtTime;// we keep track of this, because if something hurts a squid, it will forget about its love of headcrabs for a while.
-	float m_flNextSpitTime;// last time the bullsquid used the spit attack.
+	float m_flLastHurtTime = 0;// we keep track of this, because if something hurts a squid, it will forget about its love of headcrabs for a while.
+	float m_flNextSpitTime = 0;// last time the bullsquid used the spit attack.
 };
 
 LINK_ENTITY_TO_CLASS(monster_bullchicken, CBullsquid);

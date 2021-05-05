@@ -382,7 +382,7 @@ void* TeamFortressViewport::operator new(size_t stAllocateBlock)
 class CViewPortInputHandler : public InputSignal
 {
 public:
-	bool bPressed;
+	bool bPressed = false;
 
 	CViewPortInputHandler()
 	{

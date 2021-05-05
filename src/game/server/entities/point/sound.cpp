@@ -22,42 +22,42 @@ struct dynpitchvol_t
 {
 	// NOTE: do not change the order of these parameters 
 	// NOTE: unless you also change order of rgdpvpreset array elements!
-	int preset;
+	int preset = 0;
 
-	int pitchrun;		// pitch shift % when sound is running 0 - 255
-	int pitchstart;		// pitch shift % when sound stops or starts 0 - 255
-	int spinup;			// spinup time 0 - 100
-	int spindown;		// spindown time 0 - 100
+	int pitchrun = 0;		// pitch shift % when sound is running 0 - 255
+	int pitchstart = 0;		// pitch shift % when sound stops or starts 0 - 255
+	int spinup = 0;			// spinup time 0 - 100
+	int spindown = 0;		// spindown time 0 - 100
 
-	int volrun;			// volume change % when sound is running 0 - 10
-	int volstart;		// volume change % when sound stops or starts 0 - 10
-	int fadein;			// volume fade in time 0 - 100
-	int fadeout;		// volume fade out time 0 - 100
+	int volrun = 0;			// volume change % when sound is running 0 - 10
+	int volstart = 0;		// volume change % when sound stops or starts 0 - 10
+	int fadein = 0;			// volume fade in time 0 - 100
+	int fadeout = 0;		// volume fade out time 0 - 100
 
-						// Low Frequency Oscillator
-	int	lfotype;		// 0) off 1) square 2) triangle 3) random
-	int lforate;		// 0 - 1000, how fast lfo osciallates
+							// Low Frequency Oscillator
+	int	lfotype = 0;		// 0) off 1) square 2) triangle 3) random
+	int lforate = 0;		// 0 - 1000, how fast lfo osciallates
 
-	int lfomodpitch;	// 0-100 mod of current pitch. 0 is off.
-	int lfomodvol;		// 0-100 mod of current volume. 0 is off.
+	int lfomodpitch = 0;	// 0-100 mod of current pitch. 0 is off.
+	int lfomodvol = 0;		// 0-100 mod of current volume. 0 is off.
 
-	int cspinup;		// each trigger hit increments counter and spinup pitch
+	int cspinup = 0;		// each trigger hit increments counter and spinup pitch
 
 
-	int	cspincount;
+	int	cspincount = 0;
 
-	int pitch;
-	int spinupsav;
-	int spindownsav;
-	int pitchfrac;
+	int pitch = 0;
+	int spinupsav = 0;
+	int spindownsav = 0;
+	int pitchfrac = 0;
 
-	int vol;
-	int fadeinsav;
-	int fadeoutsav;
-	int volfrac;
+	int vol = 0;
+	int fadeinsav = 0;
+	int fadeoutsav = 0;
+	int volfrac = 0;
 
-	int	lfofrac;
-	int	lfomult;
+	int	lfofrac = 0;
+	int	lfomult = 0;
 };
 
 constexpr int CDPVPRESETMAX = 27;
@@ -143,11 +143,11 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 
-	float m_flAttenuation;		// attenuation value
+	float m_flAttenuation = 0;		// attenuation value
 	dynpitchvol_t m_dpv;
 
-	bool	m_fActive;	// only true when the entity is playing a looping sound
-	bool	m_fLooping;	// true when the sound played will loop
+	bool m_fActive = false;		// only true when the entity is playing a looping sound
+	bool m_fLooping = false;	// true when the sound played will loop
 };
 
 LINK_ENTITY_TO_CLASS(ambient_generic, CAmbientGeneric);
@@ -799,8 +799,8 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	float m_flRadius;
-	float m_flRoomtype;
+	float m_flRadius = 0;
+	float m_flRoomtype = 0;
 };
 
 LINK_ENTITY_TO_CLASS(env_sound, CEnvSound);
@@ -981,7 +981,7 @@ public:
 
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 
-	int	m_preset;			// preset number
+	int	m_preset = 0; // preset number
 };
 
 LINK_ENTITY_TO_CLASS(speaker, CSpeaker);

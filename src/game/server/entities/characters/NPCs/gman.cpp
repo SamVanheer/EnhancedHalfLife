@@ -43,7 +43,7 @@ public:
 
 	EHANDLE m_hPlayer;
 	EHANDLE m_hTalkTarget;
-	float m_flTalkTime;
+	float m_flTalkTime = 0;
 };
 
 LINK_ENTITY_TO_CLASS(monster_gman, CGMan);

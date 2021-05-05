@@ -48,6 +48,8 @@ using word = unsigned short;
 using string_t = unsigned int;
 using qboolean = int;
 
+constexpr string_t iStringNull = 0;
+
 #ifdef _WIN32
 //Avoid the ISO conformant warning
 #define stricmp _stricmp

@@ -41,10 +41,10 @@ public:
 
 	// UNDONE:  Save/restore this stuff!!!
 protected:
-	Vector		m_vecTravel;		// Current direction
-	float		m_flightSpeed;		// Current flight speed (decays when not flapping or gliding)
-	float		m_stopTime;			// Last time we stopped (to avoid switching states too soon)
-	float		m_momentum;			// Weight for desired vs. momentum velocity
-	const char* m_pFlapSound;
-	float m_flLastZYawTime;
+	Vector m_vecTravel;				// Current direction
+	float m_flightSpeed = 0;		// Current flight speed (decays when not flapping or gliding)
+	float m_stopTime = 0;			// Last time we stopped (to avoid switching states too soon)
+	float m_momentum = 0;			// Weight for desired vs. momentum velocity
+	const char* m_pFlapSound = nullptr;
+	float m_flLastZYawTime = 0;
 };

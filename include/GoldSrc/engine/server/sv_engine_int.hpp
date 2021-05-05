@@ -98,16 +98,16 @@ constexpr int TRACE_IGNORE_GLASS = 1 << 8;
 // Returned by TraceLine
 struct TraceResult
 {
-	int		fAllSolid;			//!< if true, plane is not valid
-	int		fStartSolid;		//!< if true, the initial point was in a solid area
-	int		fInOpen;
-	int		fInWater;
-	float	flFraction;			//!< time completed, 1.0 = didn't hit anything
-	Vector	vecEndPos;			//!< final position
-	float	flPlaneDist;
-	Vector	vecPlaneNormal;		//!< surface normal at impact
-	edict_t* pHit;				//!< entity the surface is on
-	int		iHitgroup;			//!< 0 == generic, non zero is specific body part
+	int		fAllSolid = 0;			//!< if true, plane is not valid
+	int		fStartSolid = 0;		//!< if true, the initial point was in a solid area
+	int		fInOpen = 0;
+	int		fInWater = 0;
+	float	flFraction = 0;			//!< time completed, 1.0 = didn't hit anything
+	Vector	vecEndPos;				//!< final position
+	float	flPlaneDist = 0;
+	Vector	vecPlaneNormal;			//!< surface normal at impact
+	edict_t* pHit = nullptr;		//!< entity the surface is on
+	int		iHitgroup = 0;			//!< 0 == generic, non zero is specific body part
 };
 
 /**

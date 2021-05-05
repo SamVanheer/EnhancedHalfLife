@@ -42,20 +42,20 @@ constexpr int NODE_RANGE_MAX = 255;
 class CNode
 {
 public:
-	Vector	m_vecOrigin;		//!< location of this node in space
-	Vector  m_vecOriginPeek;	//!< location of this node (LAND nodes are NODE_HEIGHT higher).
-	byte    m_Region[3];		//!< Which of 256 regions do each of the coordinate belong?
-	int		m_afNodeInfo;		//!< bits that tell us more about this location
+	Vector m_vecOrigin;			//!< location of this node in space
+	Vector m_vecOriginPeek;		//!< location of this node (LAND nodes are NODE_HEIGHT higher).
+	byte m_Region[3]{};			//!< Which of 256 regions do each of the coordinate belong?
+	int m_afNodeInfo = 0;		//!< bits that tell us more about this location
 
-	int		m_cNumLinks;		//!< how many links this node has
-	int		m_iFirstLink;		//!< index of this node's first link in the link pool.
+	int m_cNumLinks = 0;		//!< how many links this node has
+	int m_iFirstLink = 0;		//!< index of this node's first link in the link pool.
 
 	/**
 	*	@brief Where to start looking in the compressed routing table (offset into m_pRouteInfo).
 	*
 	*	(4 hull sizes -- smallest to largest + fly/swim), and secondly, door capability.
 	*/
-	int		m_pNextBestNode[MAX_NODE_HULLS][2];
+	int m_pNextBestNode[MAX_NODE_HULLS][2]{};
 
 	/**
 	*	@brief Used in finding the shortest path.
@@ -63,12 +63,12 @@ public:
 	*	m_fClosestSoFar is -1 if not visited. Then it is the distance to the source.
 	*	If another path uses this node and has a closer distance, then m_iPreviousNode is also updated.
 	*/
-	float   m_flClosestSoFar;
-	int		m_iPreviousNode;
+	float m_flClosestSoFar = 0;
+	int m_iPreviousNode = 0;
 
-	short	m_sHintType;	//!< there is something interesting in the world at this node's position
-	short	m_sHintActivity;//!< there is something interesting in the world at this node's position
-	float	m_flHintYaw;	//!< monster on this node should face this yaw to face the hint.
+	short m_sHintType = 0;		//!< there is something interesting in the world at this node's position
+	short m_sHintActivity = 0;	//!< there is something interesting in the world at this node's position
+	float m_flHintYaw = 0;		//!< monster on this node should face this yaw to face the hint.
 };
 
 constexpr int bits_LINK_SMALL_HULL = 1 << 0;	//!< headcrab box can fit through this connection
@@ -122,25 +122,24 @@ struct DIST_INFO : public DiskDistInfo
 struct CACHE_ENTRY
 {
 	Vector v;
-	short n;		//!< Nearest node or -1 if no node found.
+	short n = 0;		//!< Nearest node or -1 if no node found.
 };
 
 class CGraph
 {
 public:
-
 	// the graph has two flags, and should not be accessed unless both flags are true!
-	bool	m_fGraphPresent;	//!< is the graph in memory?
-	bool	m_fGraphPointersSet;//!< are the entity pointers for the graph all set?
-	bool    m_fRoutingComplete; //!< are the optimal routes computed, yet?
+	bool	m_fGraphPresent = false;	//!< is the graph in memory?
+	bool	m_fGraphPointersSet = false;//!< are the entity pointers for the graph all set?
+	bool    m_fRoutingComplete = false; //!< are the optimal routes computed, yet?
 
 	std::unique_ptr<CNode[]> m_pNodes;				//!< pointer to the memory block that contains all node info
 	std::unique_ptr<CLink[]> m_pLinkPool;			//!< big list of all node connections
 	std::unique_ptr<std::int8_t[]> m_pRouteInfo;	//!< compressed routing information the nodes use.
 
-	int		m_cNodes;			//!< total number of nodes
-	int		m_cLinks;			//!< total number of links
-	int     m_nRouteInfo;		//!< size of m_pRouteInfo in bytes.
+	int		m_cNodes = 0;			//!< total number of nodes
+	int		m_cLinks = 0;			//!< total number of links
+	int     m_nRouteInfo = 0;		//!< size of m_pRouteInfo in bytes.
 
 	// Tables for making nearest node lookup faster. SortedBy provided nodes in a
 	// order of a particular coordinate. Instead of doing a binary search, RangeStart
@@ -154,21 +153,21 @@ public:
 	static constexpr int CACHE_SIZE = 128;
 	static constexpr int NUM_RANGES = 256;
 	std::unique_ptr<DIST_INFO[]> m_di;	//!< This is m_cNodes long, but the entries don't correspond to CNode entries.
-	int m_RangeStart[3][NUM_RANGES];
-	int m_RangeEnd[3][NUM_RANGES];
-	float m_flShortest;
-	int m_iNearest;
-	int m_minX, m_minY, m_minZ, m_maxX, m_maxY, m_maxZ;
-	int m_minBoxX, m_minBoxY, m_minBoxZ, m_maxBoxX, m_maxBoxY, m_maxBoxZ;
-	int m_CheckedCounter;
-	float m_RegionMin[3], m_RegionMax[3]; //!< The range of nodes.
-	CACHE_ENTRY m_Cache[CACHE_SIZE];
+	int m_RangeStart[3][NUM_RANGES]{};
+	int m_RangeEnd[3][NUM_RANGES]{};
+	float m_flShortest = 0;
+	int m_iNearest = 0;
+	int m_minX = 0, m_minY = 0, m_minZ = 0, m_maxX = 0, m_maxY = 0, m_maxZ = 0;
+	int m_minBoxX = 0, m_minBoxY = 0, m_minBoxZ = 0, m_maxBoxX = 0, m_maxBoxY = 0, m_maxBoxZ = 0;
+	int m_CheckedCounter = 0;
+	float m_RegionMin[3]{}, m_RegionMax[3]{}; //!< The range of nodes.
+	CACHE_ENTRY m_Cache[CACHE_SIZE]{};
 
 	static constexpr int HashPrimesCount = 16;
 
-	int m_HashPrimes[HashPrimesCount];
+	int m_HashPrimes[HashPrimesCount]{};
 	std::unique_ptr<std::int16_t[]> m_pHashLinks;
-	int m_nHashLinks;
+	int m_nHashLinks = 0;
 
 
 	/**
@@ -176,12 +175,12 @@ public:
 	*	we keep track of the last node we searched from and store it here.
 	*	Subsequent searches by other monsters will pick up where the last search stopped.
 	*/
-	int		m_iLastActiveIdleSearch;
+	int		m_iLastActiveIdleSearch = 0;
 
 	/**
 	*	@brief another such system used to track the search for cover nodes, helps greatly with two monsters trying to get to the same node.
 	*/
-	int		m_iLastCoverSearch;
+	int		m_iLastCoverSearch = 0;
 
 	// functions to create the graph
 	/**
@@ -392,8 +391,8 @@ class CNodeEnt : public CBaseEntity
 	void KeyValue(KeyValueData* pkvd) override;
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	short m_sHintType;
-	short m_sHintActivity;
+	short m_sHintType = 0;
+	short m_sHintActivity = 0;
 };
 
 /**

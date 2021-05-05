@@ -86,8 +86,8 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int m_iMagnitude;// how large is the fireball? how much damage?
-	int m_spriteScale; // what's the exact fireball sprite scale? 
+	int m_iMagnitude = 0;// how large is the fireball? how much damage?
+	int m_spriteScale = 0; // what's the exact fireball sprite scale? 
 };
 
 TYPEDESCRIPTION	CEnvExplosion::m_SaveData[] =

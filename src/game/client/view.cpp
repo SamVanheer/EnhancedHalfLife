@@ -320,14 +320,14 @@ constexpr int ORIGIN_MASK = ORIGIN_BACKUP - 1;
 
 struct viewinterp_t
 {
-	Vector Origins[ORIGIN_BACKUP];
-	float OriginTime[ORIGIN_BACKUP];
+	Vector Origins[ORIGIN_BACKUP]{};
+	float OriginTime[ORIGIN_BACKUP]{};
 
-	Vector Angles[ORIGIN_BACKUP];
-	float AngleTime[ORIGIN_BACKUP];
+	Vector Angles[ORIGIN_BACKUP]{};
+	float AngleTime[ORIGIN_BACKUP]{};
 
-	int CurrentOrigin;
-	int CurrentAngle;
+	int CurrentOrigin = 0;
+	int CurrentAngle = 0;
 };
 
 void V_CalcNormalRefdef(ref_params_t* pparams)

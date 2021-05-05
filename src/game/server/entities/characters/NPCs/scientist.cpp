@@ -106,9 +106,9 @@ public:
 	CUSTOM_SCHEDULES;
 
 private:
-	float m_painTime;
-	float m_healTime;
-	float m_fearTime;
+	float m_painTime = 0;
+	float m_healTime = 0;
+	float m_fearTime = 0;
 };
 
 LINK_ENTITY_TO_CLASS(monster_scientist, CScientist);
@@ -1036,7 +1036,7 @@ public:
 	int	Classify() override { return	CLASS_HUMAN_PASSIVE; }
 
 	void KeyValue(KeyValueData* pkvd) override;
-	int	m_iPose;// which sequence to display
+	int	m_iPose = 0;// which sequence to display
 	static const char* m_szPoses[7];
 };
 
@@ -1123,9 +1123,9 @@ public:
 	*	@brief ask question of nearby friend, or make statement
 	*/
 	int IdleSpeak();
-	int		m_baseSequence;
-	int		m_headTurn;
-	float	m_flResponseDelay;
+	int m_baseSequence = 0;
+	int m_headTurn = 0;
+	float m_flResponseDelay = 0;
 };
 
 LINK_ENTITY_TO_CLASS(monster_sitting_scientist, CSittingScientist);

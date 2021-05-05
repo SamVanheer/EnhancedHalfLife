@@ -31,8 +31,8 @@ public:
 class CVoiceGameMgr
 {
 public:
-	CVoiceGameMgr();
-	virtual				~CVoiceGameMgr();
+	CVoiceGameMgr() = default;
+	virtual ~CVoiceGameMgr() = default;
 
 	bool				Init(
 		IVoiceGameMgrHelper* m_pHelper,
@@ -75,12 +75,12 @@ private:
 	void				UpdateMasks();
 
 private:
-	int					m_msgPlayerVoiceMask;
-	int					m_msgRequestState;
+	int m_msgPlayerVoiceMask = 0;
+	int m_msgRequestState = 0;
 
-	IVoiceGameMgrHelper* m_pHelper;
-	int					m_nMaxPlayers;
-	double				m_UpdateInterval;		//!< How long since the last update.
+	IVoiceGameMgrHelper* m_pHelper = nullptr;
+	int m_nMaxPlayers = 0;
+	double m_UpdateInterval = 0;		//!< How long since the last update.
 };
 
 inline CVoiceGameMgr g_VoiceGameMgr;

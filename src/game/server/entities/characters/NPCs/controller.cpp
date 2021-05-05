@@ -57,10 +57,10 @@ public:
 	bool ShouldAdvanceRoute(float flWaypointDist) override;
 	int LookupFloat();
 
-	float m_flNextFlinch;
+	float m_flNextFlinch = 0;
 
-	float m_flShootTime;
-	float m_flShootEnd;
+	float m_flShootTime = 0;
+	float m_flShootEnd = 0;
 
 	void PainSound() override;
 	void AlertSound() override;
@@ -79,14 +79,14 @@ public:
 	void GibMonster() override;
 
 	EHandle<CSprite> m_hBall[2];	// hand balls
-	int m_iBall[2];			// how bright it should be
-	float m_iBallTime[2];	// when it should be that color
-	int m_iBallCurrent[2];	// current brightness
+	int m_iBall[2]{};				// how bright it should be
+	float m_iBallTime[2]{};			// when it should be that color
+	int m_iBallCurrent[2]{};		// current brightness
 
 	Vector m_vecEstVelocity;
 
 	Vector m_velocity;
-	int m_fInCombat;
+	int m_fInCombat = 0; //TODO: bool
 };
 
 LINK_ENTITY_TO_CLASS(monster_alien_controller, CController);
@@ -1023,8 +1023,8 @@ class CControllerHeadBall : public CBaseMonster
 	void EXPORT BounceTouch(CBaseEntity* pOther);
 	void MovetoTarget(Vector vecTarget);
 	void Crawl();
-	int m_iTrail;
-	int m_flNextAttack;
+	int m_iTrail = 0;
+	int m_flNextAttack = 0;
 	Vector m_vecIdeal;
 	EHANDLE m_hOwner;
 };

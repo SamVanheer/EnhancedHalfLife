@@ -18,19 +18,19 @@
 struct pmplane_t
 {
 	Vector	normal;
-	float	dist;
+	float	dist = 0;
 };
 
 struct pmtrace_t
 {
-	qboolean	allsolid;	      //!< if true, plane is not valid
-	qboolean	startsolid;	      //!< if true, the initial point was in a solid area
-	qboolean	inopen, inwater;  //!< End point is in empty space or in water
-	float		fraction;		  //!< time completed, 1.0 = didn't hit anything
-	Vector		endpos;			  //!< final position
-	pmplane_t	plane;		      //!< surface normal at impact
-	int			ent;			  //!< entity at impact
-	Vector      deltavelocity;    //!< Change in player's velocity caused by impact.  
-								  //!< Only run on server.
-	int         hitgroup;
+	qboolean	allsolid = false;					//!< if true, plane is not valid
+	qboolean	startsolid = false;					//!< if true, the initial point was in a solid area
+	qboolean	inopen = false, inwater = false;	//!< End point is in empty space or in water
+	float		fraction = 0;						//!< time completed, 1.0 = didn't hit anything
+	Vector		endpos;								//!< final position
+	pmplane_t	plane;								//!< surface normal at impact
+	int			ent = 0;							//!< entity at impact
+	Vector      deltavelocity;						//!< Change in player's velocity caused by impact.  
+													//!< Only run on server.
+	int         hitgroup = 0;
 };

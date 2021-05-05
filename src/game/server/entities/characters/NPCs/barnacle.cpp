@@ -46,12 +46,12 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	float m_flAltitude;
-	float m_flKillVictimTime;
-	int	  m_cGibs;// barnacle loads up on gibs each time it kills something.
-	bool  m_fTongueExtended;
-	bool  m_fLiftingPrey;
-	float m_flTongueAdj;
+	float m_flAltitude = 0;
+	float m_flKillVictimTime = 0;
+	int m_cGibs = 0;// barnacle loads up on gibs each time it kills something.
+	bool m_fTongueExtended = false;
+	bool m_fLiftingPrey = false;
+	float m_flTongueAdj = 0;
 };
 LINK_ENTITY_TO_CLASS(monster_barnacle, CBarnacle);
 

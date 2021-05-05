@@ -95,14 +95,14 @@ public:
 	*/
 	void BeamGlow();
 
-	int m_iBravery;
+	int m_iBravery = 0;
 
 	EHandle<CBeam> m_hBeam[ISLAVE_MAX_BEAMS];
 
-	int m_iBeams;
-	float m_flNextAttack;
+	int m_iBeams = 0;
+	float m_flNextAttack = 0;
 
-	int	m_voicePitch;
+	int	m_voicePitch = 0;
 
 	EHANDLE m_hDead;
 

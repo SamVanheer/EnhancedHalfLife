@@ -109,18 +109,18 @@ public:
 
 private:
 	// UNDONE: Remove unused boid vars, do group behavior
-	float	m_flTurning;// is this boid turning?
-	bool	m_fPathBlocked;// true if there is an obstacle ahead
-	float	m_flAccelerate;
-	float	m_obstacle;
-	float	m_top;
-	float	m_bottom;
-	float	m_height;
-	float	m_waterTime;
-	float	m_sideTime;		// Timer to randomly check clearance on sides
-	float	m_zTime;
-	float	m_stateTime;
-	float	m_attackSoundTime;
+	float m_flTurning = 0;// is this boid turning?
+	bool m_fPathBlocked = false;// true if there is an obstacle ahead
+	float m_flAccelerate = 0;
+	float m_obstacle = 0;
+	float m_top = 0;
+	float m_bottom = 0;
+	float m_height = 0;
+	float m_waterTime = 0;
+	float m_sideTime = 0;		// Timer to randomly check clearance on sides
+	float m_zTime = 0;
+	float m_stateTime = 0;
+	float m_attackSoundTime = 0;
 
 #if DEBUG_BEAMS
 	EHandle<CBeam> m_hb;

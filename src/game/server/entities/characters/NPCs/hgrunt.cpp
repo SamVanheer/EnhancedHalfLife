@@ -206,23 +206,23 @@ public:
 
 	// checking the feasibility of a grenade toss is kind of costly, so we do it every couple of seconds,
 	// not every server frame.
-	float m_flNextGrenadeCheck;
-	float m_flNextPainTime;
-	float m_flLastEnemySightTime;
+	float m_flNextGrenadeCheck = 0;
+	float m_flNextPainTime = 0;
+	float m_flLastEnemySightTime = 0;
 
 	Vector	m_vecTossVelocity;
 
-	bool	m_fThrowGrenade;
-	bool	m_fStanding;
-	bool	m_fFirstEncounter;// only put on the handsign show in the squad's first encounter.
-	int		m_cClipSize;
+	bool m_fThrowGrenade = false;
+	bool m_fStanding = false;
+	bool m_fFirstEncounter = false;// only put on the handsign show in the squad's first encounter.
+	int m_cClipSize = 0;
 
-	int m_voicePitch;
+	int m_voicePitch = 0;
 
-	int		m_iBrassShell;
-	int		m_iShotgunShell;
+	int m_iBrassShell = 0;
+	int m_iShotgunShell = 0;
 
-	int		m_iSentence;
+	int m_iSentence = 0;
 
 	static const char* pGruntSentences[];
 };
@@ -2243,7 +2243,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void EXPORT RepelUse(const UseInfo& info);
-	int m_iSpriteTexture;	// Don't save, precache
+	int m_iSpriteTexture = 0;	// Don't save, precache
 };
 
 LINK_ENTITY_TO_CLASS(monster_grunt_repel, CHGruntRepel);
@@ -2297,7 +2297,7 @@ public:
 
 	void KeyValue(KeyValueData* pkvd) override;
 
-	int	m_iPose;// which sequence to display	-- temporary, don't need to save
+	int	m_iPose = 0;// which sequence to display	-- temporary, don't need to save
 	static const char* m_szPoses[3];
 };
 

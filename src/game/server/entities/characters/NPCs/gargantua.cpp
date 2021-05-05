@@ -68,7 +68,7 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	float m_flLastThinkTime;
+	float m_flLastThinkTime = 0;
 
 private:
 	// UNDONE: re-use this sprite list instead of creating new ones all the time
@@ -263,13 +263,13 @@ private:
 	EHandle<CSprite> m_hEyeGlow;		// Glow around the eyes
 	EHandle<CBeam> m_hFlame[4];		// Flame beams
 
-	int			m_eyeBrightness;	// Brightness target
-	float		m_seeTime;			// Time to attack (when I see the enemy, I set this)
-	float		m_flameTime;		// Time of next flame attack
-	float		m_painSoundTime;	// Time of next pain sound
-	float		m_streakTime;		// streak timer (don't send too many)
-	float		m_flameX;			// Flame thrower aim
-	float		m_flameY;
+	int m_eyeBrightness = 0;	// Brightness target
+	float m_seeTime = 0;			// Time to attack (when I see the enemy, I set this)
+	float m_flameTime = 0;		// Time of next flame attack
+	float m_painSoundTime = 0;	// Time of next pain sound
+	float m_streakTime = 0;		// streak timer (don't send too many)
+	float m_flameX = 0;			// Flame thrower aim
+	float m_flameY = 0;
 };
 
 LINK_ENTITY_TO_CLASS(monster_gargantua, CGargantua);
