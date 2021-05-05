@@ -118,7 +118,7 @@ void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float
 
 void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* pCaller, UseType useType, float value)
 {
-	if (!targetName)
+	if (!targetName || !(*targetName))
 		return;
 
 	ALERT(at_aiconsole, "Firing: (%s)\n", targetName);
@@ -184,7 +184,7 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float 
 	// kill the killtargets
 	//
 
-	if (!IsStringNull(m_iszKillTarget))
+	if (!IsStringNull(m_iszKillTarget) && *STRING(m_iszKillTarget))
 	{
 		ALERT(at_aiconsole, "KillTarget: %s\n", STRING(m_iszKillTarget));
 
