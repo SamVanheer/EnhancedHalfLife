@@ -114,6 +114,7 @@ float MoveToward(float cur, float goal, float maxspeed)
 	return cur;
 }
 
+#ifdef LATER
 struct moveclip_t
 {
 	Vector		boxmins, boxmaxs;// enclose the test object along entire move
@@ -125,18 +126,15 @@ struct moveclip_t
 	edict_t* passedict;
 	bool		monsterclip;
 };
+#endif
 
 void DLLEXPORT CAM_Think()
 {
 	Vector origin;
 	Vector ext, pnt, camForward, camRight, camUp;
-	moveclip_t	clip;
 	float dist;
 	Vector camAngles;
 	float flSensitivity;
-#ifdef LATER
-	int i;
-#endif
 	Vector viewangles;
 
 	switch ((int)cam_command->value)
@@ -315,10 +313,11 @@ void DLLEXPORT CAM_Think()
 		// check new ideal
 		pnt = origin;
 		AngleVectors(camAngles, camForward, camRight, camUp);
-		for (i = 0; i < 3; i++)
+		for (int i = 0; i < 3; i++)
 			pnt[i] += -dist * camForward[i];
 
 		// check line from r_refdef.vieworg to pnt
+		moveclip_t clip;
 		memset(&clip, 0, sizeof(moveclip_t));
 		clip.trace = SV_ClipMoveToEntity(sv.edicts, r_refdef.vieworg, ext, ext, pnt);
 		if (clip.trace.fraction == 1.0)
@@ -371,10 +370,11 @@ void DLLEXPORT CAM_Think()
 
 		pnt = origin;
 		AngleVectors(camAngles, camForward, camRight, camUp);
-		for (i = 0; i < 3; i++)
+		for (int i = 0; i < 3; i++)
 			pnt[i] += -dist * camForward[i];
 
 		// check line from r_refdef.vieworg to pnt
+		moveclip_t clip;
 		memset(&clip, 0, sizeof(moveclip_t));
 		ext[0] = ext[1] = ext[2] = 0.0;
 		clip.trace = SV_ClipMoveToEntity(sv.edicts, r_refdef.vieworg, ext, ext, pnt);
