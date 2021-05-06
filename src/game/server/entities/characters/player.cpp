@@ -3797,7 +3797,7 @@ void CStripWeapons::Use(const UseInfo& info)
 	}
 	else if (!g_pGameRules->IsMultiplayer())
 	{
-		pPlayer = (CBasePlayer*)CBaseEntity::Instance(g_engfuncs.pfnPEntityOfEntIndex(1));
+		pPlayer = UTIL_PlayerByIndex(1);
 	}
 
 	if (pPlayer)

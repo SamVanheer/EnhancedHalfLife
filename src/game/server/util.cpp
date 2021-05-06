@@ -347,10 +347,10 @@ CBasePlayer* UTIL_PlayerByIndex(int playerIndex)
 {
 	if (playerIndex > 0 && playerIndex <= gpGlobals->maxClients)
 	{
-		edict_t* pPlayerEdict = g_engfuncs.pfnPEntityOfEntIndex(playerIndex);
-		if (pPlayerEdict && !pPlayerEdict->free)
+		CBaseEntity* pPlayerEntity = UTIL_EntityByIndex(playerIndex);
+		if (pPlayerEntity && !pPlayerEntity->edict()->free)
 		{
-			return static_cast<CBasePlayer*>(CBaseEntity::Instance(pPlayerEdict));
+			return static_cast<CBasePlayer*>(pPlayerEntity);
 		}
 	}
 
@@ -361,17 +361,12 @@ CBasePlayer* FindPlayerByName(const char* pTestName)
 {
 	for (int i = 1; i <= gpGlobals->maxClients; i++)
 	{
-		edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex(i);
-		if (pEdict)
+		if (CBasePlayer* pEnt = UTIL_PlayerByIndex(i); pEnt && pEnt->IsPlayer())
 		{
-			CBaseEntity* pEnt = CBaseEntity::Instance(pEdict);
-			if (pEnt && pEnt->IsPlayer())
+			const char* pNetName = STRING(pEnt->pev->netname);
+			if (stricmp(pNetName, pTestName) == 0)
 			{
-				const char* pNetName = STRING(pEnt->pev->netname);
-				if (stricmp(pNetName, pTestName) == 0)
-				{
-					return (CBasePlayer*)pEnt;
-				}
+				return (CBasePlayer*)pEnt;
 			}
 		}
 	}

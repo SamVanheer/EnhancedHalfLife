@@ -145,7 +145,7 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 
 	pev->dmgtime = gpGlobals->time;
 
-	CBaseEntity* pPlayer = CBaseEntity::Instance(g_engfuncs.pfnPEntityOfEntIndex(1));
+	CBaseEntity* pPlayer = UTIL_EntityByIndex(1);
 	if (!InTransitionVolume(pPlayer, m_szLandmarkName))
 	{
 		ALERT(at_aiconsole, "Player isn't in the transition volume %s, aborting\n", m_szLandmarkName);

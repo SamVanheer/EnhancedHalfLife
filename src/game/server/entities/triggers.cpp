@@ -1137,7 +1137,7 @@ void CTriggerCamera::Use(const UseInfo& info)
 
 	if (!pActivator || !pActivator->IsPlayer())
 	{
-		pActivator = CBaseEntity::Instance(g_engfuncs.pfnPEntityOfEntIndex(1));
+		pActivator = UTIL_PlayerByIndex(1);
 	}
 
 	auto player = static_cast<CBasePlayer*>(pActivator);

@@ -1872,14 +1872,14 @@ void CMessage::Use(const UseInfo& info)
 		UTIL_ShowMessageAll(STRING(pev->message));
 	else
 	{
-		CBaseEntity* pPlayer;
+		CBasePlayer* pPlayer;
 
 		if (auto activator = info.GetActivator(); activator && activator->IsPlayer())
-			pPlayer = activator;
+			pPlayer = static_cast<CBasePlayer*>(activator);
 		else
 		{
 			//TODO: make it so that this only happens in singleplayer
-			pPlayer = CBaseEntity::Instance(g_engfuncs.pfnPEntityOfEntIndex(1));
+			pPlayer = UTIL_PlayerByIndex(1);
 		}
 		if (pPlayer)
 			UTIL_ShowMessage(STRING(pev->message), static_cast<CBasePlayer*>(pPlayer));
