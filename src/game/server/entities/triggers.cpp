@@ -652,34 +652,29 @@ void CTriggerCDAudio::Use(const UseInfo& info)
 
 void PlayCDTrack(int iTrack)
 {
-	// manually find the single player. 
-	//TODO: make this work for all players
-	CBaseEntity* pClient = UTIL_GetLocalPlayer();
-
-	// Can't play if the client is not connected!
-	if (!pClient)
-		return;
-
 	if (iTrack < -1 || iTrack > 30)
 	{
 		ALERT(at_console, "TriggerCDAudio - Track %d out of range\n");
 		return;
 	}
 
+	char string[64];
+
 	if (iTrack == -1)
 	{
-		CLIENT_COMMAND(pClient->edict(), "cd stop\n");
+		safe_strcpy(string, "cd stop\n");
 	}
 	else
 	{
-		char string[64];
-
 		snprintf(string, sizeof(string), "cd play %3d\n", iTrack);
-		CLIENT_COMMAND(pClient->edict(), string);
+	}
+
+	for (auto player : UTIL_AllPlayers())
+	{
+		CLIENT_COMMAND(player->edict(), string);
 	}
 }
 
-// only plays for ONE client, so only use in single play!
 void CTriggerCDAudio::PlayTrack()
 {
 	PlayCDTrack((int)pev->health);
@@ -715,20 +710,21 @@ void CTargetCDAudio::Use(const UseInfo& info)
 	Play();
 }
 
-// only plays for ONE client, so only use in single play!
 void CTargetCDAudio::Think()
 {
-	// manually find the single player. 
-	CBaseEntity* pClient = UTIL_GetLocalPlayer();
+	const float radiusSquared = pev->scale * pev->scale;
 
-	// Can't play if the client is not connected!
-	if (!pClient)
-		return;
+	for (auto player : UTIL_AllPlayers())
+	{
+		if ((player->GetAbsOrigin() - GetAbsOrigin()).LengthSquared() <= radiusSquared)
+		{
+			Play();
+			return;
+		}
+	}
 
+	//No players were in range, check again later
 	pev->nextthink = gpGlobals->time + 0.5;
-
-	if ((pClient->GetAbsOrigin() - GetAbsOrigin()).Length() <= pev->scale)
-		Play();
 }
 
 void CTargetCDAudio::Play()
