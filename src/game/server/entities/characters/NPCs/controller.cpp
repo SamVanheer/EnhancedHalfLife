@@ -188,11 +188,7 @@ void CController::GibMonster()
 	// delete balls
 	for (auto& ballHandle : m_hBall)
 	{
-		if (auto ball = ballHandle.Get(); ball)
-		{
-			UTIL_Remove(ball);
-			ballHandle = nullptr;
-		}
+		ballHandle.Remove();
 	}
 	CSquadMonster::GibMonster();
 }

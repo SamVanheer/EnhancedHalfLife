@@ -827,11 +827,7 @@ bool CApache::FireGun()
 	}
 	else
 	{
-		if (m_hBeam)
-		{
-			UTIL_Remove(m_hBeam);
-			m_hBeam = nullptr;
-		}
+		m_hBeam.Remove();
 	}
 	return false;
 }

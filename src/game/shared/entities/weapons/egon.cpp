@@ -436,16 +436,8 @@ void CEgon::CreateEffect()
 void CEgon::DestroyEffect()
 {
 #ifndef CLIENT_DLL
-	if (m_hBeam)
-	{
-		UTIL_Remove(m_hBeam);
-		m_hBeam = nullptr;
-	}
-	if (m_hNoise)
-	{
-		UTIL_Remove(m_hNoise);
-		m_hNoise = nullptr;
-	}
+	m_hBeam.Remove();
+	m_hNoise.Remove();
 	if (auto sprite = m_hSprite.Get(); sprite)
 	{
 		if (m_fireMode == FireMode::Wide)

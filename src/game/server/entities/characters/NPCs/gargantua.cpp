@@ -659,13 +659,10 @@ void CGargantua::FlameDamage(const Vector& vecStart, const Vector& vecEnd, CBase
 void CGargantua::FlameDestroy()
 {
 	EmitSound(SoundChannel::Weapon, pBeamAttackSounds[0]);
-	for (int i = 0; i < 4; i++)
+
+	for (auto& flameHandle : m_hFlame)
 	{
-		if (m_hFlame[i])
-		{
-			UTIL_Remove(m_hFlame[i]);
-			m_hFlame[i] = nullptr;
-		}
+		flameHandle.Remove();
 	}
 }
 
@@ -856,8 +853,7 @@ void CGargantua::OnRemove()
 void CGargantua::Killed(const KilledInfo& info)
 {
 	EyeOff();
-	UTIL_Remove(m_hEyeGlow);
-	m_hEyeGlow = nullptr;
+	m_hEyeGlow.Remove();
 	CBaseMonster::Killed({info.GetInflictor(), info.GetAttacker(), GibType::Never});
 }
 

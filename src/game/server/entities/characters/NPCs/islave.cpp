@@ -391,7 +391,7 @@ void CISlave::HandleAnimEvent(AnimationEvent& event)
 				pNew->pev->spawnflags |= SF_ISLAVE_IS_REVIVED_SLAVE;
 				WackBeam(-1, pNew);
 				WackBeam(1, pNew);
-				UTIL_Remove(m_hDead);
+				m_hDead.Remove();
 				EmitSound(SoundChannel::Weapon, "hassault/hw_shoot1.wav", VOL_NORM, ATTN_NORM, RANDOM_LONG(130, 160));
 				break;
 			}

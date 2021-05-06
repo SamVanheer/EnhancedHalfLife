@@ -464,8 +464,7 @@ void CNihilanth::DyingThink()
 		}
 		else
 		{
-			UTIL_Remove(m_hBall);
-			m_hBall = nullptr;
+			m_hBall.Remove();
 		}
 	}
 
