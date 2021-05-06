@@ -684,6 +684,7 @@ void CISlave::ArmBeam(int side)
 	beam->SetColor(96, 128, 16);
 	beam->SetBrightness(64);
 	beam->SetNoise(80);
+	beam->pev->spawnflags |= SF_BEAM_TEMPORARY; // Flag these to be destroyed on save/restore or level transition
 	m_iBeams++;
 }
 
@@ -718,6 +719,7 @@ void CISlave::WackBeam(int side, CBaseEntity* pEntity)
 	beam->SetColor(180, 255, 96);
 	beam->SetBrightness(255);
 	beam->SetNoise(80);
+	beam->pev->spawnflags |= SF_BEAM_TEMPORARY; // Flag these to be destroyed on save/restore or level transition
 	m_iBeams++;
 }
 
@@ -743,6 +745,7 @@ void CISlave::ZapBeam(int side)
 	beam->SetColor(180, 255, 96);
 	beam->SetBrightness(255);
 	beam->SetNoise(20);
+	beam->pev->spawnflags |= SF_BEAM_TEMPORARY; // Flag these to be destroyed on save/restore or level transition
 	m_iBeams++;
 
 	if (CBaseEntity* pEntity = CBaseEntity::Instance(tr.pHit); pEntity != nullptr && pEntity->pev->takedamage)
