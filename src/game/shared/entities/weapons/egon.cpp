@@ -30,6 +30,14 @@ constexpr float EGON_SWITCH_WIDE_TIME = 1.5;
 
 LINK_ENTITY_TO_CLASS(weapon_egon, CEgon);
 
+void CEgon::OnRemove()
+{
+	m_hBeam.Remove();
+	m_hNoise.Remove();
+	m_hSprite.Remove();
+	CBasePlayerWeapon::OnRemove();
+}
+
 void CEgon::Spawn()
 {
 	Precache();

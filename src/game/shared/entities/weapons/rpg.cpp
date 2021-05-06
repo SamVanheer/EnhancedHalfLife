@@ -287,6 +287,12 @@ void CRpg::Reload()
 	}
 }
 
+void CRpg::OnRemove()
+{
+	m_hSpot.Remove();
+	CBasePlayerWeapon::OnRemove();
+}
+
 void CRpg::Spawn()
 {
 	Precache();

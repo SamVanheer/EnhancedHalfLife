@@ -194,6 +194,7 @@ void StreakSplash(const Vector& origin, const Vector& direction, int color, int 
 class CGargantua : public CBaseMonster
 {
 public:
+	void OnRemove() override;
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
@@ -838,6 +839,18 @@ void CGargantua::DeathEffect()
 	pSmoker->pev->scale = 46;	// 4.6X normal size
 	pSmoker->pev->dmg = 0;		// 0 radial distribution
 	pSmoker->pev->nextthink = gpGlobals->time + 2.5;	// Start in 2.5 seconds
+}
+
+void CGargantua::OnRemove()
+{
+	m_hEyeGlow.Remove();
+
+	for (auto& flameHandle : m_hFlame)
+	{
+		flameHandle.Remove();
+	}
+
+	CBaseMonster::OnRemove();
 }
 
 void CGargantua::Killed(const KilledInfo& info)

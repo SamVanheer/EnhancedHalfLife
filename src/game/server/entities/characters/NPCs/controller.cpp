@@ -29,6 +29,8 @@ constexpr int CONTROLLER_FLINCH_DELAY = 2;		// at most one flinch every n secs
 class CController : public CSquadMonster
 {
 public:
+	void OnRemove() override;
+
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
@@ -156,18 +158,26 @@ bool CController::TakeDamage(const TakeDamageInfo& info)
 	return CBaseMonster::TakeDamage(info);
 }
 
+void CController::OnRemove()
+{
+	for (auto& ballHandle : m_hBall)
+	{
+		ballHandle.Remove();
+	}
+
+	CSquadMonster::OnRemove();
+}
+
 void CController::Killed(const KilledInfo& info)
 {
 	// fade balls
-	if (m_hBall[0])
+	for (auto& ballHandle : m_hBall)
 	{
-		m_hBall[0]->SUB_StartFadeOut();
-		m_hBall[0] = nullptr;
-	}
-	if (m_hBall[1])
-	{
-		m_hBall[1]->SUB_StartFadeOut();
-		m_hBall[1] = nullptr;
+		if (auto ball = ballHandle.Get(); ball)
+		{
+			ball->SUB_StartFadeOut();
+			ballHandle = nullptr;
+		}
 	}
 
 	CSquadMonster::Killed(info);
@@ -176,15 +186,13 @@ void CController::Killed(const KilledInfo& info)
 void CController::GibMonster()
 {
 	// delete balls
-	if (m_hBall[0])
+	for (auto& ballHandle : m_hBall)
 	{
-		UTIL_Remove(m_hBall[0]);
-		m_hBall[0] = nullptr;
-	}
-	if (m_hBall[1])
-	{
-		UTIL_Remove(m_hBall[1]);
-		m_hBall[1] = nullptr;
+		if (auto ball = ballHandle.Get(); ball)
+		{
+			UTIL_Remove(ball);
+			ballHandle = nullptr;
+		}
 	}
 	CSquadMonster::GibMonster();
 }

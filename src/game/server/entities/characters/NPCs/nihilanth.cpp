@@ -26,6 +26,7 @@ constexpr int N_SPHERES = 20;
 class CNihilanth : public CBaseMonster
 {
 public:
+	void OnRemove() override;
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
@@ -269,6 +270,18 @@ const char* CNihilanth::pDeathSounds[] =
 {
 	"X/x_die1.wav",
 };
+
+void CNihilanth::OnRemove()
+{
+	for (auto& sphereHandle : m_hSphere)
+	{
+		sphereHandle.Remove();
+	}
+
+	m_hBall.Remove();
+
+	CBaseMonster::OnRemove();
+}
 
 void CNihilanth::Spawn()
 {

@@ -32,6 +32,7 @@ constexpr int SF_ISLAVE_IS_REVIVED_SLAVE = 1 << 0;
 class CISlave : public CSquadMonster
 {
 public:
+	void OnRemove() override;
 	void Spawn() override;
 	void Precache() override;
 	void SetYawSpeed() override;
@@ -751,15 +752,17 @@ void CISlave::ZapBeam(int side)
 	UTIL_EmitAmbientSound(this, tr.vecEndPos, "weapons/electro4.wav", 0.5, ATTN_NORM, 0, RANDOM_LONG(140, 160));
 }
 
+void CISlave::OnRemove()
+{
+	ClearBeams();
+	CSquadMonster::OnRemove();
+}
+
 void CISlave::ClearBeams()
 {
 	for (int i = 0; i < ISLAVE_MAX_BEAMS; i++)
 	{
-		if (m_hBeam[i])
-		{
-			UTIL_Remove(m_hBeam[i]);
-			m_hBeam[i] = nullptr;
-		}
+		m_hBeam[i].Remove();
 	}
 	m_iBeams = 0;
 	pev->skin = 0;

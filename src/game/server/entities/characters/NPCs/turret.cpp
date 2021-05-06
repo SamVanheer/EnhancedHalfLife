@@ -40,6 +40,7 @@ enum class TurretOrientation
 class CBaseTurret : public CBaseMonster
 {
 public:
+	void OnRemove() override;
 	void Spawn() override;
 	void Precache() override;
 	void KeyValue(KeyValueData* pkvd) override;
@@ -98,7 +99,7 @@ public:
 	float m_flMaxSpin = 0;		// Max time to spin the barrel w/o a target
 	bool m_iSpin = false;
 
-	EHandle<CSprite> m_hEyeGlow;//TODO: need to remove this entity on death
+	EHandle<CSprite> m_hEyeGlow;
 	int m_eyeBrightness = 0;
 
 	int	m_iDeployHeight = 0;
@@ -234,6 +235,12 @@ void CBaseTurret::KeyValue(KeyValueData* pkvd)
 		pkvd->fHandled = true;
 	else
 		CBaseMonster::KeyValue(pkvd);
+}
+
+void CBaseTurret::OnRemove()
+{
+	m_hEyeGlow.Remove();
+	CBaseMonster::OnRemove();
 }
 
 void CBaseTurret::Spawn()
@@ -942,6 +949,8 @@ void CBaseTurret::TurretDeath()
 
 	if (m_fSequenceFinished && !MoveTurret() && pev->dmgtime + 5 < gpGlobals->time)
 	{
+		//Eye should be fully transparent by now, otherwise just turns off as a result
+		m_hEyeGlow.Remove();
 		pev->framerate = 0;
 		SetThink(nullptr);
 	}

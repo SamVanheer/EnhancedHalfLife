@@ -952,6 +952,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 #endif
 
+	void OnRemove() override;
 	void Spawn() override;
 	void Precache() override;
 	void Reload() override;
@@ -1135,6 +1136,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 #endif
 
+	void OnRemove() override;
 	void Spawn() override;
 	void Precache() override;
 	int ItemSlot() override { return 4; }

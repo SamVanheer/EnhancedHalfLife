@@ -66,6 +66,32 @@ public:
 
 	operator TEntity* () { return Get(); }
 	TEntity* operator->() { return Get(); }
+
+	/**
+	*	@brief If this handle points to an entity, calls ::UTIL_Remove on the entity and clears this handle
+	*	@return Whether the handle pointed to an entity
+	*/
+	bool Remove()
+	{
+		bool result = false;
+		if (auto entity = Get(); entity)
+		{
+			UTIL_Remove(entity);
+			result = true;
+		}
+
+		Clear();
+
+		return result;
+	}
+
+	/**
+	*	@brief Clears this handle. If the handle pointed to an entity it is not removed
+	*/
+	void Clear()
+	{
+		Set(nullptr);
+	}
 };
 
 using EHANDLE = EHandle<CBaseEntity>;

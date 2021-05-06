@@ -29,6 +29,7 @@ constexpr int SF_TRIPMINE_INSTANT_ON = 1 << 0;
 
 class CTripmineGrenade : public CGrenade
 {
+	void OnRemove() override;
 	void Spawn() override;
 	void Precache() override;
 
@@ -76,6 +77,12 @@ TYPEDESCRIPTION	CTripmineGrenade::m_SaveData[] =
 };
 
 IMPLEMENT_SAVERESTORE(CTripmineGrenade, CGrenade);
+
+void CTripmineGrenade::OnRemove()
+{
+	KillBeam();
+	CGrenade::OnRemove();
+}
 
 void CTripmineGrenade::Spawn()
 {
@@ -211,11 +218,7 @@ void CTripmineGrenade::PowerupThink()
 
 void CTripmineGrenade::KillBeam()
 {
-	if (m_hBeam)
-	{
-		UTIL_Remove(m_hBeam);
-		m_hBeam = nullptr;
-	}
+	m_hBeam.Remove();
 }
 
 void CTripmineGrenade::MakeBeam()

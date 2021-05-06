@@ -46,6 +46,8 @@ LINK_ENTITY_TO_CLASS(info_null, CNullEntity);
 
 void CBaseEntity::UpdateOnRemove()
 {
+	OnRemove();
+
 	if (IsBitSet(pev->flags, FL_GRAPHED))
 	{
 		// this entity was a LinkEnt in the world node graph, so we must remove it from

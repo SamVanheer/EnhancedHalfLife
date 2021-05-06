@@ -56,6 +56,7 @@ void CActAnimating::SetActivity(Activity act)
 class CXenPLight : public CActAnimating
 {
 public:
+	void OnRemove() override;
 	void		Spawn() override;
 	void		Precache() override;
 	void		Touch(CBaseEntity* pOther) override;
@@ -80,6 +81,11 @@ TYPEDESCRIPTION	CXenPLight::m_SaveData[] =
 };
 
 IMPLEMENT_SAVERESTORE(CXenPLight, CActAnimating);
+
+void CXenPLight::OnRemove()
+{
+	m_hGlow.Remove();
+}
 
 void CXenPLight::Spawn()
 {
@@ -241,6 +247,7 @@ constexpr int TREE_AE_ATTACK = 1;
 class CXenTree : public CActAnimating
 {
 public:
+	void OnRemove() override;
 	void		Spawn() override;
 	void		Precache() override;
 	void		Touch(CBaseEntity* pOther) override;
@@ -269,6 +276,12 @@ TYPEDESCRIPTION	CXenTree::m_SaveData[] =
 };
 
 IMPLEMENT_SAVERESTORE(CXenTree, CActAnimating);
+
+void CXenTree::OnRemove()
+{
+	m_hTrigger.Remove();
+	CActAnimating::OnRemove();
+}
 
 void CXenTree::Spawn()
 {

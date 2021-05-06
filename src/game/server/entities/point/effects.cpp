@@ -908,6 +908,12 @@ TYPEDESCRIPTION	CLaser::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CLaser, CBeam);
 
+void CLaser::OnRemove()
+{
+	m_hSprite.Remove();
+	CBeam::OnRemove();
+}
+
 void CLaser::Spawn()
 {
 	if (IsStringNull(pev->model))

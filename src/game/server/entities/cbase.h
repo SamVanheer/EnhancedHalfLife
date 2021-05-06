@@ -352,9 +352,16 @@ public:
 		OnDestroy();
 	}
 
+	/**
+	*	@brief This updates global tables that need to know about entities being removed
+	*	Do not call this in the destructor/Destroy/OnDestroy as it's not meant to be called there, only on explicit removal
+	*/
+	void UpdateOnRemove();
+
 protected:
 	virtual void OnConstruct() {}
 	virtual void OnDestroy() {}
+	virtual void OnRemove() {}
 
 public:
 	virtual void Spawn() {}
@@ -434,12 +441,6 @@ public:
 			(this->*m_pfnUse)(info);
 	}
 	virtual void Blocked(CBaseEntity* pOther) { if (m_pfnBlocked) (this->*m_pfnBlocked)(pOther); }
-
-	/**
-	*	@brief This updates global tables that need to know about entities being removed
-	*	Do not call this in the destructor/Destroy/OnDestroy as it's not meant to be called there, only on explicit removal
-	*/
-	void UpdateOnRemove();
 
 	// common member functions
 	/**
