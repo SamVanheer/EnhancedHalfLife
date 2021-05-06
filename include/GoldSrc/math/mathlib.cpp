@@ -394,6 +394,44 @@ float UTIL_ApproachAngle(float target, float value, float speed)
 	return value;
 }
 
+float UTIL_MoveToward(float cur, float goal, float maxspeed)
+{
+	//TODO: this doesn't use maxspeed
+	if (cur != goal)
+	{
+		if (fabs(cur - goal) > 180.0)
+		{
+			if (cur < goal)
+				cur += 360.0;
+			else
+				cur -= 360.0;
+		}
+
+		if (cur < goal)
+		{
+			if (cur < goal - 1.0)
+				cur += (goal - cur) / 4.0f;
+			else
+				cur = goal;
+		}
+		else
+		{
+			if (cur > goal + 1.0)
+				cur -= (cur - goal) / 4.0f;
+			else
+				cur = goal;
+		}
+	}
+
+	// bring cur back into range
+	if (cur < 0)
+		cur += 360.0;
+	else if (cur >= 360)
+		cur -= 360;
+
+	return cur;
+}
+
 float UTIL_SplineFraction(float value, float scale)
 {
 	value = scale * value;

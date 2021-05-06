@@ -109,6 +109,7 @@ float UTIL_AngleDiff(float destAngle, float srcAngle);
 float UTIL_AngleDistance(float next, float cur);
 float UTIL_Approach(float target, float value, float speed);
 float UTIL_ApproachAngle(float target, float value, float speed);
+float UTIL_MoveToward(float cur, float goal, float maxspeed);
 
 /**
 *	@brief Use for ease-in, ease-out style interpolation (accel/decel)

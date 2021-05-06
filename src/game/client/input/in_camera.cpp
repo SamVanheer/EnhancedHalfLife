@@ -76,44 +76,6 @@ void SDL_SetCursorPos(const int x, const int y)
 {
 }
 
-float MoveToward(float cur, float goal, float maxspeed)
-{
-	if (cur != goal)
-	{
-		if (fabs(cur - goal) > 180.0)
-		{
-			if (cur < goal)
-				cur += 360.0;
-			else
-				cur -= 360.0;
-		}
-
-		if (cur < goal)
-		{
-			if (cur < goal - 1.0)
-				cur += (goal - cur) / 4.0f;
-			else
-				cur = goal;
-		}
-		else
-		{
-			if (cur > goal + 1.0)
-				cur -= (cur - goal) / 4.0f;
-			else
-				cur = goal;
-		}
-	}
-
-
-	// bring cur back into range
-	if (cur < 0)
-		cur += 360.0;
-	else if (cur >= 360)
-		cur -= 360;
-
-	return cur;
-}
-
 #ifdef LATER
 struct moveclip_t
 {
@@ -351,10 +313,10 @@ void DLLEXPORT CAM_Think()
 	else
 	{
 		if (camAngles[YAW] - viewangles[YAW] != cam_idealyaw->value)
-			camAngles[YAW] = MoveToward(camAngles[YAW], cam_idealyaw->value + viewangles[YAW], CAM_ANGLE_SPEED);
+			camAngles[YAW] = UTIL_MoveToward(camAngles[YAW], cam_idealyaw->value + viewangles[YAW], CAM_ANGLE_SPEED);
 
 		if (camAngles[PITCH] - viewangles[PITCH] != cam_idealpitch->value)
-			camAngles[PITCH] = MoveToward(camAngles[PITCH], cam_idealpitch->value + viewangles[PITCH], CAM_ANGLE_SPEED);
+			camAngles[PITCH] = UTIL_MoveToward(camAngles[PITCH], cam_idealpitch->value + viewangles[PITCH], CAM_ANGLE_SPEED);
 
 		if (fabs(camAngles[2] - cam_idealdist->value) < 2.0)
 			camAngles[2] = cam_idealdist->value;
