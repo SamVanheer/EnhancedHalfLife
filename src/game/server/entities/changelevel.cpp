@@ -145,8 +145,8 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 
 	pev->dmgtime = gpGlobals->time;
 
-	CBaseEntity* pPlayer = UTIL_EntityByIndex(1);
-	if (!InTransitionVolume(pPlayer, m_szLandmarkName))
+	CBaseEntity* pPlayer = !g_pGameRules->IsMultiplayer() ? UTIL_GetLocalPlayer() : nullptr;
+	if (pPlayer && !InTransitionVolume(pPlayer, m_szLandmarkName))
 	{
 		ALERT(at_aiconsole, "Player isn't in the transition volume %s, aborting\n", m_szLandmarkName);
 		return;
@@ -161,7 +161,13 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 			// Set target and delay
 			pFireAndDie->pev->target = m_changeTarget;
 			pFireAndDie->m_flDelay = m_changeTargetDelay;
-			pFireAndDie->SetAbsOrigin(pPlayer->GetAbsOrigin());
+
+			//TODO: does this even matter?
+			if (pPlayer)
+			{
+				pFireAndDie->SetAbsOrigin(pPlayer->GetAbsOrigin());
+			}
+
 			// Call spawn
 			DispatchSpawn(pFireAndDie->edict());
 		}

@@ -654,7 +654,7 @@ void PlayCDTrack(int iTrack)
 {
 	// manually find the single player. 
 	//TODO: make this work for all players
-	CBaseEntity* pClient = UTIL_EntityByIndex(1);
+	CBaseEntity* pClient = UTIL_GetLocalPlayer();
 
 	// Can't play if the client is not connected!
 	if (!pClient)
@@ -719,7 +719,7 @@ void CTargetCDAudio::Use(const UseInfo& info)
 void CTargetCDAudio::Think()
 {
 	// manually find the single player. 
-	CBaseEntity* pClient = UTIL_EntityByIndex(1);
+	CBaseEntity* pClient = UTIL_GetLocalPlayer();
 
 	// Can't play if the client is not connected!
 	if (!pClient)
@@ -1125,6 +1125,20 @@ void CTriggerCamera::Use(const UseInfo& info)
 	if (!ShouldToggle(info.GetUseType(), m_state))
 		return;
 
+	auto pActivator = info.GetActivator();
+
+	if ((!pActivator || !pActivator->IsPlayer()) && !g_pGameRules->IsMultiplayer())
+	{
+		pActivator = UTIL_GetLocalPlayer();
+	}
+
+	if (!pActivator)
+	{
+		return;
+	}
+
+	auto player = static_cast<CBasePlayer*>(pActivator);
+
 	// Toggle state
 	m_state = !m_state;
 	if (!m_state)
@@ -1132,15 +1146,6 @@ void CTriggerCamera::Use(const UseInfo& info)
 		m_flReturnTime = gpGlobals->time;
 		return;
 	}
-
-	auto pActivator = info.GetActivator();
-
-	if (!pActivator || !pActivator->IsPlayer())
-	{
-		pActivator = UTIL_PlayerByIndex(1);
-	}
-
-	auto player = static_cast<CBasePlayer*>(pActivator);
 
 	m_hPlayer = player;
 

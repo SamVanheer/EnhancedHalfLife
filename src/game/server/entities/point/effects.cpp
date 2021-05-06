@@ -1610,14 +1610,14 @@ Vector CBlood::BloodPosition(CBaseEntity* pActivator)
 {
 	if (pev->spawnflags & SF_BLOOD_PLAYER)
 	{
-		CBaseEntity* pPlayer;
+		CBaseEntity* pPlayer = nullptr;
 
 		if (pActivator && pActivator->IsPlayer())
 		{
 			pPlayer = pActivator;
 		}
-		else
-			pPlayer = UTIL_EntityByIndex(1);
+		else if (!g_pGameRules->IsMultiplayer())
+			pPlayer = UTIL_GetLocalPlayer();
 		if (pPlayer)
 			return (pPlayer->GetAbsOrigin() + pPlayer->pev->view_ofs) + Vector(RANDOM_FLOAT(-10, 10), RANDOM_FLOAT(-10, 10), RANDOM_FLOAT(-10, 10));
 	}
@@ -1872,14 +1872,13 @@ void CMessage::Use(const UseInfo& info)
 		UTIL_ShowMessageAll(STRING(pev->message));
 	else
 	{
-		CBasePlayer* pPlayer;
+		CBasePlayer* pPlayer = nullptr;
 
 		if (auto activator = info.GetActivator(); activator && activator->IsPlayer())
 			pPlayer = static_cast<CBasePlayer*>(activator);
-		else
+		else if (!g_pGameRules->IsMultiplayer())
 		{
-			//TODO: make it so that this only happens in singleplayer
-			pPlayer = UTIL_PlayerByIndex(1);
+			pPlayer = UTIL_GetLocalPlayer();
 		}
 		if (pPlayer)
 			UTIL_ShowMessage(STRING(pev->message), static_cast<CBasePlayer*>(pPlayer));

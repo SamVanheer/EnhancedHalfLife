@@ -338,6 +338,17 @@ CBasePlayer* UTIL_PlayerByIndex(int playerIndex)
 	return nullptr;
 }
 
+CBasePlayer* UTIL_GetLocalPlayer()
+{
+	if (gpGlobals->maxClients > 1)
+	{
+		ALERT(at_warning, "UTIL_GetLocalPlayer called in a multiplayer game\n");
+		return nullptr;
+	}
+
+	return UTIL_PlayerByIndex(1);
+}
+
 CBasePlayer* FindPlayerByName(const char* pTestName)
 {
 	for (int i = 1; i <= gpGlobals->maxClients; i++)

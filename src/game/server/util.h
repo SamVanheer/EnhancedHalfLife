@@ -153,6 +153,12 @@ CBaseEntity* UTIL_CreateNamedEntity(string_t className);
 CBasePlayer* UTIL_PlayerByIndex(int playerIndex);
 
 /**
+*	@brief In singleplayer this gets the local player.
+*	In multiplayer this returns null.
+*/
+CBasePlayer* UTIL_GetLocalPlayer();
+
+/**
 *	@brief Find a player with a case-insensitive name search.
 */
 CBasePlayer* FindPlayerByName(const char* pTestName);

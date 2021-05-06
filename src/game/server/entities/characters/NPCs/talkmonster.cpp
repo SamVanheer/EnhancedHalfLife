@@ -478,7 +478,7 @@ void CTalkMonster::RunTask(Task_t* pTask)
 	case TASK_TLK_LOOK_AT_CLIENT:
 	{
 		// Get edict for one player
-		CBasePlayer* pPlayer = UTIL_PlayerByIndex(1);
+		CBasePlayer* pPlayer = UTIL_GetLocalPlayer();
 
 		// track head to the client for a while.
 		if (m_MonsterState == NPCState::Idle &&
@@ -532,7 +532,7 @@ void CTalkMonster::RunTask(Task_t* pTask)
 	case TASK_FACE_PLAYER:
 	{
 		// Get edict for one player
-		if (CBasePlayer* pPlayer = UTIL_PlayerByIndex(1); pPlayer)
+		if (CBasePlayer* pPlayer = UTIL_GetLocalPlayer(); pPlayer)
 		{
 			MakeIdealYaw(pPlayer->GetAbsOrigin());
 			ChangeYaw(pev->yaw_speed);
@@ -1169,7 +1169,7 @@ Schedule_t* CTalkMonster::GetScheduleOfType(int Type)
 
 		if (!IsTalking() && HasConditions(bits_COND_SEE_CLIENT) && RANDOM_LONG(0, 6) == 0)
 		{
-			if (CBasePlayer* pPlayer = UTIL_PlayerByIndex(1); pPlayer)
+			if (CBasePlayer* pPlayer = UTIL_GetLocalPlayer(); pPlayer)
 			{
 				// watch the client.
 				UTIL_MakeVectors(pPlayer->GetAbsAngles());
