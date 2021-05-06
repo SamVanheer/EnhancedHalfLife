@@ -97,6 +97,7 @@ public:
 	constexpr Vector operator/(float fl) const { return Vector(x / fl, y / fl, z / fl); }
 
 	// Methods
+	constexpr float LengthSquared() const { return x * x + y * y + z * z; }
 	float Length() const { return static_cast<float>(sqrt(x * x + y * y + z * z)); }
 
 	operator float* () { return &x; } // Vectors will now automatically convert to float * when needed
