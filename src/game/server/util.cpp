@@ -132,36 +132,26 @@ bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapo
 
 int UTIL_EntitiesInBox(CBaseEntity** pList, int listMax, const Vector& mins, const Vector& maxs, int flagMask)
 {
-	edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex(1);
-	CBaseEntity* pEntity;
-	int			count;
+	int count = 0;
 
-	count = 0;
-
-	if (!pEdict)
-		return count;
-
-	for (int i = 1; i < gpGlobals->maxEntities; i++, pEdict++)
+	for (int i = 1; i < gpGlobals->maxEntities; i++)
 	{
-		if (pEdict->free)	// Not in use
+		auto entity = UTIL_EntityByIndex(i);
+		if (!entity || entity->edict()->free) // Not in use
 			continue;
 
-		if (flagMask && !(pEdict->v.flags & flagMask))	// Does it meet the criteria?
+		if (flagMask && !(entity->pev->flags & flagMask)) // Does it meet the criteria?
 			continue;
 
-		if (mins.x > pEdict->v.absmax.x ||
-			mins.y > pEdict->v.absmax.y ||
-			mins.z > pEdict->v.absmax.z ||
-			maxs.x < pEdict->v.absmin.x ||
-			maxs.y < pEdict->v.absmin.y ||
-			maxs.z < pEdict->v.absmin.z)
+		if (mins.x >entity->pev->absmax.x ||
+			mins.y >entity->pev->absmax.y ||
+			mins.z >entity->pev->absmax.z ||
+			maxs.x <entity->pev->absmin.x ||
+			maxs.y <entity->pev->absmin.y ||
+			maxs.z <entity->pev->absmin.z)
 			continue;
 
-		pEntity = CBaseEntity::Instance(pEdict);
-		if (!pEntity)
-			continue;
-
-		pList[count] = pEntity;
+		pList[count] = entity;
 		count++;
 
 		if (count >= listMax)
@@ -174,28 +164,24 @@ int UTIL_EntitiesInBox(CBaseEntity** pList, int listMax, const Vector& mins, con
 
 int UTIL_MonstersInSphere(CBaseEntity** pList, int listMax, const Vector& center, float radius)
 {
-	edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex(1);
-	CBaseEntity* pEntity;
-	int			count;
-	float		distance, delta;
+	float distance, delta;
 
-	count = 0;
-	float radiusSquared = radius * radius;
+	int count = 0;
+	const float radiusSquared = radius * radius;
 
-	if (!pEdict)
-		return count;
-
-	for (int i = 1; i < gpGlobals->maxEntities; i++, pEdict++)
+	for (int i = 1; i < gpGlobals->maxEntities; i++)
 	{
-		if (pEdict->free)	// Not in use
+		auto entity = UTIL_EntityByIndex(i);
+
+		if (!entity || entity->edict()->free) // Not in use
 			continue;
 
-		if (!(pEdict->v.flags & (FL_CLIENT | FL_MONSTER)))	// Not a client/monster ?
+		if (!(entity->pev->flags & (FL_CLIENT | FL_MONSTER))) // Not a client/monster ?
 			continue;
 
 		// Use origin for X & Y since they are centered for all monsters
 		// Now X
-		delta = center.x - pEdict->v.origin.x;//(pEdict->v.absmin.x + pEdict->v.absmax.x)*0.5;
+		delta = center.x - entity->GetAbsOrigin().x;//(pEdict->v.absmin.x + pEdict->v.absmax.x)*0.5;
 		delta *= delta;
 
 		if (delta > radiusSquared)
@@ -203,7 +189,7 @@ int UTIL_MonstersInSphere(CBaseEntity** pList, int listMax, const Vector& center
 		distance = delta;
 
 		// Now Y
-		delta = center.y - pEdict->v.origin.y;//(pEdict->v.absmin.y + pEdict->v.absmax.y)*0.5;
+		delta = center.y - entity->GetAbsOrigin().y;//(pEdict->v.absmin.y + pEdict->v.absmax.y)*0.5;
 		delta *= delta;
 
 		distance += delta;
@@ -211,24 +197,19 @@ int UTIL_MonstersInSphere(CBaseEntity** pList, int listMax, const Vector& center
 			continue;
 
 		// Now Z
-		delta = center.z - (pEdict->v.absmin.z + pEdict->v.absmax.z) * 0.5f;
+		delta = center.z - (entity->pev->absmin.z + entity->pev->absmax.z) * 0.5f;
 		delta *= delta;
 
 		distance += delta;
 		if (distance > radiusSquared)
 			continue;
 
-		pEntity = CBaseEntity::Instance(pEdict);
-		if (!pEntity)
-			continue;
-
-		pList[count] = pEntity;
+		pList[count] = entity;
 		count++;
 
 		if (count >= listMax)
 			return count;
 	}
-
 
 	return count;
 }
