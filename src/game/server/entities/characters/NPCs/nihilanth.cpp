@@ -1180,7 +1180,7 @@ void CNihilanth::CommandUse(const UseInfo& info)
 				pTouch->Touch(m_hEnemy);
 			}
 			// if the player is using "notarget", the ending sequence won't fire unless we catch it here
-			else
+			else if (!g_pGameRules->IsMultiplayer())
 			{
 				if (CBaseEntity* pEntity = UTIL_GetLocalPlayer(); pEntity != nullptr && pEntity->IsAlive())
 				{
