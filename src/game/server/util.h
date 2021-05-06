@@ -23,6 +23,7 @@
 #include "activity.h"
 #include "enginecallback.h"
 #include "shared_utils.hpp"
+#include "entity_iteration.hpp"
 #include "sound/materials.hpp"
 #include "sound/sentences.hpp"
 #include "sound/sound_playback.hpp"
@@ -120,57 +121,9 @@ inline bool AreStringsEqual(const char* sz1, const char* sz2)
 }
 
 // Misc. Prototypes
-CBaseEntity* UTIL_EntityByIndex(int index);
-
-//TODO: optimize this so it doesn't have to query every time
-inline CBaseEntity* UTIL_GetWorld()
-{
-	return UTIL_EntityByIndex(0);
-}
-
-CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& vecCenter, float flRadius);
-CBaseEntity* UTIL_FindEntityByString(CBaseEntity* pStartEntity, const char* szKeyword, const char* szValue);
-CBaseEntity* UTIL_FindEntityByClassname(CBaseEntity* pStartEntity, const char* szName);
-CBaseEntity* UTIL_FindEntityByTargetname(CBaseEntity* pStartEntity, const char* szName);
-
-/**
-*	@brief for doing a reverse lookup. Say you have a door, and want to find its button.
-*/
-CBaseEntity* UTIL_FindEntityByTarget(CBaseEntity* pStartEntity, const char* szName);
-
-CBaseEntity* UTIL_FindEntityGeneric(const char* szName, const Vector& vecSrc, float flRadius);
-
-CBaseEntity* UTIL_FindClientInPVS(CBaseEntity* pPVSEntity);
-
 CBaseEntity* UTIL_CreateNamedEntity(string_t className);
 
-/**
-*	@brief Returns a CBasePlayer pointer to a player by index
-*
-*	Only returns if the player is spawned and connected, otherwise returns nullptr
-*	Index is 1 based
-*/
-CBasePlayer* UTIL_PlayerByIndex(int playerIndex);
-
-/**
-*	@brief In singleplayer this gets the local player.
-*	In multiplayer this returns null.
-*/
-CBasePlayer* UTIL_GetLocalPlayer();
-
-/**
-*	@brief Find a player with a case-insensitive name search.
-*/
-CBasePlayer* FindPlayerByName(const char* pTestName);
-
-#define UTIL_EntitiesInPVS(pent)			(*g_engfuncs.pfnEntitiesInPVS)(pent)
 void			UTIL_MakeVectors(const Vector& vecAngles);
-
-/**
-*	@brief Pass in an array of pointers and an array size, it fills the array and returns the number inserted
-*/
-int			UTIL_MonstersInSphere(CBaseEntity** pList, int listMax, const Vector& center, float radius);
-int			UTIL_EntitiesInBox(CBaseEntity** pList, int listMax, const Vector& mins, const Vector& maxs, int flagMask);
 
 /**
 *	@brief like MakeVectors, but assumes pitch isn't inverted
@@ -214,6 +167,8 @@ void			UTIL_TraceHull(const Vector& vecStart, const Vector& vecEnd, IgnoreMonste
 TraceResult	UTIL_GetGlobalTrace();
 void			UTIL_TraceModel(const Vector& vecStart, const Vector& vecEnd, Hull hullNumber, CBaseEntity* pModel, TraceResult* ptr);
 void UTIL_TraceMonsterHull(CBaseEntity* pEntity, const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, CBaseEntity* pIgnore, TraceResult* ptr);
+
+CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe);
 
 Vector		UTIL_GetAimVector(CBaseEntity* entity, float flSpeed);
 Contents UTIL_PointContents(const Vector& vec);
@@ -398,14 +353,7 @@ void UTIL_UnsetGroupTrace();
 */
 float UTIL_WeaponTimeBase();
 
-CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe);
-
 void EntvarsKeyvalue(entvars_t* pev, KeyValueData* pkvd);
-
-/**
-*	@brief Determine the current # of active players on the server for map cycling logic
-*/
-int UTIL_CountPlayers();
 
 constexpr bool UTIL_IsInWorld(const Vector& point)
 {

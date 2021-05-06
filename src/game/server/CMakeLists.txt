@@ -39,6 +39,8 @@ target_sources(hl PRIVATE
 	activity.h
 	decals.cpp
 	decals.hpp
+	entity_iteration.cpp
+	entity_iteration.hpp
 	extdll.h
 	globals.cpp
 	plane.cpp
