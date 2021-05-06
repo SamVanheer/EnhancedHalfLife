@@ -15,7 +15,7 @@
 
 #pragma once
 
-class CItem : public CBaseEntity
+class CItem : public CBaseAnimating
 {
 public:
 	void	Spawn() override;

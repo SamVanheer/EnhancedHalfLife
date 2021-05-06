@@ -480,7 +480,7 @@ public:
 	float m_flLastFireTime = 0;
 };
 
-class CBasePlayerAmmo : public CBaseEntity
+class CBasePlayerAmmo : public CBaseAnimating
 {
 public:
 	void Spawn() override;
