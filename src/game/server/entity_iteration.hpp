@@ -244,6 +244,7 @@ public:
 	CPlayerIterator(int index)
 		: m_iIndex(index)
 	{
+		FindNextPlayer(); //Find the first player to start off with
 	}
 
 	const CBasePlayer* operator*() const { return m_pEntity; }
@@ -254,18 +255,8 @@ public:
 
 	void operator++()
 	{
-		//Find the next valid player
-		for (; m_iIndex <= gpGlobals->maxClients; ++m_iIndex)
-		{
-			if (auto player = UTIL_PlayerByIndex(m_iIndex); player)
-			{
-				m_pEntity = player;
-				return;
-			}
-		}
-
-		//No more players to check, now end iterator
-		m_pEntity = nullptr;
+		++m_iIndex;
+		FindNextPlayer();
 	}
 
 	void operator++(int)
@@ -281,6 +272,23 @@ public:
 	bool operator!=(const CPlayerIterator& other) const
 	{
 		return !(*this == other);
+	}
+
+private:
+	void FindNextPlayer()
+	{
+		//Find the next valid player
+		for (; m_iIndex <= gpGlobals->maxClients; ++m_iIndex)
+		{
+			if (auto player = UTIL_PlayerByIndex(m_iIndex); player)
+			{
+				m_pEntity = player;
+				return;
+			}
+		}
+
+		//No more players to check, now end iterator
+		m_pEntity = nullptr;
 	}
 
 private:
