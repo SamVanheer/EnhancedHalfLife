@@ -216,8 +216,7 @@ void Host_Say(CBasePlayer* player, bool teamonly)
 	// This may return the world in single player if the client types something between levels or during spawn
 	// so check it, or it will infinite loop
 
-	CBasePlayer* client = nullptr;
-	while (((client = (CBasePlayer*)UTIL_FindEntityByClassname(client, "player")) != nullptr) && (!IsNullEnt(client)))
+	for (auto client : UTIL_AllPlayers())
 	{
 		if (!client->pev)
 			continue;
