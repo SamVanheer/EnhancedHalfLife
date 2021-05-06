@@ -425,7 +425,7 @@ void COsprey::Flight()
 	else
 	{
 		// UNDONE: this needs to send different sounds to every player for multiplayer.	
-		if (CBaseEntity* pPlayer = UTIL_FindEntityByClassname(nullptr, "player"); pPlayer)
+		if (CBaseEntity* pPlayer = UTIL_GetLocalPlayer(); pPlayer)
 		{
 			float pitch = DotProduct(m_velocity - pPlayer->GetAbsVelocity(), (pPlayer->GetAbsOrigin() - GetAbsOrigin()).Normalize());
 

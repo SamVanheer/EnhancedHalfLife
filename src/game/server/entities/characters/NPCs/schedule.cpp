@@ -942,7 +942,7 @@ void CBaseMonster::StartTask(Task_t* pTask)
 	break;
 	case TASK_GET_PATH_TO_SPOT:
 	{
-		CBaseEntity* pPlayer = UTIL_FindEntityByClassname(nullptr, "player");
+		CBaseEntity* pPlayer = UTIL_GetLocalPlayer();
 		if (BuildRoute(m_vecMoveGoal, bits_MF_TO_LOCATION, pPlayer))
 		{
 			TaskComplete();
