@@ -27,9 +27,6 @@ DLL_GLOBAL	short	g_sModelIndexBubbles;// holds the index for the bubbles model
 DLL_GLOBAL	short	g_sModelIndexBloodDrop;// holds the sprite index for the initial blood
 DLL_GLOBAL	short	g_sModelIndexBloodSpray;// holds the sprite index for splattered blood
 
-ItemInfo CBasePlayerItem::ItemInfoArray[MAX_WEAPONS];
-AmmoInfo CBasePlayerItem::AmmoInfoArray[MAX_AMMO_TYPES];
-
 MULTIDAMAGE gMultiDamage;
 
 /**
@@ -604,25 +601,6 @@ bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer)
 	return true;
 }
 
-void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
-{
-	const bool skiplocal = UseDecrement();
-
-	auto player = m_hPlayer.Get();
-
-	player->pev->weaponanim = iAnim;
-
-#if defined( CLIENT_WEAPONS )
-	if (skiplocal && g_engfuncs.pfnCanSkipPlayer(player->edict()))
-		return;
-#endif
-
-	MESSAGE_BEGIN(MessageDest::One, SVC_WEAPONANIM, player);
-	WRITE_BYTE(iAnim);						// sequence number
-	WRITE_BYTE(pev->body);					// weaponmodel bodygroup.
-	MESSAGE_END();
-}
-
 bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip, int iMaxCarry)
 {
 	auto player = m_hPlayer.Get();
@@ -714,55 +692,6 @@ bool CBasePlayerWeapon::IsUseable()
 
 	// clip is empty (or nonexistant) and the player has no more ammo of this type. 
 	return false;
-}
-
-bool CBasePlayerWeapon::DefaultDeploy(const char* szViewModel, const char* szWeaponModel, int iAnim, const char* szAnimExt, int body)
-{
-	if (!CanDeploy())
-		return false;
-
-	auto player = m_hPlayer.Get();
-
-	player->pev->viewmodel = MAKE_STRING(szViewModel);
-	player->pev->weaponmodel = MAKE_STRING(szWeaponModel);
-	safe_strcpy(player->m_szAnimExtension, szAnimExt);
-	SendWeaponAnim(iAnim, body);
-
-	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
-	m_flLastFireTime = 0.0;
-
-	return true;
-}
-
-bool CBasePlayerWeapon::PlayEmptySound()
-{
-	if (m_iPlayEmptySound)
-	{
-		m_hPlayer->EmitSound(SoundChannel::Weapon, "weapons/357_cock1.wav", 0.8);
-		m_iPlayEmptySound = false;
-		return false;
-	}
-	return false;
-}
-
-int CBasePlayerWeapon::PrimaryAmmoIndex()
-{
-	return m_iPrimaryAmmoType;
-}
-
-int CBasePlayerWeapon::SecondaryAmmoIndex()
-{
-	return m_iSecondaryAmmoType;
-}
-
-void CBasePlayerWeapon::Holster()
-{
-	auto player = m_hPlayer.Get();
-
-	m_fInReload = false; // cancel any reload in progress.
-	player->pev->viewmodel = iStringNull;
-	player->pev->weaponmodel = iStringNull;
 }
 
 void CBasePlayerAmmo::Spawn()

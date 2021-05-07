@@ -2411,51 +2411,6 @@ bool CBasePlayer::Restore(CRestore& restore)
 	return status;
 }
 
-void CBasePlayer::SelectItem(const char* pstr)
-{
-	if (!pstr)
-		return;
-
-	CBasePlayerItem* pItem = nullptr;
-
-	for (int i = 0; i < MAX_ITEM_TYPES; i++)
-	{
-		pItem = m_hPlayerItems[i];
-
-		while (pItem)
-		{
-			if (pItem->ClassnameIs(pstr))
-				break;
-			pItem = pItem->m_hNext;
-		}
-
-		if (pItem)
-			break;
-	}
-
-	if (!pItem)
-		return;
-
-
-	if (pItem == m_hActiveItem)
-		return;
-
-	ResetAutoaim();
-
-	// FIX, this needs to queue them up and delay
-	if (auto activeItem = m_hActiveItem.Get(); activeItem)
-		activeItem->Holster();
-
-	m_hLastItem = m_hActiveItem;
-	m_hActiveItem = pItem;
-
-	if (auto activeItem = m_hActiveItem.Get(); activeItem)
-	{
-		activeItem->Deploy();
-		activeItem->UpdateItemInfo();
-	}
-}
-
 bool CBasePlayer::HasWeapons()
 {
 	for (int i = 0; i < MAX_ITEM_TYPES; i++)

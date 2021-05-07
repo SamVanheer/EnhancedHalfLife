@@ -146,46 +146,6 @@ void CBaseEntity::Killed(const KilledInfo& info)
 	pev->effects |= EF_NODRAW;
 }
 
-bool CBasePlayerWeapon::DefaultDeploy(const char* szViewModel, const char* szWeaponModel, int iAnim, const char* szAnimExt, int body)
-{
-	if (!CanDeploy())
-		return false;
-
-	gEngfuncs.CL_LoadModel(szViewModel, reinterpret_cast<int*>(&m_hPlayer->pev->viewmodel));
-
-	SendWeaponAnim(iAnim, body);
-
-	g_irunninggausspred = false;
-	m_hPlayer->m_flNextAttack = 0.5;
-	m_flTimeWeaponIdle = 1.0;
-	return true;
-}
-
-bool CBasePlayerWeapon::PlayEmptySound()
-{
-	if (m_iPlayEmptySound)
-	{
-		HUD_PlaySound("weapons/357_cock1.wav", 0.8);
-		m_iPlayEmptySound = false;
-		return false; //TODO: incorrect?
-	}
-	return false;
-}
-
-void CBasePlayerWeapon::Holster()
-{
-	m_fInReload = false; // cancel any reload in progress.
-	g_irunninggausspred = false;
-	m_hPlayer->pev->viewmodel = iStringNull;
-}
-
-void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
-{
-	m_hPlayer->pev->weaponanim = iAnim;
-
-	HUD_SendWeaponAnim(iAnim, body, false);
-}
-
 /**
 *	@brief Only produces random numbers to match the server ones.
 */
@@ -205,33 +165,6 @@ Vector CBasePlayer::FireBulletsPlayer(std::uint32_t cShots, const Vector& vecSrc
 	}
 
 	return Vector(x * vecSpread.x, y * vecSpread.y, 0.0);
-}
-
-void CBasePlayer::SelectItem(const char* pstr)
-{
-	//TODO: needs to be merged with server version
-	if (!pstr)
-		return;
-
-	CBasePlayerItem* pItem = nullptr;
-
-	if (!pItem)
-		return;
-
-
-	if (pItem == m_hActiveItem)
-		return;
-
-	if (m_hActiveItem)
-		m_hActiveItem->Holster();
-
-	m_hLastItem = m_hActiveItem;
-	m_hActiveItem = pItem;
-
-	if (m_hActiveItem)
-	{
-		m_hActiveItem->Deploy();
-	}
 }
 
 void CBasePlayer::Killed(const KilledInfo& info)

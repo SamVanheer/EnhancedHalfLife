@@ -340,8 +340,8 @@ public:
 	virtual void SetWeaponData(const weapon_data_t& data) {}
 	virtual void DecrementTimers() {}
 
-	static ItemInfo ItemInfoArray[MAX_WEAPONS];
-	static AmmoInfo AmmoInfoArray[MAX_AMMO_TYPES];
+	static inline ItemInfo ItemInfoArray[MAX_WEAPONS]{};
+	static inline AmmoInfo AmmoInfoArray[MAX_AMMO_TYPES]{};
 
 	EHandle<CBasePlayer> m_hPlayer;
 	EHandle<CBasePlayerItem> m_hNext;

@@ -34,9 +34,6 @@
 enginefuncs_t g_engfuncs;
 globalvars_t* gpGlobals;
 
-ItemInfo CBasePlayerItem::ItemInfoArray[MAX_WEAPONS];
-AmmoInfo CBasePlayerItem::AmmoInfoArray[MAX_AMMO_TYPES];
-
 // CBaseEntity Stubs
 bool CBaseEntity::GiveHealth(float flHealth, int bitsDamageType) { return true; }
 bool CBaseEntity::TakeDamage(const TakeDamageInfo& info) { return true; }
@@ -325,8 +322,6 @@ bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer) { return false; }
 bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip, int iMaxCarry) { return true; }
 bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName, int iMax) { return true; }
 bool CBasePlayerWeapon::IsUseable() { return true; }
-int CBasePlayerWeapon::PrimaryAmmoIndex() { return m_iPrimaryAmmoType; }
-int CBasePlayerWeapon::SecondaryAmmoIndex() { return m_iSecondaryAmmoType; }
 void CBasePlayerAmmo::Spawn() { }
 CBaseEntity* CBasePlayerAmmo::Respawn() { return this; }
 void CBasePlayerAmmo::Materialize() { }

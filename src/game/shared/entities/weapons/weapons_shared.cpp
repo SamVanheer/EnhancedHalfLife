@@ -19,6 +19,14 @@
 #include "weapons.h"
 #include "gamerules.h"
 
+#ifdef CLIENT_DLL
+#include "hud.h"
+#include "cl_util.h"
+#include "com_weapons.h"
+
+extern int g_irunninggausspred;
+#endif
+
 int giAmmoIndex = 0;
 
 // Precaches the ammo and queues the ammo info for sending to clients
@@ -41,6 +49,29 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname)
 
 	CBasePlayerItem::AmmoInfoArray[giAmmoIndex].pszName = szAmmoname;
 	CBasePlayerItem::AmmoInfoArray[giAmmoIndex].iId = giAmmoIndex;   // yes, this info is redundant
+}
+
+void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
+{
+	auto player = m_hPlayer.Get();
+
+	player->pev->weaponanim = iAnim;
+
+#ifdef CLIENT_DLL
+	HUD_SendWeaponAnim(iAnim, body, false);
+#else
+#if defined( CLIENT_WEAPONS )
+	const bool skiplocal = UseDecrement();
+
+	if (skiplocal && g_engfuncs.pfnCanSkipPlayer(player->edict()))
+		return;
+#endif
+
+	MESSAGE_BEGIN(MessageDest::One, SVC_WEAPONANIM, player);
+	WRITE_BYTE(iAnim);						// sequence number
+	WRITE_BYTE(pev->body);					// weaponmodel bodygroup.
+	MESSAGE_END();
+#endif
 }
 
 bool CBasePlayerWeapon::CanDeploy()
@@ -73,6 +104,53 @@ bool CBasePlayerWeapon::CanDeploy()
 	return true;
 }
 
+void CBasePlayerWeapon::Holster()
+{
+	auto player = m_hPlayer.Get();
+
+	m_fInReload = false; // cancel any reload in progress.
+	player->pev->viewmodel = iStringNull;
+	player->pev->weaponmodel = iStringNull;
+
+#ifdef CLIENT_DLL
+	g_irunninggausspred = false;
+#endif
+}
+
+int CBasePlayerWeapon::PrimaryAmmoIndex()
+{
+	return m_iPrimaryAmmoType;
+}
+
+int CBasePlayerWeapon::SecondaryAmmoIndex()
+{
+	return m_iSecondaryAmmoType;
+}
+
+bool CBasePlayerWeapon::DefaultDeploy(const char* szViewModel, const char* szWeaponModel, int iAnim, const char* szAnimExt, int body)
+{
+	if (!CanDeploy())
+		return false;
+
+	auto player = m_hPlayer.Get();
+
+	player->pev->viewmodel = MAKE_STRING(szViewModel);
+	player->pev->weaponmodel = MAKE_STRING(szWeaponModel);
+	safe_strcpy(player->m_szAnimExtension, szAnimExt);
+	SendWeaponAnim(iAnim, body);
+
+	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
+	m_flLastFireTime = 0.0;
+
+#ifdef CLIENT_DLL
+	LoadVModel(szViewModel, player);
+	g_irunninggausspred = false;
+#endif
+
+	return true;
+}
+
 bool CBasePlayerWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay, int body)
 {
 	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
@@ -92,6 +170,21 @@ bool CBasePlayerWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay, in
 
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 3;
 	return true;
+}
+
+bool CBasePlayerWeapon::PlayEmptySound()
+{
+	if (m_iPlayEmptySound)
+	{
+#ifdef CLIENT_DLL
+		HUD_PlaySound("weapons/357_cock1.wav", 0.8);
+#else
+		m_hPlayer->EmitSound(SoundChannel::Weapon, "weapons/357_cock1.wav", 0.8);
+#endif
+		m_iPlayEmptySound = false;
+		return false; //TODO: incorrect?
+	}
+	return false;
 }
 
 void CBasePlayerWeapon::ResetEmptySound()
@@ -196,31 +289,4 @@ void CBasePlayerWeapon::ItemPostFrame()
 	{
 		WeaponIdle();
 	}
-}
-
-void CBasePlayer::SelectLastItem()
-{
-	if (!m_hLastItem)
-	{
-		return;
-	}
-
-	auto activeItem = m_hActiveItem.Get();
-
-	if (activeItem && !activeItem->CanHolster())
-	{
-		return;
-	}
-
-	ResetAutoaim();
-
-	// FIX, this needs to queue them up and delay
-	if (activeItem)
-		activeItem->Holster();
-
-	CBasePlayerItem* pTemp = activeItem;
-	activeItem = m_hActiveItem = m_hLastItem;
-	m_hLastItem = pTemp;
-	activeItem->Deploy();
-	activeItem->UpdateItemInfo();
 }
