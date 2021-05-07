@@ -2577,7 +2577,7 @@ void CBasePlayer::GiveNamedItem(const char* pszName)
 	pEntity->pev->spawnflags |= SF_NORESPAWN;
 
 	DispatchSpawn(pEntity->edict());
-	DispatchTouch(pEntity->edict(), edict());
+	pEntity->Touch(this);
 }
 
 bool CBasePlayer::FlashlightIsOn()
