@@ -88,7 +88,7 @@ public:
 	Vector m_vecEstVelocity;
 
 	Vector m_velocity;
-	int m_fInCombat = 0; //TODO: bool
+	bool m_fInCombat = false;
 };
 
 LINK_ENTITY_TO_CLASS(monster_alien_controller, CController);

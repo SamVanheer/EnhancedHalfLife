@@ -52,7 +52,7 @@ public:
 	int fontWeight = 0;
 
 	vgui::Font* font = nullptr;
-	int ownFontPointer = 0; // true if the font is ours to delete TODO bool
+	bool ownFontPointer = false; // true if the font is ours to delete
 
 	// scheme
 	byte fgColor[4]{};
