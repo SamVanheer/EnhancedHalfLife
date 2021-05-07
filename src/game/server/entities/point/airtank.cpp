@@ -72,7 +72,10 @@ void CAirtank::Killed(const KilledInfo& info)
 
 	// UNDONE: this should make a big bubble cloud, not an explosion
 
-	Explode(GetAbsOrigin(), vec3_down);
+	TraceResult tr;
+	UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + Vector(0, 0, -32), IgnoreMonsters::Yes, this, &tr);
+
+	Explode(&tr, DMG_BLAST);
 }
 
 void CAirtank::TankThink()

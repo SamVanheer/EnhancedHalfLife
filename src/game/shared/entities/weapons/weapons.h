@@ -49,7 +49,6 @@ public:
 	static CGrenade* ShootTimed(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity, float time);
 	static CGrenade* ShootContact(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity);
 
-	void Explode(Vector vecSrc, Vector vecAim);
 	void Explode(TraceResult* pTrace, int bitsDamageType);
 	void EXPORT Smoke();
 

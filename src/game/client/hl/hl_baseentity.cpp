@@ -87,7 +87,6 @@ void CBaseToggle::KeyValue(KeyValueData*) { }
 
 // CGrenade Stubs
 void CGrenade::BounceSound() { }
-void CGrenade::Explode(Vector, Vector) { }
 void CGrenade::Explode(TraceResult*, int) { }
 void CGrenade::Killed(const KilledInfo& info) { }
 void CGrenade::Spawn() { }

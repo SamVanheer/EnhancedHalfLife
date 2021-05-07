@@ -18,15 +18,6 @@ LINK_ENTITY_TO_CLASS(grenade, CGrenade);
 // Grenades flagged with this will be triggered when the owner calls detonateSatchelCharges
 constexpr int SF_DETONATE = 0x0001;
 
-//TODO: inline this in airtank
-void CGrenade::Explode(Vector vecSrc, Vector vecAim)
-{
-	TraceResult tr;
-	UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + Vector(0, 0, -32), IgnoreMonsters::Yes, this, &tr);
-
-	Explode(&tr, DMG_BLAST);
-}
-
 // UNDONE: temporary scorching for PreAlpha - find a less sleazy permenant solution.
 void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 {
