@@ -206,10 +206,6 @@ public:
 	void MovetoTarget(Vector vecTarget);
 	virtual void Crawl();
 
-	//TODO: unused?
-	void Zap();
-	void Teleport();
-
 	float m_flIdealVel = 0;
 	Vector m_vecIdeal;
 	EHandle<CNihilanth> m_hNihilanth;
