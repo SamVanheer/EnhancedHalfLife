@@ -172,8 +172,7 @@ void CSoundEnt::InsertSound(int iType, const Vector& vecOrigin, int iVolume, flo
 
 void CSoundEnt::Initialize()
 {
-	//TODO: need to clear this?
-	m_cLastActiveSounds;
+	m_cLastActiveSounds = 0;
 	m_iFreeSound = 0;
 	m_iActiveSound = SOUNDLIST_EMPTY;
 
