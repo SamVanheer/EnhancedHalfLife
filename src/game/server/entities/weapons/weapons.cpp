@@ -613,7 +613,7 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 	player->pev->weaponanim = iAnim;
 
 #if defined( CLIENT_WEAPONS )
-	if (skiplocal && ENGINE_CANSKIP(player->edict()))
+	if (skiplocal && g_engfuncs.pfnCanSkipPlayer(player->edict()))
 		return;
 #endif
 

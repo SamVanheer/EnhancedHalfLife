@@ -31,7 +31,7 @@ IMPLEMENT_SAVERESTORE(CBaseAnimating, CBaseDelay);
 
 studiohdr_t* CBaseAnimating::GetModelPointer()
 {
-	return reinterpret_cast<studiohdr_t*>(GET_MODEL_PTR(edict()));
+	return reinterpret_cast<studiohdr_t*>(g_engfuncs.pfnGetModelPtr(edict()));
 }
 
 float CBaseAnimating::StudioFrameAdvance(float flInterval)
@@ -145,12 +145,12 @@ float CBaseAnimating::SetBlending(int iBlender, float flValue)
 
 void CBaseAnimating::GetBonePosition(int iBone, Vector& origin, Vector& angles)
 {
-	GET_BONE_POSITION(edict(), iBone, origin, angles);
+	g_engfuncs.pfnGetBonePosition(edict(), iBone, origin, angles);
 }
 
 void CBaseAnimating::GetAttachment(int iAttachment, Vector& origin, Vector& angles)
 {
-	GET_ATTACHMENT(edict(), iAttachment, origin, angles);
+	g_engfuncs.pfnGetAttachment(edict(), iAttachment, origin, angles);
 }
 
 int CBaseAnimating::FindTransition(int iEndingSequence, int iGoalSequence, int& iDir)

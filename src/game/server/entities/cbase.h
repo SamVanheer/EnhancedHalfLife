@@ -496,7 +496,7 @@ public:
 
 	void SetModel(const char* modelName)
 	{
-		SET_MODEL(edict(), modelName);
+		g_engfuncs.pfnSetModel(edict(), modelName);
 	}
 
 	Solid GetSolidType() const { return pev->solid; }
@@ -682,7 +682,7 @@ public:
 	virtual Vector EarPosition() { return GetAbsOrigin() + pev->view_ofs; }	//!< position of ears
 	virtual Vector BodyTarget(const Vector& posSrc) { return Center(); }	//!< position to shoot at
 
-	virtual int Illumination() { return GETENTITYILLUM(edict()); }
+	virtual int Illumination() { return g_engfuncs.pfnGetEntityIllum(edict()); }
 
 	/**
 	*	@brief returns true if a line can be traced from the caller's eyes to the target
@@ -1071,7 +1071,7 @@ template <class T> T* GetClassPtr(T* a)
 
 	// allocate entity if necessary
 	if (pev == nullptr)
-		pev = &CREATE_ENTITY()->v;
+		pev = &g_engfuncs.pfnCreateEntity()->v;
 
 	// get the private data
 	a = (T*)GET_PRIVATE(pev->pContainingEntity);

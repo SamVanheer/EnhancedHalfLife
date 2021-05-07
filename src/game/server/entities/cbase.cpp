@@ -254,11 +254,11 @@ void CBaseEntity::SetAbsOrigin(const Vector& origin)
 {
 	if (auto ent = edict(); ent)
 	{
-		SET_ORIGIN(ent, origin);
+		g_engfuncs.pfnSetOrigin(ent, origin);
 	}
 }
 
 void CBaseEntity::SetSize(const Vector& mins, const Vector& maxs)
 {
-	SET_SIZE(edict(), mins, maxs);
+	g_engfuncs.pfnSetSize(edict(), mins, maxs);
 }

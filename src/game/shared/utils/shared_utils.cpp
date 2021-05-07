@@ -211,6 +211,6 @@ void MESSAGE_BEGIN(MessageDest msg_dest, int msg_type, const float* pOrigin, CBa
 
 void UTIL_PlaybackEvent(int flags, CBaseEntity* invoker, unsigned short eventIndex, const EventPlaybackArgs& args)
 {
-	PLAYBACK_EVENT_FULL(flags, CBaseEntity::EdictOrNull(invoker), eventIndex, args.delay,
+	g_engfuncs.pfnPlaybackEvent(flags, CBaseEntity::EdictOrNull(invoker), eventIndex, args.delay,
 		args.origin, args.angles, args.fparam1, args.fparam2, args.iparam1, args.iparam2, args.bparam1, args.bparam2);
 }

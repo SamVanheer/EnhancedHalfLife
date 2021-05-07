@@ -25,10 +25,10 @@ void UTIL_EmitAmbientSound(CBaseEntity* entity, const Vector& vecOrigin, const c
 		{
 			char name[32];
 			if (SENTENCEG_Lookup(samp, name, sizeof(name)) >= 0)
-				EMIT_AMBIENT_SOUND(edict, vecOrigin, name, vol, attenuation, fFlags, pitch);
+				g_engfuncs.pfnEmitAmbientSound(edict, vecOrigin, name, vol, attenuation, fFlags, pitch);
 		}
 		else
-			EMIT_AMBIENT_SOUND(edict, vecOrigin, samp, vol, attenuation, fFlags, pitch);
+			g_engfuncs.pfnEmitAmbientSound(edict, vecOrigin, samp, vol, attenuation, fFlags, pitch);
 	}
 	else
 	{

@@ -66,7 +66,7 @@ void ClientDisconnect(edict_t* pEntity)
 	// since the edict doesn't get deleted, fix it so it doesn't interfere.
 	pEntity->v.takedamage = static_cast<int>(DamageMode::No);// don't attract autoaim
 	pEntity->v.solid = Solid::Not;// nonsolid
-	SET_ORIGIN(pEntity, pEntity->v.origin);
+	g_engfuncs.pfnSetOrigin(pEntity, pEntity->v.origin);
 
 	if (auto pPlayer = reinterpret_cast<CBasePlayer*>(GET_PRIVATE(pEntity)); pPlayer)
 	{
@@ -688,8 +688,8 @@ void SetupVisibility(edict_t* pViewEntity, edict_t* pClient, byte** pvs, byte** 
 		org = org + (VEC_HULL_MIN - VEC_DUCK_HULL_MIN);
 	}
 
-	*pvs = ENGINE_SET_PVS(org);
-	*pas = ENGINE_SET_PAS(org);
+	*pvs = g_engfuncs.pfnSetFatPVS(org);
+	*pas = g_engfuncs.pfnSetFatPAS(org);
 }
 
 int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int hostflags, int player, byte* pSet)
@@ -713,7 +713,7 @@ int AddToFullPack(entity_state_t* state, int e, edict_t* ent, edict_t* host, int
 	// If pSet is nullptr, then the test will always succeed and the entity will be added to the update
 	if (ent != host)
 	{
-		if (!ENGINE_CHECK_VISIBILITY(ent, pSet))
+		if (!g_engfuncs.pfnCheckVisibility(ent, pSet))
 		{
 			return false;
 		}
@@ -1234,7 +1234,7 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 	cd->flSwimTime = pev->flSwimTime;
 	cd->waterjumptime = pev->teleport_time;
 
-	safe_strcpy(cd->physinfo, ENGINE_GETPHYSINFO(ent));
+	safe_strcpy(cd->physinfo, g_engfuncs.pfnGetPhysicsInfoString(ent));
 
 	cd->maxspeed = pev->maxspeed;
 	cd->fov = pl->m_iFOV;
@@ -1340,7 +1340,7 @@ void CreateInstancedBaselines()
 	entity_state_t state{};
 
 	// Create any additional baselines here for things like grendates, etc.
-	// iret = ENGINE_INSTANCE_BASELINE( pc->pev->classname, &state );
+	// iret = g_engfuncs.pfnCreateInstancedBaseline( pc->pev->classname, &state );
 
 	// Destroy objects.
 	//UTIL_Remove( pc );

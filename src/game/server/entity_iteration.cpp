@@ -93,7 +93,7 @@ CBaseEntity* UTIL_FindEntityInSphere(CBaseEntity* pStartEntity, const Vector& ve
 	else
 		pentEntity = nullptr;
 
-	pentEntity = FIND_ENTITY_IN_SPHERE(pentEntity, vecCenter, flRadius);
+	pentEntity = g_engfuncs.pfnFindEntityInSphere(pentEntity, vecCenter, flRadius);
 
 	if (!IsNullEnt(pentEntity))
 		return CBaseEntity::Instance(pentEntity);
@@ -109,7 +109,7 @@ CBaseEntity* UTIL_FindEntityByString(CBaseEntity* pStartEntity, const char* szKe
 	else
 		pentEntity = nullptr;
 
-	pentEntity = FIND_ENTITY_BY_STRING(pentEntity, szKeyword, szValue);
+	pentEntity = g_engfuncs.pfnFindEntityByString(pentEntity, szKeyword, szValue);
 
 	if (!IsNullEnt(pentEntity))
 		return CBaseEntity::Instance(pentEntity);
@@ -156,7 +156,7 @@ CBaseEntity* UTIL_FindEntityGeneric(const char* szWhatever, const Vector& vecSrc
 
 CBasePlayer* UTIL_FindClientInPVS(CBaseEntity* pPVSEntity)
 {
-	return static_cast<CBasePlayer*>(CBaseEntity::InstanceOrNull(FIND_CLIENT_IN_PVS(CBaseEntity::EdictOrNull(pPVSEntity))));
+	return static_cast<CBasePlayer*>(CBaseEntity::InstanceOrNull(g_engfuncs.pfnFindClientInPVS(CBaseEntity::EdictOrNull(pPVSEntity))));
 }
 
 int UTIL_MonstersInSphere(CBaseEntity** pList, int listMax, const Vector& center, float radius)

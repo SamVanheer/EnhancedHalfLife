@@ -209,7 +209,7 @@ struct DLL_FUNCTIONS
 	void			(*pfnCreateInstancedBaselines) ();
 
 	/**
-	*	@brief One of the ENGINE_FORCE_UNMODIFIED files failed the consistency check for the specified player
+	*	@brief One of the g_engfuncs.pfnForceUnmodified files failed the consistency check for the specified player
 	*	@return false to allow the client to continue, true to force immediate disconnection
 	*	( with an optional disconnect message of up to 256 characters )
 	*/

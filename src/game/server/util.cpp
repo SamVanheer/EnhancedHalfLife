@@ -61,7 +61,7 @@ void UTIL_SetGroupTrace(int groupmask, int op)
 	g_groupmask = groupmask;
 	g_groupop = op;
 
-	ENGINE_SETGROUPMASK(g_groupmask, g_groupop);
+	g_engfuncs.pfnSetGroupMask(g_groupmask, g_groupop);
 }
 
 void UTIL_UnsetGroupTrace()
@@ -69,7 +69,7 @@ void UTIL_UnsetGroupTrace()
 	g_groupmask = 0;
 	g_groupop = 0;
 
-	ENGINE_SETGROUPMASK(0, 0);
+	g_engfuncs.pfnSetGroupMask(0, 0);
 }
 
 UTIL_GroupTrace::UTIL_GroupTrace(int groupmask, int op)
@@ -80,7 +80,7 @@ UTIL_GroupTrace::UTIL_GroupTrace(int groupmask, int op)
 	g_groupmask = groupmask;
 	g_groupop = op;
 
-	ENGINE_SETGROUPMASK(g_groupmask, g_groupop);
+	g_engfuncs.pfnSetGroupMask(g_groupmask, g_groupop);
 }
 
 UTIL_GroupTrace::~UTIL_GroupTrace()
@@ -88,7 +88,7 @@ UTIL_GroupTrace::~UTIL_GroupTrace()
 	g_groupmask = m_oldgroupmask;
 	g_groupop = m_oldgroupop;
 
-	ENGINE_SETGROUPMASK(g_groupmask, g_groupop);
+	g_engfuncs.pfnSetGroupMask(g_groupmask, g_groupop);
 }
 
 #ifdef	DEBUG
@@ -118,7 +118,7 @@ bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapo
 
 CBaseEntity* UTIL_CreateNamedEntity(string_t className)
 {
-	auto edict = CREATE_NAMED_ENTITY(className);
+	auto edict = g_engfuncs.pfnCreateNamedEntity(className);
 
 	if (IsNullEnt(edict))
 	{
@@ -135,7 +135,7 @@ CBaseEntity* UTIL_CreateNamedEntity(string_t className)
 	//Cover this edge case with a seperate error message
 	ALERT(at_error, "Couldn't create entity \"%s\" by name!\n", STRING(className));
 
-	REMOVE_ENTITY(edict);
+	g_engfuncs.pfnRemoveEntity(edict);
 
 	return nullptr;
 }
@@ -468,7 +468,7 @@ void UTIL_ShowMessageAll(const char* pString)
 // Overloaded to add IGNORE_GLASS
 void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, IgnoreGlass ignoreGlass, CBaseEntity* pIgnore, TraceResult* ptr)
 {
-	TRACE_LINE(vecStart, vecEnd,
+	g_engfuncs.pfnTraceLine(vecStart, vecEnd,
 		(igmon == IgnoreMonsters::Yes ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING)
 		| (ignoreGlass == IgnoreGlass::Yes ? TRACE_IGNORE_GLASS : TRACE_IGNORE_NOTHING),
 		CBaseEntity::EdictOrNull(pIgnore), ptr);
@@ -477,7 +477,7 @@ void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters
 
 void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, CBaseEntity* pIgnore, TraceResult* ptr)
 {
-	TRACE_LINE(vecStart, vecEnd,
+	g_engfuncs.pfnTraceLine(vecStart, vecEnd,
 		(igmon == IgnoreMonsters::Yes ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING),
 		CBaseEntity::EdictOrNull(pIgnore), ptr);
 }
@@ -485,7 +485,7 @@ void UTIL_TraceLine(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters
 
 void UTIL_TraceHull(const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, Hull hullNumber, CBaseEntity* pIgnore, TraceResult* ptr)
 {
-	TRACE_HULL(vecStart, vecEnd,
+	g_engfuncs.pfnTraceHull(vecStart, vecEnd,
 		(igmon == IgnoreMonsters::Yes ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING),
 		static_cast<int>(hullNumber), CBaseEntity::EdictOrNull(pIgnore), ptr);
 }
@@ -497,7 +497,8 @@ void UTIL_TraceModel(const Vector& vecStart, const Vector& vecEnd, Hull hullNumb
 
 void UTIL_TraceMonsterHull(CBaseEntity* pEntity, const Vector& vecStart, const Vector& vecEnd, IgnoreMonsters igmon, CBaseEntity* pIgnore, TraceResult* ptr)
 {
-	TRACE_MONSTER_HULL(CBaseEntity::EdictOrNull(pEntity), vecStart, vecEnd, igmon == IgnoreMonsters::Yes ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING,
+	g_engfuncs.pfnTraceMonsterHull(CBaseEntity::EdictOrNull(pEntity), vecStart, vecEnd,
+		igmon == IgnoreMonsters::Yes ? TRACE_IGNORE_MONSTERS : TRACE_IGNORE_NOTHING,
 		CBaseEntity::EdictOrNull(pIgnore), ptr);
 }
 
@@ -534,7 +535,7 @@ CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe)
 
 void UTIL_ParticleEffect(const Vector& vecOrigin, const Vector& vecDirection, std::uint32_t ulColor, std::uint32_t ulCount)
 {
-	PARTICLE_EFFECT(vecOrigin, vecDirection, (float)ulColor, (float)ulCount);
+	g_engfuncs.pfnParticleEffect(vecOrigin, vecDirection, (float)ulColor, (float)ulCount);
 }
 
 char* UTIL_VarArgs(const char* format, ...)
@@ -552,7 +553,7 @@ char* UTIL_VarArgs(const char* format, ...)
 Vector UTIL_GetAimVector(CBaseEntity* entity, float flSpeed)
 {
 	Vector tmp;
-	GET_AIM_VECTOR(CBaseEntity::EdictOrNull(entity), flSpeed, tmp);
+	g_engfuncs.pfnGetAimVector(CBaseEntity::EdictOrNull(entity), flSpeed, tmp);
 	return tmp;
 }
 
@@ -593,7 +594,7 @@ bool UTIL_ShouldShowBlood(int color)
 
 Contents UTIL_PointContents(const Vector& vec)
 {
-	return POINT_CONTENTS(vec);
+	return g_engfuncs.pfnPointContents(vec);
 }
 
 void UTIL_BloodStream(const Vector& origin, const Vector& direction, int color, int amount)
@@ -930,7 +931,7 @@ void UTIL_RemoveNow(CBaseEntity* pEntity)
 	if (!pEntity)
 		return;
 
-	REMOVE_ENTITY(pEntity->edict());
+	g_engfuncs.pfnRemoveEntity(pEntity->edict());
 }
 
 bool UTIL_IsValidEntity(CBaseEntity* pEntity)
