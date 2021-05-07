@@ -214,7 +214,6 @@ void CSoundEnt::Initialize()
 
 int CSoundEnt::SoundsInList(int iListType)
 {
-	//TODO: make sure this is initialized
 	int iThisSound;
 
 	if (iListType == SOUNDLISTTYPE_FREE)
