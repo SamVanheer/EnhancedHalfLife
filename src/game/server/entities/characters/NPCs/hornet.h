@@ -15,8 +15,12 @@
 
 #pragma once
 
-constexpr int HORNET_TYPE_RED = 0;
-constexpr int HORNET_TYPE_ORANGE = 1;
+enum class HornetType
+{
+	Red = 0,
+	Orange = 1
+};
+
 constexpr float HORNET_RED_SPEED = 600;
 constexpr float HORNET_ORANGE_SPEED = 800;
 constexpr float HORNET_BUZZ_VOLUME = 0.8;
@@ -73,6 +77,6 @@ public:
 	bool TakeDamage(const TakeDamageInfo& info) override;
 
 	float m_flStopAttack = 0;
-	int m_iHornetType = 0; //TODO: enum
+	HornetType m_iHornetType = HornetType::Red;
 	float m_flFlySpeed = 0;
 };

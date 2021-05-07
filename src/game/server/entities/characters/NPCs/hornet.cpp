@@ -63,12 +63,12 @@ void CHornet::Spawn()
 
 	if (RANDOM_LONG(1, 5) <= 2)
 	{
-		m_iHornetType = HORNET_TYPE_RED;
+		m_iHornetType = HornetType::Red;
 		m_flFlySpeed = HORNET_RED_SPEED;
 	}
 	else
 	{
-		m_iHornetType = HORNET_TYPE_ORANGE;
+		m_iHornetType = HornetType::Orange;
 		m_flFlySpeed = HORNET_ORANGE_SPEED;
 	}
 
@@ -190,12 +190,12 @@ void CHornet::IgniteTrail()
 
 	switch (m_iHornetType)
 	{
-	case HORNET_TYPE_RED:
+	case HornetType::Red:
 		WRITE_BYTE(179);   // r, g, b
 		WRITE_BYTE(39);   // r, g, b
 		WRITE_BYTE(14);   // r, g, b
 		break;
-	case HORNET_TYPE_ORANGE:
+	case HornetType::Orange:
 		WRITE_BYTE(255);   // r, g, b
 		WRITE_BYTE(128);   // r, g, b
 		WRITE_BYTE(0);   // r, g, b
@@ -256,7 +256,7 @@ void CHornet::TrackTarget()
 		}
 	}
 
-	if (flDelta <= 0 && m_iHornetType == HORNET_TYPE_RED)
+	if (flDelta <= 0 && m_iHornetType == HornetType::Red)
 	{// no flying backwards, but we don't want to invert this, cause we'd go fast when we have to turn REAL far.
 		flDelta = 0.25;
 	}
@@ -272,11 +272,11 @@ void CHornet::TrackTarget()
 
 	switch (m_iHornetType)
 	{
-	case HORNET_TYPE_RED:
+	case HornetType::Red:
 		SetAbsVelocity(GetAbsVelocity() * (m_flFlySpeed * flDelta));// scale the dir by the ( speed * width of turn )
 		pev->nextthink = gpGlobals->time + RANDOM_FLOAT(0.1, 0.3);
 		break;
-	case HORNET_TYPE_ORANGE:
+	case HornetType::Orange:
 		SetAbsVelocity(GetAbsVelocity() * m_flFlySpeed);// do not have to slow down to turn.
 		pev->nextthink = gpGlobals->time + 0.1;// fixed think time
 		break;
