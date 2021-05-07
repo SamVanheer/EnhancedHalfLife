@@ -59,13 +59,6 @@ extern enginefuncs_t g_engfuncs;
 #define CVAR_SET_STRING	(*g_engfuncs.pfnCVarSetString)
 #define CVAR_GET_POINTER (*g_engfuncs.pfnCVarGetPointer)
 #define ALERT			(*g_engfuncs.pfnAlertMessage)
-inline void* GET_PRIVATE(edict_t* pent)
-{
-	if (pent)
-		return pent->pvPrivateData;
-	return nullptr;
-}
-
 #define REG_USER_MSG				(*g_engfuncs.pfnRegUserMsg)
 #define FUNCTION_FROM_NAME			(*g_engfuncs.pfnFunctionFromName)
 #define NAME_FOR_FUNCTION			(*g_engfuncs.pfnNameForFunction)

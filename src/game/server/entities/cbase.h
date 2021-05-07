@@ -601,15 +601,7 @@ public:
 			return pDefault;
 		}
 
-		return reinterpret_cast<CBaseEntity*>(GET_PRIVATE(pEntity));
-	}
-
-	static CBaseEntity* Instance(edict_t* pent)
-	{
-		if (!pent)
-			return UTIL_GetWorld();
-		CBaseEntity* pEnt = (CBaseEntity*)GET_PRIVATE(pent);
-		return pEnt;
+		return reinterpret_cast<CBaseEntity*>(pEntity->pvPrivateData);
 	}
 
 	static CBaseEntity* InstanceOrNull(edict_t* pEntity)
@@ -620,6 +612,11 @@ public:
 	static CBaseEntity* InstanceOrWorld(edict_t* pEntity)
 	{
 		return InstanceOrDefault(pEntity, UTIL_GetWorld());
+	}
+
+	static CBaseEntity* Instance(edict_t* pent)
+	{
+		return InstanceOrWorld(pent);
 	}
 
 	static edict_t* EdictOrNull(CBaseEntity* pEntity)
@@ -1074,7 +1071,7 @@ template <class T> T* GetClassPtr(T* a)
 		pev = &g_engfuncs.pfnCreateEntity()->v;
 
 	// get the private data
-	a = (T*)GET_PRIVATE(pev->pContainingEntity);
+	a = (T*)CBaseEntity::InstanceOrNull(pev->pContainingEntity);
 
 	if (a == nullptr)
 	{

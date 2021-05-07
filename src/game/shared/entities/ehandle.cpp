@@ -31,7 +31,7 @@ CBaseEntity* BaseHandle::Get()
 		return nullptr;
 	}
 
-	return reinterpret_cast<CBaseEntity*>(GET_PRIVATE(m_pent));
+	return CBaseEntity::InstanceOrNull(m_pent);
 }
 
 void BaseHandle::Set(CBaseEntity* entity)

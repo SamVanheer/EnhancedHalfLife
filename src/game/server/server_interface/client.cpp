@@ -68,7 +68,7 @@ void ClientDisconnect(edict_t* pEntity)
 	pEntity->v.solid = Solid::Not;// nonsolid
 	g_engfuncs.pfnSetOrigin(pEntity, pEntity->v.origin);
 
-	if (auto pPlayer = reinterpret_cast<CBasePlayer*>(GET_PRIVATE(pEntity)); pPlayer)
+	if (auto pPlayer = static_cast<CBasePlayer*>(CBaseEntity::InstanceOrNull(pEntity)); pPlayer)
 	{
 		if (pPlayer->m_pTank != nullptr)
 		{
@@ -476,13 +476,13 @@ void ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 
 void PlayerPreThink(edict_t* pEntity)
 {
-	if (CBasePlayer* pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity); pPlayer)
+	if (CBasePlayer* pPlayer = static_cast<CBasePlayer*>(CBaseEntity::InstanceOrNull(pEntity)); pPlayer)
 		pPlayer->PreThink();
 }
 
 void PlayerPostThink(edict_t* pEntity)
 {
-	if (CBasePlayer* pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity); pPlayer)
+	if (CBasePlayer* pPlayer = static_cast<CBasePlayer*>(CBaseEntity::InstanceOrNull(pEntity)); pPlayer)
 		pPlayer->PostThink();
 }
 
@@ -638,7 +638,7 @@ void Sys_Error(const char* error_string)
 
 void PlayerCustomization(edict_t* pEntity, customization_t* pCust)
 {
-	CBasePlayer* pPlayer = (CBasePlayer*)GET_PRIVATE(pEntity);
+	CBasePlayer* pPlayer = static_cast<CBasePlayer*>(CBaseEntity::InstanceOrNull(pEntity));
 
 	if (!pPlayer)
 	{

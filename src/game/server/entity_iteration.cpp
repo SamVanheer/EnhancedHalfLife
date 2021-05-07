@@ -19,7 +19,7 @@ CBaseEntity* UTIL_EntityByIndex(int index)
 {
 	if (auto edict = g_engfuncs.pfnPEntityOfEntIndex(index); edict)
 	{
-		return reinterpret_cast<CBaseEntity*>(edict->pvPrivateData);
+		return CBaseEntity::InstanceOrNull(edict);
 	}
 
 	return nullptr;

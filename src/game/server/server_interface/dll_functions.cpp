@@ -98,7 +98,7 @@ NEW_DLL_FUNCTIONS gNewDLLFunctions =
 
 int DispatchSpawn(edict_t* pent)
 {
-	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pent);
+	CBaseEntity* pEntity = CBaseEntity::InstanceOrNull(pent);
 
 	if (pEntity)
 	{
@@ -111,7 +111,7 @@ int DispatchSpawn(edict_t* pent)
 		// Try to get the pointer again, in case the spawn function deleted the entity.
 		// UNDONE: Spawn() should really return a code to ask that the entity be deleted, but
 		// that would touch too much code for me to do that right now.
-		pEntity = (CBaseEntity*)GET_PRIVATE(pent);
+		pEntity = CBaseEntity::InstanceOrNull(pent);
 
 		if (pEntity)
 		{
@@ -150,7 +150,7 @@ int DispatchSpawn(edict_t* pent)
 
 void DispatchThink(edict_t* pent)
 {
-	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pent);
+	CBaseEntity* pEntity = CBaseEntity::InstanceOrNull(pent);
 	if (pEntity)
 	{
 		if (IsBitSet(pEntity->pev->flags, FL_DORMANT))
@@ -162,8 +162,8 @@ void DispatchThink(edict_t* pent)
 
 void DispatchUse(edict_t* pentUsed, edict_t* pentOther)
 {
-	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pentUsed);
-	CBaseEntity* pOther = (CBaseEntity*)GET_PRIVATE(pentOther);
+	CBaseEntity* pEntity = CBaseEntity::InstanceOrNull(pentUsed);
+	CBaseEntity* pOther = CBaseEntity::InstanceOrNull(pentOther);
 
 	if (pEntity && !(pEntity->pev->flags & FL_KILLME))
 		pEntity->Use({pOther, pOther, UseType::Toggle});
@@ -178,8 +178,8 @@ void DispatchTouch(edict_t* pentTouched, edict_t* pentOther)
 	if (gTouchDisabled)
 		return;
 
-	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pentTouched);
-	CBaseEntity* pOther = (CBaseEntity*)GET_PRIVATE(pentOther);
+	CBaseEntity* pEntity = CBaseEntity::InstanceOrNull(pentTouched);
+	CBaseEntity* pOther = CBaseEntity::InstanceOrNull(pentOther);
 
 	if (pEntity && pOther && !((pEntity->pev->flags | pOther->pev->flags) & FL_KILLME))
 		pEntity->Touch(pOther);
@@ -187,8 +187,8 @@ void DispatchTouch(edict_t* pentTouched, edict_t* pentOther)
 
 void DispatchBlocked(edict_t* pentBlocked, edict_t* pentOther)
 {
-	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pentBlocked);
-	CBaseEntity* pOther = (CBaseEntity*)GET_PRIVATE(pentOther);
+	CBaseEntity* pEntity = CBaseEntity::InstanceOrNull(pentBlocked);
+	CBaseEntity* pOther = CBaseEntity::InstanceOrNull(pentOther);
 
 	if (pEntity)
 		pEntity->Blocked(pOther);
@@ -218,7 +218,7 @@ void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
 		return;
 
 	// Get the actualy entity object
-	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pentKeyvalue);
+	CBaseEntity* pEntity = CBaseEntity::InstanceOrNull(pentKeyvalue);
 
 	if (!pEntity)
 		return;
@@ -230,7 +230,7 @@ void DispatchSave(edict_t* pent, SAVERESTOREDATA* pSaveData)
 {
 	gpGlobals->time = pSaveData->time;
 
-	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pent);
+	CBaseEntity* pEntity = CBaseEntity::InstanceOrNull(pent);
 
 	if (pEntity && pSaveData)
 	{
@@ -264,7 +264,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 {
 	gpGlobals->time = pSaveData->time;
 
-	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pent);
+	CBaseEntity* pEntity = CBaseEntity::InstanceOrNull(pent);
 
 	if (pEntity && pSaveData)
 	{
@@ -328,7 +328,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 		}
 
 		// Again, could be deleted, get the pointer again.
-		pEntity = (CBaseEntity*)GET_PRIVATE(pent);
+		pEntity = CBaseEntity::InstanceOrNull(pent);
 
 #if 0
 		if (pEntity && pEntity->pev->globalname && globalEntity)
@@ -375,7 +375,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 
 void DispatchObjectCollisionBox(edict_t* pent)
 {
-	CBaseEntity* pEntity = (CBaseEntity*)GET_PRIVATE(pent);
+	CBaseEntity* pEntity = CBaseEntity::InstanceOrNull(pent);
 	if (pEntity)
 	{
 		pEntity->SetObjectCollisionBox();
@@ -398,10 +398,8 @@ void SaveReadFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseDa
 
 void OnFreeEntPrivateData(edict_t* pEdict)
 {
-	if (pEdict && pEdict->pvPrivateData)
+	if (auto entity = CBaseEntity::InstanceOrNull(pEdict); entity)
 	{
-		auto entity = reinterpret_cast<CBaseEntity*>(pEdict->pvPrivateData);
-
 		entity->Destroy();
 
 		delete entity;
