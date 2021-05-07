@@ -1198,54 +1198,53 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 {
 	if (!ent || !ent->pvPrivateData)
 		return;
-	entvars_t* pev = const_cast<entvars_t*>(&ent->v);
+
 	CBasePlayer* pl = static_cast<CBasePlayer*>(CBasePlayer::Instance(const_cast<edict_t*>(ent)));
-	entvars_t* pevOrg = pev;
+	CBasePlayer* plOrg = pl;
 
 	// if user is spectating different player in First person, override some vars
 	if (pl->pev->iuser1 == OBS_IN_EYE)
 	{
 		if (auto target = pl->m_hObserverTarget.Get(); target)
 		{
-			pev = target->pev;
 			//TODO: this doesn't account for the possibility that the target isn't a player
 			pl = static_cast<CBasePlayer*>(target);
 		}
 	}
 
-	cd->flags = pev->flags;
-	cd->health = pev->health;
+	cd->flags = pl->pev->flags;
+	cd->health = pl->pev->health;
 
-	cd->viewmodel = MODEL_INDEX(STRING(pev->viewmodel));
+	cd->viewmodel = MODEL_INDEX(STRING(pl->pev->viewmodel));
 
-	cd->waterlevel = pev->waterlevel;
-	cd->watertype = pev->watertype;
-	cd->weapons = pev->weapons;
+	cd->waterlevel = pl->pev->waterlevel;
+	cd->watertype = pl->pev->watertype;
+	cd->weapons = pl->pev->weapons;
 
 	// Vectors
-	cd->origin = pev->origin;
-	cd->velocity = pev->velocity;
-	cd->view_ofs = pev->view_ofs;
-	cd->punchangle = pev->punchangle;
+	cd->origin = pl->pev->origin;
+	cd->velocity = pl->pev->velocity;
+	cd->view_ofs = pl->pev->view_ofs;
+	cd->punchangle = pl->pev->punchangle;
 
-	cd->bInDuck = pev->bInDuck;
-	cd->flTimeStepSound = pev->flTimeStepSound;
-	cd->flDuckTime = pev->flDuckTime;
-	cd->flSwimTime = pev->flSwimTime;
-	cd->waterjumptime = pev->teleport_time;
+	cd->bInDuck = pl->pev->bInDuck;
+	cd->flTimeStepSound = pl->pev->flTimeStepSound;
+	cd->flDuckTime = pl->pev->flDuckTime;
+	cd->flSwimTime = pl->pev->flSwimTime;
+	cd->waterjumptime = pl->pev->teleport_time;
 
 	safe_strcpy(cd->physinfo, g_engfuncs.pfnGetPhysicsInfoString(ent));
 
-	cd->maxspeed = pev->maxspeed;
+	cd->maxspeed = pl->pev->maxspeed;
 	cd->fov = pl->m_iFOV;
-	cd->weaponanim = pev->weaponanim;
+	cd->weaponanim = pl->pev->weaponanim;
 
-	cd->pushmsec = pev->pushmsec;
+	cd->pushmsec = pl->pev->pushmsec;
 
 	//Spectator mode
 	// don't use spec vars from chased player
-	cd->iuser1 = pevOrg->iuser1;
-	cd->iuser2 = pevOrg->iuser2;
+	cd->iuser1 = plOrg->pev->iuser1;
+	cd->iuser2 = plOrg->pev->iuser2;
 
 #if defined( CLIENT_WEAPONS )
 	if (sendweapons)
