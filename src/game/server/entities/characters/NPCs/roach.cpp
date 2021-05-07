@@ -13,13 +13,15 @@
 *
 ****/
 
-//TODO: make enum
-constexpr int ROACH_IDLE = 0;
-constexpr int ROACH_BORED = 1;
-constexpr int ROACH_SCARED_BY_ENT = 2;
-constexpr int ROACH_SCARED_BY_LIGHT = 3;
-constexpr int ROACH_SMELL_FOOD = 4;
-constexpr int ROACH_EAT = 5;
+enum class RoachState
+{
+	Idle = 0,
+	Bored,
+	ScaredByEntity,
+	ScaredByLight,
+	SmellFood,
+	Eat,
+};
 
 /**
 *	@brief cockroach
@@ -36,7 +38,7 @@ public:
 	/**
 	*	@brief Picks a new spot for roach to run to.
 	*/
-	void PickNewDest(int iCondition);
+	void PickNewDest(RoachState iCondition);
 	void EXPORT Touch(CBaseEntity* pOther) override;
 	void Killed(const KilledInfo& info) override;
 
@@ -52,8 +54,7 @@ public:
 
 	// UNDONE: These don't necessarily need to be save/restored, but if we add more data, it may
 	bool m_fLightHacked = false;
-	int m_iMode = 0;
-	// -----------------------------
+	RoachState m_iMode = RoachState::Idle;
 };
 
 LINK_ENTITY_TO_CLASS(monster_cockroach, CRoach);
@@ -112,7 +113,7 @@ void CRoach::Spawn()
 	SetDamageMode(DamageMode::Yes);
 	m_fLightHacked = false;
 	m_flLastLightLevel = -1;
-	m_iMode = ROACH_IDLE;
+	m_iMode = RoachState::Idle;
 	m_flNextSmellTime = gpGlobals->time;
 }
 
@@ -173,8 +174,8 @@ void CRoach::MonsterThink()
 
 	switch (m_iMode)
 	{
-	case	ROACH_IDLE:
-	case	ROACH_EAT:
+	case	RoachState::Idle:
+	case	RoachState::Eat:
 	{
 		// if not moving, sample environment to see if anything scary is around. Do a radius search 'look' at random.
 		if (RANDOM_LONG(0, 3) == 1)
@@ -185,17 +186,17 @@ void CRoach::MonsterThink()
 				// if see something scary
 				//ALERT ( at_aiconsole, "Scared\n" );
 				Eat(30 + (RANDOM_LONG(0, 14)));// roach will ignore food for 30 to 45 seconds
-				PickNewDest(ROACH_SCARED_BY_ENT);
+				PickNewDest(RoachState::ScaredByEntity);
 				SetActivity(ACT_WALK);
 			}
 			else if (RANDOM_LONG(0, 149) == 1)
 			{
 				// if roach doesn't see anything, there's still a chance that it will move. (boredom)
 				//ALERT ( at_aiconsole, "Bored\n" );
-				PickNewDest(ROACH_BORED);
+				PickNewDest(RoachState::Bored);
 				SetActivity(ACT_WALK);
 
-				if (m_iMode == ROACH_EAT)
+				if (m_iMode == RoachState::Eat)
 				{
 					// roach will ignore food for 30 to 45 seconds if it got bored while eating. 
 					Eat(30 + (RANDOM_LONG(0, 14)));
@@ -204,7 +205,7 @@ void CRoach::MonsterThink()
 		}
 
 		// don't do this stuff if eating!
-		if (m_iMode == ROACH_IDLE)
+		if (m_iMode == RoachState::Idle)
 		{
 			if (ShouldEat())
 			{
@@ -215,7 +216,7 @@ void CRoach::MonsterThink()
 			{
 				// someone turned on lights!
 				//ALERT ( at_console, "Lights!\n" );
-				PickNewDest(ROACH_SCARED_BY_LIGHT);
+				PickNewDest(RoachState::ScaredByLight);
 				SetActivity(ACT_WALK);
 			}
 			else if (HasConditions(bits_COND_SMELL_FOOD))
@@ -224,7 +225,7 @@ void CRoach::MonsterThink()
 				if (CSound* pSound = CSoundEnt::SoundPointerForIndex(m_iAudibleList);
 					pSound && fabs(pSound->m_vecOrigin.z - GetAbsOrigin().z) <= 3)
 				{
-					PickNewDest(ROACH_SMELL_FOOD);
+					PickNewDest(RoachState::SmellFood);
 					SetActivity(ACT_WALK);
 				}
 			}
@@ -232,7 +233,7 @@ void CRoach::MonsterThink()
 
 		break;
 	}
-	case	ROACH_SCARED_BY_LIGHT:
+	case	RoachState::ScaredByLight:
 	{
 		// if roach was scared by light, then stop if we're over a spot at least as dark as where we started!
 		if (Illumination() <= m_flLastLightLevel)
@@ -250,11 +251,11 @@ void CRoach::MonsterThink()
 	}
 }
 
-void CRoach::PickNewDest(int iCondition)
+void CRoach::PickNewDest(RoachState iCondition)
 {
 	m_iMode = iCondition;
 
-	if (m_iMode == ROACH_SMELL_FOOD)
+	if (m_iMode == RoachState::SmellFood)
 	{
 		// find the food and go there.
 		if (CSound* pSound = CSoundEnt::SoundPointerForIndex(m_iAudibleList); pSound)
@@ -326,20 +327,20 @@ void CRoach::Move(float flInterval)
 		SetActivity(ACT_IDLE);
 		m_flLastLightLevel = Illumination();// this is roach's new comfortable light level
 
-		if (m_iMode == ROACH_SMELL_FOOD)
+		if (m_iMode == RoachState::SmellFood)
 		{
-			m_iMode = ROACH_EAT;
+			m_iMode = RoachState::Eat;
 		}
 		else
 		{
-			m_iMode = ROACH_IDLE;
+			m_iMode = RoachState::Idle;
 		}
 	}
 
-	if (RANDOM_LONG(0, 149) == 1 && m_iMode != ROACH_SCARED_BY_LIGHT && m_iMode != ROACH_SMELL_FOOD)
+	if (RANDOM_LONG(0, 149) == 1 && m_iMode != RoachState::ScaredByLight && m_iMode != RoachState::SmellFood)
 	{
 		// random skitter while moving as long as not on a b-line to get out of light or going to food
-		PickNewDest(false);
+		PickNewDest(RoachState::Idle);
 	}
 }
 
