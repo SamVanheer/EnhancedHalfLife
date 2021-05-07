@@ -715,7 +715,6 @@ constexpr int MAX_EQUIP = 32;
 /**
 *	@brief Sets the default player equipment
 *	@details Flag: USE Only
-*	TODO: make save game compatible
 */
 class CGamePlayerEquip : public CRulePointEntity
 {
@@ -726,6 +725,10 @@ public:
 
 	inline bool	UseOnly() { return (pev->spawnflags & SF_PLAYEREQUIP_USEONLY) != 0; }
 
+	bool Save(CSave& save) override;
+	bool Restore(CRestore& restore) override;
+	static TYPEDESCRIPTION m_SaveData[];
+
 private:
 
 	void		EquipPlayer(CBaseEntity* pPlayer);
@@ -735,6 +738,14 @@ private:
 };
 
 LINK_ENTITY_TO_CLASS(game_player_equip, CGamePlayerEquip);
+
+TYPEDESCRIPTION	CGamePlayerEquip::m_SaveData[] =
+{
+	DEFINE_ARRAY(CGamePlayerEquip, m_weaponNames, FIELD_STRING, MAX_EQUIP),
+	DEFINE_ARRAY(CGamePlayerEquip, m_weaponCount, FIELD_INTEGER, MAX_EQUIP),
+};
+
+IMPLEMENT_SAVERESTORE(CGamePlayerEquip, CRulePointEntity);
 
 void CGamePlayerEquip::KeyValue(KeyValueData* pkvd)
 {
