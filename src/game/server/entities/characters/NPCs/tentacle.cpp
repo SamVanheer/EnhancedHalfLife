@@ -83,9 +83,9 @@ public:
 	float m_flTapRadius = 0;
 
 	float m_flNextSong = 0;
-	//TODO: use inline
-	static int g_fFlySound;
-	static int g_fSquirmSound;
+
+	static inline bool g_fFlySound = false;
+	static inline bool g_fSquirmSound = false;
 
 	float m_flMaxYaw = 0;
 	int m_iTapSound = 0;
@@ -97,9 +97,6 @@ public:
 	static const char* pHitDirt[];
 	static const char* pHitWater[];
 };
-
-int CTentacle::g_fFlySound;
-int CTentacle::g_fSquirmSound;
 
 LINK_ENTITY_TO_CLASS(monster_tentacle, CTentacle);
 
