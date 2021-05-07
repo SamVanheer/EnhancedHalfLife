@@ -117,9 +117,10 @@ void CGMan::StartTask(Task_t* pTask)
 	switch (pTask->iTask)
 	{
 	case TASK_WAIT:
-		if (m_hPlayer == nullptr)
+		//Reacquire player if they are no longer visible
+		if (m_hPlayer == nullptr || !m_hPlayer->IsVisible(this))
 		{
-			m_hPlayer = UTIL_GetLocalPlayer();
+			m_hPlayer = UTIL_FindClientInPVS(this);
 		}
 		break;
 	}
