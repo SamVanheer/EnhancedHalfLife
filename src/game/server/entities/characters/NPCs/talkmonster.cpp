@@ -477,18 +477,21 @@ void CTalkMonster::RunTask(Task_t* pTask)
 	case TASK_TLK_CLIENT_STARE:
 	case TASK_TLK_LOOK_AT_CLIENT:
 	{
-		// Get edict for one player
-		CBasePlayer* pPlayer = UTIL_GetLocalPlayer();
+		auto pPlayer = UTIL_FindClientInPVS(this);
+
+		if (!pPlayer)
+		{
+			//No player near me
+			TaskFail();
+			return;
+		}
 
 		// track head to the client for a while.
 		if (m_MonsterState == NPCState::Idle &&
 			!IsMoving() &&
 			!IsTalking())
 		{
-			if (pPlayer)
-			{
-				IdleHeadTurn(pPlayer->GetAbsOrigin());
-			}
+			IdleHeadTurn(pPlayer->GetAbsOrigin());
 		}
 		else
 		{
@@ -499,25 +502,17 @@ void CTalkMonster::RunTask(Task_t* pTask)
 
 		if (pTask->iTask == TASK_TLK_CLIENT_STARE)
 		{
-			if (pPlayer)
+			// fail out if the player looks away or moves away.
+			if ((pPlayer->GetAbsOrigin() - GetAbsOrigin()).Length2D() > TLK_STARE_DIST)
 			{
-				// fail out if the player looks away or moves away.
-				if ((pPlayer->GetAbsOrigin() - GetAbsOrigin()).Length2D() > TLK_STARE_DIST)
-				{
-					// player moved away.
-					TaskFail();
-				}
-
-				UTIL_MakeVectors(pPlayer->GetAbsAngles());
-				if (UTIL_DotPoints(pPlayer->GetAbsOrigin(), GetAbsOrigin(), gpGlobals->v_forward) < m_flFieldOfView)
-				{
-					// player looked away
-					TaskFail();
-				}
+				// player moved away.
+				TaskFail();
 			}
-			else
+
+			UTIL_MakeVectors(pPlayer->GetAbsAngles());
+			if (UTIL_DotPoints(pPlayer->GetAbsOrigin(), GetAbsOrigin(), gpGlobals->v_forward) < m_flFieldOfView)
 			{
-				//Player couldn't be found (disconnected or teleported, etc)
+				// player looked away
 				TaskFail();
 			}
 		}
@@ -1169,7 +1164,7 @@ Schedule_t* CTalkMonster::GetScheduleOfType(int Type)
 
 		if (!IsTalking() && HasConditions(bits_COND_SEE_CLIENT) && RANDOM_LONG(0, 6) == 0)
 		{
-			if (CBasePlayer* pPlayer = UTIL_GetLocalPlayer(); pPlayer)
+			if (CBasePlayer* pPlayer = UTIL_FindClientInPVS(this); pPlayer)
 			{
 				// watch the client.
 				UTIL_MakeVectors(pPlayer->GetAbsAngles());
