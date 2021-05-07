@@ -69,7 +69,7 @@ CBaseEntity* UTIL_FindEntityByTarget(CBaseEntity* pStartEntity, const char* szNa
 
 CBaseEntity* UTIL_FindEntityGeneric(const char* szName, const Vector& vecSrc, float flRadius);
 
-CBaseEntity* UTIL_FindClientInPVS(CBaseEntity* pPVSEntity);
+CBasePlayer* UTIL_FindClientInPVS(CBaseEntity* pPVSEntity);
 
 /**
 *	@brief Pass in an array of pointers and an array size, it fills the array and returns the number inserted

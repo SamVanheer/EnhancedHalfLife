@@ -154,9 +154,9 @@ CBaseEntity* UTIL_FindEntityGeneric(const char* szWhatever, const Vector& vecSrc
 	return pEntity;
 }
 
-CBaseEntity* UTIL_FindClientInPVS(CBaseEntity* pPVSEntity)
+CBasePlayer* UTIL_FindClientInPVS(CBaseEntity* pPVSEntity)
 {
-	return CBaseEntity::InstanceOrNull(FIND_CLIENT_IN_PVS(CBaseEntity::EdictOrNull(pPVSEntity)));
+	return static_cast<CBasePlayer*>(CBaseEntity::InstanceOrNull(FIND_CLIENT_IN_PVS(CBaseEntity::EdictOrNull(pPVSEntity))));
 }
 
 int UTIL_MonstersInSphere(CBaseEntity** pList, int listMax, const Vector& center, float radius)
