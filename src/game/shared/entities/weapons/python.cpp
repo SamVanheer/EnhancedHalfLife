@@ -104,20 +104,24 @@ bool CPython::Deploy()
 
 void CPython::Holster()
 {
+	auto player = m_hPlayer.Get();
+
 	m_fInReload = false;// cancel any reload in progress.
 
-	if (m_hPlayer->m_iFOV != 0)
+	if (player->m_iFOV != 0)
 	{
 		SecondaryAttack();
 	}
 
-	m_hPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
-	m_flTimeWeaponIdle = UTIL_SharedRandomFloat(m_hPlayer->random_seed, 10, 15);
+	player->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
+	m_flTimeWeaponIdle = UTIL_SharedRandomFloat(player->random_seed, 10, 15);
 	SendWeaponAnim(PYTHON_HOLSTER);
 }
 
 void CPython::SecondaryAttack()
 {
+	auto player = m_hPlayer.Get();
+
 #ifdef CLIENT_DLL
 	if (!bIsMultiplayer())
 #else
@@ -127,13 +131,13 @@ void CPython::SecondaryAttack()
 		return;
 	}
 
-	if (m_hPlayer->m_iFOV != 0)
+	if (player->m_iFOV != 0)
 	{
-		m_hPlayer->m_iFOV = 0;  // 0 means reset to default fov
+		player->m_iFOV = 0;  // 0 means reset to default fov
 	}
-	else if (m_hPlayer->m_iFOV != 40)
+	else if (player->m_iFOV != 40)
 	{
-		m_hPlayer->m_iFOV = 40;
+		player->m_iFOV = 40;
 	}
 
 	m_flNextSecondaryAttack = 0.5;
@@ -141,8 +145,10 @@ void CPython::SecondaryAttack()
 
 void CPython::PrimaryAttack()
 {
+	auto player = m_hPlayer.Get();
+
 	// don't fire underwater
-	if (m_hPlayer->pev->waterlevel == WaterLevel::Head)
+	if (player->pev->waterlevel == WaterLevel::Head)
 	{
 		PlayEmptySound();
 		m_flNextPrimaryAttack = 0.15;
@@ -160,23 +166,23 @@ void CPython::PrimaryAttack()
 		return;
 	}
 
-	m_hPlayer->m_iWeaponVolume = LOUD_GUN_VOLUME;
-	m_hPlayer->m_iWeaponFlash = BRIGHT_GUN_FLASH;
+	player->m_iWeaponVolume = LOUD_GUN_VOLUME;
+	player->m_iWeaponFlash = BRIGHT_GUN_FLASH;
 
 	m_iClip--;
 
-	m_hPlayer->pev->effects = (int)(m_hPlayer->pev->effects) | EF_MUZZLEFLASH;
+	player->pev->effects = (int)(player->pev->effects) | EF_MUZZLEFLASH;
 
 	// player "shoot" animation
-	m_hPlayer->SetAnimation(PlayerAnim::Attack1);
+	player->SetAnimation(PlayerAnim::Attack1);
 
 
-	UTIL_MakeVectors(m_hPlayer->pev->v_angle + m_hPlayer->pev->punchangle);
+	UTIL_MakeVectors(player->pev->v_angle + player->pev->punchangle);
 
-	const Vector vecSrc = m_hPlayer->GetGunPosition();
-	const Vector vecAiming = m_hPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
+	const Vector vecSrc = player->GetGunPosition();
+	const Vector vecAiming = player->GetAutoaimVector(AUTOAIM_10DEGREES);
 
-	const Vector vecDir = m_hPlayer->FireBulletsPlayer(1, vecSrc, vecAiming, VECTOR_CONE_1DEGREES, WORLD_SIZE, BULLET_PLAYER_357, 0);
+	const Vector vecDir = player->FireBulletsPlayer(1, vecSrc, vecAiming, VECTOR_CONE_1DEGREES, WORLD_SIZE, BULLET_PLAYER_357, 0);
 
 	int flags;
 #if defined( CLIENT_WEAPONS )
@@ -185,24 +191,26 @@ void CPython::PrimaryAttack()
 	flags = 0;
 #endif
 
-	UTIL_PlaybackEvent(flags, m_hPlayer, m_usFirePython, {.fparam1 = vecDir.x, .fparam2 = vecDir.y});
+	UTIL_PlaybackEvent(flags, player, m_usFirePython, {.fparam1 = vecDir.x, .fparam2 = vecDir.y});
 
-	if (!m_iClip && m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
+	if (!m_iClip && player->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		// HEV suit - indicate out of ammo condition
-		m_hPlayer->SetSuitUpdate("!HEV_AMO0", SuitSoundType::Sentence, 0);
+		player->SetSuitUpdate("!HEV_AMO0", SuitSoundType::Sentence, 0);
 
 	m_flNextPrimaryAttack = 0.75;
-	m_flTimeWeaponIdle = UTIL_SharedRandomFloat(m_hPlayer->random_seed, 10, 15);
+	m_flTimeWeaponIdle = UTIL_SharedRandomFloat(player->random_seed, 10, 15);
 }
 
 void CPython::Reload()
 {
-	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
+	auto player = m_hPlayer.Get();
+
+	if (player->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return;
 
-	if (m_hPlayer->m_iFOV != 0)
+	if (player->m_iFOV != 0)
 	{
-		m_hPlayer->m_iFOV = 0;  // 0 means reset to default fov
+		player->m_iFOV = 0;  // 0 means reset to default fov
 	}
 
 	bool bUseScope = false;
@@ -217,15 +225,17 @@ void CPython::Reload()
 
 void CPython::WeaponIdle()
 {
+	auto player = m_hPlayer.Get();
+
 	ResetEmptySound();
 
-	m_hPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
+	player->GetAutoaimVector(AUTOAIM_10DEGREES);
 
 	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
 	int iAnim;
-	const float flRand = UTIL_SharedRandomFloat(m_hPlayer->random_seed, 0, 1);
+	const float flRand = UTIL_SharedRandomFloat(player->random_seed, 0, 1);
 	if (flRand <= 0.5)
 	{
 		iAnim = PYTHON_IDLE1;

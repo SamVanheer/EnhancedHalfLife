@@ -76,6 +76,8 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 
 bool CBasePlayerWeapon::CanDeploy()
 {
+	auto player = m_hPlayer.Get();
+
 	bool bHasAmmo = false;
 
 	if (!Ammo1Name())
@@ -86,11 +88,11 @@ bool CBasePlayerWeapon::CanDeploy()
 
 	if (Ammo1Name())
 	{
-		bHasAmmo |= (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] != 0);
+		bHasAmmo |= (player->m_rgAmmo[m_iPrimaryAmmoType] != 0);
 	}
 	if (Ammo2Name())
 	{
-		bHasAmmo |= (m_hPlayer->m_rgAmmo[m_iSecondaryAmmoType] != 0);
+		bHasAmmo |= (player->m_rgAmmo[m_iSecondaryAmmoType] != 0);
 	}
 	if (m_iClip > 0)
 	{
@@ -153,15 +155,17 @@ bool CBasePlayerWeapon::DefaultDeploy(const char* szViewModel, const char* szWea
 
 bool CBasePlayerWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay, int body)
 {
-	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
+	auto player = m_hPlayer.Get();
+
+	if (player->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return false;
 
-	const int j = std::min(iClipSize - m_iClip, m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType]);
+	const int j = std::min(iClipSize - m_iClip, player->m_rgAmmo[m_iPrimaryAmmoType]);
 
 	if (j == 0)
 		return false;
 
-	m_hPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + fDelay;
+	player->m_flNextAttack = UTIL_WeaponTimeBase() + fDelay;
 
 	//!!UNDONE -- reload sound goes here !!!
 	SendWeaponAnim(iAnim, body);

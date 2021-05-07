@@ -92,7 +92,9 @@ bool CEgon::AddToPlayer(CBasePlayer* pPlayer)
 
 void CEgon::Holster()
 {
-	m_hPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	auto player = m_hPlayer.Get();
+
+	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	SendWeaponAnim(EGON_HOLSTER);
 
 	EndAttack();
@@ -130,7 +132,9 @@ float CEgon::GetDischargeInterval()
 
 bool CEgon::HasAmmo()
 {
-	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
+	auto player = m_hPlayer.Get();
+
+	if (player->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return false;
 
 	return true;
@@ -138,16 +142,20 @@ bool CEgon::HasAmmo()
 
 void CEgon::UseAmmo(int count)
 {
-	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] >= count)
-		m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] -= count;
+	auto player = m_hPlayer.Get();
+
+	if (player->m_rgAmmo[m_iPrimaryAmmoType] >= count)
+		player->m_rgAmmo[m_iPrimaryAmmoType] -= count;
 	else
-		m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] = 0;
+		player->m_rgAmmo[m_iPrimaryAmmoType] = 0;
 }
 
 void CEgon::Attack()
 {
+	auto player = m_hPlayer.Get();
+
 	// don't fire underwater
-	if (m_hPlayer->pev->waterlevel == WaterLevel::Head)
+	if (player->pev->waterlevel == WaterLevel::Head)
 	{
 
 		if (m_fireState != FireState::Off || m_hBeam)
@@ -161,9 +169,9 @@ void CEgon::Attack()
 		return;
 	}
 
-	UTIL_MakeVectors(m_hPlayer->pev->v_angle + m_hPlayer->pev->punchangle);
+	UTIL_MakeVectors(player->pev->v_angle + player->pev->punchangle);
 	const Vector vecAiming = gpGlobals->v_forward;
-	const Vector vecSrc = m_hPlayer->GetGunPosition();
+	const Vector vecSrc = player->GetGunPosition();
 
 	int flags;
 #if defined( CLIENT_WEAPONS )
@@ -185,11 +193,11 @@ void CEgon::Attack()
 
 		m_flAmmoUseTime = gpGlobals->time;// start using ammo ASAP.
 
-		UTIL_PlaybackEvent(flags, m_hPlayer, m_usEgonFire, {.iparam1 = static_cast<int>(m_fireState), .iparam2 = static_cast<int>(m_fireMode), .bparam1 = true});
+		UTIL_PlaybackEvent(flags, player, m_usEgonFire, {.iparam1 = static_cast<int>(m_fireState), .iparam2 = static_cast<int>(m_fireMode), .bparam1 = true});
 
 		m_shakeTime = 0;
 
-		m_hPlayer->m_iWeaponVolume = EGON_PRIMARY_VOLUME;
+		player->m_iWeaponVolume = EGON_PRIMARY_VOLUME;
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.1;
 		pev->fuser1 = UTIL_WeaponTimeBase() + 2;
 
@@ -201,11 +209,11 @@ void CEgon::Attack()
 	case FireState::Charge:
 	{
 		Fire(vecSrc, vecAiming);
-		m_hPlayer->m_iWeaponVolume = EGON_PRIMARY_VOLUME;
+		player->m_iWeaponVolume = EGON_PRIMARY_VOLUME;
 
 		if (pev->fuser1 <= UTIL_WeaponTimeBase())
 		{
-			UTIL_PlaybackEvent(flags, m_hPlayer, m_usEgonFire, {.iparam1 = static_cast<int>(m_fireState), .iparam2 = static_cast<int>(m_fireMode), .bparam1 = false});
+			UTIL_PlaybackEvent(flags, player, m_usEgonFire, {.iparam1 = static_cast<int>(m_fireState), .iparam2 = static_cast<int>(m_fireMode), .bparam1 = false});
 			pev->fuser1 = 1000;
 		}
 
@@ -228,11 +236,13 @@ void CEgon::PrimaryAttack()
 
 void CEgon::Fire(const Vector& vecOrigSrc, const Vector& vecDir)
 {
+	auto player = m_hPlayer.Get();
+
 	const Vector tmpSrc = vecOrigSrc + gpGlobals->v_up * -8 + gpGlobals->v_right * 3;
 
 	// ALERT( at_console, "." );
 	TraceResult tr;
-	UTIL_TraceLine(vecOrigSrc, vecOrigSrc + vecDir * 2048, IgnoreMonsters::No, m_hPlayer, &tr);
+	UTIL_TraceLine(vecOrigSrc, vecOrigSrc + vecDir * 2048, IgnoreMonsters::No, player, &tr);
 
 	if (tr.fAllSolid)
 		return;
@@ -271,9 +281,9 @@ void CEgon::Fire(const Vector& vecOrigSrc, const Vector& vecDir)
 			ClearMultiDamage();
 			if (pEntity->pev->takedamage)
 			{
-				pEntity->TraceAttack({m_hPlayer, gSkillData.plrDmgEgonNarrow, vecDir, tr, DMG_ENERGYBEAM});
+				pEntity->TraceAttack({player, gSkillData.plrDmgEgonNarrow, vecDir, tr, DMG_ENERGYBEAM});
 			}
-			ApplyMultiDamage(m_hPlayer, m_hPlayer);
+			ApplyMultiDamage(player, player);
 
 			if (g_pGameRules->IsMultiplayer())
 			{
@@ -308,17 +318,17 @@ void CEgon::Fire(const Vector& vecOrigSrc, const Vector& vecDir)
 			ClearMultiDamage();
 			if (pEntity->pev->takedamage)
 			{
-				pEntity->TraceAttack({m_hPlayer, gSkillData.plrDmgEgonWide, vecDir, tr, DMG_ENERGYBEAM | DMG_ALWAYSGIB});
+				pEntity->TraceAttack({player, gSkillData.plrDmgEgonWide, vecDir, tr, DMG_ENERGYBEAM | DMG_ALWAYSGIB});
 			}
-			ApplyMultiDamage(m_hPlayer, m_hPlayer);
+			ApplyMultiDamage(player, player);
 
 			if (g_pGameRules->IsMultiplayer())
 			{
 				// radius damage a little more potent in multiplayer.
-				::RadiusDamage(tr.vecEndPos, this, m_hPlayer, gSkillData.plrDmgEgonWide / 4, 128, CLASS_NONE, DMG_ENERGYBEAM | DMG_BLAST | DMG_ALWAYSGIB);
+				::RadiusDamage(tr.vecEndPos, this, player, gSkillData.plrDmgEgonWide / 4, 128, CLASS_NONE, DMG_ENERGYBEAM | DMG_BLAST | DMG_ALWAYSGIB);
 			}
 
-			if (!m_hPlayer->IsAlive())
+			if (!player->IsAlive())
 				return;
 
 			if (g_pGameRules->IsMultiplayer())
@@ -390,31 +400,33 @@ void CEgon::UpdateEffect(const Vector& startPoint, const Vector& endPoint, float
 void CEgon::CreateEffect()
 {
 #ifndef CLIENT_DLL
+	auto player = m_hPlayer.Get();
+
 	DestroyEffect();
 
 	auto beam = m_hBeam = CBeam::BeamCreate(EGON_BEAM_SPRITE.data(), 40);
-	beam->PointEntInit(GetAbsOrigin(), m_hPlayer->entindex());
+	beam->PointEntInit(GetAbsOrigin(), player->entindex());
 	beam->SetFlags(BEAM_FSINE);
 	beam->SetEndAttachment(1);
 	beam->pev->spawnflags |= SF_BEAM_TEMPORARY;	// Flag these to be destroyed on save/restore or level transition
 	beam->pev->flags |= FL_SKIPLOCALHOST;
-	beam->SetOwner(m_hPlayer);
+	beam->SetOwner(player);
 
 	auto noise = m_hNoise = CBeam::BeamCreate(EGON_BEAM_SPRITE.data(), 55);
-	noise->PointEntInit(GetAbsOrigin(), m_hPlayer->entindex());
+	noise->PointEntInit(GetAbsOrigin(), player->entindex());
 	noise->SetScrollRate(25);
 	noise->SetBrightness(100);
 	noise->SetEndAttachment(1);
 	noise->pev->spawnflags |= SF_BEAM_TEMPORARY;
 	noise->pev->flags |= FL_SKIPLOCALHOST;
-	noise->SetOwner(m_hPlayer);
+	noise->SetOwner(player);
 
 	auto sprite = m_hSprite = CSprite::SpriteCreate(EGON_FLARE_SPRITE.data(), GetAbsOrigin(), false);
 	sprite->pev->scale = 1.0;
 	sprite->SetTransparency(RenderMode::Glow, {255, 255, 255}, 255, RenderFX::NoDissipation);
 	sprite->pev->spawnflags |= SF_SPRITE_TEMPORARY;
 	sprite->pev->flags |= FL_SKIPLOCALHOST;
-	sprite->SetOwner(m_hPlayer);
+	sprite->SetOwner(player);
 
 	if (m_fireMode == FireMode::Wide)
 	{
@@ -451,7 +463,9 @@ void CEgon::DestroyEffect()
 
 void CEgon::WeaponIdle()
 {
-	if (!(m_hPlayer->m_afButtonPressed & IN_ATTACK2) && (m_hPlayer->pev->button & IN_ATTACK))
+	auto player = m_hPlayer.Get();
+
+	if (!(player->m_afButtonPressed & IN_ATTACK2) && (player->pev->button & IN_ATTACK))
 	{
 		return;
 	}
@@ -471,7 +485,7 @@ void CEgon::WeaponIdle()
 	if (flRand <= 0.5)
 	{
 		iAnim = EGON_IDLE1;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_hPlayer->random_seed, 10, 15);
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(player->random_seed, 10, 15);
 	}
 	else
 	{
@@ -485,9 +499,11 @@ void CEgon::WeaponIdle()
 
 void CEgon::EndAttack()
 {
+	auto player = m_hPlayer.Get();
+
 	const bool bMakeNoise = m_fireState != FireState::Off; //Checking the button just in case!.
 
-	UTIL_PlaybackEvent(FEV_GLOBAL | FEV_RELIABLE, m_hPlayer, m_usEgonStop, {.origin = m_hPlayer->GetAbsOrigin(), .angles = m_hPlayer->GetAbsAngles(), .iparam1 = bMakeNoise});
+	UTIL_PlaybackEvent(FEV_GLOBAL | FEV_RELIABLE, player, m_usEgonStop, {.origin = player->GetAbsOrigin(), .angles = player->GetAbsAngles(), .iparam1 = bMakeNoise});
 
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 2.0;
 	m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;

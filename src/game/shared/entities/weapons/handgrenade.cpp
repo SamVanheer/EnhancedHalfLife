@@ -77,26 +77,30 @@ bool CHandGrenade::CanHolster()
 
 void CHandGrenade::Holster()
 {
-	m_hPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	auto player = m_hPlayer.Get();
 
-	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+
+	if (player->m_rgAmmo[m_iPrimaryAmmoType])
 	{
 		SendWeaponAnim(HANDGRENADE_HOLSTER);
 	}
 	else
 	{
 		// no more grenades!
-		m_hPlayer->pev->weapons &= ~(1 << WEAPON_HANDGRENADE);
+		player->pev->weapons &= ~(1 << WEAPON_HANDGRENADE);
 		SetThink(&CHandGrenade::DestroyItem);
 		pev->nextthink = gpGlobals->time + 0.1;
 	}
 
-	m_hPlayer->EmitSound(SoundChannel::Weapon, "common/null.wav");
+	player->EmitSound(SoundChannel::Weapon, "common/null.wav");
 }
 
 void CHandGrenade::PrimaryAttack()
 {
-	if (!m_flStartThrow && m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
+	auto player = m_hPlayer.Get();
+
+	if (!m_flStartThrow && player->m_rgAmmo[m_iPrimaryAmmoType] > 0)
 	{
 		m_flStartThrow = gpGlobals->time;
 		m_flReleaseThrow = 0;
@@ -108,6 +112,8 @@ void CHandGrenade::PrimaryAttack()
 
 void CHandGrenade::WeaponIdle()
 {
+	auto player = m_hPlayer.Get();
+
 	if (m_flReleaseThrow == 0 && m_flStartThrow)
 		m_flReleaseThrow = gpGlobals->time;
 
@@ -116,7 +122,7 @@ void CHandGrenade::WeaponIdle()
 
 	if (m_flStartThrow)
 	{
-		Vector angThrow = m_hPlayer->pev->v_angle + m_hPlayer->pev->punchangle;
+		Vector angThrow = player->pev->v_angle + player->pev->punchangle;
 
 		if (angThrow.x < 0)
 			angThrow.x = -10 + angThrow.x * ((90 - 10) / 90.0f);
@@ -127,14 +133,14 @@ void CHandGrenade::WeaponIdle()
 
 		UTIL_MakeVectors(angThrow);
 
-		Vector vecSrc = m_hPlayer->GetAbsOrigin() + m_hPlayer->pev->view_ofs + gpGlobals->v_forward * 16;
+		Vector vecSrc = player->GetAbsOrigin() + player->pev->view_ofs + gpGlobals->v_forward * 16;
 
-		Vector vecThrow = gpGlobals->v_forward * flVel + m_hPlayer->GetAbsVelocity();
+		Vector vecThrow = gpGlobals->v_forward * flVel + player->GetAbsVelocity();
 
 		// alway explode 3 seconds after the pin was pulled
 		const float time = std::max(0.0f, m_flStartThrow - gpGlobals->time + 3.0f);
 
-		CGrenade::ShootTimed(m_hPlayer, vecSrc, vecThrow, time);
+		CGrenade::ShootTimed(player, vecSrc, vecThrow, time);
 
 		if (flVel < 500)
 		{
@@ -150,16 +156,16 @@ void CHandGrenade::WeaponIdle()
 		}
 
 		// player "shoot" animation
-		m_hPlayer->SetAnimation(PlayerAnim::Attack1);
+		player->SetAnimation(PlayerAnim::Attack1);
 
 		//m_flReleaseThrow = 0;
 		m_flStartThrow = 0;
 		m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.5;
 
-		m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
+		player->m_rgAmmo[m_iPrimaryAmmoType]--;
 
-		if (!m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+		if (!player->m_rgAmmo[m_iPrimaryAmmoType])
 		{
 			// just threw last grenade
 			// set attack times in the future, and weapon idle in the future so we can see the whole throw
@@ -173,7 +179,7 @@ void CHandGrenade::WeaponIdle()
 		// we've finished the throw, restart.
 		m_flStartThrow = 0;
 
-		if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+		if (player->m_rgAmmo[m_iPrimaryAmmoType])
 		{
 			SendWeaponAnim(HANDGRENADE_DRAW);
 		}
@@ -183,19 +189,19 @@ void CHandGrenade::WeaponIdle()
 			return;
 		}
 
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_hPlayer->random_seed, 10, 15);
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(player->random_seed, 10, 15);
 		m_flReleaseThrow = -1;
 		return;
 	}
 
-	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+	if (player->m_rgAmmo[m_iPrimaryAmmoType])
 	{
 		int iAnim;
-		const float flRand = UTIL_SharedRandomFloat(m_hPlayer->random_seed, 0, 1);
+		const float flRand = UTIL_SharedRandomFloat(player->random_seed, 0, 1);
 		if (flRand <= 0.75)
 		{
 			iAnim = HANDGRENADE_IDLE;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_hPlayer->random_seed, 10, 15);// how long till we do this again.
+			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(player->random_seed, 10, 15);// how long till we do this again.
 		}
 		else
 		{

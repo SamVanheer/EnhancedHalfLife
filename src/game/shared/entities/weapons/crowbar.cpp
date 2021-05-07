@@ -73,7 +73,9 @@ bool CCrowbar::Deploy()
 
 void CCrowbar::Holster()
 {
-	m_hPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	auto player = m_hPlayer.Get();
+
+	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	SendWeaponAnim(CROWBAR_HOLSTER);
 }
 
@@ -143,29 +145,31 @@ void CCrowbar::SwingAgain()
 
 bool CCrowbar::Swing(bool fFirst)
 {
-	UTIL_MakeVectors(m_hPlayer->pev->v_angle);
-	const Vector vecSrc = m_hPlayer->GetGunPosition();
+	auto player = m_hPlayer.Get();
+
+	UTIL_MakeVectors(player->pev->v_angle);
+	const Vector vecSrc = player->GetGunPosition();
 	Vector vecEnd = vecSrc + gpGlobals->v_forward * 32;
 
 	TraceResult tr;
-	UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, m_hPlayer, &tr);
+	UTIL_TraceLine(vecSrc, vecEnd, IgnoreMonsters::No, player, &tr);
 
 #ifndef CLIENT_DLL
 	if (tr.flFraction >= 1.0)
 	{
-		UTIL_TraceHull(vecSrc, vecEnd, IgnoreMonsters::No, Hull::Head, m_hPlayer, &tr);
+		UTIL_TraceHull(vecSrc, vecEnd, IgnoreMonsters::No, Hull::Head, player, &tr);
 		if (tr.flFraction < 1.0)
 		{
 			// Calculate the point of intersection of the line (or hull) and the object we hit
 			// This is and approximation of the "best" intersection
 			if (CBaseEntity* pHit = CBaseEntity::Instance(tr.pHit); !pHit || pHit->IsBSPModel())
-				FindHullIntersection(vecSrc, tr, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX, m_hPlayer);
+				FindHullIntersection(vecSrc, tr, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX, player);
 			vecEnd = tr.vecEndPos;	// This is the point on the actual surface (the hull could have hit space)
 		}
 	}
 #endif
 
-	UTIL_PlaybackEvent(FEV_NOTHOST, m_hPlayer, m_usCrowbar);
+	UTIL_PlaybackEvent(FEV_NOTHOST, player, m_usCrowbar);
 
 	bool fDidHit = false;
 
@@ -177,7 +181,7 @@ bool CCrowbar::Swing(bool fFirst)
 			m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 
 			// player "shoot" animation
-			m_hPlayer->SetAnimation(PlayerAnim::Attack1);
+			player->SetAnimation(PlayerAnim::Attack1);
 		}
 	}
 	else
@@ -193,7 +197,7 @@ bool CCrowbar::Swing(bool fFirst)
 		}
 
 		// player "shoot" animation
-		m_hPlayer->SetAnimation(PlayerAnim::Attack1);
+		player->SetAnimation(PlayerAnim::Attack1);
 
 #ifndef CLIENT_DLL
 
@@ -206,14 +210,14 @@ bool CCrowbar::Swing(bool fFirst)
 		if ((m_flNextPrimaryAttack + 1 < UTIL_WeaponTimeBase()) || g_pGameRules->IsMultiplayer())
 		{
 			// first swing does full damage
-			pEntity->TraceAttack({m_hPlayer, gSkillData.plrDmgCrowbar, gpGlobals->v_forward, tr, DMG_CLUB});
+			pEntity->TraceAttack({player, gSkillData.plrDmgCrowbar, gpGlobals->v_forward, tr, DMG_CLUB});
 		}
 		else
 		{
 			// subsequent swings do half
-			pEntity->TraceAttack({m_hPlayer, gSkillData.plrDmgCrowbar / 2, gpGlobals->v_forward, tr, DMG_CLUB});
+			pEntity->TraceAttack({player, gSkillData.plrDmgCrowbar / 2, gpGlobals->v_forward, tr, DMG_CLUB});
 		}
-		ApplyMultiDamage(m_hPlayer, m_hPlayer);
+		ApplyMultiDamage(player, player);
 
 #endif
 
@@ -232,13 +236,13 @@ bool CCrowbar::Swing(bool fFirst)
 				switch (RANDOM_LONG(0, 2))
 				{
 				case 0:
-					m_hPlayer->EmitSound(SoundChannel::Item, "weapons/cbar_hitbod1.wav"); break;
+					player->EmitSound(SoundChannel::Item, "weapons/cbar_hitbod1.wav"); break;
 				case 1:
-					m_hPlayer->EmitSound(SoundChannel::Item, "weapons/cbar_hitbod2.wav"); break;
+					player->EmitSound(SoundChannel::Item, "weapons/cbar_hitbod2.wav"); break;
 				case 2:
-					m_hPlayer->EmitSound(SoundChannel::Item, "weapons/cbar_hitbod3.wav"); break;
+					player->EmitSound(SoundChannel::Item, "weapons/cbar_hitbod3.wav"); break;
 				}
-				m_hPlayer->m_iWeaponVolume = CROWBAR_BODYHIT_VOLUME;
+				player->m_iWeaponVolume = CROWBAR_BODYHIT_VOLUME;
 				if (!pEntity->IsAlive())
 					return true;
 				else
@@ -267,10 +271,10 @@ bool CCrowbar::Swing(bool fFirst)
 			switch (RANDOM_LONG(0, 1))
 			{
 			case 0:
-				m_hPlayer->EmitSound(SoundChannel::Item, "weapons/cbar_hit1.wav", fvolbar, ATTN_NORM, 98 + RANDOM_LONG(0, 3));
+				player->EmitSound(SoundChannel::Item, "weapons/cbar_hit1.wav", fvolbar, ATTN_NORM, 98 + RANDOM_LONG(0, 3));
 				break;
 			case 1:
-				m_hPlayer->EmitSound(SoundChannel::Item, "weapons/cbar_hit2.wav", fvolbar, ATTN_NORM, 98 + RANDOM_LONG(0, 3));
+				player->EmitSound(SoundChannel::Item, "weapons/cbar_hit2.wav", fvolbar, ATTN_NORM, 98 + RANDOM_LONG(0, 3));
 				break;
 			}
 
@@ -278,7 +282,7 @@ bool CCrowbar::Swing(bool fFirst)
 			m_trHit = tr;
 		}
 
-		m_hPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
+		player->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
 #endif
 		SetThink(&CCrowbar::Smack);
 		pev->nextthink = gpGlobals->time + 0.2;

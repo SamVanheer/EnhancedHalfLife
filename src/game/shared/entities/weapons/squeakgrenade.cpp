@@ -423,6 +423,8 @@ bool CSqueak::GetItemInfo(ItemInfo* p)
 
 bool CSqueak::Deploy()
 {
+	auto player = m_hPlayer.Get();
+
 	// play hunt sound
 	const float flRndSound = RANDOM_FLOAT(0, 1);
 
@@ -431,7 +433,7 @@ bool CSqueak::Deploy()
 	else
 		EmitSound(SoundChannel::Voice, "squeek/sqk_hunt3.wav");
 
-	m_hPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
+	player->m_iWeaponVolume = QUIET_GUN_VOLUME;
 
 	const bool result = DefaultDeploy("models/v_squeak.mdl", "models/p_squeak.mdl", SQUEAK_UP, "squeak");
 
@@ -445,30 +447,34 @@ bool CSqueak::Deploy()
 
 void CSqueak::Holster()
 {
-	m_hPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	auto player = m_hPlayer.Get();
 
-	if (!m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+
+	if (!player->m_rgAmmo[m_iPrimaryAmmoType])
 	{
-		m_hPlayer->pev->weapons &= ~(1 << WEAPON_SNARK);
+		player->pev->weapons &= ~(1 << WEAPON_SNARK);
 		SetThink(&CSqueak::DestroyItem);
 		pev->nextthink = gpGlobals->time + 0.1;
 		return;
 	}
 
 	SendWeaponAnim(SQUEAK_DOWN);
-	m_hPlayer->EmitSound(SoundChannel::Weapon, "common/null.wav");
+	player->EmitSound(SoundChannel::Weapon, "common/null.wav");
 }
 
 void CSqueak::PrimaryAttack()
 {
-	if (m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+	auto player = m_hPlayer.Get();
+
+	if (player->m_rgAmmo[m_iPrimaryAmmoType])
 	{
-		UTIL_MakeVectors(m_hPlayer->pev->v_angle);
+		UTIL_MakeVectors(player->pev->v_angle);
 
 		// HACK HACK:  Ugly hacks to handle change in origin based on new physics code for players
 		// Move origin up if crouched and start trace a bit outside of body ( 20 units instead of 16 )
-		Vector trace_origin = m_hPlayer->GetAbsOrigin();
-		if (m_hPlayer->pev->flags & FL_DUCKING)
+		Vector trace_origin = player->GetAbsOrigin();
+		if (player->pev->flags & FL_DUCKING)
 		{
 			trace_origin = trace_origin - (VEC_HULL_MIN - VEC_DUCK_HULL_MIN);
 		}
@@ -484,16 +490,16 @@ void CSqueak::PrimaryAttack()
 		flags = 0;
 #endif
 
-		UTIL_PlaybackEvent(flags, m_hPlayer, m_usSnarkFire);
+		UTIL_PlaybackEvent(flags, player, m_usSnarkFire);
 
 		if (tr.fAllSolid == 0 && tr.fStartSolid == 0 && tr.flFraction > 0.25)
 		{
 			// player "shoot" animation
-			m_hPlayer->SetAnimation(PlayerAnim::Attack1);
+			player->SetAnimation(PlayerAnim::Attack1);
 
 #ifndef CLIENT_DLL
-			CBaseEntity* pSqueak = CBaseEntity::Create("monster_snark", tr.vecEndPos, m_hPlayer->pev->v_angle, m_hPlayer);
-			pSqueak->SetAbsVelocity(gpGlobals->v_forward * 200 + m_hPlayer->GetAbsVelocity());
+			CBaseEntity* pSqueak = CBaseEntity::Create("monster_snark", tr.vecEndPos, player->pev->v_angle, player);
+			pSqueak->SetAbsVelocity(gpGlobals->v_forward * 200 + player->GetAbsVelocity());
 #endif
 
 			// play hunt sound
@@ -504,9 +510,9 @@ void CSqueak::PrimaryAttack()
 			else
 				EmitSound(SoundChannel::Voice, "squeek/sqk_hunt3.wav", VOL_NORM, ATTN_NORM, 105);
 
-			m_hPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
+			player->m_iWeaponVolume = QUIET_GUN_VOLUME;
 
-			m_hPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
+			player->m_rgAmmo[m_iPrimaryAmmoType]--;
 
 			m_fJustThrown = true;
 
@@ -522,6 +528,8 @@ void CSqueak::SecondaryAttack()
 
 void CSqueak::WeaponIdle()
 {
+	auto player = m_hPlayer.Get();
+
 	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
@@ -529,19 +537,19 @@ void CSqueak::WeaponIdle()
 	{
 		m_fJustThrown = false;
 
-		if (!m_hPlayer->m_rgAmmo[PrimaryAmmoIndex()])
+		if (!player->m_rgAmmo[PrimaryAmmoIndex()])
 		{
 			RetireWeapon();
 			return;
 		}
 
 		SendWeaponAnim(SQUEAK_UP);
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_hPlayer->random_seed, 10, 15);
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(player->random_seed, 10, 15);
 		return;
 	}
 
 	int iAnim;
-	const float flRand = UTIL_SharedRandomFloat(m_hPlayer->random_seed, 0, 1);
+	const float flRand = UTIL_SharedRandomFloat(player->random_seed, 0, 1);
 	if (flRand <= 0.75)
 	{
 		iAnim = SQUEAK_IDLE1;
