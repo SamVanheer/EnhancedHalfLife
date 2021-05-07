@@ -137,12 +137,12 @@ void EMIT_SOUND_DYN(CBaseEntity* entity, SoundChannel channel, const char* sampl
 	{
 		char name[32];
 		if (SENTENCEG_Lookup(sample, name, sizeof(name)) >= 0)
-			EMIT_SOUND_DYN2(edict, channel, name, volume, attenuation, flags, pitch);
+			g_engfuncs.pfnEmitSound(edict, channel, name, volume, attenuation, flags, pitch);
 		else
 			ALERT(at_aiconsole, "Unable to find %s in sentences.txt\n", sample);
 	}
 	else
-		EMIT_SOUND_DYN2(edict, channel, sample, volume, attenuation, flags, pitch);
+		g_engfuncs.pfnEmitSound(edict, channel, sample, volume, attenuation, flags, pitch);
 }
 
 void EMIT_SOUND_SUIT(CBaseEntity* entity, const char* sample)

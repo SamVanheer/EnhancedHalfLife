@@ -30,7 +30,6 @@ extern enginefuncs_t g_engfuncs;
 #define CHANGE_LEVEL	(*g_engfuncs.pfnChangeLevel)
 #define MAKE_STATIC		(*g_engfuncs.pfnMakeStatic)
 #define DROP_TO_FLOOR	(*g_engfuncs.pfnDropToFloor)
-#define EMIT_SOUND_DYN2 (*g_engfuncs.pfnEmitSound)
 #define SERVER_COMMAND	(*g_engfuncs.pfnServerCommand)
 #define SERVER_EXECUTE	(*g_engfuncs.pfnServerExecute)
 #define CLIENT_COMMAND	(*g_engfuncs.pfnClientCommand)
