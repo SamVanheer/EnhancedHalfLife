@@ -1647,7 +1647,7 @@ void CTestHull::BuildNodeGraph()
 						if ((step + stepSize) >= (flDist - 1))
 							stepSize = (flDist - step) - 1;
 
-						if (!WALK_MOVE(edict(), flYaw, stepSize, MoveMode))
+						if (!UTIL_WalkMove(this, flYaw, stepSize, MoveMode))
 						{// can't take the next step
 
 							fWalkFailed = true;

@@ -65,6 +65,8 @@ enum class MoveToOriginType
 // spawn flags 256 and above are already taken by the engine
 void UTIL_MoveToOrigin(CBaseEntity* pent, const Vector& vecGoal, float flDist, MoveToOriginType iMoveType);
 
+bool UTIL_WalkMove(CBaseEntity* entity, float yaw, float dist, WalkMoveMode iMode);
+
 /**
 *	@brief returns the velocity at which an object should be lobbed from vecspot1 to land near vecspot2.
 *	@return vec3_origin if toss is not feasible.

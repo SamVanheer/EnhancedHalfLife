@@ -309,14 +309,14 @@ void CRoach::Move(float flInterval)
 	if (RANDOM_LONG(0, 7) == 1)
 	{
 		// randomly check for blocked path.(more random load balancing)
-		if (!WALK_MOVE(edict(), pev->ideal_yaw, 4, WalkMoveMode::Normal))
+		if (!UTIL_WalkMove(this, pev->ideal_yaw, 4, WalkMoveMode::Normal))
 		{
 			// stuck, so just pick a new spot to run off to
 			PickNewDest(m_iMode);
 		}
 	}
 
-	WALK_MOVE(edict(), pev->ideal_yaw, m_flGroundSpeed * flInterval, WalkMoveMode::Normal);
+	UTIL_WalkMove(this, pev->ideal_yaw, m_flGroundSpeed * flInterval, WalkMoveMode::Normal);
 
 	// if the waypoint is closer than step size, then stop after next step (ok for roach to overshoot)
 	if (flWaypointDist <= m_flGroundSpeed * flInterval)

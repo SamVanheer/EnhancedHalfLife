@@ -603,7 +603,12 @@ bool CBaseMonster::MoveToNode(Activity movementAct, float waitTime, const Vector
 
 void UTIL_MoveToOrigin(CBaseEntity* pent, const Vector& vecGoal, float flDist, MoveToOriginType iMoveType)
 {
-	MOVE_TO_ORIGIN(pent->edict(), vecGoal, flDist, static_cast<int>(iMoveType));
+	g_engfuncs.pfnMoveToOrigin(pent->edict(), vecGoal, flDist, static_cast<int>(iMoveType));
+}
+
+bool UTIL_WalkMove(CBaseEntity* entity, float yaw, float dist, WalkMoveMode iMode)
+{
+	return g_engfuncs.pfnWalkMove(CBaseEntity::EdictOrNull(entity), yaw, dist, iMode) != 0;
 }
 
 #ifdef _DEBUG
@@ -1120,7 +1125,7 @@ LocalMoveResult CBaseMonster::CheckLocalMove(const Vector& vecStart, const Vecto
 
 		//		UTIL_ParticleEffect ( GetAbsOrigin(), vec3_origin, 255, 25 );
 
-		if (!WALK_MOVE(edict(), flYaw, stepSize, WalkMoveMode::CheckOnly))
+		if (!UTIL_WalkMove(this, flYaw, stepSize, WalkMoveMode::CheckOnly))
 		{// can't take the next step, fail!
 
 			if (pflDist != nullptr)
@@ -1689,7 +1694,7 @@ bool CBaseMonster::ShouldAdvanceRoute(float flWaypointDist)
 void CBaseMonster::MoveExecute(CBaseEntity* pTargetEnt, const Vector& vecDir, float flInterval)
 {
 	//	float flYaw = UTIL_VecToYaw ( m_Route[ m_iRouteIndex ].vecLocation - GetAbsOrigin() );// build a yaw that points to the goal.
-	//	WALK_MOVE( ENT(pev), flYaw, m_flGroundSpeed * flInterval, WALKMOVE_NORMAL );
+	//	UTIL_WalkMove( this, flYaw, m_flGroundSpeed * flInterval, WALKMOVE_NORMAL );
 	if (m_IdealActivity != m_movementActivity)
 		m_IdealActivity = m_movementActivity;
 
@@ -1779,7 +1784,7 @@ void CBaseMonster::StartMonster()
 		SetAbsOrigin(GetAbsOrigin() + Vector(0, 0, 1));
 		DROP_TO_FLOOR(edict());
 		// Try to move the monster to make sure it's not stuck in a brush.
-		if (!WALK_MOVE(edict(), 0, 0, WalkMoveMode::Normal))
+		if (!UTIL_WalkMove(this, 0, 0, WalkMoveMode::Normal))
 		{
 			ALERT(at_error, "Monster %s stuck in wall--level design error", GetClassname());
 			pev->effects = EF_BRIGHTFIELD;
