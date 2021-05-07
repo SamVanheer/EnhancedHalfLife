@@ -394,11 +394,7 @@ void CRpg::Holster()
 	SendWeaponAnim(RPG_HOLSTER1);
 
 #ifndef CLIENT_DLL
-	if (m_hSpot)
-	{
-		m_hSpot->Killed({nullptr, nullptr, GibType::Never});
-		m_hSpot = nullptr;
-	}
+	m_hSpot.Remove();
 #endif
 }
 
@@ -451,11 +447,9 @@ void CRpg::SecondaryAttack()
 	m_fSpotActive = !m_fSpotActive;
 
 #ifndef CLIENT_DLL
-	if (!m_fSpotActive && m_hSpot)
+	if (!m_fSpotActive)
 	{
-		//TODO: don't use Killed to remove this
-		m_hSpot->Killed({nullptr, nullptr, GibType::Normal});
-		m_hSpot = nullptr;
+		m_hSpot.Remove();
 	}
 #endif
 
