@@ -424,26 +424,28 @@ void COsprey::Flight()
 	}
 	else
 	{
-		// UNDONE: this needs to send different sounds to every player for multiplayer.	
-		if (CBaseEntity* pPlayer = UTIL_GetLocalPlayer(); pPlayer)
+		if (!g_pGameRules->IsMultiplayer())
 		{
-			float pitch = DotProduct(m_velocity - pPlayer->GetAbsVelocity(), (pPlayer->GetAbsOrigin() - GetAbsOrigin()).Normalize());
-
-			pitch = (int)(100 + pitch / 75.0);
-
-			pitch = std::clamp(pitch, 50.0f, 250.0f);
-
-			if (pitch == 100)
-				pitch = 101;
-
-			if (pitch != m_iPitch)
+			if (CBaseEntity* pPlayer = UTIL_GetLocalPlayer(); pPlayer)
 			{
-				m_iPitch = pitch;
-				EmitSound(SoundChannel::Static, "apache/ap_rotor4.wav", VOL_NORM, 0.15, pitch, SND_CHANGE_PITCH | SND_CHANGE_VOL);
-				// ALERT( at_console, "%.0f\n", pitch );
+				float pitch = DotProduct(m_velocity - pPlayer->GetAbsVelocity(), (pPlayer->GetAbsOrigin() - GetAbsOrigin()).Normalize());
+
+				pitch = (int)(100 + pitch / 75.0);
+
+				pitch = std::clamp(pitch, 50.0f, 250.0f);
+
+				if (pitch == 100)
+					pitch = 101;
+
+				if (pitch != m_iPitch)
+				{
+					m_iPitch = pitch;
+					EmitSound(SoundChannel::Static, "apache/ap_rotor4.wav", VOL_NORM, 0.15, pitch, SND_CHANGE_PITCH | SND_CHANGE_VOL);
+					// ALERT( at_console, "%.0f\n", pitch );
+				}
 			}
+			// EmitSound(SoundChannel::Static, "apache/ap_whine1.wav", flVol, 0.2, pitch, SND_CHANGE_PITCH | SND_CHANGE_VOL);
 		}
-		// EmitSound(SoundChannel::Static, "apache/ap_whine1.wav", flVol, 0.2, pitch, SND_CHANGE_PITCH | SND_CHANGE_VOL);
 	}
 }
 
