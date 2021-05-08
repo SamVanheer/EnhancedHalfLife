@@ -28,7 +28,8 @@ enum class ItemFallMode
 	*	@brief Place on ground with DROP_TO_FLOOR. Entity will be removed if it falls outside the level (can happen if item is clipping into BSP geometry)
 	*/
 	PlaceOnGround = 0,
-	Fall
+	Fall,
+	Float,	//!< Movetype::Fly with no falling logic
 };
 
 enum class ItemApplyResult

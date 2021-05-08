@@ -72,6 +72,10 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 		{
 			m_FallMode = ItemFallMode::Fall;
 		}
+		else if (AreStringsEqual(pkvd->szValue, "Float"))
+		{
+			m_FallMode = ItemFallMode::Float;
+		}
 		else
 		{
 			ALERT(at_warning, "Invalid fall_mode value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, pkvd->szClassName, entindex());
@@ -107,7 +111,14 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 
 void CBaseItem::SetupItem(const Vector& mins, const Vector& maxs)
 {
-	SetMovetype(Movetype::Toss);
+	if (m_FallMode == ItemFallMode::Float)
+	{
+		SetMovetype(Movetype::Fly);
+	}
+	else
+	{
+		SetMovetype(Movetype::Toss);
+	}
 
 	if (m_bCanPickUpWhileFalling)
 	{
@@ -130,7 +141,16 @@ void CBaseItem::SetupItem(const Vector& mins, const Vector& maxs)
 		return;
 	}
 
-	SetThink(&CBaseItem::FallThink);
+	//Floating items immediately materialize
+	if (m_FallMode == ItemFallMode::Float)
+	{
+		SetThink(&CBaseItem::Materialize);
+	}
+	else
+	{
+		SetThink(&CBaseItem::FallThink);
+	}
+
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
@@ -256,8 +276,11 @@ CBaseEntity* CBaseItem::Respawn()
 		newItem->SetTouch(nullptr);
 		newItem->SetThink(&CBaseItem::AttemptToMaterialize);
 
-		//TODO: this should be using the new entity's edict!
-		DROP_TO_FLOOR(edict());
+		if (m_FallMode != ItemFallMode::Float)
+		{
+			//TODO: this should be using the new entity's edict!
+			DROP_TO_FLOOR(edict());
+		}
 
 		// not a typo! We want to know when the item the player just picked up should respawn! This new entity we created is the replacement,
 		// but when it should respawn is based on conditions belonging to the weapon that was taken.
