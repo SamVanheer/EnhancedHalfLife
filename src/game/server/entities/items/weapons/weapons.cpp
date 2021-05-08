@@ -409,8 +409,14 @@ CBasePlayerItem* CBasePlayerItem::GetItemToRespawn(const Vector& respawnPoint)
 	auto pNewWeapon = static_cast<CBasePlayerItem*>(CBaseEntity::Create(GetClassname(), respawnPoint, GetAbsAngles(), GetOwner()));
 
 	//Copy over item settings
+	pNewWeapon->m_RespawnMode = m_RespawnMode;
+	pNewWeapon->m_flRespawnDelay = m_flRespawnDelay;
 	pNewWeapon->m_FallMode = m_FallMode;
 	pNewWeapon->m_bCanPickUpWhileFalling = m_bCanPickUpWhileFalling;
+	pNewWeapon->m_bClatterOnFall = m_bClatterOnFall;
+
+	pNewWeapon->m_iszClatterSound = m_iszClatterSound;
+	pNewWeapon->m_iszRespawnSound = m_iszRespawnSound;
 
 	return pNewWeapon;
 }
