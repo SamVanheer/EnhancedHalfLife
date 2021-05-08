@@ -314,11 +314,6 @@ void CBasePlayerAmmo::KeyValue(KeyValueData* pkvd)
 		m_iAmount = std::max(0, atoi(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
-	else if (AreStringsEqual(pkvd->szKeyName, "ammo_name")) //TODO: make available in ammo_generic only
-	{
-		m_iszAmmoName = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
-	}
 	else if (AreStringsEqual(pkvd->szKeyName, "pickup_sound"))
 	{
 		m_iszPickupSound = ALLOC_STRING(pkvd->szValue);
@@ -357,6 +352,21 @@ ItemApplyResult CBasePlayerAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount
 ItemApplyResult CBasePlayerAmmo::Apply(CBasePlayer* player)
 {
 	return DefaultGiveAmmo(player, m_iAmount, STRING(m_iszAmmoName));
+}
+
+LINK_ENTITY_TO_CLASS(ammo_generic, CAmmoGeneric);
+
+void CAmmoGeneric::KeyValue(KeyValueData* pkvd)
+{
+	if (AreStringsEqual(pkvd->szKeyName, "ammo_name"))
+	{
+		m_iszAmmoName = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else
+	{
+		CBasePlayerAmmo::KeyValue(pkvd);
+	}
 }
 
 TYPEDESCRIPTION	CBasePlayerWeapon::m_SaveData[] =

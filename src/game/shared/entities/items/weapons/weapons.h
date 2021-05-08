@@ -479,6 +479,15 @@ protected:
 	string_t m_iszPickupSound = MAKE_STRING("items/9mmclip1.wav");
 };
 
+/**
+*	@brief Generic ammo item
+*/
+class CAmmoGeneric : public CBasePlayerAmmo
+{
+public:
+	void KeyValue(KeyValueData* pkvd) override;
+};
+
 extern DLL_GLOBAL	short	g_sModelIndexLaser;// holds the index for the laser beam
 extern DLL_GLOBAL	const char* g_pModelNameLaser;
 
