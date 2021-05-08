@@ -99,8 +99,23 @@ TYPEDESCRIPTION CItemSuit::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CItemSuit, CBaseItem);
 
+constexpr float BATTERY_DEFAULT_CAPACITY = -1;
+
 class CItemBattery : public CItem
 {
+	void KeyValue(KeyValueData* pkvd)
+	{
+		if (AreStringsEqual(pkvd->szKeyName, "custom_capacity"))
+		{
+			m_flCustomCapacity = std::max(0.0, atof(pkvd->szValue));
+			pkvd->fHandled = true;
+		}
+		else
+		{
+			CItem::KeyValue(pkvd);
+		}
+	}
+
 	void Spawn() override
 	{
 		Precache();
@@ -122,7 +137,14 @@ class CItemBattery : public CItem
 		if ((pPlayer->pev->armorvalue < MAX_NORMAL_BATTERY) &&
 			(pPlayer->pev->weapons & (1 << WEAPON_SUIT)))
 		{
-			pPlayer->pev->armorvalue += gSkillData.batteryCapacity;
+			float capacity = gSkillData.batteryCapacity;
+
+			if (m_flCustomCapacity != BATTERY_DEFAULT_CAPACITY)
+			{
+				capacity = m_flCustomCapacity;
+			}
+
+			pPlayer->pev->armorvalue += capacity;
 			pPlayer->pev->armorvalue = std::min(pPlayer->pev->armorvalue, static_cast<float>(MAX_NORMAL_BATTERY));
 
 			pPlayer->EmitSound(SoundChannel::Item, "items/gunpickup2.wav");
@@ -148,9 +170,24 @@ class CItemBattery : public CItem
 		}
 		return ItemApplyResult::NotUsed;
 	}
+
+	bool Save(CSave& save) override;
+	bool Restore(CRestore& restore) override;
+
+	static TYPEDESCRIPTION m_SaveData[];
+
+private:
+	float m_flCustomCapacity = BATTERY_DEFAULT_CAPACITY;
 };
 
 LINK_ENTITY_TO_CLASS(item_battery, CItemBattery);
+
+TYPEDESCRIPTION	CItemBattery::m_SaveData[] =
+{
+	DEFINE_FIELD(CItemBattery, m_flCustomCapacity, FIELD_FLOAT),
+};
+
+IMPLEMENT_SAVERESTORE(CItemBattery, CItem);
 
 class CItemAntidote : public CItem
 {
