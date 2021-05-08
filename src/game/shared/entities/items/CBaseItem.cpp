@@ -296,7 +296,15 @@ CBaseEntity* CBaseItem::Respawn()
 #ifndef CLIENT_DLL
 	if (auto newItem = GetItemToRespawn(g_pGameRules->ItemRespawnSpot(*this)); newItem)
 	{
-		newItem->pev->effects |= EF_NODRAW;
+		// not a typo! We want to know when the item the player just picked up should respawn! This new entity we created is the replacement,
+		// but when it should respawn is based on conditions belonging to the weapon that was taken.
+		const float respawnTime = g_pGameRules->ItemRespawnTime(*this);
+
+		if (respawnTime > gpGlobals->time)
+		{
+			newItem->pev->effects |= EF_NODRAW;
+		}
+
 		newItem->SetTouch(nullptr);
 		newItem->SetThink(&CBaseItem::AttemptToMaterialize);
 
@@ -311,9 +319,7 @@ CBaseEntity* CBaseItem::Respawn()
 			DROP_TO_FLOOR(newItem->edict());
 		}
 
-		// not a typo! We want to know when the item the player just picked up should respawn! This new entity we created is the replacement,
-		// but when it should respawn is based on conditions belonging to the weapon that was taken.
-		newItem->pev->nextthink = g_pGameRules->ItemRespawnTime(*this);
+		newItem->pev->nextthink = respawnTime;
 		return newItem;
 	}
 
