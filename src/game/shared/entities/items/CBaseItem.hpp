@@ -22,6 +22,19 @@ enum class ItemType
 	Weapon			//!< A weapon like the Glock, MP5, etc
 };
 
+enum class ItemRespawnMode
+{
+	Default = 0,
+	Always,
+	Never
+};
+
+enum class ItemRespawnPositionMode
+{
+	Current,
+	Original
+};
+
 enum class ItemFallMode
 {
 	/**
@@ -30,6 +43,13 @@ enum class ItemFallMode
 	PlaceOnGround = 0,
 	Fall,
 	Float,	//!< Movetype::Fly with no falling logic
+};
+
+enum class ItemClatterMode
+{
+	Default,
+	Always,
+	Never
 };
 
 enum class ItemApplyAction
@@ -49,19 +69,6 @@ struct ItemApplyResult
 {
 	const ItemApplyAction Action;
 	const int Flags = 0;
-};
-
-enum class ItemRespawnMode
-{
-	Default = 0,
-	Always,
-	Never
-};
-
-enum class ItemRespawnPositionMode
-{
-	Current,
-	Original
 };
 
 constexpr float ITEM_DEFAULT_RESPAWN_DELAY = -1;
@@ -138,7 +145,7 @@ protected:
 	/**
 	*	@brief Make a clatter sound when falling on the ground
 	*/
-	bool m_bClatterOnFall = false;
+	ItemClatterMode m_ClatterMode = ItemClatterMode::Default;
 
 	bool m_bStayVisibleDuringRespawn = false;
 	bool m_bIsRespawning = false;

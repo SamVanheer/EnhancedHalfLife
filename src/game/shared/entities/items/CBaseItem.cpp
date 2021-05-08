@@ -28,7 +28,7 @@ TYPEDESCRIPTION	CBaseItem::m_SaveData[] =
 	DEFINE_FIELD(CBaseItem, m_RespawnPositionMode, FIELD_INTEGER),
 	DEFINE_FIELD(CBaseItem, m_FallMode, FIELD_INTEGER),
 	DEFINE_FIELD(CBaseItem, m_bCanPickUpWhileFalling, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBaseItem, m_bClatterOnFall, FIELD_BOOLEAN),
+	DEFINE_FIELD(CBaseItem, m_ClatterMode, FIELD_INTEGER),
 	DEFINE_FIELD(CBaseItem, m_bStayVisibleDuringRespawn, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseItem, m_bIsRespawning, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseItem, m_bFlashOnRespawn, FIELD_BOOLEAN),
@@ -122,9 +122,25 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 		m_bCanPickUpWhileFalling = atoi(pkvd->szValue) != 0;
 		pkvd->fHandled = true;
 	}
-	else if (AreStringsEqual(pkvd->szKeyName, "clatter_on_fall"))
+	else if (AreStringsEqual(pkvd->szKeyName, "clatter_mode"))
 	{
-		m_bClatterOnFall = atoi(pkvd->szValue) != 0;
+		if (AreStringsEqual(pkvd->szValue, "Default"))
+		{
+			m_ClatterMode = ItemClatterMode::Default;
+		}
+		else if (AreStringsEqual(pkvd->szValue, "Never"))
+		{
+			m_ClatterMode = ItemClatterMode::Never;
+		}
+		else if (AreStringsEqual(pkvd->szValue, "Always"))
+		{
+			m_ClatterMode = ItemClatterMode::Always;
+		}
+		else
+		{
+			ALERT(at_warning, "Invalid clatter_mode value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, GetClassname(), entindex());
+		}
+
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "clatter_sound"))
@@ -242,7 +258,8 @@ void CBaseItem::FallThink()
 		// clatter if we have an owner (i.e., dropped by someone)
 		// don't clatter if the gun is waiting to respawn (if it's waiting, it is invisible!)
 		// Also clatter if the mapper wants it to
-		if (m_bClatterOnFall || !IsNullEnt(GetOwner()))
+		if (m_ClatterMode == ItemClatterMode::Always
+			|| (m_ClatterMode == ItemClatterMode::Default && !IsNullEnt(GetOwner())))
 		{
 			if (auto sound = STRING(m_iszClatterSound); *sound)
 			{

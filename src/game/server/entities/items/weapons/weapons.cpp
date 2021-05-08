@@ -426,7 +426,7 @@ CBasePlayerWeapon* CBasePlayerWeapon::GetItemToRespawn(const Vector& respawnPoin
 
 	pNewWeapon->m_FallMode = m_FallMode;
 	pNewWeapon->m_bCanPickUpWhileFalling = m_bCanPickUpWhileFalling;
-	pNewWeapon->m_bClatterOnFall = m_bClatterOnFall;
+	pNewWeapon->m_ClatterMode = m_ClatterMode;
 	pNewWeapon->m_bStayVisibleDuringRespawn = m_bStayVisibleDuringRespawn;
 	pNewWeapon->m_bFlashOnRespawn = m_bFlashOnRespawn;
 
