@@ -494,9 +494,20 @@ public:
 
 	void SetSize(const Vector& mins, const Vector& maxs);
 
+	const char* GetModelName() const { return STRING(pev->model); }
+
 	void SetModel(const char* modelName)
 	{
 		g_engfuncs.pfnSetModel(edict(), modelName);
+	}
+
+	/**
+	*	@brief Sets the model name without setting the model
+	*	Mostly useful during setup to provide an initial/custom model before precache and spawn
+	*/
+	void SetModelName(const char* modelName)
+	{
+		pev->model = ALLOC_STRING(modelName);
 	}
 
 	Solid GetSolidType() const { return pev->solid; }
