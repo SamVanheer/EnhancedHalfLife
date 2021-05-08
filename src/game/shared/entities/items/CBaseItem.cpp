@@ -29,6 +29,8 @@ TYPEDESCRIPTION	CBaseItem::m_SaveData[] =
 	DEFINE_FIELD(CBaseItem, m_FallMode, FIELD_INTEGER),
 	DEFINE_FIELD(CBaseItem, m_bCanPickUpWhileFalling, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseItem, m_bClatterOnFall, FIELD_BOOLEAN),
+	DEFINE_FIELD(CBaseItem, m_bStayVisibleDuringRespawn, FIELD_BOOLEAN),
+	DEFINE_FIELD(CBaseItem, m_bIsRespawning, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseItem, m_iszClatterSound, FIELD_SOUNDNAME),
 	DEFINE_FIELD(CBaseItem, m_iszRespawnSound, FIELD_SOUNDNAME),
 };
@@ -79,6 +81,11 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 			ALERT(at_warning, "Invalid respawn_position_mode value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, GetClassname(), entindex());
 		}
 
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "stay_visible_during_respawn"))
+	{
+		m_bStayVisibleDuringRespawn = atoi(pkvd->szValue) != 0;
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "fall_mode"))
@@ -300,10 +307,15 @@ CBaseEntity* CBaseItem::Respawn()
 		// but when it should respawn is based on conditions belonging to the weapon that was taken.
 		const float respawnTime = g_pGameRules->ItemRespawnTime(*this);
 
-		if (respawnTime > gpGlobals->time)
+		if (respawnTime > gpGlobals->time && !m_bStayVisibleDuringRespawn)
 		{
 			newItem->pev->effects |= EF_NODRAW;
 		}
+
+		newItem->m_bIsRespawning = true;
+
+		//Clear onground flag so fall sounds will play
+		newItem->pev->flags &= ~FL_ONGROUND;
 
 		newItem->SetTouch(nullptr);
 		newItem->SetThink(&CBaseItem::AttemptToMaterialize);
@@ -342,7 +354,7 @@ void CBaseItem::CheckRespawn()
 void CBaseItem::Materialize()
 {
 #ifndef CLIENT_DLL
-	if (pev->effects & EF_NODRAW)
+	if (m_bIsRespawning)
 	{
 		// changing from invisible state to visible.
 		if (auto sound = STRING(m_iszRespawnSound); *sound)
@@ -352,6 +364,7 @@ void CBaseItem::Materialize()
 
 		pev->effects &= ~EF_NODRAW;
 		pev->effects |= EF_MUZZLEFLASH;
+		m_bIsRespawning = false;
 	}
 
 	SetSolidType(Solid::Trigger);
@@ -378,7 +391,6 @@ void CBaseItem::AttemptToMaterialize()
 
 			//Fall first, then materialize (plays clatter sound)
 		case ItemFallMode::Fall:
-			pev->flags &= ~FL_ONGROUND;
 			SetThink(&CBaseItem::FallThink);
 			pev->nextthink = gpGlobals->time + 0.1;
 			break;
