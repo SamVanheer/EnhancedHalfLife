@@ -198,6 +198,9 @@ void CBaseItem::SetupItem(const Vector& mins, const Vector& maxs)
 	}
 
 	pev->nextthink = gpGlobals->time + 0.1;
+
+	//All items are animated by default
+	pev->framerate = 1;
 }
 
 void CBaseItem::Precache()
