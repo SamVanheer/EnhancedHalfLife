@@ -278,10 +278,15 @@ void CBaseItem::ItemTouch(CBaseEntity* pOther)
 	// ok, a player is touching this item, but can he have it?
 	if (g_pGameRules->CanHaveItem(*pPlayer, *this))
 	{
-		if (const ItemApplyResult result = Apply(pPlayer); result != ItemApplyResult::NotUsed)
+		const ItemApplyResult result = Apply(pPlayer);
+
+		if (result.Action != ItemApplyAction::NotUsed)
 		{
 			// player grabbed the item. 
-			g_pGameRules->PlayerGotItem(*pPlayer, *this);
+			if (!(result.Flags & ItemFlag::PlayerGotItemHandled))
+			{
+				g_pGameRules->PlayerGotItem(*pPlayer, *this);
+			}
 
 			//Do this after telling gamerules so it can set stuff up
 			SUB_UseTargets(pOther, UseType::Toggle, 0);
@@ -294,13 +299,13 @@ void CBaseItem::ItemTouch(CBaseEntity* pOther)
 			{
 				//We're not respawning so call this here
 				FireTargets(STRING(m_iszTriggerOnDematerialize), this, this, UseType::Off, 0);
-				shouldRemoveEntity = result == ItemApplyResult::Used;
+				shouldRemoveEntity = result.Action == ItemApplyAction::Used;
 			}
+		}
 
-			if (result == ItemApplyResult::UsedAlwaysRemove)
-			{
-				shouldRemoveEntity = true;
-			}
+		if (result.Flags & ItemFlag::AlwaysRemoveItem)
+		{
+			shouldRemoveEntity = true;
 		}
 	}
 

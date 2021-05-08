@@ -64,7 +64,7 @@ class CItemSuit : public CItem
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override
 	{
 		if (pPlayer->pev->weapons & (1 << WEAPON_SUIT))
-			return ItemApplyResult::NotUsed;
+			return {ItemApplyAction::NotUsed};
 
 		switch (m_LogonType)
 		{
@@ -78,7 +78,7 @@ class CItemSuit : public CItem
 		}
 
 		pPlayer->pev->weapons |= (1 << WEAPON_SUIT);
-		return ItemApplyResult::Used;
+		return {ItemApplyAction::Used};
 	}
 
 	bool Save(CSave& save) override;
@@ -131,7 +131,7 @@ class CItemBattery : public CItem
 	{
 		if (pPlayer->pev->deadflag != DeadFlag::No)
 		{
-			return ItemApplyResult::NotUsed;
+			return {ItemApplyAction::NotUsed};
 		}
 
 		if ((pPlayer->pev->armorvalue < MAX_NORMAL_BATTERY) &&
@@ -166,9 +166,9 @@ class CItemBattery : public CItem
 
 			//EMIT_SOUND_SUIT(ENT(pev), szcharge);
 			pPlayer->SetSuitUpdate(szcharge, SuitSoundType::Sentence, SUIT_NEXT_IN_30SEC);
-			return ItemApplyResult::Used;
+			return {ItemApplyAction::Used};
 		}
-		return ItemApplyResult::NotUsed;
+		return {ItemApplyAction::NotUsed};
 	}
 
 	bool Save(CSave& save) override;
@@ -206,7 +206,7 @@ class CItemAntidote : public CItem
 		pPlayer->SetSuitUpdate("!HEV_DET4", SuitSoundType::Sentence, SUIT_NEXT_IN_1MIN);
 
 		pPlayer->m_rgItems[ITEM_ANTIDOTE] += 1;
-		return ItemApplyResult::Used;
+		return {ItemApplyAction::Used};
 	}
 };
 
@@ -228,7 +228,7 @@ class CItemLongJump : public CItem
 	{
 		if (pPlayer->m_fLongJump)
 		{
-			return ItemApplyResult::NotUsed;
+			return {ItemApplyAction::NotUsed};
 		}
 
 		if ((pPlayer->pev->weapons & (1 << WEAPON_SUIT)))
@@ -242,9 +242,9 @@ class CItemLongJump : public CItem
 			MESSAGE_END();
 
 			EMIT_SOUND_SUIT(pPlayer, "!HEV_A1");	// Play the longjump sound UNDONE: Kelly? correct sound?
-			return ItemApplyResult::Used;
+			return {ItemApplyAction::Used};
 		}
-		return ItemApplyResult::NotUsed;
+		return {ItemApplyAction::NotUsed};
 	}
 };
 

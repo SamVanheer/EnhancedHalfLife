@@ -2858,9 +2858,12 @@ ItemApplyResult CBasePlayer::AddPlayerWeapon(CBasePlayerWeapon* weapon)
 	{
 		if (pInsert->ClassnameIs(weapon->GetClassname()))
 		{
+			int flags = 0;
 			if (weapon->AddDuplicate(pInsert))
 			{
 				g_pGameRules->PlayerGotItem(*this, *weapon);
+
+				flags |= ItemFlag::PlayerGotItemHandled;
 
 				// ugly hack to update clip w/o an update clip message
 				pInsert->UpdateWeaponInfo();
@@ -2868,7 +2871,7 @@ ItemApplyResult CBasePlayer::AddPlayerWeapon(CBasePlayerWeapon* weapon)
 					activeWeapon->UpdateWeaponInfo();
 			}
 			//Respawns the weapon if needed
-			return ItemApplyResult::UsedAlwaysRemove;
+			return {ItemApplyAction::Used, flags | ItemFlag::AlwaysRemoveItem};
 		}
 		pInsert = pInsert->m_hNext;
 	}
@@ -2886,10 +2889,10 @@ ItemApplyResult CBasePlayer::AddPlayerWeapon(CBasePlayerWeapon* weapon)
 			SwitchWeapon(weapon);
 		}
 
-		return ItemApplyResult::AttachedToPlayer;
+		return {ItemApplyAction::AttachedToPlayer, ItemFlag::PlayerGotItemHandled};
 	}
 
-	return ItemApplyResult::NotUsed;
+	return {ItemApplyAction::NotUsed};
 }
 
 bool CBasePlayer::RemovePlayerWeapon(CBasePlayerWeapon* weapon)

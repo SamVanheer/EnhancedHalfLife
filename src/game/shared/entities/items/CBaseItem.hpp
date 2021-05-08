@@ -32,12 +32,23 @@ enum class ItemFallMode
 	Float,	//!< Movetype::Fly with no falling logic
 };
 
-enum class ItemApplyResult
+enum class ItemApplyAction
 {
 	NotUsed = 0,		//!< Item was not used by player and remains in the world
 	Used,				//!< Item was used and needs to be checked for respawn/removal
-	UsedAlwaysRemove,	//!< Item was used, needs to be checked for respawn/removal and always removed
 	AttachedToPlayer	//!< Item was attached to player and needs to be checked for respawn
+};
+
+namespace ItemFlag
+{
+constexpr int AlwaysRemoveItem = 1 << 0;
+constexpr int PlayerGotItemHandled = 1 << 1;
+}
+
+struct ItemApplyResult
+{
+	const ItemApplyAction Action;
+	const int Flags = 0;
 };
 
 enum class ItemRespawnMode

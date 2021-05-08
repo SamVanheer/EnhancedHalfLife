@@ -349,9 +349,9 @@ ItemApplyResult CBasePlayerAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount
 			EmitSound(SoundChannel::Item, sound);
 		}
 
-		return ItemApplyResult::Used;
+		return {ItemApplyAction::Used};
 	}
-	return ItemApplyResult::NotUsed;
+	return {ItemApplyAction::NotUsed};
 }
 
 ItemApplyResult CBasePlayerAmmo::Apply(CBasePlayer* player)
@@ -434,7 +434,7 @@ ItemApplyResult CBasePlayerWeapon::Apply(CBasePlayer* pPlayer)
 {
 	const ItemApplyResult result = pPlayer->AddPlayerWeapon(this);
 
-	if (result != ItemApplyResult::NotUsed)
+	if (result.Action != ItemApplyAction::NotUsed)
 	{
 		AttachToPlayer(pPlayer);
 		pPlayer->EmitSound(SoundChannel::Item, "items/gunpickup2.wav");
@@ -861,7 +861,7 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 				
 			m_hPlayerWeapons[i] = next;// unlink this weapon from the box
 
-			if (pPlayer->AddPlayerWeapon(weapon) == ItemApplyResult::AttachedToPlayer)
+			if (pPlayer->AddPlayerWeapon(weapon).Action == ItemApplyAction::AttachedToPlayer)
 			{
 				weapon->AttachToPlayer(pPlayer);
 			}

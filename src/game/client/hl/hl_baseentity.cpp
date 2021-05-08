@@ -268,7 +268,7 @@ void CBasePlayer::FlashlightTurnOff() { }
 void CBasePlayer::ForceClientDllUpdate() { }
 void CBasePlayer::ImpulseCommands() { }
 void CBasePlayer::CheatImpulseCommands(int iImpulse) { }
-ItemApplyResult CBasePlayer::AddPlayerWeapon(CBasePlayerWeapon* pWeapon) { return ItemApplyResult::NotUsed; }
+ItemApplyResult CBasePlayer::AddPlayerWeapon(CBasePlayerWeapon* pWeapon) { return {ItemApplyAction::NotUsed}; }
 bool CBasePlayer::RemovePlayerWeapon(CBasePlayerWeapon* pWeapon) { return false; }
 void CBasePlayer::WeaponPreFrame() { }
 void CBasePlayer::WeaponPostFrame() { }
@@ -308,7 +308,7 @@ bool CBasePlayerAmmo::Save(class CSave&) { return true; }
 float CBasePlayerWeapon::GetNextAttackDelay(float flTime) { return flTime; }
 void CBasePlayerWeapon::SetObjectCollisionBox() { }
 void CBasePlayerWeapon::FallInit() { }
-ItemApplyResult CBasePlayerWeapon::Apply(CBasePlayer* pPlayer) { return ItemApplyResult::NotUsed; }
+ItemApplyResult CBasePlayerWeapon::Apply(CBasePlayer* pPlayer) { return {ItemApplyAction::NotUsed}; }
 void CBasePlayerWeapon::DestroyWeapon() { }
 void CBasePlayerWeapon::Drop() { }
 void CBasePlayerWeapon::Kill() { }
@@ -325,7 +325,7 @@ int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon) { return 0; }
 void CBasePlayerWeapon::RetireWeapon() { }
 void CBasePlayerAmmo::KeyValue(KeyValueData* pkvd) {}
 void CBasePlayerAmmo::Precache() {}
-ItemApplyResult CBasePlayerAmmo::Apply(CBasePlayer* player) { return ItemApplyResult::NotUsed; }
+ItemApplyResult CBasePlayerAmmo::Apply(CBasePlayer* player) { return {ItemApplyAction::NotUsed}; }
 void CSoundEnt::InsertSound(int iType, const Vector& vecOrigin, int iVolume, float flDuration) {}
 
 CBaseEntity* UTIL_FindEntityByClassname(CBaseEntity* pStartEntity, const char* szName) { return nullptr; }

@@ -75,7 +75,7 @@ ItemApplyResult CHealthKit::Apply(CBasePlayer* pPlayer)
 {
 	if (pPlayer->pev->deadflag != DeadFlag::No)
 	{
-		return ItemApplyResult::NotUsed;
+		return {ItemApplyAction::NotUsed};
 	}
 
 	float capacity = gSkillData.healthkitCapacity;
@@ -93,10 +93,10 @@ ItemApplyResult CHealthKit::Apply(CBasePlayer* pPlayer)
 
 		pPlayer->EmitSound(SoundChannel::Item, "items/smallmedkit1.wav");
 
-		return ItemApplyResult::Used;
+		return {ItemApplyAction::Used};
 	}
 
-	return ItemApplyResult::NotUsed;
+	return {ItemApplyAction::NotUsed};
 }
 
 
