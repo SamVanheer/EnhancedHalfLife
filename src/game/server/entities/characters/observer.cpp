@@ -175,7 +175,7 @@ void CBasePlayer::Observer_CheckProperties()
 		if (!target)
 			return;
 
-		int weapon = (target->m_hActiveItem != nullptr) ? target->m_hActiveItem->m_iId : WEAPON_NONE;
+		int weapon = (target->m_hActiveWeapon != nullptr) ? target->m_hActiveWeapon->m_iId : WEAPON_NONE;
 		// use fov of tracked client
 		if (m_iFOV != target->m_iFOV || m_iObserverWeapon != weapon)
 		{

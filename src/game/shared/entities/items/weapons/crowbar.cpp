@@ -52,7 +52,7 @@ void CCrowbar::Precache()
 	m_usCrowbar = PRECACHE_EVENT(1, "events/crowbar.sc");
 }
 
-bool CCrowbar::GetItemInfo(ItemInfo* p)
+bool CCrowbar::GetWeaponInfo(WeaponInfo* p)
 {
 	p->pszName = GetClassname();
 	p->pszAmmo1 = nullptr;

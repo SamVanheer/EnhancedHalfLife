@@ -111,11 +111,6 @@ DBG_AssertFunction(
 }
 #endif	// DEBUG
 
-bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon)
-{
-	return g_pGameRules->GetNextBestWeapon(pPlayer, pCurrentWeapon);
-}
-
 CBaseEntity* UTIL_CreateNamedEntity(string_t className)
 {
 	auto edict = g_engfuncs.pfnCreateNamedEntity(className);

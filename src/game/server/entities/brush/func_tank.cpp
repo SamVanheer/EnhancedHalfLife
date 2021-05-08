@@ -370,9 +370,9 @@ bool CFuncTank::StartControl(CBasePlayer* pController)
 
 	m_hController = pController;
 	//TODO: don't have this code outside CBasePlayer
-	if (auto activeItem = pController->m_hActiveItem.Get(); activeItem)
+	if (auto activeWeapon = pController->m_hActiveWeapon.Get(); activeWeapon)
 	{
-		activeItem->Holster();
+		activeWeapon->Holster();
 		pController->pev->weaponmodel = iStringNull;
 		pController->pev->viewmodel = iStringNull;
 
@@ -393,8 +393,8 @@ void CFuncTank::StopControl()
 		return;
 
 	//TODO: don't have this code outside CBasePlayer
-	if (auto activeItem = controller->m_hActiveItem.Get(); activeItem)
-		activeItem->Deploy();
+	if (auto activeWeapon = controller->m_hActiveWeapon.Get(); activeWeapon)
+		activeWeapon->Deploy();
 
 	ALERT(at_console, "stopped using TANK\n");
 

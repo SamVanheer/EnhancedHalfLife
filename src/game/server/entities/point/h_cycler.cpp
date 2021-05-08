@@ -257,8 +257,8 @@ class CWeaponCycler : public CBasePlayerWeapon
 {
 public:
 	void Spawn() override;
-	int ItemSlot() override { return 1; }
-	bool GetItemInfo(ItemInfo* p) override { return false; }
+	int WeaponSlot() override { return 1; }
+	bool GetWeaponInfo(WeaponInfo* p) override { return false; }
 
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;

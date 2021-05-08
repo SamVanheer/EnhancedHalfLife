@@ -17,16 +17,16 @@
 #include "player.h"
 #include "weapons.h"
 
-void CBasePlayer::SelectLastItem()
+void CBasePlayer::SelectLastWeapon()
 {
-	if (!m_hLastItem)
+	if (!m_hLastWeapon)
 	{
 		return;
 	}
 
-	auto activeItem = m_hActiveItem.Get();
+	auto activeWeapon = m_hActiveWeapon.Get();
 
-	if (activeItem && !activeItem->CanHolster())
+	if (activeWeapon && !activeWeapon->CanHolster())
 	{
 		return;
 	}
@@ -34,44 +34,44 @@ void CBasePlayer::SelectLastItem()
 	ResetAutoaim();
 
 	// FIX, this needs to queue them up and delay
-	if (activeItem)
-		activeItem->Holster();
+	if (activeWeapon)
+		activeWeapon->Holster();
 
-	CBasePlayerItem* pTemp = activeItem;
-	activeItem = m_hActiveItem = m_hLastItem;
-	m_hLastItem = pTemp;
-	activeItem->Deploy();
-	activeItem->UpdateItemInfo();
+	CBasePlayerWeapon* pTemp = activeWeapon;
+	activeWeapon = m_hActiveWeapon = m_hLastWeapon;
+	m_hLastWeapon = pTemp;
+	activeWeapon->Deploy();
+	activeWeapon->UpdateWeaponInfo();
 }
 
-void CBasePlayer::SelectItem(const char* pstr)
+void CBasePlayer::SelectWeapon(const char* pstr)
 {
 	if (!pstr)
 		return;
 
-	CBasePlayerItem* pItem = nullptr;
+	CBasePlayerWeapon* weapon = nullptr;
 
 #ifndef CLIENT_DLL
-	for (int i = 0; i < MAX_ITEM_TYPES; i++)
+	for (int i = 0; i < MAX_WEAPON_TYPES; i++)
 	{
-		pItem = m_hPlayerItems[i];
+		weapon = m_hPlayerWeapons[i];
 
-		while (pItem)
+		while (weapon)
 		{
-			if (pItem->ClassnameIs(pstr))
+			if (weapon->ClassnameIs(pstr))
 				break;
-			pItem = pItem->m_hNext;
+			weapon = weapon->m_hNext;
 		}
 
-		if (pItem)
+		if (weapon)
 			break;
 	}
 #endif
 
-	if (!pItem)
+	if (!weapon)
 		return;
 
-	if (pItem == m_hActiveItem)
+	if (weapon == m_hActiveWeapon)
 		return;
 
 #ifndef CLIENT_DLL
@@ -79,17 +79,17 @@ void CBasePlayer::SelectItem(const char* pstr)
 #endif
 
 	// FIX, this needs to queue them up and delay
-	if (auto activeItem = m_hActiveItem.Get(); activeItem)
-		activeItem->Holster();
+	if (auto activeWeapon = m_hActiveWeapon.Get(); activeWeapon)
+		activeWeapon->Holster();
 
-	m_hLastItem = m_hActiveItem;
-	m_hActiveItem = pItem;
+	m_hLastWeapon = m_hActiveWeapon;
+	m_hActiveWeapon = weapon;
 
-	if (auto activeItem = m_hActiveItem.Get(); activeItem)
+	if (auto activeWeapon = m_hActiveWeapon.Get(); activeWeapon)
 	{
-		activeItem->Deploy();
+		activeWeapon->Deploy();
 #ifndef CLIENT_DLL
-		activeItem->UpdateItemInfo();
+		activeWeapon->UpdateWeaponInfo();
 #endif
 	}
 }

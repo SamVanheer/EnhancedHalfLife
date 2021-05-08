@@ -148,7 +148,7 @@ void CSatchelCharge::BounceSound()
 
 LINK_ENTITY_TO_CLASS(weapon_satchel, CSatchel);
 
-bool CSatchel::AddDuplicate(CBasePlayerItem* pOriginal)
+bool CSatchel::AddDuplicate(CBasePlayerWeapon* pOriginal)
 {
 #ifdef CLIENT_DLL
 	if (bIsMultiplayer())
@@ -170,7 +170,7 @@ bool CSatchel::AddDuplicate(CBasePlayerItem* pOriginal)
 
 bool CSatchel::AddToPlayer(CBasePlayer* pPlayer)
 {
-	const bool bResult = CBasePlayerItem::AddToPlayer(pPlayer);
+	const bool bResult = CBasePlayerWeapon::AddToPlayer(pPlayer);
 
 	pPlayer->pev->weapons |= (1 << m_iId);
 	m_chargeReady = ChargeState::NoSatchelsDeployed;// this satchel charge weapon now forgets that any satchels are deployed by it.
@@ -205,7 +205,7 @@ void CSatchel::Precache()
 	UTIL_PrecacheOther("monster_satchel");
 }
 
-bool CSatchel::GetItemInfo(ItemInfo* p)
+bool CSatchel::GetWeaponInfo(WeaponInfo* p)
 {
 	p->pszName = GetClassname();
 	p->pszAmmo1 = "Satchel Charge";
@@ -215,7 +215,7 @@ bool CSatchel::GetItemInfo(ItemInfo* p)
 	p->iMaxClip = WEAPON_NOCLIP;
 	p->iSlot = 4;
 	p->iPosition = 1;
-	p->iFlags = ITEM_FLAG_SELECTONEMPTY | ITEM_FLAG_LIMITINWORLD | ITEM_FLAG_EXHAUSTIBLE;
+	p->iFlags = WEAPON_FLAG_SELECTONEMPTY | WEAPON_FLAG_LIMITINWORLD | WEAPON_FLAG_EXHAUSTIBLE;
 	p->iId = m_iId = WEAPON_SATCHEL;
 	p->iWeight = SATCHEL_WEIGHT;
 
@@ -301,7 +301,7 @@ void CSatchel::Holster()
 	if (!player->m_rgAmmo[m_iPrimaryAmmoType] && m_chargeReady == ChargeState::NoSatchelsDeployed)
 	{
 		player->pev->weapons &= ~(1 << WEAPON_SATCHEL);
-		SetThink(&CSatchel::DestroyItem);
+		SetThink(&CSatchel::DestroyWeapon);
 		pev->nextthink = gpGlobals->time + 0.1;
 	}
 }

@@ -111,15 +111,15 @@ void HUD_PrepEntity(CBaseEntity* pEntity, CBasePlayer* pWeaponOwner)
 
 	if (pWeaponOwner)
 	{
-		ItemInfo info;
+		WeaponInfo info;
 
 		memset(&info, 0, sizeof(info));
 
 		((CBasePlayerWeapon*)pEntity)->m_hPlayer = pWeaponOwner;
 
-		((CBasePlayerWeapon*)pEntity)->GetItemInfo(&info);
+		((CBasePlayerWeapon*)pEntity)->GetWeaponInfo(&info);
 
-		CBasePlayerItem::ItemInfoArray[info.iId] = info;
+		CBasePlayerWeapon::WeaponInfoArray[info.iId] = info;
 
 		if (info.pszAmmo1 && *info.pszAmmo1)
 		{
@@ -167,16 +167,16 @@ Vector CBasePlayer::FireBulletsPlayer(std::uint32_t cShots, const Vector& vecSrc
 void CBasePlayer::Killed(const KilledInfo& info)
 {
 	// Holster weapon immediately, to allow it to cleanup
-	if (auto activeItem = m_hActiveItem.Get(); activeItem)
-		activeItem->Holster();
+	if (auto activeWeapon = m_hActiveWeapon.Get(); activeWeapon)
+		activeWeapon->Holster();
 
 	g_irunninggausspred = false;
 }
 
 void CBasePlayer::Spawn()
 {
-	if (auto activeItem = m_hActiveItem.Get(); activeItem)
-		activeItem->Deploy();
+	if (auto activeWeapon = m_hActiveWeapon.Get(); activeWeapon)
+		activeWeapon->Deploy();
 
 	g_irunninggausspred = false;
 }
@@ -490,13 +490,13 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 	// Point to current weapon object
 	if (from->client.m_iId)
 	{
-		player.m_hActiveItem = g_pWpns[from->client.m_iId];
+		player.m_hActiveWeapon = g_pWpns[from->client.m_iId];
 	}
 
-	if (player.m_hActiveItem->m_iId == WEAPON_RPG)
+	if (player.m_hActiveWeapon->m_iId == WEAPON_RPG)
 	{
-		((CRpg*)player.m_hActiveItem.Get())->m_fSpotActive = ((int)from->client.vuser2[1]) != 0;
-		((CRpg*)player.m_hActiveItem.Get())->m_cActiveRockets = (int)from->client.vuser2[2];
+		((CRpg*)player.m_hActiveWeapon.Get())->m_fSpotActive = ((int)from->client.vuser2[1]) != 0;
+		((CRpg*)player.m_hActiveWeapon.Get())->m_cActiveRockets = (int)from->client.vuser2[2];
 	}
 
 	// Don't go firing anything if we have died or are spectating
@@ -506,7 +506,7 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 	{
 		if (player.m_flNextAttack <= 0)
 		{
-			pWeapon->ItemPostFrame();
+			pWeapon->WeaponPostFrame();
 		}
 	}
 
@@ -523,16 +523,16 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 			if (pNew && (pNew != pWeapon))
 			{
 				// Put away old weapon
-				if (auto activeItem = player.m_hActiveItem.Get(); activeItem)
-					activeItem->Holster();
+				if (auto activeWeapon = player.m_hActiveWeapon.Get(); activeWeapon)
+					activeWeapon->Holster();
 
-				player.m_hLastItem = player.m_hActiveItem;
-				player.m_hActiveItem = pNew;
+				player.m_hLastWeapon = player.m_hActiveWeapon;
+				player.m_hActiveWeapon = pNew;
 
 				// Deploy new weapon
-				if (auto activeItem = player.m_hActiveItem.Get(); activeItem)
+				if (auto activeWeapon = player.m_hActiveWeapon.Get(); activeWeapon)
 				{
-					activeItem->Deploy();
+					activeWeapon->Deploy();
 				}
 
 				// Update weapon id so we can predict things correctly.
@@ -559,10 +559,10 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 	to->client.vuser2[0] = player.GetAmmoCount("Hornets");
 	to->client.ammo_rockets = player.GetAmmoCount("rockets");
 
-	if (player.m_hActiveItem->m_iId == WEAPON_RPG)
+	if (player.m_hActiveWeapon->m_iId == WEAPON_RPG)
 	{
-		from->client.vuser2[1] = ((CRpg*)player.m_hActiveItem.Get())->m_fSpotActive;
-		from->client.vuser2[2] = ((CRpg*)player.m_hActiveItem.Get())->m_cActiveRockets;
+		from->client.vuser2[1] = ((CRpg*)player.m_hActiveWeapon.Get())->m_fSpotActive;
+		from->client.vuser2[2] = ((CRpg*)player.m_hActiveWeapon.Get())->m_cActiveRockets;
 	}
 
 	// Make sure that weapon animation matches what the game .dll is telling us

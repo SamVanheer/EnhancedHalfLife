@@ -105,7 +105,7 @@ constexpr int CLASS_COUNT = CLASS_ALIEN_BIOWEAPON + 1;
 
 class CBaseEntity;
 class CBaseMonster;
-class CBasePlayerItem;
+class CBasePlayerWeapon;
 class CSquadMonster;
 
 /**

@@ -66,9 +66,9 @@ bool CGameRules::CanHaveItem(CBasePlayer& player, CBaseItem& item)
 
 	case ItemType::Weapon:
 	{
-		auto& weapon = static_cast<CBasePlayerItem&>(item);
+		auto& weapon = static_cast<CBasePlayerWeapon&>(item);
 
-		// only living players can have items
+		// only living players can have weapons
 		if (player.pev->deadflag != DeadFlag::No)
 			return false;
 
@@ -78,7 +78,7 @@ bool CGameRules::CanHaveItem(CBasePlayer& player, CBaseItem& item)
 			{
 				// we can't carry anymore ammo for this gun. We can only 
 				// have the gun if we aren't already carrying one of this type
-				if (player.HasPlayerItem(&weapon))
+				if (player.HasPlayerWeapon(&weapon))
 				{
 					return false;
 				}
@@ -87,13 +87,13 @@ bool CGameRules::CanHaveItem(CBasePlayer& player, CBaseItem& item)
 		else
 		{
 			// weapon doesn't use ammo, don't take another if you already have it.
-			if (player.HasPlayerItem(&weapon))
+			if (player.HasPlayerWeapon(&weapon))
 			{
 				return false;
 			}
 		}
 
-		// note: will fall through to here if GetItemInfo doesn't fill the struct!
+		// note: will fall through to here if GetWeaponInfo doesn't fill the struct!
 		return true;
 	}
 

@@ -91,7 +91,7 @@ bool CGauss::AddToPlayer(CBasePlayer* pPlayer)
 	return false;
 }
 
-bool CGauss::GetItemInfo(ItemInfo* p)
+bool CGauss::GetWeaponInfo(WeaponInfo* p)
 {
 	p->pszName = GetClassname();
 	p->pszAmmo1 = "uranium";

@@ -252,7 +252,7 @@ void CCrossbow::Precache()
 	m_usCrossbow2 = PRECACHE_EVENT(1, "events/crossbow2.sc");
 }
 
-bool CCrossbow::GetItemInfo(ItemInfo* p)
+bool CCrossbow::GetWeaponInfo(WeaponInfo* p)
 {
 	p->pszName = GetClassname();
 	p->pszAmmo1 = "bolts";

@@ -295,8 +295,8 @@ void ClientCommand(edict_t* pEntity)
 	}
 	else if (AreStringsEqual(pcmd, "drop"))
 	{
-		// player is dropping an item. 
-		player->DropPlayerItem(CMD_ARGV(1));
+		// player is dropping a weapon. 
+		player->DropPlayerWeapon(CMD_ARGV(1));
 	}
 	else if (AreStringsEqual(pcmd, "fov"))
 	{
@@ -326,15 +326,15 @@ void ClientCommand(edict_t* pEntity)
 	}
 	else if (AreStringsEqual(pcmd, "use"))
 	{
-		player->SelectItem(CMD_ARGV(1));
+		player->SelectWeapon(CMD_ARGV(1));
 	}
 	else if (((pstr = strstr(pcmd, "weapon_")) != nullptr) && (pstr == pcmd))
 	{
-		player->SelectItem(pcmd);
+		player->SelectWeapon(pcmd);
 	}
 	else if (AreStringsEqual(pcmd, "lastinv"))
 	{
-		player->SelectLastItem();
+		player->SelectLastWeapon();
 	}
 	else if (AreStringsEqual(pcmd, "spectate"))	// clients wants to become a spectator
 	{
@@ -1155,39 +1155,38 @@ int GetWeaponData(edict_t* player, weapon_data_t* info)
 		return true;
 
 	// go through all of the weapons and make a list of the ones to pack
-	for (int i = 0; i < MAX_ITEM_TYPES; i++)
+	for (int i = 0; i < MAX_WEAPON_TYPES; i++)
 	{
-		if (CBasePlayerItem* pPlayerItem = pl->m_hPlayerItems[i]; pPlayerItem)
+		CBasePlayerWeapon* weapon = pl->m_hPlayerWeapons[i];
+
+		// there's a weapon here. Should I pack it?
+		while (weapon)
 		{
-			// there's a weapon here. Should I pack it?
-			while (pPlayerItem)
+			if (weapon->UseDecrement())
 			{
-				if (CBasePlayerWeapon* gun = pPlayerItem->GetWeaponPtr(); gun && gun->UseDecrement())
+				// Get The ID.
+				WeaponInfo II{};
+				weapon->GetWeaponInfo(&II);
+
+				if (II.iId >= 0 && II.iId < MAX_WEAPONS)
 				{
-					// Get The ID.
-					ItemInfo II{};
-					gun->GetItemInfo(&II);
+					weapon_data_t* item = &info[II.iId];
 
-					if (II.iId >= 0 && II.iId < MAX_WEAPONS)
-					{
-						weapon_data_t* item = &info[II.iId];
+					item->m_iId = II.iId;
+					item->m_iClip = weapon->m_iClip;
 
-						item->m_iId = II.iId;
-						item->m_iClip = gun->m_iClip;
+					item->m_flTimeWeaponIdle = std::max(weapon->m_flTimeWeaponIdle, -0.001f);
+					item->m_flNextPrimaryAttack = std::max(weapon->m_flNextPrimaryAttack, -0.001f);
+					item->m_flNextSecondaryAttack = std::max(weapon->m_flNextSecondaryAttack, -0.001f);
+					item->m_fInReload = weapon->m_fInReload;
+					item->fuser1 = std::max(weapon->pev->fuser1, -0.001f);
 
-						item->m_flTimeWeaponIdle = std::max(gun->m_flTimeWeaponIdle, -0.001f);
-						item->m_flNextPrimaryAttack = std::max(gun->m_flNextPrimaryAttack, -0.001f);
-						item->m_flNextSecondaryAttack = std::max(gun->m_flNextSecondaryAttack, -0.001f);
-						item->m_fInReload = gun->m_fInReload;
-						item->fuser1 = std::max(gun->pev->fuser1, -0.001f);
+					weapon->GetWeaponData(*item);
 
-						gun->GetWeaponData(*item);
-
-						// item->m_flPumpTime = std::max( gun->m_flPumpTime, -0.001f );
-					}
+					// item->m_flPumpTime = std::max( weapon->m_flPumpTime, -0.001f );
 				}
-				pPlayerItem = pPlayerItem->m_hNext;
 			}
+			weapon = weapon->m_hNext;
 		}
 	}
 #endif
@@ -1261,12 +1260,12 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 			cd->ammo_cells = pl->GetAmmoCount("uranium");
 			cd->vuser2.x = pl->GetAmmoCount("Hornets");
 
-			if (pl->m_hActiveItem)
+			if (pl->m_hActiveWeapon)
 			{
-				if (CBasePlayerWeapon* gun = pl->m_hActiveItem->GetWeaponPtr(); gun && gun->UseDecrement())
+				if (CBasePlayerWeapon* gun = pl->m_hActiveWeapon; gun && gun->UseDecrement())
 				{
-					ItemInfo II{};
-					gun->GetItemInfo(&II);
+					WeaponInfo II{};
+					gun->GetWeaponInfo(&II);
 
 					cd->m_iId = II.iId;
 

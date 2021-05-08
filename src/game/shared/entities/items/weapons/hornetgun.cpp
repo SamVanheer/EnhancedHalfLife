@@ -81,7 +81,7 @@ bool CHgun::AddToPlayer(CBasePlayer* pPlayer)
 	return false;
 }
 
-bool CHgun::GetItemInfo(ItemInfo* p)
+bool CHgun::GetWeaponInfo(WeaponInfo* p)
 {
 	p->pszName = GetClassname();
 	p->pszAmmo1 = "Hornets";
@@ -92,7 +92,7 @@ bool CHgun::GetItemInfo(ItemInfo* p)
 	p->iSlot = 3;
 	p->iPosition = 3;
 	p->iId = m_iId = WEAPON_HORNETGUN;
-	p->iFlags = ITEM_FLAG_NOAUTOSWITCHEMPTY | ITEM_FLAG_NOAUTORELOAD;
+	p->iFlags = WEAPON_FLAG_NOAUTOSWITCHEMPTY | WEAPON_FLAG_NOAUTORELOAD;
 	p->iWeight = HORNETGUN_WEIGHT;
 
 	return true;

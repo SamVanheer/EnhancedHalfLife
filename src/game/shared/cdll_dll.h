@@ -30,8 +30,8 @@ constexpr int MAX_CLIENTS = 32;
 constexpr int MAX_WEAPONS = 32;	// ???
 
 //TODO: these two should be one constant
-constexpr int MAX_WEAPON_SLOTS = 5;	// hud item selection slots
-constexpr int MAX_ITEM_TYPES = 6;	// hud item selection slots
+constexpr int MAX_WEAPON_SLOTS = 5;	// hud weapon selection slots
+constexpr int MAX_WEAPON_TYPES = 6;	// hud weapon selection slots
 
 constexpr int MAX_ITEMS = 1;	// hard coded item types
 

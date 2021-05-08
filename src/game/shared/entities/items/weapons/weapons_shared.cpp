@@ -35,10 +35,10 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname, int maxCarry)
 	// make sure it's not already in the registry
 	for (int i = 0; i < MAX_AMMO_TYPES; i++)
 	{
-		if (!CBasePlayerItem::AmmoInfoArray[i].pszName)
+		if (!CBasePlayerWeapon::AmmoInfoArray[i].pszName)
 			continue;
 
-		if (stricmp(CBasePlayerItem::AmmoInfoArray[i].pszName, szAmmoname) == 0)
+		if (stricmp(CBasePlayerWeapon::AmmoInfoArray[i].pszName, szAmmoname) == 0)
 			return; // ammo already in registry, just quite
 	}
 
@@ -47,7 +47,7 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname, int maxCarry)
 	if (giAmmoIndex >= MAX_AMMO_TYPES)
 		giAmmoIndex = 0;
 
-	auto& info = CBasePlayerItem::AmmoInfoArray[giAmmoIndex];
+	auto& info = CBasePlayerWeapon::AmmoInfoArray[giAmmoIndex];
 
 	info.iId = giAmmoIndex;   // yes, this info is redundant
 	info.pszName = szAmmoname;
@@ -215,7 +215,7 @@ bool CanAttack(float attack_time, float curtime, bool isPredicted)
 	}
 }
 
-void CBasePlayerWeapon::ItemPostFrame()
+void CBasePlayerWeapon::WeaponPostFrame()
 {
 	auto player = m_hPlayer.Get();
 
@@ -270,7 +270,7 @@ void CBasePlayerWeapon::ItemPostFrame()
 		if (!IsUseable() && m_flNextPrimaryAttack < (UseDecrement() ? 0.0 : gpGlobals->time))
 		{
 			// weapon isn't useable, switch.
-			if (!(Flags() & ITEM_FLAG_NOAUTOSWITCHEMPTY) && g_pGameRules->GetNextBestWeapon(player, this))
+			if (!(Flags() & WEAPON_FLAG_NOAUTOSWITCHEMPTY) && g_pGameRules->GetNextBestWeapon(player, this))
 			{
 				m_flNextPrimaryAttack = (UseDecrement() ? 0.0 : gpGlobals->time) + 0.3;
 				return;
@@ -280,7 +280,7 @@ void CBasePlayerWeapon::ItemPostFrame()
 #endif
 		{
 			// weapon is useable. Reload if empty and weapon has waited as long as it has to after firing
-			if (m_iClip == 0 && !(Flags() & ITEM_FLAG_NOAUTORELOAD) && m_flNextPrimaryAttack < (UseDecrement() ? 0.0 : gpGlobals->time))
+			if (m_iClip == 0 && !(Flags() & WEAPON_FLAG_NOAUTORELOAD) && m_flNextPrimaryAttack < (UseDecrement() ? 0.0 : gpGlobals->time))
 			{
 				Reload();
 				return;

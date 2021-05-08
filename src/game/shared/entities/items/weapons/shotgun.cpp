@@ -79,7 +79,7 @@ bool CShotgun::AddToPlayer(CBasePlayer* pPlayer)
 	return false;
 }
 
-bool CShotgun::GetItemInfo(ItemInfo* p)
+bool CShotgun::GetWeaponInfo(WeaponInfo* p)
 {
 	p->pszName = GetClassname();
 	p->pszAmmo1 = "buckshot";
@@ -303,7 +303,7 @@ void CShotgun::WeaponIdle()
 
 	player->GetAutoaimVector(AUTOAIM_5DEGREES);
 
-	//Moved to ItemPostFrame
+	//Moved to WeaponPostFrame
 	/*
 	if ( m_flPumpTime && m_flPumpTime < gpGlobals->time )
 	{
@@ -360,7 +360,7 @@ void CShotgun::WeaponIdle()
 	}
 }
 
-void CShotgun::ItemPostFrame()
+void CShotgun::WeaponPostFrame()
 {
 	if (m_flPumpTime && m_flPumpTime < gpGlobals->time)
 	{
@@ -371,7 +371,7 @@ void CShotgun::ItemPostFrame()
 		m_flPumpTime = 0;
 	}
 
-	CBasePlayerWeapon::ItemPostFrame();
+	CBasePlayerWeapon::WeaponPostFrame();
 }
 
 void CShotgun::GetWeaponData(weapon_data_t& data)

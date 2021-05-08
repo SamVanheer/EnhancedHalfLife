@@ -261,7 +261,7 @@ bool CHalfLifeMultiplay::IsCoOp()
 	return gpGlobals->coop;
 }
 
-bool CHalfLifeMultiplay::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
+bool CHalfLifeMultiplay::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pWeapon)
 {
 	if (!pWeapon->CanDeploy())
 	{
@@ -269,17 +269,17 @@ bool CHalfLifeMultiplay::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerIte
 		return false;
 	}
 
-	auto activeItem = pPlayer->m_hActiveItem.Get();
+	auto activeWeapon = pPlayer->m_hActiveWeapon.Get();
 
-	if (!activeItem)
+	if (!activeWeapon)
 	{
-		// player doesn't have an active item!
+		// player doesn't have an active weapon!
 		return true;
 	}
 
-	if (!activeItem->CanHolster())
+	if (!activeWeapon->CanHolster())
 	{
-		// can't put away the active item.
+		// can't put away the active weapon.
 		return false;
 	}
 
@@ -295,7 +295,7 @@ bool CHalfLifeMultiplay::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerIte
 		return false;
 	}
 
-	if (pWeapon->Weight() > activeItem->Weight())
+	if (pWeapon->Weight() > activeWeapon->Weight())
 	{
 		return true;
 	}
@@ -303,11 +303,10 @@ bool CHalfLifeMultiplay::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerIte
 	return false;
 }
 
-bool CHalfLifeMultiplay::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon)
+bool CHalfLifeMultiplay::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pCurrentWeapon)
 {
-
-	CBasePlayerItem* pCheck;
-	CBasePlayerItem* pBest;// this will be used in the event that we don't find a weapon in the same category.
+	CBasePlayerWeapon* pCheck;
+	CBasePlayerWeapon* pBest;// this will be used in the event that we don't find a weapon in the same category.
 	int iBestWeight;
 	int i;
 
@@ -320,9 +319,9 @@ bool CHalfLifeMultiplay::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem
 		return false;
 	}
 
-	for (i = 0; i < MAX_ITEM_TYPES; i++)
+	for (i = 0; i < MAX_WEAPON_TYPES; i++)
 	{
-		pCheck = pPlayer->m_hPlayerItems[i];
+		pCheck = pPlayer->m_hPlayerWeapons[i];
 
 		while (pCheck)
 		{
@@ -594,7 +593,7 @@ void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller
 		PK->m_flNextDecalTime = gpGlobals->time;
 	}
 
-	if (pVictim->HasNamedPlayerItem("weapon_satchel"))
+	if (pVictim->HasNamedPlayerWeapon("weapon_satchel"))
 	{
 		DeactivateSatchels(pVictim);
 	}
@@ -621,9 +620,9 @@ void CHalfLifeMultiplay::DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller,
 				// If the inflictor is the killer,  then it must be their current weapon doing the damage
 				CBasePlayer* pPlayer = (CBasePlayer*)pKiller;
 
-				if (auto activeItem = pPlayer->m_hActiveItem.Get(); activeItem)
+				if (auto activeWeapon = pPlayer->m_hActiveWeapon.Get(); activeWeapon)
 				{
-					killer_weapon_name = activeItem->pszName();
+					killer_weapon_name = activeWeapon->pszName();
 				}
 			}
 			else
@@ -757,16 +756,16 @@ bool CHalfLifeMultiplay::CanHaveItem(CBasePlayer& player, CBaseItem& item)
 	{
 	case ItemType::Weapon:
 	{
-		auto& weapon = static_cast<CBasePlayerItem&>(item);
+		auto& weapon = static_cast<CBasePlayerWeapon&>(item);
 
 		if (weaponstay.value > 0)
 		{
-			if (!(weapon.Flags() & ITEM_FLAG_LIMITINWORLD))
+			if (!(weapon.Flags() & WEAPON_FLAG_LIMITINWORLD))
 			{
 				// check if the player already has this weapon
-				for (int i = 0; i < MAX_ITEM_TYPES; i++)
+				for (int i = 0; i < MAX_WEAPON_TYPES; i++)
 				{
-					CBasePlayerItem* it = player.m_hPlayerItems[i];
+					CBasePlayerWeapon* it = player.m_hPlayerWeapons[i];
 
 					while (it != nullptr)
 					{
@@ -812,11 +811,11 @@ float CHalfLifeMultiplay::ItemRespawnTime(CBaseItem& item)
 
 	case ItemType::Weapon:
 	{
-		auto& weapon = static_cast<CBasePlayerItem&>(item);
+		auto& weapon = static_cast<CBasePlayerWeapon&>(item);
 		if (weaponstay.value > 0)
 		{
 			// make sure it's only certain weapons
-			if (!(weapon.Flags() & ITEM_FLAG_LIMITINWORLD))
+			if (!(weapon.Flags() & WEAPON_FLAG_LIMITINWORLD))
 			{
 				return gpGlobals->time + 0;		// weapon respawns almost instantly
 			}
@@ -833,7 +832,7 @@ float CHalfLifeMultiplay::ItemRespawnTime(CBaseItem& item)
 	}
 }
 
-// when we are within this close to running out of entities,  items 
+// when we are within this close to running out of entities,  weapons 
 // marked with the ITEM_FLAG_LIMITINWORLD will delay their respawn
 constexpr int ENTITY_INTOLERANCE = 100;
 
@@ -846,9 +845,9 @@ float CHalfLifeMultiplay::ItemTryRespawn(CBaseItem& item)
 
 	case ItemType::Weapon:
 	{
-		auto& weapon = static_cast<CBasePlayerItem&>(item);
+		auto& weapon = static_cast<CBasePlayerWeapon&>(item);
 
-		if (weapon.m_iId && (weapon.Flags() & ITEM_FLAG_LIMITINWORLD))
+		if (weapon.m_iId && (weapon.Flags() & WEAPON_FLAG_LIMITINWORLD))
 		{
 			if (NUMBER_OF_ENTITIES() >= (gpGlobals->maxEntities - ENTITY_INTOLERANCE))
 			{

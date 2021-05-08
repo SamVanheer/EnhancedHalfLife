@@ -18,6 +18,7 @@
 #include <string_view>
 
 class CBaseItem;
+class CBasePlayerWeapon;
 class CBasePlayer;
 
 /**
@@ -74,12 +75,12 @@ public:
 	/**
 	*	@brief should the player switch to this weapon?
 	*/
-	virtual bool ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) = 0;
+	virtual bool ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pWeapon) = 0;
 
 	/**
 	*	@brief I can't use this weapon anymore, get me the next best one.
 	*/
-	virtual bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon) = 0;
+	virtual bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pCurrentWeapon) = 0;
 
 	// Functions to verify the single/multiplayer status of a game
 	virtual bool IsMultiplayer() = 0;			//!< is this a multiplayer game? (either coop or deathmatch)
@@ -311,8 +312,8 @@ public:
 	bool IsAllowedToSpawn(CBaseEntity* pEntity) override;
 	bool AllowFlashlight() override { return true; }
 
-	bool ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
-	bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon) override;
+	bool ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pWeapon) override;
+	bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pCurrentWeapon) override;
 
 	bool IsMultiplayer() override;
 	bool IsDeathmatch() override;
@@ -370,8 +371,8 @@ public:
 	bool IsAllowedToSpawn(CBaseEntity* pEntity) override;
 	bool AllowFlashlight() override;
 
-	bool ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
-	bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon) override;
+	bool ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pWeapon) override;
+	bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pCurrentWeapon) override;
 
 	bool IsMultiplayer() override;
 	bool IsDeathmatch() override;

@@ -101,7 +101,7 @@ void CEgon::Holster()
 	EndAttack();
 }
 
-bool CEgon::GetItemInfo(ItemInfo* p)
+bool CEgon::GetWeaponInfo(WeaponInfo* p)
 {
 	p->pszName = GetClassname();
 	p->pszAmmo1 = "uranium";

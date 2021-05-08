@@ -124,7 +124,7 @@ public:
 	float m_flFallVelocity = 0;
 
 	int m_rgItems[MAX_ITEMS]{};
-	bool m_fKnownItem = false; //!< True when a new item needs to be added
+	bool m_fKnownWeapon = false; //!< True when a new weapon needs to be added
 
 	unsigned int m_afPhysicsFlags = 0; //!< physics flags - set when 'normal' physics should be revisited or overriden
 	float m_fNextSuicideTime = 0; //!< the time after which the player can next use the suicide command
@@ -174,11 +174,11 @@ public:
 	int m_iClientHideHUD = 0;
 	int m_iFOV = 0; //!< field of view
 	int m_iClientFOV = 0; //!< client's known FOV
-	// usable player items 
-	EHandle<CBasePlayerItem> m_hPlayerItems[MAX_ITEM_TYPES];
-	EHandle<CBasePlayerItem> m_hActiveItem;
-	EHandle<CBasePlayerItem> m_hClientActiveItem;  //!< client version of the active item
-	EHandle<CBasePlayerItem> m_hLastItem;
+	// usable player weapons
+	EHandle<CBasePlayerWeapon> m_hPlayerWeapons[MAX_WEAPON_TYPES];
+	EHandle<CBasePlayerWeapon> m_hActiveWeapon;
+	EHandle<CBasePlayerWeapon> m_hClientActiveWeapon;  //!< client version of the active weapon
+	EHandle<CBasePlayerWeapon> m_hLastWeapon;
 	// shared ammo slots
 	int	m_rgAmmo[MAX_AMMO_TYPES]{};
 	int	m_rgAmmoLast[MAX_AMMO_TYPES]{};
@@ -236,7 +236,7 @@ public:
 	*/
 	void PackDeadPlayerItems();
 	void RemoveAllItems(bool removeSuit);
-	bool SwitchWeapon(CBasePlayerItem* pWeapon);
+	bool SwitchWeapon(CBasePlayerWeapon* pWeapon);
 
 	/**
 	*	@brief JOHN:  sends custom messages if player HUD data has changed  (eg health, ammo)
@@ -290,34 +290,34 @@ public:
 	void AddPointsToTeam(int score, bool bAllowNegativeScore);
 
 	/**
-	*	@brief Add a weapon to the player (Item == Weapon == Selectable Object)
+	*	@brief Add a weapon to the player (Weapon == Selectable Object)
 	*/
-	ItemApplyResult AddPlayerItem(CBasePlayerItem* pItem);
-	bool RemovePlayerItem(CBasePlayerItem* pItem);
+	ItemApplyResult AddPlayerWeapon(CBasePlayerWeapon* weapon);
+	bool RemovePlayerWeapon(CBasePlayerWeapon* weapon);
 
 	/**
-	*	@brief drop the named item, or if no name, the active item.
+	*	@brief drop the named weapon, or if no name, the active weapon.
 	*/
-	void DropPlayerItem(const char* pszItemName);
-	bool HasPlayerItem(CBasePlayerItem* pCheckItem);
-	bool HasNamedPlayerItem(const char* pszItemName);
+	void DropPlayerWeapon(const char* pszWeaponName);
+	bool HasPlayerWeapon(CBasePlayerWeapon* checkWeapon);
+	bool HasNamedPlayerWeapon(const char* pszWeaponName);
 	bool HasWeapons();//!< do I have ANY weapons?
-	void SelectLastItem();
+	void SelectLastWeapon();
 
 	/**
 	*	@brief Switch weapons
 	*/
-	void SelectItem(const char* pstr);
+	void SelectWeapon(const char* pstr);
 
 	/**
 	*	@brief Called every frame by the player PreThink
 	*/
-	void ItemPreFrame();
+	void WeaponPreFrame();
 
 	/**
 	*	@brief Called every frame by the player PostThink
 	*/
-	void ItemPostFrame();
+	void WeaponPostFrame();
 	void GiveNamedItem(const char* szName);
 	void EnableControl(bool fControl);
 

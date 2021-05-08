@@ -44,17 +44,17 @@ bool CHalfLifeRules::IsCoOp()
 	return false;
 }
 
-bool CHalfLifeRules::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
+bool CHalfLifeRules::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pWeapon)
 {
-	auto activeItem = pPlayer->m_hActiveItem.Get();
+	auto activeWeapon = pPlayer->m_hActiveWeapon.Get();
 
-	if (!activeItem)
+	if (!activeWeapon)
 	{
-		// player doesn't have an active item!
+		// player doesn't have an active weapon!
 		return true;
 	}
 
-	if (!activeItem->CanHolster())
+	if (!activeWeapon->CanHolster())
 	{
 		return false;
 	}
@@ -62,7 +62,7 @@ bool CHalfLifeRules::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* p
 	return true;
 }
 
-bool CHalfLifeRules::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon)
+bool CHalfLifeRules::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pCurrentWeapon)
 {
 	return false;
 }

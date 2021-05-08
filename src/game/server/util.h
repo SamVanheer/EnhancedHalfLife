@@ -32,7 +32,7 @@
 
 class CBaseEntity;
 class CBasePlayer;
-class CBasePlayerItem;
+class CBasePlayerWeapon;
 
 constexpr int TEAM_NAME_LENGTH = 16;
 
@@ -218,8 +218,6 @@ inline void			UTIL_CenterPrintAll(const char* msg_name,
 {
 	UTIL_ClientPrintAll(HUD_PRINTCENTER, msg_name, param1, param2, param3, param4);
 }
-
-bool UTIL_GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon);
 
 /**
 *	@brief prints messages through the HUD

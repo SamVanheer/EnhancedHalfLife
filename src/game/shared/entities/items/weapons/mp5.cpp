@@ -68,7 +68,7 @@ void CMP5::Precache()
 	m_usMP52 = PRECACHE_EVENT(1, "events/mp52.sc");
 }
 
-bool CMP5::GetItemInfo(ItemInfo* p)
+bool CMP5::GetWeaponInfo(WeaponInfo* p)
 {
 	p->pszName = GetClassname();
 	p->pszAmmo1 = "9mm";

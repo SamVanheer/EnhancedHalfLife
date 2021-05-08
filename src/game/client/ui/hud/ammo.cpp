@@ -75,7 +75,7 @@ bool WeaponsResource::HasAmmo(WEAPON* p)
 		return true;
 
 	return (p->iAmmoType == -1) || p->iClip > 0 || CountAmmo(p->iAmmoType)
-		|| CountAmmo(p->iAmmo2Type) || (p->iFlags & ITEM_FLAG_SELECTONEMPTY);
+		|| CountAmmo(p->iAmmo2Type) || (p->iFlags & WEAPON_FLAG_SELECTONEMPTY);
 }
 
 void WeaponsResource::LoadWeaponSprites(WEAPON* pWeapon)
@@ -438,10 +438,10 @@ void CHudAmmo::SelectSlot(int iSlot, bool fAdvance, int iDirection)
 		if (p && fastSwitch) // check for fast weapon switch mode
 		{
 			// if fast weapon switch is on, then weapons can be selected in a single keypress
-			// but only if there is only one item in the bucket
+			// but only if there is only one weapon in the bucket
 			WEAPON* p2 = gWR.GetNextActivePos(p->iSlot, p->iSlotPos);
 			if (!p2)
-			{	// only one active item in bucket, so change directly to weapon
+			{	// only one active weapon in bucket, so change directly to weapon
 				ServerCmd(p->szName);
 				g_weaponselect = p->iId;
 				return;

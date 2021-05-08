@@ -338,7 +338,7 @@ void CRpg::Precache()
 	m_usRpg = PRECACHE_EVENT(1, "events/rpg.sc");
 }
 
-bool CRpg::GetItemInfo(ItemInfo* p)
+bool CRpg::GetWeaponInfo(WeaponInfo* p)
 {
 	p->pszName = GetClassname();
 	p->pszAmmo1 = "rockets";
