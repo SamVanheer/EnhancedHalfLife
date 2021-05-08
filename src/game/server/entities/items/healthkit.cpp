@@ -17,14 +17,45 @@
 #include "UserMessages.h"
 #include "CBaseCharger.hpp"
 
+constexpr float HEALTHKIT_DEFAULT_CAPACITY = -1;
+
 class CHealthKit : public CItem
 {
+	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
 	void Precache() override;
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override;
+
+	bool Save(CSave& save) override;
+	bool Restore(CRestore& restore) override;
+
+	static TYPEDESCRIPTION m_SaveData[];
+
+private:
+	float m_flCustomCapacity = HEALTHKIT_DEFAULT_CAPACITY;
 };
 
 LINK_ENTITY_TO_CLASS(item_healthkit, CHealthKit);
+
+TYPEDESCRIPTION	CHealthKit::m_SaveData[] =
+{
+	DEFINE_FIELD(CHealthKit, m_flCustomCapacity, FIELD_FLOAT),
+};
+
+IMPLEMENT_SAVERESTORE(CHealthKit, CItem);
+
+void CHealthKit::KeyValue(KeyValueData* pkvd)
+{
+	if (AreStringsEqual(pkvd->szKeyName, "custom_capacity"))
+	{
+		m_flCustomCapacity = std::max(0.0, atof(pkvd->szValue));
+		pkvd->fHandled = true;
+	}
+	else
+	{
+		CItem::KeyValue(pkvd);
+	}
+}
 
 void CHealthKit::Spawn()
 {
@@ -47,7 +78,14 @@ ItemApplyResult CHealthKit::Apply(CBasePlayer* pPlayer)
 		return ItemApplyResult::NotUsed;
 	}
 
-	if (pPlayer->GiveHealth(gSkillData.healthkitCapacity, DMG_GENERIC))
+	float capacity = gSkillData.healthkitCapacity;
+
+	if (m_flCustomCapacity != HEALTHKIT_DEFAULT_CAPACITY)
+	{
+		capacity = m_flCustomCapacity;
+	}
+
+	if (pPlayer->GiveHealth(capacity, DMG_GENERIC))
 	{
 		MESSAGE_BEGIN(MessageDest::One, gmsgItemPickup, pPlayer);
 		WRITE_STRING(GetClassname());
