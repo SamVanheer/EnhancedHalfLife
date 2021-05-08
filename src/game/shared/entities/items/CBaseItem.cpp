@@ -393,6 +393,7 @@ void CBaseItem::AttemptToMaterialize()
 
 			//Fall first, then materialize (plays clatter sound)
 		case ItemFallMode::Fall:
+			pev->flags &= ~FL_ONGROUND;
 			SetThink(&CBaseItem::FallThink);
 			pev->nextthink = gpGlobals->time + 0.1;
 			break;
