@@ -242,7 +242,6 @@ public:
 		CBaseItem::OnConstruct();
 		m_FallMode = ItemFallMode::Fall;
 		m_bCanPickUpWhileFalling = false;
-		m_bClatterOnFall = true;
 	}
 
 	ItemType GetType() const override final { return ItemType::Weapon; }

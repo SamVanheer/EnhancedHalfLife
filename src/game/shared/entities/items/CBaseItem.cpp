@@ -220,7 +220,8 @@ void CBaseItem::FallThink()
 	{
 		// clatter if we have an owner (i.e., dropped by someone)
 		// don't clatter if the gun is waiting to respawn (if it's waiting, it is invisible!)
-		if (m_bClatterOnFall && !IsNullEnt(GetOwner()))
+		// Also clatter if the mapper wants it to
+		if (m_bClatterOnFall || !IsNullEnt(GetOwner()))
 		{
 			if (auto sound = STRING(m_iszClatterSound); *sound)
 			{
