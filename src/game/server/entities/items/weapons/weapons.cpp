@@ -406,7 +406,8 @@ CBasePlayerItem* CBasePlayerItem::GetItemToRespawn(const Vector& respawnPoint)
 {
 	// make a copy of this weapon that is invisible and inaccessible to players (no touch function). The weapon spawn/respawn code
 	// will decide when to make the weapon visible and touchable.
-	auto pNewWeapon = static_cast<CBasePlayerItem*>(CBaseEntity::Create(GetClassname(), respawnPoint, GetAbsAngles(), GetOwner(), false));
+	//Don't pass the current owner since the new weapon isn't owned by that entity
+	auto pNewWeapon = static_cast<CBasePlayerItem*>(CBaseEntity::Create(GetClassname(), respawnPoint, GetAbsAngles(), nullptr, false));
 
 	//Copy over item settings
 	pNewWeapon->SetModel(GetWorldModelName());
