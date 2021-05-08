@@ -343,16 +343,6 @@ CBaseEntity* CBaseItem::Respawn()
 	return nullptr;
 }
 
-void CBaseItem::CheckRespawn()
-{
-#ifndef CLIENT_DLL
-	if (g_pGameRules->ItemShouldRespawn(*this))
-	{
-		Respawn();
-	}
-#endif
-}
-
 void CBaseItem::Materialize()
 {
 #ifndef CLIENT_DLL

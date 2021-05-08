@@ -83,11 +83,6 @@ public:
 	CBaseEntity* Respawn() override;
 
 	/**
-	*	@brief a player is taking this item, should it respawn?
-	*/
-	void CheckRespawn();
-
-	/**
 	*	@brief make an item visible and tangible
 	*/
 	void EXPORT Materialize();
