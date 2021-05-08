@@ -420,6 +420,7 @@ CBasePlayerItem* CBasePlayerItem::GetItemToRespawn(const Vector& respawnPoint)
 	pNewWeapon->m_bCanPickUpWhileFalling = m_bCanPickUpWhileFalling;
 	pNewWeapon->m_bClatterOnFall = m_bClatterOnFall;
 	pNewWeapon->m_bStayVisibleDuringRespawn = m_bStayVisibleDuringRespawn;
+	pNewWeapon->m_bFlashOnRespawn = m_bFlashOnRespawn;
 
 	pNewWeapon->m_iszClatterSound = m_iszClatterSound;
 	pNewWeapon->m_iszRespawnSound = m_iszRespawnSound;

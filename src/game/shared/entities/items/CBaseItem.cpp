@@ -31,6 +31,7 @@ TYPEDESCRIPTION	CBaseItem::m_SaveData[] =
 	DEFINE_FIELD(CBaseItem, m_bClatterOnFall, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseItem, m_bStayVisibleDuringRespawn, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseItem, m_bIsRespawning, FIELD_BOOLEAN),
+	DEFINE_FIELD(CBaseItem, m_bFlashOnRespawn, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseItem, m_iszClatterSound, FIELD_SOUNDNAME),
 	DEFINE_FIELD(CBaseItem, m_iszRespawnSound, FIELD_SOUNDNAME),
 	DEFINE_FIELD(CBaseItem, m_iszTriggerOnMaterialize, FIELD_STRING),
@@ -88,6 +89,11 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 	else if (AreStringsEqual(pkvd->szKeyName, "stay_visible_during_respawn"))
 	{
 		m_bStayVisibleDuringRespawn = atoi(pkvd->szValue) != 0;
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "flash_on_respawn"))
+	{
+		m_bFlashOnRespawn = atoi(pkvd->szValue) != 0;
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "fall_mode"))
@@ -374,7 +380,12 @@ void CBaseItem::Materialize()
 		}
 
 		pev->effects &= ~EF_NODRAW;
-		pev->effects |= EF_MUZZLEFLASH;
+
+		if (m_bFlashOnRespawn)
+		{
+			pev->effects |= EF_MUZZLEFLASH;
+		}
+
 		m_bIsRespawning = false;
 	}
 

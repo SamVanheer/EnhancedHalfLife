@@ -132,6 +132,8 @@ protected:
 	bool m_bStayVisibleDuringRespawn = false;
 	bool m_bIsRespawning = false;
 
+	bool m_bFlashOnRespawn = true;
+
 	//Default sounds are precached in W_Precache
 	string_t m_iszClatterSound = MAKE_STRING("items/weapondrop1.wav");
 
