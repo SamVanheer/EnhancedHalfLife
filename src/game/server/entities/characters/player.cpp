@@ -2852,7 +2852,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 	}
 }
 
-bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
+ItemApplyResult CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 {
 	CBasePlayerItem* pInsert = m_hPlayerItems[pItem->ItemSlot()];
 
@@ -2863,21 +2863,14 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 			if (pItem->AddDuplicate(pInsert))
 			{
 				g_pGameRules->PlayerGotItem(*this, *pItem);
-				pItem->CheckRespawn();
 
 				// ugly hack to update clip w/o an update clip message
 				pInsert->UpdateItemInfo();
 				if (auto activeItem = m_hActiveItem.Get(); activeItem)
 					activeItem->UpdateItemInfo();
-
-				pItem->Kill();
 			}
-			else if (gEvilImpulse101)
-			{
-				// FIXME: remove anyway for deathmatch testing
-				pItem->Kill();
-			}
-			return false;
+			//Respawns the weapon if needed
+			return ItemApplyResult::UsedAlwaysRemove;
 		}
 		pInsert = pInsert->m_hNext;
 	}
@@ -2885,7 +2878,6 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 	if (pItem->AddToPlayer(this))
 	{
 		g_pGameRules->PlayerGotItem(*this, *pItem);
-		pItem->CheckRespawn();
 
 		pItem->m_hNext = m_hPlayerItems[pItem->ItemSlot()];
 		m_hPlayerItems[pItem->ItemSlot()] = pItem;
@@ -2896,15 +2888,10 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 			SwitchWeapon(pItem);
 		}
 
-		return true;
-	}
-	else if (gEvilImpulse101)
-	{
-		// FIXME: remove anyway for deathmatch testing
-		pItem->Kill();
+		return ItemApplyResult::AttachedToPlayer;
 	}
 
-	return false;
+	return ItemApplyResult::NotUsed;
 }
 
 bool CBasePlayer::RemovePlayerItem(CBasePlayerItem* pItem)

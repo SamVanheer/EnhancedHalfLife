@@ -269,7 +269,7 @@ void CBasePlayer::FlashlightTurnOff() { }
 void CBasePlayer::ForceClientDllUpdate() { }
 void CBasePlayer::ImpulseCommands() { }
 void CBasePlayer::CheatImpulseCommands(int iImpulse) { }
-bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem) { return false; }
+ItemApplyResult CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem) { return ItemApplyResult::NotUsed; }
 bool CBasePlayer::RemovePlayerItem(CBasePlayerItem* pItem) { return false; }
 void CBasePlayer::ItemPreFrame() { }
 void CBasePlayer::ItemPostFrame() { }

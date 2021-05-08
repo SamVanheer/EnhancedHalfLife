@@ -254,6 +254,13 @@ public:
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
+	const char* GetWorldModelName() const { return STRING(m_iszWorldModelName); }
+
+	void SetWorldModelName(const char* name)
+	{
+		m_iszWorldModelName = ALLOC_STRING(name);
+	}
+
 	/**
 	*	@brief return true if the item you want the item added to the player inventory
 	*/
@@ -346,6 +353,9 @@ public:
 
 protected:
 	CBasePlayerItem* GetItemToRespawn(const Vector& respawnPoint) override;
+
+private:
+	string_t m_iszWorldModelName = iStringNull;
 };
 
 /**
@@ -652,7 +662,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_9mmhandgun.mdl");
+		SetWorldModelName("models/w_9mmhandgun.mdl");
 	}
 
 	void Spawn() override;
@@ -702,7 +712,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_crowbar.mdl");
+		SetWorldModelName("models/w_crowbar.mdl");
 	}
 
 	void Spawn() override;
@@ -749,7 +759,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_357.mdl");
+		SetWorldModelName("models/w_357.mdl");
 	}
 
 	void Spawn() override;
@@ -795,7 +805,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_9mmAR.mdl");
+		SetWorldModelName("models/w_9mmAR.mdl");
 	}
 
 	void Spawn() override;
@@ -848,7 +858,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_crossbow.mdl");
+		SetWorldModelName("models/w_crossbow.mdl");
 	}
 
 	void Spawn() override;
@@ -913,7 +923,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_shotgun.mdl");
+		SetWorldModelName("models/w_shotgun.mdl");
 	}
 
 	void Spawn() override;
@@ -998,7 +1008,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_rpg.mdl");
+		SetWorldModelName("models/w_rpg.mdl");
 	}
 
 	void OnRemove() override;
@@ -1091,7 +1101,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_gauss.mdl");
+		SetWorldModelName("models/w_gauss.mdl");
 	}
 
 	void Spawn() override;
@@ -1194,7 +1204,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_egon.mdl");
+		SetWorldModelName("models/w_egon.mdl");
 	}
 
 	void OnRemove() override;
@@ -1273,7 +1283,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_hgun.mdl");
+		SetWorldModelName("models/w_hgun.mdl");
 	}
 
 	void Spawn() override;
@@ -1325,7 +1335,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_grenade.mdl");
+		SetWorldModelName("models/w_grenade.mdl");
 	}
 
 	void Spawn() override;
@@ -1391,7 +1401,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_satchel.mdl");
+		SetWorldModelName("models/w_satchel.mdl");
 	}
 
 	void Spawn() override;
@@ -1444,7 +1454,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/v_tripmine.mdl");
+		SetWorldModelName("models/v_tripmine.mdl");
 	}
 
 	void Spawn() override;
@@ -1493,7 +1503,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_sqknest.mdl");
+		SetWorldModelName("models/w_sqknest.mdl");
 	}
 
 	void Spawn() override;

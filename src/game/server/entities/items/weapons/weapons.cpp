@@ -16,8 +16,6 @@
 #include "UserMessages.h"
 #include "dll_functions.hpp"
 
-extern int gEvilImpulse101;
-
 DLL_GLOBAL	short	g_sModelIndexLaser;// holds the index for the laser beam
 DLL_GLOBAL  const char* g_pModelNameLaser = "sprites/laserbeam.spr";
 DLL_GLOBAL	short	g_sModelIndexLaserDot;// holds the index for the laser beam dot
@@ -400,7 +398,7 @@ void CBasePlayerItem::SetObjectCollisionBox()
 
 void CBasePlayerItem::FallInit()
 {
-	SetModel(GetModelName());
+	SetModel(GetWorldModelName());
 	SetupItem(vec3_origin, vec3_origin);//pointsize until it lands on the ground.
 }
 
@@ -411,7 +409,7 @@ CBasePlayerItem* CBasePlayerItem::GetItemToRespawn(const Vector& respawnPoint)
 	auto pNewWeapon = static_cast<CBasePlayerItem*>(CBaseEntity::Create(GetClassname(), respawnPoint, GetAbsAngles(), GetOwner(), false));
 
 	//Copy over item settings
-	pNewWeapon->SetModel(GetModelName());
+	pNewWeapon->SetModel(GetWorldModelName());
 	pNewWeapon->m_OriginalPosition = m_OriginalPosition;
 	pNewWeapon->m_RespawnMode = m_RespawnMode;
 	pNewWeapon->m_flRespawnDelay = m_flRespawnDelay;
@@ -432,14 +430,15 @@ CBasePlayerItem* CBasePlayerItem::GetItemToRespawn(const Vector& respawnPoint)
 
 ItemApplyResult CBasePlayerItem::Apply(CBasePlayer* pPlayer)
 {
-	if (pPlayer->AddPlayerItem(this))
+	const ItemApplyResult result = pPlayer->AddPlayerItem(this);
+
+	if (result != ItemApplyResult::NotUsed)
 	{
 		AttachToPlayer(pPlayer);
 		pPlayer->EmitSound(SoundChannel::Item, "items/gunpickup2.wav");
-		return ItemApplyResult::AttachedToPlayer;
 	}
 
-	return ItemApplyResult::NotUsed;
+	return result;
 }
 
 void CBasePlayerItem::DestroyItem()
@@ -873,7 +872,7 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 				
 			m_hPlayerItems[i] = next;// unlink this weapon from the box
 
-			if (pPlayer->AddPlayerItem(pItem))
+			if (pPlayer->AddPlayerItem(pItem) == ItemApplyResult::AttachedToPlayer)
 			{
 				pItem->AttachToPlayer(pPlayer);
 			}

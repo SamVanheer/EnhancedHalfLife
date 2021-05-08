@@ -16,6 +16,7 @@
 #pragma once
 
 #include "sound/materials.hpp"
+#include "CBaseItem.hpp"
 
 //
 // Player PHYSICS FLAGS bits
@@ -291,7 +292,7 @@ public:
 	/**
 	*	@brief Add a weapon to the player (Item == Weapon == Selectable Object)
 	*/
-	bool AddPlayerItem(CBasePlayerItem* pItem);
+	ItemApplyResult AddPlayerItem(CBasePlayerItem* pItem);
 	bool RemovePlayerItem(CBasePlayerItem* pItem);
 
 	/**

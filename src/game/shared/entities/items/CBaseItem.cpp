@@ -275,6 +275,11 @@ void CBaseItem::ItemTouch(CBaseEntity* pOther)
 			{
 				shouldRemoveEntity = result == ItemApplyResult::Used;
 			}
+
+			if (result == ItemApplyResult::UsedAlwaysRemove)
+			{
+				shouldRemoveEntity = true;
+			}
 		}
 	}
 
