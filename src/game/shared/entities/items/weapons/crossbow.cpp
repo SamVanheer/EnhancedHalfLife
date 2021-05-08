@@ -504,7 +504,6 @@ public:
 		CBasePlayerAmmo::OnConstruct();
 		SetModelName("models/w_crossbow_clip.mdl");
 		m_iAmount = AMMO_CROSSBOWCLIP_GIVE;
-		m_iMaxCarry = BOLT_MAX_CARRY;
 		m_iszAmmoName = MAKE_STRING("bolts");
 	}
 };

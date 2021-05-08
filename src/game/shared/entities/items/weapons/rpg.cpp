@@ -537,7 +537,6 @@ public:
 		SetModelName("models/w_rpgammo.mdl");
 		// hand out more ammo per rocket in multiplayer.
 		m_iAmount = bIsMultiplayer() ? AMMO_RPGCLIP_GIVE * 2 : AMMO_RPGCLIP_GIVE;
-		m_iMaxCarry = ROCKET_MAX_CARRY;
 		m_iszAmmoName = MAKE_STRING("rockets");
 	}
 };

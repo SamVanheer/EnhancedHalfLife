@@ -30,7 +30,7 @@ extern int g_irunninggausspred;
 int giAmmoIndex = 0;
 
 // Precaches the ammo and queues the ammo info for sending to clients
-void AddAmmoNameToAmmoRegistry(const char* szAmmoname)
+void AddAmmoNameToAmmoRegistry(const char* szAmmoname, int maxCarry)
 {
 	// make sure it's not already in the registry
 	for (int i = 0; i < MAX_AMMO_TYPES; i++)
@@ -47,8 +47,11 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname)
 	if (giAmmoIndex >= MAX_AMMO_TYPES)
 		giAmmoIndex = 0;
 
-	CBasePlayerItem::AmmoInfoArray[giAmmoIndex].pszName = szAmmoname;
-	CBasePlayerItem::AmmoInfoArray[giAmmoIndex].iId = giAmmoIndex;   // yes, this info is redundant
+	auto& info = CBasePlayerItem::AmmoInfoArray[giAmmoIndex];
+
+	info.iId = giAmmoIndex;   // yes, this info is redundant
+	info.pszName = szAmmoname;
+	info.MaxCarry = maxCarry;
 }
 
 void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)

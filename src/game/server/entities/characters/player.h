@@ -330,7 +330,7 @@ public:
 	/**
 	*	@brief Returns the unique ID for the ammo, or -1 if error
 	*/
-	int GiveAmmo(int iAmount, const char* szName, int iMax);
+	int GiveAmmo(int iAmount, const char* szName);
 
 	int GetAmmoCount(const char* name) const
 	{

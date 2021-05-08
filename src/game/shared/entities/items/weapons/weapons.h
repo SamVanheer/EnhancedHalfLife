@@ -223,13 +223,14 @@ struct ItemInfo
 
 struct AmmoInfo
 {
-	const char* pszName;
 	int iId;
+	const char* pszName;
+	int MaxCarry;
 };
 
 extern int giAmmoIndex;
 
-void AddAmmoNameToAmmoRegistry(const char* szAmmoname);
+void AddAmmoNameToAmmoRegistry(const char* szAmmoname, int maxCarry);
 
 /**
 *	@brief Items that the player has in their inventory that they can use
@@ -395,8 +396,8 @@ public:
 	virtual bool AddWeapon() { ExtractAmmo(this); return true; }
 
 	// generic "shared" ammo handlers
-	bool AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip, int iMaxCarry);
-	bool AddSecondaryAmmo(int iCount, const char* szName, int iMaxCarry);
+	bool AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip);
+	bool AddSecondaryAmmo(int iCount, const char* szName);
 
 	void UpdateItemInfo() override {}	// updates HUD state
 
@@ -495,13 +496,12 @@ public:
 	static TYPEDESCRIPTION m_SaveData[];
 
 protected:
-	ItemApplyResult DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName, int maxCarry);
+	ItemApplyResult DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName);
 
 	ItemApplyResult Apply(CBasePlayer* player) override;
 
 protected:
 	int m_iAmount = 0;
-	int m_iMaxCarry = 0; //TODO: need to rework ammo to remove the need for this
 	string_t m_iszAmmoName = iStringNull;
 
 	string_t m_iszPickupSound = MAKE_STRING("items/9mmclip1.wav");

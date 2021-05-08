@@ -123,12 +123,12 @@ void HUD_PrepEntity(CBaseEntity* pEntity, CBasePlayer* pWeaponOwner)
 
 		if (info.pszAmmo1 && *info.pszAmmo1)
 		{
-			AddAmmoNameToAmmoRegistry(info.pszAmmo1);
+			AddAmmoNameToAmmoRegistry(info.pszAmmo1, info.iMaxAmmo1);
 		}
 
 		if (info.pszAmmo2 && *info.pszAmmo2)
 		{
-			AddAmmoNameToAmmoRegistry(info.pszAmmo2);
+			AddAmmoNameToAmmoRegistry(info.pszAmmo2, info.iMaxAmmo2);
 		}
 
 		g_pWpns[info.iId] = (CBasePlayerWeapon*)pEntity;

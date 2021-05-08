@@ -532,7 +532,6 @@ public:
 		CBasePlayerAmmo::OnConstruct();
 		SetModelName("models/w_chainammo.mdl");
 		m_iAmount = AMMO_URANIUMBOX_GIVE;
-		m_iMaxCarry = URANIUM_MAX_CARRY;
 		m_iszAmmoName = MAKE_STRING("uranium");
 	}
 };

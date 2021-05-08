@@ -272,7 +272,6 @@ public:
 		CBasePlayerAmmo::OnConstruct();
 		SetModelName("models/w_9mmARclip.mdl");
 		m_iAmount = AMMO_MP5CLIP_GIVE;
-		m_iMaxCarry = _9MM_MAX_CARRY;
 		m_iszAmmoName = MAKE_STRING("9mm");
 	}
 };
@@ -287,7 +286,6 @@ public:
 		CBasePlayerAmmo::OnConstruct();
 		SetModelName("models/w_chainammo.mdl");
 		m_iAmount = AMMO_CHAINBOX_GIVE;
-		m_iMaxCarry = _9MM_MAX_CARRY;
 		m_iszAmmoName = MAKE_STRING("9mm");
 	}
 };
@@ -301,7 +299,6 @@ public:
 		CBasePlayerAmmo::OnConstruct();
 		SetModelName("models/w_ARgrenade.mdl");
 		m_iAmount = AMMO_M203BOX_GIVE;
-		m_iMaxCarry = M203_GRENADE_MAX_CARRY;
 		m_iszAmmoName = MAKE_STRING("ARgrenades");
 	}
 };

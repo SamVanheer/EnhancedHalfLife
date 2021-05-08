@@ -38,12 +38,14 @@ bool bIsMultiplayer()
 */
 int MaxAmmoCarry(string_t iszName)
 {
-	for (int i = 0; i < MAX_WEAPONS; i++)
+	for (int i = 0; i < MAX_AMMO_TYPES; i++)
 	{
-		if (CBasePlayerItem::ItemInfoArray[i].pszAmmo1 && !strcmp(STRING(iszName), CBasePlayerItem::ItemInfoArray[i].pszAmmo1))
-			return CBasePlayerItem::ItemInfoArray[i].iMaxAmmo1;
-		if (CBasePlayerItem::ItemInfoArray[i].pszAmmo2 && !strcmp(STRING(iszName), CBasePlayerItem::ItemInfoArray[i].pszAmmo2))
-			return CBasePlayerItem::ItemInfoArray[i].iMaxAmmo2;
+		const auto& info = CBasePlayerItem::AmmoInfoArray[i];
+
+		if (info.pszName && !strcmp(info.pszName, STRING(iszName)))
+		{
+			return info.MaxCarry;
+		}
 	}
 
 	ALERT(at_console, "MaxAmmoCarry() doesn't recognize '%s'!\n", STRING(iszName));
@@ -183,12 +185,12 @@ void UTIL_PrecacheOtherWeapon(const char* szClassname)
 
 		if (II.pszAmmo1 && *II.pszAmmo1)
 		{
-			AddAmmoNameToAmmoRegistry(II.pszAmmo1);
+			AddAmmoNameToAmmoRegistry(II.pszAmmo1, II.iMaxAmmo1);
 		}
 
 		if (II.pszAmmo2 && *II.pszAmmo2)
 		{
-			AddAmmoNameToAmmoRegistry(II.pszAmmo2);
+			AddAmmoNameToAmmoRegistry(II.pszAmmo2, II.iMaxAmmo2);
 		}
 
 		memset(&II, 0, sizeof II);
@@ -338,9 +340,9 @@ void CBasePlayerAmmo::Precache()
 	}
 }
 
-ItemApplyResult CBasePlayerAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName, int maxCarry)
+ItemApplyResult CBasePlayerAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName)
 {
-	if (ammoName && *ammoName && player->GiveAmmo(amount, ammoName, maxCarry) != -1)
+	if (ammoName && *ammoName && player->GiveAmmo(amount, ammoName) != -1)
 	{
 		if (auto sound = STRING(m_iszPickupSound); *sound)
 		{
@@ -354,7 +356,7 @@ ItemApplyResult CBasePlayerAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount
 
 ItemApplyResult CBasePlayerAmmo::Apply(CBasePlayer* player)
 {
-	return DefaultGiveAmmo(player, m_iAmount, STRING(m_iszAmmoName), m_iMaxCarry);
+	return DefaultGiveAmmo(player, m_iAmount, STRING(m_iszAmmoName));
 }
 
 TYPEDESCRIPTION	CBasePlayerItem::m_SaveData[] =
@@ -584,7 +586,7 @@ bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer)
 	return true;
 }
 
-bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip, int iMaxCarry)
+bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip)
 {
 	auto player = m_hPlayer.Get();
 
@@ -593,18 +595,18 @@ bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxC
 	if (iMaxClip < 1)
 	{
 		m_iClip = -1;
-		iIdAmmo = player->GiveAmmo(iCount, szName, iMaxCarry);
+		iIdAmmo = player->GiveAmmo(iCount, szName);
 	}
 	else if (m_iClip == 0)
 	{
 		int i;
 		i = std::min(m_iClip + iCount, iMaxClip) - m_iClip;
 		m_iClip += i;
-		iIdAmmo = player->GiveAmmo(iCount - i, szName, iMaxCarry);
+		iIdAmmo = player->GiveAmmo(iCount - i, szName);
 	}
 	else
 	{
-		iIdAmmo = player->GiveAmmo(iCount, szName, iMaxCarry);
+		iIdAmmo = player->GiveAmmo(iCount, szName);
 	}
 
 	// player->m_rgAmmo[m_iPrimaryAmmoType] = iMaxCarry; // hack for testing
@@ -623,11 +625,11 @@ bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxC
 	return iIdAmmo > 0;
 }
 
-bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName, int iMax)
+bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName)
 {
 	int iIdAmmo;
 
-	iIdAmmo = m_hPlayer->GiveAmmo(iCount, szName, iMax);
+	iIdAmmo = m_hPlayer->GiveAmmo(iCount, szName);
 
 	//m_hPlayer->m_rgAmmo[m_iSecondaryAmmoType] = iMax; // hack for testing
 
@@ -685,13 +687,13 @@ bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon)
 	{
 		// blindly call with m_iDefaultAmmo. It's either going to be a value or zero. If it is zero,
 		// we only get the ammo in the weapon's clip, which is what we want. 
-		result = pWeapon->AddPrimaryAmmo(m_iDefaultAmmo, Ammo1Name(), MaxClip(), MaxAmmo1());
+		result = pWeapon->AddPrimaryAmmo(m_iDefaultAmmo, Ammo1Name(), MaxClip());
 		m_iDefaultAmmo = 0;
 	}
 
 	if (Ammo2Name() != nullptr)
 	{
-		result = pWeapon->AddSecondaryAmmo(0, Ammo2Name(), MaxAmmo2()) || result;
+		result = pWeapon->AddSecondaryAmmo(0, Ammo2Name()) || result;
 	}
 
 	return result;
@@ -710,7 +712,7 @@ int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon)
 		iAmmo = m_iClip;
 	}
 
-	return pWeapon->m_hPlayer->GiveAmmo(iAmmo, Ammo1Name(), MaxAmmo1()); // , &m_iPrimaryAmmoType
+	return pWeapon->m_hPlayer->GiveAmmo(iAmmo, Ammo1Name()); // , &m_iPrimaryAmmoType
 }
 
 void CBasePlayerWeapon::RetireWeapon()
@@ -852,7 +854,7 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 		if (!IsStringNull(m_rgiszAmmo[i]))
 		{
 			// there's some ammo of this type. 
-			pPlayer->GiveAmmo(m_rgAmmo[i], STRING(m_rgiszAmmo[i]), MaxAmmoCarry(m_rgiszAmmo[i]));
+			pPlayer->GiveAmmo(m_rgAmmo[i], STRING(m_rgiszAmmo[i]));
 
 			//ALERT ( at_console, "Gave %d rounds of %s\n", m_rgAmmo[i], STRING(m_rgiszAmmo[i]) );
 

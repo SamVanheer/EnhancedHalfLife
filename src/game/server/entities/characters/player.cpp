@@ -2933,7 +2933,7 @@ bool CBasePlayer::RemovePlayerItem(CBasePlayerItem* pItem)
 	return false;
 }
 
-int CBasePlayer::GiveAmmo(int iCount, const char* szName, int iMax)
+int CBasePlayer::GiveAmmo(int iCount, const char* szName)
 {
 	if (!szName)
 	{
@@ -2941,16 +2941,18 @@ int CBasePlayer::GiveAmmo(int iCount, const char* szName, int iMax)
 		return -1;
 	}
 
+	const int i = GetAmmoIndex(szName);
+
+	if (i < 0 || i >= MAX_AMMO_TYPES)
+		return -1;
+
+	const int iMax = CBasePlayerItem::AmmoInfoArray[i].MaxCarry;
+
 	if (!g_pGameRules->CanHaveAmmo(this, szName, iMax))
 	{
 		// game rules say I can't have any more of this ammo type.
 		return -1;
 	}
-
-	const int i = GetAmmoIndex(szName);
-
-	if (i < 0 || i >= MAX_AMMO_TYPES)
-		return -1;
 
 	const int iAdd = std::min(iCount, iMax - m_rgAmmo[i]);
 	if (iAdd < 1)

@@ -220,7 +220,6 @@ public:
 		CBasePlayerAmmo::OnConstruct();
 		SetModelName("models/w_9mmclip.mdl");
 		m_iAmount = AMMO_GLOCKCLIP_GIVE;
-		m_iMaxCarry = _9MM_MAX_CARRY;
 		m_iszAmmoName = MAKE_STRING("9mm");
 	}
 };

@@ -396,7 +396,6 @@ public:
 		CBasePlayerAmmo::OnConstruct();
 		SetModelName("models/w_shotbox.mdl");
 		m_iAmount = AMMO_BUCKSHOTBOX_GIVE;
-		m_iMaxCarry = BUCKSHOT_MAX_CARRY;
 		m_iszAmmoName = MAKE_STRING("buckshot");
 	}
 };

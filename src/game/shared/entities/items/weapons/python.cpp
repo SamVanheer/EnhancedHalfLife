@@ -276,7 +276,6 @@ public:
 		CBasePlayerAmmo::OnConstruct();
 		SetModelName("models/w_357ammobox.mdl");
 		m_iAmount = AMMO_357BOX_GIVE;
-		m_iMaxCarry = _357_MAX_CARRY;
 		m_iszAmmoName = MAKE_STRING("357");
 	}
 };
