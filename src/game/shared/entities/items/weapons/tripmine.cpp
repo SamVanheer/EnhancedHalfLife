@@ -192,8 +192,8 @@ void CTripmineGrenade::PowerupThink()
 		// disable
 		StopSound(SoundChannel::Voice, "weapons/mine_deploy.wav");
 		StopSound(SoundChannel::Body, "weapons/mine_charge.wav");
-		CBaseEntity* pMine = Create("weapon_tripmine", GetAbsOrigin() + m_vecDir * 24, GetAbsAngles());
-		pMine->pev->spawnflags |= SF_NORESPAWN;
+		auto pMine = static_cast<CTripmine*>(Create("weapon_tripmine", GetAbsOrigin() + m_vecDir * 24, GetAbsAngles()));
+		pMine->m_RespawnMode = ItemRespawnMode::Never;
 
 		SetThink(&CTripmineGrenade::SUB_Remove);
 		KillBeam();

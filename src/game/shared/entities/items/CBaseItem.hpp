@@ -38,6 +38,13 @@ enum class ItemApplyResult
 	AttachedToPlayer	//!< Item was attached to player and needs to be checked for respawn
 };
 
+enum class ItemRespawnMode
+{
+	Default = 0,
+	Always,
+	Never
+};
+
 constexpr float ITEM_DEFAULT_RESPAWN_DELAY = -1;
 
 /**
@@ -51,8 +58,6 @@ public:
 	*	@brief Gets the type of item that this is
 	*/
 	virtual ItemType GetType() const = 0;
-
-	float GetCustomRespawnDelay() const { return m_flRespawnDelay; }
 
 	void KeyValue(KeyValueData* pkvd) override;
 	void Precache() override;
@@ -101,6 +106,10 @@ protected:
 	*/
 	virtual CBaseItem* GetItemToRespawn(const Vector& respawnPoint);
 
+public:
+	ItemRespawnMode m_RespawnMode = ItemRespawnMode::Default;
+	float m_flRespawnDelay = ITEM_DEFAULT_RESPAWN_DELAY;
+
 protected:
 	ItemFallMode m_FallMode = ItemFallMode::PlaceOnGround;
 
@@ -114,8 +123,6 @@ protected:
 	*	@brief Make a clatter sound when falling on the ground
 	*/
 	bool m_bClatterOnFall = false;
-
-	float m_flRespawnDelay = ITEM_DEFAULT_RESPAWN_DELAY;
 
 	//Default sounds are precached in W_Precache
 	string_t m_iszClatterSound = MAKE_STRING("items/weapondrop1.wav");

@@ -2528,11 +2528,21 @@ void CBasePlayer::GiveNamedItem(const char* pszName)
 		ALERT(at_console, "NULL Ent in GiveNamedItem!\n");
 		return;
 	}
-	pEntity->SetAbsOrigin(GetAbsOrigin());
-	pEntity->pev->spawnflags |= SF_NORESPAWN;
 
-	DispatchSpawn(pEntity->edict());
-	pEntity->Touch(this);
+	//Only allow player to give items
+	//TODO: don't rely on dynamic_cast for this
+	if (auto item = dynamic_cast<CBaseItem*>(pEntity); item)
+	{
+		item->SetAbsOrigin(GetAbsOrigin());
+		item->m_RespawnMode = ItemRespawnMode::Never;
+
+		DispatchSpawn(item->edict());
+		item->Touch(this);
+	}
+	else
+	{
+		UTIL_Remove(item);
+	}
 }
 
 bool CBasePlayer::FlashlightIsOn()

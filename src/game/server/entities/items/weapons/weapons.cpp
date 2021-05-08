@@ -904,7 +904,7 @@ bool CWeaponBox::PackWeapon(CBasePlayerItem* pWeapon)
 		pWeapon->m_hNext = nullptr;
 	}
 
-	pWeapon->pev->spawnflags |= SF_NORESPAWN;// never respawn
+	pWeapon->m_RespawnMode = ItemRespawnMode::Never;// never respawn
 	pWeapon->SetMovetype(Movetype::None);
 	pWeapon->SetSolidType(Solid::Not);
 	pWeapon->pev->effects = EF_NODRAW;

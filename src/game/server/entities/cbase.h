@@ -108,8 +108,6 @@ class CBaseMonster;
 class CBasePlayerItem;
 class CSquadMonster;
 
-constexpr int SF_NORESPAWN = 1 << 30; // !!!set this bit on guns and stuff that should never respawn.
-
 /**
 *	@brief Contains information about an entity damage event
 */

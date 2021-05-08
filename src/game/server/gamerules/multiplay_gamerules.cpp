@@ -795,14 +795,14 @@ void CHalfLifeMultiplay::PlayerGotItem(CBasePlayer& player, CBaseItem& item)
 
 bool CHalfLifeMultiplay::ItemShouldRespawn(CBaseItem& item)
 {
-	return (item.pev->spawnflags & SF_NORESPAWN) == 0;
+	return item.m_RespawnMode != ItemRespawnMode::Never;
 }
 
 float CHalfLifeMultiplay::ItemRespawnTime(CBaseItem& item)
 {
-	if (item.GetCustomRespawnDelay() != ITEM_DEFAULT_RESPAWN_DELAY)
+	if (item.m_flRespawnDelay != ITEM_DEFAULT_RESPAWN_DELAY)
 	{
-		return gpGlobals->time + item.GetCustomRespawnDelay();
+		return gpGlobals->time + item.m_flRespawnDelay;
 	}
 
 	switch (item.GetType())

@@ -22,6 +22,8 @@
 #ifndef CLIENT_DLL
 TYPEDESCRIPTION	CBaseItem::m_SaveData[] =
 {
+	DEFINE_FIELD(CBaseItem, m_RespawnMode, FIELD_INTEGER),
+	DEFINE_FIELD(CBaseItem, m_flRespawnDelay, FIELD_FLOAT),
 	DEFINE_FIELD(CBaseItem, m_FallMode, FIELD_INTEGER),
 	DEFINE_FIELD(CBaseItem, m_bCanPickUpWhileFalling, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseItem, m_bClatterOnFall, FIELD_BOOLEAN),
@@ -34,7 +36,33 @@ IMPLEMENT_SAVERESTORE(CBaseItem, CBaseAnimating);
 
 void CBaseItem::KeyValue(KeyValueData* pkvd)
 {
-	if (AreStringsEqual(pkvd->szKeyName, "fall_mode"))
+	if (AreStringsEqual(pkvd->szKeyName, "respawn_mode"))
+	{
+		if (AreStringsEqual(pkvd->szValue, "Default"))
+		{
+			m_RespawnMode = ItemRespawnMode::Default;
+		}
+		else if (AreStringsEqual(pkvd->szValue, "Always"))
+		{
+			m_RespawnMode = ItemRespawnMode::Always;
+		}
+		else if (AreStringsEqual(pkvd->szValue, "Never"))
+		{
+			m_RespawnMode = ItemRespawnMode::Never;
+		}
+		else
+		{
+			ALERT(at_warning, "Invalid respawn_mode value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, pkvd->szClassName, entindex());
+		}
+
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "respawn_delay"))
+	{
+		m_flRespawnDelay = std::max(0.0, atof(pkvd->szValue));
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "fall_mode"))
 	{
 		if (AreStringsEqual(pkvd->szValue, "PlaceOnGround"))
 		{
@@ -59,11 +87,6 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 	else if (AreStringsEqual(pkvd->szKeyName, "clatter_on_fall"))
 	{
 		m_bClatterOnFall = atoi(pkvd->szValue) != 0;
-		pkvd->fHandled = true;
-	}
-	else if (AreStringsEqual(pkvd->szKeyName, "respawn_delay"))
-	{
-		m_flRespawnDelay = std::max(0.0, atof(pkvd->szValue));
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "clatter_sound"))
