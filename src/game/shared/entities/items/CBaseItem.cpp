@@ -108,14 +108,27 @@ void CBaseItem::SetupItem(const Vector& mins, const Vector& maxs)
 
 void CBaseItem::Precache()
 {
-	PRECACHE_SOUND(STRING(m_iszClatterSound));
-	PRECACHE_SOUND(STRING(m_iszRespawnSound));
+	if (auto modelName = GetModelName(); *modelName)
+	{
+		PRECACHE_MODEL(modelName);
+	}
+
+	if (auto sound = STRING(m_iszClatterSound); *sound)
+	{
+		PRECACHE_SOUND(sound);
+	}
+
+	if (auto sound = STRING(m_iszRespawnSound); *sound)
+	{
+		PRECACHE_SOUND(STRING(m_iszRespawnSound));
+	}
 }
 
 void CBaseItem::Spawn()
 {
 #ifndef CLIENT_DLL
 	Precache();
+	SetModel(GetModelName());
 	SetupItem({-16, -16, 0}, {16, 16, 16});
 #endif
 }
@@ -130,8 +143,11 @@ void CBaseItem::FallThink()
 		// don't clatter if the gun is waiting to respawn (if it's waiting, it is invisible!)
 		if (m_bClatterOnFall && !IsNullEnt(GetOwner()))
 		{
-			int pitch = 95 + RANDOM_LONG(0, 29);
-			EmitSound(SoundChannel::Voice, STRING(m_iszClatterSound), VOL_NORM, ATTN_NORM, pitch);
+			if (auto sound = STRING(m_iszRespawnSound); *sound)
+			{
+				int pitch = 95 + RANDOM_LONG(0, 29);
+				EmitSound(SoundChannel::Voice, sound, VOL_NORM, ATTN_NORM, pitch);
+			}
 		}
 
 		// lie flat
@@ -243,7 +259,11 @@ void CBaseItem::Materialize()
 	if (pev->effects & EF_NODRAW)
 	{
 		// changing from invisible state to visible.
-		EmitSound(SoundChannel::Weapon, STRING(m_iszRespawnSound), VOL_NORM, ATTN_NORM, 150);
+		if (auto sound = STRING(m_iszRespawnSound); *sound)
+		{
+			EmitSound(SoundChannel::Weapon, sound, VOL_NORM, ATTN_NORM, 150);
+		}
+
 		pev->effects &= ~EF_NODRAW;
 		pev->effects |= EF_MUZZLEFLASH;
 	}

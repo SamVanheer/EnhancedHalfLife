@@ -497,25 +497,14 @@ void CCrossbow::WeaponIdle()
 
 class CCrossbowAmmo : public CBasePlayerAmmo
 {
-	void Spawn() override
+public:
+	void OnConstruct() override
 	{
-		Precache();
-		SetModel("models/w_crossbow_clip.mdl");
-		CBasePlayerAmmo::Spawn();
-	}
-	void Precache() override
-	{
-		PRECACHE_MODEL("models/w_crossbow_clip.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
-	}
-	ItemApplyResult Apply(CBasePlayer* pOther) override
-	{
-		if (pOther->GiveAmmo(AMMO_CROSSBOWCLIP_GIVE, "bolts", BOLT_MAX_CARRY) != -1)
-		{
-			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
-			return ItemApplyResult::Used;
-		}
-		return ItemApplyResult::NotUsed;
+		CBasePlayerAmmo::OnConstruct();
+		SetModelName("models/w_crossbow_clip.mdl");
+		m_iAmount = AMMO_CROSSBOWCLIP_GIVE;
+		m_iMaxCarry = BOLT_MAX_CARRY;
+		m_iszAmmoName = MAKE_STRING("bolts");
 	}
 };
 LINK_ENTITY_TO_CLASS(ammo_crossbow, CCrossbowAmmo);

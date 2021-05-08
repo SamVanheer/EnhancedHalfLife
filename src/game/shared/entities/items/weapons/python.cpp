@@ -269,25 +269,14 @@ void CPython::WeaponIdle()
 
 class CPythonAmmo : public CBasePlayerAmmo
 {
-	void Spawn() override
+public:
+	void OnConstruct() override
 	{
-		Precache();
-		SetModel("models/w_357ammobox.mdl");
-		CBasePlayerAmmo::Spawn();
-	}
-	void Precache() override
-	{
-		PRECACHE_MODEL("models/w_357ammobox.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
-	}
-	ItemApplyResult Apply(CBasePlayer* pOther) override
-	{
-		if (pOther->GiveAmmo(AMMO_357BOX_GIVE, "357", _357_MAX_CARRY) != -1)
-		{
-			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
-			return ItemApplyResult::Used;
-		}
-		return ItemApplyResult::NotUsed;
+		CBasePlayerAmmo::OnConstruct();
+		SetModelName("models/w_357ammobox.mdl");
+		m_iAmount = AMMO_357BOX_GIVE;
+		m_iMaxCarry = _357_MAX_CARRY;
+		m_iszAmmoName = MAKE_STRING("357");
 	}
 };
 LINK_ENTITY_TO_CLASS(ammo_357, CPythonAmmo);

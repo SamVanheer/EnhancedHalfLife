@@ -475,6 +475,27 @@ public:
 	}
 
 	ItemType GetType() const override final { return ItemType::Ammo; }
+
+	void KeyValue(KeyValueData* pkvd) override;
+
+	void Precache() override;
+
+	bool Save(CSave& save) override;
+	bool Restore(CRestore& restore) override;
+
+	static TYPEDESCRIPTION m_SaveData[];
+
+protected:
+	ItemApplyResult DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName, int maxCarry);
+
+	ItemApplyResult Apply(CBasePlayer* player) override;
+
+protected:
+	int m_iAmount = 0;
+	int m_iMaxCarry = 0; //TODO: need to rework ammo to remove the need for this
+	string_t m_iszAmmoName = iStringNull;
+
+	string_t m_iszPickupSound = MAKE_STRING("items/9mmclip1.wav");
 };
 
 extern DLL_GLOBAL	short	g_sModelIndexLaser;// holds the index for the laser beam
@@ -598,13 +619,13 @@ public:
 	int m_cAmmoTypes = 0;// how many ammo types packed into this box (if packed by a level designer)
 };
 
-#ifdef CLIENT_DLL
 /**
 *	@brief Returns if it's multiplayer.
 *	Mostly used by the client side weapons.
 */
 bool bIsMultiplayer();
 
+#ifdef CLIENT_DLL
 /**
 *	@brief Just loads a v_ model.
 */

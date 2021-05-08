@@ -29,6 +29,11 @@ DLL_GLOBAL	short	g_sModelIndexBloodSpray;// holds the sprite index for splattere
 
 MULTIDAMAGE gMultiDamage;
 
+bool bIsMultiplayer()
+{
+	return g_pGameRules->IsMultiplayer();
+}
+
 /**
 *	@brief pass in a name and this function will tell you the maximum amount of that type of ammunition that a player can carry.
 */
@@ -290,6 +295,67 @@ void W_Precache()
 
 	PRECACHE_SOUND("items/weapondrop1.wav");// weapon falls to the ground
 
+}
+
+TYPEDESCRIPTION	CBasePlayerAmmo::m_SaveData[] =
+{
+	DEFINE_FIELD(CBasePlayerAmmo, m_iAmount, FIELD_INTEGER),
+	DEFINE_FIELD(CBasePlayerAmmo, m_iszAmmoName, FIELD_STRING),
+	DEFINE_FIELD(CBasePlayerAmmo, m_iszPickupSound, FIELD_SOUNDNAME),
+};
+
+IMPLEMENT_SAVERESTORE(CBasePlayerAmmo, CBaseItem);
+
+void CBasePlayerAmmo::KeyValue(KeyValueData* pkvd)
+{
+	if (AreStringsEqual(pkvd->szKeyName, "ammo_amount"))
+	{
+		m_iAmount = std::max(0, atoi(pkvd->szValue));
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "ammo_name")) //TODO: make available in ammo_generic only
+	{
+		m_iszAmmoName = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "pickup_sound"))
+	{
+		m_iszPickupSound = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else
+	{
+		CBaseItem::KeyValue(pkvd);
+	}
+}
+
+void CBasePlayerAmmo::Precache()
+{
+	CBaseItem::Precache();
+
+	if (!IsStringNull(m_iszPickupSound))
+	{
+		PRECACHE_SOUND(STRING(m_iszPickupSound));
+	}
+}
+
+ItemApplyResult CBasePlayerAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName, int maxCarry)
+{
+	if (ammoName && *ammoName && player->GiveAmmo(amount, ammoName, maxCarry) != -1)
+	{
+		if (auto sound = STRING(m_iszPickupSound); *sound)
+		{
+			EmitSound(SoundChannel::Item, sound);
+		}
+
+		return ItemApplyResult::Used;
+	}
+	return ItemApplyResult::NotUsed;
+}
+
+ItemApplyResult CBasePlayerAmmo::Apply(CBasePlayer* player)
+{
+	return DefaultGiveAmmo(player, m_iAmount, STRING(m_iszAmmoName), m_iMaxCarry);
 }
 
 TYPEDESCRIPTION	CBasePlayerItem::m_SaveData[] =

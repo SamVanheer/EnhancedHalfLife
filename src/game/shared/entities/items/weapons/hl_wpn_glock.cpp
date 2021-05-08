@@ -213,25 +213,14 @@ void CGlock::WeaponIdle()
 
 class CGlockAmmo : public CBasePlayerAmmo
 {
-	void Spawn() override
+public:
+	void OnConstruct() override
 	{
-		Precache();
-		SetModel("models/w_9mmclip.mdl");
-		CBasePlayerAmmo::Spawn();
-	}
-	void Precache() override
-	{
-		PRECACHE_MODEL("models/w_9mmclip.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
-	}
-	ItemApplyResult Apply(CBasePlayer* pOther) override
-	{
-		if (pOther->GiveAmmo(AMMO_GLOCKCLIP_GIVE, "9mm", _9MM_MAX_CARRY) != -1)
-		{
-			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
-			return ItemApplyResult::Used;
-		}
-		return ItemApplyResult::NotUsed;
+		CBasePlayerAmmo::OnConstruct();
+		SetModelName("models/w_9mmclip.mdl");
+		m_iAmount = AMMO_GLOCKCLIP_GIVE;
+		m_iMaxCarry = _9MM_MAX_CARRY;
+		m_iszAmmoName = MAKE_STRING("9mm");
 	}
 };
 LINK_ENTITY_TO_CLASS(ammo_glockclip, CGlockAmmo);

@@ -525,25 +525,14 @@ void CEgon::SetWeaponData(const weapon_data_t& data)
 
 class CEgonAmmo : public CBasePlayerAmmo
 {
-	void Spawn() override
+public:
+	void OnConstruct() override
 	{
-		Precache();
-		SetModel("models/w_chainammo.mdl");
-		CBasePlayerAmmo::Spawn();
-	}
-	void Precache() override
-	{
-		PRECACHE_MODEL("models/w_chainammo.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
-	}
-	ItemApplyResult Apply(CBasePlayer* pOther) override
-	{
-		if (pOther->GiveAmmo(AMMO_URANIUMBOX_GIVE, "uranium", URANIUM_MAX_CARRY) != -1)
-		{
-			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
-			return ItemApplyResult::Used;
-		}
-		return ItemApplyResult::NotUsed;
+		CBasePlayerAmmo::OnConstruct();
+		SetModelName("models/w_chainammo.mdl");
+		m_iAmount = AMMO_URANIUMBOX_GIVE;
+		m_iMaxCarry = URANIUM_MAX_CARRY;
+		m_iszAmmoName = MAKE_STRING("uranium");
 	}
 };
 LINK_ENTITY_TO_CLASS(ammo_egonclip, CEgonAmmo);

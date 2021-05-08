@@ -529,41 +529,15 @@ void CRpg::UpdateSpot()
 
 class CRpgAmmo : public CBasePlayerAmmo
 {
-	void Spawn() override
+public:
+	void OnConstruct() override
 	{
-		Precache();
-		SetModel("models/w_rpgammo.mdl");
-		CBasePlayerAmmo::Spawn();
-	}
-	void Precache() override
-	{
-		PRECACHE_MODEL("models/w_rpgammo.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
-	}
-	ItemApplyResult Apply(CBasePlayer* pOther) override
-	{
-		int iGive;
-
-#ifdef CLIENT_DLL
-		if (bIsMultiplayer())
-#else
-		if (g_pGameRules->IsMultiplayer())
-#endif
-		{
-			// hand out more ammo per rocket in multiplayer.
-			iGive = AMMO_RPGCLIP_GIVE * 2;
-		}
-		else
-		{
-			iGive = AMMO_RPGCLIP_GIVE;
-		}
-
-		if (pOther->GiveAmmo(iGive, "rockets", ROCKET_MAX_CARRY) != -1)
-		{
-			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
-			return ItemApplyResult::Used;
-		}
-		return ItemApplyResult::NotUsed;
+		CBasePlayerAmmo::OnConstruct();
+		SetModelName("models/w_rpgammo.mdl");
+		// hand out more ammo per rocket in multiplayer.
+		m_iAmount = bIsMultiplayer() ? AMMO_RPGCLIP_GIVE * 2 : AMMO_RPGCLIP_GIVE;
+		m_iMaxCarry = ROCKET_MAX_CARRY;
+		m_iszAmmoName = MAKE_STRING("rockets");
 	}
 };
 LINK_ENTITY_TO_CLASS(ammo_rpgclip, CRpgAmmo);

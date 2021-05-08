@@ -32,7 +32,10 @@
 
 // Globals used by game logic
 enginefuncs_t g_engfuncs;
-globalvars_t* gpGlobals;
+
+// Local version of game .dll global variables ( time, etc. )
+static globalvars_t	Globals;
+globalvars_t* gpGlobals = &Globals;
 
 // CBaseEntity Stubs
 bool CBaseEntity::GiveHealth(float flHealth, int bitsDamageType) { return true; }
@@ -303,6 +306,8 @@ bool CBasePlayerItem::Restore(class CRestore&) { return true; }
 bool CBasePlayerItem::Save(class CSave&) { return true; }
 bool CBasePlayerWeapon::Restore(class CRestore&) { return true; }
 bool CBasePlayerWeapon::Save(class CSave&) { return true; }
+bool CBasePlayerAmmo::Restore(class CRestore&) { return true; }
+bool CBasePlayerAmmo::Save(class CSave&) { return true; }
 float CBasePlayerWeapon::GetNextAttackDelay(float flTime) { return flTime; }
 void CBasePlayerItem::SetObjectCollisionBox() { }
 void CBasePlayerItem::FallInit() { }
@@ -323,6 +328,9 @@ bool CBasePlayerWeapon::IsUseable() { return true; }
 bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon) { return false; }
 int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon) { return 0; }
 void CBasePlayerWeapon::RetireWeapon() { }
+void CBasePlayerAmmo::KeyValue(KeyValueData* pkvd) {}
+void CBasePlayerAmmo::Precache() {}
+ItemApplyResult CBasePlayerAmmo::Apply(CBasePlayer* player) { return ItemApplyResult::NotUsed; }
 void CSoundEnt::InsertSound(int iType, const Vector& vecOrigin, int iVolume, float flDuration) {}
 
 CBaseEntity* UTIL_FindEntityByClassname(CBaseEntity* pStartEntity, const char* szName) { return nullptr; }
