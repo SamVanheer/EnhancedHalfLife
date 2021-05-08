@@ -319,9 +319,6 @@ CBaseEntity* CBaseItem::Respawn()
 
 		newItem->m_bIsRespawning = true;
 
-		//Clear onground flag so fall sounds will play
-		newItem->pev->flags &= ~FL_ONGROUND;
-
 		newItem->SetTouch(nullptr);
 		newItem->SetThink(&CBaseItem::AttemptToMaterialize);
 
