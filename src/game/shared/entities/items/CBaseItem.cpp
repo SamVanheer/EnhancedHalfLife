@@ -51,6 +51,16 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 
 		pkvd->fHandled = true;
 	}
+	else if (AreStringsEqual(pkvd->szKeyName, "can_pick_up_while_falling"))
+	{
+		m_bCanPickUpWhileFalling = atoi(pkvd->szValue) != 0;
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "clatter_on_fall"))
+	{
+		m_bClatterOnFall = atoi(pkvd->szValue) != 0;
+		pkvd->fHandled = true;
+	}
 	else if (AreStringsEqual(pkvd->szKeyName, "clatter_sound"))
 	{
 		m_iszClatterSound = ALLOC_STRING(pkvd->szValue);
