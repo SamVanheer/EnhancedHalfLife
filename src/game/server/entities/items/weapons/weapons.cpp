@@ -424,6 +424,9 @@ CBasePlayerItem* CBasePlayerItem::GetItemToRespawn(const Vector& respawnPoint)
 	pNewWeapon->m_iszClatterSound = m_iszClatterSound;
 	pNewWeapon->m_iszRespawnSound = m_iszRespawnSound;
 
+	pNewWeapon->m_iszTriggerOnMaterialize = m_iszTriggerOnMaterialize;
+	pNewWeapon->m_iszTriggerOnDematerialize = m_iszTriggerOnDematerialize;
+
 	DispatchSpawn(pNewWeapon->edict());
 
 	return pNewWeapon;

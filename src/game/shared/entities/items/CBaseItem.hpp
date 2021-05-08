@@ -136,4 +136,14 @@ protected:
 	string_t m_iszClatterSound = MAKE_STRING("items/weapondrop1.wav");
 
 	string_t m_iszRespawnSound = MAKE_STRING("items/suitchargeok1.wav");
+
+	/**
+	*	@brief Target to trigger when this entity materializes (spawns/respawns)
+	*/
+	string_t m_iszTriggerOnMaterialize = iStringNull;
+
+	/**
+	*	@brief Target to trigger when this entity dematerializes (waiting to respawn, being removed)
+	*/
+	string_t m_iszTriggerOnDematerialize = iStringNull;
 };

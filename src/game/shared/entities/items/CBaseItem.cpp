@@ -33,6 +33,8 @@ TYPEDESCRIPTION	CBaseItem::m_SaveData[] =
 	DEFINE_FIELD(CBaseItem, m_bIsRespawning, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseItem, m_iszClatterSound, FIELD_SOUNDNAME),
 	DEFINE_FIELD(CBaseItem, m_iszRespawnSound, FIELD_SOUNDNAME),
+	DEFINE_FIELD(CBaseItem, m_iszTriggerOnMaterialize, FIELD_STRING),
+	DEFINE_FIELD(CBaseItem, m_iszTriggerOnDematerialize, FIELD_STRING),
 };
 
 IMPLEMENT_SAVERESTORE(CBaseItem, CBaseAnimating);
@@ -127,6 +129,16 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 	else if (AreStringsEqual(pkvd->szKeyName, "respawn_sound"))
 	{
 		m_iszRespawnSound = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "trigger_on_materialize"))
+	{
+		m_iszTriggerOnMaterialize = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "trigger_on_dematerialize"))
+	{
+		m_iszTriggerOnDematerialize = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 	else
@@ -274,6 +286,8 @@ void CBaseItem::ItemTouch(CBaseEntity* pOther)
 			}
 			else
 			{
+				//We're not respawning so call this here
+				FireTargets(STRING(m_iszTriggerOnDematerialize), this, this, UseType::Off, 0);
 				shouldRemoveEntity = result == ItemApplyResult::Used;
 			}
 
@@ -335,6 +349,10 @@ CBaseEntity* CBaseItem::Respawn()
 		}
 
 		newItem->pev->nextthink = respawnTime;
+
+		//Fire this on the new entity so anything that operates on the activator or caller works properly
+		FireTargets(STRING(m_iszTriggerOnDematerialize), newItem, newItem, UseType::Off, 0);
+
 		return newItem;
 	}
 
@@ -364,6 +382,8 @@ void CBaseItem::Materialize()
 	SetAbsOrigin(GetAbsOrigin());// link into world.
 	SetTouch(&CBaseItem::ItemTouch);
 	SetThink(nullptr);
+
+	FireTargets(STRING(m_iszTriggerOnMaterialize), this, this, UseType::On, 0);
 #endif
 }
 
