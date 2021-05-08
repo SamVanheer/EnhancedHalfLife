@@ -16,10 +16,41 @@
 #include "items.h"
 #include "UserMessages.h"
 
-constexpr int SF_SUIT_SHORTLOGON = 0x0001;
+enum class SuitLogonType
+{
+	NoLogon = 0,
+	LongLogon,
+	ShortLogon,
+	
+};
 
 class CItemSuit : public CItem
 {
+	void KeyValue(KeyValueData* pkvd) override
+	{
+		if (AreStringsEqual(pkvd->szKeyName, "logon_type"))
+		{
+			if (AreStringsEqual(pkvd->szValue, "NoLogon"))
+			{
+				m_LogonType = SuitLogonType::NoLogon;
+			}
+			else if (AreStringsEqual(pkvd->szValue, "LongLogon"))
+			{
+				m_LogonType = SuitLogonType::LongLogon;
+			}
+			else if (AreStringsEqual(pkvd->szValue, "ShortLogon"))
+			{
+				m_LogonType = SuitLogonType::ShortLogon;
+			}
+			else
+			{
+				ALERT(at_warning, "Invalid logon_type value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, GetClassname(), entindex());
+			}
+
+			pkvd->fHandled = true;
+		}
+	}
+
 	void Spawn() override
 	{
 		Precache();
@@ -35,17 +66,38 @@ class CItemSuit : public CItem
 		if (pPlayer->pev->weapons & (1 << WEAPON_SUIT))
 			return ItemApplyResult::NotUsed;
 
-		if (pev->spawnflags & SF_SUIT_SHORTLOGON)
-			EMIT_SOUND_SUIT(pPlayer, "!HEV_A0");		// short version of suit logon,
-		else
-			EMIT_SOUND_SUIT(pPlayer, "!HEV_AAx");	// long version of suit logon
+		switch (m_LogonType)
+		{
+		case SuitLogonType::NoLogon: break;
+		case SuitLogonType::LongLogon:
+			EMIT_SOUND_SUIT(pPlayer, "!HEV_AAx");
+			break;
+		case SuitLogonType::ShortLogon:
+			EMIT_SOUND_SUIT(pPlayer, "!HEV_A0");
+			break;
+		}
 
 		pPlayer->pev->weapons |= (1 << WEAPON_SUIT);
 		return ItemApplyResult::Used;
 	}
+
+	bool Save(CSave& save) override;
+	bool Restore(CRestore& restore) override;
+
+	static TYPEDESCRIPTION m_SaveData[];
+
+protected:
+	SuitLogonType m_LogonType = SuitLogonType::NoLogon;
 };
 
 LINK_ENTITY_TO_CLASS(item_suit, CItemSuit);
+
+TYPEDESCRIPTION CItemSuit::m_SaveData[] =
+{
+	DEFINE_FIELD(CItemSuit, m_LogonType, FIELD_INTEGER),
+};
+
+IMPLEMENT_SAVERESTORE(CItemSuit, CBaseItem);
 
 class CItemBattery : public CItem
 {
