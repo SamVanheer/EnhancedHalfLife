@@ -677,7 +677,7 @@ public:
 	/**
 	*	@brief NOTE: szName must be a pointer to constant memory, e.g. "monster_class" because the entity will keep a pointer to it after this call.
 	*/
-	static CBaseEntity* Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner = nullptr);
+	static CBaseEntity* Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner = nullptr, bool callSpawn = true);
 
 	virtual bool BecomeProne() { return false; }
 	edict_t* edict() { return pev->pContainingEntity; }

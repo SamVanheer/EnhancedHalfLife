@@ -14,6 +14,7 @@
 ****/
 
 #include "UserMessages.h"
+#include "dll_functions.hpp"
 
 extern int gEvilImpulse101;
 
@@ -406,9 +407,10 @@ CBasePlayerItem* CBasePlayerItem::GetItemToRespawn(const Vector& respawnPoint)
 {
 	// make a copy of this weapon that is invisible and inaccessible to players (no touch function). The weapon spawn/respawn code
 	// will decide when to make the weapon visible and touchable.
-	auto pNewWeapon = static_cast<CBasePlayerItem*>(CBaseEntity::Create(GetClassname(), respawnPoint, GetAbsAngles(), GetOwner()));
+	auto pNewWeapon = static_cast<CBasePlayerItem*>(CBaseEntity::Create(GetClassname(), respawnPoint, GetAbsAngles(), GetOwner(), false));
 
 	//Copy over item settings
+	pNewWeapon->SetModel(GetModelName());
 	pNewWeapon->m_OriginalPosition = m_OriginalPosition;
 	pNewWeapon->m_RespawnMode = m_RespawnMode;
 	pNewWeapon->m_flRespawnDelay = m_flRespawnDelay;
@@ -420,6 +422,8 @@ CBasePlayerItem* CBasePlayerItem::GetItemToRespawn(const Vector& respawnPoint)
 
 	pNewWeapon->m_iszClatterSound = m_iszClatterSound;
 	pNewWeapon->m_iszRespawnSound = m_iszRespawnSound;
+
+	DispatchSpawn(pNewWeapon->edict());
 
 	return pNewWeapon;
 }

@@ -232,7 +232,7 @@ void CBaseEntity::StopSound(SoundChannel channel, const char* fileName)
 	EMIT_SOUND_DYN(this, channel, fileName, 0, 0, SND_STOP, PITCH_NORM);
 }
 
-CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner)
+CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner, bool callSpawn)
 {
 	auto pEntity = UTIL_CreateNamedEntity(MAKE_STRING(szName));
 	if (IsNullEnt(pEntity))
@@ -245,7 +245,10 @@ CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, co
 	pEntity->SetAbsOrigin(vecOrigin);
 	pEntity->SetAbsAngles(vecAngles);
 
-	DispatchSpawn(pEntity->edict());
+	if (callSpawn)
+	{
+		DispatchSpawn(pEntity->edict());
+	}
 
 	return pEntity;
 }

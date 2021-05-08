@@ -52,7 +52,7 @@ bool CBaseEntity::ShouldToggle(UseType useType, bool currentState) { return fals
 void CBaseEntity::SetAbsOrigin(const Vector& origin) {}
 void CBaseEntity::SetSize(const Vector& mins, const Vector& maxs) {}
 int	CBaseEntity::DamageDecal(int bitsDamageType) { return -1; }
-CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner) { return nullptr; }
+CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner, bool callSpawn) { return nullptr; }
 void CBaseEntity::SUB_Remove() { }
 void CBaseEntity::EmitSound(SoundChannel channel, const char* fileName, float volume, float attenuation, int pitch, int flags) {}
 
