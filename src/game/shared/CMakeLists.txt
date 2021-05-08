@@ -7,6 +7,8 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/ehandle.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/ehandle.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/characters/player_shared.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/CBaseItem.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/CBaseItem.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/crossbow.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/crowbar.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/egon.cpp

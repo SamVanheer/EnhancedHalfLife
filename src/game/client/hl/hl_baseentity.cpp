@@ -297,6 +297,8 @@ void SpawnBlood(const Vector& vecSpot, int bloodColor, float flDamage) { }
 int DamageDecal(CBaseEntity* pEntity, int bitsDamageType) { return 0; }
 void DecalGunshot(TraceResult* pTrace, int iBulletType) { }
 void EjectBrass(const Vector& vecOrigin, const Vector& vecVelocity, float rotation, int model, int soundtype) { }
+bool CBaseItem::Restore(class CRestore&) { return true; }
+bool CBaseItem::Save(class CSave&) { return true; }
 bool CBasePlayerItem::Restore(class CRestore&) { return true; }
 bool CBasePlayerItem::Save(class CSave&) { return true; }
 bool CBasePlayerWeapon::Restore(class CRestore&) { return true; }
@@ -304,28 +306,20 @@ bool CBasePlayerWeapon::Save(class CSave&) { return true; }
 float CBasePlayerWeapon::GetNextAttackDelay(float flTime) { return flTime; }
 void CBasePlayerItem::SetObjectCollisionBox() { }
 void CBasePlayerItem::FallInit() { }
-void CBasePlayerItem::FallThink() { }
-void CBasePlayerItem::Materialize() { }
-void CBasePlayerItem::AttemptToMaterialize() { }
-void CBasePlayerItem::CheckRespawn() { }
-CBaseEntity* CBasePlayerItem::Respawn() { return nullptr; }
-void CBasePlayerItem::DefaultTouch(CBaseEntity* pOther) { }
+ItemApplyResult CBasePlayerItem::Apply(CBasePlayer* pPlayer) { return ItemApplyResult::NotUsed; }
 void CBasePlayerItem::DestroyItem() { }
 bool CBasePlayerItem::AddToPlayer(CBasePlayer* pPlayer) { return true; }
 void CBasePlayerItem::Drop() { }
 void CBasePlayerItem::Kill() { }
 void CBasePlayerItem::Holster() { }
 void CBasePlayerItem::AttachToPlayer(CBasePlayer* pPlayer) { }
+CBasePlayerItem* CBasePlayerItem::GetItemToRespawn(const Vector& respawnPoint) { return nullptr; }
 bool CBasePlayerWeapon::AddDuplicate(CBasePlayerItem* pOriginal) { return false; }
 bool CBasePlayerWeapon::AddToPlayer(CBasePlayer* pPlayer) { return false; }
 bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer) { return false; }
 bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip, int iMaxCarry) { return true; }
 bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName, int iMax) { return true; }
 bool CBasePlayerWeapon::IsUseable() { return true; }
-void CBasePlayerAmmo::Spawn() { }
-CBaseEntity* CBasePlayerAmmo::Respawn() { return this; }
-void CBasePlayerAmmo::Materialize() { }
-void CBasePlayerAmmo::DefaultTouch(CBaseEntity* pOther) { }
 bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon) { return false; }
 int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon) { return 0; }
 void CBasePlayerWeapon::RetireWeapon() { }

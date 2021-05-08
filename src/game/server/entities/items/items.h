@@ -15,12 +15,16 @@
 
 #pragma once
 
-class CItem : public CBaseAnimating
+#include "CBaseItem.hpp"
+
+class CItem : public CBaseItem
 {
 public:
-	void	Spawn() override;
-	CBaseEntity* Respawn() override;
-	void	EXPORT ItemTouch(CBaseEntity* pOther);
-	void	EXPORT Materialize();
-	virtual bool MyTouch(CBasePlayer* pPlayer) { return false; }
+	CItem()
+	{
+		m_FallMode = ItemFallMode::PlaceOnGround;
+		m_bCanPickUpWhileFalling = true;
+	}
+
+	ItemType GetType() const override final { return ItemType::PickupItem; }
 };

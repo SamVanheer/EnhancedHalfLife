@@ -276,14 +276,14 @@ class CMP5AmmoClip : public CBasePlayerAmmo
 		PRECACHE_MODEL("models/w_9mmARclip.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	bool AddAmmo(CBasePlayer* pOther) override
+	ItemApplyResult Apply(CBasePlayer* pOther) override
 	{
-		int bResult = (pOther->GiveAmmo(AMMO_MP5CLIP_GIVE, "9mm", _9MM_MAX_CARRY) != -1);
-		if (bResult)
+		if (pOther->GiveAmmo(AMMO_MP5CLIP_GIVE, "9mm", _9MM_MAX_CARRY) != -1)
 		{
 			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
+			return ItemApplyResult::Used;
 		}
-		return bResult;
+		return ItemApplyResult::NotUsed;
 	}
 };
 LINK_ENTITY_TO_CLASS(ammo_mp5clip, CMP5AmmoClip);
@@ -302,14 +302,14 @@ class CMP5Chainammo : public CBasePlayerAmmo
 		PRECACHE_MODEL("models/w_chainammo.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	bool AddAmmo(CBasePlayer* pOther) override
+	ItemApplyResult Apply(CBasePlayer* pOther) override
 	{
-		int bResult = (pOther->GiveAmmo(AMMO_CHAINBOX_GIVE, "9mm", _9MM_MAX_CARRY) != -1);
-		if (bResult)
+		if (pOther->GiveAmmo(AMMO_CHAINBOX_GIVE, "9mm", _9MM_MAX_CARRY) != -1)
 		{
 			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
+			return ItemApplyResult::Used;
 		}
-		return bResult;
+		return ItemApplyResult::NotUsed;
 	}
 };
 LINK_ENTITY_TO_CLASS(ammo_9mmbox, CMP5Chainammo);
@@ -327,15 +327,14 @@ class CMP5AmmoGrenade : public CBasePlayerAmmo
 		PRECACHE_MODEL("models/w_ARgrenade.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	bool AddAmmo(CBasePlayer* pOther) override
+	ItemApplyResult Apply(CBasePlayer* pOther) override
 	{
-		int bResult = (pOther->GiveAmmo(AMMO_M203BOX_GIVE, "ARgrenades", M203_GRENADE_MAX_CARRY) != -1);
-
-		if (bResult)
+		if (pOther->GiveAmmo(AMMO_M203BOX_GIVE, "ARgrenades", M203_GRENADE_MAX_CARRY) != -1)
 		{
 			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
+			return ItemApplyResult::Used;
 		}
-		return bResult;
+		return ItemApplyResult::NotUsed;
 	}
 };
 LINK_ENTITY_TO_CLASS(ammo_mp5grenades, CMP5AmmoGrenade);

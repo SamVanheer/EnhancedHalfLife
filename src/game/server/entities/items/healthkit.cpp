@@ -21,7 +21,7 @@ class CHealthKit : public CItem
 {
 	void Spawn() override;
 	void Precache() override;
-	bool MyTouch(CBasePlayer* pPlayer) override;
+	ItemApplyResult Apply(CBasePlayer* pPlayer) override;
 };
 
 LINK_ENTITY_TO_CLASS(item_healthkit, CHealthKit);
@@ -40,11 +40,11 @@ void CHealthKit::Precache()
 	PRECACHE_SOUND("items/smallmedkit1.wav");
 }
 
-bool CHealthKit::MyTouch(CBasePlayer* pPlayer)
+ItemApplyResult CHealthKit::Apply(CBasePlayer* pPlayer)
 {
 	if (pPlayer->pev->deadflag != DeadFlag::No)
 	{
-		return false;
+		return ItemApplyResult::NotUsed;
 	}
 
 	if (pPlayer->GiveHealth(gSkillData.healthkitCapacity, DMG_GENERIC))
@@ -55,19 +55,10 @@ bool CHealthKit::MyTouch(CBasePlayer* pPlayer)
 
 		pPlayer->EmitSound(SoundChannel::Item, "items/smallmedkit1.wav");
 
-		if (g_pGameRules->ItemShouldRespawn(this))
-		{
-			Respawn();
-		}
-		else
-		{
-			UTIL_Remove(this);
-		}
-
-		return true;
+		return ItemApplyResult::Used;
 	}
 
-	return false;
+	return ItemApplyResult::NotUsed;
 }
 
 

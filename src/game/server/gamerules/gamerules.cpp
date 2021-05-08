@@ -16,6 +16,7 @@
 #include "gamerules.h"
 #include "teamplay_gamerules.h"
 #include "game.h"
+#include "CBaseItem.hpp"
 #include "UserMessages.h"
 #include "spawnpoints.hpp"
 
@@ -56,35 +57,52 @@ CBaseEntity* CGameRules::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
 	return pSpawnSpot;
 }
 
-bool CGameRules::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
+bool CGameRules::CanHaveItem(CBasePlayer& player, CBaseItem& item)
 {
-	// only living players can have items
-	if (pPlayer->pev->deadflag != DeadFlag::No)
-		return false;
-
-	if (pWeapon->Ammo1Name())
+	switch (item.GetType())
 	{
-		if (!CanHaveAmmo(pPlayer, pWeapon->Ammo1Name(), pWeapon->MaxAmmo1()))
+	case ItemType::PickupItem: return true;
+	case ItemType::Ammo: return true;
+
+	case ItemType::Weapon:
+	{
+		auto& weapon = static_cast<CBasePlayerItem&>(item);
+
+		// only living players can have items
+		if (player.pev->deadflag != DeadFlag::No)
+			return false;
+
+		if (weapon.Ammo1Name())
 		{
-			// we can't carry anymore ammo for this gun. We can only 
-			// have the gun if we aren't already carrying one of this type
-			if (pPlayer->HasPlayerItem(pWeapon))
+			if (!CanHaveAmmo(&player, weapon.Ammo1Name(), weapon.MaxAmmo1()))
+			{
+				// we can't carry anymore ammo for this gun. We can only 
+				// have the gun if we aren't already carrying one of this type
+				if (player.HasPlayerItem(&weapon))
+				{
+					return false;
+				}
+			}
+		}
+		else
+		{
+			// weapon doesn't use ammo, don't take another if you already have it.
+			if (player.HasPlayerItem(&weapon))
 			{
 				return false;
 			}
 		}
-	}
-	else
-	{
-		// weapon doesn't use ammo, don't take another if you already have it.
-		if (pPlayer->HasPlayerItem(pWeapon))
-		{
-			return false;
-		}
+
+		// note: will fall through to here if GetItemInfo doesn't fill the struct!
+		return true;
 	}
 
-	// note: will fall through to here if GetItemInfo doesn't fill the struct!
-	return true;
+	default:
+	{
+		ALERT(at_error, "CGameRules::CanHaveItem: Unknown item type \"%d\"\n", item.GetType());
+		return false;
+	}
+	}
 }
 
 void CGameRules::RefreshSkillData()

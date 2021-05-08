@@ -508,14 +508,14 @@ class CCrossbowAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL("models/w_crossbow_clip.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	bool AddAmmo(CBasePlayer* pOther) override
+	ItemApplyResult Apply(CBasePlayer* pOther) override
 	{
 		if (pOther->GiveAmmo(AMMO_CROSSBOWCLIP_GIVE, "bolts", BOLT_MAX_CARRY) != -1)
 		{
 			EmitSound(SoundChannel::Item, "items/9mmclip1.wav");
-			return true;
+			return ItemApplyResult::Used;
 		}
-		return false;
+		return ItemApplyResult::NotUsed;
 	}
 };
 LINK_ENTITY_TO_CLASS(ammo_crossbow, CCrossbowAmmo);

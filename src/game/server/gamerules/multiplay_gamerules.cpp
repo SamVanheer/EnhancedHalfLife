@@ -18,6 +18,7 @@
 #include "gamerules.h"
 
 #include "game.h"
+#include "CBaseItem.hpp"
 #include "items.h"
 #include "voice_gamemgr.h"
 #include "hltv.h"
@@ -750,111 +751,125 @@ void CHalfLifeMultiplay::DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller,
 */
 }
 
-void CHalfLifeMultiplay::PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
+bool CHalfLifeMultiplay::CanHaveItem(CBasePlayer& player, CBaseItem& item)
 {
-}
-
-float CHalfLifeMultiplay::WeaponRespawnTime(CBasePlayerItem* pWeapon)
-{
-	if (weaponstay.value > 0)
+	switch (item.GetType())
 	{
-		// make sure it's only certain weapons
-		if (!(pWeapon->Flags() & ITEM_FLAG_LIMITINWORLD))
+	case ItemType::Weapon:
+	{
+		auto& weapon = static_cast<CBasePlayerItem&>(item);
+
+		if (weaponstay.value > 0)
 		{
-			return gpGlobals->time + 0;		// weapon respawns almost instantly
+			if (!(weapon.Flags() & ITEM_FLAG_LIMITINWORLD))
+			{
+				// check if the player already has this weapon
+				for (int i = 0; i < MAX_ITEM_TYPES; i++)
+				{
+					CBasePlayerItem* it = player.m_hPlayerItems[i];
+
+					while (it != nullptr)
+					{
+						if (it->m_iId == weapon.m_iId)
+						{
+							return false;
+						}
+
+						it = it->m_hNext;
+					}
+				}
+			}
 		}
 	}
 
-	return gpGlobals->time + WEAPON_RESPAWN_TIME;
+	[[fallthrough]];
+
+	default: return CGameRules::CanHaveItem(player, item);
+	}
+}
+
+void CHalfLifeMultiplay::PlayerGotItem(CBasePlayer& player, CBaseItem& item)
+{
+	//Nothing
+}
+
+bool CHalfLifeMultiplay::ItemShouldRespawn(CBaseItem& item)
+{
+	return (item.pev->spawnflags & SF_NORESPAWN) == 0;
+}
+
+float CHalfLifeMultiplay::ItemRespawnTime(CBaseItem& item)
+{
+	switch (item.GetType())
+	{
+	case ItemType::PickupItem: return gpGlobals->time + ITEM_RESPAWN_TIME;
+	case ItemType::Ammo: return gpGlobals->time + AMMO_RESPAWN_TIME;
+
+	case ItemType::Weapon:
+	{
+		auto& weapon = static_cast<CBasePlayerItem&>(item);
+		if (weaponstay.value > 0)
+		{
+			// make sure it's only certain weapons
+			if (!(weapon.Flags() & ITEM_FLAG_LIMITINWORLD))
+			{
+				return gpGlobals->time + 0;		// weapon respawns almost instantly
+			}
+		}
+
+		return gpGlobals->time + WEAPON_RESPAWN_TIME;
+	}
+
+	default:
+	{
+		ALERT(at_error, "CHalfLifeMultiplay::ItemRespawnTime: Unknown item type \"%d\"\n", item.GetType());
+		return -1;
+	}
+	}
+}
+
+Vector CHalfLifeMultiplay::ItemRespawnSpot(CBaseItem& item)
+{
+	return item.GetAbsOrigin();
 }
 
 // when we are within this close to running out of entities,  items 
 // marked with the ITEM_FLAG_LIMITINWORLD will delay their respawn
 constexpr int ENTITY_INTOLERANCE = 100;
 
-float CHalfLifeMultiplay::WeaponTryRespawn(CBasePlayerItem* pWeapon)
+float CHalfLifeMultiplay::ItemTryRespawn(CBaseItem& item)
 {
-	if (pWeapon && pWeapon->m_iId && (pWeapon->Flags() & ITEM_FLAG_LIMITINWORLD))
+	switch (item.GetType())
 	{
-		if (NUMBER_OF_ENTITIES() < (gpGlobals->maxEntities - ENTITY_INTOLERANCE))
-			return 0;
+	case ItemType::PickupItem: break;
+	case ItemType::Ammo: break;
 
-		// we're past the entity tolerance level,  so delay the respawn
-		return WeaponRespawnTime(pWeapon);
-	}
-
-	return 0;
-}
-
-Vector CHalfLifeMultiplay::WeaponRespawnSpot(CBasePlayerItem* pWeapon)
-{
-	return pWeapon->GetAbsOrigin();
-}
-
-int CHalfLifeMultiplay::WeaponShouldRespawn(CBasePlayerItem* pWeapon)
-{
-	if (pWeapon->pev->spawnflags & SF_NORESPAWN)
+	case ItemType::Weapon:
 	{
-		return GR_WEAPON_RESPAWN_NO;
-	}
+		auto& weapon = static_cast<CBasePlayerItem&>(item);
 
-	return GR_WEAPON_RESPAWN_YES;
-}
-
-bool CHalfLifeMultiplay::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pItem)
-{
-	if (weaponstay.value > 0)
-	{
-		if (pItem->Flags() & ITEM_FLAG_LIMITINWORLD)
-			return CGameRules::CanHavePlayerItem(pPlayer, pItem);
-
-		// check if the player already has this weapon
-		for (int i = 0; i < MAX_ITEM_TYPES; i++)
+		if (weapon.m_iId && (weapon.Flags() & ITEM_FLAG_LIMITINWORLD))
 		{
-			CBasePlayerItem* it = pPlayer->m_hPlayerItems[i];
-
-			while (it != nullptr)
+			if (NUMBER_OF_ENTITIES() >= (gpGlobals->maxEntities - ENTITY_INTOLERANCE))
 			{
-				if (it->m_iId == pItem->m_iId)
-				{
-					return false;
-				}
-
-				it = it->m_hNext;
+				// we're past the entity tolerance level,  so delay the respawn
+				//TODO: this results in time + time + delay
+				return ItemRespawnTime(weapon);
 			}
 		}
+
+		break;
 	}
 
-	return CGameRules::CanHavePlayerItem(pPlayer, pItem);
-}
-
-bool CHalfLifeMultiplay::CanHaveItem(CBasePlayer* pPlayer, CItem* pItem)
-{
-	return true;
-}
-
-void CHalfLifeMultiplay::PlayerGotItem(CBasePlayer* pPlayer, CItem* pItem)
-{
-}
-
-int CHalfLifeMultiplay::ItemShouldRespawn(CItem* pItem)
-{
-	if (pItem->pev->spawnflags & SF_NORESPAWN)
+	default:
 	{
-		return GR_ITEM_RESPAWN_NO;
+		ALERT(at_error, "CHalfLifeMultiplay::ItemTryRespawn: Unknown item type \"%d\"\n", item.GetType());
+		return -1;
+	}
 	}
 
-	return GR_ITEM_RESPAWN_YES;
-}
-
-float CHalfLifeMultiplay::ItemRespawnTime(CItem* pItem)
-{
-	return gpGlobals->time + ITEM_RESPAWN_TIME;
-}
-
-Vector CHalfLifeMultiplay::ItemRespawnSpot(CItem* pItem)
-{
-	return pItem->GetAbsOrigin();
+	//Respawn immediately
+	return 0;
 }
 
 void CHalfLifeMultiplay::PlayerGotAmmo(CBasePlayer* pPlayer, char* szName, int iCount)
@@ -867,26 +882,6 @@ bool CHalfLifeMultiplay::IsAllowedToSpawn(CBaseEntity* pEntity)
 	//		return false;
 
 	return true;
-}
-
-int CHalfLifeMultiplay::AmmoShouldRespawn(CBasePlayerAmmo* pAmmo)
-{
-	if (pAmmo->pev->spawnflags & SF_NORESPAWN)
-	{
-		return GR_AMMO_RESPAWN_NO;
-	}
-
-	return GR_AMMO_RESPAWN_YES;
-}
-
-float CHalfLifeMultiplay::AmmoRespawnTime(CBasePlayerAmmo* pAmmo)
-{
-	return gpGlobals->time + AMMO_RESPAWN_TIME;
-}
-
-Vector CHalfLifeMultiplay::AmmoRespawnSpot(CBasePlayerAmmo* pAmmo)
-{
-	return pAmmo->GetAbsOrigin();
 }
 
 float CHalfLifeMultiplay::HealthChargerRechargeTime()

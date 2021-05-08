@@ -2852,7 +2852,7 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 		{
 			if (pItem->AddDuplicate(pInsert))
 			{
-				g_pGameRules->PlayerGotWeapon(this, pItem);
+				g_pGameRules->PlayerGotItem(*this, *pItem);
 				pItem->CheckRespawn();
 
 				// ugly hack to update clip w/o an update clip message
@@ -2874,7 +2874,7 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem* pItem)
 
 	if (pItem->AddToPlayer(this))
 	{
-		g_pGameRules->PlayerGotWeapon(this, pItem);
+		g_pGameRules->PlayerGotItem(*this, *pItem);
 		pItem->CheckRespawn();
 
 		pItem->m_hNext = m_hPlayerItems[pItem->ItemSlot()];

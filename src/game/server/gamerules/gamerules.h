@@ -17,10 +17,8 @@
 
 #include <string_view>
 
-class CBasePlayerItem;
+class CBaseItem;
 class CBasePlayer;
-class CItem;
-class CBasePlayerAmmo;
 
 /**
 *	@brief weapon respawning return codes
@@ -28,15 +26,6 @@ class CBasePlayerAmmo;
 enum
 {
 	GR_NONE = 0,
-
-	GR_WEAPON_RESPAWN_YES,
-	GR_WEAPON_RESPAWN_NO,
-
-	GR_AMMO_RESPAWN_YES,
-	GR_AMMO_RESPAWN_NO,
-
-	GR_ITEM_RESPAWN_YES,
-	GR_ITEM_RESPAWN_NO,
 
 	GR_PLR_DROP_GUN_ALL,
 	GR_PLR_DROP_GUN_ACTIVE,
@@ -203,67 +192,38 @@ public:
 	*/
 	virtual void DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) = 0;
 
-	// Weapon retrieval
-		/**
-		*	@brief The player is touching an CBasePlayerItem, do I give it to him?
-		*/
-	virtual bool CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);
+	//Item spawn/respawn control
+	/**
+	*	@brief is this player allowed to take this item?
+	*/
+	virtual bool CanHaveItem(CBasePlayer& player, CBaseItem& item);
 
 	/**
-	*	@brief Called each time a player picks up a weapon from the ground
+	*	@brief call each time a player picks up an item (battery, ammo, weapon)
 	*/
-	virtual void PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) = 0;
-
-	// Weapon spawn/respawn control
-		/**
-		*	@brief should this weapon respawn?
-		*/
-	virtual int WeaponShouldRespawn(CBasePlayerItem* pWeapon) = 0;
+	virtual void PlayerGotItem(CBasePlayer& player, CBaseItem& item) = 0;
 
 	/**
-	*	@brief when may this weapon respawn?
+	*	@brief Should this item respawn?
 	*/
-	virtual float WeaponRespawnTime(CBasePlayerItem* pWeapon) = 0;
-
-	/**
-	*	@brief can i respawn now, and if not, when should i try again?
-	*	Returns 0 if the weapon can respawn now
-	*/
-	virtual float WeaponTryRespawn(CBasePlayerItem* pWeapon) = 0;
-
-	/**
-	*	@brief where in the world should this weapon respawn?
-	*	@details Some game variations may choose to randomize spawn locations
-	*/
-	virtual Vector WeaponRespawnSpot(CBasePlayerItem* pWeapon) = 0;
-
-	// Item retrieval
-		/**
-		*	@brief is this player allowed to take this item?
-		*/
-	virtual bool CanHaveItem(CBasePlayer* pPlayer, CItem* pItem) = 0;
-
-	/**
-	*	@brief call each time a player picks up an item (battery, healthkit, longjump)
-	*/
-	virtual void PlayerGotItem(CBasePlayer* pPlayer, CItem* pItem) = 0;
-
-	// Item spawn/respawn control
-		/**
-		*	@brief Should this item respawn?
-		*/
-	virtual int ItemShouldRespawn(CItem* pItem) = 0;
+	virtual bool ItemShouldRespawn(CBaseItem& item) = 0;
 
 	/**
 	*	@brief when may this item respawn?
 	*/
-	virtual float ItemRespawnTime(CItem* pItem) = 0;
+	virtual float ItemRespawnTime(CBaseItem& item) = 0;
 
 	/**
 	*	@brief where in the world should this item respawn?
 	*	@details Some game variations may choose to randomize spawn locations
 	*/
-	virtual Vector ItemRespawnSpot(CItem* pItem) = 0;
+	virtual Vector ItemRespawnSpot(CBaseItem& item) = 0;
+
+	/**
+	*	@brief can i respawn now, and if not, when should i try again?
+	*	Returns 0 if the item can respawn now
+	*/
+	virtual float ItemTryRespawn(CBaseItem& item) = 0;
 
 	// Ammo retrieval
 		/**
@@ -275,22 +235,6 @@ public:
 	*	@brief
 	*/
 	virtual void PlayerGotAmmo(CBasePlayer* pPlayer, char* szName, int iCount) = 0;// called each time a player picks up some ammo in the world
-
-// Ammo spawn/respawn control
-	/**
-	*	@brief should this ammo item respawn?
-	*/
-	virtual int AmmoShouldRespawn(CBasePlayerAmmo* pAmmo) = 0;
-
-	/**
-	*	@brief when should this ammo item respawn?
-	*/
-	virtual float AmmoRespawnTime(CBasePlayerAmmo* pAmmo) = 0;
-
-	/**
-	*	@brief where in the world should this ammo item respawn? by default, everything spawns
-	*/
-	virtual Vector AmmoRespawnSpot(CBasePlayerAmmo* pAmmo) = 0;
 
 	// Healthcharger respawn control
 		/**
@@ -394,25 +338,13 @@ public:
 	void PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) override;
 	void DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) override;
 
-	void PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
-
-	int WeaponShouldRespawn(CBasePlayerItem* pWeapon) override;
-	float WeaponRespawnTime(CBasePlayerItem* pWeapon) override;
-	float WeaponTryRespawn(CBasePlayerItem* pWeapon) override;
-	Vector WeaponRespawnSpot(CBasePlayerItem* pWeapon) override;
-
-	bool CanHaveItem(CBasePlayer* pPlayer, CItem* pItem) override;
-	void PlayerGotItem(CBasePlayer* pPlayer, CItem* pItem) override;
-
-	int ItemShouldRespawn(CItem* pItem) override;
-	float ItemRespawnTime(CItem* pItem) override;
-	Vector ItemRespawnSpot(CItem* pItem) override;
+	void PlayerGotItem(CBasePlayer& player, CBaseItem& item) override;
+	bool ItemShouldRespawn(CBaseItem& item) override;
+	float ItemRespawnTime(CBaseItem& item) override;
+	Vector ItemRespawnSpot(CBaseItem& item) override;
+	float ItemTryRespawn(CBaseItem& item) override;
 
 	void PlayerGotAmmo(CBasePlayer* pPlayer, char* szName, int iCount) override;
-
-	int AmmoShouldRespawn(CBasePlayerAmmo* pAmmo) override;
-	float AmmoRespawnTime(CBasePlayerAmmo* pAmmo) override;
-	Vector AmmoRespawnSpot(CBasePlayerAmmo* pAmmo) override;
 
 	float HealthChargerRechargeTime() override;
 
@@ -471,26 +403,14 @@ public:
 	void PlayerKilled(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) override;
 	void DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller, CBaseEntity* pInflictor) override;
 
-	void PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
-	bool CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon) override;
-
-	int WeaponShouldRespawn(CBasePlayerItem* pWeapon) override;
-	float WeaponRespawnTime(CBasePlayerItem* pWeapon) override;
-	float WeaponTryRespawn(CBasePlayerItem* pWeapon) override;
-	Vector WeaponRespawnSpot(CBasePlayerItem* pWeapon) override;
-
-	bool CanHaveItem(CBasePlayer* pPlayer, CItem* pItem) override;
-	void PlayerGotItem(CBasePlayer* pPlayer, CItem* pItem) override;
-
-	int ItemShouldRespawn(CItem* pItem) override;
-	float ItemRespawnTime(CItem* pItem) override;
-	Vector ItemRespawnSpot(CItem* pItem) override;
+	bool CanHaveItem(CBasePlayer& player, CBaseItem& item) override;
+	void PlayerGotItem(CBasePlayer& player, CBaseItem& item) override;
+	bool ItemShouldRespawn(CBaseItem& item) override;
+	float ItemRespawnTime(CBaseItem& item) override;
+	Vector ItemRespawnSpot(CBaseItem& item) override;
+	float ItemTryRespawn(CBaseItem& item) override;
 
 	void PlayerGotAmmo(CBasePlayer* pPlayer, char* szName, int iCount) override;
-
-	int AmmoShouldRespawn(CBasePlayerAmmo* pAmmo) override;
-	float AmmoRespawnTime(CBasePlayerAmmo* pAmmo) override;
-	Vector AmmoRespawnSpot(CBasePlayerAmmo* pAmmo) override;
 
 	float HealthChargerRechargeTime() override;
 	float HEVChargerRechargeTime() override;

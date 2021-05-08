@@ -302,7 +302,7 @@ TYPEDESCRIPTION	CBasePlayerItem::m_SaveData[] =
 	// DEFINE_FIELD( CBasePlayerItem, m_iIdSecondary, FIELD_INTEGER ),
 };
 
-IMPLEMENT_SAVERESTORE(CBasePlayerItem, CBaseAnimating);
+IMPLEMENT_SAVERESTORE(CBasePlayerItem, CBaseItem);
 
 TYPEDESCRIPTION	CBasePlayerWeapon::m_SaveData[] =
 {
@@ -333,134 +333,32 @@ void CBasePlayerItem::SetObjectCollisionBox()
 
 void CBasePlayerItem::FallInit()
 {
-	SetMovetype(Movetype::Toss);
-	SetSolidType(Solid::BBox);
-
-	SetAbsOrigin(GetAbsOrigin());
-	SetSize(vec3_origin, vec3_origin);//pointsize until it lands on the ground.
-
-	SetTouch(&CBasePlayerItem::DefaultTouch);
-	SetThink(&CBasePlayerItem::FallThink);
-
-	pev->nextthink = gpGlobals->time + 0.1;
+	SetupItem(vec3_origin, vec3_origin);//pointsize until it lands on the ground.
 }
 
-void CBasePlayerItem::FallThink()
-{
-	pev->nextthink = gpGlobals->time + 0.1;
-
-	if (pev->flags & FL_ONGROUND)
-	{
-		// clatter if we have an owner (i.e., dropped by someone)
-		// don't clatter if the gun is waiting to respawn (if it's waiting, it is invisible!)
-		if (!IsNullEnt(GetOwner()))
-		{
-			int pitch = 95 + RANDOM_LONG(0, 29);
-			EmitSound(SoundChannel::Voice, "items/weapondrop1.wav", VOL_NORM, ATTN_NORM, pitch);
-		}
-
-		// lie flat
-		SetAbsAngles({0, GetAbsAngles().y, 0});
-
-		Materialize();
-	}
-}
-
-void CBasePlayerItem::Materialize()
-{
-	if (pev->effects & EF_NODRAW)
-	{
-		// changing from invisible state to visible.
-		EmitSound(SoundChannel::Weapon, "items/suitchargeok1.wav", VOL_NORM, ATTN_NORM, 150);
-		pev->effects &= ~EF_NODRAW;
-		pev->effects |= EF_MUZZLEFLASH;
-	}
-
-	SetSolidType(Solid::Trigger);
-
-	SetAbsOrigin(GetAbsOrigin());// link into world.
-	SetTouch(&CBasePlayerItem::DefaultTouch);
-	SetThink(nullptr);
-
-}
-
-void CBasePlayerItem::AttemptToMaterialize()
-{
-	float time = g_pGameRules->WeaponTryRespawn(this);
-
-	if (time == 0)
-	{
-		Materialize();
-		return;
-	}
-
-	pev->nextthink = gpGlobals->time + time;
-}
-
-void CBasePlayerItem::CheckRespawn()
-{
-	switch (g_pGameRules->WeaponShouldRespawn(this))
-	{
-	case GR_WEAPON_RESPAWN_YES:
-		Respawn();
-		break;
-	case GR_WEAPON_RESPAWN_NO:
-		return;
-		break;
-	}
-}
-
-CBaseEntity* CBasePlayerItem::Respawn()
+CBasePlayerItem* CBasePlayerItem::GetItemToRespawn(const Vector& respawnPoint)
 {
 	// make a copy of this weapon that is invisible and inaccessible to players (no touch function). The weapon spawn/respawn code
 	// will decide when to make the weapon visible and touchable.
-	CBaseEntity* pNewWeapon = CBaseEntity::Create(GetClassname(), g_pGameRules->WeaponRespawnSpot(this), GetAbsAngles(), GetOwner());
+	auto pNewWeapon = static_cast<CBasePlayerItem*>(CBaseEntity::Create(GetClassname(), respawnPoint, GetAbsAngles(), GetOwner()));
 
-	if (pNewWeapon)
-	{
-		pNewWeapon->pev->effects |= EF_NODRAW;// invisible for now
-		pNewWeapon->SetTouch(nullptr);// no touch
-		pNewWeapon->SetThink(&CBasePlayerItem::AttemptToMaterialize);
-
-		DROP_TO_FLOOR(edict());
-
-		// not a typo! We want to know when the weapon the player just picked up should respawn! This new entity we created is the replacement,
-		// but when it should respawn is based on conditions belonging to the weapon that was taken.
-		pNewWeapon->pev->nextthink = g_pGameRules->WeaponRespawnTime(this);
-	}
-	else
-	{
-		ALERT(at_console, "Respawn failed to create %s!\n", GetClassname());
-	}
+	//Copy over item settings
+	pNewWeapon->m_FallMode = m_FallMode;
+	pNewWeapon->m_bCanPickUpWhileFalling = m_bCanPickUpWhileFalling;
 
 	return pNewWeapon;
 }
 
-void CBasePlayerItem::DefaultTouch(CBaseEntity* pOther)
+ItemApplyResult CBasePlayerItem::Apply(CBasePlayer* pPlayer)
 {
-	// if it's not a player, ignore
-	if (!pOther->IsPlayer())
-		return;
-
-	CBasePlayer* pPlayer = (CBasePlayer*)pOther;
-
-	// can I have this?
-	if (!g_pGameRules->CanHavePlayerItem(pPlayer, this))
-	{
-		if (gEvilImpulse101)
-		{
-			UTIL_Remove(this);
-		}
-		return;
-	}
-
 	if (pPlayer->AddPlayerItem(this))
 	{
 		AttachToPlayer(pPlayer);
 		pPlayer->EmitSound(SoundChannel::Item, "items/gunpickup2.wav");
+		return ItemApplyResult::AttachedToPlayer;
 	}
 
-	SUB_UseTargets(pOther, UseType::Toggle, 0); // UNDONE: when should this happen?
+	return ItemApplyResult::NotUsed;
 }
 
 void CBasePlayerItem::DestroyItem()
@@ -692,73 +590,6 @@ bool CBasePlayerWeapon::IsUseable()
 
 	// clip is empty (or nonexistant) and the player has no more ammo of this type. 
 	return false;
-}
-
-void CBasePlayerAmmo::Spawn()
-{
-	SetMovetype(Movetype::Toss);
-	SetSolidType(Solid::Trigger);
-	SetSize(Vector(-16, -16, 0), Vector(16, 16, 16));
-	SetAbsOrigin(GetAbsOrigin());
-
-	SetTouch(&CBasePlayerAmmo::DefaultTouch);
-}
-
-CBaseEntity* CBasePlayerAmmo::Respawn()
-{
-	pev->effects |= EF_NODRAW;
-	SetTouch(nullptr);
-
-	SetAbsOrigin(g_pGameRules->AmmoRespawnSpot(this));// move to wherever I'm supposed to repawn.
-
-	SetThink(&CBasePlayerAmmo::Materialize);
-	pev->nextthink = g_pGameRules->AmmoRespawnTime(this);
-
-	return this;
-}
-
-void CBasePlayerAmmo::Materialize()
-{
-	if (pev->effects & EF_NODRAW)
-	{
-		// changing from invisible state to visible.
-		EmitSound(SoundChannel::Weapon, "items/suitchargeok1.wav", VOL_NORM, ATTN_NORM, 150);
-		pev->effects &= ~EF_NODRAW;
-		pev->effects |= EF_MUZZLEFLASH;
-	}
-
-	SetTouch(&CBasePlayerAmmo::DefaultTouch);
-}
-
-void CBasePlayerAmmo::DefaultTouch(CBaseEntity* pOther)
-{
-	if (!pOther->IsPlayer())
-	{
-		return;
-	}
-
-	auto player = static_cast<CBasePlayer*>(pOther);
-
-	if (AddAmmo(player))
-	{
-		if (g_pGameRules->AmmoShouldRespawn(this) == GR_AMMO_RESPAWN_YES)
-		{
-			Respawn();
-		}
-		else
-		{
-			SetTouch(nullptr);
-			SetThink(&CBasePlayerAmmo::SUB_Remove);
-			pev->nextthink = gpGlobals->time + .1;
-		}
-	}
-	else if (gEvilImpulse101)
-	{
-		// evil impulse 101 hack, kill always
-		SetTouch(nullptr);
-		SetThink(&CBasePlayerAmmo::SUB_Remove);
-		pev->nextthink = gpGlobals->time + .1;
-	}
 }
 
 bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon)

@@ -14,6 +14,7 @@
 ****/
 
 #include "gamerules.h"
+#include "CBaseItem.hpp"
 #include "items.h"
 #include "UserMessages.h"
 
@@ -123,52 +124,31 @@ void CHalfLifeRules::DeathNotice(CBasePlayer* pVictim, CBaseEntity* pKiller, CBa
 {
 }
 
-void CHalfLifeRules::PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
+void CHalfLifeRules::PlayerGotItem(CBasePlayer& player, CBaseItem& item)
 {
+	//Nothing
 }
 
-float CHalfLifeRules::WeaponRespawnTime(CBasePlayerItem* pWeapon)
+bool CHalfLifeRules::ItemShouldRespawn(CBaseItem& item)
 {
+	//Items don't respawn in singleplayer
+	return false;
+}
+
+float CHalfLifeRules::ItemRespawnTime(CBaseItem& item)
+{
+	//No respawn
 	return -1;
 }
 
-float CHalfLifeRules::WeaponTryRespawn(CBasePlayerItem* pWeapon)
+Vector CHalfLifeRules::ItemRespawnSpot(CBaseItem& item)
 {
-	return 0;
+	return item.GetAbsOrigin();
 }
 
-Vector CHalfLifeRules::WeaponRespawnSpot(CBasePlayerItem* pWeapon)
-{
-	return pWeapon->GetAbsOrigin();
-}
-
-int CHalfLifeRules::WeaponShouldRespawn(CBasePlayerItem* pWeapon)
-{
-	return GR_WEAPON_RESPAWN_NO;
-}
-
-bool CHalfLifeRules::CanHaveItem(CBasePlayer* pPlayer, CItem* pItem)
-{
-	return true;
-}
-
-void CHalfLifeRules::PlayerGotItem(CBasePlayer* pPlayer, CItem* pItem)
-{
-}
-
-int CHalfLifeRules::ItemShouldRespawn(CItem* pItem)
-{
-	return GR_ITEM_RESPAWN_NO;
-}
-
-float CHalfLifeRules::ItemRespawnTime(CItem* pItem)
+float CHalfLifeRules::ItemTryRespawn(CBaseItem& item)
 {
 	return -1;
-}
-
-Vector CHalfLifeRules::ItemRespawnSpot(CItem* pItem)
-{
-	return pItem->GetAbsOrigin();
 }
 
 bool CHalfLifeRules::IsAllowedToSpawn(CBaseEntity* pEntity)
@@ -178,21 +158,6 @@ bool CHalfLifeRules::IsAllowedToSpawn(CBaseEntity* pEntity)
 
 void CHalfLifeRules::PlayerGotAmmo(CBasePlayer* pPlayer, char* szName, int iCount)
 {
-}
-
-int CHalfLifeRules::AmmoShouldRespawn(CBasePlayerAmmo* pAmmo)
-{
-	return GR_AMMO_RESPAWN_NO;
-}
-
-float CHalfLifeRules::AmmoRespawnTime(CBasePlayerAmmo* pAmmo)
-{
-	return -1;
-}
-
-Vector CHalfLifeRules::AmmoRespawnSpot(CBasePlayerAmmo* pAmmo)
-{
-	return pAmmo->GetAbsOrigin();
 }
 
 float CHalfLifeRules::HealthChargerRechargeTime()

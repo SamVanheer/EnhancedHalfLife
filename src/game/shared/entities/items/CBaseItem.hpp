@@ -1,0 +1,112 @@
+/***
+*
+*	Copyright (c) 1996-2001, Valve LLC. All rights reserved.
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
+*	All Rights Reserved.
+*
+*   Use, distribution, and modification of this source code and/or resulting
+*   object code is restricted to non-commercial enhancements to products from
+*   Valve LLC.  All other use, distribution, or modification is prohibited
+*   without written permission from Valve LLC.
+*
+****/
+
+#pragma once
+
+enum class ItemType
+{
+	PickupItem = 0,	//!< A pickup item like health, battery, etc
+	Ammo,			//!< An ammo item like a Glock magazine, AR grenades, etc
+	Weapon			//!< A weapon like the Glock, MP5, etc
+};
+
+enum class ItemFallMode
+{
+	/**
+	*	@brief Place on ground with DROP_TO_FLOOR. Entity will be removed if it falls outside the level (can happen if item is clipping into BSP geometry)
+	*/
+	PlaceOnGround = 0,
+	Fall
+};
+
+enum class ItemApplyResult
+{
+	NotUsed = 0,		//!< Item was not used by player and remains in the world
+	Used,				//!< Item was used and needs to be checked for respawn/removal
+	AttachedToPlayer	//!< Item was attached to player and needs to be checked for respawn
+};
+
+/**
+*	@brief Base class for all items
+*	@details Handles item setup in the world, pickup on touch, respawning
+*/
+class CBaseItem : public CBaseAnimating
+{
+public:
+	/**
+	*	@brief Gets the type of item that this is
+	*/
+	virtual ItemType GetType() const = 0;
+
+	void KeyValue(KeyValueData* pkvd) override;
+	void Spawn() override;
+
+	/**
+	*	@brief Items that have just spawned run this think to catch them when they hit the ground.
+	*	Once we're sure that the object is grounded,
+	*	we change its solid type to trigger and set it in a large box that helps the player get it.
+	*/
+	void EXPORT FallThink();
+
+	void EXPORT ItemTouch(CBaseEntity* pOther);
+
+	CBaseEntity* Respawn() override;
+
+	/**
+	*	@brief a player is taking this item, should it respawn?
+	*/
+	void CheckRespawn();
+
+	/**
+	*	@brief make an item visible and tangible
+	*/
+	void EXPORT Materialize();
+
+	/**
+	*	@brief the item is trying to rematerialize, should it do so now or wait longer?
+	*	the weapon desires to become visible and tangible, if the game rules allow for it
+	*/
+	void EXPORT AttemptToMaterialize();
+
+	bool Save(CSave& save) override;
+	bool Restore(CRestore& restore) override;
+
+	static TYPEDESCRIPTION m_SaveData[];
+
+protected:
+	void SetupItem(const Vector& mins, const Vector& maxs);
+
+	virtual ItemApplyResult Apply(CBasePlayer* pPlayer) = 0;
+
+	/**
+	*	@brief Returns the item that should be respawned after this one has been picked up
+	*	Can be this entity if it does not need to be cloned
+	*/
+	virtual CBaseItem* GetItemToRespawn(const Vector& respawnPoint);
+
+protected:
+	ItemFallMode m_FallMode = ItemFallMode::PlaceOnGround;
+
+	/**
+	*	@brief Can this item be picked up while it's falling?
+	*	Only affects initial fall when spawning
+	*/
+	bool m_bCanPickUpWhileFalling = true;
+
+	/**
+	*	@brief Make a clatter sound when falling on the ground
+	*/
+	bool m_bClatterOnFall = false;
+};

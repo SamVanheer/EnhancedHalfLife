@@ -22,6 +22,7 @@
 */
 
 #include "effects.h"
+#include "CBaseItem.hpp"
 
 class CBasePlayer;
 class CBasePlayerWeapon;
@@ -233,9 +234,18 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname);
 /**
 *	@brief Items that the player has in their inventory that they can use
 */
-class CBasePlayerItem : public CBaseAnimating
+class CBasePlayerItem : public CBaseItem
 {
 public:
+	CBasePlayerItem()
+	{
+		m_FallMode = ItemFallMode::Fall;
+		m_bCanPickUpWhileFalling = false;
+		m_bClatterOnFall = true;
+	}
+
+	ItemType GetType() const override final { return ItemType::Weapon; }
+
 	void SetObjectCollisionBox() override;
 
 	bool Save(CSave& save) override;
@@ -254,41 +264,12 @@ public:
 	*/
 	virtual bool AddDuplicate(CBasePlayerItem* pItem) { return false; }
 	void EXPORT DestroyItem();
-	void EXPORT DefaultTouch(CBaseEntity* pOther);
-
-	/**
-	*	@brief Items that have just spawned run this think to catch them when they hit the ground.
-	*	Once we're sure that the object is grounded,
-	*	we change its solid type to trigger and set it in a large box that helps the player get it.
-	*/
-	void EXPORT FallThink();
-
-	/**
-	*	@brief make a CBasePlayerItem visible and tangible
-	*/
-	void EXPORT Materialize();
-
-	/**
-	*	@brief the item is trying to rematerialize, should it do so now or wait longer?
-	*	the weapon desires to become visible and tangible, if the game rules allow for it
-	*/
-	void EXPORT AttemptToMaterialize();
-
-	/**
-	*	@brief this item is already in the world, but it is invisible and intangible. Make it visible and tangible.
-	*	Copies a weapon
-	*/
-	CBaseEntity* Respawn() override;
+	ItemApplyResult Apply(CBasePlayer* pPlayer);
 
 	/**
 	*	@brief Sets up movetype, size, solidtype for a new weapon.
 	*/
 	void FallInit();
-
-	/**
-	*	@brief a player is taking this weapon, should it respawn?
-	*/
-	void CheckRespawn();
 
 	/**
 	*	@brief returns false if struct not filled out
@@ -361,6 +342,9 @@ public:
 	int			MaxClip() { return ItemInfoArray[m_iId].iMaxClip; }
 	int			Weight() { return ItemInfoArray[m_iId].iWeight; }
 	int			Flags() { return ItemInfoArray[m_iId].iFlags; }
+
+protected:
+	CBasePlayerItem* GetItemToRespawn(const Vector& respawnPoint) override;
 };
 
 /**
@@ -479,15 +463,16 @@ public:
 	float m_flLastFireTime = 0;
 };
 
-class CBasePlayerAmmo : public CBaseAnimating
+class CBasePlayerAmmo : public CBaseItem
 {
 public:
-	void Spawn() override;
-	void EXPORT DefaultTouch(CBaseEntity* pOther); // default weapon touch
-	virtual bool AddAmmo(CBasePlayer* pOther) { return true; }
+	CBasePlayerAmmo()
+	{
+		m_FallMode = ItemFallMode::Fall;
+		m_bCanPickUpWhileFalling = true;
+	}
 
-	CBaseEntity* Respawn() override;
-	void EXPORT Materialize();
+	ItemType GetType() const override final { return ItemType::Ammo; }
 };
 
 extern DLL_GLOBAL	short	g_sModelIndexLaser;// holds the index for the laser beam
