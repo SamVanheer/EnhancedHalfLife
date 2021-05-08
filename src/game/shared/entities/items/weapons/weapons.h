@@ -237,8 +237,9 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname);
 class CBasePlayerItem : public CBaseItem
 {
 public:
-	CBasePlayerItem()
+	void OnConstruct() override
 	{
+		CBaseItem::OnConstruct();
 		m_FallMode = ItemFallMode::Fall;
 		m_bCanPickUpWhileFalling = false;
 		m_bClatterOnFall = true;
@@ -466,8 +467,9 @@ public:
 class CBasePlayerAmmo : public CBaseItem
 {
 public:
-	CBasePlayerAmmo()
+	void OnConstruct() override
 	{
+		CBaseItem::OnConstruct();
 		m_FallMode = ItemFallMode::Fall;
 		m_bCanPickUpWhileFalling = true;
 	}

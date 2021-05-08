@@ -20,8 +20,9 @@
 class CItem : public CBaseItem
 {
 public:
-	CItem()
+	void OnConstruct() override
 	{
+		CBaseItem::OnConstruct();
 		m_FallMode = ItemFallMode::PlaceOnGround;
 		m_bCanPickUpWhileFalling = true;
 	}

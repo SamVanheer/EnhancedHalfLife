@@ -45,7 +45,7 @@ struct globalvars_t
 	int			cdAudioTrack = 0;
 	int			maxClients = 0;
 	int			maxEntities = 0;
-	const char* pStringBase = nullptr;
+	const char* pStringBase = "";
 
 	void* pSaveData = nullptr;
 	Vector		vecLandmarkOffset;
