@@ -59,7 +59,6 @@ void CPython::Spawn()
 	SetClassname("weapon_357"); // hack to allow for old names
 	Precache();
 	m_iId = WEAPON_PYTHON;
-	SetModel("models/w_357.mdl");
 
 	m_iDefaultAmmo = PYTHON_DEFAULT_GIVE;
 
@@ -68,6 +67,8 @@ void CPython::Spawn()
 
 void CPython::Precache()
 {
+	CBasePlayerWeapon::Precache();
+
 	PRECACHE_MODEL("models/v_357.mdl");
 	PRECACHE_MODEL("models/w_357.mdl");
 	PRECACHE_MODEL("models/p_357.mdl");

@@ -217,7 +217,6 @@ void CCrossbow::Spawn()
 {
 	Precache();
 	m_iId = WEAPON_CROSSBOW;
-	SetModel("models/w_crossbow.mdl");
 
 	m_iDefaultAmmo = CROSSBOW_DEFAULT_GIVE;
 
@@ -238,6 +237,8 @@ bool CCrossbow::AddToPlayer(CBasePlayer* pPlayer)
 
 void CCrossbow::Precache()
 {
+	CBasePlayerWeapon::Precache();
+
 	PRECACHE_MODEL("models/w_crossbow.mdl");
 	PRECACHE_MODEL("models/v_crossbow.mdl");
 	PRECACHE_MODEL("models/p_crossbow.mdl");

@@ -649,6 +649,12 @@ enum glock_e
 class CGlock : public CBasePlayerWeapon
 {
 public:
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_9mmhandgun.mdl");
+	}
+
 	void Spawn() override;
 	void Precache() override;
 	int ItemSlot() override { return 2; }
@@ -693,6 +699,12 @@ enum crowbar_e
 class CCrowbar : public CBasePlayerWeapon
 {
 public:
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_crossbow.mdl");
+	}
+
 	void Spawn() override;
 	void Precache() override;
 	int ItemSlot() override { return 1; }
@@ -734,6 +746,12 @@ enum python_e
 class CPython : public CBasePlayerWeapon
 {
 public:
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_357.mdl");
+	}
+
 	void Spawn() override;
 	void Precache() override;
 	int ItemSlot() override { return 2; }
@@ -774,6 +792,12 @@ enum mp5_e
 class CMP5 : public CBasePlayerWeapon
 {
 public:
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_9mmAR.mdl");
+	}
+
 	void Spawn() override;
 	void Precache() override;
 	int ItemSlot() override { return 3; }
@@ -821,6 +845,12 @@ enum crossbow_e
 class CCrossbow : public CBasePlayerWeapon
 {
 public:
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_9mmAR.mdl");
+	}
+
 	void Spawn() override;
 	void Precache() override;
 	int ItemSlot() override { return 3; }
@@ -879,6 +909,12 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 #endif
+
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_shotgun.mdl");
+	}
 
 	void Spawn() override;
 	void Precache() override;
@@ -958,6 +994,12 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 #endif
+
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_rpg.mdl");
+	}
 
 	void OnRemove() override;
 	void Spawn() override;
@@ -1045,6 +1087,12 @@ public:
 	bool Restore(CRestore& restore) override;
 	static	TYPEDESCRIPTION m_SaveData[];
 #endif
+
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_gauss.mdl");
+	}
 
 	void Spawn() override;
 	void Precache() override;
@@ -1143,6 +1191,12 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 #endif
 
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_egon.mdl");
+	}
+
 	void OnRemove() override;
 	void Spawn() override;
 	void Precache() override;
@@ -1216,6 +1270,12 @@ enum hgun_e
 class CHgun : public CBasePlayerWeapon
 {
 public:
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_hgun.mdl");
+	}
+
 	void Spawn() override;
 	void Precache() override;
 	int ItemSlot() override { return 4; }
@@ -1262,6 +1322,12 @@ enum handgrenade_e
 class CHandGrenade : public CBasePlayerWeapon
 {
 public:
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_grenade.mdl");
+	}
+
 	void Spawn() override;
 	void Precache() override;
 	int ItemSlot() override { return 5; }
@@ -1322,6 +1388,12 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 #endif
 
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_satchel.mdl");
+	}
+
 	void Spawn() override;
 	void Precache() override;
 	int ItemSlot() override { return 5; }
@@ -1369,6 +1441,12 @@ enum tripmine_e
 class CTripmine : public CBasePlayerWeapon
 {
 public:
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/v_tripmine.mdl");
+	}
+
 	void Spawn() override;
 	void Precache() override;
 	int ItemSlot() override { return 5; }
@@ -1412,6 +1490,12 @@ enum squeak_e
 class CSqueak : public CBasePlayerWeapon
 {
 public:
+	void OnConstruct() override
+	{
+		CBasePlayerWeapon::OnConstruct();
+		SetModelName("models/w_sqknest.mdl");
+	}
+
 	void Spawn() override;
 	void Precache() override;
 	int ItemSlot() override { return 5; }

@@ -33,7 +33,6 @@ void CShotgun::Spawn()
 {
 	Precache();
 	m_iId = WEAPON_SHOTGUN;
-	SetModel("models/w_shotgun.mdl");
 
 	m_iDefaultAmmo = SHOTGUN_DEFAULT_GIVE;
 
@@ -42,6 +41,8 @@ void CShotgun::Spawn()
 
 void CShotgun::Precache()
 {
+	CBasePlayerWeapon::Precache();
+
 	PRECACHE_MODEL("models/v_shotgun.mdl");
 	PRECACHE_MODEL("models/w_shotgun.mdl");
 	PRECACHE_MODEL("models/p_shotgun.mdl");

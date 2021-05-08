@@ -336,7 +336,6 @@ void CTripmine::Spawn()
 {
 	Precache();
 	m_iId = WEAPON_TRIPMINE;
-	SetModel("models/v_tripmine.mdl");
 	pev->frame = 0;
 	pev->body = 3;
 	pev->sequence = TRIPMINE_GROUND;
@@ -359,6 +358,8 @@ void CTripmine::Spawn()
 
 void CTripmine::Precache()
 {
+	CBasePlayerWeapon::Precache();
+
 	PRECACHE_MODEL("models/v_tripmine.mdl");
 	PRECACHE_MODEL("models/p_tripmine.mdl");
 	UTIL_PrecacheOther("monster_tripmine");

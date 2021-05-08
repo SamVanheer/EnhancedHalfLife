@@ -300,7 +300,6 @@ void CRpg::Spawn()
 	Precache();
 	m_iId = WEAPON_RPG;
 
-	SetModel("models/w_rpg.mdl");
 	m_fSpotActive = true;
 
 #ifdef CLIENT_DLL
@@ -322,6 +321,8 @@ void CRpg::Spawn()
 
 void CRpg::Precache()
 {
+	CBasePlayerWeapon::Precache();
+
 	PRECACHE_MODEL("models/w_rpg.mdl");
 	PRECACHE_MODEL("models/v_rpg.mdl");
 	PRECACHE_MODEL("models/p_rpg.mdl");
