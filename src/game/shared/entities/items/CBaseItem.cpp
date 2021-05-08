@@ -25,6 +25,8 @@ TYPEDESCRIPTION	CBaseItem::m_SaveData[] =
 	DEFINE_FIELD(CBaseItem, m_FallMode, FIELD_INTEGER),
 	DEFINE_FIELD(CBaseItem, m_bCanPickUpWhileFalling, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseItem, m_bClatterOnFall, FIELD_BOOLEAN),
+	DEFINE_FIELD(CBaseItem, m_iszClatterSound, FIELD_SOUNDNAME),
+	DEFINE_FIELD(CBaseItem, m_iszRespawnSound, FIELD_SOUNDNAME),
 };
 
 IMPLEMENT_SAVERESTORE(CBaseItem, CBaseAnimating);
@@ -47,6 +49,16 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 			ALERT(at_warning, "Invalid fall_mode value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, pkvd->szClassName, entindex());
 		}
 
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "clatter_sound"))
+	{
+		m_iszClatterSound = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "respawn_sound"))
+	{
+		m_iszRespawnSound = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 	else
@@ -84,9 +96,16 @@ void CBaseItem::SetupItem(const Vector& mins, const Vector& maxs)
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
+void CBaseItem::Precache()
+{
+	PRECACHE_SOUND(STRING(m_iszClatterSound));
+	PRECACHE_SOUND(STRING(m_iszRespawnSound));
+}
+
 void CBaseItem::Spawn()
 {
 #ifndef CLIENT_DLL
+	Precache();
 	SetupItem({-16, -16, 0}, {16, 16, 16});
 #endif
 }
@@ -102,7 +121,7 @@ void CBaseItem::FallThink()
 		if (m_bClatterOnFall && !IsNullEnt(GetOwner()))
 		{
 			int pitch = 95 + RANDOM_LONG(0, 29);
-			EmitSound(SoundChannel::Voice, "items/weapondrop1.wav", VOL_NORM, ATTN_NORM, pitch);
+			EmitSound(SoundChannel::Voice, STRING(m_iszClatterSound), VOL_NORM, ATTN_NORM, pitch);
 		}
 
 		// lie flat
@@ -214,7 +233,7 @@ void CBaseItem::Materialize()
 	if (pev->effects & EF_NODRAW)
 	{
 		// changing from invisible state to visible.
-		EmitSound(SoundChannel::Weapon, "items/suitchargeok1.wav", VOL_NORM, ATTN_NORM, 150);
+		EmitSound(SoundChannel::Weapon, STRING(m_iszRespawnSound), VOL_NORM, ATTN_NORM, 150);
 		pev->effects &= ~EF_NODRAW;
 		pev->effects |= EF_MUZZLEFLASH;
 	}

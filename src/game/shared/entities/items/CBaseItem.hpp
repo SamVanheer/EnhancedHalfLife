@@ -51,6 +51,7 @@ public:
 	virtual ItemType GetType() const = 0;
 
 	void KeyValue(KeyValueData* pkvd) override;
+	void Precache() override;
 	void Spawn() override;
 
 	/**
@@ -109,4 +110,9 @@ protected:
 	*	@brief Make a clatter sound when falling on the ground
 	*/
 	bool m_bClatterOnFall = false;
+
+	//Default sounds are precached in W_Precache
+	string_t m_iszClatterSound = MAKE_STRING("items/weapondrop1.wav");
+
+	string_t m_iszRespawnSound = MAKE_STRING("items/suitchargeok1.wav");
 };
