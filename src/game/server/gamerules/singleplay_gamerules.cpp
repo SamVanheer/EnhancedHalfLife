@@ -147,11 +147,6 @@ float CHalfLifeRules::ItemRespawnTime(CBaseItem& item)
 	return -1;
 }
 
-Vector CHalfLifeRules::ItemRespawnSpot(CBaseItem& item)
-{
-	return item.GetAbsOrigin();
-}
-
 float CHalfLifeRules::ItemTryRespawn(CBaseItem& item)
 {
 	//If it has a custom delay then it can spawn when it first checks, otherwise never respawn

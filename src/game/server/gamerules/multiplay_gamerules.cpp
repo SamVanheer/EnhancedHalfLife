@@ -833,11 +833,6 @@ float CHalfLifeMultiplay::ItemRespawnTime(CBaseItem& item)
 	}
 }
 
-Vector CHalfLifeMultiplay::ItemRespawnSpot(CBaseItem& item)
-{
-	return item.GetAbsOrigin();
-}
-
 // when we are within this close to running out of entities,  items 
 // marked with the ITEM_FLAG_LIMITINWORLD will delay their respawn
 constexpr int ENTITY_INTOLERANCE = 100;

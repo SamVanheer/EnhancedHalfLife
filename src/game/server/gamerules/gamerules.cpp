@@ -105,6 +105,16 @@ bool CGameRules::CanHaveItem(CBasePlayer& player, CBaseItem& item)
 	}
 }
 
+Vector CGameRules::ItemRespawnSpot(CBaseItem& item)
+{
+	switch (item.m_RespawnPositionMode)
+	{
+	default:
+	case ItemRespawnPositionMode::Current: return item.GetAbsOrigin();
+	case ItemRespawnPositionMode::Original: return item.m_OriginalPosition;
+	}
+}
+
 void CGameRules::RefreshSkillData()
 {
 	auto skill = static_cast<SkillLevel>(CVAR_GET_FLOAT("skill"));

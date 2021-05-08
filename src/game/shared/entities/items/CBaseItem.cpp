@@ -22,8 +22,10 @@
 #ifndef CLIENT_DLL
 TYPEDESCRIPTION	CBaseItem::m_SaveData[] =
 {
+	DEFINE_FIELD(CBaseItem, m_OriginalPosition, FIELD_POSITION_VECTOR),
 	DEFINE_FIELD(CBaseItem, m_RespawnMode, FIELD_INTEGER),
 	DEFINE_FIELD(CBaseItem, m_flRespawnDelay, FIELD_FLOAT),
+	DEFINE_FIELD(CBaseItem, m_RespawnPositionMode, FIELD_INTEGER),
 	DEFINE_FIELD(CBaseItem, m_FallMode, FIELD_INTEGER),
 	DEFINE_FIELD(CBaseItem, m_bCanPickUpWhileFalling, FIELD_BOOLEAN),
 	DEFINE_FIELD(CBaseItem, m_bClatterOnFall, FIELD_BOOLEAN),
@@ -52,7 +54,7 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 		}
 		else
 		{
-			ALERT(at_warning, "Invalid respawn_mode value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, pkvd->szClassName, entindex());
+			ALERT(at_warning, "Invalid respawn_mode value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, GetClassname(), entindex());
 		}
 
 		pkvd->fHandled = true;
@@ -60,6 +62,23 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 	else if (AreStringsEqual(pkvd->szKeyName, "respawn_delay"))
 	{
 		m_flRespawnDelay = std::max(0.0, atof(pkvd->szValue));
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "respawn_position_mode"))
+	{
+		if (AreStringsEqual(pkvd->szValue, "Current"))
+		{
+			m_RespawnPositionMode = ItemRespawnPositionMode::Current;
+		}
+		else if (AreStringsEqual(pkvd->szValue, "Original"))
+		{
+			m_RespawnPositionMode = ItemRespawnPositionMode::Original;
+		}
+		else
+		{
+			ALERT(at_warning, "Invalid respawn_position_mode value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, GetClassname(), entindex());
+		}
+
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "fall_mode"))
@@ -78,7 +97,7 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 		}
 		else
 		{
-			ALERT(at_warning, "Invalid fall_mode value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, pkvd->szClassName, entindex());
+			ALERT(at_warning, "Invalid fall_mode value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, GetClassname(), entindex());
 		}
 
 		pkvd->fHandled = true;
@@ -111,6 +130,8 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 
 void CBaseItem::SetupItem(const Vector& mins, const Vector& maxs)
 {
+	m_OriginalPosition = GetAbsOrigin();
+
 	if (m_FallMode == ItemFallMode::Float)
 	{
 		SetMovetype(Movetype::Fly);
@@ -279,7 +300,13 @@ CBaseEntity* CBaseItem::Respawn()
 		newItem->SetTouch(nullptr);
 		newItem->SetThink(&CBaseItem::AttemptToMaterialize);
 
-		if (m_FallMode != ItemFallMode::Float)
+		//Drop to the floor right away if:
+		//1. we're not floating
+		//2. we respawn at the current position (should already be on the ground)
+		//3. we respawn at the original spawn point and our fall mode is to be placed on the ground (map obstacles may be toggling on/off)
+		if (m_FallMode != ItemFallMode::Float
+			&& (m_RespawnPositionMode == ItemRespawnPositionMode::Current
+				|| m_FallMode == ItemFallMode::PlaceOnGround))
 		{
 			DROP_TO_FLOOR(newItem->edict());
 		}
@@ -335,7 +362,23 @@ void CBaseItem::AttemptToMaterialize()
 
 	if (time == 0)
 	{
-		Materialize();
+		switch (m_FallMode)
+		{
+		case ItemFallMode::PlaceOnGround:
+			[[fallthrough]];
+		case ItemFallMode::Float:
+			Materialize();
+			break;
+
+			//Fall first, then materialize (plays clatter sound)
+		case ItemFallMode::Fall:
+			pev->flags &= ~FL_ONGROUND;
+			SetThink(&CBaseItem::FallThink);
+			pev->nextthink = gpGlobals->time + 0.1;
+			break;
+
+		default: ASSERT(!"Invalid fall mode in CBaseItem::AttemptToMaterialize");
+		}
 		return;
 	}
 

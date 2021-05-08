@@ -217,7 +217,7 @@ public:
 	*	@brief where in the world should this item respawn?
 	*	@details Some game variations may choose to randomize spawn locations
 	*/
-	virtual Vector ItemRespawnSpot(CBaseItem& item) = 0;
+	virtual Vector ItemRespawnSpot(CBaseItem& item);
 
 	/**
 	*	@brief can i respawn now, and if not, when should i try again?
@@ -341,7 +341,6 @@ public:
 	void PlayerGotItem(CBasePlayer& player, CBaseItem& item) override;
 	bool ItemShouldRespawn(CBaseItem& item) override;
 	float ItemRespawnTime(CBaseItem& item) override;
-	Vector ItemRespawnSpot(CBaseItem& item) override;
 	float ItemTryRespawn(CBaseItem& item) override;
 
 	void PlayerGotAmmo(CBasePlayer* pPlayer, char* szName, int iCount) override;
@@ -407,7 +406,6 @@ public:
 	void PlayerGotItem(CBasePlayer& player, CBaseItem& item) override;
 	bool ItemShouldRespawn(CBaseItem& item) override;
 	float ItemRespawnTime(CBaseItem& item) override;
-	Vector ItemRespawnSpot(CBaseItem& item) override;
 	float ItemTryRespawn(CBaseItem& item) override;
 
 	void PlayerGotAmmo(CBasePlayer* pPlayer, char* szName, int iCount) override;

@@ -46,6 +46,12 @@ enum class ItemRespawnMode
 	Never
 };
 
+enum class ItemRespawnPositionMode
+{
+	Current,
+	Original
+};
+
 constexpr float ITEM_DEFAULT_RESPAWN_DELAY = -1;
 
 /**
@@ -108,8 +114,10 @@ protected:
 	virtual CBaseItem* GetItemToRespawn(const Vector& respawnPoint);
 
 public:
+	Vector m_OriginalPosition;
 	ItemRespawnMode m_RespawnMode = ItemRespawnMode::Default;
 	float m_flRespawnDelay = ITEM_DEFAULT_RESPAWN_DELAY;
+	ItemRespawnPositionMode m_RespawnPositionMode = ItemRespawnPositionMode::Current;
 
 protected:
 	ItemFallMode m_FallMode = ItemFallMode::PlaceOnGround;
