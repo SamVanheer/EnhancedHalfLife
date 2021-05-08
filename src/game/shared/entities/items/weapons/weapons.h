@@ -443,7 +443,7 @@ public:
 	float m_flLastFireTime = 0;
 
 private:
-	string_t m_iszWorldModelName = iStringNull; //TODO: needs saving
+	string_t m_iszWorldModelName = iStringNull;
 };
 
 class CBasePlayerAmmo : public CBaseItem

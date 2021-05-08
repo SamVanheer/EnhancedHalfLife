@@ -383,6 +383,7 @@ TYPEDESCRIPTION	CBasePlayerWeapon::m_SaveData[] =
 	DEFINE_FIELD(CBasePlayerWeapon, m_iDefaultAmmo, FIELD_INTEGER),
 	//	DEFINE_FIELD( CBasePlayerWeapon, m_iClientClip, FIELD_INTEGER )	 , reset to zero on load so hud gets updated correctly
 	//  DEFINE_FIELD( CBasePlayerWeapon, m_iClientWeaponState, FIELD_INTEGER ), reset to zero on load so hud gets updated correctly
+	DEFINE_FIELD(CBasePlayerWeapon, m_iszWorldModelName, FIELD_MODELNAME),
 };
 
 IMPLEMENT_SAVERESTORE(CBasePlayerWeapon, CBaseItem);
