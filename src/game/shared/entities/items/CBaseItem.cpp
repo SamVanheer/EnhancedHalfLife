@@ -278,8 +278,7 @@ CBaseEntity* CBaseItem::Respawn()
 
 		if (m_FallMode != ItemFallMode::Float)
 		{
-			//TODO: this should be using the new entity's edict!
-			DROP_TO_FLOOR(edict());
+			DROP_TO_FLOOR(newItem->edict());
 		}
 
 		// not a typo! We want to know when the item the player just picked up should respawn! This new entity we created is the replacement,
