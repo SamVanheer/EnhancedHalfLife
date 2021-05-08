@@ -853,7 +853,6 @@ float CHalfLifeMultiplay::ItemTryRespawn(CBaseItem& item)
 			if (NUMBER_OF_ENTITIES() >= (gpGlobals->maxEntities - ENTITY_INTOLERANCE))
 			{
 				// we're past the entity tolerance level,  so delay the respawn
-				//TODO: this results in time + time + delay
 				return ItemRespawnTime(weapon);
 			}
 		}
