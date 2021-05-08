@@ -184,6 +184,9 @@ void CBaseItem::Spawn()
 void CBaseItem::FallThink()
 {
 #ifndef CLIENT_DLL
+	//Float mode never uses this method
+	ASSERT(m_FallMode != ItemFallMode::Float);
+
 	//If we're not using fall mode just do this immediately
 	if (m_FallMode != ItemFallMode::Fall || pev->flags & FL_ONGROUND)
 	{
