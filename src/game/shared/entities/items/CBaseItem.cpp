@@ -171,7 +171,7 @@ void CBaseItem::FallThink()
 		// don't clatter if the gun is waiting to respawn (if it's waiting, it is invisible!)
 		if (m_bClatterOnFall && !IsNullEnt(GetOwner()))
 		{
-			if (auto sound = STRING(m_iszRespawnSound); *sound)
+			if (auto sound = STRING(m_iszClatterSound); *sound)
 			{
 				int pitch = 95 + RANDOM_LONG(0, 29);
 				EmitSound(SoundChannel::Voice, sound, VOL_NORM, ATTN_NORM, pitch);
