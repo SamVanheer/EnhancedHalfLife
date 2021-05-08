@@ -55,7 +55,8 @@ target_include_directories(client PRIVATE
 	../engine
 	../shared
 	../shared/entities
-	../shared/entities/weapons
+	../shared/entities/items
+	../shared/entities/items/weapons
 	../shared/player_movement
 	../shared/utils)
 	

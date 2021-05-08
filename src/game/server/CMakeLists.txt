@@ -13,6 +13,7 @@ target_include_directories(hl PRIVATE
 	entities/characters
 	entities/characters/NPCs
 	entities/items
+	entities/items/weapons
 	entities/point
 	gamerules
 	persistence
@@ -28,7 +29,8 @@ target_include_directories(hl PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/math
 	../shared
 	../shared/entities
-	../shared/entities/weapons
+	../shared/entities/items
+	../shared/entities/items/weapons
 	../shared/player_movement
 	../shared/utils)
 	
@@ -139,6 +141,7 @@ target_sources(hl PRIVATE
 	entities/items/healthkit.cpp
 	entities/items/items.cpp
 	entities/items/items.h
+	entities/items/weapons/weapons.cpp
 	entities/point/airtank.cpp
 	entities/point/effects.cpp
 	entities/point/effects.h
@@ -154,7 +157,6 @@ target_sources(hl PRIVATE
 	entities/point/spawnpoints.cpp
 	entities/point/spawnpoints.hpp
 	entities/point/xen.cpp
-	entities/weapons/weapons.cpp
 	gamerules/gamerules.cpp
 	gamerules/gamerules.h
 	gamerules/mapcycle.cpp
