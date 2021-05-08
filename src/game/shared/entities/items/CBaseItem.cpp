@@ -61,6 +61,11 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 		m_bClatterOnFall = atoi(pkvd->szValue) != 0;
 		pkvd->fHandled = true;
 	}
+	else if (AreStringsEqual(pkvd->szKeyName, "respawn_delay"))
+	{
+		m_flRespawnDelay = std::max(0.0, atof(pkvd->szValue));
+		pkvd->fHandled = true;
+	}
 	else if (AreStringsEqual(pkvd->szKeyName, "clatter_sound"))
 	{
 		m_iszClatterSound = ALLOC_STRING(pkvd->szValue);

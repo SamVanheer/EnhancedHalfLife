@@ -800,6 +800,11 @@ bool CHalfLifeMultiplay::ItemShouldRespawn(CBaseItem& item)
 
 float CHalfLifeMultiplay::ItemRespawnTime(CBaseItem& item)
 {
+	if (item.GetCustomRespawnDelay() != ITEM_DEFAULT_RESPAWN_DELAY)
+	{
+		return gpGlobals->time + item.GetCustomRespawnDelay();
+	}
+
 	switch (item.GetType())
 	{
 	case ItemType::PickupItem: return gpGlobals->time + ITEM_RESPAWN_TIME;

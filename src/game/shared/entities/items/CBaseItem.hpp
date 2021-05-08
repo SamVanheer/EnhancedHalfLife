@@ -38,6 +38,8 @@ enum class ItemApplyResult
 	AttachedToPlayer	//!< Item was attached to player and needs to be checked for respawn
 };
 
+constexpr float ITEM_DEFAULT_RESPAWN_DELAY = -1;
+
 /**
 *	@brief Base class for all items
 *	@details Handles item setup in the world, pickup on touch, respawning
@@ -49,6 +51,8 @@ public:
 	*	@brief Gets the type of item that this is
 	*/
 	virtual ItemType GetType() const = 0;
+
+	float GetCustomRespawnDelay() const { return m_flRespawnDelay; }
 
 	void KeyValue(KeyValueData* pkvd) override;
 	void Precache() override;
@@ -110,6 +114,8 @@ protected:
 	*	@brief Make a clatter sound when falling on the ground
 	*/
 	bool m_bClatterOnFall = false;
+
+	float m_flRespawnDelay = ITEM_DEFAULT_RESPAWN_DELAY;
 
 	//Default sounds are precached in W_Precache
 	string_t m_iszClatterSound = MAKE_STRING("items/weapondrop1.wav");

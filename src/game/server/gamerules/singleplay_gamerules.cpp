@@ -137,6 +137,12 @@ bool CHalfLifeRules::ItemShouldRespawn(CBaseItem& item)
 
 float CHalfLifeRules::ItemRespawnTime(CBaseItem& item)
 {
+	//Allow respawn if it has a custom delay
+	if (item.GetCustomRespawnDelay() != ITEM_DEFAULT_RESPAWN_DELAY)
+	{
+		return item.GetCustomRespawnDelay();
+	}
+
 	//No respawn
 	return -1;
 }
@@ -148,7 +154,7 @@ Vector CHalfLifeRules::ItemRespawnSpot(CBaseItem& item)
 
 float CHalfLifeRules::ItemTryRespawn(CBaseItem& item)
 {
-	return -1;
+	return ItemRespawnTime(item);
 }
 
 bool CHalfLifeRules::IsAllowedToSpawn(CBaseEntity* pEntity)
