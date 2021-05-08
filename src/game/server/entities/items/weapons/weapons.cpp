@@ -400,6 +400,7 @@ void CBasePlayerItem::SetObjectCollisionBox()
 
 void CBasePlayerItem::FallInit()
 {
+	SetModel(GetModelName());
 	SetupItem(vec3_origin, vec3_origin);//pointsize until it lands on the ground.
 }
 

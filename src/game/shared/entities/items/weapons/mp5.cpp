@@ -30,7 +30,6 @@ void CMP5::Spawn()
 {
 	SetClassname("weapon_9mmAR"); // hack to allow for old names
 	Precache();
-	SetModel("models/w_9mmAR.mdl");
 	m_iId = WEAPON_MP5;
 
 	m_iDefaultAmmo = MP5_DEFAULT_GIVE;

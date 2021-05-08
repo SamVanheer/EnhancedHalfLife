@@ -702,7 +702,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_crossbow.mdl");
+		SetModelName("models/w_crowbar.mdl");
 	}
 
 	void Spawn() override;
@@ -848,7 +848,7 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
-		SetModelName("models/w_9mmAR.mdl");
+		SetModelName("models/w_crossbow.mdl");
 	}
 
 	void Spawn() override;
