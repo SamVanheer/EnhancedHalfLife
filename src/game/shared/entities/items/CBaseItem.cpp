@@ -88,12 +88,44 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "stay_visible_during_respawn"))
 	{
-		m_bStayVisibleDuringRespawn = atoi(pkvd->szValue) != 0;
+		if (AreStringsEqual(pkvd->szValue, "Default"))
+		{
+			//Use default value
+		}
+		else if (AreStringsEqual(pkvd->szValue, "No"))
+		{
+			m_bStayVisibleDuringRespawn = false;
+		}
+		else if (AreStringsEqual(pkvd->szValue, "Yes"))
+		{
+			m_bStayVisibleDuringRespawn = true;
+		}
+		else
+		{
+			ALERT(at_warning, "Invalid stay_visible_during_respawn value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, GetClassname(), entindex());
+		}
+
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "flash_on_respawn"))
 	{
-		m_bFlashOnRespawn = atoi(pkvd->szValue) != 0;
+		if (AreStringsEqual(pkvd->szValue, "Default"))
+		{
+			//Use default value
+		}
+		else if (AreStringsEqual(pkvd->szValue, "No"))
+		{
+			m_bFlashOnRespawn = false;
+		}
+		else if (AreStringsEqual(pkvd->szValue, "Yes"))
+		{
+			m_bFlashOnRespawn = true;
+		}
+		else
+		{
+			ALERT(at_warning, "Invalid flash_on_respawn value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, GetClassname(), entindex());
+		}
+
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "fall_mode"))
@@ -119,7 +151,23 @@ void CBaseItem::KeyValue(KeyValueData* pkvd)
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "can_pick_up_while_falling"))
 	{
-		m_bCanPickUpWhileFalling = atoi(pkvd->szValue) != 0;
+		if (AreStringsEqual(pkvd->szValue, "Default"))
+		{
+			//Use default value
+		}
+		else if (AreStringsEqual(pkvd->szValue, "No"))
+		{
+			m_bCanPickUpWhileFalling = false;
+		}
+		else if (AreStringsEqual(pkvd->szValue, "Yes"))
+		{
+			m_bCanPickUpWhileFalling = true;
+		}
+		else
+		{
+			ALERT(at_warning, "Invalid can_pick_up_while_falling value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, GetClassname(), entindex());
+		}
+
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "clatter_mode"))
