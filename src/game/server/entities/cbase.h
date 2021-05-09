@@ -343,6 +343,7 @@ public:
 	void Construct()
 	{
 		OnConstruct();
+		OnPostConstruct();
 	}
 
 	void Destroy()
@@ -358,6 +359,7 @@ public:
 
 protected:
 	virtual void OnConstruct() {}
+	virtual void OnPostConstruct() {}
 	virtual void OnDestroy() {}
 	virtual void OnRemove() {}
 

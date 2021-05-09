@@ -257,6 +257,14 @@ public:
 		m_bCanPickUpWhileFalling = false;
 	}
 
+	void OnPostConstruct() override
+	{
+		CBaseItem::OnPostConstruct();
+
+		//Initialize this to its weapon-specific default
+		m_iDefaultPrimaryAmmo = m_iDefaultAmmo;
+	}
+
 	void SetObjectCollisionBox() override;
 
 	ItemType GetType() const override final { return ItemType::Weapon; }
