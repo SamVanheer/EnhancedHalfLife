@@ -106,6 +106,7 @@ void HUD_PrepEntity(CBaseEntity* pEntity, CBasePlayer* pWeaponOwner)
 	pEntity->pev = pev;
 	edict->pvPrivateData = pEntity;
 
+	pEntity->Construct();
 	pEntity->Precache();
 	pEntity->Spawn();
 
