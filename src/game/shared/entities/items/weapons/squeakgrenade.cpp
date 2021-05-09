@@ -380,11 +380,7 @@ LINK_ENTITY_TO_CLASS(weapon_snark, CSqueak);
 void CSqueak::Spawn()
 {
 	Precache();
-	m_iId = WEAPON_SNARK;
-
 	FallInit();//get ready to fall down.
-
-	m_iDefaultAmmo = SNARK_DEFAULT_GIVE;
 
 	pev->sequence = 1;
 	pev->animtime = gpGlobals->time;

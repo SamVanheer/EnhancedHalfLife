@@ -335,7 +335,6 @@ LINK_ENTITY_TO_CLASS(weapon_tripmine, CTripmine);
 void CTripmine::Spawn()
 {
 	Precache();
-	m_iId = WEAPON_TRIPMINE;
 	pev->frame = 0;
 	pev->body = 3;
 	pev->sequence = TRIPMINE_GROUND;
@@ -343,8 +342,6 @@ void CTripmine::Spawn()
 	pev->framerate = 0;
 
 	FallInit();// get ready to fall down
-
-	m_iDefaultAmmo = TRIPMINE_DEFAULT_GIVE;
 
 #ifdef CLIENT_DLL
 	if (!bIsMultiplayer())

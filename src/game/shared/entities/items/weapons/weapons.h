@@ -642,6 +642,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_GLOCK;
+		m_iDefaultAmmo = GLOCK_DEFAULT_GIVE;
 		SetWorldModelName("models/w_9mmhandgun.mdl");
 	}
 
@@ -692,6 +694,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_CROWBAR;
+		m_iClip = -1;
 		SetWorldModelName("models/w_crowbar.mdl");
 	}
 
@@ -739,6 +743,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_PYTHON;
+		m_iDefaultAmmo = PYTHON_DEFAULT_GIVE;
 		SetWorldModelName("models/w_357.mdl");
 	}
 
@@ -785,6 +791,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_MP5;
+		m_iDefaultAmmo = MP5_DEFAULT_GIVE;
 		SetWorldModelName("models/w_9mmAR.mdl");
 	}
 
@@ -838,6 +846,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_CROSSBOW;
+		m_iDefaultAmmo = CROSSBOW_DEFAULT_GIVE;
 		SetWorldModelName("models/w_crossbow.mdl");
 	}
 
@@ -903,6 +913,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_SHOTGUN;
+		m_iDefaultAmmo = SHOTGUN_DEFAULT_GIVE;
 		SetWorldModelName("models/w_shotgun.mdl");
 	}
 
@@ -988,6 +1000,18 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_RPG;
+
+		if (bIsMultiplayer())
+		{
+			// more default ammo in multiplay. 
+			m_iDefaultAmmo = RPG_DEFAULT_GIVE * 2;
+		}
+		else
+		{
+			m_iDefaultAmmo = RPG_DEFAULT_GIVE;
+		}
+
 		SetWorldModelName("models/w_rpg.mdl");
 	}
 
@@ -1081,6 +1105,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_GAUSS;
+		m_iDefaultAmmo = GAUSS_DEFAULT_GIVE;
 		SetWorldModelName("models/w_gauss.mdl");
 	}
 
@@ -1184,6 +1210,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_EGON;
+		m_iDefaultAmmo = EGON_DEFAULT_GIVE;
 		SetWorldModelName("models/w_egon.mdl");
 	}
 
@@ -1263,6 +1291,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_HORNETGUN;
+		m_iDefaultAmmo = HIVEHAND_DEFAULT_GIVE;
 		SetWorldModelName("models/w_hgun.mdl");
 	}
 
@@ -1315,6 +1345,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_HANDGRENADE;
+		m_iDefaultAmmo = HANDGRENADE_DEFAULT_GIVE;
 		SetWorldModelName("models/w_grenade.mdl");
 	}
 
@@ -1381,6 +1413,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_SATCHEL;
+		m_iDefaultAmmo = SATCHEL_DEFAULT_GIVE;
 		SetWorldModelName("models/w_satchel.mdl");
 	}
 
@@ -1434,6 +1468,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_TRIPMINE;
+		m_iDefaultAmmo = TRIPMINE_DEFAULT_GIVE;
 		SetWorldModelName("models/v_tripmine.mdl");
 	}
 
@@ -1483,6 +1519,8 @@ public:
 	void OnConstruct() override
 	{
 		CBasePlayerWeapon::OnConstruct();
+		m_iId = WEAPON_SNARK;
+		m_iDefaultAmmo = SNARK_DEFAULT_GIVE;
 		SetWorldModelName("models/w_sqknest.mdl");
 	}
 

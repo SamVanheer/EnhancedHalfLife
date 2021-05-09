@@ -185,10 +185,6 @@ bool CSatchel::AddToPlayer(CBasePlayer* pPlayer)
 void CSatchel::Spawn()
 {
 	Precache();
-	m_iId = WEAPON_SATCHEL;
-
-	m_iDefaultAmmo = SATCHEL_DEFAULT_GIVE;
-
 	FallInit();// get ready to fall down.
 }
 

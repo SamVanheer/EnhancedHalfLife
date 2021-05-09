@@ -317,7 +317,7 @@ CBasePlayerWeapon* CBasePlayerWeapon::GetItemToRespawn(const Vector& respawnPoin
 bool CBasePlayerWeapon::AddDuplicate(CBasePlayerWeapon* pOriginal) { return false; }
 bool CBasePlayerWeapon::AddToPlayer(CBasePlayer* pPlayer) { return false; }
 bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer) { return false; }
-bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip) { return true; }
+bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName) { return true; }
 bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName) { return true; }
 bool CBasePlayerWeapon::IsUseable() { return true; }
 bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon) { return false; }

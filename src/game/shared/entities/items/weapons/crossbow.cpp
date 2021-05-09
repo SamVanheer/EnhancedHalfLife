@@ -216,10 +216,6 @@ LINK_ENTITY_TO_CLASS(weapon_crossbow, CCrossbow);
 void CCrossbow::Spawn()
 {
 	Precache();
-	m_iId = WEAPON_CROSSBOW;
-
-	m_iDefaultAmmo = CROSSBOW_DEFAULT_GIVE;
-
 	FallInit();// get ready to fall down.
 }
 

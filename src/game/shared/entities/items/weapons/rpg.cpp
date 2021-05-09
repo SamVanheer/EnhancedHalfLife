@@ -298,23 +298,8 @@ void CRpg::OnRemove()
 void CRpg::Spawn()
 {
 	Precache();
-	m_iId = WEAPON_RPG;
 
 	m_fSpotActive = true;
-
-#ifdef CLIENT_DLL
-	if (bIsMultiplayer())
-#else
-	if (g_pGameRules->IsMultiplayer())
-#endif
-	{
-		// more default ammo in multiplay. 
-		m_iDefaultAmmo = RPG_DEFAULT_GIVE * 2;
-	}
-	else
-	{
-		m_iDefaultAmmo = RPG_DEFAULT_GIVE;
-	}
 
 	FallInit();// get ready to fall down.
 }

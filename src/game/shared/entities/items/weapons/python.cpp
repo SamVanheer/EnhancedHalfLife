@@ -58,10 +58,6 @@ void CPython::Spawn()
 {
 	SetClassname("weapon_357"); // hack to allow for old names
 	Precache();
-	m_iId = WEAPON_PYTHON;
-
-	m_iDefaultAmmo = PYTHON_DEFAULT_GIVE;
-
 	FallInit();// get ready to fall down.
 }
 

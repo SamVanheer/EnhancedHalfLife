@@ -27,13 +27,10 @@ LINK_ENTITY_TO_CLASS(weapon_handgrenade, CHandGrenade);
 void CHandGrenade::Spawn()
 {
 	Precache();
-	m_iId = WEAPON_HANDGRENADE;
 
 #ifndef CLIENT_DLL
 	pev->dmg = gSkillData.plrDmgHandGrenade;
 #endif
-
-	m_iDefaultAmmo = HANDGRENADE_DEFAULT_GIVE;
 
 	FallInit();// get ready to fall down.
 }

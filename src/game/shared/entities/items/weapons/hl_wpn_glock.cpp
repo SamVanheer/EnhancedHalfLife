@@ -27,10 +27,6 @@ void CGlock::Spawn()
 {
 	SetClassname("weapon_9mmhandgun"); // hack to allow for old names
 	Precache();
-	m_iId = WEAPON_GLOCK;
-
-	m_iDefaultAmmo = GLOCK_DEFAULT_GIVE;
-
 	FallInit();// get ready to fall down.
 }
 

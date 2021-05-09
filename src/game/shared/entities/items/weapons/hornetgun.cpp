@@ -39,9 +39,7 @@ bool CHgun::IsUseable()
 void CHgun::Spawn()
 {
 	Precache();
-	m_iId = WEAPON_HORNETGUN;
-
-	m_iDefaultAmmo = HIVEHAND_DEFAULT_GIVE;
+	
 	m_iFirePhase = 0;
 
 	FallInit();// get ready to fall down.

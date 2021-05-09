@@ -32,10 +32,6 @@ LINK_ENTITY_TO_CLASS(weapon_shotgun, CShotgun);
 void CShotgun::Spawn()
 {
 	Precache();
-	m_iId = WEAPON_SHOTGUN;
-
-	m_iDefaultAmmo = SHOTGUN_DEFAULT_GIVE;
-
 	FallInit();// get ready to fall
 }
 

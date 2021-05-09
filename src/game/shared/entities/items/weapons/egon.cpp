@@ -41,10 +41,6 @@ void CEgon::OnRemove()
 void CEgon::Spawn()
 {
 	Precache();
-	m_iId = WEAPON_EGON;
-
-	m_iDefaultAmmo = EGON_DEFAULT_GIVE;
-
 	FallInit();// get ready to fall down.
 }
 
