@@ -1260,9 +1260,9 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 			cd->ammo_cells = pl->GetAmmoCount("uranium");
 			cd->vuser2.x = pl->GetAmmoCount("Hornets");
 
-			if (pl->m_hActiveWeapon)
+			if (auto gun = pl->m_hActiveWeapon.Get(); gun)
 			{
-				if (CBaseWeapon* gun = pl->m_hActiveWeapon; gun && gun->UseDecrement())
+				if (gun->UseDecrement())
 				{
 					WeaponInfo II{};
 					gun->GetWeaponInfo(II);
