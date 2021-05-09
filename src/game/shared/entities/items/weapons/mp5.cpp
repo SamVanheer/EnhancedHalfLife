@@ -35,7 +35,7 @@ void CMP5::Spawn()
 
 void CMP5::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/v_9mmAR.mdl");
 	PRECACHE_MODEL("models/w_9mmAR.mdl");
@@ -83,7 +83,7 @@ bool CMP5::GetWeaponInfo(WeaponInfo& p)
 
 bool CMP5::AddToPlayer(CBasePlayer* pPlayer)
 {
-	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
+	if (CBaseWeapon::AddToPlayer(pPlayer))
 	{
 		MESSAGE_BEGIN(MessageDest::One, gmsgWeapPickup, pPlayer);
 		WRITE_BYTE(m_iId);

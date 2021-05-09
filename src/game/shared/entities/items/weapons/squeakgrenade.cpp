@@ -389,7 +389,7 @@ void CSqueak::Spawn()
 
 void CSqueak::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/w_sqknest.mdl");
 	PRECACHE_MODEL("models/v_squeak.mdl");

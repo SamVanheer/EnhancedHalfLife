@@ -35,7 +35,7 @@ void CEgon::OnRemove()
 	m_hBeam.Remove();
 	m_hNoise.Remove();
 	m_hSprite.Remove();
-	CBasePlayerWeapon::OnRemove();
+	CBaseWeapon::OnRemove();
 }
 
 void CEgon::Spawn()
@@ -46,7 +46,7 @@ void CEgon::Spawn()
 
 void CEgon::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/w_egon.mdl");
 	PRECACHE_MODEL("models/v_egon.mdl");
@@ -77,7 +77,7 @@ bool CEgon::Deploy()
 
 bool CEgon::AddToPlayer(CBasePlayer* pPlayer)
 {
-	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
+	if (CBaseWeapon::AddToPlayer(pPlayer))
 	{
 		MESSAGE_BEGIN(MessageDest::One, gmsgWeapPickup, pPlayer);
 		WRITE_BYTE(m_iId);

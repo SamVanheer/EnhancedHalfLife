@@ -148,7 +148,7 @@ void CSatchelCharge::BounceSound()
 
 LINK_ENTITY_TO_CLASS(weapon_satchel, CSatchel);
 
-bool CSatchel::AddDuplicate(CBasePlayerWeapon* pOriginal)
+bool CSatchel::AddDuplicate(CBaseWeapon* pOriginal)
 {
 #ifdef CLIENT_DLL
 	if (bIsMultiplayer())
@@ -165,12 +165,12 @@ bool CSatchel::AddDuplicate(CBasePlayerWeapon* pOriginal)
 		}
 	}
 
-	return CBasePlayerWeapon::AddDuplicate(pOriginal);
+	return CBaseWeapon::AddDuplicate(pOriginal);
 }
 
 bool CSatchel::AddToPlayer(CBasePlayer* pPlayer)
 {
-	const bool bResult = CBasePlayerWeapon::AddToPlayer(pPlayer);
+	const bool bResult = CBaseWeapon::AddToPlayer(pPlayer);
 
 	pPlayer->pev->weapons |= (1 << m_iId);
 	m_chargeReady = ChargeState::NoSatchelsDeployed;// this satchel charge weapon now forgets that any satchels are deployed by it.
@@ -190,7 +190,7 @@ void CSatchel::Spawn()
 
 void CSatchel::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/v_satchel.mdl");
 	PRECACHE_MODEL("models/v_satchel_radio.mdl");

@@ -25,7 +25,7 @@
 #include "CBaseItem.hpp"
 
 class CBasePlayer;
-class CBasePlayerWeapon;
+class CBaseWeapon;
 struct weapon_data_t;
 
 /**
@@ -235,7 +235,7 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname, int maxCarry);
 /**
 *	@brief Weapons that the player has in their inventory that they can use
 */
-class CBasePlayerWeapon : public CBaseItem
+class CBaseWeapon : public CBaseItem
 {
 public:
 	bool Save(CSave& save) override;
@@ -272,7 +272,7 @@ public:
 	*	@brief CALLED THROUGH the newly-touched weapon's instance. The existing player weapon is pOriginal
 	*	@return true if you want your duplicate removed from world
 	*/
-	virtual bool AddDuplicate(CBasePlayerWeapon* weapon);
+	virtual bool AddDuplicate(CBaseWeapon* weapon);
 	void EXPORT DestroyWeapon();
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override;
 
@@ -290,13 +290,13 @@ public:
 	*	which means only the ammo in the weapon clip comes along.
 	*	@return true if you can add ammo to yourself when picked up
 	*/
-	virtual bool ExtractAmmo(CBasePlayerWeapon* pWeapon);
+	virtual bool ExtractAmmo(CBaseWeapon* pWeapon);
 
 	/**
 	*	@brief called by the new weapon's class with the existing weapon as parameter
 	*	@return true if you can add ammo to yourself when picked up
 	*/
-	virtual int ExtractClipAmmo(CBasePlayerWeapon* pWeapon);
+	virtual int ExtractClipAmmo(CBaseWeapon* pWeapon);
 
 	/**
 	*	@brief Return true if you want to add yourself to the player
@@ -402,14 +402,14 @@ public:
 	virtual void DecrementTimers() {}
 
 protected:
-	CBasePlayerWeapon* GetItemToRespawn(const Vector& respawnPoint) override;
+	CBaseWeapon* GetItemToRespawn(const Vector& respawnPoint) override;
 
 public:
 	static inline WeaponInfo WeaponInfoArray[MAX_WEAPONS]{};
 	static inline AmmoInfo AmmoInfoArray[MAX_AMMO_TYPES]{};
 
 	EHandle<CBasePlayer> m_hPlayer;
-	EHandle<CBasePlayerWeapon> m_hNext;
+	EHandle<CBaseWeapon> m_hNext;
 	int m_iId = WEAPON_NONE; // WEAPON_???
 
 	/**
@@ -595,16 +595,16 @@ public:
 	/**
 	*	@brief is a weapon of this type already packed in this box?
 	*/
-	bool HasWeapon(CBasePlayerWeapon* pCheckWeapon);
+	bool HasWeapon(CBaseWeapon* pCheckWeapon);
 
 	/**
 	*	@brief PackWeapon: Add this weapon to the box
 	*/
-	bool PackWeapon(CBasePlayerWeapon* pWeapon);
+	bool PackWeapon(CBaseWeapon* pWeapon);
 
 	bool PackAmmo(string_t iszName, int iCount);
 
-	EHandle<CBasePlayerWeapon> m_hPlayerWeapons[MAX_WEAPON_TYPES];// one slot for each 
+	EHandle<CBaseWeapon> m_hPlayerWeapons[MAX_WEAPON_TYPES];// one slot for each 
 
 	string_t m_rgiszAmmo[MAX_AMMO_TYPES]{};// ammo names
 	int	m_rgAmmo[MAX_AMMO_TYPES]{};// ammo quantities
@@ -639,12 +639,12 @@ enum glock_e
 	GLOCK_ADD_SILENCER
 };
 
-class CGlock : public CBasePlayerWeapon
+class CGlock : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_GLOCK;
 		m_iDefaultAmmo = GLOCK_DEFAULT_GIVE;
 		SetWorldModelName("models/w_9mmhandgun.mdl");
@@ -691,12 +691,12 @@ enum crowbar_e
 	CROWBAR_ATTACK3HIT
 };
 
-class CCrowbar : public CBasePlayerWeapon
+class CCrowbar : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_CROWBAR;
 		m_iClip = -1;
 		SetWorldModelName("models/w_crowbar.mdl");
@@ -740,12 +740,12 @@ enum python_e
 	PYTHON_IDLE3
 };
 
-class CPython : public CBasePlayerWeapon
+class CPython : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_PYTHON;
 		m_iDefaultAmmo = PYTHON_DEFAULT_GIVE;
 		SetWorldModelName("models/w_357.mdl");
@@ -788,12 +788,12 @@ enum mp5_e
 	MP5_FIRE3,
 };
 
-class CMP5 : public CBasePlayerWeapon
+class CMP5 : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_MP5;
 		m_iDefaultAmmo = MP5_DEFAULT_GIVE;
 		SetWorldModelName("models/w_9mmAR.mdl");
@@ -843,12 +843,12 @@ enum crossbow_e
 	CROSSBOW_HOLSTER2,	// empty
 };
 
-class CCrossbow : public CBasePlayerWeapon
+class CCrossbow : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_CROSSBOW;
 		m_iDefaultAmmo = CROSSBOW_DEFAULT_GIVE;
 		SetWorldModelName("models/w_crossbow.mdl");
@@ -897,7 +897,7 @@ enum shotgun_e
 	SHOTGUN_IDLE_DEEP
 };
 
-class CShotgun : public CBasePlayerWeapon
+class CShotgun : public CBaseWeapon
 {
 public:
 	enum class ReloadState
@@ -915,7 +915,7 @@ public:
 
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_SHOTGUN;
 		m_iDefaultAmmo = SHOTGUN_DEFAULT_GIVE;
 		SetWorldModelName("models/w_shotgun.mdl");
@@ -990,7 +990,7 @@ enum rpg_e
 	RPG_FIDGET_UL,	// unloaded fidget
 };
 
-class CRpg : public CBasePlayerWeapon
+class CRpg : public CBaseWeapon
 {
 public:
 
@@ -1002,7 +1002,7 @@ public:
 
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_RPG;
 
 		if (bIsMultiplayer())
@@ -1088,7 +1088,7 @@ enum gauss_e
 	GAUSS_DRAW
 };
 
-class CGauss : public CBasePlayerWeapon
+class CGauss : public CBaseWeapon
 {
 public:
 	enum class AttackState
@@ -1107,7 +1107,7 @@ public:
 
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_GAUSS;
 		m_iDefaultAmmo = GAUSS_DEFAULT_GIVE;
 		SetWorldModelName("models/w_gauss.mdl");
@@ -1189,7 +1189,7 @@ constexpr std::string_view EGON_SOUND_OFF{"weapons/egon_off1.wav"};
 constexpr std::string_view EGON_SOUND_RUN{"weapons/egon_run3.wav"};
 constexpr std::string_view EGON_SOUND_STARTUP{"weapons/egon_windup2.wav"};
 
-class CEgon : public CBasePlayerWeapon
+class CEgon : public CBaseWeapon
 {
 public:
 	enum class FireState
@@ -1212,7 +1212,7 @@ public:
 
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_EGON;
 		m_iDefaultAmmo = EGON_DEFAULT_GIVE;
 		SetWorldModelName("models/w_egon.mdl");
@@ -1288,12 +1288,12 @@ enum hgun_e
 	HGUN_SHOOT
 };
 
-class CHgun : public CBasePlayerWeapon
+class CHgun : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_HORNETGUN;
 		m_iDefaultAmmo = HIVEHAND_DEFAULT_GIVE;
 		SetWorldModelName("models/w_hgun.mdl");
@@ -1342,12 +1342,12 @@ enum handgrenade_e
 	HANDGRENADE_DRAW
 };
 
-class CHandGrenade : public CBasePlayerWeapon
+class CHandGrenade : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_HANDGRENADE;
 		m_iDefaultAmmo = HANDGRENADE_DEFAULT_GIVE;
 		SetWorldModelName("models/w_grenade.mdl");
@@ -1397,7 +1397,7 @@ enum satchel_radio_e
 	SATCHEL_RADIO_HOLSTER
 };
 
-class CSatchel : public CBasePlayerWeapon
+class CSatchel : public CBaseWeapon
 {
 public:
 	enum class ChargeState
@@ -1415,7 +1415,7 @@ public:
 
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_SATCHEL;
 		m_iDefaultAmmo = SATCHEL_DEFAULT_GIVE;
 		SetWorldModelName("models/w_satchel.mdl");
@@ -1428,7 +1428,7 @@ public:
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
-	bool AddDuplicate(CBasePlayerWeapon* pOriginal) override;
+	bool AddDuplicate(CBaseWeapon* pOriginal) override;
 	bool CanDeploy() override;
 	bool Deploy() override;
 	bool IsUseable() override;
@@ -1465,12 +1465,12 @@ enum tripmine_e
 	TRIPMINE_GROUND,
 };
 
-class CTripmine : public CBasePlayerWeapon
+class CTripmine : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_TRIPMINE;
 		m_iDefaultAmmo = TRIPMINE_DEFAULT_GIVE;
 		SetWorldModelName("models/v_tripmine.mdl");
@@ -1516,12 +1516,12 @@ enum squeak_e
 	SQUEAK_THROW
 };
 
-class CSqueak : public CBasePlayerWeapon
+class CSqueak : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerWeapon::OnConstruct();
+		CBaseWeapon::OnConstruct();
 		m_iId = WEAPON_SNARK;
 		m_iDefaultAmmo = SNARK_DEFAULT_GIVE;
 		SetWorldModelName("models/w_sqknest.mdl");

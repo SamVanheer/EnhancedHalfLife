@@ -253,7 +253,7 @@ void CCyclerSprite::Animate(float frames)
 		pev->frame = fmod(pev->frame, m_maxFrame);
 }
 
-class CWeaponCycler : public CBasePlayerWeapon
+class CWeaponCycler : public CBaseWeapon
 {
 public:
 	void Spawn() override;

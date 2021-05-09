@@ -34,7 +34,7 @@ void CCrowbar::Spawn()
 
 void CCrowbar::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/v_crowbar.mdl");
 	PRECACHE_MODEL("models/w_crowbar.mdl");

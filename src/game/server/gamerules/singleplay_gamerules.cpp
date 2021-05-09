@@ -44,7 +44,7 @@ bool CHalfLifeRules::IsCoOp()
 	return false;
 }
 
-bool CHalfLifeRules::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pWeapon)
+bool CHalfLifeRules::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBaseWeapon* pWeapon)
 {
 	auto activeWeapon = pPlayer->m_hActiveWeapon.Get();
 
@@ -62,7 +62,7 @@ bool CHalfLifeRules::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon*
 	return true;
 }
 
-bool CHalfLifeRules::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pCurrentWeapon)
+bool CHalfLifeRules::GetNextBestWeapon(CBasePlayer* pPlayer, CBaseWeapon* pCurrentWeapon)
 {
 	return false;
 }

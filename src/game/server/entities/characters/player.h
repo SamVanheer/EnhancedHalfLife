@@ -175,10 +175,10 @@ public:
 	int m_iFOV = 0; //!< field of view
 	int m_iClientFOV = 0; //!< client's known FOV
 	// usable player weapons
-	EHandle<CBasePlayerWeapon> m_hPlayerWeapons[MAX_WEAPON_TYPES];
-	EHandle<CBasePlayerWeapon> m_hActiveWeapon;
-	EHandle<CBasePlayerWeapon> m_hClientActiveWeapon;  //!< client version of the active weapon
-	EHandle<CBasePlayerWeapon> m_hLastWeapon;
+	EHandle<CBaseWeapon> m_hPlayerWeapons[MAX_WEAPON_TYPES];
+	EHandle<CBaseWeapon> m_hActiveWeapon;
+	EHandle<CBaseWeapon> m_hClientActiveWeapon;  //!< client version of the active weapon
+	EHandle<CBaseWeapon> m_hLastWeapon;
 	// shared ammo slots
 	int	m_rgAmmo[MAX_AMMO_TYPES]{};
 	int	m_rgAmmoLast[MAX_AMMO_TYPES]{};
@@ -236,7 +236,7 @@ public:
 	*/
 	void PackDeadPlayerItems();
 	void RemoveAllItems(bool removeSuit);
-	bool SwitchWeapon(CBasePlayerWeapon* pWeapon);
+	bool SwitchWeapon(CBaseWeapon* pWeapon);
 
 	/**
 	*	@brief JOHN:  sends custom messages if player HUD data has changed  (eg health, ammo)
@@ -292,14 +292,14 @@ public:
 	/**
 	*	@brief Add a weapon to the player (Weapon == Selectable Object)
 	*/
-	ItemApplyResult AddPlayerWeapon(CBasePlayerWeapon* weapon);
-	bool RemovePlayerWeapon(CBasePlayerWeapon* weapon);
+	ItemApplyResult AddPlayerWeapon(CBaseWeapon* weapon);
+	bool RemovePlayerWeapon(CBaseWeapon* weapon);
 
 	/**
 	*	@brief drop the named weapon, or if no name, the active weapon.
 	*/
 	void DropPlayerWeapon(const char* pszWeaponName);
-	bool HasPlayerWeapon(CBasePlayerWeapon* checkWeapon);
+	bool HasPlayerWeapon(CBaseWeapon* checkWeapon);
 	bool HasNamedPlayerWeapon(const char* pszWeaponName);
 	bool HasWeapons();//!< do I have ANY weapons?
 	void SelectLastWeapon();

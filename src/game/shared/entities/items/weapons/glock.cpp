@@ -32,7 +32,7 @@ void CGlock::Spawn()
 
 void CGlock::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/v_9mmhandgun.mdl");
 	PRECACHE_MODEL("models/w_9mmhandgun.mdl");

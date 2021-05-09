@@ -35,10 +35,10 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname, int maxCarry)
 	// make sure it's not already in the registry
 	for (int i = 0; i < MAX_AMMO_TYPES; i++)
 	{
-		if (!CBasePlayerWeapon::AmmoInfoArray[i].pszName)
+		if (!CBaseWeapon::AmmoInfoArray[i].pszName)
 			continue;
 
-		if (stricmp(CBasePlayerWeapon::AmmoInfoArray[i].pszName, szAmmoname) == 0)
+		if (stricmp(CBaseWeapon::AmmoInfoArray[i].pszName, szAmmoname) == 0)
 			return; // ammo already in registry, just quite
 	}
 
@@ -47,14 +47,14 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname, int maxCarry)
 	if (giAmmoIndex >= MAX_AMMO_TYPES)
 		giAmmoIndex = 0;
 
-	auto& info = CBasePlayerWeapon::AmmoInfoArray[giAmmoIndex];
+	auto& info = CBaseWeapon::AmmoInfoArray[giAmmoIndex];
 
 	info.iId = giAmmoIndex;   // yes, this info is redundant
 	info.pszName = szAmmoname;
 	info.MaxCarry = maxCarry;
 }
 
-void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
+void CBaseWeapon::SendWeaponAnim(int iAnim, int body)
 {
 	auto player = m_hPlayer.Get();
 
@@ -77,7 +77,7 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int body)
 #endif
 }
 
-bool CBasePlayerWeapon::CanDeploy()
+bool CBaseWeapon::CanDeploy()
 {
 	auto player = m_hPlayer.Get();
 
@@ -109,7 +109,7 @@ bool CBasePlayerWeapon::CanDeploy()
 	return true;
 }
 
-void CBasePlayerWeapon::Holster()
+void CBaseWeapon::Holster()
 {
 	auto player = m_hPlayer.Get();
 
@@ -122,17 +122,17 @@ void CBasePlayerWeapon::Holster()
 #endif
 }
 
-int CBasePlayerWeapon::PrimaryAmmoIndex()
+int CBaseWeapon::PrimaryAmmoIndex()
 {
 	return m_iPrimaryAmmoType;
 }
 
-int CBasePlayerWeapon::SecondaryAmmoIndex()
+int CBaseWeapon::SecondaryAmmoIndex()
 {
 	return m_iSecondaryAmmoType;
 }
 
-bool CBasePlayerWeapon::DefaultDeploy(const char* szViewModel, const char* szWeaponModel, int iAnim, const char* szAnimExt, int body)
+bool CBaseWeapon::DefaultDeploy(const char* szViewModel, const char* szWeaponModel, int iAnim, const char* szAnimExt, int body)
 {
 	if (!CanDeploy())
 		return false;
@@ -156,7 +156,7 @@ bool CBasePlayerWeapon::DefaultDeploy(const char* szViewModel, const char* szWea
 	return true;
 }
 
-bool CBasePlayerWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay, int body)
+bool CBaseWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay, int body)
 {
 	auto player = m_hPlayer.Get();
 
@@ -179,7 +179,7 @@ bool CBasePlayerWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay, in
 	return true;
 }
 
-bool CBasePlayerWeapon::PlayEmptySound()
+bool CBaseWeapon::PlayEmptySound()
 {
 	if (m_iPlayEmptySound)
 	{
@@ -194,7 +194,7 @@ bool CBasePlayerWeapon::PlayEmptySound()
 	return false;
 }
 
-void CBasePlayerWeapon::ResetEmptySound()
+void CBaseWeapon::ResetEmptySound()
 {
 	m_iPlayEmptySound = true;
 }
@@ -215,7 +215,7 @@ bool CanAttack(float attack_time, float curtime, bool isPredicted)
 	}
 }
 
-void CBasePlayerWeapon::WeaponPostFrame()
+void CBaseWeapon::WeaponPostFrame()
 {
 	auto player = m_hPlayer.Get();
 

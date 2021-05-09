@@ -40,7 +40,7 @@ int MaxAmmoCarry(string_t iszName)
 {
 	for (int i = 0; i < MAX_AMMO_TYPES; i++)
 	{
-		const auto& info = CBasePlayerWeapon::AmmoInfoArray[i];
+		const auto& info = CBaseWeapon::AmmoInfoArray[i];
 
 		if (info.pszName && !strcmp(info.pszName, STRING(iszName)))
 		{
@@ -179,9 +179,9 @@ void UTIL_PrecacheOtherWeapon(const char* szClassname)
 	WeaponInfo II;
 	pEntity->Precache();
 	memset(&II, 0, sizeof II);
-	if (((CBasePlayerWeapon*)pEntity)->GetWeaponInfo(II))
+	if (((CBaseWeapon*)pEntity)->GetWeaponInfo(II))
 	{
-		CBasePlayerWeapon::WeaponInfoArray[II.iId] = II;
+		CBaseWeapon::WeaponInfoArray[II.iId] = II;
 
 		if (II.pszAmmo1 && *II.pszAmmo1)
 		{
@@ -201,8 +201,8 @@ void UTIL_PrecacheOtherWeapon(const char* szClassname)
 
 void W_Precache()
 {
-	memset(CBasePlayerWeapon::WeaponInfoArray, 0, sizeof(CBasePlayerWeapon::WeaponInfoArray));
-	memset(CBasePlayerWeapon::AmmoInfoArray, 0, sizeof(CBasePlayerWeapon::AmmoInfoArray));
+	memset(CBaseWeapon::WeaponInfoArray, 0, sizeof(CBaseWeapon::WeaponInfoArray));
+	memset(CBaseWeapon::AmmoInfoArray, 0, sizeof(CBaseWeapon::AmmoInfoArray));
 	giAmmoIndex = 0;
 
 	// custom items...
@@ -369,43 +369,43 @@ void CAmmoGeneric::KeyValue(KeyValueData* pkvd)
 	}
 }
 
-TYPEDESCRIPTION	CBasePlayerWeapon::m_SaveData[] =
+TYPEDESCRIPTION	CBaseWeapon::m_SaveData[] =
 {
-	DEFINE_FIELD(CBasePlayerWeapon, m_hPlayer, FIELD_EHANDLE),
-	DEFINE_FIELD(CBasePlayerWeapon, m_hNext, FIELD_EHANDLE),
-	//DEFINE_FIELD(CBasePlayerWeapon, m_fKnown, FIELD_INTEGER),Reset to zero on load
-	DEFINE_FIELD(CBasePlayerWeapon, m_iId, FIELD_INTEGER),
-	// DEFINE_FIELD(CBasePlayerWeapon, m_iIdPrimary, FIELD_INTEGER),
-	// DEFINE_FIELD(CBasePlayerWeapon, m_iIdSecondary, FIELD_INTEGER),
+	DEFINE_FIELD(CBaseWeapon, m_hPlayer, FIELD_EHANDLE),
+	DEFINE_FIELD(CBaseWeapon, m_hNext, FIELD_EHANDLE),
+	//DEFINE_FIELD(CBaseWeapon, m_fKnown, FIELD_INTEGER),Reset to zero on load
+	DEFINE_FIELD(CBaseWeapon, m_iId, FIELD_INTEGER),
+	// DEFINE_FIELD(CBaseWeapon, m_iIdPrimary, FIELD_INTEGER),
+	// DEFINE_FIELD(CBaseWeapon, m_iIdSecondary, FIELD_INTEGER),
 
 #if defined( CLIENT_WEAPONS )
-	DEFINE_FIELD(CBasePlayerWeapon, m_flNextPrimaryAttack, FIELD_FLOAT),
-	DEFINE_FIELD(CBasePlayerWeapon, m_flNextSecondaryAttack, FIELD_FLOAT),
-	DEFINE_FIELD(CBasePlayerWeapon, m_flTimeWeaponIdle, FIELD_FLOAT),
+	DEFINE_FIELD(CBaseWeapon, m_flNextPrimaryAttack, FIELD_FLOAT),
+	DEFINE_FIELD(CBaseWeapon, m_flNextSecondaryAttack, FIELD_FLOAT),
+	DEFINE_FIELD(CBaseWeapon, m_flTimeWeaponIdle, FIELD_FLOAT),
 #else	// CLIENT_WEAPONS
-	DEFINE_FIELD(CBasePlayerWeapon, m_flNextPrimaryAttack, FIELD_TIME),
-	DEFINE_FIELD(CBasePlayerWeapon, m_flNextSecondaryAttack, FIELD_TIME),
-	DEFINE_FIELD(CBasePlayerWeapon, m_flTimeWeaponIdle, FIELD_TIME),
+	DEFINE_FIELD(CBaseWeapon, m_flNextPrimaryAttack, FIELD_TIME),
+	DEFINE_FIELD(CBaseWeapon, m_flNextSecondaryAttack, FIELD_TIME),
+	DEFINE_FIELD(CBaseWeapon, m_flTimeWeaponIdle, FIELD_TIME),
 #endif	// CLIENT_WEAPONS
-	DEFINE_FIELD(CBasePlayerWeapon, m_iPrimaryAmmoType, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayerWeapon, m_iSecondaryAmmoType, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayerWeapon, m_iClip, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayerWeapon, m_iDefaultPrimaryAmmo, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayerWeapon, m_iDefaultAmmo, FIELD_INTEGER),
-	//	DEFINE_FIELD( CBasePlayerWeapon, m_iClientClip, FIELD_INTEGER )	 , reset to zero on load so hud gets updated correctly
-	//  DEFINE_FIELD( CBasePlayerWeapon, m_iClientWeaponState, FIELD_INTEGER ), reset to zero on load so hud gets updated correctly
-	DEFINE_FIELD(CBasePlayerWeapon, m_iszWorldModelName, FIELD_MODELNAME),
+	DEFINE_FIELD(CBaseWeapon, m_iPrimaryAmmoType, FIELD_INTEGER),
+	DEFINE_FIELD(CBaseWeapon, m_iSecondaryAmmoType, FIELD_INTEGER),
+	DEFINE_FIELD(CBaseWeapon, m_iClip, FIELD_INTEGER),
+	DEFINE_FIELD(CBaseWeapon, m_iDefaultPrimaryAmmo, FIELD_INTEGER),
+	DEFINE_FIELD(CBaseWeapon, m_iDefaultAmmo, FIELD_INTEGER),
+	//	DEFINE_FIELD( CBaseWeapon, m_iClientClip, FIELD_INTEGER )	 , reset to zero on load so hud gets updated correctly
+	//  DEFINE_FIELD( CBaseWeapon, m_iClientWeaponState, FIELD_INTEGER ), reset to zero on load so hud gets updated correctly
+	DEFINE_FIELD(CBaseWeapon, m_iszWorldModelName, FIELD_MODELNAME),
 };
 
-IMPLEMENT_SAVERESTORE(CBasePlayerWeapon, CBaseItem);
+IMPLEMENT_SAVERESTORE(CBaseWeapon, CBaseItem);
 
-void CBasePlayerWeapon::SetObjectCollisionBox()
+void CBaseWeapon::SetObjectCollisionBox()
 {
 	pev->absmin = GetAbsOrigin() + Vector(-24, -24, 0);
 	pev->absmax = GetAbsOrigin() + Vector(24, 24, 16);
 }
 
-void CBasePlayerWeapon::KeyValue(KeyValueData* pkvd)
+void CBaseWeapon::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "default_primary_ammo"))
 	{
@@ -418,18 +418,18 @@ void CBasePlayerWeapon::KeyValue(KeyValueData* pkvd)
 	}
 }
 
-void CBasePlayerWeapon::FallInit()
+void CBaseWeapon::FallInit()
 {
 	SetModel(GetWorldModelName());
 	SetupItem(vec3_origin, vec3_origin);//pointsize until it lands on the ground.
 }
 
-CBasePlayerWeapon* CBasePlayerWeapon::GetItemToRespawn(const Vector& respawnPoint)
+CBaseWeapon* CBaseWeapon::GetItemToRespawn(const Vector& respawnPoint)
 {
 	// make a copy of this weapon that is invisible and inaccessible to players (no touch function). The weapon spawn/respawn code
 	// will decide when to make the weapon visible and touchable.
 	//Don't pass the current owner since the new weapon isn't owned by that entity
-	auto pNewWeapon = static_cast<CBasePlayerWeapon*>(CBaseEntity::Create(GetClassname(), respawnPoint, GetAbsAngles(), nullptr, false));
+	auto pNewWeapon = static_cast<CBaseWeapon*>(CBaseEntity::Create(GetClassname(), respawnPoint, GetAbsAngles(), nullptr, false));
 
 	//Copy over item settings
 	pNewWeapon->SetModel(GetWorldModelName());
@@ -457,7 +457,7 @@ CBasePlayerWeapon* CBasePlayerWeapon::GetItemToRespawn(const Vector& respawnPoin
 	return pNewWeapon;
 }
 
-ItemApplyResult CBasePlayerWeapon::Apply(CBasePlayer* pPlayer)
+ItemApplyResult CBaseWeapon::Apply(CBasePlayer* pPlayer)
 {
 	const ItemApplyResult result = pPlayer->AddPlayerWeapon(this);
 
@@ -470,7 +470,7 @@ ItemApplyResult CBasePlayerWeapon::Apply(CBasePlayer* pPlayer)
 	return result;
 }
 
-void CBasePlayerWeapon::DestroyWeapon()
+void CBaseWeapon::DestroyWeapon()
 {
 	if (auto player = m_hPlayer.Get(); player)
 	{
@@ -481,21 +481,21 @@ void CBasePlayerWeapon::DestroyWeapon()
 	Kill();
 }
 
-void CBasePlayerWeapon::Drop()
+void CBaseWeapon::Drop()
 {
 	SetTouch(nullptr);
-	SetThink(&CBasePlayerWeapon::SUB_Remove);
+	SetThink(&CBaseWeapon::SUB_Remove);
 	pev->nextthink = gpGlobals->time + .1;
 }
 
-void CBasePlayerWeapon::Kill()
+void CBaseWeapon::Kill()
 {
 	SetTouch(nullptr);
-	SetThink(&CBasePlayerWeapon::SUB_Remove);
+	SetThink(&CBaseWeapon::SUB_Remove);
 	pev->nextthink = gpGlobals->time + .1;
 }
 
-void CBasePlayerWeapon::AttachToPlayer(CBasePlayer* pPlayer)
+void CBaseWeapon::AttachToPlayer(CBasePlayer* pPlayer)
 {
 	SetMovetype(Movetype::Follow);
 	SetSolidType(Solid::Not);
@@ -508,7 +508,7 @@ void CBasePlayerWeapon::AttachToPlayer(CBasePlayer* pPlayer)
 	SetTouch(nullptr);
 }
 
-bool CBasePlayerWeapon::AddDuplicate(CBasePlayerWeapon* pOriginal)
+bool CBaseWeapon::AddDuplicate(CBaseWeapon* pOriginal)
 {
 	if (m_iDefaultAmmo)
 	{
@@ -521,7 +521,7 @@ bool CBasePlayerWeapon::AddDuplicate(CBasePlayerWeapon* pOriginal)
 	}
 }
 
-bool CBasePlayerWeapon::AddToPlayer(CBasePlayer* pPlayer)
+bool CBaseWeapon::AddToPlayer(CBasePlayer* pPlayer)
 {
 	m_hPlayer = pPlayer;
 
@@ -540,7 +540,7 @@ bool CBasePlayerWeapon::AddToPlayer(CBasePlayer* pPlayer)
 	return false;
 }
 
-bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer)
+bool CBaseWeapon::UpdateClientData(CBasePlayer* pPlayer)
 {
 	bool bSend = false;
 	WeaponState state = WeaponState::NotActive;
@@ -595,7 +595,7 @@ bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer)
 	return true;
 }
 
-bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName)
+bool CBaseWeapon::AddPrimaryAmmo(int iCount, const char* szName)
 {
 	const int iMaxClip = MaxClip();
 
@@ -636,7 +636,7 @@ bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName)
 	return iIdAmmo > 0;
 }
 
-bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName)
+bool CBaseWeapon::AddSecondaryAmmo(int iCount, const char* szName)
 {
 	int iIdAmmo;
 
@@ -652,7 +652,7 @@ bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName)
 	return iIdAmmo > 0;
 }
 
-bool CBasePlayerWeapon::IsUseable()
+bool CBaseWeapon::IsUseable()
 {
 	if (m_iClip > 0)
 	{
@@ -690,7 +690,7 @@ bool CBasePlayerWeapon::IsUseable()
 	return false;
 }
 
-bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon)
+bool CBaseWeapon::ExtractAmmo(CBaseWeapon* pWeapon)
 {
 	bool result = false;
 
@@ -710,7 +710,7 @@ bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon)
 	return result;
 }
 
-int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon)
+int CBaseWeapon::ExtractClipAmmo(CBaseWeapon* pWeapon)
 {
 	int			iAmmo;
 
@@ -726,7 +726,7 @@ int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon)
 	return pWeapon->m_hPlayer->GiveAmmo(iAmmo, Ammo1Name()); // , &m_iPrimaryAmmoType
 }
 
-void CBasePlayerWeapon::RetireWeapon()
+void CBaseWeapon::RetireWeapon()
 {
 	auto player = m_hPlayer.Get();
 	// first, no viewmodel at all.
@@ -743,7 +743,7 @@ void CBasePlayerWeapon::RetireWeapon()
 	}
 }
 
-float CBasePlayerWeapon::GetNextAttackDelay(float delay)
+float CBaseWeapon::GetNextAttackDelay(float delay)
 {
 	if (m_flLastFireTime == 0 || m_flNextPrimaryAttack == -1)
 	{
@@ -817,7 +817,7 @@ void CWeaponBox::Spawn()
 
 void CWeaponBox::Kill()
 {
-	CBasePlayerWeapon* pWeapon;
+	CBaseWeapon* pWeapon;
 	int i;
 
 	// destroy the weapons
@@ -827,7 +827,7 @@ void CWeaponBox::Kill()
 
 		while (pWeapon)
 		{
-			pWeapon->SetThink(&CBasePlayerWeapon::SUB_Remove);
+			pWeapon->SetThink(&CBaseWeapon::SUB_Remove);
 			pWeapon->pev->nextthink = gpGlobals->time + 0.1;
 			pWeapon = pWeapon->m_hNext;
 		}
@@ -880,7 +880,7 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 	// to deploy a better weapon that the player may pick up because he has no ammo for it.
 	for (i = 0; i < MAX_WEAPON_TYPES; i++)
 	{
-		CBasePlayerWeapon* weapon = m_hPlayerWeapons[i];
+		CBaseWeapon* weapon = m_hPlayerWeapons[i];
 
 		while (weapon)
 		{
@@ -906,7 +906,7 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 	UTIL_Remove(this);
 }
 
-bool CWeaponBox::PackWeapon(CBasePlayerWeapon* pWeapon)
+bool CWeaponBox::PackWeapon(CBaseWeapon* pWeapon)
 {
 	// is one of these weapons already packed in this box?
 	if (HasWeapon(pWeapon))
@@ -1012,9 +1012,9 @@ int CWeaponBox::GiveAmmo(int iCount, const char* szName, int iMax, int* pIndex)
 	return i;
 }
 
-bool CWeaponBox::HasWeapon(CBasePlayerWeapon* pCheckWeapon)
+bool CWeaponBox::HasWeapon(CBaseWeapon* pCheckWeapon)
 {
-	CBasePlayerWeapon* weapon = m_hPlayerWeapons[pCheckWeapon->WeaponSlot()];
+	CBaseWeapon* weapon = m_hPlayerWeapons[pCheckWeapon->WeaponSlot()];
 
 	while (weapon)
 	{
@@ -1058,7 +1058,7 @@ void CWeaponBox::SetObjectCollisionBox()
 	pev->absmax = GetAbsOrigin() + Vector(16, 16, 16);
 }
 
-void CBasePlayerWeapon::PrintState()
+void CBaseWeapon::PrintState()
 {
 	ALERT(at_console, "primary:  %f\n", m_flNextPrimaryAttack);
 	ALERT(at_console, "idle   :  %f\n", m_flTimeWeaponIdle);
@@ -1079,7 +1079,7 @@ TYPEDESCRIPTION	CRpg::m_SaveData[] =
 	DEFINE_FIELD(CRpg, m_cActiveRockets, FIELD_INTEGER),
 };
 
-IMPLEMENT_SAVERESTORE(CRpg, CBasePlayerWeapon);
+IMPLEMENT_SAVERESTORE(CRpg, CBaseWeapon);
 
 TYPEDESCRIPTION	CRpgRocket::m_SaveData[] =
 {
@@ -1098,7 +1098,7 @@ TYPEDESCRIPTION	CShotgun::m_SaveData[] =
 	DEFINE_FIELD(CShotgun, m_flPumpTime, FIELD_TIME),
 };
 
-IMPLEMENT_SAVERESTORE(CShotgun, CBasePlayerWeapon);
+IMPLEMENT_SAVERESTORE(CShotgun, CBaseWeapon);
 
 TYPEDESCRIPTION	CGauss::m_SaveData[] =
 {
@@ -1109,7 +1109,7 @@ TYPEDESCRIPTION	CGauss::m_SaveData[] =
 		DEFINE_FIELD(CGauss, m_fPrimaryFire, FIELD_BOOLEAN),
 };
 
-IMPLEMENT_SAVERESTORE(CGauss, CBasePlayerWeapon);
+IMPLEMENT_SAVERESTORE(CGauss, CBaseWeapon);
 
 TYPEDESCRIPTION	CEgon::m_SaveData[] =
 {
@@ -1123,11 +1123,11 @@ TYPEDESCRIPTION	CEgon::m_SaveData[] =
 		DEFINE_FIELD(CEgon, m_flAmmoUseTime, FIELD_TIME),
 };
 
-IMPLEMENT_SAVERESTORE(CEgon, CBasePlayerWeapon);
+IMPLEMENT_SAVERESTORE(CEgon, CBaseWeapon);
 
 TYPEDESCRIPTION	CSatchel::m_SaveData[] =
 {
 	DEFINE_FIELD(CSatchel, m_chargeReady, FIELD_INTEGER),
 };
 
-IMPLEMENT_SAVERESTORE(CSatchel, CBasePlayerWeapon);
+IMPLEMENT_SAVERESTORE(CSatchel, CBaseWeapon);

@@ -37,7 +37,7 @@ void CBasePlayer::SelectLastWeapon()
 	if (activeWeapon)
 		activeWeapon->Holster();
 
-	CBasePlayerWeapon* pTemp = activeWeapon;
+	CBaseWeapon* pTemp = activeWeapon;
 	activeWeapon = m_hActiveWeapon = m_hLastWeapon;
 	m_hLastWeapon = pTemp;
 	activeWeapon->Deploy();
@@ -49,7 +49,7 @@ void CBasePlayer::SelectWeapon(const char* pstr)
 	if (!pstr)
 		return;
 
-	CBasePlayerWeapon* weapon = nullptr;
+	CBaseWeapon* weapon = nullptr;
 
 #ifndef CLIENT_DLL
 	for (int i = 0; i < MAX_WEAPON_TYPES; i++)

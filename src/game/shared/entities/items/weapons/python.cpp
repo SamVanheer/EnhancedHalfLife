@@ -44,7 +44,7 @@ bool CPython::GetWeaponInfo(WeaponInfo& p)
 
 bool CPython::AddToPlayer(CBasePlayer* pPlayer)
 {
-	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
+	if (CBaseWeapon::AddToPlayer(pPlayer))
 	{
 		MESSAGE_BEGIN(MessageDest::One, gmsgWeapPickup, pPlayer);
 		WRITE_BYTE(m_iId);
@@ -63,7 +63,7 @@ void CPython::Spawn()
 
 void CPython::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/v_357.mdl");
 	PRECACHE_MODEL("models/w_357.mdl");

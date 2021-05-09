@@ -66,7 +66,7 @@ bool CGameRules::CanHaveItem(CBasePlayer& player, CBaseItem& item)
 
 	case ItemType::Weapon:
 	{
-		auto& weapon = static_cast<CBasePlayerWeapon&>(item);
+		auto& weapon = static_cast<CBaseWeapon&>(item);
 
 		// only living players can have weapons
 		if (player.pev->deadflag != DeadFlag::No)

@@ -37,7 +37,7 @@ void CHandGrenade::Spawn()
 
 void CHandGrenade::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/w_grenade.mdl");
 	PRECACHE_MODEL("models/v_grenade.mdl");

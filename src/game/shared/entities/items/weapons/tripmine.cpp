@@ -355,7 +355,7 @@ void CTripmine::Spawn()
 
 void CTripmine::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/v_tripmine.mdl");
 	PRECACHE_MODEL("models/p_tripmine.mdl");

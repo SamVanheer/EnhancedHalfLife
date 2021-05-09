@@ -261,7 +261,7 @@ bool CHalfLifeMultiplay::IsCoOp()
 	return gpGlobals->coop;
 }
 
-bool CHalfLifeMultiplay::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pWeapon)
+bool CHalfLifeMultiplay::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBaseWeapon* pWeapon)
 {
 	if (!pWeapon->CanDeploy())
 	{
@@ -303,10 +303,10 @@ bool CHalfLifeMultiplay::ShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerWea
 	return false;
 }
 
-bool CHalfLifeMultiplay::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerWeapon* pCurrentWeapon)
+bool CHalfLifeMultiplay::GetNextBestWeapon(CBasePlayer* pPlayer, CBaseWeapon* pCurrentWeapon)
 {
-	CBasePlayerWeapon* pCheck;
-	CBasePlayerWeapon* pBest;// this will be used in the event that we don't find a weapon in the same category.
+	CBaseWeapon* pCheck;
+	CBaseWeapon* pBest;// this will be used in the event that we don't find a weapon in the same category.
 	int iBestWeight;
 	int i;
 
@@ -756,7 +756,7 @@ bool CHalfLifeMultiplay::CanHaveItem(CBasePlayer& player, CBaseItem& item)
 	{
 	case ItemType::Weapon:
 	{
-		auto& weapon = static_cast<CBasePlayerWeapon&>(item);
+		auto& weapon = static_cast<CBaseWeapon&>(item);
 
 		if (weaponstay.value > 0)
 		{
@@ -765,7 +765,7 @@ bool CHalfLifeMultiplay::CanHaveItem(CBasePlayer& player, CBaseItem& item)
 				// check if the player already has this weapon
 				for (int i = 0; i < MAX_WEAPON_TYPES; i++)
 				{
-					CBasePlayerWeapon* it = player.m_hPlayerWeapons[i];
+					CBaseWeapon* it = player.m_hPlayerWeapons[i];
 
 					while (it != nullptr)
 					{
@@ -811,7 +811,7 @@ float CHalfLifeMultiplay::ItemRespawnTime(CBaseItem& item)
 
 	case ItemType::Weapon:
 	{
-		auto& weapon = static_cast<CBasePlayerWeapon&>(item);
+		auto& weapon = static_cast<CBaseWeapon&>(item);
 		if (weaponstay.value > 0)
 		{
 			// make sure it's only certain weapons
@@ -845,7 +845,7 @@ float CHalfLifeMultiplay::ItemTryRespawn(CBaseItem& item)
 
 	case ItemType::Weapon:
 	{
-		auto& weapon = static_cast<CBasePlayerWeapon&>(item);
+		auto& weapon = static_cast<CBaseWeapon&>(item);
 
 		if (weapon.m_iId && (weapon.Flags() & WEAPON_FLAG_LIMITINWORLD))
 		{

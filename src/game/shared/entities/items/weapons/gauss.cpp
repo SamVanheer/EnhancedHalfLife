@@ -57,7 +57,7 @@ void CGauss::Spawn()
 
 void CGauss::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/w_gauss.mdl");
 	PRECACHE_MODEL("models/v_gauss.mdl");
@@ -81,7 +81,7 @@ void CGauss::Precache()
 
 bool CGauss::AddToPlayer(CBasePlayer* pPlayer)
 {
-	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
+	if (CBaseWeapon::AddToPlayer(pPlayer))
 	{
 		MESSAGE_BEGIN(MessageDest::One, gmsgWeapPickup, pPlayer);
 		WRITE_BYTE(m_iId);

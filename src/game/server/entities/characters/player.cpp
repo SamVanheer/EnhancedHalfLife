@@ -487,7 +487,7 @@ void CBasePlayer::PackDeadPlayerItems()
 		return;
 	}
 
-	CBasePlayerWeapon* rgpPackWeapons[MAX_WEAPONS]{};
+	CBaseWeapon* rgpPackWeapons[MAX_WEAPONS]{};
 	int iPackAmmo[MAX_AMMO_TYPES + 1];
 	int iPW = 0;// index into packweapons array
 	int iPA = 0;// index into packammo array
@@ -497,7 +497,7 @@ void CBasePlayer::PackDeadPlayerItems()
 	// go through all of the weapons and make a list of the ones to pack
 	for (int i = 0; i < MAX_WEAPON_TYPES; i++)
 	{
-		if (CBasePlayerWeapon* weapon = m_hPlayerWeapons[i]; weapon)
+		if (CBaseWeapon* weapon = m_hPlayerWeapons[i]; weapon)
 		{
 			// there's a weapon here. Should I pack it?
 			while (weapon)
@@ -575,7 +575,7 @@ void CBasePlayer::PackDeadPlayerItems()
 	// pack the ammo
 	while (iPackAmmo[iPA] != -1)
 	{
-		pWeaponBox->PackAmmo(MAKE_STRING(CBasePlayerWeapon::AmmoInfoArray[iPackAmmo[iPA]].pszName), m_rgAmmo[iPackAmmo[iPA]]);
+		pWeaponBox->PackAmmo(MAKE_STRING(CBaseWeapon::AmmoInfoArray[iPackAmmo[iPA]].pszName), m_rgAmmo[iPackAmmo[iPA]]);
 		iPA++;
 	}
 
@@ -612,7 +612,7 @@ void CBasePlayer::RemoveAllItems(bool removeSuit)
 
 	for (int i = 0; i < MAX_WEAPON_TYPES; i++)
 	{
-		CBasePlayerWeapon* activeWeapon = m_hActiveWeapon = m_hPlayerWeapons[i];
+		CBaseWeapon* activeWeapon = m_hActiveWeapon = m_hPlayerWeapons[i];
 		while (activeWeapon)
 		{
 			auto pPendingWeapon = activeWeapon->m_hNext;
@@ -2850,9 +2850,9 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 	}
 }
 
-ItemApplyResult CBasePlayer::AddPlayerWeapon(CBasePlayerWeapon* weapon)
+ItemApplyResult CBasePlayer::AddPlayerWeapon(CBaseWeapon* weapon)
 {
-	CBasePlayerWeapon* pInsert = m_hPlayerWeapons[weapon->WeaponSlot()];
+	CBaseWeapon* pInsert = m_hPlayerWeapons[weapon->WeaponSlot()];
 
 	while (pInsert)
 	{
@@ -2895,7 +2895,7 @@ ItemApplyResult CBasePlayer::AddPlayerWeapon(CBasePlayerWeapon* weapon)
 	return {ItemApplyAction::NotUsed};
 }
 
-bool CBasePlayer::RemovePlayerWeapon(CBasePlayerWeapon* weapon)
+bool CBasePlayer::RemovePlayerWeapon(CBaseWeapon* weapon)
 {
 	if (m_hActiveWeapon == weapon)
 	{
@@ -2911,7 +2911,7 @@ bool CBasePlayer::RemovePlayerWeapon(CBasePlayerWeapon* weapon)
 	if (m_hLastWeapon == weapon)
 		m_hLastWeapon = nullptr;
 
-	CBasePlayerWeapon* pPrev = m_hPlayerWeapons[weapon->WeaponSlot()];
+	CBaseWeapon* pPrev = m_hPlayerWeapons[weapon->WeaponSlot()];
 
 	if (pPrev == weapon)
 	{
@@ -2947,7 +2947,7 @@ int CBasePlayer::GiveAmmo(int iCount, const char* szName)
 	if (i < 0 || i >= MAX_AMMO_TYPES)
 		return -1;
 
-	const int iMax = CBasePlayerWeapon::AmmoInfoArray[i].MaxCarry;
+	const int iMax = CBaseWeapon::AmmoInfoArray[i].MaxCarry;
 
 	if (!g_pGameRules->CanHaveAmmo(this, szName, iMax))
 	{
@@ -3030,10 +3030,10 @@ int CBasePlayer::GetAmmoIndex(const char* psz)
 
 	for (int i = 1; i < MAX_AMMO_TYPES; i++)
 	{
-		if (!CBasePlayerWeapon::AmmoInfoArray[i].pszName)
+		if (!CBaseWeapon::AmmoInfoArray[i].pszName)
 			continue;
 
-		if (stricmp(psz, CBasePlayerWeapon::AmmoInfoArray[i].pszName) == 0)
+		if (stricmp(psz, CBaseWeapon::AmmoInfoArray[i].pszName) == 0)
 			return i;
 	}
 
@@ -3261,7 +3261,7 @@ void CBasePlayer::UpdateClientData()
 			// Send ALL the weapon info now
 		for (int i = 0; i < MAX_WEAPONS; i++)
 		{
-			const WeaponInfo& II = CBasePlayerWeapon::WeaponInfoArray[i];
+			const WeaponInfo& II = CBaseWeapon::WeaponInfoArray[i];
 
 			if (!II.iId)
 				continue;
@@ -3665,9 +3665,9 @@ void CBasePlayer::DropPlayerWeapon(const char* pszWeaponName)
 	}
 }
 
-bool CBasePlayer::HasPlayerWeapon(CBasePlayerWeapon* pCheckWeapon)
+bool CBasePlayer::HasPlayerWeapon(CBaseWeapon* pCheckWeapon)
 {
-	for (CBasePlayerWeapon* weapon = m_hPlayerWeapons[pCheckWeapon->WeaponSlot()]; weapon; weapon = weapon->m_hNext)
+	for (CBaseWeapon* weapon = m_hPlayerWeapons[pCheckWeapon->WeaponSlot()]; weapon; weapon = weapon->m_hNext)
 	{
 		if (weapon->ClassnameIs(pCheckWeapon->GetClassname()))
 		{
@@ -3682,7 +3682,7 @@ bool CBasePlayer::HasNamedPlayerWeapon(const char* pszWeaponName)
 {
 	for (int i = 0; i < MAX_WEAPON_TYPES; i++)
 	{
-		for (CBasePlayerWeapon* weapon = m_hPlayerWeapons[i]; weapon; weapon = weapon->m_hNext)
+		for (CBaseWeapon* weapon = m_hPlayerWeapons[i]; weapon; weapon = weapon->m_hNext)
 		{
 			if (!strcmp(pszWeaponName, weapon->GetClassname()))
 			{
@@ -3694,7 +3694,7 @@ bool CBasePlayer::HasNamedPlayerWeapon(const char* pszWeaponName)
 	return false;
 }
 
-bool CBasePlayer::SwitchWeapon(CBasePlayerWeapon* pWeapon)
+bool CBasePlayer::SwitchWeapon(CBaseWeapon* pWeapon)
 {
 	if (pWeapon && !pWeapon->CanDeploy())
 	{

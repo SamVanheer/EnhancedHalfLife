@@ -40,7 +40,7 @@ static int			num_ents = 0;
 // The entity we'll use to represent the local client
 static CBasePlayer	player;
 
-static CBasePlayerWeapon* g_pWpns[MAX_WEAPONS];
+static CBaseWeapon* g_pWpns[MAX_WEAPONS];
 
 float g_flApplyVel = 0.0;
 int   g_irunninggausspred = 0;
@@ -115,11 +115,11 @@ void HUD_PrepEntity(CBaseEntity* pEntity, CBasePlayer* pWeaponOwner)
 
 		memset(&info, 0, sizeof(info));
 
-		((CBasePlayerWeapon*)pEntity)->m_hPlayer = pWeaponOwner;
+		((CBaseWeapon*)pEntity)->m_hPlayer = pWeaponOwner;
 
-		((CBasePlayerWeapon*)pEntity)->GetWeaponInfo(info);
+		((CBaseWeapon*)pEntity)->GetWeaponInfo(info);
 
-		CBasePlayerWeapon::WeaponInfoArray[info.iId] = info;
+		CBaseWeapon::WeaponInfoArray[info.iId] = info;
 
 		if (info.pszAmmo1 && *info.pszAmmo1)
 		{
@@ -131,7 +131,7 @@ void HUD_PrepEntity(CBaseEntity* pEntity, CBasePlayer* pWeaponOwner)
 			AddAmmoNameToAmmoRegistry(info.pszAmmo2, info.iMaxAmmo2);
 		}
 
-		g_pWpns[info.iId] = (CBasePlayerWeapon*)pEntity;
+		g_pWpns[info.iId] = (CBaseWeapon*)pEntity;
 	}
 }
 
@@ -323,8 +323,8 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 {
 	int i;
 	int buttonsChanged;
-	CBasePlayerWeapon* pWeapon = nullptr;
-	CBasePlayerWeapon* pCurrent;
+	CBaseWeapon* pWeapon = nullptr;
+	CBaseWeapon* pCurrent;
 	weapon_data_t nulldata, * pfrom, * pto;
 	static int lasthealth;
 
@@ -519,7 +519,7 @@ void HUD_WeaponsPostThink(local_state_t* from, local_state_t* to, usercmd_t* cmd
 		// Switched to a different weapon?
 		if (from->weapondata[cmd->weaponselect].m_iId == cmd->weaponselect)
 		{
-			CBasePlayerWeapon* pNew = g_pWpns[cmd->weaponselect];
+			CBaseWeapon* pNew = g_pWpns[cmd->weaponselect];
 			if (pNew && (pNew != pWeapon))
 			{
 				// Put away old weapon

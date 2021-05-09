@@ -32,7 +32,7 @@
 
 class CBaseEntity;
 class CBasePlayer;
-class CBasePlayerWeapon;
+class CBaseWeapon;
 
 constexpr int TEAM_NAME_LENGTH = 16;
 

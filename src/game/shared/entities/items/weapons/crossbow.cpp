@@ -221,7 +221,7 @@ void CCrossbow::Spawn()
 
 bool CCrossbow::AddToPlayer(CBasePlayer* pPlayer)
 {
-	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
+	if (CBaseWeapon::AddToPlayer(pPlayer))
 	{
 		MESSAGE_BEGIN(MessageDest::One, gmsgWeapPickup, pPlayer);
 		WRITE_BYTE(m_iId);
@@ -233,7 +233,7 @@ bool CCrossbow::AddToPlayer(CBasePlayer* pPlayer)
 
 void CCrossbow::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/w_crossbow.mdl");
 	PRECACHE_MODEL("models/v_crossbow.mdl");

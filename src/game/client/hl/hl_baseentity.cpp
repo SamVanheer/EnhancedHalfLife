@@ -268,8 +268,8 @@ void CBasePlayer::FlashlightTurnOff() { }
 void CBasePlayer::ForceClientDllUpdate() { }
 void CBasePlayer::ImpulseCommands() { }
 void CBasePlayer::CheatImpulseCommands(int iImpulse) { }
-ItemApplyResult CBasePlayer::AddPlayerWeapon(CBasePlayerWeapon* pWeapon) { return {ItemApplyAction::NotUsed}; }
-bool CBasePlayer::RemovePlayerWeapon(CBasePlayerWeapon* pWeapon) { return false; }
+ItemApplyResult CBasePlayer::AddPlayerWeapon(CBaseWeapon* pWeapon) { return {ItemApplyAction::NotUsed}; }
+bool CBasePlayer::RemovePlayerWeapon(CBaseWeapon* pWeapon) { return false; }
 void CBasePlayer::WeaponPreFrame() { }
 void CBasePlayer::WeaponPostFrame() { }
 int CBasePlayer::AmmoInventory(int iAmmoIndex) { return -1; }
@@ -287,8 +287,8 @@ void CBasePlayer::ResetAutoaim() { }
 void CBasePlayer::SetCustomDecalFrames(int nFrames) { }
 int CBasePlayer::GetCustomDecalFrames() { return -1; }
 void CBasePlayer::DropPlayerWeapon(const char* pszWeaponName) { }
-bool CBasePlayer::HasPlayerWeapon(CBasePlayerWeapon* pCheckWeapon) { return false; }
-bool CBasePlayer::SwitchWeapon(CBasePlayerWeapon* pWeapon) { return false; }
+bool CBasePlayer::HasPlayerWeapon(CBaseWeapon* pCheckWeapon) { return false; }
+bool CBasePlayer::SwitchWeapon(CBaseWeapon* pWeapon) { return false; }
 Vector CBasePlayer::GetGunPosition() { return vec3_origin; }
 const char* CBasePlayer::TeamID() { return ""; }
 int CBasePlayer::GiveAmmo(int iCount, const char* szName) { return 0; }
@@ -301,29 +301,29 @@ void DecalGunshot(TraceResult* pTrace, int iBulletType) { }
 void EjectBrass(const Vector& vecOrigin, const Vector& vecVelocity, float rotation, int model, int soundtype) { }
 bool CBaseItem::Restore(class CRestore&) { return true; }
 bool CBaseItem::Save(class CSave&) { return true; }
-bool CBasePlayerWeapon::Restore(class CRestore&) { return true; }
-bool CBasePlayerWeapon::Save(class CSave&) { return true; }
+bool CBaseWeapon::Restore(class CRestore&) { return true; }
+bool CBaseWeapon::Save(class CSave&) { return true; }
 bool CBaseAmmo::Restore(class CRestore&) { return true; }
 bool CBaseAmmo::Save(class CSave&) { return true; }
-float CBasePlayerWeapon::GetNextAttackDelay(float flTime) { return flTime; }
-void CBasePlayerWeapon::SetObjectCollisionBox() { }
-void CBasePlayerWeapon::KeyValue(KeyValueData* pkvd) {}
-void CBasePlayerWeapon::FallInit() { }
-ItemApplyResult CBasePlayerWeapon::Apply(CBasePlayer* pPlayer) { return {ItemApplyAction::NotUsed}; }
-void CBasePlayerWeapon::DestroyWeapon() { }
-void CBasePlayerWeapon::Drop() { }
-void CBasePlayerWeapon::Kill() { }
-void CBasePlayerWeapon::AttachToPlayer(CBasePlayer* pPlayer) { }
-CBasePlayerWeapon* CBasePlayerWeapon::GetItemToRespawn(const Vector& respawnPoint) { return nullptr; }
-bool CBasePlayerWeapon::AddDuplicate(CBasePlayerWeapon* pOriginal) { return false; }
-bool CBasePlayerWeapon::AddToPlayer(CBasePlayer* pPlayer) { return false; }
-bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer) { return false; }
-bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName) { return true; }
-bool CBasePlayerWeapon::AddSecondaryAmmo(int iCount, const char* szName) { return true; }
-bool CBasePlayerWeapon::IsUseable() { return true; }
-bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon) { return false; }
-int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon) { return 0; }
-void CBasePlayerWeapon::RetireWeapon() { }
+float CBaseWeapon::GetNextAttackDelay(float flTime) { return flTime; }
+void CBaseWeapon::SetObjectCollisionBox() { }
+void CBaseWeapon::KeyValue(KeyValueData* pkvd) {}
+void CBaseWeapon::FallInit() { }
+ItemApplyResult CBaseWeapon::Apply(CBasePlayer* pPlayer) { return {ItemApplyAction::NotUsed}; }
+void CBaseWeapon::DestroyWeapon() { }
+void CBaseWeapon::Drop() { }
+void CBaseWeapon::Kill() { }
+void CBaseWeapon::AttachToPlayer(CBasePlayer* pPlayer) { }
+CBaseWeapon* CBaseWeapon::GetItemToRespawn(const Vector& respawnPoint) { return nullptr; }
+bool CBaseWeapon::AddDuplicate(CBaseWeapon* pOriginal) { return false; }
+bool CBaseWeapon::AddToPlayer(CBasePlayer* pPlayer) { return false; }
+bool CBaseWeapon::UpdateClientData(CBasePlayer* pPlayer) { return false; }
+bool CBaseWeapon::AddPrimaryAmmo(int iCount, const char* szName) { return true; }
+bool CBaseWeapon::AddSecondaryAmmo(int iCount, const char* szName) { return true; }
+bool CBaseWeapon::IsUseable() { return true; }
+bool CBaseWeapon::ExtractAmmo(CBaseWeapon* pWeapon) { return false; }
+int CBaseWeapon::ExtractClipAmmo(CBaseWeapon* pWeapon) { return 0; }
+void CBaseWeapon::RetireWeapon() { }
 void CBaseAmmo::KeyValue(KeyValueData* pkvd) {}
 void CBaseAmmo::Precache() {}
 ItemApplyResult CBaseAmmo::Apply(CBasePlayer* player) { return {ItemApplyAction::NotUsed}; }

@@ -1157,7 +1157,7 @@ int GetWeaponData(edict_t* player, weapon_data_t* info)
 	// go through all of the weapons and make a list of the ones to pack
 	for (int i = 0; i < MAX_WEAPON_TYPES; i++)
 	{
-		CBasePlayerWeapon* weapon = pl->m_hPlayerWeapons[i];
+		CBaseWeapon* weapon = pl->m_hPlayerWeapons[i];
 
 		// there's a weapon here. Should I pack it?
 		while (weapon)
@@ -1262,7 +1262,7 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 
 			if (pl->m_hActiveWeapon)
 			{
-				if (CBasePlayerWeapon* gun = pl->m_hActiveWeapon; gun && gun->UseDecrement())
+				if (CBaseWeapon* gun = pl->m_hActiveWeapon; gun && gun->UseDecrement())
 				{
 					WeaponInfo II{};
 					gun->GetWeaponInfo(II);

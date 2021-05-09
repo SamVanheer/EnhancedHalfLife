@@ -292,7 +292,7 @@ void CRpg::Reload()
 void CRpg::OnRemove()
 {
 	m_hSpot.Remove();
-	CBasePlayerWeapon::OnRemove();
+	CBaseWeapon::OnRemove();
 }
 
 void CRpg::Spawn()
@@ -306,7 +306,7 @@ void CRpg::Spawn()
 
 void CRpg::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/w_rpg.mdl");
 	PRECACHE_MODEL("models/v_rpg.mdl");
@@ -342,7 +342,7 @@ bool CRpg::GetWeaponInfo(WeaponInfo& p)
 
 bool CRpg::AddToPlayer(CBasePlayer* pPlayer)
 {
-	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
+	if (CBaseWeapon::AddToPlayer(pPlayer))
 	{
 		MESSAGE_BEGIN(MessageDest::One, gmsgWeapPickup, pPlayer);
 		WRITE_BYTE(m_iId);

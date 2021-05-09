@@ -47,7 +47,7 @@ void CHgun::Spawn()
 
 void CHgun::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/v_hgun.mdl");
 	PRECACHE_MODEL("models/w_hgun.mdl");
@@ -60,7 +60,7 @@ void CHgun::Precache()
 
 bool CHgun::AddToPlayer(CBasePlayer* pPlayer)
 {
-	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
+	if (CBaseWeapon::AddToPlayer(pPlayer))
 	{
 
 #ifndef CLIENT_DLL

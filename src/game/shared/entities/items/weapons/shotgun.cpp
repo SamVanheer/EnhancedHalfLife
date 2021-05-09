@@ -37,7 +37,7 @@ void CShotgun::Spawn()
 
 void CShotgun::Precache()
 {
-	CBasePlayerWeapon::Precache();
+	CBaseWeapon::Precache();
 
 	PRECACHE_MODEL("models/v_shotgun.mdl");
 	PRECACHE_MODEL("models/w_shotgun.mdl");
@@ -65,7 +65,7 @@ void CShotgun::Precache()
 
 bool CShotgun::AddToPlayer(CBasePlayer* pPlayer)
 {
-	if (CBasePlayerWeapon::AddToPlayer(pPlayer))
+	if (CBaseWeapon::AddToPlayer(pPlayer))
 	{
 		MESSAGE_BEGIN(MessageDest::One, gmsgWeapPickup, pPlayer);
 		WRITE_BYTE(m_iId);
@@ -367,19 +367,19 @@ void CShotgun::WeaponPostFrame()
 		m_flPumpTime = 0;
 	}
 
-	CBasePlayerWeapon::WeaponPostFrame();
+	CBaseWeapon::WeaponPostFrame();
 }
 
 void CShotgun::GetWeaponData(weapon_data_t& data)
 {
-	CBasePlayerWeapon::GetWeaponData(data);
+	CBaseWeapon::GetWeaponData(data);
 
 	data.m_fInSpecialReload = static_cast<int>(m_fInSpecialReload);
 }
 
 void CShotgun::SetWeaponData(const weapon_data_t& data)
 {
-	CBasePlayerWeapon::SetWeaponData(data);
+	CBaseWeapon::SetWeaponData(data);
 
 	m_fInSpecialReload = static_cast<ReloadState>(data.m_fInSpecialReload);
 }
