@@ -342,6 +342,7 @@ void CBaseItem::ItemTouch(CBaseEntity* pOther)
 	auto pPlayer = static_cast<CBasePlayer*>(pOther);
 
 	bool shouldRemoveEntity = false;
+	bool attachedToPlayer = false;
 
 	// ok, a player is touching this item, but can he have it?
 	if (g_pGameRules->CanHaveItem(*pPlayer, *this))
@@ -375,12 +376,14 @@ void CBaseItem::ItemTouch(CBaseEntity* pOther)
 		{
 			shouldRemoveEntity = true;
 		}
+
+		attachedToPlayer = result.Action == ItemApplyAction::AttachedToPlayer;
 	}
 
 	//Items should only be removed if:
 	//1. they were used and they did not attach to the player and they did not respawn
-	//2. they were spawned using Impulse 101
-	if (shouldRemoveEntity || gEvilImpulse101)
+	//2. they were spawned using Impulse 101 and not attached to the player
+	if (shouldRemoveEntity || (!attachedToPlayer && gEvilImpulse101))
 	{
 		SetTouch(nullptr);
 		UTIL_Remove(this);
