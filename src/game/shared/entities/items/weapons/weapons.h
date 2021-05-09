@@ -302,7 +302,7 @@ public:
 	virtual bool AddWeapon() { ExtractAmmo(this); return true; }
 
 	// generic "shared" ammo handlers
-	bool AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip);
+	bool AddPrimaryAmmo(int iCount, const char* szName);
 	bool AddSecondaryAmmo(int iCount, const char* szName);
 
 	/**

@@ -579,8 +579,10 @@ bool CBasePlayerWeapon::UpdateClientData(CBasePlayer* pPlayer)
 	return true;
 }
 
-bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName, int iMaxClip)
+bool CBasePlayerWeapon::AddPrimaryAmmo(int iCount, const char* szName)
 {
+	const int iMaxClip = MaxClip();
+
 	auto player = m_hPlayer.Get();
 
 	int iIdAmmo;
@@ -680,7 +682,7 @@ bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon)
 	{
 		// blindly call with m_iDefaultAmmo. It's either going to be a value or zero. If it is zero,
 		// we only get the ammo in the weapon's clip, which is what we want. 
-		result = pWeapon->AddPrimaryAmmo(m_iDefaultAmmo, Ammo1Name(), MaxClip());
+		result = pWeapon->AddPrimaryAmmo(m_iDefaultAmmo, Ammo1Name());
 		m_iDefaultAmmo = 0;
 	}
 
