@@ -310,7 +310,7 @@ public:
 	/**
 	*	@brief returns false if struct not filled out
 	*/
-	virtual bool GetWeaponInfo(WeaponInfo* p) { return false; }
+	virtual bool GetWeaponInfo(WeaponInfo& p) { return false; }
 
 	/**
 	*	@brief updates HUD state
@@ -653,7 +653,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 2; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
@@ -707,7 +707,7 @@ public:
 	int WeaponSlot() override { return 1; }
 	void EXPORT SwingAgain();
 	void EXPORT Smack();
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 
 	void PrimaryAttack() override;
 	bool Swing(bool fFirst);
@@ -754,7 +754,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 2; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
@@ -802,7 +802,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 3; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
 	void PrimaryAttack() override;
@@ -857,7 +857,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 3; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 
 	void FireBolt();
 	void FireSniperBolt();
@@ -924,7 +924,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 3; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
 	void PrimaryAttack() override;
@@ -1023,7 +1023,7 @@ public:
 	void Precache() override;
 	void Reload() override;
 	int WeaponSlot() override { return 4; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
 	bool Deploy() override;
@@ -1116,7 +1116,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 4; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
 	bool Deploy() override;
@@ -1222,7 +1222,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 4; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
 	bool Deploy() override;
@@ -1302,7 +1302,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 4; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 
 	void PrimaryAttack() override;
@@ -1356,7 +1356,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 5; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 
 	void PrimaryAttack() override;
 	bool Deploy() override;
@@ -1424,7 +1424,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 5; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 	bool AddToPlayer(CBasePlayer* pPlayer) override;
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;
@@ -1479,7 +1479,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 5; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 	void SetObjectCollisionBox() override
 	{
 		//!!!BUGBUG - fix the model!
@@ -1530,7 +1530,7 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	int WeaponSlot() override { return 5; }
-	bool GetWeaponInfo(WeaponInfo* p) override;
+	bool GetWeaponInfo(WeaponInfo& p) override;
 
 	void PrimaryAttack() override;
 	void SecondaryAttack() override;

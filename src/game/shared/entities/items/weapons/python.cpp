@@ -25,19 +25,19 @@
 LINK_ENTITY_TO_CLASS(weapon_python, CPython);
 LINK_ENTITY_TO_CLASS(weapon_357, CPython);
 
-bool CPython::GetWeaponInfo(WeaponInfo* p)
+bool CPython::GetWeaponInfo(WeaponInfo& p)
 {
-	p->pszName = GetClassname();
-	p->pszAmmo1 = "357";
-	p->iMaxAmmo1 = _357_MAX_CARRY;
-	p->pszAmmo2 = nullptr;
-	p->iMaxAmmo2 = -1;
-	p->iMaxClip = PYTHON_MAX_CLIP;
-	p->iFlags = 0;
-	p->iSlot = 1;
-	p->iPosition = 1;
-	p->iId = m_iId = WEAPON_PYTHON;
-	p->iWeight = PYTHON_WEIGHT;
+	p.pszName = GetClassname();
+	p.pszAmmo1 = "357";
+	p.iMaxAmmo1 = _357_MAX_CARRY;
+	p.pszAmmo2 = nullptr;
+	p.iMaxAmmo2 = -1;
+	p.iMaxClip = PYTHON_MAX_CLIP;
+	p.iFlags = 0;
+	p.iSlot = 1;
+	p.iPosition = 1;
+	p.iId = m_iId = WEAPON_PYTHON;
+	p.iWeight = PYTHON_WEIGHT;
 
 	return true;
 }

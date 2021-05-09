@@ -75,19 +75,19 @@ bool CShotgun::AddToPlayer(CBasePlayer* pPlayer)
 	return false;
 }
 
-bool CShotgun::GetWeaponInfo(WeaponInfo* p)
+bool CShotgun::GetWeaponInfo(WeaponInfo& p)
 {
-	p->pszName = GetClassname();
-	p->pszAmmo1 = "buckshot";
-	p->iMaxAmmo1 = BUCKSHOT_MAX_CARRY;
-	p->pszAmmo2 = nullptr;
-	p->iMaxAmmo2 = -1;
-	p->iMaxClip = SHOTGUN_MAX_CLIP;
-	p->iSlot = 2;
-	p->iPosition = 1;
-	p->iFlags = 0;
-	p->iId = m_iId = WEAPON_SHOTGUN;
-	p->iWeight = SHOTGUN_WEIGHT;
+	p.pszName = GetClassname();
+	p.pszAmmo1 = "buckshot";
+	p.iMaxAmmo1 = BUCKSHOT_MAX_CARRY;
+	p.pszAmmo2 = nullptr;
+	p.iMaxAmmo2 = -1;
+	p.iMaxClip = SHOTGUN_MAX_CLIP;
+	p.iSlot = 2;
+	p.iPosition = 1;
+	p.iFlags = 0;
+	p.iId = m_iId = WEAPON_SHOTGUN;
+	p.iWeight = SHOTGUN_WEIGHT;
 
 	return true;
 }

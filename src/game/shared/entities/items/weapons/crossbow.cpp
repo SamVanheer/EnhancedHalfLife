@@ -248,19 +248,19 @@ void CCrossbow::Precache()
 	m_usCrossbow2 = PRECACHE_EVENT(1, "events/crossbow2.sc");
 }
 
-bool CCrossbow::GetWeaponInfo(WeaponInfo* p)
+bool CCrossbow::GetWeaponInfo(WeaponInfo& p)
 {
-	p->pszName = GetClassname();
-	p->pszAmmo1 = "bolts";
-	p->iMaxAmmo1 = BOLT_MAX_CARRY;
-	p->pszAmmo2 = nullptr;
-	p->iMaxAmmo2 = -1;
-	p->iMaxClip = CROSSBOW_MAX_CLIP;
-	p->iSlot = 2;
-	p->iPosition = 2;
-	p->iId = WEAPON_CROSSBOW;
-	p->iFlags = 0;
-	p->iWeight = CROSSBOW_WEIGHT;
+	p.pszName = GetClassname();
+	p.pszAmmo1 = "bolts";
+	p.iMaxAmmo1 = BOLT_MAX_CARRY;
+	p.pszAmmo2 = nullptr;
+	p.iMaxAmmo2 = -1;
+	p.iMaxClip = CROSSBOW_MAX_CLIP;
+	p.iSlot = 2;
+	p.iPosition = 2;
+	p.iId = WEAPON_CROSSBOW;
+	p.iFlags = 0;
+	p.iWeight = CROSSBOW_WEIGHT;
 	return true;
 }
 

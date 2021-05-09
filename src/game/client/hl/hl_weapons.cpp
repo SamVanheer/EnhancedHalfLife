@@ -117,7 +117,7 @@ void HUD_PrepEntity(CBaseEntity* pEntity, CBasePlayer* pWeaponOwner)
 
 		((CBasePlayerWeapon*)pEntity)->m_hPlayer = pWeaponOwner;
 
-		((CBasePlayerWeapon*)pEntity)->GetWeaponInfo(&info);
+		((CBasePlayerWeapon*)pEntity)->GetWeaponInfo(info);
 
 		CBasePlayerWeapon::WeaponInfoArray[info.iId] = info;
 

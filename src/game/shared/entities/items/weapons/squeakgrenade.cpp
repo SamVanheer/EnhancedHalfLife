@@ -401,19 +401,19 @@ void CSqueak::Precache()
 	m_usSnarkFire = PRECACHE_EVENT(1, "events/snarkfire.sc");
 }
 
-bool CSqueak::GetWeaponInfo(WeaponInfo* p)
+bool CSqueak::GetWeaponInfo(WeaponInfo& p)
 {
-	p->pszName = GetClassname();
-	p->pszAmmo1 = "Snarks";
-	p->iMaxAmmo1 = SNARK_MAX_CARRY;
-	p->pszAmmo2 = nullptr;
-	p->iMaxAmmo2 = -1;
-	p->iMaxClip = WEAPON_NOCLIP;
-	p->iSlot = 4;
-	p->iPosition = 3;
-	p->iId = m_iId = WEAPON_SNARK;
-	p->iWeight = SNARK_WEIGHT;
-	p->iFlags = WEAPON_FLAG_LIMITINWORLD | WEAPON_FLAG_EXHAUSTIBLE;
+	p.pszName = GetClassname();
+	p.pszAmmo1 = "Snarks";
+	p.iMaxAmmo1 = SNARK_MAX_CARRY;
+	p.pszAmmo2 = nullptr;
+	p.iMaxAmmo2 = -1;
+	p.iMaxClip = WEAPON_NOCLIP;
+	p.iSlot = 4;
+	p.iPosition = 3;
+	p.iId = m_iId = WEAPON_SNARK;
+	p.iWeight = SNARK_WEIGHT;
+	p.iFlags = WEAPON_FLAG_LIMITINWORLD | WEAPON_FLAG_EXHAUSTIBLE;
 
 	return true;
 }

@@ -1166,7 +1166,7 @@ int GetWeaponData(edict_t* player, weapon_data_t* info)
 			{
 				// Get The ID.
 				WeaponInfo II{};
-				weapon->GetWeaponInfo(&II);
+				weapon->GetWeaponInfo(II);
 
 				if (II.iId >= 0 && II.iId < MAX_WEAPONS)
 				{
@@ -1265,7 +1265,7 @@ void UpdateClientData(const edict_t* ent, int sendweapons, clientdata_t* cd)
 				if (CBasePlayerWeapon* gun = pl->m_hActiveWeapon; gun && gun->UseDecrement())
 				{
 					WeaponInfo II{};
-					gun->GetWeaponInfo(&II);
+					gun->GetWeaponInfo(II);
 
 					cd->m_iId = II.iId;
 

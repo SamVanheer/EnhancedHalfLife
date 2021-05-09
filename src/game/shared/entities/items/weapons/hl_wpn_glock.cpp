@@ -51,19 +51,19 @@ void CGlock::Precache()
 	m_usFireGlock2 = PRECACHE_EVENT(1, "events/glock2.sc");
 }
 
-bool CGlock::GetWeaponInfo(WeaponInfo* p)
+bool CGlock::GetWeaponInfo(WeaponInfo& p)
 {
-	p->pszName = GetClassname();
-	p->pszAmmo1 = "9mm";
-	p->iMaxAmmo1 = _9MM_MAX_CARRY;
-	p->pszAmmo2 = nullptr;
-	p->iMaxAmmo2 = -1;
-	p->iMaxClip = GLOCK_MAX_CLIP;
-	p->iSlot = 1;
-	p->iPosition = 0;
-	p->iFlags = 0;
-	p->iId = m_iId = WEAPON_GLOCK;
-	p->iWeight = GLOCK_WEIGHT;
+	p.pszName = GetClassname();
+	p.pszAmmo1 = "9mm";
+	p.iMaxAmmo1 = _9MM_MAX_CARRY;
+	p.pszAmmo2 = nullptr;
+	p.iMaxAmmo2 = -1;
+	p.iMaxClip = GLOCK_MAX_CLIP;
+	p.iSlot = 1;
+	p.iPosition = 0;
+	p.iFlags = 0;
+	p.iId = m_iId = WEAPON_GLOCK;
+	p.iWeight = GLOCK_WEIGHT;
 
 	return true;
 }

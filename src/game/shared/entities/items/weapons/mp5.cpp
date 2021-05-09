@@ -64,19 +64,19 @@ void CMP5::Precache()
 	m_usMP52 = PRECACHE_EVENT(1, "events/mp52.sc");
 }
 
-bool CMP5::GetWeaponInfo(WeaponInfo* p)
+bool CMP5::GetWeaponInfo(WeaponInfo& p)
 {
-	p->pszName = GetClassname();
-	p->pszAmmo1 = "9mm";
-	p->iMaxAmmo1 = _9MM_MAX_CARRY;
-	p->pszAmmo2 = "ARgrenades";
-	p->iMaxAmmo2 = M203_GRENADE_MAX_CARRY;
-	p->iMaxClip = MP5_MAX_CLIP;
-	p->iSlot = 2;
-	p->iPosition = 0;
-	p->iFlags = 0;
-	p->iId = m_iId = WEAPON_MP5;
-	p->iWeight = MP5_WEIGHT;
+	p.pszName = GetClassname();
+	p.pszAmmo1 = "9mm";
+	p.iMaxAmmo1 = _9MM_MAX_CARRY;
+	p.pszAmmo2 = "ARgrenades";
+	p.iMaxAmmo2 = M203_GRENADE_MAX_CARRY;
+	p.iMaxClip = MP5_MAX_CLIP;
+	p.iSlot = 2;
+	p.iPosition = 0;
+	p.iFlags = 0;
+	p.iId = m_iId = WEAPON_MP5;
+	p.iWeight = MP5_WEIGHT;
 
 	return true;
 }

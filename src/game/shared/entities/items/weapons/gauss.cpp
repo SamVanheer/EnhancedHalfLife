@@ -91,19 +91,19 @@ bool CGauss::AddToPlayer(CBasePlayer* pPlayer)
 	return false;
 }
 
-bool CGauss::GetWeaponInfo(WeaponInfo* p)
+bool CGauss::GetWeaponInfo(WeaponInfo& p)
 {
-	p->pszName = GetClassname();
-	p->pszAmmo1 = "uranium";
-	p->iMaxAmmo1 = URANIUM_MAX_CARRY;
-	p->pszAmmo2 = nullptr;
-	p->iMaxAmmo2 = -1;
-	p->iMaxClip = WEAPON_NOCLIP;
-	p->iSlot = 3;
-	p->iPosition = 1;
-	p->iId = m_iId = WEAPON_GAUSS;
-	p->iFlags = 0;
-	p->iWeight = GAUSS_WEIGHT;
+	p.pszName = GetClassname();
+	p.pszAmmo1 = "uranium";
+	p.iMaxAmmo1 = URANIUM_MAX_CARRY;
+	p.pszAmmo2 = nullptr;
+	p.iMaxAmmo2 = -1;
+	p.iMaxClip = WEAPON_NOCLIP;
+	p.iSlot = 3;
+	p.iPosition = 1;
+	p.iId = m_iId = WEAPON_GAUSS;
+	p.iFlags = 0;
+	p.iWeight = GAUSS_WEIGHT;
 
 	return true;
 }

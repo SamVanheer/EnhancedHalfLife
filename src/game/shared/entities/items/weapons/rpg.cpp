@@ -323,19 +323,19 @@ void CRpg::Precache()
 	m_usRpg = PRECACHE_EVENT(1, "events/rpg.sc");
 }
 
-bool CRpg::GetWeaponInfo(WeaponInfo* p)
+bool CRpg::GetWeaponInfo(WeaponInfo& p)
 {
-	p->pszName = GetClassname();
-	p->pszAmmo1 = "rockets";
-	p->iMaxAmmo1 = ROCKET_MAX_CARRY;
-	p->pszAmmo2 = nullptr;
-	p->iMaxAmmo2 = -1;
-	p->iMaxClip = RPG_MAX_CLIP;
-	p->iSlot = 3;
-	p->iPosition = 0;
-	p->iId = m_iId = WEAPON_RPG;
-	p->iFlags = 0;
-	p->iWeight = RPG_WEIGHT;
+	p.pszName = GetClassname();
+	p.pszAmmo1 = "rockets";
+	p.iMaxAmmo1 = ROCKET_MAX_CARRY;
+	p.pszAmmo2 = nullptr;
+	p.iMaxAmmo2 = -1;
+	p.iMaxClip = RPG_MAX_CLIP;
+	p.iSlot = 3;
+	p.iPosition = 0;
+	p.iId = m_iId = WEAPON_RPG;
+	p.iFlags = 0;
+	p.iWeight = RPG_WEIGHT;
 
 	return true;
 }

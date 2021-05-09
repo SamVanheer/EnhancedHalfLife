@@ -201,19 +201,19 @@ void CSatchel::Precache()
 	UTIL_PrecacheOther("monster_satchel");
 }
 
-bool CSatchel::GetWeaponInfo(WeaponInfo* p)
+bool CSatchel::GetWeaponInfo(WeaponInfo& p)
 {
-	p->pszName = GetClassname();
-	p->pszAmmo1 = "Satchel Charge";
-	p->iMaxAmmo1 = SATCHEL_MAX_CARRY;
-	p->pszAmmo2 = nullptr;
-	p->iMaxAmmo2 = -1;
-	p->iMaxClip = WEAPON_NOCLIP;
-	p->iSlot = 4;
-	p->iPosition = 1;
-	p->iFlags = WEAPON_FLAG_SELECTONEMPTY | WEAPON_FLAG_LIMITINWORLD | WEAPON_FLAG_EXHAUSTIBLE;
-	p->iId = m_iId = WEAPON_SATCHEL;
-	p->iWeight = SATCHEL_WEIGHT;
+	p.pszName = GetClassname();
+	p.pszAmmo1 = "Satchel Charge";
+	p.iMaxAmmo1 = SATCHEL_MAX_CARRY;
+	p.pszAmmo2 = nullptr;
+	p.iMaxAmmo2 = -1;
+	p.iMaxClip = WEAPON_NOCLIP;
+	p.iSlot = 4;
+	p.iPosition = 1;
+	p.iFlags = WEAPON_FLAG_SELECTONEMPTY | WEAPON_FLAG_LIMITINWORLD | WEAPON_FLAG_EXHAUSTIBLE;
+	p.iId = m_iId = WEAPON_SATCHEL;
+	p.iWeight = SATCHEL_WEIGHT;
 
 	return true;
 }

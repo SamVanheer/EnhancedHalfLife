@@ -49,18 +49,18 @@ void CCrowbar::Precache()
 	m_usCrowbar = PRECACHE_EVENT(1, "events/crowbar.sc");
 }
 
-bool CCrowbar::GetWeaponInfo(WeaponInfo* p)
+bool CCrowbar::GetWeaponInfo(WeaponInfo& p)
 {
-	p->pszName = GetClassname();
-	p->pszAmmo1 = nullptr;
-	p->iMaxAmmo1 = -1;
-	p->pszAmmo2 = nullptr;
-	p->iMaxAmmo2 = -1;
-	p->iMaxClip = WEAPON_NOCLIP;
-	p->iSlot = 0;
-	p->iPosition = 0;
-	p->iId = WEAPON_CROWBAR;
-	p->iWeight = CROWBAR_WEIGHT;
+	p.pszName = GetClassname();
+	p.pszAmmo1 = nullptr;
+	p.iMaxAmmo1 = -1;
+	p.pszAmmo2 = nullptr;
+	p.iMaxAmmo2 = -1;
+	p.iMaxClip = WEAPON_NOCLIP;
+	p.iSlot = 0;
+	p.iPosition = 0;
+	p.iId = WEAPON_CROWBAR;
+	p.iWeight = CROWBAR_WEIGHT;
 	return true;
 }
 
