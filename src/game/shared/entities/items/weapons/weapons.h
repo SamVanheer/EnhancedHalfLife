@@ -261,6 +261,8 @@ public:
 
 	ItemType GetType() const override final { return ItemType::Weapon; }
 
+	void KeyValue(KeyValueData* pkvd) override;
+
 	/**
 	*	@brief return true if you want the weapon added to the player inventory
 	*/
@@ -436,7 +438,8 @@ public:
 	WeaponState m_iClientWeaponState = WeaponState::NotActive;	//!< the last version of the weapon state sent to hud dll (is current weapon, is on target)
 	bool m_fInReload = false;									//!< Are we in the middle of a reload;
 
-	int m_iDefaultAmmo = 0;//!< how much ammo you get when you pick up this weapon as placed by a level designer.
+	int m_iDefaultPrimaryAmmo = 0; //!< how much ammo you get when you pick up this weapon as placed by a level designer.
+	int m_iDefaultAmmo = 0; //!< Amount of ammo left in weapon
 
 	// hle time creep vars
 	float m_flPrevPrimaryAttack = 0;

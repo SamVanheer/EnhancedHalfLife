@@ -307,6 +307,7 @@ bool CBasePlayerAmmo::Restore(class CRestore&) { return true; }
 bool CBasePlayerAmmo::Save(class CSave&) { return true; }
 float CBasePlayerWeapon::GetNextAttackDelay(float flTime) { return flTime; }
 void CBasePlayerWeapon::SetObjectCollisionBox() { }
+void CBasePlayerWeapon::KeyValue(KeyValueData* pkvd) {}
 void CBasePlayerWeapon::FallInit() { }
 ItemApplyResult CBasePlayerWeapon::Apply(CBasePlayer* pPlayer) { return {ItemApplyAction::NotUsed}; }
 void CBasePlayerWeapon::DestroyWeapon() { }

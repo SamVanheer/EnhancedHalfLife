@@ -390,6 +390,7 @@ TYPEDESCRIPTION	CBasePlayerWeapon::m_SaveData[] =
 	DEFINE_FIELD(CBasePlayerWeapon, m_iPrimaryAmmoType, FIELD_INTEGER),
 	DEFINE_FIELD(CBasePlayerWeapon, m_iSecondaryAmmoType, FIELD_INTEGER),
 	DEFINE_FIELD(CBasePlayerWeapon, m_iClip, FIELD_INTEGER),
+	DEFINE_FIELD(CBasePlayerWeapon, m_iDefaultPrimaryAmmo, FIELD_INTEGER),
 	DEFINE_FIELD(CBasePlayerWeapon, m_iDefaultAmmo, FIELD_INTEGER),
 	//	DEFINE_FIELD( CBasePlayerWeapon, m_iClientClip, FIELD_INTEGER )	 , reset to zero on load so hud gets updated correctly
 	//  DEFINE_FIELD( CBasePlayerWeapon, m_iClientWeaponState, FIELD_INTEGER ), reset to zero on load so hud gets updated correctly
@@ -402,6 +403,19 @@ void CBasePlayerWeapon::SetObjectCollisionBox()
 {
 	pev->absmin = GetAbsOrigin() + Vector(-24, -24, 0);
 	pev->absmax = GetAbsOrigin() + Vector(24, 24, 16);
+}
+
+void CBasePlayerWeapon::KeyValue(KeyValueData* pkvd)
+{
+	if (AreStringsEqual(pkvd->szKeyName, "default_primary_ammo"))
+	{
+		m_iDefaultAmmo = m_iDefaultPrimaryAmmo = std::max(0, atoi(pkvd->szValue));
+		pkvd->fHandled = true;
+	}
+	else
+	{
+		CBaseItem::KeyValue(pkvd);
+	}
 }
 
 void CBasePlayerWeapon::FallInit()
@@ -435,6 +449,8 @@ CBasePlayerWeapon* CBasePlayerWeapon::GetItemToRespawn(const Vector& respawnPoin
 
 	pNewWeapon->m_iszTriggerOnMaterialize = m_iszTriggerOnMaterialize;
 	pNewWeapon->m_iszTriggerOnDematerialize = m_iszTriggerOnDematerialize;
+
+	pNewWeapon->m_iDefaultAmmo = pNewWeapon->m_iDefaultPrimaryAmmo = m_iDefaultPrimaryAmmo;
 
 	DispatchSpawn(pNewWeapon->edict());
 
