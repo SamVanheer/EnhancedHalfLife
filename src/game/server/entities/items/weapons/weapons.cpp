@@ -894,8 +894,11 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 			{
 				weapon->AttachToPlayer(pPlayer);
 			}
-
-			//TODO: remove the weapon if it wasn't attached
+			else
+			{
+				//Player didn't pick it up, remove the weapon
+				UTIL_Remove(weapon);
+			}
 
 			weapon = next;
 		}
