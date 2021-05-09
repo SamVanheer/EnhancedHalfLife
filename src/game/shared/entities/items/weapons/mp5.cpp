@@ -260,12 +260,12 @@ void CMP5::WeaponIdle()
 	m_flTimeWeaponIdle = UTIL_SharedRandomFloat(player->random_seed, 10, 15); // how long till we do this again.
 }
 
-class CMP5AmmoClip : public CBasePlayerAmmo
+class CMP5AmmoClip : public CBaseAmmo
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerAmmo::OnConstruct();
+		CBaseAmmo::OnConstruct();
 		SetModelName("models/w_9mmARclip.mdl");
 		m_iAmount = AMMO_MP5CLIP_GIVE;
 		m_iszAmmoName = MAKE_STRING("9mm");
@@ -274,12 +274,12 @@ public:
 LINK_ENTITY_TO_CLASS(ammo_mp5clip, CMP5AmmoClip);
 LINK_ENTITY_TO_CLASS(ammo_9mmAR, CMP5AmmoClip);
 
-class CMP5Chainammo : public CBasePlayerAmmo
+class CMP5Chainammo : public CBaseAmmo
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerAmmo::OnConstruct();
+		CBaseAmmo::OnConstruct();
 		SetModelName("models/w_chainammo.mdl");
 		m_iAmount = AMMO_CHAINBOX_GIVE;
 		m_iszAmmoName = MAKE_STRING("9mm");
@@ -287,12 +287,12 @@ public:
 };
 LINK_ENTITY_TO_CLASS(ammo_9mmbox, CMP5Chainammo);
 
-class CMP5AmmoGrenade : public CBasePlayerAmmo
+class CMP5AmmoGrenade : public CBaseAmmo
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerAmmo::OnConstruct();
+		CBaseAmmo::OnConstruct();
 		SetModelName("models/w_ARgrenade.mdl");
 		m_iAmount = AMMO_M203BOX_GIVE;
 		m_iszAmmoName = MAKE_STRING("ARgrenades");

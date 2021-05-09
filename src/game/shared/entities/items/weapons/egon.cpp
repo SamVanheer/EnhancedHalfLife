@@ -520,12 +520,12 @@ void CEgon::SetWeaponData(const weapon_data_t& data)
 	m_fireState = static_cast<FireState>(data.iuser3);
 }
 
-class CEgonAmmo : public CBasePlayerAmmo
+class CEgonAmmo : public CBaseAmmo
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerAmmo::OnConstruct();
+		CBaseAmmo::OnConstruct();
 		SetModelName("models/w_chainammo.mdl");
 		m_iAmount = AMMO_URANIUMBOX_GIVE;
 		m_iszAmmoName = MAKE_STRING("uranium");

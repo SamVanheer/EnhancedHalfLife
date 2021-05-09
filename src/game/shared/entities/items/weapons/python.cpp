@@ -264,12 +264,12 @@ void CPython::WeaponIdle()
 	SendWeaponAnim(iAnim, bUseScope);
 }
 
-class CPythonAmmo : public CBasePlayerAmmo
+class CPythonAmmo : public CBaseAmmo
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerAmmo::OnConstruct();
+		CBaseAmmo::OnConstruct();
 		SetModelName("models/w_357ammobox.mdl");
 		m_iAmount = AMMO_357BOX_GIVE;
 		m_iszAmmoName = MAKE_STRING("357");

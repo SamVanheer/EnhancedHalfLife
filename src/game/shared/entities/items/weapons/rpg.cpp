@@ -513,12 +513,12 @@ void CRpg::UpdateSpot()
 #endif
 }
 
-class CRpgAmmo : public CBasePlayerAmmo
+class CRpgAmmo : public CBaseAmmo
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerAmmo::OnConstruct();
+		CBaseAmmo::OnConstruct();
 		SetModelName("models/w_rpgammo.mdl");
 		// hand out more ammo per rocket in multiplayer.
 		m_iAmount = bIsMultiplayer() ? AMMO_RPGCLIP_GIVE * 2 : AMMO_RPGCLIP_GIVE;

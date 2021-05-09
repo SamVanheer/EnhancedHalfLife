@@ -384,12 +384,12 @@ void CShotgun::SetWeaponData(const weapon_data_t& data)
 	m_fInSpecialReload = static_cast<ReloadState>(data.m_fInSpecialReload);
 }
 
-class CShotgunAmmo : public CBasePlayerAmmo
+class CShotgunAmmo : public CBaseAmmo
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerAmmo::OnConstruct();
+		CBaseAmmo::OnConstruct();
 		SetModelName("models/w_shotbox.mdl");
 		m_iAmount = AMMO_BUCKSHOTBOX_GIVE;
 		m_iszAmmoName = MAKE_STRING("buckshot");

@@ -298,16 +298,16 @@ void W_Precache()
 
 }
 
-TYPEDESCRIPTION	CBasePlayerAmmo::m_SaveData[] =
+TYPEDESCRIPTION	CBaseAmmo::m_SaveData[] =
 {
-	DEFINE_FIELD(CBasePlayerAmmo, m_iAmount, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayerAmmo, m_iszAmmoName, FIELD_STRING),
-	DEFINE_FIELD(CBasePlayerAmmo, m_iszPickupSound, FIELD_SOUNDNAME),
+	DEFINE_FIELD(CBaseAmmo, m_iAmount, FIELD_INTEGER),
+	DEFINE_FIELD(CBaseAmmo, m_iszAmmoName, FIELD_STRING),
+	DEFINE_FIELD(CBaseAmmo, m_iszPickupSound, FIELD_SOUNDNAME),
 };
 
-IMPLEMENT_SAVERESTORE(CBasePlayerAmmo, CBaseItem);
+IMPLEMENT_SAVERESTORE(CBaseAmmo, CBaseItem);
 
-void CBasePlayerAmmo::KeyValue(KeyValueData* pkvd)
+void CBaseAmmo::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "ammo_amount"))
 	{
@@ -325,7 +325,7 @@ void CBasePlayerAmmo::KeyValue(KeyValueData* pkvd)
 	}
 }
 
-void CBasePlayerAmmo::Precache()
+void CBaseAmmo::Precache()
 {
 	CBaseItem::Precache();
 
@@ -335,7 +335,7 @@ void CBasePlayerAmmo::Precache()
 	}
 }
 
-ItemApplyResult CBasePlayerAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName)
+ItemApplyResult CBaseAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName)
 {
 	if (ammoName && *ammoName && player->GiveAmmo(amount, ammoName) != -1)
 	{
@@ -349,7 +349,7 @@ ItemApplyResult CBasePlayerAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount
 	return {ItemApplyAction::NotUsed};
 }
 
-ItemApplyResult CBasePlayerAmmo::Apply(CBasePlayer* player)
+ItemApplyResult CBaseAmmo::Apply(CBasePlayer* player)
 {
 	return DefaultGiveAmmo(player, m_iAmount, STRING(m_iszAmmoName));
 }
@@ -365,7 +365,7 @@ void CAmmoGeneric::KeyValue(KeyValueData* pkvd)
 	}
 	else
 	{
-		CBasePlayerAmmo::KeyValue(pkvd);
+		CBaseAmmo::KeyValue(pkvd);
 	}
 }
 

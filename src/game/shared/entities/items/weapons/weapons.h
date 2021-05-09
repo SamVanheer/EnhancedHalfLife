@@ -449,7 +449,7 @@ private:
 	string_t m_iszWorldModelName = iStringNull;
 };
 
-class CBasePlayerAmmo : public CBaseItem
+class CBaseAmmo : public CBaseItem
 {
 public:
 	void OnConstruct() override
@@ -485,7 +485,7 @@ protected:
 /**
 *	@brief Generic ammo item
 */
-class CAmmoGeneric : public CBasePlayerAmmo
+class CAmmoGeneric : public CBaseAmmo
 {
 public:
 	void KeyValue(KeyValueData* pkvd) override;

@@ -492,12 +492,12 @@ void CCrossbow::WeaponIdle()
 	}
 }
 
-class CCrossbowAmmo : public CBasePlayerAmmo
+class CCrossbowAmmo : public CBaseAmmo
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerAmmo::OnConstruct();
+		CBaseAmmo::OnConstruct();
 		SetModelName("models/w_crossbow_clip.mdl");
 		m_iAmount = AMMO_CROSSBOWCLIP_GIVE;
 		m_iszAmmoName = MAKE_STRING("bolts");

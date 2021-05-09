@@ -604,12 +604,12 @@ void CGauss::DecrementTimers()
 	}
 }
 
-class CGaussAmmo : public CBasePlayerAmmo
+class CGaussAmmo : public CBaseAmmo
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerAmmo::OnConstruct();
+		CBaseAmmo::OnConstruct();
 		SetModelName("models/w_gaussammo.mdl");
 		m_iAmount = AMMO_URANIUMBOX_GIVE;
 		m_iszAmmoName = MAKE_STRING("uranium");

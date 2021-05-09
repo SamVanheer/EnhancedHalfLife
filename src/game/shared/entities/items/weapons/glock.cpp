@@ -208,12 +208,12 @@ void CGlock::WeaponIdle()
 	}
 }
 
-class CGlockAmmo : public CBasePlayerAmmo
+class CGlockAmmo : public CBaseAmmo
 {
 public:
 	void OnConstruct() override
 	{
-		CBasePlayerAmmo::OnConstruct();
+		CBaseAmmo::OnConstruct();
 		SetModelName("models/w_9mmclip.mdl");
 		m_iAmount = AMMO_GLOCKCLIP_GIVE;
 		m_iszAmmoName = MAKE_STRING("9mm");

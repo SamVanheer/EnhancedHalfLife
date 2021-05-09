@@ -303,8 +303,8 @@ bool CBaseItem::Restore(class CRestore&) { return true; }
 bool CBaseItem::Save(class CSave&) { return true; }
 bool CBasePlayerWeapon::Restore(class CRestore&) { return true; }
 bool CBasePlayerWeapon::Save(class CSave&) { return true; }
-bool CBasePlayerAmmo::Restore(class CRestore&) { return true; }
-bool CBasePlayerAmmo::Save(class CSave&) { return true; }
+bool CBaseAmmo::Restore(class CRestore&) { return true; }
+bool CBaseAmmo::Save(class CSave&) { return true; }
 float CBasePlayerWeapon::GetNextAttackDelay(float flTime) { return flTime; }
 void CBasePlayerWeapon::SetObjectCollisionBox() { }
 void CBasePlayerWeapon::KeyValue(KeyValueData* pkvd) {}
@@ -324,9 +324,9 @@ bool CBasePlayerWeapon::IsUseable() { return true; }
 bool CBasePlayerWeapon::ExtractAmmo(CBasePlayerWeapon* pWeapon) { return false; }
 int CBasePlayerWeapon::ExtractClipAmmo(CBasePlayerWeapon* pWeapon) { return 0; }
 void CBasePlayerWeapon::RetireWeapon() { }
-void CBasePlayerAmmo::KeyValue(KeyValueData* pkvd) {}
-void CBasePlayerAmmo::Precache() {}
-ItemApplyResult CBasePlayerAmmo::Apply(CBasePlayer* player) { return {ItemApplyAction::NotUsed}; }
+void CBaseAmmo::KeyValue(KeyValueData* pkvd) {}
+void CBaseAmmo::Precache() {}
+ItemApplyResult CBaseAmmo::Apply(CBasePlayer* player) { return {ItemApplyAction::NotUsed}; }
 void CSoundEnt::InsertSound(int iType, const Vector& vecOrigin, int iVolume, float flDuration) {}
 
 CBaseEntity* UTIL_FindEntityByClassname(CBaseEntity* pStartEntity, const char* szName) { return nullptr; }
