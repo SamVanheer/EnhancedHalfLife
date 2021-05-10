@@ -20,6 +20,7 @@
 //
 // Misc utility code
 //
+#include "extdll.h"
 #include "activity.h"
 #include "enginecallback.h"
 #include "shared_utils.hpp"
