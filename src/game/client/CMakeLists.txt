@@ -50,9 +50,6 @@ target_include_directories(client PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/game/client
 	${INCLUDE_DIRECTORY}/GoldSrc/game/server
 	${INCLUDE_DIRECTORY}/GoldSrc/math
-	../common
-	../pm_shared
-	../engine
 	../shared
 	../shared/entities
 	../shared/entities/items

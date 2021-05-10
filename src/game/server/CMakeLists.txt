@@ -18,9 +18,6 @@ target_include_directories(hl PRIVATE
 	gamerules
 	persistence
 	server_interface
-	../engine
-	../common
-	../pm_shared
 	${INCLUDE_DIRECTORY}/GoldSrc
 	${INCLUDE_DIRECTORY}/GoldSrc/engine
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/server
