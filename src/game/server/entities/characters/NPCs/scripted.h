@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "basemonster.h"
 #include "scriptevent.h"
 
 constexpr int SF_SCRIPT_WAITTILLSEEN = 1;

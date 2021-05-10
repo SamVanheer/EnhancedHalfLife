@@ -15,6 +15,37 @@
 
 #pragma once
 
+#include "CBaseToggle.hpp"
+#include "schedule.h"
+
+class CCineMonster;
+class CSound;
+
+constexpr int MAX_PATH_SIZE = 10; //!< max number of nodes available for a path.
+constexpr int ROUTE_SIZE = 8;				//!< how many waypoints a monster can store at one time
+constexpr int MAX_OLD_ENEMIES = 4;			//!< how many old enemies to remember
+
+constexpr int bits_CAP_DUCK = 1 << 0;		//!< crouch
+constexpr int bits_CAP_JUMP = 1 << 1;		//!< jump/leap
+constexpr int bits_CAP_STRAFE = 1 << 2;		//!< strafe ( walk/run sideways)
+constexpr int bits_CAP_SQUAD = 1 << 3;		//!< can form squads
+constexpr int bits_CAP_SWIM = 1 << 4;		//!< proficiently navigate in water
+constexpr int bits_CAP_CLIMB = 1 << 5;		//!< climb ladders/ropes
+constexpr int bits_CAP_USE = 1 << 6;		//!< open doors/push buttons/pull levers
+constexpr int bits_CAP_HEAR = 1 << 7;		//!< can hear forced sounds
+constexpr int bits_CAP_AUTO_DOORS = 1 << 8; //!< can trigger auto doors
+constexpr int bits_CAP_OPEN_DOORS = 1 << 9; //!< can open manual doors
+constexpr int bits_CAP_TURN_HEAD = 1 << 10;	//!< can turn head, always bone controller 0
+
+constexpr int bits_CAP_RANGE_ATTACK1 = 1 << 11;	//!< can do a range attack 1
+constexpr int bits_CAP_RANGE_ATTACK2 = 1 << 12;	//!< can do a range attack 2
+constexpr int bits_CAP_MELEE_ATTACK1 = 1 << 13;	//!< can do a melee attack 1
+constexpr int bits_CAP_MELEE_ATTACK2 = 1 << 14;	//!< can do a melee attack 2
+
+constexpr int bits_CAP_FLY = 1 << 15;			//!< can fly, move all around
+
+constexpr int bits_CAP_DOORS_GROUP = bits_CAP_USE | bits_CAP_AUTO_DOORS | bits_CAP_OPEN_DOORS;
+
 /**
 *	@brief monster to monster relationship types
 */

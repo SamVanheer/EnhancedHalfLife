@@ -16,15 +16,11 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
-#include "CPointEntity.hpp"
-#include "CMultiSource.hpp"
-#include "CBaseDelay.hpp"
-#include "CBaseAnimating.hpp"
-#include "CBaseToggle.hpp"
 
-#include "CBaseButton.hpp"
-
-#include "CWorld.hpp"
-
-#include "basemonster.h"
-#include "scripted.h"
+class CPointEntity : public CBaseEntity
+{
+public:
+	void Spawn() override;
+	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+private:
+};

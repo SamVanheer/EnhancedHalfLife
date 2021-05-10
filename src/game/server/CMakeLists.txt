@@ -56,22 +56,29 @@ target_sources(hl PRIVATE
 	util.h
 	voice_gamemgr.cpp
 	voice_gamemgr.h
-	entities/animating.cpp
 	entities/animation.cpp
 	entities/animation.h
 	entities/animationevent.hpp
-	entities/cbase.cpp
 	entities/cbase.h
+	entities/CBaseAnimating.cpp
+	entities/CBaseAnimating.hpp
+	entities/CBaseDelay.hpp
+	entities/CBaseEntity.cpp
+	entities/CBaseEntity.hpp
+	entities/CBaseToggle.hpp
+	entities/CWorld.cpp
+	entities/CWorld.hpp
 	entities/changelevel.cpp
 	entities/changelevel.hpp
+	entities/locksounds.hpp
 	entities/maprules.cpp
 	entities/maprules.h
 	entities/subs.cpp
 	entities/triggers.cpp
 	entities/triggers.hpp
-	entities/world.cpp
 	entities/brush/bmodels.cpp
 	entities/brush/buttons.cpp
+	entities/brush/CBaseButton.hpp
 	entities/brush/CBaseCharger.cpp
 	entities/brush/CBaseCharger.hpp
 	entities/brush/doors.cpp
@@ -143,6 +150,8 @@ target_sources(hl PRIVATE
 	entities/items/items.h
 	entities/items/weapons/weapons.cpp
 	entities/point/airtank.cpp
+	entities/point/CMultiSource.hpp
+	entities/point/CPointEntity.hpp
 	entities/point/effects.cpp
 	entities/point/effects.h
 	entities/point/explode.cpp

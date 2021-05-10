@@ -1,0 +1,99 @@
+/***
+*
+*	Copyright (c) 1996-2001, Valve LLC. All rights reserved.
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
+*	All Rights Reserved.
+*
+*   Use, distribution, and modification of this source code and/or resulting
+*   object code is restricted to non-commercial enhancements to products from
+*   Valve LLC.  All other use, distribution, or modification is prohibited
+*   without written permission from Valve LLC.
+*
+****/
+
+#pragma once
+
+#include "CBaseAnimating.hpp"
+
+class CBaseToggle;
+
+using CallWhenMoveDoneFn = void (CBaseToggle::*)();
+
+/**
+*	@brief generic Toggle entity.
+*/
+class CBaseToggle : public CBaseAnimating
+{
+public:
+	void KeyValue(KeyValueData* pkvd) override;
+
+	ToggleState m_toggle_state = ToggleState::AtTop;
+	float m_flActivateFinished = 0;	//!< like attack_finished, but for doors
+	float m_flMoveDistance = 0;		//!< how far a door should slide or rotate
+	float m_flWait = 0;
+	float m_flLip = 0;
+	float m_flTWidth = 0;		//!< for plats
+	float m_flTLength = 0;	//!< for plats
+
+	Vector m_vecPosition1;
+	Vector m_vecPosition2;
+	Vector m_vecAngle1;
+	Vector m_vecAngle2;
+
+	float m_flHeight = 0;
+	EHANDLE m_hActivator;
+	CallWhenMoveDoneFn m_pfnCallWhenMoveDone = nullptr;
+	Vector m_vecFinalDest;
+	Vector m_vecFinalAngle;
+
+	int m_bitsDamageInflict = 0;	//!< DMG_ damage type that the door or tigger does
+
+	bool Save(CSave& save) override;
+	bool Restore(CRestore& restore) override;
+
+	static TYPEDESCRIPTION m_SaveData[];
+
+	ToggleState GetToggleState() override { return m_toggle_state; }
+	float GetDelay() override { return m_flWait; }
+
+	// common member functions
+	/**
+	*	@brief calculate pev->velocity and pev->nextthink to reach vecDest from GetAbsOrigin() traveling at flSpeed
+	*/
+	void LinearMove(const Vector& vecDest, float flSpeed);
+
+	/**
+	*	@brief After moving, set origin to exact final destination, call "move done" function
+	*/
+	void EXPORT LinearMoveDone();
+
+	/**
+	*	@brief calculate pev->velocity and pev->nextthink to reach vecDest from GetAbsOrigin() traveling at flSpeed
+	*
+	*	Just like LinearMove, but rotational.
+	*/
+	void AngularMove(const Vector& vecDestAngle, float flSpeed);
+
+	/**
+	*	@brief After rotating, set angle to exact final angle, call "move done" function
+	*/
+	void EXPORT AngularMoveDone();
+	bool IsLockedByMaster(); //TODO: non-virtual override
+
+	static float AxisValue(int flags, const Vector& angles);
+	static void AxisDir(CBaseEntity* pEntity);
+	static float AxisDelta(int flags, const Vector& angle1, const Vector& angle2);
+
+	/**
+	*	@brief If this button has a master switch, this is the targetname.
+	*
+	*	@details A master switch must be of the multisource type.
+	*	If all of the switches in the multisource have been triggered, then the button will be allowed to operate.
+	*	Otherwise, it will be deactivated.
+	*/
+	string_t m_sMaster = iStringNull;
+};
+
+#define SetMoveDone(a) m_pfnCallWhenMoveDone = static_cast<CallWhenMoveDoneFn>(a)

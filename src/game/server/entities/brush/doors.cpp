@@ -18,6 +18,8 @@
 #define noiseMoving noise1
 #define noiseArrived noise2
 
+constexpr int SF_ITEM_USE_ONLY = 256; //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR_USE_ONLY!!! 
+
 /**
 *	@details if two doors touch, they are assumed to be connected and operate as a unit.
 *	TOGGLE causes the door to wait in both the start and end states for a trigger event.

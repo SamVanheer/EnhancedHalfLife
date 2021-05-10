@@ -16,15 +16,20 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
-#include "CPointEntity.hpp"
-#include "CMultiSource.hpp"
-#include "CBaseDelay.hpp"
-#include "CBaseAnimating.hpp"
-#include "CBaseToggle.hpp"
 
-#include "CBaseButton.hpp"
+/**
+*	@brief This spawns first when each level begins.
+*
+*	this moved here from world.cpp, to allow classes to be derived from it
+*/
+class CWorld : public CBaseEntity
+{
+public:
+	~CWorld();
 
-#include "CWorld.hpp"
+	void Spawn() override;
+	void Precache() override;
+	void KeyValue(KeyValueData* pkvd) override;
 
-#include "basemonster.h"
-#include "scripted.h"
+	int DamageDecal(int bitsDamageType) override;
+};

@@ -203,6 +203,11 @@ constexpr int itbd_SlowBurn = 6;
 constexpr int itbd_SlowFreeze = 7;
 constexpr int CDMG_TIMEBASED = 8;
 
+/**
+*	@brief people gib if their health is <= this at the time of death
+*/
+constexpr int GIB_HEALTH_VALUE = -30;
+
 constexpr Vector VEC_HULL_MIN(-16, -16, -36);
 constexpr Vector VEC_HULL_MAX(16, 16, 36);
 constexpr Vector VEC_HUMAN_HULL_MIN(-16, -16, 0);
