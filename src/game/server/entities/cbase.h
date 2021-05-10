@@ -22,7 +22,7 @@
 #include "CBaseAnimating.hpp"
 #include "CBaseToggle.hpp"
 
-#include "CBaseButton.hpp"
+#include "brush/CBaseButton.hpp"
 
 #include "CWorld.hpp"
 
