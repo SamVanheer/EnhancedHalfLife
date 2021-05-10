@@ -35,8 +35,6 @@ class CBaseEntity;
 class CBasePlayer;
 class CBaseWeapon;
 
-constexpr int TEAM_NAME_LENGTH = 16;
-
 template<typename T>
 constexpr T& SetBits(T& flBitVector, int bits)
 {

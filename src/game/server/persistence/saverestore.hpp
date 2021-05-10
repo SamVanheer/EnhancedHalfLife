@@ -15,7 +15,11 @@
 
 #pragma once
 
+#include "sv_engine_int.hpp"
+
 class CBaseEntity;
+struct edict_t;
+struct entvars_t;
 
 /**
 *	@brief Base class includes common SAVERESTOREDATA pointer, and manages the entity table

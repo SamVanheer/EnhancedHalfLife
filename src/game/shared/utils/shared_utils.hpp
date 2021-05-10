@@ -17,9 +17,11 @@
 
 #include <cstddef>
 
+#include "const.h"
+#include "progdefs.h"
+
 class CBaseEntity;
 class CBasePlayer;
-struct globalvars_t;
 
 extern globalvars_t* gpGlobals;
 

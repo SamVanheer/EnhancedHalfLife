@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "basemonster.h"
+
 constexpr int	SF_SQUADMONSTER_LEADER = 32;
 
 

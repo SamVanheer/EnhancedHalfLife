@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "basemonster.h"
+
 enum class HornetType
 {
 	Red = 0,

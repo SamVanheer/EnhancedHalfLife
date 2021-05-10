@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "CBaseAnimating.hpp"
+
 enum class ItemType
 {
 	PickupItem = 0,	//!< A pickup item like health, battery, etc

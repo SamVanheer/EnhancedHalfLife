@@ -15,6 +15,10 @@
 
 #pragma once
 
+#include <cstddef>
+
+#include "sv_engine_int.hpp"
+
 constexpr int MAX_RULE_BUFFER = 1024;
 
 struct mapcycle_item_t

@@ -15,6 +15,12 @@
 
 #pragma once
 
+#include "Platform.h"
+#include "const.h"
+#include "mathlib.h"
+
+struct edict_t;
+
 struct globalvars_t
 {
 	float		time = 0;

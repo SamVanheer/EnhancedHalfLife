@@ -24,6 +24,8 @@
 #include "brush/func_break.h"
 #include "skill.h"
 
+struct WayPoint_t;
+
 // Hit Group standards
 constexpr int HITGROUP_GENERIC = 0;
 constexpr int HITGROUP_HEAD = 1;

@@ -15,9 +15,12 @@
 
 #pragma once
 
-constexpr int ACTIVITY_NOT_AVAILABLE = -1;
-
 #include "animationevent.hpp"
+
+class CBaseEntity;
+class Vector;
+
+constexpr int ACTIVITY_NOT_AVAILABLE = -1;
 
 bool IsSoundEvent(int eventNumber);
 

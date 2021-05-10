@@ -18,6 +18,8 @@
 #include <cstdint>
 #include <memory>
 
+#include "basemonster.h"
+
 /**
 *	@file
 *

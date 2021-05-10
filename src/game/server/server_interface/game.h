@@ -15,6 +15,8 @@
 
 #pragma once
 
+struct cvar_t;
+
 void GameDLLInit();
 void GameDLLShutdown();
 

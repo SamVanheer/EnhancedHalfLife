@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "CBaseEntity.hpp"
+
 /**
 * @brief Body queue class here.... It's really just CBaseEntity
 */

@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "mathlib.h"
+
 /**
 *	@brief Shows a particle trail from player to entity in crosshair.
 *	Shows particles at that entities bbox

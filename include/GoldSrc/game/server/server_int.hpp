@@ -21,8 +21,11 @@
 
 struct clientdata_t;
 struct entity_state_t;
+struct KeyValueData;
 struct netadr_t;
 struct playermove_t;
+struct SAVERESTOREDATA;
+struct TYPEDESCRIPTION;
 struct usercmd_t;
 struct weapon_data_t;
 

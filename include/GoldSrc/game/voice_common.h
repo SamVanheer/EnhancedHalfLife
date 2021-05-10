@@ -8,6 +8,7 @@
 #pragma once
 
 #include "bitvec.h"
+#include "cdll_dll.h"
 
 constexpr int VOICE_MAX_PLAYERS = MAX_CLIENTS;
 constexpr int VOICE_MAX_PLAYERS_DW = (VOICE_MAX_PLAYERS / 32) + !!(VOICE_MAX_PLAYERS & 31);

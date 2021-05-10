@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "mathlib.h"
+
 enum class TaskStatus
 {
 	New = 0,		  //!< Just started

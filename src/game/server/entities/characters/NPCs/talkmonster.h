@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "basemonster.h"
 #include "monsters.h"
 
 constexpr float TALKRANGE_MIN = 500.0;			//!< don't talk to anyone farther away than this

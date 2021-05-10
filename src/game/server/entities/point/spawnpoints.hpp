@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "CPointEntity.hpp"
+
 class CBaseDMStart : public CPointEntity
 {
 public:

@@ -17,6 +17,8 @@
 
 #include <string_view>
 
+#include "mathlib.h"
+
 /**
 *	@file
 *
@@ -41,6 +43,8 @@ constexpr int HIDEHUD_ALL = 1 << 2;
 constexpr int HIDEHUD_HEALTH = 1 << 3;
 
 constexpr int MAX_AMMO_TYPES = 32;
+
+constexpr int TEAM_NAME_LENGTH = 16;
 
 constexpr int HUD_PRINTNOTIFY = 1;
 constexpr int HUD_PRINTCONSOLE = 2;

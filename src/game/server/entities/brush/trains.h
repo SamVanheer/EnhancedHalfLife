@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "CBaseEntity.hpp"
+#include "CPointEntity.hpp"
+
 // Trains
 constexpr int SF_TRAIN_WAIT_RETRIGGER = 1;
 constexpr int SF_TRAIN_START_ON = 4;		//!< Train is initially moving

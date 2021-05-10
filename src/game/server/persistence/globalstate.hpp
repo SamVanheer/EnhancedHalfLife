@@ -15,7 +15,12 @@
 
 #pragma once
 
+#include "Platform.h"
+
 class CBaseEntity;
+class CRestore;
+class CSave;
+struct TYPEDESCRIPTION;
 
 enum class GlobalEntState
 {

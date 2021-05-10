@@ -23,6 +23,7 @@
 
 #include "custom.h"
 
+class CBaseEntity;
 struct clientdata_t;
 struct edict_t;
 struct entity_state_t;

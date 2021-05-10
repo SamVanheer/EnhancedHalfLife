@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "CBaseToggle.hpp"
+
 enum class ChargerState
 {
 	Off,

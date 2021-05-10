@@ -15,4 +15,6 @@
 
 #pragma once
 
+#include "mathlib.h"
+
 bool Shared_GetHullBounds(int hullnumber, Vector& mins, Vector& maxs);

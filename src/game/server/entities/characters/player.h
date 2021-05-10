@@ -16,6 +16,7 @@
 #pragma once
 
 #include "sound/materials.hpp"
+#include "basemonster.h"
 #include "CBaseItem.hpp"
 
 //

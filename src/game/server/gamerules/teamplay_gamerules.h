@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "cdll_dll.h"
+#include "gamerules.h"
+
 constexpr int MAX_TEAMS = 32;
 
 constexpr int TEAMPLAY_TEAMLISTLENGTH = MAX_TEAMS * TEAM_NAME_LENGTH;

@@ -17,9 +17,14 @@
 
 #include <string_view>
 
+#include "mathlib.h"
+#include "cdll_dll.h"
+
+class CBaseEntity;
 class CBaseItem;
 class CBaseWeapon;
 class CBasePlayer;
+struct edict_t;
 
 /**
 *	@brief weapon respawning return codes

@@ -17,6 +17,8 @@
 
 #include <cstdint>
 
+#include "Platform.h"
+
 /*
 *	@brief MD5 Hash
 */

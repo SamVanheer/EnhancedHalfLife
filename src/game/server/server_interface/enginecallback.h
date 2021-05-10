@@ -16,6 +16,7 @@
 #pragma once
 
 #include "event_flags.h"
+#include "sv_engine_int.hpp"
 
 // Must be provided by user of this code
 extern enginefuncs_t g_engfuncs;

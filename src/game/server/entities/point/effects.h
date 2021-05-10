@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "CBaseEntity.hpp"
+#include "CPointEntity.hpp"
+
 constexpr int SF_BEAM_STARTON = 0x0001;
 constexpr int SF_BEAM_TOGGLE = 0x0002;
 constexpr int SF_BEAM_RANDOM = 0x0004;

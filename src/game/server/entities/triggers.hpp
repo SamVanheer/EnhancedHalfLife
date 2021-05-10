@@ -15,6 +15,12 @@
 
 #pragma once
 
+#include "CBaseEntity.hpp"
+#include "CPointEntity.hpp"
+#include "CMultiSource.hpp"
+#include "CBaseDelay.hpp"
+#include "CBaseToggle.hpp"
+
 class CBasePlayer;
 
 constexpr int SF_TRIGGER_ALLOWMONSTERS = 1;	//!< monsters allowed to fire this trigger

@@ -15,6 +15,10 @@
 
 #pragma once
 
+#include "util.h" //TODO: get rid of DLL_GLOBAL so we can remove this header include
+
+class CBaseEntity;
+
 /**
 *	@file
 *

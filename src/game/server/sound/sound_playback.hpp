@@ -15,7 +15,10 @@
 
 #pragma once
 
+#include "const.h"
+
 class CBaseEntity;
+class Vector;
 struct TraceResult;
 
 void UTIL_EmitAmbientSound(CBaseEntity* entity, const Vector& vecOrigin, const char* samp, float vol, float attenuation, int fFlags, int pitch);

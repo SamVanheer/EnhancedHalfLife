@@ -22,6 +22,7 @@
 */
 
 #include "effects.h"
+#include "basemonster.h"
 #include "CBaseItem.hpp"
 
 class CBasePlayer;

@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "mathlib.h"
+
 class CPlane
 {
 public:
