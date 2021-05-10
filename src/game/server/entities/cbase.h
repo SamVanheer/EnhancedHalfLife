@@ -877,6 +877,10 @@ public:
 
 constexpr int SF_ITEM_USE_ONLY = 256; //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR_USE_ONLY!!! 
 
+class CBaseToggle;
+
+using CallWhenMoveDoneFn = void (CBaseToggle::*)();
+
 /**
 *	@brief generic Toggle entity.
 */
@@ -900,7 +904,7 @@ public:
 
 	float m_flHeight = 0;
 	EHANDLE m_hActivator;
-	void (CBaseToggle::* m_pfnCallWhenMoveDone)() = nullptr;
+	CallWhenMoveDoneFn m_pfnCallWhenMoveDone = nullptr;
 	Vector m_vecFinalDest;
 	Vector m_vecFinalAngle;
 
@@ -952,7 +956,7 @@ public:
 	string_t m_sMaster = iStringNull;
 };
 
-#define SetMoveDone(a) m_pfnCallWhenMoveDone = static_cast<void (CBaseToggle::*)()>(a)
+#define SetMoveDone(a) m_pfnCallWhenMoveDone = static_cast<CallWhenMoveDoneFn>(a)
 
 // people gib if their health is <= this at the time of death
 constexpr int GIB_HEALTH_VALUE = -30;
