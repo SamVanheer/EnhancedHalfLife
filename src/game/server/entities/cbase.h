@@ -986,6 +986,7 @@ class CCineMonster;
 class CSound;
 
 #include "basemonster.h"
+#include "scripted.h"
 
 /**
 *	@brief Button sound table. get string of button sound number

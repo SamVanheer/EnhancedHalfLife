@@ -748,6 +748,3 @@ public:
 	*/
 	CBaseEntity* DropItem(const char* pszItemName, const Vector& vecPos, const Vector& vecAng);// drop an item.
 };
-
-//Required so the handle to CCineMonster works
-#include "scripted.h"
