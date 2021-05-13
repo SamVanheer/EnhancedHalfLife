@@ -511,6 +511,15 @@ public:
 	void KeyValue(KeyValueData* pkvd) override;
 };
 
+/**
+*	@brief Gives the player all ammo types
+*/
+class CAmmoAll : public CBaseAmmo
+{
+protected:
+	ItemApplyResult Apply(CBasePlayer* player) override;
+};
+
 extern DLL_GLOBAL	short	g_sModelIndexLaser;// holds the index for the laser beam
 extern DLL_GLOBAL	const char* g_pModelNameLaser;
 

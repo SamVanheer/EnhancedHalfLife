@@ -369,6 +369,28 @@ void CAmmoGeneric::KeyValue(KeyValueData* pkvd)
 	}
 }
 
+LINK_ENTITY_TO_CLASS(ammo_all, CAmmoAll);
+
+ItemApplyResult CAmmoAll::Apply(CBasePlayer* player)
+{
+	ItemApplyAction action = ItemApplyAction::NotUsed;
+
+	for (int i = 1; i < MAX_AMMO_TYPES; ++i)
+	{
+		const auto& info = CBaseWeapon::AmmoInfoArray[i];
+
+		if (info.pszName)
+		{
+			if (DefaultGiveAmmo(player, m_iAmount, info.pszName).Action != ItemApplyAction::NotUsed)
+			{
+				action = ItemApplyAction::Used;
+			}
+		}
+	}
+
+	return {action};
+}
+
 TYPEDESCRIPTION	CBaseWeapon::m_SaveData[] =
 {
 	DEFINE_FIELD(CBaseWeapon, m_hPlayer, FIELD_EHANDLE),
