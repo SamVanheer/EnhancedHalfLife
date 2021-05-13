@@ -26,6 +26,12 @@ enum class SuitLogonType
 
 class CItemSuit : public CItem
 {
+	void OnConstruct() override
+	{
+		CItem::OnConstruct();
+		SetModelName("models/w_suit.mdl");
+	}
+
 	void KeyValue(KeyValueData* pkvd) override
 	{
 		if (AreStringsEqual(pkvd->szKeyName, "logon_type"))
@@ -51,16 +57,6 @@ class CItemSuit : public CItem
 		}
 	}
 
-	void Spawn() override
-	{
-		Precache();
-		SetModel("models/w_suit.mdl");
-		CItem::Spawn();
-	}
-	void Precache() override
-	{
-		PRECACHE_MODEL("models/w_suit.mdl");
-	}
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override
 	{
 		if (pPlayer->pev->weapons & (1 << WEAPON_SUIT))
@@ -103,6 +99,12 @@ constexpr float BATTERY_DEFAULT_CAPACITY = -1;
 
 class CItemBattery : public CItem
 {
+	void OnConstruct() override
+	{
+		CItem::OnConstruct();
+		SetModelName("models/w_battery.mdl");
+	}
+
 	void KeyValue(KeyValueData* pkvd)
 	{
 		if (AreStringsEqual(pkvd->szKeyName, "custom_capacity"))
@@ -116,15 +118,8 @@ class CItemBattery : public CItem
 		}
 	}
 
-	void Spawn() override
-	{
-		Precache();
-		SetModel("models/w_battery.mdl");
-		CItem::Spawn();
-	}
 	void Precache() override
 	{
-		PRECACHE_MODEL("models/w_battery.mdl");
 		PRECACHE_SOUND("items/gunpickup2.wav");
 	}
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override
@@ -191,16 +186,12 @@ IMPLEMENT_SAVERESTORE(CItemBattery, CItem);
 
 class CItemAntidote : public CItem
 {
-	void Spawn() override
+	void OnConstruct() override
 	{
-		Precache();
-		SetModel("models/w_antidote.mdl");
-		CItem::Spawn();
+		CItem::OnConstruct();
+		SetModelName("models/w_antidote.mdl");
 	}
-	void Precache() override
-	{
-		PRECACHE_MODEL("models/w_antidote.mdl");
-	}
+
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override
 	{
 		pPlayer->SetSuitUpdate("!HEV_DET4", SuitSoundType::Sentence, SUIT_NEXT_IN_1MIN);
@@ -214,16 +205,12 @@ LINK_ENTITY_TO_CLASS(item_antidote, CItemAntidote);
 
 class CItemLongJump : public CItem
 {
-	void Spawn() override
+	void OnConstruct() override
 	{
-		Precache();
-		SetModel("models/w_longjump.mdl");
-		CItem::Spawn();
+		CItem::OnConstruct();
+		SetModelName("models/w_longjump.mdl");
 	}
-	void Precache() override
-	{
-		PRECACHE_MODEL("models/w_longjump.mdl");
-	}
+
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override
 	{
 		if (pPlayer->m_fLongJump)

@@ -21,8 +21,13 @@ constexpr float HEALTHKIT_DEFAULT_CAPACITY = -1;
 
 class CHealthKit : public CItem
 {
+	void OnConstruct() override
+	{
+		CItem::OnConstruct();
+		SetModelName("models/w_medkit.mdl");
+	}
+
 	void KeyValue(KeyValueData* pkvd) override;
-	void Spawn() override;
 	void Precache() override;
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override;
 
@@ -57,17 +62,8 @@ void CHealthKit::KeyValue(KeyValueData* pkvd)
 	}
 }
 
-void CHealthKit::Spawn()
-{
-	Precache();
-	SetModel("models/w_medkit.mdl");
-
-	CItem::Spawn();
-}
-
 void CHealthKit::Precache()
 {
-	PRECACHE_MODEL("models/w_medkit.mdl");
 	PRECACHE_SOUND("items/smallmedkit1.wav");
 }
 
