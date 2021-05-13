@@ -224,9 +224,7 @@ class CItemLongJump : public CItem
 
 		if ((pPlayer->pev->weapons & (1 << WEAPON_SUIT)))
 		{
-			pPlayer->m_fLongJump = true;// player now has longjump module
-
-			g_engfuncs.pfnSetPhysicsKeyValue(pPlayer->edict(), "slj", "1");
+			pPlayer->SetHasLongJump(true);// player now has longjump module
 
 			MESSAGE_BEGIN(MessageDest::One, gmsgItemPickup, pPlayer);
 			WRITE_STRING(GetClassname());

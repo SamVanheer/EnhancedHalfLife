@@ -642,6 +642,13 @@ void CBasePlayer::RemoveAllItems(bool removeSuit)
 	UpdateClientData();
 }
 
+void CBasePlayer::SetHasLongJump(bool state)
+{
+	m_fLongJump = state;
+
+	g_engfuncs.pfnSetPhysicsKeyValue(edict(), "slj", state ? "1" : "0");
+}
+
 void CBasePlayer::Killed(const KilledInfo& info)
 {
 	// Holster weapon immediately, to allow it to cleanup
@@ -2230,9 +2237,8 @@ void CBasePlayer::Spawn()
 	m_bitsHUDDamage = -1;
 	m_bitsDamageType = 0;
 	m_afPhysicsFlags = 0;
-	m_fLongJump = false;// no longjump module. 
 
-	g_engfuncs.pfnSetPhysicsKeyValue(edict(), "slj", "0");
+	SetHasLongJump(false);// no longjump module. 
 	g_engfuncs.pfnSetPhysicsKeyValue(edict(), "hl", "1");
 
 	m_iFOV = 0;// init field of view.
@@ -2391,14 +2397,7 @@ bool CBasePlayer::Restore(CRestore& restore)
 
 	g_engfuncs.pfnSetPhysicsKeyValue(edict(), "hl", "1");
 
-	if (m_fLongJump)
-	{
-		g_engfuncs.pfnSetPhysicsKeyValue(edict(), "slj", "1");
-	}
-	else
-	{
-		g_engfuncs.pfnSetPhysicsKeyValue(edict(), "slj", "0");
-	}
+	SetHasLongJump(m_fLongJump);
 
 #if defined( CLIENT_WEAPONS )
 	// HACK:	This variable is saved/restored in CBaseMonster as a time variable, but we're using it
@@ -3757,6 +3756,7 @@ void CBasePlayer::SetPrefsFromUserinfo(char* infobuffer)
 
 constexpr int WEAPONSTRIP_REMOVEWEAPONS = 1 << 0;
 constexpr int WEAPONSTRIP_REMOVESUIT = 1 << 1;
+constexpr int WEAPONSTRIP_REMOVELONGJUMP = 1 << 2;
 
 class CStripWeapons : public CPointEntity
 {
@@ -3811,6 +3811,19 @@ void CStripWeapons::KeyValue(KeyValueData* pkvd)
 
 		pkvd->fHandled = true;
 	}
+	else if (AreStringsEqual(pkvd->szKeyName, "strip_longjump"))
+	{
+		if (atoi(pkvd->szValue) != 0)
+		{
+			SetBits(m_Flags, WEAPONSTRIP_REMOVELONGJUMP);
+		}
+		else
+		{
+			ClearBits(m_Flags, WEAPONSTRIP_REMOVELONGJUMP);
+		}
+
+		pkvd->fHandled = true;
+	}
 	else
 	{
 		CPointEntity::KeyValue(pkvd);
@@ -3840,6 +3853,11 @@ void CStripWeapons::Use(const UseInfo& info)
 		if (m_Flags & WEAPONSTRIP_REMOVESUIT)
 		{
 			pPlayer->RemoveSuit();
+		}
+
+		if (m_Flags & WEAPONSTRIP_REMOVELONGJUMP)
+		{
+			pPlayer->SetHasLongJump(false);
 		}
 	}
 }

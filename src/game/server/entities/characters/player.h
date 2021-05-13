@@ -238,6 +238,9 @@ public:
 	void PackDeadPlayerItems();
 	void RemoveSuit();
 	void RemoveAllItems(bool removeSuit);
+
+	void SetHasLongJump(bool state);
+
 	bool SwitchWeapon(CBaseWeapon* pWeapon);
 
 	/**
