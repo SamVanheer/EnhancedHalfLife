@@ -236,6 +236,7 @@ public:
 	*	This is pretty brute force :(
 	*/
 	void PackDeadPlayerItems();
+	void RemoveSuit();
 	void RemoveAllItems(bool removeSuit);
 	bool SwitchWeapon(CBaseWeapon* pWeapon);
 

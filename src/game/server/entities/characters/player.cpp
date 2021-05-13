@@ -593,6 +593,11 @@ void CBasePlayer::PackDeadPlayerItems()
 	RemoveAllItems(true);// now strip off everything that wasn't handled by the code above.
 }
 
+void CBasePlayer::RemoveSuit()
+{
+	pev->weapons &= ~(1 << WEAPON_SUIT);
+}
+
 void CBasePlayer::RemoveAllItems(bool removeSuit)
 {
 	if (auto activeWeapon = m_hActiveWeapon.Get(); activeWeapon)
@@ -3750,15 +3755,67 @@ void CBasePlayer::SetPrefsFromUserinfo(char* infobuffer)
 	}
 }
 
+constexpr int WEAPONSTRIP_REMOVEWEAPONS = 1 << 0;
+constexpr int WEAPONSTRIP_REMOVESUIT = 1 << 1;
+
 class CStripWeapons : public CPointEntity
 {
 public:
-	void	Use(const UseInfo& info) override;
+	void KeyValue(KeyValueData* pkvd) override;
+
+	void Use(const UseInfo& info) override;
+
+	bool Save(CSave& save) override;
+	bool Restore(CRestore& restore) override;
+
+	static TYPEDESCRIPTION m_SaveData[];
 
 private:
+	int m_Flags = WEAPONSTRIP_REMOVEWEAPONS;
 };
 
 LINK_ENTITY_TO_CLASS(player_weaponstrip, CStripWeapons);
+
+TYPEDESCRIPTION	CStripWeapons::m_SaveData[] =
+{
+	DEFINE_FIELD(CStripWeapons, m_Flags, FIELD_INTEGER),
+};
+
+IMPLEMENT_SAVERESTORE(CStripWeapons, CPointEntity);
+
+void CStripWeapons::KeyValue(KeyValueData* pkvd)
+{
+	if (AreStringsEqual(pkvd->szKeyName, "strip_weapons"))
+	{
+		if (atoi(pkvd->szValue) != 0)
+		{
+			SetBits(m_Flags, WEAPONSTRIP_REMOVEWEAPONS);
+		}
+		else
+		{
+			ClearBits(m_Flags, WEAPONSTRIP_REMOVEWEAPONS);
+		}
+
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "strip_suit"))
+	{
+		if (atoi(pkvd->szValue) != 0)
+		{
+			SetBits(m_Flags, WEAPONSTRIP_REMOVESUIT);
+		}
+		else
+		{
+			ClearBits(m_Flags, WEAPONSTRIP_REMOVESUIT);
+		}
+
+		pkvd->fHandled = true;
+	}
+	else
+	{
+		CPointEntity::KeyValue(pkvd);
+	}
+}
 
 void CStripWeapons::Use(const UseInfo& info)
 {
@@ -3774,7 +3831,17 @@ void CStripWeapons::Use(const UseInfo& info)
 	}
 
 	if (pPlayer)
-		pPlayer->RemoveAllItems(false);
+	{
+		if (m_Flags & WEAPONSTRIP_REMOVEWEAPONS)
+		{
+			pPlayer->RemoveAllItems(false);
+		}
+
+		if (m_Flags & WEAPONSTRIP_REMOVESUIT)
+		{
+			pPlayer->RemoveSuit();
+		}
+	}
 }
 
 /**
