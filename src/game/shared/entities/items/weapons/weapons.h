@@ -511,11 +511,16 @@ public:
 	void KeyValue(KeyValueData* pkvd) override;
 };
 
+constexpr int AMMOALL_REFILLAMMO = -1;
+
 /**
 *	@brief Gives the player all ammo types
 */
 class CAmmoAll : public CBaseAmmo
 {
+public:
+	void KeyValue(KeyValueData* pkvd) override;
+
 protected:
 	ItemApplyResult Apply(CBasePlayer* player) override;
 };

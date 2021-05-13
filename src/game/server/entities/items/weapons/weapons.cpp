@@ -371,6 +371,20 @@ void CAmmoGeneric::KeyValue(KeyValueData* pkvd)
 
 LINK_ENTITY_TO_CLASS(ammo_all, CAmmoAll);
 
+void CAmmoAll::KeyValue(KeyValueData* pkvd)
+{
+	//Override this to allow -1 for refill
+	if (AreStringsEqual(pkvd->szKeyName, "ammo_amount"))
+	{
+		m_iAmount = std::max(AMMOALL_REFILLAMMO, atoi(pkvd->szValue));
+		pkvd->fHandled = true;
+	}
+	else
+	{
+		CBaseAmmo::KeyValue(pkvd);
+	}
+}
+
 ItemApplyResult CAmmoAll::Apply(CBasePlayer* player)
 {
 	ItemApplyAction action = ItemApplyAction::NotUsed;
@@ -381,7 +395,7 @@ ItemApplyResult CAmmoAll::Apply(CBasePlayer* player)
 
 		if (info.pszName)
 		{
-			if (DefaultGiveAmmo(player, m_iAmount, info.pszName).Action != ItemApplyAction::NotUsed)
+			if (DefaultGiveAmmo(player, m_iAmount == AMMOALL_REFILLAMMO ? info.MaxCarry : m_iAmount, info.pszName).Action != ItemApplyAction::NotUsed)
 			{
 				action = ItemApplyAction::Used;
 			}
