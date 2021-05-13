@@ -48,10 +48,6 @@ extern int g_irunninggausspred;
 void CGauss::Spawn()
 {
 	Precache();
-	m_iId = WEAPON_GAUSS;
-
-	m_iDefaultAmmo = GAUSS_DEFAULT_GIVE;
-
 	FallInit();// get ready to fall down.
 }
 
