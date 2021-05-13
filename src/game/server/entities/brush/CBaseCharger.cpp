@@ -190,10 +190,12 @@ void CBaseCharger::Use(const UseInfo& info)
 	if (!pActivator || !pActivator->IsPlayer())
 		return;
 
+	auto player = static_cast<CBasePlayer*>(pActivator);
+
 	CheckIfOutOfCharge(true);
 
 	// if the player doesn't have the suit, or there is no juice left, make the deny noise
-	if ((m_iCurrentCapacity == 0) || (!(pActivator->pev->weapons & (1 << WEAPON_SUIT))))
+	if ((m_iCurrentCapacity == 0) || !player->HasSuit())
 	{
 		if (m_flSoundTime <= gpGlobals->time)
 		{
@@ -214,7 +216,7 @@ void CBaseCharger::Use(const UseInfo& info)
 	if (m_flNextCharge >= gpGlobals->time)
 		return;
 
-	m_hActivator = pActivator;
+	m_hActivator = player;
 
 	// Play the on sound or the looping charging sound
 	if (m_State == ChargerState::Off)
@@ -238,8 +240,8 @@ void CBaseCharger::Use(const UseInfo& info)
 		}
 	}
 
-	const float maximumValue = GetMaximumValue(pActivator);
-	float currentValue = GetCurrentValue(pActivator);
+	const float maximumValue = GetMaximumValue(player);
+	float currentValue = GetCurrentValue(player);
 
 	// charge the player
 	if (maximumValue == -1 || currentValue < maximumValue)
@@ -262,7 +264,7 @@ void CBaseCharger::Use(const UseInfo& info)
 			currentValue = std::min(maximumValue, currentValue + maxChargeToGive);
 		}
 
-		if (SetCurrentValue(pActivator, currentValue) && m_iCurrentCapacity != CHARGER_INFINITE_CAPACITY)
+		if (SetCurrentValue(player, currentValue) && m_iCurrentCapacity != CHARGER_INFINITE_CAPACITY)
 		{
 			m_iCurrentCapacity -= maxChargeToGive;
 		}

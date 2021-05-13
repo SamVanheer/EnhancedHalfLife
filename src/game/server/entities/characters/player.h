@@ -236,8 +236,11 @@ public:
 	*	This is pretty brute force :(
 	*/
 	void PackDeadPlayerItems();
-	void RemoveSuit();
 	void RemoveAllItems(bool removeSuit);
+
+	bool HasSuit() const { return (pev->weapons & (1 << WEAPON_SUIT)) != 0; }
+
+	void SetHasSuit(bool state);
 
 	void SetHasLongJump(bool state);
 

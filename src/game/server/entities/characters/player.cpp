@@ -593,11 +593,6 @@ void CBasePlayer::PackDeadPlayerItems()
 	RemoveAllItems(true);// now strip off everything that wasn't handled by the code above.
 }
 
-void CBasePlayer::RemoveSuit()
-{
-	pev->weapons &= ~(1 << WEAPON_SUIT);
-}
-
 void CBasePlayer::RemoveAllItems(bool removeSuit)
 {
 	if (auto activeWeapon = m_hActiveWeapon.Get(); activeWeapon)
@@ -631,15 +626,30 @@ void CBasePlayer::RemoveAllItems(bool removeSuit)
 	pev->viewmodel = iStringNull;
 	pev->weaponmodel = iStringNull;
 
+	pev->weapons &= ~WEAPON_ALLWEAPONS;
+
 	if (removeSuit)
-		pev->weapons = 0;
-	else
-		pev->weapons &= ~WEAPON_ALLWEAPONS;
+	{
+		SetHasSuit(false);
+	}
 
 	for (int i = 0; i < MAX_AMMO_TYPES; i++)
 		m_rgAmmo[i] = 0;
 
 	UpdateClientData();
+}
+
+void CBasePlayer::SetHasSuit(bool state)
+{
+	if (state)
+	{
+		pev->weapons |= 1 << WEAPON_SUIT;
+	}
+	else
+	{
+		pev->weapons &= ~(1 << WEAPON_SUIT);
+		FlashlightTurnOff();
+	}
 }
 
 void CBasePlayer::SetHasLongJump(bool state)
@@ -1814,7 +1824,7 @@ void CBasePlayer::UpdateGeigerCounter()
 void CBasePlayer::CheckSuitUpdate()
 {
 	// Ignore suit updates if no suit
-	if (!(pev->weapons & (1 << WEAPON_SUIT)))
+	if (!HasSuit())
 		return;
 
 	// if in range of radiation source, ping geiger counter
@@ -1869,7 +1879,7 @@ void CBasePlayer::CheckSuitUpdate()
 void CBasePlayer::SetSuitUpdate(const char* name, SuitSoundType type, int iNoRepeatTime)
 {
 	// Ignore suit updates if no suit
-	if (!(pev->weapons & (1 << WEAPON_SUIT)))
+	if (!HasSuit())
 		return;
 
 	if (g_pGameRules->IsMultiplayer())
@@ -2559,7 +2569,7 @@ void CBasePlayer::FlashlightTurnOn()
 		return;
 	}
 
-	if ((pev->weapons & (1 << WEAPON_SUIT)))
+	if (HasSuit())
 	{
 		EmitSound(SoundChannel::Weapon, SOUND_FLASHLIGHT_ON.data());
 		SetBits(pev->effects, EF_DIMLIGHT);
@@ -3852,7 +3862,7 @@ void CStripWeapons::Use(const UseInfo& info)
 
 		if (m_Flags & WEAPONSTRIP_REMOVESUIT)
 		{
-			pPlayer->RemoveSuit();
+			pPlayer->SetHasSuit(false);
 		}
 
 		if (m_Flags & WEAPONSTRIP_REMOVELONGJUMP)

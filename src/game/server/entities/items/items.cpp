@@ -63,7 +63,7 @@ class CItemSuit : public CItem
 
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override
 	{
-		if (pPlayer->pev->weapons & (1 << WEAPON_SUIT))
+		if (pPlayer->HasSuit())
 			return {ItemApplyAction::NotUsed};
 
 		switch (m_LogonType)
@@ -77,7 +77,7 @@ class CItemSuit : public CItem
 			break;
 		}
 
-		pPlayer->pev->weapons |= (1 << WEAPON_SUIT);
+		pPlayer->SetHasSuit(true);
 		return {ItemApplyAction::Used};
 	}
 
@@ -134,7 +134,7 @@ class CItemBattery : public CItem
 		}
 
 		if ((pPlayer->pev->armorvalue < MAX_NORMAL_BATTERY) &&
-			(pPlayer->pev->weapons & (1 << WEAPON_SUIT)))
+			pPlayer->HasSuit())
 		{
 			float capacity = gSkillData.batteryCapacity;
 
@@ -235,7 +235,7 @@ class CItemLongJump : public CItem
 			return {ItemApplyAction::NotUsed};
 		}
 
-		if ((pPlayer->pev->weapons & (1 << WEAPON_SUIT)))
+		if (pPlayer->HasSuit())
 		{
 			pPlayer->SetHasLongJump(true);// player now has longjump module
 
