@@ -459,6 +459,7 @@ CBaseWeapon* CBaseWeapon::GetItemToRespawn(const Vector& respawnPoint)
 
 	//Copy over item settings
 	pNewWeapon->SetModel(GetWorldModelName());
+	pNewWeapon->pev->sequence = pev->sequence;
 	pNewWeapon->m_OriginalPosition = m_OriginalPosition;
 	pNewWeapon->m_RespawnMode = m_RespawnMode;
 	pNewWeapon->m_flRespawnDelay = m_flRespawnDelay;
