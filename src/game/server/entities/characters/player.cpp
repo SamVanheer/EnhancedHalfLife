@@ -648,7 +648,11 @@ void CBasePlayer::SetHasSuit(bool state)
 	else
 	{
 		pev->weapons &= ~(1 << WEAPON_SUIT);
-		FlashlightTurnOff();
+
+		if (FlashlightIsOn())
+		{
+			FlashlightTurnOff();
+		}
 	}
 }
 
