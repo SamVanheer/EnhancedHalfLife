@@ -124,6 +124,7 @@ class CItemBattery : public CItem
 
 	void Precache() override
 	{
+		CItem::Precache();
 		PRECACHE_SOUND("items/gunpickup2.wav");
 	}
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override

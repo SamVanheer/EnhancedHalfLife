@@ -64,6 +64,7 @@ void CHealthKit::KeyValue(KeyValueData* pkvd)
 
 void CHealthKit::Precache()
 {
+	CItem::Precache();
 	PRECACHE_SOUND("items/smallmedkit1.wav");
 }
 
