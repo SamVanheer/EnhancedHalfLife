@@ -215,6 +215,19 @@ class CItemLongJump : public CItem
 		SetModelName("models/w_longjump.mdl");
 	}
 
+	void KeyValue(KeyValueData* pkvd) override
+	{
+		if (AreStringsEqual(pkvd->szKeyName, "play_suit_sentence"))
+		{
+			m_PlaySuitSentence = atoi(pkvd->szValue) != 0;
+			pkvd->fHandled = true;
+		}
+		else
+		{
+			CItem::KeyValue(pkvd);
+		}
+	}
+
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override
 	{
 		if (pPlayer->m_fLongJump)
@@ -230,11 +243,30 @@ class CItemLongJump : public CItem
 			WRITE_STRING(GetClassname());
 			MESSAGE_END();
 
-			EMIT_SOUND_SUIT(pPlayer, "!HEV_A1");	// Play the longjump sound UNDONE: Kelly? correct sound?
+			if (m_PlaySuitSentence)
+			{
+				EMIT_SOUND_SUIT(pPlayer, "!HEV_A1");	// Play the longjump sound UNDONE: Kelly? correct sound?
+			}
+
 			return {ItemApplyAction::Used};
 		}
 		return {ItemApplyAction::NotUsed};
 	}
+
+	bool Save(CSave& save) override;
+	bool Restore(CRestore& restore) override;
+
+	static TYPEDESCRIPTION m_SaveData[];
+
+protected:
+	bool m_PlaySuitSentence = true;
 };
 
 LINK_ENTITY_TO_CLASS(item_longjump, CItemLongJump);
+
+TYPEDESCRIPTION CItemLongJump::m_SaveData[] =
+{
+	DEFINE_FIELD(CItemLongJump, m_PlaySuitSentence, FIELD_BOOLEAN),
+};
+
+IMPLEMENT_SAVERESTORE(CItemLongJump, CBaseItem);
