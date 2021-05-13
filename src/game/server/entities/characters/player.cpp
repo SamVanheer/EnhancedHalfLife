@@ -3862,6 +3862,150 @@ void CStripWeapons::Use(const UseInfo& info)
 	}
 }
 
+constexpr int PLAYERSETHEALTH_ALLPLAYERS = 1 << 0;
+constexpr int PLAYERSETHEALTH_SETHEALTH = 1 << 1;
+constexpr int PLAYERSETHEALTH_SETARMOR = 1 << 2;
+
+/**
+*	@brief Sets the player's health and/or armor to a mapper-specified value
+*/
+class CPlayerSetHealth : public CPointEntity
+{
+public:
+	void KeyValue(KeyValueData* pkvd) override;
+
+	void Use(const UseInfo& info) override;
+
+	bool Save(CSave& save) override;
+	bool Restore(CRestore& restore) override;
+
+	static TYPEDESCRIPTION m_SaveData[];
+
+private:
+	void ApplyToTarget(CBasePlayer* player);
+
+private:
+	int m_Flags = 0;
+
+	int m_Health = 100;
+	int m_Armor = 0;
+};
+
+LINK_ENTITY_TO_CLASS(player_sethealth, CPlayerSetHealth);
+
+TYPEDESCRIPTION	CPlayerSetHealth::m_SaveData[] =
+{
+	DEFINE_FIELD(CPlayerSetHealth, m_Flags, FIELD_INTEGER),
+	DEFINE_FIELD(CPlayerSetHealth, m_Health, FIELD_INTEGER),
+	DEFINE_FIELD(CPlayerSetHealth, m_Armor, FIELD_INTEGER),
+};
+
+IMPLEMENT_SAVERESTORE(CPlayerSetHealth, CPointEntity);
+
+void CPlayerSetHealth::KeyValue(KeyValueData* pkvd)
+{
+	if (AreStringsEqual(pkvd->szKeyName, "all_players"))
+	{
+		if (atoi(pkvd->szValue) != 0)
+		{
+			SetBits(m_Flags, PLAYERSETHEALTH_ALLPLAYERS);
+		}
+		else
+		{
+			ClearBits(m_Flags, PLAYERSETHEALTH_ALLPLAYERS);
+		}
+
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "set_health"))
+	{
+		if (atoi(pkvd->szValue) != 0)
+		{
+			SetBits(m_Flags, PLAYERSETHEALTH_SETHEALTH);
+		}
+		else
+		{
+			ClearBits(m_Flags, PLAYERSETHEALTH_SETHEALTH);
+		}
+
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "set_armor"))
+	{
+		if (atoi(pkvd->szValue) != 0)
+		{
+			SetBits(m_Flags, PLAYERSETHEALTH_SETARMOR);
+		}
+		else
+		{
+			ClearBits(m_Flags, PLAYERSETHEALTH_SETARMOR);
+		}
+
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "health_to_set"))
+	{
+		//Clamp to 1 so players don't end up in an invalid state
+		m_Health = std::max(atoi(pkvd->szValue), 1);
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "armor_to_set"))
+	{
+		m_Armor = std::max(atoi(pkvd->szValue), 0);
+		pkvd->fHandled = true;
+	}
+	else
+	{
+		CPointEntity::KeyValue(pkvd);
+	}
+}
+
+void CPlayerSetHealth::Use(const UseInfo& info)
+{
+	if (m_Flags & PLAYERSETHEALTH_ALLPLAYERS)
+	{
+		for (auto player : UTIL_AllPlayers())
+		{
+			ApplyToTarget(player);
+		}
+	}
+	else
+	{
+		CBasePlayer* player = nullptr;
+
+		if (auto activator = info.GetActivator(); activator && activator->IsPlayer())
+		{
+			player = static_cast<CBasePlayer*>(activator);
+		}
+		else if (!g_pGameRules->IsMultiplayer())
+		{
+			player = UTIL_GetLocalPlayer();
+		}
+
+		if (player)
+		{
+			ApplyToTarget(player);
+		}
+	}
+}
+
+void CPlayerSetHealth::ApplyToTarget(CBasePlayer* player)
+{
+	if (m_Flags & PLAYERSETHEALTH_SETHEALTH)
+	{
+		//Clamp it to the current max health
+		const int healthToSet = std::min(static_cast<int>(std::floor(player->pev->max_health)), m_Health);
+		player->pev->health = healthToSet;
+	}
+
+	if (m_Flags & PLAYERSETHEALTH_SETARMOR)
+	{
+		//Clamp it now, in case future changes allow for custom armor maximum
+		const int armorToSet = std::min(MAX_NORMAL_BATTERY, m_Armor);
+		player->pev->armorvalue = armorToSet;
+	}
+}
+
 /**
 *	@brief Multiplayer intermission spots.
 */
