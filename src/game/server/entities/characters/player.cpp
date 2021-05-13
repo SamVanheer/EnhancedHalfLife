@@ -2852,14 +2852,26 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 
 ItemApplyResult CBasePlayer::AddPlayerWeapon(CBaseWeapon* weapon)
 {
+	//Treat as though player couldn't pick it up at all
+	if (weapon->m_PickupRule == WeaponPickupRule::Never)
+	{
+		return {ItemApplyAction::NotUsed};
+	}
+
 	CBaseWeapon* pInsert = m_hPlayerWeapons[weapon->WeaponSlot()];
 
 	while (pInsert)
 	{
 		if (pInsert->ClassnameIs(weapon->GetClassname()))
 		{
+			//Can only pick up the weapon + ammo, not ammo
+			if (weapon->m_PickupRule == WeaponPickupRule::NoDuplicates)
+			{
+				return {ItemApplyAction::NotUsed};
+			}
+
 			int flags = 0;
-			if (weapon->AddDuplicate(pInsert))
+			if (weapon->AddDuplicate(pInsert) || weapon->m_PickupRule == WeaponPickupRule::Always)
 			{
 				g_pGameRules->PlayerGotItem(*this, *weapon);
 
@@ -2890,6 +2902,12 @@ ItemApplyResult CBasePlayer::AddPlayerWeapon(CBaseWeapon* weapon)
 		}
 
 		return {ItemApplyAction::AttachedToPlayer, ItemFlag::PlayerGotItemHandled};
+	}
+
+	//Treat as though player picked it up
+	if (weapon->m_PickupRule == WeaponPickupRule::Always)
+	{
+		return {ItemApplyAction::Used, ItemFlag::AlwaysRemoveItem};
 	}
 
 	return {ItemApplyAction::NotUsed};

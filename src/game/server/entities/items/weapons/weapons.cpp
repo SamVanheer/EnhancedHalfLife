@@ -395,6 +395,7 @@ TYPEDESCRIPTION	CBaseWeapon::m_SaveData[] =
 	//	DEFINE_FIELD( CBaseWeapon, m_iClientClip, FIELD_INTEGER )	 , reset to zero on load so hud gets updated correctly
 	//  DEFINE_FIELD( CBaseWeapon, m_iClientWeaponState, FIELD_INTEGER ), reset to zero on load so hud gets updated correctly
 	DEFINE_FIELD(CBaseWeapon, m_iszWorldModelName, FIELD_MODELNAME),
+	DEFINE_FIELD(CBaseWeapon, m_PickupRule, FIELD_INTEGER),
 };
 
 IMPLEMENT_SAVERESTORE(CBaseWeapon, CBaseItem);
@@ -410,6 +411,31 @@ void CBaseWeapon::KeyValue(KeyValueData* pkvd)
 	if (AreStringsEqual(pkvd->szKeyName, "default_primary_ammo"))
 	{
 		m_iDefaultAmmo = m_iDefaultPrimaryAmmo = std::max(0, atoi(pkvd->szValue));
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "pickup_rule"))
+	{
+		if (AreStringsEqual(pkvd->szValue, "Default"))
+		{
+			m_PickupRule = WeaponPickupRule::Default;
+		}
+		else if (AreStringsEqual(pkvd->szValue, "Always"))
+		{
+			m_PickupRule = WeaponPickupRule::Always;
+		}
+		else if (AreStringsEqual(pkvd->szValue, "Never"))
+		{
+			m_PickupRule = WeaponPickupRule::Never;
+		}
+		else if (AreStringsEqual(pkvd->szValue, "NoDuplicates"))
+		{
+			m_PickupRule = WeaponPickupRule::NoDuplicates;
+		}
+		else
+		{
+			ALERT(at_warning, "Invalid pickup_rule value \"%s\" for \"%s\" (entity index %d)\n", pkvd->szValue, GetClassname(), entindex());
+		}
+
 		pkvd->fHandled = true;
 	}
 	else
@@ -451,6 +477,7 @@ CBaseWeapon* CBaseWeapon::GetItemToRespawn(const Vector& respawnPoint)
 	pNewWeapon->m_iszTriggerOnDematerialize = m_iszTriggerOnDematerialize;
 
 	pNewWeapon->m_iDefaultAmmo = pNewWeapon->m_iDefaultPrimaryAmmo = m_iDefaultPrimaryAmmo;
+	pNewWeapon->m_PickupRule = m_PickupRule;
 
 	DispatchSpawn(pNewWeapon->edict());
 

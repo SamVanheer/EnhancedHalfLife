@@ -233,6 +233,14 @@ extern int giAmmoIndex;
 
 void AddAmmoNameToAmmoRegistry(const char* szAmmoname, int maxCarry);
 
+enum class WeaponPickupRule
+{
+	Default,		//!< Use default pickup rules
+	Always,			//!< Player can always pick up this weapon, even if they already have it and have maximum ammo
+	Never,			//!< Player can never pick up this weapon (ornament, prefer cheaper entities)
+	NoDuplicates,	//!< Player can pick up the weapon if they don't have it already
+};
+
 /**
 *	@brief Weapons that the player has in their inventory that they can use
 */
@@ -449,6 +457,9 @@ public:
 
 	int m_iDefaultPrimaryAmmo = 0; //!< how much ammo you get when you pick up this weapon as placed by a level designer.
 	int m_iDefaultAmmo = 0; //!< Amount of ammo left in weapon
+
+	//Handled in CBasePlayer::AddPlayerWeapon
+	WeaponPickupRule m_PickupRule = WeaponPickupRule::Default;
 
 	// hle time creep vars
 	float m_flPrevPrimaryAttack = 0;
