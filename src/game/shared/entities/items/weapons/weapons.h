@@ -491,7 +491,7 @@ public:
 	static TYPEDESCRIPTION m_SaveData[];
 
 protected:
-	ItemApplyResult DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName);
+	ItemApplyResult DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName, bool playSound);
 
 	ItemApplyResult Apply(CBasePlayer* player) override;
 

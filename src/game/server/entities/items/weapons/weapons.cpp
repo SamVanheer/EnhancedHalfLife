@@ -335,11 +335,11 @@ void CBaseAmmo::Precache()
 	}
 }
 
-ItemApplyResult CBaseAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName)
+ItemApplyResult CBaseAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName, bool playSound)
 {
 	if (ammoName && *ammoName && player->GiveAmmo(amount, ammoName) != -1)
 	{
-		if (auto sound = STRING(m_iszPickupSound); *sound)
+		if (auto sound = STRING(m_iszPickupSound); playSound && *sound)
 		{
 			EmitSound(SoundChannel::Item, sound);
 		}
@@ -351,7 +351,7 @@ ItemApplyResult CBaseAmmo::DefaultGiveAmmo(CBasePlayer* player, int amount, cons
 
 ItemApplyResult CBaseAmmo::Apply(CBasePlayer* player)
 {
-	return DefaultGiveAmmo(player, m_iAmount, STRING(m_iszAmmoName));
+	return DefaultGiveAmmo(player, m_iAmount, STRING(m_iszAmmoName), true);
 }
 
 LINK_ENTITY_TO_CLASS(ammo_generic, CAmmoGeneric);
@@ -395,10 +395,18 @@ ItemApplyResult CAmmoAll::Apply(CBasePlayer* player)
 
 		if (info.pszName)
 		{
-			if (DefaultGiveAmmo(player, m_iAmount == AMMOALL_REFILLAMMO ? info.MaxCarry : m_iAmount, info.pszName).Action != ItemApplyAction::NotUsed)
+			if (DefaultGiveAmmo(player, m_iAmount == AMMOALL_REFILLAMMO ? info.MaxCarry : m_iAmount, info.pszName, false).Action != ItemApplyAction::NotUsed)
 			{
 				action = ItemApplyAction::Used;
 			}
+		}
+	}
+
+	if (action != ItemApplyAction::NotUsed)
+	{
+		if (auto sound = STRING(m_iszPickupSound); *sound)
+		{
+			EmitSound(SoundChannel::Item, sound);
 		}
 	}
 
