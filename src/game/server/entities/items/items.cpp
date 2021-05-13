@@ -55,6 +55,10 @@ class CItemSuit : public CItem
 
 			pkvd->fHandled = true;
 		}
+		else
+		{
+			CItem::KeyValue(pkvd);
+		}
 	}
 
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override
