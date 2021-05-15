@@ -58,17 +58,8 @@ function(set_common_properties TARGET_NAME)
 		$<$<CONFIG:DEBUG>:_DEBUG>
 		CLIENT_WEAPONS
 		# These are defined for OSX as well
-		$<$<PLATFORM_ID:Linux, Darwin>:
-			POSIX
-			_POSIX
-			LINUX
-			_LINUX
-			GNUC
-		>
-		$<$<PLATFORM_ID:Darwin>:
-			OSX
-			_OSX
-		>)
+		"$<$<PLATFORM_ID:Linux, Darwin>:POSIX _POSIX LINUX _LINUX GNUC>"
+		"$<$<PLATFORM_ID:Darwin>: OSX _OSX>")
 		
 	target_link_libraries(${TARGET_NAME} PRIVATE
 		Threads::Threads
