@@ -50,7 +50,7 @@ constexpr int TRAIN_FAST = 0x04;
 constexpr int TRAIN_BACK = 0x05;
 
 // Global Savedata for player
-TYPEDESCRIPTION	CBasePlayer::m_playerSaveData[] =
+TYPEDESCRIPTION	CBasePlayer::m_SaveData[] =
 {
 	DEFINE_FIELD(CBasePlayer, m_flFlashLightTime, FIELD_TIME),
 	DEFINE_FIELD(CBasePlayer, m_iFlashBattery, FIELD_INTEGER),
@@ -2361,20 +2361,14 @@ void CBasePlayer::Precache()
 		m_fInitHUD = true;
 }
 
-bool CBasePlayer::Save(CSave& save)
+IMPLEMENT_SAVERESTORE(CBasePlayer, CBaseMonster);
+
+bool CBasePlayer::PostRestore()
 {
-	if (!CBaseMonster::Save(save))
+	if (!CBaseMonster::PostRestore())
+	{
 		return false;
-
-	return save.WriteFields("PLAYER", this, m_playerSaveData, ArraySize(m_playerSaveData));
-}
-
-bool CBasePlayer::Restore(CRestore& restore)
-{
-	if (!CBaseMonster::Restore(restore))
-		return false;
-
-	const bool status = restore.ReadFields("PLAYER", this, m_playerSaveData, ArraySize(m_playerSaveData));
+	}
 
 	SAVERESTOREDATA* pSaveData = (SAVERESTOREDATA*)gpGlobals->pSaveData;
 	// landmark isn't present.
@@ -2424,7 +2418,7 @@ bool CBasePlayer::Restore(CRestore& restore)
 
 	m_bRestored = true;
 
-	return status;
+	return true;
 }
 
 bool CBasePlayer::HasWeapons()

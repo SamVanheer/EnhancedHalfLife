@@ -126,10 +126,14 @@ bool CBaseEntity::Save(CSave& save)
 
 bool CBaseEntity::Restore(CRestore& restore)
 {
-	bool status = restore.ReadEntVars("ENTVARS", pev);
-	if (status)
-		status = restore.ReadFields("BASE", this, m_SaveData, ArraySize(m_SaveData));
+	if (restore.ReadEntVars("ENTVARS", pev))
+		return restore.ReadFields("BASE", this, m_SaveData, ArraySize(m_SaveData));
 
+	return false;
+}
+
+bool CBaseEntity::PostRestore()
+{
 	if (pev->modelindex != 0 && !IsStringNull(pev->model))
 	{
 		Vector mins, maxs;
@@ -142,7 +146,7 @@ bool CBaseEntity::Restore(CRestore& restore)
 		SetSize(mins, maxs);	// Reset them
 	}
 
-	return status;
+	return true;
 }
 
 void CBaseEntity::SetObjectCollisionBox()

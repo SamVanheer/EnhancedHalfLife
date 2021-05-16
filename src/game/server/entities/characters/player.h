@@ -229,6 +229,7 @@ public:
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
+	bool PostRestore() override;
 
 	/**
 	*	@brief call this when a player dies to pack up the appropriate weapons and ammo items,
@@ -255,7 +256,7 @@ public:
 	*/
 	virtual void UpdateClientData();
 
-	static TYPEDESCRIPTION m_playerSaveData[];
+	static TYPEDESCRIPTION m_SaveData[];
 
 	/**
 	*	@brief Player is moved across the transition by other means

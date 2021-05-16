@@ -89,19 +89,14 @@ TYPEDESCRIPTION	CBaseMonster::m_SaveData[] =
 	DEFINE_FIELD(CBaseMonster, m_hCine, FIELD_EHANDLE),
 };
 
-//IMPLEMENT_SAVERESTORE( CBaseMonster, CBaseToggle );
-bool CBaseMonster::Save(CSave& save)
-{
-	if (!CBaseToggle::Save(save))
-		return false;
-	return save.WriteFields("CBaseMonster", this, m_SaveData, ArraySize(m_SaveData));
-}
+IMPLEMENT_SAVERESTORE( CBaseMonster, CBaseToggle );
 
-bool CBaseMonster::Restore(CRestore& restore)
+bool CBaseMonster::PostRestore()
 {
-	if (!CBaseToggle::Restore(restore))
+	if (!CBaseToggle::PostRestore())
+	{
 		return false;
-	const bool status = restore.ReadFields("CBaseMonster", this, m_SaveData, ArraySize(m_SaveData));
+	}
 
 	// We don't save/restore routes yet
 	RouteClear();
@@ -117,7 +112,7 @@ bool CBaseMonster::Restore(CRestore& restore)
 	if (m_hEnemy == nullptr)
 		m_afConditions = 0;
 
-	return status;
+	return true;
 }
 
 void CBaseMonster::Eat(float flFullDuration)

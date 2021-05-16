@@ -365,8 +365,11 @@ public:
 	*/
 	virtual void Precache() {}
 	virtual void KeyValue(KeyValueData* pkvd) { pkvd->fHandled = false; }
+
 	virtual bool Save(CSave& save);
 	virtual bool Restore(CRestore& restore);
+	virtual bool PostRestore();
+
 	virtual int ObjectCaps() { return FCAP_ACROSS_TRANSITION; }
 	virtual void Activate() {}
 

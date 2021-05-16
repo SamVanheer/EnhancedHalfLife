@@ -191,6 +191,7 @@ public:
 
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;
+	bool PostRestore() override;
 
 	static TYPEDESCRIPTION m_SaveData[];
 

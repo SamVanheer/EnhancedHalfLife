@@ -316,14 +316,17 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 
 		}
 
+		if (pEntity->Restore(restoreHelper))
+		{
+			pEntity->PostRestore();
+		}
+
 		if (pEntity->ObjectCaps() & FCAP_MUST_SPAWN)
 		{
-			pEntity->Restore(restoreHelper);
 			pEntity->Spawn();
 		}
 		else
 		{
-			pEntity->Restore(restoreHelper);
 			pEntity->Precache();
 		}
 

@@ -43,6 +43,7 @@ bool CBaseEntity::TakeDamage(const TakeDamageInfo& info) { return true; }
 CBaseEntity* CBaseEntity::GetNextTarget() { return nullptr; }
 bool CBaseEntity::Save(CSave& save) { return true; }
 bool CBaseEntity::Restore(CRestore& restore) { return true; }
+bool CBaseEntity::PostRestore() { return true; }
 void CBaseEntity::SetObjectCollisionBox() { }
 bool CBaseEntity::Intersects(CBaseEntity* pOther) { return false; }
 void CBaseEntity::MakeDormant() { }
@@ -232,6 +233,7 @@ void CBaseMonster::Killed(const KilledInfo& info) {}
 bool CBaseMonster::GiveHealth(float flHealth, int bitsDamageType) { return false; }
 bool CBaseMonster::TakeDamage(const TakeDamageInfo& info) { return false; }
 bool CBaseMonster::Restore(class CRestore&) { return true; }
+bool CBaseMonster::PostRestore() { return true; }
 bool CBaseMonster::Save(class CSave&) { return true; }
 
 int TrainSpeed(int iSpeed, int iMax) { return 0; }
@@ -261,6 +263,7 @@ void CBasePlayer::PostThink() { }
 void CBasePlayer::Precache() { }
 bool CBasePlayer::Save(CSave& save) { return false; }
 bool CBasePlayer::Restore(CRestore& restore) { return false; }
+bool CBasePlayer::PostRestore() { return true; }
 bool CBasePlayer::HasWeapons() { return false; }
 bool CBasePlayer::FlashlightIsOn() { return false; }
 void CBasePlayer::FlashlightTurnOn() { }
