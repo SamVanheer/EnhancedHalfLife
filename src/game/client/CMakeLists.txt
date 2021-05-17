@@ -1,3 +1,8 @@
+include(../../../cmake/EHLCodeGenerator.cmake)
+
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 # Set up vgui library
 add_library(vgui SHARED IMPORTED)
 
@@ -184,6 +189,7 @@ target_sources(client PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/studio.h
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_in.h
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_out.h
+	${INCLUDE_DIRECTORY}/GoldSrc/codegen/codegen_api.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/com_model.h
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/custom.h
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/customentity.h
@@ -239,6 +245,8 @@ target_precompile_headers(client
 # Create filters
 get_target_property(CLIENT_SOURCES client SOURCES)
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/../../.. FILES ${CLIENT_SOURCES})
+
+ehl_codegen_enable(client)
 
 if (MSVC)
 	set(HL_EXECUTABLE "hl.exe")

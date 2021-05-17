@@ -1,0 +1,19 @@
+{
+  "SourceDirectory": "@EHL_SOURCE_DIRECTORY@",
+  "Definitions":
+  [
+@EHL_DEFINITIONS@
+  ],
+  "IncludePaths":
+  [
+@EHL_INCLUDES@
+  ],
+  "Headers":
+  [
+@EHL_HEADERS@
+  ],
+  "PrecompiledHeaders":
+  [
+@EHL_PRECOMPILED_HEADERS@
+  ]
+}

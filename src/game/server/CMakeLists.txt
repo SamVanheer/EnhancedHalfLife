@@ -1,3 +1,8 @@
+include(../../../cmake/EHLCodeGenerator.cmake)
+
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 # Add server library
 # Add the def file as well
 # This file is necessary because GiveFnptrsToDll uses the __stdcall calling convention on Windows,
@@ -208,6 +213,7 @@ target_sources(hl PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/studio.h
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_in.h
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_out.h
+	${INCLUDE_DIRECTORY}/GoldSrc/codegen/codegen_api.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/com_model.h
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/custom.h
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/customentity.h
@@ -244,6 +250,8 @@ target_precompile_headers(hl
 # Create filters
 get_target_property(SERVER_SOURCES hl SOURCES)
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/../../.. FILES ${SERVER_SOURCES})
+
+ehl_codegen_enable(hl)
 
 if (MSVC)
 	set(HLDS_EXECUTABLE "hlds.exe")
