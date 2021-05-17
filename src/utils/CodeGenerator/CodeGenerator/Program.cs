@@ -33,12 +33,15 @@ namespace CodeGenerator
             generateCommand.AddOption(new Option<string>("--config-file",
                     description: "Specifies the path to the configuration file"));
 
-            generateCommand.Handler = CommandHandler.Create<string>(GenerateCode);
+            generateCommand.AddOption(new Option<bool>("--dry-run",
+                description: "Process the target but don't generate any code"));
+
+            generateCommand.Handler = CommandHandler.Create<string, bool>(GenerateCode);
 
             return rootCommand.InvokeAsync(args).Result;
         }
 
-        private static int GenerateCode(string configFile)
+        private static int GenerateCode(string configFile, bool dryRun)
         {
             if (string.IsNullOrWhiteSpace(configFile))
             {
@@ -85,9 +88,12 @@ namespace CodeGenerator
 
             Console.WriteLine("Generating code...");
 
-            var codeGenerator = new Generator(generatedCode);
+            if (!dryRun)
+            {
+                var codeGenerator = new Generator(generatedCode);
 
-            codeGenerator.Generate();
+                codeGenerator.Generate();
+            }
 
             return ErrorSuccess;
         }
