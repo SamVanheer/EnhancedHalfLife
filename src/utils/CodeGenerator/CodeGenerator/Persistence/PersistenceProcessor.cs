@@ -268,6 +268,7 @@ namespace CodeGenerator.Persistence
                     return builtin.Kind switch
                     {
                         CXTypeKind.CXType_Int => "FIELD_INTEGER",
+                        CXTypeKind.CXType_UInt => "FIELD_INTEGER",
                         CXTypeKind.CXType_Float => DeduceFloatType(fieldType),
                         CXTypeKind.CXType_Short => "FIELD_SHORT",
                         CXTypeKind.CXType_UChar => "FIELD_CHARACTER",
