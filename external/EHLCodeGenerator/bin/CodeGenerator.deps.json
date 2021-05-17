@@ -1,0 +1,175 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0/win-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {},
+    ".NETCoreApp,Version=v5.0/win-x64": {
+      "CodeGenerator/1.0.0": {
+        "dependencies": {
+          "ClangSharp": "11.0.0-beta3",
+          "System.CommandLine": "2.0.0-beta1.21216.1"
+        },
+        "runtime": {
+          "CodeGenerator.dll": {}
+        }
+      },
+      "ClangSharp/11.0.0-beta3": {
+        "dependencies": {
+          "libclang": "11.0.0",
+          "libClangSharp": "11.0.0-beta2"
+        },
+        "runtime": {
+          "lib/net5.0/ClangSharp.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.0.0.0"
+          }
+        }
+      },
+      "libclang/11.0.0": {
+        "dependencies": {
+          "libclang.runtime.win-x64": "11.0.0"
+        }
+      },
+      "libclang.runtime.win-x64/11.0.0": {
+        "native": {
+          "runtimes/win-x64/native/libclang.dll": {
+            "fileVersion": "11.0.0.0"
+          }
+        }
+      },
+      "libClangSharp/11.0.0-beta2": {
+        "dependencies": {
+          "libClangSharp.runtime.win-x64": "11.0.0-beta2"
+        }
+      },
+      "libClangSharp.runtime.win-x64/11.0.0-beta2": {
+        "native": {
+          "runtimes/win-x64/native/libClangSharp.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Microsoft.CSharp/4.4.1": {},
+      "System.CommandLine/2.0.0-beta1.21216.1": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.4.1",
+          "System.Memory": "4.5.4"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.CommandLine.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.21.21601"
+          }
+        },
+        "resources": {
+          "lib/netstandard2.0/cs/System.CommandLine.resources.dll": {
+            "locale": "cs"
+          },
+          "lib/netstandard2.0/de/System.CommandLine.resources.dll": {
+            "locale": "de"
+          },
+          "lib/netstandard2.0/es/System.CommandLine.resources.dll": {
+            "locale": "es"
+          },
+          "lib/netstandard2.0/fr/System.CommandLine.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/netstandard2.0/it/System.CommandLine.resources.dll": {
+            "locale": "it"
+          },
+          "lib/netstandard2.0/ja/System.CommandLine.resources.dll": {
+            "locale": "ja"
+          },
+          "lib/netstandard2.0/ko/System.CommandLine.resources.dll": {
+            "locale": "ko"
+          },
+          "lib/netstandard2.0/pl/System.CommandLine.resources.dll": {
+            "locale": "pl"
+          },
+          "lib/netstandard2.0/pt-BR/System.CommandLine.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "lib/netstandard2.0/ru/System.CommandLine.resources.dll": {
+            "locale": "ru"
+          },
+          "lib/netstandard2.0/tr/System.CommandLine.resources.dll": {
+            "locale": "tr"
+          },
+          "lib/netstandard2.0/zh-Hans/System.CommandLine.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "lib/netstandard2.0/zh-Hant/System.CommandLine.resources.dll": {
+            "locale": "zh-Hant"
+          }
+        }
+      },
+      "System.Memory/4.5.4": {}
+    }
+  },
+  "libraries": {
+    "CodeGenerator/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ClangSharp/11.0.0-beta3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4cuZZHPIxjhMCVWG794GmqCqHPLsVepchOuB6AGks1a3cU2bBap08h20lZwQZot8imzUeFSkp3r1gab7NbP75A==",
+      "path": "clangsharp/11.0.0-beta3",
+      "hashPath": "clangsharp.11.0.0-beta3.nupkg.sha512"
+    },
+    "libclang/11.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5F8FctVcQ4mzMLsFH52OyeTyRwnjrhA8J2P4xMF6Ejn50ChLFQ6AVrLeQwVpws6CBQ3GiIPtHQra2EGQQbIiDw==",
+      "path": "libclang/11.0.0",
+      "hashPath": "libclang.11.0.0.nupkg.sha512"
+    },
+    "libclang.runtime.win-x64/11.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QgrS3+S7jPa++VMcuSKz8ZudHZDGyLFdo4dG7+3O8uYKauvfIxyLmm53f+s+fthsyxnGFp8MoY/19Rb2xOmswQ==",
+      "path": "libclang.runtime.win-x64/11.0.0",
+      "hashPath": "libclang.runtime.win-x64.11.0.0.nupkg.sha512"
+    },
+    "libClangSharp/11.0.0-beta2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MZgJN3LBZpQnKjEKw/MZ2OYfd+YnblVtySaYfA9SN6Al3G2fZAA3hU5ktWDLrJvOk3miv/2ysLpo9ETQOgGjvQ==",
+      "path": "libclangsharp/11.0.0-beta2",
+      "hashPath": "libclangsharp.11.0.0-beta2.nupkg.sha512"
+    },
+    "libClangSharp.runtime.win-x64/11.0.0-beta2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mjsu8502VlR4bGLyC2Bqk4CdL++CFSxnBdqSUbtyyS88QVZQvoUSB6e+g0KUPc/ksPo57/r1voYyejIjlQCHog==",
+      "path": "libclangsharp.runtime.win-x64/11.0.0-beta2",
+      "hashPath": "libclangsharp.runtime.win-x64.11.0.0-beta2.nupkg.sha512"
+    },
+    "Microsoft.CSharp/4.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-A5hI3gk6WpcBI0QGZY6/d5CCaYUxJgi7iENn1uYEng+Olo8RfI5ReGVkjXjeu3VR3srLvVYREATXa2M0X7FYJA==",
+      "path": "microsoft.csharp/4.4.1",
+      "hashPath": "microsoft.csharp.4.4.1.nupkg.sha512"
+    },
+    "System.CommandLine/2.0.0-beta1.21216.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Nbv/tW8sbOKN5T+4SSVBMdk4ADSIpJpY4UHMsj3VkcNtOckIT4iyzagjF+W5FEh2YBRvmvVQijOTIZbUJ1+1aA==",
+      "path": "system.commandline/2.0.0-beta1.21216.1",
+      "hashPath": "system.commandline.2.0.0-beta1.21216.1.nupkg.sha512"
+    },
+    "System.Memory/4.5.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1MbJTHS1lZ4bS4FmsJjnuGJOu88ZzTT2rLvrhW7Ygic+pC0NWA+3hgAen0HRdsocuQXCkUTdFn9yHJJhsijDXw==",
+      "path": "system.memory/4.5.4",
+      "hashPath": "system.memory.4.5.4.nupkg.sha512"
+    }
+  }
+}

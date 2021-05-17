@@ -45,7 +45,7 @@ function(ehl_codegen_enable target)
 	add_custom_command(
 		TARGET ${target}
 		PRE_BUILD
-		COMMAND dotnet "${CMAKE_CURRENT_SOURCE_DIR}/../../utils/CodeGenerator/CodeGenerator/bin/Debug/net5.0/win-x64/CodeGenerator.dll" generate --config-file "${CMAKE_CURRENT_BINARY_DIR}/EHLCodeGen.json"
+		COMMAND dotnet "${CMAKE_CURRENT_SOURCE_DIR}/../../../external/EHLCodeGenerator/bin/CodeGenerator.dll" generate --config-file "${CMAKE_CURRENT_BINARY_DIR}/EHLCodeGen.json"
 		BYPRODUCTS ${EHL_GENERATED_SOURCE_NAME})
 		
 		target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/${EHL_GENERATED_DIRECTORY_NAME})
