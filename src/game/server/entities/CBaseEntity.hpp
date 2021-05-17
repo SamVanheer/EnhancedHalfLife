@@ -15,11 +15,15 @@
 
 #pragma once
 
+#include "codegen/codegen_api.hpp"
+
 #include "extdll.h"
 #include "util.h"
 #include "saverestore.hpp"
 #include "globalstate.hpp"
 #include "ehandle.hpp"
+
+#include "CBaseEntity.generated.hpp"
 
 /*
 
@@ -296,8 +300,10 @@ using USEPTR = void (CBaseEntity::*)(const UseInfo& info);
 /**
 *	@brief Base Entity.  All entity types derive from this
 */
-class CBaseEntity
+class EHL_CLASS() CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	/**
 	*	@brief Constructor.  Set engine to use C/C++ callback functions pointers to engine data
@@ -310,6 +316,7 @@ public:
 	/**
 	*	@brief path corner we are heading towards
 	*/
+	EHL_FIELD(Persisted)
 	EHANDLE m_hGoalEnt;
 
 	/**
@@ -366,8 +373,6 @@ public:
 	virtual void Precache() {}
 	virtual void KeyValue(KeyValueData* pkvd) { pkvd->fHandled = false; }
 
-	virtual bool Save(CSave& save);
-	virtual bool Restore(CRestore& restore);
 	virtual bool PostRestore();
 
 	virtual int ObjectCaps() { return FCAP_ACROSS_TRANSITION; }
@@ -389,9 +394,6 @@ public:
 	*	@brief monster maker children use this to tell the monster maker that they have died.
 	*/
 	virtual void DeathNotice(CBaseEntity* pChild) {}
-
-
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	virtual void TraceAttack(const TraceAttackInfo& info);
 
@@ -425,9 +427,17 @@ public:
 	virtual CBaseEntity* GetNextTarget();
 
 	// fundamental callbacks
+	// UNDONE: Build table of these!!!
+	EHL_FIELD(Persisted)
 	BASEPTR m_pfnThink = nullptr;
+
+	EHL_FIELD(Persisted)
 	ENTITYFUNCPTR m_pfnTouch = nullptr;
+
+	EHL_FIELD(Persisted)
 	USEPTR m_pfnUse = nullptr;
+
+	EHL_FIELD(Persisted)
 	ENTITYFUNCPTR m_pfnBlocked = nullptr;
 
 	virtual void Think() { if (m_pfnThink) (this->*m_pfnThink)(); }

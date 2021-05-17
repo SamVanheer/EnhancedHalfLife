@@ -18,16 +18,15 @@
 #include "CBaseDelay.hpp"
 #include "animationevent.hpp"
 
+#include "CBaseAnimating.generated.hpp"
+
 struct studiohdr_t;
 
-class CBaseAnimating : public CBaseDelay
+class EHL_CLASS() CBaseAnimating : public CBaseDelay
 {
+	EHL_GENERATED_BODY()
+
 public:
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static TYPEDESCRIPTION m_SaveData[];
-
 	/**
 	*	@brief Gets the studio model header
 	*	Only valid for entities that use studio models
@@ -74,9 +73,18 @@ public:
 	void SetSequenceBox();
 
 	// animation needs
+	EHL_FIELD(Persisted)
 	float m_flFrameRate = 0;			//!< computed FPS for current sequence
+
+	EHL_FIELD(Persisted)
 	float m_flGroundSpeed = 0;			//!< computed linear movement rate for current sequence
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flLastEventCheck = 0;		//!< last time the event list was checked
+
+	EHL_FIELD(Persisted)
 	bool m_fSequenceFinished = false;	//!< flag set when StudioAdvanceFrame moves across a frame boundry
+
+	EHL_FIELD(Persisted)
 	bool m_fSequenceLoops = false;		//!< true if the sequence loops
 };

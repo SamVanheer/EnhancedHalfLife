@@ -83,15 +83,6 @@ void CBaseEntity::SUB_DoNothing()
 {
 }
 
-// Global Savedata for Delay
-TYPEDESCRIPTION	CBaseDelay::m_SaveData[] =
-{
-	DEFINE_FIELD(CBaseDelay, m_flDelay, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseDelay, m_iszKillTarget, FIELD_STRING),
-};
-
-IMPLEMENT_SAVERESTORE(CBaseDelay, CBaseEntity);
-
 void CBaseDelay::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "delay"))
@@ -222,31 +213,6 @@ void CBaseDelay::DelayThink()
 	SUB_UseTargets(pActivator, (UseType)pev->button, 0);
 	UTIL_RemoveNow(this);
 }
-
-// Global Savedata for Toggle
-TYPEDESCRIPTION	CBaseToggle::m_SaveData[] =
-{
-	DEFINE_FIELD(CBaseToggle, m_toggle_state, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseToggle, m_flActivateFinished, FIELD_TIME),
-	DEFINE_FIELD(CBaseToggle, m_flMoveDistance, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseToggle, m_flWait, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseToggle, m_flLip, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseToggle, m_flTWidth, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseToggle, m_flTLength, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseToggle, m_vecPosition1, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CBaseToggle, m_vecPosition2, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CBaseToggle, m_vecAngle1, FIELD_VECTOR),		// UNDONE: Position could go through transition, but also angle?
-	DEFINE_FIELD(CBaseToggle, m_vecAngle2, FIELD_VECTOR),		// UNDONE: Position could go through transition, but also angle?
-	DEFINE_FIELD(CBaseToggle, m_flHeight, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseToggle, m_hActivator, FIELD_EHANDLE),
-	DEFINE_FIELD(CBaseToggle, m_pfnCallWhenMoveDone, FIELD_FUNCTION),
-	DEFINE_FIELD(CBaseToggle, m_vecFinalDest, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CBaseToggle, m_vecFinalAngle, FIELD_VECTOR),
-	DEFINE_FIELD(CBaseToggle, m_sMaster, FIELD_STRING),
-	DEFINE_FIELD(CBaseToggle, m_bitsDamageInflict, FIELD_INTEGER),	// damage type inflicted
-};
-
-IMPLEMENT_SAVERESTORE(CBaseToggle, CBaseAnimating);
 
 void CBaseToggle::KeyValue(KeyValueData* pkvd)
 {

@@ -18,17 +18,6 @@
 #include "animation.h"
 #include "studio.h"
 
-TYPEDESCRIPTION	CBaseAnimating::m_SaveData[] =
-{
-	DEFINE_FIELD(CBaseMonster, m_flFrameRate, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseMonster, m_flGroundSpeed, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseMonster, m_flLastEventCheck, FIELD_TIME),
-	DEFINE_FIELD(CBaseMonster, m_fSequenceFinished, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBaseMonster, m_fSequenceLoops, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CBaseAnimating, CBaseDelay);
-
 studiohdr_t* CBaseAnimating::GetModelPointer()
 {
 	return reinterpret_cast<studiohdr_t*>(g_engfuncs.pfnGetModelPtr(edict()));

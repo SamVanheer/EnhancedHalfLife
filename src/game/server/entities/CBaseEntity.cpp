@@ -105,33 +105,6 @@ CBaseEntity* CBaseEntity::GetNextTarget()
 	return pTarget;
 }
 
-// Global Savedata for Delay
-TYPEDESCRIPTION	CBaseEntity::m_SaveData[] =
-{
-	DEFINE_FIELD(CBaseEntity, m_hGoalEnt, FIELD_EHANDLE),
-
-	DEFINE_FIELD(CBaseEntity, m_pfnThink, FIELD_FUNCTION),		// UNDONE: Build table of these!!!
-	DEFINE_FIELD(CBaseEntity, m_pfnTouch, FIELD_FUNCTION),
-	DEFINE_FIELD(CBaseEntity, m_pfnUse, FIELD_FUNCTION),
-	DEFINE_FIELD(CBaseEntity, m_pfnBlocked, FIELD_FUNCTION),
-};
-
-bool CBaseEntity::Save(CSave& save)
-{
-	if (save.WriteEntVars("ENTVARS", pev))
-		return save.WriteFields("BASE", this, m_SaveData, ArraySize(m_SaveData));
-
-	return false;
-}
-
-bool CBaseEntity::Restore(CRestore& restore)
-{
-	if (restore.ReadEntVars("ENTVARS", pev))
-		return restore.ReadFields("BASE", this, m_SaveData, ArraySize(m_SaveData));
-
-	return false;
-}
-
 bool CBaseEntity::PostRestore()
 {
 	if (pev->modelindex != 0 && !IsStringNull(pev->model))

@@ -17,6 +17,8 @@
 
 #include "CBaseAnimating.hpp"
 
+#include "CBaseToggle.generated.hpp"
+
 class CBaseToggle;
 
 using CallWhenMoveDoneFn = void (CBaseToggle::*)();
@@ -24,36 +26,63 @@ using CallWhenMoveDoneFn = void (CBaseToggle::*)();
 /**
 *	@brief generic Toggle entity.
 */
-class CBaseToggle : public CBaseAnimating
+class EHL_CLASS() CBaseToggle : public CBaseAnimating
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 
+	EHL_FIELD(Persisted)
 	ToggleState m_toggle_state = ToggleState::AtTop;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flActivateFinished = 0;	//!< like attack_finished, but for doors
+
+	EHL_FIELD(Persisted)
 	float m_flMoveDistance = 0;		//!< how far a door should slide or rotate
+
+	EHL_FIELD(Persisted)
 	float m_flWait = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flLip = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flTWidth = 0;		//!< for plats
+
+	EHL_FIELD(Persisted)
 	float m_flTLength = 0;	//!< for plats
 
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_vecPosition1;
-	Vector m_vecPosition2;
-	Vector m_vecAngle1;
-	Vector m_vecAngle2;
 
+	EHL_FIELD(Persisted, Type=Position)
+	Vector m_vecPosition2;
+
+	EHL_FIELD(Persisted)
+	Vector m_vecAngle1; // UNDONE: Position could go through transition, but also angle?
+
+	EHL_FIELD(Persisted)
+	Vector m_vecAngle2; // UNDONE: Position could go through transition, but also angle?
+
+	EHL_FIELD(Persisted)
 	float m_flHeight = 0;
+
+	EHL_FIELD(Persisted)
 	EHANDLE m_hActivator;
+
+	EHL_FIELD(Persisted)
 	CallWhenMoveDoneFn m_pfnCallWhenMoveDone = nullptr;
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_vecFinalDest;
+
+	EHL_FIELD(Persisted)
 	Vector m_vecFinalAngle;
 
+	EHL_FIELD(Persisted)
 	int m_bitsDamageInflict = 0;	//!< DMG_ damage type that the door or tigger does
-
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static TYPEDESCRIPTION m_SaveData[];
 
 	ToggleState GetToggleState() override { return m_toggle_state; }
 	float GetDelay() override { return m_flWait; }
@@ -93,6 +122,7 @@ public:
 	*	If all of the switches in the multisource have been triggered, then the button will be allowed to operate.
 	*	Otherwise, it will be deactivated.
 	*/
+	EHL_FIELD(Persisted)
 	string_t m_sMaster = iStringNull;
 };
 

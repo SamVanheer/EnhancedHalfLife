@@ -37,12 +37,18 @@ enginefuncs_t g_engfuncs;
 static globalvars_t	Globals;
 globalvars_t* gpGlobals = &Globals;
 
+//CSave stubs
+bool CSave::WriteEntVars(const char* pname, entvars_t* pev) { return false; }
+bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount) { return false; }
+
+//CRestore stubs
+bool CRestore::ReadEntVars(const char* pname, entvars_t* pev) { return false; }
+bool CRestore::ReadFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount) { return false; }
+
 // CBaseEntity Stubs
 bool CBaseEntity::GiveHealth(float flHealth, int bitsDamageType) { return true; }
 bool CBaseEntity::TakeDamage(const TakeDamageInfo& info) { return true; }
 CBaseEntity* CBaseEntity::GetNextTarget() { return nullptr; }
-bool CBaseEntity::Save(CSave& save) { return true; }
-bool CBaseEntity::Restore(CRestore& restore) { return true; }
 bool CBaseEntity::PostRestore() { return true; }
 void CBaseEntity::SetObjectCollisionBox() { }
 bool CBaseEntity::Intersects(CBaseEntity* pOther) { return false; }
@@ -59,12 +65,6 @@ void CBaseEntity::EmitSound(SoundChannel channel, const char* fileName, float vo
 
 // CBaseDelay Stubs
 void CBaseDelay::KeyValue(KeyValueData*) { }
-bool CBaseDelay::Restore(class CRestore&) { return true; }
-bool CBaseDelay::Save(class CSave&) { return true; }
-
-// CBaseAnimating Stubs
-bool CBaseAnimating::Restore(class CRestore&) { return true; }
-bool CBaseAnimating::Save(class CSave&) { return true; }
 
 // DEBUG Stubs
 void DBG_AssertFunction(bool fExpr, const char* szExpr, const char* szFile, int szLine, const char* szMessage) { }
@@ -81,8 +81,6 @@ void UTIL_ClientPrintAll(int, char const*, char const*, char const*, char const*
 CBaseEntity* UTIL_EntityByIndex(int index) { return nullptr; }
 
 // CBaseToggle Stubs
-bool CBaseToggle::Restore(class CRestore&) { return true; }
-bool CBaseToggle::Save(class CSave&) { return true; }
 void CBaseToggle::KeyValue(KeyValueData*) { }
 
 // CGrenade Stubs
