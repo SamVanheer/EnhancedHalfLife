@@ -298,15 +298,6 @@ void W_Precache()
 
 }
 
-TYPEDESCRIPTION	CBaseAmmo::m_SaveData[] =
-{
-	DEFINE_FIELD(CBaseAmmo, m_iAmount, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseAmmo, m_iszAmmoName, FIELD_STRING),
-	DEFINE_FIELD(CBaseAmmo, m_iszPickupSound, FIELD_SOUNDNAME),
-};
-
-IMPLEMENT_SAVERESTORE(CBaseAmmo, CBaseItem);
-
 void CBaseAmmo::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "ammo_amount"))
@@ -412,37 +403,6 @@ ItemApplyResult CAmmoAll::Apply(CBasePlayer* player)
 
 	return {action};
 }
-
-TYPEDESCRIPTION	CBaseWeapon::m_SaveData[] =
-{
-	DEFINE_FIELD(CBaseWeapon, m_hPlayer, FIELD_EHANDLE),
-	DEFINE_FIELD(CBaseWeapon, m_hNext, FIELD_EHANDLE),
-	//DEFINE_FIELD(CBaseWeapon, m_fKnown, FIELD_INTEGER),Reset to zero on load
-	DEFINE_FIELD(CBaseWeapon, m_iId, FIELD_INTEGER),
-	// DEFINE_FIELD(CBaseWeapon, m_iIdPrimary, FIELD_INTEGER),
-	// DEFINE_FIELD(CBaseWeapon, m_iIdSecondary, FIELD_INTEGER),
-
-#if defined( CLIENT_WEAPONS )
-	DEFINE_FIELD(CBaseWeapon, m_flNextPrimaryAttack, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseWeapon, m_flNextSecondaryAttack, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseWeapon, m_flTimeWeaponIdle, FIELD_FLOAT),
-#else	// CLIENT_WEAPONS
-	DEFINE_FIELD(CBaseWeapon, m_flNextPrimaryAttack, FIELD_TIME),
-	DEFINE_FIELD(CBaseWeapon, m_flNextSecondaryAttack, FIELD_TIME),
-	DEFINE_FIELD(CBaseWeapon, m_flTimeWeaponIdle, FIELD_TIME),
-#endif	// CLIENT_WEAPONS
-	DEFINE_FIELD(CBaseWeapon, m_iPrimaryAmmoType, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseWeapon, m_iSecondaryAmmoType, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseWeapon, m_iClip, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseWeapon, m_iDefaultPrimaryAmmo, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseWeapon, m_iDefaultAmmo, FIELD_INTEGER),
-	//	DEFINE_FIELD( CBaseWeapon, m_iClientClip, FIELD_INTEGER )	 , reset to zero on load so hud gets updated correctly
-	//  DEFINE_FIELD( CBaseWeapon, m_iClientWeaponState, FIELD_INTEGER ), reset to zero on load so hud gets updated correctly
-	DEFINE_FIELD(CBaseWeapon, m_iszWorldModelName, FIELD_MODELNAME),
-	DEFINE_FIELD(CBaseWeapon, m_PickupRule, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CBaseWeapon, CBaseItem);
 
 void CBaseWeapon::SetObjectCollisionBox()
 {
@@ -845,16 +805,6 @@ float CBaseWeapon::GetNextAttackDelay(float delay)
 
 LINK_ENTITY_TO_CLASS(weaponbox, CWeaponBox);
 
-TYPEDESCRIPTION	CWeaponBox::m_SaveData[] =
-{
-	DEFINE_ARRAY(CWeaponBox, m_rgAmmo, FIELD_INTEGER, MAX_AMMO_TYPES),
-	DEFINE_ARRAY(CWeaponBox, m_rgiszAmmo, FIELD_STRING, MAX_AMMO_TYPES),
-	DEFINE_ARRAY(CWeaponBox, m_hPlayerWeapons, FIELD_EHANDLE, MAX_WEAPON_TYPES),
-	DEFINE_FIELD(CWeaponBox, m_cAmmoTypes, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CWeaponBox, CBaseEntity);
-
 void CWeaponBox::Precache()
 {
 	PRECACHE_MODEL("models/w_weaponbox.mdl");
@@ -1147,62 +1097,3 @@ void CBaseWeapon::PrintState()
 
 	ALERT(at_console, "m_iclip:  %i\n", m_iClip);
 }
-
-TYPEDESCRIPTION	CRpg::m_SaveData[] =
-{
-	DEFINE_FIELD(CRpg, m_fSpotActive, FIELD_BOOLEAN),
-	DEFINE_FIELD(CRpg, m_cActiveRockets, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CRpg, CBaseWeapon);
-
-TYPEDESCRIPTION	CRpgRocket::m_SaveData[] =
-{
-	DEFINE_FIELD(CRpgRocket, m_flIgniteTime, FIELD_TIME),
-	DEFINE_FIELD(CRpgRocket, m_hLauncher, FIELD_EHANDLE),
-};
-
-IMPLEMENT_SAVERESTORE(CRpgRocket, CGrenade);
-
-TYPEDESCRIPTION	CShotgun::m_SaveData[] =
-{
-	DEFINE_FIELD(CShotgun, m_flNextReload, FIELD_TIME),
-	DEFINE_FIELD(CShotgun, m_fInSpecialReload, FIELD_INTEGER),
-	DEFINE_FIELD(CShotgun, m_flNextReload, FIELD_TIME),
-	// DEFINE_FIELD( CShotgun, m_iShell, FIELD_INTEGER ),
-	DEFINE_FIELD(CShotgun, m_flPumpTime, FIELD_TIME),
-};
-
-IMPLEMENT_SAVERESTORE(CShotgun, CBaseWeapon);
-
-TYPEDESCRIPTION	CGauss::m_SaveData[] =
-{
-	DEFINE_FIELD(CGauss, m_fInAttack, FIELD_INTEGER),
-	//	DEFINE_FIELD( CGauss, m_flStartCharge, FIELD_TIME ),
-	//	DEFINE_FIELD( CGauss, m_flPlayAftershock, FIELD_TIME ),
-	//	DEFINE_FIELD( CGauss, m_flNextAmmoBurn, FIELD_TIME ),
-		DEFINE_FIELD(CGauss, m_fPrimaryFire, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CGauss, CBaseWeapon);
-
-TYPEDESCRIPTION	CEgon::m_SaveData[] =
-{
-	//	DEFINE_FIELD( CEgon, m_hBeam, FIELD_EHANDLE ),
-	//	DEFINE_FIELD( CEgon, m_hNoise, FIELD_EHANDLE ),
-	//	DEFINE_FIELD( CEgon, m_hSprite, FIELD_EHANDLE ),
-		DEFINE_FIELD(CEgon, m_shootTime, FIELD_TIME),
-		DEFINE_FIELD(CEgon, m_fireState, FIELD_INTEGER),
-		DEFINE_FIELD(CEgon, m_fireMode, FIELD_INTEGER),
-		DEFINE_FIELD(CEgon, m_shakeTime, FIELD_TIME),
-		DEFINE_FIELD(CEgon, m_flAmmoUseTime, FIELD_TIME),
-};
-
-IMPLEMENT_SAVERESTORE(CEgon, CBaseWeapon);
-
-TYPEDESCRIPTION	CSatchel::m_SaveData[] =
-{
-	DEFINE_FIELD(CSatchel, m_chargeReady, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CSatchel, CBaseWeapon);

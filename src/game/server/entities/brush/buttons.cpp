@@ -128,17 +128,6 @@ void CEnvGlobal::Use(const UseInfo& info)
 		gGlobalState.EntityAdd(m_globalstate, gpGlobals->mapname, newState);
 }
 
-TYPEDESCRIPTION CMultiSource::m_SaveData[] =
-{
-	//!!!BUGBUG FIX
-	DEFINE_ARRAY(CMultiSource, m_rgEntities, FIELD_EHANDLE, MS_MAX_TARGETS),
-	DEFINE_ARRAY(CMultiSource, m_rgTriggered, FIELD_BOOLEAN, MS_MAX_TARGETS),
-	DEFINE_FIELD(CMultiSource, m_iTotal, FIELD_INTEGER),
-	DEFINE_FIELD(CMultiSource, m_globalstate, FIELD_STRING),
-};
-
-IMPLEMENT_SAVERESTORE(CMultiSource, CBaseEntity);
-
 LINK_ENTITY_TO_CLASS(multisource, CMultiSource);
 
 void CMultiSource::KeyValue(KeyValueData* pkvd)

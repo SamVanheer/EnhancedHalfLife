@@ -24,14 +24,6 @@
 
 LINK_ENTITY_TO_CLASS(func_friction, CFrictionModifier);
 
-// Global Savedata for changelevel friction modifier
-TYPEDESCRIPTION	CFrictionModifier::m_SaveData[] =
-{
-	DEFINE_FIELD(CFrictionModifier, m_frictionFraction, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CFrictionModifier, CBaseEntity);
-
 void CFrictionModifier::Spawn()
 {
 	SetSolidType(Solid::Trigger);
@@ -58,14 +50,6 @@ void CFrictionModifier::KeyValue(KeyValueData* pkvd)
 }
 
 LINK_ENTITY_TO_CLASS(trigger_auto, CAutoTrigger);
-
-TYPEDESCRIPTION	CAutoTrigger::m_SaveData[] =
-{
-	DEFINE_FIELD(CAutoTrigger, m_globalstate, FIELD_STRING),
-	DEFINE_FIELD(CAutoTrigger, triggerType, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CAutoTrigger, CBaseDelay);
 
 void CAutoTrigger::KeyValue(KeyValueData* pkvd)
 {
@@ -105,13 +89,6 @@ void CAutoTrigger::Think()
 
 LINK_ENTITY_TO_CLASS(trigger_relay, CTriggerRelay);
 
-TYPEDESCRIPTION	CTriggerRelay::m_SaveData[] =
-{
-	DEFINE_FIELD(CTriggerRelay, triggerType, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CTriggerRelay, CBaseDelay);
-
 void CTriggerRelay::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "triggerstate"))
@@ -135,18 +112,6 @@ void CTriggerRelay::Use(const UseInfo& info)
 }
 
 LINK_ENTITY_TO_CLASS(multi_manager, CMultiManager);
-
-// Global Savedata for multi_manager
-TYPEDESCRIPTION	CMultiManager::m_SaveData[] =
-{
-	DEFINE_FIELD(CMultiManager, m_cTargets, FIELD_INTEGER),
-	DEFINE_FIELD(CMultiManager, m_index, FIELD_INTEGER),
-	DEFINE_FIELD(CMultiManager, m_startTime, FIELD_TIME),
-	DEFINE_ARRAY(CMultiManager, m_iTargetName, FIELD_STRING, MAX_MULTI_TARGETS),
-	DEFINE_ARRAY(CMultiManager, m_flTargetDelay, FIELD_FLOAT, MAX_MULTI_TARGETS),
-};
-
-IMPLEMENT_SAVERESTORE(CMultiManager, CBaseToggle);
 
 void CMultiManager::KeyValue(KeyValueData* pkvd)
 {
@@ -779,13 +744,6 @@ void CTriggerOnce::Spawn()
 
 LINK_ENTITY_TO_CLASS(trigger_counter, CTriggerCounter);
 
-TYPEDESCRIPTION CTriggerCounter::m_SaveData[] =
-{
-	DEFINE_FIELD(CTriggerCounter, m_cTriggersLeft, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CTriggerCounter, CBaseTrigger);
-
 void CTriggerCounter::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "count"))
@@ -1017,13 +975,6 @@ void CTriggerGravity::GravityTouch(CBaseEntity* pOther)
 
 LINK_ENTITY_TO_CLASS(trigger_changetarget, CTriggerChangeTarget);
 
-TYPEDESCRIPTION	CTriggerChangeTarget::m_SaveData[] =
-{
-	DEFINE_FIELD(CTriggerChangeTarget, m_iszNewTarget, FIELD_STRING),
-};
-
-IMPLEMENT_SAVERESTORE(CTriggerChangeTarget, CBaseDelay);
-
 void CTriggerChangeTarget::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "m_iszNewTarget"))
@@ -1055,26 +1006,6 @@ void CTriggerChangeTarget::Use(const UseInfo& info)
 }
 
 LINK_ENTITY_TO_CLASS(trigger_camera, CTriggerCamera);
-
-// Global Savedata for changelevel friction modifier
-TYPEDESCRIPTION	CTriggerCamera::m_SaveData[] =
-{
-	DEFINE_FIELD(CTriggerCamera, m_hPlayer, FIELD_EHANDLE),
-	DEFINE_FIELD(CTriggerCamera, m_hTarget, FIELD_EHANDLE),
-	DEFINE_FIELD(CTriggerCamera, m_hEntPath, FIELD_EHANDLE),
-	DEFINE_FIELD(CTriggerCamera, m_sPath, FIELD_STRING),
-	DEFINE_FIELD(CTriggerCamera, m_flWait, FIELD_FLOAT),
-	DEFINE_FIELD(CTriggerCamera, m_flReturnTime, FIELD_TIME),
-	DEFINE_FIELD(CTriggerCamera, m_flStopTime, FIELD_TIME),
-	DEFINE_FIELD(CTriggerCamera, m_moveDistance, FIELD_FLOAT),
-	DEFINE_FIELD(CTriggerCamera, m_targetSpeed, FIELD_FLOAT),
-	DEFINE_FIELD(CTriggerCamera, m_initialSpeed, FIELD_FLOAT),
-	DEFINE_FIELD(CTriggerCamera, m_acceleration, FIELD_FLOAT),
-	DEFINE_FIELD(CTriggerCamera, m_deceleration, FIELD_FLOAT),
-	DEFINE_FIELD(CTriggerCamera, m_state, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CTriggerCamera, CBaseDelay);
 
 void CTriggerCamera::Spawn()
 {

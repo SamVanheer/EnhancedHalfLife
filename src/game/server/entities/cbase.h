@@ -17,7 +17,9 @@
 
 #include "CBaseEntity.hpp"
 #include "CPointEntity.hpp"
+#ifndef CLIENT_DLL
 #include "CMultiSource.hpp"
+#endif
 #include "CBaseDelay.hpp"
 #include "CBaseAnimating.hpp"
 #include "CBaseToggle.hpp"
@@ -27,4 +29,6 @@
 #include "CWorld.hpp"
 
 #include "basemonster.h"
+#ifndef CLIENT_DLL
 #include "scripted.h"
+#endif

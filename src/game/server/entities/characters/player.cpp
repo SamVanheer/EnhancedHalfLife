@@ -49,82 +49,6 @@ constexpr int TRAIN_MEDIUM = 0x03;
 constexpr int TRAIN_FAST = 0x04;
 constexpr int TRAIN_BACK = 0x05;
 
-// Global Savedata for player
-TYPEDESCRIPTION	CBasePlayer::m_SaveData[] =
-{
-	DEFINE_FIELD(CBasePlayer, m_flFlashLightTime, FIELD_TIME),
-	DEFINE_FIELD(CBasePlayer, m_iFlashBattery, FIELD_INTEGER),
-
-	DEFINE_FIELD(CBasePlayer, m_afButtonLast, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayer, m_afButtonPressed, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayer, m_afButtonReleased, FIELD_INTEGER),
-
-	DEFINE_ARRAY(CBasePlayer, m_rgItems, FIELD_INTEGER, MAX_ITEMS),
-	DEFINE_FIELD(CBasePlayer, m_afPhysicsFlags, FIELD_INTEGER),
-
-	DEFINE_FIELD(CBasePlayer, m_flTimeStepSound, FIELD_TIME),
-	DEFINE_FIELD(CBasePlayer, m_flTimeWeaponIdle, FIELD_TIME),
-	DEFINE_FIELD(CBasePlayer, m_flSwimTime, FIELD_TIME),
-	DEFINE_FIELD(CBasePlayer, m_flDuckTime, FIELD_TIME),
-	DEFINE_FIELD(CBasePlayer, m_flWallJumpTime, FIELD_TIME),
-
-	DEFINE_FIELD(CBasePlayer, m_flSuitUpdate, FIELD_TIME),
-	DEFINE_ARRAY(CBasePlayer, m_rgSuitPlayList, FIELD_INTEGER, CSUITPLAYLIST),
-	DEFINE_FIELD(CBasePlayer, m_iSuitPlayNext, FIELD_INTEGER),
-	DEFINE_ARRAY(CBasePlayer, m_rgiSuitNoRepeat, FIELD_INTEGER, CSUITNOREPEAT),
-	DEFINE_ARRAY(CBasePlayer, m_rgflSuitNoRepeatTime, FIELD_TIME, CSUITNOREPEAT),
-	DEFINE_FIELD(CBasePlayer, m_lastDamageAmount, FIELD_INTEGER),
-
-	DEFINE_ARRAY(CBasePlayer, m_hPlayerWeapons, FIELD_EHANDLE, MAX_WEAPON_TYPES),
-	DEFINE_FIELD(CBasePlayer, m_hActiveWeapon, FIELD_EHANDLE),
-	DEFINE_FIELD(CBasePlayer, m_hLastWeapon, FIELD_EHANDLE),
-
-	DEFINE_ARRAY(CBasePlayer, m_rgAmmo, FIELD_INTEGER, MAX_AMMO_TYPES),
-	DEFINE_FIELD(CBasePlayer, m_idrowndmg, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayer, m_idrownrestored, FIELD_INTEGER),
-
-	DEFINE_FIELD(CBasePlayer, m_iTrain, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayer, m_bitsHUDDamage, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayer, m_flFallVelocity, FIELD_FLOAT),
-	DEFINE_FIELD(CBasePlayer, m_iTargetVolume, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayer, m_iWeaponVolume, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayer, m_iExtraSoundTypes, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayer, m_iWeaponFlash, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayer, m_fLongJump, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBasePlayer, m_fInitHUD, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBasePlayer, m_tbdPrev, FIELD_TIME),
-
-	DEFINE_FIELD(CBasePlayer, m_pTank, FIELD_EHANDLE),
-	DEFINE_FIELD(CBasePlayer, m_hViewEntity, FIELD_EHANDLE),
-	DEFINE_FIELD(CBasePlayer, m_iHideHUD, FIELD_INTEGER),
-	DEFINE_FIELD(CBasePlayer, m_iFOV, FIELD_INTEGER),
-
-	//DEFINE_FIELD( CBasePlayer, m_fDeadTime, FIELD_FLOAT ), // only used in multiplayer games
-	//DEFINE_FIELD( CBasePlayer, m_fGameHUDInitialized, FIELD_INTEGER ), // only used in multiplayer games
-	//DEFINE_FIELD( CBasePlayer, m_flStopExtraSoundTime, FIELD_TIME ),
-	//DEFINE_FIELD( CBasePlayer, m_fKnownWeapon, FIELD_INTEGER ), // reset to zero on load
-	//DEFINE_FIELD( CBasePlayer, m_iPlayerSound, FIELD_INTEGER ),	// Don't restore, set in Precache()
-	//DEFINE_FIELD( CBasePlayer, m_hSndLast, FIELD_EHANDLE ),	// Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_flSndRoomtype, FIELD_FLOAT ),	// Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_flSndRange, FIELD_FLOAT ),	// Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_flgeigerRange, FIELD_FLOAT ),	// Don't restore, reset in Precache()
-	//DEFINE_FIELD( CBasePlayer, m_flgeigerDelay, FIELD_FLOAT ),	// Don't restore, reset in Precache()
-	//DEFINE_FIELD( CBasePlayer, m_igeigerRangePrev, FIELD_FLOAT ),	// Don't restore, reset in Precache()
-	//DEFINE_FIELD( CBasePlayer, m_bStepLeft, FIELD_BOOLEAN ), // Don't need to restore
-	//DEFINE_ARRAY( CBasePlayer, m_szTextureName, FIELD_CHARACTER, CBTEXTURENAMEMAX ), // Don't need to restore
-	//DEFINE_FIELD( CBasePlayer, m_chTextureType, FIELD_CHARACTER ), // Don't need to restore
-	//DEFINE_FIELD( CBasePlayer, m_fNoPlayerSound, FIELD_BOOLEAN ), // Don't need to restore, debug
-	//DEFINE_FIELD( CBasePlayer, m_iClientHealth, FIELD_INTEGER ), // Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_iClientBattery, FIELD_INTEGER ), // Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_iClientHideHUD, FIELD_INTEGER ), // Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_fWeapon, FIELD_BOOLEAN ),  // Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_nCustomSprayFrames, FIELD_INTEGER ), // Don't restore, depends on server message after spawning and only matters in multiplayer
-	//DEFINE_FIELD( CBasePlayer, m_vecAutoAim, FIELD_VECTOR ), // Don't save/restore - this is recomputed
-	//DEFINE_ARRAY( CBasePlayer, m_rgAmmoLast, FIELD_INTEGER, MAX_AMMO_SLOTS ), // Don't need to restore
-	//DEFINE_FIELD( CBasePlayer, m_fOnTarget, FIELD_BOOLEAN ), // Don't need to restore
-	//DEFINE_FIELD( CBasePlayer, m_nCustomSprayFrames, FIELD_INTEGER ), // Don't need to restore
-};
-
 bool giPrecacheGrunt = false;
 
 LINK_ENTITY_TO_CLASS(player, CBasePlayer);
@@ -2360,8 +2284,6 @@ void CBasePlayer::Precache()
 	if (gInitHUD)
 		m_fInitHUD = true;
 }
-
-IMPLEMENT_SAVERESTORE(CBasePlayer, CBaseMonster);
 
 bool CBasePlayer::PostRestore()
 {

@@ -15,26 +15,6 @@
 
 #include "CBaseCharger.hpp"
 
-TYPEDESCRIPTION CBaseCharger::m_SaveData[] =
-{
-	DEFINE_FIELD(CBaseCharger, m_flNextCharge, FIELD_TIME),
-	DEFINE_FIELD(CBaseCharger, m_flSoundTime, FIELD_TIME),
-	DEFINE_FIELD(CBaseCharger, m_State, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseCharger, m_flRechargeDelay, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseCharger, m_flChargeInterval, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseCharger, m_iCurrentCapacity, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseCharger, m_iPitch, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseCharger, m_iTotalCapacity, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseCharger, m_iszChargeOnSound, FIELD_SOUNDNAME),
-	DEFINE_FIELD(CBaseCharger, m_iszChargeLoopSound, FIELD_SOUNDNAME),
-	DEFINE_FIELD(CBaseCharger, m_iszRefuseChargeSound, FIELD_SOUNDNAME),
-	DEFINE_FIELD(CBaseCharger, m_iszRechargeSound, FIELD_SOUNDNAME),
-	DEFINE_FIELD(CBaseCharger, m_iszFireOnRecharge, FIELD_STRING),
-	DEFINE_FIELD(CBaseCharger, m_iszFireOnEmpty, FIELD_STRING),
-};
-
-IMPLEMENT_SAVERESTORE(CBaseCharger, CBaseToggle);
-
 void CBaseCharger::KeyValue(KeyValueData* pkvd)
 {
 	//TODO: are these really needed?

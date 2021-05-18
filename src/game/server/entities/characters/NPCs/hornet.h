@@ -30,8 +30,10 @@ constexpr float HORNET_BUZZ_VOLUME = 0.8;
 /**
 *	@brief this is the projectile that the Alien Grunt fires.
 */
-class CHornet : public CBaseMonster
+class EHL_CLASS() CHornet : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -45,9 +47,6 @@ public:
 	*	@brief hornets will never get mad at each other, no matter who the owner is.
 	*/
 	Relationship GetRelationship(CBaseEntity* pTarget) override;
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	void IgniteTrail();
 
@@ -78,7 +77,12 @@ public:
 	*/
 	bool TakeDamage(const TakeDamageInfo& info) override;
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flStopAttack = 0;
+
+	EHL_FIELD(Persisted)
 	HornetType m_iHornetType = HornetType::Red;
+
+	EHL_FIELD(Persisted)
 	float m_flFlySpeed = 0;
 };

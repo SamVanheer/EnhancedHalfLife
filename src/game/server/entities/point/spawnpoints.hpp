@@ -17,7 +17,7 @@
 
 #include "CPointEntity.hpp"
 
-class CBaseDMStart : public CPointEntity
+class EHL_CLASS() CBaseDMStart : public CPointEntity
 {
 public:
 	void KeyValue(KeyValueData* pkvd) override;

@@ -17,6 +17,8 @@
 
 #include "CBaseDelay.hpp"
 
+#include "CBreakable.generated.hpp"
+
 enum class Explosions
 {
 	Random,
@@ -48,8 +50,10 @@ constexpr int SF_BREAK_CROWBAR = 256;		//!< instant break if hit with crowbar
 /**
 *	@brief bmodel that breaks into pieces after taking damage
 */
-class CBreakable : public CBaseDelay
+class EHL_CLASS() CBreakable : public CBaseDelay
 {
+	EHL_GENERATED_BODY()
+
 public:
 	// basic functions
 	void Spawn() override;
@@ -84,8 +88,6 @@ public:
 
 	void EXPORT		Die();
 	int		ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
 
 	inline bool		Explodable() { return ExplosionMagnitude() > 0; }
 	inline int		ExplosionMagnitude() { return pev->impulse; }
@@ -102,12 +104,23 @@ public:
 	static const char* pSoundsConcrete[];
 	static const char* pSpawnObjects[];
 
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	Materials m_Material = Materials::Glass;
+
+	EHL_FIELD(Persisted)
 	Explosions m_Explosion = Explosions::Random;
+
+	// Don't need to save/restore these because we precache after restore
 	int m_idShard = 0;
+
+	EHL_FIELD(Persisted)
 	float m_angle = 0;
+
+	EHL_FIELD(Persisted)
 	string_t m_iszGibModel = iStringNull;
+
+	EHL_FIELD(Persisted)
 	string_t m_iszSpawnObject = iStringNull;
+
+	// Explosion magnitude is stored in pev->impulse
 };

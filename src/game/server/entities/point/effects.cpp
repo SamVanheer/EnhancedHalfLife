@@ -899,15 +899,6 @@ void CLightning::BeamUpdateVars()
 
 LINK_ENTITY_TO_CLASS(env_laser, CLaser);
 
-TYPEDESCRIPTION	CLaser::m_SaveData[] =
-{
-	DEFINE_FIELD(CLaser, m_hSprite, FIELD_EHANDLE),
-	DEFINE_FIELD(CLaser, m_iszSpriteName, FIELD_STRING),
-	DEFINE_FIELD(CLaser, m_firePosition, FIELD_POSITION_VECTOR),
-};
-
-IMPLEMENT_SAVERESTORE(CLaser, CBeam);
-
 void CLaser::OnRemove()
 {
 	m_hSprite.Remove();
@@ -1114,14 +1105,6 @@ void CGlow::Animate(float frames)
 }
 
 LINK_ENTITY_TO_CLASS(env_sprite, CSprite);
-
-TYPEDESCRIPTION	CSprite::m_SaveData[] =
-{
-	DEFINE_FIELD(CSprite, m_lastTime, FIELD_TIME),
-	DEFINE_FIELD(CSprite, m_maxFrame, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CSprite, CPointEntity);
 
 void CSprite::Spawn()
 {

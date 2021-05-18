@@ -169,6 +169,9 @@ target_sources(client PRIVATE
 	ui/vgui/utils/vgui_slider2.h
 	ui/vgui/utils/voice_banmgr.cpp
 	ui/vgui/utils/voice_banmgr.h
+	../server/entities/cbase.h
+	../server/entities/brush/func_break.h
+	../server/entities/characters/player.h
 	${INCLUDE_DIRECTORY}/GoldSrc/con_nprint.h
 	${INCLUDE_DIRECTORY}/GoldSrc/const.h
 	${INCLUDE_DIRECTORY}/GoldSrc/crc.h

@@ -22,7 +22,7 @@
 *
 *	this moved here from world.cpp, to allow classes to be derived from it
 */
-class CWorld : public CBaseEntity
+class EHL_CLASS() CWorld : public CBaseEntity
 {
 public:
 	~CWorld();

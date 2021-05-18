@@ -17,6 +17,8 @@
 
 #include "CBaseAnimating.hpp"
 
+#include "CBaseItem.generated.hpp"
+
 enum class ItemType
 {
 	PickupItem = 0,	//!< A pickup item like health, battery, etc
@@ -79,8 +81,10 @@ constexpr float ITEM_DEFAULT_RESPAWN_DELAY = -1;
 *	@brief Base class for all items
 *	@details Handles item setup in the world, pickup on touch, respawning
 */
-class CBaseItem : public CBaseAnimating
+class EHL_CLASS() CBaseItem : public CBaseAnimating
 {
+	EHL_GENERATED_BODY()
+
 public:
 	/**
 	*	@brief Gets the type of item that this is
@@ -113,11 +117,6 @@ public:
 	*/
 	void EXPORT AttemptToMaterialize();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static TYPEDESCRIPTION m_SaveData[];
-
 protected:
 	void SetupItem(const Vector& mins, const Vector& maxs);
 
@@ -130,42 +129,60 @@ protected:
 	virtual CBaseItem* GetItemToRespawn(const Vector& respawnPoint);
 
 public:
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_OriginalPosition;
+
+	EHL_FIELD(Persisted)
 	ItemRespawnMode m_RespawnMode = ItemRespawnMode::Default;
+
+	EHL_FIELD(Persisted)
 	float m_flRespawnDelay = ITEM_DEFAULT_RESPAWN_DELAY;
+
+	EHL_FIELD(Persisted)
 	ItemRespawnPositionMode m_RespawnPositionMode = ItemRespawnPositionMode::Current;
 
 protected:
+	EHL_FIELD(Persisted)
 	ItemFallMode m_FallMode = ItemFallMode::PlaceOnGround;
 
 	/**
 	*	@brief Can this item be picked up while it's falling?
 	*	Only affects initial fall when spawning
 	*/
+	EHL_FIELD(Persisted)
 	bool m_bCanPickUpWhileFalling = true;
 
 	/**
 	*	@brief Make a clatter sound when falling on the ground
 	*/
+	EHL_FIELD(Persisted)
 	ItemClatterMode m_ClatterMode = ItemClatterMode::Default;
 
+	EHL_FIELD(Persisted)
 	bool m_bStayVisibleDuringRespawn = false;
+
+	EHL_FIELD(Persisted)
 	bool m_bIsRespawning = false;
 
+	EHL_FIELD(Persisted)
 	bool m_bFlashOnRespawn = true;
 
 	//Default sounds are precached in W_Precache
+	EHL_FIELD(Persisted, Type=SoundName)
 	string_t m_iszClatterSound = MAKE_STRING("items/weapondrop1.wav");
 
+	EHL_FIELD(Persisted, Type=SoundName)
 	string_t m_iszRespawnSound = MAKE_STRING("items/suitchargeok1.wav");
 
 	/**
 	*	@brief Target to trigger when this entity materializes (spawns/respawns)
 	*/
+	EHL_FIELD(Persisted)
 	string_t m_iszTriggerOnMaterialize = iStringNull;
 
 	/**
 	*	@brief Target to trigger when this entity dematerializes (waiting to respawn, being removed)
 	*/
+	EHL_FIELD(Persisted)
 	string_t m_iszTriggerOnDematerialize = iStringNull;
 };

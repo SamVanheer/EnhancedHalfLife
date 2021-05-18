@@ -18,6 +18,8 @@
 #include "basemonster.h"
 #include "scriptevent.h"
 
+#include "CCineMonster.generated.hpp"
+
 constexpr int SF_SCRIPT_WAITTILLSEEN = 1;
 constexpr int SF_SCRIPT_EXITAGITATED = 2;
 constexpr int SF_SCRIPT_REPEATABLE = 4;
@@ -62,8 +64,10 @@ enum class ScriptedMoveTo
 *	range # - only search this far to find the target
 *	spawnflags - (stop if blocked, stop if player seen)
 */
-class CCineMonster : public CBaseMonster
+class EHL_CLASS() CCineMonster : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;
@@ -80,11 +84,6 @@ public:
 	*	@brief Find an entity that I'm interested in and precache the sounds he'll need in the sequence.
 	*/
 	void Activate() override;
-
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	// void EXPORT CineSpawnThink();
 	void EXPORT CineThink();
@@ -136,25 +135,48 @@ public:
 	void	AllowInterrupt(bool fAllow);
 	int		IgnoreConditions() override;
 
+	EHL_FIELD(Persisted)
 	string_t m_iszIdle = iStringNull;		// string index for idle animation
+
+	EHL_FIELD(Persisted)
 	string_t m_iszPlay = iStringNull;		// string index for scripted animation
+
+	EHL_FIELD(Persisted)
 	string_t m_iszEntity = iStringNull;		// entity that is wanted for this script
+
+	EHL_FIELD(Persisted)
 	ScriptedMoveTo m_fMoveTo = ScriptedMoveTo::No;
+
+	EHL_FIELD(Persisted)
 	int m_iFinishSchedule = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flRadius = 0;		// range to search
+
+	EHL_FIELD(Persisted)
 	float m_flRepeat = 0;	// repeat rate
 
+	EHL_FIELD(Persisted)
 	int m_iDelay = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_startTime = 0;
 
+	EHL_FIELD(Persisted)
 	Movetype m_saved_movetype = Movetype::None;
+
+	EHL_FIELD(Persisted)
 	Solid m_saved_solid = Solid::Not;
+
+	EHL_FIELD(Persisted)
 	int m_saved_effects = 0;
 	//	Vector m_vecOrigOrigin;
+
+	EHL_FIELD(Persisted)
 	bool m_interruptable = false;
 };
 
-class CCineAI : public CCineMonster
+class EHL_CLASS() CCineAI : public CCineMonster
 {
 	/**
 	*	@brief lookup a sequence name and setup the target monster to play it

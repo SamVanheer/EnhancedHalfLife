@@ -111,22 +111,6 @@ void CBreakable::KeyValue(KeyValueData* pkvd)
 }
 
 LINK_ENTITY_TO_CLASS(func_breakable, CBreakable);
-TYPEDESCRIPTION CBreakable::m_SaveData[] =
-{
-	DEFINE_FIELD(CBreakable, m_Material, FIELD_INTEGER),
-	DEFINE_FIELD(CBreakable, m_Explosion, FIELD_INTEGER),
-
-	// Don't need to save/restore these because we precache after restore
-	//	DEFINE_FIELD( CBreakable, m_idShard, FIELD_INTEGER ),
-
-		DEFINE_FIELD(CBreakable, m_angle, FIELD_FLOAT),
-		DEFINE_FIELD(CBreakable, m_iszGibModel, FIELD_STRING),
-		DEFINE_FIELD(CBreakable, m_iszSpawnObject, FIELD_STRING),
-
-		// Explosion magnitude is stored in pev->impulse
-};
-
-IMPLEMENT_SAVERESTORE(CBreakable, CBaseEntity);
 
 void CBreakable::Spawn()
 {

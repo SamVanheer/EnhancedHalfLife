@@ -230,9 +230,7 @@ void CBaseMonster::RunAI() {}
 void CBaseMonster::Killed(const KilledInfo& info) {}
 bool CBaseMonster::GiveHealth(float flHealth, int bitsDamageType) { return false; }
 bool CBaseMonster::TakeDamage(const TakeDamageInfo& info) { return false; }
-bool CBaseMonster::Restore(class CRestore&) { return true; }
 bool CBaseMonster::PostRestore() { return true; }
-bool CBaseMonster::Save(class CSave&) { return true; }
 
 int TrainSpeed(int iSpeed, int iMax) { return 0; }
 void CBasePlayer::DeathSound() { }
@@ -259,8 +257,6 @@ void CBasePlayer::SetSuitUpdate(const char* name, SuitSoundType type, int iNoRep
 void CBasePlayer::UpdatePlayerSound() { }
 void CBasePlayer::PostThink() { }
 void CBasePlayer::Precache() { }
-bool CBasePlayer::Save(CSave& save) { return false; }
-bool CBasePlayer::Restore(CRestore& restore) { return false; }
 bool CBasePlayer::PostRestore() { return true; }
 bool CBasePlayer::HasWeapons() { return false; }
 bool CBasePlayer::FlashlightIsOn() { return false; }
@@ -300,12 +296,6 @@ void SpawnBlood(const Vector& vecSpot, int bloodColor, float flDamage) { }
 int DamageDecal(CBaseEntity* pEntity, int bitsDamageType) { return 0; }
 void DecalGunshot(TraceResult* pTrace, int iBulletType) { }
 void EjectBrass(const Vector& vecOrigin, const Vector& vecVelocity, float rotation, int model, int soundtype) { }
-bool CBaseItem::Restore(class CRestore&) { return true; }
-bool CBaseItem::Save(class CSave&) { return true; }
-bool CBaseWeapon::Restore(class CRestore&) { return true; }
-bool CBaseWeapon::Save(class CSave&) { return true; }
-bool CBaseAmmo::Restore(class CRestore&) { return true; }
-bool CBaseAmmo::Save(class CSave&) { return true; }
 float CBaseWeapon::GetNextAttackDelay(float flTime) { return flTime; }
 void CBaseWeapon::SetObjectCollisionBox() { }
 void CBaseWeapon::KeyValue(KeyValueData* pkvd) {}

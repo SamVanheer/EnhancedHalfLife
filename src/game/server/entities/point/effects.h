@@ -33,8 +33,10 @@ constexpr int SF_SPRITE_STARTON = 0x0001;
 constexpr int SF_SPRITE_ONCE = 0x0002;
 constexpr int SF_SPRITE_TEMPORARY = 0x8000;
 
-class CSprite : public CPointEntity
+class EHL_CLASS() CSprite : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -88,18 +90,17 @@ public:
 
 	void EXPORT AnimateUntilDead();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 	static CSprite* SpriteCreate(const char* pSpriteName, const Vector& origin, bool animate);
 
 private:
-
+	EHL_FIELD(Persisted, Type=Time)
 	float m_lastTime = 0;
+
+	EHL_FIELD(Persisted)
 	float m_maxFrame = 0;
 };
 
-class CBeam : public CBaseEntity
+class EHL_CLASS() CBeam : public CBaseEntity
 {
 public:
 	void	Spawn() override;
@@ -186,11 +187,15 @@ public:
 	}
 };
 
+#include "CLaser.generated.hpp"
+
 constexpr int SF_MESSAGE_ONCE = 0x0001;	//!< Fade in, not out
 constexpr int SF_MESSAGE_ALL = 0x0002;	//!< Send to all clients
 
-class CLaser : public CBeam
+class EHL_CLASS() CLaser : public CBeam
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnRemove() override;
 	void	Spawn() override;
@@ -205,11 +210,13 @@ public:
 
 	void	EXPORT StrikeThink();
 	void	Use(const UseInfo& info) override;
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
+	EHL_FIELD(Persisted)
 	EHandle<CSprite> m_hSprite;
+
+	EHL_FIELD(Persisted)
 	string_t m_iszSpriteName = iStringNull;
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector  m_firePosition;
 };

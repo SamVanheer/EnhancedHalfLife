@@ -18,6 +18,8 @@
 #include "basemonster.h"
 #include "monsters.h"
 
+#include "CTalkMonster.generated.hpp"
+
 constexpr float TALKRANGE_MIN = 500.0;			//!< don't talk to anyone farther away than this
 
 constexpr int TLK_STARE_DIST = 128;				//!< anyone closer than this and looking at me is probably staring at me.
@@ -91,8 +93,10 @@ enum
 /**
 *	@brief Talking monster base class. Used for scientists and barneys
 */
-class CTalkMonster : public CBaseMonster
+class EHL_CLASS() CTalkMonster : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	/**
 	*	@brief monsters derived from ctalkmonster should call this in precache()
@@ -194,28 +198,40 @@ public:
 	virtual void SetAnswerQuestion(CTalkMonster* pSpeaker);
 	virtual int FriendNumber(int arrayNumber) { return arrayNumber; }
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static TYPEDESCRIPTION m_SaveData[];
-
 	/**
 	*	@brief array of friend names
 	*/
 	static const char* m_szFriends[TLK_CFRIENDS];
 	static inline float g_talkWaitTime = 0; //!< time delay until it's ok to speak: used so that two NPCs don't talk at once
 
+	EHL_FIELD(Persisted)
 	int m_bitsSaid = 0; //!< set bits for sentences we don't want repeated
+
+	EHL_FIELD(Persisted)
 	int m_nSpeak = 0; //!< number of times initiated talking
+
+	// NOTE: m_voicePitch & m_szGrp should be fixed up by precache each save/restore
 	int m_voicePitch = 0; //!< pitch of voice for this head
 	const char* m_szGrp[TLK_CGROUPS]{}; //!< sentence group names
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_useTime = 0; //!< Don't allow +USE until this time
+
+	EHL_FIELD(Persisted)
 	string_t m_iszUse = iStringNull; //!< Custom +USE sentence group (follow)
+
+	EHL_FIELD(Persisted)
 	string_t m_iszUnUse = iStringNull; //!< Custom +USE sentence group (stop following)
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flLastSaidSmelled = 0; //!< last time we talked about something that stinks
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flStopTalkTime = 0; //!< when in the future that I'll be done saying this sentence.
 
+	EHL_FIELD(Persisted)
 	EHANDLE m_hTalkTarget; //!< who to look at while talking
+
 	CUSTOM_SCHEDULES;
 };
 

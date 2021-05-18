@@ -880,23 +880,6 @@ void CFuncTrain::OverrideReset()
 	}
 }
 
-TYPEDESCRIPTION	CFuncTrackTrain::m_SaveData[] =
-{
-	DEFINE_FIELD(CFuncTrackTrain, m_hPath, FIELD_EHANDLE),
-	DEFINE_FIELD(CFuncTrackTrain, m_length, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTrackTrain, m_height, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTrackTrain, m_speed, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTrackTrain, m_dir, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTrackTrain, m_startSpeed, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTrackTrain, m_controlMins, FIELD_VECTOR),
-	DEFINE_FIELD(CFuncTrackTrain, m_controlMaxs, FIELD_VECTOR),
-	DEFINE_FIELD(CFuncTrackTrain, m_sounds, FIELD_INTEGER),
-	DEFINE_FIELD(CFuncTrackTrain, m_flVolume, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTrackTrain, m_flBank, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTrackTrain, m_oldSpeed, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CFuncTrackTrain, CBaseEntity);
 LINK_ENTITY_TO_CLASS(func_tracktrain, CFuncTrackTrain);
 
 void CFuncTrackTrain::KeyValue(KeyValueData* pkvd)

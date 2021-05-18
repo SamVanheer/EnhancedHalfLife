@@ -21,7 +21,7 @@
 *	@brief Define space that travels across a level transition
 *	Derive from point entity so this doesn't move across levels
 */
-class CTriggerVolume : public CPointEntity
+class EHL_CLASS() CTriggerVolume : public CPointEntity
 {
 public:
 	void		Spawn() override;
@@ -30,7 +30,7 @@ public:
 /**
 *	@brief Fires a target after level transition and then dies
 */
-class CFireAndDie : public CBaseDelay
+class EHL_CLASS() CFireAndDie : public CBaseDelay
 {
 public:
 	void Spawn() override;
@@ -44,8 +44,10 @@ constexpr int SF_CHANGELEVEL_USEONLY = 0x0002;
 /**
 *	@brief When the player touches this, he gets sent to the map listed in the "map" variable.
 */
-class CChangeLevel : public CBaseTrigger
+class EHL_CLASS() CChangeLevel : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;
@@ -70,20 +72,22 @@ public:
 	static bool AddTransitionToList(LEVELLIST* pLevelList, int listCount, const char* pMapName, const char* pLandmarkName, CBaseEntity* pentLandmark);
 	static bool InTransitionVolume(CBaseEntity* pEntity, char* pVolumeName);
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	char m_szMapName[MAX_MAPNAME_LENGTH]{};			//!< next map
+
+	EHL_FIELD(Persisted)
 	char m_szLandmarkName[MAX_MAPNAME_LENGTH]{};	//!< landmark on next map
+
+	EHL_FIELD(Persisted)
 	string_t m_changeTarget = iStringNull;
+
+	EHL_FIELD(Persisted)
 	float m_changeTargetDelay = 0;
 };
 
 constexpr int SF_ENDSECTION_USEONLY = 0x0001;
 
-class CTriggerEndSection : public CBaseTrigger
+class EHL_CLASS() CTriggerEndSection : public CBaseTrigger
 {
 public:
 	void Spawn() override;
@@ -92,24 +96,22 @@ public:
 	void EXPORT EndSectionUse(const UseInfo& info);
 };
 
-class CTriggerSave : public CBaseTrigger
+class EHL_CLASS() CTriggerSave : public CBaseTrigger
 {
 public:
 	void Spawn() override;
 	void EXPORT SaveTouch(CBaseEntity* pOther);
 };
 
-class CRevertSaved : public CPointEntity
+class EHL_CLASS() CRevertSaved : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Use(const UseInfo& info) override;
 	void	EXPORT MessageThink();
 	void	EXPORT LoadThink();
 	void	KeyValue(KeyValueData* pkvd) override;
-
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	inline	float	Duration() { return pev->dmg_take; }
 	inline	float	HoldTime() { return pev->dmg_save; }
@@ -122,6 +124,9 @@ public:
 	inline	void	SetLoadTime(float time) { m_loadTime = time; }
 
 private:
-	float m_messageTime = 0;
+	EHL_FIELD(Persisted)
+	float m_messageTime = 0; //!< These are not actual times, but durations, so save as floats
+
+	EHL_FIELD(Persisted)
 	float m_loadTime = 0;
 };

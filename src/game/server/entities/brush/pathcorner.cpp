@@ -103,16 +103,6 @@ void CPathCorner::Touch(CBaseEntity* pOther)
 }
 #endif
 
-TYPEDESCRIPTION	CPathTrack::m_SaveData[] =
-{
-	DEFINE_FIELD(CPathTrack, m_length, FIELD_FLOAT),
-	DEFINE_FIELD(CPathTrack, m_hNext, FIELD_EHANDLE),
-	DEFINE_FIELD(CPathTrack, m_hAltPath, FIELD_EHANDLE),
-	DEFINE_FIELD(CPathTrack, m_hPrevious, FIELD_EHANDLE),
-	DEFINE_FIELD(CPathTrack, m_altName, FIELD_STRING),
-};
-
-IMPLEMENT_SAVERESTORE(CPathTrack, CBaseEntity);
 LINK_ENTITY_TO_CLASS(path_track, CPathTrack);
 
 void CPathTrack::KeyValue(KeyValueData* pkvd)

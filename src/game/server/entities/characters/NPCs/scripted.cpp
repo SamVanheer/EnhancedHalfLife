@@ -61,27 +61,6 @@ void CCineMonster::KeyValue(KeyValueData* pkvd)
 	}
 }
 
-TYPEDESCRIPTION	CCineMonster::m_SaveData[] =
-{
-	DEFINE_FIELD(CCineMonster, m_iszIdle, FIELD_STRING),
-	DEFINE_FIELD(CCineMonster, m_iszPlay, FIELD_STRING),
-	DEFINE_FIELD(CCineMonster, m_iszEntity, FIELD_STRING),
-	DEFINE_FIELD(CCineMonster, m_fMoveTo, FIELD_INTEGER),
-	DEFINE_FIELD(CCineMonster, m_flRepeat, FIELD_FLOAT),
-	DEFINE_FIELD(CCineMonster, m_flRadius, FIELD_FLOAT),
-
-	DEFINE_FIELD(CCineMonster, m_iDelay, FIELD_INTEGER),
-	DEFINE_FIELD(CCineMonster, m_startTime, FIELD_TIME),
-
-	DEFINE_FIELD(CCineMonster,	m_saved_movetype, FIELD_INTEGER),
-	DEFINE_FIELD(CCineMonster,	m_saved_solid, FIELD_INTEGER),
-	DEFINE_FIELD(CCineMonster, m_saved_effects, FIELD_INTEGER),
-	DEFINE_FIELD(CCineMonster, m_iFinishSchedule, FIELD_INTEGER),
-	DEFINE_FIELD(CCineMonster, m_interruptable, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CCineMonster, CBaseMonster);
-
 LINK_ENTITY_TO_CLASS(scripted_sequence, CCineMonster);
 
 LINK_ENTITY_TO_CLASS(aiscripted_sequence, CCineAI);

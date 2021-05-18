@@ -17,11 +17,15 @@
 
 #include "CPointEntity.hpp"
 
+#include "CMultiSource.generated.hpp"
+
 constexpr int MAX_MULTI_TARGETS = 16; //!< maximum number of targets a single multi_manager entity may be assigned.
 constexpr int MS_MAX_TARGETS = 32;
 
-class CMultiSource : public CPointEntity
+class EHL_CLASS() CMultiSource : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;
@@ -29,14 +33,16 @@ public:
 	int	ObjectCaps() override { return (CPointEntity::ObjectCaps() | FCAP_MASTER); }
 	bool IsTriggered(CBaseEntity* pActivator) override;
 	void EXPORT Register();
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
 
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	EHANDLE m_rgEntities[MS_MAX_TARGETS]{};
+
+	EHL_FIELD(Persisted)
 	bool m_rgTriggered[MS_MAX_TARGETS]{};
 
+	EHL_FIELD(Persisted)
 	int m_iTotal = 0;
+
+	EHL_FIELD(Persisted)
 	string_t m_globalstate = iStringNull;
 };

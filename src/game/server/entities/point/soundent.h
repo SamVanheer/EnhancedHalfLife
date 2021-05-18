@@ -68,7 +68,7 @@ public:
 *	@brief a single instance of this entity spawns when the world spawns.
 *	The SoundEnt's job is to update the world's Free and Active sound lists.
 */
-class CSoundEnt : public CBaseEntity
+class EHL_CLASS() CSoundEnt : public CBaseEntity
 {
 public:
 

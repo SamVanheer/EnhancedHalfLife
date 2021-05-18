@@ -50,17 +50,6 @@ void CFireAndDie::Think()
 
 LINK_ENTITY_TO_CLASS(trigger_changelevel, CChangeLevel);
 
-// Global Savedata for changelevel trigger
-TYPEDESCRIPTION	CChangeLevel::m_SaveData[] =
-{
-	DEFINE_ARRAY(CChangeLevel, m_szMapName, FIELD_CHARACTER, MAX_MAPNAME_LENGTH),
-	DEFINE_ARRAY(CChangeLevel, m_szLandmarkName, FIELD_CHARACTER, MAX_MAPNAME_LENGTH),
-	DEFINE_FIELD(CChangeLevel, m_changeTarget, FIELD_STRING),
-	DEFINE_FIELD(CChangeLevel, m_changeTargetDelay, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CChangeLevel, CBaseTrigger);
-
 void CChangeLevel::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "map"))
@@ -433,14 +422,6 @@ void CTriggerSave::SaveTouch(CBaseEntity* pOther)
 }
 
 LINK_ENTITY_TO_CLASS(player_loadsaved, CRevertSaved);
-
-TYPEDESCRIPTION	CRevertSaved::m_SaveData[] =
-{
-	DEFINE_FIELD(CRevertSaved, m_messageTime, FIELD_FLOAT),	// These are not actual times, but durations, so save as floats
-	DEFINE_FIELD(CRevertSaved, m_loadTime, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CRevertSaved, CPointEntity);
 
 void CRevertSaved::KeyValue(KeyValueData* pkvd)
 {

@@ -43,7 +43,7 @@ void W_Precache();
 /**
 *	@brief Contact Grenade / Timed grenade / Satchel Charge
 */
-class CGrenade : public CBaseMonster
+class EHL_CLASS() CGrenade : public CBaseMonster
 {
 public:
 	void Spawn() override;
@@ -233,6 +233,8 @@ extern int giAmmoIndex;
 
 void AddAmmoNameToAmmoRegistry(const char* szAmmoname, int maxCarry);
 
+#include "CBaseWeapon.generated.hpp"
+
 enum class WeaponPickupRule
 {
 	Default,		//!< Use default pickup rules
@@ -244,14 +246,11 @@ enum class WeaponPickupRule
 /**
 *	@brief Weapons that the player has in their inventory that they can use
 */
-class CBaseWeapon : public CBaseItem
+class EHL_CLASS() CBaseWeapon : public CBaseItem
 {
+	EHL_GENERATED_BODY()
+
 public:
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static TYPEDESCRIPTION m_SaveData[];
-
 	const char* GetWorldModelName() const { return STRING(m_iszWorldModelName); }
 
 	void SetWorldModelName(const char* name)
@@ -425,8 +424,13 @@ public:
 	static inline WeaponInfo WeaponInfoArray[MAX_WEAPONS]{};
 	static inline AmmoInfo AmmoInfoArray[MAX_AMMO_TYPES]{};
 
+	EHL_FIELD(Persisted)
 	EHandle<CBasePlayer> m_hPlayer;
+
+	EHL_FIELD(Persisted)
 	EHandle<CBaseWeapon> m_hNext;
+
+	EHL_FIELD(Persisted)
 	int m_iId = WEAPON_NONE; // WEAPON_???
 
 	/**
@@ -444,21 +448,57 @@ public:
 	int			Weight() { return WeaponInfoArray[m_iId].iWeight; }
 	int			Flags() { return WeaponInfoArray[m_iId].iFlags; }
 
+	//TODO: move to shotgun class
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flPumpTime = 0;
+
+#ifdef CLIENT_WEAPONS
+	EHL_FIELD(Persisted)
+#else
+	EHL_FIELD(Persisted, Type=Time)
+#endif
 	float m_flNextPrimaryAttack = 0;							//!< soonest time WeaponPostFrame will call PrimaryAttack
+
+#ifdef CLIENT_WEAPONS
+	EHL_FIELD(Persisted)
+#else
+	EHL_FIELD(Persisted, Type = Time)
+#endif
 	float m_flNextSecondaryAttack = 0;							//!< soonest time WeaponPostFrame will call SecondaryAttack
+
+#ifdef CLIENT_WEAPONS
+	EHL_FIELD(Persisted)
+#else
+	EHL_FIELD(Persisted, Type = Time)
+#endif
 	float m_flTimeWeaponIdle = 0;								//!< soonest time WeaponPostFrame will call WeaponIdle
+
+	EHL_FIELD(Persisted)
 	int m_iPrimaryAmmoType = 0;									//!< "primary" ammo index into players m_rgAmmo[]
+
+	EHL_FIELD(Persisted)
 	int m_iSecondaryAmmoType = 0;								//!< "secondary" ammo index into players m_rgAmmo[]
+
+	EHL_FIELD(Persisted)
 	int m_iClip = 0;											//!< number of shots left in the primary weapon clip, -1 it not used
+
+	//reset to zero on load so hud gets updated correctly
 	int m_iClientClip = 0;										//!< the last version of m_iClip sent to hud dll
+
+	//reset to zero on load so hud gets updated correctly
 	WeaponState m_iClientWeaponState = WeaponState::NotActive;	//!< the last version of the weapon state sent to hud dll (is current weapon, is on target)
+
+	EHL_FIELD(Persisted)
 	bool m_fInReload = false;									//!< Are we in the middle of a reload;
 
+	EHL_FIELD(Persisted)
 	int m_iDefaultPrimaryAmmo = 0; //!< how much ammo you get when you pick up this weapon as placed by a level designer.
+
+	EHL_FIELD(Persisted)
 	int m_iDefaultAmmo = 0; //!< Amount of ammo left in weapon
 
 	//Handled in CBasePlayer::AddPlayerWeapon
+	EHL_FIELD(Persisted)
 	WeaponPickupRule m_PickupRule = WeaponPickupRule::Default;
 
 	// hle time creep vars
@@ -466,11 +506,16 @@ public:
 	float m_flLastFireTime = 0;
 
 private:
+	EHL_FIELD(Persisted, Type=ModelName)
 	string_t m_iszWorldModelName = iStringNull;
 };
 
-class CBaseAmmo : public CBaseItem
+#include "CBaseAmmo.generated.hpp"
+
+class EHL_CLASS() CBaseAmmo : public CBaseItem
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{
@@ -485,27 +530,26 @@ public:
 
 	void Precache() override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static TYPEDESCRIPTION m_SaveData[];
-
 protected:
 	ItemApplyResult DefaultGiveAmmo(CBasePlayer* player, int amount, const char* ammoName, bool playSound);
 
 	ItemApplyResult Apply(CBasePlayer* player) override;
 
 protected:
+	EHL_FIELD(Persisted)
 	int m_iAmount = 0;
+
+	EHL_FIELD(Persisted)
 	string_t m_iszAmmoName = iStringNull;
 
+	EHL_FIELD(Persisted, Type=SoundName)
 	string_t m_iszPickupSound = MAKE_STRING("items/9mmclip1.wav");
 };
 
 /**
 *	@brief Generic ammo item
 */
-class CAmmoGeneric : public CBaseAmmo
+class EHL_CLASS() CAmmoGeneric : public CBaseAmmo
 {
 public:
 	void KeyValue(KeyValueData* pkvd) override;
@@ -516,7 +560,7 @@ constexpr int AMMOALL_REFILLAMMO = -1;
 /**
 *	@brief Gives the player all ammo types
 */
-class CAmmoAll : public CBaseAmmo
+class EHL_CLASS() CAmmoAll : public CBaseAmmo
 {
 public:
 	void KeyValue(KeyValueData* pkvd) override;
@@ -596,11 +640,15 @@ constexpr Vector VECTOR_CONE_10DEGREES(0.08716, 0.08716, 0.08716);
 constexpr Vector VECTOR_CONE_15DEGREES(0.13053, 0.13053, 0.13053);
 constexpr Vector VECTOR_CONE_20DEGREES(0.17365, 0.17365, 0.17365);
 
+#include "CWeaponBox.generated.hpp"
+
 /**
 *	@brief a single entity that can store weapons and ammo.
 */
-class CWeaponBox : public CBaseEntity
+class EHL_CLASS() CWeaponBox : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 	void Precache() override;
 	void Spawn() override;
 
@@ -622,9 +670,6 @@ public:
 	*	@brief the think function that removes the box from the world.
 	*/
 	void EXPORT Kill();
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	/**
 	*	@brief is a weapon of this type already packed in this box?
@@ -638,11 +683,16 @@ public:
 
 	bool PackAmmo(string_t iszName, int iCount);
 
+	EHL_FIELD(Persisted)
 	EHandle<CBaseWeapon> m_hPlayerWeapons[MAX_WEAPON_TYPES];// one slot for each 
 
+	EHL_FIELD(Persisted)
 	string_t m_rgiszAmmo[MAX_AMMO_TYPES]{};// ammo names
+
+	EHL_FIELD(Persisted)
 	int	m_rgAmmo[MAX_AMMO_TYPES]{};// ammo quantities
 
+	EHL_FIELD(Persisted)
 	int m_cAmmoTypes = 0;// how many ammo types packed into this box (if packed by a level designer)
 };
 
@@ -673,7 +723,7 @@ enum glock_e
 	GLOCK_ADD_SILENCER
 };
 
-class CGlock : public CBaseWeapon
+class EHL_CLASS() CGlock : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
@@ -725,7 +775,7 @@ enum crowbar_e
 	CROWBAR_ATTACK3HIT
 };
 
-class CCrowbar : public CBaseWeapon
+class EHL_CLASS() CCrowbar : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
@@ -774,7 +824,7 @@ enum python_e
 	PYTHON_IDLE3
 };
 
-class CPython : public CBaseWeapon
+class EHL_CLASS() CPython : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
@@ -822,7 +872,7 @@ enum mp5_e
 	MP5_FIRE3,
 };
 
-class CMP5 : public CBaseWeapon
+class EHL_CLASS() CMP5 : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
@@ -877,7 +927,7 @@ enum crossbow_e
 	CROSSBOW_HOLSTER2,	// empty
 };
 
-class CCrossbow : public CBaseWeapon
+class EHL_CLASS() CCrossbow : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
@@ -917,6 +967,8 @@ private:
 	unsigned short m_usCrossbow2 = 0;
 };
 
+#include "CShotgun.generated.hpp"
+
 enum shotgun_e
 {
 	SHOTGUN_IDLE = 0,
@@ -931,8 +983,10 @@ enum shotgun_e
 	SHOTGUN_IDLE_DEEP
 };
 
-class CShotgun : public CBaseWeapon
+class EHL_CLASS() CShotgun : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	enum class ReloadState
 	{
@@ -940,12 +994,6 @@ public:
 		PlayAnimation = 1,	//!< Play the shell load animation
 		AddToClip = 2		//!< Update the clip value (and Hud as a result)
 	};
-
-#ifndef CLIENT_DLL
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-#endif
 
 	void OnConstruct() override
 	{
@@ -967,6 +1015,8 @@ public:
 	void Reload() override;
 	void WeaponIdle() override;
 	void WeaponPostFrame() override;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextReload = 0;
 	int m_iShell = 0;
 
@@ -982,6 +1032,7 @@ public:
 	void GetWeaponData(weapon_data_t& data) override;
 	void SetWeaponData(const weapon_data_t& data) override;
 
+	EHL_FIELD(Persisted)
 	ReloadState m_fInSpecialReload = ReloadState::NotReloading; //!< Are we in the middle of a reload
 
 private:
@@ -989,7 +1040,7 @@ private:
 	unsigned short m_usSingleFire = 0;
 };
 
-class CLaserSpot : public CBaseEntity
+class EHL_CLASS() CLaserSpot : public CBaseEntity
 {
 	void Spawn() override;
 	void Precache() override;
@@ -1010,6 +1061,8 @@ public:
 	static CLaserSpot* CreateSpot();
 };
 
+#include "CRpg.generated.hpp"
+
 enum rpg_e
 {
 	RPG_IDLE = 0,
@@ -1024,16 +1077,11 @@ enum rpg_e
 	RPG_FIDGET_UL,	// unloaded fidget
 };
 
-class CRpg : public CBaseWeapon
+class EHL_CLASS() CRpg : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
-
-#ifndef CLIENT_DLL
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-#endif
-
 	void OnConstruct() override
 	{
 		CBaseWeapon::OnConstruct();
@@ -1072,7 +1120,11 @@ public:
 	bool ShouldWeaponIdle() override { return true; }
 
 	EHandle<CLaserSpot> m_hSpot;
+
+	EHL_FIELD(Persisted)
 	bool m_fSpotActive = false;
+
+	EHL_FIELD(Persisted)
 	int m_cActiveRockets = 0;// how many missiles in flight from this launcher right now?
 
 	bool UseDecrement() override
@@ -1088,12 +1140,13 @@ private:
 	unsigned short m_usRpg = 0;
 };
 
-class CRpgRocket : public CGrenade
+#include "CRpgRocket.generated.hpp"
+
+class EHL_CLASS() CRpgRocket : public CGrenade
 {
+	EHL_GENERATED_BODY()
+
 public:
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 	void Spawn() override;
 	void Precache() override;
 	void EXPORT FollowThink();
@@ -1102,9 +1155,15 @@ public:
 	static CRpgRocket* CreateRpgRocket(const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner, CRpg* pLauncher);
 
 	int m_iTrail = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flIgniteTime = 0;
+
+	EHL_FIELD(Persisted)
 	EHandle<CRpg> m_hLauncher;// handle back to the launcher that fired me. 
 };
+
+#include "CGauss.generated.hpp"
 
 constexpr int GAUSS_PRIMARY_CHARGE_VOLUME = 256;	// how loud gauss is while charging
 constexpr int GAUSS_PRIMARY_FIRE_VOLUME = 450;		// how loud gauss is when discharged
@@ -1122,8 +1181,10 @@ enum gauss_e
 	GAUSS_DRAW
 };
 
-class CGauss : public CBaseWeapon
+class EHL_CLASS() CGauss : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	enum class AttackState
 	{
@@ -1132,12 +1193,6 @@ public:
 		Charging,
 		Aftershock,
 	};
-
-#ifndef CLIENT_DLL
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-#endif
 
 	void OnConstruct() override
 	{
@@ -1175,7 +1230,10 @@ public:
 
 	// was this weapon just fired primary or secondary?
 	// we need to know so we can pick the right set of effects. 
+	EHL_FIELD(Persisted)
 	bool m_fPrimaryFire = false;
+
+	EHL_FIELD(Persisted)
 	AttackState m_fInAttack = AttackState::NotAttacking;
 
 	bool UseDecrement() override
@@ -1191,6 +1249,7 @@ public:
 	void SetWeaponData(const weapon_data_t& data) override;
 	void DecrementTimers() override;
 
+	//TODO: needs save?
 	float m_flStartCharge = 0;
 	float m_flAmmoStartCharge = 0;
 	float m_flPlayAftershock = 0;
@@ -1200,6 +1259,8 @@ private:
 	unsigned short m_usGaussFire = 0;
 	unsigned short m_usGaussSpin = 0;
 };
+
+#include "CEgon.generated.hpp"
 
 enum egon_e
 {
@@ -1223,8 +1284,10 @@ constexpr std::string_view EGON_SOUND_OFF{"weapons/egon_off1.wav"};
 constexpr std::string_view EGON_SOUND_RUN{"weapons/egon_run3.wav"};
 constexpr std::string_view EGON_SOUND_STARTUP{"weapons/egon_windup2.wav"};
 
-class CEgon : public CBaseWeapon
+class EHL_CLASS() CEgon : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	enum class FireState
 	{
@@ -1237,12 +1300,6 @@ public:
 		Narrow,
 		Wide
 	};
-
-#ifndef CLIENT_DLL
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-#endif
 
 	void OnConstruct() override
 	{
@@ -1273,6 +1330,7 @@ public:
 	bool ShouldWeaponIdle() override { return true; }
 	void WeaponIdle() override;
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flAmmoUseTime = 0;// since we use < 1 point of ammo per update, we subtract ammo on a timer.
 
 	float GetPulseInterval();
@@ -1287,6 +1345,8 @@ public:
 	EHandle<CBeam> m_hBeam;
 	EHandle<CBeam> m_hNoise;
 	EHandle<CSprite> m_hSprite;
+
+	EHL_FIELD(Persisted)
 	FireState m_fireState = FireState::Off;
 
 	bool UseDecrement() override
@@ -1304,10 +1364,16 @@ public:
 	unsigned short m_usEgonStop = 0;
 
 private:
+	EHL_FIELD(Persisted, Type=Time)
 	float m_shootTime = 0;
+
+	EHL_FIELD(Persisted)
 	FireMode m_fireMode = FireMode::Narrow;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_shakeTime = 0;
-	bool m_deployed = 0;
+
+	bool m_deployed = 0; //TODO: bool
 
 	unsigned short m_usEgonFire = 0;
 };
@@ -1322,7 +1388,7 @@ enum hgun_e
 	HGUN_SHOOT
 };
 
-class CHgun : public CBaseWeapon
+class EHL_CLASS() CHgun : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
@@ -1376,7 +1442,7 @@ enum handgrenade_e
 	HANDGRENADE_DRAW
 };
 
-class CHandGrenade : public CBaseWeapon
+class EHL_CLASS() CHandGrenade : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
@@ -1414,6 +1480,8 @@ public:
 	float m_flReleaseThrow = 0;
 };
 
+#include "CSatchel.generated.hpp"
+
 enum satchel_e
 {
 	SATCHEL_IDLE1 = 0,
@@ -1431,8 +1499,10 @@ enum satchel_radio_e
 	SATCHEL_RADIO_HOLSTER
 };
 
-class CSatchel : public CBaseWeapon
+class EHL_CLASS() CSatchel : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	enum class ChargeState
 	{
@@ -1440,12 +1510,6 @@ public:
 		SatchelsDeployed,
 		Reloading,
 	};
-
-#ifndef CLIENT_DLL
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-#endif
 
 	void OnConstruct() override
 	{
@@ -1483,6 +1547,7 @@ public:
 	void GetWeaponData(weapon_data_t& data) override;
 	void SetWeaponData(const weapon_data_t& data) override;
 
+	EHL_FIELD(Persisted)
 	ChargeState m_chargeReady = ChargeState::NoSatchelsDeployed;
 };
 
@@ -1499,7 +1564,7 @@ enum tripmine_e
 	TRIPMINE_GROUND,
 };
 
-class CTripmine : public CBaseWeapon
+class EHL_CLASS() CTripmine : public CBaseWeapon
 {
 public:
 	void OnConstruct() override
@@ -1550,7 +1615,7 @@ enum squeak_e
 	SQUEAK_THROW
 };
 
-class CSqueak : public CBaseWeapon
+class EHL_CLASS() CSqueak : public CBaseWeapon
 {
 public:
 	void OnConstruct() override

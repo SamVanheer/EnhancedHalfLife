@@ -17,7 +17,7 @@
 
 #include "CBaseItem.hpp"
 
-class CItem : public CBaseItem
+class EHL_CLASS() CItem : public CBaseItem
 {
 public:
 	void OnConstruct() override

@@ -23,6 +23,8 @@
 
 class CBasePlayer;
 
+#include "CFrictionModifier.generated.hpp"
+
 constexpr int SF_TRIGGER_ALLOWMONSTERS = 1;	//!< monsters allowed to fire this trigger
 constexpr int SF_TRIGGER_NOCLIENTS = 2;		//!< players not allowed to fire this trigger
 constexpr int SF_TRIGGER_PUSHABLES = 4;		//!< only pushables can fire this trigger
@@ -31,21 +33,22 @@ constexpr int SF_TRIGGER_PUSHABLES = 4;		//!< only pushables can fire this trigg
 *	@brief Modify an entity's friction
 *	@details Sets toucher's friction to m_frictionFraction (1.0 = normal friction)
 */
-class CFrictionModifier : public CBaseEntity
+class EHL_CLASS() CFrictionModifier : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Spawn() override;
 	void		KeyValue(KeyValueData* pkvd) override;
 	void EXPORT	ChangeFriction(CBaseEntity* pOther);
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
 
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	float m_frictionFraction = 0; // Sorry, couldn't resist this name :)
 };
+
+#include "CAutoTrigger.generated.hpp"
 
 constexpr int SF_AUTO_FIREONCE = 0x0001;
 
@@ -53,8 +56,10 @@ constexpr int SF_AUTO_FIREONCE = 0x0001;
 *	@brief This trigger will fire when the level spawns (or respawns if not fire once)
 *	It will check a global state before firing. It supports delay and killtargets
 */
-class CAutoTrigger : public CBaseDelay
+class EHL_CLASS() CAutoTrigger : public CBaseDelay
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
@@ -62,34 +67,35 @@ public:
 	void Think() override;
 
 	int ObjectCaps() override { return CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
 private:
+	EHL_FIELD(Persisted)
 	string_t m_globalstate = iStringNull;
+
+	EHL_FIELD(Persisted)
 	UseType	triggerType = UseType::Off;
 };
 
+#include "CTriggerRelay.generated.hpp"
+
 constexpr int SF_RELAY_FIREONCE = 0x0001;
 
-class CTriggerRelay : public CBaseDelay
+class EHL_CLASS() CTriggerRelay : public CBaseDelay
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
 	void Use(const UseInfo& info) override;
 
 	int ObjectCaps() override { return CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
+	EHL_FIELD(Persisted)
 	UseType	triggerType = UseType::Off;
 };
+
+#include "CMultiManager.generated.hpp"
 
 constexpr int SF_MULTIMAN_CLONE = 0x80000000;
 constexpr int SF_MULTIMAN_THREAD = 0x00000001;
@@ -100,8 +106,10 @@ constexpr int SF_MULTIMAN_THREAD = 0x00000001;
 *	FLAG: CLONE (this is a clone for a threaded execution)
 *	@see MAX_MULTI_TARGETS
 */
-class CMultiManager : public CBaseToggle
+class EHL_CLASS() CMultiManager : public CBaseToggle
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
@@ -116,15 +124,19 @@ public:
 
 	int ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	int m_cTargets = 0;								//!< the total number of targets in this manager's fire list.
+
+	EHL_FIELD(Persisted)
 	int m_index = 0;								//!< Current target
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_startTime = 0;							//!< Time we started firing
+
+	EHL_FIELD(Persisted)
 	string_t m_iTargetName[MAX_MULTI_TARGETS]{};	//!< list if indexes into global string array
+
+	EHL_FIELD(Persisted)
 	float m_flTargetDelay[MAX_MULTI_TARGETS]{};		//!< delay (in seconds) from time of manager fire to target fire
 private:
 	inline bool IsClone() { return (pev->spawnflags & SF_MULTIMAN_CLONE) != 0; }
@@ -148,14 +160,14 @@ constexpr int SF_RENDER_MASKCOLOR = 1 << 3;
 /**
 *	@brief This entity will copy its render parameters (renderfx, rendermode, rendercolor, renderamt) to its targets when triggered.
 */
-class CRenderFxManager : public CBaseEntity
+class EHL_CLASS() CRenderFxManager : public CBaseEntity
 {
 public:
 	void Spawn() override;
 	void Use(const UseInfo& info) override;
 };
 
-class CBaseTrigger : public CBaseToggle
+class EHL_CLASS() CBaseTrigger : public CBaseToggle
 {
 public:
 	int	ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
@@ -186,7 +198,7 @@ constexpr int SF_TRIGGER_HURT_CLIENTONLYTOUCH = 32;	//!< only clients may touch 
 *	@details trigger hurt that causes radiation will do a radius check
 *	and set the player's geiger counter level according to distance from center of trigger
 */
-class CTriggerHurt : public CBaseTrigger
+class EHL_CLASS() CTriggerHurt : public CBaseTrigger
 {
 public:
 	void Spawn() override;
@@ -197,7 +209,7 @@ public:
 	void EXPORT RadiationThink();
 };
 
-class CTriggerMonsterJump : public CBaseTrigger
+class EHL_CLASS() CTriggerMonsterJump : public CBaseTrigger
 {
 public:
 	void Spawn() override;
@@ -209,7 +221,7 @@ public:
 *	@brief starts/stops cd audio tracks
 *	Changes tracks or stops CD when player touches or when triggered
 */
-class CTriggerCDAudio : public CBaseTrigger
+class EHL_CLASS() CTriggerCDAudio : public CBaseTrigger
 {
 public:
 	void Spawn() override;
@@ -222,7 +234,7 @@ public:
 /**
 *	@brief This plays a CD track when fired or when the player enters it's radius
 */
-class CTargetCDAudio : public CPointEntity
+class EHL_CLASS() CTargetCDAudio : public CPointEntity
 {
 public:
 	void			Spawn() override;
@@ -237,7 +249,7 @@ public:
 *	@brief Variable sized repeatable trigger. Must be targeted at one or more entities.
 *	@details "wait" : Seconds between triggerings. (.2 default)
 */
-class CTriggerMultiple : public CBaseTrigger
+class EHL_CLASS() CTriggerMultiple : public CBaseTrigger
 {
 public:
 	void Spawn() override;
@@ -251,11 +263,13 @@ public:
 *	if "killtarget" is set, any objects that have a matching "target" will be removed when the trigger is fired.
 *	if "angle" is set, the trigger will only fire when someone is facing the direction of the angle.  Use "360" for an angle of 0.
 */
-class CTriggerOnce : public CTriggerMultiple
+class EHL_CLASS() CTriggerOnce : public CTriggerMultiple
 {
 public:
 	void Spawn() override;
 };
+
+#include "CTriggerCounter.generated.hpp"
 
 constexpr int SF_COUNTER_NOMESSAGE = 1;
 
@@ -264,26 +278,24 @@ constexpr int SF_COUNTER_NOMESSAGE = 1;
 *	@details If nomessage is not set, it will print "1 more.. " etc when triggered and "sequence complete" when finished.
 *	After the counter has been triggered "cTriggersLeft" times (default 2), it will fire all of it's targets and remove itself.
 */
-class CTriggerCounter : public CBaseTrigger
+class EHL_CLASS() CTriggerCounter : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
 
 	void EXPORT CounterUse(const UseInfo& info);
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	int m_cTriggersLeft = 0; //!< # of activations remaining
 };
 
 /**
 *	@brief makes an area vertically negotiable
 */
-class CLadder : public CBaseTrigger
+class EHL_CLASS() CLadder : public CBaseTrigger
 {
 public:
 	void KeyValue(KeyValueData* pkvd) override;
@@ -297,7 +309,7 @@ constexpr int SF_TRIGGER_PUSH_START_OFF = 2;		//!< spawnflag that makes trigger_
 /**
 *	@brief Pushes the player and other entities
 */
-class CTriggerPush : public CBaseTrigger
+class EHL_CLASS() CTriggerPush : public CBaseTrigger
 {
 public:
 	void Spawn() override;
@@ -305,7 +317,7 @@ public:
 	void Touch(CBaseEntity* pOther) override;
 };
 
-class CTriggerTeleport : public CBaseTrigger
+class EHL_CLASS() CTriggerTeleport : public CBaseTrigger
 {
 public:
 	void Spawn() override;
@@ -313,39 +325,44 @@ public:
 	void EXPORT TeleportTouch(CBaseEntity* pOther);
 };
 
-class CTriggerGravity : public CBaseTrigger
+class EHL_CLASS() CTriggerGravity : public CBaseTrigger
 {
 public:
 	void Spawn() override;
 	void EXPORT GravityTouch(CBaseEntity* pOther);
 };
 
+#include "CTriggerChangeTarget.generated.hpp"
+
 /**
 *	@brief this is a really bad idea.
 */
-class CTriggerChangeTarget : public CBaseDelay
+class EHL_CLASS() CTriggerChangeTarget : public CBaseDelay
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
 	void Use(const UseInfo& info) override;
 
 	int ObjectCaps() override { return CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
+	EHL_FIELD(Persisted)
 	string_t m_iszNewTarget = iStringNull;
 };
+
+#include "CTriggerCamera.generated.hpp"
 
 constexpr int SF_CAMERA_PLAYER_POSITION = 1;
 constexpr int SF_CAMERA_PLAYER_TARGET = 2;
 constexpr int SF_CAMERA_PLAYER_TAKECONTROL = 4;
 
-class CTriggerCamera : public CBaseDelay
+class EHL_CLASS() CTriggerCamera : public CBaseDelay
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;
@@ -353,22 +370,44 @@ public:
 	void EXPORT FollowTarget();
 	void Move();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	static	TYPEDESCRIPTION m_SaveData[];
 
+	EHL_FIELD(Persisted)
 	EHandle<CBasePlayer> m_hPlayer;
+
+	EHL_FIELD(Persisted)
 	EHANDLE m_hTarget;
+
+	EHL_FIELD(Persisted)
 	EHandle<CBaseEntity> m_hEntPath;
+
+	EHL_FIELD(Persisted)
 	string_t m_sPath = iStringNull;
+
+	EHL_FIELD(Persisted)
 	float m_flWait = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flReturnTime = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flStopTime = 0;
+
+	EHL_FIELD(Persisted)
 	float m_moveDistance = 0;
+
+	EHL_FIELD(Persisted)
 	float m_targetSpeed = 0;
+
+	EHL_FIELD(Persisted)
 	float m_initialSpeed = 0;
+
+	EHL_FIELD(Persisted)
 	float m_acceleration = 0;
+
+	EHL_FIELD(Persisted)
 	float m_deceleration = 0;
+
+	EHL_FIELD(Persisted)
 	bool m_state = false;
 };

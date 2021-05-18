@@ -18,6 +18,8 @@
 #include "CBaseEntity.hpp"
 #include "CPointEntity.hpp"
 
+#include "CPathTrack.generated.hpp"
+
 // Trains
 constexpr int SF_TRAIN_WAIT_RETRIGGER = 1;
 constexpr int SF_TRAIN_START_ON = 4;		//!< Train is initially moving
@@ -42,8 +44,10 @@ constexpr int SF_CORNER_TELEPORT = 0x002;
 constexpr int SF_CORNER_FIREONCE = 0x004;
 
 //#define PATH_SPARKLE_DEBUG		1	// This makes a particle effect around path_track entities for debugging
-class CPathTrack : public CPointEntity
+class EHL_CLASS() CPathTrack : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Spawn() override;
 	void		Activate() override;
@@ -64,23 +68,32 @@ public:
 	CPathTrack* GetNext();
 	CPathTrack* GetPrevious();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
 #if PATH_SPARKLE_DEBUG
 	void EXPORT Sparkle();
 #endif
 
+	EHL_FIELD(Persisted)
 	float m_length = 0;
+
+	EHL_FIELD(Persisted)
 	string_t m_altName = iStringNull;
+
+	EHL_FIELD(Persisted)
 	EHandle<CPathTrack> m_hNext;
+
+	EHL_FIELD(Persisted)
 	EHandle<CPathTrack> m_hPrevious;
+
+	EHL_FIELD(Persisted)
 	EHandle<CPathTrack> m_hAltPath;
 };
 
-class CFuncTrackTrain : public CBaseEntity
+#include "CFuncTrackTrain.generated.hpp"
+
+class EHL_CLASS() CFuncTrackTrain : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -111,26 +124,47 @@ public:
 
 	static CFuncTrackTrain* Instance(CBaseEntity* pent);
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DIRECTIONAL_USE; }
 
 	void	OverrideReset() override;
 
+	EHL_FIELD(Persisted)
 	EHandle<CPathTrack> m_hPath;
+
+	EHL_FIELD(Persisted)
 	float m_length = 0;
+
+	EHL_FIELD(Persisted)
 	float m_height = 0;
+
+	EHL_FIELD(Persisted)
 	float m_speed = 0;
+
+	EHL_FIELD(Persisted)
 	float m_dir = 0;
+
+	EHL_FIELD(Persisted)
 	float m_startSpeed = 0;
+
+	EHL_FIELD(Persisted)
 	Vector m_controlMins;
+
+	EHL_FIELD(Persisted)
 	Vector m_controlMaxs;
+
+	EHL_FIELD(Persisted)
 	bool m_soundPlaying = false;
+
+	EHL_FIELD(Persisted)
 	int m_sounds = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flVolume = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flBank = 0;
+
+	EHL_FIELD(Persisted)
 	float m_oldSpeed = 0;
 
 private:

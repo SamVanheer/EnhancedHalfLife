@@ -17,7 +17,7 @@
 
 #include "CBaseEntity.hpp"
 
-class CPointEntity : public CBaseEntity
+class EHL_CLASS() CPointEntity : public CBaseEntity
 {
 public:
 	void Spawn() override;

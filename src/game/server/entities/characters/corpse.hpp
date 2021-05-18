@@ -20,7 +20,7 @@
 /**
 * @brief Body queue class here.... It's really just CBaseEntity
 */
-class CCorpse : public CBaseEntity
+class EHL_CLASS() CCorpse : public CBaseEntity
 {
 	int ObjectCaps() override { return FCAP_DONT_SAVE; }
 };

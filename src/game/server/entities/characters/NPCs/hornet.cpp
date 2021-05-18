@@ -20,15 +20,6 @@ int iHornetPuff;
 
 LINK_ENTITY_TO_CLASS(hornet, CHornet);
 
-TYPEDESCRIPTION	CHornet::m_SaveData[] =
-{
-	DEFINE_FIELD(CHornet, m_flStopAttack, FIELD_TIME),
-	DEFINE_FIELD(CHornet, m_iHornetType, FIELD_INTEGER),
-	DEFINE_FIELD(CHornet, m_flFlySpeed, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CHornet, CBaseMonster);
-
 bool CHornet::TakeDamage(const TakeDamageInfo& info)
 {
 	int damageTypes = info.GetDamageTypes();

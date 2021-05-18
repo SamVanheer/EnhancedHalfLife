@@ -20,7 +20,7 @@
 /**
 *	@brief Base class for flying monsters.  This overrides the movement test & execution code from CBaseMonster
 */
-class CFlyingMonster : public CBaseMonster
+class EHL_CLASS() CFlyingMonster : public CBaseMonster
 {
 public:
 	LocalMoveResult CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist) override;

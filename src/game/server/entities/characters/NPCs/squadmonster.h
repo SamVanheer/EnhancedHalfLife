@@ -17,6 +17,8 @@
 
 #include "basemonster.h"
 
+#include "CSquadMonster.generated.hpp"
+
 constexpr int	SF_SQUADMONSTER_LEADER = 32;
 
 
@@ -53,17 +55,29 @@ constexpr int MAX_SQUAD_MEMBERS = 5;
 /**
 *	@brief for any monster that forms squads.
 */
-class CSquadMonster : public CBaseMonster
+class EHL_CLASS() CSquadMonster : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	// squad leader info
+	EHL_FIELD(Persisted)
 	EHandle<CSquadMonster> m_hSquadLeader;		//!< who is my leader
+
+	EHL_FIELD(Persisted)
 	EHandle<CSquadMonster> m_hSquadMember[MAX_SQUAD_MEMBERS - 1]{};	//!< valid only for leader
+
+	// these need to be reset after transitions!
 	int m_afSquadSlots = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flLastEnemySightTime = 0; //!< last time anyone in the squad saw the enemy
+
+	EHL_FIELD(Persisted)
 	bool m_fEnemyEluded = false;
 
 	// squad member info
+	EHL_FIELD(Persisted)
 	int m_iMySlot = 0; //!< this is the behaviour slot that the monster currently holds in the squad. 
 
 	bool CheckEnemy(CBaseEntity* pEnemy) override;
@@ -147,11 +161,6 @@ public:
 	bool SquadMemberInRange(const Vector& vecLocation, float flDist);
 
 	CSquadMonster* MySquadMonsterPointer() override { return this; }
-
-	static TYPEDESCRIPTION m_SaveData[];
-
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
 
 	/**
 	*	@brief determines whether or not the chosen cover location is a good one to move to.

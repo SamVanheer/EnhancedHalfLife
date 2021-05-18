@@ -19,28 +19,6 @@
 #include "gamerules.h"
 #include "CBaseItem.hpp"
 
-#ifndef CLIENT_DLL
-TYPEDESCRIPTION	CBaseItem::m_SaveData[] =
-{
-	DEFINE_FIELD(CBaseItem, m_OriginalPosition, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CBaseItem, m_RespawnMode, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseItem, m_flRespawnDelay, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseItem, m_RespawnPositionMode, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseItem, m_FallMode, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseItem, m_bCanPickUpWhileFalling, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBaseItem, m_ClatterMode, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseItem, m_bStayVisibleDuringRespawn, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBaseItem, m_bIsRespawning, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBaseItem, m_bFlashOnRespawn, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBaseItem, m_iszClatterSound, FIELD_SOUNDNAME),
-	DEFINE_FIELD(CBaseItem, m_iszRespawnSound, FIELD_SOUNDNAME),
-	DEFINE_FIELD(CBaseItem, m_iszTriggerOnMaterialize, FIELD_STRING),
-	DEFINE_FIELD(CBaseItem, m_iszTriggerOnDematerialize, FIELD_STRING),
-};
-
-IMPLEMENT_SAVERESTORE(CBaseItem, CBaseAnimating);
-#endif
-
 void CBaseItem::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "respawn_mode"))
