@@ -243,6 +243,10 @@ add_subdirectory(../shared shared)
 
 add_shared_sources(hl)
 
+if (MSVC)
+	target_sources(hl PRIVATE ../cpp.hint)
+endif()
+
 target_precompile_headers(hl
 	PRIVATE
 		server_precompiled.hpp)

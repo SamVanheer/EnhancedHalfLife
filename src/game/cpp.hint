@@ -1,0 +1,3 @@
+#define EHL_CLASS()
+#define EHL_FIELD()
+#define EHL_GENERATED_BODY()
