@@ -100,6 +100,22 @@ namespace CodeGenerator.Persistence
                 return;
             }
 
+            bool isBaseEntity = record.Name == EntityBaseClassName && scope.Length == 0;
+
+            if (!isBaseEntity && record.Bases.Count == 0)
+            {
+                throw new ProcessingException($"Class {fqName} is not CBaseEntity yet has no base class!");
+            }
+
+            var baseClass = !isBaseEntity ? record.Bases[0].Referenced.Name : string.Empty;
+
+            record.Location.GetSpellingLocation(out var file, out _, out _, out _);
+
+            var headerFileName = Path.GetFullPath(file.Name.CString.NormalizeSlashes());
+
+            var data = new GeneratedClassData(scope, record.Name, headerFileName);
+            _generatedCode.Add(data);
+
             //Generate a declaration and definition for persistence if the class has any fields that need it
             var persistedFields = record.Fields
                 .Select(f => new { Field = f, Attributes = GetRelevantAttributes(f, FieldPrefix) })
@@ -108,22 +124,6 @@ namespace CodeGenerator.Persistence
 
             if (persistedFields.Count > 0)
             {
-                bool isBaseEntity = record.Name == EntityBaseClassName && scope.Length == 0;
-
-                if (!isBaseEntity && record.Bases.Count == 0)
-                {
-                    throw new ProcessingException($"Class {fqName} is not CBaseEntity yet has no base class!");
-                }
-
-                var baseClass = !isBaseEntity ? record.Bases[0].Referenced.Name : string.Empty;
-
-                record.Location.GetSpellingLocation(out var file, out _, out _, out _);
-
-                var headerFileName = Path.GetFullPath(file.Name.CString.NormalizeSlashes());
-
-                var data = new GeneratedClassData(scope, record.Name, headerFileName);
-                _generatedCode.Add(data);
-
                 data.AddHeaderInclude(headerFileName);
 
                 data.AddVisibilityDeclaration("public");
