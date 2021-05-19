@@ -50,7 +50,7 @@ namespace CodeGenerator.CodeGen
             }
 
             //Generate the automatically included source file
-            using var writer = File.CreateText(GeneratedSourceName);
+            using var writer = File.CreateText(_generatedDirectory + GeneratedSourceName);
 
             writer.Write(heading);
 

@@ -1,6 +1,6 @@
 # Functions to help generate the codegen config file and adding the prebuild command
 set(EHL_GENERATED_DIRECTORY_NAME generated)
-set(EHL_GENERATED_SOURCE_NAME ehl_generated.cpp)
+set(EHL_GENERATED_SOURCE_NAME generated/ehl_generated.cpp)
 
 function(ehl_codegen_list_to_array list array)
 	# Prepend some spaces to align the result nicely
