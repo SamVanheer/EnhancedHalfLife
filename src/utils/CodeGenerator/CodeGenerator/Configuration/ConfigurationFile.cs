@@ -13,7 +13,5 @@ namespace CodeGenerator.Configuration
         public List<string>? IncludePaths { get; set; }
 
         public List<string>? Headers { get; set; }
-
-        public List<string>? PrecompiledHeaders { get; set; }
     }
 }

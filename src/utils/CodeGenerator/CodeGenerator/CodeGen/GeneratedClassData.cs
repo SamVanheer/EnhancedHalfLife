@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace CodeGenerator.CodeGen
 {
@@ -13,18 +14,19 @@ namespace CodeGenerator.CodeGen
 
         public string Name { get; }
 
-        public string FullyQualifiedName => Scope.Length > 0 ? $"{Scope}::{Name}" : Name;
+        public string FileName { get; }
 
-        public string BaseFileName => FullyQualifiedName.Replace("::", "_") + ".generated";
+        public string FullyQualifiedName => Scope.Length > 0 ? $"{Scope}::{Name}" : Name;
 
         public List<string> GeneratedDeclaration { get; } = new();
 
         public List<string> GeneratedDefinition { get; } = new();
 
-        public GeneratedClassData(string scope, string name)
+        public GeneratedClassData(string scope, string name, string fileName)
         {
             Scope = scope;
             Name = name;
+            FileName = fileName;
         }
 
         public void AddVisibilityDeclaration(string visibility)
@@ -84,6 +86,11 @@ namespace CodeGenerator.CodeGen
         public string GenerateFullDefinition()
         {
             return string.Join("\n", GeneratedDefinition);
+        }
+
+        public override string ToString()
+        {
+            return $"{FullyQualifiedName}:{Path.GetFileName(FileName)}";
         }
     }
 }

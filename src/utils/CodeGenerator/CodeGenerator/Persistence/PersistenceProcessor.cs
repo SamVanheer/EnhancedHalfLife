@@ -2,9 +2,11 @@
 using ClangSharp.Interop;
 using CodeGenerator.CodeGen;
 using CodeGenerator.Processing;
+using CodeGenerator.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -29,7 +31,11 @@ namespace CodeGenerator.Persistence
 
         public void ProcessTranslationUnit(TranslationUnit translationUnit)
         {
-            Visit(translationUnit.TranslationUnitDecl);
+            //Do this here so Visit doesn't have to filter out TU cursors
+            foreach (var child in translationUnit.TranslationUnitDecl.CursorChildren)
+            {
+                Visit(child);
+            }
         }
 
         private void Visit(Cursor cursor)
@@ -40,10 +46,15 @@ namespace CodeGenerator.Persistence
                 return;
             }
 
+            //Only process types from the main file
+            if (!cursor.Location.IsFromMainFile)
+            {
+                return;
+            }
+
             //Recurse into child scopes first to define all nested types
             switch (cursor)
             {
-                case TranslationUnitDecl:
                 case NamespaceDecl:
                 case CXXRecordDecl:
                     foreach (var child in cursor.CursorChildren)
@@ -106,11 +117,14 @@ namespace CodeGenerator.Persistence
 
                 var baseClass = !isBaseEntity ? record.Bases[0].Referenced.Name : string.Empty;
 
-                var data = _generatedCode.Get(scope, record.Name);
-
                 record.Location.GetSpellingLocation(out var file, out _, out _, out _);
 
-                data.AddHeaderInclude(file.Name.CString);
+                var headerFileName = Path.GetFullPath(file.Name.CString.NormalizeSlashes());
+
+                var data = new GeneratedClassData(scope, record.Name, headerFileName);
+                _generatedCode.Add(data);
+
+                data.AddHeaderInclude(headerFileName);
 
                 data.AddVisibilityDeclaration("public");
                 data.AddMethodDeclaration("bool Save(CSave& save)", isBaseEntity, true);

@@ -1,5 +1,7 @@
 ﻿using ClangSharp;
 using ClangSharp.Interop;
+using CodeGenerator.Configuration;
+using CodeGenerator.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -13,15 +15,13 @@ namespace CodeGenerator.Processing
     /// </summary>
     public class ProcessingEngine : IDisposable
     {
-        private const string PrecompiledHeaderName = "Precompiled.pch";
-
         private readonly ImmutableHashSet<string> _definitions;
 
         private readonly ImmutableList<string> _includePaths;
 
         private readonly ImmutableList<string> _headers;
 
-        private readonly ImmutableList<string> _precompiledHeaders;
+        private readonly ImmutableDictionary<string, CachedFileInfo> _cachedFileInfo;
 
         private readonly ClangSharp.Index _index;
 
@@ -29,30 +29,37 @@ namespace CodeGenerator.Processing
 
         public ProcessingEngine(ImmutableHashSet<string> definitions,
             ImmutableList<string> includePaths,
-            ImmutableList<string> headers,
-            ImmutableList<string> precompiledHeaders)
+            IEnumerable<string> headers,
+            ImmutableDictionary<string, CachedFileInfo> cachedFileInfo)
         {
             _definitions = definitions;
             _includePaths = includePaths;
-            _headers = headers;
-            _precompiledHeaders = precompiledHeaders;
+            _headers = headers.Select(h => Path.GetFullPath(h.NormalizeSlashes())).ToImmutableList();
+            _cachedFileInfo = cachedFileInfo;
 
             _index = ClangSharp.Index.Create(displayDiagnostics: false);
         }
 
-        public void Process()
+        /// <summary>
+        /// Processes the list of header files
+        /// </summary>
+        /// <returns>Updated list of file change info</returns>
+        public ImmutableDictionary<string, ProcessedFileInfo> Process()
         {
-            var sharedArguments = CreateSharedCommandLineArguments();
+            var newFileInfo = new List<ProcessedFileInfo>();
 
-            try
+            var commandLineArgs = CreateCommandLineArguments();
+
+            foreach (var file in _headers)
             {
-                (bool hasPrecompiledHeader, ImmutableHashSet<string> filesToSkip) = MaybeGeneratePrecompiledHeader(sharedArguments);
+                var lastChange = File.GetLastWriteTimeUtc(file);
 
-                var commandLineArgs = CreateCommandLineArguments(sharedArguments, hasPrecompiledHeader);
+                _cachedFileInfo.TryGetValue(file, out var fileChangeInfo);
 
-                var files = _headers.Except(filesToSkip).ToList();
+                bool processFile = fileChangeInfo is null || lastChange > fileChangeInfo.LastProcessed;
 
-                foreach (var file in files)
+                //if we've processed this file after the last change time we can skip doing it again
+                if (processFile)
                 {
                     var parseError = CXTranslationUnit.TryParse(_index.Handle, file, commandLineArgs, ReadOnlySpan<CXUnsavedFile>.Empty,
                         CXTranslationUnit_Flags.CXTranslationUnit_None
@@ -68,15 +75,14 @@ namespace CodeGenerator.Processing
 
                     ProcessTranslationUnit(translationUnit);
                 }
+
+                newFileInfo.Add(new ProcessedFileInfo(file, DateTimeOffset.UtcNow, processFile, fileChangeInfo?.HasGeneratedSourceFile == true));
             }
-            finally
-            {
-                //Delete the temporary precompiled header
-                File.Delete(PrecompiledHeaderName);
-            }
+
+            return newFileInfo.ToImmutableDictionary(i => i.FileName);
         }
 
-        private string[] CreateSharedCommandLineArguments()
+        private string[] CreateCommandLineArguments()
         {
             var args = new List<string>
             {
@@ -89,73 +95,6 @@ namespace CodeGenerator.Processing
             args.AddRange(_includePaths.Select(i => $"-I{i}"));
 
             return args.ToArray();
-        }
-
-        private static string[] CreateCommandLineArguments(string[] sharedArguments, bool hasPrecompiledHeader)
-        {
-            var list = sharedArguments.ToList();
-
-            if (hasPrecompiledHeader)
-            {
-                list.Add("-include-pch");
-                list.Add(PrecompiledHeaderName);
-            }
-
-            return list.ToArray();
-        }
-
-        private unsafe (bool, ImmutableHashSet<string>) MaybeGeneratePrecompiledHeader(string[] sharedArguments)
-        {
-            if (_precompiledHeaders.IsEmpty)
-            {
-                return (false, ImmutableHashSet<string>.Empty);
-            }
-
-            var parseError = CXTranslationUnit.TryParse(
-                    _index.Handle,
-                    null,
-                    sharedArguments
-                        .Concat(_precompiledHeaders)
-                        .ToArray(),
-                    ReadOnlySpan<CXUnsavedFile>.Empty,
-                    CXTranslationUnit_Flags.CXTranslationUnit_ForSerialization
-                    | CXTranslationUnit_Flags.CXTranslationUnit_Incomplete,
-                    out var precompiledTU);
-
-            if (parseError != CXErrorCode.CXError_Success)
-            {
-                throw new ProcessingException($"Error parsing precompiled headers: {parseError}");
-            }
-
-            var saveError = precompiledTU.Save(PrecompiledHeaderName, (CXSaveTranslationUnit_Flags)clang.defaultSaveOptions(precompiledTU));
-
-            if (saveError != CXSaveError.CXSaveError_None)
-            {
-                throw new ProcessingException($"Error saving precompiled headers: {saveError}");
-            }
-
-            using var translationUnit = TranslationUnit.GetOrCreate(precompiledTU);
-
-            ProcessTranslationUnit(translationUnit);
-
-            var filesToSkip = ImmutableHashSet.CreateBuilder<string>();
-
-            //Find all files that were included and add them for exclusion
-            foreach (var child in translationUnit.TranslationUnitDecl.CursorChildren)
-            {
-                child.Location.GetSpellingLocation(out var file, out _, out _, out _);
-
-                var path = file.Name.CString;
-
-                //Normalize the paths
-                path = path.Replace('/', Path.DirectorySeparatorChar);
-                path = path.Replace('\\', Path.DirectorySeparatorChar);
-                path = Path.GetFullPath(path);
-
-                filesToSkip.Add(path);
-            }
-
-            return (true, filesToSkip.ToImmutable());
         }
 
         private void ProcessTranslationUnit(TranslationUnit translationUnit)

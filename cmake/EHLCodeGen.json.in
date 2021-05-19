@@ -12,9 +12,5 @@
   "Headers":
   [
 @EHL_HEADERS@
-  ],
-  "PrecompiledHeaders":
-  [
-@EHL_PRECOMPILED_HEADERS@
   ]
 }

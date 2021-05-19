@@ -14,6 +14,8 @@ namespace CodeGenerator
 {
     public static class Program
     {
+        private const string EHLCodeGeneratorCacheFileName = "EHLCodeGeneratorCache.json";
+
         private const int ErrorSuccess = 0;
         private const int ErrorNoConfigFile = 1;
         private const int ErrorInvalidConfigFile = 2;
@@ -38,6 +40,15 @@ namespace CodeGenerator
 
             generateCommand.Handler = CommandHandler.Create<string, bool>(GenerateCode);
 
+            var cleanCommand = new Command("clean", "Cleans up the generated code and caches");
+
+            rootCommand.AddCommand(cleanCommand);
+
+            cleanCommand.AddOption(new Option<string>("--config-file",
+                    description: "Specifies the path to the configuration file"));
+
+            cleanCommand.Handler = CommandHandler.Create<string>(CleanGeneratedCode);
+
             return rootCommand.InvokeAsync(args).Result;
         }
 
@@ -49,6 +60,80 @@ namespace CodeGenerator
                 return ErrorNoConfigFile;
             }
 
+            var config = LoadConfigurationFile(configFile);
+
+            if (config is null)
+            {
+                return ErrorInvalidConfigFile;
+            }
+
+            var generatedCode = new GeneratedCode();
+
+            ImmutableDictionary<string, ProcessedFileInfo>? newFileInfo = null;
+
+            try
+            {
+                var cachedFileInfo = LoadCache(config.BinaryDirectory!);
+
+                Console.WriteLine("Processing code...");
+
+                using var engine = new ProcessingEngine(
+                    config.Definitions!.ToImmutableHashSet(),
+                    config.IncludePaths!.ToImmutableList(),
+                    config.Headers!.Select(h => Path.GetFullPath(h, config.SourceDirectory!)),
+                    cachedFileInfo);
+
+                engine.Processors.Add(new PersistenceProcessor(generatedCode));
+
+                newFileInfo = engine.Process();
+
+                Console.WriteLine("Generating code...");
+
+                if (!dryRun)
+                {
+                    var codeGenerator = new Generator(config.BinaryDirectory!, newFileInfo, generatedCode);
+
+                    codeGenerator.Generate();
+                }
+            }
+            catch (ProcessingException e)
+            {
+                Console.Error.WriteLine("An error occurred while processing: {0}", e.Message);
+                return ErrorProcessingFailed;
+            }
+
+            //Update the list on disk
+            SaveCache(config.BinaryDirectory!, newFileInfo);
+
+            return ErrorSuccess;
+        }
+
+        private static int CleanGeneratedCode(string configFile)
+        {
+            var config = LoadConfigurationFile(configFile);
+
+            if (config is null)
+            {
+                return ErrorInvalidConfigFile;
+            }
+
+            Console.WriteLine("Cleaning codegen in {0}...", config.BinaryDirectory);
+
+            //Delete all generated files and the cache
+            var generatedDirectory = Path.Combine(config.BinaryDirectory!, Generator.GeneratedDirectory);
+
+            if (Directory.Exists(generatedDirectory))
+            {
+                Directory.Delete(Path.Combine(config.BinaryDirectory!, Generator.GeneratedDirectory), true);
+            }
+
+            File.Delete(Path.Combine(config.BinaryDirectory!, EHLCodeGeneratorCacheFileName));
+
+            return ErrorSuccess;
+        }
+
+        private static ConfigurationFile? LoadConfigurationFile(string configFile)
+        {
             var configFileContents = File.ReadAllText(configFile);
 
             var config = JsonSerializer.Deserialize<ConfigurationFile>(configFileContents);
@@ -58,45 +143,56 @@ namespace CodeGenerator
                 || config.BinaryDirectory is null
                 || config.Definitions is null
                 || config.IncludePaths is null
-                || config.Headers is null
-                || config.PrecompiledHeaders is null)
+                || config.Headers is null)
             {
                 Console.WriteLine("Configuration file is invalid");
-                return ErrorInvalidConfigFile;
+                return null;
             }
 
-            Console.WriteLine("Processing code...");
+            return config;
+        }
 
-            using var engine = new ProcessingEngine(
-                config.Definitions.ToImmutableHashSet(),
-                config.IncludePaths.ToImmutableList(),
-                config.Headers.Select(h => Path.GetFullPath(h, config.SourceDirectory)).ToImmutableList(),
-                config.PrecompiledHeaders.ToImmutableList());
-
-            var generatedCode = new GeneratedCode();
-
-            engine.Processors.Add(new PersistenceProcessor(generatedCode));
-
+        private static ImmutableDictionary<string, CachedFileInfo> LoadCache(string binaryDirectory)
+        {
             try
             {
-                engine.Process();
+                var changeListContents = File.ReadAllText(Path.Combine(binaryDirectory, EHLCodeGeneratorCacheFileName));
+                var changeList = JsonSerializer.Deserialize<EHLCodeGeneratorCache>(changeListContents);
+
+                if (changeList is null
+                    || changeList.Files is null)
+                {
+                    throw new ProcessingException("File cache is invalid");
+                }
+
+                return changeList.Files.ToImmutableDictionary(f => f.FileName);
             }
-            catch (ProcessingException e)
+            catch (FileNotFoundException)
             {
-                Console.Error.WriteLine("An error occurred while processing: {0}", e.Message);
-                return ErrorProcessingFailed;
+                return ImmutableDictionary<string, CachedFileInfo>.Empty;
             }
+        }
 
-            Console.WriteLine("Generating code...");
-
-            if (!dryRun)
+        private static void SaveCache(string binaryDirectory, ImmutableDictionary<string, ProcessedFileInfo> newFileChangeInfo)
+        {
+            var list = new EHLCodeGeneratorCache
             {
-                var codeGenerator = new Generator(config.BinaryDirectory, generatedCode);
+                Files = newFileChangeInfo.Values
+                    .Select(i => new CachedFileInfo
+                    {
+                        FileName = i.FileName,
+                        LastProcessed = i.LastProcessed,
+                        HasGeneratedSourceFile = i.HasGeneratedSourceFile
+                    })
+                    .ToList()
+            };
 
-                codeGenerator.Generate();
-            }
+            var serialized = JsonSerializer.Serialize(list, options: new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
 
-            return ErrorSuccess;
+            File.WriteAllText(Path.Combine(binaryDirectory, EHLCodeGeneratorCacheFileName), serialized);
         }
     }
 }

@@ -8,17 +8,9 @@ namespace CodeGenerator.CodeGen
 
         public IEnumerable<GeneratedClassData> Classes => _classes.Values;
 
-        public GeneratedClassData Get(string scope, string name)
+        public void Add(GeneratedClassData data)
         {
-            var fullyQualifiedName = scope.Length > 0 ? $"{scope}::{name}" : name;
-
-            if (!_classes.TryGetValue(fullyQualifiedName, out var data))
-            {
-                data = new GeneratedClassData(scope, name);
-                _classes.Add(fullyQualifiedName, data);
-            }
-
-            return data;
+            _classes.Add(data.FullyQualifiedName, data);
         }
     }
 }
