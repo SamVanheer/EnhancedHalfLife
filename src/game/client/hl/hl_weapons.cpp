@@ -30,6 +30,21 @@
 #include "com_weapons.h"
 #include "demo.h"
 
+#include "CCrossbow.hpp"
+#include "CCrowbar.hpp"
+#include "CEgon.hpp"
+#include "CGauss.hpp"
+#include "CGlock.hpp"
+#include "CHandGrenade.hpp"
+#include "CHgun.hpp"
+#include "CMP5.hpp"
+#include "CPython.hpp"
+#include "CRpg.hpp"
+#include "CSatchel.hpp"
+#include "CShotgun.hpp"
+#include "CSqueak.hpp"
+#include "CTripmine.hpp"
+
 extern int g_iUser1;
 
 // Pool of client side entities/entvars_t

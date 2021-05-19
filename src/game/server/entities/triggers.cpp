@@ -20,7 +20,7 @@
 */
 
 #include "triggers.hpp"
-#include "trains.h"			// trigger_camera has train functionality
+#include "plats/CPathCorner.hpp"			// trigger_camera has train functionality
 
 LINK_ENTITY_TO_CLASS(func_friction, CFrictionModifier);
 

@@ -20,7 +20,7 @@
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
-#include "weapons.h"
+#include "CBaseWeapon.hpp"
 
 /**
 *	@brief Finds and returns the matching sprite name 'psz' and resolution 'iRes' in the given sprite list 'pList'

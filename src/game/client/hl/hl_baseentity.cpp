@@ -27,7 +27,9 @@
 #include "player.h"
 #include "weapons.h"
 #include "navigation/nodes.h"
-#include "soundent.h"
+#include "CBaseWeapon.hpp"
+#include "CGrenade.hpp"
+#include "CSoundEnt.hpp"
 #include "skill.h"
 
 // Globals used by game logic
@@ -315,9 +317,6 @@ bool CBaseWeapon::IsUseable() { return true; }
 bool CBaseWeapon::ExtractAmmo(CBaseWeapon* pWeapon) { return false; }
 int CBaseWeapon::ExtractClipAmmo(CBaseWeapon* pWeapon) { return 0; }
 void CBaseWeapon::RetireWeapon() { }
-void CBaseAmmo::KeyValue(KeyValueData* pkvd) {}
-void CBaseAmmo::Precache() {}
-ItemApplyResult CBaseAmmo::Apply(CBasePlayer* player) { return {ItemApplyAction::NotUsed}; }
 void CSoundEnt::InsertSound(int iType, const Vector& vecOrigin, int iVolume, float flDuration) {}
 
 CBaseEntity* UTIL_FindEntityByClassname(CBaseEntity* pStartEntity, const char* szName) { return nullptr; }

@@ -14,6 +14,7 @@
 ****/
 
 #include "game.h"
+#include "CGrenade.hpp"
 
 //=========================================================
 // monster-specific schedule types

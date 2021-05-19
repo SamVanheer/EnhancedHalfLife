@@ -18,6 +18,7 @@
 
 #include "pm_shared.h"
 #include "UserMessages.h"
+#include "CBaseWeapon.hpp"
 
 void CBasePlayer::Observer_FindNextPlayer(bool bReverse)
 {

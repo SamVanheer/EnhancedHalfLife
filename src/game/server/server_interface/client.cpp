@@ -27,6 +27,7 @@
 #include "entity_state.h"
 #include "server_int.hpp"
 #include "shared_interface/shared_interface.hpp"
+#include "CRpg.hpp"
 
 extern DLL_GLOBAL std::uint32_t	g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;

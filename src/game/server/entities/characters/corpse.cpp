@@ -64,24 +64,6 @@ void CopyToBodyQue(CBaseEntity* pEntity)
 	g_pBodyQueueHead = g_pBodyQueueHead->GetOwner();
 }
 
-constexpr int DEADHEV_BODYGROUP_HEAD = 1;
-constexpr int DEADHEV_HEAD_HELMETED = 1;
-
-/**
-*	@brief Dead HEV suit prop
-*/
-class CDeadHEV : public CBaseMonster
-{
-public:
-	void Spawn() override;
-	int	Classify() override { return CLASS_HUMAN_MILITARY; }
-
-	void KeyValue(KeyValueData* pkvd) override;
-
-	int	m_iPose = 0;// which sequence to display	-- temporary, don't need to save
-	static constexpr const char* m_szPoses[4] = {"deadback", "deadsitting", "deadstomach", "deadtable"};
-};
-
 void CDeadHEV::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "pose"))

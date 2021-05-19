@@ -20,7 +20,7 @@
 
 #include "nodes.h"
 #include "animation.h"
-#include "doors.h"
+#include "doors/CBaseDoor.hpp"
 #include "dll_functions.hpp"
 #include "corpse.hpp"
 #include "game.h"

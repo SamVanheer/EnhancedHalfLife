@@ -43,6 +43,7 @@ target_include_directories(client PRIVATE
 	../server/entities
 	../server/entities/characters
 	../server/entities/characters/NPCs
+	../server/entities/items/weapons
 	../server/entities/point
 	../server/gamerules
 	../server/persistence
@@ -170,7 +171,7 @@ target_sources(client PRIVATE
 	ui/vgui/utils/voice_banmgr.cpp
 	ui/vgui/utils/voice_banmgr.h
 	../server/entities/cbase.h
-	../server/entities/brush/func_break.h
+	../server/entities/brush/CBreakable.hpp
 	../server/entities/characters/player.h
 	${INCLUDE_DIRECTORY}/GoldSrc/con_nprint.h
 	${INCLUDE_DIRECTORY}/GoldSrc/const.h

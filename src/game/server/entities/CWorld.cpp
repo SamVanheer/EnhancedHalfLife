@@ -24,6 +24,7 @@
 #include "dll_functions.hpp"
 #include "corpse.hpp"
 #include "spawnpoints.hpp"
+#include "effects/CMessage.hpp"
 
 extern DLL_GLOBAL	int			gDisplayTitle;
 

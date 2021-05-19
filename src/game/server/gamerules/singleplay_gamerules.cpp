@@ -15,7 +15,8 @@
 
 #include "gamerules.h"
 #include "CBaseItem.hpp"
-#include "items.h"
+#include "CBaseWeapon.hpp"
+#include "CItem.hpp"
 #include "UserMessages.h"
 
 extern DLL_GLOBAL bool	g_fGameOver;

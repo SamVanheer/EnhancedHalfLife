@@ -17,6 +17,7 @@
 #include "teamplay_gamerules.h"
 #include "game.h"
 #include "CBaseItem.hpp"
+#include "CBaseWeapon.hpp"
 #include "UserMessages.h"
 #include "spawnpoints.hpp"
 

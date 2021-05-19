@@ -9,20 +9,35 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/characters/player_shared.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/CBaseItem.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/CBaseItem.hpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/crossbow.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/crowbar.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/egon.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/gauss.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/glock.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/handgrenade.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/hornetgun.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/mp5.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/python.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/rpg.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/satchel.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/shotgun.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/squeakgrenade.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/tripmine.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CBaseWeapon.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CCrossbow.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CCrossbow.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CCrowbar.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CCrowbar.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CEgon.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CEgon.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CGauss.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CGauss.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CGlock.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CGlock.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CHandGrenade.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CHandGrenade.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CHgun.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CHgun.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CMP5.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CMP5.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CPython.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CPython.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CRpg.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CRpg.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CSatchel.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CSatchel.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CShotgun.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CShotgun.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CSqueak.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CSqueak.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CTripmine.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CTripmine.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/weapons.h
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/weapons_shared.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_debug.cpp

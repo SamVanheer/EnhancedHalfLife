@@ -25,6 +25,24 @@ class EHL_CLASS() CCorpse : public CBaseEntity
 	int ObjectCaps() override { return FCAP_DONT_SAVE; }
 };
 
+constexpr int DEADHEV_BODYGROUP_HEAD = 1;
+constexpr int DEADHEV_HEAD_HELMETED = 1;
+
+/**
+*	@brief Dead HEV suit prop
+*/
+class CDeadHEV : public CBaseMonster
+{
+public:
+	void Spawn() override;
+	int	Classify() override { return CLASS_HUMAN_MILITARY; }
+
+	void KeyValue(KeyValueData* pkvd) override;
+
+	int	m_iPose = 0;// which sequence to display	-- temporary, don't need to save
+	static constexpr const char* m_szPoses[4] = {"deadback", "deadsitting", "deadstomach", "deadtable"};
+};
+
 inline CBaseEntity* g_pBodyQueueHead = nullptr;
 
 void InitBodyQue();

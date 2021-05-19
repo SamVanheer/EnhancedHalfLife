@@ -24,7 +24,7 @@
 #include "CBaseAnimating.hpp"
 #include "CBaseToggle.hpp"
 
-#include "brush/CBaseButton.hpp"
+#include "brush/buttons/CBaseButton.hpp"
 
 #include "CWorld.hpp"
 

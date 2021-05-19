@@ -20,7 +20,7 @@
 */
 
 #include "animation.h"
-#include "func_break.h"
+#include "CBreakable.hpp"
 
 constexpr int GERMAN_GIB_COUNT = 4;
 constexpr int HUMAN_GIB_COUNT = 6;

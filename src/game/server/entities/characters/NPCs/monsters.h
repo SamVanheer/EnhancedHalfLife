@@ -21,7 +21,8 @@
 *	monster-related utility code
 */
 
-#include "brush/func_break.h"
+//TODO: why is this included here?
+#include "brush/CBreakable.hpp"
 #include "skill.h"
 
 struct WayPoint_t;

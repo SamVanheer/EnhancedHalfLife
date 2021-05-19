@@ -20,7 +20,8 @@
 */
 
 #include "navigation/nodes.h"
-#include "doors.h"
+#include "doors/CBaseDoor.hpp"
+#include "CNullEntity.hpp"
 
 // Landmark class
 void CPointEntity::Spawn()
@@ -28,15 +29,6 @@ void CPointEntity::Spawn()
 	SetSolidType(Solid::Not);
 	//	SetSize( vec3_origin, vec3_origin);
 }
-
-/**
-*	@brief Null Entity, remove on startup
-*/
-class CNullEntity : public CBaseEntity
-{
-public:
-	void Spawn() override;
-};
 
 void CNullEntity::Spawn()
 {

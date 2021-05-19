@@ -14,8 +14,8 @@
 ****/
 
 #include "customentity.h"
-#include "explode.h"
-#include "func_break.h"
+#include "CBreakable.hpp"
+#include "effects/CEnvExplosion.hpp"
 
 constexpr float GARG_ATTACKDIST = 80.0;
 

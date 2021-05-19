@@ -16,7 +16,7 @@
 #include "util.h"
 #include "cbase.h"
 #include "player.h"
-#include "weapons.h"
+#include "CBaseWeapon.hpp"
 #include "gamerules.h"
 
 #ifdef CLIENT_DLL

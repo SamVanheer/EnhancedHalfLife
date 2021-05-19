@@ -16,6 +16,7 @@
 #include "plane.h"
 #include "animation.h"
 #include "customentity.h"
+#include "CGrenade.hpp"
 
 enum class GruntQuestion
 {

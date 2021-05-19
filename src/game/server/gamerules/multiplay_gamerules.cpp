@@ -19,11 +19,13 @@
 
 #include "game.h"
 #include "CBaseItem.hpp"
-#include "items.h"
+#include "CBaseWeapon.hpp"
+#include "CItem.hpp"
 #include "voice_gamemgr.h"
 #include "hltv.h"
 #include "UserMessages.h"
 #include "mapcycle.hpp"
+#include "CSatchelCharge.hpp"
 
 extern DLL_GLOBAL bool	g_fGameOver;
 
