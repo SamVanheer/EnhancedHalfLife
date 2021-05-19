@@ -1,5 +1,6 @@
 ﻿using CodeGenerator.CodeGen;
 using CodeGenerator.Configuration;
+using CodeGenerator.ErrorDetection;
 using CodeGenerator.Persistence;
 using CodeGenerator.Processing;
 using System;
@@ -20,6 +21,7 @@ namespace CodeGenerator
         private const int ErrorNoConfigFile = 1;
         private const int ErrorInvalidConfigFile = 2;
         private const int ErrorProcessingFailed = 3;
+        private const int ErrorErrorFoundInCodegen = 4;
 
         public static int Main(string[] args)
         {
@@ -89,11 +91,20 @@ namespace CodeGenerator
 
                 Console.WriteLine("Generating code...");
 
-                if (!dryRun)
+                if (!ErrorChecker.CheckForErrors(config.SourceDirectory!, generatedCode))
                 {
-                    var codeGenerator = new Generator(config.BinaryDirectory!, newFileInfo, generatedCode);
+                    if (!dryRun)
+                    {
+                        var codeGenerator = new Generator(config.BinaryDirectory!, newFileInfo, generatedCode);
 
-                    codeGenerator.Generate();
+                        codeGenerator.Generate();
+                    }
+                }
+                else
+                {
+                    Console.Error.WriteLine("One or more errors found; no code generated");
+                    //The cache is not updated so a second build still shows the same errors
+                    return ErrorErrorFoundInCodegen;
                 }
             }
             catch (ProcessingException e)
