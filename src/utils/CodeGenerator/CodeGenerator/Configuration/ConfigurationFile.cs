@@ -6,6 +6,8 @@ namespace CodeGenerator.Configuration
     {
         public string? SourceDirectory { get; set; }
 
+        public string? BinaryDirectory { get; set; }
+
         public List<string>? Definitions { get; set; }
 
         public List<string>? IncludePaths { get; set; }

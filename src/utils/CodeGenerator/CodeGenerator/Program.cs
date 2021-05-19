@@ -55,6 +55,7 @@ namespace CodeGenerator
 
             if (config is null
                 || config.SourceDirectory is null
+                || config.BinaryDirectory is null
                 || config.Definitions is null
                 || config.IncludePaths is null
                 || config.Headers is null
@@ -90,7 +91,7 @@ namespace CodeGenerator
 
             if (!dryRun)
             {
-                var codeGenerator = new Generator(generatedCode);
+                var codeGenerator = new Generator(config.BinaryDirectory, generatedCode);
 
                 codeGenerator.Generate();
             }

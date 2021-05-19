@@ -1,5 +1,6 @@
 {
   "SourceDirectory": "@EHL_SOURCE_DIRECTORY@",
+  "BinaryDirectory": "@EHL_BINARY_DIRECTORY@",
   "Definitions":
   [
 @EHL_DEFINITIONS@
