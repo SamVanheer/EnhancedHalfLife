@@ -99,6 +99,11 @@ namespace CodeGenerator.Persistence
             {
                 bool isBaseEntity = record.Name == EntityBaseClassName && scope.Length == 0;
 
+                if (!isBaseEntity && record.Bases.Count == 0)
+                {
+                    throw new ProcessingException($"Class {fqName} is not CBaseEntity yet has no base class!");
+                }
+
                 var baseClass = !isBaseEntity ? record.Bases[0].Referenced.Name : string.Empty;
 
                 var data = _generatedCode.Get(scope, record.Name);
