@@ -112,6 +112,11 @@ namespace CodeGenerator.Persistence
 
             var classAttributes = GetRelevantAttributes(record, ClassPrefix);
 
+            if (classAttributes is null)
+            {
+                return;
+            }
+
             //Not marked for processing, ignore
             if (classAttributes.IsEmpty)
             {
@@ -134,7 +139,27 @@ namespace CodeGenerator.Persistence
 
             if (!isBaseEntity && record.Bases.Count == 0)
             {
-                throw new ProcessingException($"Class {fqName} is not CBaseEntity yet has no base class!");
+                LogError(record, $"Class {fqName} is not CBaseEntity yet has no base class!");
+                return;
+            }
+
+            var fields = record.Fields
+                .Select(f => new { Field = f, Attributes = GetRelevantAttributes(f, FieldPrefix) })
+                .ToList();
+
+            if (fields.Any(f => f.Attributes is null))
+            {
+                return;
+            }
+
+            var persistedFields = fields
+                .Where(f => f.Attributes!.ContainsKey("Persisted"))
+                .Select(f => FormatField(fqName, f.Field, f.Attributes!))
+                .ToList();
+
+            if (persistedFields.Any(f => f is null))
+            {
+                return;
             }
 
             var baseClass = !isBaseEntity ? record.Bases[0].Referenced.Name : string.Empty;
@@ -158,11 +183,6 @@ namespace CodeGenerator.Persistence
                 "Did you forget to add EHL_GENERATED_BODY() or the generated header include?");
 
             //Generate a declaration and definition for persistence if the class has any fields that need it
-            var persistedFields = record.Fields
-                .Select(f => new { Field = f, Attributes = GetRelevantAttributes(f, FieldPrefix) })
-                .Where(f => f.Attributes.ContainsKey("Persisted"))
-                .ToList();
-
             if (persistedFields.Count > 0)
             {
                 data.AddVisibilityDeclaration("public");
@@ -170,10 +190,7 @@ namespace CodeGenerator.Persistence
                 data.AddMethodDeclaration("bool Restore(CRestore& restore)", isBaseEntity, true);
                 data.AddVariableDeclaration("static TYPEDESCRIPTION m_SaveData[]");
 
-                var savedFields = persistedFields
-                    .Select(f => FormatField(fqName, f.Field, f.Attributes));
-
-                var saveData = $"TYPEDESCRIPTION {record.Name}::m_SaveData[] =\n{{\n{string.Join(",\n", savedFields)}\n}};\n";
+                var saveData = $"TYPEDESCRIPTION {record.Name}::m_SaveData[] =\n{{\n{string.Join(",\n", persistedFields)}\n}};\n";
 
                 data.AddVariableDefinition(saveData);
 
@@ -242,26 +259,34 @@ namespace CodeGenerator.Persistence
             return (attribute.Trim(), string.Empty);
         }
 
-        private static ImmutableDictionary<string, string> GetRelevantAttributes(NamedDecl decl, string prefix)
+        private ImmutableDictionary<string, string>? GetRelevantAttributes(NamedDecl decl, string prefix)
         {
             //Regex from: https://stackoverflow.com/a/3147901
-            try
-            {
-                return decl.Attrs
-                    .Where(attr => attr.Spelling.StartsWith(prefix))
-                    .SelectMany(attr => Regex.Split(attr.Spelling[prefix.Length..], ",(?=(?:[^']*'[^']*')*[^']*$)"))
-                    .Select(ConvertAttributeToKeyValue)
-                    .ToImmutableDictionary(attr => attr.Key, attr => attr.Value);
-            }
-            catch (ArgumentException e)
-            {
-                var (scope, fqName) = GetFullyQualifiedName(decl);
+            var keyValues = decl.Attrs
+                .Where(attr => attr.Spelling.StartsWith(prefix))
+                .SelectMany(attr => Regex.Split(attr.Spelling[prefix.Length..], ",(?=(?:[^']*'[^']*')*[^']*$)"))
+                .Select(ConvertAttributeToKeyValue)
+                .ToList();
 
-                throw new ProcessingException($"Duplicate attribute encountered on declaration {fqName}", e);
+            var duplicates = keyValues
+                .GroupBy(k => k.Key)
+                .Where(g => g.Count() > 1)
+                .ToList();
+
+            if (duplicates.Count > 0)
+            {
+                foreach (var duplicate in duplicates)
+                {
+                    LogError(decl, $"Duplicate attribute \"{duplicate.Key}\" encountered");
+                }
+
+                return null;
             }
+
+            return keyValues.ToImmutableDictionary(attr => attr.Key, attr => attr.Value);
         }
 
-        private static string DeduceFloatType(string? fieldType)
+        private string? DeduceFloatType(FieldDecl field, string? fieldType)
         {
             if (fieldType is null || fieldType == "Float")
             {
@@ -273,11 +298,12 @@ namespace CodeGenerator.Persistence
             }
             else
             {
-                throw new ProcessingException($"Unknown float type \"{fieldType}\"");
+                LogError(field, $"Unknown float type \"{fieldType}\"");
+                return null;
             }
         }
 
-        private static string DeduceVectorType(string? fieldType)
+        private string? DeduceVectorType(FieldDecl field, string? fieldType)
         {
             if (fieldType is null || fieldType == "Vector")
             {
@@ -289,11 +315,12 @@ namespace CodeGenerator.Persistence
             }
             else
             {
-                throw new ProcessingException($"Unknown Vector type \"{fieldType}\"");
+                LogError(field, $"Unknown Vector type \"{fieldType}\"");
+                return null;
             }
         }
 
-        private static string DeduceStringType(string? fieldType)
+        private string? DeduceStringType(FieldDecl field, string? fieldType)
         {
             if (fieldType is null || fieldType == "String")
             {
@@ -309,24 +336,15 @@ namespace CodeGenerator.Persistence
             }
             else
             {
-                throw new ProcessingException($"Unknown String type \"{fieldType}\"");
+                LogError(field, $"Unknown String type \"{fieldType}\"");
+                return null;
             }
         }
 
-        private static string DeduceFieldType(FieldDecl field, ImmutableDictionary<string, string> attributes)
+        private string? DeduceFieldType(FieldDecl field, ImmutableDictionary<string, string> attributes)
         {
             attributes.TryGetValue(TypeKey, out var fieldType);
 
-            /*
-            var fieldTypes = GetTypeAttributes(attributes);
-
-            if (fieldTypes.Count > 1)
-            {
-                throw new ProcessingException("More than one Type attribute was specified");
-            }
-
-            var fieldType = fieldTypes.SingleOrDefault();
-            */
             var type = field.Type;
 
             //Strip array type information so we can get the actual type
@@ -350,18 +368,28 @@ namespace CodeGenerator.Persistence
                     }
 
                 case BuiltinType builtin:
-                    return builtin.Kind switch
                     {
-                        CXTypeKind.CXType_Int => "FIELD_INTEGER",
-                        CXTypeKind.CXType_UInt => "FIELD_INTEGER",
-                        CXTypeKind.CXType_Float => DeduceFloatType(fieldType),
-                        CXTypeKind.CXType_Short => "FIELD_SHORT",
-                        CXTypeKind.CXType_UChar => "FIELD_CHARACTER",
-                        CXTypeKind.CXType_Char_S => "FIELD_CHARACTER",
-                        CXTypeKind.CXType_Char_U => "FIELD_CHARACTER",
-                        CXTypeKind.CXType_Bool => "FIELD_BOOLEAN",
-                        _ => throw new ProcessingException($"Builtin type \"{builtin.AsString}\" not supported")
-                    };
+                        var result = builtin.Kind switch
+                        {
+                            CXTypeKind.CXType_Int => "FIELD_INTEGER",
+                            CXTypeKind.CXType_UInt => "FIELD_INTEGER",
+                            CXTypeKind.CXType_Float => DeduceFloatType(field, fieldType),
+                            CXTypeKind.CXType_Short => "FIELD_SHORT",
+                            CXTypeKind.CXType_UChar => "FIELD_CHARACTER",
+                            CXTypeKind.CXType_Char_S => "FIELD_CHARACTER",
+                            CXTypeKind.CXType_Char_U => "FIELD_CHARACTER",
+                            CXTypeKind.CXType_Bool => "FIELD_BOOLEAN",
+                            _ => null
+                        };
+
+                        if (result is null)
+                        {
+                            //TODO: float types will log on invalid types, so this is duplicated for that
+                            LogError(field, $"Builtin type \"{builtin.AsString}\" not supported");
+                        }
+
+                        return result;
+                    }
 
                 default:
                     var typeString = type.AsString;
@@ -373,8 +401,8 @@ namespace CodeGenerator.Persistence
 
                     return typeString switch
                     {
-                        "Vector" => DeduceVectorType(fieldType),
-                        "string_t" => DeduceStringType(fieldType),
+                        "Vector" => DeduceVectorType(field, fieldType),
+                        "string_t" => DeduceStringType(field, fieldType),
                         "byte" => "FIELD_CHARACTER",
                         _ => "FIELD_CHARACTER" //All other types are treated as byte arrays
                     };
@@ -397,9 +425,15 @@ namespace CodeGenerator.Persistence
             return 1.ToString();
         }
 
-        private static string FormatField(string fqName, FieldDecl field, ImmutableDictionary<string, string> attributes)
+        private string? FormatField(string fqName, FieldDecl field, ImmutableDictionary<string, string> attributes)
         {
             var type = DeduceFieldType(field, attributes);
+
+            if (type is null)
+            {
+                return null;
+            }
+
             var isByteArray = type == "FIELD_CHARACTER";
 
             return $"\t{{ {type}, \"{field.Name}\", static_cast<int>(offsetof({fqName}, {field.Name})), {DetermineFieldSize(field, isByteArray)}, 0 }}";
