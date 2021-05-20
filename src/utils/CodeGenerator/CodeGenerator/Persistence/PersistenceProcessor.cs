@@ -142,6 +142,19 @@ namespace CodeGenerator.Persistence
             var data = new GeneratedClassData(scope, record.Name, headerFileName);
             _generatedCode.Add(data);
 
+            data.AddVisibilityDeclaration("public");
+            //Add type aliases
+            data.AddAlias("ThisClass", record.Name);
+
+            if (baseClass.Length > 0)
+            {
+                data.AddAlias("BaseClass", baseClass);
+            }
+
+            data.AddHeaderInclude(headerFileName);
+
+            data.AddStaticAssertDefinition($"std::is_same_v<{fqName}, {fqName}::ThisClass>", "Did you forget to add EHL_GENERATED_BODY() to the declaration?");
+
             //Generate a declaration and definition for persistence if the class has any fields that need it
             var persistedFields = record.Fields
                 .Select(f => new { Field = f, Attributes = GetRelevantAttributes(f, FieldPrefix) })
@@ -150,8 +163,6 @@ namespace CodeGenerator.Persistence
 
             if (persistedFields.Count > 0)
             {
-                data.AddHeaderInclude(headerFileName);
-
                 data.AddVisibilityDeclaration("public");
                 data.AddMethodDeclaration("bool Save(CSave& save)", isBaseEntity, true);
                 data.AddMethodDeclaration("bool Restore(CRestore& restore)", isBaseEntity, true);
