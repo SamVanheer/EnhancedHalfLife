@@ -35,16 +35,7 @@ function(ehl_codegen_generate_config_file target)
 	configure_file(${CMAKE_CURRENT_FUNCTION_LIST_DIR}/EHLCodeGen.json.in ${CMAKE_CURRENT_BINARY_DIR}/EHLCodeGen.json @ONLY)
 endfunction()
 
-function(ehl_codegen_add_clean target)
-	# Create the target that will clean all targets
-	if (NOT TARGET CLEAN_CODEGEN_ALL)
-		add_custom_target(CLEAN_CODEGEN_ALL)
-		set_target_properties(CLEAN_CODEGEN_ALL
-			PROPERTIES
-				EXCLUDE_FROM_ALL TRUE
-				EXCLUDE_FROM_DEFAULT_BUILD TRUE)
-	endif()
-	
+function(ehl_codegen_add_clean target)	
 	# Create the target that will clean a specific target
 	add_custom_target(
 		CLEAN_CODEGEN_${target}
@@ -54,9 +45,6 @@ function(ehl_codegen_add_clean target)
 		PROPERTIES
 			EXCLUDE_FROM_ALL TRUE
 			EXCLUDE_FROM_DEFAULT_BUILD TRUE)
-	
-	# Make the main clean target build each clean target
-	add_dependencies(CLEAN_CODEGEN_ALL CLEAN_CODEGEN_${target})
 endfunction()
 
 function(ehl_codegen_enable target)
