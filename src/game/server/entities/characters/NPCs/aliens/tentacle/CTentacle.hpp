@@ -25,7 +25,7 @@ constexpr int ACT_T_REARIDLE = 1040;
 /**
 *	@brief silo of death tentacle monster (half life)
 */
-class CTentacle : public CBaseMonster
+class EHL_CLASS() CTentacle : public CBaseMonster
 {
 public:
 	CTentacle();

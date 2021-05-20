@@ -50,7 +50,7 @@ enum class TankBullet
 *	rockets
 *	explosion?
 */
-class CFuncTank : public CBaseEntity
+class EHL_CLASS() CFuncTank : public CBaseEntity
 {
 public:
 	void	Spawn() override;

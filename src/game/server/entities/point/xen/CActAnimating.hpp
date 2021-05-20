@@ -17,7 +17,7 @@
 
 #include "CBaseAnimating.hpp"
 
-class CActAnimating : public CBaseAnimating
+class EHL_CLASS() CActAnimating : public CBaseAnimating
 {
 public:
 	void			SetActivity(Activity act);

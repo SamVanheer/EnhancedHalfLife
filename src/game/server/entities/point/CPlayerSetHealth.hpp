@@ -24,7 +24,7 @@ constexpr int PLAYERSETHEALTH_SETARMOR = 1 << 2;
 /**
 *	@brief Sets the player's health and/or armor to a mapper-specified value
 */
-class CPlayerSetHealth : public CPointEntity
+class EHL_CLASS() CPlayerSetHealth : public CPointEntity
 {
 public:
 	void KeyValue(KeyValueData* pkvd) override;

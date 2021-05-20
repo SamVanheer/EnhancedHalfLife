@@ -30,7 +30,7 @@ enum class RoachState
 /**
 *	@brief cockroach
 */
-class CRoach : public CBaseMonster
+class EHL_CLASS() CRoach : public CBaseMonster
 {
 public:
 	void Spawn() override;

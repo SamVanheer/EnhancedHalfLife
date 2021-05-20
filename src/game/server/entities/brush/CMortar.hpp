@@ -17,7 +17,7 @@
 
 #include "CGrenade.hpp"
 
-class CMortar : public CGrenade
+class EHL_CLASS() CMortar : public CGrenade
 {
 public:
 	void Spawn() override;

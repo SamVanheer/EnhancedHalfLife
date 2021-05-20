@@ -30,7 +30,7 @@ constexpr int SF_TRAIN_PASSABLE = 8;		//!< Train is not solid -- used to make wa
 *	speed	default 100
 *	dmg		default	2
 */
-class CFuncTrain : public CBasePlatTrain
+class EHL_CLASS() CFuncTrain : public CBasePlatTrain
 {
 public:
 	void Spawn() override;

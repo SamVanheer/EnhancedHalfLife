@@ -22,7 +22,7 @@ class CGib;
 
 constexpr int SF_GIBSHOOTER_REPEATABLE = 1; //!< allows a gibshooter to be refired
 
-class CGibShooter : public CBaseDelay
+class EHL_CLASS() CGibShooter : public CBaseDelay
 {
 public:
 	void	Spawn() override;

@@ -17,7 +17,7 @@
 
 #include "CGrenade.hpp"
 
-class CApacheHVR : public CGrenade
+class EHL_CLASS() CApacheHVR : public CGrenade
 {
 	void Spawn() override;
 	void Precache() override;

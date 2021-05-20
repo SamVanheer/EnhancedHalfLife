@@ -43,7 +43,7 @@ constexpr int SF_ITEM_USE_ONLY = 256; //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR
 *	"lip"           lip remaining at end of move (0 default)
 *	"dmg"           damage to inflict when blocked (0 default)
 */
-class CBaseDoor : public CBaseToggle
+class EHL_CLASS() CBaseDoor : public CBaseToggle
 {
 public:
 	void Spawn() override;

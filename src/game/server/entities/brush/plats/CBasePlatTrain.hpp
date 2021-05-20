@@ -19,7 +19,7 @@
 
 constexpr int SF_PLAT_TOGGLE = 0x0001;
 
-class CBasePlatTrain : public CBaseToggle
+class EHL_CLASS() CBasePlatTrain : public CBaseToggle
 {
 public:
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }

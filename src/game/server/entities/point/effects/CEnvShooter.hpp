@@ -17,7 +17,7 @@
 
 #include "CGibShooter.hpp"
 
-class CEnvShooter : public CGibShooter
+class EHL_CLASS() CEnvShooter : public CGibShooter
 {
 	void		Precache() override;
 	void		KeyValue(KeyValueData* pkvd) override;

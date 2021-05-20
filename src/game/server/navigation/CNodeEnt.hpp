@@ -20,7 +20,7 @@
 /**
 *	@brief Nodes start out as ents in the level. The node graph  is built, then these ents are discarded.
 */
-class CNodeEnt : public CBaseEntity
+class EHL_CLASS() CNodeEnt : public CBaseEntity
 {
 	void Spawn() override;
 

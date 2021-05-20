@@ -61,7 +61,7 @@ constexpr int SCIENTIST_AE_NEEDLEOFF = 3;
 /**
 *	@brief human scientist (passive lab worker)
 */
-class CScientist : public CTalkMonster
+class EHL_CLASS() CScientist : public CTalkMonster
 {
 public:
 	void Spawn() override;

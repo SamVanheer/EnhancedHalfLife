@@ -23,7 +23,7 @@ constexpr int SF_PKILL_FIREONCE = 0x0001;
 *	@brief Damages the player who fires it
 *	@details Flag: Fire once
 */
-class CGamePlayerHurt : public CRulePointEntity
+class EHL_CLASS() CGamePlayerHurt : public CRulePointEntity
 {
 public:
 	void		Use(const UseInfo& info) override;

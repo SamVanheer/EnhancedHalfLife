@@ -19,7 +19,7 @@
 
 constexpr int SF_WALL_START_OFF = 0x0001;
 
-class CFuncWallToggle : public CFuncWall
+class EHL_CLASS() CFuncWallToggle : public CFuncWall
 {
 public:
 	void	Spawn() override;

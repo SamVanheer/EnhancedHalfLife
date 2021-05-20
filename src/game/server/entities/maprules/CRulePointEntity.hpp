@@ -20,7 +20,7 @@
 /**
 *	@brief base class for all rule "point" entities (not brushes)
 */
-class CRulePointEntity : public CRuleEntity
+class EHL_CLASS() CRulePointEntity : public CRuleEntity
 {
 public:
 	void		Spawn() override;

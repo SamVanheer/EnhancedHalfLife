@@ -24,7 +24,7 @@ constexpr int SF_MONSTERMAKER_MONSTERCLIP = 8;	//!< Children are blocked by mons
 /**
 *	@brief this ent creates monsters during the game.
 */
-class CMonsterMaker : public CBaseMonster
+class EHL_CLASS() CMonsterMaker : public CBaseMonster
 {
 public:
 	void Spawn() override;

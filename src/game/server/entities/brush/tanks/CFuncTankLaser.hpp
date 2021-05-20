@@ -19,7 +19,7 @@
 
 class CLaser;
 
-class CFuncTankLaser : public CFuncTank
+class EHL_CLASS() CFuncTankLaser : public CFuncTank
 {
 public:
 	void	Activate() override;

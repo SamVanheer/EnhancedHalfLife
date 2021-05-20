@@ -17,7 +17,7 @@
 
 #include "CBaseTurret.hpp"
 
-class CTurret : public CBaseTurret
+class EHL_CLASS() CTurret : public CBaseTurret
 {
 public:
 	void Spawn() override;

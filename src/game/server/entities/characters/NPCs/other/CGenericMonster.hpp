@@ -23,7 +23,7 @@ constexpr int	SF_GENERICMONSTER_NOTSOLID = 4;
 /**
 *	@brief purely for scripted sequence work.
 */
-class CGenericMonster : public CBaseMonster
+class EHL_CLASS() CGenericMonster : public CBaseMonster
 {
 public:
 	void Spawn() override;

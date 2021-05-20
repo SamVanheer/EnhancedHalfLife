@@ -22,7 +22,7 @@ class CSprite;
 constexpr std::string_view XEN_PLANT_GLOW_SPRITE{"sprites/flare3.spr"};
 constexpr int XEN_PLANT_HIDE_TIME = 5;
 
-class CXenPLight : public CActAnimating
+class EHL_CLASS() CXenPLight : public CActAnimating
 {
 public:
 	void OnRemove() override;

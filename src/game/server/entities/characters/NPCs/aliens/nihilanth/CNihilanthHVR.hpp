@@ -22,7 +22,7 @@ class CNihilanth;
 /**
 *	@brief Controller bouncy ball attack
 */
-class CNihilanthHVR : public CBaseMonster
+class EHL_CLASS() CNihilanthHVR : public CBaseMonster
 {
 public:
 	bool Save(CSave& save) override;

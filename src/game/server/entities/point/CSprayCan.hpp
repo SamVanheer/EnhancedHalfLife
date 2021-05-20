@@ -20,7 +20,7 @@
 /**
 *	@brief !!!UNDONE:ultra temporary SprayCan entity to apply decal frame at a time. For PreAlpha CD
 */
-class CSprayCan : public CBaseEntity
+class EHL_CLASS() CSprayCan : public CBaseEntity
 {
 public:
 	void	Spawn(CBaseEntity* pOwner);

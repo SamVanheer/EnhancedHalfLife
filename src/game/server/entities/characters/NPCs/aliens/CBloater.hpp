@@ -22,7 +22,7 @@
 //=========================================================
 constexpr int BLOATER_AE_ATTACK_MELEE1 = 0x01;
 
-class CBloater : public CBaseMonster
+class EHL_CLASS() CBloater : public CBaseMonster
 {
 public:
 	void Spawn() override;

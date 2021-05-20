@@ -45,7 +45,7 @@ constexpr int STOMP_SPRITE_COUNT = 10;
 
 int gStompSprite = 0, gGargGibModel = 0;
 
-class CGargantua : public CBaseMonster
+class EHL_CLASS() CGargantua : public CBaseMonster
 {
 public:
 	void OnRemove() override;

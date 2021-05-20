@@ -17,7 +17,7 @@
 
 #include "CBaseMonster.hpp"
 
-class CTentacleMaw : public CBaseMonster
+class EHL_CLASS() CTentacleMaw : public CBaseMonster
 {
 public:
 	void Spawn() override;

@@ -115,7 +115,7 @@ constexpr int bits_MEMORY_CUSTOM1 = 1 << 31; 		// Monster-specific memory
 //
 // A gib is a chunk of a body, or a piece of wood/metal/rocks/etc.
 //
-class CGib : public CBaseEntity
+class EHL_CLASS() CGib : public CBaseEntity
 {
 public:
 	/**

@@ -25,7 +25,7 @@ constexpr float ANNOUNCE_MINUTES_MAX = 2.25;
 /**
 *	@brief Used for announcements per level, for door lock/unlock spoken voice.
 */
-class CSpeaker : public CBaseEntity
+class EHL_CLASS() CSpeaker : public CBaseEntity
 {
 public:
 	void KeyValue(KeyValueData* pkvd) override;

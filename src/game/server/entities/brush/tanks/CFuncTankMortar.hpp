@@ -17,7 +17,7 @@
 
 #include "CFuncTank.hpp"
 
-class CFuncTankMortar : public CFuncTank
+class EHL_CLASS() CFuncTankMortar : public CFuncTank
 {
 public:
 	void KeyValue(KeyValueData* pkvd) override;

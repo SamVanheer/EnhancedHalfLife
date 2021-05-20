@@ -20,7 +20,7 @@
 /**
 *	@brief kdb: changed from public CBaseMonster so he can speak
 */
-class CSittingScientist : public CScientist
+class EHL_CLASS() CSittingScientist : public CScientist
 {
 public:
 	void Spawn() override;

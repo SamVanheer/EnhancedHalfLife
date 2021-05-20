@@ -20,7 +20,7 @@
 constexpr int SF_BTARGET_USE = 0x0001;
 constexpr int SF_BTARGET_ON = 0x0002;
 
-class CButtonTarget : public CBaseEntity
+class EHL_CLASS() CButtonTarget : public CBaseEntity
 {
 public:
 	void Spawn() override;

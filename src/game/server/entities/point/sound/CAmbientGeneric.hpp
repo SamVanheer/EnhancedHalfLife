@@ -80,7 +80,7 @@ constexpr int LFO_RANDOM = 3;
 *	@brief Generic ambient sound
 *	general-purpose user-defined static sound
 */
-class CAmbientGeneric : public CBaseEntity
+class EHL_CLASS() CAmbientGeneric : public CBaseEntity
 {
 public:
 	void KeyValue(KeyValueData* pkvd) override;

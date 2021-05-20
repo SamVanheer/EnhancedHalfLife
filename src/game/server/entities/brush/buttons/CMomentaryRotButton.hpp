@@ -25,7 +25,7 @@
 constexpr int SF_MOMENTARY_DOOR = 0x0001;
 constexpr int SF_MOMENTARY_AUTO_RETURN = 16;
 
-class CMomentaryRotButton : public CBaseToggle
+class EHL_CLASS() CMomentaryRotButton : public CBaseToggle
 {
 public:
 	void	Spawn() override;

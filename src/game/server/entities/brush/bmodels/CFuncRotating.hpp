@@ -35,7 +35,7 @@ constexpr int SF_BRUSH_ROTATE_LARGERADIUS = 512;
 *	It will rotate around the Z axis by default.
 *	You can check either the X_AXIS or Y_AXIS box to change that.
 */
-class CFuncRotating : public CBaseEntity
+class EHL_CLASS() CFuncRotating : public CBaseEntity
 {
 public:
 	// basic functions

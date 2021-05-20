@@ -17,7 +17,7 @@
 
 #include "CBaseEntity.hpp"
 
-class	CBloodSplat : public CBaseEntity
+class	EHL_CLASS() CBloodSplat : public CBaseEntity
 {
 public:
 	void	Spawn(CBaseEntity* pOwner);

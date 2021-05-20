@@ -20,7 +20,7 @@
 /**
 *	@brief This is just a solid wall if not inhibited
 */
-class CFuncWall : public CBaseEntity
+class EHL_CLASS() CFuncWall : public CBaseEntity
 {
 public:
 	void	Spawn() override;

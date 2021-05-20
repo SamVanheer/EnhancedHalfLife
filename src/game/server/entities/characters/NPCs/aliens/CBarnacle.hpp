@@ -29,7 +29,7 @@ constexpr int BARNACLE_AE_PUKEGIB = 2;
 /**
 *	@brief stationary ceiling mounted 'fishing' monster
 */
-class CBarnacle : public CBaseMonster
+class EHL_CLASS() CBarnacle : public CBaseMonster
 {
 public:
 	void Spawn() override;

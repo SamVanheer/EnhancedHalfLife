@@ -26,7 +26,7 @@ constexpr int ZOMBIE_AE_ATTACK_BOTH = 0x03;
 
 constexpr int ZOMBIE_FLINCH_DELAY = 2;		//!< at most one flinch every n secs
 
-class CZombie : public CBaseMonster
+class EHL_CLASS() CZombie : public CBaseMonster
 {
 public:
 	void Spawn() override;

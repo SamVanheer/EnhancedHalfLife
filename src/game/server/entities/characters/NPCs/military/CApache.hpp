@@ -22,7 +22,7 @@ class CBeam;
 constexpr int SF_WAITFORTRIGGER = 0x04 | 0x40; // UNDONE: Fix!
 constexpr int SF_NOWRECKAGE = 0x08;
 
-class CApache : public CBaseMonster
+class EHL_CLASS() CApache : public CBaseMonster
 {
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;

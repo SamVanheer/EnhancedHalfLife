@@ -35,7 +35,7 @@ constexpr int SF_BUTTON_TOUCH_ONLY = 256;	// button only fires as a result of US
 *	"lip"		override the default 4 unit lip remaining at end of move
 *	"health"	if set, the button must be killed instead of touched
 */
-class CBaseButton : public CBaseToggle
+class EHL_CLASS() CBaseButton : public CBaseToggle
 {
 public:
 	void Spawn() override;

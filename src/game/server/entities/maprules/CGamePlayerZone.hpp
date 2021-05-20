@@ -21,7 +21,7 @@
 *	@brief players in the zone fire my target when I'm fired
 *	@details TODO: Needs master?
 */
-class CGamePlayerZone : public CRuleBrushEntity
+class EHL_CLASS() CGamePlayerZone : public CRuleBrushEntity
 {
 public:
 	void		KeyValue(KeyValueData* pkvd) override;

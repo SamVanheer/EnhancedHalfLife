@@ -20,7 +20,7 @@
 /**
 *	@brief Soda can
 */
-class CItemSoda : public CBaseEntity
+class EHL_CLASS() CItemSoda : public CBaseEntity
 {
 public:
 	void	Spawn() override;

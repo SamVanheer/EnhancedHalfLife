@@ -20,7 +20,7 @@
 /**
 *	@brief Ends the game in MP
 */
-class CGameEnd : public CRulePointEntity
+class EHL_CLASS() CGameEnd : public CRulePointEntity
 {
 public:
 	void	Use(const UseInfo& info) override;

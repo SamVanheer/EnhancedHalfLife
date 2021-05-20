@@ -20,7 +20,7 @@
 /**
 *	@brief Flaming Wreakage
 */
-class CWreckage : public CBaseMonster
+class EHL_CLASS() CWreckage : public CBaseMonster
 {
 	bool Save(CSave& save) override;
 	bool Restore(CRestore& restore) override;

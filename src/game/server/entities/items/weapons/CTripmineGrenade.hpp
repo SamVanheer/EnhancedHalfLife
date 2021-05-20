@@ -19,7 +19,7 @@
 
 constexpr int SF_TRIPMINE_INSTANT_ON = 1 << 0;
 
-class CTripmineGrenade : public CGrenade
+class EHL_CLASS() CTripmineGrenade : public CGrenade
 {
 	void OnRemove() override;
 	void Spawn() override;

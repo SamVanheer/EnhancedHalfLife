@@ -20,7 +20,7 @@
 class CFuncPlat;
 
 // UNDONE: Need to save this!!! It needs class & linkage
-class CPlatTrigger : public CBaseEntity
+class EHL_CLASS() CPlatTrigger : public CBaseEntity
 {
 public:
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DONT_SAVE; }

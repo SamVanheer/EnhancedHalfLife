@@ -17,7 +17,7 @@
 
 #include "CFuncPlat.hpp"
 
-class CFuncPlatRot : public CFuncPlat
+class EHL_CLASS() CFuncPlatRot : public CFuncPlat
 {
 public:
 	void Spawn() override;

@@ -20,7 +20,7 @@
 /**
 *	@brief Null Entity, remove on startup
 */
-class CNullEntity : public CBaseEntity
+class EHL_CLASS() CNullEntity : public CBaseEntity
 {
 public:
 	void Spawn() override;

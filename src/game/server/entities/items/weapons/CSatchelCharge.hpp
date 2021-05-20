@@ -17,7 +17,7 @@
 
 #include "CGrenade.hpp"
 
-class CSatchelCharge : public CGrenade
+class EHL_CLASS() CSatchelCharge : public CGrenade
 {
 	void Spawn() override;
 	void Precache() override;

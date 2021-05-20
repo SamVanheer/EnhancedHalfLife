@@ -17,7 +17,7 @@
 
 #include "CBaseMonster.hpp"
 
-class CControllerZapBall : public CBaseMonster
+class EHL_CLASS() CControllerZapBall : public CBaseMonster
 {
 	void Spawn() override;
 	void Precache() override;

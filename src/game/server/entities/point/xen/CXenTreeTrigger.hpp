@@ -17,7 +17,7 @@
 
 #include "CBaseEntity.hpp"
 
-class CXenTreeTrigger : public CBaseEntity
+class EHL_CLASS() CXenTreeTrigger : public CBaseEntity
 {
 public:
 	void		Touch(CBaseEntity* pOther) override;

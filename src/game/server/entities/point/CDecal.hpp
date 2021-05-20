@@ -19,7 +19,7 @@
 
 constexpr int SF_DECAL_NOTINDEATHMATCH = 2048;
 
-class CDecal : public CBaseEntity
+class EHL_CLASS() CDecal : public CBaseEntity
 {
 public:
 	void	Spawn() override;

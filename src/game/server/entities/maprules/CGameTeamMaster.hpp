@@ -27,7 +27,7 @@ constexpr int SF_TEAMMASTER_ANYTEAM = 0x0002;
 *	Flag: Remove on Fire
 *	Flag: Any team until set? -- Any team can use this until the team is set (otherwise no teams can use it)
 */
-class CGameTeamMaster : public CRulePointEntity
+class EHL_CLASS() CGameTeamMaster : public CRulePointEntity
 {
 public:
 	void		KeyValue(KeyValueData* pkvd) override;

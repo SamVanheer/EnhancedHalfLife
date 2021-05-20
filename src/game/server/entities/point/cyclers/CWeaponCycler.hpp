@@ -17,7 +17,7 @@
 
 #include "CBaseWeapon.hpp"
 
-class CWeaponCycler : public CBaseWeapon
+class EHL_CLASS() CWeaponCycler : public CBaseWeapon
 {
 public:
 	void Spawn() override;

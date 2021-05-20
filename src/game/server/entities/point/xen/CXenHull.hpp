@@ -20,7 +20,7 @@
 /**
 *	@brief Fake collision box for big spores
 */
-class CXenHull : public CPointEntity
+class EHL_CLASS() CXenHull : public CPointEntity
 {
 public:
 	static CXenHull* CreateHull(CBaseEntity* source, const Vector& mins, const Vector& maxs, const Vector& offset);

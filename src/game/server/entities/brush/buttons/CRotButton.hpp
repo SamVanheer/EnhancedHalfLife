@@ -22,7 +22,7 @@ constexpr int SF_ROTBUTTON_NOTSOLID = 1;
 /**
 *	@brief Rotating button (aka "lever")
 */
-class CRotButton : public CBaseButton
+class EHL_CLASS() CRotButton : public CBaseButton
 {
 public:
 	void Spawn() override;

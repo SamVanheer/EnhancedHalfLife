@@ -39,7 +39,7 @@ constexpr int ICHTHYOSAUR_AE_SHAKE_LEFT = 2;
 /**
 *	@brief evil, satan fish monster
 */
-class CIchthyosaur : public CFlyingMonster
+class EHL_CLASS() CIchthyosaur : public CFlyingMonster
 {
 public:
 	void  Spawn() override;

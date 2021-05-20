@@ -20,7 +20,7 @@
 /**
 *	@brief A simple entity that looks solid but lets you walk through it.
 */
-class CFuncIllusionary : public CBaseToggle
+class EHL_CLASS() CFuncIllusionary : public CBaseToggle
 {
 public:
 	void Spawn() override;

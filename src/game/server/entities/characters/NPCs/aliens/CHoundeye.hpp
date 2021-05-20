@@ -65,7 +65,7 @@ constexpr int HOUND_AE_CLOSE_EYE = 7;
 /**
 *	@brief spooky sonic dog.
 */
-class CHoundeye : public CSquadMonster
+class EHL_CLASS() CHoundeye : public CSquadMonster
 {
 public:
 	void Spawn() override;

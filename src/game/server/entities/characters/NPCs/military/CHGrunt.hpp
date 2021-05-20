@@ -101,7 +101,7 @@ enum
 //=========================================================
 constexpr int bits_COND_GRUNT_NOFIRE = bits_COND_SPECIAL1;
 
-class CHGrunt : public CSquadMonster
+class EHL_CLASS() CHGrunt : public CSquadMonster
 {
 public:
 	void Spawn() override;

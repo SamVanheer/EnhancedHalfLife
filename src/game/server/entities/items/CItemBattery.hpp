@@ -23,7 +23,7 @@
 
 constexpr float BATTERY_DEFAULT_CAPACITY = -1;
 
-class CItemBattery : public CItem
+class EHL_CLASS() CItemBattery : public CItem
 {
 	void OnConstruct() override
 	{

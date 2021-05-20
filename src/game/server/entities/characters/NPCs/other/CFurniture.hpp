@@ -20,7 +20,7 @@
 /**
 *	@brief this is the cool comment I cut-and-pasted
 */
-class CFurniture : public CBaseMonster
+class EHL_CLASS() CFurniture : public CBaseMonster
 {
 public:
 	/**

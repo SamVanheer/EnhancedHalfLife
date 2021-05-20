@@ -20,7 +20,7 @@
 /**
 *	@brief Designer selects a pose in worldcraft, 0 through ArraySize(m_szPoses)-1
 */
-class CDeadBarney : public CBaseMonster
+class EHL_CLASS() CDeadBarney : public CBaseMonster
 {
 public:
 	void Spawn() override;

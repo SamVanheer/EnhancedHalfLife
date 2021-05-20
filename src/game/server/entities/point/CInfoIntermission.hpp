@@ -20,7 +20,7 @@
 /**
 *	@brief Multiplayer intermission spots.
 */
-class CInfoIntermission :public CPointEntity
+class EHL_CLASS() CInfoIntermission :public CPointEntity
 {
 	void Spawn() override;
 	void Think() override;

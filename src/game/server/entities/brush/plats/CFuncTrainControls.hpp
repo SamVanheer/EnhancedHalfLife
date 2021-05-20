@@ -20,7 +20,7 @@
 /**
 *	@brief This class defines the volume of space that the player must stand in to control the train
 */
-class CFuncTrainControls : public CBaseEntity
+class EHL_CLASS() CFuncTrainControls : public CBaseEntity
 {
 public:
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }

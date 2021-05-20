@@ -19,7 +19,7 @@
 #include "CItem.hpp"
 #include "UserMessages.h"
 
-class CItemLongJump : public CItem
+class EHL_CLASS() CItemLongJump : public CItem
 {
 	void OnConstruct() override
 	{

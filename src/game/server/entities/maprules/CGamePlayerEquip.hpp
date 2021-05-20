@@ -24,7 +24,7 @@ constexpr int MAX_EQUIP = 32;
 *	@brief Sets the default player equipment
 *	@details Flag: USE Only
 */
-class CGamePlayerEquip : public CRulePointEntity
+class EHL_CLASS() CGamePlayerEquip : public CRulePointEntity
 {
 public:
 	void		KeyValue(KeyValueData* pkvd) override;

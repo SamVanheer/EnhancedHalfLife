@@ -20,7 +20,7 @@
 /**
 *	@brief Mortar shot entity
 */
-class CBMortar : public CBaseEntity
+class EHL_CLASS() CBMortar : public CBaseEntity
 {
 public:
 	void Spawn() override;

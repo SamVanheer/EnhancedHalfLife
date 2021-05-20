@@ -61,7 +61,7 @@ constexpr int AGRUNT_MELEE_DIST = 100;
 /**
 *	@brief Dominant, warlike alien grunt monster
 */
-class CAGrunt : public CSquadMonster
+class EHL_CLASS() CAGrunt : public CSquadMonster
 {
 public:
 	void Spawn() override;

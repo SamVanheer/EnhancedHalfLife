@@ -20,7 +20,7 @@
 /**
 *	@brief Controller bouncy ball attack
 */
-class CControllerHeadBall : public CBaseMonster
+class EHL_CLASS() CControllerHeadBall : public CBaseMonster
 {
 	void Spawn() override;
 	void Precache() override;

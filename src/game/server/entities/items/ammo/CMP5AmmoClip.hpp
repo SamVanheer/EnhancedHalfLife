@@ -18,7 +18,7 @@
 #include "CBaseAmmo.hpp"
 #include "CBaseWeapon.hpp"
 
-class CMP5AmmoClip : public CBaseAmmo
+class EHL_CLASS() CMP5AmmoClip : public CBaseAmmo
 {
 public:
 	void OnConstruct() override

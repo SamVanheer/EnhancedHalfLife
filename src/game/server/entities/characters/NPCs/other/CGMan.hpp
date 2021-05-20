@@ -20,7 +20,7 @@
 /**
 *	@brief misunderstood servant of the people
 */
-class CGMan : public CBaseMonster
+class EHL_CLASS() CGMan : public CBaseMonster
 {
 public:
 	void Spawn() override;

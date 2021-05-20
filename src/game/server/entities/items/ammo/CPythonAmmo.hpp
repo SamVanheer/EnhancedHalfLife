@@ -18,7 +18,7 @@
 #include "CBaseAmmo.hpp"
 #include "CBaseWeapon.hpp"
 
-class CPythonAmmo : public CBaseAmmo
+class EHL_CLASS() CPythonAmmo : public CBaseAmmo
 {
 public:
 	void OnConstruct() override

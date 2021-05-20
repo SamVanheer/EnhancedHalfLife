@@ -23,7 +23,7 @@
 
 #include "CBaseCharger.hpp"
 
-class CRecharge : public CBaseCharger
+class EHL_CLASS() CRecharge : public CBaseCharger
 {
 public:
 	CRecharge()

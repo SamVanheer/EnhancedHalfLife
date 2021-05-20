@@ -17,7 +17,7 @@
 
 #include "CXenSpore.hpp"
 
-class CXenSporeSmall : public CXenSpore
+class EHL_CLASS() CXenSporeSmall : public CXenSpore
 {
 	void		Spawn() override;
 };

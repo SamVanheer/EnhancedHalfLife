@@ -20,7 +20,7 @@
 /**
 *	@brief FUNC TANK CONTROLS
 */
-class CFuncTankControls : public CBaseEntity
+class EHL_CLASS() CFuncTankControls : public CBaseEntity
 {
 public:
 	int	ObjectCaps() override;

@@ -27,7 +27,7 @@ constexpr int SF_PTEAM_GIB = 0x0004;
 *	Flag: Kill Player
 *	Flag: Gib Player
 */
-class CGamePlayerTeam : public CRulePointEntity
+class EHL_CLASS() CGamePlayerTeam : public CRulePointEntity
 {
 public:
 	void		Use(const UseInfo& info) override;

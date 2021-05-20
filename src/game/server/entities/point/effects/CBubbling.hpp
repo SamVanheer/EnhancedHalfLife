@@ -17,7 +17,7 @@
 
 #include "CBaseEntity.hpp"
 
-class CBubbling : public CBaseEntity
+class EHL_CLASS() CBubbling : public CBaseEntity
 {
 public:
 	void	Spawn() override;

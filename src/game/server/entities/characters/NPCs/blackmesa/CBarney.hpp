@@ -31,7 +31,7 @@ constexpr int BARNEY_BODY_GUNHOLSTERED = 0;
 constexpr int BARNEY_BODY_GUNDRAWN = 1;
 constexpr int BARNEY_BODY_GUNGONE = 2;
 
-class CBarney : public CTalkMonster
+class EHL_CLASS() CBarney : public CTalkMonster
 {
 public:
 	void Spawn() override;

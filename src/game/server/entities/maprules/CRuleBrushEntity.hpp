@@ -21,7 +21,7 @@
 *	@brief base class for all rule "brush" entities (not brushes)
 *	@details Default behavior is to set up like a trigger, invisible, but keep the model for volume testing
 */
-class CRuleBrushEntity : public CRuleEntity
+class EHL_CLASS() CRuleBrushEntity : public CRuleEntity
 {
 public:
 	void		Spawn() override;

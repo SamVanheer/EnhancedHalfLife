@@ -17,7 +17,7 @@
 
 #include "CGrenade.hpp"
 
-class CAirtank : public CGrenade
+class EHL_CLASS() CAirtank : public CGrenade
 {
 	void Spawn() override;
 	void Precache() override;

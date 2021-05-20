@@ -21,7 +21,7 @@ constexpr int WEAPONSTRIP_REMOVEWEAPONS = 1 << 0;
 constexpr int WEAPONSTRIP_REMOVESUIT = 1 << 1;
 constexpr int WEAPONSTRIP_REMOVELONGJUMP = 1 << 2;
 
-class CStripWeapons : public CPointEntity
+class EHL_CLASS() CStripWeapons : public CPointEntity
 {
 public:
 	void KeyValue(KeyValueData* pkvd) override;

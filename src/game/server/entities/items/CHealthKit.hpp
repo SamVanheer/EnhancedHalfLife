@@ -19,7 +19,7 @@
 
 constexpr float HEALTHKIT_DEFAULT_CAPACITY = -1;
 
-class CHealthKit : public CItem
+class EHL_CLASS() CHealthKit : public CItem
 {
 	void OnConstruct() override
 	{

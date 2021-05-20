@@ -20,7 +20,7 @@
 constexpr std::string_view GARG_STOMP_SPRITE_NAME{"sprites/gargeye1.spr"};
 constexpr std::string_view GARG_STOMP_BUZZ_SOUND{"weapons/mine_charge.wav"};
 
-class CStomp : public CBaseEntity
+class EHL_CLASS() CStomp : public CBaseEntity
 {
 public:
 	void Spawn() override;

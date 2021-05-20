@@ -17,7 +17,7 @@
 
 #include "CBaseEntity.hpp"
 
-class CSmoker : public CBaseEntity
+class EHL_CLASS() CSmoker : public CBaseEntity
 {
 public:
 	void Spawn() override;

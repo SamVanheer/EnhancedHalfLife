@@ -35,7 +35,7 @@
 *	"speed"			movement speed (100 default)
 *	"wait"			wait before returning (0 default, -1 = never return)
 */
-class CRotDoor : public CBaseDoor
+class EHL_CLASS() CRotDoor : public CBaseDoor
 {
 public:
 	void Spawn() override;

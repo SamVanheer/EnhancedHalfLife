@@ -26,7 +26,7 @@ constexpr int N_SPHERES = 20;
 /**
 *	@brief Nihilanth, final Boss monster
 */
-class CNihilanth : public CBaseMonster
+class EHL_CLASS() CNihilanth : public CBaseMonster
 {
 public:
 	void OnRemove() override;

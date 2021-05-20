@@ -50,7 +50,7 @@ constexpr int bits_MEMORY_BADJUMP = bits_MEMORY_CUSTOM1;
 /**
 *	@brief Human assassin, fast and stealthy
 */
-class CHAssassin : public CBaseMonster
+class EHL_CLASS() CHAssassin : public CBaseMonster
 {
 public:
 	void Spawn() override;

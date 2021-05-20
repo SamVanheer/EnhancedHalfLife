@@ -25,7 +25,7 @@ enum w_squeak_e
 	WSQUEAK_RUN,
 };
 
-class CSqueakGrenade : public CGrenade
+class EHL_CLASS() CSqueakGrenade : public CGrenade
 {
 	void Spawn() override;
 	void Precache() override;

@@ -25,7 +25,7 @@ constexpr int SF_TEAMSET_CLEARTEAM = 0x0002;
 *	@details Flag: Fire once
 *	Flag: Clear team -- Sets the team to "NONE" instead of activator
 */
-class CGameTeamSet : public CRulePointEntity
+class EHL_CLASS() CGameTeamSet : public CRulePointEntity
 {
 public:
 	void		Use(const UseInfo& info) override;

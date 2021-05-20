@@ -17,7 +17,7 @@
 
 #include "CBaseMonster.hpp"
 
-class CFlockingFlyerFlock : public CBaseMonster
+class EHL_CLASS() CFlockingFlyerFlock : public CBaseMonster
 {
 public:
 	void Spawn() override;

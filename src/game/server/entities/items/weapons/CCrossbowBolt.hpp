@@ -25,7 +25,7 @@ constexpr int BOLT_WATER_VELOCITY = 1000;
 // OVERLOADS SOME ENTVARS:
 //
 // speed - the ideal magnitude of my velocity
-class CCrossbowBolt : public CBaseEntity
+class EHL_CLASS() CCrossbowBolt : public CBaseEntity
 {
 	void Spawn() override;
 	void Precache() override;

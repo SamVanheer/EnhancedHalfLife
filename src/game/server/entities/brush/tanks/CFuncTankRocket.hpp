@@ -17,7 +17,7 @@
 
 #include "CFuncTank.hpp"
 
-class CFuncTankRocket : public CFuncTank
+class EHL_CLASS() CFuncTankRocket : public CFuncTank
 {
 public:
 	void Precache() override;

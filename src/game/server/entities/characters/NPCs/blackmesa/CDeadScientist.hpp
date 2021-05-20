@@ -17,7 +17,7 @@
 
 #include "CBaseMonster.hpp"
 
-class CDeadScientist : public CBaseMonster
+class EHL_CLASS() CDeadScientist : public CBaseMonster
 {
 public:
 	void Spawn() override;

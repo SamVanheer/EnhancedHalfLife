@@ -18,7 +18,7 @@
 #include "CBaseEntity.hpp"
 
 // Spiral Effect
-class CSpiral : public CBaseEntity
+class EHL_CLASS() CSpiral : public CBaseEntity
 {
 public:
 	void Spawn() override;

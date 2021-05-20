@@ -20,7 +20,7 @@
 // UNDONE:	These need to smoke somehow when they take damage
 //			Touch behavior?
 //			Cause damage in smoke area
-class CXenSpore : public CActAnimating
+class EHL_CLASS() CXenSpore : public CActAnimating
 {
 public:
 	void		Spawn() override;

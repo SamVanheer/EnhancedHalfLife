@@ -17,7 +17,7 @@
 
 #include "CBaseToggle.hpp"
 
-class CMomentaryDoor : public CBaseToggle
+class EHL_CLASS() CMomentaryDoor : public CBaseToggle
 {
 public:
 	void	Spawn() override;

@@ -22,7 +22,7 @@ constexpr int SF_CORNER_WAITFORTRIG = 0x001;
 constexpr int SF_CORNER_TELEPORT = 0x002;
 constexpr int SF_CORNER_FIREONCE = 0x004;
 
-class CPathCorner : public CPointEntity
+class EHL_CLASS() CPathCorner : public CPointEntity
 {
 public:
 	void Spawn() override;

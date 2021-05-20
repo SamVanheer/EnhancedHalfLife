@@ -17,7 +17,7 @@
 
 #include "CLight.hpp"
 
-class CEnvLight : public CLight
+class EHL_CLASS() CEnvLight : public CLight
 {
 public:
 	void	KeyValue(KeyValueData* pkvd) override;

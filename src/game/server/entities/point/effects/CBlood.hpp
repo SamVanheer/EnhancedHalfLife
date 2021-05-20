@@ -25,7 +25,7 @@ constexpr int SF_BLOOD_DECAL = 0x0008;
 /**
 *	@brief Blood effects
 */
-class CBlood : public CPointEntity
+class EHL_CLASS() CBlood : public CPointEntity
 {
 public:
 	void	Spawn() override;

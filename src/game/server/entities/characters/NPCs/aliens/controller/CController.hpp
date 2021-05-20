@@ -28,7 +28,7 @@ constexpr int CONTROLLER_AE_POWERUP_HALF = 5;
 
 constexpr int CONTROLLER_FLINCH_DELAY = 2;		// at most one flinch every n secs
 
-class CController : public CSquadMonster
+class EHL_CLASS() CController : public CSquadMonster
 {
 public:
 	void OnRemove() override;

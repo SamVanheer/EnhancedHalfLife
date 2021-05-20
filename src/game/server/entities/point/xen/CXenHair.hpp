@@ -19,7 +19,7 @@
 
 constexpr int SF_HAIR_SYNC = 0x0001;
 
-class CXenHair : public CActAnimating
+class EHL_CLASS() CXenHair : public CActAnimating
 {
 public:
 	void		Spawn() override;

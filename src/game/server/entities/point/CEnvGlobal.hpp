@@ -27,7 +27,7 @@ enum class GlobalTriggerMode
 	Toggle
 };
 
-class CEnvGlobal : public CPointEntity
+class EHL_CLASS() CEnvGlobal : public CPointEntity
 {
 public:
 	void	Spawn() override;

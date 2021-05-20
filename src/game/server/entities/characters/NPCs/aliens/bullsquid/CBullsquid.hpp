@@ -56,7 +56,7 @@ constexpr int BSQUID_AE_THROW = 6;
 /**
 *	@brief big, spotty tentacle-mouthed meanie.
 */
-class CBullsquid : public CBaseMonster
+class EHL_CLASS() CBullsquid : public CBaseMonster
 {
 public:
 	void Spawn() override;

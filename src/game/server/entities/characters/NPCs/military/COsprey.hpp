@@ -21,7 +21,7 @@ constexpr int SF_WAITFORTRIGGER = 0x40;
 
 constexpr int MAX_CARRY = 24;
 
-class COsprey : public CBaseMonster
+class EHL_CLASS() COsprey : public CBaseMonster
 {
 public:
 	bool Save(CSave& save) override;

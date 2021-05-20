@@ -21,7 +21,7 @@
 /**
 *	@brief tiny, jumpy alien parasite
 */
-class CHeadCrab : public CBaseMonster
+class EHL_CLASS() CHeadCrab : public CBaseMonster
 {
 public:
 	void Spawn() override;

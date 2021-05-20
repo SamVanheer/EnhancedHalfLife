@@ -20,7 +20,7 @@
 /**
 *	@brief when triggered, spawns a monster_human_grunt repelling down a line.
 */
-class CHGruntRepel : public CBaseMonster
+class EHL_CLASS() CHGruntRepel : public CBaseMonster
 {
 public:
 	void Spawn() override;

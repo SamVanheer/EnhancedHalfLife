@@ -36,7 +36,7 @@ constexpr int SF_ISLAVE_IS_REVIVED_SLAVE = 1 << 0;
 /**
 *	@brief Alien slave monster
 */
-class CISlave : public CSquadMonster
+class EHL_CLASS() CISlave : public CSquadMonster
 {
 public:
 	void OnRemove() override;

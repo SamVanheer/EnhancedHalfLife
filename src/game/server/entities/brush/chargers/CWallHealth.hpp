@@ -20,7 +20,7 @@
 /**
 *	@brief Wall mounted health kit
 */
-class CWallHealth : public CBaseCharger
+class EHL_CLASS() CWallHealth : public CBaseCharger
 {
 public:
 	CWallHealth()

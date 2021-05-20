@@ -20,7 +20,7 @@
 /**
 *	@brief Spark Shower
 */
-class CShower : public CBaseEntity
+class EHL_CLASS() CShower : public CBaseEntity
 {
 	void Spawn() override;
 	void Think() override;

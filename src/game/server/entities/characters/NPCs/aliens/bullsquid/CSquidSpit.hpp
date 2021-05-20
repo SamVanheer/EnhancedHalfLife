@@ -20,7 +20,7 @@
 //=========================================================
 // Bullsquid's spit projectile
 //=========================================================
-class CSquidSpit : public CBaseEntity
+class EHL_CLASS() CSquidSpit : public CBaseEntity
 {
 public:
 	void Spawn() override;

@@ -20,7 +20,7 @@
 constexpr int SF_SPARK_TOGGLE = 1 << 5;
 constexpr int SF_SPARK_START_ON = 1 << 6;
 
-class CEnvSpark : public CBaseEntity
+class EHL_CLASS() CEnvSpark : public CBaseEntity
 {
 public:
 	void	Spawn() override;

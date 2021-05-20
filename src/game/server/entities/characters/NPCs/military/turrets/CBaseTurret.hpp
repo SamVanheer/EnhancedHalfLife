@@ -43,7 +43,7 @@ enum class TurretOrientation
 	Ceiling
 };
 
-class CBaseTurret : public CBaseMonster
+class EHL_CLASS() CBaseTurret : public CBaseMonster
 {
 public:
 	void OnRemove() override;

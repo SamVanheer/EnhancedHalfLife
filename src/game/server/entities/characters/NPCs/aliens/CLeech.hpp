@@ -37,7 +37,7 @@ constexpr float LEECH_FRAMETIME = 0.1;
 /**
 *	@brief basic little swimming monster
 */
-class CLeech : public CBaseMonster
+class EHL_CLASS() CLeech : public CBaseMonster
 {
 public:
 	void Spawn() override;

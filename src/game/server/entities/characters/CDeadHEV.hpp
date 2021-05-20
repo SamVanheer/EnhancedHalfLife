@@ -23,7 +23,7 @@ constexpr int DEADHEV_HEAD_HELMETED = 1;
 /**
 *	@brief Dead HEV suit prop
 */
-class CDeadHEV : public CBaseMonster
+class EHL_CLASS() CDeadHEV : public CBaseMonster
 {
 public:
 	void Spawn() override;

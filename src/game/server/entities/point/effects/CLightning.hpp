@@ -17,7 +17,7 @@
 
 #include "CBeam.hpp"
 
-class CLightning : public CBeam
+class EHL_CLASS() CLightning : public CBeam
 {
 public:
 	void	Spawn() override;

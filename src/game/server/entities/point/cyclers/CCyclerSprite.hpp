@@ -17,7 +17,7 @@
 
 #include "CBaseEntity.hpp"
 
-class CCyclerSprite : public CBaseEntity
+class EHL_CLASS() CCyclerSprite : public CBaseEntity
 {
 public:
 	void Spawn() override;

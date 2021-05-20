@@ -26,7 +26,7 @@ constexpr int AFLOCK_TOO_CLOSE = 100;
 constexpr int AFLOCK_TOO_FAR = 256;
 
 //TODO: should probably make this inherit from CSquadMonster and remove the squad code from this class
-class CFlockingFlyer : public CBaseMonster
+class EHL_CLASS() CFlockingFlyer : public CBaseMonster
 {
 public:
 	void Spawn() override;

@@ -20,7 +20,7 @@
 constexpr int SF_CONVEYOR_VISUAL = 0x0001;
 constexpr int SF_CONVEYOR_NOTSOLID = 0x0002;
 
-class CFuncConveyor : public CFuncWall
+class EHL_CLASS() CFuncConveyor : public CFuncWall
 {
 public:
 	void	Spawn() override;

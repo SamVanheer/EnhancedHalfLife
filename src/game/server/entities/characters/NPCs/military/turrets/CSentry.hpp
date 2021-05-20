@@ -20,7 +20,7 @@
 /**
 *	@brief smallest turret, placed near grunt entrenchments
 */
-class CSentry : public CBaseTurret
+class EHL_CLASS() CSentry : public CBaseTurret
 {
 public:
 	void Spawn() override;

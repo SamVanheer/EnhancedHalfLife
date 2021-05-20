@@ -17,7 +17,7 @@
 
 #include "CHeadCrab.hpp"
 
-class CBabyCrab : public CHeadCrab
+class EHL_CLASS() CBabyCrab : public CHeadCrab
 {
 public:
 	void Spawn() override;

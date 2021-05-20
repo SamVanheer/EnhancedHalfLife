@@ -22,7 +22,7 @@ constexpr int SF_FUNNEL_REVERSE = 1; //!< funnel effect repels particles instead
 /**
 *	@brief Funnel Effect
 */
-class CEnvFunnel : public CBaseDelay
+class EHL_CLASS() CEnvFunnel : public CBaseDelay
 {
 public:
 	void	Spawn() override;

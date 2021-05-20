@@ -25,7 +25,7 @@ enum class SuitLogonType
 	ShortLogon,
 };
 
-class CItemSuit : public CItem
+class EHL_CLASS() CItemSuit : public CItem
 {
 	void OnConstruct() override
 	{

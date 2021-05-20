@@ -20,7 +20,7 @@
 /**
 *	@brief Auto track change
 */
-class CFuncTrackAuto : public CFuncTrackChange
+class EHL_CLASS() CFuncTrackAuto : public CFuncTrackChange
 {
 public:
 	void			Use(const UseInfo& info) override;

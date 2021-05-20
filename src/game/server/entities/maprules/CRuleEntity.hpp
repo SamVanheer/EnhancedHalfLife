@@ -23,7 +23,7 @@
 *	This module contains entities for implementing/changing game rules dynamically within each map (.BSP)
 */
 
-class CRuleEntity : public CBaseEntity
+class EHL_CLASS() CRuleEntity : public CBaseEntity
 {
 public:
 	void	Spawn() override;

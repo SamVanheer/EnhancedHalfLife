@@ -24,7 +24,7 @@
 /**
 *	@brief environmental monster
 */
-class CRat : public CBaseMonster
+class EHL_CLASS() CRat : public CBaseMonster
 {
 public:
 	void Spawn() override;

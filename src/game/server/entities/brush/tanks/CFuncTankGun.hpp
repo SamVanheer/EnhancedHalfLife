@@ -17,7 +17,7 @@
 
 #include "CFuncTank.hpp"
 
-class CFuncTankGun : public CFuncTank
+class EHL_CLASS() CFuncTankGun : public CFuncTank
 {
 public:
 	void Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker) override;

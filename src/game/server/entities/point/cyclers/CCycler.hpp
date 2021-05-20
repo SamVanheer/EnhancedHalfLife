@@ -17,7 +17,7 @@
 
 #include "CBaseMonster.hpp"
 
-class CCycler : public CBaseMonster
+class EHL_CLASS() CCycler : public CBaseMonster
 {
 public:
 	void GenericCyclerSpawn(const char* szModel, const Vector& vecMin, const Vector& vecMax);

@@ -19,7 +19,7 @@
 #include "CItem.hpp"
 #include "weapons.h"
 
-class CItemAntidote : public CItem
+class EHL_CLASS() CItemAntidote : public CItem
 {
 	void OnConstruct() override
 	{

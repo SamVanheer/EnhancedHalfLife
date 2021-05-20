@@ -25,7 +25,7 @@ constexpr int SF_FADE_ONLYONE = 0x0004;
 *	@details pev->dmg_take is duration
 *	pev->dmg_save is hold duration
 */
-class CFade : public CPointEntity
+class EHL_CLASS() CFade : public CPointEntity
 {
 public:
 	void	Spawn() override;

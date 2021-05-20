@@ -17,7 +17,7 @@
 
 #include "CPointEntity.hpp"
 
-class CGlow : public CPointEntity
+class EHL_CLASS() CGlow : public CPointEntity
 {
 public:
 	void Spawn() override;

@@ -23,7 +23,7 @@
 *	@details This brush will be solid for any entity who has the FL_MONSTERCLIP flag set in pev->flags
 *	otherwise it will be invisible and not solid. This can be used to keep  specific monsters out of certain areas
 */
-class CFuncMonsterClip : public CFuncWall
+class EHL_CLASS() CFuncMonsterClip : public CFuncWall
 {
 public:
 	void	Spawn() override;

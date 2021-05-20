@@ -28,7 +28,7 @@ enum class MortarControlType
 *	@brief the "LaBuznik" mortar device
 *	Drop bombs from above
 */
-class CFuncMortarField : public CBaseToggle
+class EHL_CLASS() CFuncMortarField : public CBaseToggle
 {
 public:
 	void Spawn() override;

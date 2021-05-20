@@ -20,7 +20,7 @@
 // func_pushable (it's also func_breakable, so don't collide with those flags)
 constexpr int SF_PUSH_BREAKABLE = 128;
 
-class CPushable : public CBreakable
+class EHL_CLASS() CPushable : public CBreakable
 {
 public:
 	void	Spawn() override;
