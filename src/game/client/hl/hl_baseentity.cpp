@@ -24,7 +24,7 @@
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
-#include "player.h"
+#include "CBasePlayer.hpp"
 #include "weapons.h"
 #include "navigation/nodes.h"
 #include "CBaseWeapon.hpp"

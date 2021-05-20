@@ -18,7 +18,7 @@
 #include "Platform.h"
 #include "shared_utils.hpp"
 #include "cbase.h"
-#include "player.h"
+#include "CBasePlayer.hpp"
 #include "CStringPool.hpp"
 
 CStringPool g_StringPool;

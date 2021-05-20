@@ -22,7 +22,7 @@
 #include "navigation/nodes.h"
 #include "client.h"
 #include "dll_functions.hpp"
-#include "corpse.hpp"
+#include "CCorpse.hpp"
 #include "spawnpoints.hpp"
 #include "effects/CMessage.hpp"
 

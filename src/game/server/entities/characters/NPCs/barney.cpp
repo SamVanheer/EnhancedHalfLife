@@ -16,7 +16,6 @@
 // UNDONE: Holster weapon?
 
 #include "defaultai.h"
-#include "scripted.h"
 
 //=========================================================
 // Monster's Anim Events Go Here

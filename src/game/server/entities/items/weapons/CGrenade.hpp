@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "basemonster.h"
+#include "CBaseMonster.hpp"
 
 /**
 *	@brief Contact Grenade / Timed grenade / Satchel Charge

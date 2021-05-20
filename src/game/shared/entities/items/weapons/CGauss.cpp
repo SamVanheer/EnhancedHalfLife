@@ -18,7 +18,7 @@
 #include "cbase.h"
 #include "monsters.h"
 #include "weapons.h"
-#include "player.h"
+#include "CBasePlayer.hpp"
 #include "CSoundEnt.hpp"
 #include "shake.h"
 #include "gamerules.h"

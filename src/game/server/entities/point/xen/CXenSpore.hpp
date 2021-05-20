@@ -33,20 +33,3 @@ public:
 
 	static const char* pModelNames[];
 };
-
-class CXenSporeSmall : public CXenSpore
-{
-	void		Spawn() override;
-};
-
-class CXenSporeMed : public CXenSpore
-{
-	void		Spawn() override;
-};
-
-class CXenSporeLarge : public CXenSpore
-{
-	void		Spawn() override;
-
-	static const Vector m_hullSizes[];
-};

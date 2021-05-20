@@ -20,7 +20,6 @@
 */
 
 #include "defaultai.h"
-#include "scripted.h"
 
 Task_t	tlFail[] =
 {

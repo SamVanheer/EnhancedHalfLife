@@ -16,7 +16,7 @@
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
-#include "player.h"
+#include "CBasePlayer.hpp"
 #include "monsters.h"
 #include "weapons.h"
 #include "effects/CBeam.hpp"

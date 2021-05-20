@@ -14,7 +14,6 @@
 ****/
 
 #include "defaultai.h"
-#include "scripted.h"
 #include "animation.h"
 
 constexpr int SCIENTIST_BODYGROUP_HEAD = 1;

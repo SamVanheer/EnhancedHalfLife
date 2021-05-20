@@ -22,7 +22,7 @@
 */
 
 #include "CBaseEntity.hpp"
-#include "basemonster.h"
+#include "CBaseMonster.hpp"
 
 #include "util.h" //TODO: get rid of DLL_GLOBAL so we can remove this header include
 

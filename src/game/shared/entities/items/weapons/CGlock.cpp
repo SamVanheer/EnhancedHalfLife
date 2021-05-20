@@ -18,7 +18,7 @@
 #include "cbase.h"
 #include "monsters.h"
 #include "weapons.h"
-#include "player.h"
+#include "CBasePlayer.hpp"
 #include "CGlock.hpp"
 
 LINK_ENTITY_TO_CLASS(weapon_glock, CGlock);

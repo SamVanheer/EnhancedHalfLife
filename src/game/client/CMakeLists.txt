@@ -171,8 +171,13 @@ target_sources(client PRIVATE
 	ui/vgui/utils/voice_banmgr.cpp
 	ui/vgui/utils/voice_banmgr.h
 	../server/entities/cbase.h
+	../server/entities/CBaseAnimating.hpp
+	../server/entities/CBaseDelay.hpp
+	../server/entities/CBaseEntity.hpp
+	../server/entities/CBaseToggle.hpp
 	../server/entities/brush/CBreakable.hpp
-	../server/entities/characters/player.h
+	../server/entities/characters/CBasePlayer.hpp
+	../server/entities/characters/NPCs/CBaseMonster.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/con_nprint.h
 	${INCLUDE_DIRECTORY}/GoldSrc/const.h
 	${INCLUDE_DIRECTORY}/GoldSrc/crc.h

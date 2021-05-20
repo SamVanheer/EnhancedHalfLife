@@ -20,7 +20,6 @@
 */
 
 #include "animation.h"
-#include "scripted.h"
 #include "navigation/nodes.h"
 #include "defaultai.h"
 

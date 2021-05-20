@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "basemonster.h"
+#include "CBaseMonster.hpp"
 
 enum class HornetType
 {

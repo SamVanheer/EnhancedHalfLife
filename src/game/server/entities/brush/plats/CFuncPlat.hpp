@@ -64,21 +64,3 @@ public:
 	*/
 	virtual void HitBottom();
 };
-
-// UNDONE: Need to save this!!! It needs class & linkage
-class CPlatTrigger : public CBaseEntity
-{
-public:
-	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DONT_SAVE; }
-
-	/**
-	*	@brief Create a trigger entity for a platform.
-	*/
-	void SpawnInsideTrigger(CFuncPlat* pPlatform);
-
-	/**
-	*	@brief When the platform's trigger field is touched, the platform ???
-	*/
-	void Touch(CBaseEntity* pOther) override;
-	EHandle<CFuncPlat> m_hPlatform;
-};

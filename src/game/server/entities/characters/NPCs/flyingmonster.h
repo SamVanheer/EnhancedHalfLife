@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "basemonster.h"
+#include "CBaseMonster.hpp"
 
 /**
 *	@brief Base class for flying monsters.  This overrides the movement test & execution code from CBaseMonster

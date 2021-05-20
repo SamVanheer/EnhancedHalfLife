@@ -14,7 +14,7 @@
 ****/
 
 #include "cbase.h"
-#include "player.h"
+#include "CBasePlayer.hpp"
 #include "CBaseWeapon.hpp"
 
 void CBasePlayer::SelectLastWeapon()

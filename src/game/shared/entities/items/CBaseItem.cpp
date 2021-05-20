@@ -14,7 +14,7 @@
 ****/
 
 #include "cbase.h"
-#include "player.h"
+#include "CBasePlayer.hpp"
 #include "weapons.h"
 #include "gamerules.h"
 #include "CBaseItem.hpp"

@@ -71,14 +71,8 @@ target_sources(hl PRIVATE
 	entities/CNullEntity.hpp
 	entities/CWorld.cpp
 	entities/CWorld.hpp
-	entities/changelevel.cpp
-	entities/changelevel.hpp
 	entities/locksounds.hpp
-	entities/maprules.cpp
-	entities/maprules.h
 	entities/subs.cpp
-	entities/triggers.cpp
-	entities/triggers.hpp
 	entities/brush/CBreakable.cpp
 	entities/brush/CBreakable.hpp
 	entities/brush/CFuncMortarField.cpp
@@ -143,6 +137,8 @@ target_sources(hl PRIVATE
 	entities/brush/plats/CPathCorner.hpp
 	entities/brush/plats/CPathTrack.cpp
 	entities/brush/plats/CPathTrack.hpp
+	entities/brush/plats/CPlatTrigger.cpp
+	entities/brush/plats/CPlatTrigger.hpp
 	entities/brush/tanks/CFuncTank.cpp
 	entities/brush/tanks/CFuncTank.hpp
 	entities/brush/tanks/CFuncTankControls.cpp
@@ -155,22 +151,48 @@ target_sources(hl PRIVATE
 	entities/brush/tanks/CFuncTankMortar.hpp
 	entities/brush/tanks/CFuncTankRocket.cpp
 	entities/brush/tanks/CFuncTankRocket.hpp
-	entities/characters/corpse.cpp
-	entities/characters/corpse.hpp
-	entities/characters/observer.cpp
-	entities/characters/player.cpp
-	entities/characters/player.h
+	entities/changelevel/CChangeLevel.cpp
+	entities/changelevel/CChangeLevel.hpp
+	entities/changelevel/CFireAndDie.cpp
+	entities/changelevel/CFireAndDie.hpp
+	entities/changelevel/CRevertSaved.cpp
+	entities/changelevel/CRevertSaved.hpp
+	entities/changelevel/CTriggerEndSection.cpp
+	entities/changelevel/CTriggerEndSection.hpp
+	entities/changelevel/CTriggerSave.cpp
+	entities/changelevel/CTriggerSave.hpp
+	entities/changelevel/CTriggerVolume.cpp
+	entities/changelevel/CTriggerVolume.hpp
+	entities/characters/CBasePlayer.cpp
+	entities/characters/CBasePlayer.hpp
+	entities/characters/CBasePlayer.observer.cpp
+	entities/characters/CCorpse.cpp
+	entities/characters/CCorpse.hpp
+	entities/characters/CDeadHEV.cpp
+	entities/characters/CDeadHEV.hpp
 	entities/characters/NPCs/aflock.cpp
 	entities/characters/NPCs/agrunt.cpp
 	entities/characters/NPCs/apache.cpp
 	entities/characters/NPCs/barnacle.cpp
 	entities/characters/NPCs/barney.cpp
-	entities/characters/NPCs/basemonster.h
 	entities/characters/NPCs/bigmomma.cpp
 	entities/characters/NPCs/bloater.cpp
 	entities/characters/NPCs/bullsquid.cpp
+	entities/characters/NPCs/CBaseMonster.hpp
+	entities/characters/NPCs/CCineAI.cpp
+	entities/characters/NPCs/CCineAI.hpp
+	entities/characters/NPCs/CCineMonster.cpp
+	entities/characters/NPCs/CCineMonster.hpp
+	entities/characters/NPCs/CFurniture.cpp
+	entities/characters/NPCs/CFurniture.hpp
 	entities/characters/NPCs/combat.cpp
 	entities/characters/NPCs/controller.cpp
+	entities/characters/NPCs/CScriptedSentence.cpp
+	entities/characters/NPCs/CScriptedSentence.hpp
+	entities/characters/NPCs/CSquadMonster.cpp
+	entities/characters/NPCs/CSquadMonster.hpp
+	entities/characters/NPCs/CTalkMonster.cpp
+	entities/characters/NPCs/CTalkMonster.hpp
 	entities/characters/NPCs/defaultai.cpp
 	entities/characters/NPCs/defaultai.h
 	entities/characters/NPCs/flyingmonster.cpp
@@ -198,14 +220,8 @@ target_sources(hl PRIVATE
 	entities/characters/NPCs/schedule.cpp
 	entities/characters/NPCs/schedule.h
 	entities/characters/NPCs/scientist.cpp
-	entities/characters/NPCs/scripted.cpp
-	entities/characters/NPCs/scripted.h
 	entities/characters/NPCs/scriptevent.h
 	entities/characters/NPCs/squad.h
-	entities/characters/NPCs/squadmonster.cpp
-	entities/characters/NPCs/squadmonster.h
-	entities/characters/NPCs/talkmonster.cpp
-	entities/characters/NPCs/talkmonster.h
 	entities/characters/NPCs/tentacle.cpp
 	entities/characters/NPCs/turret.cpp
 	entities/characters/NPCs/zombie.cpp
@@ -266,6 +282,34 @@ target_sources(hl PRIVATE
 	entities/items/weapons/CWeaponBox.cpp
 	entities/items/weapons/CWeaponBox.hpp
 	entities/items/weapons/weapons.cpp
+	entities/maprules/CGameCounter.cpp
+	entities/maprules/CGameCounter.hpp
+	entities/maprules/CGameCounterSet.cpp
+	entities/maprules/CGameCounterSet.hpp
+	entities/maprules/CGameEnd.cpp
+	entities/maprules/CGameEnd.hpp
+	entities/maprules/CGamePlayerHurt.cpp
+	entities/maprules/CGamePlayerHurt.hpp
+	entities/maprules/CGamePlayerEquip.cpp
+	entities/maprules/CGamePlayerEquip.hpp
+	entities/maprules/CGamePlayerTeam.cpp
+	entities/maprules/CGamePlayerTeam.hpp
+	entities/maprules/CGamePlayerZone.cpp
+	entities/maprules/CGamePlayerZone.hpp
+	entities/maprules/CGameScore.cpp
+	entities/maprules/CGameScore.hpp
+	entities/maprules/CGameTeamMaster.cpp
+	entities/maprules/CGameTeamMaster.hpp
+	entities/maprules/CGameTeamSet.cpp
+	entities/maprules/CGameTeamSet.hpp
+	entities/maprules/CGameText.cpp
+	entities/maprules/CGameText.hpp
+	entities/maprules/CRuleBrushEntity.cpp
+	entities/maprules/CRuleBrushEntity.hpp
+	entities/maprules/CRuleEntity.cpp
+	entities/maprules/CRuleEntity.hpp
+	entities/maprules/CRulePointEntity.cpp
+	entities/maprules/CRulePointEntity.hpp
 	entities/point/CDecal.cpp
 	entities/point/CDecal.hpp
 	entities/point/CEnvGlobal.cpp
@@ -357,10 +401,54 @@ target_sources(hl PRIVATE
 	entities/point/xen/CXenPLight.hpp
 	entities/point/xen/CXenSpore.cpp
 	entities/point/xen/CXenSpore.hpp
+	entities/point/xen/CXenSporeLarge.cpp
+	entities/point/xen/CXenSporeLarge.hpp
+	entities/point/xen/CXenSporeMed.cpp
+	entities/point/xen/CXenSporeMed.hpp
+	entities/point/xen/CXenSporeSmall.cpp
+	entities/point/xen/CXenSporeSmall.hpp
 	entities/point/xen/CXenTree.cpp
 	entities/point/xen/CXenTree.hpp
 	entities/point/xen/CXenTreeTrigger.cpp
 	entities/point/xen/CXenTreeTrigger.hpp
+	entities/triggers/CAutoTrigger.cpp
+	entities/triggers/CAutoTrigger.hpp
+	entities/triggers/CBaseTrigger.cpp
+	entities/triggers/CBaseTrigger.hpp
+	entities/triggers/CFrictionModifier.cpp
+	entities/triggers/CFrictionModifier.hpp
+	entities/triggers/CLadder.cpp
+	entities/triggers/CLadder.hpp
+	entities/triggers/CMultiManager.cpp
+	entities/triggers/CMultiManager.hpp
+	entities/triggers/CRenderFxManager.cpp
+	entities/triggers/CRenderFxManager.hpp
+	entities/triggers/CTriggerCamera.cpp
+	entities/triggers/CTriggerCamera.hpp
+	entities/triggers/CTargetCDAudio.cpp
+	entities/triggers/CTargetCDAudio.hpp
+	entities/triggers/CTriggerCDAudio.cpp
+	entities/triggers/CTriggerCDAudio.hpp
+	entities/triggers/CTriggerChangeTarget.cpp
+	entities/triggers/CTriggerChangeTarget.hpp
+	entities/triggers/CTriggerCounter.cpp
+	entities/triggers/CTriggerCounter.hpp
+	entities/triggers/CTriggerGravity.cpp
+	entities/triggers/CTriggerGravity.hpp
+	entities/triggers/CTriggerHurt.cpp
+	entities/triggers/CTriggerHurt.hpp
+	entities/triggers/CTriggerMonsterJump.cpp
+	entities/triggers/CTriggerMonsterJump.hpp
+	entities/triggers/CTriggerMultiple.cpp
+	entities/triggers/CTriggerMultiple.hpp
+	entities/triggers/CTriggerOnce.cpp
+	entities/triggers/CTriggerOnce.hpp
+	entities/triggers/CTriggerPush.cpp
+	entities/triggers/CTriggerPush.hpp
+	entities/triggers/CTriggerRelay.cpp
+	entities/triggers/CTriggerRelay.hpp
+	entities/triggers/CTriggerTeleport.cpp
+	entities/triggers/CTriggerTeleport.hpp
 	gamerules/gamerules.cpp
 	gamerules/gamerules.h
 	gamerules/mapcycle.cpp
@@ -369,6 +457,12 @@ target_sources(hl PRIVATE
 	gamerules/singleplay_gamerules.cpp
 	gamerules/teamplay_gamerules.cpp
 	gamerules/teamplay_gamerules.h
+	navigation/CNodeEnt.cpp
+	navigation/CNodeEnt.hpp
+	navigation/CNodeViewer.cpp
+	navigation/CNodeViewer.hpp
+	navigation/CTestHull.cpp
+	navigation/CTestHull.hpp
 	navigation/nodes.cpp
 	navigation/nodes.h
 	navigation/nodes_io.cpp

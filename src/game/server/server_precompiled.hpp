@@ -20,9 +20,9 @@
 //Includes extdll.h and util.h
 #include "cbase.h"
 
-#include "player.h"
-#include "talkmonster.h"
-#include "squadmonster.h"
+#include "CBasePlayer.hpp"
+#include "CSquadMonster.hpp"
+#include "CTalkMonster.hpp"
 #include "monsters.h"
 #include "weapons.h"
 #include "effects/CBeam.hpp"

@@ -17,7 +17,7 @@
 #include "cbase.h"
 #include "monsters.h"
 #include "weapons.h"
-#include "player.h"
+#include "CBasePlayer.hpp"
 
 #include "usercmd.h"
 #include "entity_state.h"

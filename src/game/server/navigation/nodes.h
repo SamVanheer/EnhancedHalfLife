@@ -18,8 +18,6 @@
 #include <cstdint>
 #include <memory>
 
-#include "basemonster.h"
-
 /**
 *	@file
 *
@@ -37,6 +35,16 @@ constexpr int bits_NODE_GROUP_REALM = bits_NODE_LAND | bits_NODE_AIR | bits_NODE
 
 constexpr int NODE_RANGE_MIN = 0;
 constexpr int NODE_RANGE_MAX = 255;
+
+constexpr int HULL_STEP_SIZE = 16; // how far the test hull moves on each step
+constexpr int NODE_HEIGHT = 8;	// how high to lift nodes off the ground after we drop them all (make stair/ramp mapping easier)
+
+/**
+*	@brief to help eliminate node clutter by level designers,
+*	this is used to cap how many other nodes any given node is allowed to 'see' in the first stage of graph creation "LinkVisibleNodes()".
+*/
+constexpr int MAX_NODE_INITIAL_LINKS = 128;
+constexpr int MAX_NODES = 1024;
 
 /**
 *	@brief Instance of a node.
@@ -378,23 +386,6 @@ public:
 		return &DestNode(iNode, iLink);
 	}
 #endif
-};
-
-/**
-*	@brief Nodes start out as ents in the level. The node graph  is built, then these ents are discarded.
-*/
-class CNodeEnt : public CBaseEntity
-{
-	void Spawn() override;
-
-	/**
-	*	@brief nodes start out as ents in the world. As they are spawned, the node info is recorded then the ents are discarded.
-	*/
-	void KeyValue(KeyValueData* pkvd) override;
-	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-
-	short m_sHintType = 0;
-	short m_sHintActivity = 0;
 };
 
 /**

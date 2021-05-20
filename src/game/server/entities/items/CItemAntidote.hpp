@@ -15,8 +15,8 @@
 
 #pragma once
 
+#include "CBasePlayer.hpp"
 #include "CItem.hpp"
-#include "player.h"
 #include "weapons.h"
 
 class CItemAntidote : public CItem

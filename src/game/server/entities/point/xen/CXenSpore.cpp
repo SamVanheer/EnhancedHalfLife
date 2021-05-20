@@ -13,12 +13,7 @@
 *
 ****/
 
-#include "CXenHull.hpp"
 #include "CXenSpore.hpp"
-
-LINK_ENTITY_TO_CLASS(xen_spore_small, CXenSporeSmall);
-LINK_ENTITY_TO_CLASS(xen_spore_medium, CXenSporeMed);
-LINK_ENTITY_TO_CLASS(xen_spore_large, CXenSporeLarge);
 
 void CXenSpore::Spawn()
 {
@@ -69,45 +64,4 @@ void CXenSpore::Think()
 
 	}
 #endif
-}
-
-void CXenSporeSmall::Spawn()
-{
-	pev->skin = 0;
-	CXenSpore::Spawn();
-	SetSize(Vector(-16, -16, 0), Vector(16, 16, 64));
-}
-
-void CXenSporeMed::Spawn()
-{
-	pev->skin = 1;
-	CXenSpore::Spawn();
-	SetSize(Vector(-40, -40, 0), Vector(40, 40, 120));
-}
-
-/**
-*	@brief I just eyeballed these -- fill in hulls for the legs
-*/
-const Vector CXenSporeLarge::m_hullSizes[] =
-{
-	Vector(90, -25, 0),
-	Vector(25, 75, 0),
-	Vector(-15, -100, 0),
-	Vector(-90, -35, 0),
-	Vector(-90, 60, 0),
-};
-
-void CXenSporeLarge::Spawn()
-{
-	pev->skin = 2;
-	CXenSpore::Spawn();
-	SetSize(Vector(-48, -48, 110), Vector(48, 48, 240));
-
-	Vector forward, right;
-
-	AngleVectors(GetAbsAngles(), &forward, &right, nullptr);
-
-	// Rotate the leg hulls into position
-	for (std::size_t i = 0; i < ArraySize(m_hullSizes); i++)
-		CXenHull::CreateHull(this, Vector(-12, -12, 0), Vector(12, 12, 120), (m_hullSizes[i].x * forward) + (m_hullSizes[i].y * right));
 }

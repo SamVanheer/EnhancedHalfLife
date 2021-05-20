@@ -28,7 +28,7 @@
 
 #include "CWorld.hpp"
 
-#include "basemonster.h"
+#include "CBaseMonster.hpp"
 #ifndef CLIENT_DLL
-#include "scripted.h"
+#include "CCineMonster.hpp"
 #endif

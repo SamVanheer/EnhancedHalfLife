@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "basemonster.h"
+#include "CBaseMonster.hpp"
 
 constexpr int FGUNTARGET_START_ON = 0x0001;
 

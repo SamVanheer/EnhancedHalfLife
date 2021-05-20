@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "basemonster.h"
+#include "CBaseMonster.hpp"
 
 class CCycler : public CBaseMonster
 {

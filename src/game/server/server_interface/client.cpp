@@ -13,7 +13,6 @@
 *
 ****/
 
-#include "changelevel.hpp"
 #include "client.h"
 #include "game.h"
 #include "customentity.h"
@@ -22,11 +21,12 @@
 #include "netadr.h"
 #include "pm_shared.h"
 #include "UserMessages.h"
-#include "corpse.hpp"
+#include "CCorpse.hpp"
 #include "voice_gamemgr.h"
 #include "entity_state.h"
 #include "server_int.hpp"
 #include "shared_interface/shared_interface.hpp"
+#include "changelevel/CChangeLevel.hpp"
 #include "CRpg.hpp"
 
 extern DLL_GLOBAL std::uint32_t	g_ulModelIndexPlayer;
