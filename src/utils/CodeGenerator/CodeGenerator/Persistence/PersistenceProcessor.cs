@@ -1,6 +1,7 @@
 ﻿using ClangSharp;
 using ClangSharp.Interop;
 using CodeGenerator.CodeGen;
+using CodeGenerator.Diagnostics;
 using CodeGenerator.Processing;
 using CodeGenerator.Utility;
 using System;
@@ -21,11 +22,14 @@ namespace CodeGenerator.Persistence
         private const string EntityBaseClassName = "CBaseEntity";
 
         private readonly HashSet<string> _visitedTypes = new();
+        private readonly HashSet<string> _warnedDuplicateClassesInHeader = new();
 
+        private readonly DiagnosticEngine _diagnosticEngine;
         private readonly GeneratedCode _generatedCode;
 
-        public PersistenceProcessor(GeneratedCode generatedCode)
+        public PersistenceProcessor(DiagnosticEngine diagnosticEngine, GeneratedCode generatedCode)
         {
+            _diagnosticEngine = diagnosticEngine;
             _generatedCode = generatedCode;
         }
 
@@ -92,11 +96,37 @@ namespace CodeGenerator.Persistence
 
             _visitedTypes.Add(fqName);
 
+            bool isEntityClass = IsEntityClass(record);
+
+            record.Location.GetSpellingLocation(out var file, out _, out _, out _);
+
+            var headerFileName = Path.GetFullPath(file.Name.CString.NormalizeSlashes());
+
+            if (isEntityClass
+                && _generatedCode.Classes.Any(c => c.FileName == headerFileName)
+                && !_warnedDuplicateClassesInHeader.Contains(headerFileName))
+            {
+                _warnedDuplicateClassesInHeader.Add(headerFileName);
+                LogError(record, "Multiple classes declared in header. Move each class to its own file to avoid codegen errors");
+            }
+
             var classAttributes = GetRelevantAttributes(record, ClassPrefix);
 
             //Not marked for processing, ignore
             if (classAttributes.IsEmpty)
             {
+                if (isEntityClass)
+                {
+                    LogError(record, $"Class {fqName} is an entity class but has no EHL_CLASS macro");
+                }
+
+                return;
+            }
+
+            //Not currently allowed
+            if (!isEntityClass)
+            {
+                LogError(record, $"Class {fqName} is marked for codegen but is not an entity class");
                 return;
             }
 
@@ -108,10 +138,6 @@ namespace CodeGenerator.Persistence
             }
 
             var baseClass = !isBaseEntity ? record.Bases[0].Referenced.Name : string.Empty;
-
-            record.Location.GetSpellingLocation(out var file, out _, out _, out _);
-
-            var headerFileName = Path.GetFullPath(file.Name.CString.NormalizeSlashes());
 
             var data = new GeneratedClassData(scope, record.Name, headerFileName);
             _generatedCode.Add(data);
@@ -143,6 +169,13 @@ namespace CodeGenerator.Persistence
             }
         }
 
+        private void LogError(Cursor cursor, string message)
+        {
+            cursor.Location.GetSpellingLocation(out var file, out var line, out var column, out _);
+            _diagnosticEngine.AddDiagnostic(Path.GetFullPath(file.Name.CString.NormalizeSlashes()),
+                line, column, message, Severity.Error);
+        }
+
         private static (string Scope, string FullyQualifiedName) GetFullyQualifiedName(NamedDecl decl)
         {
             string scope = string.Empty;
@@ -153,6 +186,26 @@ namespace CodeGenerator.Persistence
             }
 
             return (scope, scope.Length > 0 ? $"{scope}::{decl.Name}" : decl.Name);
+        }
+
+        private static bool IsEntityClass(CXXRecordDecl record)
+        {
+            if (record.DeclContext is TranslationUnitDecl && record.Name == EntityBaseClassName)
+            {
+                return true;
+            }
+
+            if (record.Bases.Count == 0)
+            {
+                return false;
+            }
+
+            if (record.Bases[0].Referenced is not CXXRecordDecl baseClass)
+            {
+                return false;
+            }
+
+            return IsEntityClass(baseClass);
         }
 
         private static (string Key, string Value) ConvertAttributeToKeyValue(string attribute)

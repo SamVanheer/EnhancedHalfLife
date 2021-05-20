@@ -1,6 +1,6 @@
 ﻿using CodeGenerator.CodeGen;
 using CodeGenerator.Configuration;
-using CodeGenerator.ErrorDetection;
+using CodeGenerator.Diagnostics;
 using CodeGenerator.Persistence;
 using CodeGenerator.Processing;
 using System;
@@ -79,22 +79,29 @@ namespace CodeGenerator
 
                 Console.WriteLine("Processing code...");
 
+                var diagnosticEngine = new DiagnosticEngine();
+
                 using var engine = new ProcessingEngine(
                     config.Definitions!.ToImmutableHashSet(),
                     config.IncludePaths!.ToImmutableList(),
                     config.Headers!.Select(h => Path.GetFullPath(h, config.SourceDirectory!)),
                     cachedFileInfo);
 
-                engine.Processors.Add(new PersistenceProcessor(generatedCode));
+                engine.Processors.Add(new PersistenceProcessor(diagnosticEngine, generatedCode));
 
                 newFileInfo = engine.Process();
 
-                Console.WriteLine("Generating code...");
+                //diagnosticEngine.PrintDiagnostics();
 
-                if (!ErrorChecker.CheckForErrors(config.SourceDirectory!, generatedCode))
+                diagnosticEngine.GetDiagnosticCounts(out var infoCount, out var warningCount, out var errorCount);
+
+                Console.WriteLine("{0} Messages, {1} Warnings, {2} Errors", infoCount, warningCount, errorCount);
+
+                if (errorCount == 0)
                 {
                     if (!dryRun)
                     {
+                        Console.WriteLine("Generating code...");
                         var codeGenerator = new Generator(config.BinaryDirectory!, newFileInfo, generatedCode);
 
                         codeGenerator.Generate();
@@ -102,7 +109,7 @@ namespace CodeGenerator
                 }
                 else
                 {
-                    Console.Error.WriteLine("One or more errors found; no code generated");
+                    Console.WriteLine("One or more errors found; no code generated");
                     //The cache is not updated so a second build still shows the same errors
                     return ErrorErrorFoundInCodegen;
                 }
