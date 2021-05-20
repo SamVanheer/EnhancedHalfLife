@@ -153,7 +153,9 @@ namespace CodeGenerator.Persistence
 
             data.AddHeaderInclude(headerFileName);
 
-            data.AddStaticAssertDefinition($"std::is_same_v<{fqName}, {fqName}::ThisClass>", "Did you forget to add EHL_GENERATED_BODY() to the declaration?");
+            data.AddStaticAssertDefinition(
+                $"std::is_same_v<{fqName}, {fqName}::ThisClass>",
+                "Did you forget to add EHL_GENERATED_BODY() or the generated header include?");
 
             //Generate a declaration and definition for persistence if the class has any fields that need it
             var persistedFields = record.Fields
