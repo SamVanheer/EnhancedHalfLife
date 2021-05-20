@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "flyingmonster.h"
+#include "CFlyingMonster.hpp"
 #include "animation.h"
 
 constexpr int SEARCH_RETRY = 16;

@@ -32,10 +32,20 @@ target_sources(hl
 		other/rat.cpp
 		other/roach.cpp
 		CBaseMonster.hpp
+		CBaseMonster.defaultai.cpp
+		CBaseMonster.defaultai.hpp
+		CBaseMonster.h_ai.cpp
+		CBaseMonster.monsters.cpp
+		CBaseMonster.monsters.hpp
+		CBaseMonster.monsterstate.cpp
+		CBaseMonster.schedule.cpp
+		CBaseMonster.schedule.hpp
 		CCineAI.cpp
 		CCineAI.hpp
 		CCineMonster.cpp
 		CCineMonster.hpp
+		CFlyingMonster.cpp
+		CFlyingMonster.hpp
 		combat.cpp
 		CScriptedSentence.cpp
 		CScriptedSentence.hpp
@@ -43,15 +53,5 @@ target_sources(hl
 		CSquadMonster.hpp
 		CTalkMonster.cpp
 		CTalkMonster.hpp
-		defaultai.cpp
-		defaultai.h
-		flyingmonster.cpp
-		flyingmonster.h
-		h_ai.cpp
-		monsters.cpp
-		monsters.h
-		monsterstate.cpp
-		schedule.cpp
-		schedule.h
 		scriptevent.h
 		squad.h)

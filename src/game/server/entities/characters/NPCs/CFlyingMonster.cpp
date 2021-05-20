@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "flyingmonster.h"
+#include "CFlyingMonster.hpp"
 
 constexpr int FLYING_AE_FLAP = 8;
 constexpr int FLYING_AE_FLAPSOUND = 9;

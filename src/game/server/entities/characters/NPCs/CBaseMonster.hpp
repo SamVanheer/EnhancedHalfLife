@@ -16,7 +16,7 @@
 #pragma once
 
 #include "CBaseToggle.hpp"
-#include "schedule.h"
+#include "CBaseMonster.schedule.hpp"
 
 #include "CBaseMonster.generated.hpp"
 

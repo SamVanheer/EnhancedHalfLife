@@ -19,7 +19,7 @@
 #include "monsters.h"
 #include "weapons.h"
 #include "CBasePlayer.hpp"
-#include "hornet.h"
+#include "aliens/hornet.h"
 #include "gamerules.h"
 #include "UserMessages.h"
 #include "CHgun.hpp"
