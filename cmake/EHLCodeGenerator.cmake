@@ -52,10 +52,18 @@ function(ehl_codegen_enable target)
 
 	ehl_codegen_add_clean(${target})
 	
+	# Process and generate code
 	add_custom_command(
 		TARGET ${target}
 		PRE_BUILD
 		COMMAND ${EHL_CODEGEN_COMMAND} generate --config-file "${CMAKE_CURRENT_BINARY_DIR}/EHLCodeGen.json"
+		BYPRODUCTS ${EHL_GENERATED_SOURCE_NAME})
+	
+	# Update the cache file so subsequent compilations skip finished files
+	add_custom_command(
+		TARGET ${target}
+		POST_BUILD
+		COMMAND ${EHL_CODEGEN_COMMAND} update-cache-file --config-file "${CMAKE_CURRENT_BINARY_DIR}/EHLCodeGen.json"
 		BYPRODUCTS ${EHL_GENERATED_SOURCE_NAME})
 		
 		target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/${EHL_GENERATED_DIRECTORY_NAME})

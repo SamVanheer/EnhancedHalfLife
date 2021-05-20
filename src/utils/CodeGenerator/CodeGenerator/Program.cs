@@ -16,12 +16,14 @@ namespace CodeGenerator
     public static class Program
     {
         private const string EHLCodeGeneratorCacheFileName = "EHLCodeGeneratorCache.json";
+        private const string EHLCodeGeneratorNewCacheFileName = "EHLCodeGeneratorNewCache.json";
 
         private const int ErrorSuccess = 0;
         private const int ErrorNoConfigFile = 1;
         private const int ErrorInvalidConfigFile = 2;
         private const int ErrorProcessingFailed = 3;
         private const int ErrorErrorFoundInCodegen = 4;
+        private const int ErrorNoNewCacheFile = 5;
 
         public static int Main(string[] args)
         {
@@ -41,6 +43,15 @@ namespace CodeGenerator
                 description: "Process the target but don't generate any code"));
 
             generateCommand.Handler = CommandHandler.Create<string, bool>(GenerateCode);
+
+            var updateCacheFileCommand = new Command("update-cache-file", "Updates the cache file to include changes from the last run");
+
+            rootCommand.AddCommand(updateCacheFileCommand);
+
+            updateCacheFileCommand.AddOption(new Option<string>("--config-file",
+                    description: "Specifies the path to the configuration file"));
+
+            updateCacheFileCommand.Handler = CommandHandler.Create<string>(UpdateCacheFile);
 
             var cleanCommand = new Command("clean", "Cleans up the generated code and caches");
 
@@ -120,8 +131,34 @@ namespace CodeGenerator
                 return ErrorProcessingFailed;
             }
 
-            //Update the list on disk
-            SaveCache(config.BinaryDirectory!, newFileInfo);
+            //Write the new cache file
+            SaveCache(config.BinaryDirectory!, EHLCodeGeneratorNewCacheFileName, newFileInfo);
+
+            return ErrorSuccess;
+        }
+
+        private static int UpdateCacheFile(string configFile)
+        {
+            var config = LoadConfigurationFile(configFile);
+
+            if (config is null)
+            {
+                return ErrorInvalidConfigFile;
+            }
+
+            var newCacheFileName = Path.Combine(config.BinaryDirectory!, EHLCodeGeneratorNewCacheFileName);
+
+            if (!File.Exists(newCacheFileName))
+            {
+                Console.Error.WriteLine("New cache file not found");
+                return ErrorNoNewCacheFile;
+            }
+
+            Console.WriteLine("Updating cache file...");
+
+            var cacheFileName = Path.Combine(config.BinaryDirectory!, EHLCodeGeneratorCacheFileName);
+
+            File.Move(newCacheFileName, cacheFileName, true);
 
             return ErrorSuccess;
         }
@@ -191,7 +228,7 @@ namespace CodeGenerator
             }
         }
 
-        private static void SaveCache(string binaryDirectory, ImmutableDictionary<string, ProcessedFileInfo> newFileChangeInfo)
+        private static void SaveCache(string binaryDirectory, string cacheFileName, ImmutableDictionary<string, ProcessedFileInfo> newFileChangeInfo)
         {
             var list = new EHLCodeGeneratorCache
             {
@@ -210,7 +247,7 @@ namespace CodeGenerator
                 WriteIndented = true
             });
 
-            File.WriteAllText(Path.Combine(binaryDirectory, EHLCodeGeneratorCacheFileName), serialized);
+            File.WriteAllText(Path.Combine(binaryDirectory, cacheFileName), serialized);
         }
     }
 }
