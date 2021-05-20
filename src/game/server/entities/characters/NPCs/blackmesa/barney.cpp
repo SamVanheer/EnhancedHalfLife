@@ -15,7 +15,7 @@
 
 // UNDONE: Holster weapon?
 
-#include "defaultai.h"
+#include "CBaseMonster.defaultai.hpp"
 
 //=========================================================
 // Monster's Anim Events Go Here

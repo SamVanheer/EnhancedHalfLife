@@ -17,7 +17,7 @@
 #include "util.h"
 #include "cbase.h"
 #include "CBasePlayer.hpp"
-#include "monsters.h"
+#include "CBaseMonster.monsters.hpp"
 #include "weapons.h"
 #include "effects/CBeam.hpp"
 #include "effects/CSprite.hpp"

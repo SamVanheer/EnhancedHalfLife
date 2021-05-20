@@ -15,7 +15,7 @@
 
 #include "animation.h"
 #include "CCineMonster.hpp"
-#include "defaultai.h"
+#include "CBaseMonster.defaultai.hpp"
 
 void CCineMonster::KeyValue(KeyValueData* pkvd)
 {

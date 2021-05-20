@@ -23,7 +23,7 @@
 #include "CBasePlayer.hpp"
 #include "CSquadMonster.hpp"
 #include "CTalkMonster.hpp"
-#include "monsters.h"
+#include "CBaseMonster.monsters.hpp"
 #include "weapons.h"
 #include "effects/CBeam.hpp"
 #include "effects/CSprite.hpp"

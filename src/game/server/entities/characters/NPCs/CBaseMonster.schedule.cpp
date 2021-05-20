@@ -21,7 +21,7 @@
 
 #include "animation.h"
 #include "navigation/nodes.h"
-#include "defaultai.h"
+#include "CBaseMonster.defaultai.hpp"
 
 bool CBaseMonster::HasSchedule()
 {

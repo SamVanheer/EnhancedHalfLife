@@ -16,7 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
-#include "monsters.h"
+#include "CBaseMonster.monsters.hpp"
 
 #include "CTalkMonster.generated.hpp"
 

@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "defaultai.h"
+#include "CBaseMonster.defaultai.hpp"
 #include "animation.h"
 
 constexpr int SCIENTIST_BODYGROUP_HEAD = 1;

@@ -17,7 +17,7 @@
 #include "util.h"
 #include "cbase.h"
 #include "weapons.h"
-#include "monsters.h"
+#include "CBaseMonster.monsters.hpp"
 #include "CBasePlayer.hpp"
 #include "gamerules.h"
 #include "UserMessages.h"

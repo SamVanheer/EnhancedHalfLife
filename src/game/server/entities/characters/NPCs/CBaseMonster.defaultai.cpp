@@ -19,7 +19,7 @@
 *	Default behaviors.
 */
 
-#include "defaultai.h"
+#include "CBaseMonster.defaultai.hpp"
 
 Task_t	tlFail[] =
 {
