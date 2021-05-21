@@ -76,7 +76,8 @@ namespace CodeGenerator.Processing
                     ProcessTranslationUnit(translationUnit);
                 }
 
-                newFileInfo.Add(new ProcessedFileInfo(file, DateTimeOffset.UtcNow, processFile, fileChangeInfo?.HasGeneratedSourceFile == true));
+                //Only carry over generated source file info if we didn't process the header so the generator can provide an up-to-date value later on
+                newFileInfo.Add(new ProcessedFileInfo(file, DateTimeOffset.UtcNow, processFile, !processFile && fileChangeInfo?.HasGeneratedSourceFile == true));
             }
 
             return newFileInfo.ToImmutableDictionary(i => i.FileName);
