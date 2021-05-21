@@ -49,6 +49,9 @@ function(ehl_codegen_add_clean target)
 endfunction()
 
 function(ehl_codegen_enable target)
+	# Do this first so the include path is added to the generated file as well
+	target_include_directories(${target} BEFORE PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/${EHL_GENERATED_DIRECTORY_NAME})
+	
 	ehl_codegen_generate_config_file(${target})
 
 	ehl_codegen_add_clean(${target})
@@ -64,9 +67,7 @@ function(ehl_codegen_enable target)
 	add_custom_command(
 		TARGET ${target}
 		POST_BUILD
-		COMMAND ${EHL_CODEGEN_COMMAND} update-cache-file --config-file "${CMAKE_CURRENT_BINARY_DIR}/EHLCodeGen.json"
-		BYPRODUCTS ${EHL_GENERATED_SOURCE_NAME})
-		
-		target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/${EHL_GENERATED_DIRECTORY_NAME})
-		target_sources(${target} PRIVATE ${EHL_GENERATED_SOURCE_NAME})
+		COMMAND ${EHL_CODEGEN_COMMAND} update-cache-file --config-file "${CMAKE_CURRENT_BINARY_DIR}/EHLCodeGen.json")
+	
+	target_sources(${target} PRIVATE ${EHL_GENERATED_SOURCE_NAME})
 endfunction()
