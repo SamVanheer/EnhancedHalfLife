@@ -13,6 +13,7 @@ target_sources(hl
 		CNullEntity.hpp
 		CWorld.cpp
 		CWorld.hpp
+		locksounds.cpp
 		locksounds.hpp
 		subs.cpp
 		brush/CBreakable.cpp

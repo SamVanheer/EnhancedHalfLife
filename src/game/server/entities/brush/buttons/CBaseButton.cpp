@@ -204,38 +204,6 @@ void CBaseButton::Spawn()
 	}
 }
 
-const char* ButtonSound(int sound)
-{
-	switch (sound)
-	{
-	case 0: return "common/null.wav";
-	case 1: return "buttons/button1.wav";
-	case 2: return "buttons/button2.wav";
-	case 3: return "buttons/button3.wav";
-	case 4: return "buttons/button4.wav";
-	case 5: return "buttons/button5.wav";
-	case 6: return "buttons/button6.wav";
-	case 7: return "buttons/button7.wav";
-	case 8: return "buttons/button8.wav";
-	case 9: return "buttons/button9.wav";
-	case 10: return "buttons/button10.wav";
-	case 11: return "buttons/button11.wav";
-	case 12: return "buttons/latchlocked1.wav";
-	case 13: return "buttons/latchunlocked1.wav";
-	case 14: return "buttons/lightswitch2.wav";
-
-		// next 6 slots reserved for any additional sliding button sounds we may add
-
-	case 21: return "buttons/lever1.wav";
-	case 22: return "buttons/lever2.wav";
-	case 23: return "buttons/lever3.wav";
-	case 24: return "buttons/lever4.wav";
-	case 25: return "buttons/lever5.wav";
-
-	default:return "buttons/button9.wav";
-	}
-}
-
 void CBaseButton::ButtonSpark()
 {
 	SetThink(&CBaseButton::ButtonSpark);
