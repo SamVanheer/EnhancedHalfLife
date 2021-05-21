@@ -218,7 +218,6 @@ target_sources(hl
 		point/CSprayCan.hpp
 		point/CStripWeapons.cpp
 		point/CStripWeapons.hpp
-		point/effects.cpp
 		point/cyclers/CCycler.cpp
 		point/cyclers/CCycler.hpp
 		point/cyclers/CCyclerSprite.cpp
