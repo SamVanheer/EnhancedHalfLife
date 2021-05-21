@@ -15,7 +15,7 @@
 
 #include "CBaseMonster.defaultai.hpp"
 #include "CScientist.hpp"
-#include "animation.h"
+#include "animation.hpp"
 
 LINK_ENTITY_TO_CLASS(monster_scientist, CScientist);
 

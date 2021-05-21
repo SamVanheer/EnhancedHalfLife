@@ -22,8 +22,8 @@
 
 #include<VGUI_StackLayout.h>
 
-#include "camera.h"
-#include "kbutton.h"
+#include "camera.hpp"
+#include "kbutton.hpp"
 
 #define MOTD_TITLE_X		XRES(16)
 #define MOTD_TITLE_Y		YRES(16)

@@ -13,9 +13,9 @@
 *
 ****/
 
-#include "event_api.h"
-#include "pmtrace.h"
-#include "ev_hldm.h"
+#include "event_api.hpp"
+#include "pmtrace.hpp"
+#include "ev_hldm.hpp"
 
 /**
 *	@brief Associate script file name with callback functions.

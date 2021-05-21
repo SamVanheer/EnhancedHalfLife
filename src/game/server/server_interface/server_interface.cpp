@@ -14,7 +14,7 @@
 ****/
 
 #include "server_interface.hpp"
-#include "util.h"
+#include "util.hpp"
 
 // Holds engine functionality callbacks
 enginefuncs_t g_engfuncs;

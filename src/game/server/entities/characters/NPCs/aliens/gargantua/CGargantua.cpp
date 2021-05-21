@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "customentity.h"
+#include "customentity.hpp"
 #include "CBreakable.hpp"
 #include "CGargantua.hpp"
 #include "CSpiral.hpp"

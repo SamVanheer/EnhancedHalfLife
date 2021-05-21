@@ -12,13 +12,13 @@
 *	Triangle rendering apis are in gEngfuncs.pTriAPI
 */
 
-#include "entity_state.h"
-#include "cl_entity.h"
-#include "triangleapi.h"
-#include "Exports.h"
+#include "entity_state.hpp"
+#include "cl_entity.hpp"
+#include "triangleapi.hpp"
+#include "Exports.hpp"
 
-#include "particleman.h"
-#include "tri.h"
+#include "particleman.hpp"
+#include "tri.hpp"
 
 void DLLEXPORT HUD_DrawNormalTriangles()
 {

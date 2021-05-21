@@ -17,7 +17,7 @@
 
 #include <cstdint>
 
-#include "nodes.h"
+#include "nodes.hpp"
 
 constexpr std::int32_t GRAPH_VERSION = 17; //!< !!!increment this whever graph/node/link classes change, to obsolesce older disk files.
 

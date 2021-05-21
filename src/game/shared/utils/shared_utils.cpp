@@ -15,9 +15,9 @@
 
 #include <string>
 
-#include "Platform.h"
+#include "Platform.hpp"
 #include "shared_utils.hpp"
-#include "cbase.h"
+#include "cbase.hpp"
 #include "CBasePlayer.hpp"
 #include "CStringPool.hpp"
 

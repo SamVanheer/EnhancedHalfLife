@@ -21,16 +21,16 @@
 *	If so, cut it from here, paste it in hl_weapons.cpp or somewhere else and add in the functionality you need.
 */
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
 #include "CBasePlayer.hpp"
-#include "weapons.h"
-#include "navigation/nodes.h"
+#include "weapons.hpp"
+#include "navigation/nodes.hpp"
 #include "CBaseWeapon.hpp"
 #include "CGrenade.hpp"
 #include "CSoundEnt.hpp"
-#include "skill.h"
+#include "skill.hpp"
 
 // Globals used by game logic
 enginefuncs_t g_engfuncs;

@@ -17,9 +17,9 @@
 
 #include "CBasePlayer.hpp"
 #include "CItem.hpp"
-#include "skill.h"
-#include "UserMessages.h"
-#include "weapons.h"
+#include "skill.hpp"
+#include "UserMessages.hpp"
+#include "weapons.hpp"
 #include "CItemBattery.generated.hpp"
 
 constexpr float BATTERY_DEFAULT_CAPACITY = -1;

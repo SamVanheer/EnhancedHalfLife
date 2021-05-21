@@ -13,7 +13,6 @@
 *
 ****/
 
-#include "animation.h"
 #include "CIchthyosaur.hpp"
 
 LINK_ENTITY_TO_CLASS(monster_ichthyosaur, CIchthyosaur);

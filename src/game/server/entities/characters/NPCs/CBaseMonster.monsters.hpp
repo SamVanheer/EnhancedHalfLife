@@ -22,7 +22,7 @@
 */
 
 #include "effects/CGib.hpp"
-#include "skill.h"
+#include "skill.hpp"
 
 struct WayPoint_t;
 

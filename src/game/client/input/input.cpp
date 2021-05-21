@@ -11,13 +11,13 @@
 
 #include <cctype>
 
-#include "camera.h"
-#include "kbutton.h"
-#include "cvardef.h"
-#include "usercmd.h"
-#include "camera.h"
-#include "view.h"
-#include "Exports.h"
+#include "camera.hpp"
+#include "kbutton.hpp"
+#include "cvardef.hpp"
+#include "usercmd.hpp"
+#include "camera.hpp"
+#include "view.hpp"
+#include "Exports.hpp"
 
 extern bool g_iAlive;
 

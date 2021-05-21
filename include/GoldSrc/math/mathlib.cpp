@@ -12,8 +12,8 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#include "Platform.h"
-#include "mathlib.h"
+#include "Platform.hpp"
+#include "mathlib.hpp"
 
 #pragma warning(disable : 4244)
 

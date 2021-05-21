@@ -19,8 +19,6 @@
 *	base class monster functions for controlling core AI.
 */
 
-#include "animation.h"
-
 void CBaseMonster::SetState(NPCState State)
 {
 	/*

@@ -16,7 +16,7 @@
 #pragma once
 
 #include "shared_utils.hpp"
-#include "progdefs.h"
+#include "progdefs.hpp"
 
 class CBaseEntity;
 class CBasePlayer;

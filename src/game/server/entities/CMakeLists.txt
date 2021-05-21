@@ -1,9 +1,9 @@
 target_sources(hl
 	PRIVATE
 		animation.cpp
-		animation.h
+		animation.hpp
 		animationevent.hpp
-		cbase.h
+		cbase.hpp
 		CBaseAnimating.cpp
 		CBaseAnimating.hpp
 		CBaseDelay.hpp

@@ -13,17 +13,17 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
 #include "CBaseMonster.monsters.hpp"
-#include "weapons.h"
+#include "weapons.hpp"
 #include "CBasePlayer.hpp"
 #include "CSoundEnt.hpp"
-#include "shake.h"
-#include "gamerules.h"
-#include "UserMessages.h"
-#include "weaponinfo.h"
+#include "shake.hpp"
+#include "gamerules.hpp"
+#include "UserMessages.hpp"
+#include "weaponinfo.hpp"
 #include "CGauss.hpp"
 
 LINK_ENTITY_TO_CLASS(weapon_gauss, CGauss);

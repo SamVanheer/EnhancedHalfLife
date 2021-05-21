@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "extdll.h"
+#include "extdll.hpp"
 
 class CBaseEntity;
 

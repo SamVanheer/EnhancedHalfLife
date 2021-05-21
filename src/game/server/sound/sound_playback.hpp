@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "const.h"
+#include "const.hpp"
 
 class CBaseEntity;
 class Vector;

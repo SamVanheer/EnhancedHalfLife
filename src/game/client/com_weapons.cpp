@@ -19,10 +19,10 @@
 *	Shared weapons common/shared functions
 */
 
-#include "com_weapons.h"
+#include "com_weapons.hpp"
 
-#include "entity_state.h"
-#include "r_efx.h"
+#include "entity_state.hpp"
+#include "r_efx.hpp"
 
 /**
 *	@brief During our weapon prediction processing,

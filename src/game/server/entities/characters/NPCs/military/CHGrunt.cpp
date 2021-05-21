@@ -13,8 +13,7 @@
 *
 ****/
 
-#include "plane.h"
-#include "animation.h"
+#include "animation.hpp"
 #include "CHGrunt.hpp"
 #include "CGrenade.hpp"
 

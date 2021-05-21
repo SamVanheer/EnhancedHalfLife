@@ -15,8 +15,8 @@
 
 #include <cctype>
 
-#include "Platform.h"
-#include "mathlib.h"
+#include "Platform.hpp"
+#include "mathlib.hpp"
 #include "CTokenizer.hpp"
 #include "string_utils.hpp"
 

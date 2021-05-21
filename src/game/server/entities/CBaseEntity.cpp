@@ -14,8 +14,8 @@
 ****/
 
 #include "CBaseEntity.hpp"
-#include "client.h"
-#include "game.h"
+#include "client.hpp"
+#include "game.hpp"
 #include "dll_functions.hpp"
 
 extern DLL_GLOBAL Vector		g_vecAttackDir;

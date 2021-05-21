@@ -14,7 +14,7 @@
 ****/
 
 #include "CRevertSaved.hpp"
-#include "shake.h"
+#include "shake.hpp"
 
 LINK_ENTITY_TO_CLASS(player_loadsaved, CRevertSaved);
 

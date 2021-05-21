@@ -15,8 +15,8 @@
 
 #include <limits>
 
-#include "animation.h"
-#include "studio.h"
+#include "animation.hpp"
+#include "studio.hpp"
 
 studiohdr_t* CBaseAnimating::GetModelPointer()
 {

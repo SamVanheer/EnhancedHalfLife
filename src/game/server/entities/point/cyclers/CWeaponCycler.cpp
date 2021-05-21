@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "animation.h"
+#include "animation.hpp"
 #include "CWeaponCycler.hpp"
 
 LINK_ENTITY_TO_CLASS(cycler_weapon, CWeaponCycler);

@@ -13,8 +13,7 @@
 *
 ****/
 
-#include "animation.h"
-#include "plane.h"
+#include "plane.hpp"
 
 bool CSquadMonster::OccupySlot(int iDesiredSlots)
 {

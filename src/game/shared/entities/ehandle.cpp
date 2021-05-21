@@ -13,9 +13,9 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
 #include "ehandle.hpp"
 
 CBaseEntity* BaseHandle::operator=(CBaseEntity* entity)

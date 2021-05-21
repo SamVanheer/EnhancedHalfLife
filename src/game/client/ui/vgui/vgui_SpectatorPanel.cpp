@@ -1,10 +1,10 @@
-#include "entity_state.h"
-#include "cl_entity.h"
-#include "pm_shared.h"
-#include "vgui_SpectatorPanel.h"
-#include "vgui_ScorePanel.h"
+#include "entity_state.hpp"
+#include "cl_entity.hpp"
+#include "pm_shared.hpp"
+#include "vgui_SpectatorPanel.hpp"
+#include "vgui_ScorePanel.hpp"
 
-#include "Exports.h"
+#include "Exports.hpp"
 
 void DLLEXPORT HUD_ChatInputPosition(int* x, int* y)
 {

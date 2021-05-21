@@ -6,7 +6,7 @@
 //=============================================================================
 
 #include <cassert>
-#include "vgui_grid.h"
+#include "vgui_grid.hpp"
 
 using namespace vgui;
 

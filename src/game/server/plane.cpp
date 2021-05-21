@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "plane.h"
+#include "plane.hpp"
 
 CPlane::CPlane(const Vector& vecNormal, const Vector& vecPoint)
 	: m_vecNormal(vecNormal)

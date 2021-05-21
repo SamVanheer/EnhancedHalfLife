@@ -20,13 +20,13 @@
 
 #include <VGUI_LineBorder.h>
 
-#include "entity_state.h"
-#include "cl_entity.h"
-#include "vgui_ScorePanel.h"
-#include "vgui_helpers.h"
-#include "vgui_loadtga.h"
-#include "voice_status.h"
-#include "vgui_SpectatorPanel.h"
+#include "entity_state.hpp"
+#include "cl_entity.hpp"
+#include "vgui_ScorePanel.hpp"
+#include "vgui_helpers.hpp"
+#include "vgui_loadtga.hpp"
+#include "voice_status.hpp"
+#include "vgui_SpectatorPanel.hpp"
 
 team_info_t			 g_TeamInfo[MAX_TEAMS + 1];
 int					 g_IsSpectator[MAX_PLAYERS + 1];

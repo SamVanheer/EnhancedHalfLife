@@ -13,16 +13,16 @@
 *
 ****/
 
-#include "demo.h"
+#include "demo.hpp"
 
-#include "demo_api.h"
-#include "entity_state.h"
-#include "cl_entity.h"
+#include "demo_api.hpp"
+#include "entity_state.hpp"
+#include "cl_entity.hpp"
 
-#include "pm_defs.h"
-#include "event_api.h"
-#include "entity_types.h"
-#include "r_efx.h"
+#include "pm_defs.hpp"
+#include "event_api.hpp"
+#include "entity_types.hpp"
+#include "r_efx.hpp"
 
 extern BEAM* pBeam;
 extern BEAM* pBeam2;

@@ -13,9 +13,9 @@
 *
 ****/
 
-#include "entity_state.h"
-#include "cl_entity.h"
-#include "event_api.h"
+#include "entity_state.hpp"
+#include "cl_entity.hpp"
+#include "event_api.hpp"
 
 DECLARE_MESSAGE(m_StatusIcons, StatusIcon);
 

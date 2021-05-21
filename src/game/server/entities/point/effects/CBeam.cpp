@@ -14,7 +14,7 @@
 ****/
 
 #include "CBeam.hpp"
-#include "customentity.h"
+#include "customentity.hpp"
 
 LINK_ENTITY_TO_CLASS(beam, CBeam);
 

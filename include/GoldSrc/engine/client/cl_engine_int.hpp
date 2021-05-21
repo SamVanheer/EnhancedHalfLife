@@ -2,10 +2,10 @@
 
 #include <cstdint>
 
-#include "Platform.h"
-#include "const.h"
-#include "netadr.h"
-#include "Sequence.h"
+#include "Platform.hpp"
+#include "const.hpp"
+#include "netadr.hpp"
+#include "Sequence.hpp"
 
 struct cl_entity_t;
 struct client_sprite_t;

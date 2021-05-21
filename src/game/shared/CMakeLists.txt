@@ -1,7 +1,7 @@
 function(add_shared_sources target)
 	target_sources(${target}
 		PRIVATE
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/cdll_dll.h
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/cdll_dll.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/filesystem_shared.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/filesystem_shared.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/ehandle.cpp
@@ -38,12 +38,12 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CSqueak.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CTripmine.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CTripmine.hpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/weapons.h
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/weapons.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/weapons_shared.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_debug.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_debug.h
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_debug.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.cpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.h
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shared_interface/shared_interface.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/shared_interface/shared_interface.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/sound/materials.cpp
@@ -51,7 +51,7 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/sound/sentences.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/sound/sentences.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/BinaryReader.hpp
-			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/bitvec.h
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/bitvec.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CStringPool.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CStringPool.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/utils/CTokenizer.cpp

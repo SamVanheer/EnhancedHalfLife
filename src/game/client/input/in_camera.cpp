@@ -5,12 +5,12 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include "camera.h"
-#include "kbutton.h"
-#include "cvardef.h"
-#include "usercmd.h"
-#include "camera.h"
-#include "Exports.h"
+#include "camera.hpp"
+#include "kbutton.hpp"
+#include "cvardef.hpp"
+#include "usercmd.hpp"
+#include "camera.hpp"
+#include "Exports.hpp"
 
 #include "SDL2/SDL_mouse.h"
 

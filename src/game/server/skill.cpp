@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "skill.h"
+#include "skill.hpp"
 
 float GetSkillCvar(const char* pName)
 {

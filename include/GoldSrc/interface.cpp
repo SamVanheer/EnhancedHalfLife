@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <string>
 
-#include "interface.h"
+#include "interface.hpp"
 
 #include "PlatformHeaders.hpp"
 

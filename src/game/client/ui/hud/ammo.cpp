@@ -13,13 +13,13 @@
 *
 ****/
 
-#include "pm_shared.h"
+#include "pm_shared.hpp"
 
-#include "ammohistory.h"
+#include "ammohistory.hpp"
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
 #include "CBaseWeapon.hpp"
 
 /**

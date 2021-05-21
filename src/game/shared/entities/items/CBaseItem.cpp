@@ -13,10 +13,10 @@
 *
 ****/
 
-#include "cbase.h"
+#include "cbase.hpp"
 #include "CBasePlayer.hpp"
-#include "weapons.h"
-#include "gamerules.h"
+#include "weapons.hpp"
+#include "gamerules.hpp"
 #include "CBaseItem.hpp"
 
 void CBaseItem::KeyValue(KeyValueData* pkvd)

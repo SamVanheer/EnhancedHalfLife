@@ -20,7 +20,7 @@
 #include <cstddef>
 #include <string_view>
 
-#include "vector.h"
+#include "vector.hpp"
 
 /**
 *	@brief Copies src to dest and always null terminates the result

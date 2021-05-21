@@ -15,11 +15,11 @@
 
 #include <limits>
 
-#include "gamerules.h"
-#include "teamplay_gamerules.h"
-#include "game.h"
-#include "UserMessages.h"
-#include "voice_gamemgr.h"
+#include "gamerules.hpp"
+#include "teamplay_gamerules.hpp"
+#include "game.hpp"
+#include "UserMessages.hpp"
+#include "voice_gamemgr.hpp"
 
 static char team_names[MAX_TEAMS][TEAM_NAME_LENGTH];
 static int team_scores[MAX_TEAMS];

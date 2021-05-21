@@ -13,15 +13,15 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
 #include "CBaseMonster.monsters.hpp"
-#include "weapons.h"
+#include "weapons.hpp"
 #include "CBasePlayer.hpp"
 #include "CSoundEnt.hpp"
-#include "gamerules.h"
-#include "UserMessages.h"
+#include "gamerules.hpp"
+#include "UserMessages.hpp"
 #include "CGrenade.hpp"
 #include "CMP5.hpp"
 

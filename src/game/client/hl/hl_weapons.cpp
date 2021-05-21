@@ -12,23 +12,23 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
 #include "CBaseMonster.monsters.hpp"
-#include "weapons.h"
+#include "weapons.hpp"
 #include "CBasePlayer.hpp"
 
-#include "usercmd.h"
-#include "entity_state.h"
-#include "demo_api.h"
-#include "pm_defs.h"
-#include "event_api.h"
-#include "r_efx.h"
+#include "usercmd.hpp"
+#include "entity_state.hpp"
+#include "demo_api.hpp"
+#include "pm_defs.hpp"
+#include "event_api.hpp"
+#include "r_efx.hpp"
 
-#include "cl_dll.h"
-#include "com_weapons.h"
-#include "demo.h"
+#include "cl_dll.hpp"
+#include "com_weapons.hpp"
+#include "demo.hpp"
 
 #include "CCrossbow.hpp"
 #include "CCrowbar.hpp"

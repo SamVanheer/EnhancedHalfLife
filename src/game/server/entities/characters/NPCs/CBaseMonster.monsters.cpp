@@ -19,8 +19,8 @@
 *	Monster-related utility code
 */
 
-#include "navigation/nodes.h"
-#include "animation.h"
+#include "navigation/nodes.hpp"
+#include "animation.hpp"
 #include "dll_functions.hpp"
 
 constexpr int MONSTER_CUT_CORNER_DIST = 8; // 8 means the monster's bounding box is contained without the box of the node in WC

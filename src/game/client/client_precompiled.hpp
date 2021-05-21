@@ -17,9 +17,9 @@
 
 //Include a bunch of common headers
 
-//Includes Platform.h and mathlib.h
-#include "hud.h"
-#include "cl_util.h"
+//Includes Platform.hpp and mathlib.hpp
+#include "hud.hpp"
+#include "cl_util.hpp"
 
-#include "parsemsg.h"
-#include "vgui_TeamFortressViewport.h"
+#include "parsemsg.hpp"
+#include "vgui_TeamFortressViewport.hpp"

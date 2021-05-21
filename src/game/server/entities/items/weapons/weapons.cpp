@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "UserMessages.h"
+#include "UserMessages.hpp"
 #include "dll_functions.hpp"
 #include "CBaseWeapon.hpp"
 

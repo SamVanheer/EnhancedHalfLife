@@ -16,7 +16,7 @@
 #include <limits>
 
 #include "CBaseMonster.defaultai.hpp"
-#include "animation.h"
+#include "animation.hpp"
 
 const char* CTalkMonster::m_szFriends[TLK_CFRIENDS] =
 {

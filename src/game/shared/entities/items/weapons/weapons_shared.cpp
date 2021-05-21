@@ -12,17 +12,17 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
 #include "CBasePlayer.hpp"
 #include "CBaseWeapon.hpp"
-#include "gamerules.h"
+#include "gamerules.hpp"
 
 #ifdef CLIENT_DLL
-#include "hud.h"
-#include "cl_util.h"
-#include "com_weapons.h"
+#include "hud.hpp"
+#include "cl_util.hpp"
+#include "com_weapons.hpp"
 
 extern int g_irunninggausspred;
 #endif

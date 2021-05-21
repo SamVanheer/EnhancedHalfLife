@@ -19,8 +19,8 @@
 *	precaches and defs for entities and other data that must always be available.
 */
 
-#include "navigation/nodes.h"
-#include "client.h"
+#include "navigation/nodes.hpp"
+#include "client.hpp"
 #include "dll_functions.hpp"
 #include "CCorpse.hpp"
 #include "CBaseDMStart.hpp"

@@ -16,7 +16,7 @@
 #pragma once
 
 #include "CBaseItem.hpp"
-#include "weapons.h"
+#include "weapons.hpp"
 
 #include "CBaseWeapon.generated.hpp"
 

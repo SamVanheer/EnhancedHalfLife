@@ -14,7 +14,7 @@
 ****/
 
 #include "CHealthKit.hpp"
-#include "UserMessages.h"
+#include "UserMessages.hpp"
 
 LINK_ENTITY_TO_CLASS(item_healthkit, CHealthKit);
 

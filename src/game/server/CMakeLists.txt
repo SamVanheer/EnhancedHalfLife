@@ -40,32 +40,32 @@ target_compile_definitions(hl PRIVATE
 	VALVE_DLL)
 
 target_sources(hl PRIVATE
-	activity.h
+	activity.hpp
 	decals.cpp
 	decals.hpp
 	entity_iteration.cpp
 	entity_iteration.hpp
-	extdll.h
+	extdll.hpp
 	globals.cpp
 	plane.cpp
-	plane.h
+	plane.hpp
 	server_precompiled.hpp
 	skill.cpp
-	skill.h
+	skill.hpp
 	UserMessages.cpp
-	UserMessages.h
+	UserMessages.hpp
 	util.cpp
-	util.h
+	util.hpp
 	voice_gamemgr.cpp
-	voice_gamemgr.h
+	voice_gamemgr.hpp
 	gamerules/gamerules.cpp
-	gamerules/gamerules.h
+	gamerules/gamerules.hpp
 	gamerules/mapcycle.cpp
 	gamerules/mapcycle.hpp
 	gamerules/multiplay_gamerules.cpp
 	gamerules/singleplay_gamerules.cpp
 	gamerules/teamplay_gamerules.cpp
-	gamerules/teamplay_gamerules.h
+	gamerules/teamplay_gamerules.hpp
 	navigation/CNodeEnt.cpp
 	navigation/CNodeEnt.hpp
 	navigation/CNodeViewer.cpp
@@ -73,7 +73,7 @@ target_sources(hl PRIVATE
 	navigation/CTestHull.cpp
 	navigation/CTestHull.hpp
 	navigation/nodes.cpp
-	navigation/nodes.h
+	navigation/nodes.hpp
 	navigation/nodes_io.cpp
 	navigation/nodes_io.hpp
 	persistence/globalstate.cpp
@@ -81,59 +81,59 @@ target_sources(hl PRIVATE
 	persistence/saverestore.cpp
 	persistence/saverestore.hpp
 	server_interface/client.cpp
-	server_interface/client.h
+	server_interface/client.hpp
 	server_interface/dll_functions.cpp
 	server_interface/dll_functions.hpp
-	server_interface/enginecallback.h
+	server_interface/enginecallback.hpp
 	server_interface/game.cpp
-	server_interface/game.h
+	server_interface/game.hpp
 	server_interface/server_interface.cpp
 	server_interface/server_interface.hpp
 	sound/sound_playback.cpp
 	sound/sound_playback.hpp
-	${INCLUDE_DIRECTORY}/GoldSrc/const.h
-	${INCLUDE_DIRECTORY}/GoldSrc/crc.h
-	${INCLUDE_DIRECTORY}/GoldSrc/cvardef.h
-	${INCLUDE_DIRECTORY}/GoldSrc/director_cmds.h
-	${INCLUDE_DIRECTORY}/GoldSrc/enums.h
-	${INCLUDE_DIRECTORY}/GoldSrc/FileSystem.h
-	${INCLUDE_DIRECTORY}/GoldSrc/hltv.h
-	${INCLUDE_DIRECTORY}/GoldSrc/in_buttons.h
+	${INCLUDE_DIRECTORY}/GoldSrc/const.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/crc.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/cvardef.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/director_cmds.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/enums.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/FileSystem.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/hltv.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/in_buttons.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/interface.cpp
-	${INCLUDE_DIRECTORY}/GoldSrc/interface.h
-	${INCLUDE_DIRECTORY}/GoldSrc/keydefs.h
-	${INCLUDE_DIRECTORY}/GoldSrc/netadr.h
-	${INCLUDE_DIRECTORY}/GoldSrc/Platform.h
+	${INCLUDE_DIRECTORY}/GoldSrc/interface.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/keydefs.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/netadr.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/Platform.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/PlatformHeaders.hpp
-	${INCLUDE_DIRECTORY}/GoldSrc/Sequence.h
-	${INCLUDE_DIRECTORY}/GoldSrc/studio.h
-	${INCLUDE_DIRECTORY}/GoldSrc/winsani_in.h
-	${INCLUDE_DIRECTORY}/GoldSrc/winsani_out.h
+	${INCLUDE_DIRECTORY}/GoldSrc/Sequence.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/studio.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/winsani_in.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/winsani_out.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/codegen/codegen_api.hpp
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/com_model.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/custom.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/customentity.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/edict.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/entity_state.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_args.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_flags.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_defs.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_info.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_movevars.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/pmtrace.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/progdefs.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/progs.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/r_studioint.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/screenfade.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/shake.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/usercmd.h
-	${INCLUDE_DIRECTORY}/GoldSrc/engine/weaponinfo.h
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/com_model.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/custom.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/customentity.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/edict.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/entity_state.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_args.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_flags.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_defs.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_info.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_movevars.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/pmtrace.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/progdefs.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/progs.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/r_studioint.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/screenfade.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/shake.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/usercmd.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/weaponinfo.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/server/sv_engine_int.hpp
-	${INCLUDE_DIRECTORY}/GoldSrc/game/voice_common.h
+	${INCLUDE_DIRECTORY}/GoldSrc/game/voice_common.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/game/server/server_int.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/math/mathlib.cpp
-	${INCLUDE_DIRECTORY}/GoldSrc/math/mathlib.h
-	${INCLUDE_DIRECTORY}/GoldSrc/math/vector.h)
+	${INCLUDE_DIRECTORY}/GoldSrc/math/mathlib.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/math/vector.hpp)
 
 add_subdirectory(entities)
 

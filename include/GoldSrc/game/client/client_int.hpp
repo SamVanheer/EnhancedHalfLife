@@ -2,10 +2,10 @@
 
 #include <cstdint>
 
-#include "const.h"
-#include "vector.h"
-#include "netadr.h"
-#include "Platform.h"
+#include "const.hpp"
+#include "vector.hpp"
+#include "netadr.hpp"
+#include "Platform.hpp"
 
 struct cl_enginefunc_t;
 struct cl_entity_t;

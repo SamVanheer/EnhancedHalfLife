@@ -15,7 +15,7 @@
 
 #include "CNodeEnt.hpp"
 #include "CTestHull.hpp"
-#include "nodes.h"
+#include "nodes.hpp"
 
 LINK_ENTITY_TO_CLASS(info_node, CNodeEnt);
 LINK_ENTITY_TO_CLASS(info_node_air, CNodeEnt);

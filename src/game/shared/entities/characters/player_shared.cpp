@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "cbase.h"
+#include "cbase.hpp"
 #include "CBasePlayer.hpp"
 #include "CBaseWeapon.hpp"
 

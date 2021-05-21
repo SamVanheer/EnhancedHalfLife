@@ -5,8 +5,8 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include "Platform.h"
-#include "voice_banmgr.h"
+#include "Platform.hpp"
+#include "voice_banmgr.hpp"
 #include "filesystem_shared.hpp"
 
 constexpr int BANMGR_FILEVERSION = 1;

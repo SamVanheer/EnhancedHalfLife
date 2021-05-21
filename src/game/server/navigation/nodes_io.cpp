@@ -18,7 +18,7 @@
 #include <memory>
 #include <new>
 
-#include "nodes.h"
+#include "nodes.hpp"
 #include "nodes_io.hpp"
 #include "BinaryReader.hpp"
 

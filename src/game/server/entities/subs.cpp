@@ -19,7 +19,7 @@
 *	frequently used global functions
 */
 
-#include "navigation/nodes.h"
+#include "navigation/nodes.hpp"
 #include "doors/CBaseDoor.hpp"
 #include "CNullEntity.hpp"
 

@@ -15,18 +15,18 @@
 
 #include <cassert>
 
-#include "Platform.h"
+#include "Platform.hpp"
 #include "PlatformHeaders.hpp"
 
 #ifndef CLIENT_DLL
-#include "extdll.h"
-#include "util.h"
+#include "extdll.hpp"
+#include "util.hpp"
 #else
-#include "hud.h"
-#include "cl_util.h"
+#include "hud.hpp"
+#include "cl_util.hpp"
 #endif
 
-#include "interface.h"
+#include "interface.hpp"
 
 #include "filesystem_shared.hpp"
 

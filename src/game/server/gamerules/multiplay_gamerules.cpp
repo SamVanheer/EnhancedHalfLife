@@ -15,15 +15,15 @@
 
 #include <limits>
 
-#include "gamerules.h"
+#include "gamerules.hpp"
 
-#include "game.h"
+#include "game.hpp"
 #include "CBaseItem.hpp"
 #include "CBaseWeapon.hpp"
 #include "CItem.hpp"
-#include "voice_gamemgr.h"
-#include "hltv.h"
-#include "UserMessages.h"
+#include "voice_gamemgr.hpp"
+#include "hltv.hpp"
+#include "UserMessages.hpp"
 #include "mapcycle.hpp"
 #include "CSatchelCharge.hpp"
 

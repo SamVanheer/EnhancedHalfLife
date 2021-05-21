@@ -5,7 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include"vgui_int.h"
+#include"vgui_int.hpp"
 #include<VGUI_BorderLayout.h>
 
 using namespace vgui;

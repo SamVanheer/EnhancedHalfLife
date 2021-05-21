@@ -13,8 +13,8 @@
 *
 ****/
 
-#include "Platform.h"
-#include "mathlib.h"
+#include "Platform.hpp"
+#include "mathlib.hpp"
 #include "view_utils.hpp"
 
 void UTIL_DropPunchAngle(float frametime, Vector& ev_punchangle)

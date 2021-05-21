@@ -7,16 +7,16 @@
 
 #include <cassert>
 
-#include "demo.h"
-#include "demo_api.h"
-#include "voice_status.h"
-#include "r_efx.h"
-#include "entity_types.h"
+#include "demo.hpp"
+#include "demo_api.hpp"
+#include "voice_status.hpp"
+#include "r_efx.hpp"
+#include "entity_types.hpp"
 #include "VGUI_ActionSignal.h"
 #include "VGUI_Scheme.h"
 #include "VGUI_TextImage.h"
-#include "vgui_loadtga.h"
-#include "vgui_helpers.h"
+#include "vgui_loadtga.hpp"
+#include "vgui_helpers.hpp"
 #include "VGUI_MouseCode.h"
 #include "CTokenizer.hpp"
 

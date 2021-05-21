@@ -14,7 +14,7 @@
 ****/
 
 #include "CNodeViewer.hpp"
-#include "nodes.h"
+#include "nodes.hpp"
 
 LINK_ENTITY_TO_CLASS(node_viewer, CNodeViewer);
 LINK_ENTITY_TO_CLASS(node_viewer_human, CNodeViewer);

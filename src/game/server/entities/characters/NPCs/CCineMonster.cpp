@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "animation.h"
+#include "animation.hpp"
 #include "CCineMonster.hpp"
 #include "CBaseMonster.defaultai.hpp"
 

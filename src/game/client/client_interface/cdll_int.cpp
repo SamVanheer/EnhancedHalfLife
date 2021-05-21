@@ -20,23 +20,23 @@
 */
 
 #include "client_int.hpp"
-#include "netadr.h"
-#include "interface.h"
+#include "netadr.hpp"
+#include "interface.hpp"
 #include "sound/materials.hpp"
-//#include "vgui_schememanager.h"
+//#include "vgui_schememanager.hpp"
 
-#include "pm_shared.h"
+#include "pm_shared.hpp"
 
-#include "vgui_int.h"
+#include "vgui_int.hpp"
 
-#include "Exports.h"
+#include "Exports.hpp"
 
-#include "tri.h"
+#include "tri.hpp"
 #include "shared_interface/shared_interface.hpp"
 
 TeamFortressViewport* gViewPort = nullptr;
 
-#include "particleman.h"
+#include "particleman.hpp"
 CSysModule* g_hParticleManModule = nullptr;
 
 void CL_LoadParticleMan();
@@ -243,7 +243,7 @@ extern "C" void DLLEXPORT F(void* pv)
 	*pcldll_func = cldll_func;
 }
 
-#include "IGameClientExports.h"
+#include "IGameClientExports.hpp"
 
 /**
 *	@brief Exports functions that are used by the gameUI for UI dialogs

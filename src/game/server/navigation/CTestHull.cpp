@@ -16,8 +16,8 @@
 #include "CCorpse.hpp"
 #include "CTestHull.hpp"
 #include "dll_functions.hpp"
-#include "game.h"
-#include "nodes.h"
+#include "game.hpp"
+#include "nodes.hpp"
 
 LINK_ENTITY_TO_CLASS(testhull, CTestHull);
 

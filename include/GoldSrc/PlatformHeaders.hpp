@@ -23,9 +23,9 @@
 #define NOMCX
 #define NOIME
 #define NOMINMAX
-#include "winsani_in.h"
+#include "winsani_in.hpp"
 #include <Windows.h>
-#include "winsani_out.h"
+#include "winsani_out.hpp"
 
 #else // _WIN32
 #define MAX_PATH PATH_MAX

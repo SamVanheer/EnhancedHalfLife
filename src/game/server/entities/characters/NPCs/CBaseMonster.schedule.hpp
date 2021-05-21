@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "mathlib.h"
+#include "mathlib.hpp"
 
 enum class TaskStatus
 {

@@ -17,7 +17,7 @@
 
 #include <cstdint>
 
-#include "custom.h"
+#include "custom.hpp"
 
 struct clientdata_t;
 struct entity_state_t;

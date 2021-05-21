@@ -5,9 +5,9 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include "vgui_scrollbar2.h"
-#include "vgui_slider2.h"
-#include "vgui_loadtga.h"
+#include "vgui_scrollbar2.hpp"
+#include "vgui_slider2.hpp"
+#include "vgui_loadtga.hpp"
 
 #include<VGUI_IntChangeSignal.h>
 #include<VGUI_Button.h>

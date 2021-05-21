@@ -15,18 +15,18 @@
 
 #include <cassert>
 
-#include "Platform.h"
+#include "Platform.hpp"
 
-#include "mathlib.h"
-#include "cdll_dll.h"
-#include "const.h"
-#include "usercmd.h"
-#include "pm_defs.h"
-#include "pm_shared.h"
-#include "pm_movevars.h"
-#include "pm_debug.h"
+#include "mathlib.hpp"
+#include "cdll_dll.hpp"
+#include "const.hpp"
+#include "usercmd.hpp"
+#include "pm_defs.hpp"
+#include "pm_shared.hpp"
+#include "pm_movevars.hpp"
+#include "pm_debug.hpp"
 #include "sound/materials.hpp"
-#include "com_model.h"
+#include "com_model.hpp"
 #include "string_utils.hpp"
 #include "view_utils.hpp"
 

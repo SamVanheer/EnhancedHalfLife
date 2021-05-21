@@ -13,12 +13,12 @@
 *
 ****/
 
-#include "gamerules.h"
-#include "teamplay_gamerules.h"
-#include "game.h"
+#include "gamerules.hpp"
+#include "teamplay_gamerules.hpp"
+#include "game.hpp"
 #include "CBaseItem.hpp"
 #include "CBaseWeapon.hpp"
-#include "UserMessages.h"
+#include "UserMessages.hpp"
 #include "CBaseDMStart.hpp"
 
 extern DLL_GLOBAL bool	g_fGameOver;

@@ -20,8 +20,8 @@
 
 #include <algorithm>
 
-#include "shake.h"
-#include "UserMessages.h"
+#include "shake.hpp"
+#include "UserMessages.hpp"
 
 float UTIL_WeaponTimeBase()
 {

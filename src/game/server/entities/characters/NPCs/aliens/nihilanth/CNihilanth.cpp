@@ -15,7 +15,7 @@
 
 #include "CNihilanth.hpp"
 #include "CNihilanthHVR.hpp"
-#include "navigation/nodes.h"
+#include "navigation/nodes.hpp"
 
 LINK_ENTITY_TO_CLASS(monster_nihilanth, CNihilanth);
 

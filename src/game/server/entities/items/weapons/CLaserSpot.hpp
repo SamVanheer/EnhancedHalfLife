@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "weapons.h"
+#include "weapons.hpp"
 #include "CLaserSpot.generated.hpp"
 
 class EHL_CLASS() CLaserSpot : public CBaseEntity

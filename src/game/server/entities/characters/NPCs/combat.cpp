@@ -19,7 +19,7 @@
 *	functions dealing with damage infliction & death
 */
 
-#include "animation.h"
+#include "animation.hpp"
 #include "CBreakable.hpp"
 
 bool CBaseMonster::HasHumanGibs()

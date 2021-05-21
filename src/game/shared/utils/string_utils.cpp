@@ -19,8 +19,8 @@
 #include <cstdint>
 #include <string>
 
-#include "Platform.h"
-#include "mathlib.h"
+#include "Platform.hpp"
+#include "mathlib.hpp"
 #include "string_utils.hpp"
 
 bool Q_IsValidUChar32(char32_t uVal)

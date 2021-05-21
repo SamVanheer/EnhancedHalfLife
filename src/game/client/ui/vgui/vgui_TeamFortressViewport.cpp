@@ -37,23 +37,23 @@
 #include<VGUI_App.h>
 #include<VGUI_BuildGroup.h>
 
-#include "camera.h"
-#include "kbutton.h"
-#include "cvardef.h"
-#include "usercmd.h"
-#include "camera.h"
-#include "pm_shared.h"
-#include "keydefs.h"
-#include "demo.h"
-#include "demo_api.h"
+#include "camera.hpp"
+#include "kbutton.hpp"
+#include "cvardef.hpp"
+#include "usercmd.hpp"
+#include "camera.hpp"
+#include "pm_shared.hpp"
+#include "keydefs.hpp"
+#include "demo.hpp"
+#include "demo_api.hpp"
 
-#include "vgui_int.h"
-#include "vgui_TeamFortressViewport.h"
-#include "vgui_ScorePanel.h"
-#include "vgui_SpectatorPanel.h"
+#include "vgui_int.hpp"
+#include "vgui_TeamFortressViewport.hpp"
+#include "vgui_ScorePanel.hpp"
+#include "vgui_SpectatorPanel.hpp"
 
-#include "shake.h"
-#include "screenfade.h"
+#include "shake.hpp"
+#include "screenfade.hpp"
 #include "CTokenizer.hpp"
 
 extern bool g_iVisibleMouse;

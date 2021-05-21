@@ -15,7 +15,7 @@
 
 #include "CBigMomma.hpp"
 #include "CBMortar.hpp"
-#include "game.h"
+#include "game.hpp"
 
 LINK_ENTITY_TO_CLASS(monster_bigmomma, CBigMomma);
 

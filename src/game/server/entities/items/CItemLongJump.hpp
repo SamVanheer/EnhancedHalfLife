@@ -17,7 +17,7 @@
 
 #include "CBasePlayer.hpp"
 #include "CItem.hpp"
-#include "UserMessages.h"
+#include "UserMessages.hpp"
 #include "CItemLongJump.generated.hpp"
 
 class EHL_CLASS() CItemLongJump : public CItem

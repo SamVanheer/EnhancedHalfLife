@@ -17,8 +17,8 @@
 
 #include "codegen/codegen_api.hpp"
 
-#include "extdll.h"
-#include "util.h"
+#include "extdll.hpp"
+#include "util.hpp"
 #include "saverestore.hpp"
 #include "globalstate.hpp"
 #include "ehandle.hpp"

@@ -24,7 +24,7 @@
 #include "CBaseEntity.hpp"
 #include "CBaseMonster.hpp"
 
-#include "util.h" //TODO: get rid of DLL_GLOBAL so we can remove this header include
+#include "util.hpp" //TODO: get rid of DLL_GLOBAL so we can remove this header include
 #include "CEnvExplosion.generated.hpp"
 
 class CBaseEntity;

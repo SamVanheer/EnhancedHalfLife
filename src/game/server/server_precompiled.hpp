@@ -17,17 +17,17 @@
 
 //Include a bunch of common headers
 
-//Includes extdll.h and util.h
-#include "cbase.h"
+//Includes extdll.hpp and util.hpp
+#include "cbase.hpp"
 
 #include "CBasePlayer.hpp"
 #include "CSquadMonster.hpp"
 #include "CTalkMonster.hpp"
 #include "CBaseMonster.monsters.hpp"
-#include "weapons.h"
+#include "weapons.hpp"
 #include "effects/CBeam.hpp"
 #include "effects/CSprite.hpp"
-#include "skill.h"
-#include "gamerules.h"
+#include "skill.hpp"
+#include "gamerules.hpp"
 #include "decals.hpp"
 #include "CSoundEnt.hpp"

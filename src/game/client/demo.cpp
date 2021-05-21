@@ -13,9 +13,9 @@
 *
 ****/
 
-#include "demo.h"
-#include "demo_api.h"
-#include "Exports.h"
+#include "demo.hpp"
+#include "demo_api.hpp"
+#include "Exports.hpp"
 
 int g_demosniper = 0;
 int g_demosniperdamage = 0;

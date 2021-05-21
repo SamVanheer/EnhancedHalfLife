@@ -1,5 +1,5 @@
-#include "extdll.h"
-#include "util.h"
+#include "extdll.hpp"
+#include "util.hpp"
 
 #include "CStringPool.hpp"
 

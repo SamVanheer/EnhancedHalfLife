@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "game.h"
+#include "game.hpp"
 #include "CHAssassin.hpp"
 #include "CGrenade.hpp"
 

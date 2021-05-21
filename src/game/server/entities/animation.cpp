@@ -13,10 +13,10 @@
 *
 ****/
 
-#include "studio.h"
-#include "activity.h"
-#include "animation.h"
-#include "scriptevent.h"
+#include "studio.hpp"
+#include "activity.hpp"
+#include "animation.hpp"
+#include "scriptevent.hpp"
 
 #pragma warning( disable : 4244 )
 

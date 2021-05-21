@@ -18,13 +18,13 @@
 
 #include "VGUI_Font.h"
 
-#include "camera.h"
-#include "kbutton.h"
-#include "cvardef.h"
-#include "usercmd.h"
-#include "camera.h"
+#include "camera.hpp"
+#include "kbutton.hpp"
+#include "cvardef.hpp"
+#include "usercmd.hpp"
+#include "camera.hpp"
 
-#include "vgui_loadtga.h"
+#include "vgui_loadtga.hpp"
 
 // Arrow filenames
 const char* sArrowFilenames[] =

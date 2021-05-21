@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "vector.h"
+#include "vector.hpp"
 
 void UTIL_DropPunchAngle(float frametime, Vector& ev_punchangle);
 float UTIL_CalcRoll(const Vector& angles, const Vector& velocity, float rollangle, float rollspeed);

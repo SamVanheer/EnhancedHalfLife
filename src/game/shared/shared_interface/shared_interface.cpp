@@ -13,10 +13,10 @@
 *
 ****/
 
-#include "Platform.h"
-#include "mathlib.h"
-#include "const.h"
-#include "cdll_dll.h"
+#include "Platform.hpp"
+#include "mathlib.hpp"
+#include "const.hpp"
+#include "cdll_dll.hpp"
 
 bool Shared_GetHullBounds(int hullnumber, Vector& mins, Vector& maxs)
 {

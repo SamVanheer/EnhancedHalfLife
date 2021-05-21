@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "Platform.h"
+#include "Platform.hpp"
 
 class CBaseEntity;
 class CRestore;

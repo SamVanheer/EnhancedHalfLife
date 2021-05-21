@@ -18,8 +18,7 @@
 #include <new>
 #include <queue>
 
-#include "nodes.h"
-#include "animation.h"
+#include "nodes.hpp"
 #include "doors/CBaseDoor.hpp"
 #include "CCorpse.hpp"
 

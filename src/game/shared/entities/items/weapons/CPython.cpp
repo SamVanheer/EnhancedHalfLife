@@ -13,14 +13,14 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "weapons.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
+#include "weapons.hpp"
 #include "CBaseMonster.monsters.hpp"
 #include "CBasePlayer.hpp"
-#include "gamerules.h"
-#include "UserMessages.h"
+#include "gamerules.hpp"
+#include "UserMessages.hpp"
 #include "CPython.hpp"
 
 LINK_ENTITY_TO_CLASS(weapon_python, CPython);

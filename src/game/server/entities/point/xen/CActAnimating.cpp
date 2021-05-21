@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "animation.h"
+#include "animation.hpp"
 #include "CActAnimating.hpp"
 
 void CActAnimating::SetActivity(Activity act)

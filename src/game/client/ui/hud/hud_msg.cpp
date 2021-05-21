@@ -13,13 +13,13 @@
 *
 ****/
 
-#include "hud.h"
-#include "r_efx.h"
+#include "hud.hpp"
+#include "r_efx.hpp"
 
-#include "extdll.h"
-#include "util.h"
+#include "extdll.hpp"
+#include "util.hpp"
 
-#include "particleman.h"
+#include "particleman.hpp"
 
 extern BEAM* pBeam;
 extern BEAM* pBeam2;

@@ -15,8 +15,8 @@
 
 #include "CBullsquid.hpp"
 #include "CSquidSpit.hpp"
-#include "navigation/nodes.h"
-#include "game.h"
+#include "navigation/nodes.hpp"
+#include "game.hpp"
 
 LINK_ENTITY_TO_CLASS(monster_bullchicken, CBullsquid);
 

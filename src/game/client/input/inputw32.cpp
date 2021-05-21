@@ -13,14 +13,14 @@
 */
 
 #include "PlatformHeaders.hpp"
-#include "camera.h"
-#include "kbutton.h"
-#include "cvardef.h"
-#include "usercmd.h"
-#include "camera.h"
-#include "keydefs.h"
-#include "view.h"
-#include "Exports.h"
+#include "camera.hpp"
+#include "kbutton.hpp"
+#include "cvardef.hpp"
+#include "usercmd.hpp"
+#include "camera.hpp"
+#include "keydefs.hpp"
+#include "view.hpp"
+#include "Exports.hpp"
 
 #include <SDL2/SDL_mouse.h>
 #include <SDL2/SDL_gamecontroller.h>

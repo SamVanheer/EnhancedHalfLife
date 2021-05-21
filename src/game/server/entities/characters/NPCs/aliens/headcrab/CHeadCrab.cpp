@@ -14,7 +14,7 @@
 ****/
 
 #include "CHeadCrab.hpp"
-#include "game.h"
+#include "game.hpp"
 
 //=========================================================
 // Monster's Anim Events Go Here

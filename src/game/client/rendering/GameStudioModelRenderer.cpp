@@ -5,18 +5,18 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include "com_model.h"
-#include "studio.h"
-#include "entity_state.h"
-#include "cl_entity.h"
-#include "dlight.h"
-#include "triangleapi.h"
+#include "com_model.hpp"
+#include "studio.hpp"
+#include "entity_state.hpp"
+#include "cl_entity.hpp"
+#include "dlight.hpp"
+#include "triangleapi.hpp"
 
-#include "r_studioint.h"
+#include "r_studioint.hpp"
 
-#include "StudioModelRenderer.h"
-#include "GameStudioModelRenderer.h"
-#include "Exports.h"
+#include "StudioModelRenderer.hpp"
+#include "GameStudioModelRenderer.hpp"
+#include "Exports.hpp"
 
 /**
 *	@file

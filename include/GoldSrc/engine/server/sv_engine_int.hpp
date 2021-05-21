@@ -24,10 +24,10 @@
 
 #include <cstdint>
 
-#include "cvardef.h"
-#include "Sequence.h"
-#include "crc.h"
-#include "progdefs.h"
+#include "cvardef.hpp"
+#include "Sequence.hpp"
+#include "crc.hpp"
+#include "progdefs.hpp"
 
 struct cvar_t;
 struct delta_t;

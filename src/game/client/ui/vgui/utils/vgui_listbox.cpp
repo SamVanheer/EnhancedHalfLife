@@ -5,7 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include "vgui_listbox.h"
+#include "vgui_listbox.hpp"
 
 using namespace vgui;
 

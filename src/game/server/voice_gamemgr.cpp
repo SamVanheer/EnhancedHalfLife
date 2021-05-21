@@ -5,7 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include "voice_gamemgr.h"
+#include "voice_gamemgr.hpp"
 
 constexpr float UPDATE_INTERVAL = 0.3;
 

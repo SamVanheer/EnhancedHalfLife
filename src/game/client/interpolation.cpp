@@ -7,7 +7,7 @@
 **
 ******************************************************************************/
 
-#include "interpolation.h"
+#include "interpolation.hpp"
 
 /**
 *	@brief determinant of matrix a,b,c

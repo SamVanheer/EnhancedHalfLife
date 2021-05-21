@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "weapons.h"
+#include "weapons.hpp"
 #include "CWeaponBox.generated.hpp"
 
 /**

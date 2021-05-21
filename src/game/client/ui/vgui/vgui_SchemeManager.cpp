@@ -18,8 +18,8 @@
 
 #include <string>
 
-#include "vgui_SchemeManager.h"
-#include "cvardef.h"
+#include "vgui_SchemeManager.hpp"
+#include "cvardef.hpp"
 #include "CTokenizer.hpp"
 
 cvar_t* g_CV_BitmapFonts;

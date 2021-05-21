@@ -5,7 +5,7 @@
 #include <cstring>
 #include <stdexcept>
 
-#include "Platform.h"
+#include "Platform.hpp"
 
 /**
 *	@brief Allows reading binary data from a buffer

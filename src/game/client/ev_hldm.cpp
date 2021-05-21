@@ -13,28 +13,28 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
-#include "weapons.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
+#include "weapons.hpp"
 
-#include "entity_state.h"
-#include "cl_entity.h"
-#include "entity_types.h"
-#include "usercmd.h"
-#include "pm_defs.h"
+#include "entity_state.hpp"
+#include "cl_entity.hpp"
+#include "entity_types.hpp"
+#include "usercmd.hpp"
+#include "pm_defs.hpp"
 #include "sound/materials.hpp"
 
-#include "eventscripts.h"
-#include "ev_hldm.h"
+#include "eventscripts.hpp"
+#include "ev_hldm.hpp"
 
-#include "r_efx.h"
-#include "event_api.h"
-#include "event_args.h"
+#include "r_efx.hpp"
+#include "event_api.hpp"
+#include "event_args.hpp"
 
-#include "r_studioint.h"
-#include "com_model.h"
-#include "view.h"
+#include "r_studioint.hpp"
+#include "com_model.hpp"
+#include "view.hpp"
 
 #include "CCrossbow.hpp"
 #include "CCrowbar.hpp"

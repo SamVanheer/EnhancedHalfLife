@@ -13,18 +13,18 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
 #include "CBasePlayer.hpp"
 #include "CBaseMonster.monsters.hpp"
-#include "weapons.h"
+#include "weapons.hpp"
 #include "effects/CBeam.hpp"
 #include "effects/CSprite.hpp"
-#include "customentity.h"
-#include "gamerules.h"
-#include "UserMessages.h"
-#include "weaponinfo.h"
+#include "customentity.hpp"
+#include "gamerules.hpp"
+#include "UserMessages.hpp"
+#include "weaponinfo.hpp"
 #include "CEgon.hpp"
 
 constexpr float EGON_SWITCH_NARROW_TIME = 0.75;		// Time it takes to switch fire modes

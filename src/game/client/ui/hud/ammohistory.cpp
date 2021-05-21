@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "ammohistory.h"
+#include "ammohistory.hpp"
 
 HistoryResource gHR;
 

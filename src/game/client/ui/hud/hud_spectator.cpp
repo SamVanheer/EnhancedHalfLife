@@ -8,23 +8,23 @@
 #include <string>
 #include <string_view>
 
-#include "cl_entity.h"
-#include "triangleapi.h"
-#include "vgui_SpectatorPanel.h"
-#include "hltv.h"
+#include "cl_entity.hpp"
+#include "triangleapi.hpp"
+#include "vgui_SpectatorPanel.hpp"
+#include "hltv.hpp"
 
-#include "pm_shared.h"
-#include "pm_defs.h"
-#include "pmtrace.h"
-#include "entity_types.h"
-#include "view.h"
+#include "pm_shared.hpp"
+#include "pm_defs.hpp"
+#include "pmtrace.hpp"
+#include "entity_types.hpp"
+#include "view.hpp"
 #include "CTokenizer.hpp"
 
 // these are included for the math functions
-#include "com_model.h"
-#include "demo_api.h"
-#include "event_api.h"
-#include "screenfade.h"
+#include "com_model.hpp"
+#include "demo_api.hpp"
+#include "event_api.hpp"
+#include "screenfade.hpp"
 
 #pragma warning(disable: 4244)
 

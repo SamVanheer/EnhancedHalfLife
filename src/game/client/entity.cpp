@@ -4,17 +4,17 @@
 *	Client side entity management functions
 */
 
-#include "entity_types.h"
-#include "studio.h" // def. of mstudioevent_t
-#include "r_efx.h"
-#include "event_api.h"
-#include "pm_defs.h"
-#include "pmtrace.h"	
-#include "pm_shared.h"
-#include "Exports.h"
-#include "scriptevent.h"
+#include "entity_types.hpp"
+#include "studio.hpp" // def. of mstudioevent_t
+#include "r_efx.hpp"
+#include "event_api.hpp"
+#include "pm_defs.hpp"
+#include "pmtrace.hpp"	
+#include "pm_shared.hpp"
+#include "Exports.hpp"
+#include "scriptevent.hpp"
 
-#include "particleman.h"
+#include "particleman.hpp"
 
 void Game_AddObjects();
 

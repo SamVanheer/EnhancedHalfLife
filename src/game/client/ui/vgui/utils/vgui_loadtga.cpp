@@ -5,10 +5,10 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include "wrect.h"
-#include "cl_dll.h"
+#include "wrect.hpp"
+#include "cl_dll.hpp"
 #include "VGUI.h"
-#include "vgui_loadtga.h"
+#include "vgui_loadtga.hpp"
 #include "VGUI_InputStream.h"
 #include "filesystem_shared.hpp"
 

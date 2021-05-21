@@ -17,7 +17,7 @@
 
 #include "CBasePlayer.hpp"
 #include "CItem.hpp"
-#include "weapons.h"
+#include "weapons.hpp"
 #include "CItemAntidote.generated.hpp"
 
 class EHL_CLASS() CItemAntidote : public CItem

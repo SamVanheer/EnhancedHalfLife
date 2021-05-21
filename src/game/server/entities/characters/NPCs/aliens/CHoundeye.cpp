@@ -13,10 +13,10 @@
 *
 ****/
 
-#include "animation.h"
+#include "animation.hpp"
 #include "CHoundeye.hpp"
-#include "navigation/nodes.h"
-#include "game.h"
+#include "navigation/nodes.hpp"
+#include "game.hpp"
 
 LINK_ENTITY_TO_CLASS(monster_houndeye, CHoundeye);
 

@@ -19,8 +19,8 @@
 *	functions and data pertaining to the monsters' AI scheduling system.
 */
 
-#include "animation.h"
-#include "navigation/nodes.h"
+#include "animation.hpp"
+#include "navigation/nodes.hpp"
 #include "CBaseMonster.defaultai.hpp"
 
 bool CBaseMonster::HasSchedule()

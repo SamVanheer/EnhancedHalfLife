@@ -5,9 +5,9 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include "Platform.h"
-#include "vgui_checkbutton2.h"
-#include "vgui_loadtga.h"
+#include "Platform.hpp"
+#include "vgui_checkbutton2.hpp"
+#include "vgui_loadtga.hpp"
 
 constexpr int EXTRA_X = 5;
 

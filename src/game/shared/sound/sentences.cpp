@@ -13,9 +13,9 @@
 *
 ****/
 
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
 #include "sentences.hpp"
 
 void SENTENCEG_Init()

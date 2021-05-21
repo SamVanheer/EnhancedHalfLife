@@ -12,13 +12,13 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
 #include "CBaseMonster.monsters.hpp"
-#include "weapons.h"
+#include "weapons.hpp"
 #include "CBasePlayer.hpp"
-#include "weaponinfo.h"
+#include "weaponinfo.hpp"
 #include "CGrenade.hpp"
 #include "CHandGrenade.hpp"
 

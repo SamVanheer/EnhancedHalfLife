@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "hud.h"
+#include "hud.hpp"
 constexpr int MAX_LOGO_FRAMES = 56;
 
 constexpr int grgLogoFrame[MAX_LOGO_FRAMES] =

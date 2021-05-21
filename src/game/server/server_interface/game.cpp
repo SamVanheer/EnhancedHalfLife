@@ -13,7 +13,7 @@
 *
 ****/
 
-#include "game.h"
+#include "game.hpp"
 
 cvar_t	displaysoundlist = {"displaysoundlist","0"};
 

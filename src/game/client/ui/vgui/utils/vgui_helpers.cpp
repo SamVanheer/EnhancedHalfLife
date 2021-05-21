@@ -5,7 +5,7 @@
 // $NoKeywords: $
 //=============================================================================
 
-#include "vgui_helpers.h"
+#include "vgui_helpers.hpp"
 
 using namespace vgui;
 

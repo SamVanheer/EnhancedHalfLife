@@ -22,8 +22,8 @@ target_sources(hl
 		CSquadMonster.hpp
 		CTalkMonster.cpp
 		CTalkMonster.hpp
-		scriptevent.h
-		squad.h
+		scriptevent.hpp
+		squad.hpp
 		aliens/CAGrunt.cpp
 		aliens/CAGrunt.hpp
 		aliens/CBarnacle.cpp
@@ -42,7 +42,6 @@ target_sources(hl
 		aliens/CLeech.hpp
 		aliens/CZombie.cpp
 		aliens/CZombie.hpp
-		
 		aliens/aflock/CFlockingFlyer.cpp
 		aliens/aflock/CFlockingFlyer.hpp
 		aliens/aflock/CFlockingFlyerFlock.cpp
@@ -83,7 +82,6 @@ target_sources(hl
 		aliens/tentacle/CTentacle.hpp
 		aliens/tentacle/CTentacleMaw.cpp
 		aliens/tentacle/CTentacleMaw.hpp
-		
 		blackmesa/CBarney.cpp
 		blackmesa/CBarney.hpp
 		blackmesa/CDeadBarney.cpp

@@ -12,15 +12,15 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#include "extdll.h"
-#include "util.h"
-#include "cbase.h"
+#include "extdll.hpp"
+#include "util.hpp"
+#include "cbase.hpp"
 #include "CBaseMonster.monsters.hpp"
-#include "weapons.h"
+#include "weapons.hpp"
 #include "CBasePlayer.hpp"
 #include "effects/CBeam.hpp"
 #include "effects/CSprite.hpp"
-#include "gamerules.h"
+#include "gamerules.hpp"
 #include "CTripmine.hpp"
 
 constexpr int	TRIPMINE_PRIMARY_VOLUME = 450;

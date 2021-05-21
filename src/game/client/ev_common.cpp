@@ -19,14 +19,14 @@
 *	shared event functions
 */
 
-#include "entity_state.h"
-#include "cl_entity.h"
+#include "entity_state.hpp"
+#include "cl_entity.hpp"
 
-#include "r_efx.h"
+#include "r_efx.hpp"
 
-#include "eventscripts.h"
-#include "event_api.h"
-#include "pm_shared.h"
+#include "eventscripts.hpp"
+#include "event_api.hpp"
+#include "pm_shared.hpp"
 
 bool IsFirstPersonSpectator()
 {

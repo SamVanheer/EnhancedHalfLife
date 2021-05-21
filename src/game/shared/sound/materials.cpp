@@ -19,7 +19,7 @@
 #include <cctype>
 #include <vector>
 
-#include "Platform.h"
+#include "Platform.hpp"
 #include "filesystem_shared.hpp"
 #include "materials.hpp"
 #include "shared_utils.hpp"

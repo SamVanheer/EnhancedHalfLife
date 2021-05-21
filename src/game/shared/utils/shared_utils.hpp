@@ -17,8 +17,8 @@
 
 #include <cstddef>
 
-#include "const.h"
-#include "progdefs.h"
+#include "const.hpp"
+#include "progdefs.hpp"
 
 class CBaseEntity;
 class CBasePlayer;
