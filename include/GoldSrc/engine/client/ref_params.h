@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "vector.h"
+
 struct movevars_t;
 struct usercmd_t;
 

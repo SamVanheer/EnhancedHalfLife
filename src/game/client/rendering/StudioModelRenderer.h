@@ -7,7 +7,15 @@
 
 #pragma once
 
+#include "Platform.h"
+#include "mathlib.h"
+#include "studio.h"
+
+struct cl_entity_t;
+struct cvar_t;
 struct entity_state_t;
+struct model_t;
+struct player_info_t;
 
 class CStudioModelRenderer
 {

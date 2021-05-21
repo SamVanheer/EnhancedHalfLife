@@ -20,6 +20,7 @@
 #include <memory>
 #include <tuple>
 
+#include "Platform.h"
 #include "FileSystem.h"
 
 inline IFileSystem* g_pFileSystem = nullptr;

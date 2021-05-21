@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "cl_engine_int.hpp"
 #include "cvardef.h"
 
 #include "Platform.h"

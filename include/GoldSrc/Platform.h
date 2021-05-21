@@ -47,6 +47,7 @@ using byte = unsigned char;
 using word = unsigned short;
 using string_t = unsigned int;
 using qboolean = int;
+using vec_t = float;
 
 constexpr string_t iStringNull = 0;
 

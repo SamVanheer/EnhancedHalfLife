@@ -15,6 +15,10 @@
 
 #pragma once
 
+#include "ammo.h"
+#include "cdll_dll.h"
+#include "wrect.h"
+
 /**
 *	@brief this is the max number of items in each bucket
 */

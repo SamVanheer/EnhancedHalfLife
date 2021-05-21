@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "vector.h"
+
 enum ptype_t
 {
 	pt_static,

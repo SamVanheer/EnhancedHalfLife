@@ -20,6 +20,8 @@
 #include <cstddef>
 #include <string_view>
 
+#include "vector.h"
+
 /**
 *	@brief Copies src to dest and always null terminates the result
 *	@param dst Buffer to copy the string to

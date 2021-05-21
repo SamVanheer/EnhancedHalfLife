@@ -21,6 +21,8 @@
 *	Studio models are position independent, so the cache manager can move them.
 */
 
+#include "Platform.h"
+#include "mathlib.h"
 
 constexpr int MAXSTUDIOTRIANGLES = 20000;
 constexpr int MAXSTUDIOVERTS = 2048;

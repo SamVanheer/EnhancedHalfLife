@@ -7,6 +7,9 @@
 
 #pragma once
 
+#include "Platform.h"
+#include "vector.h"
+
 /**
 *	@brief Types of demo messages we can write/parse
 */

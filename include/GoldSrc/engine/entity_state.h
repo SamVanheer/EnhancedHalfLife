@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "Platform.h"
+#include "mathlib.h"
+#include "const.h"
 #include "pm_info.h"
 #include "weaponinfo.h"
 

@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "vector.h"
+
 struct model_t;
 struct particle_t;
 

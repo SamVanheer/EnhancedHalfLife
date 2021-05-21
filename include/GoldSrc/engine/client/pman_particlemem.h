@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "vector.h"
+
 class CCoreTriangleEffect;
 
 constexpr int TRIANGLE_FPS = 30;

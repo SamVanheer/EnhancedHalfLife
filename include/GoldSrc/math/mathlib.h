@@ -17,7 +17,7 @@
 
 #include <cmath>
 
-typedef float vec_t;
+#include "Platform.h"
 
 #include "vector.h"
 

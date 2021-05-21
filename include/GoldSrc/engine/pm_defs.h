@@ -17,6 +17,19 @@
 
 #include <cstdint>
 
+#include "Platform.h"
+#include "const.h"
+#include "pm_info.h"
+
+// PM_PlayerTrace results.
+#include "pmtrace.h"
+#include "usercmd.h"
+
+struct hull_t;
+struct model_t;
+struct movevars_t;
+struct pmtrace_t;
+
 constexpr int MAX_PHYSENTS = 600; 		  //!< Must have room for all entities in the world. (can break if num_edicts is greater than this)
 constexpr int MAX_MOVEENTS = 64;
 constexpr int MAX_CLIP_PLANES = 5;
@@ -30,17 +43,6 @@ constexpr int PM_WORLD_ONLY = 0x00000008;		//!< Only trace against the world
 // Values for flags parameter of PM_TraceLine
 constexpr int PM_TRACELINE_PHYSENTSONLY = 0;
 constexpr int PM_TRACELINE_ANYVISIBLE = 1;
-
-#include "pm_info.h"
-
-// PM_PlayerTrace results.
-#include "pmtrace.h"
-#include "usercmd.h"
-
-struct hull_t;
-struct model_t;
-struct movevars_t;
-struct pmtrace_t;
 
 // physent_t
 struct physent_t

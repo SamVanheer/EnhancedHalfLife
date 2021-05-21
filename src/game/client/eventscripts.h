@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "vector.h"
+
 struct cl_entity_t;
 struct event_args_t;
 

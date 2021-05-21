@@ -2,6 +2,8 @@
 
 #include "pman_particlemem.h" 
 
+struct model_t;
+
 constexpr int TRI_COLLIDEWORLD = 0x00000020;
 constexpr int TRI_COLLIDEALL = 0x00001000;	//!< will collide with world and slideboxes
 constexpr int TRI_COLLIDEKILL = 0x00004000;	//!< tent is removed upon collision with anything

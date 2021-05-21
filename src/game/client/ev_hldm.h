@@ -7,6 +7,10 @@
 
 #pragma once
 
+struct event_args_t;
+struct pmtrace_t;
+class Vector;
+
 void EV_HLDM_GunshotDecalTrace(pmtrace_t* pTrace, const char* decalName);
 void EV_HLDM_DecalGunshot(pmtrace_t* pTrace, int iBulletType);
 bool EV_HLDM_CheckTracer(int idx, const Vector& vecSrc, const Vector& end, const Vector& forward, const Vector& right, int iBulletType, int iTracerFreq, int* tracerCount);

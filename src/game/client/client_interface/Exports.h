@@ -2,7 +2,9 @@
 
 #include "Platform.h"
 
+struct cl_enginefunc_t;
 struct cl_entity_t;
+struct client_data_t;
 struct clientdata_t;
 struct engine_studio_api_t;
 struct entity_state_t;
@@ -15,6 +17,7 @@ struct r_studio_interface_t;
 struct ref_params_t;
 struct TEMPENTITY;
 struct usercmd_t;
+class Vector;
 struct weapon_data_t;
 
 extern "C"

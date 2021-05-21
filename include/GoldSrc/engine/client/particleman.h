@@ -5,6 +5,8 @@
 #include "interface.h"
 #include "pman_triangleffect.h"
 
+struct cl_enginefunc_t;
+
 constexpr std::string_view PARTICLEMAN_INTERFACE{"create_particleman"};
 
 #ifdef _WIN32

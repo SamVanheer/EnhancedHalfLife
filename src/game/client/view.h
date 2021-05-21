@@ -7,6 +7,8 @@
 
 #pragma once
 
+class Vector;
+
 void V_StartPitchDrift();
 void V_StopPitchDrift();
 void V_GetChasePos(int target, Vector* cl_angles, Vector& origin, Vector& angles);

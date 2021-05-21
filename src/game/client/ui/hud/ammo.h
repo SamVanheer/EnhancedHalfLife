@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "cl_engine_int.hpp"
+#include "wrect.h"
+
 constexpr int MAX_WEAPON_NAME = 128;
 
 struct WEAPON

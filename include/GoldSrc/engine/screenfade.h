@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "Platform.h"
+
 struct screenfade_t
 {
 	float		fadeSpeed;		//!< How fast to fade (tics / second) (+ fade in, - fade out)

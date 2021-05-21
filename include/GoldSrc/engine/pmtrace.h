@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "Platform.h"
+#include "mathlib.h"
+
 struct pmplane_t
 {
 	Vector	normal;

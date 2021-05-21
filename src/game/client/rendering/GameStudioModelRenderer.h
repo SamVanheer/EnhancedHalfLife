@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "StudioModelRenderer.h"
+
 class CGameStudioModelRenderer : public CStudioModelRenderer
 {
 public:

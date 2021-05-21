@@ -1,9 +1,14 @@
 #pragma once
 
+#include "Platform.h"
+#include "mathlib.h"
+#include "const.h"
+
 struct alight_t;
 struct cache_user_t;
 struct cl_entity_t;
 struct cvar_t;
+struct edict_t;
 struct entity_state_t;
 struct model_t;
 struct player_info_t;

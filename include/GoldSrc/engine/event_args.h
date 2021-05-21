@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "Platform.h"
+#include "mathlib.h"
+
 // Event was invoked with stated origin
 constexpr int FEVENT_ORIGIN = 1 << 0;
 

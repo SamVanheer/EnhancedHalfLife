@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "vector.h"
+
 /**
 *	@brief Bezier inpolation class
 */

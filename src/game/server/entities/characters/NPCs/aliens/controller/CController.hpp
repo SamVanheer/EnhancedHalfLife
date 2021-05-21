@@ -15,8 +15,11 @@
 
 #pragma once
 
+#include "CBaseMonster.monsters.hpp"
 #include "CSquadMonster.hpp"
 #include "CController.generated.hpp"
+
+class CSprite;
 
 //=========================================================
 // Monster's Anim Events Go Here

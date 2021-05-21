@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "vector.h"
+
 struct playermove_t;
 
 void PM_Init(playermove_t* ppmove);

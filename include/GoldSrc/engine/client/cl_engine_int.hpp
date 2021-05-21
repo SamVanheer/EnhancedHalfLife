@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "Platform.h"
+#include "const.h"
 #include "netadr.h"
 #include "Sequence.h"
 
@@ -42,6 +44,8 @@ struct Point
 };
 
 typedef int HSPRITE;	//!< handle to a graphic
+
+typedef int (*pfnUserMsgHook)(const char* pszName, int iSize, void* pbuf);
 
 /**
 *	@brief Functions exported by the engine

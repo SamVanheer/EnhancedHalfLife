@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "Platform.h"
+
 // movevars_t                  // Physics variables.
 
 struct movevars_t

@@ -7,10 +7,15 @@
 
 #pragma once
 
+#include "cl_engine_int.hpp"
 #include "cl_entity.h"
+#include "global_consts.h"
 #include "interpolation.h"
+#include "Sequence.h"
+#include "wrect.h"
 
 struct cl_entity_t;
+struct cvar_t;
 struct model_t;
 
 constexpr int INSET_OFF = 0;

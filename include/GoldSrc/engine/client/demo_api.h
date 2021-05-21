@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "Platform.h"
+
 struct demo_api_t
 {
 	int		(*IsRecording)	();

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseToggle.hpp"
+#include "locksounds.hpp"
 #include "CBaseDoor.generated.hpp"
 
 constexpr int SF_DOOR_ROTATE_Y = 0;

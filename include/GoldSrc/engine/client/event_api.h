@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "const.h"
+
 constexpr int EVENT_API_VERSION = 1;
 
 struct edict_t;

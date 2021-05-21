@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "const.h"
+
 struct model_t;
 
 enum TRICULLSTYLE

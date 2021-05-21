@@ -14,7 +14,9 @@
 */
 
 #include "Exports.h"
+#include "vector.h"
 
+struct cvar_t;
 struct edict_t;
 struct local_state_t;
 

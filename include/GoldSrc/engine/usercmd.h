@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "Platform.h"
+#include "mathlib.h"
+
 struct usercmd_t
 {
 	short	lerp_msec;      //!< Interpolation time on client

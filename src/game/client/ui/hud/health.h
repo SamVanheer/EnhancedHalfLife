@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "cl_engine_int.hpp"
+#include "vector.h"
+
 constexpr int DMG_IMAGE_LIFE = 2;	// seconds that image is up
 
 constexpr int DMG_IMAGE_POISON = 0;

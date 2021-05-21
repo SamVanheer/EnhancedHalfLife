@@ -18,6 +18,8 @@
 #include "CGrenade.hpp"
 #include "CTripmineGrenade.generated.hpp"
 
+class CBeam;
+
 constexpr int SF_TRIPMINE_INSTANT_ON = 1 << 0;
 
 class EHL_CLASS() CTripmineGrenade : public CGrenade

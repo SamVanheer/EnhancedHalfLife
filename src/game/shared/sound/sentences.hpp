@@ -21,6 +21,8 @@
 *	Sentences parsing and lookup
 */
 
+#include <cstddef>
+
 // sentence groups
 constexpr int CBSENTENCENAME_MAX = 16;
 

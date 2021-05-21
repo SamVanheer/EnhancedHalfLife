@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "vector.h"
+
 struct con_nprint_t
 {
 	int		index;			// Row #

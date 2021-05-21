@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include "const.h"
+#include "vector.h"
+
 struct dlight_t
 {
 	Vector	origin;

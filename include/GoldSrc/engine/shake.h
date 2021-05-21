@@ -21,6 +21,8 @@
 *	Screen / View effects
 */
 
+#include "Platform.h"
+
 // screen shake
 
 // This structure is sent over the net to describe a screen shake event

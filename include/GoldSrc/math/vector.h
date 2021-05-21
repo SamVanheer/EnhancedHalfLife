@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include "Platform.h"
+
 /**
 *	@brief used for many pathfinding and many other operations that are treated as planar rather than 3d.
 */

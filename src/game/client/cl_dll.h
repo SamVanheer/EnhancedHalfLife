@@ -27,8 +27,6 @@
 
 #include "Platform.h"
 
-typedef int (*pfnUserMsgHook)(const char* pszName, int iSize, void* pbuf);
-
 #include "mathlib.h"
 
 #include "cdll_int.h"

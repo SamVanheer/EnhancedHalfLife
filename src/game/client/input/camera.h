@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "vector.h"
+
 /**
 *	@file
 *
