@@ -183,6 +183,7 @@ namespace CodeGenerator
             }
 
             File.Delete(Path.Combine(config.BinaryDirectory!, EHLCodeGeneratorCacheFileName));
+            File.Delete(Path.Combine(config.BinaryDirectory!, EHLCodeGeneratorNewCacheFileName));
 
             return ErrorSuccess;
         }
