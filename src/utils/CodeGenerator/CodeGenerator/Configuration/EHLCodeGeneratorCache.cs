@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CodeGenerator.Configuration
 {
@@ -7,6 +8,8 @@ namespace CodeGenerator.Configuration
     /// </summary>
     public class EHLCodeGeneratorCache
     {
+        public DateTimeOffset CodeGeneratorBuildTimestamp { get; set; }
+
         public List<CachedFileInfo>? Files { get; set; }
     }
 }
