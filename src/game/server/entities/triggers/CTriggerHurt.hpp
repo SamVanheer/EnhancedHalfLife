@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseTrigger.hpp"
+#include "CTriggerHurt.generated.hpp"
 
 constexpr int SF_TRIGGER_HURT_TARGETONCE = 1;		//!< Only fire hurt target once
 constexpr int SF_TRIGGER_HURT_START_OFF = 2;		//!< spawnflag that makes trigger_push spawn turned OFF
@@ -30,6 +31,8 @@ constexpr int SF_TRIGGER_HURT_CLIENTONLYTOUCH = 32;	//!< only clients may touch 
 */
 class EHL_CLASS() CTriggerHurt : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	/**

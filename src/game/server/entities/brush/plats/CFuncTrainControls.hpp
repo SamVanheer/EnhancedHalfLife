@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CFuncTrainControls.generated.hpp"
 
 /**
 *	@brief This class defines the volume of space that the player must stand in to control the train
 */
 class EHL_CLASS() CFuncTrainControls : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	void Spawn() override;

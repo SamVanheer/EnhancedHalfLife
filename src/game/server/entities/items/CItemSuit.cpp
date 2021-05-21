@@ -16,10 +16,3 @@
 #include "CItemSuit.hpp"
 
 LINK_ENTITY_TO_CLASS(item_suit, CItemSuit);
-
-TYPEDESCRIPTION CItemSuit::m_SaveData[] =
-{
-	DEFINE_FIELD(CItemSuit, m_LogonType, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CItemSuit, CBaseItem);

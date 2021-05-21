@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CGrenade.hpp"
+#include "CSqueakGrenade.generated.hpp"
 
 enum w_squeak_e
 {
@@ -27,6 +28,8 @@ enum w_squeak_e
 
 class EHL_CLASS() CSqueakGrenade : public CGrenade
 {
+	EHL_GENERATED_BODY()
+
 	void Spawn() override;
 	void Precache() override;
 	int  Classify() override;
@@ -36,19 +39,27 @@ class EHL_CLASS() CSqueakGrenade : public CGrenade
 	void Killed(const KilledInfo& info) override;
 	void GibMonster() override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	static inline float m_flNextBounceSoundTime = 0;
 
 	// CBaseEntity *m_pTarget;
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flDie = 0;
+
+	EHL_FIELD(Persisted)
 	Vector m_vecTarget;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextHunt = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextHit = 0;
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_posPrev;
+
+	EHL_FIELD(Persisted)
 	EHANDLE m_hOwner;
+
+	//Not saved, recalculated on demand
 	int  m_iMyClass = 0;
 };

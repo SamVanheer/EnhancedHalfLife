@@ -17,9 +17,12 @@
 
 #include "CBaseAmmo.hpp"
 #include "CBaseWeapon.hpp"
+#include "CEgonAmmo.generated.hpp"
 
 class EHL_CLASS() CEgonAmmo : public CBaseAmmo
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{

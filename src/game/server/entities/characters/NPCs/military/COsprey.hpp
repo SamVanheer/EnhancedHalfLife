@@ -16,17 +16,17 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "COsprey.generated.hpp"
 
-constexpr int SF_WAITFORTRIGGER = 0x40;
+constexpr int SF_OSPREY_WAITFORTRIGGER = 0x40;
 
 constexpr int MAX_CARRY = 24;
 
 class EHL_CLASS() COsprey : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 	int		ObjectCaps() override { return CBaseMonster::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 	void Spawn() override;
@@ -52,29 +52,61 @@ public:
 	void TraceAttack(const TraceAttackInfo& info) override;
 	void ShowDamage();
 
+	EHL_FIELD(Persisted)
 	EHandle<CBaseEntity> m_hGoalEnt;
+
+	EHL_FIELD(Persisted)
 	Vector m_vel1;
+
+	EHL_FIELD(Persisted)
 	Vector m_vel2;
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_pos1;
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_pos2;
+
+	EHL_FIELD(Persisted)
 	Vector m_ang1;
+
+	EHL_FIELD(Persisted)
 	Vector m_ang2;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_startTime = 0;
+
+	EHL_FIELD(Persisted)
 	float m_dTime = 0;
 
+	EHL_FIELD(Persisted)
 	Vector m_velocity;
 
+	EHL_FIELD(Persisted)
 	float m_flIdealtilt = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flRotortilt = 0;
 
+	EHL_FIELD(Persisted)
 	float m_flRightHealth = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flLeftHealth = 0;
 
+	EHL_FIELD(Persisted)
 	int	m_iUnits = 0;
+
+	EHL_FIELD(Persisted)
 	EHANDLE m_hGrunt[MAX_CARRY];
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_vecOrigin[MAX_CARRY];
+
+	EHL_FIELD(Persisted)
 	EHANDLE m_hRepel[4];
 
+	//These 7 not saved
 	int m_iSoundState = 0;
 	int m_iSpriteTexture = 0;
 
@@ -85,6 +117,9 @@ public:
 	int	m_iBodyGibs = 0;
 	int	m_iEngineGibs = 0;
 
+	EHL_FIELD(Persisted)
 	int m_iDoLeftSmokePuff = 0;
+
+	EHL_FIELD(Persisted)
 	int m_iDoRightSmokePuff = 0;
 };

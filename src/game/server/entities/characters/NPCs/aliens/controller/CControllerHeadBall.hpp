@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CControllerHeadBall.generated.hpp"
 
 /**
 *	@brief Controller bouncy ball attack
 */
 class EHL_CLASS() CControllerHeadBall : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 	void Spawn() override;
 	void Precache() override;
 	void EXPORT HuntThink();

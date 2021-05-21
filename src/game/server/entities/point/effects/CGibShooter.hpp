@@ -17,6 +17,7 @@
 
 #include "CBaseDelay.hpp"
 #include "CBreakable.hpp"
+#include "CGibShooter.generated.hpp"
 
 class CGib;
 
@@ -24,6 +25,8 @@ constexpr int SF_GIBSHOOTER_REPEATABLE = 1; //!< allows a gibshooter to be refir
 
 class EHL_CLASS() CGibShooter : public CBaseDelay
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Precache() override;
@@ -33,15 +36,24 @@ public:
 
 	virtual CGib* CreateGib();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	int	m_iGibs = 0;
+
+	EHL_FIELD(Persisted)
 	int m_iGibCapacity = 0;
+
+	EHL_FIELD(Persisted)
 	Materials m_iGibMaterial = Materials::Glass;
+
+	EHL_FIELD(Persisted)
 	int m_iGibModelIndex = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flGibVelocity = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flVariance = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flGibLife = 0;
 };

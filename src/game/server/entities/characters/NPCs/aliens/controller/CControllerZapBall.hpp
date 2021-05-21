@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CControllerZapBall.generated.hpp"
 
 class EHL_CLASS() CControllerZapBall : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 	void Spawn() override;
 	void Precache() override;
 	void EXPORT AnimateThink();

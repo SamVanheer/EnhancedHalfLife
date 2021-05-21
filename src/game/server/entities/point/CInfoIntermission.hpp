@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CInfoIntermission.generated.hpp"
 
 /**
 *	@brief Multiplayer intermission spots.
 */
 class EHL_CLASS() CInfoIntermission :public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 	void Spawn() override;
 	void Think() override;
 };

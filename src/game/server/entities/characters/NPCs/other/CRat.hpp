@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CRat.generated.hpp"
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -26,6 +27,8 @@
 */
 class EHL_CLASS() CRat : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

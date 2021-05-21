@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CLight.generated.hpp"
 
 constexpr int SF_LIGHT_START_OFF = 1;
 
@@ -26,17 +27,17 @@ constexpr int SF_LIGHT_START_OFF = 1;
 */
 class EHL_CLASS() CLight : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	KeyValue(KeyValueData* pkvd) override;
 	void	Spawn() override;
 	void	Use(const UseInfo& info) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
 private:
+	EHL_FIELD(Persisted)
 	int m_iStyle = 0;
+
+	EHL_FIELD(Persisted)
 	string_t m_iszPattern = iStringNull;
 };

@@ -17,7 +17,6 @@
 
 #include "CBaseMonster.hpp"
 #include "scriptevent.h"
-
 #include "CCineMonster.generated.hpp"
 
 constexpr int SF_SCRIPT_WAITTILLSEEN = 1;

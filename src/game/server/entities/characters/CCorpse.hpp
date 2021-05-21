@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CCorpse.generated.hpp"
 
 /**
 * @brief Body queue class here.... It's really just CBaseEntity
 */
 class EHL_CLASS() CCorpse : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 	int ObjectCaps() override { return FCAP_DONT_SAVE; }
 };
 

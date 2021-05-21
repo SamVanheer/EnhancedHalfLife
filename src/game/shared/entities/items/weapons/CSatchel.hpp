@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
-
 #include "CSatchel.generated.hpp"
 
 enum satchel_e

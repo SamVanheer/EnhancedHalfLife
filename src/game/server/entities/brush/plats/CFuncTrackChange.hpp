@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CFuncPlatRot.hpp"
+#include "CFuncTrackChange.generated.hpp"
 
 class CFuncTrackTrain;
 class CPathTrack;
@@ -41,6 +42,8 @@ enum class TrainCode
 */
 class EHL_CLASS() CFuncTrackChange : public CFuncPlatRot
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -68,22 +71,32 @@ public:
 	void			EnableUse() { m_use = true; }
 	bool UseEnabled() { return m_use; }
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	void	OverrideReset() override;
 
-
+	EHL_FIELD(Persisted)
 	EHandle<CPathTrack> m_hTrackTop;
+
+	EHL_FIELD(Persisted)
 	EHandle<CPathTrack> m_hTrackBottom;
 
+	EHL_FIELD(Persisted)
 	EHandle<CFuncTrackTrain> m_hTrain;
 
+	EHL_FIELD(Persisted)
 	string_t m_trackTopName = iStringNull;
+
+	EHL_FIELD(Persisted)
 	string_t m_trackBottomName = iStringNull;
+
+	EHL_FIELD(Persisted)
 	string_t m_trainName = iStringNull;
+
+	EHL_FIELD(Persisted)
 	TrainCode m_code = TrainCode::Safe;
+
+	EHL_FIELD(Persisted)
 	ToggleState m_targetState = ToggleState::AtTop;
+
+	EHL_FIELD(Persisted)
 	bool m_use = false;
 };

@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CBloodSplat.generated.hpp"
 
 class	EHL_CLASS() CBloodSplat : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn(CBaseEntity* pOwner);
 	void	Spray();

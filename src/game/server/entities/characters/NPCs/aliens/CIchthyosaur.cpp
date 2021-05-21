@@ -18,21 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_ichthyosaur, CIchthyosaur);
 
-TYPEDESCRIPTION	CIchthyosaur::m_SaveData[] =
-{
-	DEFINE_FIELD(CIchthyosaur, m_SaveVelocity, FIELD_VECTOR),
-	DEFINE_FIELD(CIchthyosaur, m_idealDist, FIELD_FLOAT),
-	DEFINE_FIELD(CIchthyosaur, m_flBlink, FIELD_FLOAT),
-	DEFINE_FIELD(CIchthyosaur, m_flEnemyTouched, FIELD_FLOAT),
-	DEFINE_FIELD(CIchthyosaur, m_bOnAttack, FIELD_BOOLEAN),
-	DEFINE_FIELD(CIchthyosaur, m_flMaxSpeed, FIELD_FLOAT),
-	DEFINE_FIELD(CIchthyosaur, m_flMinSpeed, FIELD_FLOAT),
-	DEFINE_FIELD(CIchthyosaur, m_flMaxDist, FIELD_FLOAT),
-	DEFINE_FIELD(CIchthyosaur, m_flNextAlert, FIELD_TIME),
-};
-
-IMPLEMENT_SAVERESTORE(CIchthyosaur, CFlyingMonster);
-
 const char* CIchthyosaur::pIdleSounds[] =
 {
 	"ichy/ichy_idle1.wav",

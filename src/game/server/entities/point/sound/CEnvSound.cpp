@@ -17,14 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(env_sound, CEnvSound);
 
-TYPEDESCRIPTION	CEnvSound::m_SaveData[] =
-{
-	DEFINE_FIELD(CEnvSound, m_flRadius, FIELD_FLOAT),
-	DEFINE_FIELD(CEnvSound, m_flRoomtype, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CEnvSound, CBaseEntity);
-
 void CEnvSound::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "radius"))

@@ -16,19 +16,19 @@
 #pragma once
 
 #include "CBaseAnimating.hpp"
+#include "CActAnimating.generated.hpp"
 
 class EHL_CLASS() CActAnimating : public CBaseAnimating
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void			SetActivity(Activity act);
 	inline Activity	GetActivity() { return m_Activity; }
 
 	int	ObjectCaps() override { return CBaseAnimating::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 private:
+	EHL_FIELD(Persisted)
 	Activity m_Activity = ACT_RESET;
 };

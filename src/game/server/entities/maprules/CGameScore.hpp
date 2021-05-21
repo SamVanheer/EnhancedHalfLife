@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CRulePointEntity.hpp"
+#include "CGameScore.generated.hpp"
 
 constexpr int SF_SCORE_NEGATIVE = 0x0001;
 constexpr int SF_SCORE_TEAM = 0x0002;
@@ -28,6 +29,8 @@ constexpr int SF_SCORE_TEAM = 0x0002;
 */
 class EHL_CLASS() CGameScore : public CRulePointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Use(const UseInfo& info) override;

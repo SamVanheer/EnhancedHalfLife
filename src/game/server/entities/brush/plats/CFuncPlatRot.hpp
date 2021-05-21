@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CFuncPlat.hpp"
+#include "CFuncPlatRot.generated.hpp"
 
 class EHL_CLASS() CFuncPlatRot : public CFuncPlat
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void SetupRotation();
@@ -29,9 +32,10 @@ public:
 	void	HitBottom() override;
 
 	void			RotMove(const Vector& destAngle, float time);
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
-	Vector	m_end, m_start;
+	EHL_FIELD(Persisted)
+	Vector	m_end;
+		
+	EHL_FIELD(Persisted)
+	Vector m_start;
 };

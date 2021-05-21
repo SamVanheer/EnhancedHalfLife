@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CBaseDelay.hpp"
-
 #include "CTriggerRelay.generated.hpp"
 
 constexpr int SF_RELAY_FIREONCE = 0x0001;

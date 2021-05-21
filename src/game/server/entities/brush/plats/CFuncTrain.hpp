@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBasePlatTrain.hpp"
+#include "CFuncTrain.generated.hpp"
 
 // Trains
 constexpr int SF_TRAIN_WAIT_RETRIGGER = 1;
@@ -32,6 +33,8 @@ constexpr int SF_TRAIN_PASSABLE = 8;		//!< Train is not solid -- used to make wa
 */
 class EHL_CLASS() CFuncTrain : public CBasePlatTrain
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -49,11 +52,13 @@ public:
 	*	@brief path corner needs to change to next target
 	*/
 	void EXPORT Next();
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
+	EHL_FIELD(Persisted)
 	EHANDLE m_hCurrentTarget;
+
+	EHL_FIELD(Persisted)
 	int m_sounds = 0;
+
+	EHL_FIELD(Persisted)
 	bool m_activated = false;
 };

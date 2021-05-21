@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
+#include "CTripmine.generated.hpp"
 
 enum tripmine_e
 {
@@ -32,6 +33,8 @@ enum tripmine_e
 
 class EHL_CLASS() CTripmine : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{

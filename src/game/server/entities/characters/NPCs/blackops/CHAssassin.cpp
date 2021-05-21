@@ -19,24 +19,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_human_assassin, CHAssassin);
 
-TYPEDESCRIPTION	CHAssassin::m_SaveData[] =
-{
-	DEFINE_FIELD(CHAssassin, m_flLastShot, FIELD_TIME),
-	DEFINE_FIELD(CHAssassin, m_flDiviation, FIELD_FLOAT),
-
-	DEFINE_FIELD(CHAssassin, m_flNextJump, FIELD_TIME),
-	DEFINE_FIELD(CHAssassin, m_vecJumpVelocity, FIELD_VECTOR),
-
-	DEFINE_FIELD(CHAssassin, m_flNextGrenadeCheck, FIELD_TIME),
-	DEFINE_FIELD(CHAssassin, m_vecTossVelocity, FIELD_VECTOR),
-	DEFINE_FIELD(CHAssassin, m_fThrowGrenade, FIELD_BOOLEAN),
-
-	DEFINE_FIELD(CHAssassin, m_iTargetRanderamt, FIELD_INTEGER),
-	DEFINE_FIELD(CHAssassin, m_iFrustration, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CHAssassin, CBaseMonster);
-
 void CHAssassin::DeathSound()
 {
 }

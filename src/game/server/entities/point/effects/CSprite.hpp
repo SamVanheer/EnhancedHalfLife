@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CSprite.generated.hpp"
 
 constexpr int SF_SPRITE_STARTON = 0x0001;
 constexpr int SF_SPRITE_ONCE = 0x0002;
@@ -81,9 +82,9 @@ public:
 	static CSprite* SpriteCreate(const char* pSpriteName, const Vector & origin, bool animate);
 
 private:
-	EHL_FIELD(Persisted, Type = Time)
-		float m_lastTime = 0;
+	EHL_FIELD(Persisted, Type=Time)
+	float m_lastTime = 0;
 
 	EHL_FIELD(Persisted)
-		float m_maxFrame = 0;
+	float m_maxFrame = 0;
 };

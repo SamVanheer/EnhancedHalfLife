@@ -19,13 +19,6 @@
 
 LINK_ENTITY_TO_CLASS(player_weaponstrip, CStripWeapons);
 
-TYPEDESCRIPTION	CStripWeapons::m_SaveData[] =
-{
-	DEFINE_FIELD(CStripWeapons, m_Flags, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CStripWeapons, CPointEntity);
-
 void CStripWeapons::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "strip_weapons"))

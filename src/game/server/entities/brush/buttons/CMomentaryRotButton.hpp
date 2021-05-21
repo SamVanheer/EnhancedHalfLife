@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseToggle.hpp"
+#include "CMomentaryRotButton.generated.hpp"
 
 /**
 *	@brief Make this button behave like a door (HACKHACK)
@@ -27,6 +28,8 @@ constexpr int SF_MOMENTARY_AUTO_RETURN = 16;
 
 class EHL_CLASS() CMomentaryRotButton : public CBaseToggle
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	KeyValue(KeyValueData* pkvd) override;
@@ -47,15 +50,21 @@ public:
 	void	PlaySound();
 	void	UpdateTarget(float value);
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	bool m_lastUsed = false;
+
+	EHL_FIELD(Persisted)
 	int m_direction = 0;
+
+	EHL_FIELD(Persisted)
 	float m_returnSpeed = 0;
+
+	EHL_FIELD(Persisted)
 	Vector m_start;
+
+	EHL_FIELD(Persisted)
 	Vector m_end;
+
+	EHL_FIELD(Persisted)
 	int m_sounds = 0;
 };

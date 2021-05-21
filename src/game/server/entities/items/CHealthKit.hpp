@@ -16,11 +16,14 @@
 #pragma once
 
 #include "CItem.hpp"
+#include "CHealthKit.generated.hpp"
 
 constexpr float HEALTHKIT_DEFAULT_CAPACITY = -1;
 
 class EHL_CLASS() CHealthKit : public CItem
 {
+	EHL_GENERATED_BODY()
+
 	void OnConstruct() override
 	{
 		CItem::OnConstruct();
@@ -31,11 +34,7 @@ class EHL_CLASS() CHealthKit : public CItem
 	void Precache() override;
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static TYPEDESCRIPTION m_SaveData[];
-
 private:
+	EHL_FIELD(Persisted)
 	float m_flCustomCapacity = HEALTHKIT_DEFAULT_CAPACITY;
 };

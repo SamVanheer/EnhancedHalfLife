@@ -15,13 +15,6 @@
 
 #include "CTurret.hpp"
 
-TYPEDESCRIPTION	CTurret::m_SaveData[] =
-{
-	DEFINE_FIELD(CTurret, m_iStartSpin, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CTurret, CBaseTurret);
-
 LINK_ENTITY_TO_CLASS(monster_turret, CTurret);
 
 constexpr std::string_view TURRET_GLOW_SPRITE{"sprites/flare3.spr"};

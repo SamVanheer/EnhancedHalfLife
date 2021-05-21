@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
-
 #include "CShotgun.generated.hpp"
 
 enum shotgun_e
@@ -66,8 +65,9 @@ public:
 	void WeaponIdle() override;
 	void WeaponPostFrame() override;
 
-	EHL_FIELD(Persisted, Type = Time)
-		float m_flNextReload = 0;
+	EHL_FIELD(Persisted, Type=Time)
+	float m_flNextReload = 0;
+
 	int m_iShell = 0;
 
 	bool UseDecrement() override
@@ -83,7 +83,7 @@ public:
 	void SetWeaponData(const weapon_data_t & data) override;
 
 	EHL_FIELD(Persisted)
-		ReloadState m_fInSpecialReload = ReloadState::NotReloading; //!< Are we in the middle of a reload
+	ReloadState m_fInSpecialReload = ReloadState::NotReloading; //!< Are we in the middle of a reload
 
 private:
 	unsigned short m_usDoubleFire = 0;

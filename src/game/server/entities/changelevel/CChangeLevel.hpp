@@ -16,7 +16,6 @@
 #pragma once
 
 #include "triggers/CBaseTrigger.hpp"
-
 #include "CChangeLevel.generated.hpp"
 
 constexpr int SF_CHANGELEVEL_USEONLY = 0x0002;

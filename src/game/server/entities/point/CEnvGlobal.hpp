@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CEnvGlobal.generated.hpp"
 
 constexpr int SF_GLOBAL_SET = 1;			// Set global state to initial state on spawn
 
@@ -29,17 +30,19 @@ enum class GlobalTriggerMode
 
 class EHL_CLASS() CEnvGlobal : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	KeyValue(KeyValueData* pkvd) override;
 	void	Use(const UseInfo& info) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	string_t m_globalstate = iStringNull;
+
+	EHL_FIELD(Persisted)
 	GlobalTriggerMode m_triggermode = GlobalTriggerMode::Off;
+
+	EHL_FIELD(Persisted)
 	GlobalEntState m_initialstate = GlobalEntState::Off;
 };

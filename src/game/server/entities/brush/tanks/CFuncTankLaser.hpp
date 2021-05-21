@@ -16,11 +16,14 @@
 #pragma once
 
 #include "CFuncTank.hpp"
+#include "CFuncTankLaser.generated.hpp"
 
 class CLaser;
 
 class EHL_CLASS() CFuncTankLaser : public CFuncTank
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Activate() override;
 	void	KeyValue(KeyValueData* pkvd) override;
@@ -28,11 +31,10 @@ public:
 	void	Think() override;
 	CLaser* GetLaser();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 private:
+	EHL_FIELD(Persisted)
 	EHandle<CLaser> m_hLaser;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_laserTime = 0;
 };

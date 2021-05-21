@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CFuncTank.hpp"
+#include "CFuncTankMortar.generated.hpp"
 
 class EHL_CLASS() CFuncTankMortar : public CFuncTank
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker) override;

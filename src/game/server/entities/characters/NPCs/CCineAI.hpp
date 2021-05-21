@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CCineMonster.hpp"
+#include "CCineAI.generated.hpp"
 
 class EHL_CLASS() CCineAI : public CCineMonster
 {
+	EHL_GENERATED_BODY()
+
 	/**
 	*	@brief lookup a sequence name and setup the target monster to play it
 	*	overridden for CCineAI because it's ok for them to not have an animation sequence for the monster to play.

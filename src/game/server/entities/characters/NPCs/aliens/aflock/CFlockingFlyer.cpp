@@ -18,24 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_flyer, CFlockingFlyer);
 
-TYPEDESCRIPTION	CFlockingFlyer::m_SaveData[] =
-{
-	DEFINE_FIELD(CFlockingFlyer, m_hSquadLeader, FIELD_EHANDLE),
-	DEFINE_FIELD(CFlockingFlyer, m_hSquadNext, FIELD_EHANDLE),
-	DEFINE_FIELD(CFlockingFlyer, m_fTurning, FIELD_BOOLEAN),
-	DEFINE_FIELD(CFlockingFlyer, m_fCourseAdjust, FIELD_BOOLEAN),
-	DEFINE_FIELD(CFlockingFlyer, m_fPathBlocked, FIELD_BOOLEAN),
-	DEFINE_FIELD(CFlockingFlyer, m_vecReferencePoint, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CFlockingFlyer, m_vecAdjustedVelocity, FIELD_VECTOR),
-	DEFINE_FIELD(CFlockingFlyer, m_flGoalSpeed, FIELD_FLOAT),
-	DEFINE_FIELD(CFlockingFlyer, m_flLastBlockedTime, FIELD_TIME),
-	DEFINE_FIELD(CFlockingFlyer, m_flFakeBlockedTime, FIELD_TIME),
-	DEFINE_FIELD(CFlockingFlyer, m_flAlertTime, FIELD_TIME),
-	//	DEFINE_FIELD( CFlockingFlyer, m_flFlockNextSoundTime, FIELD_TIME ),	// don't need to save
-};
-
-IMPLEMENT_SAVERESTORE(CFlockingFlyer, CBaseMonster);
-
 void CFlockingFlyer::Spawn()
 {
 	Precache();

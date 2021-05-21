@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CSmoker.generated.hpp"
 
 class EHL_CLASS() CSmoker : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Think() override;

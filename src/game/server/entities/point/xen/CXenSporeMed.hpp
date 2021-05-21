@@ -16,8 +16,11 @@
 #pragma once
 
 #include "CXenSpore.hpp"
+#include "CXenSporeMed.generated.hpp"
 
 class EHL_CLASS() CXenSporeMed : public CXenSpore
 {
+	EHL_GENERATED_BODY()
+
 	void		Spawn() override;
 };

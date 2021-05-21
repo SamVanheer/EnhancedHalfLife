@@ -20,15 +20,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_bullchicken, CBullsquid);
 
-TYPEDESCRIPTION	CBullsquid::m_SaveData[] =
-{
-	DEFINE_FIELD(CBullsquid, m_fCanThreatDisplay, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBullsquid, m_flLastHurtTime, FIELD_TIME),
-	DEFINE_FIELD(CBullsquid, m_flNextSpitTime, FIELD_TIME),
-};
-
-IMPLEMENT_SAVERESTORE(CBullsquid, CBaseMonster);
-
 int CBullsquid::IgnoreConditions()
 {
 	int iIgnore = CBaseMonster::IgnoreConditions();

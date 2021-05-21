@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
+#include "CMP5.generated.hpp"
 
 enum mp5_e
 {
@@ -31,6 +32,8 @@ enum mp5_e
 
 class EHL_CLASS() CMP5 : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{

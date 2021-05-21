@@ -17,14 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(func_platrot, CFuncPlatRot);
 
-TYPEDESCRIPTION	CFuncPlatRot::m_SaveData[] =
-{
-	DEFINE_FIELD(CFuncPlatRot, m_end, FIELD_VECTOR),
-	DEFINE_FIELD(CFuncPlatRot, m_start, FIELD_VECTOR),
-};
-
-IMPLEMENT_SAVERESTORE(CFuncPlatRot, CFuncPlat);
-
 void CFuncPlatRot::SetupRotation()
 {
 	if (m_vecFinalAngle.x != 0)		// This plat rotates too!

@@ -19,15 +19,6 @@
 
 LINK_ENTITY_TO_CLASS(player_sethealth, CPlayerSetHealth);
 
-TYPEDESCRIPTION	CPlayerSetHealth::m_SaveData[] =
-{
-	DEFINE_FIELD(CPlayerSetHealth, m_Flags, FIELD_INTEGER),
-	DEFINE_FIELD(CPlayerSetHealth, m_Health, FIELD_INTEGER),
-	DEFINE_FIELD(CPlayerSetHealth, m_Armor, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CPlayerSetHealth, CPointEntity);
-
 void CPlayerSetHealth::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "all_players"))

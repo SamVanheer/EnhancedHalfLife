@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CGrenade.hpp"
-
 #include "CRpgRocket.generated.hpp"
 
 class CRpg;
@@ -35,7 +34,7 @@ public:
 
 	int m_iTrail = 0;
 
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flIgniteTime = 0;
 
 	EHL_FIELD(Persisted)

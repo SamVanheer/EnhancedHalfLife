@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CTalkMonster.hpp"
+#include "CBarney.generated.hpp"
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -33,6 +34,8 @@ constexpr int BARNEY_BODY_GUNGONE = 2;
 
 class EHL_CLASS() CBarney : public CTalkMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -72,16 +75,20 @@ public:
 	void TraceAttack(const TraceAttackInfo& info) override;
 	void Killed(const KilledInfo& info) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	bool m_fGunDrawn = false;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_painTime = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_checkAttackTime = 0;
+
+	EHL_FIELD(Persisted)
 	bool m_lastAttackCheck = false;
 
 	// UNDONE: What is this for?  It isn't used?
+	EHL_FIELD(Persisted)
 	float m_flPlayerDamage = 0;// how much pain has the player inflicted on me?
 
 	CUSTOM_SCHEDULES;

@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CLight.hpp"
+#include "CEnvLight.generated.hpp"
 
 class EHL_CLASS() CEnvLight : public CLight
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	KeyValue(KeyValueData* pkvd) override;
 	void	Spawn() override;

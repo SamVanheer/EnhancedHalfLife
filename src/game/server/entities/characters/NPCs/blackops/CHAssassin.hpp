@@ -17,6 +17,7 @@
 
 #include "CBaseMonster.hpp"
 #include "CBaseMonster.monsters.hpp"
+#include "CHAssassin.generated.hpp"
 
 //=========================================================
 // monster-specific schedule types
@@ -52,6 +53,8 @@ constexpr int bits_MEMORY_BADJUMP = bits_MEMORY_CUSTOM1;
 */
 class EHL_CLASS() CHAssassin : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -72,22 +75,31 @@ public:
 	void IdleSound() override;
 	CUSTOM_SCHEDULES;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flLastShot = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flDiviation = 0;
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextJump = 0;
+
+	EHL_FIELD(Persisted)
 	Vector m_vecJumpVelocity;
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextGrenadeCheck = 0;
+
+	EHL_FIELD(Persisted)
 	Vector m_vecTossVelocity;
+
+	EHL_FIELD(Persisted)
 	bool m_fThrowGrenade = false;
 
+	EHL_FIELD(Persisted)
 	int m_iTargetRanderamt = 0;
 
+	EHL_FIELD(Persisted)
 	int m_iFrustration = 0;
 
 	int m_iShell = 0;

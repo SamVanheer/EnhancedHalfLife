@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CRulePointEntity.hpp"
+#include "CGameText.generated.hpp"
 
 constexpr int SF_ENVTEXT_ALLPLAYERS = 0x0001;
 
@@ -25,21 +26,21 @@ constexpr int SF_ENVTEXT_ALLPLAYERS = 0x0001;
 */
 class EHL_CLASS() CGameText : public CRulePointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Use(const UseInfo& info) override;
 	void	KeyValue(KeyValueData* pkvd) override;
 	void Precache() override;
 	void Spawn() override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	inline	bool	MessageToAll() { return (pev->spawnflags & SF_ENVTEXT_ALLPLAYERS) != 0; }
 	inline	void	MessageSet(const char* pMessage) { pev->message = ALLOC_STRING(pMessage); }
 	inline	const char* MessageGet() { return STRING(pev->message); }
 
 private:
-
+	// Save parms as a block.  Will break save/restore if the structure changes, but this entity didn't ship with Half-Life, so
+	// it can't impact saved Half-Life games.
+	EHL_FIELD(Persisted)
 	hudtextparms_t m_textParms;
 };

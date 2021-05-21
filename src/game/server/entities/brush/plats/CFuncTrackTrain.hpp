@@ -17,7 +17,6 @@
 
 #include "CBaseEntity.hpp"
 #include "CPathTrack.hpp"
-
 #include "CFuncTrackTrain.generated.hpp"
 
 // Tracktrain spawn flags

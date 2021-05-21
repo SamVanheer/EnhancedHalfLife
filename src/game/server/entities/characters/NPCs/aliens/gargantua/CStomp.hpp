@@ -16,21 +16,21 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CStomp.generated.hpp"
 
 constexpr std::string_view GARG_STOMP_SPRITE_NAME{"sprites/gargeye1.spr"};
 constexpr std::string_view GARG_STOMP_BUZZ_SOUND{"weapons/mine_charge.wav"};
 
 class EHL_CLASS() CStomp : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Think() override;
 	static CStomp* StompCreate(const Vector& origin, const Vector& end, float speed);
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flLastThinkTime = 0;
 
 private:

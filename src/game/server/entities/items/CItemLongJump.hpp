@@ -18,9 +18,12 @@
 #include "CBasePlayer.hpp"
 #include "CItem.hpp"
 #include "UserMessages.h"
+#include "CItemLongJump.generated.hpp"
 
 class EHL_CLASS() CItemLongJump : public CItem
 {
+	EHL_GENERATED_BODY()
+
 	void OnConstruct() override
 	{
 		CItem::OnConstruct();
@@ -65,11 +68,7 @@ class EHL_CLASS() CItemLongJump : public CItem
 		return {ItemApplyAction::NotUsed};
 	}
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static TYPEDESCRIPTION m_SaveData[];
-
 protected:
+	EHL_FIELD(Persisted)
 	bool m_PlaySuitSentence = true;
 };

@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseToggle.hpp"
+#include "CFuncIllusionary.generated.hpp"
 
 /**
 *	@brief A simple entity that looks solid but lets you walk through it.
 */
 class EHL_CLASS() CFuncIllusionary : public CBaseToggle
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;

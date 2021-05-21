@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CCycler.generated.hpp"
 
 class EHL_CLASS() CCycler : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void GenericCyclerSpawn(const char* szModel, const Vector& vecMin, const Vector& vecMax);
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() | FCAP_IMPULSE_USE); }
@@ -39,9 +42,6 @@ public:
 	// Don't treat as a live target
 	bool IsAlive() override { return false; }
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	bool m_animate = false;
 };

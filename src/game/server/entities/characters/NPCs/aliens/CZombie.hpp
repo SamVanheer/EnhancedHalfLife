@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CZombie.generated.hpp"
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -28,6 +29,8 @@ constexpr int ZOMBIE_FLINCH_DELAY = 2;		//!< at most one flinch every n secs
 
 class EHL_CLASS() CZombie : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

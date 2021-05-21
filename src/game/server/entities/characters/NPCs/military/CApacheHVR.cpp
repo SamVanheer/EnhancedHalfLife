@@ -17,14 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(hvr_rocket, CApacheHVR);
 
-TYPEDESCRIPTION	CApacheHVR::m_SaveData[] =
-{
-	//	DEFINE_FIELD( CApacheHVR, m_iTrail, FIELD_INTEGER ),	// Dont' save, precache
-		DEFINE_FIELD(CApacheHVR, m_vecForward, FIELD_VECTOR),
-};
-
-IMPLEMENT_SAVERESTORE(CApacheHVR, CGrenade);
-
 void CApacheHVR::Spawn()
 {
 	Precache();

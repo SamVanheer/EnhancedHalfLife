@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CTargetCDAudio.generated.hpp"
 
 /**
 *	@brief This plays a CD track when fired or when the player enters it's radius
 */
 class EHL_CLASS() CTargetCDAudio : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void			Spawn() override;
 	void			KeyValue(KeyValueData * pkvd) override;

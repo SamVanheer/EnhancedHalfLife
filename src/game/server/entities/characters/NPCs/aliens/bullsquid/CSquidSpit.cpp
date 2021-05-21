@@ -20,13 +20,6 @@
 
 LINK_ENTITY_TO_CLASS(squidspit, CSquidSpit);
 
-TYPEDESCRIPTION	CSquidSpit::m_SaveData[] =
-{
-	DEFINE_FIELD(CSquidSpit, m_maxFrame, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CSquidSpit, CBaseEntity);
-
 void CSquidSpit::Spawn()
 {
 	SetMovetype(Movetype::Fly);

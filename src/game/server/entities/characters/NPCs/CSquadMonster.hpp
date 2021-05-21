@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
-
 #include "CSquadMonster.generated.hpp"
 
 constexpr int	SF_SQUADMONSTER_LEADER = 32;

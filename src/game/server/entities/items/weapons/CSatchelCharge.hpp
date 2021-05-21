@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CGrenade.hpp"
+#include "CSatchelCharge.generated.hpp"
 
 class EHL_CLASS() CSatchelCharge : public CGrenade
 {
+	EHL_GENERATED_BODY()
+
 	void Spawn() override;
 	void Precache() override;
 	void BounceSound() override;

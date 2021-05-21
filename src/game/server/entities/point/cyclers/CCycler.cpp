@@ -15,13 +15,6 @@
 
 #include "CCycler.hpp"
 
-TYPEDESCRIPTION	CCycler::m_SaveData[] =
-{
-	DEFINE_FIELD(CCycler, m_animate, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CCycler, CBaseMonster);
-
 void CCycler::GenericCyclerSpawn(const char* szModel, const Vector& vecMin, const Vector& vecMax)
 {
 	if (!szModel || !*szModel)

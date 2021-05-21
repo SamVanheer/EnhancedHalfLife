@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CGMan.generated.hpp"
 
 /**
 *	@brief misunderstood servant of the people
 */
 class EHL_CLASS() CGMan : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -29,10 +32,6 @@ public:
 	int  Classify() override;
 	void HandleAnimEvent(AnimationEvent& event) override;
 	int SoundMask() override;
-
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static TYPEDESCRIPTION m_SaveData[];
 
 	void StartTask(Task_t* pTask) override;
 	void RunTask(Task_t* pTask) override;
@@ -46,6 +45,10 @@ public:
 	void PlayScriptedSentence(const char* pszSentence, float duration, float volume, float attenuation, bool bConcurrent, CBaseEntity* pListener) override;
 
 	EHANDLE m_hPlayer;
+
+	EHL_FIELD(Persisted)
 	EHANDLE m_hTalkTarget;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flTalkTime = 0;
 };

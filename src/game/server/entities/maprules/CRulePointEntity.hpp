@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CRuleEntity.hpp"
+#include "CRulePointEntity.generated.hpp"
 
 /**
 *	@brief base class for all rule "point" entities (not brushes)
 */
 class EHL_CLASS() CRulePointEntity : public CRuleEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Spawn() override;
 };

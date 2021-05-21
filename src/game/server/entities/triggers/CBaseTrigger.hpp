@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseToggle.hpp"
+#include "CBaseTrigger.generated.hpp"
 
 constexpr int SF_TRIGGER_ALLOWMONSTERS = 1;	//!< monsters allowed to fire this trigger
 constexpr int SF_TRIGGER_NOCLIENTS = 2;		//!< players not allowed to fire this trigger
@@ -23,6 +24,8 @@ constexpr int SF_TRIGGER_PUSHABLES = 4;		//!< only pushables can fire this trigg
 
 class EHL_CLASS() CBaseTrigger : public CBaseToggle
 {
+	EHL_GENERATED_BODY()
+
 public:
 	int	ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	void KeyValue(KeyValueData * pkvd) override;

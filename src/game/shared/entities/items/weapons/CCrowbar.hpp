@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
+#include "CCrowbar.generated.hpp"
 
 enum crowbar_e
 {
@@ -32,6 +33,8 @@ enum crowbar_e
 
 class EHL_CLASS() CCrowbar : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{

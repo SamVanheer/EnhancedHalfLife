@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseTrigger.hpp"
+#include "CTriggerMonsterJump.generated.hpp"
 
 class EHL_CLASS() CTriggerMonsterJump : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Touch(CBaseEntity * pOther) override;

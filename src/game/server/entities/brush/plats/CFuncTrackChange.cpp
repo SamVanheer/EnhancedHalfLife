@@ -19,21 +19,6 @@
 
 LINK_ENTITY_TO_CLASS(func_trackchange, CFuncTrackChange);
 
-TYPEDESCRIPTION	CFuncTrackChange::m_SaveData[] =
-{
-	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_hTrackTop, FIELD_EHANDLE),
-	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_hTrackBottom, FIELD_EHANDLE),
-	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_hTrain, FIELD_EHANDLE),
-	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_trackTopName, FIELD_STRING),
-	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_trackBottomName, FIELD_STRING),
-	DEFINE_GLOBAL_FIELD(CFuncTrackChange, m_trainName, FIELD_STRING),
-	DEFINE_FIELD(CFuncTrackChange, m_code, FIELD_INTEGER),
-	DEFINE_FIELD(CFuncTrackChange, m_targetState, FIELD_INTEGER),
-	DEFINE_FIELD(CFuncTrackChange, m_use, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CFuncTrackChange, CFuncPlatRot);
-
 void CFuncTrackChange::Spawn()
 {
 	Setup();

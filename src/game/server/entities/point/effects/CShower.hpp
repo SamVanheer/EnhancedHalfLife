@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CShower.generated.hpp"
 
 /**
 *	@brief Spark Shower
 */
 class EHL_CLASS() CShower : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 	void Spawn() override;
 	void Think() override;
 	void Touch(CBaseEntity* pOther) override;

@@ -17,13 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(info_bigmomma, CInfoBM);
 
-TYPEDESCRIPTION	CInfoBM::m_SaveData[] =
-{
-	DEFINE_FIELD(CInfoBM, m_preSequence, FIELD_STRING),
-};
-
-IMPLEMENT_SAVERESTORE(CInfoBM, CPointEntity);
-
 void CInfoBM::Spawn()
 {
 }

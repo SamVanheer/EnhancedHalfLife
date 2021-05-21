@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CGibShooter.hpp"
+#include "CEnvShooter.generated.hpp"
 
 class EHL_CLASS() CEnvShooter : public CGibShooter
 {
+	EHL_GENERATED_BODY()
+
 	void		Precache() override;
 	void		KeyValue(KeyValueData* pkvd) override;
 

@@ -16,21 +16,21 @@
 #pragma once
 
 #include "CFuncTank.hpp"
+#include "CFuncTankControls.generated.hpp"
 
 /**
 *	@brief FUNC TANK CONTROLS
 */
 class EHL_CLASS() CFuncTankControls : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	int	ObjectCaps() override;
 	void Spawn() override;
 	void Use(const UseInfo& info) override;
 	void Think() override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	EHandle<CFuncTank> m_hTank;
 };

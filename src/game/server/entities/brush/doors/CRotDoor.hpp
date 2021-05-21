@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseDoor.hpp"
+#include "CRotDoor.generated.hpp"
 
 /**
 *	@details if two doors touch, they are assumed to be connected and operate as a unit.
@@ -37,6 +38,8 @@
 */
 class EHL_CLASS() CRotDoor : public CBaseDoor
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 };

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CTalkMonster.hpp"
+#include "CScientist.generated.hpp"
 
 constexpr int SCIENTIST_BODYGROUP_HEAD = 1;
 constexpr int SCIENTIST_BODYGROUP_NEEDLE = 2;
@@ -63,6 +64,8 @@ constexpr int SCIENTIST_AE_NEEDLEOFF = 3;
 */
 class EHL_CLASS() CScientist : public CTalkMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -99,14 +102,15 @@ public:
 
 	void Killed(const KilledInfo& info) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	CUSTOM_SCHEDULES;
 
 private:
+	EHL_FIELD(Persisted, Type=Time)
 	float m_painTime = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_healTime = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_fearTime = 0;
 };

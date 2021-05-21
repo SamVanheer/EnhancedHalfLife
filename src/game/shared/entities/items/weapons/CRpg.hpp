@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
-
 #include "CRpg.generated.hpp"
 
 class CLaserSpot;

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CActAnimating.hpp"
+#include "CXenPLight.generated.hpp"
 
 class CSprite;
 
@@ -24,6 +25,8 @@ constexpr int XEN_PLANT_HIDE_TIME = 5;
 
 class EHL_CLASS() CXenPLight : public CActAnimating
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnRemove() override;
 	void		Spawn() override;
@@ -34,10 +37,7 @@ public:
 	void		LightOn();
 	void		LightOff();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 private:
+	EHL_FIELD(Persisted)
 	EHandle<CSprite> m_hGlow;
 };

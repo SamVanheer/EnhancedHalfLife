@@ -16,14 +16,6 @@
 #include "CFlockingFlyer.hpp"
 #include "CFlockingFlyerFlock.hpp"
 
-TYPEDESCRIPTION	CFlockingFlyerFlock::m_SaveData[] =
-{
-	DEFINE_FIELD(CFlockingFlyerFlock, m_cFlockSize, FIELD_INTEGER),
-	DEFINE_FIELD(CFlockingFlyerFlock, m_flFlockRadius, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CFlockingFlyerFlock, CBaseMonster);
-
 LINK_ENTITY_TO_CLASS(monster_flyer_flock, CFlockingFlyerFlock);
 
 void CFlockingFlyerFlock::KeyValue(KeyValueData* pkvd)

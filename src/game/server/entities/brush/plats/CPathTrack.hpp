@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CPointEntity.hpp"
-
 #include "CPathTrack.generated.hpp"
 
 // Spawnflag for CPathTrack

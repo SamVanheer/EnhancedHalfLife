@@ -21,13 +21,6 @@
 
 LINK_ENTITY_TO_CLASS(momentary_door, CMomentaryDoor);
 
-TYPEDESCRIPTION	CMomentaryDoor::m_SaveData[] =
-{
-	DEFINE_FIELD(CMomentaryDoor, m_bMoveSnd, FIELD_CHARACTER),
-};
-
-IMPLEMENT_SAVERESTORE(CMomentaryDoor, CBaseToggle);
-
 void CMomentaryDoor::Spawn()
 {
 	SetMovedir(this);

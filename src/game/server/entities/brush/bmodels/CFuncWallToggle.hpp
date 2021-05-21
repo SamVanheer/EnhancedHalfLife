@@ -16,11 +16,14 @@
 #pragma once
 
 #include "CFuncWall.hpp"
+#include "CFuncWallToggle.generated.hpp"
 
 constexpr int SF_WALL_START_OFF = 0x0001;
 
 class EHL_CLASS() CFuncWallToggle : public CFuncWall
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Use(const UseInfo& info) override;

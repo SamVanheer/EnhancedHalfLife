@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CPointEntity.hpp"
-
 #include "CMultiSource.generated.hpp"
 
 constexpr int MAX_MULTI_TARGETS = 16; //!< maximum number of targets a single multi_manager entity may be assigned.

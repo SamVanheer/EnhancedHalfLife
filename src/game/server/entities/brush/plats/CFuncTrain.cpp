@@ -19,15 +19,6 @@
 
 LINK_ENTITY_TO_CLASS(func_train, CFuncTrain);
 
-TYPEDESCRIPTION	CFuncTrain::m_SaveData[] =
-{
-	DEFINE_FIELD(CFuncTrain, m_sounds, FIELD_INTEGER),
-	DEFINE_FIELD(CFuncTrain, m_hCurrentTarget, FIELD_EHANDLE),
-	DEFINE_FIELD(CFuncTrain, m_activated, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CFuncTrain, CBasePlatTrain);
-
 void CFuncTrain::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "sounds"))

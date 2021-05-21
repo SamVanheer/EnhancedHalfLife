@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseToggle.hpp"
+#include "CFuncMortarField.generated.hpp"
 
 enum class MortarControlType
 {
@@ -30,6 +31,8 @@ enum class MortarControlType
 */
 class EHL_CLASS() CFuncMortarField : public CBaseToggle
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -38,20 +41,26 @@ public:
 	// Bmodels don't go across transitions
 	int	ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	/**
 	*	@brief If connected to a table, then use the table controllers, else hit where the trigger is.
 	*/
 	void EXPORT FieldUse(const UseInfo& info);
 
+	EHL_FIELD(Persisted)
 	string_t m_iszXController = iStringNull;
+
+	EHL_FIELD(Persisted)
 	string_t m_iszYController = iStringNull;
+
+	EHL_FIELD(Persisted)
 	float m_flSpread = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flDelay = 0;
+
+	EHL_FIELD(Persisted)
 	int m_iCount = 0;
+
+	EHL_FIELD(Persisted)
 	MortarControlType m_fControl = MortarControlType::Random;
 };

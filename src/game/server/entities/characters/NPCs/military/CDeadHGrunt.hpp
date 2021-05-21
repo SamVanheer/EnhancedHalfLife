@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CDeadHGrunt.generated.hpp"
 
 class EHL_CLASS() CDeadHGrunt : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	int	Classify() override { return	CLASS_HUMAN_MILITARY; }

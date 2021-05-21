@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CCrossbowBolt.generated.hpp"
 
 constexpr int BOLT_AIR_VELOCITY = 2000;
 constexpr int BOLT_WATER_VELOCITY = 1000;
@@ -27,6 +28,8 @@ constexpr int BOLT_WATER_VELOCITY = 1000;
 // speed - the ideal magnitude of my velocity
 class EHL_CLASS() CCrossbowBolt : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 	void Spawn() override;
 	void Precache() override;
 	int  Classify() override;

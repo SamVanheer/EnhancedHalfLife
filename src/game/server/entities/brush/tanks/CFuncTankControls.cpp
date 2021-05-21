@@ -17,13 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(func_tankcontrols, CFuncTankControls);
 
-TYPEDESCRIPTION	CFuncTankControls::m_SaveData[] =
-{
-	DEFINE_FIELD(CFuncTankControls, m_hTank, FIELD_EHANDLE),
-};
-
-IMPLEMENT_SAVERESTORE(CFuncTankControls, CBaseEntity);
-
 int	CFuncTankControls::ObjectCaps()
 {
 	return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_IMPULSE_USE;

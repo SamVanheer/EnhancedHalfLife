@@ -17,11 +17,15 @@
 
 #include "CBaseEntity.hpp"
 
+#include "CNullEntity.generated.hpp"
+
 /**
 *	@brief Null Entity, remove on startup
 */
 class EHL_CLASS() CNullEntity : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 };

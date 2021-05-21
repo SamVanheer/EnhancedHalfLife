@@ -16,11 +16,14 @@
 #pragma once
 
 #include "triggers/CBaseTrigger.hpp"
+#include "CTriggerEndSection.generated.hpp"
 
 constexpr int SF_ENDSECTION_USEONLY = 0x0001;
 
 class EHL_CLASS() CTriggerEndSection : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void EXPORT EndSectionTouch(CBaseEntity * pOther);

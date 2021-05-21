@@ -20,24 +20,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_human_grunt, CHGrunt);
 
-TYPEDESCRIPTION	CHGrunt::m_SaveData[] =
-{
-	DEFINE_FIELD(CHGrunt, m_flNextGrenadeCheck, FIELD_TIME),
-	DEFINE_FIELD(CHGrunt, m_flNextPainTime, FIELD_TIME),
-	//	DEFINE_FIELD( CHGrunt, m_flLastEnemySightTime, FIELD_TIME ), // don't save, go to zero
-		DEFINE_FIELD(CHGrunt, m_vecTossVelocity, FIELD_VECTOR),
-		DEFINE_FIELD(CHGrunt, m_fThrowGrenade, FIELD_BOOLEAN),
-		DEFINE_FIELD(CHGrunt, m_fStanding, FIELD_BOOLEAN),
-		DEFINE_FIELD(CHGrunt, m_fFirstEncounter, FIELD_BOOLEAN),
-		DEFINE_FIELD(CHGrunt, m_cClipSize, FIELD_INTEGER),
-		DEFINE_FIELD(CHGrunt, m_voicePitch, FIELD_INTEGER),
-		//  DEFINE_FIELD( CShotgun, m_iBrassShell, FIELD_INTEGER ),
-		//  DEFINE_FIELD( CShotgun, m_iShotgunShell, FIELD_INTEGER ),
-			DEFINE_FIELD(CHGrunt, m_iSentence, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CHGrunt, CSquadMonster);
-
 const char* CHGrunt::pGruntSentences[] =
 {
 	"HG_GREN", // grenade scared grunt

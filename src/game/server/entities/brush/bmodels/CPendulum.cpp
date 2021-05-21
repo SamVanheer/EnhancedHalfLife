@@ -19,21 +19,6 @@
 
 LINK_ENTITY_TO_CLASS(func_pendulum, CPendulum);
 
-TYPEDESCRIPTION	CPendulum::m_SaveData[] =
-{
-	DEFINE_FIELD(CPendulum, m_accel, FIELD_FLOAT),
-	DEFINE_FIELD(CPendulum, m_distance, FIELD_FLOAT),
-	DEFINE_FIELD(CPendulum, m_time, FIELD_TIME),
-	DEFINE_FIELD(CPendulum, m_damp, FIELD_FLOAT),
-	DEFINE_FIELD(CPendulum, m_maxSpeed, FIELD_FLOAT),
-	DEFINE_FIELD(CPendulum, m_dampSpeed, FIELD_FLOAT),
-	DEFINE_FIELD(CPendulum, m_center, FIELD_VECTOR),
-	DEFINE_FIELD(CPendulum, m_start, FIELD_VECTOR),
-	DEFINE_FIELD(CPendulum, m_hRopeUser, FIELD_EHANDLE),
-};
-
-IMPLEMENT_SAVERESTORE(CPendulum, CBaseEntity);
-
 void CPendulum::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "distance"))

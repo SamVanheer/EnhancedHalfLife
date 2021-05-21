@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseAmmo.hpp"
+#include "CAmmoGeneric.generated.hpp"
 
 /**
 *	@brief Generic ammo item
 */
 class EHL_CLASS() CAmmoGeneric : public CBaseAmmo
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData * pkvd) override;
 };

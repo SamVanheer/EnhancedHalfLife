@@ -372,38 +372,38 @@ public:
 	int			Flags() { return WeaponInfoArray[m_iId].iFlags; }
 
 	//TODO: move to shotgun class
-	EHL_FIELD(Persisted, Type = Time)
-		float m_flPumpTime = 0;
+	EHL_FIELD(Persisted, Type=Time)
+	float m_flPumpTime = 0;
 
 #ifdef CLIENT_WEAPONS
 	EHL_FIELD(Persisted)
 #else
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 #endif
-		float m_flNextPrimaryAttack = 0;							//!< soonest time WeaponPostFrame will call PrimaryAttack
+	float m_flNextPrimaryAttack = 0;							//!< soonest time WeaponPostFrame will call PrimaryAttack
 
 #ifdef CLIENT_WEAPONS
 	EHL_FIELD(Persisted)
 #else
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 #endif
-		float m_flNextSecondaryAttack = 0;							//!< soonest time WeaponPostFrame will call SecondaryAttack
+	float m_flNextSecondaryAttack = 0;							//!< soonest time WeaponPostFrame will call SecondaryAttack
 
 #ifdef CLIENT_WEAPONS
 	EHL_FIELD(Persisted)
 #else
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 #endif
-		float m_flTimeWeaponIdle = 0;								//!< soonest time WeaponPostFrame will call WeaponIdle
+	float m_flTimeWeaponIdle = 0;								//!< soonest time WeaponPostFrame will call WeaponIdle
 
 	EHL_FIELD(Persisted)
-		int m_iPrimaryAmmoType = 0;									//!< "primary" ammo index into players m_rgAmmo[]
+	int m_iPrimaryAmmoType = 0;									//!< "primary" ammo index into players m_rgAmmo[]
 
 	EHL_FIELD(Persisted)
-		int m_iSecondaryAmmoType = 0;								//!< "secondary" ammo index into players m_rgAmmo[]
+	int m_iSecondaryAmmoType = 0;								//!< "secondary" ammo index into players m_rgAmmo[]
 
 	EHL_FIELD(Persisted)
-		int m_iClip = 0;											//!< number of shots left in the primary weapon clip, -1 it not used
+	int m_iClip = 0;											//!< number of shots left in the primary weapon clip, -1 it not used
 
 		//reset to zero on load so hud gets updated correctly
 	int m_iClientClip = 0;										//!< the last version of m_iClip sent to hud dll
@@ -412,17 +412,17 @@ public:
 	WeaponState m_iClientWeaponState = WeaponState::NotActive;	//!< the last version of the weapon state sent to hud dll (is current weapon, is on target)
 
 	EHL_FIELD(Persisted)
-		bool m_fInReload = false;									//!< Are we in the middle of a reload;
+	bool m_fInReload = false;									//!< Are we in the middle of a reload;
 
 	EHL_FIELD(Persisted)
-		int m_iDefaultPrimaryAmmo = 0; //!< how much ammo you get when you pick up this weapon as placed by a level designer.
+	int m_iDefaultPrimaryAmmo = 0; //!< how much ammo you get when you pick up this weapon as placed by a level designer.
 
 	EHL_FIELD(Persisted)
-		int m_iDefaultAmmo = 0; //!< Amount of ammo left in weapon
+	int m_iDefaultAmmo = 0; //!< Amount of ammo left in weapon
 
 		//Handled in CBasePlayer::AddPlayerWeapon
 	EHL_FIELD(Persisted)
-		WeaponPickupRule m_PickupRule = WeaponPickupRule::Default;
+	WeaponPickupRule m_PickupRule = WeaponPickupRule::Default;
 
 	// hle time creep vars
 	float m_flPrevPrimaryAttack = 0;
@@ -430,5 +430,5 @@ public:
 
 private:
 	EHL_FIELD(Persisted, Type = ModelName)
-		string_t m_iszWorldModelName = iStringNull;
+	string_t m_iszWorldModelName = iStringNull;
 };

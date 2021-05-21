@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CGrenade.hpp"
+#include "CMortar.generated.hpp"
 
 class EHL_CLASS() CMortar : public CGrenade
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

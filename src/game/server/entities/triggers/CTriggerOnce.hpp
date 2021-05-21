@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CTriggerMultiple.hpp"
+#include "CTriggerOnce.generated.hpp"
 
 /**
 *	@brief Variable sized trigger. Triggers once, then removes itself.
@@ -25,6 +26,8 @@
 */
 class EHL_CLASS() CTriggerOnce : public CTriggerMultiple
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 };

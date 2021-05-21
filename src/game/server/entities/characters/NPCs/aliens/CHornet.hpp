@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CHornet.generated.hpp"
 
 enum class HornetType
 {

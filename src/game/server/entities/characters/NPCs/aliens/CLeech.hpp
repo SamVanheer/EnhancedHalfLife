@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CLeech.generated.hpp"
 
 // Animation events
 constexpr int LEECH_AE_ATTACK = 1;
@@ -39,6 +40,8 @@ constexpr float LEECH_FRAMETIME = 0.1;
 */
 class EHL_CLASS() CLeech : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -85,26 +88,45 @@ public:
 	int	Classify() override { return CLASS_INSECT; }
 	Relationship GetRelationship(CBaseEntity* pTarget) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	static const char* pAttackSounds[];
 	static const char* pAlertSounds[];
 
 private:
 	// UNDONE: Remove unused boid vars, do group behavior
+	EHL_FIELD(Persisted)
 	float m_flTurning = 0;// is this boid turning?
+
+	EHL_FIELD(Persisted)
 	bool m_fPathBlocked = false;// true if there is an obstacle ahead
+
+	EHL_FIELD(Persisted)
 	float m_flAccelerate = 0;
+
+	EHL_FIELD(Persisted)
 	float m_obstacle = 0;
+
+	EHL_FIELD(Persisted)
 	float m_top = 0;
+
+	EHL_FIELD(Persisted)
 	float m_bottom = 0;
+
+	EHL_FIELD(Persisted)
 	float m_height = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_waterTime = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_sideTime = 0;		// Timer to randomly check clearance on sides
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_zTime = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_stateTime = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_attackSoundTime = 0;
 
 #if DEBUG_BEAMS

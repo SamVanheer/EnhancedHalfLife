@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CRulePointEntity.hpp"
+#include "CGameTeamMaster.generated.hpp"
 
 constexpr int SF_TEAMMASTER_FIREONCE = 0x0001;
 constexpr int SF_TEAMMASTER_ANYTEAM = 0x0002;
@@ -29,6 +30,8 @@ constexpr int SF_TEAMMASTER_ANYTEAM = 0x0002;
 */
 class EHL_CLASS() CGameTeamMaster : public CRulePointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		KeyValue(KeyValueData* pkvd) override;
 	void		Use(const UseInfo& info) override;

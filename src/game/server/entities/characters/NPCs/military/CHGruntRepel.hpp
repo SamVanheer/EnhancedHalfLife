@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CHGruntRepel.generated.hpp"
 
 /**
 *	@brief when triggered, spawns a monster_human_grunt repelling down a line.
 */
 class EHL_CLASS() CHGruntRepel : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

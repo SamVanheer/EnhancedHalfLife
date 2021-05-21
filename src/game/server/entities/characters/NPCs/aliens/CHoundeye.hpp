@@ -17,6 +17,7 @@
 
 #include "CBaseMonster.monsters.hpp"
 #include "CSquadMonster.hpp"
+#include "CHoundeye.generated.hpp"
 
 // houndeye does 20 points of damage spread over a sphere 384 units in diameter, and each additional 
 // squad member increases the BASE damage by 110%, per the spec.
@@ -67,6 +68,8 @@ constexpr int HOUND_AE_CLOSE_EYE = 7;
 */
 class EHL_CLASS() CHoundeye : public CSquadMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -100,14 +103,18 @@ public:
 	Schedule_t* GetScheduleOfType(int Type) override;
 	Schedule_t* GetSchedule() override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
 	CUSTOM_SCHEDULES;
-	static TYPEDESCRIPTION m_SaveData[];
 
+	//TODO: shouldn't be saved
+	EHL_FIELD(Persisted)
 	int m_iSpriteTexture = 0;
+
+	EHL_FIELD(Persisted)
 	bool m_fAsleep = false;// some houndeyes sleep in idle mode if this is set, the houndeye is lying down
+
+	EHL_FIELD(Persisted)
 	bool m_fDontBlink = false;// don't try to open/close eye if this bit is set!
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_vecPackCenter; // the center of the pack. The leader maintains this by averaging the origins of all pack members.
 };

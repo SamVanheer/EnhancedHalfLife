@@ -17,6 +17,8 @@
 
 #include "CBaseEntity.hpp"
 
+#include "CWorld.generated.hpp"
+
 /**
 *	@brief This spawns first when each level begins.
 *
@@ -24,6 +26,8 @@
 */
 class EHL_CLASS() CWorld : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	~CWorld();
 

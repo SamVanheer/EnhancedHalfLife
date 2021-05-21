@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CActAnimating.hpp"
+#include "CXenTree.generated.hpp"
 
 class CXenTreeTrigger;
 
@@ -23,6 +24,8 @@ constexpr int TREE_AE_ATTACK = 1;
 
 class EHL_CLASS() CXenTree : public CActAnimating
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnRemove() override;
 	void		Spawn() override;
@@ -34,13 +37,10 @@ public:
 	void		Attack();
 	int			Classify() override { return CLASS_BARNACLE; }
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	static const char* pAttackHitSounds[];
 	static const char* pAttackMissSounds[];
 
 private:
+	EHL_FIELD(Persisted)
 	EHandle<CXenTreeTrigger> m_hTrigger;
 };

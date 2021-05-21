@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseTrigger.hpp"
+#include "CTriggerMultiple.generated.hpp"
 
 /**
 *	@brief Variable sized repeatable trigger. Must be targeted at one or more entities.
@@ -23,6 +24,8 @@
 */
 class EHL_CLASS() CTriggerMultiple : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 

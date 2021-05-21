@@ -16,9 +16,12 @@
 #pragma once
 
 #include "triggers/CBaseTrigger.hpp"
+#include "CTriggerSave.generated.hpp"
 
 class EHL_CLASS() CTriggerSave : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void EXPORT SaveTouch(CBaseEntity * pOther);

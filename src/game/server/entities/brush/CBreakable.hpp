@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CBaseDelay.hpp"
-
 #include "CBreakable.generated.hpp"
 
 enum class Explosions

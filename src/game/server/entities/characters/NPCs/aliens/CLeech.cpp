@@ -36,24 +36,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_leech, CLeech);
 
-TYPEDESCRIPTION	CLeech::m_SaveData[] =
-{
-	DEFINE_FIELD(CLeech, m_flTurning, FIELD_FLOAT),
-	DEFINE_FIELD(CLeech, m_fPathBlocked, FIELD_BOOLEAN),
-	DEFINE_FIELD(CLeech, m_flAccelerate, FIELD_FLOAT),
-	DEFINE_FIELD(CLeech, m_obstacle, FIELD_FLOAT),
-	DEFINE_FIELD(CLeech, m_top, FIELD_FLOAT),
-	DEFINE_FIELD(CLeech, m_bottom, FIELD_FLOAT),
-	DEFINE_FIELD(CLeech, m_height, FIELD_FLOAT),
-	DEFINE_FIELD(CLeech, m_waterTime, FIELD_TIME),
-	DEFINE_FIELD(CLeech, m_sideTime, FIELD_TIME),
-	DEFINE_FIELD(CLeech, m_zTime, FIELD_TIME),
-	DEFINE_FIELD(CLeech, m_stateTime, FIELD_TIME),
-	DEFINE_FIELD(CLeech, m_attackSoundTime, FIELD_TIME),
-};
-
-IMPLEMENT_SAVERESTORE(CLeech, CBaseMonster);
-
 const char* CLeech::pAttackSounds[] =
 {
 	"leech/leech_bite1.wav",

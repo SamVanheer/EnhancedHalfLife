@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CGrenade.generated.hpp"
 
 /**
 *	@brief Contact Grenade / Timed grenade / Satchel Charge
 */
 class EHL_CLASS() CGrenade : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 

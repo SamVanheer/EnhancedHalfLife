@@ -17,12 +17,16 @@
 
 #include "CBaseEntity.hpp"
 
+#include "CNodeViewer.generated.hpp"
+
 /**
 *	@brief Draws a graph of the shorted path from all nodes to current location (typically the player).
 *	It then draws as many connects as it can per frame, trying not to overflow the buffer
 */
 class EHL_CLASS() CNodeViewer : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 

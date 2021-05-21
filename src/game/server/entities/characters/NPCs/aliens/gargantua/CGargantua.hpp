@@ -17,6 +17,7 @@
 
 #include "CBaseMonster.hpp"
 #include "CBaseMonster.monsters.hpp"
+#include "CGargantua.generated.hpp"
 
 class CBeam;
 class CSprite;
@@ -43,10 +44,12 @@ constexpr float ATTN_GARG = ATTN_NORM;
 
 constexpr int STOMP_SPRITE_COUNT = 10;
 
-int gStompSprite = 0, gGargGibModel = 0;
+inline int gStompSprite = 0, gGargGibModel = 0;
 
 class EHL_CLASS() CGargantua : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnRemove() override;
 	void Spawn() override;
@@ -87,10 +90,6 @@ public:
 
 	void FlameDamage(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	CUSTOM_SCHEDULES;
 
 private:
@@ -115,14 +114,30 @@ private:
 	*/
 	CBaseEntity* GargantuaCheckTraceHullAttack(float flDist, int iDamage, int iDmgType);
 
+	EHL_FIELD(Persisted)
 	EHandle<CSprite> m_hEyeGlow;		// Glow around the eyes
+
+	EHL_FIELD(Persisted)
 	EHandle<CBeam> m_hFlame[4];		// Flame beams
 
+	EHL_FIELD(Persisted)
 	int m_eyeBrightness = 0;	// Brightness target
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_seeTime = 0;			// Time to attack (when I see the enemy, I set this)
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flameTime = 0;		// Time of next flame attack
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_painSoundTime = 0;	// Time of next pain sound
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_streakTime = 0;		// streak timer (don't send too many)
+
+	EHL_FIELD(Persisted)
 	float m_flameX = 0;			// Flame thrower aim
+
+	EHL_FIELD(Persisted)
 	float m_flameY = 0;
 };

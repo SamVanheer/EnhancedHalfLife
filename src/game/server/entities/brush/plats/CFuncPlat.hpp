@@ -17,6 +17,7 @@
 
 #include "CBaseEntity.hpp"
 #include "CBasePlatTrain.hpp"
+#include "CFuncPlat.generated.hpp"
 
 /**
 *	@details Plats are always drawn in the extended position, so they will light correctly.
@@ -28,6 +29,8 @@
 */
 class EHL_CLASS() CFuncPlat : public CBasePlatTrain
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

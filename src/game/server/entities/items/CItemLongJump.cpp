@@ -16,10 +16,3 @@
 #include "CItemLongJump.hpp"
 
 LINK_ENTITY_TO_CLASS(item_longjump, CItemLongJump);
-
-TYPEDESCRIPTION CItemLongJump::m_SaveData[] =
-{
-	DEFINE_FIELD(CItemLongJump, m_PlaySuitSentence, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CItemLongJump, CBaseItem);

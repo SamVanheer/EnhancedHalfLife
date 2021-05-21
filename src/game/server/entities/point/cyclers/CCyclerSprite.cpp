@@ -17,15 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(cycler_sprite, CCyclerSprite);
 
-TYPEDESCRIPTION	CCyclerSprite::m_SaveData[] =
-{
-	DEFINE_FIELD(CCyclerSprite, m_animate, FIELD_BOOLEAN),
-	DEFINE_FIELD(CCyclerSprite, m_lastTime, FIELD_TIME),
-	DEFINE_FIELD(CCyclerSprite, m_maxFrame, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CCyclerSprite, CBaseEntity);
-
 void CCyclerSprite::Spawn()
 {
 	SetSolidType(Solid::SlideBox);

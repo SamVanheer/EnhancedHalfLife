@@ -16,22 +16,24 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CFlockingFlyerFlock.generated.hpp"
 
 class EHL_CLASS() CFlockingFlyerFlock : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
 	void KeyValue(KeyValueData* pkvd) override;
 	void SpawnFlock();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	// Sounds are shared by the flock
 	static  void PrecacheFlockSounds();
 
+	EHL_FIELD(Persisted)
 	int m_cFlockSize = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flFlockRadius = 0;
 };

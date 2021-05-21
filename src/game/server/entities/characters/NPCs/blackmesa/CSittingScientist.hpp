@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CScientist.hpp"
+#include "CSittingScientist.generated.hpp"
 
 /**
 *	@brief kdb: changed from public CBaseMonster so he can speak
 */
 class EHL_CLASS() CSittingScientist : public CScientist
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void  Precache() override;
@@ -35,9 +38,6 @@ public:
 	*	@brief ID as a passive human
 	*/
 	int	Classify() override;
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	/**
 	*	@brief prepare sitting scientist to answer a question
@@ -49,7 +49,13 @@ public:
 	*	@brief ask question of nearby friend, or make statement
 	*/
 	int IdleSpeak();
+
+	//Don't need to save (recalc'd)
 	int m_baseSequence = 0;
+
+	EHL_FIELD(Persisted)
 	int m_headTurn = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flResponseDelay = 0;
 };

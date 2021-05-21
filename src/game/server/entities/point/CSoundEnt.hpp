@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CSoundEnt.generated.hpp"
 
 constexpr int	MAX_WORLD_SOUNDS = 64;		//!< maximum number of sounds handled by the world at one time.
 
@@ -70,6 +71,8 @@ public:
 */
 class EHL_CLASS() CSoundEnt : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 
 	void Precache() override;

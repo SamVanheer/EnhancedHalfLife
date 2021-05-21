@@ -18,19 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(monstermaker, CMonsterMaker);
 
-TYPEDESCRIPTION	CMonsterMaker::m_SaveData[] =
-{
-	DEFINE_FIELD(CMonsterMaker, m_iszMonsterClassname, FIELD_STRING),
-	DEFINE_FIELD(CMonsterMaker, m_cNumMonsters, FIELD_INTEGER),
-	DEFINE_FIELD(CMonsterMaker, m_cLiveChildren, FIELD_INTEGER),
-	DEFINE_FIELD(CMonsterMaker, m_flGround, FIELD_FLOAT),
-	DEFINE_FIELD(CMonsterMaker, m_iMaxLiveChildren, FIELD_INTEGER),
-	DEFINE_FIELD(CMonsterMaker, m_fActive, FIELD_BOOLEAN),
-	DEFINE_FIELD(CMonsterMaker, m_fFadeChildren, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CMonsterMaker, CBaseMonster);
-
 void CMonsterMaker::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "monstercount"))

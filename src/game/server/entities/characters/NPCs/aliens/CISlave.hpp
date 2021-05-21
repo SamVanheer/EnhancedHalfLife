@@ -17,6 +17,7 @@
 
 #include "CBaseMonster.monsters.hpp"
 #include "CSquadMonster.hpp"
+#include "CISlave.generated.hpp"
 
 class CBeam;
 
@@ -38,6 +39,8 @@ constexpr int SF_ISLAVE_IS_REVIVED_SLAVE = 1 << 0;
 */
 class EHL_CLASS() CISlave : public CSquadMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnRemove() override;
 	void Spawn() override;
@@ -77,10 +80,6 @@ public:
 	Schedule_t* GetScheduleOfType(int Type) override;
 	CUSTOM_SCHEDULES;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static TYPEDESCRIPTION m_SaveData[];
-
 	void ClearBeams();
 
 	/**
@@ -103,15 +102,22 @@ public:
 	*/
 	void BeamGlow();
 
+	EHL_FIELD(Persisted)
 	int m_iBravery = 0;
 
+	EHL_FIELD(Persisted)
 	EHandle<CBeam> m_hBeam[ISLAVE_MAX_BEAMS];
 
+	EHL_FIELD(Persisted)
 	int m_iBeams = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextAttack = 0;
 
+	EHL_FIELD(Persisted)
 	int	m_voicePitch = 0;
 
+	EHL_FIELD(Persisted)
 	EHANDLE m_hDead;
 
 	static const char* pAttackHitSounds[];

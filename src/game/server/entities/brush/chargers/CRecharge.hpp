@@ -22,9 +22,12 @@
 */
 
 #include "CBaseCharger.hpp"
+#include "CRecharge.generated.hpp"
 
 class EHL_CLASS() CRecharge : public CBaseCharger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	CRecharge()
 	{

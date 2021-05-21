@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CGenericMonster.generated.hpp"
 
 // For holograms, make them not solid so the player can walk through them
 constexpr int	SF_GENERICMONSTER_NOTSOLID = 4;
@@ -25,6 +26,8 @@ constexpr int	SF_GENERICMONSTER_NOTSOLID = 4;
 */
 class EHL_CLASS() CGenericMonster : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

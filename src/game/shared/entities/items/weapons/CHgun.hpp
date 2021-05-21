@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
+#include "CHgun.generated.hpp"
 
 enum hgun_e
 {
@@ -29,6 +30,8 @@ enum hgun_e
 
 class EHL_CLASS() CHgun : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{

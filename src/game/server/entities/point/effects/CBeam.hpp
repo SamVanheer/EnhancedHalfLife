@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CBeam.generated.hpp"
 
 constexpr int SF_BEAM_STARTON = 0x0001;
 constexpr int SF_BEAM_TOGGLE = 0x0002;
@@ -30,6 +31,8 @@ constexpr int SF_BEAM_TEMPORARY = 0x8000;
 
 class EHL_CLASS() CBeam : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Precache() override;

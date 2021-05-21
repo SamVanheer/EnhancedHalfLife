@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CHeadCrab.hpp"
+#include "CBabyCrab.generated.hpp"
 
 class EHL_CLASS() CBabyCrab : public CHeadCrab
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

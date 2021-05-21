@@ -20,16 +20,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_houndeye, CHoundeye);
 
-TYPEDESCRIPTION	CHoundeye::m_SaveData[] =
-{
-	DEFINE_FIELD(CHoundeye, m_iSpriteTexture, FIELD_INTEGER),
-	DEFINE_FIELD(CHoundeye, m_fAsleep, FIELD_BOOLEAN),
-	DEFINE_FIELD(CHoundeye, m_fDontBlink, FIELD_BOOLEAN),
-	DEFINE_FIELD(CHoundeye, m_vecPackCenter, FIELD_POSITION_VECTOR),
-};
-
-IMPLEMENT_SAVERESTORE(CHoundeye, CSquadMonster);
-
 int	CHoundeye::Classify()
 {
 	return	CLASS_ALIEN_MONSTER;

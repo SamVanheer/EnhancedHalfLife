@@ -18,9 +18,12 @@
 #include "CBasePlayer.hpp"
 #include "CItem.hpp"
 #include "weapons.h"
+#include "CItemAntidote.generated.hpp"
 
 class EHL_CLASS() CItemAntidote : public CItem
 {
+	EHL_GENERATED_BODY()
+
 	void OnConstruct() override
 	{
 		CItem::OnConstruct();

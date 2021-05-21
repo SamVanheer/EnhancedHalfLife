@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
+#include "CWeaponCycler.generated.hpp"
 
 class EHL_CLASS() CWeaponCycler : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	int WeaponSlot() override { return 1; }

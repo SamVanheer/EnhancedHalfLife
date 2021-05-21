@@ -24,6 +24,7 @@
 //TODO: why is this included here?
 #include "brush/CBreakable.hpp"
 #include "skill.h"
+#include "CBaseMonster.monsters.generated.hpp"
 
 struct WayPoint_t;
 
@@ -112,11 +113,14 @@ constexpr int bits_MEMORY_CUSTOM3 = 1 << 29; 		// Monster-specific memory
 constexpr int bits_MEMORY_CUSTOM2 = 1 << 30; 		// Monster-specific memory
 constexpr int bits_MEMORY_CUSTOM1 = 1 << 31; 		// Monster-specific memory
 
+//TODO: move to its own file
 //
 // A gib is a chunk of a body, or a piece of wood/metal/rocks/etc.
 //
 class EHL_CLASS() CGib : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	/**
 	*	@brief Throw a chunk

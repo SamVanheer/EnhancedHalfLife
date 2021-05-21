@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CSquadMonster.hpp"
+#include "CController.generated.hpp"
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -30,12 +31,10 @@ constexpr int CONTROLLER_FLINCH_DELAY = 2;		// at most one flinch every n secs
 
 class EHL_CLASS() CController : public CSquadMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnRemove() override;
-
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	void Spawn() override;
 	void Precache() override;
@@ -82,11 +81,19 @@ public:
 	void Killed(const KilledInfo& info) override;
 	void GibMonster() override;
 
+	EHL_FIELD(Persisted)
 	EHandle<CSprite> m_hBall[2];	// hand balls
+
+	EHL_FIELD(Persisted)
 	int m_iBall[2]{};				// how bright it should be
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_iBallTime[2]{};			// when it should be that color
+
+	EHL_FIELD(Persisted)
 	int m_iBallCurrent[2]{};		// current brightness
 
+	EHL_FIELD(Persisted)
 	Vector m_vecEstVelocity;
 
 	Vector m_velocity;

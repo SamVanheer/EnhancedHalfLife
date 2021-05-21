@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseTrigger.hpp"
+#include "CTriggerTeleport.generated.hpp"
 
 class EHL_CLASS() CTriggerTeleport : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 

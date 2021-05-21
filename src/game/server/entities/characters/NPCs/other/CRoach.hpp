@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CRoach.generated.hpp"
 
 enum class RoachState
 {
@@ -32,6 +33,8 @@ enum class RoachState
 */
 class EHL_CLASS() CRoach : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

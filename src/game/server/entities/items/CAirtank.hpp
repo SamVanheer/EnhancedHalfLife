@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CGrenade.hpp"
+#include "CAirtank.generated.hpp"
 
 class EHL_CLASS() CAirtank : public CGrenade
 {
+	EHL_GENERATED_BODY()
+
 	void Spawn() override;
 	void Precache() override;
 	void EXPORT TankThink();
@@ -26,10 +29,6 @@ class EHL_CLASS() CAirtank : public CGrenade
 	int	 BloodColor() override { return DONT_BLEED; }
 	void Killed(const KilledInfo& info) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	bool m_state = false;
 };

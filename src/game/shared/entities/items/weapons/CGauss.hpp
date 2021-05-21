@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
-
 #include "CGauss.generated.hpp"
 
 constexpr int GAUSS_PRIMARY_CHARGE_VOLUME = 256;	// how loud gauss is while charging

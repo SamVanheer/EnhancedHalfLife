@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CEnvSound.generated.hpp"
 
 /**
 *	@brief Room sound FX
@@ -26,16 +27,17 @@
 */
 class EHL_CLASS() CEnvSound : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
 
 	void Think() override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	float m_flRadius = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flRoomtype = 0;
 };

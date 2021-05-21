@@ -20,11 +20,14 @@
 #include "skill.h"
 #include "UserMessages.h"
 #include "weapons.h"
+#include "CItemBattery.generated.hpp"
 
 constexpr float BATTERY_DEFAULT_CAPACITY = -1;
 
 class EHL_CLASS() CItemBattery : public CItem
 {
+	EHL_GENERATED_BODY()
+
 	void OnConstruct() override
 	{
 		CItem::OnConstruct();
@@ -93,11 +96,7 @@ class EHL_CLASS() CItemBattery : public CItem
 		return {ItemApplyAction::NotUsed};
 	}
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static TYPEDESCRIPTION m_SaveData[];
-
 private:
+	EHL_FIELD(Persisted)
 	float m_flCustomCapacity = BATTERY_DEFAULT_CAPACITY;
 };

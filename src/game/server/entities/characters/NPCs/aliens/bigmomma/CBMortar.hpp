@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CBMortar.generated.hpp"
 
 /**
 *	@brief Mortar shot entity
 */
 class EHL_CLASS() CBMortar : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 
@@ -29,9 +32,6 @@ public:
 	void Touch(CBaseEntity* pOther) override;
 	void EXPORT Animate();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	int m_maxFrame = 0;
 };

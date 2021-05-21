@@ -18,41 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_osprey, COsprey);
 
-TYPEDESCRIPTION	COsprey::m_SaveData[] =
-{
-	DEFINE_FIELD(COsprey, m_hGoalEnt, FIELD_EHANDLE),
-	DEFINE_FIELD(COsprey, m_vel1, FIELD_VECTOR),
-	DEFINE_FIELD(COsprey, m_vel2, FIELD_VECTOR),
-	DEFINE_FIELD(COsprey, m_pos1, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(COsprey, m_pos2, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(COsprey, m_ang1, FIELD_VECTOR),
-	DEFINE_FIELD(COsprey, m_ang2, FIELD_VECTOR),
-
-	DEFINE_FIELD(COsprey, m_startTime, FIELD_TIME),
-	DEFINE_FIELD(COsprey, m_dTime, FIELD_FLOAT),
-	DEFINE_FIELD(COsprey, m_velocity, FIELD_VECTOR),
-
-	DEFINE_FIELD(COsprey, m_flIdealtilt, FIELD_FLOAT),
-	DEFINE_FIELD(COsprey, m_flRotortilt, FIELD_FLOAT),
-
-	DEFINE_FIELD(COsprey, m_flRightHealth, FIELD_FLOAT),
-	DEFINE_FIELD(COsprey, m_flLeftHealth, FIELD_FLOAT),
-
-	DEFINE_FIELD(COsprey, m_iUnits, FIELD_INTEGER),
-	DEFINE_ARRAY(COsprey, m_hGrunt, FIELD_EHANDLE, MAX_CARRY),
-	DEFINE_ARRAY(COsprey, m_vecOrigin, FIELD_POSITION_VECTOR, MAX_CARRY),
-	DEFINE_ARRAY(COsprey, m_hRepel, FIELD_EHANDLE, 4),
-
-	// DEFINE_FIELD( COsprey, m_iSoundState, FIELD_INTEGER ),
-	// DEFINE_FIELD( COsprey, m_iSpriteTexture, FIELD_INTEGER ),
-	// DEFINE_FIELD( COsprey, m_iPitch, FIELD_INTEGER ),
-
-	DEFINE_FIELD(COsprey, m_iDoLeftSmokePuff, FIELD_INTEGER),
-	DEFINE_FIELD(COsprey, m_iDoRightSmokePuff, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(COsprey, CBaseMonster);
-
 void COsprey::Spawn()
 {
 	Precache();
@@ -81,7 +46,7 @@ void COsprey::Spawn()
 	SetThink(&COsprey::FindAllThink);
 	SetUse(&COsprey::CommandUse);
 
-	if (!(pev->spawnflags & SF_WAITFORTRIGGER))
+	if (!(pev->spawnflags & SF_OSPREY_WAITFORTRIGGER))
 	{
 		pev->nextthink = gpGlobals->time + 1.0;
 	}

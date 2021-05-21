@@ -17,9 +17,12 @@
 
 #include "CBaseAmmo.hpp"
 #include "CBaseWeapon.hpp"
+#include "CMP5Chainammo.generated.hpp"
 
 class EHL_CLASS() CMP5Chainammo : public CBaseAmmo
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{

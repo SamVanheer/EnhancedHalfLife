@@ -17,6 +17,7 @@
 
 #include "CBaseMonster.monsters.hpp"
 #include "CSquadMonster.hpp"
+#include "CHGrunt.generated.hpp"
 
 enum class GruntQuestion
 {
@@ -103,6 +104,8 @@ constexpr int bits_COND_GRUNT_NOFIRE = bits_COND_SPECIAL1;
 
 class EHL_CLASS() CHGrunt : public CSquadMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -173,9 +176,6 @@ public:
 	*/
 	void SpeakSentence();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
 	CBaseEntity* Kick();
 	Schedule_t* GetSchedule() override;
 	Schedule_t* GetScheduleOfType(int Type) override;
@@ -203,26 +203,40 @@ public:
 	void JustSpoke();
 
 	CUSTOM_SCHEDULES;
-	static TYPEDESCRIPTION m_SaveData[];
 
 	// checking the feasibility of a grenade toss is kind of costly, so we do it every couple of seconds,
 	// not every server frame.
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextGrenadeCheck = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextPainTime = 0;
+
+	//Don't save, go to zero
 	float m_flLastEnemySightTime = 0;
 
+	EHL_FIELD(Persisted)
 	Vector	m_vecTossVelocity;
 
+	EHL_FIELD(Persisted)
 	bool m_fThrowGrenade = false;
+
+	EHL_FIELD(Persisted)
 	bool m_fStanding = false;
+
+	EHL_FIELD(Persisted)
 	bool m_fFirstEncounter = false;// only put on the handsign show in the squad's first encounter.
+
+	EHL_FIELD(Persisted)
 	int m_cClipSize = 0;
 
+	EHL_FIELD(Persisted)
 	int m_voicePitch = 0;
 
 	int m_iBrassShell = 0;
 	int m_iShotgunShell = 0;
 
+	EHL_FIELD(Persisted)
 	int m_iSentence = 0;
 
 	static const char* pGruntSentences[];

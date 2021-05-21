@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
+#include "CCrossbow.generated.hpp"
 
 enum crossbow_e
 {
@@ -35,6 +36,8 @@ enum crossbow_e
 
 class EHL_CLASS() CCrossbow : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{

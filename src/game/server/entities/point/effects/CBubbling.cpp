@@ -17,17 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(env_bubbles, CBubbling);
 
-TYPEDESCRIPTION	CBubbling::m_SaveData[] =
-{
-	DEFINE_FIELD(CBubbling, m_density, FIELD_INTEGER),
-	DEFINE_FIELD(CBubbling, m_frequency, FIELD_INTEGER),
-	DEFINE_FIELD(CBubbling, m_state, FIELD_BOOLEAN),
-	// Let spawn restore this!
-	//	DEFINE_FIELD( CBubbling, m_bubbleModel, FIELD_INTEGER ),
-};
-
-IMPLEMENT_SAVERESTORE(CBubbling, CBaseEntity);
-
 constexpr int SF_BUBBLES_STARTOFF = 0x0001;
 
 void CBubbling::Spawn()

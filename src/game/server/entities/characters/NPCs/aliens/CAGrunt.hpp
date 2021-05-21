@@ -17,6 +17,7 @@
 
 #include "CBaseMonster.monsters.hpp"
 #include "CSquadMonster.hpp"
+#include "CAGrunt.generated.hpp"
 
 //=========================================================
 // monster-specific schedule types
@@ -36,7 +37,7 @@ enum
 	TASK_AGRUNT_GET_PATH_TO_ENEMY_CORPSE,
 };
 
-int iAgruntMuzzleFlash;
+inline int iAgruntMuzzleFlash;
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -63,6 +64,8 @@ constexpr int AGRUNT_MELEE_DIST = 100;
 */
 class EHL_CLASS() CAGrunt : public CSquadMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -119,10 +122,6 @@ public:
 	bool ShouldSpeak();
 	CUSTOM_SCHEDULES;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	static const char* pAttackHitSounds[];
 	static const char* pAttackMissSounds[];
 	static const char* pAttackSounds[];
@@ -131,13 +130,22 @@ public:
 	static const char* pIdleSounds[];
 	static const char* pAlertSounds[];
 
+	EHL_FIELD(Persisted)
 	bool m_fCanHornetAttack = false;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextHornetAttackCheck = 0;
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextPainTime = 0;
 
 	// three hacky fields for speech stuff. These don't really need to be saved.
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextSpeakTime = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextWordTime = 0;
+
+	EHL_FIELD(Persisted)
 	int m_iLastWord = 0;
 };

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CRuleEntity.hpp"
+#include "CRuleBrushEntity.generated.hpp"
 
 /**
 *	@brief base class for all rule "brush" entities (not brushes)
@@ -23,6 +24,8 @@
 */
 class EHL_CLASS() CRuleBrushEntity : public CRuleEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Spawn() override;
 };

@@ -15,18 +15,6 @@
 
 #include "CMomentaryRotButton.hpp"
 
-TYPEDESCRIPTION CMomentaryRotButton::m_SaveData[] =
-{
-	DEFINE_FIELD(CMomentaryRotButton, m_lastUsed, FIELD_BOOLEAN),
-	DEFINE_FIELD(CMomentaryRotButton, m_direction, FIELD_INTEGER),
-	DEFINE_FIELD(CMomentaryRotButton, m_returnSpeed, FIELD_FLOAT),
-	DEFINE_FIELD(CMomentaryRotButton, m_start, FIELD_VECTOR),
-	DEFINE_FIELD(CMomentaryRotButton, m_end, FIELD_VECTOR),
-	DEFINE_FIELD(CMomentaryRotButton, m_sounds, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CMomentaryRotButton, CBaseToggle);
-
 LINK_ENTITY_TO_CLASS(momentary_rot_button, CMomentaryRotButton);
 
 void CMomentaryRotButton::Spawn()

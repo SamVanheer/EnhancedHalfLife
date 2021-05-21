@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseDelay.hpp"
+#include "CEnvBeverage.generated.hpp"
 
 /**
 *	@brief Beverage Dispenser
@@ -24,6 +25,8 @@
 */
 class EHL_CLASS() CEnvBeverage : public CBaseDelay
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Precache() override;

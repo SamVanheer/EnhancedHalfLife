@@ -17,14 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(path_corner, CPathCorner);
 
-// Global Savedata for Delay
-TYPEDESCRIPTION	CPathCorner::m_SaveData[] =
-{
-	DEFINE_FIELD(CPathCorner, m_flWait, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CPathCorner, CPointEntity);
-
 void CPathCorner::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "wait"))

@@ -16,38 +16,6 @@
 #include "CBaseWeapon.hpp"
 #include "CFuncTank.hpp"
 
-TYPEDESCRIPTION	CFuncTank::m_SaveData[] =
-{
-	DEFINE_FIELD(CFuncTank, m_yawCenter, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_yawRate, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_yawRange, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_yawTolerance, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_pitchCenter, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_pitchRate, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_pitchRange, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_pitchTolerance, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_fireLast, FIELD_TIME),
-	DEFINE_FIELD(CFuncTank, m_fireRate, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_lastSightTime, FIELD_TIME),
-	DEFINE_FIELD(CFuncTank, m_persist, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_minRange, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_maxRange, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_barrelPos, FIELD_VECTOR),
-	DEFINE_FIELD(CFuncTank, m_spriteScale, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncTank, m_iszSpriteSmoke, FIELD_STRING),
-	DEFINE_FIELD(CFuncTank, m_iszSpriteFlash, FIELD_STRING),
-	DEFINE_FIELD(CFuncTank, m_bulletType, FIELD_INTEGER),
-	DEFINE_FIELD(CFuncTank, m_sightOrigin, FIELD_VECTOR),
-	DEFINE_FIELD(CFuncTank, m_spread, FIELD_INTEGER),
-	DEFINE_FIELD(CFuncTank, m_hController, FIELD_EHANDLE),
-	DEFINE_FIELD(CFuncTank, m_vecControllerUsePos, FIELD_VECTOR),
-	DEFINE_FIELD(CFuncTank, m_flNextAttack, FIELD_TIME),
-	DEFINE_FIELD(CFuncTank, m_iBulletDamage, FIELD_INTEGER),
-	DEFINE_FIELD(CFuncTank, m_iszMaster, FIELD_STRING),
-};
-
-IMPLEMENT_SAVERESTORE(CFuncTank, CBaseEntity);
-
 void CFuncTank::Spawn()
 {
 	Precache();

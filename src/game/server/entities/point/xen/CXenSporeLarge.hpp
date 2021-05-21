@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CXenSpore.hpp"
+#include "CXenSporeLarge.generated.hpp"
 
 class EHL_CLASS() CXenSporeLarge : public CXenSpore
 {
+	EHL_GENERATED_BODY()
+
 	void		Spawn() override;
 
 	static const Vector m_hullSizes[];

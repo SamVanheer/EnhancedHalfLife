@@ -19,13 +19,6 @@
 
 LINK_ENTITY_TO_CLASS(xen_tree, CXenTree);
 
-TYPEDESCRIPTION	CXenTree::m_SaveData[] =
-{
-	DEFINE_FIELD(CXenTree, m_hTrigger, FIELD_EHANDLE),
-};
-
-IMPLEMENT_SAVERESTORE(CXenTree, CActAnimating);
-
 void CXenTree::OnRemove()
 {
 	m_hTrigger.Remove();

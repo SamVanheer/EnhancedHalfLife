@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CFuncTank.hpp"
+#include "CFuncTankRocket.generated.hpp"
 
 class EHL_CLASS() CFuncTankRocket : public CFuncTank
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Precache() override;
 	void Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker) override;

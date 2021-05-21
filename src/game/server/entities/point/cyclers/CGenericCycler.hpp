@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CCycler.hpp"
+#include "CGenericCycler.generated.hpp"
 
 /**
 *	@brief we should get rid of all the other cyclers and replace them with this.
 */
 class EHL_CLASS() CGenericCycler : public CCycler
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override { GenericCyclerSpawn(STRING(pev->model), Vector(-16, -16, 0), Vector(16, 16, 72)); }
 };

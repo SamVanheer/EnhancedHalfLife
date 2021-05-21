@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseButton.hpp"
+#include "CRotButton.generated.hpp"
 
 constexpr int SF_ROTBUTTON_NOTSOLID = 1;
 
@@ -24,6 +25,8 @@ constexpr int SF_ROTBUTTON_NOTSOLID = 1;
 */
 class EHL_CLASS() CRotButton : public CBaseButton
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 };

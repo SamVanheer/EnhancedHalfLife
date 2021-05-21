@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CFlyingMonster.generated.hpp"
 
 /**
 *	@brief Base class for flying monsters.  This overrides the movement test & execution code from CBaseMonster
 */
 class EHL_CLASS() CFlyingMonster : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	LocalMoveResult CheckLocalMove(const Vector& vecStart, const Vector& vecEnd, CBaseEntity* pTarget, float* pflDist) override;
 	bool		Triangulate(const Vector& vecStart, const Vector& vecEnd, float flDist, CBaseEntity* pTargetEnt, Vector* pApex) override;

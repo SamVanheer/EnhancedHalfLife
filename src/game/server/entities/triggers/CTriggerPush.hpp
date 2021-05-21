@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseTrigger.hpp"
+#include "CTriggerPush.generated.hpp"
 
 constexpr int SF_TRIGGER_PUSH_ONCE = 1;
 constexpr int SF_TRIGGER_PUSH_START_OFF = 2;		//!< spawnflag that makes trigger_push spawn turned OFF
@@ -25,6 +26,8 @@ constexpr int SF_TRIGGER_PUSH_START_OFF = 2;		//!< spawnflag that makes trigger_
 */
 class EHL_CLASS() CTriggerPush : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData * pkvd) override;

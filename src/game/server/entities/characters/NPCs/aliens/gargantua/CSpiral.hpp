@@ -16,10 +16,13 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CSpiral.generated.hpp"
 
 // Spiral Effect
 class EHL_CLASS() CSpiral : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Think() override;

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CBloater.generated.hpp"
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -24,6 +25,8 @@ constexpr int BLOATER_AE_ATTACK_MELEE1 = 0x01;
 
 class EHL_CLASS() CBloater : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

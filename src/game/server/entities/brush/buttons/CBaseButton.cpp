@@ -21,22 +21,6 @@
 
 #include "effects/CEnvSpark.hpp"
 
-// CBaseButton
-TYPEDESCRIPTION CBaseButton::m_SaveData[] =
-{
-	DEFINE_FIELD(CBaseButton, m_fStayPushed, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBaseButton, m_fRotating, FIELD_BOOLEAN),
-
-	DEFINE_FIELD(CBaseButton, m_sounds, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseButton, m_bLockedSound, FIELD_CHARACTER),
-	DEFINE_FIELD(CBaseButton, m_bLockedSentence, FIELD_CHARACTER),
-	DEFINE_FIELD(CBaseButton, m_bUnlockedSound, FIELD_CHARACTER),
-	DEFINE_FIELD(CBaseButton, m_bUnlockedSentence, FIELD_CHARACTER),
-	//	DEFINE_FIELD( CBaseButton, m_ls, FIELD_??? ),   // This is restored in Precache()
-};
-
-IMPLEMENT_SAVERESTORE(CBaseButton, CBaseToggle);
-
 void CBaseButton::Precache()
 {
 	if (IsBitSet(pev->spawnflags, SF_BUTTON_SPARK_IF_OFF))// this button should spark in OFF state

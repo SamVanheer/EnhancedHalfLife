@@ -15,13 +15,6 @@
 
 #include "CEnvExplosion.hpp"
 
-TYPEDESCRIPTION	CEnvExplosion::m_SaveData[] =
-{
-	DEFINE_FIELD(CEnvExplosion, m_iMagnitude, FIELD_INTEGER),
-	DEFINE_FIELD(CEnvExplosion, m_spriteScale, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CEnvExplosion, CBaseMonster);
 LINK_ENTITY_TO_CLASS(env_explosion, CEnvExplosion);
 
 void CEnvExplosion::KeyValue(KeyValueData* pkvd)

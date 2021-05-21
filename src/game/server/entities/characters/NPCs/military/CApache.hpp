@@ -16,17 +16,16 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CApache.generated.hpp"
 
 class CBeam;
 
-constexpr int SF_WAITFORTRIGGER = 0x04 | 0x40; // UNDONE: Fix!
+constexpr int SF_APACHE_WAITFORTRIGGER = 0x04 | 0x40; // UNDONE: Fix!
 constexpr int SF_NOWRECKAGE = 0x08;
 
 class EHL_CLASS() CApache : public CBaseMonster
 {
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
+	EHL_GENERATED_BODY()
 
 	void Spawn() override;
 	void Precache() override;
@@ -56,30 +55,52 @@ class EHL_CLASS() CApache : public CBaseMonster
 	bool TakeDamage(const TakeDamageInfo& info) override;
 	void TraceAttack(const TraceAttackInfo& info) override;
 
+	EHL_FIELD(Persisted)
 	int m_iRockets = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flForce = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextRocket = 0;
 
+	EHL_FIELD(Persisted)
 	Vector m_vecTarget;
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_posTarget;
 
+	EHL_FIELD(Persisted)
 	Vector m_vecDesired;
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_posDesired;
 
+	EHL_FIELD(Persisted)
 	Vector m_vecGoal;
 
+	EHL_FIELD(Persisted)
 	Vector m_angGun;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flLastSeen = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flPrevSeen = 0;
 
+	//Don't save, precached
 	int m_iSoundState = 0; // don't save this
 
 	int m_iSpriteTexture = 0;
 	int m_iExplode = 0;
 	int m_iBodyGibs = 0;
 
+	EHL_FIELD(Persisted)
 	float m_flGoalSpeed = 0;
 
+	EHL_FIELD(Persisted)
 	int m_iDoSmokePuff = 0;
+
+	EHL_FIELD(Persisted)
 	EHandle<CBeam> m_hBeam;
 };

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CRenderFxManager.generated.hpp"
 
 // Flags to indicate masking off various render parameters that are normally copied to the targets
 constexpr int SF_RENDER_MASKFX = 1 << 0;
@@ -28,6 +29,8 @@ constexpr int SF_RENDER_MASKCOLOR = 1 << 3;
 */
 class EHL_CLASS() CRenderFxManager : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Use(const UseInfo & info) override;

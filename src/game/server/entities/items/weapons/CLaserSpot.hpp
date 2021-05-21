@@ -16,9 +16,12 @@
 #pragma once
 
 #include "weapons.h"
+#include "CLaserSpot.generated.hpp"
 
 class EHL_CLASS() CLaserSpot : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 	void Spawn() override;
 	void Precache() override;
 

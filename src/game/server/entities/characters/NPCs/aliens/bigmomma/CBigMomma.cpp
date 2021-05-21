@@ -19,17 +19,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_bigmomma, CBigMomma);
 
-TYPEDESCRIPTION	CBigMomma::m_SaveData[] =
-{
-	DEFINE_FIELD(CBigMomma, m_nodeTime, FIELD_TIME),
-	DEFINE_FIELD(CBigMomma, m_crabTime, FIELD_TIME),
-	DEFINE_FIELD(CBigMomma, m_mortarTime, FIELD_TIME),
-	DEFINE_FIELD(CBigMomma, m_painSoundTime, FIELD_TIME),
-	DEFINE_FIELD(CBigMomma, m_crabCount, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CBigMomma, CBaseMonster);
-
 const char* CBigMomma::pChildDieSounds[] =
 {
 	"gonarch/gon_childdie1.wav",

@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CSprayCan.generated.hpp"
 
 /**
 *	@brief !!!UNDONE:ultra temporary SprayCan entity to apply decal frame at a time. For PreAlpha CD
 */
 class EHL_CLASS() CSprayCan : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn(CBaseEntity* pOwner);
 	void	Think() override;

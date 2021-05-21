@@ -18,22 +18,6 @@
 LINK_ENTITY_TO_CLASS(monster_alien_slave, CISlave);
 LINK_ENTITY_TO_CLASS(monster_vortigaunt, CISlave);
 
-TYPEDESCRIPTION	CISlave::m_SaveData[] =
-{
-	DEFINE_FIELD(CISlave, m_iBravery, FIELD_INTEGER),
-
-	DEFINE_ARRAY(CISlave, m_hBeam, FIELD_EHANDLE, ISLAVE_MAX_BEAMS),
-	DEFINE_FIELD(CISlave, m_iBeams, FIELD_INTEGER),
-	DEFINE_FIELD(CISlave, m_flNextAttack, FIELD_TIME),
-
-	DEFINE_FIELD(CISlave, m_voicePitch, FIELD_INTEGER),
-
-	DEFINE_FIELD(CISlave, m_hDead, FIELD_EHANDLE),
-
-};
-
-IMPLEMENT_SAVERESTORE(CISlave, CSquadMonster);
-
 const char* CISlave::pAttackHitSounds[] =
 {
 	"zombie/claw_strike1.wav",

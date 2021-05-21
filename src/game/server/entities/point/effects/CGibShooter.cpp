@@ -15,18 +15,6 @@
 
 #include "CGibShooter.hpp"
 
-TYPEDESCRIPTION CGibShooter::m_SaveData[] =
-{
-	DEFINE_FIELD(CGibShooter, m_iGibs, FIELD_INTEGER),
-	DEFINE_FIELD(CGibShooter, m_iGibCapacity, FIELD_INTEGER),
-	DEFINE_FIELD(CGibShooter, m_iGibMaterial, FIELD_INTEGER),
-	DEFINE_FIELD(CGibShooter, m_iGibModelIndex, FIELD_INTEGER),
-	DEFINE_FIELD(CGibShooter, m_flGibVelocity, FIELD_FLOAT),
-	DEFINE_FIELD(CGibShooter, m_flVariance, FIELD_FLOAT),
-	DEFINE_FIELD(CGibShooter, m_flGibLife, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CGibShooter, CBaseDelay);
 LINK_ENTITY_TO_CLASS(gibshooter, CGibShooter);
 
 void CGibShooter::Precache()

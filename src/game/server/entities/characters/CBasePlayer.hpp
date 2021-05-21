@@ -18,7 +18,6 @@
 #include "sound/materials.hpp"
 #include "CBaseMonster.hpp"
 #include "CBaseItem.hpp"
-
 #include "CBasePlayer.generated.hpp"
 
 //
@@ -166,16 +165,16 @@ public:
 	EHL_FIELD(Persisted, Type=Time)
 	float m_flTimeWeaponIdle = 0; //!< when to play another weapon idle animation.
 
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flSwimTime = 0; //!< how long player has been underwater
 
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flDuckTime = 0; //!< how long we've been ducking
 
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flWallJumpTime = 0; //!< how long until next walljump
 
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flSuitUpdate = 0; //!< when to play next suit update
 
 	EHL_FIELD(Persisted)
@@ -187,13 +186,13 @@ public:
 	EHL_FIELD(Persisted)
 	int m_rgiSuitNoRepeat[CSUITNOREPEAT]{}; //!< suit sentence no repeat list
 
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 	float m_rgflSuitNoRepeatTime[CSUITNOREPEAT]{}; //!< how long to wait before allowing repeat
 
 	EHL_FIELD(Persisted)
 	int m_lastDamageAmount = 0; //!< Last damage taken
 
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 	float m_tbdPrev = 0; //!< Time-based damage timer
 
 	// Don't restore, reset in Precache()

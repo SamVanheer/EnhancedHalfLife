@@ -17,7 +17,6 @@
 
 #include "CBaseMonster.hpp"
 #include "CBaseMonster.monsters.hpp"
-
 #include "CTalkMonster.generated.hpp"
 
 constexpr float TALKRANGE_MIN = 500.0;			//!< don't talk to anyone farther away than this

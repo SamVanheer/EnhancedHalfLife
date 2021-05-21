@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CTentacleMaw.generated.hpp"
 
 class EHL_CLASS() CTentacleMaw : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CRulePointEntity.hpp"
+#include "CGameTeamSet.generated.hpp"
 
 constexpr int SF_TEAMSET_FIREONCE = 0x0001;
 constexpr int SF_TEAMSET_CLEARTEAM = 0x0002;
@@ -27,6 +28,8 @@ constexpr int SF_TEAMSET_CLEARTEAM = 0x0002;
 */
 class EHL_CLASS() CGameTeamSet : public CRulePointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Use(const UseInfo& info) override;
 	inline bool RemoveOnFire() { return (pev->spawnflags & SF_TEAMSET_FIREONCE) != 0; }

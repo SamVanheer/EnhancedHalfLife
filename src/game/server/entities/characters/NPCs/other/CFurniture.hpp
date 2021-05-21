@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CFurniture.generated.hpp"
 
 /**
 *	@brief this is the cool comment I cut-and-pasted
 */
 class EHL_CLASS() CFurniture : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	/**
 	*	@brief This used to have something to do with bees flying, but now it only initializes moving furniture in scripted sequences

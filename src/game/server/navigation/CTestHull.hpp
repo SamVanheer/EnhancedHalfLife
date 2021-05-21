@@ -17,11 +17,15 @@
 
 #include "CBaseMonster.hpp"
 
+#include "CTestHull.generated.hpp"
+
 /**
 *	@brief TestHull is a modelless clip hull that verifies reachable nodes by walking from every node to each of it's connections
 */
 class EHL_CLASS() CTestHull : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn(CBaseEntity* pMasterNode);
 	int	ObjectCaps() override { return CBaseMonster::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }

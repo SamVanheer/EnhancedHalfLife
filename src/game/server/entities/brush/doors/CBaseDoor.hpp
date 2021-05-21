@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseToggle.hpp"
+#include "CBaseDoor.generated.hpp"
 
 constexpr int SF_DOOR_ROTATE_Y = 0;
 constexpr int SF_DOOR_START_OPEN = 1;
@@ -45,6 +46,8 @@ constexpr int SF_ITEM_USE_ONLY = 256; //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR
 */
 class EHL_CLASS() CBaseDoor : public CBaseToggle
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -60,10 +63,6 @@ public:
 		else
 			return (CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION);
 	}
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	/**
 	*	@brief used to selectivly override defaults
@@ -97,15 +96,26 @@ public:
 	*/
 	void EXPORT DoorHitBottom();
 
+	EHL_FIELD(Persisted)
 	byte m_bHealthValue = 0;//!< some doors are medi-kit doors, they give players health
 
+	EHL_FIELD(Persisted)
 	byte m_bMoveSnd = 0;		//!< sound a door makes while moving
+
+	EHL_FIELD(Persisted)
 	byte m_bStopSnd = 0;		//!< sound a door makes when it stops
 
 	locksound_t m_ls;			//!< door lock sounds
 
+	EHL_FIELD(Persisted)
 	byte m_bLockedSound = 0;	//!< ordinals from entity selection
+
+	EHL_FIELD(Persisted)
 	byte m_bLockedSentence = 0;
+
+	EHL_FIELD(Persisted)
 	byte m_bUnlockedSound = 0;
+
+	EHL_FIELD(Persisted)
 	byte m_bUnlockedSentence = 0;
 };

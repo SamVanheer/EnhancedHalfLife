@@ -16,15 +16,6 @@
 #include "CGamePlayerZone.hpp"
 
 LINK_ENTITY_TO_CLASS(game_zone_player, CGamePlayerZone);
-TYPEDESCRIPTION	CGamePlayerZone::m_SaveData[] =
-{
-	DEFINE_FIELD(CGamePlayerZone, m_iszInTarget, FIELD_STRING),
-	DEFINE_FIELD(CGamePlayerZone, m_iszOutTarget, FIELD_STRING),
-	DEFINE_FIELD(CGamePlayerZone, m_iszInCount, FIELD_STRING),
-	DEFINE_FIELD(CGamePlayerZone, m_iszOutCount, FIELD_STRING),
-};
-
-IMPLEMENT_SAVERESTORE(CGamePlayerZone, CRuleBrushEntity);
 
 void CGamePlayerZone::KeyValue(KeyValueData* pkvd)
 {

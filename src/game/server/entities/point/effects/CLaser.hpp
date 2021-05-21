@@ -16,10 +16,9 @@
 #pragma once
 
 #include "CBeam.hpp"
+#include "CLaser.generated.hpp"
 
 class CSprite;
-
-#include "CLaser.generated.hpp"
 
 class EHL_CLASS() CLaser : public CBeam
 {

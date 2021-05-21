@@ -17,12 +17,16 @@
 
 #include "CBaseTrigger.hpp"
 
+#include "CTriggerCDAudio.generated.hpp"
+
 /**
 *	@brief starts/stops cd audio tracks
 *	Changes tracks or stops CD when player touches or when triggered
 */
 class EHL_CLASS() CTriggerCDAudio : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 

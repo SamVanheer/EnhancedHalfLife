@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CItemSoda.generated.hpp"
 
 /**
 *	@brief Soda can
 */
 class EHL_CLASS() CItemSoda : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Precache() override;

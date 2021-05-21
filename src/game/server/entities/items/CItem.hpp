@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseItem.hpp"
+#include "CItem.generated.hpp"
 
 class EHL_CLASS() CItem : public CBaseItem
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{

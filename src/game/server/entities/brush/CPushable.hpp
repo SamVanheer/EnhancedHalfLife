@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBreakable.hpp"
+#include "CPushable.generated.hpp"
 
 // func_pushable (it's also func_breakable, so don't collide with those flags)
 constexpr int SF_PUSH_BREAKABLE = 128;
 
 class EHL_CLASS() CPushable : public CBreakable
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Precache() override;
@@ -37,18 +40,19 @@ public:
 	//	virtual void	SetActivator( CBaseEntity *pActivator ) { m_pPusher = pActivator; }
 
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_CONTINUOUS_USE; }
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
 
 	inline float MaxSpeed() { return m_maxSpeed; }
 
 	// breakables use an overridden takedamage
 	bool TakeDamage(const TakeDamageInfo& info)  override;
 
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	static const char* m_soundNames[3];
+
 	int m_lastSound = 0;	// no need to save/restore, just keeps the same sound from playing twice in a row
+
+	EHL_FIELD(Persisted)
 	float m_maxSpeed = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_soundTime = 0;
 };

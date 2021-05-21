@@ -18,17 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_alien_controller, CController);
 
-TYPEDESCRIPTION	CController::m_SaveData[] =
-{
-	DEFINE_ARRAY(CController, m_hBall, FIELD_EHANDLE, 2),
-	DEFINE_ARRAY(CController, m_iBall, FIELD_INTEGER, 2),
-	DEFINE_ARRAY(CController, m_iBallTime, FIELD_TIME, 2),
-	DEFINE_ARRAY(CController, m_iBallCurrent, FIELD_INTEGER, 2),
-	DEFINE_FIELD(CController, m_vecEstVelocity, FIELD_VECTOR),
-};
-
-IMPLEMENT_SAVERESTORE(CController, CSquadMonster);
-
 const char* CController::pAttackSounds[] =
 {
 	"controller/con_attack1.wav",

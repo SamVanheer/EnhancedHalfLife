@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CInfoBM.generated.hpp"
 
 constexpr int SF_INFOBM_RUN = 0x0001;
 constexpr int SF_INFOBM_WAIT = 0x0002;
@@ -23,6 +24,8 @@ constexpr int SF_INFOBM_WAIT = 0x0002;
 // AI Nodes for Big Momma
 class EHL_CLASS() CInfoBM : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;
@@ -35,9 +38,6 @@ public:
 	// Reach delay in pev->speed
 	// Reach sequence in pev->netname
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	string_t m_preSequence = iStringNull;
 };

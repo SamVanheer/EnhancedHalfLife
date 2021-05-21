@@ -16,8 +16,8 @@
 #pragma once
 
 #include "CBaseToggle.hpp"
-
 #include "locksounds.hpp"
+#include "CBaseButton.generated.hpp"
 
 constexpr int SF_BUTTON_DONTMOVE = 1;
 constexpr int SF_BUTTON_TOGGLE = 32;		// button stays pushed until reactivated
@@ -37,6 +37,8 @@ constexpr int SF_BUTTON_TOUCH_ONLY = 256;	// button only fires as a result of US
 */
 class EHL_CLASS() CBaseButton : public CBaseToggle
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -69,8 +71,6 @@ public:
 	void EXPORT ButtonBackHome();
 	void EXPORT ButtonUse(const UseInfo& info);
 	bool TakeDamage(const TakeDamageInfo& info) override;
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
 
 	enum class ButtonCode
 	{
@@ -81,7 +81,6 @@ public:
 
 	ButtonCode ButtonResponseToTouch();
 
-	static TYPEDESCRIPTION m_SaveData[];
 	/**
 	*	@brief Buttons that don't take damage can be IMPULSE used
 	*/
@@ -90,12 +89,22 @@ public:
 	bool m_fStayPushed = false;		//!< button stays pushed in until touched again?
 	bool m_fRotating = false;		//!< a rotating button?  default is a sliding button.
 
+	// This is restored in Precache()
 	locksound_t m_ls;			//!< door lock sounds
 
 	// ordinals from entity selection
+	EHL_FIELD(Persisted)
 	byte m_bLockedSound = 0;
+
+	EHL_FIELD(Persisted)
 	byte m_bLockedSentence = 0;
+
+	EHL_FIELD(Persisted)
 	byte m_bUnlockedSound = 0;
+
+	EHL_FIELD(Persisted)
 	byte m_bUnlockedSentence = 0;
+
+	EHL_FIELD(Persisted)
 	int m_sounds = 0;
 };

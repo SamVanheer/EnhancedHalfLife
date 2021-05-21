@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CSpeaker.generated.hpp"
 
 constexpr int SPEAKER_START_SILENT = 1;	//!< wait for trigger 'on' to start announcements
 
@@ -27,6 +28,8 @@ constexpr float ANNOUNCE_MINUTES_MAX = 2.25;
 */
 class EHL_CLASS() CSpeaker : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
@@ -38,11 +41,8 @@ public:
 	void EXPORT ToggleUse(const UseInfo& info);
 	void EXPORT SpeakerThink();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 
+	EHL_FIELD(Persisted)
 	int	m_preset = 0; // preset number
 };

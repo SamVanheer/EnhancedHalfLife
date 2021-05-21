@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CTentacle.generated.hpp"
 
 constexpr int ACT_T_IDLE = 1010;
 constexpr int ACT_T_TAP = 1020;
@@ -27,16 +28,14 @@ constexpr int ACT_T_REARIDLE = 1040;
 */
 class EHL_CLASS() CTentacle : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	CTentacle();
 
 	void Spawn() override;
 	void Precache() override;
 	void KeyValue(KeyValueData* pkvd) override;
-
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	// Don't allow the tentacle to go across transitions!!!
 	int	ObjectCaps() override { return CBaseMonster::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
@@ -72,29 +71,58 @@ public:
 	int MyLevel();
 	float MyHeight();
 
+	EHL_FIELD(Persisted)
 	float m_flInitialYaw = 0;
+
+	EHL_FIELD(Persisted)
 	int m_iGoalAnim = 0;
+
+	EHL_FIELD(Persisted)
 	int m_iLevel = 0;
+
+	EHL_FIELD(Persisted)
 	int m_iDir = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flFramerateAdj = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flSoundYaw = 0;
+
+	EHL_FIELD(Persisted)
 	int m_iSoundLevel = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flSoundTime = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flSoundRadius = 0;
+
+	EHL_FIELD(Persisted)
 	int m_iHitDmg = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flHitTime = 0;
 
+	EHL_FIELD(Persisted)
 	float m_flTapRadius = 0;
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextSong = 0;
 
 	static inline bool g_fFlySound = false;
 	static inline bool g_fSquirmSound = false;
 
+	EHL_FIELD(Persisted)
 	float m_flMaxYaw = 0;
+
+	EHL_FIELD(Persisted)
 	int m_iTapSound = 0;
 
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_vecPrevSound;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flPrevSoundTime = 0;
 
 	static const char* pHitSilo[];

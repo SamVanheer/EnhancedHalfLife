@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseToggle.hpp"
+#include "CMomentaryDoor.generated.hpp"
 
 class EHL_CLASS() CMomentaryDoor : public CBaseToggle
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void Precache() override;
@@ -27,14 +30,11 @@ public:
 	void	Use(const UseInfo& info) override;
 	int	ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	/**
 	*	@brief The door has reached needed position.
 	*/
 	void EXPORT DoorMoveDone();
 
+	EHL_FIELD(Persisted)
 	byte m_bMoveSnd = 0;			// sound a door makes while moving	
 };

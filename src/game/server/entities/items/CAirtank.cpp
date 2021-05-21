@@ -17,13 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(item_airtank, CAirtank);
 
-TYPEDESCRIPTION	CAirtank::m_SaveData[] =
-{
-	DEFINE_FIELD(CAirtank, m_state, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CAirtank, CGrenade);
-
 void CAirtank::Spawn()
 {
 	Precache();

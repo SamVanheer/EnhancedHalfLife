@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CRulePointEntity.hpp"
+#include "CGamePlayerTeam.generated.hpp"
 
 constexpr int SF_PTEAM_FIREONCE = 0x0001;
 constexpr int SF_PTEAM_KILL = 0x0002;
@@ -29,6 +30,8 @@ constexpr int SF_PTEAM_GIB = 0x0004;
 */
 class EHL_CLASS() CGamePlayerTeam : public CRulePointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Use(const UseInfo& info) override;
 

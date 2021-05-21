@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CGunTarget.generated.hpp"
 
 constexpr int FGUNTARGET_START_ON = 0x0001;
 
@@ -26,6 +27,8 @@ constexpr int FGUNTARGET_START_ON = 0x0001;
 */
 class EHL_CLASS() CGunTarget : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void			Spawn() override;
 	void			Activate() override;
@@ -41,11 +44,8 @@ public:
 	Vector			BodyTarget(const Vector& posSrc) override { return GetAbsOrigin(); }
 
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
+	EHL_FIELD(Persisted)
 	bool m_on = false;
 };

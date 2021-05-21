@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseDelay.hpp"
+#include "CFireAndDie.generated.hpp"
 
 /**
 *	@brief Fires a target after level transition and then dies
 */
 class EHL_CLASS() CFireAndDie : public CBaseDelay
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

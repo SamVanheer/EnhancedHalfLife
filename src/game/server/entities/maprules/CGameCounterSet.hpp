@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CRulePointEntity.hpp"
+#include "CGameCounterSet.generated.hpp"
 
 constexpr int SF_GAMECOUNTSET_FIREONCE = 0x0001;
 
@@ -25,6 +26,8 @@ constexpr int SF_GAMECOUNTSET_FIREONCE = 0x0001;
 */
 class EHL_CLASS() CGameCounterSet : public CRulePointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Use(const UseInfo& info) override;
 	inline bool RemoveOnFire() { return (pev->spawnflags & SF_GAMECOUNTSET_FIREONCE) != 0; }

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CTriggerVolume.generated.hpp"
 
 /**
 *	@brief Define space that travels across a level transition
@@ -23,6 +24,8 @@
 */
 class EHL_CLASS() CTriggerVolume : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Spawn() override;
 };

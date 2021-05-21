@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CCyclerSprite.generated.hpp"
 
 class EHL_CLASS() CCyclerSprite : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Think() override;
@@ -27,12 +30,14 @@ public:
 	bool	TakeDamage(const TakeDamageInfo& info) override;
 	void	Animate(float frames);
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	inline bool		ShouldAnimate() { return m_animate && m_maxFrame > 1.0; }
+
+	EHL_FIELD(Persisted)
 	bool m_animate = false;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_lastTime = 0;
+
+	EHL_FIELD(Persisted)
 	float m_maxFrame = 0;
 };

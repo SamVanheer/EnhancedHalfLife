@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CNihilanthHVR.generated.hpp"
 
 class CNihilanth;
 
@@ -24,11 +25,9 @@ class CNihilanth;
 */
 class EHL_CLASS() CNihilanthHVR : public CBaseMonster
 {
-public:
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
+	EHL_GENERATED_BODY()
 
+public:
 	void Spawn() override;
 	void Precache() override;
 
@@ -57,9 +56,18 @@ public:
 	void MovetoTarget(Vector vecTarget);
 	virtual void Crawl();
 
+	EHL_FIELD(Persisted)
 	float m_flIdealVel = 0;
+
+	EHL_FIELD(Persisted)
 	Vector m_vecIdeal;
+
+	EHL_FIELD(Persisted)
 	EHandle<CNihilanth> m_hNihilanth;
+
+	EHL_FIELD(Persisted)
 	EHANDLE m_hTouch;
+
+	EHL_FIELD(Persisted)
 	int m_nFrames = 0;
 };

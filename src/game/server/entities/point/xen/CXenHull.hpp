@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CXenHull.generated.hpp"
 
 /**
 *	@brief Fake collision box for big spores
 */
 class EHL_CLASS() CXenHull : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	static CXenHull* CreateHull(CBaseEntity* source, const Vector& mins, const Vector& maxs, const Vector& offset);
 	int			Classify() override { return CLASS_BARNACLE; }

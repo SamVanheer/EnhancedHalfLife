@@ -16,10 +16,3 @@
 #include "CItemBattery.hpp"
 
 LINK_ENTITY_TO_CLASS(item_battery, CItemBattery);
-
-TYPEDESCRIPTION	CItemBattery::m_SaveData[] =
-{
-	DEFINE_FIELD(CItemBattery, m_flCustomCapacity, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CItemBattery, CItem);

@@ -18,14 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(func_tanklaser, CFuncTankLaser);
 
-TYPEDESCRIPTION	CFuncTankLaser::m_SaveData[] =
-{
-	DEFINE_FIELD(CFuncTankLaser, m_hLaser, FIELD_EHANDLE),
-	DEFINE_FIELD(CFuncTankLaser, m_laserTime, FIELD_TIME),
-};
-
-IMPLEMENT_SAVERESTORE(CFuncTankLaser, CFuncTank);
-
 void CFuncTankLaser::Activate()
 {
 	if (!GetLaser())

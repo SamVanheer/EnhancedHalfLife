@@ -18,17 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(nihilanth_energy_ball, CNihilanthHVR);
 
-TYPEDESCRIPTION	CNihilanthHVR::m_SaveData[] =
-{
-	DEFINE_FIELD(CNihilanthHVR, m_flIdealVel, FIELD_FLOAT),
-	DEFINE_FIELD(CNihilanthHVR, m_vecIdeal, FIELD_VECTOR),
-	DEFINE_FIELD(CNihilanthHVR, m_hNihilanth, FIELD_EHANDLE),
-	DEFINE_FIELD(CNihilanthHVR, m_hTouch, FIELD_EHANDLE),
-	DEFINE_FIELD(CNihilanthHVR, m_nFrames, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CNihilanthHVR, CBaseMonster);
-
 void CNihilanthHVR::Spawn()
 {
 	Precache();

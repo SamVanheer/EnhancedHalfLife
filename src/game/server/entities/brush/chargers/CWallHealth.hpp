@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseCharger.hpp"
+#include "CWallHealth.generated.hpp"
 
 /**
 *	@brief Wall mounted health kit
 */
 class EHL_CLASS() CWallHealth : public CBaseCharger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	CWallHealth()
 	{

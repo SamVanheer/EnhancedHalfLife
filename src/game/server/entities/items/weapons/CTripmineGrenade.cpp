@@ -18,21 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_tripmine, CTripmineGrenade);
 
-TYPEDESCRIPTION	CTripmineGrenade::m_SaveData[] =
-{
-	DEFINE_FIELD(CTripmineGrenade, m_flPowerUp, FIELD_TIME),
-	DEFINE_FIELD(CTripmineGrenade, m_vecDir, FIELD_VECTOR),
-	DEFINE_FIELD(CTripmineGrenade, m_vecEnd, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CTripmineGrenade, m_flBeamLength, FIELD_FLOAT),
-	DEFINE_FIELD(CTripmineGrenade, m_hOwner, FIELD_EHANDLE),
-	DEFINE_FIELD(CTripmineGrenade, m_hBeam, FIELD_EHANDLE),
-	DEFINE_FIELD(CTripmineGrenade, m_posOwner, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CTripmineGrenade, m_angleOwner, FIELD_VECTOR),
-	DEFINE_FIELD(CTripmineGrenade, m_hRealOwner, FIELD_EHANDLE),
-};
-
-IMPLEMENT_SAVERESTORE(CTripmineGrenade, CGrenade);
-
 void CTripmineGrenade::OnRemove()
 {
 	KillBeam();

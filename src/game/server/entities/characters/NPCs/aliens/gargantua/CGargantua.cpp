@@ -22,21 +22,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_gargantua, CGargantua);
 
-TYPEDESCRIPTION	CGargantua::m_SaveData[] =
-{
-	DEFINE_FIELD(CGargantua, m_hEyeGlow, FIELD_EHANDLE),
-	DEFINE_FIELD(CGargantua, m_eyeBrightness, FIELD_INTEGER),
-	DEFINE_FIELD(CGargantua, m_seeTime, FIELD_TIME),
-	DEFINE_FIELD(CGargantua, m_flameTime, FIELD_TIME),
-	DEFINE_FIELD(CGargantua, m_streakTime, FIELD_TIME),
-	DEFINE_FIELD(CGargantua, m_painSoundTime, FIELD_TIME),
-	DEFINE_ARRAY(CGargantua, m_hFlame, FIELD_EHANDLE, 4),
-	DEFINE_FIELD(CGargantua, m_flameX, FIELD_FLOAT),
-	DEFINE_FIELD(CGargantua, m_flameY, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CGargantua, CBaseMonster);
-
 const char* CGargantua::pAttackHitSounds[] =
 {
 	"zombie/claw_strike1.wav",

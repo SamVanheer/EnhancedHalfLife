@@ -175,9 +175,18 @@ target_sources(client PRIVATE
 	../server/entities/CBaseDelay.hpp
 	../server/entities/CBaseEntity.hpp
 	../server/entities/CBaseToggle.hpp
+	../server/entities/CWorld.hpp
 	../server/entities/brush/CBreakable.hpp
+	../server/entities/brush/buttons/CBaseButton.hpp
 	../server/entities/characters/CBasePlayer.hpp
 	../server/entities/characters/NPCs/CBaseMonster.hpp
+	../server/entities/characters/NPCs/CBaseMonster.monsters.hpp
+	../server/entities/characters/NPCs/aliens/CHornet.hpp
+	../server/entities/items/weapons/CGrenade.hpp
+	../server/entities/point/CPointEntity.hpp
+	../server/entities/point/CSoundEnt.hpp
+	../server/entities/point/effects/CBeam.hpp
+	../server/entities/point/effects/CSprite.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/con_nprint.h
 	${INCLUDE_DIRECTORY}/GoldSrc/const.h
 	${INCLUDE_DIRECTORY}/GoldSrc/crc.h

@@ -20,14 +20,6 @@ LINK_ENTITY_TO_CLASS(light, CLight);
 // shut up spawn functions for new spotlights
 LINK_ENTITY_TO_CLASS(light_spot, CLight);
 
-TYPEDESCRIPTION	CLight::m_SaveData[] =
-{
-	DEFINE_FIELD(CLight, m_iStyle, FIELD_INTEGER),
-	DEFINE_FIELD(CLight, m_iszPattern, FIELD_STRING),
-};
-
-IMPLEMENT_SAVERESTORE(CLight, CPointEntity);
-
 void CLight::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "style"))

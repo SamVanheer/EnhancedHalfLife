@@ -17,11 +17,15 @@
 
 #include "CBaseEntity.hpp"
 
+#include "CNodeEnt.generated.hpp"
+
 /**
 *	@brief Nodes start out as ents in the level. The node graph  is built, then these ents are discarded.
 */
 class EHL_CLASS() CNodeEnt : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 	void Spawn() override;
 
 	/**

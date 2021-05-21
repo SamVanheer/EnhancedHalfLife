@@ -17,30 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_apache, CApache);
 
-TYPEDESCRIPTION	CApache::m_SaveData[] =
-{
-	DEFINE_FIELD(CApache, m_iRockets, FIELD_INTEGER),
-	DEFINE_FIELD(CApache, m_flForce, FIELD_FLOAT),
-	DEFINE_FIELD(CApache, m_flNextRocket, FIELD_TIME),
-	DEFINE_FIELD(CApache, m_vecTarget, FIELD_VECTOR),
-	DEFINE_FIELD(CApache, m_posTarget, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CApache, m_vecDesired, FIELD_VECTOR),
-	DEFINE_FIELD(CApache, m_posDesired, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CApache, m_vecGoal, FIELD_VECTOR),
-	DEFINE_FIELD(CApache, m_angGun, FIELD_VECTOR),
-	DEFINE_FIELD(CApache, m_flLastSeen, FIELD_TIME),
-	DEFINE_FIELD(CApache, m_flPrevSeen, FIELD_TIME),
-	//	DEFINE_FIELD( CApache, m_iSoundState, FIELD_INTEGER ),		// Don't save, precached
-	//	DEFINE_FIELD( CApache, m_iSpriteTexture, FIELD_INTEGER ),
-	//	DEFINE_FIELD( CApache, m_iExplode, FIELD_INTEGER ),
-	//	DEFINE_FIELD( CApache, m_iBodyGibs, FIELD_INTEGER ),
-		DEFINE_FIELD(CApache, m_hBeam, FIELD_EHANDLE),
-		DEFINE_FIELD(CApache, m_flGoalSpeed, FIELD_FLOAT),
-		DEFINE_FIELD(CApache, m_iDoSmokePuff, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CApache, CBaseMonster);
-
 void CApache::Spawn()
 {
 	Precache();
@@ -64,7 +40,7 @@ void CApache::Spawn()
 
 	InitBoneControllers();
 
-	if (pev->spawnflags & SF_WAITFORTRIGGER)
+	if (pev->spawnflags & SF_APACHE_WAITFORTRIGGER)
 	{
 		SetUse(&CApache::StartupUse);
 	}

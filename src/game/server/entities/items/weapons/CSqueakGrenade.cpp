@@ -16,17 +16,6 @@
 #include "CSqueakGrenade.hpp"
 
 LINK_ENTITY_TO_CLASS(monster_snark, CSqueakGrenade);
-TYPEDESCRIPTION	CSqueakGrenade::m_SaveData[] =
-{
-	DEFINE_FIELD(CSqueakGrenade, m_flDie, FIELD_TIME),
-	DEFINE_FIELD(CSqueakGrenade, m_vecTarget, FIELD_VECTOR),
-	DEFINE_FIELD(CSqueakGrenade, m_flNextHunt, FIELD_TIME),
-	DEFINE_FIELD(CSqueakGrenade, m_flNextHit, FIELD_TIME),
-	DEFINE_FIELD(CSqueakGrenade, m_posPrev, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CSqueakGrenade, m_hOwner, FIELD_EHANDLE),
-};
-
-IMPLEMENT_SAVERESTORE(CSqueakGrenade, CGrenade);
 
 constexpr float SQUEEK_DETONATE_DELAY = 15.0;
 

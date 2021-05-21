@@ -45,29 +45,6 @@ const char* CTentacle::pHitWater[] =
 	"player/pl_slosh4.wav",
 };
 
-TYPEDESCRIPTION	CTentacle::m_SaveData[] =
-{
-	DEFINE_FIELD(CTentacle, m_flInitialYaw, FIELD_FLOAT),
-	DEFINE_FIELD(CTentacle, m_iGoalAnim, FIELD_INTEGER),
-	DEFINE_FIELD(CTentacle, m_iLevel, FIELD_INTEGER),
-	DEFINE_FIELD(CTentacle, m_iDir, FIELD_INTEGER),
-	DEFINE_FIELD(CTentacle, m_flFramerateAdj, FIELD_FLOAT),
-	DEFINE_FIELD(CTentacle, m_flSoundYaw, FIELD_FLOAT),
-	DEFINE_FIELD(CTentacle, m_iSoundLevel, FIELD_INTEGER),
-	DEFINE_FIELD(CTentacle, m_flSoundTime, FIELD_TIME),
-	DEFINE_FIELD(CTentacle, m_flSoundRadius, FIELD_FLOAT),
-	DEFINE_FIELD(CTentacle, m_iHitDmg, FIELD_INTEGER),
-	DEFINE_FIELD(CTentacle, m_flHitTime, FIELD_TIME),
-	DEFINE_FIELD(CTentacle, m_flTapRadius, FIELD_FLOAT),
-	DEFINE_FIELD(CTentacle, m_flNextSong, FIELD_TIME),
-	DEFINE_FIELD(CTentacle, m_iTapSound, FIELD_INTEGER),
-	DEFINE_FIELD(CTentacle, m_flMaxYaw, FIELD_FLOAT),
-	DEFINE_FIELD(CTentacle, m_vecPrevSound, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CTentacle, m_flPrevSoundTime, FIELD_TIME),
-};
-
-IMPLEMENT_SAVERESTORE(CTentacle, CBaseMonster);
-
 // animation sequence aliases 
 enum TENTACLE_ANIM
 {

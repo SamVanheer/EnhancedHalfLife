@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseDelay.hpp"
+#include "CEnvFunnel.generated.hpp"
 
 constexpr int SF_FUNNEL_REVERSE = 1; //!< funnel effect repels particles instead of attracting them.
 
@@ -24,6 +25,8 @@ constexpr int SF_FUNNEL_REVERSE = 1; //!< funnel effect repels particles instead
 */
 class EHL_CLASS() CEnvFunnel : public CBaseDelay
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Precache() override;

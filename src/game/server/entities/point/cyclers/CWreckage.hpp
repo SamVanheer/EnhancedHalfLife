@@ -16,19 +16,19 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CWreckage.generated.hpp"
 
 /**
 *	@brief Flaming Wreakage
 */
 class EHL_CLASS() CWreckage : public CBaseMonster
 {
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
+	EHL_GENERATED_BODY()
 
 	void Spawn() override;
 	void Precache() override;
 	void Think() override;
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flStartTime = 0;
 };

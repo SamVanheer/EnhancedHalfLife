@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CRulePointEntity.hpp"
+#include "CGamePlayerHurt.generated.hpp"
 
 constexpr int SF_PKILL_FIREONCE = 0x0001;
 
@@ -25,6 +26,8 @@ constexpr int SF_PKILL_FIREONCE = 0x0001;
 */
 class EHL_CLASS() CGamePlayerHurt : public CRulePointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Use(const UseInfo& info) override;
 	inline bool RemoveOnFire() { return (pev->spawnflags & SF_PKILL_FIREONCE) != 0; }

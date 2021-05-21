@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseTurret.hpp"
+#include "CTurret.generated.hpp"
 
 class EHL_CLASS() CTurret : public CBaseTurret
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -26,15 +29,11 @@ public:
 	void SpinUpCall() override;
 	void SpinDownCall() override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	// other functions
 	void Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy) override;
 
 private:
+	EHL_FIELD(Persisted)
 	bool m_iStartSpin = false;
 
 };

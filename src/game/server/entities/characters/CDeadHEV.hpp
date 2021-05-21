@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CDeadHEV.generated.hpp"
 
 constexpr int DEADHEV_BODYGROUP_HEAD = 1;
 constexpr int DEADHEV_HEAD_HELMETED = 1;
@@ -25,6 +26,8 @@ constexpr int DEADHEV_HEAD_HELMETED = 1;
 */
 class EHL_CLASS() CDeadHEV : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	int	Classify() override { return CLASS_HUMAN_MILITARY; }

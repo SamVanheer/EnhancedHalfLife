@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CAmbientGeneric.generated.hpp"
 
 /**
 *	@brief runtime pitch shift and volume fadein/out structure
@@ -82,6 +83,8 @@ constexpr int LFO_RANDOM = 3;
 */
 class EHL_CLASS() CAmbientGeneric : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
@@ -105,14 +108,22 @@ public:
 	*/
 	void InitModulationParms();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 
+	EHL_FIELD(Persisted)
 	float m_flAttenuation = 0;		// attenuation value
+
+	// HACKHACK - This is not really in the spirit of the save/restore design, but save this
+	// out as a binary data block.  If the dynpitchvol_t is changed, old saved games will NOT
+	// load these correctly, so bump the save/restore version if you change the size of the struct
+	// The right way to do this is to split the input parms (read in keyvalue) into members and re-init this
+	// struct in Precache(), but it's unlikely that the struct will change, so it's not worth the time right now.
+	EHL_FIELD(Persisted)
 	dynpitchvol_t m_dpv;
 
+	EHL_FIELD(Persisted)
 	bool m_fActive = false;		// only true when the entity is playing a looping sound
+
+	EHL_FIELD(Persisted)
 	bool m_fLooping = false;	// true when the sound played will loop
 };

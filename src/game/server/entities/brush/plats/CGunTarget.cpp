@@ -18,13 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(func_guntarget, CGunTarget);
 
-TYPEDESCRIPTION	CGunTarget::m_SaveData[] =
-{
-	DEFINE_FIELD(CGunTarget, m_on, FIELD_BOOLEAN),
-};
-
-IMPLEMENT_SAVERESTORE(CGunTarget, CBaseMonster);
-
 void CGunTarget::Spawn()
 {
 	SetSolidType(Solid::BSP);

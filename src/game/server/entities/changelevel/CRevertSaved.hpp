@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CPointEntity.hpp"
-
 #include "CRevertSaved.generated.hpp"
 
 class EHL_CLASS() CRevertSaved : public CPointEntity

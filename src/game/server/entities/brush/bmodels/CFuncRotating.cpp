@@ -20,17 +20,6 @@
 #define		noiseStop		noise2
 #define		noiseRunning	noise3
 
-TYPEDESCRIPTION	CFuncRotating::m_SaveData[] =
-{
-	DEFINE_FIELD(CFuncRotating, m_flFanFriction, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncRotating, m_flAttenuation, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncRotating, m_flVolume, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncRotating, m_pitch, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncRotating, m_sounds, FIELD_INTEGER)
-};
-
-IMPLEMENT_SAVERESTORE(CFuncRotating, CBaseEntity);
-
 LINK_ENTITY_TO_CLASS(func_rotating, CFuncRotating);
 
 void CFuncRotating::KeyValue(KeyValueData* pkvd)

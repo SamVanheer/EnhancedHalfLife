@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseTrigger.hpp"
+#include "CTriggerGravity.generated.hpp"
 
 class EHL_CLASS() CTriggerGravity : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void EXPORT GravityTouch(CBaseEntity * pOther);

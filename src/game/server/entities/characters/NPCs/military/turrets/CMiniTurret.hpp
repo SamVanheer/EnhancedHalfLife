@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseTurret.hpp"
+#include "CMiniTurret.generated.hpp"
 
 class EHL_CLASS() CMiniTurret : public CBaseTurret
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

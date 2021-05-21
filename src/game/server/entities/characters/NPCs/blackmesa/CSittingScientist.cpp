@@ -16,14 +16,6 @@
 #include "CSittingScientist.hpp"
 
 LINK_ENTITY_TO_CLASS(monster_sitting_scientist, CSittingScientist);
-TYPEDESCRIPTION	CSittingScientist::m_SaveData[] =
-{
-	// Don't need to save/restore m_baseSequence (recalced)
-	DEFINE_FIELD(CSittingScientist, m_headTurn, FIELD_INTEGER),
-	DEFINE_FIELD(CSittingScientist, m_flResponseDelay, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CSittingScientist, CScientist);
 
 // animation sequence aliases 
 enum SITTING_ANIM

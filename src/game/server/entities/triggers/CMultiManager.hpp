@@ -17,7 +17,6 @@
 
 #include "CBaseToggle.hpp"
 #include "CMultiSource.hpp"
-
 #include "CMultiManager.generated.hpp"
 
 constexpr int SF_MULTIMAN_CLONE = 0x80000000;
@@ -53,7 +52,7 @@ public:
 	EHL_FIELD(Persisted)
 	int m_index = 0;								//!< Current target
 
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 	float m_startTime = 0;							//!< Time we started firing
 
 	EHL_FIELD(Persisted)

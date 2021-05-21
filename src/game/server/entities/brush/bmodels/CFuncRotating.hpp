@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CFuncRotating.generated.hpp"
 
 constexpr int SF_BRUSH_ROTATE_Y_AXIS = 0;
 constexpr int SF_BRUSH_ROTATE_INSTANT = 1;
@@ -37,6 +38,8 @@ constexpr int SF_BRUSH_ROTATE_LARGERADIUS = 512;
 */
 class EHL_CLASS() CFuncRotating : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	// basic functions
 	void Spawn() override;
@@ -74,14 +77,19 @@ public:
 	*/
 	void Blocked(CBaseEntity* pOther) override;
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
 
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	float m_flFanFriction = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flAttenuation = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flVolume = 0;
+
+	EHL_FIELD(Persisted)
 	float m_pitch = 0;
+
+	EHL_FIELD(Persisted)
 	int m_sounds = 0;
 };

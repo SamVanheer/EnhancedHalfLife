@@ -18,18 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_alien_grunt, CAGrunt);
 
-TYPEDESCRIPTION	CAGrunt::m_SaveData[] =
-{
-	DEFINE_FIELD(CAGrunt, m_fCanHornetAttack, FIELD_BOOLEAN),
-	DEFINE_FIELD(CAGrunt, m_flNextHornetAttackCheck, FIELD_TIME),
-	DEFINE_FIELD(CAGrunt, m_flNextPainTime, FIELD_TIME),
-	DEFINE_FIELD(CAGrunt, m_flNextSpeakTime, FIELD_TIME),
-	DEFINE_FIELD(CAGrunt, m_flNextWordTime, FIELD_TIME),
-	DEFINE_FIELD(CAGrunt, m_iLastWord, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CAGrunt, CSquadMonster);
-
 const char* CAGrunt::pAttackHitSounds[] =
 {
 	"zombie/claw_strike1.wav",

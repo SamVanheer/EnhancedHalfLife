@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CEnvSpark.generated.hpp"
 
 constexpr int SF_SPARK_TOGGLE = 1 << 5;
 constexpr int SF_SPARK_START_ON = 1 << 6;
 
 class EHL_CLASS() CEnvSpark : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Precache() override;
@@ -30,11 +33,7 @@ public:
 	void	EXPORT SparkStop(const UseInfo& info);
 	void	KeyValue(KeyValueData* pkvd) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	float m_flDelay = 0;
 };
 

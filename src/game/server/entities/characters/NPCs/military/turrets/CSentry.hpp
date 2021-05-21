@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseTurret.hpp"
+#include "CSentry.generated.hpp"
 
 /**
 *	@brief smallest turret, placed near grunt entrenchments
 */
 class EHL_CLASS() CSentry : public CBaseTurret
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

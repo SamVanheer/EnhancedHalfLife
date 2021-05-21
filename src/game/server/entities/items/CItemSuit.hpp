@@ -17,6 +17,7 @@
 
 #include "CBasePlayer.hpp"
 #include "CItem.hpp"
+#include "CItemSuit.generated.hpp"
 
 enum class SuitLogonType
 {
@@ -27,6 +28,8 @@ enum class SuitLogonType
 
 class EHL_CLASS() CItemSuit : public CItem
 {
+	EHL_GENERATED_BODY()
+
 	void OnConstruct() override
 	{
 		CItem::OnConstruct();
@@ -82,11 +85,7 @@ class EHL_CLASS() CItemSuit : public CItem
 		return {ItemApplyAction::Used};
 	}
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static TYPEDESCRIPTION m_SaveData[];
-
 protected:
+	EHL_FIELD(Persisted)
 	SuitLogonType m_LogonType = SuitLogonType::NoLogon;
 };

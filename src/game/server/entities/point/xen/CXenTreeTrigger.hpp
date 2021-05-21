@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CXenTreeTrigger.generated.hpp"
 
 class EHL_CLASS() CXenTreeTrigger : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Touch(CBaseEntity* pOther) override;
 	static CXenTreeTrigger* TriggerCreate(CBaseEntity* pOwner, const Vector& position);

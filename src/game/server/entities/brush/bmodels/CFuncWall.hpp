@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CFuncWall.generated.hpp"
 
 /**
 *	@brief This is just a solid wall if not inhibited
 */
 class EHL_CLASS() CFuncWall : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Use(const UseInfo& info) override;

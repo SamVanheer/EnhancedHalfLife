@@ -17,14 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(env_glow, CGlow);
 
-TYPEDESCRIPTION	CGlow::m_SaveData[] =
-{
-	DEFINE_FIELD(CGlow, m_lastTime, FIELD_TIME),
-	DEFINE_FIELD(CGlow, m_maxFrame, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CGlow, CPointEntity);
-
 void CGlow::Spawn()
 {
 	SetSolidType(Solid::Not);

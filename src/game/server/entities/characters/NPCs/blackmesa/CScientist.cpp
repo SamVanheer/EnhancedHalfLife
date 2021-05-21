@@ -19,15 +19,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_scientist, CScientist);
 
-TYPEDESCRIPTION	CScientist::m_SaveData[] =
-{
-	DEFINE_FIELD(CScientist, m_painTime, FIELD_TIME),
-	DEFINE_FIELD(CScientist, m_healTime, FIELD_TIME),
-	DEFINE_FIELD(CScientist, m_fearTime, FIELD_TIME),
-};
-
-IMPLEMENT_SAVERESTORE(CScientist, CTalkMonster);
-
 //=========================================================
 // AI Schedules Specific to this monster
 //=========================================================

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CRuleEntity.generated.hpp"
 
 /**
 *	@file
@@ -25,12 +26,11 @@
 
 class EHL_CLASS() CRuleEntity : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	KeyValue(KeyValueData* pkvd) override;
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	void	SetMaster(string_t iszMaster) { m_iszMaster = iszMaster; }
 
@@ -38,5 +38,6 @@ protected:
 	bool	CanFireForActivator(CBaseEntity* pActivator);
 
 private:
+	EHL_FIELD(Persisted)
 	string_t m_iszMaster = iStringNull;
 };

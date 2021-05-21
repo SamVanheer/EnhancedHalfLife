@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseAmmo.hpp"
+#include "CAmmoAll.generated.hpp"
 
 constexpr int AMMOALL_REFILLAMMO = -1;
 
@@ -24,6 +25,8 @@ constexpr int AMMOALL_REFILLAMMO = -1;
 */
 class EHL_CLASS() CAmmoAll : public CBaseAmmo
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData * pkvd) override;
 

@@ -16,11 +16,14 @@
 #pragma once
 
 #include "CActAnimating.hpp"
+#include "CXenHair.generated.hpp"
 
 constexpr int SF_HAIR_SYNC = 0x0001;
 
 class EHL_CLASS() CXenHair : public CActAnimating
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Spawn() override;
 	void		Precache() override;

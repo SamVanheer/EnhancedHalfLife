@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CShake.generated.hpp"
 
 constexpr int SF_SHAKE_EVERYONE = 0x0001;	//!< Don't check radius
 // UNDONE: These don't work yet
@@ -33,6 +34,8 @@ constexpr int SF_SHAKE_INAIR = 0x0004;		//!< Shake players in air
 */
 class EHL_CLASS() CShake : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Use(const UseInfo& info) override;

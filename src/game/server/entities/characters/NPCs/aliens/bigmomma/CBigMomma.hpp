@@ -17,8 +17,8 @@
 
 #include "CBaseMonster.hpp"
 #include "CBaseMonster.monsters.hpp"
-
 #include "CInfoBM.hpp"
+#include "CBigMomma.generated.hpp"
 
 //=========================================================
 // Monster's Anim Events Go Here
@@ -67,6 +67,8 @@ constexpr std::string_view BIG_CHILDCLASS{"monster_babycrab"};
 
 class EHL_CLASS() CBigMomma : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -181,10 +183,6 @@ public:
 	bool CheckMeleeAttack2(float flDot, float flDist) override;	//!< Lay a crab
 	bool CheckRangeAttack1(float flDot, float flDist) override;	//!< Mortar launch
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 	static const char* pChildDieSounds[];
 	static const char* pSackSounds[];
 	static const char* pDeathSounds[];
@@ -198,9 +196,18 @@ public:
 	CUSTOM_SCHEDULES;
 
 private:
+	EHL_FIELD(Persisted, Type=Time)
 	float m_nodeTime = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_crabTime = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_mortarTime = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_painSoundTime = 0;
+
+	EHL_FIELD(Persisted)
 	int m_crabCount = 0;
 };

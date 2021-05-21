@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CRuleBrushEntity.hpp"
+#include "CGamePlayerZone.generated.hpp"
 
 /**
 *	@brief players in the zone fire my target when I'm fired
@@ -23,17 +24,22 @@
 */
 class EHL_CLASS() CGamePlayerZone : public CRuleBrushEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		KeyValue(KeyValueData* pkvd) override;
 	void		Use(const UseInfo& info) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
 private:
+	EHL_FIELD(Persisted)
 	string_t m_iszInTarget = iStringNull;
+
+	EHL_FIELD(Persisted)
 	string_t m_iszOutTarget = iStringNull;
+
+	EHL_FIELD(Persisted)
 	string_t m_iszInCount = iStringNull;
+
+	EHL_FIELD(Persisted)
 	string_t m_iszOutCount = iStringNull;
 };

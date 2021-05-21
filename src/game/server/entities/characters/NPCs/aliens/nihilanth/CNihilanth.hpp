@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CNihilanth.generated.hpp"
 
 class CNihilanthHVR;
 class CSprite;
@@ -28,11 +29,10 @@ constexpr int N_SPHERES = 20;
 */
 class EHL_CLASS() CNihilanth : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnRemove() override;
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	void Spawn() override;
 	void Precache() override;
@@ -85,50 +85,93 @@ public:
 
 	// x_teleattack1.wav	the looping sound of the teleport attack ball.
 
+	EHL_FIELD(Persisted)
 	float m_flForce = 0;
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextPainSound = 0;
 
+	EHL_FIELD(Persisted)
 	Vector m_velocity;
+
+	EHL_FIELD(Persisted)
 	Vector m_avelocity;
 
+	EHL_FIELD(Persisted)
 	Vector m_vecTarget;
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_posTarget;
 
+	EHL_FIELD(Persisted)
 	Vector m_vecDesired;
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector m_posDesired;
 
+	EHL_FIELD(Persisted)
 	float  m_flMinZ = 0;
+
+	EHL_FIELD(Persisted)
 	float  m_flMaxZ = 0;
 
+	EHL_FIELD(Persisted)
 	Vector m_vecGoal;
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flLastSeen = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flPrevSeen = 0;
 
+	EHL_FIELD(Persisted)
 	int m_irritation = 0;
 
+	EHL_FIELD(Persisted)
 	int m_iLevel = 0;
+
+	EHL_FIELD(Persisted)
 	int m_iTeleport = 0;
 
+	EHL_FIELD(Persisted)
 	EHANDLE m_hRecharger;
 
+	EHL_FIELD(Persisted)
 	EHandle<CNihilanthHVR> m_hSphere[N_SPHERES];
+
+	EHL_FIELD(Persisted)
 	int	m_iActiveSpheres = 0;
 
+	EHL_FIELD(Persisted)
 	float m_flAdj = 0;
 
+	EHL_FIELD(Persisted)
 	EHandle<CSprite> m_hBall;
 
+	EHL_FIELD(Persisted)
 	char m_szRechargerTarget[64]{};
+
+	EHL_FIELD(Persisted)
 	char m_szDrawUse[64]{};
+
+	EHL_FIELD(Persisted)
 	char m_szTeleportUse[64]{};
+
+	EHL_FIELD(Persisted)
 	char m_szTeleportTouch[64]{};
+
+	EHL_FIELD(Persisted)
 	char m_szDeadUse[64]{};
+
+	EHL_FIELD(Persisted)
 	char m_szDeadTouch[64]{};
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flShootEnd = 0;
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flShootTime = 0;
 
+	EHL_FIELD(Persisted)
 	EHANDLE m_hFriend[3];
 };

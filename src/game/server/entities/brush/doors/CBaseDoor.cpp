@@ -18,20 +18,6 @@
 #define noiseMoving noise1
 #define noiseArrived noise2
 
-TYPEDESCRIPTION	CBaseDoor::m_SaveData[] =
-{
-	DEFINE_FIELD(CBaseDoor, m_bHealthValue, FIELD_CHARACTER),
-	DEFINE_FIELD(CBaseDoor, m_bMoveSnd, FIELD_CHARACTER),
-	DEFINE_FIELD(CBaseDoor, m_bStopSnd, FIELD_CHARACTER),
-
-	DEFINE_FIELD(CBaseDoor, m_bLockedSound, FIELD_CHARACTER),
-	DEFINE_FIELD(CBaseDoor, m_bLockedSentence, FIELD_CHARACTER),
-	DEFINE_FIELD(CBaseDoor, m_bUnlockedSound, FIELD_CHARACTER),
-	DEFINE_FIELD(CBaseDoor, m_bUnlockedSentence, FIELD_CHARACTER),
-};
-
-IMPLEMENT_SAVERESTORE(CBaseDoor, CBaseToggle);
-
 constexpr int DOOR_SENTENCEWAIT = 6;
 constexpr int DOOR_SOUNDWAIT = 3;
 constexpr float BUTTON_SOUNDWAIT = 0.5;

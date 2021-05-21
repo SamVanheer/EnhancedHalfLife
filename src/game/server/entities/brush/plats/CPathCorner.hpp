@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CPathCorner.generated.hpp"
 
 // Spawnflags of CPathCorner
 constexpr int SF_CORNER_WAITFORTRIG = 0x001;
@@ -24,16 +25,15 @@ constexpr int SF_CORNER_FIREONCE = 0x004;
 
 class EHL_CLASS() CPathCorner : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;
 	float GetDelay() override { return m_flWait; }
 	//	void Touch( CBaseEntity *pOther ) override;
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
+	EHL_FIELD(Persisted)
 	float m_flWait = 0;
 };

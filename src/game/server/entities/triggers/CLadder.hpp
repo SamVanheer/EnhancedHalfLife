@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseTrigger.hpp"
+#include "CLadder.generated.hpp"
 
 /**
 *	@brief makes an area vertically negotiable
 */
 class EHL_CLASS() CLadder : public CBaseTrigger
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData * pkvd) override;
 	void Spawn() override;

@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CFuncTrackChange.hpp"
+#include "CFuncTrackAuto.generated.hpp"
 
 /**
 *	@brief Auto track change
 */
 class EHL_CLASS() CFuncTrackAuto : public CFuncTrackChange
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void			Use(const UseInfo& info) override;
 	void	UpdateAutoTargets(ToggleState toggleState) override;

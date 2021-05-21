@@ -18,13 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(bmortar, CBMortar);
 
-TYPEDESCRIPTION	CBMortar::m_SaveData[] =
-{
-	DEFINE_FIELD(CBMortar, m_maxFrame, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CBMortar, CBaseEntity);
-
 // UNDONE: right now this is pretty much a copy of the squid spit with minor changes to the way it does damage
 void CBMortar::Spawn()
 {

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CPendulum.generated.hpp"
 
 constexpr int SF_PENDULUM_SWING = 2;	// spawnflag that makes a pendulum a rope swing.
 
@@ -24,6 +25,8 @@ constexpr int SF_PENDULUM_PASSABLE = 32;
 
 class EHL_CLASS() CPendulum : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	KeyValue(KeyValueData* pkvd) override;
@@ -33,20 +36,32 @@ public:
 	void	Touch(CBaseEntity* pOther) override;
 	void	EXPORT RopeTouch(CBaseEntity* pOther);// this touch func makes the pendulum a rope
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
 	void	Blocked(CBaseEntity* pOther) override;
 
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	float m_accel = 0;			// Acceleration
+
+	EHL_FIELD(Persisted)
 	float m_distance = 0;			// 
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_time = 0;
+
+	EHL_FIELD(Persisted)
 	float m_damp = 0;
+
+	EHL_FIELD(Persisted)
 	float m_maxSpeed = 0;
+
+	EHL_FIELD(Persisted)
 	float m_dampSpeed = 0;
+
+	EHL_FIELD(Persisted)
 	Vector m_center;
+
+	EHL_FIELD(Persisted)
 	Vector m_start;
 
+	EHL_FIELD(Persisted)
 	EHandle<CBaseEntity> m_hRopeUser;
 };

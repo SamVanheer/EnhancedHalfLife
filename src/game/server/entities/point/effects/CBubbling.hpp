@@ -16,9 +16,12 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CBubbling.generated.hpp"
 
 class EHL_CLASS() CBubbling : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Precache() override;
@@ -27,13 +30,17 @@ public:
 	void	EXPORT FizzThink();
 	void	Use(const UseInfo& info) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
 	int		ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-	static	TYPEDESCRIPTION m_SaveData[];
 
+	EHL_FIELD(Persisted)
 	int m_density = 0;
+
+	EHL_FIELD(Persisted)
 	int m_frequency = 0;
+
+	//let spawn restore this!
 	int m_bubbleModel = 0;
+
+	EHL_FIELD(Persisted)
 	bool m_state = false;
 };

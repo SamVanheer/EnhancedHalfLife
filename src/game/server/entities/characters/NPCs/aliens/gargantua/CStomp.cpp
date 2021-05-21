@@ -17,13 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(garg_stomp, CStomp);
 
-TYPEDESCRIPTION	CStomp::m_SaveData[] =
-{
-	DEFINE_FIELD(CStomp, m_flLastThinkTime, FIELD_TIME),
-};
-
-IMPLEMENT_SAVERESTORE(CStomp, CBaseEntity);
-
 CStomp* CStomp::StompCreate(const Vector& origin, const Vector& end, float speed)
 {
 	CStomp* pStomp = GetClassPtr((CStomp*)nullptr);

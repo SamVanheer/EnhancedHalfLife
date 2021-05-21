@@ -16,18 +16,20 @@
 #pragma once
 
 #include "CGrenade.hpp"
+#include "CApacheHVR.generated.hpp"
 
 class EHL_CLASS() CApacheHVR : public CGrenade
 {
+	EHL_GENERATED_BODY()
+
 	void Spawn() override;
 	void Precache() override;
 	void EXPORT IgniteThink();
 	void EXPORT AccelerateThink();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	//Don't save, precached
 	int m_iTrail = 0;
+
+	EHL_FIELD(Persisted)
 	Vector m_vecForward;
 };

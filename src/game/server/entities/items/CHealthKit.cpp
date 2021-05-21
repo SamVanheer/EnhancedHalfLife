@@ -18,13 +18,6 @@
 
 LINK_ENTITY_TO_CLASS(item_healthkit, CHealthKit);
 
-TYPEDESCRIPTION	CHealthKit::m_SaveData[] =
-{
-	DEFINE_FIELD(CHealthKit, m_flCustomCapacity, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CHealthKit, CItem);
-
 void CHealthKit::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "custom_capacity"))

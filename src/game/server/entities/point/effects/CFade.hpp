@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CFade.generated.hpp"
 
 constexpr int SF_FADE_IN = 0x0001;			//!< Fade in, not out
 constexpr int SF_FADE_MODULATE = 0x0002;	//!< Modulate, don't blend
@@ -27,6 +28,8 @@ constexpr int SF_FADE_ONLYONE = 0x0004;
 */
 class EHL_CLASS() CFade : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Use(const UseInfo& info) override;

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CFuncWall.hpp"
+#include "CFuncMonsterClip.generated.hpp"
 
 /**
 *	@brief Monster only clip brush
@@ -25,6 +26,8 @@
 */
 class EHL_CLASS() CFuncMonsterClip : public CFuncWall
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	Use(const UseInfo& info) override {}		//!< Clear out func_wall's use function

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
+#include "CGlock.generated.hpp"
 
 enum glock_e
 {
@@ -33,6 +34,8 @@ enum glock_e
 
 class EHL_CLASS() CGlock : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{

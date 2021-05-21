@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CBaseItem.hpp"
-
 #include "CBaseAmmo.generated.hpp"
 
 class EHL_CLASS() CBaseAmmo : public CBaseItem

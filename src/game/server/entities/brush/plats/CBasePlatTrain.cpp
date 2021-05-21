@@ -15,15 +15,6 @@
 
 #include "CBasePlatTrain.hpp"
 
-TYPEDESCRIPTION	CBasePlatTrain::m_SaveData[] =
-{
-	DEFINE_FIELD(CBasePlatTrain, m_bMoveSnd, FIELD_CHARACTER),
-	DEFINE_FIELD(CBasePlatTrain, m_bStopSnd, FIELD_CHARACTER),
-	DEFINE_FIELD(CBasePlatTrain, m_volume, FIELD_FLOAT),
-};
-
-IMPLEMENT_SAVERESTORE(CBasePlatTrain, CBaseToggle);
-
 void CBasePlatTrain::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "lip"))

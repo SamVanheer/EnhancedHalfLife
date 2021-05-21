@@ -16,11 +16,14 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CDecal.generated.hpp"
 
 constexpr int SF_DECAL_NOTINDEATHMATCH = 2048;
 
 class EHL_CLASS() CDecal : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Spawn() override;
 	void	KeyValue(KeyValueData* pkvd) override;

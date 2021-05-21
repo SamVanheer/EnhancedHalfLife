@@ -17,12 +17,15 @@
 
 #include "CBaseMonster.hpp"
 #include "CBaseMonster.monsters.hpp"
+#include "CHeadCrab.generated.hpp"
 
 /**
 *	@brief tiny, jumpy alien parasite
 */
 class EHL_CLASS() CHeadCrab : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;

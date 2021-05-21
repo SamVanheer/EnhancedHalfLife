@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CActAnimating.hpp"
+#include "CXenSpore.generated.hpp"
 
 // UNDONE:	These need to smoke somehow when they take damage
 //			Touch behavior?
 //			Cause damage in smoke area
 class EHL_CLASS() CXenSpore : public CActAnimating
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Spawn() override;
 	void		Precache() override;

@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
+#include "CSqueak.generated.hpp"
 
 enum squeak_e
 {
@@ -29,6 +30,8 @@ enum squeak_e
 
 class EHL_CLASS() CSqueak : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{

@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CRulePointEntity.hpp"
+#include "CGameEnd.generated.hpp"
 
 /**
 *	@brief Ends the game in MP
 */
 class EHL_CLASS() CGameEnd : public CRulePointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void	Use(const UseInfo& info) override;
 };

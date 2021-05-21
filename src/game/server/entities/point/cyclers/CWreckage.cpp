@@ -15,13 +15,6 @@
 
 #include "CWreckage.hpp"
 
-TYPEDESCRIPTION	CWreckage::m_SaveData[] =
-{
-	DEFINE_FIELD(CWreckage, m_flStartTime, FIELD_TIME),
-};
-
-IMPLEMENT_SAVERESTORE(CWreckage, CBaseMonster);
-
 LINK_ENTITY_TO_CLASS(cycler_wreckage, CWreckage);
 
 void CWreckage::Spawn()

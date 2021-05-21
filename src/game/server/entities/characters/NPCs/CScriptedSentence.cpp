@@ -15,21 +15,6 @@
 
 #include "CScriptedSentence.hpp"
 
-TYPEDESCRIPTION	CScriptedSentence::m_SaveData[] =
-{
-	DEFINE_FIELD(CScriptedSentence, m_iszSentence, FIELD_STRING),
-	DEFINE_FIELD(CScriptedSentence, m_iszEntity, FIELD_STRING),
-	DEFINE_FIELD(CScriptedSentence, m_flRadius, FIELD_FLOAT),
-	DEFINE_FIELD(CScriptedSentence, m_flDuration, FIELD_FLOAT),
-	DEFINE_FIELD(CScriptedSentence, m_flRepeat, FIELD_FLOAT),
-	DEFINE_FIELD(CScriptedSentence, m_flAttenuation, FIELD_FLOAT),
-	DEFINE_FIELD(CScriptedSentence, m_flVolume, FIELD_FLOAT),
-	DEFINE_FIELD(CScriptedSentence, m_active, FIELD_BOOLEAN),
-	DEFINE_FIELD(CScriptedSentence, m_iszListener, FIELD_STRING),
-};
-
-IMPLEMENT_SAVERESTORE(CScriptedSentence, CBaseToggle);
-
 LINK_ENTITY_TO_CLASS(scripted_sentence, CScriptedSentence);
 
 void CScriptedSentence::KeyValue(KeyValueData* pkvd)

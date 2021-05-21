@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CPlayerSetHealth.generated.hpp"
 
 constexpr int PLAYERSETHEALTH_ALLPLAYERS = 1 << 0;
 constexpr int PLAYERSETHEALTH_SETHEALTH = 1 << 1;
@@ -26,22 +27,23 @@ constexpr int PLAYERSETHEALTH_SETARMOR = 1 << 2;
 */
 class EHL_CLASS() CPlayerSetHealth : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 
 	void Use(const UseInfo& info) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static TYPEDESCRIPTION m_SaveData[];
-
 private:
 	void ApplyToTarget(CBasePlayer* player);
 
 private:
+	EHL_FIELD(Persisted)
 	int m_Flags = 0;
 
+	EHL_FIELD(Persisted)
 	int m_Health = 100;
+
+	EHL_FIELD(Persisted)
 	int m_Armor = 0;
 };

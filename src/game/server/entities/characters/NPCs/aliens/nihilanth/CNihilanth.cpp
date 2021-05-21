@@ -19,42 +19,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_nihilanth, CNihilanth);
 
-TYPEDESCRIPTION	CNihilanth::m_SaveData[] =
-{
-	DEFINE_FIELD(CNihilanth, m_flForce, FIELD_FLOAT),
-	DEFINE_FIELD(CNihilanth, m_flNextPainSound, FIELD_TIME),
-	DEFINE_FIELD(CNihilanth, m_velocity, FIELD_VECTOR),
-	DEFINE_FIELD(CNihilanth, m_avelocity, FIELD_VECTOR),
-	DEFINE_FIELD(CNihilanth, m_vecTarget, FIELD_VECTOR),
-	DEFINE_FIELD(CNihilanth, m_posTarget, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CNihilanth, m_vecDesired, FIELD_VECTOR),
-	DEFINE_FIELD(CNihilanth, m_posDesired, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CNihilanth, m_flMinZ, FIELD_FLOAT),
-	DEFINE_FIELD(CNihilanth, m_flMaxZ, FIELD_FLOAT),
-	DEFINE_FIELD(CNihilanth, m_vecGoal, FIELD_VECTOR),
-	DEFINE_FIELD(CNihilanth, m_flLastSeen, FIELD_TIME),
-	DEFINE_FIELD(CNihilanth, m_flPrevSeen, FIELD_TIME),
-	DEFINE_FIELD(CNihilanth, m_irritation, FIELD_INTEGER),
-	DEFINE_FIELD(CNihilanth, m_iLevel, FIELD_INTEGER),
-	DEFINE_FIELD(CNihilanth, m_iTeleport, FIELD_INTEGER),
-	DEFINE_FIELD(CNihilanth, m_hRecharger, FIELD_EHANDLE),
-	DEFINE_ARRAY(CNihilanth, m_hSphere, FIELD_EHANDLE, N_SPHERES),
-	DEFINE_FIELD(CNihilanth, m_iActiveSpheres, FIELD_INTEGER),
-	DEFINE_FIELD(CNihilanth, m_flAdj, FIELD_FLOAT),
-	DEFINE_FIELD(CNihilanth, m_hBall, FIELD_EHANDLE),
-	DEFINE_ARRAY(CNihilanth, m_szRechargerTarget, FIELD_CHARACTER, 64),
-	DEFINE_ARRAY(CNihilanth, m_szDrawUse, FIELD_CHARACTER, 64),
-	DEFINE_ARRAY(CNihilanth, m_szTeleportUse, FIELD_CHARACTER, 64),
-	DEFINE_ARRAY(CNihilanth, m_szTeleportTouch, FIELD_CHARACTER, 64),
-	DEFINE_ARRAY(CNihilanth, m_szDeadUse, FIELD_CHARACTER, 64),
-	DEFINE_ARRAY(CNihilanth, m_szDeadTouch, FIELD_CHARACTER, 64),
-	DEFINE_FIELD(CNihilanth, m_flShootEnd, FIELD_TIME),
-	DEFINE_FIELD(CNihilanth, m_flShootTime, FIELD_TIME),
-	DEFINE_ARRAY(CNihilanth, m_hFriend, FIELD_EHANDLE, 3),
-};
-
-IMPLEMENT_SAVERESTORE(CNihilanth, CBaseMonster);
-
 const char* CNihilanth::pAttackSounds[] =
 {
 	"X/x_attack1.wav",

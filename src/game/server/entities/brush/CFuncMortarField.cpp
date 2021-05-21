@@ -17,18 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(func_mortar_field, CFuncMortarField);
 
-TYPEDESCRIPTION	CFuncMortarField::m_SaveData[] =
-{
-	DEFINE_FIELD(CFuncMortarField, m_iszXController, FIELD_STRING),
-	DEFINE_FIELD(CFuncMortarField, m_iszYController, FIELD_STRING),
-	DEFINE_FIELD(CFuncMortarField, m_flSpread, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncMortarField, m_flDelay, FIELD_FLOAT),
-	DEFINE_FIELD(CFuncMortarField, m_iCount, FIELD_INTEGER),
-	DEFINE_FIELD(CFuncMortarField, m_fControl, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CFuncMortarField, CBaseToggle);
-
 void CFuncMortarField::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "m_iszXController"))

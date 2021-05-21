@@ -17,14 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(game_player_equip, CGamePlayerEquip);
 
-TYPEDESCRIPTION	CGamePlayerEquip::m_SaveData[] =
-{
-	DEFINE_ARRAY(CGamePlayerEquip, m_weaponNames, FIELD_STRING, MAX_EQUIP),
-	DEFINE_ARRAY(CGamePlayerEquip, m_weaponCount, FIELD_INTEGER, MAX_EQUIP),
-};
-
-IMPLEMENT_SAVERESTORE(CGamePlayerEquip, CRulePointEntity);
-
 void CGamePlayerEquip::KeyValue(KeyValueData* pkvd)
 {
 	CRulePointEntity::KeyValue(pkvd);

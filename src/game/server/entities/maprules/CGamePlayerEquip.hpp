@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CRulePointEntity.hpp"
+#include "CGamePlayerEquip.generated.hpp"
 
 constexpr int SF_PLAYEREQUIP_USEONLY = 0x0001;
 constexpr int MAX_EQUIP = 32;
@@ -26,6 +27,8 @@ constexpr int MAX_EQUIP = 32;
 */
 class EHL_CLASS() CGamePlayerEquip : public CRulePointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		KeyValue(KeyValueData* pkvd) override;
 	void		Touch(CBaseEntity* pOther) override;
@@ -33,14 +36,13 @@ public:
 
 	inline bool	UseOnly() { return (pev->spawnflags & SF_PLAYEREQUIP_USEONLY) != 0; }
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static TYPEDESCRIPTION m_SaveData[];
-
 private:
 
 	void		EquipPlayer(CBaseEntity* pPlayer);
 
+	EHL_FIELD(Persisted)
 	string_t m_weaponNames[MAX_EQUIP]{};
+
+	EHL_FIELD(Persisted)
 	int m_weaponCount[MAX_EQUIP]{};
 };

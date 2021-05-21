@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CDeadBarney.generated.hpp"
 
 /**
 *	@brief Designer selects a pose in worldcraft, 0 through ArraySize(m_szPoses)-1
 */
 class EHL_CLASS() CDeadBarney : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	int	Classify() override { return	CLASS_PLAYER_ALLY; }

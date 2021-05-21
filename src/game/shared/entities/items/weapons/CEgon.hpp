@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
-
 #include "CEgon.generated.hpp"
 
 enum egon_e
@@ -87,8 +86,8 @@ public:
 	bool ShouldWeaponIdle() override { return true; }
 	void WeaponIdle() override;
 
-	EHL_FIELD(Persisted, Type = Time)
-		float m_flAmmoUseTime = 0;// since we use < 1 point of ammo per update, we subtract ammo on a timer.
+	EHL_FIELD(Persisted, Type=Time)
+	float m_flAmmoUseTime = 0;// since we use < 1 point of ammo per update, we subtract ammo on a timer.
 
 	float GetPulseInterval();
 	float GetDischargeInterval();
@@ -104,7 +103,7 @@ public:
 	EHandle<CSprite> m_hSprite;
 
 	EHL_FIELD(Persisted)
-		FireState m_fireState = FireState::Off;
+	FireState m_fireState = FireState::Off;
 
 	bool UseDecrement() override
 	{
@@ -121,14 +120,14 @@ public:
 	unsigned short m_usEgonStop = 0;
 
 private:
-	EHL_FIELD(Persisted, Type = Time)
-		float m_shootTime = 0;
+	EHL_FIELD(Persisted, Type=Time)
+	float m_shootTime = 0;
 
 	EHL_FIELD(Persisted)
-		FireMode m_fireMode = FireMode::Narrow;
+	FireMode m_fireMode = FireMode::Narrow;
 
-	EHL_FIELD(Persisted, Type = Time)
-		float m_shakeTime = 0;
+	EHL_FIELD(Persisted, Type=Time)
+	float m_shakeTime = 0;
 
 	bool m_deployed = 0; //TODO: bool
 

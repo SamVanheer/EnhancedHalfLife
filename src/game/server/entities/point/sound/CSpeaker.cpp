@@ -17,13 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(speaker, CSpeaker);
 
-TYPEDESCRIPTION	CSpeaker::m_SaveData[] =
-{
-	DEFINE_FIELD(CSpeaker, m_preset, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CSpeaker, CBaseEntity);
-
 void CSpeaker::Spawn()
 {
 	const char* szSoundFile = STRING(pev->message);

@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CBaseDelay.hpp"
-
 #include "CAutoTrigger.generated.hpp"
 
 constexpr int SF_AUTO_FIREONCE = 0x0001;

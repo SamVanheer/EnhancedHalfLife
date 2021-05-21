@@ -17,6 +17,7 @@
 
 #include "CBaseMonster.hpp"
 #include "CBaseMonster.monsters.hpp"
+#include "CBullsquid.generated.hpp"
 
 constexpr int SQUID_SPRINT_DIST = 256; // how close the squid has to get before starting to sprint and refusing to swerve
 
@@ -58,6 +59,8 @@ constexpr int BSQUID_AE_THROW = 6;
 */
 class EHL_CLASS() CBullsquid : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -116,14 +119,14 @@ public:
 	*/
 	NPCState GetIdealState() override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
 	CUSTOM_SCHEDULES;
-	static TYPEDESCRIPTION m_SaveData[];
 
+	EHL_FIELD(Persisted)
 	bool m_fCanThreatDisplay = false;// this is so the squid only does the "I see a headcrab!" dance one time. 
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flLastHurtTime = 0;// we keep track of this, because if something hurts a squid, it will forget about its love of headcrabs for a while.
+
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextSpitTime = 0;// last time the bullsquid used the spit attack.
 };

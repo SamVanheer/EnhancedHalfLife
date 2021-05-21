@@ -16,13 +16,6 @@
 #include "animation.h"
 #include "CActAnimating.hpp"
 
-TYPEDESCRIPTION	CActAnimating::m_SaveData[] =
-{
-	DEFINE_FIELD(CActAnimating, m_Activity, FIELD_INTEGER),
-};
-
-IMPLEMENT_SAVERESTORE(CActAnimating, CBaseAnimating);
-
 void CActAnimating::SetActivity(Activity act)
 {
 	int sequence = LookupActivity(act);

@@ -53,10 +53,10 @@ public:
 	EHL_FIELD(Persisted)
 	float m_flWait = 0;
 
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flReturnTime = 0;
 
-	EHL_FIELD(Persisted, Type = Time)
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flStopTime = 0;
 
 	EHL_FIELD(Persisted)

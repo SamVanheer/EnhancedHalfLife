@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
+#include "CPython.generated.hpp"
 
 enum python_e
 {
@@ -31,6 +32,8 @@ enum python_e
 
 class EHL_CLASS() CPython : public CBaseWeapon
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void OnConstruct() override
 	{

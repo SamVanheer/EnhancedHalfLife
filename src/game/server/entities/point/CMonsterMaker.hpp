@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseMonster.hpp"
+#include "CMonsterMaker.generated.hpp"
 
 constexpr int SF_MONSTERMAKER_START_ON = 1;		//!< start active ( if has targetname )
 constexpr int SF_MONSTERMAKER_CYCLIC = 4;		//!< drop one monster every time fired.
@@ -26,6 +27,8 @@ constexpr int SF_MONSTERMAKER_MONSTERCLIP = 8;	//!< Children are blocked by mons
 */
 class EHL_CLASS() CMonsterMaker : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Precache() override;
@@ -52,21 +55,24 @@ public:
 	*/
 	void MakeMonster();
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	string_t m_iszMonsterClassname = iStringNull;//!< classname of the monster(s) that will be created.
 
+	EHL_FIELD(Persisted)
 	int m_cNumMonsters = 0;//!< max number of monsters this ent can create
 
-
+	EHL_FIELD(Persisted)
 	int m_cLiveChildren = 0;//!< how many monsters made by this monster maker that are currently alive
+
+	EHL_FIELD(Persisted)
 	int m_iMaxLiveChildren = 0;//!< max number of monsters that this maker may have out at one time.
 
+	EHL_FIELD(Persisted)
 	float m_flGround = 0; //!< z coord of the ground under me, used to make sure no monsters are under the maker when it drops a new child
 
+	EHL_FIELD(Persisted)
 	bool m_fActive = false;
+
+	EHL_FIELD(Persisted)
 	bool m_fFadeChildren = false;//!< should we make the children fadeout?
 };

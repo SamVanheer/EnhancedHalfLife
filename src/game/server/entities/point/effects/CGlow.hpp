@@ -16,17 +16,20 @@
 #pragma once
 
 #include "CPointEntity.hpp"
+#include "CGlow.generated.hpp"
 
 class EHL_CLASS() CGlow : public CPointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Think() override;
 	void Animate(float frames);
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_lastTime = 0;
+
+	EHL_FIELD(Persisted)
 	float m_maxFrame = 0;
 };

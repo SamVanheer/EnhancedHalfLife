@@ -17,13 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(monster_gman, CGMan);
 
-TYPEDESCRIPTION	CGMan::m_SaveData[] =
-{
-	DEFINE_FIELD(CGMan, m_hTalkTarget, FIELD_EHANDLE),
-	DEFINE_FIELD(CGMan, m_flTalkTime, FIELD_TIME),
-};
-IMPLEMENT_SAVERESTORE(CGMan, CBaseMonster);
-
 int	CGMan::Classify()
 {
 	return CLASS_NONE;

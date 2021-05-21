@@ -15,39 +15,6 @@
 
 #include "CBaseTurret.hpp"
 
-TYPEDESCRIPTION	CBaseTurret::m_SaveData[] =
-{
-	DEFINE_FIELD(CBaseTurret, m_flMaxSpin, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseTurret, m_iSpin, FIELD_BOOLEAN),
-
-	DEFINE_FIELD(CBaseTurret, m_hEyeGlow, FIELD_EHANDLE),
-	DEFINE_FIELD(CBaseTurret, m_eyeBrightness, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseTurret, m_iDeployHeight, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseTurret, m_iRetractHeight, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseTurret, m_iMinPitch, FIELD_INTEGER),
-
-	DEFINE_FIELD(CBaseTurret, m_iBaseTurnRate, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseTurret, m_fTurnRate, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseTurret, m_iOrientation, FIELD_INTEGER),
-	DEFINE_FIELD(CBaseTurret, m_iOn, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBaseTurret, m_fBeserk, FIELD_BOOLEAN),
-	DEFINE_FIELD(CBaseTurret, m_iAutoStart, FIELD_BOOLEAN),
-
-	DEFINE_FIELD(CBaseTurret, m_vecLastSight, FIELD_POSITION_VECTOR),
-	DEFINE_FIELD(CBaseTurret, m_flLastSight, FIELD_TIME),
-	DEFINE_FIELD(CBaseTurret, m_flMaxWait, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseTurret, m_iSearchSpeed, FIELD_INTEGER),
-
-	DEFINE_FIELD(CBaseTurret, m_flStartYaw, FIELD_FLOAT),
-	DEFINE_FIELD(CBaseTurret, m_vecCurAngles, FIELD_VECTOR),
-	DEFINE_FIELD(CBaseTurret, m_vecGoalAngles, FIELD_VECTOR),
-
-	DEFINE_FIELD(CBaseTurret, m_flPingTime, FIELD_TIME),
-	DEFINE_FIELD(CBaseTurret, m_flSpinUpTime, FIELD_TIME),
-};
-
-IMPLEMENT_SAVERESTORE(CBaseTurret, CBaseMonster);
-
 void CBaseTurret::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "maxsleep"))

@@ -16,19 +16,17 @@
 #pragma once
 
 #include "CGrenade.hpp"
+#include "CTripmineGrenade.generated.hpp"
 
 constexpr int SF_TRIPMINE_INSTANT_ON = 1 << 0;
 
 class EHL_CLASS() CTripmineGrenade : public CGrenade
 {
+	EHL_GENERATED_BODY()
+
 	void OnRemove() override;
 	void Spawn() override;
 	void Precache() override;
-
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-
-	static	TYPEDESCRIPTION m_SaveData[];
 
 	bool TakeDamage(const TakeDamageInfo& info) override;
 
@@ -41,14 +39,30 @@ class EHL_CLASS() CTripmineGrenade : public CGrenade
 	void MakeBeam();
 	void KillBeam();
 
+	EHL_FIELD(Persisted, Type=Time)
 	float		m_flPowerUp = 0;
+
+	EHL_FIELD(Persisted)
 	Vector		m_vecDir;
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector		m_vecEnd;
+
+	EHL_FIELD(Persisted)
 	float		m_flBeamLength = 0;
 
+	EHL_FIELD(Persisted)
 	EHANDLE		m_hOwner;
+
+	EHL_FIELD(Persisted)
 	EHandle<CBeam> m_hBeam;
+
+	EHL_FIELD(Persisted, Type=Position)
 	Vector		m_posOwner;
+
+	EHL_FIELD(Persisted)
 	Vector		m_angleOwner;
+
+	EHL_FIELD(Persisted)
 	EHANDLE m_hRealOwner;// tracelines don't hit PEV->OWNER, which means a player couldn't detonate his own trip mine, so we store the owner here.
 };

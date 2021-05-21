@@ -25,6 +25,7 @@
 #include "CBaseMonster.hpp"
 
 #include "util.h" //TODO: get rid of DLL_GLOBAL so we can remove this header include
+#include "CEnvExplosion.generated.hpp"
 
 class CBaseEntity;
 
@@ -37,17 +38,18 @@ constexpr int SF_ENVEXPLOSION_NOSPARKS = 1 << 5;	// don't make a scorch mark
 
 class EHL_CLASS() CEnvExplosion : public CBaseMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void EXPORT Smoke();
 	void KeyValue(KeyValueData* pkvd) override;
 	void Use(const UseInfo& info) override;
 
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static	TYPEDESCRIPTION m_SaveData[];
-
+	EHL_FIELD(Persisted)
 	int m_iMagnitude = 0;// how large is the fireball? how much damage?
+
+	EHL_FIELD(Persisted)
 	int m_spriteScale = 0; // what's the exact fireball sprite scale? 
 };
 

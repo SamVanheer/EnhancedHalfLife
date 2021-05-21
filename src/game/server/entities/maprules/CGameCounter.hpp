@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CRulePointEntity.hpp"
+#include "CGameCounter.generated.hpp"
 
 constexpr int SF_GAMECOUNT_FIREONCE = 0x0001;
 constexpr int SF_GAMECOUNT_RESET = 0x0002;
@@ -27,6 +28,8 @@ constexpr int SF_GAMECOUNT_RESET = 0x0002;
 */
 class EHL_CLASS() CGameCounter : public CRulePointEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void		Spawn() override;
 	void		Use(const UseInfo& info) override;

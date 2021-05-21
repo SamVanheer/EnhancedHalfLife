@@ -16,7 +16,6 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
-
 #include "CFrictionModifier.generated.hpp"
 
 /**

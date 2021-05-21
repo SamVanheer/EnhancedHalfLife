@@ -17,13 +17,6 @@
 
 LINK_ENTITY_TO_CLASS(xen_plantlight, CXenPLight);
 
-TYPEDESCRIPTION	CXenPLight::m_SaveData[] =
-{
-	DEFINE_FIELD(CXenPLight, m_hGlow, FIELD_EHANDLE),
-};
-
-IMPLEMENT_SAVERESTORE(CXenPLight, CActAnimating);
-
 void CXenPLight::OnRemove()
 {
 	m_hGlow.Remove();

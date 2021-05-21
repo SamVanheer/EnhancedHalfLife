@@ -17,6 +17,7 @@
 
 #include "CBaseMonster.monsters.hpp"
 #include "CFlyingMonster.hpp"
+#include "CIchthyosaur.generated.hpp"
 
 class CBeam;
 
@@ -41,6 +42,8 @@ constexpr int ICHTHYOSAUR_AE_SHAKE_LEFT = 2;
 */
 class EHL_CLASS() CIchthyosaur : public CFlyingMonster
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void  Spawn() override;
 	void  Precache() override;
@@ -48,10 +51,6 @@ public:
 	int   Classify() override;
 	void  HandleAnimEvent(AnimationEvent& event) override;
 	CUSTOM_SCHEDULES;
-
-	bool Save(CSave& save) override;
-	bool Restore(CRestore& restore) override;
-	static TYPEDESCRIPTION m_SaveData[];
 
 	Schedule_t* GetSchedule() override;
 	Schedule_t* GetScheduleOfType(int Type) override;
@@ -86,20 +85,34 @@ public:
 	float PitchDiff();
 	float ChangePitch(int speed);
 
+	EHL_FIELD(Persisted)
 	Vector m_SaveVelocity;
+
+	EHL_FIELD(Persisted)
 	float m_idealDist = 0;
 
+	EHL_FIELD(Persisted)
 	float m_flBlink = 0;
 
+	//TODO: should be time
+	EHL_FIELD(Persisted)
 	float m_flEnemyTouched = 0;
+
+	EHL_FIELD(Persisted)
 	bool  m_bOnAttack = false;
 
+	EHL_FIELD(Persisted)
 	float m_flMaxSpeed = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flMinSpeed = 0;
+
+	EHL_FIELD(Persisted)
 	float m_flMaxDist = 0;
 
 	EHandle<CBeam> m_hBeam;
 
+	EHL_FIELD(Persisted, Type=Time)
 	float m_flNextAlert = 0;
 
 	float m_flLastPitchTime = 0;

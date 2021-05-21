@@ -16,12 +16,15 @@
 #pragma once
 
 #include "CBaseEntity.hpp"
+#include "CButtonTarget.generated.hpp"
 
 constexpr int SF_BTARGET_USE = 0x0001;
 constexpr int SF_BTARGET_ON = 0x0002;
 
 class EHL_CLASS() CButtonTarget : public CBaseEntity
 {
+	EHL_GENERATED_BODY()
+
 public:
 	void Spawn() override;
 	void Use(const UseInfo& info) override;
