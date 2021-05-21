@@ -55,7 +55,7 @@ namespace CodeGenerator.CodeGen
             {
                 var fileName = GetBaseFileName(data.FileName) + HeaderFileExtension;
                 _generatedFileNames.Add(fileName);
-                File.WriteAllText(fileName, heading + data.GenerateFullDeclaration());
+                File.WriteAllText(fileName, (heading + data.GenerateFullDeclaration()).NormalizeNewlines());
             }
         }
 
@@ -65,7 +65,7 @@ namespace CodeGenerator.CodeGen
             {
                 var fileName = GetBaseFileName(data.FileName) + SourceFileExtension;
                 _generatedFileNames.Add(fileName);
-                File.WriteAllText(fileName, heading + data.GenerateFullDefinition());
+                File.WriteAllText(fileName, (heading + data.GenerateFullDefinition()).NormalizeNewlines());
             }
 
             //Generate the automatically included source file
@@ -74,7 +74,7 @@ namespace CodeGenerator.CodeGen
 
             using var writer = File.CreateText(generatedSourceFileName);
 
-            writer.Write(heading);
+            writer.Write(heading.NormalizeNewlines());
 
             foreach (var data in _generatedCode.Classes)
             {
