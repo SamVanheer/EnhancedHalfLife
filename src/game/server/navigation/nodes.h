@@ -15,14 +15,16 @@
 
 #pragma once
 
-#include <cstdint>
-#include <memory>
-
 /**
 *	@file
 *
 *	AI node tree stuff.
 */
+
+#include <cstdint>
+#include <memory>
+
+#include "CBaseEntity.hpp"
 
 constexpr int MAX_STACK_NODES = 100;
 constexpr int NO_NODE = -1;
