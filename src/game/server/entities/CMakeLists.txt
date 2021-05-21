@@ -197,6 +197,8 @@ target_sources(hl
 		maprules/CRuleEntity.hpp
 		maprules/CRulePointEntity.cpp
 		maprules/CRulePointEntity.hpp
+		point/CBaseDMStart.cpp
+		point/CBaseDMStart.hpp
 		point/CDecal.cpp
 		point/CDecal.hpp
 		point/CEnvGlobal.cpp
@@ -217,8 +219,6 @@ target_sources(hl
 		point/CStripWeapons.cpp
 		point/CStripWeapons.hpp
 		point/effects.cpp
-		point/spawnpoints.cpp
-		point/spawnpoints.hpp
 		point/cyclers/CCycler.cpp
 		point/cyclers/CCycler.hpp
 		point/cyclers/CCyclerSprite.cpp
@@ -249,6 +249,8 @@ target_sources(hl
 		point/effects/CEnvSpark.hpp
 		point/effects/CFade.cpp
 		point/effects/CFade.hpp
+		point/effects/CGib.cpp
+		point/effects/CGib.hpp
 		point/effects/CGibShooter.cpp
 		point/effects/CGibShooter.hpp
 		point/effects/CGlow.cpp

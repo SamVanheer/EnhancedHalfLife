@@ -16,8 +16,7 @@
 #pragma once
 
 #include "CPointEntity.hpp"
-//TODO: rename this file
-#include "spawnpoints.generated.hpp"
+#include "CBaseDMStart.generated.hpp"
 
 class EHL_CLASS() CBaseDMStart : public CPointEntity
 {

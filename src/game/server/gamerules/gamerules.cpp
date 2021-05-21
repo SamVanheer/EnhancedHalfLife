@@ -19,7 +19,7 @@
 #include "CBaseItem.hpp"
 #include "CBaseWeapon.hpp"
 #include "UserMessages.h"
-#include "spawnpoints.hpp"
+#include "CBaseDMStart.hpp"
 
 extern DLL_GLOBAL bool	g_fGameOver;
 

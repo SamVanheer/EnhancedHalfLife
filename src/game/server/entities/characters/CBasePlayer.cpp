@@ -31,7 +31,7 @@
 #include "client.h"
 #include "dll_functions.hpp"
 #include "CCorpse.hpp"
-#include "spawnpoints.hpp"
+#include "CBaseDMStart.hpp"
 #include "CBaseWeapon.hpp"
 #include "CSprayCan.hpp"
 #include "CWeaponBox.hpp"
