@@ -89,7 +89,8 @@ namespace CodeGenerator.Processing
             {
                 "-xc++",
                 "-std=c++17",
-                "-DEHL_CODEGEN_PROCESSING" //Tells the code that we're processing it for codegen
+                "-DEHL_CODEGEN_PROCESSING", //Tells the code that we're processing it for codegen
+                "-Wno-pragma-once-outside-header",
             };
 
             args.AddRange(_definitions.Select(d => $"-D{d}"));
