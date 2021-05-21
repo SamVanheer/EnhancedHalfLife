@@ -44,7 +44,8 @@ function(ehl_codegen_add_clean target)
 	set_target_properties(CLEAN_CODEGEN_${target}
 		PROPERTIES
 			EXCLUDE_FROM_ALL TRUE
-			EXCLUDE_FROM_DEFAULT_BUILD TRUE)
+			EXCLUDE_FROM_DEFAULT_BUILD TRUE
+			FOLDER "CLEAN_CODEGEN")
 endfunction()
 
 function(ehl_codegen_enable target)
