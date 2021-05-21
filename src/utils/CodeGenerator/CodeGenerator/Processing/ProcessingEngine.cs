@@ -30,14 +30,15 @@ namespace CodeGenerator.Processing
         public ProcessingEngine(ImmutableHashSet<string> definitions,
             ImmutableList<string> includePaths,
             IEnumerable<string> headers,
-            ImmutableDictionary<string, CachedFileInfo> cachedFileInfo)
+            ImmutableDictionary<string, CachedFileInfo> cachedFileInfo,
+            bool displayDiagnostics)
         {
             _definitions = definitions;
             _includePaths = includePaths;
             _headers = headers.Select(h => Path.GetFullPath(h.NormalizeSlashes())).ToImmutableList();
             _cachedFileInfo = cachedFileInfo;
 
-            _index = ClangSharp.Index.Create(displayDiagnostics: false);
+            _index = ClangSharp.Index.Create(displayDiagnostics: displayDiagnostics);
         }
 
         /// <summary>

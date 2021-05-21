@@ -42,7 +42,10 @@ namespace CodeGenerator
             generateCommand.AddOption(new Option<bool>("--dry-run",
                 description: "Process the target but don't generate any code"));
 
-            generateCommand.Handler = CommandHandler.Create<string, bool>(GenerateCode);
+            generateCommand.AddOption(new Option<bool>("--display-diagnostics",
+                description: "Display Clang diagnostics during processing"));
+
+            generateCommand.Handler = CommandHandler.Create<string, bool, bool>(GenerateCode);
 
             var updateCacheFileCommand = new Command("update-cache-file", "Updates the cache file to include changes from the last run");
 
@@ -65,7 +68,7 @@ namespace CodeGenerator
             return rootCommand.InvokeAsync(args).Result;
         }
 
-        private static int GenerateCode(string configFile, bool dryRun)
+        private static int GenerateCode(string configFile, bool dryRun, bool displayDiagnostics)
         {
             if (string.IsNullOrWhiteSpace(configFile))
             {
@@ -97,7 +100,8 @@ namespace CodeGenerator
                     config.Definitions!.ToImmutableHashSet(),
                     config.IncludePaths!.ToImmutableList(),
                     config.Headers!.Select(h => Path.GetFullPath(h, config.SourceDirectory!)),
-                    cachedFileInfo);
+                    cachedFileInfo,
+                    displayDiagnostics);
 
                 engine.Processors.Add(new PersistenceProcessor(diagnosticEngine, generatedCode));
 
@@ -238,7 +242,7 @@ namespace CodeGenerator
                 }
                 else
                 {
-                    Console.WriteLine("Discarding cache; code generator has been updated");
+                    Console.WriteLine("Ignoring cache; code generator has been updated");
                 }
             }
             catch (FileNotFoundException)

@@ -3,6 +3,8 @@ set(EHL_GENERATED_DIRECTORY_NAME generated)
 set(EHL_GENERATED_SOURCE_NAME generated/ehl_generated.cpp)
 set(EHL_CODEGEN_COMMAND dotnet "${CMAKE_CURRENT_SOURCE_DIR}/../../../external/EHLCodeGenerator/bin/CodeGenerator.dll")
 
+set(CodeGeneration_DISPLAY_CLANG_DIAGNOSTICS OFF CACHE BOOL "Display Clang diagnostics encountered during code generation")
+
 function(ehl_codegen_list_to_array list array)
 	# Prepend some spaces to align the result nicely
 	list(TRANSFORM ${list} PREPEND "    \"")
@@ -56,11 +58,15 @@ function(ehl_codegen_enable target)
 
 	ehl_codegen_add_clean(${target})
 	
+	if (CodeGeneration_DISPLAY_CLANG_DIAGNOSTICS)
+		set(CODEGEN_DISPLAY_DIAGNOSTICS --display-diagnostics)
+	endif()
+	
 	# Process and generate code
 	add_custom_command(
 		TARGET ${target}
 		PRE_BUILD
-		COMMAND ${EHL_CODEGEN_COMMAND} generate --config-file "${CMAKE_CURRENT_BINARY_DIR}/EHLCodeGen.json"
+		COMMAND ${EHL_CODEGEN_COMMAND} generate --config-file "${CMAKE_CURRENT_BINARY_DIR}/EHLCodeGen.json" ${CODEGEN_DISPLAY_DIAGNOSTICS}
 		BYPRODUCTS ${EHL_GENERATED_SOURCE_NAME})
 	
 	# Update the cache file so subsequent compilations skip finished files
