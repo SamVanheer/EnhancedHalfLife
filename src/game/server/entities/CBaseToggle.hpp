@@ -61,9 +61,6 @@ public:
 	Vector m_vecAngle2; // UNDONE: Position could go through transition, but also angle?
 
 	EHL_FIELD(Persisted)
-	float m_flHeight = 0;
-
-	EHL_FIELD(Persisted)
 	EHANDLE m_hActivator;
 
 	EHL_FIELD(Persisted)

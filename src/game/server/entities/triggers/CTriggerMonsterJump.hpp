@@ -26,4 +26,8 @@ public:
 	void Spawn() override;
 	void Touch(CBaseEntity * pOther) override;
 	void Think() override;
+
+private:
+	EHL_FIELD(Persisted)
+	float m_flHeight = 0;
 };

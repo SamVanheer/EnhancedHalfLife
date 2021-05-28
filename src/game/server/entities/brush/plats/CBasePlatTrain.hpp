@@ -33,6 +33,9 @@ public:
 	virtual bool IsTogglePlat() { return (pev->spawnflags & SF_PLAT_TOGGLE) != 0; }
 
 	EHL_FIELD(Persisted)
+	float m_flHeight = 0;
+
+	EHL_FIELD(Persisted)
 	byte m_bMoveSnd = 0; // sound a plat makes while moving
 
 	EHL_FIELD(Persisted)
