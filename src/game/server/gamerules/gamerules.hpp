@@ -57,6 +57,9 @@ enum
 class CGameRules
 {
 public:
+	CGameRules() = default;
+	virtual ~CGameRules() = default;
+
 	/**
 	*	@brief fill skill data struct with proper values
 	*/
