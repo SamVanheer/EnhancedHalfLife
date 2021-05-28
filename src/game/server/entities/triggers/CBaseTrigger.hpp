@@ -42,4 +42,8 @@ public:
 	*	@brief If this is the USE function for a trigger, its state will toggle every time it's fired
 	*/
 	void EXPORT ToggleUse(const UseInfo & info);
+
+private:
+	EHL_FIELD(Persisted, Type=SoundName)
+	string_t m_ActivateSound = iStringNull;
 };

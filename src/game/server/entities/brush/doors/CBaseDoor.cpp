@@ -15,9 +15,6 @@
 
 #include "CBaseDoor.hpp"
 
-#define noiseMoving noise1
-#define noiseArrived noise2
-
 void CBaseDoor::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "skin"))//skin is used for content type
@@ -129,50 +126,50 @@ void CBaseDoor::Precache()
 	switch (m_bMoveSnd)
 	{
 	case	0:
-		pev->noiseMoving = ALLOC_STRING("common/null.wav");
+		m_iszMovingSound = ALLOC_STRING("common/null.wav");
 		break;
 	case	1:
 		PRECACHE_SOUND("doors/doormove1.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove1.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove1.wav");
 		break;
 	case	2:
 		PRECACHE_SOUND("doors/doormove2.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove2.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove2.wav");
 		break;
 	case	3:
 		PRECACHE_SOUND("doors/doormove3.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove3.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove3.wav");
 		break;
 	case	4:
 		PRECACHE_SOUND("doors/doormove4.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove4.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove4.wav");
 		break;
 	case	5:
 		PRECACHE_SOUND("doors/doormove5.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove5.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove5.wav");
 		break;
 	case	6:
 		PRECACHE_SOUND("doors/doormove6.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove6.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove6.wav");
 		break;
 	case	7:
 		PRECACHE_SOUND("doors/doormove7.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove7.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove7.wav");
 		break;
 	case	8:
 		PRECACHE_SOUND("doors/doormove8.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove8.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove8.wav");
 		break;
 	case	9:
 		PRECACHE_SOUND("doors/doormove9.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove9.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove9.wav");
 		break;
 	case	10:
 		PRECACHE_SOUND("doors/doormove10.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove10.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove10.wav");
 		break;
 	default:
-		pev->noiseMoving = ALLOC_STRING("common/null.wav");
+		m_iszMovingSound = ALLOC_STRING("common/null.wav");
 		break;
 	}
 
@@ -180,42 +177,42 @@ void CBaseDoor::Precache()
 	switch (m_bStopSnd)
 	{
 	case	0:
-		pev->noiseArrived = ALLOC_STRING("common/null.wav");
+		m_iszArrivedSound = ALLOC_STRING("common/null.wav");
 		break;
 	case	1:
 		PRECACHE_SOUND("doors/doorstop1.wav");
-		pev->noiseArrived = ALLOC_STRING("doors/doorstop1.wav");
+		m_iszArrivedSound = ALLOC_STRING("doors/doorstop1.wav");
 		break;
 	case	2:
 		PRECACHE_SOUND("doors/doorstop2.wav");
-		pev->noiseArrived = ALLOC_STRING("doors/doorstop2.wav");
+		m_iszArrivedSound = ALLOC_STRING("doors/doorstop2.wav");
 		break;
 	case	3:
 		PRECACHE_SOUND("doors/doorstop3.wav");
-		pev->noiseArrived = ALLOC_STRING("doors/doorstop3.wav");
+		m_iszArrivedSound = ALLOC_STRING("doors/doorstop3.wav");
 		break;
 	case	4:
 		PRECACHE_SOUND("doors/doorstop4.wav");
-		pev->noiseArrived = ALLOC_STRING("doors/doorstop4.wav");
+		m_iszArrivedSound = ALLOC_STRING("doors/doorstop4.wav");
 		break;
 	case	5:
 		PRECACHE_SOUND("doors/doorstop5.wav");
-		pev->noiseArrived = ALLOC_STRING("doors/doorstop5.wav");
+		m_iszArrivedSound = ALLOC_STRING("doors/doorstop5.wav");
 		break;
 	case	6:
 		PRECACHE_SOUND("doors/doorstop6.wav");
-		pev->noiseArrived = ALLOC_STRING("doors/doorstop6.wav");
+		m_iszArrivedSound = ALLOC_STRING("doors/doorstop6.wav");
 		break;
 	case	7:
 		PRECACHE_SOUND("doors/doorstop7.wav");
-		pev->noiseArrived = ALLOC_STRING("doors/doorstop7.wav");
+		m_iszArrivedSound = ALLOC_STRING("doors/doorstop7.wav");
 		break;
 	case	8:
 		PRECACHE_SOUND("doors/doorstop8.wav");
-		pev->noiseArrived = ALLOC_STRING("doors/doorstop8.wav");
+		m_iszArrivedSound = ALLOC_STRING("doors/doorstop8.wav");
 		break;
 	default:
-		pev->noiseArrived = ALLOC_STRING("common/null.wav");
+		m_iszArrivedSound = ALLOC_STRING("common/null.wav");
 		break;
 	}
 
@@ -342,7 +339,7 @@ void CBaseDoor::DoorGoUp()
 	if (!IsBitSet(pev->spawnflags, SF_DOOR_SILENT))
 	{
 		if (m_toggle_state != ToggleState::GoingUp && m_toggle_state != ToggleState::GoingDown)
-			EmitSound(SoundChannel::Static, STRING(pev->noiseMoving));
+			EmitSound(SoundChannel::Static, STRING(m_iszMovingSound));
 	}
 
 	m_toggle_state = ToggleState::GoingUp;
@@ -378,8 +375,8 @@ void CBaseDoor::DoorHitTop()
 {
 	if (!IsBitSet(pev->spawnflags, SF_DOOR_SILENT))
 	{
-		StopSound(SoundChannel::Static, STRING(pev->noiseMoving));
-		EmitSound(SoundChannel::Static, STRING(pev->noiseArrived));
+		StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
+		EmitSound(SoundChannel::Static, STRING(m_iszArrivedSound));
 	}
 
 	ASSERT(m_toggle_state == ToggleState::GoingUp);
@@ -416,7 +413,7 @@ void CBaseDoor::DoorGoDown()
 	if (!IsBitSet(pev->spawnflags, SF_DOOR_SILENT))
 	{
 		if (m_toggle_state != ToggleState::GoingUp && m_toggle_state != ToggleState::GoingDown)
-			EmitSound(SoundChannel::Static, STRING(pev->noiseMoving));
+			EmitSound(SoundChannel::Static, STRING(m_iszMovingSound));
 	}
 
 #ifdef DOOR_ASSERT
@@ -435,8 +432,8 @@ void CBaseDoor::DoorHitBottom()
 {
 	if (!IsBitSet(pev->spawnflags, SF_DOOR_SILENT))
 	{
-		StopSound(SoundChannel::Static, STRING(pev->noiseMoving));
-		EmitSound(SoundChannel::Static, STRING(pev->noiseArrived));
+		StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
+		EmitSound(SoundChannel::Static, STRING(m_iszArrivedSound));
 	}
 
 	ASSERT(m_toggle_state == ToggleState::GoingDown);
@@ -509,7 +506,7 @@ void CBaseDoor::Blocked(CBaseEntity* pOther)
 						}
 
 						if (!IsBitSet(pev->spawnflags, SF_DOOR_SILENT))
-							StopSound(SoundChannel::Static, STRING(pev->noiseMoving));
+							StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
 
 						if (pDoor->m_toggle_state == ToggleState::GoingDown)
 							pDoor->DoorGoUp();

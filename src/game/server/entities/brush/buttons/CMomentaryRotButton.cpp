@@ -49,7 +49,7 @@ void CMomentaryRotButton::Spawn()
 
 	const char* pszSound = ButtonSound(m_sounds);
 	PRECACHE_SOUND(pszSound);
-	pev->noise = ALLOC_STRING(pszSound);
+	m_iszActivateSound = ALLOC_STRING(pszSound);
 	m_lastUsed = false;
 }
 
@@ -71,7 +71,7 @@ void CMomentaryRotButton::KeyValue(KeyValueData* pkvd)
 
 void CMomentaryRotButton::PlaySound()
 {
-	EmitSound(SoundChannel::Voice, STRING(pev->noise));
+	EmitSound(SoundChannel::Voice, STRING(m_iszActivateSound));
 }
 
 // BUGBUG: This design causes a latency.  When the button is retriggered, the first impulse

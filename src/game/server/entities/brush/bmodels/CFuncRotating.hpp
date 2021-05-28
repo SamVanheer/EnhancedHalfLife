@@ -92,4 +92,16 @@ public:
 
 	EHL_FIELD(Persisted)
 	int m_sounds = 0;
+
+	//These sounds are never actually used
+	/*
+	EHL_FIELD(Persisted, Type=SoundName)
+	string_t m_iszStartSound = iStringNull;
+
+	EHL_FIELD(Persisted, Type = SoundName)
+	string_t m_iszStopSound = iStringNull;
+	*/
+
+	EHL_FIELD(Persisted, Type = SoundName)
+	string_t m_iszRunningSound = iStringNull;
 };

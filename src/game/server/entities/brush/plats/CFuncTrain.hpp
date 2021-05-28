@@ -37,7 +37,6 @@ class EHL_CLASS() CFuncTrain : public CBasePlatTrain
 
 public:
 	void Spawn() override;
-	void Precache() override;
 	void Activate() override;
 	void OverrideReset() override;
 

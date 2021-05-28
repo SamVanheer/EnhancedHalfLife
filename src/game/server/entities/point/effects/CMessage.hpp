@@ -31,4 +31,6 @@ public:
 	void	Use(const UseInfo& info) override;
 	void	KeyValue(KeyValueData* pkvd) override;
 private:
+	EHL_FIELD(Persisted, Type=SoundName)
+	string_t m_iszMessageSound = iStringNull;
 };

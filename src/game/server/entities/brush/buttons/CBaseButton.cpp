@@ -126,7 +126,7 @@ bool CBaseButton::TakeDamage(const TakeDamageInfo& info)
 
 	if (code == ButtonCode::Return)
 	{
-		EmitSound(SoundChannel::Voice, STRING(pev->noise));
+		EmitSound(SoundChannel::Voice, STRING(m_iszActivateSound));
 
 		// Toggle buttons fire when they get back to their "home" position
 		if (!(pev->spawnflags & SF_BUTTON_TOGGLE))
@@ -149,7 +149,7 @@ void CBaseButton::Spawn()
 	//----------------------------------------------------
 	const char* pszSound = ButtonSound(m_sounds);
 	PRECACHE_SOUND(pszSound);
-	pev->noise = ALLOC_STRING(pszSound);
+	m_iszActivateSound = ALLOC_STRING(pszSound);
 
 	Precache();
 
@@ -224,7 +224,7 @@ void CBaseButton::ButtonUse(const UseInfo& info)
 	{
 		if (!m_fStayPushed && IsBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
 		{
-			EmitSound(SoundChannel::Voice, STRING(pev->noise));
+			EmitSound(SoundChannel::Voice, STRING(m_iszActivateSound));
 
 			//SUB_UseTargets( m_eoActivator );
 			ButtonReturn();
@@ -280,7 +280,7 @@ void CBaseButton::ButtonTouch(CBaseEntity* pOther)
 
 	if (code == ButtonCode::Return)
 	{
-		EmitSound(SoundChannel::Voice, STRING(pev->noise));
+		EmitSound(SoundChannel::Voice, STRING(m_iszActivateSound));
 		SUB_UseTargets(m_hActivator, UseType::Toggle, 0);
 		ButtonReturn();
 	}
@@ -290,7 +290,7 @@ void CBaseButton::ButtonTouch(CBaseEntity* pOther)
 
 void CBaseButton::ButtonActivate()
 {
-	EmitSound(SoundChannel::Voice, STRING(pev->noise));
+	EmitSound(SoundChannel::Voice, STRING(m_iszActivateSound));
 
 	if (!UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
 	{
@@ -368,7 +368,7 @@ void CBaseButton::ButtonBackHome()
 
 	if (IsBitSet(pev->spawnflags, SF_BUTTON_TOGGLE))
 	{
-		//EmitSound(SoundChannel::Voice, STRING(pev->noise));
+		//EmitSound(SoundChannel::Voice, STRING(m_iszActivateSound));
 
 		SUB_UseTargets(m_hActivator, UseType::Toggle, 0);
 	}

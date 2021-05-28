@@ -26,7 +26,7 @@ void CRotButton::Spawn()
 	//----------------------------------------------------
 	const char* pszSound = ButtonSound(m_sounds);
 	PRECACHE_SOUND(pszSound);
-	pev->noise = ALLOC_STRING(pszSound);
+	m_iszActivateSound = ALLOC_STRING(pszSound);
 
 	// set the axis of rotation
 	CBaseToggle::AxisDir(this);

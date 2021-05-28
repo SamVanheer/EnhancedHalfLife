@@ -37,4 +37,10 @@ public:
 
 	EHL_FIELD(Persisted)
 	byte m_bMoveSnd = 0;			// sound a door makes while moving	
+
+	EHL_FIELD(Persisted, Type=SoundName)
+	string_t m_iszMovingSound = iStringNull;
+
+	EHL_FIELD(Persisted, Type=SoundName)
+	string_t m_iszArrivedSound = iStringNull;
 };

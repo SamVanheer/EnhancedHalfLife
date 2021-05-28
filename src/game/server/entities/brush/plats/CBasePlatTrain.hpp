@@ -40,10 +40,10 @@ public:
 
 	EHL_FIELD(Persisted)
 	float m_volume = 0; // Sound volume
-};
 
-//TODO: get rid of these
-#define noiseMoving noise
-#define noiseArrived noise1
-#define noiseMovement noise
-#define noiseStopMoving noise1
+	EHL_FIELD(Persisted, Type=SoundName)
+	string_t m_iszMovingSound = iStringNull;
+
+	EHL_FIELD(Persisted, Type=SoundName)
+	string_t m_iszArrivedSound = iStringNull;
+};

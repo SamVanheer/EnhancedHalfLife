@@ -133,7 +133,7 @@ constexpr int TRAIN_MAXSPEED = 1000;	// approx max speed for sound pitch calcula
 void CFuncTrackTrain::StopSound()
 {
 	// if sound playing, stop it
-	if (m_soundPlaying && !IsStringNull(pev->noise))
+	if (m_soundPlaying && !IsStringNull(m_iszMovingSound))
 	{
 		const unsigned short us_sound = ((unsigned short)(m_sounds) & 0x0007) << 12;
 
@@ -142,7 +142,7 @@ void CFuncTrackTrain::StopSound()
 		UTIL_PlaybackEvent(FEV_RELIABLE | FEV_UPDATE, this, m_usAdjustPitch, {.iparam1 = us_encode, .bparam1 = true});
 
 		/*
-		StopSound(SoundChannel::Static, STRING(pev->noise));
+		StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
 		*/
 		EmitSound(SoundChannel::Item, "plats/ttrain_brake1.wav", m_flVolume);
 	}
@@ -152,7 +152,7 @@ void CFuncTrackTrain::StopSound()
 
 void CFuncTrackTrain::UpdateSound()
 {
-	if (IsStringNull(pev->noise))
+	if (IsStringNull(m_iszMovingSound))
 		return;
 
 	const float flpitch = TRAIN_STARTPITCH + (fabs(pev->speed) * (TRAIN_MAXPITCH - TRAIN_STARTPITCH) / TRAIN_MAXSPEED);
@@ -161,14 +161,14 @@ void CFuncTrackTrain::UpdateSound()
 	{
 		// play startup sound for train
 		EmitSound(SoundChannel::Item, "plats/ttrain_start1.wav", m_flVolume);
-		EmitSound(SoundChannel::Static, STRING(pev->noise), m_flVolume, ATTN_NORM, (int)flpitch);
+		EmitSound(SoundChannel::Static, STRING(m_iszMovingSound), m_flVolume, ATTN_NORM, (int)flpitch);
 		m_soundPlaying = true;
 	}
 	else
 	{
 		/*
 				// update pitch
-				EmitSound(SoundChannel::Static, STRING(pev->noise), m_flVolume, ATTN_NORM, (int) flpitch, SND_CHANGE_PITCH);
+				EmitSound(SoundChannel::Static, STRING(m_iszMovingSound), m_flVolume, ATTN_NORM, (int) flpitch, SND_CHANGE_PITCH);
 		*/
 		// volume 0.0 - 1.0 - 6 bits
 		// m_sounds 3 bits
@@ -546,14 +546,14 @@ void CFuncTrackTrain::Precache()
 	{
 	default:
 		// no sound
-		pev->noise = iStringNull;
+		m_iszMovingSound = iStringNull;
 		break;
-	case 1: PRECACHE_SOUND("plats/ttrain1.wav"); pev->noise = MAKE_STRING("plats/ttrain1.wav"); break;
-	case 2: PRECACHE_SOUND("plats/ttrain2.wav"); pev->noise = MAKE_STRING("plats/ttrain2.wav"); break;
-	case 3: PRECACHE_SOUND("plats/ttrain3.wav"); pev->noise = MAKE_STRING("plats/ttrain3.wav"); break;
-	case 4: PRECACHE_SOUND("plats/ttrain4.wav"); pev->noise = MAKE_STRING("plats/ttrain4.wav"); break;
-	case 5: PRECACHE_SOUND("plats/ttrain6.wav"); pev->noise = MAKE_STRING("plats/ttrain6.wav"); break;
-	case 6: PRECACHE_SOUND("plats/ttrain7.wav"); pev->noise = MAKE_STRING("plats/ttrain7.wav"); break;
+	case 1: PRECACHE_SOUND("plats/ttrain1.wav"); m_iszMovingSound = MAKE_STRING("plats/ttrain1.wav"); break;
+	case 2: PRECACHE_SOUND("plats/ttrain2.wav"); m_iszMovingSound = MAKE_STRING("plats/ttrain2.wav"); break;
+	case 3: PRECACHE_SOUND("plats/ttrain3.wav"); m_iszMovingSound = MAKE_STRING("plats/ttrain3.wav"); break;
+	case 4: PRECACHE_SOUND("plats/ttrain4.wav"); m_iszMovingSound = MAKE_STRING("plats/ttrain4.wav"); break;
+	case 5: PRECACHE_SOUND("plats/ttrain6.wav"); m_iszMovingSound = MAKE_STRING("plats/ttrain6.wav"); break;
+	case 6: PRECACHE_SOUND("plats/ttrain7.wav"); m_iszMovingSound = MAKE_STRING("plats/ttrain7.wav"); break;
 	}
 
 	PRECACHE_SOUND("plats/ttrain_brake1.wav");

@@ -47,8 +47,8 @@ void CFuncTank::Precache()
 	if (!IsStringNull(m_iszSpriteFlash))
 		PRECACHE_MODEL(STRING(m_iszSpriteFlash));
 
-	if (!IsStringNull(pev->noise))
-		PRECACHE_SOUND(STRING(pev->noise));
+	if (!IsStringNull(m_iszRotateSound))
+		PRECACHE_SOUND(STRING(m_iszRotateSound));
 }
 
 void CFuncTank::KeyValue(KeyValueData* pkvd)
@@ -120,7 +120,7 @@ void CFuncTank::KeyValue(KeyValueData* pkvd)
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "rotatesound"))
 	{
-		pev->noise = ALLOC_STRING(pkvd->szValue);
+		m_iszRotateSound = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "persistence"))
@@ -518,15 +518,15 @@ void CFuncTank::TankTrace(const Vector& vecStart, const Vector& vecForward, cons
 
 void CFuncTank::StartRotSound()
 {
-	if (IsStringNull(pev->noise) || (pev->spawnflags & SF_TANK_SOUNDON))
+	if (IsStringNull(m_iszRotateSound) || (pev->spawnflags & SF_TANK_SOUNDON))
 		return;
 	pev->spawnflags |= SF_TANK_SOUNDON;
-	EmitSound(SoundChannel::Static, STRING(pev->noise), 0.85);
+	EmitSound(SoundChannel::Static, STRING(m_iszRotateSound), 0.85);
 }
 
 void CFuncTank::StopRotSound()
 {
 	if (pev->spawnflags & SF_TANK_SOUNDON)
-		StopSound(SoundChannel::Static, STRING(pev->noise));
+		StopSound(SoundChannel::Static, STRING(m_iszRotateSound));
 	pev->spawnflags &= ~SF_TANK_SOUNDON;
 }

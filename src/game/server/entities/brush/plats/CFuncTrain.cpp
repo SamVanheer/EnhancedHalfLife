@@ -56,8 +56,8 @@ void CFuncTrain::Use(const UseInfo& info)
 			pev->target = last->pev->targetname;
 		pev->nextthink = 0;
 		SetAbsVelocity(vec3_origin);
-		if (!IsStringNull(pev->noiseStopMoving))
-			EmitSound(SoundChannel::Voice, STRING(pev->noiseStopMoving), m_volume);
+		if (!IsStringNull(m_iszArrivedSound))
+			EmitSound(SoundChannel::Voice, STRING(m_iszArrivedSound), m_volume);
 	}
 }
 
@@ -79,10 +79,10 @@ void CFuncTrain::Wait()
 	{
 		pev->spawnflags |= SF_TRAIN_WAIT_RETRIGGER;
 		// clear the sound channel.
-		if (!IsStringNull(pev->noiseMovement))
-			StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
-		if (!IsStringNull(pev->noiseStopMoving))
-			EmitSound(SoundChannel::Voice, STRING(pev->noiseStopMoving), m_volume);
+		if (!IsStringNull(m_iszMovingSound))
+			StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
+		if (!IsStringNull(m_iszArrivedSound))
+			EmitSound(SoundChannel::Voice, STRING(m_iszArrivedSound), m_volume);
 		pev->nextthink = 0;
 		return;
 	}
@@ -92,10 +92,10 @@ void CFuncTrain::Wait()
 	if (m_flWait != 0)
 	{// -1 wait will wait forever!		
 		pev->nextthink = pev->ltime + m_flWait;
-		if (!IsStringNull(pev->noiseMovement))
-			StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
-		if (!IsStringNull(pev->noiseStopMoving))
-			EmitSound(SoundChannel::Voice, STRING(pev->noiseStopMoving), m_volume);
+		if (!IsStringNull(m_iszMovingSound))
+			StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
+		if (!IsStringNull(m_iszArrivedSound))
+			EmitSound(SoundChannel::Voice, STRING(m_iszArrivedSound), m_volume);
 		SetThink(&CFuncTrain::Next);
 	}
 	else
@@ -111,11 +111,11 @@ void CFuncTrain::Next()
 
 	if (!pTarg)
 	{
-		if (!IsStringNull(pev->noiseMovement))
-			StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
+		if (!IsStringNull(m_iszMovingSound))
+			StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
 		// Play stop sound
-		if (!IsStringNull(pev->noiseStopMoving))
-			EmitSound(SoundChannel::Voice, STRING(pev->noiseStopMoving), m_volume);
+		if (!IsStringNull(m_iszArrivedSound))
+			EmitSound(SoundChannel::Voice, STRING(m_iszArrivedSound), m_volume);
 		return;
 	}
 
@@ -146,10 +146,10 @@ void CFuncTrain::Next()
 		// CHANGED this from SoundChannel::Voice to SoundChannel::Static around OEM beta time because trains should
 		// use SoundChannel::Static for their movement sounds to prevent sound field problems.
 		// this is not a hack or temporary fix, this is how things should be. (sjb).
-		if (!IsStringNull(pev->noiseMovement))
-			StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
-		if (!IsStringNull(pev->noiseMovement))
-			EmitSound(SoundChannel::Static, STRING(pev->noiseMovement), m_volume);
+		if (!IsStringNull(m_iszMovingSound))
+			StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
+		if (!IsStringNull(m_iszMovingSound))
+			EmitSound(SoundChannel::Static, STRING(m_iszMovingSound), m_volume);
 		ClearBits(pev->effects, EF_NOINTERP);
 		SetMoveDone(&CFuncTrain::Wait);
 		LinearMove(pTarg->GetAbsOrigin() - (pev->mins + pev->maxs) * 0.5, pev->speed);
@@ -213,36 +213,6 @@ void CFuncTrain::Spawn()
 
 	if (m_volume == 0)
 		m_volume = 0.85;
-}
-
-void CFuncTrain::Precache()
-{
-	CBasePlatTrain::Precache();
-
-#if 0  // obsolete
-	// otherwise use preset sound
-	switch (m_sounds)
-	{
-	case 0:
-		pev->noise = 0;
-		pev->noise1 = 0;
-		break;
-
-	case 1:
-		PRECACHE_SOUND("plats/train2.wav");
-		PRECACHE_SOUND("plats/train1.wav");
-		pev->noise = MAKE_STRING("plats/train2.wav");
-		pev->noise1 = MAKE_STRING("plats/train1.wav");
-		break;
-
-	case 2:
-		PRECACHE_SOUND("plats/platmove1.wav");
-		PRECACHE_SOUND("plats/platstop1.wav");
-		pev->noise = MAKE_STRING("plats/platstop1.wav");
-		pev->noise1 = MAKE_STRING("plats/platmove1.wav");
-		break;
-	}
-#endif
 }
 
 void CFuncTrain::OverrideReset()

@@ -16,9 +16,6 @@
 #include "CBaseDoor.hpp"
 #include "CMomentaryDoor.hpp"
 
-#define noiseMoving noise1
-#define noiseArrived noise2
-
 LINK_ENTITY_TO_CLASS(momentary_door, CMomentaryDoor);
 
 void CMomentaryDoor::Spawn()
@@ -58,42 +55,42 @@ void CMomentaryDoor::Precache()
 	switch (m_bMoveSnd)
 	{
 	case	0:
-		pev->noiseMoving = ALLOC_STRING("common/null.wav");
+		m_iszMovingSound = ALLOC_STRING("common/null.wav");
 		break;
 	case	1:
 		PRECACHE_SOUND("doors/doormove1.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove1.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove1.wav");
 		break;
 	case	2:
 		PRECACHE_SOUND("doors/doormove2.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove2.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove2.wav");
 		break;
 	case	3:
 		PRECACHE_SOUND("doors/doormove3.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove3.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove3.wav");
 		break;
 	case	4:
 		PRECACHE_SOUND("doors/doormove4.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove4.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove4.wav");
 		break;
 	case	5:
 		PRECACHE_SOUND("doors/doormove5.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove5.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove5.wav");
 		break;
 	case	6:
 		PRECACHE_SOUND("doors/doormove6.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove6.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove6.wav");
 		break;
 	case	7:
 		PRECACHE_SOUND("doors/doormove7.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove7.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove7.wav");
 		break;
 	case	8:
 		PRECACHE_SOUND("doors/doormove8.wav");
-		pev->noiseMoving = ALLOC_STRING("doors/doormove8.wav");
+		m_iszMovingSound = ALLOC_STRING("doors/doormove8.wav");
 		break;
 	default:
-		pev->noiseMoving = ALLOC_STRING("common/null.wav");
+		m_iszMovingSound = ALLOC_STRING("common/null.wav");
 		break;
 	}
 }
@@ -137,7 +134,7 @@ void CMomentaryDoor::Use(const UseInfo& info)
 	// This entity only thinks when it moves, so if it's thinking, it's in the process of moving
 	// play the sound when it starts moving (not yet thinking)
 	if (pev->nextthink < pev->ltime || pev->nextthink == 0)
-		EmitSound(SoundChannel::Static, STRING(pev->noiseMoving));
+		EmitSound(SoundChannel::Static, STRING(m_iszMovingSound));
 	// If we already moving to designated point, return
 	else if (move == m_vecFinalDest)
 		return;
@@ -148,6 +145,6 @@ void CMomentaryDoor::Use(const UseInfo& info)
 
 void CMomentaryDoor::DoorMoveDone()
 {
-	StopSound(SoundChannel::Static, STRING(pev->noiseMoving));
-	EmitSound(SoundChannel::Static, STRING(pev->noiseArrived));
+	StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
+	EmitSound(SoundChannel::Static, STRING(m_iszArrivedSound)); //TODO: arrived sound is never set
 }

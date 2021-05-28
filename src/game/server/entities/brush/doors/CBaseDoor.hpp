@@ -119,4 +119,10 @@ public:
 
 	EHL_FIELD(Persisted)
 	byte m_bUnlockedSentence = 0;
+
+	EHL_FIELD(Persisted, Type=SoundName)
+	string_t m_iszMovingSound = iStringNull;
+
+	EHL_FIELD(Persisted, Type=SoundName)
+	string_t m_iszArrivedSound = iStringNull;
 };

@@ -176,6 +176,9 @@ protected:
 	EHL_FIELD(Persisted, Type=Time)
 	float m_lastSightTime = 0;	// Last time I saw target
 
+	EHL_FIELD(Persisted, Type=SoundName)
+	string_t m_iszRotateSound = iStringNull;
+
 	EHL_FIELD(Persisted)
 	float m_persist = 0;		// Persistence of firing (how long do I shoot when I can't see)
 

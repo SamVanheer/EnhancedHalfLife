@@ -20,8 +20,8 @@ LINK_ENTITY_TO_CLASS(func_plat, CFuncPlat);
 
 void CFuncPlat::Setup()
 {
-	//pev->noiseMovement = MAKE_STRING("plats/platmove1.wav");
-	//pev->noiseStopMoving = MAKE_STRING("plats/platstop1.wav");
+	//m_iszMovingSound = MAKE_STRING("plats/platmove1.wav");
+	//m_iszArrivedSound = MAKE_STRING("plats/platstop1.wav");
 
 	if (m_flTLength == 0)
 		m_flTLength = 80;
@@ -107,8 +107,8 @@ void CFuncPlat::PlatUse(const UseInfo& info)
 
 void CFuncPlat::GoDown()
 {
-	if (!IsStringNull(pev->noiseMovement))
-		EmitSound(SoundChannel::Static, STRING(pev->noiseMovement), m_volume);
+	if (!IsStringNull(m_iszMovingSound))
+		EmitSound(SoundChannel::Static, STRING(m_iszMovingSound), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::AtTop || m_toggle_state == ToggleState::GoingUp);
 	m_toggle_state = ToggleState::GoingDown;
@@ -118,11 +118,11 @@ void CFuncPlat::GoDown()
 
 void CFuncPlat::HitBottom()
 {
-	if (!IsStringNull(pev->noiseMovement))
-		StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
+	if (!IsStringNull(m_iszMovingSound))
+		StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
 
-	if (!IsStringNull(pev->noiseStopMoving))
-		EmitSound(SoundChannel::Weapon, STRING(pev->noiseStopMoving), m_volume);
+	if (!IsStringNull(m_iszArrivedSound))
+		EmitSound(SoundChannel::Weapon, STRING(m_iszArrivedSound), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::GoingDown);
 	m_toggle_state = ToggleState::AtBottom;
@@ -130,8 +130,8 @@ void CFuncPlat::HitBottom()
 
 void CFuncPlat::GoUp()
 {
-	if (!IsStringNull(pev->noiseMovement))
-		EmitSound(SoundChannel::Static, STRING(pev->noiseMovement), m_volume);
+	if (!IsStringNull(m_iszMovingSound))
+		EmitSound(SoundChannel::Static, STRING(m_iszMovingSound), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::AtBottom || m_toggle_state == ToggleState::GoingDown);
 	m_toggle_state = ToggleState::GoingUp;
@@ -141,11 +141,11 @@ void CFuncPlat::GoUp()
 
 void CFuncPlat::HitTop()
 {
-	if (!IsStringNull(pev->noiseMovement))
-		StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
+	if (!IsStringNull(m_iszMovingSound))
+		StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
 
-	if (!IsStringNull(pev->noiseStopMoving))
-		EmitSound(SoundChannel::Weapon, STRING(pev->noiseStopMoving), m_volume);
+	if (!IsStringNull(m_iszArrivedSound))
+		EmitSound(SoundChannel::Weapon, STRING(m_iszArrivedSound), m_volume);
 
 	ASSERT(m_toggle_state == ToggleState::GoingUp);
 	m_toggle_state = ToggleState::AtTop;
@@ -164,8 +164,8 @@ void CFuncPlat::Blocked(CBaseEntity* pOther)
 	// Hurt the blocker a little
 	pOther->TakeDamage({this, this, 1, DMG_CRUSH});
 
-	if (!IsStringNull(pev->noiseMovement))
-		StopSound(SoundChannel::Static, STRING(pev->noiseMovement));
+	if (!IsStringNull(m_iszMovingSound))
+		StopSound(SoundChannel::Static, STRING(m_iszMovingSound));
 
 	// Send the platform back where it came from
 	ASSERT(m_toggle_state == ToggleState::GoingUp || m_toggle_state == ToggleState::GoingDown);

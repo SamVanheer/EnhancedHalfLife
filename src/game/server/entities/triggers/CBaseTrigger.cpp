@@ -30,6 +30,11 @@ void CBaseTrigger::KeyValue(KeyValueData* pkvd)
 		m_bitsDamageInflict = atoi(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
+	else if (AreStringsEqual(pkvd->szKeyName, "activate_sound"))
+	{
+		m_ActivateSound = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
 	else
 		CBaseToggle::KeyValue(pkvd);
 }
@@ -55,8 +60,8 @@ void CBaseTrigger::ActivateMultiTrigger(CBaseEntity* pActivator)
 	if (!UTIL_IsMasterTriggered(m_sMaster, pActivator))
 		return;
 
-	if (!IsStringNull(pev->noise))
-		EmitSound(SoundChannel::Voice, STRING(pev->noise));
+	if (!IsStringNull(m_ActivateSound))
+		EmitSound(SoundChannel::Voice, STRING(m_ActivateSound));
 
 	m_hActivator = pActivator;
 	SUB_UseTargets(m_hActivator, UseType::Toggle, 0);

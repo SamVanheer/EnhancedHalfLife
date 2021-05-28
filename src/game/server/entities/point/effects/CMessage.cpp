@@ -52,15 +52,15 @@ void CMessage::Spawn()
 
 void CMessage::Precache()
 {
-	if (!IsStringNull(pev->noise))
-		PRECACHE_SOUND(STRING(pev->noise));
+	if (!IsStringNull(m_iszMessageSound))
+		PRECACHE_SOUND(STRING(m_iszMessageSound));
 }
 
 void CMessage::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "messagesound"))
 	{
-		pev->noise = ALLOC_STRING(pkvd->szValue);
+		m_iszMessageSound = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "messagevolume"))
@@ -94,9 +94,9 @@ void CMessage::Use(const UseInfo& info)
 		if (pPlayer)
 			UTIL_ShowMessage(STRING(pev->message), static_cast<CBasePlayer*>(pPlayer));
 	}
-	if (!IsStringNull(pev->noise))
+	if (!IsStringNull(m_iszMessageSound))
 	{
-		EmitSound(SoundChannel::Body, STRING(pev->noise), pev->scale, pev->speed);
+		EmitSound(SoundChannel::Body, STRING(m_iszMessageSound), pev->scale, pev->speed);
 	}
 	if (pev->spawnflags & SF_MESSAGE_ONCE)
 		UTIL_Remove(this);
