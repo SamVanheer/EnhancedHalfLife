@@ -19,13 +19,7 @@ LINK_ENTITY_TO_CLASS(DelayedUse, CDelayedUse);
 
 void CDelayedUse::DelayThink()
 {
-	CBaseEntity* pActivator = nullptr;
-
-	if (auto owner = GetOwner(); owner)		// A player activated this on delay
-	{
-		pActivator = owner;
-	}
 	// The use type is cached (and stashed) in pev->button
-	SUB_UseTargets(pActivator, (UseType)pev->button, 0);
+	SUB_UseTargets(m_hActivator, (UseType)pev->button, 0);
 	UTIL_RemoveNow(this);
 }

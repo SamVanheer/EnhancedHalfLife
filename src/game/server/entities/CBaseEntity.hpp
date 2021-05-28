@@ -323,11 +323,27 @@ public:
 	*/
 	CBaseEntity* m_pLink = nullptr;
 
+	/**
+	*	@brief Last entity that activated me
+	*/
+	EHL_FIELD(Persisted)
+	EHANDLE m_hActivator;
+
 	EHL_FIELD(Persisted)
 	float m_flDelay = 0;
 
 	EHL_FIELD(Persisted)
 	string_t m_iszKillTarget = iStringNull;
+
+	/**
+	*	@brief If this entity has a master switch, this is the targetname.
+	*
+	*	@details A master switch must be of the multisource or game_team_master type.
+	*	If all of the switches in the multisource have been triggered, then the entity will be allowed to operate.
+	*	Otherwise, it will be deactivated.
+	*/
+	EHL_FIELD(Persisted)
+	string_t m_iszMaster = iStringNull;
 
 	CBaseEntity() = default;
 	virtual ~CBaseEntity() {}
@@ -612,7 +628,7 @@ public:
 	bool Intersects(CBaseEntity* pOther);
 	void MakeDormant();
 	bool IsDormant();
-	bool IsLockedByMaster() { return false; }
+	bool IsLockedByMaster();
 
 	static CBaseEntity* InstanceOrDefault(edict_t* pEntity, CBaseEntity* pDefault)
 	{

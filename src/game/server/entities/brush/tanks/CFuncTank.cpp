@@ -153,11 +153,6 @@ void CFuncTank::KeyValue(KeyValueData* pkvd)
 		m_maxRange = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (AreStringsEqual(pkvd->szKeyName, "master"))
-	{
-		m_iszMaster = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
-	}
 	else
 		CBaseEntity::KeyValue(pkvd);
 }

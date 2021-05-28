@@ -22,17 +22,6 @@ void CRuleEntity::Spawn()
 	pev->effects = EF_NODRAW;
 }
 
-void CRuleEntity::KeyValue(KeyValueData* pkvd)
-{
-	if (AreStringsEqual(pkvd->szKeyName, "master"))
-	{
-		SetMaster(ALLOC_STRING(pkvd->szValue));
-		pkvd->fHandled = true;
-	}
-	else
-		CBaseEntity::KeyValue(pkvd);
-}
-
 bool CRuleEntity::CanFireForActivator(CBaseEntity* pActivator)
 {
 	if (!IsStringNull(m_iszMaster))

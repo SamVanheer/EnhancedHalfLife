@@ -213,7 +213,4 @@ protected:
 
 	EHL_FIELD(Persisted)
 	int m_spread = 0;			// firing spread
-
-	EHL_FIELD(Persisted)
-	string_t m_iszMaster = iStringNull;	// Master entity (game_team_master or multisource)
 };

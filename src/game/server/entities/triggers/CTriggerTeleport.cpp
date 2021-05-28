@@ -31,7 +31,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 	if (!IsBitSet(pOther->pev->flags, FL_CLIENT | FL_MONSTER))
 		return;
 
-	if (!UTIL_IsMasterTriggered(m_sMaster, pOther))
+	if (!UTIL_IsMasterTriggered(m_iszMaster, pOther))
 		return;
 
 	if (!(pev->spawnflags & SF_TRIGGER_ALLOWMONSTERS))

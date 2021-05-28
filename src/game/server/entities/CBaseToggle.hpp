@@ -61,9 +61,6 @@ public:
 	Vector m_vecAngle2; // UNDONE: Position could go through transition, but also angle?
 
 	EHL_FIELD(Persisted)
-	EHANDLE m_hActivator;
-
-	EHL_FIELD(Persisted)
 	CallWhenMoveDoneFn m_pfnCallWhenMoveDone = nullptr;
 
 	EHL_FIELD(Persisted, Type=Position)
@@ -96,21 +93,10 @@ public:
 	*	@brief After rotating, set angle to exact final angle, call "move done" function
 	*/
 	void EXPORT AngularMoveDone();
-	bool IsLockedByMaster(); //TODO: non-virtual override
 
 	static float AxisValue(int flags, const Vector& angles);
 	static void AxisDir(CBaseEntity* pEntity);
 	static float AxisDelta(int flags, const Vector& angle1, const Vector& angle2);
-
-	/**
-	*	@brief If this button has a master switch, this is the targetname.
-	*
-	*	@details A master switch must be of the multisource type.
-	*	If all of the switches in the multisource have been triggered, then the button will be allowed to operate.
-	*	Otherwise, it will be deactivated.
-	*/
-	EHL_FIELD(Persisted)
-	string_t m_sMaster = iStringNull;
 };
 
 #define SetMoveDone(a) m_pfnCallWhenMoveDone = static_cast<CallWhenMoveDoneFn>(a)

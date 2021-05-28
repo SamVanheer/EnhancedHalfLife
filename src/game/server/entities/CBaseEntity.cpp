@@ -32,6 +32,11 @@ void CBaseEntity::KeyValue(KeyValueData* pkvd)
 		m_iszKillTarget = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
+	else if (AreStringsEqual(pkvd->szKeyName, "master"))
+	{
+		m_iszMaster = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
 	else
 	{
 		pkvd->fHandled = false;
@@ -205,6 +210,11 @@ bool CBaseEntity::ShouldToggle(UseType useType, bool currentState)
 			return false;
 	}
 	return true;
+}
+
+bool CBaseEntity::IsLockedByMaster()
+{
+	return !IsStringNull(m_iszMaster) && !UTIL_IsMasterTriggered(m_iszMaster, m_hActivator);
 }
 
 int	CBaseEntity::DamageDecal(int bitsDamageType)

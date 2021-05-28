@@ -30,14 +30,7 @@ class EHL_CLASS() CRuleEntity : public CBaseEntity
 
 public:
 	void	Spawn() override;
-	void	KeyValue(KeyValueData* pkvd) override;
-
-	void	SetMaster(string_t iszMaster) { m_iszMaster = iszMaster; }
 
 protected:
 	bool	CanFireForActivator(CBaseEntity* pActivator);
-
-private:
-	EHL_FIELD(Persisted)
-	string_t m_iszMaster = iStringNull;
 };

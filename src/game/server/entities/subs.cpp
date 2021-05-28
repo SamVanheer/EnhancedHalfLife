@@ -121,19 +121,7 @@ void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float
 		pTemp->m_iszKillTarget = m_iszKillTarget;
 		pTemp->m_flDelay = 0; // prevent "recursion"
 		pTemp->pev->target = pev->target;
-		//TODO: do this properly
-		// HACKHACK
-		// This wasn't in the release build of Half-Life.  We should have moved m_hActivator into this class
-		// but changing member variable hierarchy would break save/restore without some ugly code.
-		// This code is not as ugly as that code
-		if (pActivator && pActivator->IsPlayer())		// If a player activates, then save it
-		{
-			pTemp->SetOwner(pActivator);
-		}
-		else
-		{
-			pTemp->SetOwner(nullptr);
-		}
+		pTemp->m_hActivator = pActivator;
 
 		return;
 	}
@@ -176,11 +164,6 @@ void CBaseToggle::KeyValue(KeyValueData* pkvd)
 	else if (AreStringsEqual(pkvd->szKeyName, "wait"))
 	{
 		m_flWait = atof(pkvd->szValue);
-		pkvd->fHandled = true;
-	}
-	else if (AreStringsEqual(pkvd->szKeyName, "master"))
-	{
-		m_sMaster = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "distance"))
@@ -237,11 +220,6 @@ void CBaseToggle::LinearMoveDone()
 	pev->nextthink = -1;
 	if (m_pfnCallWhenMoveDone)
 		(this->*m_pfnCallWhenMoveDone)();
-}
-
-bool CBaseToggle::IsLockedByMaster()
-{
-	return !IsStringNull(m_sMaster) && !UTIL_IsMasterTriggered(m_sMaster, m_hActivator);
 }
 
 void CBaseToggle::AngularMove(const Vector& vecDestAngle, float flSpeed)

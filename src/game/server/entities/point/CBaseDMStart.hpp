@@ -23,7 +23,6 @@ class EHL_CLASS() CBaseDMStart : public CPointEntity
 	EHL_GENERATED_BODY()
 
 public:
-	void KeyValue(KeyValueData* pkvd) override;
 	bool IsTriggered(CBaseEntity* pEntity) override;
 };
 
