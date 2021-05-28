@@ -15,13 +15,13 @@
 
 #pragma once
 
-#include "CBaseMonster.hpp"
+#include "CBaseAnimating.hpp"
 #include "CGrenade.generated.hpp"
 
 /**
 *	@brief Contact Grenade / Timed grenade / Satchel Charge
 */
-class EHL_CLASS() CGrenade : public CBaseMonster
+class EHL_CLASS() CGrenade : public CBaseAnimating
 {
 	EHL_GENERATED_BODY()
 
@@ -54,6 +54,9 @@ public:
 	virtual void BounceSound();
 	int	BloodColor() override { return DONT_BLEED; }
 	void Killed(const KilledInfo & info) override;
+
+	EHL_FIELD(Persisted)
+	float m_flNextAttack = 0;
 
 	bool m_fRegisteredSound = false;//!< whether or not this grenade has issued its DANGER sound to the world sound list yet.
 };

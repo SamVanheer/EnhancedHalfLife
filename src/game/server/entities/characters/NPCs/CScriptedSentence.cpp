@@ -60,7 +60,7 @@ void CScriptedSentence::KeyValue(KeyValueData* pkvd)
 		pkvd->fHandled = true;
 	}
 	else
-		CBaseToggle::KeyValue(pkvd);
+		BaseClass::KeyValue(pkvd);
 }
 
 void CScriptedSentence::Use(const UseInfo& info)

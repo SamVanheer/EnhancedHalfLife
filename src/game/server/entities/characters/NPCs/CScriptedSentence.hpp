@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "CBaseToggle.hpp"
+#include "CPointEntity.hpp"
 #include "CScriptedSentence.generated.hpp"
 
 enum class SentenceAttenuation
@@ -31,7 +31,7 @@ constexpr int SF_SENTENCE_FOLLOWERS = 0x0002;	//!< only say if following player
 constexpr int SF_SENTENCE_INTERRUPT = 0x0004;	//!< force talking except when dead
 constexpr int SF_SENTENCE_CONCURRENT = 0x0008;	//!< allow other people to keep talking
 
-class EHL_CLASS() CScriptedSentence : public CBaseToggle
+class EHL_CLASS() CScriptedSentence : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -41,7 +41,6 @@ public:
 	void Use(const UseInfo& info) override;
 	void EXPORT FindThink();
 	void EXPORT DelayThink();
-	int	 ObjectCaps() override { return (CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 
 	CBaseMonster* FindEntity();
 	bool AcceptableSpeaker(CBaseMonster* pMonster);

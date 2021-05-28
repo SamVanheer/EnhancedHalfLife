@@ -30,8 +30,13 @@ void CBaseTrigger::KeyValue(KeyValueData* pkvd)
 		m_ActivateSound = ALLOC_STRING(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
+	else if (AreStringsEqual(pkvd->szKeyName, "wait"))
+	{
+		m_flWait = atof(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
 	else
-		CBaseToggle::KeyValue(pkvd);
+		BaseClass::KeyValue(pkvd);
 }
 
 void CBaseTrigger::InitTrigger()

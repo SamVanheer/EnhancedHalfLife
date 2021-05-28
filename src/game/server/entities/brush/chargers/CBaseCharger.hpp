@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "CBaseToggle.hpp"
+#include "CBaseEntity.hpp"
 #include "CBaseCharger.generated.hpp"
 
 enum class ChargerState
@@ -33,7 +33,7 @@ constexpr int CHARGER_NOT_INITIALIZED = -2;
 */
 constexpr int SF_CHARGER_FIRE_ON_SPAWN = 1 << 0;
 
-class EHL_CLASS() CBaseCharger : public CBaseToggle
+class EHL_CLASS() CBaseCharger : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -45,7 +45,7 @@ public:
 	void EXPORT Recharge();
 	void KeyValue(KeyValueData* pkvd) override;
 	void Use(const UseInfo& info) override;
-	int	ObjectCaps() override { return (CBaseToggle::ObjectCaps() | FCAP_CONTINUOUS_USE) & ~FCAP_ACROSS_TRANSITION; }
+	int	ObjectCaps() override { return (BaseClass::ObjectCaps() | FCAP_CONTINUOUS_USE) & ~FCAP_ACROSS_TRANSITION; }
 
 	void CheckIfOutOfCharge(bool fireTargets);
 

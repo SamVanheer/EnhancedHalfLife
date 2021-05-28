@@ -15,18 +15,18 @@
 
 #pragma once
 
-#include "CBaseToggle.hpp"
+#include "CBaseEntity.hpp"
 #include "CFuncIllusionary.generated.hpp"
 
 /**
 *	@brief A simple entity that looks solid but lets you walk through it.
 */
-class EHL_CLASS() CFuncIllusionary : public CBaseToggle
+class EHL_CLASS() CFuncIllusionary : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
 public:
 	void Spawn() override;
 	void KeyValue(KeyValueData* pkvd) override;
-	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+	int	ObjectCaps() override { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 };

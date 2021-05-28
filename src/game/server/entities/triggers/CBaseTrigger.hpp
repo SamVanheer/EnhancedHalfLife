@@ -15,19 +15,19 @@
 
 #pragma once
 
-#include "CBaseToggle.hpp"
+#include "CBaseEntity.hpp"
 #include "CBaseTrigger.generated.hpp"
 
 constexpr int SF_TRIGGER_ALLOWMONSTERS = 1;	//!< monsters allowed to fire this trigger
 constexpr int SF_TRIGGER_NOCLIENTS = 2;		//!< players not allowed to fire this trigger
 constexpr int SF_TRIGGER_PUSHABLES = 4;		//!< only pushables can fire this trigger
 
-class EHL_CLASS() CBaseTrigger : public CBaseToggle
+class EHL_CLASS() CBaseTrigger : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
 public:
-	int	ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+	int	ObjectCaps() override { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	void KeyValue(KeyValueData * pkvd) override;
 
 	void InitTrigger();
@@ -42,6 +42,9 @@ public:
 	*	@brief If this is the USE function for a trigger, its state will toggle every time it's fired
 	*/
 	void EXPORT ToggleUse(const UseInfo & info);
+
+	EHL_FIELD(Persisted)
+	float m_flWait = 0;
 
 private:
 	EHL_FIELD(Persisted, Type=SoundName)

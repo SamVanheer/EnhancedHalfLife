@@ -48,6 +48,8 @@ constexpr int bits_CAP_FLY = 1 << 15;			//!< can fly, move all around
 
 constexpr int bits_CAP_DOORS_GROUP = bits_CAP_USE | bits_CAP_AUTO_DOORS | bits_CAP_OPEN_DOORS;
 
+constexpr float RadiusDamageMagnitudeMultiplier = 2.5f;
+
 /**
 *	@brief monster to monster relationship types
 */

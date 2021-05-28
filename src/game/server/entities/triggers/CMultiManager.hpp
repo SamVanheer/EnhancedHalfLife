@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "CBaseToggle.hpp"
+#include "CPointEntity.hpp"
 #include "CMultiSource.hpp"
 #include "CMultiManager.generated.hpp"
 
@@ -28,7 +28,7 @@ constexpr int SF_MULTIMAN_THREAD = 0x00000001;
 *	FLAG: CLONE (this is a clone for a threaded execution)
 *	@see MAX_MULTI_TARGETS
 */
-class EHL_CLASS() CMultiManager : public CBaseToggle
+class EHL_CLASS() CMultiManager : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -44,7 +44,8 @@ public:
 
 	bool		HasTarget(string_t targetname) override;
 
-	int ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+	EHL_FIELD(Persisted)
+	float m_flWait = 0;
 
 	EHL_FIELD(Persisted)
 	int m_cTargets = 0;								//!< the total number of targets in this manager's fire list.

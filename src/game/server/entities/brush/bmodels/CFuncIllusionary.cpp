@@ -25,7 +25,7 @@ void CFuncIllusionary::KeyValue(KeyValueData* pkvd)
 		pkvd->fHandled = true;
 	}
 	else
-		CBaseToggle::KeyValue(pkvd);
+		BaseClass::KeyValue(pkvd);
 }
 
 void CFuncIllusionary::Spawn()

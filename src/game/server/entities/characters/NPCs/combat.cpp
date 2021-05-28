@@ -650,12 +650,12 @@ void RadiusDamage(Vector vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker
 
 void CBaseMonster::RadiusDamage(CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType)
 {
-	::RadiusDamage(GetAbsOrigin(), pInflictor, pAttacker, flDamage, flDamage * 2.5, iClassIgnore, bitsDamageType);
+	::RadiusDamage(GetAbsOrigin(), pInflictor, pAttacker, flDamage, flDamage * RadiusDamageMagnitudeMultiplier, iClassIgnore, bitsDamageType);
 }
 
 void CBaseMonster::RadiusDamage(const Vector& vecSrc, CBaseEntity* pInflictor, CBaseEntity* pAttacker, float flDamage, int iClassIgnore, int bitsDamageType)
 {
-	::RadiusDamage(vecSrc, pInflictor, pAttacker, flDamage, flDamage * 2.5, iClassIgnore, bitsDamageType);
+	::RadiusDamage(vecSrc, pInflictor, pAttacker, flDamage, flDamage * RadiusDamageMagnitudeMultiplier, iClassIgnore, bitsDamageType);
 }
 
 CBaseEntity* CBaseMonster::CheckTraceHullAttack(float flDist, int iDamage, int iDmgType)

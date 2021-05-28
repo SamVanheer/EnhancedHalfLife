@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "CGrenade.hpp"
+#include "CBaseMonster.hpp"
 #include "CSqueakGrenade.generated.hpp"
 
 enum w_squeak_e
@@ -26,7 +26,7 @@ enum w_squeak_e
 	WSQUEAK_RUN,
 };
 
-class EHL_CLASS() CSqueakGrenade : public CGrenade
+class EHL_CLASS() CSqueakGrenade : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

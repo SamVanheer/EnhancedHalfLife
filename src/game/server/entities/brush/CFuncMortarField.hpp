@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "CBaseToggle.hpp"
+#include "CBaseEntity.hpp"
 #include "CFuncMortarField.generated.hpp"
 
 enum class MortarControlType
@@ -29,7 +29,7 @@ enum class MortarControlType
 *	@brief the "LaBuznik" mortar device
 *	Drop bombs from above
 */
-class EHL_CLASS() CFuncMortarField : public CBaseToggle
+class EHL_CLASS() CFuncMortarField : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -39,7 +39,7 @@ public:
 	void KeyValue(KeyValueData* pkvd) override;
 
 	// Bmodels don't go across transitions
-	int	ObjectCaps() override { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+	int	ObjectCaps() override { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 	/**
 	*	@brief If connected to a table, then use the table controllers, else hit where the trigger is.
