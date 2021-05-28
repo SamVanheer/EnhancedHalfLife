@@ -23,11 +23,6 @@ void CFuncPlat::Setup()
 	//m_iszMovingSound = MAKE_STRING("plats/platmove1.wav");
 	//m_iszArrivedSound = MAKE_STRING("plats/platstop1.wav");
 
-	if (m_flTLength == 0)
-		m_flTLength = 80;
-	if (m_flTWidth == 0)
-		m_flTWidth = 10;
-
 	SetAbsAngles(vec3_origin);
 
 	SetSolidType(Solid::BSP);

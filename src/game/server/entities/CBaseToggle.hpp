@@ -48,12 +48,6 @@ public:
 	EHL_FIELD(Persisted)
 	float m_flLip = 0;
 
-	EHL_FIELD(Persisted)
-	float m_flTWidth = 0;		//!< for plats
-
-	EHL_FIELD(Persisted)
-	float m_flTLength = 0;	//!< for plats
-
 	EHL_FIELD(Persisted, Type=Position)
 	Vector m_vecPosition1;
 
