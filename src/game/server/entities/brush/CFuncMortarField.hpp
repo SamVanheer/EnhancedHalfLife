@@ -56,9 +56,6 @@ public:
 	float m_flSpread = 0;
 
 	EHL_FIELD(Persisted)
-	float m_flDelay = 0;
-
-	EHL_FIELD(Persisted)
 	int m_iCount = 0;
 
 	EHL_FIELD(Persisted)
