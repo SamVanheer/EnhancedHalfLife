@@ -31,22 +31,9 @@ public:
 	void KeyValue(KeyValueData * pkvd) override;
 
 	void InitTrigger();
-	void ActivateMultiTrigger(CBaseEntity * pActivator);
-
-	/**
-	*	@brief the wait time has passed, so set back up for another activation
-	*/
-	void EXPORT MultiWaitOver();
 
 	/**
 	*	@brief If this is the USE function for a trigger, its state will toggle every time it's fired
 	*/
 	void EXPORT ToggleUse(const UseInfo & info);
-
-	EHL_FIELD(Persisted)
-	float m_flWait = 0;
-
-private:
-	EHL_FIELD(Persisted, Type=SoundName)
-	string_t m_ActivateSound = iStringNull;
 };

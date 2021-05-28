@@ -323,8 +323,6 @@ target_sources(hl
 		triggers/CTriggerCDAudio.hpp
 		triggers/CTriggerChangeTarget.cpp
 		triggers/CTriggerChangeTarget.hpp
-		triggers/CTriggerCounter.cpp
-		triggers/CTriggerCounter.hpp
 		triggers/CTriggerGravity.cpp
 		triggers/CTriggerGravity.hpp
 		triggers/CTriggerHurt.cpp

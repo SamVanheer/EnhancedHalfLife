@@ -17,6 +17,22 @@
 
 LINK_ENTITY_TO_CLASS(trigger_multiple, CTriggerMultiple);
 
+void CTriggerMultiple::KeyValue(KeyValueData* pkvd)
+{
+	if (AreStringsEqual(pkvd->szKeyName, "activate_sound"))
+	{
+		m_ActivateSound = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "wait"))
+	{
+		m_flWait = atof(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else
+		BaseClass::KeyValue(pkvd);
+}
+
 void CTriggerMultiple::Spawn()
 {
 	if (m_flWait == 0)
@@ -48,4 +64,43 @@ void CTriggerMultiple::MultiTouch(CBaseEntity* pOther)
 
 		ActivateMultiTrigger(pOther);
 	}
+}
+
+void CTriggerMultiple::ActivateMultiTrigger(CBaseEntity* pActivator)
+{
+	if (pev->nextthink > gpGlobals->time)
+		return;         // still waiting for reset time
+
+	if (!UTIL_IsMasterTriggered(m_iszMaster, pActivator))
+		return;
+
+	if (!IsStringNull(m_ActivateSound))
+		EmitSound(SoundChannel::Voice, STRING(m_ActivateSound));
+
+	m_hActivator = pActivator;
+	SUB_UseTargets(m_hActivator, UseType::Toggle, 0);
+
+	if (!IsStringNull(pev->message) && pActivator->IsPlayer())
+	{
+		UTIL_ShowMessage(STRING(pev->message), static_cast<CBasePlayer*>(pActivator));
+	}
+
+	if (m_flWait > 0)
+	{
+		SetThink(&CTriggerMultiple::MultiWaitOver);
+		pev->nextthink = gpGlobals->time + m_flWait;
+	}
+	else
+	{
+		// we can't just remove (self) here, because this is a touch function
+		// called while C code is looping through area links...
+		SetTouch(nullptr);
+		pev->nextthink = gpGlobals->time + 0.1;
+		SetThink(&CTriggerMultiple::SUB_Remove);
+	}
+}
+
+void CTriggerMultiple::MultiWaitOver()
+{
+	SetThink(nullptr);
 }

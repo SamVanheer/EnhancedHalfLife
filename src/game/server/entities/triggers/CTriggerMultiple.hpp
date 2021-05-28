@@ -27,7 +27,24 @@ class EHL_CLASS() CTriggerMultiple : public CBaseTrigger
 	EHL_GENERATED_BODY()
 
 public:
+	void KeyValue(KeyValueData* pkvd) override;
 	void Spawn() override;
 
 	void EXPORT MultiTouch(CBaseEntity * pOther);
+
+private:
+	void ActivateMultiTrigger(CBaseEntity * pActivator);
+
+	/**
+	*	@brief the wait time has passed, so set back up for another activation
+	*/
+	void EXPORT MultiWaitOver();
+
+protected:
+	EHL_FIELD(Persisted)
+	float m_flWait = 0;
+
+private:
+	EHL_FIELD(Persisted, Type=SoundName)
+	string_t m_ActivateSound = iStringNull;
 };
