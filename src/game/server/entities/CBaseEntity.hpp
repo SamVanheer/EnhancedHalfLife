@@ -408,7 +408,6 @@ public:
 	virtual bool IsTriggered(CBaseEntity* pActivator) { return true; }
 	virtual CBaseMonster* MyMonsterPointer() { return nullptr; }
 	virtual CSquadMonster* MySquadMonsterPointer() { return nullptr; }
-	virtual	ToggleState GetToggleState() { return ToggleState::AtTop; }
 	virtual float GetDelay() { return 0; }
 	virtual bool IsMoving() { return GetAbsVelocity() != vec3_origin; }
 	virtual void OverrideReset() {}

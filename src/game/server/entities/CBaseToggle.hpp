@@ -84,7 +84,6 @@ public:
 	EHL_FIELD(Persisted)
 	int m_bitsDamageInflict = 0;	//!< DMG_ damage type that the door or tigger does
 
-	ToggleState GetToggleState() override { return m_toggle_state; }
 	float GetDelay() override { return m_flWait; }
 
 	// common member functions

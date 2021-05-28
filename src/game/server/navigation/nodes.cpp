@@ -128,6 +128,8 @@ bool CGraph::HandleLinkEnt(int iNode, CBaseEntity* pLinkEnt, int afCapMask, Node
 	if (pLinkEnt->ClassnameIs("func_door") || pLinkEnt->ClassnameIs("func_door_rotating"))
 	{// ent is a door.
 
+		auto door = static_cast<CBaseDoor*>(pLinkEnt);
+
 		if ((pLinkEnt->pev->spawnflags & SF_DOOR_USE_ONLY))
 		{// door is use only.
 
@@ -138,7 +140,7 @@ bool CGraph::HandleLinkEnt(int iNode, CBaseEntity* pLinkEnt, int afCapMask, Node
 			else
 			{
 				// monster should try for it if the door is open and looks as if it will stay that way
-				if (pLinkEnt->GetToggleState() == ToggleState::AtTop && (pLinkEnt->pev->spawnflags & SF_DOOR_NO_AUTO_RETURN))
+				if (door->m_toggle_state == ToggleState::AtTop && (pLinkEnt->pev->spawnflags & SF_DOOR_NO_AUTO_RETURN))
 				{
 					return true;
 				}
@@ -150,7 +152,7 @@ bool CGraph::HandleLinkEnt(int iNode, CBaseEntity* pLinkEnt, int afCapMask, Node
 		{// door must be opened with a button or trigger field.
 
 			// monster should try for it if the door is open and looks as if it will stay that way
-			if (pLinkEnt->GetToggleState() == ToggleState::AtTop && (pLinkEnt->pev->spawnflags & SF_DOOR_NO_AUTO_RETURN))
+			if (door->m_toggle_state == ToggleState::AtTop && (pLinkEnt->pev->spawnflags & SF_DOOR_NO_AUTO_RETURN))
 			{
 				return true;
 			}
