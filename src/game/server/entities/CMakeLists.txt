@@ -8,15 +8,16 @@ target_sources(hl
 		CBaseAnimating.hpp
 		CBaseEntity.cpp
 		CBaseEntity.hpp
+		CBaseToggle.cpp
 		CBaseToggle.hpp
 		CDelayedUse.cpp
 		CDelayedUse.hpp
+		CNullEntity.cpp
 		CNullEntity.hpp
 		CWorld.cpp
 		CWorld.hpp
 		locksounds.cpp
 		locksounds.hpp
-		subs.cpp
 		brush/CBreakable.cpp
 		brush/CBreakable.hpp
 		brush/CFuncMortarField.cpp
@@ -213,6 +214,7 @@ target_sources(hl
 		point/CMultiSource.hpp
 		point/CPlayerSetHealth.cpp
 		point/CPlayerSetHealth.hpp
+		point/CPointEntity.cpp
 		point/CPointEntity.hpp
 		point/CSoundEnt.cpp
 		point/CSoundEnt.hpp
