@@ -15,13 +15,13 @@
 
 #pragma once
 
-#include "CBaseDelay.hpp"
+#include "CBaseEntity.hpp"
 #include "CFireAndDie.generated.hpp"
 
 /**
 *	@brief Fires a target after level transition and then dies
 */
-class EHL_CLASS() CFireAndDie : public CBaseDelay
+class EHL_CLASS() CFireAndDie : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -29,5 +29,5 @@ public:
 	void Spawn() override;
 	void Precache() override;
 	void Think() override;
-	int ObjectCaps() override { return CBaseDelay::ObjectCaps() | FCAP_FORCE_TRANSITION; }	// Always go across transitions
+	int ObjectCaps() override { return BaseClass::ObjectCaps() | FCAP_FORCE_TRANSITION; }	// Always go across transitions
 };

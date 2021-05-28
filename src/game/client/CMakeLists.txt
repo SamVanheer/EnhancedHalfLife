@@ -172,9 +172,9 @@ target_sources(client PRIVATE
 	ui/vgui/utils/voice_banmgr.hpp
 	../server/entities/cbase.hpp
 	../server/entities/CBaseAnimating.hpp
-	../server/entities/CBaseDelay.hpp
 	../server/entities/CBaseEntity.hpp
 	../server/entities/CBaseToggle.hpp
+	../server/entities/CDelayedUse.hpp
 	../server/entities/CWorld.hpp
 	../server/entities/brush/CBreakable.hpp
 	../server/entities/brush/buttons/CBaseButton.hpp

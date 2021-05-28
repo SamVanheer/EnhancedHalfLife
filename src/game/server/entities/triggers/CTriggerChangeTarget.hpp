@@ -15,14 +15,14 @@
 
 #pragma once
 
-#include "CBaseDelay.hpp"
+#include "CBaseEntity.hpp"
 
 #include "CTriggerChangeTarget.generated.hpp"
 
 /**
 *	@brief this is a really bad idea.
 */
-class EHL_CLASS() CTriggerChangeTarget : public CBaseDelay
+class EHL_CLASS() CTriggerChangeTarget : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -31,7 +31,7 @@ public:
 	void Spawn() override;
 	void Use(const UseInfo & info) override;
 
-	int ObjectCaps() override { return CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+	int ObjectCaps() override { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 private:
 	EHL_FIELD(Persisted)

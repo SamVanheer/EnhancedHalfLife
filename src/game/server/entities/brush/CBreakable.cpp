@@ -107,7 +107,7 @@ void CBreakable::KeyValue(KeyValueData* pkvd)
 	else if (AreStringsEqual(pkvd->szKeyName, "lip"))
 		pkvd->fHandled = true;
 	else
-		CBaseDelay::KeyValue(pkvd);
+		BaseClass::KeyValue(pkvd);
 }
 
 LINK_ENTITY_TO_CLASS(func_breakable, CBreakable);
@@ -474,7 +474,7 @@ void CBreakable::TraceAttack(const TraceAttackInfo& info)
 		}
 	}
 
-	CBaseDelay::TraceAttack(info);
+	BaseClass::TraceAttack(info);
 }
 
 bool CBreakable::TakeDamage(const TakeDamageInfo& info)

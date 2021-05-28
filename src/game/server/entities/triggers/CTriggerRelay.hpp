@@ -15,12 +15,12 @@
 
 #pragma once
 
-#include "CBaseDelay.hpp"
+#include "CBaseEntity.hpp"
 #include "CTriggerRelay.generated.hpp"
 
 constexpr int SF_RELAY_FIREONCE = 0x0001;
 
-class EHL_CLASS() CTriggerRelay : public CBaseDelay
+class EHL_CLASS() CTriggerRelay : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -29,7 +29,7 @@ public:
 	void Spawn() override;
 	void Use(const UseInfo & info) override;
 
-	int ObjectCaps() override { return CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+	int ObjectCaps() override { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 private:
 	EHL_FIELD(Persisted)

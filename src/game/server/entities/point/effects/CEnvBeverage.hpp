@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "CBaseDelay.hpp"
+#include "CBaseEntity.hpp"
 #include "CEnvBeverage.generated.hpp"
 
 /**
@@ -23,7 +23,7 @@
 *	@details overloaded pev->frags, is now a flag for whether or not a can is stuck in the dispenser.
 *	overloaded pev->health, is now how many cans remain in the machine.
 */
-class EHL_CLASS() CEnvBeverage : public CBaseDelay
+class EHL_CLASS() CEnvBeverage : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

@@ -13,24 +13,19 @@
 *
 ****/
 
-#pragma once
+#include "CDelayedUse.hpp"
 
-#include "CBaseEntity.hpp"
-#include "CEnvFunnel.generated.hpp"
+LINK_ENTITY_TO_CLASS(DelayedUse, CDelayedUse);
 
-constexpr int SF_FUNNEL_REVERSE = 1; //!< funnel effect repels particles instead of attracting them.
-
-/**
-*	@brief Funnel Effect
-*/
-class EHL_CLASS() CEnvFunnel : public CBaseEntity
+void CDelayedUse::DelayThink()
 {
-	EHL_GENERATED_BODY()
+	CBaseEntity* pActivator = nullptr;
 
-public:
-	void	Spawn() override;
-	void	Precache() override;
-	void	Use(const UseInfo& info) override;
-
-	int m_iSprite = 0;	// Don't save, precache
-};
+	if (auto owner = GetOwner(); owner)		// A player activated this on delay
+	{
+		pActivator = owner;
+	}
+	// The use type is cached (and stashed) in pev->button
+	SUB_UseTargets(pActivator, (UseType)pev->button, 0);
+	UTIL_RemoveNow(this);
+}

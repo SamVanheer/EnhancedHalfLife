@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "CBaseDelay.hpp"
+#include "CBaseEntity.hpp"
 #include "CBreakable.hpp"
 #include "CGibShooter.generated.hpp"
 
@@ -23,7 +23,7 @@ class CGib;
 
 constexpr int SF_GIBSHOOTER_REPEATABLE = 1; //!< allows a gibshooter to be refired
 
-class EHL_CLASS() CGibShooter : public CBaseDelay
+class EHL_CLASS() CGibShooter : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

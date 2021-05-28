@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "CBaseDelay.hpp"
+#include "CBaseEntity.hpp"
 
 #include "CTriggerCamera.generated.hpp"
 
@@ -25,7 +25,7 @@ constexpr int SF_CAMERA_PLAYER_POSITION = 1;
 constexpr int SF_CAMERA_PLAYER_TARGET = 2;
 constexpr int SF_CAMERA_PLAYER_TAKECONTROL = 4;
 
-class EHL_CLASS() CTriggerCamera : public CBaseDelay
+class EHL_CLASS() CTriggerCamera : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -36,7 +36,7 @@ public:
 	void EXPORT FollowTarget();
 	void Move();
 
-	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+	int	ObjectCaps() override { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 	EHL_FIELD(Persisted)
 	EHandle<CBasePlayer> m_hPlayer;

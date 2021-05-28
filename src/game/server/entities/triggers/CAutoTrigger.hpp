@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "CBaseDelay.hpp"
+#include "CBaseEntity.hpp"
 #include "CAutoTrigger.generated.hpp"
 
 constexpr int SF_AUTO_FIREONCE = 0x0001;
@@ -24,7 +24,7 @@ constexpr int SF_AUTO_FIREONCE = 0x0001;
 *	@brief This trigger will fire when the level spawns (or respawns if not fire once)
 *	It will check a global state before firing. It supports delay and killtargets
 */
-class EHL_CLASS() CAutoTrigger : public CBaseDelay
+class EHL_CLASS() CAutoTrigger : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -34,7 +34,7 @@ public:
 	void Precache() override;
 	void Think() override;
 
-	int ObjectCaps() override { return CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+	int ObjectCaps() override { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 private:
 	EHL_FIELD(Persisted)
 	string_t m_globalstate = iStringNull;

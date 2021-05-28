@@ -15,14 +15,14 @@
 
 #pragma once
 
-#include "CBaseDelay.hpp"
+#include "CBaseEntity.hpp"
 #include "animationevent.hpp"
 
 #include "CBaseAnimating.generated.hpp"
 
 struct studiohdr_t;
 
-class EHL_CLASS() CBaseAnimating : public CBaseDelay
+class EHL_CLASS() CBaseAnimating : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

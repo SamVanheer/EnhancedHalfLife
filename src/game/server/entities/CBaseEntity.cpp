@@ -20,6 +20,24 @@
 
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 
+void CBaseEntity::KeyValue(KeyValueData* pkvd)
+{
+	if (AreStringsEqual(pkvd->szKeyName, "delay"))
+	{
+		m_flDelay = atof(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else if (AreStringsEqual(pkvd->szKeyName, "killtarget"))
+	{
+		m_iszKillTarget = ALLOC_STRING(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else
+	{
+		pkvd->fHandled = false;
+	}
+}
+
 // give health
 bool CBaseEntity::GiveHealth(float flHealth, int bitsDamageType)
 {

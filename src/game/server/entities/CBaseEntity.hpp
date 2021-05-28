@@ -30,13 +30,12 @@
 Class Hierachy
 
 CBaseEntity
-	CBaseDelay
-		CBaseToggle
-			CBaseItem
-			CBaseMonster
-				CBaseCycler
-				CBasePlayer
-				CBaseGroup
+	CBaseToggle
+		CBaseItem
+		CBaseMonster
+			CBaseCycler
+			CBasePlayer
+			CBaseGroup
 */
 
 class CBaseEntity;
@@ -324,6 +323,12 @@ public:
 	*/
 	CBaseEntity* m_pLink = nullptr;
 
+	EHL_FIELD(Persisted)
+	float m_flDelay = 0;
+
+	EHL_FIELD(Persisted)
+	string_t m_iszKillTarget = iStringNull;
+
 	CBaseEntity() = default;
 	virtual ~CBaseEntity() {}
 
@@ -371,7 +376,7 @@ public:
 	*	@brief precaches all resources this entity needs
 	*/
 	virtual void Precache() {}
-	virtual void KeyValue(KeyValueData* pkvd) { pkvd->fHandled = false; }
+	virtual void KeyValue(KeyValueData* pkvd);
 
 	virtual bool PostRestore();
 
@@ -597,8 +602,6 @@ public:
 	*	@brief Trigger targets specified in pev->target
 	*
 	*	@details Search for (string)pev->targetname in all entities that match (string)pev->target and call their Use function (if they have one)
-	*
-	*	CBaseDelay classes only:
 	*	If m_flDelay is set, a DelayedUse entity will be created that will actually do the SUB_UseTargets after that many seconds have passed.
 	*	Removes all entities with a targetname that match m_iszKillTarget, and removes them, so some events can remove other triggers.
 	*/

@@ -30,7 +30,7 @@ void CAutoTrigger::KeyValue(KeyValueData* pkvd)
 		pkvd->fHandled = true;
 	}
 	else
-		CBaseDelay::KeyValue(pkvd);
+		BaseClass::KeyValue(pkvd);
 }
 
 void CAutoTrigger::Spawn()

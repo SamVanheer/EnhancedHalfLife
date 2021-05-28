@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "CBaseDelay.hpp"
+#include "CBaseEntity.hpp"
 #include "CBreakable.generated.hpp"
 
 enum class Explosions
@@ -49,7 +49,7 @@ constexpr int SF_BREAK_CROWBAR = 256;		//!< instant break if hit with crowbar
 /**
 *	@brief bmodel that breaks into pieces after taking damage
 */
-class EHL_CLASS() CBreakable : public CBaseDelay
+class EHL_CLASS() CBreakable : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

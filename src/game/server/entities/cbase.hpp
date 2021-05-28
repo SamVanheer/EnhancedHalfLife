@@ -20,7 +20,6 @@
 #ifndef CLIENT_DLL
 #include "CMultiSource.hpp"
 #endif
-#include "CBaseDelay.hpp"
 #include "CBaseAnimating.hpp"
 #include "CBaseToggle.hpp"
 

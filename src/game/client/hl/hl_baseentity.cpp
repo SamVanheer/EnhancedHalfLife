@@ -48,6 +48,7 @@ bool CRestore::ReadEntVars(const char* pname, entvars_t* pev) { return false; }
 bool CRestore::ReadFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount) { return false; }
 
 // CBaseEntity Stubs
+void CBaseEntity::KeyValue(KeyValueData*) { }
 bool CBaseEntity::GiveHealth(float flHealth, int bitsDamageType) { return true; }
 bool CBaseEntity::TakeDamage(const TakeDamageInfo& info) { return true; }
 CBaseEntity* CBaseEntity::GetNextTarget() { return nullptr; }
@@ -64,9 +65,6 @@ int	CBaseEntity::DamageDecal(int bitsDamageType) { return -1; }
 CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner, bool callSpawn) { return nullptr; }
 void CBaseEntity::SUB_Remove() { }
 void CBaseEntity::EmitSound(SoundChannel channel, const char* fileName, float volume, float attenuation, int pitch, int flags) {}
-
-// CBaseDelay Stubs
-void CBaseDelay::KeyValue(KeyValueData*) { }
 
 // DEBUG Stubs
 void DBG_AssertFunction(bool fExpr, const char* szExpr, const char* szFile, int szLine, const char* szMessage) { }

@@ -21,6 +21,7 @@
 
 #include "navigation/nodes.hpp"
 #include "doors/CBaseDoor.hpp"
+#include "CDelayedUse.hpp"
 #include "CNullEntity.hpp"
 
 // Landmark class
@@ -75,32 +76,6 @@ void CBaseEntity::SUB_DoNothing()
 {
 }
 
-void CBaseDelay::KeyValue(KeyValueData* pkvd)
-{
-	if (AreStringsEqual(pkvd->szKeyName, "delay"))
-	{
-		m_flDelay = atof(pkvd->szValue);
-		pkvd->fHandled = true;
-	}
-	else if (AreStringsEqual(pkvd->szKeyName, "killtarget"))
-	{
-		m_iszKillTarget = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
-	}
-	else
-	{
-		CBaseEntity::KeyValue(pkvd);
-	}
-}
-
-void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float value)
-{
-	if (!IsStringNull(pev->target))
-	{
-		FireTargets(STRING(pev->target), pActivator, this, useType, value);
-	}
-}
-
 void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* pCaller, UseType useType, float value)
 {
 	if (!targetName || !(*targetName))
@@ -120,9 +95,7 @@ void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* p
 	}
 }
 
-LINK_ENTITY_TO_CLASS(DelayedUse, CBaseDelay);
-
-void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float value)
+void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float value)
 {
 	//
 	// exit immediately if we don't have a target or kill target
@@ -136,12 +109,12 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float 
 	if (m_flDelay != 0)
 	{
 		// create a temp object to fire at a later time
-		CBaseDelay* pTemp = GetClassPtr((CBaseDelay*)nullptr);
+		CDelayedUse* pTemp = GetClassPtr((CDelayedUse*)nullptr);
 		pTemp->SetClassname("DelayedUse");
 
 		pTemp->pev->nextthink = gpGlobals->time + m_flDelay;
 
-		pTemp->SetThink(&CBaseDelay::DelayThink);
+		pTemp->SetThink(&CDelayedUse::DelayThink);
 
 		// Save the useType
 		pTemp->pev->button = (int)useType;
@@ -193,19 +166,6 @@ void CBaseDelay::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float 
 	}
 }
 
-void CBaseDelay::DelayThink()
-{
-	CBaseEntity* pActivator = nullptr;
-
-	if (auto owner = GetOwner(); owner)		// A player activated this on delay
-	{
-		pActivator = owner;
-	}
-	// The use type is cached (and stashed) in pev->button
-	SUB_UseTargets(pActivator, (UseType)pev->button, 0);
-	UTIL_RemoveNow(this);
-}
-
 void CBaseToggle::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "lip"))
@@ -229,7 +189,7 @@ void CBaseToggle::KeyValue(KeyValueData* pkvd)
 		pkvd->fHandled = true;
 	}
 	else
-		CBaseDelay::KeyValue(pkvd);
+		BaseClass::KeyValue(pkvd);
 }
 
 void CBaseToggle::LinearMove(const Vector& vecDest, float flSpeed)

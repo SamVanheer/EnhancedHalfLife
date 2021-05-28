@@ -53,7 +53,7 @@ void CGibShooter::KeyValue(KeyValueData* pkvd)
 	}
 	else
 	{
-		CBaseDelay::KeyValue(pkvd);
+		BaseClass::KeyValue(pkvd);
 	}
 }
 

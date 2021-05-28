@@ -6,10 +6,11 @@ target_sources(hl
 		cbase.hpp
 		CBaseAnimating.cpp
 		CBaseAnimating.hpp
-		CBaseDelay.hpp
 		CBaseEntity.cpp
 		CBaseEntity.hpp
 		CBaseToggle.hpp
+		CDelayedUse.cpp
+		CDelayedUse.hpp
 		CNullEntity.hpp
 		CWorld.cpp
 		CWorld.hpp
