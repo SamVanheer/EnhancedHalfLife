@@ -25,11 +25,6 @@ void CBaseTrigger::KeyValue(KeyValueData* pkvd)
 		pev->dmg = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
-	else if (AreStringsEqual(pkvd->szKeyName, "damagetype"))
-	{
-		m_bitsDamageInflict = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
-	}
 	else if (AreStringsEqual(pkvd->szKeyName, "activate_sound"))
 	{
 		m_ActivateSound = ALLOC_STRING(pkvd->szValue);

@@ -34,10 +34,15 @@ class EHL_CLASS() CTriggerHurt : public CBaseTrigger
 	EHL_GENERATED_BODY()
 
 public:
+	void KeyValue(KeyValueData * pkvd) override;
 	void Spawn() override;
 	/**
 	*	@brief When touched, a hurt trigger does DMG points of damage each half-second
 	*/
 	void EXPORT HurtTouch(CBaseEntity * pOther);
 	void EXPORT RadiationThink();
+
+private:
+	EHL_FIELD(Persisted)
+	int m_bitsDamageInflict = 0;	//!< DMG_ damage type that the door or tigger does
 };

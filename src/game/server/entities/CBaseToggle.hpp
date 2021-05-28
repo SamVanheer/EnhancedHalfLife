@@ -81,9 +81,6 @@ public:
 	EHL_FIELD(Persisted)
 	Vector m_vecFinalAngle;
 
-	EHL_FIELD(Persisted)
-	int m_bitsDamageInflict = 0;	//!< DMG_ damage type that the door or tigger does
-
 	float GetDelay() override { return m_flWait; }
 
 	// common member functions

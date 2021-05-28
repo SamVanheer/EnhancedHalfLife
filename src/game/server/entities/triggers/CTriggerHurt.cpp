@@ -17,6 +17,19 @@
 
 LINK_ENTITY_TO_CLASS(trigger_hurt, CTriggerHurt);
 
+void CTriggerHurt::KeyValue(KeyValueData* pkvd)
+{
+	if (AreStringsEqual(pkvd->szKeyName, "damagetype"))
+	{
+		m_bitsDamageInflict = atoi(pkvd->szValue);
+		pkvd->fHandled = true;
+	}
+	else
+	{
+		BaseClass::KeyValue(pkvd);
+	}
+}
+
 void CTriggerHurt::Spawn()
 {
 	InitTrigger();
