@@ -34,7 +34,7 @@ public:
 	void	KeyValue(KeyValueData* pkvd) override;
 
 	EHL_FIELD(Persisted)
-	float m_flDelay = 0;
+	float m_flMaxDelay = 0;
 };
 
 /**

@@ -55,8 +55,8 @@ void CEnvSpark::Spawn()
 
 	pev->nextthink = gpGlobals->time + (0.1 + RANDOM_FLOAT(0, 1.5));
 
-	if (m_flDelay <= 0)
-		m_flDelay = 1.5;
+	if (m_flMaxDelay <= 0)
+		m_flMaxDelay = 1.5;
 
 	Precache();
 }
@@ -75,7 +75,7 @@ void CEnvSpark::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "MaxDelay"))
 	{
-		m_flDelay = atof(pkvd->szValue);
+		m_flMaxDelay = atof(pkvd->szValue);
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "style") ||
@@ -91,7 +91,7 @@ void CEnvSpark::KeyValue(KeyValueData* pkvd)
 
 void EXPORT CEnvSpark::SparkThink()
 {
-	pev->nextthink = gpGlobals->time + 0.1 + RANDOM_FLOAT(0, m_flDelay);
+	pev->nextthink = gpGlobals->time + 0.1 + RANDOM_FLOAT(0, m_flMaxDelay);
 	DoSpark(this, GetAbsOrigin());
 }
 
@@ -99,7 +99,7 @@ void EXPORT CEnvSpark::SparkStart(const UseInfo& info)
 {
 	SetUse(&CEnvSpark::SparkStop);
 	SetThink(&CEnvSpark::SparkThink);
-	pev->nextthink = gpGlobals->time + (0.1 + RANDOM_FLOAT(0, m_flDelay));
+	pev->nextthink = gpGlobals->time + (0.1 + RANDOM_FLOAT(0, m_flMaxDelay));
 }
 
 void EXPORT CEnvSpark::SparkStop(const UseInfo& info)
