@@ -289,8 +289,6 @@ const char* GetSpectatorLabel(int iMode)
 	default:
 		return "#OBS_NONE";
 	}
-
-	return "";
 }
 
 void SpectatorPanel::EnableInsetView(bool isEnabled)

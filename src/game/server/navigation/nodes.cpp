@@ -170,12 +170,8 @@ bool CGraph::HandleLinkEnt(int iNode, CBaseEntity* pLinkEnt, int afCapMask, Node
 	{
 		return true;
 	}
-	else
-	{
-		ALERT(at_aiconsole, "Unhandled Ent in Path %s\n", pLinkEnt->GetClassname());
-		return false;
-	}
 
+	ALERT(at_aiconsole, "Unhandled Ent in Path %s\n", pLinkEnt->GetClassname());
 	return false;
 }
 

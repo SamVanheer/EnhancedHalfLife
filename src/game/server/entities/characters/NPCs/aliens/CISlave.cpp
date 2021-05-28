@@ -323,6 +323,7 @@ bool CISlave::CheckRangeAttack2(float flDot, float flDist)
 {
 	return false;
 
+#if false
 	if (m_flNextAttack > gpGlobals->time)
 	{
 		return false;
@@ -357,6 +358,7 @@ bool CISlave::CheckRangeAttack2(float flDot, float flDist)
 	}
 
 	return m_hDead != nullptr;
+#endif
 }
 
 void CISlave::StartTask(Task_t* pTask)

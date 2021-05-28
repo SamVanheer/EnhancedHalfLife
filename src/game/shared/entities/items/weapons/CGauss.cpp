@@ -564,7 +564,10 @@ void CGauss::WeaponIdle()
 		}
 
 		return;
+		//TODO: fix this
+#if false
 		SendWeaponAnim(iAnim);
+#endif
 	}
 }
 
