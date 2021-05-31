@@ -23,6 +23,7 @@
 #include "extdll.hpp"
 #include "activity.hpp"
 #include "enginecallback.hpp"
+#include "EntityDictionary.hpp"
 #include "shared_utils.hpp"
 #include "entity_iteration.hpp"
 #include "sound/materials.hpp"
@@ -63,9 +64,20 @@ constexpr bool IsBitSet(const T& flBitVector, int bit)
 *	The _declspec forces them to be exported by name so we can do a lookup with GetProcAddress()
 *	The function is used to intialize / allocate the object for the entity
 */
-#define LINK_ENTITY_TO_CLASS(mapClassName,DLLClassName) \
-	extern "C" DLLEXPORT void mapClassName( entvars_t *pev ); \
-	void mapClassName( entvars_t *pev ) { GetClassPtr( (DLLClassName *)pev ); }
+#define LINK_ENTITY_TO_CLASS(mapClassName,DLLClassName)												\
+	extern "C" DLLEXPORT void mapClassName( entvars_t *pev );										\
+	void mapClassName( entvars_t *pev ) { GetClassPtr( (DLLClassName *)pev ); }						\
+	static CEntityFactory<DLLClassName> g_##mapClassName##Factory{#mapClassName, #DLLClassName}
+
+/**
+*	@brief This is the glue that hooks .MAP entity class names to our CPP classes
+*	The _declspec forces them to be exported by name so we can do a lookup with GetProcAddress()
+*	The function is used to intialize / allocate the object for the entity
+*/
+#define LINK_CANONICAL_ENTITY_TO_CLASS(mapClassName, canonicalMapClassName, DLLClassName)								\
+	extern "C" DLLEXPORT void mapClassName( entvars_t *pev );															\
+	void mapClassName( entvars_t *pev ) { GetClassPtr( (DLLClassName *)pev ); }											\
+	static CEntityFactory<DLLClassName> g_##mapClassName##Factory{#mapClassName, #DLLClassName, #canonicalMapClassName}
 
 inline int ENTINDEX(const edict_t* pEdict) { return (*g_engfuncs.pfnIndexOfEdict)(pEdict); }
 

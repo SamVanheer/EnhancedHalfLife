@@ -6,6 +6,10 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/filesystem_shared.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/ehandle.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/ehandle.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/EntityDictionary.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/EntityDictionary.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/EntityList.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/EntityList.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/characters/player_shared.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/CBaseItem.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/CBaseItem.hpp

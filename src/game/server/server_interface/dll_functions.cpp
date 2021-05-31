@@ -14,6 +14,7 @@
 ****/
 
 #include "dll_functions.hpp"
+#include "EntityList.hpp"
 #include "game.hpp"
 #include "client.hpp"
 #include "pm_shared.hpp"
@@ -197,6 +198,9 @@ void DispatchBlocked(edict_t* pentBlocked, edict_t* pentOther)
 void SV_NewMapStarted()
 {
 	ClearStringPool();
+
+	//Initialize the list to the current engine list
+	g_EntityList = CEntityList(g_engfuncs.pfnPEntityOfEntIndex(0));
 }
 
 void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
