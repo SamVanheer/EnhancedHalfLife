@@ -33,7 +33,7 @@ public:
 
 	CBaseEntity* operator=(CBaseEntity* entity);
 
-	CBaseEntity* Get();
+	CBaseEntity* Get() const;
 	void Set(CBaseEntity* entity);
 
 private:
@@ -61,11 +61,11 @@ public:
 		return entity;
 	}
 
-	TEntity* Get() { return static_cast<TEntity*>(BaseHandle::Get()); }
+	TEntity* Get() const { return static_cast<TEntity*>(BaseHandle::Get()); }
 	void Set(TEntity* entity) { BaseHandle::Set(entity); }
 
-	operator TEntity* () { return Get(); }
-	TEntity* operator->() { return Get(); }
+	operator TEntity* () const { return Get(); }
+	TEntity* operator->() const { return Get(); }
 
 	/**
 	*	@brief If this handle points to an entity, calls ::UTIL_Remove on the entity and clears this handle

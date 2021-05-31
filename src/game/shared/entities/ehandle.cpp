@@ -24,7 +24,7 @@ CBaseEntity* BaseHandle::operator=(CBaseEntity* entity)
 	return entity;
 }
 
-CBaseEntity* BaseHandle::Get()
+CBaseEntity* BaseHandle::Get() const
 {
 	if (!m_pent || m_pent->serialnumber != m_serialnumber)
 	{
