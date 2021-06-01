@@ -117,7 +117,7 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity* pActivator)
 		if (pFireAndDie)
 		{
 			// Set target and delay
-			pFireAndDie->pev->target = m_changeTarget;
+			pFireAndDie->SetTargetDirect(m_changeTarget);
 			pFireAndDie->m_flDelay = m_changeTargetDelay;
 
 			//TODO: does this even matter?

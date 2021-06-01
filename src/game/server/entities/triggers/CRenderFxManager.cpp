@@ -24,11 +24,11 @@ void CRenderFxManager::Spawn()
 
 void CRenderFxManager::Use(const UseInfo& info)
 {
-	if (!IsStringNull(pev->target))
+	if (HasTarget())
 	{
 		CBaseEntity* pTarget = nullptr;
 
-		while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target))) != nullptr)
+		while ((pTarget = UTIL_FindEntityByTargetname(pTarget, GetTarget())) != nullptr)
 		{
 			if (!IsBitSet(pev->spawnflags, SF_RENDER_MASKFX))
 				pTarget->SetRenderFX(GetRenderFX());

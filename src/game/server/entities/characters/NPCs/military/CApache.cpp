@@ -341,9 +341,9 @@ void CApache::HuntThink()
 
 	ShowDamage();
 
-	if (m_hGoalEnt == nullptr && !IsStringNull(pev->target))// this monster has a target
+	if (m_hGoalEnt == nullptr && HasTarget())// this monster has a target
 	{
-		m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+		m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, GetTarget());
 		if (auto goal = m_hGoalEnt.Get(); goal)
 		{
 			m_posDesired = goal->GetAbsOrigin();
@@ -388,7 +388,7 @@ void CApache::HuntThink()
 
 		if (flLength < 128)
 		{
-			m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(goal->pev->target));
+			m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, goal->GetTarget());
 			if (goal = m_hGoalEnt.Get(); goal)
 			{
 				m_posDesired = goal->GetAbsOrigin();

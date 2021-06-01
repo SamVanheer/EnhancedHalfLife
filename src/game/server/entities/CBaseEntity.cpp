@@ -121,9 +121,9 @@ void CBaseEntity::Killed(const KilledInfo& info)
 
 CBaseEntity* CBaseEntity::GetNextTarget()
 {
-	if (IsStringNull(pev->target))
+	if (!HasTarget())
 		return nullptr;
-	CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+	CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, GetTarget());
 	if (IsNullEnt(pTarget))
 		return nullptr;
 
@@ -293,7 +293,7 @@ void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float
 	//
 	// exit immediately if we don't have a target or kill target
 	//
-	if (IsStringNull(pev->target) && IsStringNull(m_iszKillTarget))
+	if (!HasTarget() && IsStringNull(m_iszKillTarget))
 		return;
 
 	//
@@ -313,7 +313,7 @@ void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float
 		pTemp->pev->button = (int)useType;
 		pTemp->m_iszKillTarget = m_iszKillTarget;
 		pTemp->m_flDelay = 0; // prevent "recursion"
-		pTemp->pev->target = pev->target;
+		pTemp->SetTarget(GetTarget());
 		pTemp->m_hActivator = pActivator;
 
 		return;
@@ -341,9 +341,9 @@ void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float
 	//
 	// fire targets
 	//
-	if (!IsStringNull(pev->target))
+	if (HasTarget())
 	{
-		FireTargets(STRING(pev->target), pActivator, this, useType, value);
+		FireTargets(GetTarget(), pActivator, this, useType, value);
 	}
 }
 

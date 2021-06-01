@@ -517,6 +517,26 @@ public:
 		pev->targetname = iStringNull;
 	}
 
+	bool HasTarget() const { return !IsStringNull(pev->target); }
+
+	const char* GetTarget() const { return STRING(pev->target); }
+
+	void SetTarget(const char* target)
+	{
+		pev->target = ALLOC_STRING(target);
+	}
+
+	void SetTargetDirect(string_t target)
+	{
+		pev->target = target;
+	}
+
+	//TODO: SetTarget("") should do the same
+	void ClearTarget()
+	{
+		pev->target = iStringNull;
+	}
+
 	const Vector& GetAbsOrigin() { return pev->origin; }
 	void SetAbsOrigin(const Vector& origin);
 

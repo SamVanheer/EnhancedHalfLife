@@ -120,9 +120,9 @@ void CFuncTrain::Next()
 	}
 
 	// Save last target in case we need to find it again
-	pev->message = pev->target;
+	pev->message = MAKE_STRING(GetTarget());
 
-	pev->target = pTarg->pev->target;
+	SetTarget(pTarg->GetTarget());
 	m_flWait = pTarg->GetDelay();
 
 	if (CBaseEntity* pCurrentTarget = m_hCurrentTarget; pCurrentTarget && pCurrentTarget->pev->speed != 0)
@@ -162,7 +162,7 @@ void CFuncTrain::Activate()
 	if (!m_activated)
 	{
 		m_activated = true;
-		CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+		CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, GetTarget());
 
 		//TODO: currently mimics old behavior where it uses the world by default. Needs to handle null targets better
 		if (!pTarget)
@@ -170,7 +170,7 @@ void CFuncTrain::Activate()
 			pTarget = UTIL_GetWorld();
 		}
 
-		pev->target = pTarget->pev->target;
+		SetTarget(pTarget->GetTarget());
 		m_hCurrentTarget = pTarget;// keep track of this since path corners change our target for us.
 
 		SetAbsOrigin(pTarget->GetAbsOrigin() - (pev->mins + pev->maxs) * 0.5);
@@ -191,7 +191,7 @@ void CFuncTrain::Spawn()
 	if (pev->speed == 0)
 		pev->speed = 100;
 
-	if (IsStringNull(pev->target))
+	if (!HasTarget())
 		ALERT(at_console, "FuncTrain with no target");
 
 	if (pev->dmg == 0)
@@ -220,7 +220,7 @@ void CFuncTrain::OverrideReset()
 	// Are we moving?
 	if (GetAbsVelocity() != vec3_origin && pev->nextthink != 0)
 	{
-		pev->target = pev->message;
+		SetTargetDirect(pev->message);
 		// now find our next target
 		CBaseEntity* pTarg = GetNextTarget();
 		if (!pTarg)

@@ -197,7 +197,7 @@ void CFuncTrackTrain::Next()
 	/*
 	if (!m_hPath)
 	{
-		m_hPath = CPathTrack::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(pev->target)));
+		m_hPath = CPathTrack::Instance(UTIL_FindEntityByTargetname(nullptr, GetTarget()));
 	}
 	*/
 	if (!m_hPath)
@@ -401,7 +401,7 @@ bool CFuncTrackTrain::OnControls(CBaseEntity* pTest)
 
 void CFuncTrackTrain::Find()
 {
-	auto path = m_hPath = CPathTrack::Instance(UTIL_FindEntityByTargetname(nullptr, STRING(pev->target)));
+	auto path = m_hPath = CPathTrack::Instance(UTIL_FindEntityByTargetname(nullptr, GetTarget()));
 	if (!path)
 		return;
 
@@ -510,7 +510,7 @@ void CFuncTrackTrain::Spawn()
 
 	m_dir = 1;
 
-	if (IsStringNull(pev->target))
+	if (!HasTarget())
 		ALERT(at_console, "FuncTrain with no target");
 
 	if (pev->spawnflags & SF_TRACKTRAIN_PASSABLE)

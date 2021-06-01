@@ -417,7 +417,7 @@ void CBigMomma::NodeReach()
 	}
 	Forget(bits_MEMORY_FIRED_NODE);
 
-	pev->netname = pTarget->pev->target;
+	pev->netname = MAKE_STRING(pTarget->GetTarget());
 	if (pTarget->pev->health == 0)
 		Remember(bits_MEMORY_ADVANCE_NODE);	// Move on if no health at this node
 }
@@ -572,7 +572,7 @@ void CBigMomma::StartTask(Task_t* pTask)
 		if (!HasMemory(bits_MEMORY_ADVANCE_NODE))
 		{
 			if (CBaseEntity* pTarget = m_hTargetEnt; pTarget)
-				pev->netname = m_hTargetEnt->pev->target;
+				pev->netname = MAKE_STRING(m_hTargetEnt->GetTarget());
 		}
 		NodeStart(pev->netname);
 		TaskComplete();

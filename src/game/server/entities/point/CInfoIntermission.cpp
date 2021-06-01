@@ -30,7 +30,7 @@ void CInfoIntermission::Spawn()
 void CInfoIntermission::Think()
 {
 	// find my target
-	CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+	CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, GetTarget());
 
 	if (!IsNullEnt(pTarget))
 	{

@@ -123,10 +123,10 @@ void CMonsterMaker::MakeMonster()
 	}
 
 	// If I have a target, fire!
-	if (!IsStringNull(pev->target))
+	if (HasTarget())
 	{
 		// delay already overloaded for this entity, so can't call SUB_UseTargets()
-		FireTargets(STRING(pev->target), this, this, UseType::Toggle, 0);
+		FireTargets(GetTarget(), this, this, UseType::Toggle, 0);
 	}
 
 	pEntity->SetAbsOrigin(GetAbsOrigin());

@@ -34,7 +34,7 @@ void CFuncTankControls::Think()
 {
 	CBaseEntity* pTarget = nullptr;
 
-	while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target))) != nullptr)
+	while ((pTarget = UTIL_FindEntityByTargetname(pTarget, GetTarget())) != nullptr)
 	{
 		if (!strncmp(pTarget->GetClassname(), "func_tank", 9))
 		{
@@ -44,7 +44,7 @@ void CFuncTankControls::Think()
 
 	if (IsNullEnt(pTarget))
 	{
-		ALERT(at_console, "No tank %s\n", STRING(pev->target));
+		ALERT(at_console, "No tank %s\n", GetTarget());
 		return;
 	}
 

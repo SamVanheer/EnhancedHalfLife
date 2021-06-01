@@ -94,7 +94,7 @@ void CGunTarget::Wait()
 
 	m_flWait = pTarget->GetDelay();
 
-	pev->target = pTarget->pev->target;
+	SetTarget(pTarget->GetTarget());
 	SetThink(&CGunTarget::Next);
 	if (m_flWait != 0)
 	{// -1 wait will wait forever!		

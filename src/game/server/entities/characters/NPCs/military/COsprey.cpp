@@ -249,9 +249,9 @@ void COsprey::FlyThink()
 	StudioFrameAdvance();
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	if (m_hGoalEnt == nullptr && !IsStringNull(pev->target))// this monster has a target
+	if (m_hGoalEnt == nullptr && HasTarget())// this monster has a target
 	{
-		m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+		m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, GetTarget());
 		UpdateGoal();
 	}
 
@@ -263,7 +263,7 @@ void COsprey::FlyThink()
 		}
 		//TODO: this doesn't check if target is valid and if goal ent is valid
 		do {
-			m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(m_hGoalEnt->pev->target));
+			m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, m_hGoalEnt->GetTarget());
 		}
 		while (m_hGoalEnt->pev->speed < 400 && !HasDead());
 		UpdateGoal();

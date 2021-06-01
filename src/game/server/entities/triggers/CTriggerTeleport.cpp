@@ -50,7 +50,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity* pOther)
 		}
 	}
 
-	CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+	CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, GetTarget());
 	if (IsNullEnt(pTarget))
 		return;
 

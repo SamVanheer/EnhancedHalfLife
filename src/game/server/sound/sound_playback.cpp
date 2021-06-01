@@ -34,7 +34,7 @@ void UTIL_EmitAmbientSound(CBaseEntity* entity, const Vector& vecOrigin, const c
 	{
 		if (entity)
 		{
-			ALERT(at_warning, "UTIL_EmitAmbientSound: NULL sample name passed for entity %s(%s)\n", entity->GetClassname(), STRING(entity->pev->target));
+			ALERT(at_warning, "UTIL_EmitAmbientSound: NULL sample name passed for entity %s(%s)\n", entity->GetClassname(), entity->GetTarget());
 		}
 		else
 		{

@@ -152,7 +152,7 @@ void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
 	// Apply damage every half second
 	pev->dmgtime = gpGlobals->time + 0.5;// half second delay until this trigger can hurt toucher again
 
-	if (!IsStringNull(pev->target))
+	if (HasTarget())
 	{
 		// trigger has a target it wants to fire. 
 		if (pev->spawnflags & SF_TRIGGER_HURT_CLIENTONLYFIRE)
@@ -166,7 +166,7 @@ void CTriggerHurt::HurtTouch(CBaseEntity* pOther)
 
 		SUB_UseTargets(pOther, UseType::Toggle, 0);
 		if (pev->spawnflags & SF_TRIGGER_HURT_TARGETONCE)
-			pev->target = iStringNull;
+			ClearTarget();
 	}
 }
 

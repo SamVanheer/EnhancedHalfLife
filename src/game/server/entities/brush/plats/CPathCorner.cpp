@@ -60,17 +60,17 @@ void CPathCorner::Touch(CBaseEntity* pOther)
 	*/
 
 	// Find the next "stop" on the path, make it the goal of the "toucher".
-	if (IsStringNull(pev->target))
+	if (!HasTarget())
 	{
 		ALERT(at_warning, "PathCornerTouch: no next stop specified");
 	}
 
-	pOther->m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+	pOther->m_hGoalEnt = UTIL_FindEntityByTargetname(nullptr, GetTarget());
 
 	// If "next spot" was not found (does not exist - level design error)
 	if (!pOther->m_hGoalEnt)
 	{
-		ALERT(at_console, "PathCornerTouch--%s couldn't find next stop in path: %s", GetClassname(), STRING(pev->target));
+		ALERT(at_console, "PathCornerTouch--%s couldn't find next stop in path: %s", GetClassname(), GetTarget());
 		return;
 	}
 

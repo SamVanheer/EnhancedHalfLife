@@ -908,9 +908,9 @@ int CHalfLifeMultiplay::DeadPlayerAmmo(CBasePlayer* pPlayer)
 CBaseEntity* CHalfLifeMultiplay::GetPlayerSpawnSpot(CBasePlayer* pPlayer)
 {
 	CBaseEntity* pSpawnSpot = CGameRules::GetPlayerSpawnSpot(pPlayer);
-	if (IsMultiplayer() && !IsStringNull(pSpawnSpot->pev->target))
+	if (IsMultiplayer() && pSpawnSpot->HasTarget())
 	{
-		FireTargets(STRING(pSpawnSpot->pev->target), pPlayer, pPlayer, UseType::Toggle, 0);
+		FireTargets(pSpawnSpot->GetTarget(), pPlayer, pPlayer, UseType::Toggle, 0);
 	}
 
 	return pSpawnSpot;

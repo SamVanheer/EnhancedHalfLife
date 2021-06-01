@@ -37,7 +37,7 @@ void CGamePlayerTeam::Use(const UseInfo& info)
 
 	if (info.GetActivator()->IsPlayer())
 	{
-		const char* pszTargetTeam = TargetTeamName(STRING(pev->target));
+		const char* pszTargetTeam = TargetTeamName(GetTarget());
 		if (pszTargetTeam)
 		{
 			CBasePlayer* pPlayer = (CBasePlayer*)info.GetActivator();

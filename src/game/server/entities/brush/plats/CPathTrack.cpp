@@ -57,9 +57,9 @@ void CPathTrack::Use(const UseInfo& info)
 
 void CPathTrack::Link()
 {
-	if (!IsStringNull(pev->target))
+	if (HasTarget())
 	{
-		CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, STRING(pev->target));
+		CBaseEntity* pTarget = UTIL_FindEntityByTargetname(nullptr, GetTarget());
 		if (!IsNullEnt(pTarget))
 		{
 			m_hNext = CPathTrack::Instance(pTarget);
@@ -70,7 +70,7 @@ void CPathTrack::Link()
 			}
 		}
 		else
-			ALERT(at_console, "Dead end link %s\n", STRING(pev->target));
+			ALERT(at_console, "Dead end link %s\n", GetTarget());
 	}
 
 	// Find "alternate" path
