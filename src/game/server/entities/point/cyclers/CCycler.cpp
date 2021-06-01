@@ -15,8 +15,12 @@
 
 #include "CCycler.hpp"
 
-void CCycler::GenericCyclerSpawn(const char* szModel, const Vector& vecMin, const Vector& vecMax)
+LINK_ENTITY_TO_CLASS(cycler, CCycler);
+
+void CCycler::Spawn()
 {
+	const char* szModel = STRING(pev->model);
+
 	if (!szModel || !*szModel)
 	{
 		ALERT(at_error, "cycler at %.0f %.0f %0.f missing modelname", GetAbsOrigin().x, GetAbsOrigin().y, GetAbsOrigin().z);
@@ -27,13 +31,6 @@ void CCycler::GenericCyclerSpawn(const char* szModel, const Vector& vecMin, cons
 	PRECACHE_MODEL(szModel);
 	SetModel(szModel);
 
-	CCycler::Spawn();
-
-	SetSize(vecMin, vecMax);
-}
-
-void CCycler::Spawn()
-{
 	InitBoneControllers();
 	SetSolidType(Solid::SlideBox);
 	SetMovetype(Movetype::None);
@@ -60,6 +57,11 @@ void CCycler::Spawn()
 	{
 		m_animate = true;
 	}
+
+	const Vector vecMin(-16, -16, 0);
+	const Vector vecMax(16, 16, 72);
+
+	SetSize(vecMin, vecMax);
 }
 
 void CCycler::Think()

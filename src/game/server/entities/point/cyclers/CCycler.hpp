@@ -18,12 +18,14 @@
 #include "CBaseMonster.hpp"
 #include "CCycler.generated.hpp"
 
+/**
+*	@brief we should get rid of all the other cyclers and replace them with this.
+*/
 class EHL_CLASS() CCycler : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
 public:
-	void GenericCyclerSpawn(const char* szModel, const Vector& vecMin, const Vector& vecMax);
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() | FCAP_IMPULSE_USE); }
 
 	/**

@@ -226,8 +226,6 @@ target_sources(hl
 		point/cyclers/CCycler.hpp
 		point/cyclers/CCyclerSprite.cpp
 		point/cyclers/CCyclerSprite.hpp
-		point/cyclers/CGenericCycler.cpp
-		point/cyclers/CGenericCycler.hpp
 		point/cyclers/CWeaponCycler.cpp
 		point/cyclers/CWeaponCycler.hpp
 		point/cyclers/CWreckage.cpp
