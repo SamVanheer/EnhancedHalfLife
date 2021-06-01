@@ -88,6 +88,15 @@ function(set_common_properties TARGET_NAME)
 			-m32 -gdwarf-2 -g2>
 		$<$<PLATFORM_ID:Linux>:
 			-Wl,-Map,${TARGET_NAME}_map.txt>)
+	
+	if (MSVC)
+		target_sources(${TARGET_NAME}
+			PRIVATE
+				${CMAKE_CURRENT_FUNCTION_LIST_DIR}/cpp.hint
+				${CMAKE_CURRENT_FUNCTION_LIST_DIR}/EHLGame.natvis)
+		
+		set_property(SOURCE ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/EHLGame.natvis PROPERTY VS_SETTINGS "ExcludedFromBuild=true")
+	endif()
 endfunction()
 
 add_subdirectory(client)
