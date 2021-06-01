@@ -45,6 +45,12 @@ EHandle<CBaseEntity> CEntityList::InternalGetEntityByIndex(int index) const
 
 	auto edict = m_Entities + index;
 
+	//Player entities can have a valid CBaseEntity instance while still being marked free
+	if (edict->free)
+	{
+		return nullptr;
+	}
+
 	auto entity = CBaseEntity::InstanceOrNull(edict);
 
 	return entity;
