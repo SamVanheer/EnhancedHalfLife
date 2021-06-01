@@ -67,9 +67,8 @@ void CSprite::SpriteInit(const char* pSpriteName, const Vector& origin)
 
 CSprite* CSprite::SpriteCreate(const char* pSpriteName, const Vector& origin, bool animate)
 {
-	CSprite* pSprite = GetClassPtr((CSprite*)nullptr);
+	CSprite* pSprite = static_cast<CSprite*>(g_EntityList.Create("env_sprite"));
 	pSprite->SpriteInit(pSpriteName, origin);
-	pSprite->SetClassname("env_sprite");
 	pSprite->SetSolidType(Solid::Not);
 	pSprite->SetMovetype(Movetype::Noclip);
 	if (animate)

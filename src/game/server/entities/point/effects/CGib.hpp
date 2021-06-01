@@ -50,6 +50,9 @@ public:
 	void		LimitVelocity();
 
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DONT_SAVE; }
+
+	static CGib* GibCreate();
+
 	static	void SpawnHeadGib(CBaseEntity * pVictim);
 	static	void SpawnRandomGibs(CBaseEntity * pVictim, int cGibs, bool human);
 	static  void SpawnStickyGibs(CBaseEntity * pVictim, const Vector & vecOrigin, int cGibs);

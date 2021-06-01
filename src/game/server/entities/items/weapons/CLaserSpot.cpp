@@ -19,10 +19,8 @@ LINK_ENTITY_TO_CLASS(laser_spot, CLaserSpot);
 
 CLaserSpot* CLaserSpot::CreateSpot()
 {
-	CLaserSpot* pSpot = GetClassPtr((CLaserSpot*)nullptr);
+	CLaserSpot* pSpot = static_cast<CLaserSpot*>(g_EntityList.Create("laser_spot"));
 	pSpot->Spawn();
-
-	pSpot->SetClassname("laser_spot");
 
 	return pSpot;
 }

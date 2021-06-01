@@ -23,7 +23,6 @@ LINK_ENTITY_TO_CLASS(squidspit, CSquidSpit);
 void CSquidSpit::Spawn()
 {
 	SetMovetype(Movetype::Fly);
-	SetClassname("squidspit");
 
 	SetSolidType(Solid::BBox);
 	SetRenderMode(RenderMode::TransAlpha);
@@ -53,7 +52,7 @@ void CSquidSpit::Animate()
 
 void CSquidSpit::Shoot(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity)
 {
-	CSquidSpit* pSpit = GetClassPtr((CSquidSpit*)nullptr);
+	auto pSpit = static_cast<CSquidSpit*>(g_EntityList.Create("squidspit"));
 	pSpit->Spawn();
 
 	pSpit->SetAbsOrigin(vecStart);

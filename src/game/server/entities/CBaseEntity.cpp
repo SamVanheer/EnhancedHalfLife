@@ -302,8 +302,7 @@ void CBaseEntity::SUB_UseTargets(CBaseEntity* pActivator, UseType useType, float
 	if (m_flDelay != 0)
 	{
 		// create a temp object to fire at a later time
-		CDelayedUse* pTemp = GetClassPtr((CDelayedUse*)nullptr);
-		pTemp->SetClassname("DelayedUse");
+		auto pTemp = static_cast<CDelayedUse*>(g_EntityList.Create("DelayedUse"));
 
 		pTemp->pev->nextthink = gpGlobals->time + m_flDelay;
 

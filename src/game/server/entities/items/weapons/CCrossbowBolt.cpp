@@ -20,8 +20,7 @@ LINK_ENTITY_TO_CLASS(crossbow_bolt, CCrossbowBolt);
 CCrossbowBolt* CCrossbowBolt::BoltCreate()
 {
 	// Create a new entity with CCrossbowBolt private data
-	CCrossbowBolt* pBolt = GetClassPtr((CCrossbowBolt*)nullptr);
-	pBolt->SetClassname("bolt");
+	CCrossbowBolt* pBolt = static_cast<CCrossbowBolt*>(g_EntityList.Create("crossbow_bolt"));
 	pBolt->Spawn();
 
 	return pBolt;

@@ -119,13 +119,13 @@ void CMortar::MortarExplode()
 }
 
 #if 0
-void CMortar::ShootTimed(EVARS* pevOwner, const Vector& vecStart, float time)
+void CMortar::ShootTimed(entvars_t* pevOwner, const Vector& vecStart, float time)
 {
-	CMortar* pMortar = GetClassPtr((CMortar*)nullptr);
+	CMortar* pMortar = static_cast<CMortar*>(g_EntityList.Create("monster_mortar"));
 	pMortar->Spawn();
 
 	TraceResult tr;
-	UTIL_TraceLine(vecStart, vecStart + vec3_down * WORLD_BOUNDARY, ignore_monsters, ENT(pMortar->pev), &tr);
+	UTIL_TraceLine(vecStart, vecStart + vec3_down * WORLD_BOUNDARY, IgnoreMonsters::Yes, pMortar, &tr);
 
 	pMortar->pev->nextthink = gpGlobals->time + time;
 

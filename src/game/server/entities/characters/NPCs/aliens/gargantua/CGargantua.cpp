@@ -765,7 +765,7 @@ void CGargantua::RunTask(Task_t* pTask)
 			const int parts = MODEL_FRAMES(gGargGibModel);
 			for (int i = 0; i < 10; i++)
 			{
-				CGib* pGib = GetClassPtr((CGib*)nullptr);
+				auto pGib = CGib::GibCreate();
 
 				pGib->Spawn(GARG_GIB_MODEL.data());
 

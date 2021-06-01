@@ -52,7 +52,10 @@ void CFuncPlat::Precache()
 	//PRECACHE_SOUND("plats/platmove1.wav");
 	//PRECACHE_SOUND("plats/platstop1.wav");
 	if (!IsTogglePlat())
-		GetClassPtr((CPlatTrigger*)nullptr)->SpawnInsideTrigger(this);		// the "start moving" trigger
+	{
+		auto trigger = static_cast<CPlatTrigger*>(g_EntityList.Create("func_plat_trigger"));
+		trigger->SpawnInsideTrigger(this);		// the "start moving" trigger
+	}
 }
 
 void CFuncPlat::Spawn()

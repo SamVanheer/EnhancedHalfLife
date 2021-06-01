@@ -66,7 +66,7 @@ void CEnvShooter::Precache()
 
 CGib* CEnvShooter::CreateGib()
 {
-	CGib* pGib = GetClassPtr((CGib*)nullptr);
+	CGib* pGib = CGib::GibCreate();
 
 	pGib->Spawn(STRING(pev->model));
 

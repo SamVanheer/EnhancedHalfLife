@@ -21,12 +21,11 @@
 #include "CBasePlayer.hpp"
 #include "CGlock.hpp"
 
-LINK_ENTITY_TO_CLASS(weapon_glock, CGlock);
 LINK_ENTITY_TO_CLASS(weapon_9mmhandgun, CGlock);
+LINK_ALIAS_ENTITY_TO_CLASS(weapon_glock, weapon_9mmhandgun, CGlock);
 
 void CGlock::Spawn()
 {
-	SetClassname("weapon_9mmhandgun"); // hack to allow for old names
 	Precache();
 	FallInit();// get ready to fall down.
 }

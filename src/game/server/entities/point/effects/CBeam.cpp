@@ -70,8 +70,7 @@ const Vector& CBeam::GetEndPos()
 CBeam* CBeam::BeamCreate(const char* pSpriteName, int width)
 {
 	// Create a new entity with CBeam private data
-	CBeam* pBeam = GetClassPtr((CBeam*)nullptr);
-	pBeam->SetClassname("beam");
+	CBeam* pBeam = static_cast<CBeam*>(g_EntityList.Create("beam"));
 
 	pBeam->BeamInit(pSpriteName, width);
 

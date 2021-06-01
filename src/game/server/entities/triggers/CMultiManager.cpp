@@ -107,7 +107,7 @@ void CMultiManager::ManagerThink()
 
 CMultiManager* CMultiManager::Clone()
 {
-	CMultiManager* pMulti = GetClassPtr((CMultiManager*)nullptr);
+	CMultiManager* pMulti = static_cast<CMultiManager*>(g_EntityList.Create("multi_manager"));
 
 	edict_t* pEdict = pMulti->pev->pContainingEntity;
 	memcpy(pMulti->pev, pev, sizeof(*pev));

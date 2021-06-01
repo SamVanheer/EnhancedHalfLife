@@ -19,9 +19,8 @@ LINK_ENTITY_TO_CLASS(xen_ttrigger, CXenTreeTrigger);
 
 CXenTreeTrigger* CXenTreeTrigger::TriggerCreate(CBaseEntity* pOwner, const Vector& position)
 {
-	CXenTreeTrigger* pTrigger = GetClassPtr((CXenTreeTrigger*)nullptr);
+	CXenTreeTrigger* pTrigger = static_cast<CXenTreeTrigger*>(g_EntityList.Create("xen_ttrigger"));
 	pTrigger->SetAbsOrigin(position);
-	pTrigger->SetClassname("xen_ttrigger");
 	pTrigger->SetSolidType(Solid::Trigger);
 	pTrigger->SetMovetype(Movetype::None);
 	pTrigger->SetOwner(pOwner);

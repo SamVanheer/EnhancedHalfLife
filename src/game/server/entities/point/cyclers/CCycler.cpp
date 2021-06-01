@@ -24,7 +24,6 @@ void CCycler::GenericCyclerSpawn(const char* szModel, const Vector& vecMin, cons
 		return;
 	}
 
-	SetClassname("cycler");
 	PRECACHE_MODEL(szModel);
 	SetModel(szModel);
 

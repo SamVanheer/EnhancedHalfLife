@@ -89,7 +89,7 @@ CGib* CGibShooter::CreateGib()
 	if (CVAR_GET_FLOAT("violence_hgibs") == 0)
 		return nullptr;
 
-	CGib* pGib = GetClassPtr((CGib*)nullptr);
+	CGib* pGib = CGib::GibCreate();
 	pGib->Spawn("models/hgibs.mdl");
 	pGib->m_bloodColor = BLOOD_COLOR_RED;
 

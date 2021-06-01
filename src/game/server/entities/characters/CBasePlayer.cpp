@@ -2159,7 +2159,6 @@ void CBasePlayer::PostThink()
 
 void CBasePlayer::Spawn()
 {
-	SetClassname("player");
 	pev->health = 100;
 	pev->armorvalue = 0;
 	SetDamageMode(DamageMode::Aim);
@@ -2506,7 +2505,7 @@ void CBasePlayer::ImpulseCommands()
 		if (tr.flFraction != 1.0)
 		{// line hit something, so paint a decal
 			m_flNextDecalTime = gpGlobals->time + decalfrequency.value;
-			CSprayCan* pCan = GetClassPtr((CSprayCan*)nullptr);
+			auto pCan = static_cast<CSprayCan*>(g_EntityList.Create("spray_can"));
 			pCan->Spawn(this);
 		}
 
@@ -2685,7 +2684,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 
 		if (tr.flFraction != 1.0)
 		{// line hit something, so paint a decal
-			CBloodSplat* pBlood = GetClassPtr((CBloodSplat*)nullptr);
+			auto pBlood = static_cast<CBloodSplat*>(g_EntityList.Create("blood_splat"));
 			pBlood->Spawn(this);
 		}
 		break;

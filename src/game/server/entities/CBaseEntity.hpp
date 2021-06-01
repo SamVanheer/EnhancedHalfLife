@@ -22,6 +22,7 @@
 #include "saverestore.hpp"
 #include "globalstate.hpp"
 #include "ehandle.hpp"
+#include "EntityList.hpp"
 
 #include "CBaseEntity.generated.hpp"
 
@@ -794,28 +795,3 @@ inline bool IsNullEnt(CBaseEntity* ent) { return (ent == nullptr) || IsNullEnt(e
 #define SetBlocked(a) m_pfnBlocked = static_cast<ENTITYFUNCPTR>(a)
 
 #endif
-
-/**
-*	@brief Converts a entvars_t * to a class pointer. It will allocate the class and entity if necessary
-*/
-template <class T> T* GetClassPtr(T* a)
-{
-	entvars_t* pev = (entvars_t*)a;
-
-	// allocate entity if necessary
-	if (pev == nullptr)
-		pev = &g_engfuncs.pfnCreateEntity()->v;
-
-	// get the private data
-	a = (T*)CBaseEntity::InstanceOrNull(pev->pContainingEntity);
-
-	if (a == nullptr)
-	{
-		// allocate private data 
-		a = new T();
-		pev->pContainingEntity->pvPrivateData = a;
-		a->pev = pev;
-		a->Construct();
-	}
-	return a;
-}

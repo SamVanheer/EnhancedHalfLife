@@ -26,28 +26,28 @@ class CBaseEntity;
 class CBaseEntityFactory
 {
 protected:
-	CBaseEntityFactory(const char* mapClassName, const char* internalClassName, const char* canonicalMapClassName = nullptr);
+	CBaseEntityFactory(const char* mapClassName, const char* internalClassName, const char* aliasMapClassName = nullptr);
 
 public:
 	virtual ~CBaseEntityFactory();
 
-	const char* GetMapClassName() const { return m_MapClassName; }
+	const char* GetMapClassName() const { return m_mapClassName; }
 
-	const char* GetInternalClassName() const { return m_InternalClassName; }
+	const char* GetInternalClassName() const { return m_internalClassName; }
 
 	/**
 	*	@brief The name that maps refer to this entity by. On construction the name will be changed to the actual classname
 	*/
-	const char* GetCanonicalMapClassName() const { return m_CanonicalMapClassName; }
+	const char* GetAliasMapClassName() const { return m_aliasMapClassName; }
 
 	virtual CBaseEntity* CreateInstance() = 0;
 
 	virtual void DestroyInstance(CBaseEntity* entity) = 0;
 
 private:
-	const char* const m_MapClassName;
-	const char* const m_InternalClassName;
-	const char* const m_CanonicalMapClassName;
+	const char* const m_mapClassName;
+	const char* const m_internalClassName;
+	const char* const m_aliasMapClassName;
 };
 
 /**
@@ -58,8 +58,8 @@ template<typename TEntity>
 class CEntityFactory final : public CBaseEntityFactory
 {
 public:
-	CEntityFactory(const char* mapClassName, const char* internalClassName, const char* canonicalMapClassName = nullptr)
-		: CBaseEntityFactory(mapClassName, internalClassName, canonicalMapClassName)
+	CEntityFactory(const char* mapClassName, const char* internalClassName, const char* aliasMapClassName = nullptr)
+		: CBaseEntityFactory(mapClassName, internalClassName, aliasMapClassName)
 	{
 	}
 

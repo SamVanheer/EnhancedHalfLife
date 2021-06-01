@@ -208,7 +208,7 @@ int CSittingScientist::IdleSpeak()
 	// try to talk to any standing or sitting scientists nearby
 	if (CBaseEntity* pentFriend = FindNearestFriend(false); pentFriend && RANDOM_LONG(0, 1))
 	{
-		CTalkMonster* pTalkMonster = GetClassPtr((CTalkMonster*)pentFriend->pev);
+		CTalkMonster* pTalkMonster = static_cast<CTalkMonster*>(pentFriend);
 		pTalkMonster->SetAnswerQuestion(this);
 
 		IdleHeadTurn(pentFriend->GetAbsOrigin());

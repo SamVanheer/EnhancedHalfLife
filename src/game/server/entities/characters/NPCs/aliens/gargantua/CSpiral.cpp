@@ -49,7 +49,7 @@ CSpiral* CSpiral::Create(const Vector& origin, float height, float radius, float
 	if (duration <= 0)
 		return nullptr;
 
-	CSpiral* pSpiral = GetClassPtr((CSpiral*)nullptr);
+	CSpiral* pSpiral = static_cast<CSpiral*>(g_EntityList.Create("streak_spiral"));
 	pSpiral->Spawn();
 	pSpiral->pev->dmgtime = pSpiral->pev->nextthink;
 	pSpiral->SetAbsOrigin(origin);

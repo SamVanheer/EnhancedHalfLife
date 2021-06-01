@@ -125,9 +125,9 @@ void CCineMonster::Touch(CBaseEntity* pOther)
 {
 	/*
 		ALERT( at_aiconsole, "Cine Touch\n" );
-		if (m_pentTarget && OFFSET(pOther->pev) == OFFSET(m_pentTarget))
+		if (m_hTargetEnt && pOther == m_hTargetEnt)
 		{
-			CBaseMonster *pTarget = GetClassPtr((CBaseMonster *)VARS(m_pentTarget));
+			CBaseMonster *pTarget = m_hTargetEnt->MyMonsterPointer();
 			pTarget->m_monsterState == NPCState::Script;
 		}
 	*/

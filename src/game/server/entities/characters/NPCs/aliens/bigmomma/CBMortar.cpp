@@ -22,7 +22,6 @@ LINK_ENTITY_TO_CLASS(bmortar, CBMortar);
 void CBMortar::Spawn()
 {
 	SetMovetype(Movetype::Toss);
-	SetClassname("bmortar");
 
 	SetSolidType(Solid::BBox);
 	SetRenderMode(RenderMode::TransAlpha);
@@ -58,7 +57,7 @@ void CBMortar::Animate()
 
 CBMortar* CBMortar::Shoot(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity)
 {
-	CBMortar* pSpit = GetClassPtr((CBMortar*)nullptr);
+	auto pSpit = static_cast<CBMortar*>(g_EntityList.Create("bmortar"));
 	pSpit->Spawn();
 
 	pSpit->SetAbsOrigin(vecStart);

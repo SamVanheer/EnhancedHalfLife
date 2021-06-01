@@ -73,7 +73,7 @@ void CWorld::Precache()
 
 	///!!!LATER - do we want a sound ent in deathmatch? (sjb)
 	//pSoundEnt = CBaseEntity::Create( "soundent", vec3_origin, vec3_origin, this );
-	pSoundEnt = GetClassPtr((CSoundEnt*)nullptr);
+	pSoundEnt = static_cast<CSoundEnt*>(g_EntityList.Create("soundent"));
 	pSoundEnt->Spawn();
 
 	if (!pSoundEnt)

@@ -17,14 +17,14 @@
 
 #include "EntityDictionary.hpp"
 
-CBaseEntityFactory::CBaseEntityFactory(const char* mapClassName, const char* internalClassName, const char* canonicalMapClassName)
-	: m_MapClassName(mapClassName)
-	, m_InternalClassName(internalClassName)
-	, m_CanonicalMapClassName(canonicalMapClassName ? canonicalMapClassName : mapClassName)
+CBaseEntityFactory::CBaseEntityFactory(const char* mapClassName, const char* internalClassName, const char* aliasMapClassName)
+	: m_mapClassName(mapClassName)
+	, m_internalClassName(internalClassName)
+	, m_aliasMapClassName(aliasMapClassName ? aliasMapClassName : mapClassName)
 {
 	ASSERTSZ(mapClassName && *mapClassName, "Entity map classname must be valid");
 	ASSERTSZ(internalClassName && *internalClassName, "Entity internal classname must be valid");
-	ASSERTSZ(!canonicalMapClassName || *canonicalMapClassName, "Canoonical entity map classname must be either null or valid");
+	ASSERTSZ(!aliasMapClassName || *aliasMapClassName, "Alias entity map classname must be either null or valid");
 
 	GetEntityDictionary().Add(this);
 }
@@ -42,7 +42,7 @@ void CEntityDictionary::Add(CBaseEntityFactory* factory)
 		return;
 	}
 
-	const std::string_view mapClassName{factory->GetCanonicalMapClassName()};
+	const std::string_view mapClassName{factory->GetAliasMapClassName()};
 
 	if (auto it = m_Entities.find(mapClassName); it != m_Entities.end())
 	{
@@ -62,7 +62,7 @@ void CEntityDictionary::Remove(CBaseEntityFactory* factory)
 		return;
 	}
 
-	m_Entities.erase(factory->GetCanonicalMapClassName());
+	m_Entities.erase(factory->GetAliasMapClassName());
 }
 
 CBaseEntityFactory* CEntityDictionary::Find(const char* mapClassName) const

@@ -19,7 +19,6 @@ LINK_ENTITY_TO_CLASS(fireanddie, CFireAndDie);
 
 void CFireAndDie::Spawn()
 {
-	SetClassname("fireanddie");
 	// Don't call Precache() - it should be called on restore
 }
 

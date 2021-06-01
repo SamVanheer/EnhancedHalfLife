@@ -122,7 +122,7 @@ void ClientKill(edict_t* pEntity)
 
 void ClientPutInServer(edict_t* pEntity)
 {
-	CBasePlayer* pPlayer = GetClassPtr((CBasePlayer*)&pEntity->v);
+	CBasePlayer* pPlayer = static_cast<CBasePlayer*>(g_EntityList.Create("player", pEntity));
 	pPlayer->SetCustomDecalFrames(-1); // Assume none;
 
 	// Allocate a CBasePlayer for pev, and call spawn
@@ -272,7 +272,7 @@ void ClientCommand(edict_t* pEntity)
 	const char* pcmd = CMD_ARGV(0);
 	const char* pstr;
 
-	auto player = GetClassPtr<CBasePlayer>(reinterpret_cast<CBasePlayer*>(&pEntity->v));
+	auto player = static_cast<CBasePlayer*>(CBaseEntity::InstanceOrNull(pEntity));
 
 	if (AreStringsEqual(pcmd, "say"))
 	{

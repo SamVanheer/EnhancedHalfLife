@@ -290,7 +290,6 @@ void CGrenade::TumbleThink()
 void CGrenade::Spawn()
 {
 	SetMovetype(Movetype::Bounce);
-	SetClassname("grenade");
 
 	SetSolidType(Solid::BBox);
 
@@ -303,7 +302,7 @@ void CGrenade::Spawn()
 
 CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity)
 {
-	CGrenade* pGrenade = GetClassPtr((CGrenade*)nullptr);
+	CGrenade* pGrenade = static_cast<CGrenade*>(g_EntityList.Create("grenade"));
 	pGrenade->Spawn();
 	// contact grenades arc lower
 	pGrenade->pev->gravity = 0.5;// lower gravity since grenade is aerodynamic and engine doesn't know it.
@@ -329,7 +328,7 @@ CGrenade* CGrenade::ShootContact(CBaseEntity* pOwner, const Vector& vecStart, co
 
 CGrenade* CGrenade::ShootTimed(CBaseEntity* pOwner, const Vector& vecStart, const Vector& vecVelocity, float time)
 {
-	CGrenade* pGrenade = GetClassPtr((CGrenade*)nullptr);
+	CGrenade* pGrenade = static_cast<CGrenade*>(g_EntityList.Create("grenade"));
 	pGrenade->Spawn();
 	pGrenade->SetAbsOrigin(vecStart);
 	pGrenade->SetAbsVelocity(vecVelocity);

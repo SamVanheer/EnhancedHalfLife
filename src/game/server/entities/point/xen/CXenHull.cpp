@@ -19,12 +19,11 @@ LINK_ENTITY_TO_CLASS(xen_hull, CXenHull);
 
 CXenHull* CXenHull::CreateHull(CBaseEntity* source, const Vector& mins, const Vector& maxs, const Vector& offset)
 {
-	CXenHull* pHull = GetClassPtr((CXenHull*)nullptr);
+	CXenHull* pHull = static_cast<CXenHull*>(g_EntityList.Create("xen_hull"));
 
 	pHull->SetAbsOrigin(source->GetAbsOrigin() + offset);
 	pHull->SetModel(STRING(source->pev->model));
 	pHull->SetSolidType(Solid::BBox);
-	pHull->SetClassname("xen_hull");
 	pHull->SetMovetype(Movetype::None);
 	pHull->SetOwner(source);
 	pHull->SetSize(mins, maxs);

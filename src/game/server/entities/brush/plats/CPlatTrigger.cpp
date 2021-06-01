@@ -16,6 +16,8 @@
 #include "CFuncPlat.hpp"
 #include "CPlatTrigger.hpp"
 
+LINK_ENTITY_TO_CLASS(func_plat_trigger, CPlatTrigger);
+
 void CPlatTrigger::SpawnInsideTrigger(CFuncPlat* pPlatform)
 {
 	m_hPlatform = pPlatform;

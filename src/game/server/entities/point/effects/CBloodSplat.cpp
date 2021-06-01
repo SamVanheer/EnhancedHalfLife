@@ -15,7 +15,7 @@
 
 #include "CBloodSplat.hpp"
 
-//TODO: should tie this to an entity
+LINK_ENTITY_TO_CLASS(blood_splat, CBloodSplat);
 
 void CBloodSplat::Spawn(CBaseEntity* pOwner)
 {

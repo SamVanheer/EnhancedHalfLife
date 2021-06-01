@@ -65,7 +65,7 @@ void CFlockingFlyerFlock::SpawnFlock()
 
 	for (int iCount = 0; iCount < m_cFlockSize; iCount++)
 	{
-		CFlockingFlyer* pBoid = GetClassPtr((CFlockingFlyer*)nullptr);
+		auto pBoid = static_cast<CFlockingFlyer*>(g_EntityList.Create("monster_flyer"));
 
 		if (!pLeader)
 		{

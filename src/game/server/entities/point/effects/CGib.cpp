@@ -19,6 +19,13 @@ constexpr int GERMAN_GIB_COUNT = 4;
 constexpr int HUMAN_GIB_COUNT = 6;
 constexpr int ALIEN_GIB_COUNT = 4;
 
+LINK_ENTITY_TO_CLASS(gib, CGib);
+
+CGib* CGib::GibCreate()
+{
+	return static_cast<CGib*>(g_EntityList.Create("gib"));
+}
+
 void CGib::Spawn(const char* szGibModel)
 {
 	SetMovetype(Movetype::Bounce);
@@ -30,7 +37,6 @@ void CGib::Spawn(const char* szGibModel)
 	SetRenderMode(RenderMode::Normal);
 	SetRenderFX(RenderFX::None);
 	SetSolidType(Solid::SlideBox);/// hopefully this will fix the VELOCITY TOO LOW crap
-	SetClassname("gib");
 
 	SetModel(szGibModel);
 	SetSize(vec3_origin, vec3_origin);
@@ -144,7 +150,7 @@ void CGib::LimitVelocity()
 
 void CGib::SpawnHeadGib(CBaseEntity* pVictim)
 {
-	CGib* pGib = GetClassPtr((CGib*)nullptr);
+	CGib* pGib = CGib::GibCreate();
 
 	if (g_Language == LANGUAGE_GERMAN)
 	{
@@ -204,7 +210,7 @@ void CGib::SpawnRandomGibs(CBaseEntity* pVictim, int cGibs, bool human)
 {
 	for (int cSplat = 0; cSplat < cGibs; cSplat++)
 	{
-		CGib* pGib = GetClassPtr((CGib*)nullptr);
+		CGib* pGib = CGib::GibCreate();
 
 		if (g_Language == LANGUAGE_GERMAN)
 		{
@@ -288,7 +294,7 @@ void CGib::SpawnStickyGibs(CBaseEntity* pVictim, const Vector& vecOrigin, int cG
 
 	for (int i = 0; i < cGibs; i++)
 	{
-		CGib* pGib = GetClassPtr((CGib*)nullptr);
+		CGib* pGib = CGib::GibCreate();
 
 		pGib->Spawn("models/stickygib.mdl");
 		pGib->pev->body = RANDOM_LONG(0, 2);
