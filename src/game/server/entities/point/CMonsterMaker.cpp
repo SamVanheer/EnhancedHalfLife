@@ -45,7 +45,7 @@ void CMonsterMaker::Spawn()
 
 	m_cLiveChildren = 0;
 	Precache();
-	if (!IsStringNull(pev->targetname))
+	if (HasTargetname())
 	{
 		if (pev->spawnflags & SF_MONSTERMAKER_CYCLIC)
 		{
@@ -143,7 +143,7 @@ void CMonsterMaker::MakeMonster()
 	if (!IsStringNull(pev->netname))
 	{
 		// if I have a netname (overloaded), give the child monster that name as a targetname
-		pEntity->pev->targetname = pev->netname;
+		pEntity->SetTargetname(STRING(pev->netname));
 	}
 
 	m_cLiveChildren++;// count this monster

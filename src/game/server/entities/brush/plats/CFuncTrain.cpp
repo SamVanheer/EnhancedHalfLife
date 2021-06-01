@@ -53,7 +53,7 @@ void CFuncTrain::Use(const UseInfo& info)
 		pev->spawnflags |= SF_TRAIN_WAIT_RETRIGGER;
 		// Pop back to last target if it's available
 		if (CBaseEntity* last = m_hCurrentTarget; last)
-			pev->target = last->pev->targetname;
+			SetTarget(last->GetTargetname());
 		pev->nextthink = 0;
 		SetAbsVelocity(vec3_origin);
 		if (!IsStringNull(m_iszArrivedSound))
@@ -128,7 +128,7 @@ void CFuncTrain::Next()
 	if (CBaseEntity* pCurrentTarget = m_hCurrentTarget; pCurrentTarget && pCurrentTarget->pev->speed != 0)
 	{// don't copy speed from target if it is 0 (uninitialized)
 		pev->speed = pCurrentTarget->pev->speed;
-		ALERT(at_aiconsole, "Train %s speed to %4.2f\n", STRING(pev->targetname), pev->speed);
+		ALERT(at_aiconsole, "Train %s speed to %4.2f\n", GetTargetname(), pev->speed);
 	}
 	m_hCurrentTarget = pTarg;// keep track of this since path corners change our target for us.
 
@@ -175,7 +175,7 @@ void CFuncTrain::Activate()
 
 		SetAbsOrigin(pTarget->GetAbsOrigin() - (pev->mins + pev->maxs) * 0.5);
 
-		if (IsStringNull(pev->targetname))
+		if (!HasTargetname())
 		{	// not triggered, so start immediately
 			pev->nextthink = pev->ltime + 0.1;
 			SetThink(&CFuncTrain::Next);

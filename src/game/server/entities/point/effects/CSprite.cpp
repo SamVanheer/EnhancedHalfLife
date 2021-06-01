@@ -28,7 +28,7 @@ void CSprite::Spawn()
 	SetModel(STRING(pev->model));
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
-	if (!IsStringNull(pev->targetname) && !(pev->spawnflags & SF_SPRITE_STARTON))
+	if (HasTargetname() && !(pev->spawnflags & SF_SPRITE_STARTON))
 		TurnOff();
 	else
 		TurnOn();

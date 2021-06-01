@@ -26,7 +26,7 @@ void CDecal::Spawn()
 		return;
 	}
 
-	if (IsStringNull(pev->targetname))
+	if (!HasTargetname())
 	{
 		SetThink(&CDecal::StaticDecal);
 		// if there's no targetname, the decal will spray itself on as soon as the world is done spawning.

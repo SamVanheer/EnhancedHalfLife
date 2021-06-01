@@ -76,12 +76,12 @@ void CCineMonster::Spawn()
 #endif
 
 	// if no targetname, start now
-	if (IsStringNull(pev->targetname) || !IsStringNull(m_iszIdle))
+	if (!HasTargetname() || !IsStringNull(m_iszIdle))
 	{
 		SetThink(&CCineMonster::CineThink);
 		pev->nextthink = gpGlobals->time + 1.0;
 		// Wait to be used?
-		if (!IsStringNull(pev->targetname))
+		if (HasTargetname())
 			m_startTime = gpGlobals->time + 1E6;
 	}
 
@@ -265,7 +265,7 @@ void CCineMonster::PossessEntity()
 			//			pTarget->pev->flags &= ~FL_ONGROUND;
 			break;
 		}
-		//		ALERT( at_aiconsole, "\"%s\" found and used (INT: %s)\n", STRING( pTarget->pev->targetname ), IsBitSet(pev->spawnflags, SF_SCRIPT_NOINTERRUPT)?"No":"Yes" );
+		//		ALERT( at_aiconsole, "\"%s\" found and used (INT: %s)\n", pTarget->GetTargetname(), IsBitSet(pev->spawnflags, SF_SCRIPT_NOINTERRUPT)?"No":"Yes" );
 
 		pTarget->m_IdealMonsterState = NPCState::Script;
 		if (!IsStringNull(m_iszIdle))
@@ -284,12 +284,12 @@ void CCineMonster::CineThink()
 	if (FindEntity())
 	{
 		PossessEntity();
-		ALERT(at_aiconsole, "script \"%s\" using monster \"%s\"\n", STRING(pev->targetname), STRING(m_iszEntity));
+		ALERT(at_aiconsole, "script \"%s\" using monster \"%s\"\n", GetTargetname(), STRING(m_iszEntity));
 	}
 	else
 	{
 		CancelScript();
-		ALERT(at_aiconsole, "script \"%s\" can't find monster \"%s\"\n", STRING(pev->targetname), STRING(m_iszEntity));
+		ALERT(at_aiconsole, "script \"%s\" can't find monster \"%s\"\n", GetTargetname(), STRING(m_iszEntity));
 		pev->nextthink = gpGlobals->time + 1.0;
 	}
 }
@@ -305,7 +305,7 @@ bool CCineMonster::StartSequence(CBaseMonster* pTarget, string_t iszSeq, bool co
 	pTarget->pev->sequence = pTarget->LookupSequence(STRING(iszSeq));
 	if (pTarget->pev->sequence == -1)
 	{
-		ALERT(at_error, "%s: unknown scripted sequence \"%s\"\n", STRING(pTarget->pev->targetname), STRING(iszSeq));
+		ALERT(at_error, "%s: unknown scripted sequence \"%s\"\n", pTarget->GetTargetname(), STRING(iszSeq));
 		pTarget->pev->sequence = 0;
 		// return false;
 	}
@@ -313,7 +313,7 @@ bool CCineMonster::StartSequence(CBaseMonster* pTarget, string_t iszSeq, bool co
 #if 0
 	const char* s = !(pev->spawnflags & SF_SCRIPT_NOINTERRUPT) ? "Yes" : "No";
 
-	ALERT(at_console, "%s (%s): started \"%s\":INT:%s\n", STRING(pTarget->pev->targetname), pTarget->GetClassname(), STRING(iszSeq), s);
+	ALERT(at_console, "%s (%s): started \"%s\":INT:%s\n", pTarget->GetTargetname(), pTarget->GetClassname(), STRING(iszSeq), s);
 #endif
 
 	pTarget->pev->frame = 0;
@@ -422,7 +422,7 @@ void CCineMonster::CancelScript()
 {
 	ALERT(at_aiconsole, "Cancelling script: %s\n", STRING(m_iszPlay));
 
-	if (IsStringNull(pev->targetname))
+	if (!HasTargetname())
 	{
 		ScriptEntityCancel(this);
 		return;
@@ -430,7 +430,7 @@ void CCineMonster::CancelScript()
 
 	CBaseEntity* pCineTarget = nullptr;
 
-	while ((pCineTarget = UTIL_FindEntityByTargetname(pCineTarget, STRING(pev->targetname))) != nullptr)
+	while ((pCineTarget = UTIL_FindEntityByTargetname(pCineTarget, GetTargetname())) != nullptr)
 	{
 		ScriptEntityCancel(pCineTarget);
 	}
@@ -440,7 +440,7 @@ void CCineMonster::DelayStart(int state)
 {
 	CBaseEntity* pCine = nullptr;
 
-	while ((pCine = UTIL_FindEntityByTargetname(pCine, STRING(pev->targetname))) != nullptr)
+	while ((pCine = UTIL_FindEntityByTargetname(pCine, GetTargetname())) != nullptr)
 	{
 		if (pCine->ClassnameIs("scripted_sequence"))
 		{

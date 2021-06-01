@@ -80,7 +80,7 @@ CBaseEntity* CGraph::LinkEntForLink(CLink* pLink, CNode* pNode)
 
 		CBaseEntity* pSearch = nullptr;// start search at the top of the ent list.
 
-		while ((pSearch = UTIL_FindEntityByTarget(pSearch, STRING(pLinkEnt->pev->targetname))) != nullptr) // find the button or trigger
+		while ((pSearch = UTIL_FindEntityByTarget(pSearch, pLinkEnt->GetTargetname())) != nullptr) // find the button or trigger
 		{
 			if (pSearch->ClassnameIs("func_button") || pSearch->ClassnameIs("func_rot_button"))
 			{// only buttons are handled right now. 
@@ -1102,7 +1102,7 @@ int CGraph::LinkVisibleNodes(CLink* pLinkPool, FSFile& file, int* piBadNode)
 
 				if (auto linkEnt = pLinkPool[cTotalLinks].m_hLinkEnt.Get(); !IsNullEnt(linkEnt))
 				{// record info about the ent in the way, if any.
-					file.Printf("  Entity on connection: %s, name: %s  Model: %s", linkEnt->GetClassname(), STRING(linkEnt->pev->targetname), STRING(linkEnt->pev->model));
+					file.Printf("  Entity on connection: %s, name: %s  Model: %s", linkEnt->GetClassname(), linkEnt->GetTargetname(), STRING(linkEnt->pev->model));
 				}
 
 				file.Printf("\n");

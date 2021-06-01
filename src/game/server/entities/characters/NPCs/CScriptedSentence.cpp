@@ -78,7 +78,7 @@ void CScriptedSentence::Spawn()
 
 	m_active = true;
 	// if no targetname, start now
-	if (IsStringNull(pev->targetname))
+	if (!HasTargetname())
 	{
 		SetThink(&CScriptedSentence::FindThink);
 		pev->nextthink = gpGlobals->time + 1.0;
@@ -132,7 +132,7 @@ void CScriptedSentence::FindThink()
 void CScriptedSentence::DelayThink()
 {
 	m_active = true;
-	if (IsStringNull(pev->targetname))
+	if (!HasTargetname())
 		pev->nextthink = gpGlobals->time + 0.1;
 	SetThink(&CScriptedSentence::FindThink);
 }
@@ -164,7 +164,7 @@ CBaseMonster* CScriptedSentence::FindEntity()
 		{
 			if (AcceptableSpeaker(pMonster))
 				return pMonster;
-			//			ALERT( at_console, "%s (%s), not acceptable\n", pMonster->GetClassname(), STRING(pMonster->pev->targetname) );
+			//			ALERT( at_console, "%s (%s), not acceptable\n", pMonster->GetClassname(), pMonster->GetTargetname() );
 		}
 	}
 

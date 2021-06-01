@@ -77,7 +77,7 @@ void CFuncTrackTrain::Blocked(CBaseEntity* pOther)
 	else
 		pOther->SetAbsVelocity((pOther->GetAbsOrigin() - GetAbsOrigin()).Normalize() * pev->dmg);
 
-	ALERT(at_aiconsole, "TRAIN(%s): Blocked by %s (dmg:%.2f)\n", STRING(pev->targetname), pOther->GetClassname(), pev->dmg);
+	ALERT(at_aiconsole, "TRAIN(%s): Blocked by %s (dmg:%.2f)\n", GetTargetname(), pOther->GetClassname(), pev->dmg);
 	if (pev->dmg <= 0)
 		return;
 	// we can't hurt this thing, so we're not concerned with it
@@ -122,7 +122,7 @@ void CFuncTrackTrain::Use(const UseInfo& info)
 		}
 		pev->speed = m_speed * delta;
 		Next();
-		ALERT(at_aiconsole, "TRAIN(%s), speed to %.2f\n", STRING(pev->targetname), pev->speed);
+		ALERT(at_aiconsole, "TRAIN(%s), speed to %.2f\n", GetTargetname(), pev->speed);
 	}
 }
 
@@ -189,7 +189,7 @@ void CFuncTrackTrain::Next()
 {
 	if (!pev->speed)
 	{
-		ALERT(at_aiconsole, "TRAIN(%s): Speed is 0\n", STRING(pev->targetname));
+		ALERT(at_aiconsole, "TRAIN(%s): Speed is 0\n", GetTargetname());
 		StopSound();
 		return;
 	}
@@ -202,7 +202,7 @@ void CFuncTrackTrain::Next()
 	*/
 	if (!m_hPath)
 	{
-		ALERT(at_aiconsole, "TRAIN(%s): Lost path\n", STRING(pev->targetname));
+		ALERT(at_aiconsole, "TRAIN(%s): Lost path\n", GetTargetname());
 		StopSound();
 		return;
 	}
@@ -285,7 +285,7 @@ void CFuncTrackTrain::Next()
 				if (pFire->pev->speed != 0)
 				{// don't copy speed from target if it is 0 (uninitialized)
 					pev->speed = pFire->pev->speed;
-					ALERT(at_aiconsole, "TrackTrain %s speed to %4.2f\n", STRING(pev->targetname), pev->speed);
+					ALERT(at_aiconsole, "TrackTrain %s speed to %4.2f\n", GetTargetname(), pev->speed);
 				}
 			}
 
@@ -326,7 +326,7 @@ void CFuncTrackTrain::DeadEnd()
 	// Fire the dead-end target if there is one
 	CPathTrack* pTrack = m_hPath;
 
-	ALERT(at_aiconsole, "TRAIN(%s): Dead end ", STRING(pev->targetname));
+	ALERT(at_aiconsole, "TRAIN(%s): Dead end ", GetTargetname());
 	// Find the dead end path node
 	// HACKHACK -- This is bugly, but the train can actually stop moving at a different node depending on its speed
 	// so we have to traverse the list to it's end.
@@ -360,7 +360,7 @@ void CFuncTrackTrain::DeadEnd()
 	pev->avelocity = vec3_origin;
 	if (pTrack)
 	{
-		ALERT(at_aiconsole, "at %s\n", STRING(pTrack->pev->targetname));
+		ALERT(at_aiconsole, "at %s\n", pTrack->GetTargetname());
 		if (!IsStringNull(pTrack->pev->netname))
 			FireTargets(STRING(pTrack->pev->netname), this, this, UseType::Toggle, 0);
 	}
@@ -465,7 +465,7 @@ void CFuncTrackTrain::NearestPath()
 		return;
 	}
 
-	ALERT(at_aiconsole, "TRAIN: %s, Nearest track is %s\n", STRING(pev->targetname), STRING(pNearest->pev->targetname));
+	ALERT(at_aiconsole, "TRAIN: %s, Nearest track is %s\n", GetTargetname(), pNearest->GetTargetname());
 	// If I'm closer to the next path_track on this path, then it's my real path
 	pTrack = ((CPathTrack*)pNearest)->GetNext();
 	if (pTrack)

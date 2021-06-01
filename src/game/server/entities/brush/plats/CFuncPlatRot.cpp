@@ -30,7 +30,7 @@ void CFuncPlatRot::SetupRotation()
 		m_start = vec3_origin;
 		m_end = vec3_origin;
 	}
-	if (!IsStringNull(pev->targetname))	// Start at top
+	if (HasTargetname())	// Start at top
 	{
 		SetAbsAngles(m_end);
 	}

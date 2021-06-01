@@ -437,7 +437,7 @@ public:
 	virtual bool IsAlive() { return (pev->deadflag == DeadFlag::No) && pev->health > 0; }
 	virtual bool IsBSPModel() { return GetSolidType() == Solid::BSP || GetMovetype() == Movetype::PushStep; }
 	virtual bool ReflectGauss() { return (IsBSPModel() && !pev->takedamage); }
-	virtual bool HasTarget(string_t targetname) { return AreStringsEqual(STRING(targetname), STRING(pev->targetname)); }
+	virtual bool HasTarget(string_t targetname) { return AreStringsEqual(STRING(targetname), GetTargetname()); }
 	virtual bool IsInWorld();
 	virtual	bool IsPlayer() { return false; }
 	virtual bool IsNetClient() { return false; }
@@ -500,6 +500,21 @@ public:
 	void SetClassname(const char* classname)
 	{
 		pev->classname = ALLOC_STRING(classname);
+	}
+
+	bool HasTargetname() const { return !IsStringNull(pev->targetname); }
+
+	const char* GetTargetname() const { return STRING(pev->targetname); }
+
+	void SetTargetname(const char* targetname)
+	{
+		pev->targetname = ALLOC_STRING(targetname);
+	}
+
+	//TODO: SetTargetname("") should do the same
+	void ClearTargetname()
+	{
+		pev->targetname = iStringNull;
 	}
 
 	const Vector& GetAbsOrigin() { return pev->origin; }

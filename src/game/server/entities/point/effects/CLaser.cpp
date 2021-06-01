@@ -47,7 +47,7 @@ void CLaser::Spawn()
 	if (auto sprite = m_hSprite.Get(); sprite)
 		sprite->SetTransparency(RenderMode::Glow, GetRenderColor(), GetRenderAmount(), GetRenderFX());
 
-	if (!IsStringNull(pev->targetname) && !(pev->spawnflags & SF_BEAM_STARTON))
+	if (HasTargetname() && !(pev->spawnflags & SF_BEAM_STARTON))
 		TurnOff();
 	else
 		TurnOn();

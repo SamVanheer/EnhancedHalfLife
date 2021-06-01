@@ -314,10 +314,10 @@ void CTentacle::Test()
 
 void CTentacle::Cycle()
 {
-	// ALERT( at_console, "%s %.2f %d %d\n", STRING( pev->targetname ), GetAbsOrigin().z, m_MonsterState, m_IdealMonsterState );
+	// ALERT( at_console, "%s %.2f %d %d\n", GetTargetname(), GetAbsOrigin().z, m_MonsterState, m_IdealMonsterState );
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	// ALERT( at_console, "%s %d %d %d %f %f\n", STRING( pev->targetname ), pev->sequence, m_iGoalAnim, m_iDir, pev->framerate, pev->health );
+	// ALERT( at_console, "%s %d %d %d %f %f\n", GetTargetname(), pev->sequence, m_iGoalAnim, m_iDir, pev->framerate, pev->health );
 
 	if (m_MonsterState == NPCState::Script || m_IdealMonsterState == NPCState::Script)
 	{
@@ -404,7 +404,7 @@ void CTentacle::Cycle()
 
 	if (m_fSequenceFinished)
 	{
-		// ALERT( at_console, "%s done %d %d\n", STRING( pev->targetname ), pev->sequence, m_iGoalAnim );
+		// ALERT( at_console, "%s done %d %d\n", GetTargetname(), pev->sequence, m_iGoalAnim );
 		if (pev->health <= 1)
 		{
 			m_iGoalAnim = TENTACLE_ANIM_Pit_Idle;
@@ -555,7 +555,7 @@ void CTentacle::Cycle()
 
 void CTentacle::CommandUse(const UseInfo& info)
 {
-	// ALERT( at_console, "%s triggered %d\n", STRING( pev->targetname ), useType ); 
+	// ALERT( at_console, "%s triggered %d\n", GetTargetname(), useType ); 
 	switch (info.GetUseType())
 	{
 	case UseType::Off:

@@ -78,7 +78,7 @@ void CCineAI::PossessEntity()
 			break;
 		}
 
-		ALERT(at_aiconsole, "\"%s\" found and used\n", STRING(pTarget->pev->targetname));
+		ALERT(at_aiconsole, "\"%s\" found and used\n", pTarget->GetTargetname());
 
 		pTarget->m_IdealMonsterState = NPCState::Script;
 
@@ -118,7 +118,7 @@ bool CCineAI::StartSequence(CBaseMonster* pTarget, string_t iszSeq, bool complet
 
 	if (pTarget->pev->sequence == -1)
 	{
-		ALERT(at_error, "%s: unknown aiscripted sequence \"%s\"\n", STRING(pTarget->pev->targetname), STRING(iszSeq));
+		ALERT(at_error, "%s: unknown aiscripted sequence \"%s\"\n", pTarget->GetTargetname(), STRING(iszSeq));
 		pTarget->pev->sequence = 0;
 		// return false;
 	}

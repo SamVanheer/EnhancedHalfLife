@@ -45,7 +45,7 @@ void CLight::KeyValue(KeyValueData* pkvd)
 
 void CLight::Spawn()
 {
-	if (IsStringNull(pev->targetname))
+	if (!HasTargetname())
 	{       // inert light
 		UTIL_RemoveNow(this);
 		return;

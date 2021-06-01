@@ -77,7 +77,7 @@ void CMultiSource::Use(const UseInfo& info)
 	// 
 	if (IsTriggered(info.GetActivator()))
 	{
-		ALERT(at_aiconsole, "Multisource %s enabled (%d inputs)\n", STRING(pev->targetname), m_iTotal);
+		ALERT(at_aiconsole, "Multisource %s enabled (%d inputs)\n", GetTargetname(), m_iTotal);
 		UseType useType = UseType::Toggle;
 		if (!IsStringNull(m_globalstate))
 			useType = UseType::On;
@@ -121,7 +121,7 @@ void CMultiSource::Register()
 
 	CBaseEntity* pTarget = nullptr;
 
-	while ((pTarget = UTIL_FindEntityByTarget(pTarget, STRING(pev->targetname))) != nullptr && (m_iTotal < MS_MAX_TARGETS))
+	while ((pTarget = UTIL_FindEntityByTarget(pTarget, GetTargetname())) != nullptr && (m_iTotal < MS_MAX_TARGETS))
 	{
 		m_rgEntities[m_iTotal++] = pTarget;
 	}
@@ -130,7 +130,7 @@ void CMultiSource::Register()
 
 	while ((pTarget = UTIL_FindEntityByClassname(pTarget, "multi_manager")) != nullptr && (m_iTotal < MS_MAX_TARGETS))
 	{
-		if (pTarget->HasTarget(pev->targetname))
+		if (pTarget->HasTarget(MAKE_STRING(GetTargetname())))
 		{
 			m_rgEntities[m_iTotal++] = pTarget;
 		}

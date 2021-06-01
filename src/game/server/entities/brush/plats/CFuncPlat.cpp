@@ -63,7 +63,7 @@ void CFuncPlat::Spawn()
 
 	// If this platform is the target of some button, it starts at the TOP position,
 	// and is brought down by that button.  Otherwise, it starts at BOTTOM.
-	if (!IsStringNull(pev->targetname))
+	if (HasTargetname())
 	{
 		SetAbsOrigin(m_vecPosition1);
 		m_toggle_state = ToggleState::AtTop;

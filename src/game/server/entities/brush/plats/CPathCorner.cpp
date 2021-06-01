@@ -30,7 +30,7 @@ void CPathCorner::KeyValue(KeyValueData* pkvd)
 
 void CPathCorner::Spawn()
 {
-	ASSERTSZ(!IsStringNull(pev->targetname), "path_corner without a targetname");
+	ASSERTSZ(HasTargetname(), "path_corner without a targetname");
 }
 
 #if 0
