@@ -18,7 +18,7 @@
 #include "CGrenade.hpp"
 #include "CMortar.generated.hpp"
 
-class EHL_CLASS() CMortar : public CGrenade
+class EHL_CLASS(EntityName=monster_mortar) CMortar : public CGrenade
 {
 	EHL_GENERATED_BODY()
 

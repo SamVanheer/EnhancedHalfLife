@@ -15,8 +15,6 @@
 
 #include "CTriggerPush.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_push, CTriggerPush);
-
 void CTriggerPush::KeyValue(KeyValueData* pkvd)
 {
 	CBaseTrigger::KeyValue(pkvd);

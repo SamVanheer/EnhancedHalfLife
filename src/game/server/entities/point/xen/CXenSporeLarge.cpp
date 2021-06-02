@@ -16,8 +16,6 @@
 #include "CXenHull.hpp"
 #include "CXenSporeLarge.hpp"
 
-LINK_ENTITY_TO_CLASS(xen_spore_large, CXenSporeLarge);
-
 /**
 *	@brief I just eyeballed these -- fill in hulls for the legs
 */

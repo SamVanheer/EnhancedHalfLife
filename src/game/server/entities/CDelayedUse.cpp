@@ -15,8 +15,6 @@
 
 #include "CDelayedUse.hpp"
 
-LINK_ENTITY_TO_CLASS(DelayedUse, CDelayedUse);
-
 void CDelayedUse::DelayThink()
 {
 	// The use type is cached (and stashed) in pev->button

@@ -16,8 +16,6 @@
 #include "CFlockingFlyer.hpp"
 #include "CFlockingFlyerFlock.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_flyer_flock, CFlockingFlyerFlock);
-
 void CFlockingFlyerFlock::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "iFlockSize"))

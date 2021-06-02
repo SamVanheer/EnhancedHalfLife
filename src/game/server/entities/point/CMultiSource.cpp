@@ -15,8 +15,6 @@
 
 #include "CMultiSource.hpp"
 
-LINK_ENTITY_TO_CLASS(multisource, CMultiSource);
-
 void CMultiSource::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "style") ||

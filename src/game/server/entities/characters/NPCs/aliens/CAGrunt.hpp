@@ -62,7 +62,7 @@ constexpr int AGRUNT_MELEE_DIST = 100;
 /**
 *	@brief Dominant, warlike alien grunt monster
 */
-class EHL_CLASS() CAGrunt : public CSquadMonster
+class EHL_CLASS(EntityName=monster_alien_grunt) CAGrunt : public CSquadMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -16,8 +16,6 @@
 #include "CRevertSaved.hpp"
 #include "shake.hpp"
 
-LINK_ENTITY_TO_CLASS(player_loadsaved, CRevertSaved);
-
 void CRevertSaved::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "duration"))

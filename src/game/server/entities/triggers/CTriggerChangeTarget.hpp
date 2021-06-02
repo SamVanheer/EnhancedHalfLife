@@ -22,7 +22,7 @@
 /**
 *	@brief this is a really bad idea.
 */
-class EHL_CLASS() CTriggerChangeTarget : public CBaseEntity
+class EHL_CLASS(EntityName=trigger_changetarget) CTriggerChangeTarget : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

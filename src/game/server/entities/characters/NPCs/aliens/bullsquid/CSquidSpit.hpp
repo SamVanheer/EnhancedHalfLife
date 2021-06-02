@@ -21,7 +21,7 @@
 //=========================================================
 // Bullsquid's spit projectile
 //=========================================================
-class EHL_CLASS() CSquidSpit : public CBaseEntity
+class EHL_CLASS(EntityName=squidspit) CSquidSpit : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

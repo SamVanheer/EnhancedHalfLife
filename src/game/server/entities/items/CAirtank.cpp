@@ -15,8 +15,6 @@
 
 #include "CAirtank.hpp"
 
-LINK_ENTITY_TO_CLASS(item_airtank, CAirtank);
-
 void CAirtank::Spawn()
 {
 	Precache();

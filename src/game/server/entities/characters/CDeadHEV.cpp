@@ -26,8 +26,6 @@ void CDeadHEV::KeyValue(KeyValueData* pkvd)
 		CBaseMonster::KeyValue(pkvd);
 }
 
-LINK_ENTITY_TO_CLASS(monster_hevsuit_dead, CDeadHEV);
-
 void CDeadHEV::Spawn()
 {
 	PRECACHE_MODEL("models/player.mdl");

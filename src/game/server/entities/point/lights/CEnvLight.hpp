@@ -18,7 +18,7 @@
 #include "CLight.hpp"
 #include "CEnvLight.generated.hpp"
 
-class EHL_CLASS() CEnvLight : public CLight
+class EHL_CLASS(EntityName=light_environment) CEnvLight : public CLight
 {
 	EHL_GENERATED_BODY()
 

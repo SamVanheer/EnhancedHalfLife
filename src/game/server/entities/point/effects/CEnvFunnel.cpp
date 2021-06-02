@@ -15,8 +15,6 @@
 
 #include "CEnvFunnel.hpp"
 
-LINK_ENTITY_TO_CLASS(env_funnel, CEnvFunnel);
-
 void CEnvFunnel::Precache()
 {
 	m_iSprite = PRECACHE_MODEL("sprites/flare6.spr");

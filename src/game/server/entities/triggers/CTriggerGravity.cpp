@@ -15,8 +15,6 @@
 
 #include "CTriggerGravity.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_gravity, CTriggerGravity);
-
 void CTriggerGravity::Spawn()
 {
 	InitTrigger();

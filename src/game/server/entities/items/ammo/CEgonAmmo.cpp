@@ -14,5 +14,3 @@
 ****/
 
 #include "CEgonAmmo.hpp"
-
-LINK_ENTITY_TO_CLASS(ammo_egonclip, CEgonAmmo);

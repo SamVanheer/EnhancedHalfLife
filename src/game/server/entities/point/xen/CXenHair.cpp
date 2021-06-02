@@ -15,8 +15,6 @@
 
 #include "CXenHair.hpp"
 
-LINK_ENTITY_TO_CLASS(xen_hair, CXenHair);
-
 void CXenHair::Spawn()
 {
 	Precache();

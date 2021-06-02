@@ -18,7 +18,7 @@
 #include "CBaseToggle.hpp"
 #include "CMomentaryDoor.generated.hpp"
 
-class EHL_CLASS() CMomentaryDoor : public CBaseToggle
+class EHL_CLASS(EntityName=momentary_door) CMomentaryDoor : public CBaseToggle
 {
 	EHL_GENERATED_BODY()
 

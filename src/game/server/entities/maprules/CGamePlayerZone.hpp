@@ -22,7 +22,7 @@
 *	@brief players in the zone fire my target when I'm fired
 *	@details TODO: Needs master?
 */
-class EHL_CLASS() CGamePlayerZone : public CRuleBrushEntity
+class EHL_CLASS(EntityName=game_zone_player) CGamePlayerZone : public CRuleBrushEntity
 {
 	EHL_GENERATED_BODY()
 

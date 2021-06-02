@@ -23,12 +23,10 @@
 #include "client.hpp"
 #include "dll_functions.hpp"
 #include "CCorpse.hpp"
-#include "CBaseDMStart.hpp"
+#include "spawnpoints/spawnpoints.hpp"
 #include "effects/CMessage.hpp"
 
 extern DLL_GLOBAL	int			gDisplayTitle;
-
-LINK_ENTITY_TO_CLASS(worldspawn, CWorld);
 
 constexpr int SF_WORLD_DARK = 0x0001;		//!< Fade from black at startup
 constexpr int SF_WORLD_TITLE = 0x0002;		//!< Display game title at startup

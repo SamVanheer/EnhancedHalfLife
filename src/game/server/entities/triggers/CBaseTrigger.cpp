@@ -15,9 +15,6 @@
 
 #include "CBaseTrigger.hpp"
 
-//TODO: is this even needed? there's no spawn method for this so it just creates an empty entity
-LINK_ENTITY_TO_CLASS(trigger, CBaseTrigger);
-
 void CBaseTrigger::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "damage"))

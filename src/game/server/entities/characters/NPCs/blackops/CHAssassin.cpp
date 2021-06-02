@@ -17,8 +17,6 @@
 #include "CHAssassin.hpp"
 #include "CGrenade.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_human_assassin, CHAssassin);
-
 void CHAssassin::DeathSound()
 {
 }

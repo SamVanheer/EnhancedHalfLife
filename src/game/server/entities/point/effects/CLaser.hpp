@@ -20,7 +20,7 @@
 
 class CSprite;
 
-class EHL_CLASS() CLaser : public CBeam
+class EHL_CLASS(EntityName=env_laser) CLaser : public CBeam
 {
 	EHL_GENERATED_BODY()
 

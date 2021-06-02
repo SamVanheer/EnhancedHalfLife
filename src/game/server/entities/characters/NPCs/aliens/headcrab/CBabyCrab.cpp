@@ -15,8 +15,6 @@
 
 #include "CBabyCrab.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_babycrab, CBabyCrab);
-
 void CBabyCrab::Spawn()
 {
 	CHeadCrab::Spawn();

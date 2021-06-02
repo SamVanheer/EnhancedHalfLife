@@ -15,8 +15,6 @@
 
 #include "CWreckage.hpp"
 
-LINK_ENTITY_TO_CLASS(cycler_wreckage, CWreckage);
-
 void CWreckage::Spawn()
 {
 	SetSolidType(Solid::Not);

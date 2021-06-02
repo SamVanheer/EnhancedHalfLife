@@ -15,8 +15,6 @@
 
 #include "CControllerZapBall.hpp"
 
-LINK_ENTITY_TO_CLASS(controller_energy_ball, CControllerZapBall);
-
 void CControllerZapBall::Spawn()
 {
 	Precache();

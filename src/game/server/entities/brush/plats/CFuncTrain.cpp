@@ -17,8 +17,6 @@
 #include "CFuncTrain.hpp"
 #include "CPathCorner.hpp"
 
-LINK_ENTITY_TO_CLASS(func_train, CFuncTrain);
-
 void CFuncTrain::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "sounds"))

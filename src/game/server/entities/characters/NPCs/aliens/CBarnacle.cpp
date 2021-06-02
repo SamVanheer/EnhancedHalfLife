@@ -15,8 +15,6 @@
 
 #include "CBarnacle.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_barnacle, CBarnacle);
-
 int	CBarnacle::Classify()
 {
 	return	CLASS_ALIEN_MONSTER;

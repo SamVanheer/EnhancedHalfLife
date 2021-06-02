@@ -16,8 +16,6 @@
 #include "animation.hpp"
 #include "CWeaponCycler.hpp"
 
-LINK_ENTITY_TO_CLASS(cycler_weapon, CWeaponCycler);
-
 void CWeaponCycler::Spawn()
 {
 	SetSolidType(Solid::SlideBox);

@@ -36,7 +36,7 @@
 *	"speed"			movement speed (100 default)
 *	"wait"			wait before returning (0 default, -1 = never return)
 */
-class EHL_CLASS() CRotDoor : public CBaseDoor
+class EHL_CLASS(EntityName=func_door_rotating) CRotDoor : public CBaseDoor
 {
 	EHL_GENERATED_BODY()
 

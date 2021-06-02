@@ -14,5 +14,3 @@
 ****/
 
 #include "CItemSuit.hpp"
-
-LINK_ENTITY_TO_CLASS(item_suit, CItemSuit);

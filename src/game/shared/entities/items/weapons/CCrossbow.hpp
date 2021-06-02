@@ -34,7 +34,7 @@ enum crossbow_e
 	CROSSBOW_HOLSTER2,	// empty
 };
 
-class EHL_CLASS() CCrossbow : public CBaseWeapon
+class EHL_CLASS(EntityName=weapon_crossbow) CCrossbow : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

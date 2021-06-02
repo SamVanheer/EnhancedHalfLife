@@ -19,8 +19,6 @@ constexpr int GERMAN_GIB_COUNT = 4;
 constexpr int HUMAN_GIB_COUNT = 6;
 constexpr int ALIEN_GIB_COUNT = 4;
 
-LINK_ENTITY_TO_CLASS(gib, CGib);
-
 CGib* CGib::GibCreate()
 {
 	return static_cast<CGib*>(g_EntityList.Create("gib"));

@@ -31,7 +31,7 @@ enum class RoachState
 /**
 *	@brief cockroach
 */
-class EHL_CLASS() CRoach : public CBaseMonster
+class EHL_CLASS(EntityName=monster_cockroach) CRoach : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

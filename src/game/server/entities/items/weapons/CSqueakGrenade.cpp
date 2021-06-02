@@ -15,8 +15,6 @@
 
 #include "CSqueakGrenade.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_snark, CSqueakGrenade);
-
 constexpr float SQUEEK_DETONATE_DELAY = 15.0;
 
 int CSqueakGrenade::Classify()

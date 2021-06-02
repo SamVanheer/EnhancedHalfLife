@@ -24,7 +24,7 @@ constexpr int	SF_GENERICMONSTER_NOTSOLID = 4;
 /**
 *	@brief purely for scripted sequence work.
 */
-class EHL_CLASS() CGenericMonster : public CBaseMonster
+class EHL_CLASS(EntityName=monster_generic) CGenericMonster : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

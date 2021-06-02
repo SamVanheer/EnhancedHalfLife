@@ -15,8 +15,6 @@
 
 #include "CTentacle.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_tentacle, CTentacle);
-
 // stike sounds
 constexpr int TE_NONE = -1;
 constexpr int TE_SILO = 0;

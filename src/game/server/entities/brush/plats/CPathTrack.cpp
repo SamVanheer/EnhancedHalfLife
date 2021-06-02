@@ -15,8 +15,6 @@
 
 #include "CPathTrack.hpp"
 
-LINK_ENTITY_TO_CLASS(path_track, CPathTrack);
-
 void CPathTrack::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "altpath"))

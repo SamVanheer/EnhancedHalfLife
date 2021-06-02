@@ -23,7 +23,7 @@ class CBeam;
 constexpr int SF_APACHE_WAITFORTRIGGER = 0x04 | 0x40; // UNDONE: Fix!
 constexpr int SF_NOWRECKAGE = 0x08;
 
-class EHL_CLASS() CApache : public CBaseMonster
+class EHL_CLASS(EntityName=monster_apache) CApache : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

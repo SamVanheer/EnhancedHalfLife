@@ -21,7 +21,7 @@
 /**
 *	@brief when triggered, spawns a monster_human_grunt repelling down a line.
 */
-class EHL_CLASS() CHGruntRepel : public CBaseMonster
+class EHL_CLASS(EntityName=monster_grunt_repel) CHGruntRepel : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

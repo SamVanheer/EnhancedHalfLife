@@ -15,8 +15,6 @@
 
 #include "CFuncTrackTrain.hpp"
 
-LINK_ENTITY_TO_CLASS(func_tracktrain, CFuncTrackTrain);
-
 void CFuncTrackTrain::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "wheels"))

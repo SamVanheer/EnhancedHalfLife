@@ -15,9 +15,6 @@
 
 #include "CISlave.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_alien_slave, CISlave);
-LINK_ENTITY_TO_CLASS(monster_vortigaunt, CISlave);
-
 const char* CISlave::pAttackHitSounds[] =
 {
 	"zombie/claw_strike1.wav",

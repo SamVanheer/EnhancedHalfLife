@@ -22,7 +22,7 @@ constexpr int SF_SPRITE_STARTON = 0x0001;
 constexpr int SF_SPRITE_ONCE = 0x0002;
 constexpr int SF_SPRITE_TEMPORARY = 0x8000;
 
-class EHL_CLASS() CSprite : public CPointEntity
+class EHL_CLASS(EntityName=env_sprite) CSprite : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

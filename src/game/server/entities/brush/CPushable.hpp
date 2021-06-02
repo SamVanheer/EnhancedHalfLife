@@ -21,7 +21,7 @@
 // func_pushable (it's also func_breakable, so don't collide with those flags)
 constexpr int SF_PUSH_BREAKABLE = 128;
 
-class EHL_CLASS() CPushable : public CBreakable
+class EHL_CLASS(EntityName=func_pushable) CPushable : public CBreakable
 {
 	EHL_GENERATED_BODY()
 

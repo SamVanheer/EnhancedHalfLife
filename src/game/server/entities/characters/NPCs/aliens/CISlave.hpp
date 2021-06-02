@@ -37,7 +37,7 @@ constexpr int SF_ISLAVE_IS_REVIVED_SLAVE = 1 << 0;
 /**
 *	@brief Alien slave monster
 */
-class EHL_CLASS() CISlave : public CSquadMonster
+class EHL_CLASS(EntityName=monster_alien_slave, EntityNameAliases=[monster_vortigaunt]) CISlave : public CSquadMonster
 {
 	EHL_GENERATED_BODY()
 

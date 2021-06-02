@@ -22,7 +22,7 @@ constexpr int WEAPONSTRIP_REMOVEWEAPONS = 1 << 0;
 constexpr int WEAPONSTRIP_REMOVESUIT = 1 << 1;
 constexpr int WEAPONSTRIP_REMOVELONGJUMP = 1 << 2;
 
-class EHL_CLASS() CStripWeapons : public CPointEntity
+class EHL_CLASS(EntityName=player_weaponstrip) CStripWeapons : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

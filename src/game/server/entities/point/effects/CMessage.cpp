@@ -15,8 +15,6 @@
 
 #include "CMessage.hpp"
 
-LINK_ENTITY_TO_CLASS(env_message, CMessage);
-
 void CMessage::Spawn()
 {
 	Precache();

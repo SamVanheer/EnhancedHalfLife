@@ -65,7 +65,7 @@ void MortarSpray(const Vector& position, const Vector& direction, int spriteMode
 //
 constexpr std::string_view BIG_CHILDCLASS{"monster_babycrab"};
 
-class EHL_CLASS() CBigMomma : public CBaseMonster
+class EHL_CLASS(EntityName=monster_bigmomma) CBigMomma : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

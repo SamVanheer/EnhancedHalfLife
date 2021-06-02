@@ -15,8 +15,6 @@
 
 #include "CRat.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_rat, CRat);
-
 int	CRat::Classify()
 {
 	return	CLASS_INSECT;

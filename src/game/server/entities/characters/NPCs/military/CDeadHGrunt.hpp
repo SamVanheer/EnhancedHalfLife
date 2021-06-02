@@ -18,7 +18,7 @@
 #include "CBaseMonster.hpp"
 #include "CDeadHGrunt.generated.hpp"
 
-class EHL_CLASS() CDeadHGrunt : public CBaseMonster
+class EHL_CLASS(EntityName=monster_hgrunt_dead) CDeadHGrunt : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

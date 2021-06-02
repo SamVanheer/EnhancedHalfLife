@@ -15,8 +15,6 @@
 
 #include "CFuncIllusionary.hpp"
 
-LINK_ENTITY_TO_CLASS(func_illusionary, CFuncIllusionary);
-
 void CFuncIllusionary::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "skin"))//skin is used for content type

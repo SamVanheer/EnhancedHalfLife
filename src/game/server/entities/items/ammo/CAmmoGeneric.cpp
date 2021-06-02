@@ -15,8 +15,6 @@
 
 #include "CAmmoGeneric.hpp"
 
-LINK_ENTITY_TO_CLASS(ammo_generic, CAmmoGeneric);
-
 void CAmmoGeneric::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "ammo_name"))

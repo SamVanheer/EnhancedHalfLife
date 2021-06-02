@@ -17,8 +17,6 @@
 #include "CBMortar.hpp"
 #include "game.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_bigmomma, CBigMomma);
-
 const char* CBigMomma::pChildDieSounds[] =
 {
 	"gonarch/gon_childdie1.wav",

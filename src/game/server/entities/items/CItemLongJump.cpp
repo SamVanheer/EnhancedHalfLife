@@ -14,5 +14,3 @@
 ****/
 
 #include "CItemLongJump.hpp"
-
-LINK_ENTITY_TO_CLASS(item_longjump, CItemLongJump);

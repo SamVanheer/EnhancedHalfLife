@@ -14,5 +14,3 @@
 ****/
 
 #include "CItemAntidote.hpp"
-
-LINK_ENTITY_TO_CLASS(item_antidote, CItemAntidote);

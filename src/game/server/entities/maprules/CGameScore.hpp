@@ -27,7 +27,7 @@ constexpr int SF_SCORE_TEAM = 0x0002;
 *	Flag: Allow negative scores					SF_SCORE_NEGATIVE
 *	Flag: Award points to team in teamplay		SF_SCORE_TEAM
 */
-class EHL_CLASS() CGameScore : public CRulePointEntity
+class EHL_CLASS(EntityName=game_score) CGameScore : public CRulePointEntity
 {
 	EHL_GENERATED_BODY()
 

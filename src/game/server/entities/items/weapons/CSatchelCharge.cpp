@@ -15,8 +15,6 @@
 
 #include "CSatchelCharge.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_satchel, CSatchelCharge);
-
 void CSatchelCharge::Deactivate()
 {
 	SetSolidType(Solid::Not);

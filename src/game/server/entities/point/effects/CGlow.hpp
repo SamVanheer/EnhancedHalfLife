@@ -18,7 +18,7 @@
 #include "CPointEntity.hpp"
 #include "CGlow.generated.hpp"
 
-class EHL_CLASS() CGlow : public CPointEntity
+class EHL_CLASS(EntityName=env_glow) CGlow : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

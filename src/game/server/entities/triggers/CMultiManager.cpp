@@ -15,8 +15,6 @@
 
 #include "CMultiManager.hpp"
 
-LINK_ENTITY_TO_CLASS(multi_manager, CMultiManager);
-
 void CMultiManager::KeyValue(KeyValueData* pkvd)
 {
 	// UNDONE: Maybe this should do something like this:

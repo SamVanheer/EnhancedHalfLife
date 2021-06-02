@@ -45,7 +45,7 @@ constexpr int SF_ITEM_USE_ONLY = 256; //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR
 *	"lip"           lip remaining at end of move (0 default)
 *	"dmg"           damage to inflict when blocked (0 default)
 */
-class EHL_CLASS() CBaseDoor : public CBaseToggle
+class EHL_CLASS(EntityName=func_door) CBaseDoor : public CBaseToggle
 {
 	EHL_GENERATED_BODY()
 

@@ -15,8 +15,6 @@
 
 #include "CTriggerMultiple.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_multiple, CTriggerMultiple);
-
 void CTriggerMultiple::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "activate_sound"))

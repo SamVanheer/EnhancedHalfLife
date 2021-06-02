@@ -66,6 +66,8 @@ target_sources(hl PRIVATE
 	gamerules/singleplay_gamerules.cpp
 	gamerules/teamplay_gamerules.cpp
 	gamerules/teamplay_gamerules.hpp
+	navigation/CAirNodeEnt.cpp
+	navigation/CAirNodeEnt.hpp
 	navigation/CNodeEnt.cpp
 	navigation/CNodeEnt.hpp
 	navigation/CNodeViewer.cpp

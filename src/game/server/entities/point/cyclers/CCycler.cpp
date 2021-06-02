@@ -15,8 +15,6 @@
 
 #include "CCycler.hpp"
 
-LINK_ENTITY_TO_CLASS(cycler, CCycler);
-
 void CCycler::Spawn()
 {
 	const char* szModel = STRING(pev->model);

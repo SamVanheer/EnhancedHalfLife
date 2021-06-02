@@ -18,7 +18,7 @@
 #include "CFuncTank.hpp"
 #include "CFuncTankMortar.generated.hpp"
 
-class EHL_CLASS() CFuncTankMortar : public CFuncTank
+class EHL_CLASS(EntityName=func_tankmortar) CFuncTankMortar : public CFuncTank
 {
 	EHL_GENERATED_BODY()
 

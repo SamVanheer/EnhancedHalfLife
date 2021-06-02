@@ -15,8 +15,6 @@
 
 #include "CIchthyosaur.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_ichthyosaur, CIchthyosaur);
-
 const char* CIchthyosaur::pIdleSounds[] =
 {
 	"ichy/ichy_idle1.wav",

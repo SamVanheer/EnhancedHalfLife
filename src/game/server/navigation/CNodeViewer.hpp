@@ -23,7 +23,7 @@
 *	@brief Draws a graph of the shorted path from all nodes to current location (typically the player).
 *	It then draws as many connects as it can per frame, trying not to overflow the buffer
 */
-class EHL_CLASS() CNodeViewer : public CBaseEntity
+class EHL_CLASS(EntityName=node_viewer, EntityNameAliases=[node_viewer_human, node_viewer_fly, node_viewer_large]) CNodeViewer : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

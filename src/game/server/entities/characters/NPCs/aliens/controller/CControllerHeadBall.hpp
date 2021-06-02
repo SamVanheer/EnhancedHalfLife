@@ -21,7 +21,7 @@
 /**
 *	@brief Controller bouncy ball attack
 */
-class EHL_CLASS() CControllerHeadBall : public CBaseMonster
+class EHL_CLASS(EntityName=controller_head_ball) CControllerHeadBall : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

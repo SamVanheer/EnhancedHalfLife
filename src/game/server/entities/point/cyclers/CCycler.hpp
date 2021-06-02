@@ -21,7 +21,7 @@
 /**
 *	@brief we should get rid of all the other cyclers and replace them with this.
 */
-class EHL_CLASS() CCycler : public CBaseMonster
+class EHL_CLASS(EntityName=cycler) CCycler : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -22,7 +22,7 @@ class CBeam;
 
 constexpr int SF_TRIPMINE_INSTANT_ON = 1 << 0;
 
-class EHL_CLASS() CTripmineGrenade : public CGrenade
+class EHL_CLASS(EntityName=monster_tripmine) CTripmineGrenade : public CGrenade
 {
 	EHL_GENERATED_BODY()
 

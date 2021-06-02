@@ -15,8 +15,6 @@
 
 #include "CGameText.hpp"
 
-LINK_ENTITY_TO_CLASS(game_text, CGameText);
-
 void CGameText::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "channel"))

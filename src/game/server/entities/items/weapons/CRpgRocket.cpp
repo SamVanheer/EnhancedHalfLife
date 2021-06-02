@@ -16,8 +16,6 @@
 #include "CRpg.hpp"
 #include "CRpgRocket.hpp"
 
-LINK_ENTITY_TO_CLASS(rpg_rocket, CRpgRocket);
-
 CRpgRocket* CRpgRocket::CreateRpgRocket(const Vector& vecOrigin, const Vector& vecAngles, CBaseEntity* pOwner, CRpg* pLauncher)
 {
 	CRpgRocket* pRocket = static_cast<CRpgRocket*>(g_EntityList.Create("rpg_rocket"));

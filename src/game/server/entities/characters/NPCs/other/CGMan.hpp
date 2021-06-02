@@ -21,7 +21,7 @@
 /**
 *	@brief misunderstood servant of the people
 */
-class EHL_CLASS() CGMan : public CBaseMonster
+class EHL_CLASS(EntityName=monster_gman) CGMan : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

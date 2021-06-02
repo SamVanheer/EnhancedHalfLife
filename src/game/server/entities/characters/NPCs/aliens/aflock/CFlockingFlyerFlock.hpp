@@ -18,7 +18,7 @@
 #include "CBaseMonster.hpp"
 #include "CFlockingFlyerFlock.generated.hpp"
 
-class EHL_CLASS() CFlockingFlyerFlock : public CBaseMonster
+class EHL_CLASS(EntityName=monster_flyer_flock) CFlockingFlyerFlock : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

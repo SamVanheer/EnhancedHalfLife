@@ -15,8 +15,6 @@
 
 #include "CTriggerEndSection.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_endsection, CTriggerEndSection);
-
 void CTriggerEndSection::EndSectionUse(const UseInfo& info)
 {
 	// Only save on clients

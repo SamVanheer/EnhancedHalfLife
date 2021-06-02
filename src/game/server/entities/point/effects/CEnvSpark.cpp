@@ -32,9 +32,6 @@ void DoSpark(CBaseEntity* entity, const Vector& location)
 	}
 }
 
-LINK_ENTITY_TO_CLASS(env_spark, CEnvSpark);
-LINK_ENTITY_TO_CLASS(env_debris, CEnvSpark);
-
 void CEnvSpark::Spawn()
 {
 	SetThink(nullptr);

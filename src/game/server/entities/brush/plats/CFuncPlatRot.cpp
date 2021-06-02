@@ -15,8 +15,6 @@
 
 #include "CFuncPlatRot.hpp"
 
-LINK_ENTITY_TO_CLASS(func_platrot, CFuncPlatRot);
-
 void CFuncPlatRot::SetupRotation()
 {
 	if (m_vecFinalAngle.x != 0)		// This plat rotates too!

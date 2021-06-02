@@ -36,7 +36,7 @@ constexpr int SF_ENVEXPLOSION_NOSMOKE = 1 << 3;		// don't draw the smoke
 constexpr int SF_ENVEXPLOSION_NODECAL = 1 << 4;		// don't make a scorch mark
 constexpr int SF_ENVEXPLOSION_NOSPARKS = 1 << 5;	// don't make a scorch mark
 
-class EHL_CLASS() CEnvExplosion : public CBaseMonster
+class EHL_CLASS(EntityName=env_explosion) CEnvExplosion : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

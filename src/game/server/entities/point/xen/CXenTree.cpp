@@ -17,8 +17,6 @@
 #include "CXenTree.hpp"
 #include "CXenTreeTrigger.hpp"
 
-LINK_ENTITY_TO_CLASS(xen_tree, CXenTree);
-
 void CXenTree::OnRemove()
 {
 	m_hTrigger.Remove();

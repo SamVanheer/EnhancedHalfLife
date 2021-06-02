@@ -25,7 +25,7 @@ constexpr int SF_TRACKTRAIN_NOCONTROL = 0x0002;
 constexpr int SF_TRACKTRAIN_FORWARDONLY = 0x0004;
 constexpr int SF_TRACKTRAIN_PASSABLE = 0x0008;
 
-class EHL_CLASS() CFuncTrackTrain : public CBaseEntity
+class EHL_CLASS(EntityName=func_tracktrain) CFuncTrackTrain : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

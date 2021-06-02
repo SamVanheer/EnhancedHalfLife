@@ -16,8 +16,6 @@
 #include "CBaseDoor.hpp"
 #include "CMomentaryDoor.hpp"
 
-LINK_ENTITY_TO_CLASS(momentary_door, CMomentaryDoor);
-
 void CMomentaryDoor::Spawn()
 {
 	SetMovedir(this);

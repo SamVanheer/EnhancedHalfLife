@@ -15,8 +15,6 @@
 
 #include "CItemSoda.hpp"
 
-LINK_ENTITY_TO_CLASS(item_sodacan, CItemSoda);
-
 void CItemSoda::Precache()
 {
 }

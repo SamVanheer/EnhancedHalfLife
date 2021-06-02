@@ -18,7 +18,7 @@
 #include "CGrenade.hpp"
 #include "CSatchelCharge.generated.hpp"
 
-class EHL_CLASS() CSatchelCharge : public CGrenade
+class EHL_CLASS(EntityName=monster_satchel) CSatchelCharge : public CGrenade
 {
 	EHL_GENERATED_BODY()
 

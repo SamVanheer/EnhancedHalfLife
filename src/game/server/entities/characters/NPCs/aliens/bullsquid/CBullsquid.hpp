@@ -57,7 +57,7 @@ constexpr int BSQUID_AE_THROW = 6;
 /**
 *	@brief big, spotty tentacle-mouthed meanie.
 */
-class EHL_CLASS() CBullsquid : public CBaseMonster
+class EHL_CLASS(EntityName=monster_bullchicken) CBullsquid : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -19,5 +19,3 @@ void CNullEntity::Spawn()
 {
 	UTIL_RemoveNow(this);
 }
-
-LINK_ENTITY_TO_CLASS(info_null, CNullEntity);

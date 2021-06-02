@@ -32,7 +32,7 @@ enum shotgun_e
 	SHOTGUN_IDLE_DEEP
 };
 
-class EHL_CLASS() CShotgun : public CBaseWeapon
+class EHL_CLASS(EntityName=weapon_shotgun) CShotgun : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

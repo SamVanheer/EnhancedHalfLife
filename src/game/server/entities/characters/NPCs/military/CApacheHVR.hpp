@@ -18,7 +18,7 @@
 #include "CGrenade.hpp"
 #include "CApacheHVR.generated.hpp"
 
-class EHL_CLASS() CApacheHVR : public CGrenade
+class EHL_CLASS(EntityName=hvr_rocket) CApacheHVR : public CGrenade
 {
 	EHL_GENERATED_BODY()
 

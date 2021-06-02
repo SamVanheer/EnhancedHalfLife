@@ -23,7 +23,7 @@ class CGib;
 
 constexpr int SF_GIBSHOOTER_REPEATABLE = 1; //!< allows a gibshooter to be refired
 
-class EHL_CLASS() CGibShooter : public CBaseEntity
+class EHL_CLASS(EntityName=gibshooter) CGibShooter : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

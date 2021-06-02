@@ -15,8 +15,6 @@
 
 #include "CPathCorner.hpp"
 
-LINK_ENTITY_TO_CLASS(path_corner, CPathCorner);
-
 void CPathCorner::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "wait"))

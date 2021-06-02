@@ -21,7 +21,7 @@
 /**
 *	@brief a single entity that can store weapons and ammo.
 */
-class EHL_CLASS() CWeaponBox : public CBaseEntity
+class EHL_CLASS(EntityName=weaponbox) CWeaponBox : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

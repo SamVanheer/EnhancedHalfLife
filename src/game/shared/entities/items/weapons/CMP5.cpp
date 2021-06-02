@@ -25,9 +25,6 @@
 #include "CGrenade.hpp"
 #include "CMP5.hpp"
 
-LINK_ENTITY_TO_CLASS(weapon_9mmAR, CMP5);
-LINK_ALIAS_ENTITY_TO_CLASS(weapon_mp5, weapon_9mmAR, CMP5);
-
 void CMP5::Spawn()
 {
 	Precache();

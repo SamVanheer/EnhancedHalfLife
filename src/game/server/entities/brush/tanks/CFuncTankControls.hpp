@@ -21,7 +21,7 @@
 /**
 *	@brief FUNC TANK CONTROLS
 */
-class EHL_CLASS() CFuncTankControls : public CBaseEntity
+class EHL_CLASS(EntityName=func_tankcontrols) CFuncTankControls : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

@@ -31,7 +31,7 @@ constexpr float HORNET_BUZZ_VOLUME = 0.8;
 /**
 *	@brief this is the projectile that the Alien Grunt fires.
 */
-class EHL_CLASS() CHornet : public CBaseMonster
+class EHL_CLASS(EntityName=hornet) CHornet : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

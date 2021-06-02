@@ -15,8 +15,6 @@
 
 #include "CTriggerHurt.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_hurt, CTriggerHurt);
-
 void CTriggerHurt::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "damagetype"))

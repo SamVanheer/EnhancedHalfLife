@@ -25,7 +25,7 @@ constexpr int SF_LIGHT_START_OFF = 1;
 *	Default style is 0
 *	If targeted, it will toggle between on or off.
 */
-class EHL_CLASS() CLight : public CPointEntity
+class EHL_CLASS(EntityName=light) CLight : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

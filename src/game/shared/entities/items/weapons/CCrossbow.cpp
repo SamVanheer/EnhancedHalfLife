@@ -27,8 +27,6 @@
 #include "CCrossbowBolt.hpp"
 #endif
 
-LINK_ENTITY_TO_CLASS(weapon_crossbow, CCrossbow);
-
 void CCrossbow::Spawn()
 {
 	Precache();

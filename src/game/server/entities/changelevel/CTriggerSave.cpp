@@ -15,8 +15,6 @@
 
 #include "CTriggerSave.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_autosave, CTriggerSave);
-
 void CTriggerSave::Spawn()
 {
 	if (!g_pGameRules->AreSaveGamesSupported())

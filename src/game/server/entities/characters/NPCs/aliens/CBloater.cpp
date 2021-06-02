@@ -15,8 +15,6 @@
 
 #include "CBloater.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_bloater, CBloater);
-
 int	CBloater::Classify()
 {
 	return	CLASS_ALIEN_MONSTER;

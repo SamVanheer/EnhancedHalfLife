@@ -23,8 +23,6 @@
 #include "gamerules.hpp"
 #include "CSqueak.hpp"
 
-LINK_ENTITY_TO_CLASS(weapon_snark, CSqueak);
-
 void CSqueak::Spawn()
 {
 	Precache();

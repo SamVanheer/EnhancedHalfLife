@@ -27,7 +27,7 @@
 *	If the "height" key is set, that will determine the amount the plat moves,
 *	instead ofbeing implicitly determined by the model's height.
 */
-class EHL_CLASS() CFuncPlat : public CBasePlatTrain
+class EHL_CLASS(EntityName=func_plat) CFuncPlat : public CBasePlatTrain
 {
 	EHL_GENERATED_BODY()
 

@@ -15,8 +15,6 @@
 
 #include "CEnvGlobal.hpp"
 
-LINK_ENTITY_TO_CLASS(env_global, CEnvGlobal);
-
 void CEnvGlobal::KeyValue(KeyValueData* pkvd)
 {
 	pkvd->fHandled = true;

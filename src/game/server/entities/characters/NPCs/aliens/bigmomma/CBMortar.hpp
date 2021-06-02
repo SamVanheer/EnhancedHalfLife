@@ -21,7 +21,7 @@
 /**
 *	@brief Mortar shot entity
 */
-class EHL_CLASS() CBMortar : public CBaseEntity
+class EHL_CLASS(EntityName=bmortar) CBMortar : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

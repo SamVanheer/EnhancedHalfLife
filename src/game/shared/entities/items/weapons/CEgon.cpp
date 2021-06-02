@@ -30,8 +30,6 @@
 constexpr float EGON_SWITCH_NARROW_TIME = 0.75;		// Time it takes to switch fire modes
 constexpr float EGON_SWITCH_WIDE_TIME = 1.5;
 
-LINK_ENTITY_TO_CLASS(weapon_egon, CEgon);
-
 void CEgon::OnRemove()
 {
 	m_hBeam.Remove();

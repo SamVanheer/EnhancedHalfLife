@@ -15,8 +15,6 @@
 
 #include "CFrictionModifier.hpp"
 
-LINK_ENTITY_TO_CLASS(func_friction, CFrictionModifier);
-
 void CFrictionModifier::Spawn()
 {
 	SetSolidType(Solid::Trigger);

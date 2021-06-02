@@ -18,7 +18,7 @@
 #include "CBaseTrigger.hpp"
 #include "CTriggerMonsterJump.generated.hpp"
 
-class EHL_CLASS() CTriggerMonsterJump : public CBaseTrigger
+class EHL_CLASS(EntityName=trigger_monsterjump) CTriggerMonsterJump : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 

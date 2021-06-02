@@ -31,6 +31,8 @@
 #include "CGrenade.hpp"
 #include "CSoundEnt.hpp"
 #include "skill.hpp"
+#include "brush/CBreakable.hpp"
+#include "characters/NPCs/aliens/CHornet.hpp"
 
 // Globals used by game logic
 enginefuncs_t g_engfuncs;
@@ -315,6 +317,35 @@ bool CBaseWeapon::IsUseable() { return true; }
 bool CBaseWeapon::ExtractAmmo(CBaseWeapon* pWeapon) { return false; }
 int CBaseWeapon::ExtractClipAmmo(CBaseWeapon* pWeapon) { return 0; }
 void CBaseWeapon::RetireWeapon() { }
+
+void CSoundEnt::Spawn() {}
+void CSoundEnt::Precache() {}
 void CSoundEnt::InsertSound(int iType, const Vector& vecOrigin, int iVolume, float flDuration) {}
+void CSoundEnt::Think() {}
+
+void CPointEntity::Spawn() {}
+
+void CHornet::Spawn() {}
+void CHornet::Precache() {}
+int CHornet::Classify() { return 0; }
+Relationship CHornet::GetRelationship(CBaseEntity*) { return Relationship::None; }
+bool CHornet::TakeDamage(const TakeDamageInfo&) { return false; }
+
+void CBreakable::Spawn() {}
+void CBreakable::Precache() {}
+void CBreakable::KeyValue(KeyValueData*) {}
+void CBreakable::Use(const UseInfo&) {}
+void CBreakable::TraceAttack(const TraceAttackInfo&) {}
+bool CBreakable::TakeDamage(const TakeDamageInfo&) { return false; }
+int CBreakable::DamageDecal(int) { return 0; }
+
+void CSprite::Spawn() {}
+void CSprite::Precache() {}
+void CSprite::Use(const UseInfo&) {}
+
+void CBeam::Spawn() {}
+void CBeam::Precache() {}
+const Vector& CBeam::GetStartPos() { return vec3_origin; }
+const Vector& CBeam::GetEndPos() { return vec3_origin; }
 
 CBaseEntity* UTIL_FindEntityByClassname(CBaseEntity* pStartEntity, const char* szName) { return nullptr; }

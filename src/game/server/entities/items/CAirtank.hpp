@@ -18,7 +18,7 @@
 #include "CGrenade.hpp"
 #include "CAirtank.generated.hpp"
 
-class EHL_CLASS() CAirtank : public CGrenade
+class EHL_CLASS(EntityName=item_airtank) CAirtank : public CGrenade
 {
 	EHL_GENERATED_BODY()
 

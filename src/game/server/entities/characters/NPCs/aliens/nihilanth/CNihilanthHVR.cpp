@@ -16,8 +16,6 @@
 #include "CNihilanth.hpp"
 #include "CNihilanthHVR.hpp"
 
-LINK_ENTITY_TO_CLASS(nihilanth_energy_ball, CNihilanthHVR);
-
 void CNihilanthHVR::Spawn()
 {
 	Precache();

@@ -26,7 +26,7 @@ constexpr int SF_GAMECOUNT_RESET = 0x0002;
 *	@details Flag: Fire once
 *	Flag: Reset on Fire
 */
-class EHL_CLASS() CGameCounter : public CRulePointEntity
+class EHL_CLASS(EntityName=game_counter) CGameCounter : public CRulePointEntity
 {
 	EHL_GENERATED_BODY()
 

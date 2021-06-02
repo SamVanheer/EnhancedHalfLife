@@ -15,8 +15,6 @@
 
 #include "CTriggerOnce.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_once, CTriggerOnce);
-
 void CTriggerOnce::Spawn()
 {
 	m_flWait = -1;

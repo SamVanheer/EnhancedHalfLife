@@ -40,7 +40,7 @@ constexpr int ICHTHYOSAUR_AE_SHAKE_LEFT = 2;
 /**
 *	@brief evil, satan fish monster
 */
-class EHL_CLASS() CIchthyosaur : public CFlyingMonster
+class EHL_CLASS(EntityName=monster_ichthyosaur) CIchthyosaur : public CFlyingMonster
 {
 	EHL_GENERATED_BODY()
 

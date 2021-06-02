@@ -15,8 +15,6 @@
 
 #include "CEnvExplosion.hpp"
 
-LINK_ENTITY_TO_CLASS(env_explosion, CEnvExplosion);
-
 void CEnvExplosion::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "iMagnitude"))

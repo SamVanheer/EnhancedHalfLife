@@ -15,8 +15,6 @@
 
 #include "CFuncWall.hpp"
 
-LINK_ENTITY_TO_CLASS(func_wall, CFuncWall);
-
 void CFuncWall::Spawn()
 {
 	SetAbsAngles(vec3_origin);

@@ -16,8 +16,6 @@
 #include "CFade.hpp"
 #include "shake.hpp"
 
-LINK_ENTITY_TO_CLASS(env_fade, CFade);
-
 void CFade::Spawn()
 {
 	SetSolidType(Solid::Not);

@@ -25,7 +25,7 @@
 *	If two or more sound entities are contending for a client, then the nearest sound entity to the client will set the client's room_type.
 *	A client's room_type will remain set to its prior value until a new in-range, visible sound entity resets a new room_type.
 */
-class EHL_CLASS() CEnvSound : public CPointEntity
+class EHL_CLASS(EntityName=env_sound) CEnvSound : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

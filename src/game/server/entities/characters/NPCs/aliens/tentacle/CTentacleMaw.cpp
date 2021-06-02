@@ -15,8 +15,6 @@
 
 #include "CTentacleMaw.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_tentaclemaw, CTentacleMaw);
-
 void CTentacleMaw::Spawn()
 {
 	Precache();

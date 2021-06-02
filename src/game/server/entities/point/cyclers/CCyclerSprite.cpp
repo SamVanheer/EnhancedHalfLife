@@ -15,8 +15,6 @@
 
 #include "CCyclerSprite.hpp"
 
-LINK_ENTITY_TO_CLASS(cycler_sprite, CCyclerSprite);
-
 void CCyclerSprite::Spawn()
 {
 	SetSolidType(Solid::SlideBox);

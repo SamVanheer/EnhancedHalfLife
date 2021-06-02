@@ -15,8 +15,6 @@
 
 #include "CGlow.hpp"
 
-LINK_ENTITY_TO_CLASS(env_glow, CGlow);
-
 void CGlow::Spawn()
 {
 	SetSolidType(Solid::Not);

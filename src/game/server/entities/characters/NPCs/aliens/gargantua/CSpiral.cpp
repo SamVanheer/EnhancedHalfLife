@@ -15,8 +15,6 @@
 
 #include "CSpiral.hpp"
 
-LINK_ENTITY_TO_CLASS(streak_spiral, CSpiral);
-
 void StreakSplash(const Vector& origin, const Vector& direction, int color, int count, int speed, int velocityRange)
 {
 	MESSAGE_BEGIN(MessageDest::PVS, SVC_TEMPENTITY, origin);

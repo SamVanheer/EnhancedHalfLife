@@ -21,7 +21,7 @@
 /**
 *	@brief A simple entity that looks solid but lets you walk through it.
 */
-class EHL_CLASS() CFuncIllusionary : public CBaseEntity
+class EHL_CLASS(EntityName=func_illusionary) CFuncIllusionary : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

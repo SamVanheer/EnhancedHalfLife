@@ -13,24 +13,4 @@
 *
 ****/
 
-#pragma once
-
-#include "CPointEntity.hpp"
-#include "CBaseDMStart.generated.hpp"
-
-class EHL_CLASS() CBaseDMStart : public CPointEntity
-{
-	EHL_GENERATED_BODY()
-
-public:
-	bool IsTriggered(CBaseEntity* pEntity) override;
-};
-
-inline CBaseEntity* g_pLastSpawn = nullptr;
-
-/**
-*	@brief Returns the entity to spawn at
-*
-*	USES AND SETS GLOBAL g_pLastSpawn
-*/
-CBaseEntity* EntSelectSpawnPoint(CBaseEntity* pPlayer);
+#include "CInfoLandmark.hpp"

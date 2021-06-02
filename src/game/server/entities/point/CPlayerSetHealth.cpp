@@ -17,8 +17,6 @@
 
 #include "CPlayerSetHealth.hpp"
 
-LINK_ENTITY_TO_CLASS(player_sethealth, CPlayerSetHealth);
-
 void CPlayerSetHealth::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "all_players"))

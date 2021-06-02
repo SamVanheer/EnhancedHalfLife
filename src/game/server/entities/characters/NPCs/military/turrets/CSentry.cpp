@@ -15,8 +15,6 @@
 
 #include "CSentry.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_sentry, CSentry);
-
 void CSentry::Precache()
 {
 	CBaseTurret::Precache();

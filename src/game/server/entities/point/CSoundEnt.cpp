@@ -15,8 +15,6 @@
 
 #include "CSoundEnt.hpp"
 
-LINK_ENTITY_TO_CLASS(soundent, CSoundEnt);
-
 void CSound::Clear()
 {
 	m_vecOrigin = vec3_origin;

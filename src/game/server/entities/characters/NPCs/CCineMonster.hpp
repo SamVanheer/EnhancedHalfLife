@@ -63,7 +63,7 @@ enum class ScriptedMoveTo
 *	range # - only search this far to find the target
 *	spawnflags - (stop if blocked, stop if player seen)
 */
-class EHL_CLASS() CCineMonster : public CBaseMonster
+class EHL_CLASS(EntityName=scripted_sequence) CCineMonster : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -17,8 +17,6 @@
 
 #include "CStripWeapons.hpp"
 
-LINK_ENTITY_TO_CLASS(player_weaponstrip, CStripWeapons);
-
 void CStripWeapons::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "strip_weapons"))

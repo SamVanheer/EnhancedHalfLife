@@ -22,7 +22,7 @@ constexpr int SF_OSPREY_WAITFORTRIGGER = 0x40;
 
 constexpr int MAX_CARRY = 24;
 
-class EHL_CLASS() COsprey : public CBaseMonster
+class EHL_CLASS(EntityName=monster_osprey) COsprey : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

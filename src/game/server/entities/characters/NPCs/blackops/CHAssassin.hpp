@@ -51,7 +51,7 @@ constexpr int bits_MEMORY_BADJUMP = bits_MEMORY_CUSTOM1;
 /**
 *	@brief Human assassin, fast and stealthy
 */
-class EHL_CLASS() CHAssassin : public CBaseMonster
+class EHL_CLASS(EntityName=monster_human_assassin) CHAssassin : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

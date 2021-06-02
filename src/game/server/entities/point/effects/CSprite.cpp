@@ -15,8 +15,6 @@
 
 #include "CSprite.hpp"
 
-LINK_ENTITY_TO_CLASS(env_sprite, CSprite);
-
 void CSprite::Spawn()
 {
 	SetSolidType(Solid::Not);

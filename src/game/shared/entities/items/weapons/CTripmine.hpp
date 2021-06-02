@@ -31,7 +31,7 @@ enum tripmine_e
 	TRIPMINE_GROUND,
 };
 
-class EHL_CLASS() CTripmine : public CBaseWeapon
+class EHL_CLASS(EntityName=weapon_tripmine) CTripmine : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

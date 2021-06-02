@@ -15,8 +15,6 @@
 
 #include "CGamePlayerZone.hpp"
 
-LINK_ENTITY_TO_CLASS(game_zone_player, CGamePlayerZone);
-
 void CGamePlayerZone::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "intarget"))

@@ -23,7 +23,7 @@ constexpr int SF_CORNER_WAITFORTRIG = 0x001;
 constexpr int SF_CORNER_TELEPORT = 0x002;
 constexpr int SF_CORNER_FIREONCE = 0x004;
 
-class EHL_CLASS() CPathCorner : public CPointEntity
+class EHL_CLASS(EntityName=path_corner) CPathCorner : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

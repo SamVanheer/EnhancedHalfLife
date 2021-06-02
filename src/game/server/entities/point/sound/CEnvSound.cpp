@@ -15,8 +15,6 @@
 
 #include "CEnvSound.hpp"
 
-LINK_ENTITY_TO_CLASS(env_sound, CEnvSound);
-
 void CEnvSound::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "radius"))

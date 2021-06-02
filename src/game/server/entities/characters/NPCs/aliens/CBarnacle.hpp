@@ -30,7 +30,7 @@ constexpr int BARNACLE_AE_PUKEGIB = 2;
 /**
 *	@brief stationary ceiling mounted 'fishing' monster
 */
-class EHL_CLASS() CBarnacle : public CBaseMonster
+class EHL_CLASS(EntityName=monster_barnacle) CBarnacle : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

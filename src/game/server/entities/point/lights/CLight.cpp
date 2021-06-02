@@ -15,11 +15,6 @@
 
 #include "CLight.hpp"
 
-LINK_ENTITY_TO_CLASS(light, CLight);
-
-// shut up spawn functions for new spotlights
-LINK_ENTITY_TO_CLASS(light_spot, CLight);
-
 void CLight::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "style"))

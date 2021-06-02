@@ -15,8 +15,6 @@
 
 #include "CGamePlayerEquip.hpp"
 
-LINK_ENTITY_TO_CLASS(game_player_equip, CGamePlayerEquip);
-
 void CGamePlayerEquip::KeyValue(KeyValueData* pkvd)
 {
 	CRulePointEntity::KeyValue(pkvd);

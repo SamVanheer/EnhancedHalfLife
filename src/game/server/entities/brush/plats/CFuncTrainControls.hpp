@@ -21,7 +21,7 @@
 /**
 *	@brief This class defines the volume of space that the player must stand in to control the train
 */
-class EHL_CLASS() CFuncTrainControls : public CBaseEntity
+class EHL_CLASS(EntityName=func_traincontrols) CFuncTrainControls : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

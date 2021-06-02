@@ -20,7 +20,7 @@
 #include "UserMessages.hpp"
 #include "CItemLongJump.generated.hpp"
 
-class EHL_CLASS() CItemLongJump : public CItem
+class EHL_CLASS(EntityName=item_longjump) CItemLongJump : public CItem
 {
 	EHL_GENERATED_BODY()
 

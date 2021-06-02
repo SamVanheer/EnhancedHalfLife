@@ -15,8 +15,6 @@
 
 #include "CSmoker.hpp"
 
-LINK_ENTITY_TO_CLASS(env_smoker, CSmoker);
-
 void CSmoker::Spawn()
 {
 	SetMovetype(Movetype::None);

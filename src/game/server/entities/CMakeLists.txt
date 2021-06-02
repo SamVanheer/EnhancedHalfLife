@@ -56,6 +56,8 @@ target_sources(hl
 		brush/chargers/CWallHealth.cpp
 		brush/doors/CBaseDoor.cpp
 		brush/doors/CBaseDoor.hpp
+		brush/doors/CFuncWater.cpp
+		brush/doors/CFuncWater.hpp
 		brush/doors/CMomentaryDoor.cpp
 		brush/doors/CMomentaryDoor.hpp
 		brush/doors/CRotDoor.cpp
@@ -100,6 +102,8 @@ target_sources(hl
 		changelevel/CChangeLevel.hpp
 		changelevel/CFireAndDie.cpp
 		changelevel/CFireAndDie.hpp
+		changelevel/CInfoLandmark.cpp
+		changelevel/CInfoLandmark.hpp
 		changelevel/CRevertSaved.cpp
 		changelevel/CRevertSaved.hpp
 		changelevel/CTriggerEndSection.cpp
@@ -200,14 +204,14 @@ target_sources(hl
 		maprules/CRuleEntity.hpp
 		maprules/CRulePointEntity.cpp
 		maprules/CRulePointEntity.hpp
-		point/CBaseDMStart.cpp
-		point/CBaseDMStart.hpp
 		point/CDecal.cpp
 		point/CDecal.hpp
 		point/CEnvGlobal.cpp
 		point/CEnvGlobal.hpp
 		point/CInfoIntermission.cpp
 		point/CInfoIntermission.hpp
+		point/CInfoTarget.cpp
+		point/CInfoTarget.hpp
 		point/CMonsterMaker.cpp
 		point/CMonsterMaker.hpp
 		point/CMultiSource.cpp
@@ -270,11 +274,18 @@ target_sources(hl
 		point/effects/CShower.hpp
 		point/effects/CSprite.cpp
 		point/effects/CSprite.hpp
-		point/effects/info_target.cpp
 		point/lights/CEnvLight.cpp
 		point/lights/CEnvLight.hpp
 		point/lights/CLight.cpp
 		point/lights/CLight.hpp
+		point/lights/CSpotLight.cpp
+		point/lights/CSpotLight.hpp
+		point/spawnpoints/CBaseDMStart.cpp
+		point/spawnpoints/CBaseDMStart.hpp
+		point/spawnpoints/CInfoPlayerStart.cpp
+		point/spawnpoints/CInfoPlayerStart.hpp
+		point/spawnpoints/spawnpoints.cpp
+		point/spawnpoints/spawnpoints.hpp
 		point/sound/CAmbientGeneric.cpp
 		point/sound/CAmbientGeneric.hpp
 		point/sound/CEnvSound.cpp
@@ -307,6 +318,8 @@ target_sources(hl
 		triggers/CBaseTrigger.hpp
 		triggers/CFrictionModifier.cpp
 		triggers/CFrictionModifier.hpp
+		triggers/CInfoTeleportDestination.cpp
+		triggers/CInfoTeleportDestination.hpp
 		triggers/CLadder.cpp
 		triggers/CLadder.hpp
 		triggers/CMultiManager.cpp

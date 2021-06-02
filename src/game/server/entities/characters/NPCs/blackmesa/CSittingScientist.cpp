@@ -15,8 +15,6 @@
 
 #include "CSittingScientist.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_sitting_scientist, CSittingScientist);
-
 // animation sequence aliases 
 enum SITTING_ANIM
 {

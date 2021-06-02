@@ -15,8 +15,6 @@
 
 #include "CFireAndDie.hpp"
 
-LINK_ENTITY_TO_CLASS(fireanddie, CFireAndDie);
-
 void CFireAndDie::Spawn()
 {
 	// Don't call Precache() - it should be called on restore

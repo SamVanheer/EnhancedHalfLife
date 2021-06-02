@@ -18,7 +18,7 @@
 #include "CFuncTank.hpp"
 #include "CFuncTankRocket.generated.hpp"
 
-class EHL_CLASS() CFuncTankRocket : public CFuncTank
+class EHL_CLASS(EntityName=func_tankrocket) CFuncTankRocket : public CFuncTank
 {
 	EHL_GENERATED_BODY()
 

@@ -18,7 +18,7 @@
 #include "CBaseTrigger.hpp"
 #include "CTriggerGravity.generated.hpp"
 
-class EHL_CLASS() CTriggerGravity : public CBaseTrigger
+class EHL_CLASS(EntityName=trigger_gravity) CTriggerGravity : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 

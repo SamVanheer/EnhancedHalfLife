@@ -16,8 +16,6 @@
 #include "CLaser.hpp"
 #include "CSprite.hpp"
 
-LINK_ENTITY_TO_CLASS(env_laser, CLaser);
-
 void CLaser::OnRemove()
 {
 	m_hSprite.Remove();

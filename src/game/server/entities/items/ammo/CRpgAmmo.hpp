@@ -19,7 +19,7 @@
 #include "CBaseWeapon.hpp"
 #include "CRpgAmmo.generated.hpp"
 
-class EHL_CLASS() CRpgAmmo : public CBaseAmmo
+class EHL_CLASS(EntityName=ammo_rpgclip) CRpgAmmo : public CBaseAmmo
 {
 	EHL_GENERATED_BODY()
 

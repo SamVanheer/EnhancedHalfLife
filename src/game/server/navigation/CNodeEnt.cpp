@@ -17,9 +17,6 @@
 #include "CTestHull.hpp"
 #include "nodes.hpp"
 
-LINK_ENTITY_TO_CLASS(info_node, CNodeEnt);
-LINK_ENTITY_TO_CLASS(info_node_air, CNodeEnt);
-
 void CNodeEnt::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "hinttype"))

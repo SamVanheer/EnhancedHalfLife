@@ -66,7 +66,7 @@ constexpr int HOUND_AE_CLOSE_EYE = 7;
 /**
 *	@brief spooky sonic dog.
 */
-class EHL_CLASS() CHoundeye : public CSquadMonster
+class EHL_CLASS(EntityName=monster_houndeye) CHoundeye : public CSquadMonster
 {
 	EHL_GENERATED_BODY()
 

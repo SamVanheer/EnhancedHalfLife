@@ -16,11 +16,6 @@
 #include "CNodeViewer.hpp"
 #include "nodes.hpp"
 
-LINK_ENTITY_TO_CLASS(node_viewer, CNodeViewer);
-LINK_ENTITY_TO_CLASS(node_viewer_human, CNodeViewer);
-LINK_ENTITY_TO_CLASS(node_viewer_fly, CNodeViewer);
-LINK_ENTITY_TO_CLASS(node_viewer_large, CNodeViewer);
-
 void CNodeViewer::Spawn()
 {
 	if (!WorldGraph.m_fGraphPresent || !WorldGraph.m_fGraphPointersSet)

@@ -17,8 +17,6 @@
 #include "CNihilanthHVR.hpp"
 #include "navigation/nodes.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_nihilanth, CNihilanth);
-
 const char* CNihilanth::pAttackSounds[] =
 {
 	"X/x_attack1.wav",

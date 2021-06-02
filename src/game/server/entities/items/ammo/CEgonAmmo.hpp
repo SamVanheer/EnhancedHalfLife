@@ -19,7 +19,7 @@
 #include "CBaseWeapon.hpp"
 #include "CEgonAmmo.generated.hpp"
 
-class EHL_CLASS() CEgonAmmo : public CBaseAmmo
+class EHL_CLASS(EntityName=ammo_egonclip) CEgonAmmo : public CBaseAmmo
 {
 	EHL_GENERATED_BODY()
 

@@ -174,10 +174,7 @@ target_sources(client PRIVATE
 	../server/entities/CBaseAnimating.hpp
 	../server/entities/CBaseEntity.hpp
 	../server/entities/CBaseToggle.hpp
-	../server/entities/CDelayedUse.hpp
-	../server/entities/CWorld.hpp
 	../server/entities/brush/CBreakable.hpp
-	../server/entities/brush/buttons/CBaseButton.hpp
 	../server/entities/characters/CBasePlayer.hpp
 	../server/entities/characters/NPCs/CBaseMonster.hpp
 	../server/entities/characters/NPCs/aliens/CHornet.hpp

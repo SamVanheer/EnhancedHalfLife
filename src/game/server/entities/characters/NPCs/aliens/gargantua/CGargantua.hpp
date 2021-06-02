@@ -46,7 +46,7 @@ constexpr int STOMP_SPRITE_COUNT = 10;
 
 inline int gStompSprite = 0, gGargGibModel = 0;
 
-class EHL_CLASS() CGargantua : public CBaseMonster
+class EHL_CLASS(EntityName=monster_gargantua) CGargantua : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

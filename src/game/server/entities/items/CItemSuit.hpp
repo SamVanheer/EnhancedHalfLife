@@ -26,7 +26,7 @@ enum class SuitLogonType
 	ShortLogon,
 };
 
-class EHL_CLASS() CItemSuit : public CItem
+class EHL_CLASS(EntityName=item_suit) CItemSuit : public CItem
 {
 	EHL_GENERATED_BODY()
 

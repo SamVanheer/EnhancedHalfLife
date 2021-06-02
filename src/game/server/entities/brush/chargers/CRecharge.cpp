@@ -14,5 +14,3 @@
 ****/
 
 #include "CRecharge.hpp"
-
-LINK_ENTITY_TO_CLASS(func_recharge, CRecharge);

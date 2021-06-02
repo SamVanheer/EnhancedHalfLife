@@ -16,8 +16,6 @@
 #include "CTripmine.hpp"
 #include "CTripmineGrenade.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_tripmine, CTripmineGrenade);
-
 void CTripmineGrenade::OnRemove()
 {
 	KillBeam();

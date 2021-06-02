@@ -26,7 +26,7 @@ enum w_squeak_e
 	WSQUEAK_RUN,
 };
 
-class EHL_CLASS() CSqueakGrenade : public CBaseMonster
+class EHL_CLASS(EntityName=monster_snark) CSqueakGrenade : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -18,7 +18,7 @@
 #include "CBaseTurret.hpp"
 #include "CMiniTurret.generated.hpp"
 
-class EHL_CLASS() CMiniTurret : public CBaseTurret
+class EHL_CLASS(EntityName=monster_miniturret) CMiniTurret : public CBaseTurret
 {
 	EHL_GENERATED_BODY()
 

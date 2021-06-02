@@ -15,8 +15,6 @@
 
 #include "CPushable.hpp"
 
-LINK_ENTITY_TO_CLASS(func_pushable, CPushable);
-
 const char* CPushable::m_soundNames[3] = {"debris/pushbox1.wav", "debris/pushbox2.wav", "debris/pushbox3.wav"};
 
 void CPushable::Spawn()

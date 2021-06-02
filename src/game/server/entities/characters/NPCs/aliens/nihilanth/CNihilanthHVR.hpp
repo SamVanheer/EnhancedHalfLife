@@ -23,7 +23,7 @@ class CNihilanth;
 /**
 *	@brief Controller bouncy ball attack
 */
-class EHL_CLASS() CNihilanthHVR : public CBaseMonster
+class EHL_CLASS(EntityName=nihilanth_energy_ball) CNihilanthHVR : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -25,7 +25,7 @@ constexpr int FGUNTARGET_START_ON = 0x0001;
 *	pev->health is current health
 *	pev->max_health is the amount to reset to each time it starts
 */
-class EHL_CLASS() CGunTarget : public CBaseMonster
+class EHL_CLASS(EntityName=func_guntarget) CGunTarget : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -15,8 +15,6 @@
 
 #include "CFuncConveyor.hpp"
 
-LINK_ENTITY_TO_CLASS(func_conveyor, CFuncConveyor);
-
 void CFuncConveyor::Spawn()
 {
 	SetMovedir(this);

@@ -15,8 +15,6 @@
 
 #include "CDecal.hpp"
 
-LINK_ENTITY_TO_CLASS(infodecal, CDecal);
-
 // UNDONE:  These won't get sent to joining players in multi-player
 void CDecal::Spawn()
 {

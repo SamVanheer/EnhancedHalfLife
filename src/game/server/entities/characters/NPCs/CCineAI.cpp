@@ -15,8 +15,6 @@
 
 #include "CCineAI.hpp"
 
-LINK_ENTITY_TO_CLASS(aiscripted_sequence, CCineAI);
-
 bool CCineAI::CanOverrideState()
 {
 	return true;

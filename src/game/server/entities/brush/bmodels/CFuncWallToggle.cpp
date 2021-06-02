@@ -15,8 +15,6 @@
 
 #include "CFuncWallToggle.hpp"
 
-LINK_ENTITY_TO_CLASS(func_wall_toggle, CFuncWallToggle);
-
 void CFuncWallToggle::Spawn()
 {
 	CFuncWall::Spawn();

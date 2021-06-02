@@ -15,8 +15,6 @@
 
 #include "CFuncMortarField.hpp"
 
-LINK_ENTITY_TO_CLASS(func_mortar_field, CFuncMortarField);
-
 void CFuncMortarField::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "m_iszXController"))

@@ -15,8 +15,6 @@
 
 #include "CEnvLight.hpp"
 
-LINK_ENTITY_TO_CLASS(light_environment, CEnvLight);
-
 void CEnvLight::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "_light"))

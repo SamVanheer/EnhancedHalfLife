@@ -15,8 +15,6 @@
 
 #include "CInfoBM.hpp"
 
-LINK_ENTITY_TO_CLASS(info_bigmomma, CInfoBM);
-
 void CInfoBM::Spawn()
 {
 }

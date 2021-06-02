@@ -17,8 +17,6 @@
 #include "CFireAndDie.hpp"
 #include "dll_functions.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_changelevel, CChangeLevel);
-
 void CChangeLevel::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "map"))

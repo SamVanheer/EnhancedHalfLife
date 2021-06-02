@@ -31,7 +31,7 @@ constexpr int SF_TRAIN_PASSABLE = 8;		//!< Train is not solid -- used to make wa
 *	speed	default 100
 *	dmg		default	2
 */
-class EHL_CLASS() CFuncTrain : public CBasePlatTrain
+class EHL_CLASS(EntityName=func_train) CFuncTrain : public CBasePlatTrain
 {
 	EHL_GENERATED_BODY()
 

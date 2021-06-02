@@ -15,8 +15,6 @@
 
 #include "CBlood.hpp"
 
-LINK_ENTITY_TO_CLASS(env_blood, CBlood);
-
 void CBlood::Spawn()
 {
 	SetSolidType(Solid::Not);

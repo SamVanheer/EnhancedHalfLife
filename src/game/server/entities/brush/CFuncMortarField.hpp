@@ -29,7 +29,7 @@ enum class MortarControlType
 *	@brief the "LaBuznik" mortar device
 *	Drop bombs from above
 */
-class EHL_CLASS() CFuncMortarField : public CBaseEntity
+class EHL_CLASS(EntityName=func_mortar_field) CFuncMortarField : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

@@ -27,7 +27,7 @@ constexpr int N_SPHERES = 20;
 /**
 *	@brief Nihilanth, final Boss monster
 */
-class EHL_CLASS() CNihilanth : public CBaseMonster
+class EHL_CLASS(EntityName=monster_nihilanth) CNihilanth : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -23,8 +23,6 @@
 #include "weaponinfo.hpp"
 #include "CSatchel.hpp"
 
-LINK_ENTITY_TO_CLASS(weapon_satchel, CSatchel);
-
 bool CSatchel::AddDuplicate(CBaseWeapon* pOriginal)
 {
 #ifdef CLIENT_DLL

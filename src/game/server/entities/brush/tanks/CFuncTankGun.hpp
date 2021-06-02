@@ -18,7 +18,7 @@
 #include "CFuncTank.hpp"
 #include "CFuncTankGun.generated.hpp"
 
-class EHL_CLASS() CFuncTankGun : public CFuncTank
+class EHL_CLASS(EntityName=func_tank) CFuncTankGun : public CFuncTank
 {
 	EHL_GENERATED_BODY()
 

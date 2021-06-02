@@ -28,7 +28,7 @@ constexpr int SF_MULTIMAN_THREAD = 0x00000001;
 *	FLAG: CLONE (this is a clone for a threaded execution)
 *	@see MAX_MULTI_TARGETS
 */
-class EHL_CLASS() CMultiManager : public CPointEntity
+class EHL_CLASS(EntityName=multi_manager) CMultiManager : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

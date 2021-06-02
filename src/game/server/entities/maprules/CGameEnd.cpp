@@ -15,8 +15,6 @@
 
 #include "CGameEnd.hpp"
 
-LINK_ENTITY_TO_CLASS(game_end, CGameEnd);
-
 void CGameEnd::Use(const UseInfo& info)
 {
 	if (!CanFireForActivator(info.GetActivator()))

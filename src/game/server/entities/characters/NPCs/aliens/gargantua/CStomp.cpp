@@ -15,8 +15,6 @@
 
 #include "CStomp.hpp"
 
-LINK_ENTITY_TO_CLASS(garg_stomp, CStomp);
-
 CStomp* CStomp::StompCreate(const Vector& origin, const Vector& end, float speed)
 {
 	CStomp* pStomp = static_cast<CStomp*>(g_EntityList.Create("garg_stomp"));

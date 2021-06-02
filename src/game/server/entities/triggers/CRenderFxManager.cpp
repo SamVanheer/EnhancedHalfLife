@@ -15,8 +15,6 @@
 
 #include "CRenderFxManager.hpp"
 
-LINK_ENTITY_TO_CLASS(env_render, CRenderFxManager);
-
 void CRenderFxManager::Spawn()
 {
 	SetSolidType(Solid::Not);

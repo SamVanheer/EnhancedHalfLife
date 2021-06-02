@@ -23,7 +23,7 @@ constexpr int SF_PENDULUM_SWING = 2;	// spawnflag that makes a pendulum a rope s
 constexpr int SF_PENDULUM_AUTO_RETURN = 16;
 constexpr int SF_PENDULUM_PASSABLE = 32;
 
-class EHL_CLASS() CPendulum : public CBaseEntity
+class EHL_CLASS(EntityName=func_pendulum) CPendulum : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

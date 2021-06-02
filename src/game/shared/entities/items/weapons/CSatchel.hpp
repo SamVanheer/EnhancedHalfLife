@@ -35,7 +35,7 @@ enum satchel_radio_e
 	SATCHEL_RADIO_HOLSTER
 };
 
-class EHL_CLASS() CSatchel : public CBaseWeapon
+class EHL_CLASS(EntityName=weapon_satchel) CSatchel : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

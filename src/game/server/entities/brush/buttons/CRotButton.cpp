@@ -16,8 +16,6 @@
 #include "doors/CBaseDoor.hpp"
 #include "CRotButton.hpp"
 
-LINK_ENTITY_TO_CLASS(func_rot_button, CRotButton);
-
 void CRotButton::Spawn()
 {
 	//----------------------------------------------------

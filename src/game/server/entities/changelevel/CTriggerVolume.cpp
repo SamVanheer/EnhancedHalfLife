@@ -15,8 +15,6 @@
 
 #include "CTriggerVolume.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_transition, CTriggerVolume);
-
 void CTriggerVolume::Spawn()
 {
 	SetSolidType(Solid::Not);

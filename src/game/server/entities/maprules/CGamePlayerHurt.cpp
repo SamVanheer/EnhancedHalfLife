@@ -15,8 +15,6 @@
 
 #include "CGamePlayerHurt.hpp"
 
-LINK_ENTITY_TO_CLASS(game_player_hurt, CGamePlayerHurt);
-
 void CGamePlayerHurt::Use(const UseInfo& info)
 {
 	if (!CanFireForActivator(info.GetActivator()))

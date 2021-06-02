@@ -15,8 +15,6 @@
 
 #include "CEnvShooter.hpp"
 
-LINK_ENTITY_TO_CLASS(env_shooter, CEnvShooter);
-
 void CEnvShooter::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "shootmodel"))

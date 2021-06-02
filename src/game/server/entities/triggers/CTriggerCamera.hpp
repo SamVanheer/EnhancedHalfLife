@@ -25,7 +25,7 @@ constexpr int SF_CAMERA_PLAYER_POSITION = 1;
 constexpr int SF_CAMERA_PLAYER_TARGET = 2;
 constexpr int SF_CAMERA_PLAYER_TAKECONTROL = 4;
 
-class EHL_CLASS() CTriggerCamera : public CBaseEntity
+class EHL_CLASS(EntityName=trigger_camera) CTriggerCamera : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

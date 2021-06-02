@@ -24,8 +24,6 @@
 
 constexpr int HANDGRENADE_PRIMARY_VOLUME = 450;
 
-LINK_ENTITY_TO_CLASS(weapon_handgrenade, CHandGrenade);
-
 void CHandGrenade::Spawn()
 {
 	Precache();

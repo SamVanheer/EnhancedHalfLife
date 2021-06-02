@@ -21,7 +21,7 @@
 /**
 *	@brief Flaming Wreakage
 */
-class EHL_CLASS() CWreckage : public CBaseMonster
+class EHL_CLASS(EntityName=cycler_wreckage) CWreckage : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

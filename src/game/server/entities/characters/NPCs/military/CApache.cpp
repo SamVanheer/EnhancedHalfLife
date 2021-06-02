@@ -15,8 +15,6 @@
 
 #include "CApache.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_apache, CApache);
-
 void CApache::Spawn()
 {
 	Precache();

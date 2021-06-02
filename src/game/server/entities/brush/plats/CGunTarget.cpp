@@ -16,8 +16,6 @@
 #include "CGunTarget.hpp"
 #include "CPathCorner.hpp"
 
-LINK_ENTITY_TO_CLASS(func_guntarget, CGunTarget);
-
 void CGunTarget::Spawn()
 {
 	SetSolidType(Solid::BSP);

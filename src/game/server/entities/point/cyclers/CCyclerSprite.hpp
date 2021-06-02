@@ -18,7 +18,7 @@
 #include "CBaseEntity.hpp"
 #include "CCyclerSprite.generated.hpp"
 
-class EHL_CLASS() CCyclerSprite : public CBaseEntity
+class EHL_CLASS(EntityName=cycler_sprite) CCyclerSprite : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

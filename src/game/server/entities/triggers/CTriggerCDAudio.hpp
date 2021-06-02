@@ -23,7 +23,7 @@
 *	@brief starts/stops cd audio tracks
 *	Changes tracks or stops CD when player touches or when triggered
 */
-class EHL_CLASS() CTriggerCDAudio : public CBaseTrigger
+class EHL_CLASS(EntityName=trigger_cdaudio) CTriggerCDAudio : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 

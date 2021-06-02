@@ -15,8 +15,6 @@
 
 #include "CMomentaryRotButton.hpp"
 
-LINK_ENTITY_TO_CLASS(momentary_rot_button, CMomentaryRotButton);
-
 void CMomentaryRotButton::Spawn()
 {
 	CBaseToggle::AxisDir(this);

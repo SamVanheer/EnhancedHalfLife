@@ -17,8 +17,6 @@
 
 #include "CZombie.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_zombie, CZombie);
-
 const char* CZombie::pAttackHitSounds[] =
 {
 	"zombie/claw_strike1.wav",

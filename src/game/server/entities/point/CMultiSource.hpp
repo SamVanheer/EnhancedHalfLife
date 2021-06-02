@@ -21,7 +21,7 @@
 constexpr int MAX_MULTI_TARGETS = 16; //!< maximum number of targets a single multi_manager entity may be assigned.
 constexpr int MS_MAX_TARGETS = 32;
 
-class EHL_CLASS() CMultiSource : public CPointEntity
+class EHL_CLASS(EntityName=multisource) CMultiSource : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

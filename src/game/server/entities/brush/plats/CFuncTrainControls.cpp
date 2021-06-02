@@ -16,8 +16,6 @@
 #include "CFuncTrackTrain.hpp"
 #include "CFuncTrainControls.hpp"
 
-LINK_ENTITY_TO_CLASS(func_traincontrols, CFuncTrainControls);
-
 void CFuncTrainControls::Find()
 {
 	CBaseEntity* pTarget = nullptr;

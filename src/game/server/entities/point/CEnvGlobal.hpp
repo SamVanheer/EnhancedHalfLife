@@ -28,7 +28,7 @@ enum class GlobalTriggerMode
 	Toggle
 };
 
-class EHL_CLASS() CEnvGlobal : public CPointEntity
+class EHL_CLASS(EntityName=env_global) CEnvGlobal : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

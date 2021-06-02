@@ -15,8 +15,6 @@
 
 #include "CLaserSpot.hpp"
 
-LINK_ENTITY_TO_CLASS(laser_spot, CLaserSpot);
-
 CLaserSpot* CLaserSpot::CreateSpot()
 {
 	CLaserSpot* pSpot = static_cast<CLaserSpot*>(g_EntityList.Create("laser_spot"));

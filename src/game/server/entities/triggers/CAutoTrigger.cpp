@@ -15,8 +15,6 @@
 
 #include "CAutoTrigger.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_auto, CAutoTrigger);
-
 void CAutoTrigger::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "globalstate"))

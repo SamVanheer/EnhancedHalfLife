@@ -23,9 +23,6 @@
 #include "UserMessages.hpp"
 #include "CPython.hpp"
 
-LINK_ENTITY_TO_CLASS(weapon_357, CPython);
-LINK_ALIAS_ENTITY_TO_CLASS(weapon_python, weapon_357, CPython);
-
 bool CPython::GetWeaponInfo(WeaponInfo& p)
 {
 	p.pszName = GetClassname();

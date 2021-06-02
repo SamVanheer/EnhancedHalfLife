@@ -62,7 +62,7 @@ constexpr int SCIENTIST_AE_NEEDLEOFF = 3;
 /**
 *	@brief human scientist (passive lab worker)
 */
-class EHL_CLASS() CScientist : public CTalkMonster
+class EHL_CLASS(EntityName=monster_scientist) CScientist : public CTalkMonster
 {
 	EHL_GENERATED_BODY()
 

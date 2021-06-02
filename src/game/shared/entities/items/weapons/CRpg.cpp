@@ -28,8 +28,6 @@
 #include "CRpgRocket.hpp"
 #endif
 
-LINK_ENTITY_TO_CLASS(weapon_rpg, CRpg);
-
 void CRpg::Reload()
 {
 	auto player = m_hPlayer.Get();

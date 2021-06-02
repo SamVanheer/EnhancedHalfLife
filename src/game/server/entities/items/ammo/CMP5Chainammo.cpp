@@ -14,5 +14,3 @@
 ****/
 
 #include "CMP5Chainammo.hpp"
-
-LINK_ENTITY_TO_CLASS(ammo_9mmbox, CMP5Chainammo);

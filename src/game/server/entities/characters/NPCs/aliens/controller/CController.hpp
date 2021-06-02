@@ -32,7 +32,7 @@ constexpr int CONTROLLER_AE_POWERUP_HALF = 5;
 
 constexpr int CONTROLLER_FLINCH_DELAY = 2;		// at most one flinch every n secs
 
-class EHL_CLASS() CController : public CSquadMonster
+class EHL_CLASS(EntityName=monster_alien_controller) CController : public CSquadMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -16,8 +16,6 @@
 #include "CFuncTankMortar.hpp"
 #include "effects/CEnvExplosion.hpp"
 
-LINK_ENTITY_TO_CLASS(func_tankmortar, CFuncTankMortar);
-
 void CFuncTankMortar::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "iMagnitude"))

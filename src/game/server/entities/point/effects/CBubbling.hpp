@@ -18,7 +18,7 @@
 #include "CBaseEntity.hpp"
 #include "CBubbling.generated.hpp"
 
-class EHL_CLASS() CBubbling : public CBaseEntity
+class EHL_CLASS(EntityName=env_bubbles) CBubbling : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

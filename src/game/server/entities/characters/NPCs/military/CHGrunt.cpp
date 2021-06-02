@@ -17,8 +17,6 @@
 #include "CHGrunt.hpp"
 #include "CGrenade.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_human_grunt, CHGrunt);
-
 const char* CHGrunt::pGruntSentences[] =
 {
 	"HG_GREN", // grenade scared grunt

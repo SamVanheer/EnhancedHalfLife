@@ -15,8 +15,6 @@
 
 #include "CTriggerChangeTarget.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_changetarget, CTriggerChangeTarget);
-
 void CTriggerChangeTarget::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "m_iszNewTarget"))

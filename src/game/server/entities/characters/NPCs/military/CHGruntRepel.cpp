@@ -16,8 +16,6 @@
 #include "CHGruntRepel.hpp"
 #include "customentity.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_grunt_repel, CHGruntRepel);
-
 void CHGruntRepel::Spawn()
 {
 	Precache();

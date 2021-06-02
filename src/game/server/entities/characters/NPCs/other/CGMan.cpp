@@ -15,8 +15,6 @@
 
 #include "CGMan.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_gman, CGMan);
-
 int	CGMan::Classify()
 {
 	return CLASS_NONE;

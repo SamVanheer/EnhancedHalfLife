@@ -15,8 +15,6 @@
 
 #include "CGamePlayerTeam.hpp"
 
-LINK_ENTITY_TO_CLASS(game_player_team, CGamePlayerTeam);
-
 const char* CGamePlayerTeam::TargetTeamName(const char* pszTargetName)
 {
 	CBaseEntity* pTeamEntity = nullptr;

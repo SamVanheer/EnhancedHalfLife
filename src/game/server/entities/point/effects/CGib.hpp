@@ -22,7 +22,7 @@
 /**
 *	@brief A gib is a chunk of a body, or a piece of wood/metal/rocks/etc.
 */
-class EHL_CLASS() CGib : public CBaseEntity
+class EHL_CLASS(EntityName=gib) CGib : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

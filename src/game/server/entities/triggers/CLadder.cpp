@@ -15,8 +15,6 @@
 
 #include "CLadder.hpp"
 
-LINK_ENTITY_TO_CLASS(func_ladder, CLadder);
-
 void CLadder::KeyValue(KeyValueData* pkvd)
 {
 	CBaseTrigger::KeyValue(pkvd);

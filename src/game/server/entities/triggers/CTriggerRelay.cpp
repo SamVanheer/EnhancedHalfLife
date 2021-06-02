@@ -15,8 +15,6 @@
 
 #include "CTriggerRelay.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_relay, CTriggerRelay);
-
 void CTriggerRelay::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "triggerstate"))

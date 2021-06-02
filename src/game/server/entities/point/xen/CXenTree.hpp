@@ -22,7 +22,7 @@ class CXenTreeTrigger;
 
 constexpr int TREE_AE_ATTACK = 1;
 
-class EHL_CLASS() CXenTree : public CActAnimating
+class EHL_CLASS(EntityName=xen_tree) CXenTree : public CActAnimating
 {
 	EHL_GENERATED_BODY()
 

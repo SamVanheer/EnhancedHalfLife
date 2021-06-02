@@ -20,7 +20,7 @@
 
 constexpr int SF_RELAY_FIREONCE = 0x0001;
 
-class EHL_CLASS() CTriggerRelay : public CBaseEntity
+class EHL_CLASS(EntityName=trigger_relay) CTriggerRelay : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

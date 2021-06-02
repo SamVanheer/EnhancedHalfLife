@@ -16,8 +16,6 @@
 #include "CFuncPlat.hpp"
 #include "CPlatTrigger.hpp"
 
-LINK_ENTITY_TO_CLASS(func_plat, CFuncPlat);
-
 void CFuncPlat::Setup()
 {
 	//m_iszMovingSound = MAKE_STRING("plats/platmove1.wav");

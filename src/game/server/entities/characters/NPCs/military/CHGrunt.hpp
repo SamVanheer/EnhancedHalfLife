@@ -102,7 +102,7 @@ enum
 //=========================================================
 constexpr int bits_COND_GRUNT_NOFIRE = bits_COND_SPECIAL1;
 
-class EHL_CLASS() CHGrunt : public CSquadMonster
+class EHL_CLASS(EntityName=monster_human_grunt) CHGrunt : public CSquadMonster
 {
 	EHL_GENERATED_BODY()
 

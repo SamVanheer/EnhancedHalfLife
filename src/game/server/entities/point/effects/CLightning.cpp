@@ -16,9 +16,6 @@
 #include "CLightning.hpp"
 #include "customentity.hpp"
 
-LINK_ENTITY_TO_CLASS(env_lightning, CLightning);
-LINK_ENTITY_TO_CLASS(env_beam, CLightning);
-
 void CLightning::Spawn()
 {
 	if (IsStringNull(m_iszSpriteName))

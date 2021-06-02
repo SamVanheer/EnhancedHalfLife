@@ -18,8 +18,6 @@
 #include "navigation/nodes.hpp"
 #include "game.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_houndeye, CHoundeye);
-
 int	CHoundeye::Classify()
 {
 	return	CLASS_ALIEN_MONSTER;

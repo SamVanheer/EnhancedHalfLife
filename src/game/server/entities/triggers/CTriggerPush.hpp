@@ -24,7 +24,7 @@ constexpr int SF_TRIGGER_PUSH_START_OFF = 2;		//!< spawnflag that makes trigger_
 /**
 *	@brief Pushes the player and other entities
 */
-class EHL_CLASS() CTriggerPush : public CBaseTrigger
+class EHL_CLASS(EntityName=trigger_push) CTriggerPush : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 

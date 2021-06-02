@@ -16,6 +16,9 @@ namespace CodeGenerator.Persistence
     public class PersistenceProcessor : IProcessor
     {
         private const string ClassPrefix = "Class=";
+        private const string EntityNameKey = "EntityName";
+        private const string EntityNameAliasesKey = "EntityNameAliases";
+
         private const string FieldPrefix = "Field=";
         private const string TypeKey = "Type";
 
@@ -169,14 +172,46 @@ namespace CodeGenerator.Persistence
 
             data.AddVisibilityDeclaration("public");
             //Add type aliases
-            data.AddAlias("ThisClass", record.Name);
+            data.AddTypeAlias("ThisClass", record.Name);
 
             if (baseClass.Length > 0)
             {
-                data.AddAlias("BaseClass", baseClass);
+                data.AddTypeAlias("BaseClass", baseClass);
             }
 
             data.AddHeaderInclude(headerFileName);
+
+            if (classAttributes.TryGetValue(EntityNameKey, out var entityNames))
+            {
+                if (entityNames.Count > 1)
+                {
+                    LogError(record, $"Too many values provided for {EntityNameKey}");
+                    return;
+                }
+                else if (entityNames.Count == 0)
+                {
+                    LogError(record, $"{EntityNameKey} attribute with no value");
+                    return;
+                }
+
+                var entityName = entityNames[0].Name;
+
+                data.AddDefinitionMacro($"LINK_ENTITY_TO_CLASS({entityName}, {fqName});");
+
+                if (classAttributes.TryGetValue(EntityNameAliasesKey, out var aliases))
+                {
+                    //TODO: need to validate the name so it doesn't contain invalid characters
+                    foreach (var alias in aliases)
+                    {
+                        data.AddDefinitionMacro($"LINK_ALIAS_ENTITY_TO_CLASS({alias.Name}, {entityName}, {fqName});");
+                    }
+                }
+            }
+            else if (classAttributes.ContainsKey(EntityNameAliasesKey))
+            {
+                LogError(record, $"Class {fqName} has entity alias names but no entity name");
+                return;
+            }
 
             data.AddStaticAssertDefinition(
                 $"std::is_same_v<{fqName}, {fqName}::ThisClass>",

@@ -81,7 +81,7 @@ constexpr int LFO_RANDOM = 3;
 *	@brief Generic ambient sound
 *	general-purpose user-defined static sound
 */
-class EHL_CLASS() CAmbientGeneric : public CBaseEntity
+class EHL_CLASS(EntityName=ambient_generic) CAmbientGeneric : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

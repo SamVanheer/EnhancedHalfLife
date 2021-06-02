@@ -15,8 +15,6 @@
 
 #include "CBubbling.hpp"
 
-LINK_ENTITY_TO_CLASS(env_bubbles, CBubbling);
-
 constexpr int SF_BUBBLES_STARTOFF = 0x0001;
 
 void CBubbling::Spawn()

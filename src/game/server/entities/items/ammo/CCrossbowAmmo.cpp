@@ -14,5 +14,3 @@
 ****/
 
 #include "CCrossbowAmmo.hpp"
-
-LINK_ENTITY_TO_CLASS(ammo_crossbow, CCrossbowAmmo);

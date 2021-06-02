@@ -19,7 +19,7 @@
 #include "CBaseWeapon.hpp"
 #include "CMP5Chainammo.generated.hpp"
 
-class EHL_CLASS() CMP5Chainammo : public CBaseAmmo
+class EHL_CLASS(EntityName=ammo_9mmbox) CMP5Chainammo : public CBaseAmmo
 {
 	EHL_GENERATED_BODY()
 

@@ -15,8 +15,6 @@
 
 #include "CShower.hpp"
 
-LINK_ENTITY_TO_CLASS(spark_shower, CShower);
-
 void CShower::Spawn()
 {
 	Vector velocity = RANDOM_FLOAT(200, 300) * GetAbsAngles();

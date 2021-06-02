@@ -21,7 +21,7 @@
 /**
 *	@brief kdb: changed from public CBaseMonster so he can speak
 */
-class EHL_CLASS() CSittingScientist : public CScientist
+class EHL_CLASS(EntityName=monster_sitting_scientist) CSittingScientist : public CScientist
 {
 	EHL_GENERATED_BODY()
 

@@ -28,7 +28,7 @@ enum squeak_e
 	SQUEAK_THROW
 };
 
-class EHL_CLASS() CSqueak : public CBaseWeapon
+class EHL_CLASS(EntityName=weapon_snark) CSqueak : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

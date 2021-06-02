@@ -28,7 +28,7 @@ constexpr int SF_PTEAM_GIB = 0x0004;
 *	Flag: Kill Player
 *	Flag: Gib Player
 */
-class EHL_CLASS() CGamePlayerTeam : public CRulePointEntity
+class EHL_CLASS(EntityName=game_player_team) CGamePlayerTeam : public CRulePointEntity
 {
 	EHL_GENERATED_BODY()
 

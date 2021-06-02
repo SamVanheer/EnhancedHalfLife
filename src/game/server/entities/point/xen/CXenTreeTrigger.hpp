@@ -18,7 +18,7 @@
 #include "CBaseEntity.hpp"
 #include "CXenTreeTrigger.generated.hpp"
 
-class EHL_CLASS() CXenTreeTrigger : public CBaseEntity
+class EHL_CLASS(EntityName=xen_ttrigger) CXenTreeTrigger : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

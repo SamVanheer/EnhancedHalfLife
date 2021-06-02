@@ -22,7 +22,7 @@
 *	@brief Define space that travels across a level transition
 *	Derive from point entity so this doesn't move across levels
 */
-class EHL_CLASS() CTriggerVolume : public CPointEntity
+class EHL_CLASS(EntityName=trigger_transition) CTriggerVolume : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

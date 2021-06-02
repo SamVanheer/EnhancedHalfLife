@@ -25,8 +25,6 @@
 constexpr int CROWBAR_BODYHIT_VOLUME = 128;
 constexpr int CROWBAR_WALLHIT_VOLUME = 512;
 
-LINK_ENTITY_TO_CLASS(weapon_crowbar, CCrowbar);
-
 void CCrowbar::Spawn()
 {
 	Precache();

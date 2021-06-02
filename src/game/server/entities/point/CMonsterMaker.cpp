@@ -16,8 +16,6 @@
 #include "dll_functions.hpp"
 #include "CMonsterMaker.hpp"
 
-LINK_ENTITY_TO_CLASS(monstermaker, CMonsterMaker);
-
 void CMonsterMaker::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "monstercount"))

@@ -61,8 +61,6 @@ void CCineMonster::KeyValue(KeyValueData* pkvd)
 	}
 }
 
-LINK_ENTITY_TO_CLASS(scripted_sequence, CCineMonster);
-
 void CCineMonster::Spawn()
 {
 	// SetSolidType(Solid::Trigger);

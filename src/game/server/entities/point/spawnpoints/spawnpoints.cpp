@@ -13,17 +13,7 @@
 *
 ****/
 
-#include "CBaseDMStart.hpp"
-
-// These are the new entry points to entities. 
-LINK_ENTITY_TO_CLASS(info_player_deathmatch, CBaseDMStart);
-LINK_ENTITY_TO_CLASS(info_player_start, CPointEntity);
-LINK_ENTITY_TO_CLASS(info_landmark, CPointEntity);
-
-bool CBaseDMStart::IsTriggered(CBaseEntity* pEntity)
-{
-	return UTIL_IsMasterTriggered(m_iszMaster, pEntity);
-}
+#include "spawnpoints.hpp"
 
 /**
 *	@brief checks if the spot is clear of players
@@ -142,3 +132,4 @@ CBaseEntity* EntSelectSpawnPoint(CBaseEntity* pPlayer)
 	g_pLastSpawn = pSpot;
 	return pSpot;
 }
+

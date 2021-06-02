@@ -40,7 +40,7 @@ constexpr std::string_view EGON_SOUND_OFF{"weapons/egon_off1.wav"};
 constexpr std::string_view EGON_SOUND_RUN{"weapons/egon_run3.wav"};
 constexpr std::string_view EGON_SOUND_STARTUP{"weapons/egon_windup2.wav"};
 
-class EHL_CLASS() CEgon : public CBaseWeapon
+class EHL_CLASS(EntityName=weapon_egon) CEgon : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

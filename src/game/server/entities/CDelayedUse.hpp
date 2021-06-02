@@ -21,7 +21,7 @@
 /**
 *	@brief Used to delay triggering an entity
 */
-class EHL_CLASS() CDelayedUse final : public CBaseEntity
+class EHL_CLASS(EntityName=DelayedUse) CDelayedUse final : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

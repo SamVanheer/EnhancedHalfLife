@@ -139,8 +139,6 @@ bool CBaseButton::TakeDamage(const TakeDamageInfo& info)
 	return false;
 }
 
-LINK_ENTITY_TO_CLASS(func_button, CBaseButton);
-
 void CBaseButton::Spawn()
 {
 	//----------------------------------------------------

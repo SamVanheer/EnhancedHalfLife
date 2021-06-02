@@ -21,7 +21,7 @@
 constexpr int SF_CONVEYOR_VISUAL = 0x0001;
 constexpr int SF_CONVEYOR_NOTSOLID = 0x0002;
 
-class EHL_CLASS() CFuncConveyor : public CFuncWall
+class EHL_CLASS(EntityName=func_conveyor) CFuncConveyor : public CFuncWall
 {
 	EHL_GENERATED_BODY()
 

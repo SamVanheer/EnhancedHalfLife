@@ -29,8 +29,6 @@ void CDeadHGrunt::KeyValue(KeyValueData* pkvd)
 		CBaseMonster::KeyValue(pkvd);
 }
 
-LINK_ENTITY_TO_CLASS(monster_hgrunt_dead, CDeadHGrunt);
-
 void CDeadHGrunt::Spawn()
 {
 	PRECACHE_MODEL("models/hgrunt.mdl");

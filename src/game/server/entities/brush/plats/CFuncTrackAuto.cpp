@@ -17,8 +17,6 @@
 #include "CFuncTrackTrain.hpp"
 #include "CPathTrack.hpp"
 
-LINK_ENTITY_TO_CLASS(func_trackautochange, CFuncTrackAuto);
-
 void CFuncTrackAuto::UpdateAutoTargets(ToggleState toggleState)
 {
 	if (!m_hTrackTop || !m_hTrackBottom)

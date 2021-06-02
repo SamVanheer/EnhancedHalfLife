@@ -15,8 +15,6 @@
 
 #include "CApacheHVR.hpp"
 
-LINK_ENTITY_TO_CLASS(hvr_rocket, CApacheHVR);
-
 void CApacheHVR::Spawn()
 {
 	Precache();

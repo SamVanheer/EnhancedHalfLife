@@ -15,8 +15,6 @@
 
 #include "CEnvBeverage.hpp"
 
-LINK_ENTITY_TO_CLASS(env_beverage, CEnvBeverage);
-
 void CEnvBeverage::Precache()
 {
 	PRECACHE_MODEL("models/can.mdl");

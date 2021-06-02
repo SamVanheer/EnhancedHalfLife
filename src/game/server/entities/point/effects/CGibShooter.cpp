@@ -15,8 +15,6 @@
 
 #include "CGibShooter.hpp"
 
-LINK_ENTITY_TO_CLASS(gibshooter, CGibShooter);
-
 void CGibShooter::Precache()
 {
 	if (g_Language == LANGUAGE_GERMAN)

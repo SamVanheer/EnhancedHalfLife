@@ -15,8 +15,6 @@
 
 #include "CButtonTarget.hpp"
 
-LINK_ENTITY_TO_CLASS(button_target, CButtonTarget);
-
 void CButtonTarget::Spawn()
 {
 	SetMovetype(Movetype::Push);

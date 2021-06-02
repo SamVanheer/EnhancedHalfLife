@@ -20,7 +20,7 @@
 #include "weapons.hpp"
 #include "CItemAntidote.generated.hpp"
 
-class EHL_CLASS() CItemAntidote : public CItem
+class EHL_CLASS(EntityName=item_antidote) CItemAntidote : public CItem
 {
 	EHL_GENERATED_BODY()
 

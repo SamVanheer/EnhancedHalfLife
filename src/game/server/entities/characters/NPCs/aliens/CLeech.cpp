@@ -34,8 +34,6 @@
 // Try this on a model with hulls/tracehull?
 //
 
-LINK_ENTITY_TO_CLASS(monster_leech, CLeech);
-
 const char* CLeech::pAttackSounds[] =
 {
 	"leech/leech_bite1.wav",

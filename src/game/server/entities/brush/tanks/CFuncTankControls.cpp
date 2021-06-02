@@ -15,8 +15,6 @@
 
 #include "CFuncTankControls.hpp"
 
-LINK_ENTITY_TO_CLASS(func_tankcontrols, CFuncTankControls);
-
 int	CFuncTankControls::ObjectCaps()
 {
 	return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_IMPULSE_USE;

@@ -15,8 +15,6 @@
 
 #include "CGenericMonster.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_generic, CGenericMonster);
-
 int	CGenericMonster::Classify()
 {
 	return CLASS_PLAYER_ALLY;

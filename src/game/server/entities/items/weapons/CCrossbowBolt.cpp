@@ -15,8 +15,6 @@
 
 #include "CCrossbowBolt.hpp"
 
-LINK_ENTITY_TO_CLASS(crossbow_bolt, CCrossbowBolt);
-
 CCrossbowBolt* CCrossbowBolt::BoltCreate()
 {
 	// Create a new entity with CCrossbowBolt private data

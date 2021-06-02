@@ -16,8 +16,6 @@
 #include "CHealthKit.hpp"
 #include "UserMessages.hpp"
 
-LINK_ENTITY_TO_CLASS(item_healthkit, CHealthKit);
-
 void CHealthKit::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "custom_capacity"))

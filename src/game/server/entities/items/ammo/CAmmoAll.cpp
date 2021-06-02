@@ -16,8 +16,6 @@
 #include "CAmmoAll.hpp"
 #include "CBaseWeapon.hpp"
 
-LINK_ENTITY_TO_CLASS(ammo_all, CAmmoAll);
-
 void CAmmoAll::KeyValue(KeyValueData* pkvd)
 {
 	//Override this to allow -1 for refill

@@ -18,7 +18,7 @@
 #include "CGibShooter.hpp"
 #include "CEnvShooter.generated.hpp"
 
-class EHL_CLASS() CEnvShooter : public CGibShooter
+class EHL_CLASS(EntityName=env_shooter) CEnvShooter : public CGibShooter
 {
 	EHL_GENERATED_BODY()
 

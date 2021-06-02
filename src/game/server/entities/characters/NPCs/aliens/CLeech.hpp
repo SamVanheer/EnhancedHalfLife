@@ -38,7 +38,7 @@ constexpr float LEECH_FRAMETIME = 0.1;
 /**
 *	@brief basic little swimming monster
 */
-class EHL_CLASS() CLeech : public CBaseMonster
+class EHL_CLASS(EntityName=monster_leech) CLeech : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

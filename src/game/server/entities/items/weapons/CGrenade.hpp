@@ -21,7 +21,7 @@
 /**
 *	@brief Contact Grenade / Timed grenade / Satchel Charge
 */
-class EHL_CLASS() CGrenade : public CBaseAnimating
+class EHL_CLASS(EntityName=grenade) CGrenade : public CBaseAnimating
 {
 	EHL_GENERATED_BODY()
 

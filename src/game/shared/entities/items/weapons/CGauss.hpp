@@ -34,7 +34,7 @@ enum gauss_e
 	GAUSS_DRAW
 };
 
-class EHL_CLASS() CGauss : public CBaseWeapon
+class EHL_CLASS(EntityName=weapon_gauss) CGauss : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

@@ -15,8 +15,6 @@
 
 #include "CFuncTankGun.hpp"
 
-LINK_ENTITY_TO_CLASS(func_tank, CFuncTankGun);
-
 void CFuncTankGun::Fire(const Vector& barrelEnd, const Vector& forward, CBaseEntity* pAttacker)
 {
 	if (m_fireLast != 0)

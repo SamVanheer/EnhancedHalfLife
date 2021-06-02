@@ -18,8 +18,6 @@
 #include "navigation/nodes.hpp"
 #include "game.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_bullchicken, CBullsquid);
-
 int CBullsquid::IgnoreConditions()
 {
 	int iIgnore = CBaseMonster::IgnoreConditions();

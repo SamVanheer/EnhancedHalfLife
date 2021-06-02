@@ -15,8 +15,6 @@
 
 #include "CFuncMonsterClip.hpp"
 
-LINK_ENTITY_TO_CLASS(func_monsterclip, CFuncMonsterClip);
-
 void CFuncMonsterClip::Spawn()
 {
 	CFuncWall::Spawn();

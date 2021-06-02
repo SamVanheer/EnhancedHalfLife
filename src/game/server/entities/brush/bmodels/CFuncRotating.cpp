@@ -15,8 +15,6 @@
 
 #include "CFuncRotating.hpp"
 
-LINK_ENTITY_TO_CLASS(func_rotating, CFuncRotating);
-
 void CFuncRotating::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "fanfriction"))

@@ -34,7 +34,7 @@ enum rpg_e
 	RPG_FIDGET_UL,	// unloaded fidget
 };
 
-class EHL_CLASS() CRpg : public CBaseWeapon
+class EHL_CLASS(EntityName=weapon_rpg) CRpg : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

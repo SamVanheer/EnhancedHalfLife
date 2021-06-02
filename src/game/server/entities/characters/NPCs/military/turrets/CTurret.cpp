@@ -15,8 +15,6 @@
 
 #include "CTurret.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_turret, CTurret);
-
 constexpr std::string_view TURRET_GLOW_SPRITE{"sprites/flare3.spr"};
 
 void CTurret::Spawn()

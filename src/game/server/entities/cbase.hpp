@@ -23,9 +23,11 @@
 #include "CBaseAnimating.hpp"
 #include "CBaseToggle.hpp"
 
+#ifndef CLIENT_DLL
 #include "brush/buttons/CBaseButton.hpp"
 
 #include "CWorld.hpp"
+#endif
 
 #include "CBaseMonster.hpp"
 #ifndef CLIENT_DLL

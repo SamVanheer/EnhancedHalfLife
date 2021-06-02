@@ -18,7 +18,7 @@
 #include "CBaseMonster.hpp"
 #include "CTentacleMaw.generated.hpp"
 
-class EHL_CLASS() CTentacleMaw : public CBaseMonster
+class EHL_CLASS(EntityName=monster_tentaclemaw) CTentacleMaw : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

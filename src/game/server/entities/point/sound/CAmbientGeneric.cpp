@@ -52,8 +52,6 @@ constexpr dynpitchvol_t rgdpvpreset[CDPVPRESETMAX] =
 	{27,128,	 90,	10,		10,		10,		1,		20,		40,		1,		5,		10,		20,		0,		0,0,0,0,0,0,0,0,0,0}
 };
 
-LINK_ENTITY_TO_CLASS(ambient_generic, CAmbientGeneric);
-
 void CAmbientGeneric::Spawn()
 {
 	/*

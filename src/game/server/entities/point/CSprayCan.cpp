@@ -15,8 +15,6 @@
 
 #include "CSprayCan.hpp"
 
-LINK_ENTITY_TO_CLASS(spray_can, CSprayCan);
-
 void CSprayCan::Spawn(CBaseEntity* pOwner)
 {
 	SetAbsOrigin(pOwner->GetAbsOrigin() + Vector(0, 0, 32));

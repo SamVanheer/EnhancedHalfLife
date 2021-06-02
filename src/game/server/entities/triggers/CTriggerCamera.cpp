@@ -16,8 +16,6 @@
 #include "CTriggerCamera.hpp"
 #include "plats/CPathCorner.hpp"			// trigger_camera has train functionality
 
-LINK_ENTITY_TO_CLASS(trigger_camera, CTriggerCamera);
-
 void CTriggerCamera::Spawn()
 {
 	SetMovetype(Movetype::Noclip);

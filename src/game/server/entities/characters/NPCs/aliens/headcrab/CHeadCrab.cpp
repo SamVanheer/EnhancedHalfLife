@@ -63,8 +63,6 @@ Schedule_t	slHCRangeAttack1Fast[] =
 	},
 };
 
-LINK_ENTITY_TO_CLASS(monster_headcrab, CHeadCrab);
-
 DEFINE_CUSTOM_SCHEDULES(CHeadCrab)
 {
 	slHCRangeAttack1,

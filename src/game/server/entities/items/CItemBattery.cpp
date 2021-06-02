@@ -14,5 +14,3 @@
 ****/
 
 #include "CItemBattery.hpp"
-
-LINK_ENTITY_TO_CLASS(item_battery, CItemBattery);

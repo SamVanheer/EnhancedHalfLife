@@ -24,7 +24,7 @@ constexpr int SF_ENVTEXT_ALLPLAYERS = 0x0001;
 *	@brief NON-Localized HUD Message (use env_message to display a titles.txt message)
 *	@details Flag: All players SF_ENVTEXT_ALLPLAYERS
 */
-class EHL_CLASS() CGameText : public CRulePointEntity
+class EHL_CLASS(EntityName=game_text) CGameText : public CRulePointEntity
 {
 	EHL_GENERATED_BODY()
 

@@ -24,7 +24,7 @@
 #include "CBaseCharger.hpp"
 #include "CRecharge.generated.hpp"
 
-class EHL_CLASS() CRecharge : public CBaseCharger
+class EHL_CLASS(EntityName=func_recharge) CRecharge : public CBaseCharger
 {
 	EHL_GENERATED_BODY()
 

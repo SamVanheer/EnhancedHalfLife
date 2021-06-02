@@ -16,8 +16,6 @@
 #include "CTargetCDAudio.hpp"
 #include "CTriggerCDAudio.hpp"
 
-LINK_ENTITY_TO_CLASS(target_cdaudio, CTargetCDAudio);
-
 void CTargetCDAudio::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "radius"))

@@ -15,8 +15,6 @@
 
 #include "CFuncTankRocket.hpp"
 
-LINK_ENTITY_TO_CLASS(func_tankrocket, CFuncTankRocket);
-
 void CFuncTankRocket::Precache()
 {
 	UTIL_PrecacheOther("rpg_rocket");

@@ -16,8 +16,6 @@
 #include "CBaseWeapon.hpp"
 #include "CWeaponBox.hpp"
 
-LINK_ENTITY_TO_CLASS(weaponbox, CWeaponBox);
-
 void CWeaponBox::Precache()
 {
 	PRECACHE_MODEL("models/w_weaponbox.mdl");

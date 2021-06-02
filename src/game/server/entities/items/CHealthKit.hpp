@@ -20,7 +20,7 @@
 
 constexpr float HEALTHKIT_DEFAULT_CAPACITY = -1;
 
-class EHL_CLASS() CHealthKit : public CItem
+class EHL_CLASS(EntityName=item_healthkit) CHealthKit : public CItem
 {
 	EHL_GENERATED_BODY()
 

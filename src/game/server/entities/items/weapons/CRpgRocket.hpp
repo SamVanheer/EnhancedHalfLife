@@ -20,7 +20,7 @@
 
 class CRpg;
 
-class EHL_CLASS() CRpgRocket : public CGrenade
+class EHL_CLASS(EntityName=rpg_rocket) CRpgRocket : public CGrenade
 {
 	EHL_GENERATED_BODY()
 

@@ -18,8 +18,6 @@
 #include "CBarney.hpp"
 #include "CBaseMonster.defaultai.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_barney, CBarney);
-
 //=========================================================
 // AI Schedules Specific to this monster
 //=========================================================

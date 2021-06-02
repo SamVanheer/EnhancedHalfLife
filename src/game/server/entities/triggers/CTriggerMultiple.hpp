@@ -22,7 +22,7 @@
 *	@brief Variable sized repeatable trigger. Must be targeted at one or more entities.
 *	@details "wait" : Seconds between triggerings. (.2 default)
 */
-class EHL_CLASS() CTriggerMultiple : public CBaseTrigger
+class EHL_CLASS(EntityName=trigger_multiple) CTriggerMultiple : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 

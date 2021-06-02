@@ -110,8 +110,6 @@ void CBreakable::KeyValue(KeyValueData* pkvd)
 		BaseClass::KeyValue(pkvd);
 }
 
-LINK_ENTITY_TO_CLASS(func_breakable, CBreakable);
-
 void CBreakable::Spawn()
 {
 	Precache();

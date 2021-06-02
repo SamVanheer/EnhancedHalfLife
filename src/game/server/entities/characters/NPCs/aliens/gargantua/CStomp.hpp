@@ -21,7 +21,7 @@
 constexpr std::string_view GARG_STOMP_SPRITE_NAME{"sprites/gargeye1.spr"};
 constexpr std::string_view GARG_STOMP_BUZZ_SOUND{"weapons/mine_charge.wav"};
 
-class EHL_CLASS() CStomp : public CBaseEntity
+class EHL_CLASS(EntityName=garg_stomp) CStomp : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

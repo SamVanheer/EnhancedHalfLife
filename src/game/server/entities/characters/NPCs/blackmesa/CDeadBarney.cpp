@@ -28,8 +28,6 @@ void CDeadBarney::KeyValue(KeyValueData* pkvd)
 		CBaseMonster::KeyValue(pkvd);
 }
 
-LINK_ENTITY_TO_CLASS(monster_barney_dead, CDeadBarney);
-
 void CDeadBarney::Spawn()
 {
 	PRECACHE_MODEL("models/barney.mdl");

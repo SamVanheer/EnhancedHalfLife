@@ -15,8 +15,6 @@
 
 #include "CShake.hpp"
 
-LINK_ENTITY_TO_CLASS(env_shake, CShake);
-
 void CShake::Spawn()
 {
 	SetSolidType(Solid::Not);

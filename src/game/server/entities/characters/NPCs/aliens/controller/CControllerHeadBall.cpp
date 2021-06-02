@@ -15,8 +15,6 @@
 
 #include "CControllerHeadBall.hpp"
 
-LINK_ENTITY_TO_CLASS(controller_head_ball, CControllerHeadBall);
-
 void CControllerHeadBall::Spawn()
 {
 	Precache();

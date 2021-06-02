@@ -32,7 +32,7 @@ enum glock_e
 	GLOCK_ADD_SILENCER
 };
 
-class EHL_CLASS() CGlock : public CBaseWeapon
+class EHL_CLASS(EntityName=weapon_9mmhandgun, EntityNameAliases=[weapon_glock]) CGlock : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

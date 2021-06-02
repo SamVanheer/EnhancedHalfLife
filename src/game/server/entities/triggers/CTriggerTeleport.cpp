@@ -15,9 +15,6 @@
 
 #include "CTriggerTeleport.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_teleport, CTriggerTeleport);
-LINK_ENTITY_TO_CLASS(info_teleport_destination, CPointEntity);
-
 void CTriggerTeleport::Spawn()
 {
 	InitTrigger();

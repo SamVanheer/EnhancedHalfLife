@@ -30,7 +30,7 @@ enum python_e
 	PYTHON_IDLE3
 };
 
-class EHL_CLASS() CPython : public CBaseWeapon
+class EHL_CLASS(EntityName=weapon_357, EntityNameAliases=[weapon_python]) CPython : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

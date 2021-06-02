@@ -15,8 +15,6 @@
 
 #include "CRoach.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_cockroach, CRoach);
-
 int CRoach::SoundMask()
 {
 	return	bits_SOUND_CARCASS | bits_SOUND_MEAT;

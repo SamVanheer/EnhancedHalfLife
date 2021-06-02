@@ -31,7 +31,7 @@
 #include "client.hpp"
 #include "dll_functions.hpp"
 #include "CCorpse.hpp"
-#include "CBaseDMStart.hpp"
+#include "spawnpoints/spawnpoints.hpp"
 #include "CBaseWeapon.hpp"
 #include "CSprayCan.hpp"
 #include "CWeaponBox.hpp"
@@ -54,8 +54,6 @@ constexpr int TRAIN_FAST = 0x04;
 constexpr int TRAIN_BACK = 0x05;
 
 bool giPrecacheGrunt = false;
-
-LINK_ENTITY_TO_CLASS(player, CBasePlayer);
 
 void CBasePlayer::Pain()
 {

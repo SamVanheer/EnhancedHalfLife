@@ -18,8 +18,6 @@
 int iHornetTrail;
 int iHornetPuff;
 
-LINK_ENTITY_TO_CLASS(hornet, CHornet);
-
 bool CHornet::TakeDamage(const TakeDamageInfo& info)
 {
 	int damageTypes = info.GetDamageTypes();

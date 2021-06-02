@@ -15,8 +15,6 @@
 
 #include "CGameTeamMaster.hpp"
 
-LINK_ENTITY_TO_CLASS(game_team_master, CGameTeamMaster);
-
 void CGameTeamMaster::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "teamindex"))

@@ -16,8 +16,6 @@
 #include "CFuncTankLaser.hpp"
 #include "effects/CLaser.hpp"
 
-LINK_ENTITY_TO_CLASS(func_tanklaser, CFuncTankLaser);
-
 void CFuncTankLaser::Activate()
 {
 	if (!GetLaser())

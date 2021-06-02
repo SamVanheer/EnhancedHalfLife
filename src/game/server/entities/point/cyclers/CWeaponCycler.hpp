@@ -18,7 +18,7 @@
 #include "CBaseWeapon.hpp"
 #include "CWeaponCycler.generated.hpp"
 
-class EHL_CLASS() CWeaponCycler : public CBaseWeapon
+class EHL_CLASS(EntityName=cycler_weapon) CWeaponCycler : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

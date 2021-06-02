@@ -40,7 +40,7 @@ enum class TrainCode
 *	It must be larger in X-Y planar area than the train,
 *	since it must contain the train within these dimensions in order to operate when the train is near it.
 */
-class EHL_CLASS() CFuncTrackChange : public CFuncPlatRot
+class EHL_CLASS(EntityName=func_trackchange) CFuncTrackChange : public CFuncPlatRot
 {
 	EHL_GENERATED_BODY()
 

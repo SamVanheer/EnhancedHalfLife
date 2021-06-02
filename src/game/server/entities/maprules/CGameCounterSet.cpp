@@ -15,8 +15,6 @@
 
 #include "CGameCounterSet.hpp"
 
-LINK_ENTITY_TO_CLASS(game_counter_set, CGameCounterSet);
-
 void CGameCounterSet::Use(const UseInfo& info)
 {
 	if (!CanFireForActivator(info.GetActivator()))

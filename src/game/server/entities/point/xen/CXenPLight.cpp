@@ -15,8 +15,6 @@
 
 #include "CXenPLight.hpp"
 
-LINK_ENTITY_TO_CLASS(xen_plantlight, CXenPLight);
-
 void CXenPLight::OnRemove()
 {
 	m_hGlow.Remove();

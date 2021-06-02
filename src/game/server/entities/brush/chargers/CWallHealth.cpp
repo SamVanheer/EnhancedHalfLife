@@ -14,5 +14,3 @@
 ****/
 
 #include "CWallHealth.hpp"
-
-LINK_ENTITY_TO_CLASS(func_healthcharger, CWallHealth);

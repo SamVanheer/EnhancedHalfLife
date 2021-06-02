@@ -15,8 +15,6 @@
 
 #include "CXenSporeMed.hpp"
 
-LINK_ENTITY_TO_CLASS(xen_spore_medium, CXenSporeMed);
-
 void CXenSporeMed::Spawn()
 {
 	pev->skin = 1;

@@ -24,7 +24,7 @@
 
 constexpr float BATTERY_DEFAULT_CAPACITY = -1;
 
-class EHL_CLASS() CItemBattery : public CItem
+class EHL_CLASS(EntityName=item_battery) CItemBattery : public CItem
 {
 	EHL_GENERATED_BODY()
 

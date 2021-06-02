@@ -18,7 +18,7 @@
 #include "triggers/CBaseTrigger.hpp"
 #include "CTriggerSave.generated.hpp"
 
-class EHL_CLASS() CTriggerSave : public CBaseTrigger
+class EHL_CLASS(EntityName=trigger_autosave) CTriggerSave : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 

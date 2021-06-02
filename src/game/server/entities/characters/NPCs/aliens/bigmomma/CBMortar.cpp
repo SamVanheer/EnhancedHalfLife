@@ -16,8 +16,6 @@
 #include "CBigMomma.hpp"
 #include "CBMortar.hpp"
 
-LINK_ENTITY_TO_CLASS(bmortar, CBMortar);
-
 // UNDONE: right now this is pretty much a copy of the squid spit with minor changes to the way it does damage
 void CBMortar::Spawn()
 {

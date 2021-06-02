@@ -24,7 +24,7 @@ constexpr int SF_GAMECOUNTSET_FIREONCE = 0x0001;
 *	@brief Sets the counter's value
 *	@details Flag: Fire once
 */
-class EHL_CLASS() CGameCounterSet : public CRulePointEntity
+class EHL_CLASS(EntityName=game_counter_set) CGameCounterSet : public CRulePointEntity
 {
 	EHL_GENERATED_BODY()
 

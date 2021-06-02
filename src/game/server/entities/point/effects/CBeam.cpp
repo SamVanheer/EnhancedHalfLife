@@ -16,8 +16,6 @@
 #include "CBeam.hpp"
 #include "customentity.hpp"
 
-LINK_ENTITY_TO_CLASS(beam, CBeam);
-
 void CBeam::Spawn()
 {
 	SetSolidType(Solid::Not);							// Remove model & collisions

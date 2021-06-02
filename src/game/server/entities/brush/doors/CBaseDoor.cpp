@@ -66,13 +66,6 @@ void CBaseDoor::KeyValue(KeyValueData* pkvd)
 		CBaseToggle::KeyValue(pkvd);
 }
 
-LINK_ENTITY_TO_CLASS(func_door, CBaseDoor);
-
-/**
-*	@brief func_water - same as a door.
-*/
-LINK_ENTITY_TO_CLASS(func_water, CBaseDoor);
-
 void CBaseDoor::Spawn()
 {
 	Precache();

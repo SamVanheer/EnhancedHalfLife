@@ -13,9 +13,4 @@
 *
 ****/
 
-#include "CPointEntity.hpp"
-
-/**
-*	@brief Lightning target, just alias landmark
-*/
-LINK_ENTITY_TO_CLASS(info_target, CPointEntity);
+#include "CInfoPlayerStart.hpp"

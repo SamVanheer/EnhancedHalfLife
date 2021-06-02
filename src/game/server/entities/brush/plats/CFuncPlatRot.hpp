@@ -18,7 +18,7 @@
 #include "CFuncPlat.hpp"
 #include "CFuncPlatRot.generated.hpp"
 
-class EHL_CLASS() CFuncPlatRot : public CFuncPlat
+class EHL_CLASS(EntityName=func_platrot) CFuncPlatRot : public CFuncPlat
 {
 	EHL_GENERATED_BODY()
 

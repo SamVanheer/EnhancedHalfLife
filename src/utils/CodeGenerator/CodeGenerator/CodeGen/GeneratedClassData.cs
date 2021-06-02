@@ -59,11 +59,16 @@ namespace CodeGenerator.CodeGen
             GeneratedDeclaration.Add(declaration);
         }
 
-        public void AddAlias(string aliasName, string originalName)
+        public void AddTypeAlias(string aliasName, string originalName)
         {
             var alias = $"using {aliasName} = {originalName};";
 
             GeneratedDeclaration.Add(alias);
+        }
+
+        public void AddDeclarationMacro(string macro)
+        {
+            GeneratedDeclaration.Add(macro);
         }
 
         public void AddHeaderInclude(string relativePath)
@@ -86,6 +91,11 @@ namespace CodeGenerator.CodeGen
             var assert = message is not null ? $"static_assert({condition}, \"{message}\");" : $"static_assert({condition});";
 
             GeneratedDefinition.Add(assert);
+        }
+
+        public void AddDefinitionMacro(string macro)
+        {
+            GeneratedDefinition.Add(macro);
         }
 
         public string GenerateFullDeclaration()

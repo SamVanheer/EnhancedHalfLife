@@ -18,8 +18,6 @@
 #include "CBullsquid.hpp"
 #include "CSquidSpit.hpp"
 
-LINK_ENTITY_TO_CLASS(squidspit, CSquidSpit);
-
 void CSquidSpit::Spawn()
 {
 	SetMovetype(Movetype::Fly);

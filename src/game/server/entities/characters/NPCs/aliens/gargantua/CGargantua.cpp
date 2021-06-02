@@ -20,8 +20,6 @@
 #include "CStomp.hpp"
 #include "effects/CEnvExplosion.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_gargantua, CGargantua);
-
 const char* CGargantua::pAttackHitSounds[] =
 {
 	"zombie/claw_strike1.wav",

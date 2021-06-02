@@ -29,8 +29,6 @@ void CDeadScientist::KeyValue(KeyValueData* pkvd)
 		CBaseMonster::KeyValue(pkvd);
 }
 
-LINK_ENTITY_TO_CLASS(monster_scientist_dead, CDeadScientist);
-
 void CDeadScientist::Spawn()
 {
 	PRECACHE_MODEL("models/scientist.mdl");

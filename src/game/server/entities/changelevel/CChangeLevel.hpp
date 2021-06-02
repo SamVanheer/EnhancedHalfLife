@@ -23,7 +23,7 @@ constexpr int SF_CHANGELEVEL_USEONLY = 0x0002;
 /**
 *	@brief When the player touches this, he gets sent to the map listed in the "map" variable.
 */
-class EHL_CLASS() CChangeLevel : public CBaseTrigger
+class EHL_CLASS(EntityName=trigger_changelevel) CChangeLevel : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 

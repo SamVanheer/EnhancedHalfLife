@@ -22,7 +22,7 @@ constexpr int SF_INFOBM_RUN = 0x0001;
 constexpr int SF_INFOBM_WAIT = 0x0002;
 
 // AI Nodes for Big Momma
-class EHL_CLASS() CInfoBM : public CPointEntity
+class EHL_CLASS(EntityName=info_bigmomma) CInfoBM : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

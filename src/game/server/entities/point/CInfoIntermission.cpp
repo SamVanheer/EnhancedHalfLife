@@ -15,8 +15,6 @@
 
 #include "CInfoIntermission.hpp"
 
-LINK_ENTITY_TO_CLASS(info_intermission, CInfoIntermission);
-
 void CInfoIntermission::Spawn()
 {
 	SetAbsOrigin(GetAbsOrigin());

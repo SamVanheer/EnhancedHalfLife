@@ -26,7 +26,7 @@
 constexpr int SF_MOMENTARY_DOOR = 0x0001;
 constexpr int SF_MOMENTARY_AUTO_RETURN = 16;
 
-class EHL_CLASS() CMomentaryRotButton : public CBaseToggle
+class EHL_CLASS(EntityName=momentary_rot_button) CMomentaryRotButton : public CBaseToggle
 {
 	EHL_GENERATED_BODY()
 

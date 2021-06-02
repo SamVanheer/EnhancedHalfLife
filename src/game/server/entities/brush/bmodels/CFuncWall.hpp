@@ -21,7 +21,7 @@
 /**
 *	@brief This is just a solid wall if not inhibited
 */
-class EHL_CLASS() CFuncWall : public CBaseEntity
+class EHL_CLASS(EntityName=func_wall) CFuncWall : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

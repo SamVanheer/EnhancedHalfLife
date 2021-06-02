@@ -76,7 +76,7 @@ constexpr float CHAT_INTERVAL = 1.0f;
 *	@brief generic player
 *	This is Half-Life player entity
 */
-class EHL_CLASS() CBasePlayer : public CBaseMonster
+class EHL_CLASS(EntityName=player) CBasePlayer : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

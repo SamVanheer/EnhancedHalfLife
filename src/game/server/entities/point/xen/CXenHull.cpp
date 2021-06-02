@@ -15,8 +15,6 @@
 
 #include "CXenHull.hpp"
 
-LINK_ENTITY_TO_CLASS(xen_hull, CXenHull);
-
 CXenHull* CXenHull::CreateHull(CBaseEntity* source, const Vector& mins, const Vector& maxs, const Vector& offset)
 {
 	CXenHull* pHull = static_cast<CXenHull*>(g_EntityList.Create("xen_hull"));

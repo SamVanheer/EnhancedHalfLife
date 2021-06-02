@@ -16,8 +16,6 @@
 #include "CFlockingFlyer.hpp"
 #include "CFlockingFlyerFlock.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_flyer, CFlockingFlyer);
-
 void CFlockingFlyer::Spawn()
 {
 	Precache();

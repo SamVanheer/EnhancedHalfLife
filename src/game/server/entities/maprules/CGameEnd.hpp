@@ -21,7 +21,7 @@
 /**
 *	@brief Ends the game in MP
 */
-class EHL_CLASS() CGameEnd : public CRulePointEntity
+class EHL_CLASS(EntityName=game_end) CGameEnd : public CRulePointEntity
 {
 	EHL_GENERATED_BODY()
 

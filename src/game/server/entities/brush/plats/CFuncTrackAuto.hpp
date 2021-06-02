@@ -21,7 +21,7 @@
 /**
 *	@brief Auto track change
 */
-class EHL_CLASS() CFuncTrackAuto : public CFuncTrackChange
+class EHL_CLASS(EntityName=func_trackautochange) CFuncTrackAuto : public CFuncTrackChange
 {
 	EHL_GENERATED_BODY()
 

@@ -15,8 +15,6 @@
 
 #include "CScriptedSentence.hpp"
 
-LINK_ENTITY_TO_CLASS(scripted_sentence, CScriptedSentence);
-
 void CScriptedSentence::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "sentence"))

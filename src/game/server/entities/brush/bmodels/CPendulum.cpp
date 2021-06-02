@@ -17,8 +17,6 @@
 #include "CPendulum.hpp"
 #include "doors/CBaseDoor.hpp"
 
-LINK_ENTITY_TO_CLASS(func_pendulum, CPendulum);
-
 void CPendulum::KeyValue(KeyValueData* pkvd)
 {
 	if (AreStringsEqual(pkvd->szKeyName, "distance"))

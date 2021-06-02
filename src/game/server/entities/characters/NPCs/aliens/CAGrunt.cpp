@@ -16,8 +16,6 @@
 #include "CAGrunt.hpp"
 #include	"CHornet.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_alien_grunt, CAGrunt);
-
 const char* CAGrunt::pAttackHitSounds[] =
 {
 	"zombie/claw_strike1.wav",

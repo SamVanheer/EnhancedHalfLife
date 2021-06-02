@@ -15,8 +15,6 @@
 
 #include "CTriggerMonsterJump.hpp"
 
-LINK_ENTITY_TO_CLASS(trigger_monsterjump, CTriggerMonsterJump);
-
 void CTriggerMonsterJump::Spawn()
 {
 	SetMovedir(this);

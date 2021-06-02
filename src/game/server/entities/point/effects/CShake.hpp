@@ -32,7 +32,7 @@ constexpr int SF_SHAKE_INAIR = 0x0004;		//!< Shake players in air
 *	radius of 0 means all players
 *	NOTE: UTIL_ScreenShake() will only shake players who are on the ground
 */
-class EHL_CLASS() CShake : public CPointEntity
+class EHL_CLASS(EntityName=env_shake) CShake : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

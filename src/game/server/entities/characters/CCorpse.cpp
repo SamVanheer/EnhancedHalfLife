@@ -15,8 +15,6 @@
 
 #include "CCorpse.hpp"
 
-LINK_ENTITY_TO_CLASS(bodyque, CCorpse);
-
 void InitBodyQue()
 {
 	string_t istrClassname = MAKE_STRING("bodyque");

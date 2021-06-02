@@ -19,8 +19,6 @@
 #include "game.hpp"
 #include "nodes.hpp"
 
-LINK_ENTITY_TO_CLASS(testhull, CTestHull);
-
 void CTestHull::Spawn(CBaseEntity* pMasterNode)
 {
 	SetModel("models/player.mdl");

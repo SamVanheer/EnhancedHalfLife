@@ -15,8 +15,6 @@
 
 #include "CSpeaker.hpp"
 
-LINK_ENTITY_TO_CLASS(speaker, CSpeaker);
-
 void CSpeaker::Spawn()
 {
 	const char* szSoundFile = STRING(pev->message);

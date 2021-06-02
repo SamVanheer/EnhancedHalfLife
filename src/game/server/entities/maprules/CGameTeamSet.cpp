@@ -15,8 +15,6 @@
 
 #include "CGameTeamSet.hpp"
 
-LINK_ENTITY_TO_CLASS(game_team_set, CGameTeamSet);
-
 void CGameTeamSet::Use(const UseInfo& info)
 {
 	if (!CanFireForActivator(info.GetActivator()))

@@ -17,8 +17,6 @@
 #include "CScientist.hpp"
 #include "animation.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_scientist, CScientist);
-
 //=========================================================
 // AI Schedules Specific to this monster
 //=========================================================

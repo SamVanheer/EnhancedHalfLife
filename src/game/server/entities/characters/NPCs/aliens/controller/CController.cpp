@@ -16,8 +16,6 @@
 #include "CController.hpp"
 #include "dll_functions.hpp"
 
-LINK_ENTITY_TO_CLASS(monster_alien_controller, CController);
-
 const char* CController::pAttackSounds[] =
 {
 	"controller/con_attack1.wav",

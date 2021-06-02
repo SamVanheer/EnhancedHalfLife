@@ -26,8 +26,6 @@
 #include "weaponinfo.hpp"
 #include "CGauss.hpp"
 
-LINK_ENTITY_TO_CLASS(weapon_gauss, CGauss);
-
 float CGauss::GetFullChargeTime()
 {
 #ifdef CLIENT_DLL

@@ -18,7 +18,7 @@
 #include "CBeam.hpp"
 #include "CLightning.generated.hpp"
 
-class EHL_CLASS() CLightning : public CBeam
+class EHL_CLASS(EntityName=env_beam, EntityNameAliases=[env_lightning]) CLightning : public CBeam
 {
 	EHL_GENERATED_BODY()
 

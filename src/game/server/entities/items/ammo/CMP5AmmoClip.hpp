@@ -19,7 +19,7 @@
 #include "CBaseWeapon.hpp"
 #include "CMP5AmmoClip.generated.hpp"
 
-class EHL_CLASS() CMP5AmmoClip : public CBaseAmmo
+class EHL_CLASS(EntityName=ammo_9mmAR, EntityNameAliases=[ammo_mp5clip]) CMP5AmmoClip : public CBaseAmmo
 {
 	EHL_GENERATED_BODY()
 
