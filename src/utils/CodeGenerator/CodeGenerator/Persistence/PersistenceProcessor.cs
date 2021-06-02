@@ -2,6 +2,7 @@
 using ClangSharp.Interop;
 using CodeGenerator.CodeGen;
 using CodeGenerator.Diagnostics;
+using CodeGenerator.Parsing;
 using CodeGenerator.Processing;
 using CodeGenerator.Utility;
 using System;
@@ -9,7 +10,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace CodeGenerator.Persistence
 {
@@ -110,7 +110,7 @@ namespace CodeGenerator.Persistence
                 LogError(record, "Multiple classes declared in header. Move each class to its own file to avoid codegen errors");
             }
 
-            var classAttributes = GetRelevantAttributes(record, ClassPrefix);
+            var (classAttributes, hasEHLClassMacro) = GetRelevantAttributes(record, ClassPrefix);
 
             if (classAttributes is null)
             {
@@ -118,7 +118,7 @@ namespace CodeGenerator.Persistence
             }
 
             //Not marked for processing, ignore
-            if (classAttributes.IsEmpty)
+            if (!hasEHLClassMacro)
             {
                 if (isEntityClass)
                 {
@@ -144,7 +144,7 @@ namespace CodeGenerator.Persistence
             }
 
             var fields = record.Fields
-                .Select(f => new { Field = f, Attributes = GetRelevantAttributes(f, FieldPrefix) })
+                .Select(f => new { Field = f, GetRelevantAttributes(f, FieldPrefix).Attributes })
                 .ToList();
 
             if (fields.Any(f => f.Attributes is null))
@@ -238,52 +238,48 @@ namespace CodeGenerator.Persistence
             return IsEntityClass(baseClass);
         }
 
-        private static (string Key, string Value) ConvertAttributeToKeyValue(string attribute)
+        private (ImmutableDictionary<string, ImmutableList<CodeAttribute>>? Attributes, bool HasAnyAttributes) GetRelevantAttributes(
+            NamedDecl decl, string prefix)
         {
-            //if an attribute has a =, it will be split on that character
-            var index = attribute.IndexOf('=');
+            var rawAttributes = decl.Attrs
+                    .Where(attr => attr.Spelling.StartsWith(prefix))
+                    .ToList();
 
-            if (index != -1)
-            {
-                var value = attribute[(index + 1)..].Trim();
+            var attributes = ConvertAttributes(decl, prefix, rawAttributes);
 
-                //Values that are quoted will be transformed to have no quotes
-                if (value.StartsWith('\"') && value.EndsWith('\"'))
-                {
-                    value = value[1..^1];
-                }
-
-                return (attribute.Substring(0, index).Trim(), value);
-            }
-
-            return (attribute.Trim(), string.Empty);
+            return (attributes, rawAttributes.Count > 0);
         }
 
-        private ImmutableDictionary<string, string>? GetRelevantAttributes(NamedDecl decl, string prefix)
+        private ImmutableDictionary<string, ImmutableList<CodeAttribute>>? ConvertAttributes(NamedDecl decl, string prefix, List<Attr> rawAttributes)
         {
-            //Regex from: https://stackoverflow.com/a/3147901
-            var keyValues = decl.Attrs
-                .Where(attr => attr.Spelling.StartsWith(prefix))
-                .SelectMany(attr => Regex.Split(attr.Spelling[prefix.Length..], ",(?=(?:[^']*'[^']*')*[^']*$)"))
-                .Select(ConvertAttributeToKeyValue)
-                .ToList();
-
-            var duplicates = keyValues
-                .GroupBy(k => k.Key)
-                .Where(g => g.Count() > 1)
-                .ToList();
-
-            if (duplicates.Count > 0)
+            try
             {
-                foreach (var duplicate in duplicates)
+                var keyValues = rawAttributes
+                    .SelectMany(attr => AttributeParser.ParseText(attr.Spelling.AsSpan()[prefix.Length..]))
+                    .ToList();
+
+                var duplicates = keyValues
+                    .GroupBy(k => k.Name)
+                    .Where(g => g.Count() > 1)
+                    .ToList();
+
+                if (duplicates.Count > 0)
                 {
-                    LogError(decl, $"Duplicate attribute \"{duplicate.Key}\" encountered");
+                    foreach (var duplicate in duplicates)
+                    {
+                        LogError(decl, $"Duplicate attribute \"{duplicate.Key}\" encountered");
+                    }
+
+                    return null;
                 }
 
+                return keyValues.ToImmutableDictionary(attr => attr.Name, attr => attr.Values);
+            }
+            catch (AttributeParseException e)
+            {
+                LogError(decl, $"Error parsing attributes: {e.Message}");
                 return null;
             }
-
-            return keyValues.ToImmutableDictionary(attr => attr.Key, attr => attr.Value);
         }
 
         private string? DeduceFloatType(FieldDecl field, string? fieldType)
@@ -341,9 +337,25 @@ namespace CodeGenerator.Persistence
             }
         }
 
-        private string? DeduceFieldType(FieldDecl field, ImmutableDictionary<string, string> attributes)
+        private string? DeduceFieldType(FieldDecl field, ImmutableDictionary<string, ImmutableList<CodeAttribute>> attributes)
         {
-            attributes.TryGetValue(TypeKey, out var fieldType);
+            attributes.TryGetValue(TypeKey, out var fieldTypes);
+
+            if (fieldTypes is not null)
+            {
+                if (fieldTypes.Count > 1)
+                {
+                    LogError(field, "Too many field types provided");
+                    return null;
+                }
+                else if (fieldTypes.Count == 0)
+                {
+                    LogError(field, "Field type attribute with no value");
+                    return null;
+                }
+            }
+
+            var fieldType = fieldTypes?.FirstOrDefault()?.Name;
 
             var type = field.Type;
 
@@ -425,7 +437,7 @@ namespace CodeGenerator.Persistence
             return 1.ToString();
         }
 
-        private string? FormatField(string fqName, FieldDecl field, ImmutableDictionary<string, string> attributes)
+        private string? FormatField(string fqName, FieldDecl field, ImmutableDictionary<string, ImmutableList<CodeAttribute>> attributes)
         {
             var type = DeduceFieldType(field, attributes);
 
