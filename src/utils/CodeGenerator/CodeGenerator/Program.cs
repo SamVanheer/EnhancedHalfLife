@@ -3,13 +3,13 @@ using CodeGenerator.Configuration;
 using CodeGenerator.Diagnostics;
 using CodeGenerator.Persistence;
 using CodeGenerator.Processing;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Immutable;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 
 namespace CodeGenerator
 {
@@ -197,7 +197,7 @@ namespace CodeGenerator
         {
             var configFileContents = File.ReadAllText(configFile);
 
-            var config = JsonSerializer.Deserialize<ConfigurationFile>(configFileContents);
+            var config = JsonConvert.DeserializeObject<ConfigurationFile>(configFileContents);
 
             if (config is null
                 || config.SourceDirectory is null
@@ -227,7 +227,7 @@ namespace CodeGenerator
             try
             {
                 var changeListContents = File.ReadAllText(Path.Combine(binaryDirectory, EHLCodeGeneratorCacheFileName));
-                var changeList = JsonSerializer.Deserialize<EHLCodeGeneratorCache>(changeListContents);
+                var changeList = JsonConvert.DeserializeObject<EHLCodeGeneratorCache>(changeListContents);
 
                 if (changeList is null
                     || changeList.Files is null)
@@ -268,9 +268,9 @@ namespace CodeGenerator
                     .ToList()
             };
 
-            var serialized = JsonSerializer.Serialize(list, options: new JsonSerializerOptions
+            var serialized = JsonConvert.SerializeObject(list, settings: new JsonSerializerSettings
             {
-                WriteIndented = true
+                Formatting = Formatting.Indented
             });
 
             File.WriteAllText(Path.Combine(binaryDirectory, cacheFileName), serialized);
