@@ -167,7 +167,7 @@ void ExplodeModel(const Vector& vecOrigin, float speed, int model, int count)
 */
 void UTIL_PrecacheOtherWeapon(const char* szClassname)
 {
-	auto pEntity = UTIL_CreateNamedEntity(MAKE_STRING(szClassname));
+	auto pEntity = g_EntityList.Create(szClassname);
 	if (IsNullEnt(pEntity))
 	{
 		ALERT(at_console, "NULL Ent in UTIL_PrecacheOtherWeapon\n");

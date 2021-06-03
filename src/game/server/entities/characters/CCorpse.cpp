@@ -17,15 +17,15 @@
 
 void InitBodyQue()
 {
-	string_t istrClassname = MAKE_STRING("bodyque");
+	const char* classname = "bodyque";
 
-	g_pBodyQueueHead = UTIL_CreateNamedEntity(istrClassname);
+	g_pBodyQueueHead = g_EntityList.Create(classname);
 	auto pEntity = g_pBodyQueueHead;
 
 	// Reserve 3 more slots for dead bodies
 	for (int i = 0; i < 3; i++)
 	{
-		pEntity->SetOwner(UTIL_CreateNamedEntity(istrClassname));
+		pEntity->SetOwner(g_EntityList.Create(classname));
 		pEntity = pEntity->GetOwner();
 	}
 

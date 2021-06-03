@@ -122,7 +122,7 @@ CBaseEntityFactory* CEntityList::GetFactory(const char* className)
 		return factory;
 	}
 
-	ALERT(at_error, "CEntityList::Create: no factory for \"%s\"\n", className);
+	ALERT(at_error, "CEntityList::Create: no factory for \"%s\", can't create entity\n", className);
 
 	return nullptr;
 }

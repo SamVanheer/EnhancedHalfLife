@@ -2368,9 +2368,7 @@ const char* CBasePlayer::TeamID()
 
 void CBasePlayer::GiveNamedItem(const char* pszName)
 {
-	string_t istr = MAKE_STRING(pszName);
-
-	auto pEntity = UTIL_CreateNamedEntity(istr);
+	auto pEntity = g_EntityList.Create(pszName);
 	if (IsNullEnt(pEntity))
 	{
 		ALERT(at_console, "NULL Ent in GiveNamedItem!\n");

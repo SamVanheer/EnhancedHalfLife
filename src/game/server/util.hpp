@@ -132,8 +132,6 @@ inline bool AreStringsEqual(const char* sz1, const char* sz2)
 }
 
 // Misc. Prototypes
-CBaseEntity* UTIL_CreateNamedEntity(string_t className);
-
 void			UTIL_MakeVectors(const Vector& vecAngles);
 
 /**

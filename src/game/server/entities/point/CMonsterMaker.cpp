@@ -112,7 +112,7 @@ void CMonsterMaker::MakeMonster()
 		return;
 	}
 
-	auto pEntity = UTIL_CreateNamedEntity(m_iszMonsterClassname);
+	auto pEntity = g_EntityList.Create(STRING(m_iszMonsterClassname));
 
 	if (IsNullEnt(pEntity))
 	{

@@ -111,30 +111,6 @@ DBG_AssertFunction(
 }
 #endif	// DEBUG
 
-CBaseEntity* UTIL_CreateNamedEntity(string_t className)
-{
-	auto edict = g_engfuncs.pfnCreateNamedEntity(className);
-
-	if (IsNullEnt(edict))
-	{
-		return nullptr;
-	}
-
-	auto entity = CBaseEntity::InstanceOrNull(edict);
-
-	if (entity)
-	{
-		return entity;
-	}
-
-	//Cover this edge case with a seperate error message
-	ALERT(at_error, "Couldn't create entity \"%s\" by name!\n", STRING(className));
-
-	g_engfuncs.pfnRemoveEntity(edict);
-
-	return nullptr;
-}
-
 void UTIL_MakeVectors(const Vector& vecAngles)
 {
 	AngleVectors(vecAngles, gpGlobals->v_forward, gpGlobals->v_right, gpGlobals->v_up);
@@ -937,7 +913,7 @@ bool UTIL_IsValidEntity(CBaseEntity* pEntity)
 
 void UTIL_PrecacheOther(const char* szClassname)
 {
-	auto pEntity = UTIL_CreateNamedEntity(MAKE_STRING(szClassname));
+	auto pEntity = g_EntityList.Create(szClassname);
 	if (IsNullEnt(pEntity))
 	{
 		ALERT(at_console, "NULL Ent in UTIL_PrecacheOther\n");
