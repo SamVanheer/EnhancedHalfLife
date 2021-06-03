@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CodeGenerator.Persistence
 {
@@ -182,11 +184,20 @@ namespace CodeGenerator.Persistence
 
             if (classAttributes.EntityName is not null)
             {
+                if (!ValidateEntityName(record, fqName, classAttributes.EntityName))
+                {
+                    return;
+                }
+
                 data.AddDefinitionMacro($"LINK_ENTITY_TO_CLASS({classAttributes.EntityName}, {fqName});");
 
-                //TODO: need to validate the name so it doesn't contain invalid characters or that it's empty
                 foreach (var alias in classAttributes.EntityNameAliases)
                 {
+                    if (!ValidateEntityName(record, fqName, alias))
+                    {
+                        return;
+                    }
+
                     data.AddDefinitionMacro($"LINK_ALIAS_ENTITY_TO_CLASS({alias}, {classAttributes.EntityName}, {fqName});");
                 }
             }
@@ -441,6 +452,35 @@ namespace CodeGenerator.Persistence
             var saveMethod = $"bool {typeName}::{methodName}({storageType}& {storageParameter})\n{{\n{saveContents}\n}}\n";
 
             return saveMethod;
+        }
+
+        private bool ValidateEntityName(Cursor cursor, string fqName, string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                LogError(cursor, $"Class {fqName} has empty entity name");
+                return false;
+            }
+
+            if (Encoding.UTF8.GetByteCount(name) != name.Length)
+            {
+                LogError(cursor, $"Class {fqName} has entity name \"{name}\" with non-ASCII characters");
+                return false;
+            }
+
+            if (char.IsDigit(name[0]))
+            {
+                LogError(cursor, $"Class {fqName} has entity name \"{name}\" that starts with digit");
+                return false;
+            }
+
+            if (Regex.IsMatch(name, "^[^a-zA-Z0-9_]+$"))
+            {
+                LogError(cursor, $"Class {fqName} has entity name \"{name}\" that contains invalid characters");
+                return false;
+            }
+
+            return true;
         }
     }
 }
