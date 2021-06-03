@@ -18,7 +18,7 @@
 #include "CPointEntity.hpp"
 #include "CRevertSaved.generated.hpp"
 
-class EHL_CLASS(EntityName=player_loadsaved) CRevertSaved : public CPointEntity
+class EHL_CLASS("EntityName": "player_loadsaved") CRevertSaved : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -39,9 +39,9 @@ public:
 	inline	void	SetLoadTime(float time) { m_loadTime = time; }
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_messageTime = 0; //!< These are not actual times, but durations, so save as floats
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_loadTime = 0;
 };

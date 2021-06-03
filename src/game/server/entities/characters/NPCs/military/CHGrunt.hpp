@@ -102,7 +102,7 @@ enum
 //=========================================================
 constexpr int bits_COND_GRUNT_NOFIRE = bits_COND_SPECIAL1;
 
-class EHL_CLASS(EntityName=monster_human_grunt) CHGrunt : public CSquadMonster
+class EHL_CLASS("EntityName": "monster_human_grunt") CHGrunt : public CSquadMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -206,37 +206,37 @@ public:
 
 	// checking the feasibility of a grenade toss is kind of costly, so we do it every couple of seconds,
 	// not every server frame.
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextGrenadeCheck = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextPainTime = 0;
 
 	//Don't save, go to zero
 	float m_flLastEnemySightTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector	m_vecTossVelocity;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fThrowGrenade = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fStanding = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fFirstEncounter = false;// only put on the handsign show in the squad's first encounter.
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_cClipSize = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_voicePitch = 0;
 
 	int m_iBrassShell = 0;
 	int m_iShotgunShell = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iSentence = 0;
 
 	static const char* pGruntSentences[];

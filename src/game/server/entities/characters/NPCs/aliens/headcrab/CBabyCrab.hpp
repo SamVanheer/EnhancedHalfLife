@@ -18,7 +18,7 @@
 #include "CHeadCrab.hpp"
 #include "CBabyCrab.generated.hpp"
 
-class EHL_CLASS(EntityName=monster_babycrab) CBabyCrab : public CHeadCrab
+class EHL_CLASS("EntityName": "monster_babycrab") CBabyCrab : public CHeadCrab
 {
 	EHL_GENERATED_BODY()
 

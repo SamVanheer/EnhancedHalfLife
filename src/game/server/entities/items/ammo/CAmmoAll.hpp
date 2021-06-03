@@ -23,7 +23,7 @@ constexpr int AMMOALL_REFILLAMMO = -1;
 /**
 *	@brief Gives the player all ammo types
 */
-class EHL_CLASS(EntityName=ammo_all) CAmmoAll : public CBaseAmmo
+class EHL_CLASS("EntityName": "ammo_all") CAmmoAll : public CBaseAmmo
 {
 	EHL_GENERATED_BODY()
 

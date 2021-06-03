@@ -21,7 +21,7 @@
 constexpr std::string_view GARG_STOMP_SPRITE_NAME{"sprites/gargeye1.spr"};
 constexpr std::string_view GARG_STOMP_BUZZ_SOUND{"weapons/mine_charge.wav"};
 
-class EHL_CLASS(EntityName=garg_stomp) CStomp : public CBaseEntity
+class EHL_CLASS("EntityName": "garg_stomp") CStomp : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -30,7 +30,7 @@ public:
 	void Think() override;
 	static CStomp* StompCreate(const Vector& origin, const Vector& end, float speed);
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flLastThinkTime = 0;
 
 private:

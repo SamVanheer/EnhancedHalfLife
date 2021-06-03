@@ -21,7 +21,7 @@
 /**
 *	@brief kdb: changed from public CBaseMonster so he can speak
 */
-class EHL_CLASS(EntityName=monster_sitting_scientist) CSittingScientist : public CScientist
+class EHL_CLASS("EntityName": "monster_sitting_scientist") CSittingScientist : public CScientist
 {
 	EHL_GENERATED_BODY()
 
@@ -53,9 +53,9 @@ public:
 	//Don't need to save (recalc'd)
 	int m_baseSequence = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_headTurn = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flResponseDelay = 0;
 };

@@ -129,60 +129,60 @@ protected:
 	virtual CBaseItem* GetItemToRespawn(const Vector& respawnPoint);
 
 public:
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_OriginalPosition;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ItemRespawnMode m_RespawnMode = ItemRespawnMode::Default;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flRespawnDelay = ITEM_DEFAULT_RESPAWN_DELAY;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ItemRespawnPositionMode m_RespawnPositionMode = ItemRespawnPositionMode::Current;
 
 protected:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ItemFallMode m_FallMode = ItemFallMode::PlaceOnGround;
 
 	/**
 	*	@brief Can this item be picked up while it's falling?
 	*	Only affects initial fall when spawning
 	*/
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_bCanPickUpWhileFalling = true;
 
 	/**
 	*	@brief Make a clatter sound when falling on the ground
 	*/
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ItemClatterMode m_ClatterMode = ItemClatterMode::Default;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_bStayVisibleDuringRespawn = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_bIsRespawning = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_bFlashOnRespawn = true;
 
 	//Default sounds are precached in W_Precache
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszClatterSound = MAKE_STRING("items/weapondrop1.wav");
 
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszRespawnSound = MAKE_STRING("items/suitchargeok1.wav");
 
 	/**
 	*	@brief Target to trigger when this entity materializes (spawns/respawns)
 	*/
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszTriggerOnMaterialize = iStringNull;
 
 	/**
 	*	@brief Target to trigger when this entity dematerializes (waiting to respawn, being removed)
 	*/
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszTriggerOnDematerialize = iStringNull;
 };

@@ -40,7 +40,7 @@ constexpr int ICHTHYOSAUR_AE_SHAKE_LEFT = 2;
 /**
 *	@brief evil, satan fish monster
 */
-class EHL_CLASS(EntityName=monster_ichthyosaur) CIchthyosaur : public CFlyingMonster
+class EHL_CLASS("EntityName": "monster_ichthyosaur") CIchthyosaur : public CFlyingMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -85,34 +85,34 @@ public:
 	float PitchDiff();
 	float ChangePitch(int speed);
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_SaveVelocity;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_idealDist = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flBlink = 0;
 
 	//TODO: should be time
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flEnemyTouched = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool  m_bOnAttack = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flMaxSpeed = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flMinSpeed = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flMaxDist = 0;
 
 	EHandle<CBeam> m_hBeam;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextAlert = 0;
 
 	float m_flLastPitchTime = 0;

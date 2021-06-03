@@ -25,7 +25,7 @@
 /**
 *	@brief environmental monster
 */
-class EHL_CLASS(EntityName=monster_rat) CRat : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_rat") CRat : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -42,12 +42,12 @@ protected:
 	ItemApplyResult Apply(CBasePlayer * player) override;
 
 protected:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		int m_iAmount = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		string_t m_iszAmmoName = iStringNull;
 
-	EHL_FIELD(Persisted, Type = SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 		string_t m_iszPickupSound = MAKE_STRING("items/9mmclip1.wav");
 };

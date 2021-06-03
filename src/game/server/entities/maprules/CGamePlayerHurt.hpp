@@ -24,7 +24,7 @@ constexpr int SF_PKILL_FIREONCE = 0x0001;
 *	@brief Damages the player who fires it
 *	@details Flag: Fire once
 */
-class EHL_CLASS(EntityName=game_player_hurt) CGamePlayerHurt : public CRulePointEntity
+class EHL_CLASS("EntityName": "game_player_hurt") CGamePlayerHurt : public CRulePointEntity
 {
 	EHL_GENERATED_BODY()
 

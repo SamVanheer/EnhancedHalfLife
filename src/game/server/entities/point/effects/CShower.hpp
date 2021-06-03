@@ -21,7 +21,7 @@
 /**
 *	@brief Spark Shower
 */
-class EHL_CLASS(EntityName=spark_shower) CShower : public CBaseEntity
+class EHL_CLASS("EntityName": "spark_shower") CShower : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

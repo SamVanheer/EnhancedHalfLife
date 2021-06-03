@@ -27,7 +27,7 @@ constexpr int AFLOCK_TOO_CLOSE = 100;
 constexpr int AFLOCK_TOO_FAR = 256;
 
 //TODO: should probably make this inherit from CSquadMonster and remove the squad code from this class
-class EHL_CLASS(EntityName=monster_flyer) CFlockingFlyer : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_flyer") CFlockingFlyer : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -108,37 +108,37 @@ public:
 	*/
 	void SquadDisband();
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CFlockingFlyer> m_hSquadLeader;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CFlockingFlyer> m_hSquadNext;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fTurning = false;// is this boid turning?
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fCourseAdjust = false;// followers set this flag true to override flocking while they avoid something
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fPathBlocked = false;// true if there is an obstacle ahead
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_vecReferencePoint;// last place we saw leader
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecAdjustedVelocity;// adjusted velocity (used when fCourseAdjust is true)
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flGoalSpeed = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flLastBlockedTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flFakeBlockedTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flAlertTime = 0;
 
 	//Don't need to save

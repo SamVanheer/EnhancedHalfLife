@@ -23,7 +23,7 @@ class CBeam;
 constexpr int SF_APACHE_WAITFORTRIGGER = 0x04 | 0x40; // UNDONE: Fix!
 constexpr int SF_NOWRECKAGE = 0x08;
 
-class EHL_CLASS(EntityName=monster_apache) CApache : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_apache") CApache : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -55,37 +55,37 @@ class EHL_CLASS(EntityName=monster_apache) CApache : public CBaseMonster
 	bool TakeDamage(const TakeDamageInfo& info) override;
 	void TraceAttack(const TraceAttackInfo& info) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iRockets = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flForce = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextRocket = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecTarget;
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_posTarget;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecDesired;
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_posDesired;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecGoal;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_angGun;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flLastSeen = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flPrevSeen = 0;
 
 	//Don't save, precached
@@ -95,12 +95,12 @@ class EHL_CLASS(EntityName=monster_apache) CApache : public CBaseMonster
 	int m_iExplode = 0;
 	int m_iBodyGibs = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flGoalSpeed = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iDoSmokePuff = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CBeam> m_hBeam;
 };

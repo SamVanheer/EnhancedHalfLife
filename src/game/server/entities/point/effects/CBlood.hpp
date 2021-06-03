@@ -26,7 +26,7 @@ constexpr int SF_BLOOD_DECAL = 0x0008;
 /**
 *	@brief Blood effects
 */
-class EHL_CLASS(EntityName=env_blood) CBlood : public CPointEntity
+class EHL_CLASS("EntityName": "env_blood") CBlood : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

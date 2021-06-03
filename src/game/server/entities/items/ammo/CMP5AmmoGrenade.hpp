@@ -19,7 +19,7 @@
 #include "CBaseWeapon.hpp"
 #include "CMP5AmmoGrenade.generated.hpp"
 
-class EHL_CLASS(EntityName=ammo_ARgrenades, EntityNameAliases=[ammo_mp5grenades]) CMP5AmmoGrenade : public CBaseAmmo
+class EHL_CLASS("EntityName": "ammo_ARgrenades", "EntityNameAliases": ["ammo_mp5grenades"]) CMP5AmmoGrenade : public CBaseAmmo
 {
 	EHL_GENERATED_BODY()
 

@@ -63,7 +63,7 @@ enum class ScriptedMoveTo
 *	range # - only search this far to find the target
 *	spawnflags - (stop if blocked, stop if player seen)
 */
-class EHL_CLASS(EntityName=scripted_sequence) CCineMonster : public CBaseMonster
+class EHL_CLASS("EntityName": "scripted_sequence") CCineMonster : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -134,43 +134,43 @@ public:
 	void	AllowInterrupt(bool fAllow);
 	int		IgnoreConditions() override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszIdle = iStringNull;		// string index for idle animation
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszPlay = iStringNull;		// string index for scripted animation
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszEntity = iStringNull;		// entity that is wanted for this script
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ScriptedMoveTo m_fMoveTo = ScriptedMoveTo::No;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iFinishSchedule = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flRadius = 0;		// range to search
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flRepeat = 0;	// repeat rate
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iDelay = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_startTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Movetype m_saved_movetype = Movetype::None;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Solid m_saved_solid = Solid::Not;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_saved_effects = 0;
 	//	Vector m_vecOrigOrigin;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_interruptable = false;
 };

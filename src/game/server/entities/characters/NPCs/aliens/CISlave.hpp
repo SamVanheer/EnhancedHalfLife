@@ -37,7 +37,7 @@ constexpr int SF_ISLAVE_IS_REVIVED_SLAVE = 1 << 0;
 /**
 *	@brief Alien slave monster
 */
-class EHL_CLASS(EntityName=monster_alien_slave, EntityNameAliases=[monster_vortigaunt]) CISlave : public CSquadMonster
+class EHL_CLASS("EntityName": "monster_alien_slave", "EntityNameAliases": ["monster_vortigaunt"]) CISlave : public CSquadMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -102,22 +102,22 @@ public:
 	*/
 	void BeamGlow();
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iBravery = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CBeam> m_hBeam[ISLAVE_MAX_BEAMS];
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iBeams = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextAttack = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int	m_voicePitch = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hDead;
 
 	static const char* pAttackHitSounds[];

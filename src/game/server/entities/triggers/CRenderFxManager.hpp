@@ -27,7 +27,7 @@ constexpr int SF_RENDER_MASKCOLOR = 1 << 3;
 /**
 *	@brief This entity will copy its render parameters (renderfx, rendermode, rendercolor, renderamt) to its targets when triggered.
 */
-class EHL_CLASS(EntityName=env_render) CRenderFxManager : public CBaseEntity
+class EHL_CLASS("EntityName": "env_render") CRenderFxManager : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

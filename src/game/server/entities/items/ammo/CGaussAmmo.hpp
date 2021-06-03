@@ -19,7 +19,7 @@
 #include "CBaseWeapon.hpp"
 #include "CGaussAmmo.generated.hpp"
 
-class EHL_CLASS(EntityName=ammo_gaussclip) CGaussAmmo : public CBaseAmmo
+class EHL_CLASS("EntityName": "ammo_gaussclip") CGaussAmmo : public CBaseAmmo
 {
 	EHL_GENERATED_BODY()
 

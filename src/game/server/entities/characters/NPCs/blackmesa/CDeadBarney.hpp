@@ -21,7 +21,7 @@
 /**
 *	@brief Designer selects a pose in worldcraft, 0 through ArraySize(m_szPoses)-1
 */
-class EHL_CLASS(EntityName=monster_barney_dead) CDeadBarney : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_barney_dead") CDeadBarney : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

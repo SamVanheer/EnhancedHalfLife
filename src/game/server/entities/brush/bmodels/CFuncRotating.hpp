@@ -36,7 +36,7 @@ constexpr int SF_BRUSH_ROTATE_LARGERADIUS = 512;
 *	It will rotate around the Z axis by default.
 *	You can check either the X_AXIS or Y_AXIS box to change that.
 */
-class EHL_CLASS(EntityName=func_rotating) CFuncRotating : public CBaseEntity
+class EHL_CLASS("EntityName": "func_rotating") CFuncRotating : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -78,30 +78,30 @@ public:
 	void Blocked(CBaseEntity* pOther) override;
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flFanFriction = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flAttenuation = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flVolume = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_pitch = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_sounds = 0;
 
 	//These sounds are never actually used
 	/*
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszStartSound = iStringNull;
 
-	EHL_FIELD(Persisted, Type = SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszStopSound = iStringNull;
 	*/
 
-	EHL_FIELD(Persisted, Type = SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszRunningSound = iStringNull;
 };

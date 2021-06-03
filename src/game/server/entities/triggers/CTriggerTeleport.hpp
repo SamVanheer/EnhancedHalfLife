@@ -18,7 +18,7 @@
 #include "CBaseTrigger.hpp"
 #include "CTriggerTeleport.generated.hpp"
 
-class EHL_CLASS(EntityName=trigger_teleport) CTriggerTeleport : public CBaseTrigger
+class EHL_CLASS("EntityName": "trigger_teleport") CTriggerTeleport : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 

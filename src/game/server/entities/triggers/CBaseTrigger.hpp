@@ -23,7 +23,7 @@ constexpr int SF_TRIGGER_NOCLIENTS = 2;		//!< players not allowed to fire this t
 constexpr int SF_TRIGGER_PUSHABLES = 4;		//!< only pushables can fire this trigger
 
 //TODO: should this even be linked to a name? there's no spawn method for this so it just creates an empty entity
-class EHL_CLASS(EntityName=trigger) CBaseTrigger : public CBaseEntity
+class EHL_CLASS("EntityName": "trigger") CBaseTrigger : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

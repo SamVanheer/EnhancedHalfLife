@@ -26,7 +26,7 @@ constexpr int SF_FADE_ONLYONE = 0x0004;
 *	@details pev->dmg_take is duration
 *	pev->dmg_save is hold duration
 */
-class EHL_CLASS(EntityName=env_fade) CFade : public CPointEntity
+class EHL_CLASS("EntityName": "env_fade") CFade : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

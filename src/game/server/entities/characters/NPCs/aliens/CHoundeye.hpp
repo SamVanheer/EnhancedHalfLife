@@ -66,7 +66,7 @@ constexpr int HOUND_AE_CLOSE_EYE = 7;
 /**
 *	@brief spooky sonic dog.
 */
-class EHL_CLASS(EntityName=monster_houndeye) CHoundeye : public CSquadMonster
+class EHL_CLASS("EntityName": "monster_houndeye") CHoundeye : public CSquadMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -106,15 +106,15 @@ public:
 	CUSTOM_SCHEDULES;
 
 	//TODO: shouldn't be saved
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iSpriteTexture = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fAsleep = false;// some houndeyes sleep in idle mode if this is set, the houndeye is lying down
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fDontBlink = false;// don't try to open/close eye if this bit is set!
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_vecPackCenter; // the center of the pack. The leader maintains this by averaging the origins of all pack members.
 };

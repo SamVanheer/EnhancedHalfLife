@@ -21,7 +21,7 @@
 /**
 *	@brief misunderstood servant of the people
 */
-class EHL_CLASS(EntityName=monster_gman) CGMan : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_gman") CGMan : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -46,9 +46,9 @@ public:
 
 	EHANDLE m_hPlayer;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hTalkTarget;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flTalkTime = 0;
 };

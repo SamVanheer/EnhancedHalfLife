@@ -26,7 +26,7 @@
 constexpr int SF_MOMENTARY_DOOR = 0x0001;
 constexpr int SF_MOMENTARY_AUTO_RETURN = 16;
 
-class EHL_CLASS(EntityName=momentary_rot_button) CMomentaryRotButton : public CBaseToggle
+class EHL_CLASS("EntityName": "momentary_rot_button") CMomentaryRotButton : public CBaseToggle
 {
 	EHL_GENERATED_BODY()
 
@@ -50,24 +50,24 @@ public:
 	void	PlaySound();
 	void	UpdateTarget(float value);
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_lastUsed = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_direction = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_returnSpeed = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_start;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_end;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_sounds = 0;
 
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszActivateSound = iStringNull;
 };

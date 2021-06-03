@@ -30,7 +30,7 @@ enum mp5_e
 	MP5_FIRE3,
 };
 
-class EHL_CLASS(EntityName=weapon_9mmAR, EntityNameAliases=[weapon_mp5]) CMP5 : public CBaseWeapon
+class EHL_CLASS("EntityName": "weapon_9mmAR", "EntityNameAliases": ["weapon_mp5"]) CMP5 : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

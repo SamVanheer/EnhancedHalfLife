@@ -21,7 +21,7 @@
 /**
 *	@brief func_water - same as a door.
 */
-class EHL_CLASS(EntityName=func_water) CFuncWater : public CBaseDoor
+class EHL_CLASS("EntityName": "func_water") CFuncWater : public CBaseDoor
 {
 	EHL_GENERATED_BODY()
 };

@@ -29,7 +29,7 @@ constexpr int SF_TRIGGER_HURT_CLIENTONLYTOUCH = 32;	//!< only clients may touch 
 *	@details trigger hurt that causes radiation will do a radius check
 *	and set the player's geiger counter level according to distance from center of trigger
 */
-class EHL_CLASS(EntityName=trigger_hurt) CTriggerHurt : public CBaseTrigger
+class EHL_CLASS("EntityName": "trigger_hurt") CTriggerHurt : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 
@@ -43,6 +43,6 @@ public:
 	void EXPORT RadiationThink();
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_bitsDamageInflict = 0;	//!< DMG_ damage type that the door or tigger does
 };

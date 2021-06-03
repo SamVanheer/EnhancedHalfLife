@@ -21,7 +21,7 @@
 constexpr int MAX_MULTI_TARGETS = 16; //!< maximum number of targets a single multi_manager entity may be assigned.
 constexpr int MS_MAX_TARGETS = 32;
 
-class EHL_CLASS(EntityName=multisource) CMultiSource : public CPointEntity
+class EHL_CLASS("EntityName": "multisource") CMultiSource : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -33,15 +33,15 @@ public:
 	bool IsTriggered(CBaseEntity* pActivator) override;
 	void EXPORT Register();
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_rgEntities[MS_MAX_TARGETS]{};
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_rgTriggered[MS_MAX_TARGETS]{};
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iTotal = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_globalstate = iStringNull;
 };

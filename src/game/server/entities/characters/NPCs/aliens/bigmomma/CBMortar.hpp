@@ -21,7 +21,7 @@
 /**
 *	@brief Mortar shot entity
 */
-class EHL_CLASS(EntityName=bmortar) CBMortar : public CBaseEntity
+class EHL_CLASS("EntityName": "bmortar") CBMortar : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -32,6 +32,6 @@ public:
 	void Touch(CBaseEntity* pOther) override;
 	void EXPORT Animate();
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_maxFrame = 0;
 };

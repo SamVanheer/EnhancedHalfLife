@@ -18,7 +18,7 @@
 #include "CBaseMonster.hpp"
 #include "CFlockingFlyerFlock.generated.hpp"
 
-class EHL_CLASS(EntityName=monster_flyer_flock) CFlockingFlyerFlock : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_flyer_flock") CFlockingFlyerFlock : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -31,9 +31,9 @@ public:
 	// Sounds are shared by the flock
 	static  void PrecacheFlockSounds();
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_cFlockSize = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flFlockRadius = 0;
 };

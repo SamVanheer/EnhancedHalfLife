@@ -35,7 +35,7 @@ enum satchel_radio_e
 	SATCHEL_RADIO_HOLSTER
 };
 
-class EHL_CLASS(EntityName=weapon_satchel) CSatchel : public CBaseWeapon
+class EHL_CLASS("EntityName": "weapon_satchel") CSatchel : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 
@@ -83,6 +83,6 @@ public:
 	void GetWeaponData(weapon_data_t & data) override;
 	void SetWeaponData(const weapon_data_t & data) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		ChargeState m_chargeReady = ChargeState::NoSatchelsDeployed;
 };

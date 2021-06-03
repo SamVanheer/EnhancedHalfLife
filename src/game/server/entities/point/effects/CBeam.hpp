@@ -29,7 +29,7 @@ constexpr int SF_BEAM_SHADEIN = 0x0080;
 constexpr int SF_BEAM_SHADEOUT = 0x0100;
 constexpr int SF_BEAM_TEMPORARY = 0x8000;
 
-class EHL_CLASS(EntityName=beam) CBeam : public CBaseEntity
+class EHL_CLASS("EntityName": "beam") CBeam : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

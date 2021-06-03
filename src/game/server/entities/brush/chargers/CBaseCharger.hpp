@@ -62,63 +62,63 @@ protected:
 	[[nodiscard]] virtual float GetDefaultRechargeDelay() = 0;
 
 public:
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextCharge = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flSoundTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ChargerState m_State = ChargerState::Off;
 
 	/**
 	*	@brief DeathMatch Delay until recharged
 	*	-1 == use gamerules provided value, >= 0 == use mapper defined value
 	*/
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flRechargeDelay = -1;
 
 	/**
 	*	@brief Amount of charge to apply per use
 	*/
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iChargePerUse = 1;
 
 	/**
 	*	@brief Interval between charges
 	*/
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flChargeInterval = 0.1f;
 
 	/**
 	*	@brief CHARGER_NOT_INITIALIZED == use total capacity to initialize, >= CHARGER_INFINITE_CAPACITY == use mapper defined value
 	*/
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iCurrentCapacity = CHARGER_NOT_INITIALIZED;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iPitch = PITCH_NORM;
 
 	//These should all be assigned to a sensible default by the derived class constructor
 	//Overridable by mapper
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iTotalCapacity = 0;
 
-	EHL_FIELD(Persisted, Type = SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszChargeOnSound = iStringNull;
 
-	EHL_FIELD(Persisted, Type = SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszChargeLoopSound = iStringNull;
 
-	EHL_FIELD(Persisted, Type = SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszRefuseChargeSound = iStringNull;
 
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszRechargeSound = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszFireOnRecharge = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszFireOnEmpty = iStringNull;
 };

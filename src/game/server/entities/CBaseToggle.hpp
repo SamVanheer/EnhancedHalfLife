@@ -33,40 +33,40 @@ class EHL_CLASS() CBaseToggle : public CBaseAnimating
 public:
 	void KeyValue(KeyValueData* pkvd) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ToggleState m_toggle_state = ToggleState::AtTop;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flActivateFinished = 0;	//!< like attack_finished, but for doors
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flMoveDistance = 0;		//!< how far a door should slide or rotate
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flWait = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flLip = 0;
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_vecPosition1;
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_vecPosition2;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecAngle1; // UNDONE: Position could go through transition, but also angle?
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecAngle2; // UNDONE: Position could go through transition, but also angle?
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	CallWhenMoveDoneFn m_pfnCallWhenMoveDone = nullptr;
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_vecFinalDest;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecFinalAngle;
 
 	float GetDelay() override { return m_flWait; }

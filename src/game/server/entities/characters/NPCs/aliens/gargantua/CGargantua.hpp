@@ -46,7 +46,7 @@ constexpr int STOMP_SPRITE_COUNT = 10;
 
 inline int gStompSprite = 0, gGargGibModel = 0;
 
-class EHL_CLASS(EntityName=monster_gargantua) CGargantua : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_gargantua") CGargantua : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -114,30 +114,30 @@ private:
 	*/
 	CBaseEntity* GargantuaCheckTraceHullAttack(float flDist, int iDamage, int iDmgType);
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CSprite> m_hEyeGlow;		// Glow around the eyes
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CBeam> m_hFlame[4];		// Flame beams
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_eyeBrightness = 0;	// Brightness target
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_seeTime = 0;			// Time to attack (when I see the enemy, I set this)
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flameTime = 0;		// Time of next flame attack
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_painSoundTime = 0;	// Time of next pain sound
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_streakTime = 0;		// streak timer (don't send too many)
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flameX = 0;			// Flame thrower aim
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flameY = 0;
 };

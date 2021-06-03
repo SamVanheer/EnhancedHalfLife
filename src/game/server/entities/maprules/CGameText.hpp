@@ -24,7 +24,7 @@ constexpr int SF_ENVTEXT_ALLPLAYERS = 0x0001;
 *	@brief NON-Localized HUD Message (use env_message to display a titles.txt message)
 *	@details Flag: All players SF_ENVTEXT_ALLPLAYERS
 */
-class EHL_CLASS(EntityName=game_text) CGameText : public CRulePointEntity
+class EHL_CLASS("EntityName": "game_text") CGameText : public CRulePointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -41,6 +41,6 @@ public:
 private:
 	// Save parms as a block.  Will break save/restore if the structure changes, but this entity didn't ship with Half-Life, so
 	// it can't impact saved Half-Life games.
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	hudtextparms_t m_textParms;
 };

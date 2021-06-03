@@ -23,7 +23,7 @@ class CNihilanth;
 /**
 *	@brief Controller bouncy ball attack
 */
-class EHL_CLASS(EntityName=nihilanth_energy_ball) CNihilanthHVR : public CBaseMonster
+class EHL_CLASS("EntityName": "nihilanth_energy_ball") CNihilanthHVR : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -56,18 +56,18 @@ public:
 	void MovetoTarget(Vector vecTarget);
 	virtual void Crawl();
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flIdealVel = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecIdeal;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CNihilanth> m_hNihilanth;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hTouch;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_nFrames = 0;
 };

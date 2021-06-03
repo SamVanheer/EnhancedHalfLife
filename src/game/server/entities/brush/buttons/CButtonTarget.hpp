@@ -21,7 +21,7 @@
 constexpr int SF_BTARGET_USE = 0x0001;
 constexpr int SF_BTARGET_ON = 0x0002;
 
-class EHL_CLASS(EntityName=button_target) CButtonTarget : public CBaseEntity
+class EHL_CLASS("EntityName": "button_target") CButtonTarget : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

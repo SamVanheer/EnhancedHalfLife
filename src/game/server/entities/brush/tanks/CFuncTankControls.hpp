@@ -21,7 +21,7 @@
 /**
 *	@brief FUNC TANK CONTROLS
 */
-class EHL_CLASS(EntityName=func_tankcontrols) CFuncTankControls : public CBaseEntity
+class EHL_CLASS("EntityName": "func_tankcontrols") CFuncTankControls : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -31,6 +31,6 @@ public:
 	void Use(const UseInfo& info) override;
 	void Think() override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CFuncTank> m_hTank;
 };

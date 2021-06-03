@@ -18,7 +18,7 @@
 #include "CNodeEnt.hpp"
 #include "CAirNodeEnt.generated.hpp"
 
-class EHL_CLASS(EntityName=info_node_air) CAirNodeEnt : public CNodeEnt
+class EHL_CLASS("EntityName": "info_node_air") CAirNodeEnt : public CNodeEnt
 {
 	EHL_GENERATED_BODY()
 };

@@ -20,7 +20,7 @@
 
 constexpr int SF_RELAY_FIREONCE = 0x0001;
 
-class EHL_CLASS(EntityName=trigger_relay) CTriggerRelay : public CBaseEntity
+class EHL_CLASS("EntityName": "trigger_relay") CTriggerRelay : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -32,6 +32,6 @@ public:
 	int ObjectCaps() override { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	UseType	triggerType = UseType::Off;
 };

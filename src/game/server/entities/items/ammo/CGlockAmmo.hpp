@@ -19,7 +19,7 @@
 #include "CBaseWeapon.hpp"
 #include "CGlockAmmo.generated.hpp"
 
-class EHL_CLASS(EntityName=ammo_9mmclip, EntityNameAliases=[ammo_glockclip]) CGlockAmmo : public CBaseAmmo
+class EHL_CLASS("EntityName": "ammo_9mmclip", "EntityNameAliases": ["ammo_glockclip"]) CGlockAmmo : public CBaseAmmo
 {
 	EHL_GENERATED_BODY()
 

@@ -100,71 +100,71 @@ public:
 	bool MoveTurret();
 	virtual void Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy) {}
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flMaxSpin = 0;		// Max time to spin the barrel w/o a target
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_iSpin = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CSprite> m_hEyeGlow;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_eyeBrightness = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int	m_iDeployHeight = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int	m_iRetractHeight = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iMinPitch = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iBaseTurnRate = 0;	// angles per second
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_fTurnRate = 0;		// actual turn rate
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	TurretOrientation m_iOrientation = TurretOrientation::Floor;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_iOn = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fBeserk = false;		// Sometimes this bitch will just freak out
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_iAutoStart = false;	// true if the turret auto deploys when a target
 								// enters its range
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_vecLastSight;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flLastSight = 0;	// Last time we saw a target
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flMaxWait = 0;		// Max time to seach w/o a target
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iSearchSpeed = 0;		// Not Used!
 
 	// movement
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flStartYaw = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecCurAngles;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecGoalAngles;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flPingTime = 0;		// Time until the next ping, used when searching
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flSpinUpTime = 0;	// Amount of time until the barrel should spin down when searching
 };

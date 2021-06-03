@@ -21,7 +21,7 @@
 /**
 *	@brief Fires a target after level transition and then dies
 */
-class EHL_CLASS(EntityName=fireanddie) CFireAndDie : public CBaseEntity
+class EHL_CLASS("EntityName": "fireanddie") CFireAndDie : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

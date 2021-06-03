@@ -22,7 +22,7 @@
 *	@brief players in the zone fire my target when I'm fired
 *	@details TODO: Needs master?
 */
-class EHL_CLASS(EntityName=game_zone_player) CGamePlayerZone : public CRuleBrushEntity
+class EHL_CLASS("EntityName": "game_zone_player") CGamePlayerZone : public CRuleBrushEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -31,15 +31,15 @@ public:
 	void		Use(const UseInfo& info) override;
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszInTarget = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszOutTarget = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszInCount = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszOutCount = iStringNull;
 };

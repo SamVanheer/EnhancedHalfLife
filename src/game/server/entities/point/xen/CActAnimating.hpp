@@ -29,6 +29,6 @@ public:
 	int	ObjectCaps() override { return CBaseAnimating::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Activity m_Activity = ACT_RESET;
 };

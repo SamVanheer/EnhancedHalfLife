@@ -22,7 +22,7 @@
 /**
 *	@brief Nodes start out as ents in the level. The node graph  is built, then these ents are discarded.
 */
-class EHL_CLASS(EntityName=info_node) CNodeEnt : public CBaseEntity
+class EHL_CLASS("EntityName": "info_node") CNodeEnt : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

@@ -18,7 +18,7 @@
 #include "CBaseTrigger.hpp"
 #include "CTriggerMonsterJump.generated.hpp"
 
-class EHL_CLASS(EntityName=trigger_monsterjump) CTriggerMonsterJump : public CBaseTrigger
+class EHL_CLASS("EntityName": "trigger_monsterjump") CTriggerMonsterJump : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 
@@ -28,6 +28,6 @@ public:
 	void Think() override;
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flHeight = 0;
 };

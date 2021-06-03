@@ -27,7 +27,7 @@ constexpr int N_SPHERES = 20;
 /**
 *	@brief Nihilanth, final Boss monster
 */
-class EHL_CLASS(EntityName=monster_nihilanth) CNihilanth : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_nihilanth") CNihilanth : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -85,93 +85,93 @@ public:
 
 	// x_teleattack1.wav	the looping sound of the teleport attack ball.
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flForce = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextPainSound = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_velocity;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_avelocity;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecTarget;
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_posTarget;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecDesired;
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_posDesired;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float  m_flMinZ = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float  m_flMaxZ = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecGoal;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flLastSeen = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flPrevSeen = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_irritation = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iLevel = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iTeleport = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hRecharger;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CNihilanthHVR> m_hSphere[N_SPHERES];
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int	m_iActiveSpheres = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flAdj = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CSprite> m_hBall;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	char m_szRechargerTarget[64]{};
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	char m_szDrawUse[64]{};
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	char m_szTeleportUse[64]{};
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	char m_szTeleportTouch[64]{};
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	char m_szDeadUse[64]{};
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	char m_szDeadTouch[64]{};
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flShootEnd = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flShootTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hFriend[3];
 };

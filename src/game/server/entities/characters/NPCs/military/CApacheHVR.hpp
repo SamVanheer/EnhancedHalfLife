@@ -18,7 +18,7 @@
 #include "CGrenade.hpp"
 #include "CApacheHVR.generated.hpp"
 
-class EHL_CLASS(EntityName=hvr_rocket) CApacheHVR : public CGrenade
+class EHL_CLASS("EntityName": "hvr_rocket") CApacheHVR : public CGrenade
 {
 	EHL_GENERATED_BODY()
 
@@ -30,6 +30,6 @@ class EHL_CLASS(EntityName=hvr_rocket) CApacheHVR : public CGrenade
 	//Don't save, precached
 	int m_iTrail = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecForward;
 };

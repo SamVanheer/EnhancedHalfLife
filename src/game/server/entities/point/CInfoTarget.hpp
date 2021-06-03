@@ -21,7 +21,7 @@
 /**
 *	@brief Lightning/generic target
 */
-class EHL_CLASS(EntityName=info_target) CInfoTarget : public CPointEntity
+class EHL_CLASS("EntityName": "info_target") CInfoTarget : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 };

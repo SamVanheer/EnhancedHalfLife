@@ -22,7 +22,7 @@
 /**
 *	@brief TestHull is a modelless clip hull that verifies reachable nodes by walking from every node to each of it's connections
 */
-class EHL_CLASS(EntityName=testhull) CTestHull : public CBaseMonster
+class EHL_CLASS("EntityName": "testhull") CTestHull : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

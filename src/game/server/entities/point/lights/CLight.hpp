@@ -25,7 +25,7 @@ constexpr int SF_LIGHT_START_OFF = 1;
 *	Default style is 0
 *	If targeted, it will toggle between on or off.
 */
-class EHL_CLASS(EntityName=light) CLight : public CPointEntity
+class EHL_CLASS("EntityName": "light") CLight : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -35,9 +35,9 @@ public:
 	void	Use(const UseInfo& info) override;
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iStyle = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszPattern = iStringNull;
 };

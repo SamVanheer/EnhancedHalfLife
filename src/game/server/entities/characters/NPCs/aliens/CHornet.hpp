@@ -31,7 +31,7 @@ constexpr float HORNET_BUZZ_VOLUME = 0.8;
 /**
 *	@brief this is the projectile that the Alien Grunt fires.
 */
-class EHL_CLASS(EntityName=hornet) CHornet : public CBaseMonster
+class EHL_CLASS("EntityName": "hornet") CHornet : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -78,12 +78,12 @@ public:
 	*/
 	bool TakeDamage(const TakeDamageInfo& info) override;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flStopAttack = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	HornetType m_iHornetType = HornetType::Red;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flFlySpeed = 0;
 };

@@ -18,7 +18,7 @@
 #include "CBaseEntity.hpp"
 #include "CSmoker.generated.hpp"
 
-class EHL_CLASS(EntityName=env_smoker) CSmoker : public CBaseEntity
+class EHL_CLASS("EntityName": "env_smoker") CSmoker : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

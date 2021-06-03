@@ -23,7 +23,7 @@
 //=========================================================
 constexpr int BLOATER_AE_ATTACK_MELEE1 = 0x01;
 
-class EHL_CLASS(EntityName=monster_bloater) CBloater : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_bloater") CBloater : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -20,7 +20,7 @@
 #include "UserMessages.hpp"
 #include "CItemLongJump.generated.hpp"
 
-class EHL_CLASS(EntityName=item_longjump) CItemLongJump : public CItem
+class EHL_CLASS("EntityName": "item_longjump") CItemLongJump : public CItem
 {
 	EHL_GENERATED_BODY()
 
@@ -69,6 +69,6 @@ class EHL_CLASS(EntityName=item_longjump) CItemLongJump : public CItem
 	}
 
 protected:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_PlaySuitSentence = true;
 };

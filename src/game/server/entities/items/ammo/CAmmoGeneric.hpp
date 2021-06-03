@@ -21,7 +21,7 @@
 /**
 *	@brief Generic ammo item
 */
-class EHL_CLASS(EntityName=ammo_generic) CAmmoGeneric : public CBaseAmmo
+class EHL_CLASS("EntityName": "ammo_generic") CAmmoGeneric : public CBaseAmmo
 {
 	EHL_GENERATED_BODY()
 

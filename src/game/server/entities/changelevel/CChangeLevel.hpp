@@ -23,7 +23,7 @@ constexpr int SF_CHANGELEVEL_USEONLY = 0x0002;
 /**
 *	@brief When the player touches this, he gets sent to the map listed in the "map" variable.
 */
-class EHL_CLASS(EntityName=trigger_changelevel) CChangeLevel : public CBaseTrigger
+class EHL_CLASS("EntityName": "trigger_changelevel") CChangeLevel : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 
@@ -51,15 +51,15 @@ public:
 	static bool AddTransitionToList(LEVELLIST * pLevelList, int listCount, const char* pMapName, const char* pLandmarkName, CBaseEntity * pentLandmark);
 	static bool InTransitionVolume(CBaseEntity * pEntity, char* pVolumeName);
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	char m_szMapName[MAX_MAPNAME_LENGTH]{};			//!< next map
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	char m_szLandmarkName[MAX_MAPNAME_LENGTH]{};	//!< landmark on next map
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_changeTarget = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_changeTargetDelay = 0;
 };

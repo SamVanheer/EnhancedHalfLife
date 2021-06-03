@@ -32,21 +32,21 @@ public:
 	// This is done to fix spawn flag collisions between this class and a derived class
 	virtual bool IsTogglePlat() { return (pev->spawnflags & SF_PLAT_TOGGLE) != 0; }
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flHeight = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bMoveSnd = 0; // sound a plat makes while moving
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bStopSnd = 0; // sound a plat makes when it stops
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_volume = 0; // Sound volume
 
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszMovingSound = iStringNull;
 
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszArrivedSound = iStringNull;
 };

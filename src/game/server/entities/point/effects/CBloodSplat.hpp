@@ -18,7 +18,7 @@
 #include "CBaseEntity.hpp"
 #include "CBloodSplat.generated.hpp"
 
-class EHL_CLASS(EntityName=blood_splat) CBloodSplat : public CBaseEntity
+class EHL_CLASS("EntityName": "blood_splat") CBloodSplat : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

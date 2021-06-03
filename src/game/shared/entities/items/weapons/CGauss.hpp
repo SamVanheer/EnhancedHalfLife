@@ -34,7 +34,7 @@ enum gauss_e
 	GAUSS_DRAW
 };
 
-class EHL_CLASS(EntityName=weapon_gauss) CGauss : public CBaseWeapon
+class EHL_CLASS("EntityName": "weapon_gauss") CGauss : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 
@@ -83,10 +83,10 @@ public:
 
 	// was this weapon just fired primary or secondary?
 	// we need to know so we can pick the right set of effects. 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		bool m_fPrimaryFire = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		AttackState m_fInAttack = AttackState::NotAttacking;
 
 	bool UseDecrement() override

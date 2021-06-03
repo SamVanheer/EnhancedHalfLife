@@ -21,7 +21,7 @@
 /**
 * @brief Body queue class here.... It's really just CBaseEntity
 */
-class EHL_CLASS(EntityName=bodyque) CCorpse : public CBaseEntity
+class EHL_CLASS("EntityName": "bodyque") CCorpse : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

@@ -32,7 +32,7 @@ enum shotgun_e
 	SHOTGUN_IDLE_DEEP
 };
 
-class EHL_CLASS(EntityName=weapon_shotgun) CShotgun : public CBaseWeapon
+class EHL_CLASS("EntityName": "weapon_shotgun") CShotgun : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 
@@ -65,7 +65,7 @@ public:
 	void WeaponIdle() override;
 	void WeaponPostFrame() override;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextReload = 0;
 
 	int m_iShell = 0;
@@ -82,7 +82,7 @@ public:
 	void GetWeaponData(weapon_data_t & data) override;
 	void SetWeaponData(const weapon_data_t & data) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ReloadState m_fInSpecialReload = ReloadState::NotReloading; //!< Are we in the middle of a reload
 
 private:

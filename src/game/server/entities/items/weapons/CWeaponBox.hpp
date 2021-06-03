@@ -21,7 +21,7 @@
 /**
 *	@brief a single entity that can store weapons and ammo.
 */
-class EHL_CLASS(EntityName=weaponbox) CWeaponBox : public CBaseEntity
+class EHL_CLASS("EntityName": "weaponbox") CWeaponBox : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -59,15 +59,15 @@ public:
 
 	bool PackAmmo(string_t iszName, int iCount);
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CBaseWeapon> m_hPlayerWeapons[MAX_WEAPON_TYPES];// one slot for each 
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_rgiszAmmo[MAX_AMMO_TYPES]{};// ammo names
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int	m_rgAmmo[MAX_AMMO_TYPES]{};// ammo quantities
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_cAmmoTypes = 0;// how many ammo types packed into this box (if packed by a level designer)
 };

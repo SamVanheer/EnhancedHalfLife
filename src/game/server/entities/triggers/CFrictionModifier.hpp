@@ -22,7 +22,7 @@
 *	@brief Modify an entity's friction
 *	@details Sets toucher's friction to m_frictionFraction (1.0 = normal friction)
 */
-class EHL_CLASS(EntityName=func_friction) CFrictionModifier : public CBaseEntity
+class EHL_CLASS("EntityName": "func_friction") CFrictionModifier : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -33,6 +33,6 @@ public:
 
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_frictionFraction = 0; // Sorry, couldn't resist this name :)
 };

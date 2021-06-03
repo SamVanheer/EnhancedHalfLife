@@ -57,7 +57,7 @@ constexpr int BSQUID_AE_THROW = 6;
 /**
 *	@brief big, spotty tentacle-mouthed meanie.
 */
-class EHL_CLASS(EntityName=monster_bullchicken) CBullsquid : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_bullchicken") CBullsquid : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -121,12 +121,12 @@ public:
 
 	CUSTOM_SCHEDULES;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fCanThreatDisplay = false;// this is so the squid only does the "I see a headcrab!" dance one time. 
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flLastHurtTime = 0;// we keep track of this, because if something hurts a squid, it will forget about its love of headcrabs for a while.
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextSpitTime = 0;// last time the bullsquid used the spit attack.
 };

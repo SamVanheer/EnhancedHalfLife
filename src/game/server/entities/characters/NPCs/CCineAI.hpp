@@ -18,7 +18,7 @@
 #include "CCineMonster.hpp"
 #include "CCineAI.generated.hpp"
 
-class EHL_CLASS(EntityName=aiscripted_sequence) CCineAI : public CCineMonster
+class EHL_CLASS("EntityName": "aiscripted_sequence") CCineAI : public CCineMonster
 {
 	EHL_GENERATED_BODY()
 

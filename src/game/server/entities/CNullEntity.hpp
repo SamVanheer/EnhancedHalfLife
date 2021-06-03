@@ -22,7 +22,7 @@
 /**
 *	@brief Null Entity, remove on startup
 */
-class EHL_CLASS(EntityName=info_null) CNullEntity : public CBaseEntity
+class EHL_CLASS("EntityName": "info_null") CNullEntity : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

@@ -21,7 +21,7 @@
 /**
 *	@brief Contact Grenade / Timed grenade / Satchel Charge
 */
-class EHL_CLASS(EntityName=grenade) CGrenade : public CBaseAnimating
+class EHL_CLASS("EntityName": "grenade") CGrenade : public CBaseAnimating
 {
 	EHL_GENERATED_BODY()
 
@@ -55,7 +55,7 @@ public:
 	int	BloodColor() override { return DONT_BLEED; }
 	void Killed(const KilledInfo & info) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flNextAttack = 0;
 
 	bool m_fRegisteredSound = false;//!< whether or not this grenade has issued its DANGER sound to the world sound list yet.

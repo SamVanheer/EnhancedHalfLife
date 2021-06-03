@@ -18,7 +18,7 @@
 #include "CBaseTurret.hpp"
 #include "CTurret.generated.hpp"
 
-class EHL_CLASS(EntityName=monster_turret) CTurret : public CBaseTurret
+class EHL_CLASS("EntityName": "monster_turret") CTurret : public CBaseTurret
 {
 	EHL_GENERATED_BODY()
 
@@ -33,7 +33,7 @@ public:
 	void Shoot(const Vector& vecSrc, const Vector& vecDirToEnemy) override;
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_iStartSpin = false;
 
 };

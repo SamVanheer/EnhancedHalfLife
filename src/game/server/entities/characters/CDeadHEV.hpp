@@ -24,7 +24,7 @@ constexpr int DEADHEV_HEAD_HELMETED = 1;
 /**
 *	@brief Dead HEV suit prop
 */
-class EHL_CLASS(EntityName=monster_hevsuit_dead) CDeadHEV : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_hevsuit_dead") CDeadHEV : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -76,7 +76,7 @@ constexpr float CHAT_INTERVAL = 1.0f;
 *	@brief generic player
 *	This is Half-Life player entity
 */
-class EHL_CLASS(EntityName=player) CBasePlayer : public CBaseMonster
+class EHL_CLASS("EntityName": "player") CBasePlayer : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -110,33 +110,33 @@ public:
 	// Don't restore, set in Precache()
 	int m_iPlayerSound = 0; //!< the index of the sound list slot reserved for this player
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iTargetVolume = 0; //!< ideal sound volume. 
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iWeaponVolume = 0; //!< how loud the player's weapon is right now.
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iExtraSoundTypes = 0; //!< additional classification for this weapon's sound
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iWeaponFlash = 0; //!< brightness of the weapon flash
 
 	float m_flStopExtraSoundTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flFlashLightTime = 0; //!< Time until next battery draw/Recharge
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iFlashBattery = 0; //!< Flashlight Battery Draw
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_afButtonLast = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_afButtonPressed = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_afButtonReleased = 0;
 
 	// Don't restore, client needs reset
@@ -144,55 +144,55 @@ public:
 	float m_flSndRoomtype = 0; //!< last roomtype set by sound entity
 	float m_flSndRange = 0; //!< dist from player to sound entity
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flFallVelocity = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_rgItems[MAX_ITEMS]{};
 
 	// reset to false on load
 	bool m_fKnownWeapon = false; //!< True when a new weapon needs to be added
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	unsigned int m_afPhysicsFlags = 0; //!< physics flags - set when 'normal' physics should be revisited or overriden
 
 	float m_fNextSuicideTime = 0; //!< the time after which the player can next use the suicide command
 
 	// these are time-sensitive things that we keep track of
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flTimeStepSound = 0; //!< when the last stepping sound was made
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flTimeWeaponIdle = 0; //!< when to play another weapon idle animation.
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flSwimTime = 0; //!< how long player has been underwater
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flDuckTime = 0; //!< how long we've been ducking
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flWallJumpTime = 0; //!< how long until next walljump
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flSuitUpdate = 0; //!< when to play next suit update
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_rgSuitPlayList[CSUITPLAYLIST]{}; //!< next sentencenum to play for suit update
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iSuitPlayNext = 0; //!< next sentence slot for queue storage;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_rgiSuitNoRepeat[CSUITNOREPEAT]{}; //!< suit sentence no repeat list
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_rgflSuitNoRepeatTime[CSUITNOREPEAT]{}; //!< how long to wait before allowing repeat
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_lastDamageAmount = 0; //!< Last damage taken
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_tbdPrev = 0; //!< Time-based damage timer
 
 	// Don't restore, reset in Precache()
@@ -205,31 +205,31 @@ public:
 	char m_szTextureName[CBTEXTURENAMEMAX]{}; //!< current texture name we're standing on
 	char m_chTextureType = '\0'; //!< current texture type
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_idrowndmg = 0; //!< track drowning damage taken
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_idrownrestored = 0; //!< track drowning damage restored
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_bitsHUDDamage = 0; //!< Damage bits for the current frame. These get sent to the hude via the DAMAGE message
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fInitHUD = false; //!< True when deferred HUD restart msg needs to be sent
 
 	// only used in multiplayer games
 	bool m_fGameHUDInitialized = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iTrain = 0; //!< Train control position
 
 	// Don't restore, client needs reset
 	bool m_fWeapon = false; //!< Set this to false to force a reset of the current weapon HUD info
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_pTank; //!< the tank which the player is currently controlling,  nullptr if no tank
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hViewEntity; //!< The view entity being used, or null if the player is using itself as the view entity
 
 	bool m_bResetViewEntity = false; //!<True if the player's view needs to be set back to the view entity
@@ -240,38 +240,38 @@ public:
 	// Don't need to restore, debug
 	bool m_fNoPlayerSound = false; //!< a debugging feature. Player makes no sound if this is true. 
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fLongJump = false; //!< does this player have the longjump module?
 
 	// Don't restore, client needs reset
 	int m_iClientHealth = 0; //!< the health currently known by the client.  If this changes, send a new
 	int m_iClientBattery = 0; //!< the Battery currently known by the client.  If this changes, send a new
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iHideHUD = 0; //!< the players hud weapon info is to be hidden
 
 	// Don't restore, client needs reset
 	int m_iClientHideHUD = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iFOV = 0; //!< field of view
 
 	int m_iClientFOV = 0; //!< client's known FOV
 
 	// usable player weapons
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CBaseWeapon> m_hPlayerWeapons[MAX_WEAPON_TYPES];
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CBaseWeapon> m_hActiveWeapon;
 
 	EHandle<CBaseWeapon> m_hClientActiveWeapon;  //!< client version of the active weapon
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CBaseWeapon> m_hLastWeapon;
 
 	// shared ammo slots
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int	m_rgAmmo[MAX_AMMO_TYPES]{};
 
 	// Don't need to restore

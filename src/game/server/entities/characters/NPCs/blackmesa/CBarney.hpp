@@ -32,7 +32,7 @@ constexpr int BARNEY_BODY_GUNHOLSTERED = 0;
 constexpr int BARNEY_BODY_GUNDRAWN = 1;
 constexpr int BARNEY_BODY_GUNGONE = 2;
 
-class EHL_CLASS(EntityName=monster_barney) CBarney : public CTalkMonster
+class EHL_CLASS("EntityName": "monster_barney") CBarney : public CTalkMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -75,20 +75,20 @@ public:
 	void TraceAttack(const TraceAttackInfo& info) override;
 	void Killed(const KilledInfo& info) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fGunDrawn = false;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_painTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_checkAttackTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_lastAttackCheck = false;
 
 	// UNDONE: What is this for?  It isn't used?
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flPlayerDamage = 0;// how much pain has the player inflicted on me?
 
 	CUSTOM_SCHEDULES;

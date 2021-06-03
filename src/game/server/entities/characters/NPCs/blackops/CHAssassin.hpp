@@ -51,7 +51,7 @@ constexpr int bits_MEMORY_BADJUMP = bits_MEMORY_CUSTOM1;
 /**
 *	@brief Human assassin, fast and stealthy
 */
-class EHL_CLASS(EntityName=monster_human_assassin) CHAssassin : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_human_assassin") CHAssassin : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -75,31 +75,31 @@ public:
 	void IdleSound() override;
 	CUSTOM_SCHEDULES;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flLastShot = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flDiviation = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextJump = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecJumpVelocity;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextGrenadeCheck = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecTossVelocity;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fThrowGrenade = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iTargetRanderamt = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iFrustration = 0;
 
 	int m_iShell = 0;

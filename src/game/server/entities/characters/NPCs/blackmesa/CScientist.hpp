@@ -62,7 +62,7 @@ constexpr int SCIENTIST_AE_NEEDLEOFF = 3;
 /**
 *	@brief human scientist (passive lab worker)
 */
-class EHL_CLASS(EntityName=monster_scientist) CScientist : public CTalkMonster
+class EHL_CLASS("EntityName": "monster_scientist") CScientist : public CTalkMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -105,12 +105,12 @@ public:
 	CUSTOM_SCHEDULES;
 
 private:
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_painTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_healTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_fearTime = 0;
 };

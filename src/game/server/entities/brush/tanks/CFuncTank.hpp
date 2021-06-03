@@ -132,85 +132,85 @@ public:
 
 
 protected:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CBasePlayer> m_hController;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextAttack = 0;
 
 	//TODO: should be position
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecControllerUsePos;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_yawCenter = 0;		// "Center" yaw
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_yawRate = 0;		// Max turn rate to track targets
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_yawRange = 0;		// Range of turning motion (one-sided: 30 is +/- 30 degress from center)
 								// Zero is full rotation
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_yawTolerance = 0;	// Tolerance angle
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_pitchCenter = 0;	// "Center" pitch
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_pitchRate = 0;		// Max turn rate on pitch
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_pitchRange = 0;		// Range of pitch motion as above
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_pitchTolerance = 0;	// Tolerance angle
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_fireLast = 0;		// Last time I fired
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_fireRate = 0;		// How many rounds/second
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_lastSightTime = 0;	// Last time I saw target
 
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszRotateSound = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_persist = 0;		// Persistence of firing (how long do I shoot when I can't see)
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_minRange = 0;		// Minimum range to aim/track
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_maxRange = 0;		// Max range to aim/track
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_barrelPos;			// Length of the freakin barrel
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_spriteScale = 0;	// Scale of any sprites we shoot
 
 	//TODO: should probably both be ModelName
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszSpriteSmoke = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszSpriteFlash = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	TankBullet m_bulletType = TankBullet::None;	// Bullet type
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iBulletDamage = 0;	// 0 means use Bullet type's default damage
 
 	//TODO: should be position
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_sightOrigin;		// Last sight of target
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_spread = 0;			// firing spread
 };

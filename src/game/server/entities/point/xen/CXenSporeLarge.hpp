@@ -18,7 +18,7 @@
 #include "CXenSpore.hpp"
 #include "CXenSporeLarge.generated.hpp"
 
-class EHL_CLASS(EntityName=xen_spore_large) CXenSporeLarge : public CXenSpore
+class EHL_CLASS("EntityName": "xen_spore_large") CXenSporeLarge : public CXenSpore
 {
 	EHL_GENERATED_BODY()
 

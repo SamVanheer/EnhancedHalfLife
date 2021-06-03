@@ -60,23 +60,23 @@ class EHL_CLASS() CSquadMonster : public CBaseMonster
 
 public:
 	// squad leader info
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CSquadMonster> m_hSquadLeader;		//!< who is my leader
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CSquadMonster> m_hSquadMember[MAX_SQUAD_MEMBERS - 1]{};	//!< valid only for leader
 
 	// these need to be reset after transitions!
 	int m_afSquadSlots = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flLastEnemySightTime = 0; //!< last time anyone in the squad saw the enemy
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fEnemyEluded = false;
 
 	// squad member info
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iMySlot = 0; //!< this is the behaviour slot that the monster currently holds in the squad. 
 
 	bool CheckEnemy(CBaseEntity* pEnemy) override;

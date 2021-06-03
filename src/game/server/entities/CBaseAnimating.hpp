@@ -73,18 +73,18 @@ public:
 	void SetSequenceBox();
 
 	// animation needs
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flFrameRate = 0;			//!< computed FPS for current sequence
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flGroundSpeed = 0;			//!< computed linear movement rate for current sequence
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flLastEventCheck = 0;		//!< last time the event list was checked
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fSequenceFinished = false;	//!< flag set when StudioAdvanceFrame moves across a frame boundry
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fSequenceLoops = false;		//!< true if the sequence loops
 };

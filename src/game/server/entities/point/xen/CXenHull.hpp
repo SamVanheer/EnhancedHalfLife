@@ -21,7 +21,7 @@
 /**
 *	@brief Fake collision box for big spores
 */
-class EHL_CLASS(EntityName=xen_hull) CXenHull : public CPointEntity
+class EHL_CLASS("EntityName": "xen_hull") CXenHull : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

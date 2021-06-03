@@ -21,7 +21,7 @@
 /**
 *	@brief Soda can
 */
-class EHL_CLASS(EntityName=item_sodacan) CItemSoda : public CBaseEntity
+class EHL_CLASS("EntityName": "item_sodacan") CItemSoda : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

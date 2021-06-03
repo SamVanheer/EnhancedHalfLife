@@ -40,7 +40,7 @@ constexpr std::string_view EGON_SOUND_OFF{"weapons/egon_off1.wav"};
 constexpr std::string_view EGON_SOUND_RUN{"weapons/egon_run3.wav"};
 constexpr std::string_view EGON_SOUND_STARTUP{"weapons/egon_windup2.wav"};
 
-class EHL_CLASS(EntityName=weapon_egon) CEgon : public CBaseWeapon
+class EHL_CLASS("EntityName": "weapon_egon") CEgon : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 
@@ -86,7 +86,7 @@ public:
 	bool ShouldWeaponIdle() override { return true; }
 	void WeaponIdle() override;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flAmmoUseTime = 0;// since we use < 1 point of ammo per update, we subtract ammo on a timer.
 
 	float GetPulseInterval();
@@ -102,7 +102,7 @@ public:
 	EHandle<CBeam> m_hNoise;
 	EHandle<CSprite> m_hSprite;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	FireState m_fireState = FireState::Off;
 
 	bool UseDecrement() override
@@ -120,13 +120,13 @@ public:
 	unsigned short m_usEgonStop = 0;
 
 private:
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_shootTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	FireMode m_fireMode = FireMode::Narrow;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_shakeTime = 0;
 
 	bool m_deployed = 0; //TODO: bool

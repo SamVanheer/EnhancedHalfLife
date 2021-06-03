@@ -20,7 +20,7 @@
 
 class CLaser;
 
-class EHL_CLASS(EntityName=func_tanklaser) CFuncTankLaser : public CFuncTank
+class EHL_CLASS("EntityName": "func_tanklaser") CFuncTankLaser : public CFuncTank
 {
 	EHL_GENERATED_BODY()
 
@@ -32,9 +32,9 @@ public:
 	CLaser* GetLaser();
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CLaser> m_hLaser;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_laserTime = 0;
 };

@@ -38,7 +38,7 @@ constexpr float LEECH_FRAMETIME = 0.1;
 /**
 *	@brief basic little swimming monster
 */
-class EHL_CLASS(EntityName=monster_leech) CLeech : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_leech") CLeech : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -93,40 +93,40 @@ public:
 
 private:
 	// UNDONE: Remove unused boid vars, do group behavior
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flTurning = 0;// is this boid turning?
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fPathBlocked = false;// true if there is an obstacle ahead
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flAccelerate = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_obstacle = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_top = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_bottom = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_height = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_waterTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_sideTime = 0;		// Timer to randomly check clearance on sides
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_zTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_stateTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_attackSoundTime = 0;
 
 #if DEBUG_BEAMS

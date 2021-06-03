@@ -347,13 +347,13 @@ public:
 	static inline WeaponInfo WeaponInfoArray[MAX_WEAPONS]{};
 	static inline AmmoInfo AmmoInfoArray[MAX_AMMO_TYPES]{};
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		EHandle<CBasePlayer> m_hPlayer;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		EHandle<CBaseWeapon> m_hNext;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		int m_iId = WEAPON_NONE; // WEAPON_???
 
 		/**
@@ -372,37 +372,37 @@ public:
 	int			Flags() { return WeaponInfoArray[m_iId].iFlags; }
 
 	//TODO: move to shotgun class
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flPumpTime = 0;
 
 #ifdef CLIENT_WEAPONS
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 #else
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 #endif
 	float m_flNextPrimaryAttack = 0;							//!< soonest time WeaponPostFrame will call PrimaryAttack
 
 #ifdef CLIENT_WEAPONS
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 #else
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 #endif
 	float m_flNextSecondaryAttack = 0;							//!< soonest time WeaponPostFrame will call SecondaryAttack
 
 #ifdef CLIENT_WEAPONS
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 #else
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 #endif
 	float m_flTimeWeaponIdle = 0;								//!< soonest time WeaponPostFrame will call WeaponIdle
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iPrimaryAmmoType = 0;									//!< "primary" ammo index into players m_rgAmmo[]
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iSecondaryAmmoType = 0;								//!< "secondary" ammo index into players m_rgAmmo[]
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iClip = 0;											//!< number of shots left in the primary weapon clip, -1 it not used
 
 		//reset to zero on load so hud gets updated correctly
@@ -411,17 +411,17 @@ public:
 	//reset to zero on load so hud gets updated correctly
 	WeaponState m_iClientWeaponState = WeaponState::NotActive;	//!< the last version of the weapon state sent to hud dll (is current weapon, is on target)
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fInReload = false;									//!< Are we in the middle of a reload;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iDefaultPrimaryAmmo = 0; //!< how much ammo you get when you pick up this weapon as placed by a level designer.
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iDefaultAmmo = 0; //!< Amount of ammo left in weapon
 
 		//Handled in CBasePlayer::AddPlayerWeapon
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	WeaponPickupRule m_PickupRule = WeaponPickupRule::Default;
 
 	// hle time creep vars
@@ -429,6 +429,6 @@ public:
 	float m_flLastFireTime = 0;
 
 private:
-	EHL_FIELD(Persisted, Type = ModelName)
+	EHL_FIELD("Persisted": true, "Type": "ModelName")
 	string_t m_iszWorldModelName = iStringNull;
 };

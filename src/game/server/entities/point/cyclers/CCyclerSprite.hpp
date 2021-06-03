@@ -18,7 +18,7 @@
 #include "CBaseEntity.hpp"
 #include "CCyclerSprite.generated.hpp"
 
-class EHL_CLASS(EntityName=cycler_sprite) CCyclerSprite : public CBaseEntity
+class EHL_CLASS("EntityName": "cycler_sprite") CCyclerSprite : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -32,12 +32,12 @@ public:
 
 	inline bool		ShouldAnimate() { return m_animate && m_maxFrame > 1.0; }
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_animate = false;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_lastTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_maxFrame = 0;
 };

@@ -21,7 +21,7 @@
 /**
 *	@brief shut up spawn functions for new spotlights
 */
-class EHL_CLASS(EntityName=light_spot) CSpotLight : public CLight
+class EHL_CLASS("EntityName": "light_spot") CSpotLight : public CLight
 {
 	EHL_GENERATED_BODY()
 };

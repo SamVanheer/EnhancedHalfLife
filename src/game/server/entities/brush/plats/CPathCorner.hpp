@@ -23,7 +23,7 @@ constexpr int SF_CORNER_WAITFORTRIG = 0x001;
 constexpr int SF_CORNER_TELEPORT = 0x002;
 constexpr int SF_CORNER_FIREONCE = 0x004;
 
-class EHL_CLASS(EntityName=path_corner) CPathCorner : public CPointEntity
+class EHL_CLASS("EntityName": "path_corner") CPathCorner : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -34,6 +34,6 @@ public:
 	//	void Touch( CBaseEntity *pOther ) override;
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flWait = 0;
 };

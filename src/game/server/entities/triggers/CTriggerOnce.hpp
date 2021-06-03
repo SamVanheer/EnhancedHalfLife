@@ -24,7 +24,7 @@
 *	if "killtarget" is set, any objects that have a matching "target" will be removed when the trigger is fired.
 *	if "angle" is set, the trigger will only fire when someone is facing the direction of the angle.  Use "360" for an angle of 0.
 */
-class EHL_CLASS(EntityName=trigger_once) CTriggerOnce : public CTriggerMultiple
+class EHL_CLASS("EntityName": "trigger_once") CTriggerOnce : public CTriggerMultiple
 {
 	EHL_GENERATED_BODY()
 

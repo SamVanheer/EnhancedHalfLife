@@ -316,7 +316,7 @@ public:
 	/**
 	*	@brief path corner we are heading towards
 	*/
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hGoalEnt;
 
 	/**
@@ -327,13 +327,13 @@ public:
 	/**
 	*	@brief Last entity that activated me
 	*/
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hActivator;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flDelay = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszKillTarget = iStringNull;
 
 	/**
@@ -343,7 +343,7 @@ public:
 	*	If all of the switches in the multisource have been triggered, then the entity will be allowed to operate.
 	*	Otherwise, it will be deactivated.
 	*/
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszMaster = iStringNull;
 
 	CBaseEntity() = default;
@@ -449,16 +449,16 @@ public:
 
 	// fundamental callbacks
 	// UNDONE: Build table of these!!!
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	BASEPTR m_pfnThink = nullptr;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ENTITYFUNCPTR m_pfnTouch = nullptr;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	USEPTR m_pfnUse = nullptr;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ENTITYFUNCPTR m_pfnBlocked = nullptr;
 
 	virtual void Think() { if (m_pfnThink) (this->*m_pfnThink)(); }

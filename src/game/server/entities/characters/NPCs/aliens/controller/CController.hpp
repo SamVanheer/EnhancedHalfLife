@@ -32,7 +32,7 @@ constexpr int CONTROLLER_AE_POWERUP_HALF = 5;
 
 constexpr int CONTROLLER_FLINCH_DELAY = 2;		// at most one flinch every n secs
 
-class EHL_CLASS(EntityName=monster_alien_controller) CController : public CSquadMonster
+class EHL_CLASS("EntityName": "monster_alien_controller") CController : public CSquadMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -84,19 +84,19 @@ public:
 	void Killed(const KilledInfo& info) override;
 	void GibMonster() override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CSprite> m_hBall[2];	// hand balls
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iBall[2]{};				// how bright it should be
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_iBallTime[2]{};			// when it should be that color
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iBallCurrent[2]{};		// current brightness
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecEstVelocity;
 
 	Vector m_velocity;

@@ -20,7 +20,7 @@
 
 class CRpg;
 
-class EHL_CLASS(EntityName=rpg_rocket) CRpgRocket : public CGrenade
+class EHL_CLASS("EntityName": "rpg_rocket") CRpgRocket : public CGrenade
 {
 	EHL_GENERATED_BODY()
 
@@ -34,9 +34,9 @@ public:
 
 	int m_iTrail = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flIgniteTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CRpg> m_hLauncher;// handle back to the launcher that fired me. 
 };

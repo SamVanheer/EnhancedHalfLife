@@ -31,7 +31,7 @@ enum crowbar_e
 	CROWBAR_ATTACK3HIT
 };
 
-class EHL_CLASS(EntityName=weapon_crowbar) CCrowbar : public CBaseWeapon
+class EHL_CLASS("EntityName": "weapon_crowbar") CCrowbar : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

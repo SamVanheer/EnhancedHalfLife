@@ -21,7 +21,7 @@
 /**
 *	@brief Wall mounted health kit
 */
-class EHL_CLASS(EntityName=func_healthcharger) CWallHealth : public CBaseCharger
+class EHL_CLASS("EntityName": "func_healthcharger") CWallHealth : public CBaseCharger
 {
 	EHL_GENERATED_BODY()
 

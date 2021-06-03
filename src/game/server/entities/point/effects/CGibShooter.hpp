@@ -23,7 +23,7 @@ class CGib;
 
 constexpr int SF_GIBSHOOTER_REPEATABLE = 1; //!< allows a gibshooter to be refired
 
-class EHL_CLASS(EntityName=gibshooter) CGibShooter : public CBaseEntity
+class EHL_CLASS("EntityName": "gibshooter") CGibShooter : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -36,24 +36,24 @@ public:
 
 	virtual CGib* CreateGib();
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int	m_iGibs = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iGibCapacity = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Materials m_iGibMaterial = Materials::Glass;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iGibModelIndex = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flGibVelocity = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flVariance = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flGibLife = 0;
 };

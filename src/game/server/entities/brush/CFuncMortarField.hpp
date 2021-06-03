@@ -29,7 +29,7 @@ enum class MortarControlType
 *	@brief the "LaBuznik" mortar device
 *	Drop bombs from above
 */
-class EHL_CLASS(EntityName=func_mortar_field) CFuncMortarField : public CBaseEntity
+class EHL_CLASS("EntityName": "func_mortar_field") CFuncMortarField : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -46,18 +46,18 @@ public:
 	*/
 	void EXPORT FieldUse(const UseInfo& info);
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszXController = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszYController = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flSpread = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iCount = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	MortarControlType m_fControl = MortarControlType::Random;
 };

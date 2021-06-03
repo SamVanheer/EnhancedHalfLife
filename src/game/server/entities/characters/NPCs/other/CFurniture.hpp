@@ -21,7 +21,7 @@
 /**
 *	@brief this is the cool comment I cut-and-pasted
 */
-class EHL_CLASS(EntityName=monster_furniture) CFurniture : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_furniture") CFurniture : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

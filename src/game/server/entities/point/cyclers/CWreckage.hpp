@@ -21,7 +21,7 @@
 /**
 *	@brief Flaming Wreakage
 */
-class EHL_CLASS(EntityName=cycler_wreckage) CWreckage : public CBaseMonster
+class EHL_CLASS("EntityName": "cycler_wreckage") CWreckage : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -29,6 +29,6 @@ class EHL_CLASS(EntityName=cycler_wreckage) CWreckage : public CBaseMonster
 	void Precache() override;
 	void Think() override;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flStartTime = 0;
 };

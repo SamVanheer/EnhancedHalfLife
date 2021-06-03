@@ -26,7 +26,7 @@ constexpr int SF_TEAMSET_CLEARTEAM = 0x0002;
 *	@details Flag: Fire once
 *	Flag: Clear team -- Sets the team to "NONE" instead of activator
 */
-class EHL_CLASS(EntityName=game_team_set) CGameTeamSet : public CRulePointEntity
+class EHL_CLASS("EntityName": "game_team_set") CGameTeamSet : public CRulePointEntity
 {
 	EHL_GENERATED_BODY()
 

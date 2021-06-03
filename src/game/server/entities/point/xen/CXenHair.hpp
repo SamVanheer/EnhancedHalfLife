@@ -20,7 +20,7 @@
 
 constexpr int SF_HAIR_SYNC = 0x0001;
 
-class EHL_CLASS(EntityName=xen_hair) CXenHair : public CActAnimating
+class EHL_CLASS("EntityName": "xen_hair") CXenHair : public CActAnimating
 {
 	EHL_GENERATED_BODY()
 

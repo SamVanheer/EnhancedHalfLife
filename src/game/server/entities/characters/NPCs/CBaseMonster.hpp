@@ -109,7 +109,7 @@ class EHL_CLASS() CBaseMonster : public CBaseToggle
 	EHL_GENERATED_BODY()
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_afConditions = 0;
 
 public:
@@ -127,47 +127,47 @@ public:
 	// perhaps it's best to just pick a new one when we start up again.
 
 	// these fields have been added in the process of reworking the state machine. (sjb)
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hEnemy;		 //!< the entity that the monster is fighting.
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hTargetEnt;	 //!< the entity that the monster is trying to reach
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hOldEnemy[MAX_OLD_ENEMIES]{};
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_vecOldEnemy[MAX_OLD_ENEMIES]{};
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flFieldOfView = 0; //!< width of monster's field of view ( dot product )
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flWaitFinished = 0; //!< if we're told to wait, this is the time that the wait will be over.
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flMoveWaitFinished = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Activity m_Activity = ACT_RESET; //!< what the monster is doing (animation)
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Activity m_IdealActivity = ACT_RESET; //!< monster should switch to this activity
 
 	int m_LastHitGroup = 0; //!< the last body region that took damage
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	NPCState m_MonsterState = NPCState::None; //!< monster's current state
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	NPCState m_IdealMonsterState = NPCState::None; //!< monster should change to this state
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	TaskStatus m_iTaskStatus = TaskStatus::New;
 
 	Schedule_t* m_pSchedule = nullptr;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iScheduleIndex = 0;
 
 	WayPoint_t m_Route[ROUTE_SIZE]{};	//!< Positions of movement
@@ -175,77 +175,77 @@ public:
 	int m_iRouteIndex = 0;					//!< index into m_Route[]
 	float m_moveWaitTime = 0;				//!< How long I should wait for something to move
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_vecMoveGoal;			//!< kept around for node graph moves, so we know our ultimate goal
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Activity m_movementActivity = ACT_RESET;	//!< When moving, set this activity
 
 	int m_iAudibleList = 0; //!< first index of a linked list of sounds that the monster can hear.
 	int m_afSoundTypes = 0;
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_vecLastPosition;//!< monster sometimes wants to return to where it started after an operation.
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iHintNode = 0; //!< this is the hint node that the monster is moving towards or performing active idle on.
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_afMemory = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iMaxHealth = 0; //!< keeps track of monster's maximum health value (for re-healing, etc)
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_vecEnemyLKP; //!< last known position of enemy. (enemy's origin)
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_cAmmoLoaded = 0; //!< how much ammo is in the weapon (used to trigger reload anim sequences)
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_afCapability = 0;//!< tells us what a monster can/can't do.
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextAttack = 0; //!< cannot attack again until this time
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_bitsDamageType = 0; //!< what types of damage has monster (player) taken
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_rgbTimeBasedDamage[CDMG_TIMEBASED]{};
 
 	int m_lastDamageAmount = 0;//!< how much damage did monster (player) last take
 							//!< time based damage counters, decr. 1 per 2 seconds
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_bloodColor = 0; //!< color of blood particless
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_failSchedule = 0; //!< Schedule type to choose if current schedule fails
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flHungryTime = 0; //!< set this is a future time to stop the monster from eating for a while. 
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flDistTooFar = 0; //!< if enemy farther away than this, bits_COND_ENEMY_TOOFAR set in CheckEnemy
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flDistLook = 0;	//!< distance monster sees (Default 2048)
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	AITrigger m_iTriggerCondition = AITrigger::None; //!< for scripted AI, this is the condition that will cause the activation of the monster's TriggerTarget
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszTriggerTarget = iStringNull; //!< name of target that should be fired. 
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_HackedGunPos; //!< HACK until we can query end of gun
 
 // Scripted sequence Info
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ScriptState m_scriptState = ScriptState::Playing; //!< internal cinematic state
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CCineMonster> m_hCine;
 
 	float m_flLastYawTime = 0;

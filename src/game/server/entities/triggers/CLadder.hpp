@@ -21,7 +21,7 @@
 /**
 *	@brief makes an area vertically negotiable
 */
-class EHL_CLASS(EntityName=func_ladder) CLadder : public CBaseTrigger
+class EHL_CLASS("EntityName": "func_ladder") CLadder : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 

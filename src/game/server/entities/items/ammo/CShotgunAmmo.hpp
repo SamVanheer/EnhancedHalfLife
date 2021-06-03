@@ -19,7 +19,7 @@
 #include "CBaseWeapon.hpp"
 #include "CShotgunAmmo.generated.hpp"
 
-class EHL_CLASS(EntityName=ammo_buckshot) CShotgunAmmo : public CBaseAmmo
+class EHL_CLASS("EntityName": "ammo_buckshot") CShotgunAmmo : public CBaseAmmo
 {
 	EHL_GENERATED_BODY()
 

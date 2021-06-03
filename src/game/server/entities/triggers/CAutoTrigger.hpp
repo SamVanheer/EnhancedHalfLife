@@ -24,7 +24,7 @@ constexpr int SF_AUTO_FIREONCE = 0x0001;
 *	@brief This trigger will fire when the level spawns (or respawns if not fire once)
 *	It will check a global state before firing. It supports delay and killtargets
 */
-class EHL_CLASS(EntityName=trigger_auto) CAutoTrigger : public CBaseEntity
+class EHL_CLASS("EntityName": "trigger_auto") CAutoTrigger : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -36,9 +36,9 @@ public:
 
 	int ObjectCaps() override { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_globalstate = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	UseType	triggerType = UseType::Off;
 };

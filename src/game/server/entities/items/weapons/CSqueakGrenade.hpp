@@ -26,7 +26,7 @@ enum w_squeak_e
 	WSQUEAK_RUN,
 };
 
-class EHL_CLASS(EntityName=monster_snark) CSqueakGrenade : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_snark") CSqueakGrenade : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -42,22 +42,22 @@ class EHL_CLASS(EntityName=monster_snark) CSqueakGrenade : public CBaseMonster
 	static inline float m_flNextBounceSoundTime = 0;
 
 	// CBaseEntity *m_pTarget;
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flDie = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_vecTarget;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextHunt = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextHit = 0;
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector m_posPrev;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hOwner;
 
 	//Not saved, recalculated on demand

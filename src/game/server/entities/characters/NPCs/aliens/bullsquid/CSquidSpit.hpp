@@ -21,7 +21,7 @@
 //=========================================================
 // Bullsquid's spit projectile
 //=========================================================
-class EHL_CLASS(EntityName=squidspit) CSquidSpit : public CBaseEntity
+class EHL_CLASS("EntityName": "squidspit") CSquidSpit : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -32,6 +32,6 @@ public:
 	void Touch(CBaseEntity* pOther) override;
 	void EXPORT Animate();
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_maxFrame = 0;
 };

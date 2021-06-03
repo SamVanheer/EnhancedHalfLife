@@ -31,7 +31,7 @@ constexpr int SF_SENTENCE_FOLLOWERS = 0x0002;	//!< only say if following player
 constexpr int SF_SENTENCE_INTERRUPT = 0x0004;	//!< force talking except when dead
 constexpr int SF_SENTENCE_CONCURRENT = 0x0008;	//!< allow other people to keep talking
 
-class EHL_CLASS(EntityName=scripted_sentence) CScriptedSentence : public CPointEntity
+class EHL_CLASS("EntityName": "scripted_sentence") CScriptedSentence : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -48,30 +48,30 @@ public:
 
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszSentence = iStringNull;	// string index for idle animation
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszEntity = iStringNull;		// entity that is wanted for this sentence
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flRadius = 0;					// range to search
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flDuration = 0;					// How long the sentence lasts
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flRepeat = 0;					// repeat rate
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flAttenuation = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flVolume = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_active = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszListener = iStringNull;	// name of entity to look at while talking
 };

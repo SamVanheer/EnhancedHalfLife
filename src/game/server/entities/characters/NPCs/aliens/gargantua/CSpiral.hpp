@@ -19,7 +19,7 @@
 #include "CSpiral.generated.hpp"
 
 // Spiral Effect
-class EHL_CLASS(EntityName=streak_spiral) CSpiral : public CBaseEntity
+class EHL_CLASS("EntityName": "streak_spiral") CSpiral : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

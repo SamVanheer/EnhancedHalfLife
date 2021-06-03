@@ -28,7 +28,7 @@ enum hgun_e
 	HGUN_SHOOT
 };
 
-class EHL_CLASS(EntityName=weapon_hornetgun) CHgun : public CBaseWeapon
+class EHL_CLASS("EntityName": "weapon_hornetgun") CHgun : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

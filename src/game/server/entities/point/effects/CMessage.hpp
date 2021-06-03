@@ -21,7 +21,7 @@
 constexpr int SF_MESSAGE_ONCE = 0x0001;	//!< Fade in, not out
 constexpr int SF_MESSAGE_ALL = 0x0002;	//!< Send to all clients
 
-class EHL_CLASS(EntityName=env_message) CMessage : public CPointEntity
+class EHL_CLASS("EntityName": "env_message") CMessage : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -31,6 +31,6 @@ public:
 	void	Use(const UseInfo& info) override;
 	void	KeyValue(KeyValueData* pkvd) override;
 private:
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszMessageSound = iStringNull;
 };

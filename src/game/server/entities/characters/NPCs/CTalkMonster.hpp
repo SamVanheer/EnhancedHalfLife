@@ -203,32 +203,32 @@ public:
 	static const char* m_szFriends[TLK_CFRIENDS];
 	static inline float g_talkWaitTime = 0; //!< time delay until it's ok to speak: used so that two NPCs don't talk at once
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_bitsSaid = 0; //!< set bits for sentences we don't want repeated
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_nSpeak = 0; //!< number of times initiated talking
 
 	// NOTE: m_voicePitch & m_szGrp should be fixed up by precache each save/restore
 	int m_voicePitch = 0; //!< pitch of voice for this head
 	const char* m_szGrp[TLK_CGROUPS]{}; //!< sentence group names
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_useTime = 0; //!< Don't allow +USE until this time
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszUse = iStringNull; //!< Custom +USE sentence group (follow)
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszUnUse = iStringNull; //!< Custom +USE sentence group (stop following)
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flLastSaidSmelled = 0; //!< last time we talked about something that stinks
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flStopTalkTime = 0; //!< when in the future that I'll be done saying this sentence.
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hTalkTarget; //!< who to look at while talking
 
 	CUSTOM_SCHEDULES;

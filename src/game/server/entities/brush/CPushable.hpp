@@ -21,7 +21,7 @@
 // func_pushable (it's also func_breakable, so don't collide with those flags)
 constexpr int SF_PUSH_BREAKABLE = 128;
 
-class EHL_CLASS(EntityName=func_pushable) CPushable : public CBreakable
+class EHL_CLASS("EntityName": "func_pushable") CPushable : public CBreakable
 {
 	EHL_GENERATED_BODY()
 
@@ -50,9 +50,9 @@ public:
 
 	int m_lastSound = 0;	// no need to save/restore, just keeps the same sound from playing twice in a row
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_maxSpeed = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_soundTime = 0;
 };

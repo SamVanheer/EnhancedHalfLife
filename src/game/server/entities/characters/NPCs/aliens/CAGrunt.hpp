@@ -62,7 +62,7 @@ constexpr int AGRUNT_MELEE_DIST = 100;
 /**
 *	@brief Dominant, warlike alien grunt monster
 */
-class EHL_CLASS(EntityName=monster_alien_grunt) CAGrunt : public CSquadMonster
+class EHL_CLASS("EntityName": "monster_alien_grunt") CAGrunt : public CSquadMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -130,22 +130,22 @@ public:
 	static const char* pIdleSounds[];
 	static const char* pAlertSounds[];
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fCanHornetAttack = false;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextHornetAttackCheck = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextPainTime = 0;
 
 	// three hacky fields for speech stuff. These don't really need to be saved.
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextSpeakTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flNextWordTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_iLastWord = 0;
 };

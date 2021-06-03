@@ -26,7 +26,7 @@ constexpr int SF_PATH_DISABLE_TRAIN = 0x00000008;
 constexpr int SF_PATH_ALTERNATE = 0x00008000;
 
 //#define PATH_SPARKLE_DEBUG		1	// This makes a particle effect around path_track entities for debugging
-class EHL_CLASS(EntityName=path_track) CPathTrack : public CPointEntity
+class EHL_CLASS("EntityName": "path_track") CPathTrack : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -54,18 +54,18 @@ public:
 	void EXPORT Sparkle();
 #endif
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		float m_length = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		string_t m_altName = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		EHandle<CPathTrack> m_hNext;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		EHandle<CPathTrack> m_hPrevious;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		EHandle<CPathTrack> m_hAltPath;
 };

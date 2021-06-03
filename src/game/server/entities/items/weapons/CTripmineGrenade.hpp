@@ -22,7 +22,7 @@ class CBeam;
 
 constexpr int SF_TRIPMINE_INSTANT_ON = 1 << 0;
 
-class EHL_CLASS(EntityName=monster_tripmine) CTripmineGrenade : public CGrenade
+class EHL_CLASS("EntityName": "monster_tripmine") CTripmineGrenade : public CGrenade
 {
 	EHL_GENERATED_BODY()
 
@@ -41,30 +41,30 @@ class EHL_CLASS(EntityName=monster_tripmine) CTripmineGrenade : public CGrenade
 	void MakeBeam();
 	void KillBeam();
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float		m_flPowerUp = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector		m_vecDir;
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector		m_vecEnd;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float		m_flBeamLength = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE		m_hOwner;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CBeam> m_hBeam;
 
-	EHL_FIELD(Persisted, Type=Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector		m_posOwner;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector		m_angleOwner;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHANDLE m_hRealOwner;// tracelines don't hit PEV->OWNER, which means a player couldn't detonate his own trip mine, so we store the owner here.
 };

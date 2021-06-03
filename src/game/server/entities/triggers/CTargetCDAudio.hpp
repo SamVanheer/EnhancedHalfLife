@@ -21,7 +21,7 @@
 /**
 *	@brief This plays a CD track when fired or when the player enters it's radius
 */
-class EHL_CLASS(EntityName=target_cdaudio) CTargetCDAudio : public CPointEntity
+class EHL_CLASS("EntityName": "target_cdaudio") CTargetCDAudio : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

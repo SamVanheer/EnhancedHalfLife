@@ -18,7 +18,7 @@
 #include "CPointEntity.hpp"
 #include "CGlow.generated.hpp"
 
-class EHL_CLASS(EntityName=env_glow) CGlow : public CPointEntity
+class EHL_CLASS("EntityName": "env_glow") CGlow : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -27,9 +27,9 @@ public:
 	void Think() override;
 	void Animate(float frames);
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_lastTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_maxFrame = 0;
 };

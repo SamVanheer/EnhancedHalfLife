@@ -81,7 +81,7 @@ constexpr int LFO_RANDOM = 3;
 *	@brief Generic ambient sound
 *	general-purpose user-defined static sound
 */
-class EHL_CLASS(EntityName=ambient_generic) CAmbientGeneric : public CBaseEntity
+class EHL_CLASS("EntityName": "ambient_generic") CAmbientGeneric : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -110,7 +110,7 @@ public:
 
 	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flAttenuation = 0;		// attenuation value
 
 	// HACKHACK - This is not really in the spirit of the save/restore design, but save this
@@ -118,12 +118,12 @@ public:
 	// load these correctly, so bump the save/restore version if you change the size of the struct
 	// The right way to do this is to split the input parms (read in keyvalue) into members and re-init this
 	// struct in Precache(), but it's unlikely that the struct will change, so it's not worth the time right now.
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	dynpitchvol_t m_dpv;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fActive = false;		// only true when the entity is playing a looping sound
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fLooping = false;	// true when the sound played will loop
 };

@@ -18,7 +18,7 @@
 #include "CPointEntity.hpp"
 #include "CInfoPlayerStart.generated.hpp"
 
-class EHL_CLASS(EntityName = info_player_start) CInfoPlayerStart : public CPointEntity
+class EHL_CLASS("EntityName": "info_player_start") CInfoPlayerStart : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 };

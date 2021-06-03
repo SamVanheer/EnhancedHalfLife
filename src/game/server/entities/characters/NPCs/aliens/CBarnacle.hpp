@@ -30,7 +30,7 @@ constexpr int BARNACLE_AE_PUKEGIB = 2;
 /**
 *	@brief stationary ceiling mounted 'fishing' monster
 */
-class EHL_CLASS(EntityName=monster_barnacle) CBarnacle : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_barnacle") CBarnacle : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -50,21 +50,21 @@ public:
 	void Killed(const KilledInfo& info) override;
 	bool TakeDamage(const TakeDamageInfo& info) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flAltitude = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flKillVictimTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_cGibs = 0;// barnacle loads up on gibs each time it kills something.
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fTongueExtended = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fLiftingPrey = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flTongueAdj = 0;
 };

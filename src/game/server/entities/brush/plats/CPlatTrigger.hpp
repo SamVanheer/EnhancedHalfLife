@@ -21,7 +21,7 @@
 class CFuncPlat;
 
 // UNDONE: Need to save this!!! It needs class & linkage
-class EHL_CLASS(EntityName=func_plat_trigger) CPlatTrigger : public CBaseEntity
+class EHL_CLASS("EntityName": "func_plat_trigger") CPlatTrigger : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

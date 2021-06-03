@@ -49,7 +49,7 @@ constexpr int SF_BREAK_CROWBAR = 256;		//!< instant break if hit with crowbar
 /**
 *	@brief bmodel that breaks into pieces after taking damage
 */
-class EHL_CLASS(EntityName=func_breakable) CBreakable : public CBaseEntity
+class EHL_CLASS("EntityName": "func_breakable") CBreakable : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -103,22 +103,22 @@ public:
 	static const char* pSoundsConcrete[];
 	static const char* pSpawnObjects[];
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Materials m_Material = Materials::Glass;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Explosions m_Explosion = Explosions::Random;
 
 	// Don't need to save/restore these because we precache after restore
 	int m_idShard = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_angle = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszGibModel = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszSpawnObject = iStringNull;
 
 	// Explosion magnitude is stored in pev->impulse

@@ -28,7 +28,7 @@ constexpr int SF_MULTIMAN_THREAD = 0x00000001;
 *	FLAG: CLONE (this is a clone for a threaded execution)
 *	@see MAX_MULTI_TARGETS
 */
-class EHL_CLASS(EntityName=multi_manager) CMultiManager : public CPointEntity
+class EHL_CLASS("EntityName": "multi_manager") CMultiManager : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -44,22 +44,22 @@ public:
 
 	bool		HasTarget(string_t targetname) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flWait = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_cTargets = 0;								//!< the total number of targets in this manager's fire list.
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_index = 0;								//!< Current target
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_startTime = 0;							//!< Time we started firing
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iTargetName[MAX_MULTI_TARGETS]{};	//!< list if indexes into global string array
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flTargetDelay[MAX_MULTI_TARGETS]{};		//!< delay (in seconds) from time of manager fire to target fire
 private:
 	inline bool IsClone() { return (pev->spawnflags & SF_MULTIMAN_CLONE) != 0; }

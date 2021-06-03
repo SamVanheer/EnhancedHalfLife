@@ -21,7 +21,7 @@
 constexpr int SF_SPARK_TOGGLE = 1 << 5;
 constexpr int SF_SPARK_START_ON = 1 << 6;
 
-class EHL_CLASS(EntityName=env_spark, EntityNameAliases=[env_debris]) CEnvSpark : public CBaseEntity
+class EHL_CLASS("EntityName": "env_spark", "EntityNameAliases": ["env_debris"]) CEnvSpark : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -33,7 +33,7 @@ public:
 	void	EXPORT SparkStop(const UseInfo& info);
 	void	KeyValue(KeyValueData* pkvd) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flMaxDelay = 0;
 };
 

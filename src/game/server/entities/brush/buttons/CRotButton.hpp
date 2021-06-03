@@ -23,7 +23,7 @@ constexpr int SF_ROTBUTTON_NOTSOLID = 1;
 /**
 *	@brief Rotating button (aka "lever")
 */
-class EHL_CLASS(EntityName=func_rot_button) CRotButton : public CBaseButton
+class EHL_CLASS("EntityName": "func_rot_button") CRotButton : public CBaseButton
 {
 	EHL_GENERATED_BODY()
 

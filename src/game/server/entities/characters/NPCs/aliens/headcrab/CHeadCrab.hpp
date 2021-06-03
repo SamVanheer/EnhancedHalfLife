@@ -22,7 +22,7 @@
 /**
 *	@brief tiny, jumpy alien parasite
 */
-class EHL_CLASS(EntityName=monster_headcrab) CHeadCrab : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_headcrab") CHeadCrab : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

@@ -23,7 +23,7 @@ class CSprite;
 constexpr std::string_view XEN_PLANT_GLOW_SPRITE{"sprites/flare3.spr"};
 constexpr int XEN_PLANT_HIDE_TIME = 5;
 
-class EHL_CLASS(EntityName=xen_plantlight) CXenPLight : public CActAnimating
+class EHL_CLASS("EntityName": "xen_plantlight") CXenPLight : public CActAnimating
 {
 	EHL_GENERATED_BODY()
 
@@ -38,6 +38,6 @@ public:
 	void		LightOff();
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CSprite> m_hGlow;
 };

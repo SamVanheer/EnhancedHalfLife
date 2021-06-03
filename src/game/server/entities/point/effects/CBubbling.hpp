@@ -18,7 +18,7 @@
 #include "CBaseEntity.hpp"
 #include "CBubbling.generated.hpp"
 
-class EHL_CLASS(EntityName=env_bubbles) CBubbling : public CBaseEntity
+class EHL_CLASS("EntityName": "env_bubbles") CBubbling : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -32,15 +32,15 @@ public:
 
 	int		ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_density = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_frequency = 0;
 
 	//let spawn restore this!
 	int m_bubbleModel = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_state = false;
 };

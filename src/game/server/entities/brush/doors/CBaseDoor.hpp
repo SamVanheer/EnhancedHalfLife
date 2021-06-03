@@ -45,7 +45,7 @@ constexpr int SF_ITEM_USE_ONLY = 256; //  ITEM_USE_ONLY = BUTTON_USE_ONLY = DOOR
 *	"lip"           lip remaining at end of move (0 default)
 *	"dmg"           damage to inflict when blocked (0 default)
 */
-class EHL_CLASS(EntityName=func_door) CBaseDoor : public CBaseToggle
+class EHL_CLASS("EntityName": "func_door") CBaseDoor : public CBaseToggle
 {
 	EHL_GENERATED_BODY()
 
@@ -97,32 +97,32 @@ public:
 	*/
 	void EXPORT DoorHitBottom();
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bHealthValue = 0;//!< some doors are medi-kit doors, they give players health
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bMoveSnd = 0;		//!< sound a door makes while moving
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bStopSnd = 0;		//!< sound a door makes when it stops
 
 	locksound_t m_ls;			//!< door lock sounds
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bLockedSound = 0;	//!< ordinals from entity selection
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bLockedSentence = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bUnlockedSound = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bUnlockedSentence = 0;
 
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszMovingSound = iStringNull;
 
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszArrivedSound = iStringNull;
 };

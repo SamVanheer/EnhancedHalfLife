@@ -18,7 +18,7 @@
 #include "CPointEntity.hpp"
 #include "CInfoLandmark.generated.hpp"
 
-class EHL_CLASS(EntityName=info_landmark) CInfoLandmark : public CPointEntity
+class EHL_CLASS("EntityName": "info_landmark") CInfoLandmark : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 };

@@ -25,7 +25,7 @@ constexpr int PLAYERSETHEALTH_SETARMOR = 1 << 2;
 /**
 *	@brief Sets the player's health and/or armor to a mapper-specified value
 */
-class EHL_CLASS(EntityName=player_sethealth) CPlayerSetHealth : public CPointEntity
+class EHL_CLASS("EntityName": "player_sethealth") CPlayerSetHealth : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -38,12 +38,12 @@ private:
 	void ApplyToTarget(CBasePlayer* player);
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_Flags = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_Health = 100;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_Armor = 0;
 };

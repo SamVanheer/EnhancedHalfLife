@@ -40,7 +40,7 @@ enum class TrainCode
 *	It must be larger in X-Y planar area than the train,
 *	since it must contain the train within these dimensions in order to operate when the train is near it.
 */
-class EHL_CLASS(EntityName=func_trackchange) CFuncTrackChange : public CFuncPlatRot
+class EHL_CLASS("EntityName": "func_trackchange") CFuncTrackChange : public CFuncPlatRot
 {
 	EHL_GENERATED_BODY()
 
@@ -73,30 +73,30 @@ public:
 
 	void	OverrideReset() override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CPathTrack> m_hTrackTop;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CPathTrack> m_hTrackBottom;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CFuncTrackTrain> m_hTrain;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_trackTopName = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_trackBottomName = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_trainName = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	TrainCode m_code = TrainCode::Safe;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	ToggleState m_targetState = ToggleState::AtTop;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_use = false;
 };

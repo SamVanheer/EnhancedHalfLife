@@ -26,7 +26,7 @@ constexpr int BOLT_WATER_VELOCITY = 1000;
 // OVERLOADS SOME ENTVARS:
 //
 // speed - the ideal magnitude of my velocity
-class EHL_CLASS(EntityName=crossbow_bolt) CCrossbowBolt : public CBaseEntity
+class EHL_CLASS("EntityName": "crossbow_bolt") CCrossbowBolt : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

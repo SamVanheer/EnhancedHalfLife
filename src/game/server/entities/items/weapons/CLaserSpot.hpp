@@ -18,7 +18,7 @@
 #include "weapons.hpp"
 #include "CLaserSpot.generated.hpp"
 
-class EHL_CLASS(EntityName=laser_spot) CLaserSpot : public CBaseEntity
+class EHL_CLASS("EntityName": "laser_spot") CLaserSpot : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

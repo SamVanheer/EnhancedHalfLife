@@ -22,7 +22,7 @@
 /**
 *	@brief this is a really bad idea.
 */
-class EHL_CLASS(EntityName=trigger_changetarget) CTriggerChangeTarget : public CBaseEntity
+class EHL_CLASS("EntityName": "trigger_changetarget") CTriggerChangeTarget : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -34,6 +34,6 @@ public:
 	int ObjectCaps() override { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 		string_t m_iszNewTarget = iStringNull;
 };

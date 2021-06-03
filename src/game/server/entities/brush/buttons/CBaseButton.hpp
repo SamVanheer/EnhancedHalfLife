@@ -35,7 +35,7 @@ constexpr int SF_BUTTON_TOUCH_ONLY = 256;	// button only fires as a result of US
 *	"lip"		override the default 4 unit lip remaining at end of move
 *	"health"	if set, the button must be killed instead of touched
 */
-class EHL_CLASS(EntityName=func_button) CBaseButton : public CBaseToggle
+class EHL_CLASS("EntityName": "func_button") CBaseButton : public CBaseToggle
 {
 	EHL_GENERATED_BODY()
 
@@ -93,21 +93,21 @@ public:
 	locksound_t m_ls;			//!< door lock sounds
 
 	// ordinals from entity selection
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bLockedSound = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bLockedSentence = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bUnlockedSound = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bUnlockedSentence = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_sounds = 0;
 
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszActivateSound = iStringNull;
 };

@@ -18,7 +18,7 @@
 #include "CGrenade.hpp"
 #include "CAirtank.generated.hpp"
 
-class EHL_CLASS(EntityName=item_airtank) CAirtank : public CGrenade
+class EHL_CLASS("EntityName": "item_airtank") CAirtank : public CGrenade
 {
 	EHL_GENERATED_BODY()
 
@@ -29,6 +29,6 @@ class EHL_CLASS(EntityName=item_airtank) CAirtank : public CGrenade
 	int	 BloodColor() override { return DONT_BLEED; }
 	void Killed(const KilledInfo& info) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_state = false;
 };

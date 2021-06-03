@@ -21,7 +21,7 @@
 /**
 *	@brief we should get rid of all the other cyclers and replace them with this.
 */
-class EHL_CLASS(EntityName=cycler) CCycler : public CBaseMonster
+class EHL_CLASS("EntityName": "cycler") CCycler : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -44,6 +44,6 @@ public:
 	// Don't treat as a live target
 	bool IsAlive() override { return false; }
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_animate = false;
 };

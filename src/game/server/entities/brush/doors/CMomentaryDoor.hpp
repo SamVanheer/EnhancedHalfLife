@@ -18,7 +18,7 @@
 #include "CBaseToggle.hpp"
 #include "CMomentaryDoor.generated.hpp"
 
-class EHL_CLASS(EntityName=momentary_door) CMomentaryDoor : public CBaseToggle
+class EHL_CLASS("EntityName": "momentary_door") CMomentaryDoor : public CBaseToggle
 {
 	EHL_GENERATED_BODY()
 
@@ -35,12 +35,12 @@ public:
 	*/
 	void EXPORT DoorMoveDone();
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	byte m_bMoveSnd = 0;			// sound a door makes while moving	
 
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszMovingSound = iStringNull;
 
-	EHL_FIELD(Persisted, Type=SoundName)
+	EHL_FIELD("Persisted": true, "Type": "SoundName")
 	string_t m_iszArrivedSound = iStringNull;
 };

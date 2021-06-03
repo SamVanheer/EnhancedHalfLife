@@ -18,7 +18,7 @@
 #include "CPointEntity.hpp"
 #include "CInfoTeleportDestination.generated.hpp"
 
-class EHL_CLASS(EntityName=info_teleport_destination) CInfoTeleportDestination : public CPointEntity
+class EHL_CLASS("EntityName": "info_teleport_destination") CInfoTeleportDestination : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 };

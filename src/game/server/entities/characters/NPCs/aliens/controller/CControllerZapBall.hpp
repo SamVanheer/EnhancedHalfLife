@@ -18,7 +18,7 @@
 #include "CBaseMonster.hpp"
 #include "CControllerZapBall.generated.hpp"
 
-class EHL_CLASS(EntityName=controller_energy_ball) CControllerZapBall : public CBaseMonster
+class EHL_CLASS("EntityName": "controller_energy_ball") CControllerZapBall : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 

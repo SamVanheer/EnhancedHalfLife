@@ -23,7 +23,7 @@ constexpr int SF_PENDULUM_SWING = 2;	// spawnflag that makes a pendulum a rope s
 constexpr int SF_PENDULUM_AUTO_RETURN = 16;
 constexpr int SF_PENDULUM_PASSABLE = 32;
 
-class EHL_CLASS(EntityName=func_pendulum) CPendulum : public CBaseEntity
+class EHL_CLASS("EntityName": "func_pendulum") CPendulum : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -38,30 +38,30 @@ public:
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	void	Blocked(CBaseEntity* pOther) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_accel = 0;			// Acceleration
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_distance = 0;			// 
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_time = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_damp = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_maxSpeed = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_dampSpeed = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_center;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_start;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CBaseEntity> m_hRopeUser;
 };

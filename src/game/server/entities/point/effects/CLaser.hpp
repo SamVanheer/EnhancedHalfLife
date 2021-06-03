@@ -20,7 +20,7 @@
 
 class CSprite;
 
-class EHL_CLASS(EntityName=env_laser) CLaser : public CBeam
+class EHL_CLASS("EntityName": "env_laser") CLaser : public CBeam
 {
 	EHL_GENERATED_BODY()
 
@@ -39,12 +39,12 @@ public:
 	void	EXPORT StrikeThink();
 	void	Use(const UseInfo & info) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	EHandle<CSprite> m_hSprite;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszSpriteName = iStringNull;
 
-	EHL_FIELD(Persisted, Type = Position)
+	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector  m_firePosition;
 };

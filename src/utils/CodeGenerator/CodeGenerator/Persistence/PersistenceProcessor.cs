@@ -7,7 +7,6 @@ using CodeGenerator.Processing;
 using CodeGenerator.Utility;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
@@ -113,7 +112,7 @@ namespace CodeGenerator.Persistence
                 LogError(record, "Multiple classes declared in header. Move each class to its own file to avoid codegen errors");
             }
 
-            var (classAttributes, hasEHLClassMacro) = GetRelevantAttributes(record, ClassPrefix);
+            var (classAttributes, hasEHLClassMacro) = GetAttributes<ClassAttributes>(record, ClassPrefix);
 
             if (classAttributes is null)
             {
@@ -147,7 +146,7 @@ namespace CodeGenerator.Persistence
             }
 
             var fields = record.Fields
-                .Select(f => new { Field = f, GetRelevantAttributes(f, FieldPrefix).Attributes })
+                .Select(f => new { Field = f, GetAttributes<FieldAttributes>(f, FieldPrefix).Attributes })
                 .ToList();
 
             if (fields.Any(f => f.Attributes is null))
@@ -156,7 +155,7 @@ namespace CodeGenerator.Persistence
             }
 
             var persistedFields = fields
-                .Where(f => f.Attributes!.ContainsKey("Persisted"))
+                .Where(f => f.Attributes?.Persisted == true)
                 .Select(f => FormatField(fqName, f.Field, f.Attributes!))
                 .ToList();
 
@@ -181,33 +180,17 @@ namespace CodeGenerator.Persistence
 
             data.AddHeaderInclude(headerFileName);
 
-            if (classAttributes.TryGetValue(EntityNameKey, out var entityNames))
+            if (classAttributes.EntityName is not null)
             {
-                if (entityNames.Count > 1)
-                {
-                    LogError(record, $"Too many values provided for {EntityNameKey}");
-                    return;
-                }
-                else if (entityNames.Count == 0)
-                {
-                    LogError(record, $"{EntityNameKey} attribute with no value");
-                    return;
-                }
+                data.AddDefinitionMacro($"LINK_ENTITY_TO_CLASS({classAttributes.EntityName}, {fqName});");
 
-                var entityName = entityNames[0].Name;
-
-                data.AddDefinitionMacro($"LINK_ENTITY_TO_CLASS({entityName}, {fqName});");
-
-                if (classAttributes.TryGetValue(EntityNameAliasesKey, out var aliases))
+                //TODO: need to validate the name so it doesn't contain invalid characters or that it's empty
+                foreach (var alias in classAttributes.EntityNameAliases)
                 {
-                    //TODO: need to validate the name so it doesn't contain invalid characters
-                    foreach (var alias in aliases)
-                    {
-                        data.AddDefinitionMacro($"LINK_ALIAS_ENTITY_TO_CLASS({alias.Name}, {entityName}, {fqName});");
-                    }
+                    data.AddDefinitionMacro($"LINK_ALIAS_ENTITY_TO_CLASS({alias}, {classAttributes.EntityName}, {fqName});");
                 }
             }
-            else if (classAttributes.ContainsKey(EntityNameAliasesKey))
+            else if (!classAttributes.EntityNameAliases.IsEmpty)
             {
                 LogError(record, $"Class {fqName} has entity alias names but no entity name");
                 return;
@@ -273,57 +256,28 @@ namespace CodeGenerator.Persistence
             return IsEntityClass(baseClass);
         }
 
-        private (ImmutableDictionary<string, ImmutableList<CodeAttribute>>? Attributes, bool HasAnyAttributes) GetRelevantAttributes(
+        private (T? Attributes, bool HasAnyAttributes) GetAttributes<T>(
             NamedDecl decl, string prefix)
+            where T : class, new()
         {
             var rawAttributes = decl.Attrs
                     .Where(attr => attr.Spelling.StartsWith(prefix))
                     .ToList();
 
-            var attributes = ConvertAttributes(decl, prefix, rawAttributes);
+            var text = string.Join(",", rawAttributes.Select(attr => attr.Spelling.AsSpan()[prefix.Length..].ToString()));
+
+            var attributes = AttributeSerializer.Deserialize<T>(decl, _diagnosticEngine, text);
 
             return (attributes, rawAttributes.Count > 0);
         }
 
-        private ImmutableDictionary<string, ImmutableList<CodeAttribute>>? ConvertAttributes(NamedDecl decl, string prefix, List<Attr> rawAttributes)
+        private string? DeduceFloatType(FieldDecl field, FieldType? fieldType)
         {
-            try
-            {
-                var keyValues = rawAttributes
-                    .SelectMany(attr => AttributeParser.ParseText(attr.Spelling.AsSpan()[prefix.Length..]))
-                    .ToList();
-
-                var duplicates = keyValues
-                    .GroupBy(k => k.Name)
-                    .Where(g => g.Count() > 1)
-                    .ToList();
-
-                if (duplicates.Count > 0)
-                {
-                    foreach (var duplicate in duplicates)
-                    {
-                        LogError(decl, $"Duplicate attribute \"{duplicate.Key}\" encountered");
-                    }
-
-                    return null;
-                }
-
-                return keyValues.ToImmutableDictionary(attr => attr.Name, attr => attr.Values);
-            }
-            catch (AttributeParseException e)
-            {
-                LogError(decl, $"Error parsing attributes: {e.Message}");
-                return null;
-            }
-        }
-
-        private string? DeduceFloatType(FieldDecl field, string? fieldType)
-        {
-            if (fieldType is null || fieldType == "Float")
+            if (fieldType is null || fieldType == FieldType.Float)
             {
                 return "FIELD_FLOAT";
             }
-            else if (fieldType == "Time")
+            else if (fieldType == FieldType.Time)
             {
                 return "FIELD_TIME";
             }
@@ -334,13 +288,13 @@ namespace CodeGenerator.Persistence
             }
         }
 
-        private string? DeduceVectorType(FieldDecl field, string? fieldType)
+        private string? DeduceVectorType(FieldDecl field, FieldType? fieldType)
         {
-            if (fieldType is null || fieldType == "Vector")
+            if (fieldType is null || fieldType == FieldType.Vector)
             {
                 return "FIELD_VECTOR";
             }
-            else if (fieldType == "Position")
+            else if (fieldType == FieldType.Position)
             {
                 return "FIELD_POSITION_VECTOR";
             }
@@ -351,17 +305,17 @@ namespace CodeGenerator.Persistence
             }
         }
 
-        private string? DeduceStringType(FieldDecl field, string? fieldType)
+        private string? DeduceStringType(FieldDecl field, FieldType? fieldType)
         {
-            if (fieldType is null || fieldType == "String")
+            if (fieldType is null || fieldType == FieldType.String)
             {
                 return "FIELD_STRING";
             }
-            else if (fieldType == "ModelName")
+            else if (fieldType == FieldType.ModelName)
             {
                 return "FIELD_MODELNAME";
             }
-            else if (fieldType == "SoundName")
+            else if (fieldType == FieldType.SoundName)
             {
                 return "FIELD_SOUNDNAME";
             }
@@ -372,25 +326,9 @@ namespace CodeGenerator.Persistence
             }
         }
 
-        private string? DeduceFieldType(FieldDecl field, ImmutableDictionary<string, ImmutableList<CodeAttribute>> attributes)
+        private string? DeduceFieldType(FieldDecl field, FieldAttributes attributes)
         {
-            attributes.TryGetValue(TypeKey, out var fieldTypes);
-
-            if (fieldTypes is not null)
-            {
-                if (fieldTypes.Count > 1)
-                {
-                    LogError(field, "Too many field types provided");
-                    return null;
-                }
-                else if (fieldTypes.Count == 0)
-                {
-                    LogError(field, "Field type attribute with no value");
-                    return null;
-                }
-            }
-
-            var fieldType = fieldTypes?.FirstOrDefault()?.Name;
+            var fieldType = attributes.Type;
 
             var type = field.Type;
 
@@ -472,7 +410,7 @@ namespace CodeGenerator.Persistence
             return 1.ToString();
         }
 
-        private string? FormatField(string fqName, FieldDecl field, ImmutableDictionary<string, ImmutableList<CodeAttribute>> attributes)
+        private string? FormatField(string fqName, FieldDecl field, FieldAttributes attributes)
         {
             var type = DeduceFieldType(field, attributes);
 

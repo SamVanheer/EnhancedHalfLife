@@ -25,7 +25,7 @@ constexpr int FGUNTARGET_START_ON = 0x0001;
 *	pev->health is current health
 *	pev->max_health is the amount to reset to each time it starts
 */
-class EHL_CLASS(EntityName=func_guntarget) CGunTarget : public CBaseMonster
+class EHL_CLASS("EntityName": "func_guntarget") CGunTarget : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -46,6 +46,6 @@ public:
 	int	ObjectCaps() override { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_on = false;
 };

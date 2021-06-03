@@ -23,7 +23,7 @@ constexpr int SF_FUNNEL_REVERSE = 1; //!< funnel effect repels particles instead
 /**
 *	@brief Funnel Effect
 */
-class EHL_CLASS(EntityName=env_funnel) CEnvFunnel : public CBaseEntity
+class EHL_CLASS("EntityName": "env_funnel") CEnvFunnel : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 

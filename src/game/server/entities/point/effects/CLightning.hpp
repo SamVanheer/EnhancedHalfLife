@@ -18,7 +18,7 @@
 #include "CBeam.hpp"
 #include "CLightning.generated.hpp"
 
-class EHL_CLASS(EntityName=env_beam, EntityNameAliases=[env_lightning]) CLightning : public CBeam
+class EHL_CLASS("EntityName": "env_beam", "EntityNameAliases": ["env_lightning"]) CLightning : public CBeam
 {
 	EHL_GENERATED_BODY()
 
@@ -43,43 +43,43 @@ public:
 
 	void	BeamUpdateVars();
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_active = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszStartEntity = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszEndEntity = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_life = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_boltWidth = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_noiseAmplitude = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_brightness = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_speed = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_restrike = 0;
 
 	//TODO: shouldn't be saved
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_spriteTexture = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_iszSpriteName = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_frameStart = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_radius = 0;
 };

@@ -18,7 +18,7 @@
 #include "CPointEntity.hpp"
 #include "CBaseDMStart.generated.hpp"
 
-class EHL_CLASS(EntityName=info_player_deathmatch) CBaseDMStart : public CPointEntity
+class EHL_CLASS("EntityName": "info_player_deathmatch") CBaseDMStart : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 

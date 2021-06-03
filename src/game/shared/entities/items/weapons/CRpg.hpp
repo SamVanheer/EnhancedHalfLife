@@ -34,7 +34,7 @@ enum rpg_e
 	RPG_FIDGET_UL,	// unloaded fidget
 };
 
-class EHL_CLASS(EntityName=weapon_rpg) CRpg : public CBaseWeapon
+class EHL_CLASS("EntityName": "weapon_rpg") CRpg : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 
@@ -78,10 +78,10 @@ public:
 
 	EHandle<CLaserSpot> m_hSpot;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	bool m_fSpotActive = false;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_cActiveRockets = 0;// how many missiles in flight from this launcher right now?
 
 	bool UseDecrement() override

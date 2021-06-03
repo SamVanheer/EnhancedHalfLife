@@ -25,7 +25,7 @@ constexpr int MAX_EQUIP = 32;
 *	@brief Sets the default player equipment
 *	@details Flag: USE Only
 */
-class EHL_CLASS(EntityName=game_player_equip) CGamePlayerEquip : public CRulePointEntity
+class EHL_CLASS("EntityName": "game_player_equip") CGamePlayerEquip : public CRulePointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -40,9 +40,9 @@ private:
 
 	void		EquipPlayer(CBaseEntity* pPlayer);
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_weaponNames[MAX_EQUIP]{};
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_weaponCount[MAX_EQUIP]{};
 };

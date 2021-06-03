@@ -18,7 +18,7 @@
 #include "CFuncPlat.hpp"
 #include "CFuncPlatRot.generated.hpp"
 
-class EHL_CLASS(EntityName=func_platrot) CFuncPlatRot : public CFuncPlat
+class EHL_CLASS("EntityName": "func_platrot") CFuncPlatRot : public CFuncPlat
 {
 	EHL_GENERATED_BODY()
 
@@ -33,9 +33,9 @@ public:
 
 	void			RotMove(const Vector& destAngle, float time);
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector	m_end;
 		
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	Vector m_start;
 };

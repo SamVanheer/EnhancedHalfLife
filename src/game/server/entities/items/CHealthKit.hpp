@@ -20,7 +20,7 @@
 
 constexpr float HEALTHKIT_DEFAULT_CAPACITY = -1;
 
-class EHL_CLASS(EntityName=item_healthkit) CHealthKit : public CItem
+class EHL_CLASS("EntityName": "item_healthkit") CHealthKit : public CItem
 {
 	EHL_GENERATED_BODY()
 
@@ -35,6 +35,6 @@ class EHL_CLASS(EntityName=item_healthkit) CHealthKit : public CItem
 	ItemApplyResult Apply(CBasePlayer* pPlayer) override;
 
 private:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	float m_flCustomCapacity = HEALTHKIT_DEFAULT_CAPACITY;
 };

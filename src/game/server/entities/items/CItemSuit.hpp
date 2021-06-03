@@ -26,7 +26,7 @@ enum class SuitLogonType
 	ShortLogon,
 };
 
-class EHL_CLASS(EntityName=item_suit) CItemSuit : public CItem
+class EHL_CLASS("EntityName": "item_suit") CItemSuit : public CItem
 {
 	EHL_GENERATED_BODY()
 
@@ -86,6 +86,6 @@ class EHL_CLASS(EntityName=item_suit) CItemSuit : public CItem
 	}
 
 protected:
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	SuitLogonType m_LogonType = SuitLogonType::NoLogon;
 };

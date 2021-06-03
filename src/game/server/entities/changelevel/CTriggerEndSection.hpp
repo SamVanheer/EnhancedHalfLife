@@ -20,7 +20,7 @@
 
 constexpr int SF_ENDSECTION_USEONLY = 0x0001;
 
-class EHL_CLASS(EntityName=trigger_endsection) CTriggerEndSection : public CBaseTrigger
+class EHL_CLASS("EntityName": "trigger_endsection") CTriggerEndSection : public CBaseTrigger
 {
 	EHL_GENERATED_BODY()
 

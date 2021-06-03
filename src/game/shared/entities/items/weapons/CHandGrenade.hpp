@@ -30,7 +30,7 @@ enum handgrenade_e
 	HANDGRENADE_DRAW
 };
 
-class EHL_CLASS(EntityName=weapon_handgrenade) CHandGrenade : public CBaseWeapon
+class EHL_CLASS("EntityName": "weapon_handgrenade") CHandGrenade : public CBaseWeapon
 {
 	EHL_GENERATED_BODY()
 

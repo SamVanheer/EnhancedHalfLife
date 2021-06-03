@@ -19,7 +19,7 @@
 #include "CBaseWeapon.hpp"
 #include "CPythonAmmo.generated.hpp"
 
-class EHL_CLASS(EntityName=ammo_357) CPythonAmmo : public CBaseAmmo
+class EHL_CLASS("EntityName": "ammo_357") CPythonAmmo : public CBaseAmmo
 {
 	EHL_GENERATED_BODY()
 

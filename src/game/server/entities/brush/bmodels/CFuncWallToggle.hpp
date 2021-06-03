@@ -20,7 +20,7 @@
 
 constexpr int SF_WALL_START_OFF = 0x0001;
 
-class EHL_CLASS(EntityName=func_wall_toggle) CFuncWallToggle : public CFuncWall
+class EHL_CLASS("EntityName": "func_wall_toggle") CFuncWallToggle : public CFuncWall
 {
 	EHL_GENERATED_BODY()
 

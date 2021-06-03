@@ -65,7 +65,7 @@ void MortarSpray(const Vector& position, const Vector& direction, int spriteMode
 //
 constexpr std::string_view BIG_CHILDCLASS{"monster_babycrab"};
 
-class EHL_CLASS(EntityName=monster_bigmomma) CBigMomma : public CBaseMonster
+class EHL_CLASS("EntityName": "monster_bigmomma") CBigMomma : public CBaseMonster
 {
 	EHL_GENERATED_BODY()
 
@@ -196,18 +196,18 @@ public:
 	CUSTOM_SCHEDULES;
 
 private:
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_nodeTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_crabTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_mortarTime = 0;
 
-	EHL_FIELD(Persisted, Type=Time)
+	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_painSoundTime = 0;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	int m_crabCount = 0;
 };

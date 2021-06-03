@@ -22,7 +22,7 @@ constexpr int SF_INFOBM_RUN = 0x0001;
 constexpr int SF_INFOBM_WAIT = 0x0002;
 
 // AI Nodes for Big Momma
-class EHL_CLASS(EntityName=info_bigmomma) CInfoBM : public CPointEntity
+class EHL_CLASS("EntityName": "info_bigmomma") CInfoBM : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -38,6 +38,6 @@ public:
 	// Reach delay in pev->speed
 	// Reach sequence in pev->netname
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_preSequence = iStringNull;
 };

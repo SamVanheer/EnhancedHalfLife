@@ -28,7 +28,7 @@ enum class GlobalTriggerMode
 	Toggle
 };
 
-class EHL_CLASS(EntityName=env_global) CEnvGlobal : public CPointEntity
+class EHL_CLASS("EntityName": "env_global") CEnvGlobal : public CPointEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -37,12 +37,12 @@ public:
 	void	KeyValue(KeyValueData* pkvd) override;
 	void	Use(const UseInfo& info) override;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	string_t m_globalstate = iStringNull;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	GlobalTriggerMode m_triggermode = GlobalTriggerMode::Off;
 
-	EHL_FIELD(Persisted)
+	EHL_FIELD("Persisted": true)
 	GlobalEntState m_initialstate = GlobalEntState::Off;
 };

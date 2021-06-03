@@ -21,7 +21,7 @@
 /**
 *	@brief smallest turret, placed near grunt entrenchments
 */
-class EHL_CLASS(EntityName=monster_sentry) CSentry : public CBaseTurret
+class EHL_CLASS("EntityName": "monster_sentry") CSentry : public CBaseTurret
 {
 	EHL_GENERATED_BODY()
 
