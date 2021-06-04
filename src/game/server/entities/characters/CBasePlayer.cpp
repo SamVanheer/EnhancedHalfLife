@@ -909,15 +909,18 @@ void CBasePlayer::WaterMove()
 
 	// make bubbles
 
-	const int air = (int)(pev->air_finished - gpGlobals->time);
-	if (!RANDOM_LONG(0, 0x1f) && RANDOM_LONG(0, PLAYER_AIRTIME - 1) >= air)
+	if (pev->waterlevel == WaterLevel::Head)
 	{
-		switch (RANDOM_LONG(0, 3))
+		const int air = (int)(pev->air_finished - gpGlobals->time);
+		if (!RANDOM_LONG(0, 0x1f) && RANDOM_LONG(0, PLAYER_AIRTIME - 1) >= air)
 		{
-		case 0:	EmitSound(SoundChannel::Body, "player/pl_swim1.wav", 0.8); break;
-		case 1:	EmitSound(SoundChannel::Body, "player/pl_swim2.wav", 0.8); break;
-		case 2:	EmitSound(SoundChannel::Body, "player/pl_swim3.wav", 0.8); break;
-		case 3:	EmitSound(SoundChannel::Body, "player/pl_swim4.wav", 0.8); break;
+			switch (RANDOM_LONG(0, 3))
+			{
+			case 0:	EmitSound(SoundChannel::Body, "player/pl_swim1.wav", 0.8); break;
+			case 1:	EmitSound(SoundChannel::Body, "player/pl_swim2.wav", 0.8); break;
+			case 2:	EmitSound(SoundChannel::Body, "player/pl_swim3.wav", 0.8); break;
+			case 3:	EmitSound(SoundChannel::Body, "player/pl_swim4.wav", 0.8); break;
+			}
 		}
 	}
 
