@@ -29,7 +29,12 @@ void CTripmine::Spawn()
 {
 	Precache();
 	pev->frame = 0;
+#ifdef CLIENT_DLL
+	//Force this to 0 for client prediction
+	pev->body = 0;
+#else
 	pev->body = 3;
+#endif
 	pev->sequence = TRIPMINE_GROUND;
 	// ResetSequenceInfo( );
 	pev->framerate = 0;
@@ -158,9 +163,6 @@ void CTripmine::PrimaryAttack()
 void CTripmine::WeaponIdle()
 {
 	auto player = m_hPlayer.Get();
-
-	//If we're here then we're in a player's inventory, and need to use this body
-	pev->body = 0;
 
 	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
