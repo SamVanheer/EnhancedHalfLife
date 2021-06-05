@@ -270,7 +270,6 @@ void ClientCommand(edict_t* pEntity)
 		return;
 
 	const char* pcmd = CMD_ARGV(0);
-	const char* pstr;
 
 	auto player = static_cast<CBasePlayer*>(CBaseEntity::InstanceOrNull(pEntity));
 
@@ -329,9 +328,16 @@ void ClientCommand(edict_t* pEntity)
 	{
 		player->SelectWeapon(CMD_ARGV(1));
 	}
-	else if (((pstr = strstr(pcmd, "weapon_")) != nullptr) && (pstr == pcmd))
+	else if (AreStringsEqual(pcmd, "selectweapon"))
 	{
-		player->SelectWeapon(pcmd);
+		if (CMD_ARGC() > 1)
+		{
+			player->SelectWeapon(CMD_ARGV(1));
+		}
+		else
+		{
+			CLIENT_PRINTF(pEntity, print_console, "usage: selectweapon <weapon name>\n");
+		}
 	}
 	else if (AreStringsEqual(pcmd, "lastinv"))
 	{
