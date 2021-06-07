@@ -27,9 +27,25 @@ public:
 	CServerLibrary(const CServerLibrary&) = delete;
 	CServerLibrary& operator=(const CServerLibrary&) = delete;
 
+	void MapIsEnding()
+	{
+		m_isStartingNewMap = true;
+	}
+
+	void CheckForNewMapStart()
+	{
+		if (m_isStartingNewMap)
+		{
+			m_isStartingNewMap = false;
+			NewMapStarted();
+		}
+	}
+
+private:
 	void NewMapStarted();
 
 private:
+	bool m_isStartingNewMap = true;
 };
 
 inline CServerLibrary g_Server;

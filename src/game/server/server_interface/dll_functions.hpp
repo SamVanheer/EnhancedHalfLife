@@ -19,8 +19,6 @@
 
 extern bool gTouchDisabled;
 
-inline bool g_IsStartingNewMap = true;
-
 int DispatchSpawn(edict_t* pent);
 void DispatchThink(edict_t* pent);
 void DispatchUse(edict_t* pentUsed, edict_t* pentOther);

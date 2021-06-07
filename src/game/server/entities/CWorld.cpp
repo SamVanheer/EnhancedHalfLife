@@ -21,6 +21,7 @@
 
 #include "navigation/nodes.hpp"
 #include "client.hpp"
+#include "CServerLibrary.hpp"
 #include "dll_functions.hpp"
 #include "CCorpse.hpp"
 #include "spawnpoints/spawnpoints.hpp"
@@ -36,7 +37,7 @@ extern DLL_GLOBAL bool		g_fGameOver;
 
 CWorld::~CWorld()
 {
-	g_IsStartingNewMap = true;
+	g_Server.MapIsEnding();
 }
 
 void CWorld::Spawn()
