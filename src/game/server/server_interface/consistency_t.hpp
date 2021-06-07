@@ -13,16 +13,15 @@
 *
 ****/
 
-#include "cbase.hpp"
-#include "CServerLibrary.hpp"
-#include "server_t.hpp"
+#pragma once
 
-void CServerLibrary::NewMapStarted()
+struct consistency_t
 {
-	auto server = SV_GetServerGlobal();
-
-	ClearStringPool();
-
-	//Initialize the list to the current engine list
-	g_EntityList = CEntityList(g_engfuncs.pfnPEntityOfEntIndex(0));
-}
+	char* filename;
+	int issound;
+	int orig_index;
+	int value;
+	int check_type;
+	float mins[3];
+	float maxs[3];
+};

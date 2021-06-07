@@ -13,16 +13,17 @@
 *
 ****/
 
-#include "cbase.hpp"
-#include "CServerLibrary.hpp"
-#include "server_t.hpp"
+#pragma once
 
-void CServerLibrary::NewMapStarted()
-{
-	auto server = SV_GetServerGlobal();
+constexpr int MAX_MODELS = 512;
 
-	ClearStringPool();
+constexpr int MAX_SOUNDS_BITS = 9;
+constexpr int MAX_SOUNDS = 1 << MAX_SOUNDS_BITS;
 
-	//Initialize the list to the current engine list
-	g_EntityList = CEntityList(g_engfuncs.pfnPEntityOfEntIndex(0));
-}
+constexpr int MAX_GENERIC_FILES = 512;
+constexpr int MAX_EVENTS = 256;
+constexpr int MAX_DECALS = 512;
+
+constexpr int MAX_RESOURCES = 512 + 512 + 256;
+
+constexpr int MAX_LIGHT_STYLES = 64;

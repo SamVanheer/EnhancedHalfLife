@@ -84,6 +84,7 @@ target_sources(hl PRIVATE
 	persistence/saverestore.hpp
 	server_interface/client.cpp
 	server_interface/client.hpp
+	server_interface/consistency_t.hpp
 	server_interface/CServerLibrary.cpp
 	server_interface/CServerLibrary.hpp
 	server_interface/dll_functions.cpp
@@ -93,6 +94,7 @@ target_sources(hl PRIVATE
 	server_interface/game.hpp
 	server_interface/server_interface.cpp
 	server_interface/server_interface.hpp
+	server_interface/server_t.hpp
 	sound/sound_playback.cpp
 	sound/sound_playback.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/const.hpp
@@ -110,9 +112,11 @@ target_sources(hl PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/Platform.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/PlatformHeaders.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/Sequence.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/sizebuf_t.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/studio.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_in.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_out.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/WorldLimits.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/codegen/codegen_api.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/com_model.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/custom.hpp
@@ -121,6 +125,7 @@ target_sources(hl PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/entity_state.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_args.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_flags.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/engine/event_t.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_defs.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_info.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/engine/pm_movevars.hpp

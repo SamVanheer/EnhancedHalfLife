@@ -13,16 +13,13 @@
 *
 ****/
 
-#include "cbase.hpp"
-#include "CServerLibrary.hpp"
-#include "server_t.hpp"
+#pragma once
 
-void CServerLibrary::NewMapStarted()
+struct event_t
 {
-	auto server = SV_GetServerGlobal();
+	unsigned __int16 index;
+	const char* filename;
+	int filesize;
+	const char* pszScript;
+};
 
-	ClearStringPool();
-
-	//Initialize the list to the current engine list
-	g_EntityList = CEntityList(g_engfuncs.pfnPEntityOfEntIndex(0));
-}
