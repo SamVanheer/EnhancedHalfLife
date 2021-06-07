@@ -196,16 +196,21 @@ void DispatchBlocked(edict_t* pentBlocked, edict_t* pentOther)
 		pEntity->Blocked(pOther);
 }
 
-void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
+void CheckForNewMapStart()
 {
-	if (!pkvd || !pentKeyvalue)
-		return;
-
 	if (g_IsStartingNewMap)
 	{
 		g_IsStartingNewMap = false;
 		g_Server.NewMapStarted();
 	}
+}
+
+void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
+{
+	if (!pkvd || !pentKeyvalue)
+		return;
+
+	CheckForNewMapStart();
 
 	EntvarsKeyvalue(&pentKeyvalue->v, pkvd);
 
@@ -392,6 +397,9 @@ void SaveWriteFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseD
 
 void SaveReadFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount)
 {
+	//Will happen here if we're loading a saved game
+	CheckForNewMapStart();
+
 	CRestore restoreHelper(pSaveData);
 	restoreHelper.ReadFields(pname, pBaseData, pFields, fieldCount);
 }
