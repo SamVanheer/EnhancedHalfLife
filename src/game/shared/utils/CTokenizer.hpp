@@ -37,6 +37,11 @@ public:
 
 	~CTokenizer() = default;
 
+	CTokenizer(const CTokenizer&) = default;
+	CTokenizer& operator=(const CTokenizer&) = default;
+	CTokenizer(CTokenizer&&) = default;
+	CTokenizer& operator=(CTokenizer&&) = default;
+
 	constexpr bool HasMoreData() const { return _offset < _data.length(); }
 
 	bool HasToken() const { return _flags.test(Flag_HasToken); }
@@ -52,7 +57,16 @@ public:
 
 	constexpr std::size_t GetOffset() const { return _offset; }
 
+	constexpr std::string_view GetCurrentData() const { return _data.substr(GetOffset()); }
+
 	constexpr std::string_view GetToken() const { return _token; }
+
+	void Reset()
+	{
+		_offset = 0;
+		_token = {};
+		SetHasToken(false);
+	}
 
 	bool Next();
 
