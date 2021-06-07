@@ -84,6 +84,8 @@ target_sources(hl PRIVATE
 	persistence/saverestore.hpp
 	server_interface/client.cpp
 	server_interface/client.hpp
+	server_interface/CServerLibrary.cpp
+	server_interface/CServerLibrary.hpp
 	server_interface/dll_functions.cpp
 	server_interface/dll_functions.hpp
 	server_interface/enginecallback.hpp

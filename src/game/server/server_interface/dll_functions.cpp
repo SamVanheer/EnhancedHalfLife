@@ -13,6 +13,7 @@
 *
 ****/
 
+#include "CServerLibrary.hpp"
 #include "dll_functions.hpp"
 #include "EntityList.hpp"
 #include "game.hpp"
@@ -195,14 +196,6 @@ void DispatchBlocked(edict_t* pentBlocked, edict_t* pentOther)
 		pEntity->Blocked(pOther);
 }
 
-void SV_NewMapStarted()
-{
-	ClearStringPool();
-
-	//Initialize the list to the current engine list
-	g_EntityList = CEntityList(g_engfuncs.pfnPEntityOfEntIndex(0));
-}
-
 void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
 {
 	if (!pkvd || !pentKeyvalue)
@@ -211,7 +204,7 @@ void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
 	if (g_IsStartingNewMap)
 	{
 		g_IsStartingNewMap = false;
-		SV_NewMapStarted();
+		g_Server.NewMapStarted();
 	}
 
 	EntvarsKeyvalue(&pentKeyvalue->v, pkvd);
