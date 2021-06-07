@@ -351,15 +351,14 @@ public:
 
 	void* operator new(std::size_t count)
 	{
-		auto memory = new byte[count];
+		auto memory = ::operator new(count);
 		std::memset(memory, 0, count);
 		return memory;
 	}
 
 	void operator delete(void* ptr)
 	{
-		auto memory = reinterpret_cast<byte*>(ptr);
-		delete[] memory;
+		::operator delete(ptr);
 	}
 
 	// initialization functions
