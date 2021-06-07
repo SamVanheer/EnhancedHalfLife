@@ -408,11 +408,7 @@ void OnFreeEntPrivateData(edict_t* pEdict)
 {
 	if (auto entity = CBaseEntity::InstanceOrNull(pEdict); entity)
 	{
-		entity->Destroy();
-
-		delete entity;
-
-		pEdict->pvPrivateData = nullptr;
+		g_EntityList.Destroy(entity);
 	}
 }
 
