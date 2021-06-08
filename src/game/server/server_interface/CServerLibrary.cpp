@@ -14,15 +14,57 @@
 ****/
 
 #include "cbase.hpp"
+#include "com_model.hpp"
 #include "CServerLibrary.hpp"
+#include "EntityParser.hpp"
 #include "server_t.hpp"
 
-void CServerLibrary::NewMapStarted()
+void CServerLibrary::NewMapStarted(bool loadGame)
 {
-	auto server = SV_GetServerGlobal();
+	m_engineServer = SV_GetServerGlobal();
 
 	ClearStringPool();
 
 	//Initialize the list to the current engine list
-	g_EntityList = CEntityList(g_engfuncs.pfnPEntityOfEntIndex(0));
+	g_EntityList = CEntityList(m_engineServer->edicts);
+
+	if (!loadGame)
+	{
+		ParseEntityData();
+	}
+}
+
+void CServerLibrary::ParseEntityData()
+{
+	//We're parsing the entity data string ourselves instead of letting the engine do it
+	const std::string_view entityData{m_engineServer->worldmodel->entities};
+
+	EntityParser parser{entityData};
+
+	parser.Parse();
+
+	//Clear the entity data string so the engine won't do anything
+	//This must be done by altering the string after the first '{', wherever that may be
+	//If there is whitespace in front of it this must still work
+	const auto start = entityData.find('{');
+
+	if (start != std::string_view::npos)
+	{
+		//Must have enough space for "{}\0" at minimum
+		if (start + 1 <= entityData.size())
+		{
+			m_engineServer->worldmodel->entities[start + 1] = '}';
+			m_engineServer->worldmodel->entities[start + 2] = '\0';
+		}
+		else
+		{
+			//Should never get here, engine only calls into this code if it finds a classname keyvalue, so there must be enough space
+			ALERT(at_error, "Entity data string is invalid: not enough space for empty entity block\n");
+		}
+	}
+	else
+	{
+		//Should never get here, engine validates the first parsed token before we can get to this
+		ALERT(at_error, "Entity data string is invalid: does not start with '{'\n");
+	}
 }

@@ -15,6 +15,8 @@
 
 #pragma once
 
+struct server_t;
+
 /**
 *	@brief Handles core server actions
 */
@@ -32,20 +34,27 @@ public:
 		m_isStartingNewMap = true;
 	}
 
-	void CheckForNewMapStart()
+	bool CheckForNewMapStart(bool loadGame)
 	{
 		if (m_isStartingNewMap)
 		{
 			m_isStartingNewMap = false;
-			NewMapStarted();
+			NewMapStarted(loadGame);
+			return true;
 		}
+
+		return false;
 	}
 
 private:
-	void NewMapStarted();
+	void NewMapStarted(bool loadGame);
+
+	void ParseEntityData();
 
 private:
 	bool m_isStartingNewMap = true;
+
+	server_t* m_engineServer = nullptr;
 };
 
 inline CServerLibrary g_Server;

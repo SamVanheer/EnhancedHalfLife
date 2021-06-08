@@ -182,7 +182,9 @@ namespace CodeGenerator.Persistence
 
             data.AddHeaderInclude(headerFileName);
 
-            if (classAttributes.EntityName is not null)
+            //Don't link worldspawn
+            //TODO: remove this hack when all engine references to entities are gone
+            if (classAttributes.EntityName is not null && classAttributes.EntityName != "worldspawn")
             {
                 if (!ValidateEntityName(record, fqName, classAttributes.EntityName))
                 {

@@ -20,6 +20,8 @@
 #include "client.hpp"
 #include "pm_shared.hpp"
 
+void Engine_DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd);
+
 void SpectatorDummyFunction(edict_t*)
 {
 	//Nothing. Never called
@@ -33,7 +35,7 @@ DLL_FUNCTIONS gEntityInterface =
 	DispatchUse,				//pfnUse
 	DispatchTouch,				//pfnTouch
 	DispatchBlocked,			//pfnBlocked
-	DispatchKeyValue,			//pfnKeyValue
+	Engine_DispatchKeyValue,	//pfnKeyValue
 	DispatchSave,				//pfnSave
 	DispatchRestore,			//pfnRestore
 	DispatchObjectCollisionBox,	//pfnAbsBox
@@ -201,8 +203,6 @@ void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
 	if (!pkvd || !pentKeyvalue)
 		return;
 
-	g_Server.CheckForNewMapStart();
-
 	EntvarsKeyvalue(&pentKeyvalue->v, pkvd);
 
 	// If the key was an entity variable, or there's no class set yet, don't look for the object, it may
@@ -217,6 +217,38 @@ void DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
 		return;
 
 	pEntity->KeyValue(pkvd);
+}
+
+void Engine_DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd)
+{
+	if (!pkvd || !pentKeyvalue)
+		return;
+
+	//We should only get here once per map, for worldspawn's classname
+	//Verify that this is the case and force the keyvalue to the correct value to plug arbitrary GetProcAddress/dlsym exploits
+
+	if (strcmp(pkvd->szKeyName, "classname"))
+	{
+		ALERT(at_warning, "Engine DispatchKeyValue is processing a key \"%s\" other than \"classname\"\n", pkvd->szKeyName);
+	}
+	else if (strcmp(pkvd->szValue, "worldspawn"))
+	{
+		ALERT(at_warning, "Engine DispatchKeyValue is processing a classname \"%s\" other than \"worldspawn\"\n", pkvd->szValue);
+		pkvd->szValue = "worldspawn";
+	}
+
+	if (g_Server.CheckForNewMapStart(false))
+	{
+		//Already handled
+		pkvd->fHandled = true;
+		return;
+	}
+
+	ALERT(at_error, "Engine DispatchKeyValue is handling keyvalues! Should never be able to get here!\n");
+
+	//Do nothing. The engine shouldn't be parsing anything else, so don't let it overwrite anything
+	//Ensure engine will trigger a Host_Error
+	pkvd->fHandled = false;
 }
 
 void DispatchSave(edict_t* pent, SAVERESTOREDATA* pSaveData)
@@ -389,7 +421,7 @@ void SaveWriteFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseD
 void SaveReadFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCount)
 {
 	//Will happen here if we're loading a saved game
-	g_Server.CheckForNewMapStart();
+	g_Server.CheckForNewMapStart(true);
 
 	CRestore restoreHelper(pSaveData);
 	restoreHelper.ReadFields(pname, pBaseData, pFields, fieldCount);

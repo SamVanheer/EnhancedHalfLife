@@ -18,8 +18,6 @@
 #include "CBaseEntity.hpp"
 #include "CDecal.generated.hpp"
 
-constexpr int SF_DECAL_NOTINDEATHMATCH = 2048;
-
 class EHL_CLASS("EntityName": "infodecal") CDecal : public CBaseEntity
 {
 	EHL_GENERATED_BODY()

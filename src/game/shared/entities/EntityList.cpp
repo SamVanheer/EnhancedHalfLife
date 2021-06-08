@@ -28,6 +28,16 @@ int CEntityList::GetEntityLimit() const
 	return gpGlobals->maxEntities;
 }
 
+edict_t* CEntityList::GetEdictByIndex(int index) const
+{
+	if (index < 0 || index >= GetEntityLimit())
+	{
+		return nullptr;
+	}
+
+	return m_Entities + index;
+}
+
 EHandle<CBaseEntity> CEntityList::GetEntityByIndex(int index) const
 {
 	if (index < 0 || index >= GetEntityLimit())
@@ -167,5 +177,12 @@ void CEntityList::Destroy(CBaseEntity* entity)
 		ALERT(at_error, "CEntityList::Destroy: no factory for \"%s\"\n", className);
 	}
 
-	edict->pvPrivateData = nullptr;
+	if (edict)
+	{
+		edict->pvPrivateData = nullptr;
+	}
+	else
+	{
+		ALERT(at_error, "CEntityList::Destroy: NULL edict\n");
+	}
 }

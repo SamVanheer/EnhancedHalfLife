@@ -37,7 +37,11 @@ public:
 	CEntityList(CEntityList&&) = default;
 	CEntityList& operator=(CEntityList&&) = default;
 
+	bool IsValid() const { return m_Entities != nullptr; }
+
 	int GetEntityLimit() const;
+
+	edict_t* GetEdictByIndex(int index) const;
 
 	EHandle<CBaseEntity> GetEntityByIndex(int index) const;
 

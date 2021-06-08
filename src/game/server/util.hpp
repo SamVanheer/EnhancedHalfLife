@@ -312,6 +312,8 @@ void DBG_AssertFunction(bool fExpr, const char* szExpr, const char* szFile, int 
 #define ASSERTSZ(f, sz)
 #endif	// !DEBUG
 
+constexpr int SF_NOTINDEATHMATCH = 1 << 11;
+
 //
 // Constants that were used only by QC (maybe not used at all now)
 //
