@@ -441,6 +441,14 @@ void SaveReadFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseDa
 
 	CRestore restoreHelper(pSaveData);
 	restoreHelper.ReadFields(pname, pBaseData, pFields, fieldCount);
+
+	if (AreStringsEqual(pname, "ETABLE"))
+	{
+		auto table = reinterpret_cast<ENTITYTABLE*>(pBaseData);
+
+		//Force the classname for security purposes
+		table->classname = MAKE_STRING("custom");
+	}
 }
 
 void OnFreeEntPrivateData(edict_t* pEdict)
