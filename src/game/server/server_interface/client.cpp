@@ -28,6 +28,7 @@
 #include "shared_interface/shared_interface.hpp"
 #include "changelevel/CChangeLevel.hpp"
 #include "CRpg.hpp"
+#include "CServerLibrary.hpp"
 
 extern DLL_GLOBAL std::uint32_t	g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;
@@ -454,6 +455,8 @@ void ServerActivate(edict_t* pEdictList, int edictCount, int clientMax)
 {
 	// Every call to ServerActivate should be matched by a call to ServerDeactivate
 	g_serveractive = true;
+
+	g_Server.MapActivate();
 
 	// Clients have not been initialized yet
 	for (int i = 0; i < edictCount; i++)

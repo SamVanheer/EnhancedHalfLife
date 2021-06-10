@@ -20,23 +20,6 @@
 #include "dll_functions.hpp"
 #include "EntityParser.hpp"
 
-extern "C" DLLEXPORT void worldspawn(entvars_t* pev)
-{
-	//If we're loading a save game we still need to do this for now
-	//TODO: remove
-	if (gpGlobals->pSaveData)
-	{
-		g_EntityList.Create("worldspawn", pev->pContainingEntity);
-	}
-	else
-	{
-		//Nothing. Must be provided so the engine doesn't free the already created worldspawn
-	}
-}
-
-//TODO: remove this when save game handling is done server side
-static CEntityFactory<CWorld> g_CWorldFactory{"worldspawn", "CWorld"};
-
 EntityParser::EntityParser(std::string_view entityData)
 	: m_EntityData(entityData)
 {

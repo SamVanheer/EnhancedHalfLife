@@ -61,22 +61,14 @@ constexpr bool IsBitSet(const T& flBitVector, int bit)
 
 /**
 *	@brief This is the glue that hooks .MAP entity class names to our CPP classes
-*	The _declspec forces them to be exported by name so we can do a lookup with GetProcAddress()
-*	The function is used to intialize / allocate the object for the entity
 */
 #define LINK_ENTITY_TO_CLASS(mapClassName,DLLClassName)													\
-	extern "C" DLLEXPORT void mapClassName( entvars_t *pev );											\
-	void mapClassName( entvars_t *pev ) { g_EntityList.Create(#mapClassName, pev->pContainingEntity); }	\
 	static CEntityFactory<DLLClassName> g_##mapClassName##Factory{#mapClassName, #DLLClassName}
 
 /**
 *	@brief This is the glue that hooks .MAP entity class names to our CPP classes
-*	The _declspec forces them to be exported by name so we can do a lookup with GetProcAddress()
-*	The function is used to intialize / allocate the object for the entity
 */
 #define LINK_ALIAS_ENTITY_TO_CLASS(aliasMapClassName, canonicalMapClassName, DLLClassName)											\
-	extern "C" DLLEXPORT void aliasMapClassName( entvars_t *pev );																	\
-	void aliasMapClassName( entvars_t *pev ) { g_EntityList.Create(#aliasMapClassName, pev->pContainingEntity); }					\
 	static CEntityFactory<DLLClassName> g_##aliasMapClassName##Factory{#canonicalMapClassName, #DLLClassName, #aliasMapClassName}
 
 inline int ENTINDEX(const edict_t* pEdict) { return (*g_engfuncs.pfnIndexOfEdict)(pEdict); }

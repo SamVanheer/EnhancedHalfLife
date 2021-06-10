@@ -19,6 +19,20 @@
 #include "EntityParser.hpp"
 #include "server_t.hpp"
 
+extern "C" DLLEXPORT void custom(entvars_t * pev)
+{
+	//Nothing. Must be provided so the engine doesn't free the already created entity
+}
+
+/**
+*	@details This is provided separately so worldspawn's classname can be just that.
+*	It also avoids complications from needing to handle the second pfnKeyValue call.
+*/
+extern "C" DLLEXPORT void worldspawn(entvars_t * pev)
+{
+	//Nothing. Must be provided so the engine doesn't free the already created worldspawn
+}
+
 void CServerLibrary::NewMapStarted(bool loadGame)
 {
 	m_engineServer = SV_GetServerGlobal();
@@ -32,6 +46,28 @@ void CServerLibrary::NewMapStarted(bool loadGame)
 	{
 		ParseEntityData();
 	}
+}
+
+void CServerLibrary::CheckEntityListNeedsRestoring()
+{
+	if (m_isLoadingSave)
+	{
+		auto saveData = reinterpret_cast<SAVERESTOREDATA*>(gpGlobals->pSaveData);
+
+		std::size_t hash = 0;
+		HashCombine(hash, std::string_view{saveData->szCurrentMapName}, std::string_view{saveData->szLandmarkName});
+
+		if (!m_landmarksCheckedForRestore.contains(hash))
+		{
+			m_landmarksCheckedForRestore.insert(hash);
+			CreateRestoredEntities(saveData);
+		}
+	}
+}
+
+void CServerLibrary::MapActivate()
+{
+	m_isLoadingSave = false;
 }
 
 void CServerLibrary::ParseEntityData()
@@ -67,4 +103,46 @@ void CServerLibrary::ParseEntityData()
 		//Should never get here, engine validates the first parsed token before we can get to this
 		ALERT(at_error, "Entity data string is invalid: does not start with '{'\n");
 	}
+}
+
+void CServerLibrary::CreateRestoredEntities(SAVERESTOREDATA* saveData)
+{
+	//Create all entities in the current save data list
+	const int savedIndex = saveData->currentIndex;
+	saveData->size = saveData->pTable[saveData->currentIndex].location;
+	saveData->pCurrentData = saveData->pBaseData + saveData->size;
+
+	entvars_t tmpVars;
+
+	for (int i = 0; i < saveData->tableCount; ++i)
+	{
+		auto& table = saveData->pTable[i];
+
+		if (table.pent)
+		{
+			saveData->currentIndex = i;
+			saveData->size = table.location;
+			saveData->pCurrentData = saveData->pBaseData + saveData->size;
+
+			CRestore tmpRestore(saveData);
+			tmpRestore.PrecacheMode(false);
+			tmpRestore.ReadEntVars("ENTVARS", &tmpVars);
+
+			auto className = STRING(tmpVars.classname);
+
+			auto entity = g_EntityList.Create(className, table.pent);
+
+			if (!entity)
+			{
+				ALERT(at_console, "Can't create entity: %s\n", className);
+				//Will be skipped during engine restore (unless this is the first entity)
+				g_engfuncs.pfnRemoveEntity(table.pent);
+				table.pent = nullptr;
+			}
+		}
+	}
+
+	saveData->currentIndex = savedIndex;
+	saveData->size = saveData->pTable[saveData->currentIndex].location;
+	saveData->pCurrentData = saveData->pBaseData + saveData->size;
 }

@@ -15,6 +15,9 @@
 
 #pragma once
 
+#include <unordered_set>
+
+struct SAVERESTOREDATA;
 struct server_t;
 
 /**
@@ -36,6 +39,13 @@ public:
 
 	bool CheckForNewMapStart(bool loadGame)
 	{
+		//TODO: verify that this works when save games fail to load
+		if (!m_isLoadingSave)
+		{
+			m_isLoadingSave = loadGame;
+			m_landmarksCheckedForRestore.clear();
+		}
+
 		if (m_isStartingNewMap)
 		{
 			m_isStartingNewMap = false;
@@ -46,15 +56,38 @@ public:
 		return false;
 	}
 
+	/**
+	*	@brief Checks if the entity list needs restoring
+	*	@details To override the engine's entity creation code we need to do two things:
+	*	1. Tell the engine all entity classnames are "custom". This is the function normally used for unrecognized entities during entity data parsing.\n
+	*		This also provides a catch-all for any engine-level calls that might still try to create entities (there shouldn't be any)
+	*	2. When an entity is being restored, check if we need to create all entities in the table that the entity came from.\n
+	*		This will be the case for the main save file's entities when loading a save game\n
+	*		and when changing maps with changelevel2 (landmark-based changelevel).\n
+	*		This will also be the case for the entity lists from adjacent maps.\n
+	*		The first entity from each list that is restored will trigger creation of all existing entities,\n
+	*		just like the engine would have done.
+	*
+	*	This is necessary because the restore code has to be able to initialize ehandles, and some PostRestore code accesses fully formed entities.
+	*/
+	void CheckEntityListNeedsRestoring();
+
+	void MapActivate();
+
 private:
 	void NewMapStarted(bool loadGame);
 
 	void ParseEntityData();
 
+	void CreateRestoredEntities(SAVERESTOREDATA* saveData);
+
 private:
 	bool m_isStartingNewMap = true;
+	bool m_isLoadingSave = false;
 
 	server_t* m_engineServer = nullptr;
+
+	std::unordered_set<std::size_t> m_landmarksCheckedForRestore;
 };
 
 inline CServerLibrary g_Server;

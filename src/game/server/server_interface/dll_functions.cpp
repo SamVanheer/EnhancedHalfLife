@@ -276,7 +276,8 @@ void DispatchSave(edict_t* pent, SAVERESTOREDATA* pSaveData)
 		}
 
 		pTable->location = pSaveData->size;		// Remember entity position for file I/O
-		pTable->classname = pEntity->pev->classname;	// Remember entity class for respawn
+		//See CServerLibrary::CheckEntityListNeedsRestoring for why this is needed
+		pTable->classname = MAKE_STRING("custom");//pEntity->pev->classname;	// Remember entity class for respawn
 
 		CSave saveHelper(pSaveData);
 		pEntity->Save(saveHelper);
@@ -289,10 +290,25 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 {
 	gpGlobals->time = pSaveData->time;
 
+	g_Server.CheckEntityListNeedsRestoring();
+
+	//Could've been removed during list restore
+	if (pent->free)
+	{
+		return -1;
+	}
+
 	CBaseEntity* pEntity = CBaseEntity::InstanceOrNull(pent);
 
 	if (pEntity && pSaveData)
 	{
+		//If this table is marked with a level bit, we're currently restoring an entity being merged or transferred
+		if (pSaveData->pTable[pSaveData->currentIndex].flags & ((1 << MAX_LEVEL_CONNECTIONS) - 1))
+		{
+			//Print this out so users can see which entities are really being transferred (engine will always print "custom")
+			ALERT(at_console, "Real entity classname: %s\n", pEntity->GetClassname());
+		}
+
 		entvars_t tmpVars;
 		Vector oldOffset;
 

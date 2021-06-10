@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <array>
 #include <cstddef>
+#include <string>
 #include <string_view>
 
 #include "vector.hpp"
@@ -160,3 +161,14 @@ std::array<int, Size> UTIL_StringToIntArray(std::string_view str)
 std::string_view COM_FileBase(std::string_view in);
 
 bool UTIL_IEquals(std::string_view lhs, std::string_view rhs);
+
+/**
+*	@details From https://stackoverflow.com/a/38140932 and https://stackoverflow.com/a/54728293
+*/
+template <typename T, typename... Rest>
+void HashCombine(std::size_t& seed, const T& v, Rest... rest)
+{
+	std::hash<T> hasher;
+	seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+	(HashCombine(seed, rest), ...);
+}
