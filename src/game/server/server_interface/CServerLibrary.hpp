@@ -39,7 +39,6 @@ public:
 
 	bool CheckForNewMapStart(bool loadGame)
 	{
-		//TODO: verify that this works when save games fail to load
 		if (!m_isLoadingSave)
 		{
 			m_isLoadingSave = loadGame;
