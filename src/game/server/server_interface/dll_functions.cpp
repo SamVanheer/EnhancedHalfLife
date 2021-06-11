@@ -446,8 +446,11 @@ void SaveReadFields(SAVERESTOREDATA* pSaveData, const char* pname, void* pBaseDa
 	{
 		auto table = reinterpret_cast<ENTITYTABLE*>(pBaseData);
 
-		//Force the classname for security purposes
-		table->classname = MAKE_STRING("custom");
+		if (!IsStringNull(table->classname))
+		{
+			//Force the classname for security purposes
+			table->classname = MAKE_STRING("custom");
+		}
 	}
 }
 
