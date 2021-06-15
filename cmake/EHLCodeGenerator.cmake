@@ -76,4 +76,8 @@ function(ehl_codegen_enable target)
 		COMMAND ${EHL_CODEGEN_COMMAND} update-cache-file --config-file "${CMAKE_CURRENT_BINARY_DIR}/EHLCodeGen.json")
 	
 	target_sources(${target} PRIVATE ${EHL_GENERATED_SOURCE_NAME})
+	
+	if (MSVC)
+		set_source_files_properties(${EHL_GENERATED_SOURCE_NAME} PROPERTIES COMPILE_OPTIONS "/bigobj")
+	endif()
 endfunction()
