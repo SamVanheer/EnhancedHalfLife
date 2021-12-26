@@ -113,6 +113,7 @@ target_sources(hl PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/PlatformHeaders.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/Sequence.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/sizebuf_t.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/string_t.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/studio.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_in.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_out.hpp

@@ -38,7 +38,7 @@ public:
 	void	Use(const UseInfo& info) override;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_globalstate = iStringNull;
+	string_t m_globalstate;
 
 	EHL_FIELD("Persisted": true)
 	GlobalTriggerMode m_triggermode = GlobalTriggerMode::Off;

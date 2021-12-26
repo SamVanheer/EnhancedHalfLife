@@ -24,13 +24,12 @@
 #include "CRpg.hpp"
 
 #ifndef CLIENT_DLL
-#include "CLaserSpot.hpp"
 #include "CRpgRocket.hpp"
 #endif
 
 void CRpg::Reload()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (m_iClip == 1)
 	{
@@ -163,7 +162,7 @@ bool CRpg::CanHolster()
 
 void CRpg::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	m_fInReload = false;// cancel any reload in progress.
 
@@ -180,7 +179,7 @@ void CRpg::PrimaryAttack()
 {
 	if (m_iClip)
 	{
-		auto player = m_hPlayer.Get();
+		auto player = GetPlayerOwner();
 
 		player->m_iWeaponVolume = LOUD_GUN_VOLUME;
 		player->m_iWeaponFlash = BRIGHT_GUN_FLASH;
@@ -238,7 +237,7 @@ void CRpg::SecondaryAttack()
 
 void CRpg::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	UpdateSpot();
 
@@ -282,7 +281,7 @@ void CRpg::UpdateSpot()
 #ifndef CLIENT_DLL
 	if (m_fSpotActive)
 	{
-		auto player = m_hPlayer.Get();
+		auto player = GetPlayerOwner();
 
 		if (!m_hSpot)
 		{

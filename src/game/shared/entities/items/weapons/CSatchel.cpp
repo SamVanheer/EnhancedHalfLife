@@ -95,7 +95,7 @@ bool CSatchel::GetWeaponInfo(WeaponInfo& p)
 
 bool CSatchel::IsUseable()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[PrimaryAmmoIndex()] > 0)
 	{
@@ -114,7 +114,7 @@ bool CSatchel::IsUseable()
 
 bool CSatchel::CanDeploy()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[PrimaryAmmoIndex()] > 0)
 	{
@@ -133,7 +133,7 @@ bool CSatchel::CanDeploy()
 
 bool CSatchel::Deploy()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
 	//m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( player->random_seed, 10, 15 );
@@ -155,7 +155,7 @@ bool CSatchel::Deploy()
 
 void CSatchel::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 
@@ -179,7 +179,7 @@ void CSatchel::Holster()
 
 void CSatchel::PrimaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	switch (m_chargeReady)
 	{
@@ -231,7 +231,7 @@ void CSatchel::SecondaryAttack()
 
 void CSatchel::Throw()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType])
 	{
@@ -266,7 +266,7 @@ void CSatchel::Throw()
 
 void CSatchel::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;

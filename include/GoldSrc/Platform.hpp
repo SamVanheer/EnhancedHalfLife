@@ -43,13 +43,12 @@
 #include <cstdint>
 #include <cstring>
 
+#include "string_t.hpp"
+
 using byte = unsigned char;
 using word = unsigned short;
-using string_t = unsigned int;
 using qboolean = int;
 using vec_t = float;
-
-constexpr string_t iStringNull = 0;
 
 #ifdef _WIN32
 //Avoid the ISO conformant warning

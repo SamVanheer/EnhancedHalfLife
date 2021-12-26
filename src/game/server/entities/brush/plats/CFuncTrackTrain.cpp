@@ -271,7 +271,7 @@ void CFuncTrackTrain::Next()
 			{
 				FireTargets(STRING(pFire->pev->message), this, this, UseType::Toggle, 0);
 				if (IsBitSet(pFire->pev->spawnflags, SF_PATH_FIREONCE))
-					pFire->pev->message = iStringNull;
+					pFire->pev->message = string_t::Null;
 			}
 
 			if (pFire->pev->spawnflags & SF_PATH_DISABLE_TRAIN)
@@ -544,7 +544,7 @@ void CFuncTrackTrain::Precache()
 	{
 	default:
 		// no sound
-		m_iszMovingSound = iStringNull;
+		m_iszMovingSound = string_t::Null;
 		break;
 	case 1: PRECACHE_SOUND("plats/ttrain1.wav"); m_iszMovingSound = MAKE_STRING("plats/ttrain1.wav"); break;
 	case 2: PRECACHE_SOUND("plats/ttrain2.wav"); m_iszMovingSound = MAKE_STRING("plats/ttrain2.wav"); break;

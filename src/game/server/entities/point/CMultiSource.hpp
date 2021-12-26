@@ -43,5 +43,5 @@ public:
 	int m_iTotal = 0;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_globalstate = iStringNull;
+	string_t m_globalstate;
 };

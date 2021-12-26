@@ -27,7 +27,7 @@ extern globalvars_t* gpGlobals;
 
 inline const char* STRING(string_t offset)
 {
-	return gpGlobals->pStringBase + static_cast<unsigned int>(offset);
+	return gpGlobals->pStringBase + offset.GetOffset();
 }
 
 /**
@@ -35,7 +35,7 @@ inline const char* STRING(string_t offset)
 */
 inline string_t MAKE_STRING(const char* str)
 {
-	return reinterpret_cast<std::uint64_t>(str) - reinterpret_cast<std::uint64_t>(STRING(0));
+	return string_t{reinterpret_cast<std::uint64_t>(str) - reinterpret_cast<std::uint64_t>(STRING(string_t::Null))};
 }
 
 string_t ALLOC_STRING(const char* str);

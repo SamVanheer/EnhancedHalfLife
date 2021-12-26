@@ -83,7 +83,7 @@ void CGlock::PrimaryAttack()
 
 void CGlock::GlockFire(float flSpread, float flCycleTime, bool fUseAutoAim)
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (m_iClip <= 0)
 	{
@@ -151,7 +151,7 @@ void CGlock::GlockFire(float flSpread, float flCycleTime, bool fUseAutoAim)
 
 void CGlock::Reload()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return;
@@ -171,7 +171,7 @@ void CGlock::Reload()
 
 void CGlock::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	ResetEmptySound();
 

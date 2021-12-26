@@ -116,10 +116,10 @@ public:
 	float m_angle = 0;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszGibModel = iStringNull;
+	string_t m_iszGibModel;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszSpawnObject = iStringNull;
+	string_t m_iszSpawnObject;
 
 	// Explosion magnitude is stored in pev->impulse
 };

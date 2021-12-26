@@ -39,5 +39,5 @@ public:
 	// Reach sequence in pev->netname
 
 	EHL_FIELD("Persisted": true)
-	string_t m_preSequence = iStringNull;
+	string_t m_preSequence;
 };

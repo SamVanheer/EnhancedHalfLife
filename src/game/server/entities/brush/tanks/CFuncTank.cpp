@@ -187,8 +187,8 @@ bool CFuncTank::StartControl(CBasePlayer* pController)
 	if (auto activeWeapon = pController->m_hActiveWeapon.Get(); activeWeapon)
 	{
 		activeWeapon->Holster();
-		pController->pev->weaponmodel = iStringNull;
-		pController->pev->viewmodel = iStringNull;
+		pController->pev->weaponmodel = string_t::Null;
+		pController->pev->viewmodel = string_t::Null;
 
 	}
 

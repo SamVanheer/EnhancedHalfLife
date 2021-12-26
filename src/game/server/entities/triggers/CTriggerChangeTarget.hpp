@@ -35,5 +35,5 @@ public:
 
 private:
 	EHL_FIELD("Persisted": true)
-		string_t m_iszNewTarget = iStringNull;
+		string_t m_iszNewTarget;
 };

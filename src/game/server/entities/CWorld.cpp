@@ -210,7 +210,7 @@ void CWorld::Precache()
 		{
 			pEntity->SetThink(&CBaseEntity::SUB_CallUseToggle);
 			pEntity->pev->message = pev->netname;
-			pev->netname = iStringNull;
+			pev->netname = string_t::Null;
 			pEntity->pev->nextthink = gpGlobals->time + 0.3;
 			pEntity->pev->spawnflags = SF_MESSAGE_ONCE;
 		}
@@ -292,7 +292,7 @@ void CWorld::KeyValue(KeyValueData* pkvd)
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "mapteams"))
 	{
-		pev->team = static_cast<int>(ALLOC_STRING(pkvd->szValue));
+		pev->team = static_cast<int>(ALLOC_STRING(pkvd->szValue).GetOffset());
 		pkvd->fHandled = true;
 	}
 	else if (AreStringsEqual(pkvd->szKeyName, "defaultteam"))

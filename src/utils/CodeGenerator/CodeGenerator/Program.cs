@@ -1,8 +1,8 @@
 ﻿using CodeGenerator.CodeGen;
 using CodeGenerator.Configuration;
 using CodeGenerator.Diagnostics;
-using CodeGenerator.Persistence;
 using CodeGenerator.Processing;
+using CodeGenerator.Reflection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Immutable;
@@ -103,7 +103,7 @@ namespace CodeGenerator
                     cachedFileInfo,
                     displayDiagnostics);
 
-                engine.Processors.Add(new PersistenceProcessor(diagnosticEngine, generatedCode));
+                engine.Processors.Add(new ReflectionProcessor(diagnosticEngine, generatedCode));
 
                 var newFileInfo = engine.Process();
 

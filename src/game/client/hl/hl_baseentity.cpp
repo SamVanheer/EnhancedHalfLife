@@ -28,6 +28,7 @@
 #include "weapons.hpp"
 #include "navigation/nodes.hpp"
 #include "CBaseWeapon.hpp"
+#include "CCineMonster.hpp"
 #include "CGrenade.hpp"
 #include "CSoundEnt.hpp"
 #include "skill.hpp"
@@ -233,6 +234,18 @@ void CBaseMonster::Killed(const KilledInfo& info) {}
 bool CBaseMonster::GiveHealth(float flHealth, int bitsDamageType) { return false; }
 bool CBaseMonster::TakeDamage(const TakeDamageInfo& info) { return false; }
 bool CBaseMonster::PostRestore() { return true; }
+
+void CCineMonster::Use(const UseInfo&) {}
+void CCineMonster::Touch(CBaseEntity*) {}
+void CCineMonster::Spawn() {}
+void CCineMonster::PossessEntity() {}
+void CCineMonster::KeyValue(KeyValueData*) {}
+void CCineMonster::FixScriptMonsterSchedule(CBaseMonster*) {}
+void CCineMonster::Blocked(CBaseEntity*) {}
+void CCineMonster::Activate() {}
+int CCineMonster::IgnoreConditions() { return 0; }
+bool CCineMonster::StartSequence(CBaseMonster*, string_t, bool) { return false; }
+bool CCineMonster::CanOverrideState() { return false; }
 
 int TrainSpeed(int iSpeed, int iMax) { return 0; }
 void CBasePlayer::DeathSound() { }

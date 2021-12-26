@@ -69,7 +69,7 @@ void CFuncTrain::Wait()
 	{
 		FireTargets(STRING(pTarget->pev->message), this, this, UseType::Toggle, 0);
 		if (IsBitSet(pTarget->pev->spawnflags, SF_CORNER_FIREONCE))
-			pTarget->pev->message = iStringNull;
+			pTarget->pev->message = string_t::Null;
 	}
 
 	// need pointer to LAST target.

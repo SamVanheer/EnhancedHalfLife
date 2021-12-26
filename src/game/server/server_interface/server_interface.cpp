@@ -13,6 +13,7 @@
 *
 ****/
 
+#include "CServerLibrary.hpp"
 #include "server_interface.hpp"
 #include "util.hpp"
 
@@ -26,12 +27,28 @@ globalvars_t* gpGlobals;
 #define GIVEFNPTRSTODLL_EXPORT DLLEXPORT
 #endif
 
+enginefuncs_t original;
+
+int PrecacheModel(const char* s)
+{
+	if (*s <= 32)
+	{
+		int x = 10;
+	}
+
+	return original.pfnPrecacheModel(s);
+}
+
 extern "C"
 {
 	void GIVEFNPTRSTODLL_EXPORT GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine, globalvars_t* pGlobals)
 	{
 		memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
+		memcpy(&original, pengfuncsFromEngine, sizeof(enginefuncs_t));
+		g_engfuncs.pfnPrecacheModel = PrecacheModel;
 		gpGlobals = pGlobals;
+
+		g_Server.Initialize();
 	}
 
 	int GetEntityAPI(DLL_FUNCTIONS* pFunctionTable, int interfaceVersion)

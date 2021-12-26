@@ -45,8 +45,8 @@ public:
 	float m_volume = 0; // Sound volume
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszMovingSound = iStringNull;
+	string_t m_iszMovingSound;
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszArrivedSound = iStringNull;
+	string_t m_iszArrivedSound;
 };

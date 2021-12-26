@@ -31,6 +31,6 @@ public:
 	void SecondaryAttack() override;
 	bool Deploy() override;
 	void Holster() override;
-	string_t m_iszModel = iStringNull;
+	string_t m_iszModel;
 	int m_iModel = 0;
 };

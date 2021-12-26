@@ -46,7 +46,7 @@ protected:
 		int m_iAmount = 0;
 
 	EHL_FIELD("Persisted": true)
-		string_t m_iszAmmoName = iStringNull;
+		string_t m_iszAmmoName;
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
 		string_t m_iszPickupSound = MAKE_STRING("items/9mmclip1.wav");

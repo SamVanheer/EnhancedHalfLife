@@ -19,6 +19,8 @@
 #include "game.hpp"
 #include "client.hpp"
 #include "pm_shared.hpp"
+#include "persistence/Restore.hpp"
+#include "persistence/Save.hpp"
 
 void Engine_DispatchKeyValue(edict_t* pentKeyvalue, KeyValueData* pkvd);
 
@@ -279,8 +281,12 @@ void DispatchSave(edict_t* pent, SAVERESTOREDATA* pSaveData)
 		//See CServerLibrary::CheckEntityListNeedsRestoring for why this is needed
 		pTable->classname = MAKE_STRING("custom");//pEntity->pev->classname;	// Remember entity class for respawn
 
-		CSave saveHelper(pSaveData);
-		pEntity->Save(saveHelper);
+		//CSave saveHelper(pSaveData);
+		//pEntity->Save(saveHelper);
+
+		persistence::Save saveHelper(pSaveData);
+
+		saveHelper.WriteFields(pEntity->GetInstance(), pEntity->GetClassname());
 
 		pTable->size = pSaveData->size - pTable->location;	// Size of entity block is data size written to block
 	}
@@ -312,12 +318,15 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 		entvars_t tmpVars;
 		Vector oldOffset;
 
-		CRestore restoreHelper(pSaveData);
+		//CRestore restoreHelper(pSaveData);
+		persistence::Restore restoreHelper(pSaveData);
 		if (globalEntity)
 		{
-			CRestore tmpRestore(pSaveData);
-			tmpRestore.PrecacheMode(false);
-			tmpRestore.ReadEntVars("ENTVARS", &tmpVars);
+			persistence::Restore tmpRestore(pSaveData);
+			//CRestore tmpRestore(pSaveData);
+			tmpRestore.SetPrecacheMode(false);
+			tmpRestore.ReadFields(pEntity->GetInstance());
+			//tmpRestore.ReadEntVars("ENTVARS", &tmpVars);
 
 			// HACKHACK - reset the save pointers, we're going to restore for real this time
 			pSaveData->size = pSaveData->pTable[pSaveData->currentIndex].location;
@@ -341,7 +350,7 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 			{
 				//				ALERT( at_console, "Overlay %s with %s\n", pNewEntity->GetClassname(), STRING(tmpVars.classname) );
 								// Tell the restore code we're overlaying a global entity from another level
-				restoreHelper.SetGlobalMode(1);	// Don't overwrite global fields
+				restoreHelper.SetRestoreGlobalFields(false);	// Don't overwrite global fields
 				pSaveData->vecLandmarkOffset = (pSaveData->vecLandmarkOffset - pNewEntity->pev->mins) + tmpVars.mins;
 				pEntity = pNewEntity;// we're going to restore this data OVER the old entity
 				pent = pEntity->edict();
@@ -357,10 +366,28 @@ int DispatchRestore(edict_t* pent, SAVERESTOREDATA* pSaveData, int globalEntity)
 
 		}
 
+		if (pEntity->ClassnameIs("env_sprite"))
+		{
+			int x = 10;
+		}
+
+		restoreHelper.ReadFields(pEntity->GetInstance());
+
+		const auto expectedlocation = pSaveData->pBaseData + (pSaveData->pTable[pSaveData->currentIndex].location + pSaveData->pTable[pSaveData->currentIndex].size);
+		if (pSaveData->pCurrentData != expectedlocation)
+		{
+			int offset = pSaveData->pCurrentData - expectedlocation;
+			int x = 10;
+		}
+
+		pEntity->PostRestore();
+
+		/*
 		if (pEntity->Restore(restoreHelper))
 		{
 			pEntity->PostRestore();
 		}
+		*/
 
 		if (pEntity->ObjectCaps() & FCAP_MUST_SPAWN)
 		{

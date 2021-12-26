@@ -109,5 +109,5 @@ public:
 	int m_sounds = 0;
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszActivateSound = iStringNull;
+	string_t m_iszActivateSound;
 };

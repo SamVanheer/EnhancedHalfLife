@@ -16,6 +16,7 @@
 #pragma once
 
 #include "CBaseItem.hpp"
+#include "CBaseMonster.hpp"
 #include "weapons.hpp"
 
 #include "CBaseWeapon.generated.hpp"
@@ -347,8 +348,12 @@ public:
 	static inline WeaponInfo WeaponInfoArray[MAX_WEAPONS]{};
 	static inline AmmoInfo AmmoInfoArray[MAX_AMMO_TYPES]{};
 
+	//TODO: this is CBaseMonster for now because RTTR needs fully defined types, and CBasePlayer already includes this header
+	//At some point a new class CBaseCharacter will be created that will be used here
 	EHL_FIELD("Persisted": true)
-		EHandle<CBasePlayer> m_hPlayer;
+		EHandle<CBaseMonster> m_hPlayer;
+
+	CBasePlayer* GetPlayerOwner() const;
 
 	EHL_FIELD("Persisted": true)
 		EHandle<CBaseWeapon> m_hNext;
@@ -430,5 +435,5 @@ public:
 
 private:
 	EHL_FIELD("Persisted": true, "Type": "ModelName")
-	string_t m_iszWorldModelName = iStringNull;
+	string_t m_iszWorldModelName;
 };

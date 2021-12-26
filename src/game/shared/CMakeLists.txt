@@ -44,6 +44,20 @@ function(add_shared_sources target)
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/CTripmine.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/weapons.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/entities/items/weapons/weapons_shared.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/metadata/MetaDataUtils.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/metadata/TypeReflection.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/ISerializer.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/PersistenceDefs.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/Restore.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/Restore.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/Save.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/Save.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/SaveRestoreBuffer.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/SaveRestoreBuffer.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/SerializerRegistry.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/Serializers.cpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/Serializers.hpp
+			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/persistence/ValueVisitor.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_debug.cpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_debug.hpp
 			${CMAKE_CURRENT_FUNCTION_LIST_DIR}/player_movement/pm_shared.cpp

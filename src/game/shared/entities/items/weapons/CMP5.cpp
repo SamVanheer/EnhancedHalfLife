@@ -98,7 +98,7 @@ bool CMP5::Deploy()
 
 void CMP5::PrimaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	// don't fire underwater
 	if (player->pev->waterlevel == WaterLevel::Head)
@@ -167,7 +167,7 @@ void CMP5::PrimaryAttack()
 
 void CMP5::SecondaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	// don't fire underwater
 	if (player->pev->waterlevel == WaterLevel::Head)
@@ -221,7 +221,7 @@ void CMP5::SecondaryAttack()
 
 void CMP5::Reload()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return;
@@ -231,7 +231,7 @@ void CMP5::Reload()
 
 void CMP5::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	ResetEmptySound();
 

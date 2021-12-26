@@ -24,5 +24,15 @@ namespace CodeGenerator.Utility
         {
             return text.NormalizeNewlines(Environment.NewLine);
         }
+
+        public static string WrapWithDoubleQuotes(this string text)
+        {
+            return $"\"{text}\"";
+        }
+
+        public static string ConvertTypeNameToIdentifierName(this string name)
+        {
+            return name.Replace("::", "_");
+        }
     }
 }

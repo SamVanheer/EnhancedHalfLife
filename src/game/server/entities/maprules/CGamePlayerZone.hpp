@@ -32,14 +32,14 @@ public:
 
 private:
 	EHL_FIELD("Persisted": true)
-	string_t m_iszInTarget = iStringNull;
+	string_t m_iszInTarget;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszOutTarget = iStringNull;
+	string_t m_iszOutTarget;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszInCount = iStringNull;
+	string_t m_iszInCount;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszOutCount = iStringNull;
+	string_t m_iszOutCount;
 };

@@ -87,7 +87,7 @@ bool CTripmine::Deploy()
 
 void CTripmine::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 
@@ -105,7 +105,7 @@ void CTripmine::Holster()
 
 void CTripmine::PrimaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return;
@@ -162,7 +162,7 @@ void CTripmine::PrimaryAttack()
 
 void CTripmine::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;

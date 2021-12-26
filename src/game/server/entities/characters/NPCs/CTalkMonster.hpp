@@ -217,10 +217,10 @@ public:
 	float m_useTime = 0; //!< Don't allow +USE until this time
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszUse = iStringNull; //!< Custom +USE sentence group (follow)
+	string_t m_iszUse; //!< Custom +USE sentence group (follow)
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszUnUse = iStringNull; //!< Custom +USE sentence group (stop following)
+	string_t m_iszUnUse; //!< Custom +USE sentence group (stop following)
 
 	EHL_FIELD("Persisted": true, "Type": "Time")
 	float m_flLastSaidSmelled = 0; //!< last time we talked about something that stinks

@@ -502,7 +502,7 @@ bool CSave::WriteFields(const char* pname, void* pBaseData, TYPEDESCRIPTION* pFi
 					entityArray[j] = EntityIndex(((edict_t**)pOutputData)[j]);
 					break;
 				case FIELD_EHANDLE:
-					entityArray[j] = EntityIndex((((BaseHandle*)pOutputData)[j]).Get());
+					entityArray[j] = EntityIndex((((BaseHandle*)pOutputData)[j]).UnsafeGet());
 					break;
 				}
 			}
@@ -648,7 +648,7 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 						advanceInputByBytes = inputLength + 1;
 
 						if (inputLength == 0)
-							*((string_t*)pOutputData) = iStringNull;
+							*((string_t*)pOutputData) = string_t::Null;
 						else
 						{
 							string_t string = ALLOC_STRING(inputString);
@@ -679,9 +679,9 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 						const int entityIndex = *(int*)pInputData;
 
 						if (edict_t* pent = EntityFromIndex(entityIndex); pent)
-							*((BaseHandle*)pOutputData) = CBaseEntity::Instance(pent);
+							((BaseHandle*)pOutputData)->UnsafeSet(CBaseEntity::Instance(pent));
 						else
-							*((BaseHandle*)pOutputData) = nullptr;
+							((BaseHandle*)pOutputData)->UnsafeSet(nullptr);
 						break;
 					}
 					case FIELD_VECTOR:

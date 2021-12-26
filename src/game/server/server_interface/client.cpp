@@ -13,6 +13,9 @@
 *
 ****/
 
+#include <algorithm>
+#include <vector>
+
 #include "client.hpp"
 #include "game.hpp"
 #include "customentity.hpp"
@@ -308,6 +311,63 @@ void ClientCommand(edict_t* pEntity)
 		else
 		{
 			CLIENT_PRINTF(pEntity, print_console, UTIL_VarArgs("\"fov\" is \"%d\"\n", (int)player->m_iFOV));
+		}
+	}
+	else if (AreStringsEqual(pcmd, "ent_list_classes"))
+	{
+		//Cheat protected because this allocates memory and does some CPU-intensive work. Could be exploited in multiplayer games otherwise
+		if (g_psv_cheats->value)
+		{
+			//Print in alphabetical order
+			const std::size_t EntitiesPerPage = 10;
+
+			const auto& entities = g_EntityDictionary.GetSortedEntityFactories();
+
+			const std::size_t pageCount = (entities.size() / EntitiesPerPage) + (entities.size() % EntitiesPerPage ? 1 : 0);
+
+			std::size_t page = 1;
+
+			if (CMD_ARGC() > 1)
+			{
+				page = strtoul(CMD_ARGV(1), nullptr, 10);
+			}
+
+			const std::size_t logicalPageIndex = page - 1;
+
+			if (logicalPageIndex < pageCount)
+			{
+				for (std::size_t i = 0; i < EntitiesPerPage; ++i)
+				{
+					const std::size_t ent = i + (logicalPageIndex * EntitiesPerPage);
+
+					if (ent >= entities.size())
+					{
+						break;
+					}
+
+					auto factory = entities[ent];
+
+					if (factory->GetAliasMapClassName() != factory->GetMapClassName())
+					{
+						CLIENT_PRINTF(pEntity, print_console,
+							UTIL_VarArgs("%s (alias of %s)\n", factory->GetAliasMapClassName().c_str(), factory->GetMapClassName().c_str()));
+					}
+					else
+					{
+						CLIENT_PRINTF(pEntity, print_console, UTIL_VarArgs("%s\n", factory->GetAliasMapClassName().c_str()));
+					}
+				}
+
+				CLIENT_PRINTF(pEntity, print_console, UTIL_VarArgs("Page %zu of %zu\n", page, pageCount));
+			}
+			else
+			{
+				CLIENT_PRINTF(pEntity, print_console, UTIL_VarArgs("Invalid page index %zu of %zu\n", page, pageCount));
+			}
+		}
+		else
+		{
+			CLIENT_PRINTF(pEntity, print_console, "Can't use \"ent_list_classes\" unless sv_cheats is set to 1\n");
 		}
 	}
 	else if (AreStringsEqual(pcmd, "ent_remove"))

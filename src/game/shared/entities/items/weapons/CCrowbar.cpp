@@ -70,7 +70,7 @@ bool CCrowbar::Deploy()
 
 void CCrowbar::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	SendWeaponAnim(CROWBAR_HOLSTER);
@@ -142,7 +142,7 @@ void CCrowbar::SwingAgain()
 
 bool CCrowbar::Swing(bool fFirst)
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	UTIL_MakeVectors(player->pev->v_angle);
 	const Vector vecSrc = player->GetGunPosition();

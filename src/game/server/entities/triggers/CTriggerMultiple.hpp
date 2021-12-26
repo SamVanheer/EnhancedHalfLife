@@ -46,5 +46,5 @@ protected:
 
 private:
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_ActivateSound = iStringNull;
+	string_t m_ActivateSound;
 };

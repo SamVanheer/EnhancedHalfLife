@@ -54,9 +54,14 @@ void AddAmmoNameToAmmoRegistry(const char* szAmmoname, int maxCarry)
 	info.MaxCarry = maxCarry;
 }
 
+CBasePlayer* CBaseWeapon::GetPlayerOwner() const
+{
+	return static_cast<CBasePlayer*>(m_hPlayer.Get());
+}
+
 void CBaseWeapon::SendWeaponAnim(int iAnim, int body)
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->pev->weaponanim = iAnim;
 
@@ -79,7 +84,7 @@ void CBaseWeapon::SendWeaponAnim(int iAnim, int body)
 
 bool CBaseWeapon::CanDeploy()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	bool bHasAmmo = false;
 
@@ -111,11 +116,11 @@ bool CBaseWeapon::CanDeploy()
 
 void CBaseWeapon::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	m_fInReload = false; // cancel any reload in progress.
-	player->pev->viewmodel = iStringNull;
-	player->pev->weaponmodel = iStringNull;
+	player->pev->viewmodel = string_t::Null;
+	player->pev->weaponmodel = string_t::Null;
 
 #ifdef CLIENT_DLL
 	g_irunninggausspred = false;
@@ -137,7 +142,7 @@ bool CBaseWeapon::DefaultDeploy(const char* szViewModel, const char* szWeaponMod
 	if (!CanDeploy())
 		return false;
 
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->pev->viewmodel = MAKE_STRING(szViewModel);
 	player->pev->weaponmodel = MAKE_STRING(szWeaponModel);
@@ -158,7 +163,7 @@ bool CBaseWeapon::DefaultDeploy(const char* szViewModel, const char* szWeaponMod
 
 bool CBaseWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay, int body)
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return false;
@@ -217,7 +222,7 @@ bool CanAttack(float attack_time, float curtime, bool isPredicted)
 
 void CBaseWeapon::WeaponPostFrame()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if ((m_fInReload) && (player->m_flNextAttack <= UTIL_WeaponTimeBase()))
 	{

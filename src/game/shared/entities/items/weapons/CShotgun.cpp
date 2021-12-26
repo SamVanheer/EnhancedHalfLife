@@ -98,7 +98,7 @@ bool CShotgun::Deploy()
 
 void CShotgun::PrimaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	// don't fire underwater
 	if (player->pev->waterlevel == WaterLevel::Head)
@@ -169,7 +169,7 @@ void CShotgun::PrimaryAttack()
 
 void CShotgun::SecondaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	// don't fire underwater
 	if (player->pev->waterlevel == WaterLevel::Head)
@@ -244,7 +244,7 @@ void CShotgun::SecondaryAttack()
 
 void CShotgun::Reload()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType] <= 0 || m_iClip == SHOTGUN_MAX_CLIP)
 		return;
@@ -292,7 +292,7 @@ void CShotgun::Reload()
 
 void CShotgun::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	ResetEmptySound();
 
@@ -359,7 +359,7 @@ void CShotgun::WeaponPostFrame()
 {
 	if (m_flPumpTime && m_flPumpTime < gpGlobals->time)
 	{
-		auto player = m_hPlayer.Get();
+		auto player = GetPlayerOwner();
 
 		// play pumping sound
 		player->EmitSound(SoundChannel::Item, "weapons/scock1.wav", VOL_NORM, ATTN_NORM, 95 + RANDOM_LONG(0, 0x1f));

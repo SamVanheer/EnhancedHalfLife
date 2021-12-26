@@ -20,6 +20,7 @@
 */
 
 #include "client_int.hpp"
+#include "com_weapons.hpp"
 #include "netadr.hpp"
 #include "interface.hpp"
 #include "sound/materials.hpp"
@@ -33,6 +34,9 @@
 
 #include "tri.hpp"
 #include "shared_interface/shared_interface.hpp"
+
+#include "codegen/codegen_api.hpp"
+#include "EntityDictionary.hpp"
 
 TeamFortressViewport* gViewPort = nullptr;
 
@@ -93,6 +97,14 @@ int DLLEXPORT Initialize(cl_enginefunc_t* pEnginefuncs, int iVersion)
 	CL_LoadParticleMan();
 
 	if (!FileSystem_LoadFileSystem())
+	{
+		return false;
+	}
+
+	//So ALERT() will work
+	HUD_InitClientWeapons();
+
+	if (!g_EntityDictionary.RegisterEntityTypes())
 	{
 		return false;
 	}

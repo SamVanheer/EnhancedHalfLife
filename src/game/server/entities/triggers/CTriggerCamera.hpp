@@ -48,7 +48,7 @@ public:
 	EHandle<CBaseEntity> m_hEntPath;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_sPath = iStringNull;
+	string_t m_sPath;
 
 	EHL_FIELD("Persisted": true)
 	float m_flWait = 0;

@@ -47,10 +47,10 @@ public:
 	bool m_active = false;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszStartEntity = iStringNull;
+	string_t m_iszStartEntity;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszEndEntity = iStringNull;
+	string_t m_iszEndEntity;
 
 	EHL_FIELD("Persisted": true)
 	float m_life = 0;
@@ -75,7 +75,7 @@ public:
 	int m_spriteTexture = 0;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszSpriteName = iStringNull;
+	string_t m_iszSpriteName;
 
 	EHL_FIELD("Persisted": true)
 	int m_frameStart = 0;

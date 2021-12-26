@@ -15,26 +15,31 @@
 
 #pragma once
 
+#include <rttr/rttr_enable.h>
+
 class CBaseEntity;
 struct edict_t;
 
 /**
 *	@brief Base class for entity handles
+*	Directly using BaseHandle methods is unsafe and can cause type conversion errors at runtime
 */
 class BaseHandle
 {
+	RTTR_ENABLE()
+
 public:
 	BaseHandle() = default;
 
+protected:
 	BaseHandle(CBaseEntity* entity)
 	{
-		Set(entity);
+		UnsafeSet(entity);
 	}
 
-	CBaseEntity* operator=(CBaseEntity* entity);
-
-	CBaseEntity* Get() const;
-	void Set(CBaseEntity* entity);
+public:
+	CBaseEntity* UnsafeGet() const;
+	void UnsafeSet(CBaseEntity* entity);
 
 private:
 	edict_t* m_pent = nullptr;
@@ -45,8 +50,10 @@ private:
 *	@brief Safe way to point to CBaseEntities who may die between frames
 */
 template<typename TEntity>
-class EHandle : protected BaseHandle
+class EHandle : public BaseHandle
 {
+	RTTR_ENABLE(BaseHandle)
+
 public:
 	EHandle() = default;
 
@@ -61,8 +68,8 @@ public:
 		return entity;
 	}
 
-	TEntity* Get() const { return static_cast<TEntity*>(BaseHandle::Get()); }
-	void Set(TEntity* entity) { BaseHandle::Set(entity); }
+	TEntity* Get() const { return static_cast<TEntity*>(BaseHandle::UnsafeGet()); }
+	void Set(TEntity* entity) { BaseHandle::UnsafeSet(entity); }
 
 	operator TEntity* () const { return Get(); }
 	TEntity* operator->() const { return Get(); }

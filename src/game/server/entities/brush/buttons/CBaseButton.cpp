@@ -62,7 +62,7 @@ void CBaseButton::Precache()
 	case 8: m_ls.sLockedSentence = MAKE_STRING("NH"); break; // maintenance door
 	case 9: m_ls.sLockedSentence = MAKE_STRING("NG"); break; // broken door
 
-	default: m_ls.sLockedSentence = iStringNull; break;
+	default: m_ls.sLockedSentence = string_t::Null; break;
 	}
 
 	switch (m_bUnlockedSentence)
@@ -76,7 +76,7 @@ void CBaseButton::Precache()
 	case 7: m_ls.sUnlockedSentence = MAKE_STRING("ECON"); break; // gen containment
 	case 8: m_ls.sUnlockedSentence = MAKE_STRING("EH"); break; // maintenance door
 
-	default: m_ls.sUnlockedSentence = iStringNull; break;
+	default: m_ls.sUnlockedSentence = string_t::Null; break;
 	}
 }
 

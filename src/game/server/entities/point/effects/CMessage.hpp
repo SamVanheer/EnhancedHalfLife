@@ -32,5 +32,5 @@ public:
 	void	KeyValue(KeyValueData* pkvd) override;
 private:
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszMessageSound = iStringNull;
+	string_t m_iszMessageSound;
 };

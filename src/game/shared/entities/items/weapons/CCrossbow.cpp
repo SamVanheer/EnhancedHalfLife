@@ -87,7 +87,7 @@ bool CCrossbow::Deploy()
 
 void CCrossbow::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	m_fInReload = false;// cancel any reload in progress.
 
@@ -105,7 +105,7 @@ void CCrossbow::Holster()
 
 void CCrossbow::PrimaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 #ifdef CLIENT_DLL
 	if (player->m_iFOV != 0 && bIsMultiplayer())
@@ -123,7 +123,7 @@ void CCrossbow::PrimaryAttack()
 // this function only gets called in multiplayer
 void CCrossbow::FireSniperBolt()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	m_flNextPrimaryAttack = GetNextAttackDelay(0.75);
 
@@ -168,7 +168,7 @@ void CCrossbow::FireSniperBolt()
 
 void CCrossbow::FireBolt()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (m_iClip == 0)
 	{
@@ -234,7 +234,7 @@ void CCrossbow::FireBolt()
 
 void CCrossbow::SecondaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_iFOV != 0)
 	{
@@ -251,7 +251,7 @@ void CCrossbow::SecondaryAttack()
 
 void CCrossbow::Reload()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return;
@@ -269,7 +269,7 @@ void CCrossbow::Reload()
 
 void CCrossbow::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->GetAutoaimVector(AUTOAIM_2DEGREES);  // get the autoaim vector but ignore it;  used for autoaim crosshair in DM
 

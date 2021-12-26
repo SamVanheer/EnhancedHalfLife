@@ -98,7 +98,7 @@ bool CPython::Deploy()
 
 void CPython::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	m_fInReload = false;// cancel any reload in progress.
 
@@ -114,7 +114,7 @@ void CPython::Holster()
 
 void CPython::SecondaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 #ifdef CLIENT_DLL
 	if (!bIsMultiplayer())
@@ -139,7 +139,7 @@ void CPython::SecondaryAttack()
 
 void CPython::PrimaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	// don't fire underwater
 	if (player->pev->waterlevel == WaterLevel::Head)
@@ -197,7 +197,7 @@ void CPython::PrimaryAttack()
 
 void CPython::Reload()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return;
@@ -219,7 +219,7 @@ void CPython::Reload()
 
 void CPython::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	ResetEmptySound();
 

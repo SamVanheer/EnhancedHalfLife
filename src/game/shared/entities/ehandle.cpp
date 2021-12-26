@@ -18,13 +18,7 @@
 #include "cbase.hpp"
 #include "ehandle.hpp"
 
-CBaseEntity* BaseHandle::operator=(CBaseEntity* entity)
-{
-	Set(entity);
-	return entity;
-}
-
-CBaseEntity* BaseHandle::Get() const
+CBaseEntity* BaseHandle::UnsafeGet() const
 {
 	if (!m_pent || m_pent->serialnumber != m_serialnumber)
 	{
@@ -34,7 +28,7 @@ CBaseEntity* BaseHandle::Get() const
 	return CBaseEntity::InstanceOrNull(m_pent);
 }
 
-void BaseHandle::Set(CBaseEntity* entity)
+void BaseHandle::UnsafeSet(CBaseEntity* entity)
 {
 	if (entity)
 	{

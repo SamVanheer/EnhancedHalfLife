@@ -59,25 +59,10 @@ constexpr bool IsBitSet(const T& flBitVector, int bit)
 // Makes these more explicit, and easier to find
 #define DLL_GLOBAL
 
-/**
-*	@brief This is the glue that hooks .MAP entity class names to our CPP classes
-*/
-#define LINK_ENTITY_TO_CLASS(mapClassName,DLLClassName)													\
-	static CEntityFactory<DLLClassName> g_##mapClassName##Factory{#mapClassName, #DLLClassName}
-
-/**
-*	@brief This is the glue that hooks .MAP entity class names to our CPP classes
-*/
-#define LINK_ALIAS_ENTITY_TO_CLASS(aliasMapClassName, canonicalMapClassName, DLLClassName)											\
-	static CEntityFactory<DLLClassName> g_##aliasMapClassName##Factory{#canonicalMapClassName, #DLLClassName, #aliasMapClassName}
-
 inline int ENTINDEX(const edict_t* pEdict) { return (*g_engfuncs.pfnIndexOfEdict)(pEdict); }
 
 // Testing the two types of "entity" for nullity
 inline bool IsNullEnt(const edict_t* pent) { return pent == nullptr || ENTINDEX(pent) == 0; }
-
-// Testing strings for nullity
-inline bool IsStringNull(string_t iString) { return iString == iStringNull; }
 
 // Dot products for view cone checking
 constexpr float VIEW_FIELD_FULL = -1.0;			//!< +-180 degrees

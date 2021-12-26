@@ -31,4 +31,8 @@ public:
 	}
 
 	ItemType GetType() const override final { return ItemType::PickupItem; }
+
+protected:
+	//Has to be redeclared here so libClang reports this class as abstract TODO: fix this
+	virtual ItemApplyResult Apply(CBasePlayer* pPlayer) = 0;
 };

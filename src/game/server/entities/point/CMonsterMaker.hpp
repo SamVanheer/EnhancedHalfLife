@@ -56,7 +56,7 @@ public:
 	void MakeMonster();
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszMonsterClassname = iStringNull;//!< classname of the monster(s) that will be created.
+	string_t m_iszMonsterClassname;//!< classname of the monster(s) that will be created.
 
 	EHL_FIELD("Persisted": true)
 	int m_cNumMonsters = 0;//!< max number of monsters this ent can create

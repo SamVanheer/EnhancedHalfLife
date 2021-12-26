@@ -37,7 +37,7 @@ public:
 	int ObjectCaps() override { return BaseClass::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 private:
 	EHL_FIELD("Persisted": true)
-	string_t m_globalstate = iStringNull;
+	string_t m_globalstate;
 
 	EHL_FIELD("Persisted": true)
 	UseType	triggerType = UseType::Off;

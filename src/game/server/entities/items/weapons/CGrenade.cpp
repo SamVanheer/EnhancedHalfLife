@@ -21,7 +21,7 @@ constexpr int SF_DETONATE = 0x0001;
 // UNDONE: temporary scorching for PreAlpha - find a less sleazy permenant solution.
 void CGrenade::Explode(TraceResult* pTrace, int bitsDamageType)
 {
-	pev->model = iStringNull;//invisible
+	pev->model = string_t::Null;//invisible
 	SetSolidType(Solid::Not);// intangible
 
 	SetDamageMode(DamageMode::No);

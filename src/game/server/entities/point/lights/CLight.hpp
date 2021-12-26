@@ -39,5 +39,5 @@ private:
 	int m_iStyle = 0;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszPattern = iStringNull;
+	string_t m_iszPattern;
 };

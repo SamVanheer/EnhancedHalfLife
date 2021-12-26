@@ -2,6 +2,10 @@
 
 #include <type_traits>
 
+#include <rttr/registration.h>
+
+#include "persistence/PersistenceDefs.hpp"
+
 /**
 *	@file
 *
@@ -39,3 +43,9 @@
 //Define an empty version of this macro now so users don't get errors on first compilation
 //Generated headers will undefine and redefine this to contain the generated body of the class to which the header belongs
 #define EHL_GENERATED_BODY()
+
+/**
+*	@brief Specialized for each type that needs reflection initialized
+*/
+template<typename T>
+class TypeReflectionInitializer;

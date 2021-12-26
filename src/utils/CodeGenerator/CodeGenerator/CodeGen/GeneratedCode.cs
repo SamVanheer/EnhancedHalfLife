@@ -4,11 +4,11 @@ namespace CodeGenerator.CodeGen
 {
     public class GeneratedCode
     {
-        private readonly Dictionary<string, GeneratedClassData> _classes = new();
+        private readonly Dictionary<string, GeneratedClass> _classes = new();
 
-        public IEnumerable<GeneratedClassData> Classes => _classes.Values;
+        public IEnumerable<GeneratedClass> Classes => _classes.Values;
 
-        public void Add(GeneratedClassData data)
+        public void Add(GeneratedClass data)
         {
             _classes.Add(data.FullyQualifiedName, data);
         }

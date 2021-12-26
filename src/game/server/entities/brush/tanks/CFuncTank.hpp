@@ -177,7 +177,7 @@ protected:
 	float m_lastSightTime = 0;	// Last time I saw target
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszRotateSound = iStringNull;
+	string_t m_iszRotateSound;
 
 	EHL_FIELD("Persisted": true)
 	float m_persist = 0;		// Persistence of firing (how long do I shoot when I can't see)
@@ -196,10 +196,10 @@ protected:
 
 	//TODO: should probably both be ModelName
 	EHL_FIELD("Persisted": true)
-	string_t m_iszSpriteSmoke = iStringNull;
+	string_t m_iszSpriteSmoke;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszSpriteFlash = iStringNull;
+	string_t m_iszSpriteFlash;
 
 	EHL_FIELD("Persisted": true)
 	TankBullet m_bulletType = TankBullet::None;	// Bullet type

@@ -83,13 +83,13 @@ public:
 	EHandle<CFuncTrackTrain> m_hTrain;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_trackTopName = iStringNull;
+	string_t m_trackTopName;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_trackBottomName = iStringNull;
+	string_t m_trackBottomName;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_trainName = iStringNull;
+	string_t m_trainName;
 
 	EHL_FIELD("Persisted": true)
 	TrainCode m_code = TrainCode::Safe;

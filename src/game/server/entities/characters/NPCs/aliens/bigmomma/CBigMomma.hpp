@@ -98,7 +98,7 @@ public:
 		{
 			return pTarget->pev->netname;	// netname holds node sequence
 		}
-		return iStringNull;
+		return string_t::Null;
 	}
 
 	string_t GetNodePresequence()
@@ -108,7 +108,7 @@ public:
 		{
 			return pTarget->m_preSequence;
 		}
-		return iStringNull;
+		return string_t::Null;
 	}
 
 	float GetNodeDelay()

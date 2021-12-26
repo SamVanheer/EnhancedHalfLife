@@ -111,7 +111,7 @@ bool CGauss::Deploy()
 
 void CGauss::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	UTIL_PlaybackEvent(FEV_GLOBAL | FEV_RELIABLE, player, m_usGaussFire,
 		{.delay = 0.01f, .origin = player->GetAbsOrigin(), .angles = player->GetAbsAngles(), .fparam1 = 0.0f, .bparam1 = false, .bparam2 = true});
@@ -124,7 +124,7 @@ void CGauss::Holster()
 
 void CGauss::PrimaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	// don't fire underwater
 	if (player->pev->waterlevel == WaterLevel::Head)
@@ -154,7 +154,7 @@ void CGauss::PrimaryAttack()
 
 void CGauss::SecondaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	// don't fire underwater
 	if (player->pev->waterlevel == WaterLevel::Head)
@@ -284,7 +284,7 @@ void CGauss::SecondaryAttack()
 
 void CGauss::StartFire()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	UTIL_MakeVectors(player->pev->v_angle + player->pev->punchangle);
 	const Vector vecAiming = gpGlobals->v_forward;
@@ -345,7 +345,7 @@ void CGauss::StartFire()
 
 void CGauss::Fire(const Vector& vecOrigSrc, Vector vecDir, float flDamage)
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->m_iWeaponVolume = GAUSS_PRIMARY_FIRE_VOLUME;
 
@@ -515,7 +515,7 @@ void CGauss::Fire(const Vector& vecOrigSrc, Vector vecDir, float flDamage)
 
 void CGauss::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	ResetEmptySound();
 

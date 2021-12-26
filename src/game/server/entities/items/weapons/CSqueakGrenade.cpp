@@ -90,7 +90,7 @@ void CSqueakGrenade::Precache()
 
 void CSqueakGrenade::Killed(const KilledInfo& info)
 {
-	pev->model = iStringNull;// make invisible
+	pev->model = string_t::Null;// make invisible
 	SetThink(&CSqueakGrenade::SUB_Remove);
 	SetTouch(nullptr);
 	pev->nextthink = gpGlobals->time + 0.1;

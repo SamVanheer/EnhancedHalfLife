@@ -49,10 +49,10 @@ public:
 
 private:
 	EHL_FIELD("Persisted": true)
-	string_t m_iszSentence = iStringNull;	// string index for idle animation
+	string_t m_iszSentence;	// string index for idle animation
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszEntity = iStringNull;		// entity that is wanted for this sentence
+	string_t m_iszEntity;		// entity that is wanted for this sentence
 
 	EHL_FIELD("Persisted": true)
 	float m_flRadius = 0;					// range to search
@@ -73,5 +73,5 @@ private:
 	bool m_active = false;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszListener = iStringNull;	// name of entity to look at while talking
+	string_t m_iszListener;	// name of entity to look at while talking
 };

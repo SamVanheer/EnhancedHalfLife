@@ -15,60 +15,44 @@
 
 #pragma once
 
+#include <memory>
+#include <optional>
+#include <string>
 #include <string_view>
 #include <unordered_map>
+#include <vector>
+
+#include <rttr/type.h>
 
 class CBaseEntity;
 
 /**
-*	@brief Base class for entity factories
+*	@brief Handles creation and destruction of specific entity classes, maps aliases to canonical names
 */
-class CBaseEntityFactory
+class CEntityFactory
 {
-protected:
-	CBaseEntityFactory(const char* mapClassName, const char* internalClassName, const char* aliasMapClassName = nullptr);
-
 public:
-	virtual ~CBaseEntityFactory();
+	CEntityFactory(rttr::type type, const std::string& mapClassName, const std::string& internalClassName, const std::optional<std::string> aliasMapClassName = {});
+	~CEntityFactory();
 
-	const char* GetMapClassName() const { return m_mapClassName; }
+	const std::string& GetMapClassName() const { return m_mapClassName; }
 
-	const char* GetInternalClassName() const { return m_internalClassName; }
+	const std::string& GetInternalClassName() const { return m_internalClassName; }
 
 	/**
 	*	@brief The name that maps refer to this entity by. On construction the name will be changed to the actual classname
 	*/
-	const char* GetAliasMapClassName() const { return m_aliasMapClassName; }
+	const std::string& GetAliasMapClassName() const { return m_aliasMapClassName; }
 
-	virtual CBaseEntity* CreateInstance() = 0;
+	CBaseEntity* CreateInstance();
 
-	virtual void DestroyInstance(CBaseEntity* entity) = 0;
+	void DestroyInstance(CBaseEntity* entity);
 
 private:
-	const char* const m_mapClassName;
-	const char* const m_internalClassName;
-	const char* const m_aliasMapClassName;
-};
-
-/**
-*	@brief Implementation of the factory interface
-*	Handles creation and destruction of specific entity classes
-*/
-template<typename TEntity>
-class CEntityFactory final : public CBaseEntityFactory
-{
-public:
-	CEntityFactory(const char* mapClassName, const char* internalClassName, const char* aliasMapClassName = nullptr)
-		: CBaseEntityFactory(mapClassName, internalClassName, aliasMapClassName)
-	{
-	}
-
-	CBaseEntity* CreateInstance() override { return new TEntity(); }
-
-	void DestroyInstance(CBaseEntity* entity) override
-	{
-		delete entity;
-	}
+	rttr::type m_type;
+	const std::string m_mapClassName;
+	const std::string m_internalClassName;
+	const std::string m_aliasMapClassName;
 };
 
 /**
@@ -83,18 +67,35 @@ public:
 	CEntityDictionary(const CEntityDictionary&) = delete;
 	CEntityDictionary& operator=(const CEntityDictionary&) = delete;
 
-	void Add(CBaseEntityFactory* factory);
+	const std::vector<CEntityFactory*>& GetSortedEntityFactories() const { return m_sortedEntities; }
 
-	void Remove(CBaseEntityFactory* factory);
+	std::size_t GetClassCount() const { return m_sortedEntities.size(); }
 
-	CBaseEntityFactory* Find(const char* mapClassName) const;
+	CEntityFactory* Find(const char* mapClassName) const;
 
-	auto begin() const { return m_Entities.begin(); }
+	auto begin() const { return m_sortedEntities.begin(); }
 
-	auto end() const { return m_Entities.end(); }
+	auto end() const { return m_sortedEntities.end(); }
+
+	bool RegisterEntityTypes();
 
 private:
-	std::unordered_map<std::string_view, CBaseEntityFactory*> m_Entities;
+	void Add(std::unique_ptr<CEntityFactory>&& factory);
+
+	void Remove(CEntityFactory* factory);
+
+	void Clear()
+	{
+		m_entities.clear();
+		m_sortedEntities.clear();
+	}
+
+	void CreateSortedEntitiesList();
+
+private:
+	std::unordered_map<std::string_view, std::unique_ptr<CEntityFactory>> m_entities;
+
+	std::vector<CEntityFactory*> m_sortedEntities;
 };
 
-CEntityDictionary& GetEntityDictionary();
+inline CEntityDictionary g_EntityDictionary;

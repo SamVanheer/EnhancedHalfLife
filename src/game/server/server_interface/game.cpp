@@ -428,9 +428,21 @@ cvar_t	sk_player_leg3 = {"sk_player_leg3","1"};
 // This gets called one time when the game is initialied
 void GameDLLInit()
 {
+	bool success = true;
+
 	if (!FileSystem_LoadFileSystem())
 	{
 		g_engfuncs.pfnServerPrint("Could not load filesystem library\n");
+		success = false;
+	}
+
+	if (!g_EntityDictionary.RegisterEntityTypes())
+	{
+		success = false;
+	}
+
+	if (!success)
+	{
 		SERVER_COMMAND("quit\n");
 		return;
 	}

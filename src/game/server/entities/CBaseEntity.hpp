@@ -15,6 +15,8 @@
 
 #pragma once
 
+#include <rttr/variant.h>
+
 #include "codegen/codegen_api.hpp"
 
 #include "extdll.hpp"
@@ -309,7 +311,9 @@ public:
 	*	@brief Constructor.  Set engine to use C/C++ callback functions pointers to engine data
 	*
 	*	Don't need to save/restore this pointer, the engine resets it
+	*	Data within this does need to be persisted however
 	*/
+	EHL_FIELD("Persisted": true)
 	entvars_t* pev = nullptr;
 
 	// path corners
@@ -334,7 +338,7 @@ public:
 	float m_flDelay = 0;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszKillTarget = iStringNull;
+	string_t m_iszKillTarget;
 
 	/**
 	*	@brief If this entity has a master switch, this is the targetname.
@@ -344,7 +348,7 @@ public:
 	*	Otherwise, it will be deactivated.
 	*/
 	EHL_FIELD("Persisted": true)
-	string_t m_iszMaster = iStringNull;
+	string_t m_iszMaster;
 
 	CBaseEntity() = default;
 	virtual ~CBaseEntity() {}
@@ -361,6 +365,17 @@ public:
 		::operator delete(ptr);
 	}
 
+	const rttr::variant& GetInstance() const { return m_instance; }
+
+	void SetInstance(rttr::variant&& instance)
+	{
+		m_instance = std::move(instance);
+	}
+
+private:
+	rttr::variant m_instance;
+
+public:
 	// initialization functions
 	void Construct()
 	{
@@ -514,7 +529,7 @@ public:
 	//TODO: SetTargetname("") should do the same
 	void ClearTargetname()
 	{
-		pev->targetname = iStringNull;
+		pev->targetname = string_t::Null;
 	}
 
 	bool HasTarget() const { return !IsStringNull(pev->target); }
@@ -534,7 +549,7 @@ public:
 	//TODO: SetTarget("") should do the same
 	void ClearTarget()
 	{
-		pev->target = iStringNull;
+		pev->target = string_t::Null;
 	}
 
 	const Vector& GetAbsOrigin() { return pev->origin; }

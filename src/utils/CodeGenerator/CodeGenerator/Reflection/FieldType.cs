@@ -1,12 +1,10 @@
-﻿namespace CodeGenerator.Persistence
+﻿namespace CodeGenerator.Reflection
 {
     public enum FieldType
     {
-        Float,
+        Default,
         Time,
-        Vector,
         Position,
-        String,
         ModelName,
         SoundName,
     }

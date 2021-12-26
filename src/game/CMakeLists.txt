@@ -47,6 +47,19 @@ set(INCLUDE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../include)
 # Find dependencies
 find_package(Threads REQUIRED)
 
+# Set up SDL2 library
+add_library(RTTR STATIC IMPORTED)
+
+if (WIN32)
+	set_target_properties(RTTR PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/../../external/RTTR/lib/rttr_core_lib_s.lib")
+	set_target_properties(RTTR PROPERTIES IMPORTED_LOCATION_DEBUG "${CMAKE_CURRENT_SOURCE_DIR}/../../external/RTTR/lib/rttr_core_lib_s_d.lib")
+else()
+	#TODO
+	#set_target_properties(RTTR PROPERTIES IMPORTED_LOCATION "${GAME_DIRECTORY}/libSDL2.so")
+endif()
+
+target_include_directories(RTTR INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../external/RTTR/include)
+
 # Sets properties common to all projects
 function(set_common_properties TARGET_NAME)
 	set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
@@ -63,6 +76,7 @@ function(set_common_properties TARGET_NAME)
 		"$<$<PLATFORM_ID:Darwin>: OSX _OSX>")
 		
 	target_link_libraries(${TARGET_NAME} PRIVATE
+		RTTR
 		Threads::Threads
 		$<$<PLATFORM_ID:Linux,Darwin>:dl>)
 

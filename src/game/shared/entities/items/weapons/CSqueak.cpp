@@ -66,7 +66,7 @@ bool CSqueak::GetWeaponInfo(WeaponInfo& p)
 
 bool CSqueak::Deploy()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	// play hunt sound
 	const float flRndSound = RANDOM_FLOAT(0, 1);
@@ -90,7 +90,7 @@ bool CSqueak::Deploy()
 
 void CSqueak::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 
@@ -108,7 +108,7 @@ void CSqueak::Holster()
 
 void CSqueak::PrimaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType])
 	{
@@ -171,7 +171,7 @@ void CSqueak::SecondaryAttack()
 
 void CSqueak::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;

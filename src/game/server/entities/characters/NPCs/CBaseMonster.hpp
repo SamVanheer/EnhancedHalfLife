@@ -17,10 +17,10 @@
 
 #include "CBaseToggle.hpp"
 #include "CBaseMonster.schedule.hpp"
+#include "CCineMonster.hpp"
 
 #include "CBaseMonster.generated.hpp"
 
-class CCineMonster;
 class CSound;
 
 constexpr int MAX_PATH_SIZE = 10; //!< max number of nodes available for a path.
@@ -236,7 +236,7 @@ public:
 	AITrigger m_iTriggerCondition = AITrigger::None; //!< for scripted AI, this is the condition that will cause the activation of the monster's TriggerTarget
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszTriggerTarget = iStringNull; //!< name of target that should be fired. 
+	string_t m_iszTriggerTarget; //!< name of target that should be fired. 
 
 	EHL_FIELD("Persisted": true)
 	Vector m_HackedGunPos; //!< HACK until we can query end of gun

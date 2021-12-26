@@ -43,7 +43,7 @@ public:
 	EHandle<CSprite> m_hSprite;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszSpriteName = iStringNull;
+	string_t m_iszSpriteName;
 
 	EHL_FIELD("Persisted": true, "Type": "Position")
 	Vector  m_firePosition;

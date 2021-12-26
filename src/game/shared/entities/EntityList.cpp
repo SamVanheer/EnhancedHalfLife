@@ -125,9 +125,9 @@ CBaseEntity* CEntityList::Create(const char* className, edict_t* edict)
 	return nullptr;
 }
 
-CBaseEntityFactory* CEntityList::GetFactory(const char* className)
+CEntityFactory* CEntityList::GetFactory(const char* className)
 {
-	if (auto factory = GetEntityDictionary().Find(className); factory)
+	if (auto factory = g_EntityDictionary.Find(className); factory)
 	{
 		return factory;
 	}
@@ -137,7 +137,7 @@ CBaseEntityFactory* CEntityList::GetFactory(const char* className)
 	return nullptr;
 }
 
-CBaseEntity* CEntityList::ConstructEntity(CBaseEntityFactory* factory, edict_t* edict)
+CBaseEntity* CEntityList::ConstructEntity(CEntityFactory* factory, edict_t* edict)
 {
 	auto entity = factory->CreateInstance();
 
@@ -145,7 +145,7 @@ CBaseEntity* CEntityList::ConstructEntity(CBaseEntityFactory* factory, edict_t* 
 	edict->pvPrivateData = entity;
 
 	//Use the factory's string to ensure it lives long enough
-	entity->pev->classname = MAKE_STRING(factory->GetMapClassName());
+	entity->pev->classname = MAKE_STRING(factory->GetMapClassName().c_str());
 
 	entity->Construct();
 
@@ -167,7 +167,7 @@ void CEntityList::Destroy(CBaseEntity* entity)
 
 	entity->Destroy();
 
-	if (auto factory = GetEntityDictionary().Find(className); factory)
+	if (auto factory = g_EntityDictionary.Find(className); factory)
 	{
 		factory->DestroyInstance(entity);
 	}

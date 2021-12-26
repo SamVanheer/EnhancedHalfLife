@@ -18,6 +18,9 @@
 #include "CServerLibrary.hpp"
 #include "EntityParser.hpp"
 #include "server_t.hpp"
+#include "codegen/codegen_api.hpp"
+#include "persistence/Restore.hpp"
+#include "persistence/Serializers.hpp"
 
 extern "C" DLLEXPORT void custom(entvars_t * pev)
 {
@@ -31,6 +34,11 @@ extern "C" DLLEXPORT void custom(entvars_t * pev)
 extern "C" DLLEXPORT void worldspawn(entvars_t * pev)
 {
 	//Nothing. Must be provided so the engine doesn't free the already created worldspawn
+}
+
+void CServerLibrary::Initialize()
+{
+	persistence::RegisterSerializers();
 }
 
 void CServerLibrary::NewMapStarted(bool loadGame)
@@ -112,8 +120,6 @@ void CServerLibrary::CreateRestoredEntities(SAVERESTOREDATA* saveData)
 	saveData->size = saveData->pTable[saveData->currentIndex].location;
 	saveData->pCurrentData = saveData->pBaseData + saveData->size;
 
-	entvars_t tmpVars;
-
 	for (int i = 0; i < saveData->tableCount; ++i)
 	{
 		auto& table = saveData->pTable[i];
@@ -124,13 +130,13 @@ void CServerLibrary::CreateRestoredEntities(SAVERESTOREDATA* saveData)
 			saveData->size = table.location;
 			saveData->pCurrentData = saveData->pBaseData + saveData->size;
 
-			CRestore tmpRestore(saveData);
-			tmpRestore.PrecacheMode(false);
-			tmpRestore.ReadEntVars("ENTVARS", &tmpVars);
+			persistence::Restore tmpRestore(saveData);
+			tmpRestore.SetPrecacheMode(false);
 
-			auto className = STRING(tmpVars.classname);
+			auto className = tmpRestore.ReadClassName();
 
-			auto entity = g_EntityList.Create(className, table.pent);
+			//TODO: pass as string_view
+			auto entity = g_EntityList.Create(className.data(), table.pent);
 
 			if (!entity)
 			{

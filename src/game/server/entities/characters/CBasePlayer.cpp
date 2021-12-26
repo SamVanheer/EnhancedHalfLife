@@ -549,8 +549,8 @@ void CBasePlayer::RemoveAllItems(bool removeSuit)
 	}
 	m_hActiveWeapon = nullptr;
 
-	pev->viewmodel = iStringNull;
-	pev->weaponmodel = iStringNull;
+	pev->viewmodel = string_t::Null;
+	pev->weaponmodel = string_t::Null;
 
 	pev->weapons &= ~WEAPON_ALLWEAPONS;
 
@@ -2773,8 +2773,8 @@ bool CBasePlayer::RemovePlayerWeapon(CBaseWeapon* weapon)
 		weapon->pev->nextthink = 0;// crowbar may be trying to swing again, etc.
 		weapon->SetThink(nullptr);
 		m_hActiveWeapon = nullptr;
-		pev->viewmodel = iStringNull;
-		pev->weaponmodel = iStringNull;
+		pev->viewmodel = string_t::Null;
+		pev->weaponmodel = string_t::Null;
 	}
 
 	if (m_hLastWeapon == weapon)

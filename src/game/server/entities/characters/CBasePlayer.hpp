@@ -18,6 +18,7 @@
 #include "sound/materials.hpp"
 #include "CBaseMonster.hpp"
 #include "CBaseItem.hpp"
+#include "CBaseWeapon.hpp"
 #include "CBasePlayer.generated.hpp"
 
 //

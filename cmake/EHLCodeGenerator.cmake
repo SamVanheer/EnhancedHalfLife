@@ -23,7 +23,25 @@ function(ehl_codegen_generate_config_file target)
 	#message(STATUS ${EHL_DEFINITIONS})
 	
 	get_target_property(TARGET_INCLUDES ${target} INCLUDE_DIRECTORIES)
+	
+	# Include direct library header includes
+	get_target_property(TARGET_LINK_LIBRARIES ${target} LINK_LIBRARIES)
+	# Strip out generator expressions and empty entries
+	list(TRANSFORM TARGET_LINK_LIBRARIES GENEX_STRIP)
+	
+	foreach (library ${TARGET_LINK_LIBRARIES})
+		get_target_property(LIBRARY_INCLUDES ${library} INTERFACE_INCLUDE_DIRECTORIES)
+		
+		if (LIBRARY_INCLUDES)
+			# Strip out generator expressions and empty entries
+			list(TRANSFORM LIBRARY_INCLUDES GENEX_STRIP)
+			
+			list(APPEND TARGET_INCLUDES ${LIBRARY_INCLUDES})
+		endif()
+	endforeach()
+	
 	ehl_codegen_list_to_array(TARGET_INCLUDES EHL_INCLUDES)
+	
 	#message(STATUS ${EHL_INCLUDES})
 
 	get_target_property(TARGET_HEADERS ${target} SOURCES)

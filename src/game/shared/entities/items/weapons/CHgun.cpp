@@ -102,7 +102,7 @@ bool CHgun::Deploy()
 
 void CHgun::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	SendWeaponAnim(HGUN_DOWN);
@@ -116,7 +116,7 @@ void CHgun::Holster()
 
 void CHgun::PrimaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	Reload();
 
@@ -164,7 +164,7 @@ void CHgun::PrimaryAttack()
 
 void CHgun::SecondaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	Reload();
 
@@ -244,7 +244,7 @@ void CHgun::SecondaryAttack()
 
 void CHgun::Reload()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType] >= HORNET_MAX_CARRY)
 		return;
@@ -258,7 +258,7 @@ void CHgun::Reload()
 
 void CHgun::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	Reload();
 

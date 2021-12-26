@@ -57,7 +57,7 @@ void CEnvExplosion::Spawn()
 
 void CEnvExplosion::Use(const UseInfo& info)
 {
-	pev->model = iStringNull;//invisible
+	pev->model = string_t::Null;//invisible
 	SetSolidType(Solid::Not);// intangible
 
 	const Vector vecSpot = GetAbsOrigin() + Vector(0, 0, 8); // trace starts here!

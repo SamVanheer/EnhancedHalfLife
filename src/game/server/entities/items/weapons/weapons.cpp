@@ -396,7 +396,7 @@ ItemApplyResult CBaseWeapon::Apply(CBasePlayer* pPlayer)
 
 void CBaseWeapon::DestroyWeapon()
 {
-	if (auto player = m_hPlayer.Get(); player)
+	if (auto player = GetPlayerOwner(); player)
 	{
 		// if attached to a player, remove. 
 		player->RemovePlayerWeapon(this);
@@ -426,7 +426,7 @@ void CBaseWeapon::AttachToPlayer(CBasePlayer* pPlayer)
 	SetAimEntity(pPlayer);
 	pev->effects = EF_NODRAW; // ??
 	pev->modelindex = 0;// server won't send down to clients if modelindex == 0
-	pev->model = iStringNull;
+	pev->model = string_t::Null;
 	SetOwner(pPlayer);
 	pev->nextthink = gpGlobals->time + .1;
 	SetTouch(nullptr);
@@ -523,7 +523,7 @@ bool CBaseWeapon::AddPrimaryAmmo(int iCount, const char* szName)
 {
 	const int iMaxClip = MaxClip();
 
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	int iIdAmmo;
 
@@ -564,7 +564,7 @@ bool CBaseWeapon::AddSecondaryAmmo(int iCount, const char* szName)
 {
 	int iIdAmmo;
 
-	iIdAmmo = m_hPlayer->GiveAmmo(iCount, szName);
+	iIdAmmo = GetPlayerOwner()->GiveAmmo(iCount, szName);
 
 	//m_hPlayer->m_rgAmmo[m_iSecondaryAmmoType] = iMax; // hack for testing
 
@@ -589,7 +589,7 @@ bool CBaseWeapon::IsUseable()
 		return true;
 	}
 
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[PrimaryAmmoIndex()] > 0)
 	{
@@ -647,15 +647,15 @@ int CBaseWeapon::ExtractClipAmmo(CBaseWeapon* pWeapon)
 		iAmmo = m_iClip;
 	}
 
-	return pWeapon->m_hPlayer->GiveAmmo(iAmmo, Ammo1Name()); // , &m_iPrimaryAmmoType
+	return pWeapon->GetPlayerOwner()->GiveAmmo(iAmmo, Ammo1Name()); // , &m_iPrimaryAmmoType
 }
 
 void CBaseWeapon::RetireWeapon()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 	// first, no viewmodel at all.
-	player->pev->viewmodel = iStringNull;
-	player->pev->weaponmodel = iStringNull;
+	player->pev->viewmodel = string_t::Null;
+	player->pev->weaponmodel = string_t::Null;
 	//m_pPlayer->pev->viewmodelindex = 0;
 
 	g_pGameRules->GetNextBestWeapon(player, this);

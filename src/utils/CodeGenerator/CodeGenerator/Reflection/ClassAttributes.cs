@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 
-namespace CodeGenerator.Persistence
+namespace CodeGenerator.Reflection
 {
     public class ClassAttributes
     {

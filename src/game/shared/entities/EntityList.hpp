@@ -18,7 +18,7 @@
 #include "ehandle.hpp"
 
 class CBaseEntity;
-class CBaseEntityFactory;
+class CEntityFactory;
 
 /**
 *	@brief Manages the list of entities
@@ -73,9 +73,9 @@ public:
 private:
 	EHandle<CBaseEntity> InternalGetEntityByIndex(int index) const;
 
-	CBaseEntityFactory* GetFactory(const char* className);
+	CEntityFactory* GetFactory(const char* className);
 
-	CBaseEntity* ConstructEntity(CBaseEntityFactory* factory, edict_t* edict);
+	CBaseEntity* ConstructEntity(CEntityFactory* factory, edict_t* edict);
 
 private:
 	edict_t* m_Entities = nullptr;

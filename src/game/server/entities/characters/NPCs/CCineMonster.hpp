@@ -15,7 +15,8 @@
 
 #pragma once
 
-#include "CBaseMonster.hpp"
+#include "CBaseMonster.schedule.hpp"
+#include "CBaseEntity.hpp"
 #include "scriptevent.hpp"
 #include "CCineMonster.generated.hpp"
 
@@ -63,7 +64,7 @@ enum class ScriptedMoveTo
 *	range # - only search this far to find the target
 *	spawnflags - (stop if blocked, stop if player seen)
 */
-class EHL_CLASS("EntityName": "scripted_sequence") CCineMonster : public CBaseMonster
+class EHL_CLASS("EntityName": "scripted_sequence") CCineMonster : public CBaseEntity
 {
 	EHL_GENERATED_BODY()
 
@@ -77,7 +78,7 @@ public:
 	*/
 	void Blocked(CBaseEntity* pOther) override;
 	void Touch(CBaseEntity* pOther) override;
-	int	 ObjectCaps() override { return (CBaseMonster::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
+	int	 ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 
 	/**
 	*	@brief Find an entity that I'm interested in and precache the sounds he'll need in the sequence.
@@ -132,16 +133,19 @@ public:
 	virtual void FixScriptMonsterSchedule(CBaseMonster* pMonster);
 	bool	CanInterrupt();
 	void	AllowInterrupt(bool fAllow);
-	int		IgnoreConditions() override;
+	int		IgnoreConditions();
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszIdle = iStringNull;		// string index for idle animation
+	EHANDLE m_hTargetEnt;	 //!< Monster we're trying to control
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszPlay = iStringNull;		// string index for scripted animation
+	string_t m_iszIdle;		// string index for idle animation
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszEntity = iStringNull;		// entity that is wanted for this script
+	string_t m_iszPlay;		// string index for scripted animation
+
+	EHL_FIELD("Persisted": true)
+	string_t m_iszEntity;		// entity that is wanted for this script
 
 	EHL_FIELD("Persisted": true)
 	ScriptedMoveTo m_fMoveTo = ScriptedMoveTo::No;

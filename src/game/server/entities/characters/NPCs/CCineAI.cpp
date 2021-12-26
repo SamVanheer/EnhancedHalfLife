@@ -47,15 +47,15 @@ void CCineAI::PossessEntity()
 		{
 		case ScriptedMoveTo::No:
 		case ScriptedMoveTo::TurnToFace:
-			pTarget->m_scriptState = ScriptState::Wait;
+			pTarget->m_scriptState = CBaseMonster::ScriptState::Wait;
 			break;
 
 		case ScriptedMoveTo::Walk:
-			pTarget->m_scriptState = ScriptState::WalkToMark;
+			pTarget->m_scriptState = CBaseMonster::ScriptState::WalkToMark;
 			break;
 
 		case ScriptedMoveTo::Run:
-			pTarget->m_scriptState = ScriptState::RunToMark;
+			pTarget->m_scriptState = CBaseMonster::ScriptState::RunToMark;
 			break;
 
 		case ScriptedMoveTo::Instantaneous:
@@ -66,7 +66,7 @@ void CCineAI::PossessEntity()
 			pTarget->SetAbsVelocity(vec3_origin);
 			pTarget->pev->effects |= EF_NOINTERP;
 			pTarget->SetAbsAngles({0, GetAbsAngles().y, 0});
-			pTarget->m_scriptState = ScriptState::Wait;
+			pTarget->m_scriptState = CBaseMonster::ScriptState::Wait;
 			m_startTime = gpGlobals->time + 1E6;
 			// UNDONE: Add a flag to do this so people can fixup physics after teleporting monsters
 			pTarget->pev->flags &= ~FL_ONGROUND;

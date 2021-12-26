@@ -43,7 +43,7 @@ namespace CodeGenerator.CodeGen
 //{DateTimeOffset.Now}
 //DO NOT EDIT
 
-";
+".NormalizeNewlines();
 
             GenerateHeaders(heading);
             GenerateSources(heading);
@@ -55,7 +55,7 @@ namespace CodeGenerator.CodeGen
             {
                 var fileName = GetBaseFileName(data.FileName) + HeaderFileExtension;
                 _generatedFileNames.Add(fileName);
-                File.WriteAllText(fileName, (heading + data.GenerateFullDeclaration()).NormalizeNewlines());
+                File.WriteAllText(fileName, heading + data.GetGeneratedHeaderContents());
             }
         }
 
@@ -65,7 +65,7 @@ namespace CodeGenerator.CodeGen
             {
                 var fileName = GetBaseFileName(data.FileName) + SourceFileExtension;
                 _generatedFileNames.Add(fileName);
-                File.WriteAllText(fileName, (heading + data.GenerateFullDefinition()).NormalizeNewlines());
+                File.WriteAllText(fileName, heading + data.GetGeneratedSourceContents());
             }
 
             //Generate the automatically included source file
@@ -74,7 +74,7 @@ namespace CodeGenerator.CodeGen
 
             using var writer = File.CreateText(generatedSourceFileName);
 
-            writer.Write(heading.NormalizeNewlines());
+            writer.Write(heading);
 
             foreach (var data in _generatedCode.Classes)
             {

@@ -58,7 +58,7 @@ public:
 		float m_length = 0;
 
 	EHL_FIELD("Persisted": true)
-		string_t m_altName = iStringNull;
+		string_t m_altName;
 
 	EHL_FIELD("Persisted": true)
 		EHandle<CPathTrack> m_hNext;

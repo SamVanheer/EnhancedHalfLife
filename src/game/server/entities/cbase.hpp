@@ -30,6 +30,3 @@
 #endif
 
 #include "CBaseMonster.hpp"
-#ifndef CLIENT_DLL
-#include "CCineMonster.hpp"
-#endif

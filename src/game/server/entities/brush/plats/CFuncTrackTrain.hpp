@@ -94,7 +94,7 @@ public:
 	int m_sounds = 0;
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszMovingSound = iStringNull;
+	string_t m_iszMovingSound;
 
 	EHL_FIELD("Persisted": true)
 	float m_flVolume = 0;

@@ -32,6 +32,8 @@ public:
 	CServerLibrary(const CServerLibrary&) = delete;
 	CServerLibrary& operator=(const CServerLibrary&) = delete;
 
+	void Initialize();
+
 	void MapIsEnding()
 	{
 		m_isStartingNewMap = true;

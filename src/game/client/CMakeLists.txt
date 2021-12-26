@@ -23,6 +23,7 @@ else()
 	set_target_properties(SDL2 PROPERTIES IMPORTED_LOCATION "${GAME_DIRECTORY}/libSDL2.so")
 endif()
 
+# TODO needs to be for SDL2
 target_include_directories(vgui INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../../external/SDL2/include)
 
 # Add client library
@@ -177,6 +178,7 @@ target_sources(client PRIVATE
 	../server/entities/brush/CBreakable.hpp
 	../server/entities/characters/CBasePlayer.hpp
 	../server/entities/characters/NPCs/CBaseMonster.hpp
+	../server/entities/characters/NPCs/CCineMonster.hpp
 	../server/entities/characters/NPCs/aliens/CHornet.hpp
 	../server/entities/items/weapons/CGrenade.hpp
 	../server/entities/point/CPointEntity.hpp
@@ -201,6 +203,7 @@ target_sources(client PRIVATE
 	${INCLUDE_DIRECTORY}/GoldSrc/Platform.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/PlatformHeaders.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/Sequence.hpp
+	${INCLUDE_DIRECTORY}/GoldSrc/string_t.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/studio.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_in.hpp
 	${INCLUDE_DIRECTORY}/GoldSrc/winsani_out.hpp

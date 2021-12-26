@@ -89,7 +89,7 @@ bool CEgon::AddToPlayer(CBasePlayer* pPlayer)
 
 void CEgon::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	SendWeaponAnim(EGON_HOLSTER);
@@ -129,7 +129,7 @@ float CEgon::GetDischargeInterval()
 
 bool CEgon::HasAmmo()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return false;
@@ -139,7 +139,7 @@ bool CEgon::HasAmmo()
 
 void CEgon::UseAmmo(int count)
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (player->m_rgAmmo[m_iPrimaryAmmoType] >= count)
 		player->m_rgAmmo[m_iPrimaryAmmoType] -= count;
@@ -149,7 +149,7 @@ void CEgon::UseAmmo(int count)
 
 void CEgon::Attack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	// don't fire underwater
 	if (player->pev->waterlevel == WaterLevel::Head)
@@ -233,7 +233,7 @@ void CEgon::PrimaryAttack()
 
 void CEgon::Fire(const Vector& vecOrigSrc, const Vector& vecDir)
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	const Vector tmpSrc = vecOrigSrc + gpGlobals->v_up * -8 + gpGlobals->v_right * 3;
 
@@ -397,7 +397,7 @@ void CEgon::UpdateEffect(const Vector& startPoint, const Vector& endPoint, float
 void CEgon::CreateEffect()
 {
 #ifndef CLIENT_DLL
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	DestroyEffect();
 
@@ -460,7 +460,7 @@ void CEgon::DestroyEffect()
 
 void CEgon::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (!(player->m_afButtonPressed & IN_ATTACK2) && (player->pev->button & IN_ATTACK))
 	{
@@ -496,7 +496,7 @@ void CEgon::WeaponIdle()
 
 void CEgon::EndAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	const bool bMakeNoise = m_fireState != FireState::Off; //Checking the button just in case!.
 

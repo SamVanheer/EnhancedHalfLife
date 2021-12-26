@@ -58,7 +58,7 @@ public:
 	char m_szLandmarkName[MAX_MAPNAME_LENGTH]{};	//!< landmark on next map
 
 	EHL_FIELD("Persisted": true)
-	string_t m_changeTarget = iStringNull;
+	string_t m_changeTarget;
 
 	EHL_FIELD("Persisted": true)
 	float m_changeTargetDelay = 0;

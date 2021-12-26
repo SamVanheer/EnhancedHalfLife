@@ -24,10 +24,10 @@ class CBaseEntity;
 */
 struct locksound_t
 {
-	string_t sLockedSound = iStringNull;		//!< sound a door makes when it's locked
-	string_t sLockedSentence = iStringNull;		//!< sentence group played when door is locked
-	string_t sUnlockedSound = iStringNull;		//!< sound a door makes when it's unlocked
-	string_t sUnlockedSentence = iStringNull;	//!< sentence group played when door is unlocked
+	string_t sLockedSound;			//!< sound a door makes when it's locked
+	string_t sLockedSentence;		//!< sentence group played when door is locked
+	string_t sUnlockedSound;		//!< sound a door makes when it's unlocked
+	string_t sUnlockedSentence;		//!< sentence group played when door is unlocked
 
 	int iLockedSentence = 0;		//!< which sentence in sentence group to play next
 	int iUnlockedSentence = 0;		//!< which sentence in sentence group to play next

@@ -178,11 +178,11 @@ protected:
 	*	@brief Target to trigger when this entity materializes (spawns/respawns)
 	*/
 	EHL_FIELD("Persisted": true)
-	string_t m_iszTriggerOnMaterialize = iStringNull;
+	string_t m_iszTriggerOnMaterialize;
 
 	/**
 	*	@brief Target to trigger when this entity dematerializes (waiting to respawn, being removed)
 	*/
 	EHL_FIELD("Persisted": true)
-	string_t m_iszTriggerOnDematerialize = iStringNull;
+	string_t m_iszTriggerOnDematerialize;
 };

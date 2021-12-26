@@ -96,12 +96,12 @@ public:
 	//These sounds are never actually used
 	/*
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszStartSound = iStringNull;
+	string_t m_iszStartSound;
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszStopSound = iStringNull;
+	string_t m_iszStopSound;
 	*/
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszRunningSound = iStringNull;
+	string_t m_iszRunningSound;
 };

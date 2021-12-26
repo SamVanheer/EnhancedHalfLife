@@ -103,7 +103,7 @@ void CWeaponBox::Touch(CBaseEntity* pOther)
 			//ALERT ( at_console, "Gave %d rounds of %s\n", m_rgAmmo[i], STRING(m_rgiszAmmo[i]) );
 
 			// now empty the ammo from the weaponbox since we just gave it to the player
-			m_rgiszAmmo[i] = iStringNull;
+			m_rgiszAmmo[i] = string_t::Null;
 			m_rgAmmo[i] = 0;
 		}
 	}
@@ -150,7 +150,7 @@ bool CWeaponBox::PackWeapon(CBaseWeapon* pWeapon)
 		return false;// box can only hold one of each weapon type
 	}
 
-	if (auto player = pWeapon->m_hPlayer.Get(); player)
+	if (auto player = pWeapon->GetPlayerOwner(); player)
 	{
 		if (!player->RemovePlayerWeapon(pWeapon))
 		{
@@ -179,7 +179,7 @@ bool CWeaponBox::PackWeapon(CBaseWeapon* pWeapon)
 	pWeapon->SetSolidType(Solid::Not);
 	pWeapon->pev->effects = EF_NODRAW;
 	pWeapon->pev->modelindex = 0;
-	pWeapon->pev->model = iStringNull;
+	pWeapon->pev->model = string_t::Null;
 	pWeapon->SetOwner(this);
 	pWeapon->SetThink(nullptr);// crowbar may be trying to swing again, etc.
 	pWeapon->SetTouch(nullptr);

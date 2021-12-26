@@ -47,10 +47,10 @@ public:
 	void EXPORT FieldUse(const UseInfo& info);
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszXController = iStringNull;
+	string_t m_iszXController;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszYController = iStringNull;
+	string_t m_iszYController;
 
 	EHL_FIELD("Persisted": true)
 	float m_flSpread = 0;

@@ -75,7 +75,7 @@ bool CHandGrenade::CanHolster()
 
 void CHandGrenade::Holster()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	player->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 
@@ -96,7 +96,7 @@ void CHandGrenade::Holster()
 
 void CHandGrenade::PrimaryAttack()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (!m_flStartThrow && player->m_rgAmmo[m_iPrimaryAmmoType] > 0)
 	{
@@ -110,7 +110,7 @@ void CHandGrenade::PrimaryAttack()
 
 void CHandGrenade::WeaponIdle()
 {
-	auto player = m_hPlayer.Get();
+	auto player = GetPlayerOwner();
 
 	if (m_flReleaseThrow == 0 && m_flStartThrow)
 		m_flReleaseThrow = gpGlobals->time;

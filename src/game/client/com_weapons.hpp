@@ -49,6 +49,7 @@ unsigned short	stub_PrecacheEvent(int type, const char* s);
 const char* stub_NameForFunction(std::uint32_t function);
 void			stub_SetModel(edict_t* e, const char* m);
 
+void HUD_InitClientWeapons();
 
 extern cvar_t* cl_lw;
 

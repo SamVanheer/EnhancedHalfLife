@@ -105,20 +105,20 @@ public:
 	int m_iTotalCapacity = 0;
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszChargeOnSound = iStringNull;
+	string_t m_iszChargeOnSound;
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszChargeLoopSound = iStringNull;
+	string_t m_iszChargeLoopSound;
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszRefuseChargeSound = iStringNull;
+	string_t m_iszRefuseChargeSound;
 
 	EHL_FIELD("Persisted": true, "Type": "SoundName")
-	string_t m_iszRechargeSound = iStringNull;
+	string_t m_iszRechargeSound;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszFireOnRecharge = iStringNull;
+	string_t m_iszFireOnRecharge;
 
 	EHL_FIELD("Persisted": true)
-	string_t m_iszFireOnEmpty = iStringNull;
+	string_t m_iszFireOnEmpty;
 };

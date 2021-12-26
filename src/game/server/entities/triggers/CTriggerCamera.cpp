@@ -239,7 +239,7 @@ void CTriggerCamera::Move()
 		{
 			FireTargets(STRING(path->pev->message), this, this, UseType::Toggle, 0);
 			if (IsBitSet(path->pev->spawnflags, SF_CORNER_FIREONCE))
-				path->pev->message = iStringNull;
+				path->pev->message = string_t::Null;
 		}
 		// Time to go to the next target
 		path = m_hEntPath = path->GetNextTarget();

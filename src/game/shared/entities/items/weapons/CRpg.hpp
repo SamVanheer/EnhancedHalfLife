@@ -16,9 +16,10 @@
 #pragma once
 
 #include "CBaseWeapon.hpp"
+#ifndef CLIENT_DLL
+#include "CLaserSpot.hpp"
+#endif
 #include "CRpg.generated.hpp"
-
-class CLaserSpot;
 
 enum rpg_e
 {
@@ -76,7 +77,9 @@ public:
 	void UpdateSpot();
 	bool ShouldWeaponIdle() override { return true; }
 
+#ifndef CLIENT_DLL
 	EHandle<CLaserSpot> m_hSpot;
+#endif
 
 	EHL_FIELD("Persisted": true)
 	bool m_fSpotActive = false;
